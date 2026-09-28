@@ -1,0 +1,94 @@
+{
+ "task": "desk_prep",
+ "instruction": "Prepare the desk with a notebook, a pen, and a mug.",
+ "seed": 0,
+ "scene_usd": "tasks/desk_prep/scene.usd",
+ "annotation": "tasks/desk_prep/annotation.json",
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  5.4,
+  -3.6,
+  0.0
+ ],
+ "placed_objects": {
+  "notebook": {
+   "asset": "notebook",
+   "support": "CellShelfFactory_2688822_spawn_asset_5011983/surface_4",
+   "yaw": 1.5707963267948966,
+   "position": [
+    3.574144637477432,
+    4.3304460900582225,
+    0.9561000000000001
+   ]
+  },
+  "pen": {
+   "asset": "pen",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "yaw": -3.1243861495570098,
+   "position": [
+    3.607783764118874,
+    5.63074339330825,
+    0.8696
+   ]
+  },
+  "pencil": {
+   "asset": "pencil",
+   "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "yaw": -2.0379158390962826,
+   "position": [
+    4.178930759516597,
+    -7.717920901525366,
+    0.7262
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {
+  "mug": [
+   "mug_shelf",
+   "mug_counter",
+   "mug_dining_cabinet"
+  ],
+  "cup_fallback": [
+   "cup_counter_b",
+   "cup_kitchen_cabinet",
+   "cup_side_table"
+  ]
+ },
+ "candidate_supports": {
+  "notebook": [
+   "CellShelfFactory_2688822_spawn_asset_5011983/surface_4",
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "pen": [
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "CellShelfFactory_2688822_spawn_asset_5011983/surface_2",
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "pencil": [
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+  ]
+ },
+ "alternatives": [
+  "mug missing -> cup",
+  "pen missing -> pencil"
+ ],
+ "success": {
+  "all_of": [
+   {
+    "objects": [
+     "notebook",
+     "pen|pencil"
+    ],
+    "on_support": "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
+   },
+   {
+    "role": "mug|cup_fallback",
+    "on_support": "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
+   }
+  ]
+ }
+}

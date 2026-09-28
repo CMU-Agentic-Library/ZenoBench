@@ -1,0 +1,11 @@
+build/
+install/
+log/
+artifacts/
+.venv/
+.runtime/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+*.swp

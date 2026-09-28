@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<robot name="cereal_box">
+   <link name="cereal_box">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/cereal_box.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/cereal_box_collision.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.5000"/>
+         <origin xyz="0 0 0"/>
+         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+      <extra_info>
+         <scale>0.300000</scale>
+         <version>v2.1.0</version>
+         <category>cereal_box</category>
+         <description>plain mustard-yellow rectangular carton with flat faces and slightly rounded edges.</description>
+         <min_height>0.25</min_height>
+         <max_height>0.35</max_height>
+         <real_height>0.3</real_height>
+         <min_mass>0.3</min_mass>
+         <max_mass>0.7</max_mass>
+         <generate_time>20260924160020</generate_time>
+         <gs_model>mesh/cereal_box_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.172847270965576</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

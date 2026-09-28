@@ -1,0 +1,1050 @@
+{
+ "breakfast_plate": {
+  "name": "breakfast_plate",
+  "tags": [
+   "dish",
+   "plate",
+   "flat"
+  ],
+  "mass": 0.6,
+  "collider": "solid",
+  "size": [
+   0.248,
+   0.2481,
+   0.0325
+  ],
+  "origin_to_bottom_center": [
+   0.0001,
+   0.0,
+   -0.016
+  ],
+  "min_pinch_width": 0.2144,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.032500225612106866
+   }
+  ],
+  "usd": "usd/assets/breakfast_plate.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/breakfast_plate/result/breakfast_plate_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "breakfast_bowl": {
+  "name": "breakfast_bowl",
+  "tags": [
+   "dish",
+   "bowl",
+   "container"
+  ],
+  "mass": 0.4,
+  "collider": "round_container",
+  "size": [
+   0.1781,
+   0.1757,
+   0.09
+  ],
+  "origin_to_bottom_center": [
+   -0.0001,
+   0.0001,
+   -0.0451
+  ],
+  "min_pinch_width": 0.1565,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch",
+    "radius": 0.0853,
+    "rim_height": 0.09,
+    "depth": 0.035,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.35,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/breakfast_bowl.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/breakfast_bowl/result/breakfast_bowl_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "round",
+   "bands": [
+    [
+     0.0108,
+     0.0306,
+     0.0639
+    ],
+    [
+     0.0306,
+     0.0504,
+     0.0736
+    ],
+    [
+     0.0504,
+     0.0702,
+     0.0792
+    ],
+    [
+     0.0702,
+     0.09,
+     0.0853
+    ]
+   ],
+   "rim_height": 0.09,
+   "rim_radius": 0.0853
+  }
+ },
+ "breakfast_cup": {
+  "name": "breakfast_cup",
+  "tags": [
+   "dish",
+   "cup",
+   "drinking_container",
+   "container"
+  ],
+  "mass": 0.03,
+  "collider": "round_container",
+  "size": [
+   0.1076,
+   0.1096,
+   0.15
+  ],
+  "origin_to_bottom_center": [
+   0.0001,
+   -0.0,
+   -0.075
+  ],
+  "min_pinch_width": 0.1076,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch",
+    "radius": 0.0507,
+    "rim_height": 0.15,
+    "depth": 0.035,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.35,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/breakfast_cup.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/breakfast_cup/result/breakfast_cup_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "round",
+   "bands": [
+    [
+     0.018,
+     0.051,
+     0.0356
+    ],
+    [
+     0.051,
+     0.084,
+     0.0387
+    ],
+    [
+     0.084,
+     0.117,
+     0.0419
+    ],
+    [
+     0.117,
+     0.15,
+     0.0507
+    ]
+   ],
+   "rim_height": 0.15,
+   "rim_radius": 0.0507
+  }
+ },
+ "breakfast_mug": {
+  "name": "breakfast_mug",
+  "tags": [
+   "dish",
+   "mug",
+   "drinking_container",
+   "container"
+  ],
+  "mass": 0.375,
+  "collider": "round_container",
+  "size": [
+   0.0926,
+   0.1266,
+   0.12
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   -0.0597
+  ],
+  "min_pinch_width": 0.0459,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch",
+    "radius": 0.0566,
+    "rim_height": 0.12,
+    "depth": 0.035,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.35,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/breakfast_mug.usd",
+  "source_urdf": "outputs/validation/textto3d/asset3d/breakfast_mug/result/breakfast_mug_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "round",
+   "bands": [
+    [
+     0.0144,
+     0.0408,
+     0.0556
+    ],
+    [
+     0.0408,
+     0.0672,
+     0.0561
+    ],
+    [
+     0.0672,
+     0.0936,
+     0.0585
+    ],
+    [
+     0.0936,
+     0.12,
+     0.0566
+    ]
+   ],
+   "rim_height": 0.12,
+   "rim_radius": 0.0566
+  }
+ },
+ "breakfast_spoon": {
+  "name": "breakfast_spoon",
+  "tags": [
+   "utensil",
+   "spoon"
+  ],
+  "mass": 0.04,
+  "collider": "solid",
+  "size": [
+   0.1814,
+   0.0409,
+   0.025
+  ],
+  "origin_to_bottom_center": [
+   -0.0001,
+   -0.0,
+   -0.0128
+  ],
+  "min_pinch_width": 0.0081,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.5707963267948966,
+    "width": 0.008139600208215818,
+    "offset_xy": [
+     -0.0,
+     -0.0003
+    ],
+    "height": 0.008372752446625184,
+    "pre_open": 0.01606980010410791
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.025000031050882252
+   }
+  ],
+  "usd": "usd/assets/breakfast_spoon.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/breakfast_spoon/result/breakfast_spoon_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "cereal_box": {
+  "name": "cereal_box",
+  "tags": [
+   "food",
+   "box",
+   "clutter"
+  ],
+  "mass": 0.5,
+  "collider": "solid",
+  "size": [
+   0.105,
+   0.1253,
+   0.3
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   -0.0001,
+   -0.15
+  ],
+  "min_pinch_width": 0.1048,
+  "graspable_by_zeno": false,
+  "grasps": [],
+  "usd": "usd/assets/cereal_box.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/cereal_box/result/cereal_box_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "apple": {
+  "name": "apple",
+  "tags": [
+   "fruit",
+   "apple"
+  ],
+  "mass": 0.16,
+  "collider": "solid",
+  "size": [
+   0.0619,
+   0.064,
+   0.07
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   -0.035
+  ],
+  "min_pinch_width": 0.0619,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.0,
+    "width": 0.06192796992994378,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.035,
+    "pre_open": 0.04
+   }
+  ],
+  "usd": "usd/assets/apple.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/apple/result/apple_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "banana": {
+  "name": "banana",
+  "tags": [
+   "fruit",
+   "banana"
+  ],
+  "mass": 0.12,
+  "collider": "solid",
+  "size": [
+   0.1924,
+   0.0846,
+   0.0432
+  ],
+  "origin_to_bottom_center": [
+   -0.0039,
+   -0.006,
+   -0.0199
+  ],
+  "min_pinch_width": 0.0483,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.5707963267948966,
+    "width": 0.04833213244090487,
+    "offset_xy": [
+     -0.0,
+     -0.0182
+    ],
+    "height": 0.021603907043018705,
+    "pre_open": 0.03616606622045243
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.04320781408603741
+   }
+  ],
+  "usd": "usd/assets/banana.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/banana/result/banana_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "orange": {
+  "name": "orange",
+  "tags": [
+   "fruit",
+   "orange"
+  ],
+  "mass": 0.15,
+  "collider": "solid",
+  "size": [
+   0.068,
+   0.0642,
+   0.0586
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   -0.029
+  ],
+  "min_pinch_width": 0.0636,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.8325957145940461,
+    "width": 0.06362087584330853,
+    "offset_xy": [
+     -0.0002,
+     -0.0001
+    ],
+    "height": 0.029300826603697927,
+    "pre_open": 0.04
+   }
+  ],
+  "usd": "usd/assets/orange.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/orange/result/orange_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "fruit_basket": {
+  "name": "fruit_basket",
+  "tags": [
+   "container",
+   "basket",
+   "fruit_container"
+  ],
+  "mass": 0.5,
+  "collider": "round_container",
+  "size": [
+   0.2911,
+   0.2525,
+   0.3
+  ],
+  "origin_to_bottom_center": [
+   -0.0012,
+   -0.0005,
+   -0.1501
+  ],
+  "min_pinch_width": 0.2118,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch",
+    "radius": 0.1326,
+    "rim_height": 0.174,
+    "depth": 0.035,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.35,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/fruit_basket.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/fruit_basket/result/fruit_basket_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "round",
+   "bands": [
+    [
+     0.0209,
+     0.0592,
+     0.1102
+    ],
+    [
+     0.0592,
+     0.0974,
+     0.1177
+    ],
+    [
+     0.0974,
+     0.1357,
+     0.1219
+    ],
+    [
+     0.1357,
+     0.174,
+     0.1326
+    ]
+   ],
+   "rim_height": 0.174,
+   "rim_radius": 0.1326
+  }
+ },
+ "serving_tray": {
+  "name": "serving_tray",
+  "tags": [
+   "container",
+   "tray",
+   "fruit_container"
+  ],
+  "mass": 0.8,
+  "collider": "rect_container",
+  "size": [
+   0.42,
+   0.3583,
+   0.063
+  ],
+  "origin_to_bottom_center": [
+   0.0001,
+   0.0002,
+   -0.0319
+  ],
+  "min_pinch_width": 0.2782,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch_rect",
+    "half_x": 0.21,
+    "half_y": 0.17916289185917844,
+    "rim_height": 0.06298937579014834,
+    "depth": 0.03,
+    "tilts": [
+     0.4,
+     0.2
+    ],
+    "pre_open": 0.03
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.06298937579014834
+   }
+  ],
+  "usd": "usd/assets/serving_tray.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/serving_tray/result/serving_tray_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "rect",
+   "bands": [
+    [
+     0.0,
+     0.063,
+     0.2065,
+     0.1757
+    ]
+   ],
+   "rim_height": 0.063
+  }
+ },
+ "notebook": {
+  "name": "notebook",
+  "tags": [
+   "stationery",
+   "notebook",
+   "flat"
+  ],
+  "mass": 0.25,
+  "collider": "solid",
+  "size": [
+   0.21,
+   0.1693,
+   0.0291
+  ],
+  "origin_to_bottom_center": [
+   -0.0,
+   -0.0006,
+   -0.0111
+  ],
+  "min_pinch_width": 0.1307,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.029133945743562366
+   }
+  ],
+  "usd": "usd/assets/notebook.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/notebook/result/notebook_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "pen": {
+  "name": "pen",
+  "tags": [
+   "stationery",
+   "pen",
+   "writing_tool"
+  ],
+  "mass": 0.015,
+  "collider": "solid",
+  "size": [
+   0.14,
+   0.0162,
+   0.0102
+  ],
+  "origin_to_bottom_center": [
+   0.0001,
+   0.0006,
+   -0.0056
+  ],
+  "min_pinch_width": 0.0097,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.5707963267948966,
+    "width": 0.0097479662550701,
+    "offset_xy": [
+     -0.0,
+     -0.0032
+    ],
+    "height": 0.004942223664802159,
+    "pre_open": 0.01687398312753505
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.010208158678303193
+   }
+  ],
+  "usd": "usd/assets/pen.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/pen/result/pen_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "pencil": {
+  "name": "pencil",
+  "tags": [
+   "stationery",
+   "pencil",
+   "writing_tool"
+  ],
+  "mass": 0.01,
+  "collider": "solid",
+  "size": [
+   0.18,
+   0.0172,
+   0.0165
+  ],
+  "origin_to_bottom_center": [
+   0.0001,
+   0.0,
+   -0.0082
+  ],
+  "min_pinch_width": 0.0171,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.5707963267948966,
+    "width": 0.01710326059494946,
+    "offset_xy": [
+     -0.0,
+     -0.0001
+    ],
+    "height": 0.00826204801113052,
+    "pre_open": 0.02055163029747473
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.016543611652227466
+   }
+  ],
+  "usd": "usd/assets/pencil.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/pencil/result/pencil_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "book_red": {
+  "name": "book_red",
+  "tags": [
+   "book",
+   "flat"
+  ],
+  "mass": 0.55,
+  "collider": "solid",
+  "size": [
+   0.24,
+   0.1674,
+   0.0697
+  ],
+  "origin_to_bottom_center": [
+   -0.0,
+   0.0,
+   -0.0355
+  ],
+  "min_pinch_width": 0.1668,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.06970664466539739
+   }
+  ],
+  "usd": "usd/assets/book_red.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/book_red/result/book_red_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "book_green": {
+  "name": "book_green",
+  "tags": [
+   "book",
+   "flat"
+  ],
+  "mass": 0.45,
+  "collider": "solid",
+  "size": [
+   0.2201,
+   0.183,
+   0.0562
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   -0.0001,
+   -0.0276
+  ],
+  "min_pinch_width": 0.1382,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.05619869095120432
+   }
+  ],
+  "usd": "usd/assets/book_green.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/book_green/result/book_green_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "book_blue": {
+  "name": "book_blue",
+  "tags": [
+   "book",
+   "flat"
+  ],
+  "mass": 0.3,
+  "collider": "solid",
+  "size": [
+   0.2,
+   0.1399,
+   0.0591
+  ],
+  "origin_to_bottom_center": [
+   -0.0001,
+   -0.0,
+   -0.0301
+  ],
+  "min_pinch_width": 0.1394,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.059132225114590625
+   }
+  ],
+  "usd": "usd/assets/book_blue.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/book_blue/result/book_blue_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "toy_car": {
+  "name": "toy_car",
+  "tags": [
+   "toy",
+   "toy_car"
+  ],
+  "mass": 0.15,
+  "collider": "solid",
+  "size": [
+   0.0532,
+   0.12,
+   0.044
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   -0.0221
+  ],
+  "min_pinch_width": 0.0514,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.0,
+    "width": 0.05141294093078113,
+    "offset_xy": [
+     0.0001,
+     0.0
+    ],
+    "height": 0.021977062013781662,
+    "pre_open": 0.037706470465390565
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.043954124027563324
+   }
+  ],
+  "usd": "usd/assets/toy_car.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/toy_car/result/toy_car_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "teddy_bear": {
+  "name": "teddy_bear",
+  "tags": [
+   "toy",
+   "plush"
+  ],
+  "mass": 0.2,
+  "collider": "solid",
+  "size": [
+   0.1452,
+   0.22,
+   0.2124
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0004,
+   -0.1059
+  ],
+  "min_pinch_width": 0.1073,
+  "graspable_by_zeno": false,
+  "grasps": [],
+  "usd": "usd/assets/teddy_bear.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/teddy_bear/result/teddy_bear_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "toy_block": {
+  "name": "toy_block",
+  "tags": [
+   "toy",
+   "block"
+  ],
+  "mass": 0.04,
+  "collider": "solid",
+  "size": [
+   0.0427,
+   0.0499,
+   0.05
+  ],
+  "origin_to_bottom_center": [
+   -0.0,
+   -0.0,
+   -0.025
+  ],
+  "min_pinch_width": 0.0427,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.0,
+    "width": 0.042719839957815475,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.025,
+    "pre_open": 0.033359919978907734
+   }
+  ],
+  "usd": "usd/assets/toy_block.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/toy_block/result/toy_block_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "rubber_duck": {
+  "name": "rubber_duck",
+  "tags": [
+   "toy",
+   "duck"
+  ],
+  "mass": 0.05,
+  "collider": "solid",
+  "size": [
+   0.09,
+   0.0658,
+   0.0835
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   -0.0001,
+   -0.0417
+  ],
+  "min_pinch_width": 0.0561,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.5707963267948966,
+    "width": 0.056068974694423665,
+    "offset_xy": [
+     0.027,
+     -0.0002
+    ],
+    "height": 0.04173208688329786,
+    "pre_open": 0.04
+   }
+  ],
+  "usd": "usd/assets/rubber_duck.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/rubber_duck/result/rubber_duck_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "toy_box": {
+  "name": "toy_box",
+  "tags": [
+   "container",
+   "toy_box",
+   "storage"
+  ],
+  "mass": 3.0,
+  "collider": "rect_container",
+  "size": [
+   0.3731,
+   0.5,
+   0.4808
+  ],
+  "origin_to_bottom_center": [
+   -0.0002,
+   0.0001,
+   -0.2397
+  ],
+  "min_pinch_width": 0.2529,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch_rect",
+    "half_x": 0.1865414964107568,
+    "half_y": 0.25,
+    "rim_height": 0.48076879489306024,
+    "depth": 0.03,
+    "tilts": [
+     0.4,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/toy_box.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/toy_box/result/toy_box_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "rect",
+   "bands": [
+    [
+     0.0,
+     0.4808,
+     0.183,
+     0.2465
+    ]
+   ],
+   "rim_height": 0.4808
+  }
+ },
+ "storage_basket": {
+  "name": "storage_basket",
+  "tags": [
+   "container",
+   "basket",
+   "storage"
+  ],
+  "mass": 0.6,
+  "collider": "rect_container",
+  "size": [
+   0.3618,
+   0.3276,
+   0.38
+  ],
+  "origin_to_bottom_center": [
+   -0.0,
+   0.0001,
+   -0.1903
+  ],
+  "min_pinch_width": 0.2621,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch_rect",
+    "half_x": 0.18091605205685402,
+    "half_y": 0.16377715946793736,
+    "rim_height": 0.38,
+    "depth": 0.03,
+    "tilts": [
+     0.4,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/storage_basket.usd",
+  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/storage_basket/result/storage_basket_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "rect",
+   "bands": [
+    [
+     0.0,
+     0.38,
+     0.1774,
+     0.1603
+    ]
+   ],
+   "rim_height": 0.38
+  }
+ }
+}

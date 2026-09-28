@@ -1,0 +1,1038 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="zeno_malo_edu">
+  <link name="base_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/base_link.STL" />
+      </geometry>
+      <material name="base_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/base_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.021336 -0.000097 0.22555" />
+      <mass value="27.471" />
+      <inertia ixx="1.8732" ixy="0.0000799" ixz="0.12812" iyy="1.8499" iyz="0.0001262" izz="0.59433" />
+    </inertial>
+  </link>
+  <link name="lidar_link" />
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="lidar_link" />
+    <origin rpy="0 0 0" xyz="0.12 0 0.25505" />
+  </joint>
+  <link name="fl_steering_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/fl_steering_link.STL" />
+      </geometry>
+      <material name="fl_steering_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/fl_steering_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0.01283 -0.04306" />
+      <mass value="0.203" />
+      <inertia ixx="0.0002764" ixy="0" ixz="0" iyy="0.0002396" iyz="0.0000749" izz="0.0001111" />
+    </inertial>
+  </link>
+  <link name="fl_wheel_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/fl_wheel_link.STL" />
+      </geometry>
+      <material name="fl_wheel_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/fl_wheel_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0000004 -0.026726 -0.000006" />
+      <mass value="0.429" />
+      <inertia ixx="0.0001894" ixy="0" ixz="0" iyy="0.0002852" iyz="0.0000001" izz="0.0001894" />
+    </inertial>
+  </link>
+  <link name="fr_steering_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/fr_steering_link.STL" />
+      </geometry>
+      <material name="fr_steering_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/fr_steering_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 -0.01283 -0.04306" />
+      <mass value="0.203" />
+      <inertia ixx="0.0002764" ixy="0" ixz="0" iyy="0.0002396" iyz="-0.0000749" izz="0.0001111" />
+    </inertial>
+  </link>
+  <link name="fr_wheel_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/fr_wheel_link.STL" />
+      </geometry>
+      <material name="fr_wheel_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/fr_wheel_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0000004 0.026726 -0.000006" />
+      <mass value="0.429" />
+      <inertia ixx="0.0001894" ixy="0" ixz="0" iyy="0.0002852" iyz="-0.0000001" izz="0.0001894" />
+    </inertial>
+  </link>
+  <link name="rl_steering_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/rl_steering_link.STL" />
+      </geometry>
+      <material name="rl_steering_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/rl_steering_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0.01283 -0.04306" />
+      <mass value="0.203" />
+      <inertia ixx="0.0002764" ixy="0" ixz="0" iyy="0.0002396" iyz="0.0000749" izz="0.0001111" />
+    </inertial>
+  </link>
+  <link name="rl_wheel_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/rl_wheel_link.STL" />
+      </geometry>
+      <material name="rl_wheel_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/rl_wheel_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.0000004 -0.026726 -0.000006" />
+      <mass value="0.429" />
+      <inertia ixx="0.0001894" ixy="0" ixz="0" iyy="0.0002852" iyz="0.0000001" izz="0.0001894" />
+    </inertial>
+  </link>
+  <link name="rr_steering_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/rr_steering_link.STL" />
+      </geometry>
+      <material name="rr_steering_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/rr_steering_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 -0.01283 -0.04306" />
+      <mass value="0.203" />
+      <inertia ixx="0.0002764" ixy="0" ixz="0" iyy="0.0002396" iyz="-0.0000749" izz="0.0001111" />
+    </inertial>
+  </link>
+  <link name="rr_wheel_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/rr_wheel_link.STL" />
+      </geometry>
+      <material name="rr_wheel_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/rr_wheel_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0000004 0.026726 -0.000006" />
+      <mass value="0.429" />
+      <inertia ixx="0.0001894" ixy="0" ixz="0" iyy="0.0002852" iyz="-0.0000001" izz="0.0001894" />
+    </inertial>
+  </link>
+  <joint name="fl_steering_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="fl_steering_link" />
+    <origin rpy="0 0 0" xyz="0.155 0.155 0.12905" />
+    <axis xyz="0 0 1" />
+    <limit effort="8.4" lower="-2.5" upper="2.5" velocity="10.4719755" />
+  </joint>
+  <joint name="fl_wheel_joint" type="continuous">
+    <parent link="fl_steering_link" />
+    <child link="fl_wheel_link" />
+    <origin rpy="0 0 0" xyz="0 0.026 -0.088" />
+    <axis xyz="0 1 0" />
+    <limit effort="2" velocity="10.47" />
+  </joint>
+  <joint name="fr_steering_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="fr_steering_link" />
+    <origin rpy="0 0 0" xyz="0.155 -0.155 0.12905" />
+    <axis xyz="0 0 1" />
+    <limit effort="8.4" lower="-2.5" upper="2.5" velocity="10.4719755" />
+  </joint>
+  <joint name="fr_wheel_joint" type="continuous">
+    <parent link="fr_steering_link" />
+    <child link="fr_wheel_link" />
+    <origin rpy="0 0 0" xyz="0 -0.026 -0.088" />
+    <axis xyz="0 1 0" />
+    <limit effort="2" velocity="10.47" />
+  </joint>
+  <joint name="rl_steering_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="rl_steering_link" />
+    <origin rpy="0 0 0" xyz="-0.155 0.155 0.12905" />
+    <axis xyz="0 0 1" />
+    <limit effort="8.4" lower="-2.5" upper="2.5" velocity="10.4719755" />
+  </joint>
+  <joint name="rl_wheel_joint" type="continuous">
+    <parent link="rl_steering_link" />
+    <child link="rl_wheel_link" />
+    <origin rpy="0 0 0" xyz="0 0.026 -0.088" />
+    <axis xyz="0 1 0" />
+    <limit effort="2" velocity="10.47" />
+  </joint>
+  <joint name="rr_steering_joint" type="revolute">
+    <parent link="base_link" />
+    <child link="rr_steering_link" />
+    <origin rpy="0 0 0" xyz="-0.155 -0.155 0.12905" />
+    <axis xyz="0 0 1" />
+    <limit effort="8.4" lower="-2.5" upper="2.5" velocity="10.4719755" />
+  </joint>
+  <joint name="rr_wheel_joint" type="continuous">
+    <parent link="rr_steering_link" />
+    <child link="rr_wheel_link" />
+    <origin rpy="0 0 0" xyz="0 -0.026 -0.088" />
+    <axis xyz="0 1 0" />
+    <limit effort="2" velocity="10.47" />
+  </joint>
+  <link name="torso_lift_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/torso_lift_link.STL" />
+      </geometry>
+      <material name="torso_lift_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/torso_lift_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.046116 0.008008 -0.013038" />
+      <mass value="2.722" />
+      <inertia ixx="0.006563" ixy="-0.0007239" ixz="0.0007623" iyy="0.01068" iyz="0.0002937" izz="0.0090714" />
+    </inertial>
+  </link>
+  <link name="torso_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/torso_link.STL" />
+      </geometry>
+      <material name="torso_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/torso_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.000948 0.000267 0.14342" />
+      <mass value="2.968" />
+      <inertia ixx="0.037402" ixy="0.0000084" ixz="-0.0000693" iyy="0.032024" iyz="0.0001052" izz="0.017719" />
+    </inertial>
+  </link>
+  <link name="head_yaw_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/head_yaw_link.STL" />
+      </geometry>
+      <material name="head_yaw_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/head_yaw_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.000144 -0.009399 0.066208" />
+      <mass value="0.372" />
+      <inertia ixx="0.0008689" ixy="0.0000002" ixz="-0.0000003" iyy="0.0008379" iyz="0.0001629" izz="0.0001384" />
+    </inertial>
+  </link>
+  <link name="head_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/head_link.STL" />
+      </geometry>
+      <material name="head_link_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/head_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.025672 -0.000015 0.037254" />
+      <mass value="0.49" />
+      <inertia ixx="0.0022426" ixy="-0.0000019" ixz="0.0000013" iyy="0.0020907" iyz="-0.0000015" izz="0.002241" />
+    </inertial>
+  </link>
+  <link name="stereo_camera_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/stereo_camera_link.STL" />
+      </geometry>
+      <material name="stereo_camera_link_material_0">
+        <color rgba="0.52549000 0.52549000 0.52549000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/stereo_camera_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0059267 -0.0000042 -0.0001887" />
+      <mass value="0.0095159" />
+      <inertia ixx="0.0000076" ixy="0" ixz="0" iyy="0.0000006" iyz="0" izz="0.0000076" />
+    </inertial>
+  </link>
+  <joint name="torso_lift_joint" type="prismatic">
+    <parent link="base_link" />
+    <child link="torso_lift_link" />
+    <origin rpy="0 0 0" xyz="-0.0225987 0 0.8823262" />
+    <axis xyz="0 0 1" />
+    <limit effort="2011" lower="-0.54" upper="0" velocity="0.1166666666" />
+  </joint>
+  <joint name="waist_pitch_joint" type="revolute">
+    <parent link="torso_lift_link" />
+    <child link="torso_link" />
+    <origin rpy="0 0 0" xyz="0.11623 0 -0.0006568" />
+    <axis xyz="0 1 0" />
+    <limit effort="160" lower="-0.0872665" upper="0.6981317" velocity="0.9424778" />
+  </joint>
+  <joint name="head_yaw_joint" type="revolute">
+    <parent link="torso_link" />
+    <child link="head_yaw_link" />
+    <origin rpy="0 0 0" xyz="-0.006 0 0.2735" />
+    <axis xyz="0 0 1" />
+    <limit effort="3" lower="-1.0471976" upper="1.0471976" velocity="15.7079633" />
+  </joint>
+  <joint name="head_pitch_joint" type="revolute">
+    <parent link="head_yaw_link" />
+    <child link="head_link" />
+    <origin rpy="0 0 0" xyz="0 0 0.115" />
+    <axis xyz="0 1 0" />
+    <limit effort="3" lower="-0.5235988" upper="0.3141593" velocity="15.7079633" />
+  </joint>
+  <joint name="head_stereo_camera_joint" type="fixed">
+    <parent link="head_link" />
+    <child link="stereo_camera_link" />
+    <origin rpy="0 0.1308997 0" xyz="0.0659491 0 0.0476084" />
+  </joint>
+  <link name="left_arm_link_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_1.STL" />
+      </geometry>
+      <material name="left_arm_link_1_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_1.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00072 0.057186 -0.000043" />
+      <mass value="0.961" />
+      <inertia ixx="0.0015992" ixy="0.000026" ixz="-0.0000008" iyy="0.00061" iyz="-0.0000028" izz="0.0016159" />
+    </inertial>
+  </link>
+  <link name="left_arm_link_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_2.STL" />
+      </geometry>
+      <material name="left_arm_link_2_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_2.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0085497 -0.0001114 -0.02853" />
+      <mass value="0.17378" />
+      <inertia ixx="0.0001504" ixy="-0.0000005" ixz="0.0000645" iyy="0.000194" iyz="0.0000007" izz="0.0001222" />
+    </inertial>
+  </link>
+  <link name="left_arm_link_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_3.STL" />
+      </geometry>
+      <material name="left_arm_link_3_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_3.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.009249 0.001462 -0.07886" />
+      <mass value="0.772" />
+      <inertia ixx="0.0031317" ixy="-0.0000181" ixz="0.000485" iyy="0.0032114" iyz="0.0000802" izz="0.0005501" />
+    </inertial>
+  </link>
+  <link name="left_arm_link_4">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_4.STL" />
+      </geometry>
+      <material name="left_arm_link_4_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_4.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.017896 -0.027023 -0.024242" />
+      <mass value="0.17974" />
+      <inertia ixx="0.0001784" ixy="0.0000071" ixz="-0.0000321" iyy="0.0001643" iyz="0.0000094" izz="0.0001643" />
+    </inertial>
+  </link>
+  <link name="left_arm_link_5">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_5.STL" />
+      </geometry>
+      <material name="left_arm_link_5_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_5.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.000421 -0.000246 -0.044861" />
+      <mass value="0.516" />
+      <inertia ixx="0.000711" ixy="0.0000023" ixz="0.0000004" iyy="0.0007594" iyz="-0.0000047" izz="0.0002825" />
+    </inertial>
+  </link>
+  <link name="left_arm_link_6">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_6.STL" />
+      </geometry>
+      <material name="left_arm_link_6_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_6.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.025649 0.001523 -0.000079" />
+      <mass value="0.203" />
+      <inertia ixx="0.0000625" ixy="0" ixz="0.0000001" iyy="0.0000699" iyz="-0.0000002" izz="0.0000596" />
+    </inertial>
+  </link>
+  <link name="left_arm_link_7">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_7.STL" />
+      </geometry>
+      <material name="left_arm_link_7_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/left_arm_link_7.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0.0064831 -0.012311" />
+      <mass value="0.024745" />
+      <inertia ixx="0.0000086" ixy="0" ixz="0" iyy="0.0000101" iyz="0.0000004" izz="0.0000019" />
+    </inertial>
+  </link>
+  <joint name="left_arm_joint_1" type="revolute">
+    <parent link="torso_link" />
+    <child link="left_arm_link_1" />
+    <origin rpy="0 0 0" xyz="0 0.09 0.2385" />
+    <axis xyz="0 -1 0" />
+    <limit effort="40" lower="-1.4835" upper="2.81" velocity="5.8643063" />
+  </joint>
+  <joint name="left_arm_joint_2" type="revolute">
+    <parent link="left_arm_link_1" />
+    <child link="left_arm_link_2" />
+    <origin rpy="0 0 0" xyz="-0.029125 0.09075 0" />
+    <axis xyz="1 0 0" />
+    <limit effort="40" lower="0" upper="3.1415927" velocity="5.8643063" />
+  </joint>
+  <joint name="left_arm_joint_3" type="revolute">
+    <parent link="left_arm_link_2" />
+    <child link="left_arm_link_3" />
+    <origin rpy="0 0 0" xyz="0.029 0 -0.063" />
+    <axis xyz="0 0 1" />
+    <limit effort="10" lower="-1.5707963" upper="1.5707963" velocity="16.7551608" />
+  </joint>
+  <joint name="left_arm_joint_4" type="revolute">
+    <parent link="left_arm_link_3" />
+    <child link="left_arm_link_4" />
+    <origin rpy="0 0 0" xyz="0.025 0.025 -0.147" />
+    <axis xyz="0 -1 0" />
+    <limit effort="10" lower="0" upper="2.5307274" velocity="16.7551608" />
+  </joint>
+  <joint name="left_arm_joint_5" type="revolute">
+    <parent link="left_arm_link_4" />
+    <child link="left_arm_link_5" />
+    <origin rpy="0 0 0" xyz="-0.025 -0.025 -0.059" />
+    <axis xyz="0 0 1" />
+    <limit effort="3" lower="-1.5707963" upper="1.5707963" velocity="15.7079633" />
+  </joint>
+  <joint name="left_arm_joint_6" type="revolute">
+    <parent link="left_arm_link_5" />
+    <child link="left_arm_link_6" />
+    <origin rpy="0 0 0" xyz="0.02565 0 -0.131" />
+    <axis xyz="1 0 0" />
+    <limit effort="3" lower="-0.7853982" upper="0.7853982" velocity="15.7079633" />
+  </joint>
+  <joint name="left_arm_joint_7" type="revolute">
+    <parent link="left_arm_link_6" />
+    <child link="left_arm_link_7" />
+    <origin rpy="0 0 0" xyz="-0.02565 0.019 0" />
+    <axis xyz="0 -1 0" />
+    <limit effort="3" lower="-1.5707963" upper="1.5707963" velocity="15.7079633" />
+  </joint>
+  <link name="right_arm_link_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_1.STL" />
+      </geometry>
+      <material name="right_arm_link_1_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_1.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.00072 -0.057186 -0.000043" />
+      <mass value="0.961" />
+      <inertia ixx="0.0015992" ixy="-0.000026" ixz="-0.0000009" iyy="0.00061" iyz="0.0000028" izz="0.0016159" />
+    </inertial>
+  </link>
+  <link name="right_arm_link_2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_2.STL" />
+      </geometry>
+      <material name="right_arm_link_2_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_2.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0085497 -0.0001114 -0.02853" />
+      <mass value="0.17378" />
+      <inertia ixx="0.0001504" ixy="-0.0000005" ixz="0.0000645" iyy="0.000194" iyz="0.0000007" izz="0.0001222" />
+    </inertial>
+  </link>
+  <link name="right_arm_link_3">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_3.STL" />
+      </geometry>
+      <material name="right_arm_link_3_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_3.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.009283 -0.001511 -0.078825" />
+      <mass value="0.772" />
+      <inertia ixx="0.0031289" ixy="0.0000187" ixz="0.0004864" iyy="0.0032086" iyz="-0.0000779" izz="0.0005499" />
+    </inertial>
+  </link>
+  <link name="right_arm_link_4">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_4.STL" />
+      </geometry>
+      <material name="right_arm_link_4_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_4.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.017886 0.027169 -0.024243" />
+      <mass value="0.17974" />
+      <inertia ixx="0.0001783" ixy="-0.0000063" ixz="-0.0000322" iyy="0.0001643" iyz="-0.0000089" izz="0.0001643" />
+    </inertial>
+  </link>
+  <link name="right_arm_link_5">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_5.STL" />
+      </geometry>
+      <material name="right_arm_link_5_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_5.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.000391 0.000254 -0.044861" />
+      <mass value="0.516" />
+      <inertia ixx="0.000711" ixy="-0.0000021" ixz="-0.0000001" iyy="0.0007594" iyz="0.000005" izz="0.0002825" />
+    </inertial>
+  </link>
+  <link name="right_arm_link_6">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_6.STL" />
+      </geometry>
+      <material name="right_arm_link_6_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_6.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.025651 -0.001523 -0.000079" />
+      <mass value="0.203" />
+      <inertia ixx="0.0000625" ixy="0" ixz="-0.0000001" iyy="0.0000699" iyz="0.0000002" izz="0.0000596" />
+    </inertial>
+  </link>
+  <link name="right_arm_link_7">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_7.STL" />
+      </geometry>
+      <material name="right_arm_link_7_material_0">
+        <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/robots/malo_edu/right_arm_link_7.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 -0.0064831 -0.012311" />
+      <mass value="0.024745" />
+      <inertia ixx="0.0000086" ixy="0" ixz="0" iyy="0.0000101" iyz="-0.0000004" izz="0.0000019" />
+    </inertial>
+  </link>
+  <joint name="right_arm_joint_1" type="revolute">
+    <parent link="torso_link" />
+    <child link="right_arm_link_1" />
+    <origin rpy="0 0 0" xyz="0 -0.09 0.2385" />
+    <axis xyz="0 -1 0" />
+    <limit effort="40" lower="-1.4835" upper="2.81" velocity="5.8643063" />
+  </joint>
+  <joint name="right_arm_joint_2" type="revolute">
+    <parent link="right_arm_link_1" />
+    <child link="right_arm_link_2" />
+    <origin rpy="0 0 0" xyz="-0.029125 -0.09075 0" />
+    <axis xyz="-1 0 0" />
+    <limit effort="40" lower="0" upper="3.1415927" velocity="5.8643063" />
+  </joint>
+  <joint name="right_arm_joint_3" type="revolute">
+    <parent link="right_arm_link_2" />
+    <child link="right_arm_link_3" />
+    <origin rpy="0 0 0" xyz="0.029 0 -0.063" />
+    <axis xyz="0 0 1" />
+    <limit effort="10" lower="-1.5707963" upper="1.5707963" velocity="16.7551608" />
+  </joint>
+  <joint name="right_arm_joint_4" type="revolute">
+    <parent link="right_arm_link_3" />
+    <child link="right_arm_link_4" />
+    <origin rpy="0 0 0" xyz="0.025 -0.025 -0.147" />
+    <axis xyz="0 -1 0" />
+    <limit effort="10" lower="0" upper="2.5307274" velocity="16.7551608" />
+  </joint>
+  <joint name="right_arm_joint_5" type="revolute">
+    <parent link="right_arm_link_4" />
+    <child link="right_arm_link_5" />
+    <origin rpy="0 0 0" xyz="-0.025 0.025 -0.059" />
+    <axis xyz="0 0 1" />
+    <limit effort="3" lower="-1.5707963" upper="1.5707963" velocity="15.7079633" />
+  </joint>
+  <joint name="right_arm_joint_6" type="revolute">
+    <parent link="right_arm_link_5" />
+    <child link="right_arm_link_6" />
+    <origin rpy="0 0 0" xyz="0.02565 0 -0.131" />
+    <axis xyz="1 0 0" />
+    <limit effort="3" lower="-0.7853982" upper="0.7853982" velocity="15.7079633" />
+  </joint>
+  <joint name="right_arm_joint_7" type="revolute">
+    <parent link="right_arm_link_6" />
+    <child link="right_arm_link_7" />
+    <origin rpy="0 0 0" xyz="-0.02565 -0.019 0" />
+    <axis xyz="0 -1 0" />
+    <limit effort="3" lower="-1.5707963" upper="1.5707963" velocity="15.7079633" />
+  </joint>
+  <link name="left_gripper_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_link.STL" />
+      </geometry>
+      <material name="left_gripper_link_material_0">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.002014 0 -0.036133" />
+      <mass value="0.25" />
+      <inertia ixx="0.00010689" ixy="2e-9" ixz="0.00001236" iyy="0.00014003" iyz="-3e-9" izz="0.00010039" />
+    </inertial>
+  </link>
+  <link name="left_gripper_camera_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_camera_link.STL" />
+      </geometry>
+      <material name="left_gripper_camera_link_material_0">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_camera_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0016311 -0.0003052 0.0043217" />
+      <mass value="0.0032185" />
+      <inertia ixx="1.6446e-7" ixy="1.1084e-8" ixz="3.1094e-8" iyy="1.81e-7" iyz="-7.5358e-9" izz="1.7936e-7" />
+    </inertial>
+  </link>
+  <joint name="left_gripper_camera_joint" type="fixed">
+    <parent link="left_gripper_link" />
+    <child link="left_gripper_camera_link" />
+    <origin rpy="3.1416 -0.5236 3.1416" xyz="0.049624 0 -0.070936" />
+  </joint>
+  <link name="left_gripper_left_finger_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_left_finger_link.STL" />
+      </geometry>
+      <material name="left_gripper_left_finger_link_material_0">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_left_finger_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.007135 -0.007955 0.055382" />
+      <mass value="0.048" />
+      <inertia ixx="0.000043919" ixy="-0.000003883" ixz="0.000005145" iyy="0.000026436" iyz="0.000009565" izz="0.000024303" />
+    </inertial>
+  </link>
+  <joint name="left_gripper_left_finger_axis" type="prismatic">
+    <parent link="left_gripper_link" />
+    <child link="left_gripper_left_finger_link" />
+    <origin rpy="0 0 0" xyz="0 0 -0.12985" />
+    <axis xyz="0 1 0" />
+    <limit effort="80" lower="0" upper="0.04" velocity="0.0785" />
+  </joint>
+  <link name="left_gripper_right_finger_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_right_finger_link.STL" />
+      </geometry>
+      <material name="left_gripper_right_finger_link_material_0">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_right_finger_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.007124 0.007956 0.055382" />
+      <mass value="0.048" />
+      <inertia ixx="0.000043919" ixy="-0.000003883" ixz="-0.000005145" iyy="0.000026436" iyz="-0.000009565" izz="0.000024303" />
+    </inertial>
+  </link>
+  <joint name="left_gripper_right_finger_axis" type="prismatic">
+    <parent link="left_gripper_link" />
+    <child link="left_gripper_right_finger_link" />
+    <origin rpy="0 0 0" xyz="0 0 -0.12985" />
+    <axis xyz="0 -1 0" />
+    <limit effort="80" lower="0" upper="0.04" velocity="0.0785" />
+    <mimic joint="left_gripper_left_finger_axis" multiplier="1" offset="0" />
+  </joint>
+  <joint name="left_gripper_mount_joint" type="fixed">
+    <parent link="left_arm_link_7" />
+    <child link="left_gripper_link" />
+    <origin rpy="0 0 0" xyz="0 -0.019 -0.0384" />
+  </joint>
+  <link name="right_gripper_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_link.STL" />
+      </geometry>
+      <material name="right_gripper_link_material_0">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.002014 0 -0.036133" />
+      <mass value="0.25" />
+      <inertia ixx="0.00010689" ixy="2e-9" ixz="0.00001236" iyy="0.00014003" iyz="-3e-9" izz="0.00010039" />
+    </inertial>
+  </link>
+  <link name="right_gripper_camera_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_camera_link.STL" />
+      </geometry>
+      <material name="right_gripper_camera_link_material_0">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_camera_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0016311 -0.0003052 0.0043217" />
+      <mass value="0.0032185" />
+      <inertia ixx="1.6446e-7" ixy="1.1084e-8" ixz="3.1094e-8" iyy="1.81e-7" iyz="-7.5358e-9" izz="1.7936e-7" />
+    </inertial>
+  </link>
+  <joint name="right_gripper_camera_joint" type="fixed">
+    <parent link="right_gripper_link" />
+    <child link="right_gripper_camera_link" />
+    <origin rpy="3.1416 -0.5236 3.1416" xyz="0.049624 0 -0.070936" />
+  </joint>
+  <link name="right_gripper_left_finger_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_left_finger_link.STL" />
+      </geometry>
+      <material name="right_gripper_left_finger_link_material_0">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_left_finger_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="-0.007135 -0.007955 0.055382" />
+      <mass value="0.048" />
+      <inertia ixx="0.000043919" ixy="-0.000003883" ixz="0.000005145" iyy="0.000026436" iyz="0.000009565" izz="0.000024303" />
+    </inertial>
+  </link>
+  <joint name="right_gripper_left_finger_axis" type="prismatic">
+    <parent link="right_gripper_link" />
+    <child link="right_gripper_left_finger_link" />
+    <origin rpy="0 0 0" xyz="0 0 -0.12985" />
+    <axis xyz="0 1 0" />
+    <limit effort="80" lower="0" upper="0.04" velocity="0.0785" />
+  </joint>
+  <link name="right_gripper_right_finger_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_right_finger_link.STL" />
+      </geometry>
+      <material name="right_gripper_right_finger_link_material_0">
+        <color rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="meshes/end_effectors/malo_pinch/gripper_right_finger_link.STL" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.007124 0.007956 0.055382" />
+      <mass value="0.048" />
+      <inertia ixx="0.000043919" ixy="-0.000003883" ixz="-0.000005145" iyy="0.000026436" iyz="-0.000009565" izz="0.000024303" />
+    </inertial>
+  </link>
+  <joint name="right_gripper_right_finger_axis" type="prismatic">
+    <parent link="right_gripper_link" />
+    <child link="right_gripper_right_finger_link" />
+    <origin rpy="0 0 0" xyz="0 0 -0.12985" />
+    <axis xyz="0 -1 0" />
+    <limit effort="80" lower="0" upper="0.04" velocity="0.0785" />
+    <mimic joint="right_gripper_left_finger_axis" multiplier="1" offset="0" />
+  </joint>
+  <joint name="right_gripper_mount_joint" type="fixed">
+    <parent link="right_arm_link_7" />
+    <child link="right_gripper_link" />
+    <origin rpy="0 0 0" xyz="0 0.019 -0.0384" />
+  </joint>
+</robot>

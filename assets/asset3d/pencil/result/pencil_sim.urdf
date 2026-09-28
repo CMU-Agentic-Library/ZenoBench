@@ -1,0 +1,46 @@
+<robot name="pencil">
+   <link name="pencil">
+      <visual>
+         <origin xyz="0 0 0" rpy="-1.794268 0.001085 0.001138" />
+         <geometry>
+            <mesh filename="mesh/pencil.obj" scale="0.016691 0.016691 0.016691" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="-1.794268 0.001085 0.001138" />
+         <geometry>
+            <mesh filename="mesh/pencil_collision.obj" scale="0.016691 0.016691 0.016691" />
+         </geometry>
+         <gazebo>
+            <mu1>0.80</mu1>
+            <mu2>0.60</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.0100" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="4.757e-07" ixy="0.0" ixz="0.0" iyy="2.723e-05" iyz="0.0" izz="2.725e-05" />
+      </inertial>
+      <extra_info>
+         <scale>10.784171</scale>
+         <version>v2.1.0</version>
+         <category>pencil</category>
+         <description>pencil</description>
+         <min_height>1</min_height>
+         <max_height>1</max_height>
+         <real_height>1.0</real_height>
+         <min_mass>1</min_mass>
+         <max_mass>1</max_mass>
+         <generate_time>20260926194128</generate_time>
+         <gs_model>mesh/pencil_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>Error when calling GPT api, check config in `embodied_gen/utils/gpt_config.yaml` or net connection.</MeshGeoChecker>
+         <ImageSegChecker>Error when calling GPT api, check config in `embodied_gen/utils/gpt_config.yaml` or net connection.</ImageSegChecker>
+         <ImageAestheticChecker>4.3386030197143555</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>zeno_malo_description</name>
+  <version>1.0.0</version>
+  <description>Zeno Malo EDU robot with two Malo Pinch grippers.</description>
+  <maintainer email="maintainer@example.com">Zeno Malo Maintainers</maintainer>
+  <!-- Software only; imported CAD assets retain their owner's terms. -->
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>python3-pytest</test_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

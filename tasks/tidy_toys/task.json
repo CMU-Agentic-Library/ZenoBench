@@ -1,0 +1,120 @@
+{
+ "task": "tidy_toys",
+ "instruction": "Collect the toys and store them in the toy box.",
+ "seed": 0,
+ "scene_usd": "tasks/tidy_toys/scene.usd",
+ "annotation": "tasks/tidy_toys/annotation.json",
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  4.3,
+  -2.2,
+  0.0
+ ],
+ "placed_objects": {
+  "toy_car": {
+   "asset": "toy_car",
+   "support": "floor:living_room",
+   "yaw": -1.4464727375963786,
+   "position": [
+    4.3579943325781905,
+    1.675194071642272,
+    0.034100000000000005
+   ]
+  },
+  "teddy_bear": {
+   "asset": "teddy_bear",
+   "support": "floor:bedroom",
+   "yaw": 2.5934197786078093,
+   "position": [
+    4.947755584941411,
+    -2.134906459777551,
+    0.11789999999999999
+   ]
+  },
+  "toy_block": {
+   "asset": "toy_block",
+   "support": "floor:bedroom",
+   "yaw": 2.7336406607023154,
+   "position": [
+    5.489952052966393,
+    -4.34014549276592,
+    0.037000000000000005
+   ]
+  },
+  "rubber_duck": {
+   "asset": "rubber_duck",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": -2.930568260297326,
+   "position": [
+    7.862280147098437,
+    0.31248920082838716,
+    0.5257
+   ]
+  },
+  "toy_box": {
+   "asset": "toy_box",
+   "support": "floor:bedroom",
+   "yaw": 0.2605085298868297,
+   "position": [
+    4.285481871183976,
+    -2.9995716381802535,
+    0.2517
+   ]
+  },
+  "storage_basket": {
+   "asset": "storage_basket",
+   "support": "floor:bedroom2",
+   "yaw": -2.3606977967595952,
+   "position": [
+    1.4511598332440045,
+    -1.6420484335591865,
+    0.2023
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "candidate_supports": {
+  "toy_car": [
+   "floor:living_room",
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "teddy_bear": [
+   "floor:bedroom",
+   "MattressFactory_4281756_spawn_asset_1415123/surface_0"
+  ],
+  "toy_block": [
+   "floor:bedroom",
+   "floor:bedroom2",
+   "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
+  ],
+  "rubber_duck": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "floor:living_room"
+  ],
+  "toy_box": [
+   "floor:bedroom"
+  ],
+  "storage_basket": [
+   "floor:bedroom2",
+   "floor:living_room"
+  ]
+ },
+ "alternatives": [
+  "toy_box missing -> storage_basket"
+ ],
+ "success": {
+  "all_of": [
+   {
+    "objects": [
+     "toy_car",
+     "teddy_bear",
+     "toy_block",
+     "rubber_duck"
+    ],
+    "inside_container": "toy_box|storage_basket"
+   }
+  ]
+ }
+}

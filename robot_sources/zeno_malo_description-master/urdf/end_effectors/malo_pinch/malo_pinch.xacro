@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="malo_pinch">
+  <!-- Malo Pinch: one motor drives two opposed racks through equal travel.
+       CAD geometry, masses and joint origins are retained. User-specified
+       per-finger limits are 80 N and 0.0785 m/s (78.5 mm/s). -->
+  <xacro:macro name="malo_pinch_geometry" params="prefix">
+    <link name="${prefix}gripper_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/end_effectors/malo_pinch/gripper_link.STL" />
+        </geometry>
+        <material name="${prefix}gripper_link_material_0">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/end_effectors/malo_pinch/gripper_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.002014 0 -0.036133" rpy="0 0 0" />
+        <mass value="0.25" />
+        <inertia ixx="0.00010689" ixy="2e-9" ixz="0.00001236" iyy="0.00014003" iyz="-3e-9" izz="0.00010039" />
+      </inertial>
+    </link>
+    <link name="${prefix}gripper_camera_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/end_effectors/malo_pinch/gripper_camera_link.STL" />
+        </geometry>
+        <material name="${prefix}gripper_camera_link_material_0">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/end_effectors/malo_pinch/gripper_camera_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0016311 -0.0003052 0.0043217" rpy="0 0 0" />
+        <mass value="0.0032185" />
+        <inertia ixx="1.6446e-7" ixy="1.1084e-8" ixz="3.1094e-8" iyy="1.81e-7" iyz="-7.5358e-9" izz="1.7936e-7" />
+      </inertial>
+    </link>
+    <joint name="${prefix}gripper_camera_joint" type="fixed">
+      <parent link="${prefix}gripper_link" />
+      <child link="${prefix}gripper_camera_link" />
+      <origin xyz="0.049624 0 -0.070936" rpy="3.1416 -0.5236 3.1416" />
+    </joint>
+    <link name="${prefix}gripper_left_finger_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/end_effectors/malo_pinch/gripper_left_finger_link.STL" />
+        </geometry>
+        <material name="${prefix}gripper_left_finger_link_material_0">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/end_effectors/malo_pinch/gripper_left_finger_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.007135 -0.007955 0.055382" rpy="0 0 0" />
+        <mass value="0.048" />
+        <inertia ixx="0.000043919" ixy="-0.000003883" ixz="0.000005145" iyy="0.000026436" iyz="0.000009565" izz="0.000024303" />
+      </inertial>
+    </link>
+    <joint name="${prefix}gripper_left_finger_axis" type="prismatic">
+      <parent link="${prefix}gripper_link" />
+      <child link="${prefix}gripper_left_finger_link" />
+      <origin xyz="0 0 -0.12985" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit lower="0" upper="0.04" effort="80" velocity="0.0785" />
+    </joint>
+    <link name="${prefix}gripper_right_finger_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/end_effectors/malo_pinch/gripper_right_finger_link.STL" />
+        </geometry>
+        <material name="${prefix}gripper_right_finger_link_material_0">
+          <color rgba="1 1 1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/end_effectors/malo_pinch/gripper_right_finger_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.007124 0.007956 0.055382" rpy="0 0 0" />
+        <mass value="0.048" />
+        <inertia ixx="0.000043919" ixy="-0.000003883" ixz="-0.000005145" iyy="0.000026436" iyz="-0.000009565" izz="0.000024303" />
+      </inertial>
+    </link>
+    <joint name="${prefix}gripper_right_finger_axis" type="prismatic">
+      <parent link="${prefix}gripper_link" />
+      <child link="${prefix}gripper_right_finger_link" />
+      <origin xyz="0 0 -0.12985" rpy="0 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="0" upper="0.04" effort="80" velocity="0.0785" />
+      <!-- Opposite joint axes already encode the mirrored physical motion. -->
+      <mimic joint="${prefix}gripper_left_finger_axis" multiplier="1" offset="0" />
+    </joint>
+  </xacro:macro>
+  <xacro:macro name="malo_pinch" params="prefix parent xyz rpy">
+    <xacro:malo_pinch_geometry prefix="${prefix}" />
+    <joint name="${prefix}gripper_mount_joint" type="fixed">
+      <parent link="${parent}" />
+      <child link="${prefix}gripper_link" />
+      <origin xyz="${xyz}" rpy="${rpy}" />
+    </joint>
+  </xacro:macro>
+</robot>

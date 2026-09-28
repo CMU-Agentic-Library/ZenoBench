@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="malo_chassis">
+  <xacro:macro name="malo_chassis">
+    <link name="base_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/base_link.STL" />
+        </geometry>
+        <material name="base_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/base_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.021336 -0.000097 0.22555" rpy="0 0 0" />
+        <mass value="27.471" />
+        <inertia ixx="1.8732" ixy="0.0000799" ixz="0.12812" iyy="1.8499" iyz="0.0001262" izz="0.59433" />
+      </inertial>
+    </link>
+    <link name="lidar_link" />
+    <joint name="lidar_joint" type="fixed">
+      <parent link="base_link" />
+      <child link="lidar_link" />
+      <origin xyz="0.12 0 0.25505" rpy="0 0 0" />
+    </joint>
+    <link name="fl_steering_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/fl_steering_link.STL" />
+        </geometry>
+        <material name="fl_steering_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/fl_steering_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0.01283 -0.04306" rpy="0 0 0" />
+        <mass value="0.203" />
+        <inertia ixx="0.0002764" ixy="0" ixz="0" iyy="0.0002396" iyz="0.0000749" izz="0.0001111" />
+      </inertial>
+    </link>
+    <link name="fl_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/fl_wheel_link.STL" />
+        </geometry>
+        <material name="fl_wheel_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/fl_wheel_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0000004 -0.026726 -0.000006" rpy="0 0 0" />
+        <mass value="0.429" />
+        <inertia ixx="0.0001894" ixy="0" ixz="0" iyy="0.0002852" iyz="0.0000001" izz="0.0001894" />
+      </inertial>
+    </link>
+    <link name="fr_steering_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/fr_steering_link.STL" />
+        </geometry>
+        <material name="fr_steering_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/fr_steering_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 -0.01283 -0.04306" rpy="0 0 0" />
+        <mass value="0.203" />
+        <inertia ixx="0.0002764" ixy="0" ixz="0" iyy="0.0002396" iyz="-0.0000749" izz="0.0001111" />
+      </inertial>
+    </link>
+    <link name="fr_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/fr_wheel_link.STL" />
+        </geometry>
+        <material name="fr_wheel_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/fr_wheel_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0000004 0.026726 -0.000006" rpy="0 0 0" />
+        <mass value="0.429" />
+        <inertia ixx="0.0001894" ixy="0" ixz="0" iyy="0.0002852" iyz="-0.0000001" izz="0.0001894" />
+      </inertial>
+    </link>
+    <link name="rl_steering_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/rl_steering_link.STL" />
+        </geometry>
+        <material name="rl_steering_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/rl_steering_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0.01283 -0.04306" rpy="0 0 0" />
+        <mass value="0.203" />
+        <inertia ixx="0.0002764" ixy="0" ixz="0" iyy="0.0002396" iyz="0.0000749" izz="0.0001111" />
+      </inertial>
+    </link>
+    <link name="rl_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/rl_wheel_link.STL" />
+        </geometry>
+        <material name="rl_wheel_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/rl_wheel_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.0000004 -0.026726 -0.000006" rpy="0 0 0" />
+        <mass value="0.429" />
+        <inertia ixx="0.0001894" ixy="0" ixz="0" iyy="0.0002852" iyz="0.0000001" izz="0.0001894" />
+      </inertial>
+    </link>
+    <link name="rr_steering_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/rr_steering_link.STL" />
+        </geometry>
+        <material name="rr_steering_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/rr_steering_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 -0.01283 -0.04306" rpy="0 0 0" />
+        <mass value="0.203" />
+        <inertia ixx="0.0002764" ixy="0" ixz="0" iyy="0.0002396" iyz="-0.0000749" izz="0.0001111" />
+      </inertial>
+    </link>
+    <link name="rr_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/rr_wheel_link.STL" />
+        </geometry>
+        <material name="rr_wheel_link_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/rr_wheel_link.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0000004 0.026726 -0.000006" rpy="0 0 0" />
+        <mass value="0.429" />
+        <inertia ixx="0.0001894" ixy="0" ixz="0" iyy="0.0002852" iyz="-0.0000001" izz="0.0001894" />
+      </inertial>
+    </link>
+    <joint name="fl_steering_joint" type="revolute">
+      <parent link="base_link" />
+      <child link="fl_steering_link" />
+      <origin xyz="0.155 0.155 0.12905" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-2.5" upper="2.5" effort="8.4" velocity="10.4719755" />
+    </joint>
+    <joint name="fl_wheel_joint" type="continuous">
+      <parent link="fl_steering_link" />
+      <child link="fl_wheel_link" />
+      <origin xyz="0 0.026 -0.088" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="2" velocity="10.47" />
+    </joint>
+    <joint name="fr_steering_joint" type="revolute">
+      <parent link="base_link" />
+      <child link="fr_steering_link" />
+      <origin xyz="0.155 -0.155 0.12905" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-2.5" upper="2.5" effort="8.4" velocity="10.4719755" />
+    </joint>
+    <joint name="fr_wheel_joint" type="continuous">
+      <parent link="fr_steering_link" />
+      <child link="fr_wheel_link" />
+      <origin xyz="0 -0.026 -0.088" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="2" velocity="10.47" />
+    </joint>
+    <joint name="rl_steering_joint" type="revolute">
+      <parent link="base_link" />
+      <child link="rl_steering_link" />
+      <origin xyz="-0.155 0.155 0.12905" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-2.5" upper="2.5" effort="8.4" velocity="10.4719755" />
+    </joint>
+    <joint name="rl_wheel_joint" type="continuous">
+      <parent link="rl_steering_link" />
+      <child link="rl_wheel_link" />
+      <origin xyz="0 0.026 -0.088" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="2" velocity="10.47" />
+    </joint>
+    <joint name="rr_steering_joint" type="revolute">
+      <parent link="base_link" />
+      <child link="rr_steering_link" />
+      <origin xyz="-0.155 -0.155 0.12905" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-2.5" upper="2.5" effort="8.4" velocity="10.4719755" />
+    </joint>
+    <joint name="rr_wheel_joint" type="continuous">
+      <parent link="rr_steering_link" />
+      <child link="rr_wheel_link" />
+      <origin xyz="0 -0.026 -0.088" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit effort="2" velocity="10.47" />
+    </joint>
+  </xacro:macro>
+</robot>

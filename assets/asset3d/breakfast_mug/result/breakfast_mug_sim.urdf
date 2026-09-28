@@ -1,0 +1,46 @@
+<robot name="breakfast_mug">
+   <link name="breakfast_mug">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/breakfast_mug.obj" scale="1.000000 1.000000 1.000000" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/breakfast_mug_collision.obj" scale="1.000000 1.000000 1.000000" />
+         </geometry>
+         <gazebo>
+            <mu1>0.70</mu1>
+            <mu2>0.50</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.3750" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="9.507e-04" ixy="0.0" ixz="0.0" iyy="7.178e-04" iyz="0.0" izz="7.685e-04" />
+      </inertial>
+      <extra_info>
+         <scale>0.126583</scale>
+         <version>v2.1.0</version>
+         <category>breakfast_mug</category>
+         <description>plain gray ceramic mug with tall cylindrical body, rounded base, and curved loop handle.</description>
+         <min_height>0.1</min_height>
+         <max_height>0.14</max_height>
+         <real_height>0.12</real_height>
+         <min_mass>0.25</min_mass>
+         <max_mass>0.5</max_mass>
+         <generate_time>20260923225938</generate_time>
+         <gs_model>mesh/breakfast_mug_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.4954071044921875</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

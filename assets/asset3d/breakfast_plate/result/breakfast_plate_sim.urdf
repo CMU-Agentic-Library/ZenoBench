@@ -1,0 +1,46 @@
+<robot name="breakfast_plate">
+   <link name="breakfast_plate">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/breakfast_plate.obj" scale="1.000000 1.000000 1.000000" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/breakfast_plate_collision.obj" scale="1.000000 1.000000 1.000000" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.50</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.6000" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="3.131e-03" ixy="0.0" ixz="0.0" iyy="3.128e-03" iyz="0.0" izz="6.154e-03" />
+      </inertial>
+      <extra_info>
+         <scale>0.248135</scale>
+         <version>v2.1.0</version>
+         <category>breakfast_plate</category>
+         <description>shallow gray plate with a broad raised rim and gently tapered underside.</description>
+         <min_height>0.025</min_height>
+         <max_height>0.04</max_height>
+         <real_height>0.0325</real_height>
+         <min_mass>0.4</min_mass>
+         <max_mass>0.8</max_mass>
+         <generate_time>20260924155153</generate_time>
+         <gs_model>mesh/breakfast_plate_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.487094879150391</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

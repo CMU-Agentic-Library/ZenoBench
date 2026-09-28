@@ -1,0 +1,46 @@
+<robot name="toy_box">
+   <link name="toy_box">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/toy_box.obj" scale="0.480769 0.480769 0.480769" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/toy_box_collision.obj" scale="0.480769 0.480769 0.480769" />
+         </geometry>
+         <gazebo>
+            <mu1>0.80</mu1>
+            <mu2>0.60</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="3.0000" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="1.203e-01" ixy="0.0" ixz="0.0" iyy="9.258e-02" iyz="0.0" izz="9.730e-02" />
+      </inertial>
+      <extra_info>
+         <scale>1.040001</scale>
+         <version>v2.1.0</version>
+         <category>toy_box</category>
+         <description>toy_box</description>
+         <min_height>1</min_height>
+         <max_height>1</max_height>
+         <real_height>1.0</real_height>
+         <min_mass>1</min_mass>
+         <max_mass>1</max_mass>
+         <generate_time>20260926193111</generate_time>
+         <gs_model>mesh/toy_box_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>Error when calling GPT api, check config in `embodied_gen/utils/gpt_config.yaml` or net connection.</MeshGeoChecker>
+         <ImageSegChecker>Error when calling GPT api, check config in `embodied_gen/utils/gpt_config.yaml` or net connection.</ImageSegChecker>
+         <ImageAestheticChecker>4.80035924911499</ImageAestheticChecker>
+         <overall>YES</overall>
+      </quality>
+   </custom_data>
+</robot>

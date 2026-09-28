@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.8)
+project(zeno_malo_description)
+find_package(ament_cmake REQUIRED)
+install(DIRECTORY urdf meshes launch rviz
+  DESTINATION share/${PROJECT_NAME})
+install(FILES README.md README.zh-CN.md LICENSE DESTINATION share/${PROJECT_NAME})
+if(BUILD_TESTING)
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(description_integrity test/test_description.py TIMEOUT 90)
+endif()
+ament_package()

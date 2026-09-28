@@ -1,0 +1,112 @@
+{
+ "task": "collect_fruits",
+ "instruction": "Collect the fruits and place them in a container on the dining table.",
+ "seed": 0,
+ "scene_usd": "tasks/collect_fruits/scene.usd",
+ "annotation": "tasks/collect_fruits/annotation.json",
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  2.9,
+  4.9,
+  0.0
+ ],
+ "placed_objects": {
+  "apple": {
+   "asset": "apple",
+   "support": "repair/kitchen_counter_top",
+   "yaw": -1.4464727375963786,
+   "position": [
+    -0.6809423850078592,
+    7.497332698768601,
+    0.907
+   ]
+  },
+  "banana": {
+   "asset": "banana",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": 2.5934197786078093,
+   "position": [
+    7.655215457843413,
+    0.3520412196953587,
+    0.5039
+   ]
+  },
+  "orange": {
+   "asset": "orange",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "yaw": 2.7336406607023154,
+   "position": [
+    3.5900908520282058,
+    5.591198578558219,
+    0.893
+   ]
+  },
+  "fruit_basket": {
+   "asset": "fruit_basket",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "yaw": -0.7308754819569288,
+   "position": [
+    3.6019684988568343,
+    7.678392486160668,
+    1.0141
+   ]
+  },
+  "serving_tray": {
+   "asset": "serving_tray",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "yaw": -2.292756278181666,
+   "position": [
+    3.405951404647601,
+    6.771199962582151,
+    0.8959
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "candidate_supports": {
+  "apple": [
+   "repair/kitchen_counter_top",
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "banana": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "CellShelfFactory_2688822_spawn_asset_5011983/surface_4",
+   "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+  ],
+  "orange": [
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "repair/kitchen_counter_top",
+   "CellShelfFactory_2688822_spawn_asset_5011983/surface_2"
+  ],
+  "fruit_basket": [
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+  ],
+  "serving_tray": [
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+  ]
+ },
+ "alternatives": [
+  "fruit_basket missing -> serving_tray (or the breakfast bowls)"
+ ],
+ "success": {
+  "all_of": [
+   {
+    "objects": [
+     "apple",
+     "banana",
+     "orange"
+    ],
+    "inside_container": "fruit_basket|serving_tray"
+   },
+   {
+    "objects": [
+     "fruit_basket|serving_tray"
+    ],
+    "on_support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+   }
+  ]
+ }
+}

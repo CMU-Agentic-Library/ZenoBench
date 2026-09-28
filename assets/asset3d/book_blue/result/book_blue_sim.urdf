@@ -1,0 +1,46 @@
+<robot name="book_blue">
+   <link name="book_blue">
+      <visual>
+         <origin xyz="0 0 0" rpy="-1.573886 0.002899 3.140653" />
+         <geometry>
+            <mesh filename="mesh/book_blue.obj" scale="0.059412 0.059412 0.059412" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="-1.573886 0.002899 3.140653" />
+         <geometry>
+            <mesh filename="mesh/book_blue_collision.obj" scale="0.059412 0.059412 0.059412" />
+         </geometry>
+         <gazebo>
+            <mu1>0.80</mu1>
+            <mu2>0.60</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.3000" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="5.765e-04" ixy="0.0" ixz="0.0" iyy="1.088e-03" iyz="0.0" izz="1.489e-03" />
+      </inertial>
+      <extra_info>
+         <scale>3.366345</scale>
+         <version>v2.1.0</version>
+         <category>book_blue</category>
+         <description>book_blue</description>
+         <min_height>1</min_height>
+         <max_height>1</max_height>
+         <real_height>1.0</real_height>
+         <min_mass>1</min_mass>
+         <max_mass>1</max_mass>
+         <generate_time>20260926191212</generate_time>
+         <gs_model>mesh/book_blue_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>Error when calling GPT api, check config in `embodied_gen/utils/gpt_config.yaml` or net connection.</MeshGeoChecker>
+         <ImageSegChecker>Error when calling GPT api, check config in `embodied_gen/utils/gpt_config.yaml` or net connection.</ImageSegChecker>
+         <ImageAestheticChecker>4.088683605194092</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

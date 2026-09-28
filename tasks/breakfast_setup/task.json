@@ -1,0 +1,93 @@
+{
+ "task": "breakfast_setup",
+ "instruction": "Set up the dining table for breakfast.",
+ "seed": 0,
+ "scene_usd": "tasks/breakfast_setup/scene.usd",
+ "annotation": "tasks/breakfast_setup/annotation.json",
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  1.6,
+  8.4,
+  0.0
+ ],
+ "placed_objects": {},
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [
+  "plate_dining_cabinet",
+  "plate_inside_kitchen_cabinet"
+ ],
+ "existing_objects": {
+  "plate": [
+   "plate_counter_a",
+   "plate_counter_b",
+   "plate_dining_cabinet",
+   "plate_inside_kitchen_cabinet"
+  ],
+  "bowl_fallback": [
+   "bowl_dining_cabinet",
+   "bowl_kitchen_cabinet",
+   "bowl_side_table",
+   "bowl_inside_kitchen_cabinet"
+  ],
+  "cup": [
+   "cup_counter_b",
+   "cup_kitchen_cabinet",
+   "cup_side_table"
+  ],
+  "mug_fallback": [
+   "mug_counter",
+   "mug_shelf",
+   "mug_dining_cabinet"
+  ],
+  "spoon": [
+   "spoon_counter",
+   "spoon_kitchen_cabinet",
+   "spoon_inside_kitchen_drawer",
+   "spoon_side_table",
+   "spoon_target_table"
+  ],
+  "table_clutter": [
+   "clutter_cereal_a",
+   "clutter_cereal_b"
+  ]
+ },
+ "candidate_supports": {},
+ "alternatives": [
+  "plate missing -> bowl",
+  "cup missing -> mug",
+  "target spot occupied (cereal boxes) -> move clutter off the table first"
+ ],
+ "success": {
+  "all_of": [
+   {
+    "role": "plate|bowl_fallback",
+    "on_support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+   },
+   {
+    "role": "cup|mug_fallback",
+    "on_support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+   },
+   {
+    "role": "spoon",
+    "on_support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+   }
+  ]
+ },
+ "target": {
+  "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+  "place_xy": {
+   "plate": [
+    3.16,
+    6.75
+   ],
+   "cup": [
+    3.45,
+    6.75
+   ],
+   "spoon": [
+    3.3,
+    6.45
+   ]
+  }
+ }
+}

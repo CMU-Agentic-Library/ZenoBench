@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<robot name="notebook">
+   <link name="notebook">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/notebook.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/notebook_collision.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+         <gazebo>
+            <mu1>0.80</mu1>
+            <mu2>0.60</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="1.0000"/>
+         <origin xyz="0 0 0"/>
+         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+      <extra_info>
+         <scale>1.000000</scale>
+         <version>v2.1.0</version>
+         <category>notebook</category>
+         <description>notebook</description>
+         <min_height>1</min_height>
+         <max_height>1</max_height>
+         <real_height>1.0</real_height>
+         <min_mass>1</min_mass>
+         <max_mass>1</max_mass>
+         <generate_time>20260926183159</generate_time>
+         <gs_model>mesh/notebook_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>Error when calling GPT api, check config in `embodied_gen/utils/gpt_config.yaml` or net connection.</MeshGeoChecker>
+         <ImageSegChecker>Error when calling GPT api, check config in `embodied_gen/utils/gpt_config.yaml` or net connection.</ImageSegChecker>
+         <ImageAestheticChecker>4.463387966156006</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

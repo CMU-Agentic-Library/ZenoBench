@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="modules/chassis.xacro"/>
+  <xacro:include filename="modules/torso.xacro"/>
+  <xacro:include filename="modules/left_arm.xacro"/>
+  <xacro:include filename="modules/right_arm.xacro"/>
+  <xacro:macro name="malo_edu" params="">
+    <xacro:malo_chassis/>
+    <xacro:malo_torso/>
+    <xacro:malo_left_arm/>
+    <xacro:malo_right_arm/>
+  </xacro:macro>
+</robot>

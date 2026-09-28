@@ -1,0 +1,208 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="malo_left_arm">
+  <xacro:macro name="malo_left_arm">
+    <link name="left_arm_link_1">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_1.STL" />
+        </geometry>
+        <material name="left_arm_link_1_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_1.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.00072 0.057186 -0.000043" rpy="0 0 0" />
+        <mass value="0.961" />
+        <inertia ixx="0.0015992" ixy="0.000026" ixz="-0.0000008" iyy="0.00061" iyz="-0.0000028" izz="0.0016159" />
+      </inertial>
+    </link>
+    <link name="left_arm_link_2">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_2.STL" />
+        </geometry>
+        <material name="left_arm_link_2_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_2.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.0085497 -0.0001114 -0.02853" rpy="0 0 0" />
+        <mass value="0.17378" />
+        <inertia ixx="0.0001504" ixy="-0.0000005" ixz="0.0000645" iyy="0.000194" iyz="0.0000007" izz="0.0001222" />
+      </inertial>
+    </link>
+    <link name="left_arm_link_3">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_3.STL" />
+        </geometry>
+        <material name="left_arm_link_3_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_3.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.009249 0.001462 -0.07886" rpy="0 0 0" />
+        <mass value="0.772" />
+        <inertia ixx="0.0031317" ixy="-0.0000181" ixz="0.000485" iyy="0.0032114" iyz="0.0000802" izz="0.0005501" />
+      </inertial>
+    </link>
+    <link name="left_arm_link_4">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_4.STL" />
+        </geometry>
+        <material name="left_arm_link_4_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_4.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.017896 -0.027023 -0.024242" rpy="0 0 0" />
+        <mass value="0.17974" />
+        <inertia ixx="0.0001784" ixy="0.0000071" ixz="-0.0000321" iyy="0.0001643" iyz="0.0000094" izz="0.0001643" />
+      </inertial>
+    </link>
+    <link name="left_arm_link_5">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_5.STL" />
+        </geometry>
+        <material name="left_arm_link_5_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_5.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0.000421 -0.000246 -0.044861" rpy="0 0 0" />
+        <mass value="0.516" />
+        <inertia ixx="0.000711" ixy="0.0000023" ixz="0.0000004" iyy="0.0007594" iyz="-0.0000047" izz="0.0002825" />
+      </inertial>
+    </link>
+    <link name="left_arm_link_6">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_6.STL" />
+        </geometry>
+        <material name="left_arm_link_6_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_6.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="-0.025649 0.001523 -0.000079" rpy="0 0 0" />
+        <mass value="0.203" />
+        <inertia ixx="0.0000625" ixy="0" ixz="0.0000001" iyy="0.0000699" iyz="-0.0000002" izz="0.0000596" />
+      </inertial>
+    </link>
+    <link name="left_arm_link_7">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_7.STL" />
+        </geometry>
+        <material name="left_arm_link_7_material_0">
+          <color rgba="1.00000000 1.00000000 1.00000000 1.00000000" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://zeno_malo_description/meshes/robots/malo_edu/left_arm_link_7.STL" />
+        </geometry>
+      </collision>
+      <inertial>
+        <origin xyz="0 0.0064831 -0.012311" rpy="0 0 0" />
+        <mass value="0.024745" />
+        <inertia ixx="0.0000086" ixy="0" ixz="0" iyy="0.0000101" iyz="0.0000004" izz="0.0000019" />
+      </inertial>
+    </link>
+    <joint name="left_arm_joint_1" type="revolute">
+      <parent link="torso_link" />
+      <child link="left_arm_link_1" />
+      <origin xyz="0 0.09 0.2385" rpy="0 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-1.4835" upper="2.81" effort="40" velocity="5.8643063" />
+    </joint>
+    <joint name="left_arm_joint_2" type="revolute">
+      <parent link="left_arm_link_1" />
+      <child link="left_arm_link_2" />
+      <origin xyz="-0.029125 0.09075 0" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="0" upper="3.1415927" effort="40" velocity="5.8643063" />
+    </joint>
+    <joint name="left_arm_joint_3" type="revolute">
+      <parent link="left_arm_link_2" />
+      <child link="left_arm_link_3" />
+      <origin xyz="0.029 0 -0.063" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-1.5707963" upper="1.5707963" effort="10" velocity="16.7551608" />
+    </joint>
+    <joint name="left_arm_joint_4" type="revolute">
+      <parent link="left_arm_link_3" />
+      <child link="left_arm_link_4" />
+      <origin xyz="0.025 0.025 -0.147" rpy="0 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="0" upper="2.5307274" effort="10" velocity="16.7551608" />
+    </joint>
+    <joint name="left_arm_joint_5" type="revolute">
+      <parent link="left_arm_link_4" />
+      <child link="left_arm_link_5" />
+      <origin xyz="-0.025 -0.025 -0.059" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="-1.5707963" upper="1.5707963" effort="3" velocity="15.7079633" />
+    </joint>
+    <joint name="left_arm_joint_6" type="revolute">
+      <parent link="left_arm_link_5" />
+      <child link="left_arm_link_6" />
+      <origin xyz="0.02565 0 -0.131" rpy="0 0 0" />
+      <axis xyz="1 0 0" />
+      <limit lower="-0.7853982" upper="0.7853982" effort="3" velocity="15.7079633" />
+    </joint>
+    <joint name="left_arm_joint_7" type="revolute">
+      <parent link="left_arm_link_6" />
+      <child link="left_arm_link_7" />
+      <origin xyz="-0.02565 0.019 0" rpy="0 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="-1.5707963" upper="1.5707963" effort="3" velocity="15.7079633" />
+    </joint>
+  </xacro:macro>
+</robot>

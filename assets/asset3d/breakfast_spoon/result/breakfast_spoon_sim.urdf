@@ -1,0 +1,46 @@
+<robot name="breakfast_spoon">
+   <link name="breakfast_spoon">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/breakfast_spoon.obj" scale="1.000000 1.000000 1.000000" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/breakfast_spoon_collision.obj" scale="1.000000 1.000000 1.000000" />
+         </geometry>
+         <gazebo>
+            <mu1>0.70</mu1>
+            <mu2>0.50</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.0400" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="7.665e-06" ixy="0.0" ixz="0.0" iyy="1.118e-04" iyz="0.0" izz="1.152e-04" />
+      </inertial>
+      <extra_info>
+         <scale>0.181384</scale>
+         <version>v2.1.0</version>
+         <category>breakfast_spoon</category>
+         <description>dark metallic spoon with an oval concave bowl and long, slender handle.</description>
+         <min_height>0.02</min_height>
+         <max_height>0.03</max_height>
+         <real_height>0.025</real_height>
+         <min_mass>0.025</min_mass>
+         <max_mass>0.055</max_mass>
+         <generate_time>20260924155757</generate_time>
+         <gs_model>mesh/breakfast_spoon_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.498987674713135</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

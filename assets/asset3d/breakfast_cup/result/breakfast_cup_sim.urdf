@@ -1,0 +1,46 @@
+<robot name="breakfast_cup">
+   <link name="breakfast_cup">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/breakfast_cup.obj" scale="1.000000 1.000000 1.000000" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/breakfast_cup_collision.obj" scale="1.000000 1.000000 1.000000" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.50</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.0300" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="8.629e-05" ixy="0.0" ixz="0.0" iyy="8.521e-05" iyz="0.0" izz="5.900e-05" />
+      </inertial>
+      <extra_info>
+         <scale>0.150000</scale>
+         <version>v2.1.0</version>
+         <category>breakfast_cup</category>
+         <description>tall, plain gray tapered cup with a rounded rim and narrow flat base.</description>
+         <min_height>0.12</min_height>
+         <max_height>0.18</max_height>
+         <real_height>0.15</real_height>
+         <min_mass>0.01</min_mass>
+         <max_mass>0.05</max_mass>
+         <generate_time>20260924155546</generate_time>
+         <gs_model>mesh/breakfast_cup_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.27982234954834</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

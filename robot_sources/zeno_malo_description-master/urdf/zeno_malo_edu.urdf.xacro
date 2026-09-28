@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="zeno_malo_edu">
+  <xacro:include filename="robots/malo_edu/malo_edu.xacro"/>
+  <xacro:include filename="end_effectors/malo_pinch/malo_pinch.xacro"/>
+  <xacro:malo_edu/>
+  <!-- The CAD wrist frames have +Z upward: 38.4 mm below is negative Z.
+       The 19 mm lateral offset follows the mirrored left/right mount plates.
+       Mount faces coincide: left -0.019 + 0.024 = 0.005 m; right mirrored. -->
+  <xacro:malo_pinch prefix="left_" parent="left_arm_link_7"
+    xyz="0 -0.019 -0.0384" rpy="0 0 0"/>
+  <xacro:malo_pinch prefix="right_" parent="right_arm_link_7"
+    xyz="0 0.019 -0.0384" rpy="0 0 0"/>
+</robot>
