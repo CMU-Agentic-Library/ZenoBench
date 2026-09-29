@@ -1,0 +1,11 @@
+{
+ "_doc": "Batch input for tools/generate_assets.py --batch (copy, edit, run). size = longest extent in m, mass in kg, collider: solid | round_container | rect_container. Keys starting with _ are ignored.",
+ "soda_can": {"prompt": "an empty red aluminium soda can", "size": 0.12, "mass": 0.02,
+              "tags": ["can", "recyclable"], "collider": "solid"},
+ "water_bottle": {"prompt": "a small empty clear plastic water bottle with a blue cap", "size": 0.20,
+                  "mass": 0.03, "tags": ["bottle", "recyclable"], "collider": "solid", "lay_flat": true},
+ "sneaker": {"prompt": "a single white canvas sneaker", "size": 0.27, "mass": 0.30,
+             "tags": ["shoe"], "collider": "solid"},
+ "screwdriver": {"prompt": "a flat-head screwdriver with a yellow plastic handle", "size": 0.20,
+                 "mass": 0.08, "tags": ["tool"], "collider": "solid", "lay_flat": true}
+}

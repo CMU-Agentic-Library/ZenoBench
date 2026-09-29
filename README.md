@@ -304,7 +304,8 @@ Or open `sim/zeno_house.usd` or `tasks/<task>/scene.usd` in Isaac Sim with `File
 ## Add your own assets (EmbodiedGen)
 
 Every task object in this repo was made with [EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen)
-V2 text-to-3D. The same path works for any new object (cans, bottles, shoes, tools, …).
+V2 text-to-3D. One command turns a text prompt or a photo into a sim-ready, grasp-annotated asset
+that the skills and the task builder can use (cans, bottles, shoes, tools, …).
 
 **1. Install EmbodiedGen** (separate conda env; it needs its own CUDA/PyTorch stack):
 
@@ -318,60 +319,92 @@ export EMBODIEDGEN_ROOT=$PWD
 
 The text/image-to-3D pipelines use a GPT backend for prompt checks and physical sizing: set it in
 `embodied_gen/utils/gpt_config.yaml` (Azure OpenAI / OpenRouter key, or `agent_type: codex` after
-`codex login`). Without one, the assets still generate, but come out 1 m / 1 kg; step 3 fixes the size.
+`codex login`). Without one, the assets still generate, but come out 1 m / 1 kg; `--size` / `--mass`
+below fix that.
 Model weights download on first use. See the
 [install guide](https://horizonrobotics.github.io/EmbodiedGen/docs/install.html) for Docker and details.
 
-**2. Generate** (inside the `embodiedgen` env, from `$EMBODIEDGEN_ROOT`):
+**2. Generate automatically: one command per asset** (`tools/generate_assets.py`). It chains
+text/image → 3D (EmbodiedGen, in the `embodiedgen` env) → real size and mass → URDF→USD → **grasp
+annotation for the Zeno gripper** → per-asset textures, so the asset is sim-ready and usable by the skills:
 
 ```bash
-text3d-cli --prompts "an empty aluminium soda can" "a white sneaker" \
-  --asset_names soda_can sneaker \
-  --n_image_retry 2 --n_asset_retry 2 --n_pipe_retry 1 --seed_img 0 \
-  --output_root /path/to/zeno-house/assets/asset3d
-# or from a photo: img3d-cli --image_path my_mug.jpg --output_root .../assets/asset3d
-# -> assets/asset3d/<name>/result/<name>.urdf + textured mesh
+export EMBODIEDGEN_ROOT=/path/to/EmbodiedGen ISAACLAB_PYTHON=/path/to/isaaclab/python
+# optional: EMBODIEDGEN_PYTHON=/path/to/envs/embodiedgen/bin/python (default: conda run -n embodiedgen)
+
+# from a text prompt
+python tools/generate_assets.py --name soda_can --prompt "an empty red aluminium soda can" \
+    --size 0.12 --mass 0.02 --tags can recyclable
+
+# from a photo of a real object (image-to-3D)
+python tools/generate_assets.py --name my_mug --image photos/mug.jpg \
+    --size 0.10 --mass 0.30 --tags mug container --collider round_container
+
+# several at once (see assets/new_assets.example.json: can, bottle, sneaker, screwdriver)
+python tools/generate_assets.py --batch assets/new_assets.example.json
 ```
 
-`assets/gen_v2_assets*.sh` are the exact commands used for this repo.
+| argument | meaning |
+|---|---|
+| `--size` | longest extent in metres; the generated mesh is rescaled to it |
+| `--mass` | kg; box inertia is computed from the real size |
+| `--collider` | `solid` (convex hull), `round_container` / `rect_container` (walls follow the mesh profile, so objects can be dropped in) |
+| `--lay-flat` | rest thin objects (books, pens, bottles) on their largest face |
+| `--tags` | free labels, usable as roles/categories in task specs |
+| `--skip-generate` | reuse an existing `assets/asset3d/<name>/result/<name>.urdf` (re-annotate after editing the spec) |
 
-**3. Register the asset**: real size, mass, tags and collider type, in `assets/custom_assets.json`
-(no Python edits):
+What it writes:
 
-```json
+| step | output |
+|---|---|
+| generate (`text3d-cli` / `img3d-cli`) | `assets/asset3d/<name>/result/<name>.urdf` + textured mesh |
+| register | `assets/custom_assets.json` (size, mass, tags, collider) |
+| convert + annotate (`tools/prepare_assets.py --convert`) | `usd/assets/<name>.usd`, entry in `annotations/assets.json`: size, bottom offset, container profile, grasps (`top_pinch` across the narrowest section, `rim_pinch` for containers, `edge_pinch_after_push` for flat objects wider than 8 cm; `graspable_by_zeno: false` if no pinch fits) |
+| textures (`tools/fix_textures.py`) | `usd/assets/configuration/materials/textures/<name>_diffuse.png` |
+
+At the end it prints the grasp types found and a spec snippet.
+
+**3. Put it in the house**: name the asset in a task spec and build the scene. The builder drops it
+onto a reachable spot of the chosen surface with the same physics as the other assets:
+
+```bash
+cat > task_specs/tidy_cans.json <<'JSON'
 {
- "soda_can": {"size": 0.12, "mass": 0.35, "tags": ["can", "container"], "collider": "solid",
-              "urdf": "assets/asset3d/soda_can/result/soda_can.urdf"},
- "sneaker":  {"size": 0.28, "mass": 0.30, "tags": ["shoe"], "collider": "solid", "lay_flat": false}
+ "task": "tidy_cans", "instruction": "Put the empty can in the storage basket.",
+ "robot_start_near": [4.3, 1.6],
+ "objects": {"can_1": {"asset": "soda_can", "supports": ["tv_stand", "floor:living_room"]},
+             "storage_basket": {"asset": "storage_basket", "supports": ["floor:living_room"]}},
+ "goal": {"all": [{"inside": ["can_1"], "container": "storage_basket"}, {"not_dropped": "all"}]}
 }
+JSON
+bash tools/make_tasks.sh tidy_cans                 # build + settle + physics check (renders) + annotate
+$ISAACLAB_PYTHON tools/run_task.py --task tidy_cans  # scripted policy + success check + video
 ```
 
-`size` is the longest extent in metres (the mesh is rescaled to it). `collider` is `solid`,
-`round_container` or `rect_container`: containers get walls that follow the mesh profile, so things can
-be dropped in. `lay_flat` rests thin objects (books, pens) on their largest face.
+To try only the grasp: `tools/run_skills.py --scene tasks/tidy_cans/scene.usd --ann tasks/tidy_cans/annotation.json --out runs/can --plan "pick can_1" "place can_1 in:storage_basket"`.
 
-**4. Convert to USD and annotate** (Isaac Lab python; `EMBODIEDGEN_ROOT` set for its URDF→USD converter):
+<details><summary>The same steps by hand</summary>
 
 ```bash
-$ISAACLAB_PYTHON tools/prepare_assets.py --only soda_can sneaker --convert
+# inside the embodiedgen env, from $EMBODIEDGEN_ROOT (assets/gen_v2_assets*.sh are the commands used for this repo)
+text3d-cli --prompts "an empty aluminium soda can" --asset_names soda_can \
+  --n_image_retry 2 --n_asset_retry 2 --n_pipe_retry 1 --seed_img 0 --output_root /path/to/zeno-house/assets
+# -> assets/asset3d/soda_can/result/soda_can.urdf
+
+# register in assets/custom_assets.json:
+#   {"soda_can": {"size": 0.12, "mass": 0.02, "tags": ["can"], "collider": "solid", "lay_flat": false,
+#                 "urdf": "assets/asset3d/soda_can/result/soda_can.urdf"}}
+
+$ISAACLAB_PYTHON tools/prepare_assets.py --only soda_can --convert
 $ISAACLAB_PYTHON tools/fix_textures.py
 ```
-
-This writes `usd/assets/<name>.usd` and an entry in `annotations/assets.json`: size, bottom offset,
-container profile and **grasp annotations for the Zeno gripper** (`top_pinch` across the narrowest
-section, `rim_pinch` for containers, `edge_pinch_after_push` for flat objects wider than 8 cm).
-`graspable_by_zeno: false` means no pinch fits.
-
-**5. Put it in the house**: use the asset in a task spec (`"objects": {"can_1": {"asset": "soda_can",
-"supports": ["tv_stand", "floor:living_room"]}}`) and build it as in
-[Define your own task](#define-your-own-task). The builder drops it onto the chosen surface with
-the physics settings of the other assets (box inertia, convex-hull or container collider, rubber pads).
-`tools/check_scene.py` then verifies that it rests stably.
+</details>
 
 ## Rebuild pipeline
 
 ```text
-assets/gen_v2_assets*.sh      EmbodiedGen V2 text3d-cli (needs EMBODIEDGEN_ROOT, embodiedgen env)
+tools/generate_assets.py      one command: EmbodiedGen text/image-to-3D -> register -> USD -> grasp annotation -> textures
+assets/gen_v2_assets*.sh      EmbodiedGen V2 text3d-cli commands used for this repo
 tools/prepare_assets.py       real-size scaling, lay-flat alignment, grasp annotation, URDF→USD (--convert)
 tools/fix_textures.py         per-asset textures (run after every --convert)
 tools/settle_scene.py         drop-and-settle, write rest poses
