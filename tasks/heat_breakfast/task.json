@@ -1,0 +1,76 @@
+{
+ "task": "heat_breakfast",
+ "instruction": "Take the chilled oatmeal from the refrigerator, heat it in the microwave, and serve it on the dining table.",
+ "instruction_zh": "\u4ece\u51b0\u7bb1\u53d6\u51fa\u71d5\u9ea6\u7ca5\uff0c\u5728\u5fae\u6ce2\u7089\u4e2d\u52a0\u70ed\uff0c\u7136\u540e\u7aef\u5230\u9910\u684c\u3002",
+ "seed": 0,
+ "spec": "task_specs/heat_breakfast.json",
+ "scene_usd": "tasks/heat_breakfast/scene.usd",
+ "annotation": "tasks/heat_breakfast/annotation.json",
+ "base_scene": "sim/zeno_house_appliances.usd",
+ "thermal": {
+  "oatmeal": {
+   "initial_c": 4.0,
+   "ambient_c": 21.0,
+   "heating_rate_c_per_s": 4.0
+  }
+ },
+ "demonstrate_microwave_door": false,
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  5.5,
+  2.2,
+  0.0
+ ],
+ "placed_objects": {
+  "oatmeal": {
+   "asset": "breakfast_bowl",
+   "support": "breakfast_fridge/inside_shelf",
+   "yaw": -1.4464727375963786,
+   "position": [
+    6.039913172180012,
+    3.159888371465673,
+    0.8601000000000001
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "roles": {},
+ "candidate_supports": {
+  "oatmeal": [
+   "breakfast_fridge/inside_shelf"
+  ]
+ },
+ "alternatives": [],
+ "place_hints": {
+  "oatmeal": [
+   2.93,
+   6.7
+  ]
+ },
+ "goal": {
+  "all": [
+   {
+    "heated": [
+     "oatmeal"
+    ],
+    "appliance": "kitchen_microwave",
+    "min_temp_c": 60.0
+   },
+   {
+    "on": [
+     "oatmeal"
+    ],
+    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+    "upright": true
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

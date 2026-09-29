@@ -109,6 +109,10 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
                                                              torch.tensor([tgt], dtype=f32))
                     cams["wide"].set_world_poses_from_view(torch.tensor([w(-2.2, -1.2, 2.4)], dtype=f32),
                                                            torch.tensor([w(0.4, 0.0, 0.5)], dtype=f32))
+                    if rig.camera_override is not None:
+                        eye, target = rig.camera_override
+                        cams["follow"].set_world_poses_from_view(torch.tensor([eye], dtype=f32),
+                                                                  torch.tensor([target], dtype=f32))
                 orig_step(1)
         rig.step = step_with_cams
     return rig

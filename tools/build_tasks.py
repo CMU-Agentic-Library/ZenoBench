@@ -64,7 +64,9 @@ def main():
     rng = np.random.default_rng(args.seed)
     out = Path(args.out).resolve() if args.out else ROOT / "tasks" / args.task
     out.mkdir(parents=True, exist_ok=True)
-    base_ann = json.loads((ROOT / "annotations/zeno_house.json").read_text())
+    base_scene = spec.get("base_scene", "sim/zeno_house.usd")
+    base_annotation = spec.get("base_annotation", "annotations/zeno_house.json")
+    base_ann = json.loads((ROOT / base_annotation).read_text())
     assets = json.loads((ROOT / "annotations/assets.json").read_text())
 
     # ---- reachability: Zeno must be able to pinch the object where it is put
@@ -73,7 +75,7 @@ def main():
     from zeno_skills.collision import WorldModel
     from zeno_skills.kinematics import ArmKin, gripper_rot
     from zeno_skills.planner import find_park
-    ann = SceneAnnotations(ROOT / "annotations/zeno_house.json")
+    ann = SceneAnnotations(ROOT / base_annotation)
     world = WorldModel(ann)
     kin = ArmKin()
     kin.scene = world
@@ -104,12 +106,18 @@ def main():
             sup = o["supports"][rng.integers(len(o["supports"]))] if attempt > 12 else o["supports"][0]
             s = support_box(base_ann, sup)
             yaw = float(rng.uniform(-math.pi, math.pi)) if "flat" not in a["tags"] else float(rng.choice([0, math.pi / 2]))
+            if attempt == 0 and o.get("spawn_yaw_deg") is not None:
+                yaw = math.radians(float(o["spawn_yaw_deg"]))
             c, sn = abs(math.cos(yaw)), abs(math.sin(yaw))
             hx, hy = (c * sx + sn * sy) / 2 + 0.02, (sn * sx + c * sy) / 2 + 0.02
             x0, y0, x1, y1 = s["aabb_xy"]
             if x1 - x0 < 2 * hx or y1 - y0 < 2 * hy or s.get("clearance", 1) < sz + 0.02:
                 continue
             x, y = rng.uniform(x0 + hx, x1 - hx), rng.uniform(y0 + hy, y1 - hy)
+            if attempt == 0 and o.get("spawn_xy") is not None:
+                x, y = map(float, o["spawn_xy"])
+                if not (x0 + hx <= x <= x1 - hx and y0 + hy <= y <= y1 - hy):
+                    raise ValueError(f"{name}: spawn_xy outside {s['name']} safe region")
             # reachability-aware: Zeno's arm reaches ~0.4 m past a furniture
             # edge, so objects sit in a band along the edges of big surfaces
             if not str(s["name"]).startswith("floor") and \
@@ -168,7 +176,7 @@ def main():
     path = out / "scene.usd"
     layer = Sdf.Layer.CreateNew(str(path)) if not path.exists() else Sdf.Layer.FindOrOpen(str(path))
     layer.Clear()
-    layer.subLayerPaths.append(os.path.relpath(ROOT / "sim/zeno_house.usd", out))
+    layer.subLayerPaths.append(os.path.relpath(ROOT / base_scene, out))
     layer.Save()
     stage = Usd.Stage.Open(str(path))
     stage.SetEditTarget(stage.GetRootLayer())
@@ -187,6 +195,16 @@ def main():
             P.container_collider(stage, f"/World/Tasks/{name}", c["bands"], shape=c["shape"], mats=mats)
         else:
             P.solid_collider(stage, f"/World/Tasks/{name}", mats=mats)
+        if o := spec["objects"][name].get("visual_fill"):
+            # Food-colored visual inside a pre-existing bowl; no extra collider
+            # or rigid body, so the generated object's mass and grasp stay the
+            # same. The sphere is authored in the rigid body's local frame.
+            body = P.body_prim(stage, f"/World/Tasks/{name}")
+            fill = UsdGeom.Sphere.Define(stage, f"{body.GetPath()}/food_fill")
+            fill.CreateRadiusAttr(1.0)
+            fill.AddTranslateOp().Set(Gf.Vec3d(0.0, 0.0, 0.016))
+            fill.AddScaleOp().Set(Gf.Vec3f(0.068, 0.068, 0.009))
+            fill.CreateDisplayColorAttr([Gf.Vec3f(*o)])
     for inst in removed:
         stage.GetPrimAtPath(f"/World/TaskAssets/{inst}").SetActive(False)
     # robot start
@@ -209,6 +227,8 @@ def main():
             "seed": args.seed, "spec": os.path.relpath(Path(args.spec).resolve(), ROOT) if args.spec
             else f"task_specs/{args.task}.json",
             "scene_usd": f"{rel}/scene.usd", "annotation": f"{rel}/annotation.json",
+            "base_scene": base_scene, "thermal": spec.get("thermal", {}),
+            "demonstrate_microwave_door": spec.get("demonstrate_microwave_door", False),
             "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
             "robot_start": start, "placed_objects": placements, "dropped_optional_objects": dropped,
             "deactivated_base_objects": removed, "existing_objects": existing, "roles": roles,

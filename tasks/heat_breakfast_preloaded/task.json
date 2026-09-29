@@ -1,0 +1,64 @@
+{
+ "task": "heat_breakfast_preloaded",
+ "instruction": "Heat the prepared oatmeal in the microwave until it reaches 60 C, then leave all appliance doors closed.",
+ "instruction_zh": "\u5c06\u5fae\u6ce2\u7089\u91cc\u51c6\u5907\u597d\u7684\u71d5\u9ea6\u7ca5\u52a0\u70ed\u81f3 60 \u6444\u6c0f\u5ea6\uff0c\u5e76\u4fdd\u6301\u7535\u5668\u95e8\u5173\u95ed\u3002",
+ "seed": 0,
+ "spec": "task_specs/heat_breakfast_preloaded.json",
+ "scene_usd": "tasks/heat_breakfast_preloaded/scene.usd",
+ "annotation": "tasks/heat_breakfast_preloaded/annotation.json",
+ "base_scene": "sim/zeno_house_appliances.usd",
+ "thermal": {
+  "oatmeal": {
+   "initial_c": 4.0,
+   "ambient_c": 21.0,
+   "heating_rate_c_per_s": 4.0
+  }
+ },
+ "demonstrate_microwave_door": false,
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  5.5,
+  2.2,
+  0.0
+ ],
+ "placed_objects": {
+  "oatmeal": {
+   "asset": "breakfast_bowl",
+   "support": "kitchen_microwave/inside_floor",
+   "yaw": -1.4464727375963786,
+   "position": [
+    4.499913172180012,
+    2.4998883714656728,
+    0.7751
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "roles": {},
+ "candidate_supports": {
+  "oatmeal": [
+   "kitchen_microwave/inside_floor"
+  ]
+ },
+ "alternatives": [],
+ "place_hints": {},
+ "goal": {
+  "all": [
+   {
+    "heated": [
+     "oatmeal"
+    ],
+    "appliance": "kitchen_microwave",
+    "min_temp_c": 60.0
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

@@ -1,0 +1,89 @@
+{
+ "task": "heat_breakfast_combo",
+ "instruction": "Open the microwave to inspect the prepared oatmeal, close it and heat the oatmeal, then bring chilled milk from the refrigerator to the dining table and close the refrigerator.",
+ "instruction_zh": "\u6253\u5f00\u5fae\u6ce2\u7089\u67e5\u770b\u9884\u7f6e\u7684\u71d5\u9ea6\u7ca5\uff0c\u5173\u95e8\u52a0\u70ed\uff0c\u7136\u540e\u4ece\u51b0\u7bb1\u53d6\u725b\u5976\u9001\u5230\u9910\u684c\u5e76\u5173\u597d\u51b0\u7bb1\u95e8\u3002",
+ "seed": 0,
+ "spec": "task_specs/heat_breakfast_combo.json",
+ "scene_usd": "tasks/heat_breakfast_combo/scene.usd",
+ "annotation": "tasks/heat_breakfast_combo/annotation.json",
+ "base_scene": "sim/zeno_house_appliances.usd",
+ "thermal": {
+  "oatmeal": {
+   "initial_c": 4.0,
+   "ambient_c": 21.0,
+   "heating_rate_c_per_s": 4.0
+  }
+ },
+ "demonstrate_microwave_door": true,
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  5.5,
+  2.2,
+  0.0
+ ],
+ "placed_objects": {
+  "oatmeal": {
+   "asset": "breakfast_bowl",
+   "support": "kitchen_microwave/inside_floor",
+   "yaw": -1.4464727375963786,
+   "position": [
+    4.499913172180012,
+    2.4998883714656728,
+    0.7751
+   ]
+  },
+  "milk": {
+   "asset": "breakfast_cup",
+   "support": "breakfast_fridge/inside_shelf",
+   "yaw": -1.4486232791552935,
+   "position": [
+    6.039987813065659,
+    3.125099254615164,
+    0.89
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "roles": {},
+ "candidate_supports": {
+  "oatmeal": [
+   "kitchen_microwave/inside_floor"
+  ],
+  "milk": [
+   "breakfast_fridge/inside_shelf"
+  ]
+ },
+ "alternatives": [],
+ "place_hints": {
+  "milk": [
+   2.93,
+   6.7
+  ]
+ },
+ "goal": {
+  "all": [
+   {
+    "heated": [
+     "oatmeal"
+    ],
+    "appliance": "kitchen_microwave",
+    "min_temp_c": 60.0
+   },
+   {
+    "on": [
+     "milk"
+    ],
+    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+    "upright": true
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

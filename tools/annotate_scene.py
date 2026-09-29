@@ -262,7 +262,8 @@ def main():
             "open_q": round(open_q, 3), "part": str(b1.GetPath()), "part_frame": P1.round(5).tolist(),
             "part_box": part_box, "part_boxes": part_boxes, "handle": h,
             "room": room_of(static["rooms"], pivot[:2]),
-            "category": "microwave" if "microwave" in cab.GetName() else ("drawer" if not rev else "cabinet_door"),
+            "category": "microwave" if "microwave" in cab.GetName() else (
+                "refrigerator" if "fridge" in cab.GetName() else ("drawer" if not rev else "cabinet_door")),
         })
         body = stage.GetPrimAtPath(j.GetBody0Rel().GetTargets()[0])
         lo, hi = bounds(body)
@@ -280,13 +281,38 @@ def main():
                               "aabb": np.r_[plo, phi].round(3).tolist()})
         # horizontal panels inside the carcass (bottom, shelf) hold things too
         for name, plo, phi in pb:
-            if name in ("bottom", "shelf") and phi[2] - plo[2] < 0.05:
-                above = [q[1][2] for q in pb if q[1][2] > phi[2] + 0.02 and
+            if name in ("bottom", "shelf", "floor") and phi[2] - plo[2] < 0.05:
+                above = [q[1][2] for q in pb if q[0] in ("roof", "top", "shelf") and q[1][2] > phi[2] + 0.02 and
                          q[1][0] < phi[0] and q[2][0] > plo[0] and q[1][1] < phi[1] and q[2][1] > plo[1]]
                 supports.append({"name": f"{cab.GetName()}/inside_{name}", "furniture": cab.GetName(),
                                  "category": "cabinet_inside", "z": round(float(phi[2]), 3),
                                  "aabb_xy": np.r_[plo[:2], phi[:2]].round(3).tolist(),
                                  "clearance": round(float(min(above) - phi[2]), 3) if above else 0.3})
+        # The microwave's food region and start control are annotations, not
+        # policy-owned state. This lets both the skill and evaluator use the
+        # same physical cavity and button location after a scene relocation.
+        if "microwave" in cab.GetName():
+            floor = next(((plo, phi) for name, plo, phi in pb if name == "floor"), None)
+            roof = next(((plo, phi) for name, plo, phi in pb if name == "roof"), None)
+            if floor and roof:
+                fl, fh = floor
+                rl, _ = roof
+                articulated[-1]["cavity_aabb"] = [round(float(fl[0] + .035), 3),
+                    round(float(fl[1] + .035), 3), round(float(fh[2]), 3),
+                    round(float(fh[0] - .11), 3), round(float(fh[1] - .035), 3),
+                    round(float(rl[2]), 3)]
+            button = cab.GetChild("base").GetChild("start_button")
+            if button:
+                blo, bhi = bounds(button)
+                articulated[-1]["start_button"] = {"center": ((blo + bhi) / 2).round(4).tolist(),
+                                                  "outward": [0.0, -1.0, 0.0],
+                                                  "prim": str(button.GetPath())}
+            door_button = cab.GetChild("base").GetChild("door_button")
+            if door_button:
+                blo, bhi = bounds(door_button)
+                articulated[-1]["door_button"] = {"center": ((blo + bhi) / 2).round(4).tolist(),
+                                                   "outward": [0.0, -1.0, 0.0],
+                                                   "prim": str(door_button.GetPath())}
         # carcass top is a support surface too
         supports.append({"name": cab.GetName() + "/top", "furniture": cab.GetName(), "category": "cabinet_top",
                          "z": round(float(hi[2]), 3), "aabb_xy": np.r_[lo[:2], hi[:2]].round(3).tolist(),

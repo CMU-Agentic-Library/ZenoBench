@@ -2,7 +2,7 @@
 
 An Isaac Sim house with baked physics, **ground-truth (GT) annotations for every
 asset**, **annotation-driven manipulation skills** (IK + grasp selection + base
-planning), and **five household task scenes**. The house is an Infinigen layout.
+planning), and **six household task scenes**. The house is an Infinigen layout.
 Every task object was generated with [EmbodiedGen V2](https://github.com/HorizonRobotics/EmbodiedGen)
 text-to-3D.
 
@@ -44,7 +44,8 @@ simulator state (joint angle, object pose, finger gap).
 One house (`sim/zeno_house.usd`) contains 10 rooms, 58 pieces of static furniture, 15
 articulated cabinets and drawers, a microwave and the Zeno Malo robot. No cabinet stands in a bathroom
 (the ones the layout generator put there were moved to the living and dining rooms, `tools/relocate_furniture.py`). Each task scene is a thin
-USD layer on top of it (`tasks/<task>/scene.usd`). The rooms themselves are never modified; a
+USD layer on top of it (`tasks/<task>/scene.usd`); the breakfast heating tasks layer over the
+appliance scene (`sim/zeno_house_appliances.usd`). The rooms themselves are never modified; a
 task only adds assets to furniture tops or to the floor.
 
 | | |
@@ -75,8 +76,54 @@ with their candidate supports, the alternatives, and the goal. A task is **score
 | **tidy_toys** | <img src="media/tasks/tidy_toys.gif" width="420"/><br>[video](media/tasks/tidy_toys.mp4) | **success**, progress 100%<br>238 s simulated<br><sub>alternative: storage_basket</sub> |
 | **shelve_books** | <img src="media/tasks/shelve_books.gif" width="420"/><br>[video](media/tasks/shelve_books.mp4) | **success**, progress 100%<br>438 s simulated |
 | **breakfast_setup** | <img src="media/tasks/breakfast_setup.gif" width="420"/><br>[video](media/tasks/breakfast_setup.mp4) | **partial**, progress 67%<br>340 s simulated<br><sub>alternative: mug; dropped: mug</sub> |
+| **heat_breakfast_combo** | <img src="media/tasks/heat_breakfast_combo.gif" width="420"/><br>[video](media/tasks/heat_breakfast_combo.mp4) | **success**, progress 100%<br>204 s simulated<br><sub>microwave door opened and closed; oatmeal 63.6 °C</sub> |
 | **desk_prep** | <img src="media/tasks/desk_prep.gif" width="420"/><br>[video](media/tasks/desk_prep.mp4) | **success**, progress 100%<br>625 s simulated |
 <!-- /TASK_VIDEOS -->
+
+### Breakfast heating (appliance tasks)
+
+`tools/build_appliance_scene.py` adds an articulated refrigerator and a relocated
+microwave with a complete four-sided shell, a powered articulated door,
+physical door and start buttons, and a low stand. The
+appliance layer is `sim/zeno_house_appliances.usd`; the original house is unchanged.
+
+- `heat_breakfast_preloaded` starts with oatmeal in the microwave. The robot
+  presses the start button, waits until the food reaches 60 °C, and leaves the
+  doors closed. This baseline passed an Isaac Sim run at 100% progress; see
+  `runs/heat_breakfast_preloaded_smoke4/result.json`.
+- `heat_breakfast_combo` starts with oatmeal already inside the microwave.
+  The robot presses the blue door button; the physical hinge opens the door
+  for inspection and closes it again. The robot then presses the green start
+  button, opens the refrigerator, picks up chilled milk, places it upright on
+  the dining table, and closes the refrigerator. The microwave stops when the
+  oatmeal reaches the target temperature. The final
+  Isaac Sim run passed at 100% progress with oatmeal at 63.6 °C; see
+  [recorded result](media/tasks/heat_breakfast_combo.result.json) and the [video](media/tasks/heat_breakfast_combo.mp4).
+
+- `heat_breakfast` is the harder refrigerator-to-microwave-to-table transfer.
+  Its scene passes physics checks, but the complete task has **not** passed.
+  Earlier loading experiments used a side-open microwave prototype and do not
+  validate a loading trajectory for the current complete shell; see
+  [task status](tasks/heat_breakfast/STATUS.md).
+
+<img src="media/tasks/heat_breakfast_combo_open.png" width="540" alt="Microwave door open with oatmeal inside and complete side panel"/><br>
+The microwave door at its measured open angle of −1.4 rad (frame from the recorded run).
+
+```bash
+$ISAACLAB_PYTHON tools/run_task.py --task heat_breakfast_preloaded --no-video
+$ISAACLAB_PYTHON tools/run_task.py --task heat_breakfast_combo  # records runs/heat_breakfast_combo/run.mp4
+$ISAACLAB_PYTHON tools/run_task.py --task heat_breakfast --no-video
+# Rebuild the appliance layer and tasks:
+$ISAACLAB_PYTHON tools/build_appliance_scene.py
+$ISAACLAB_PYTHON tools/settle_scene.py sim/zeno_house_appliances.usd
+$ISAACLAB_PYTHON tools/annotate_scene.py sim/zeno_house_appliances.usd annotations/zeno_house_appliances.json
+bash tools/make_tasks.sh heat_breakfast_preloaded heat_breakfast_combo heat_breakfast
+```
+
+Temperature is an explicit task-level state model, not a PhysX heat simulation. It
+starts at 4 °C and rises at 4 °C/s only while the microwave is active, its door is
+closed, and the oatmeal is inside its annotated cavity. The evaluator checks this
+state independently of the policy action log.
 
 ### Success conditions
 
@@ -99,6 +146,7 @@ Geometric definitions (`zeno_skills/evaluator.py`):
 | `inside` | `{"inside": [slots], "container": "a\|b", "bind": "name"}` | object centre inside the container's wall profile, between its floor and 3 cm above the rim; **one** container holds every slot; it is bound for later conditions (`"$name"`) |
 | `upright` | `{"upright": [slots], "max_tilt_deg": 20}` | tilt of the object's z axis ≤ limit |
 | `near` | `{"near": [slots], "support": place, "max_dist": 0.5}` | one instance per slot on that support, pairwise within `max_dist` |
+| `heated` | `{"heated": [slots], "appliance": name, "min_temp_c": 60}` | measured task temperature meets the threshold |
 | `closed` | `{"closed": "all" \| [names], "tol": …}` | every listed articulated joint within 0.10 rad (doors) / 4 cm (drawers) of closed |
 | `not_dropped` | `{"not_dropped": "all"}` | no object that started above 10 cm is on the floor (unless inside a container) |
 

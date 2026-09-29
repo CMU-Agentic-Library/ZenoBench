@@ -1,0 +1,66 @@
+{
+  "task": "heat_breakfast",
+  "instruction": "Take the chilled oatmeal from the refrigerator, heat it in the microwave, and serve it on the dining table.",
+  "instruction_zh": "从冰箱取出燕麦粥，在微波炉中加热，然后端到餐桌。",
+  "base_scene": "sim/zeno_house_appliances.usd",
+  "base_annotation": "annotations/zeno_house_appliances.json",
+  "robot_start_near": [
+    5.5,
+    2.2
+  ],
+  "objects": {
+    "oatmeal": {
+      "asset": "breakfast_bowl",
+      "supports": [
+        "breakfast_fridge/inside_shelf"
+      ],
+      "spawn_xy": [
+        6.04,
+        3.16
+      ],
+      "reach_check": false,
+      "visual_fill": [
+        0.72,
+        0.53,
+        0.32
+      ]
+    }
+  },
+  "thermal": {
+    "oatmeal": {
+      "initial_c": 4.0,
+      "ambient_c": 21.0,
+      "heating_rate_c_per_s": 4.0
+    }
+  },
+  "place_hints": {
+    "oatmeal": [
+      2.93,
+      6.7
+    ]
+  },
+  "goal": {
+    "all": [
+      {
+        "heated": [
+          "oatmeal"
+        ],
+        "appliance": "kitchen_microwave",
+        "min_temp_c": 60.0
+      },
+      {
+        "on": [
+          "oatmeal"
+        ],
+        "support": "dining_table",
+        "upright": true
+      },
+      {
+        "closed": "all"
+      },
+      {
+        "not_dropped": "all"
+      }
+    ]
+  }
+}

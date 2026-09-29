@@ -114,10 +114,12 @@ class TaskPolicy:
     def _rank(c):
         if "on" in c and any(s.startswith("$") for s in c["on"]):
             return 0                # move the container first
-        return {"inside": 1, "on": 2, "near": 3, "upright": 4, "closed": 5}.get(
-            next((k for k in c if k in ("on", "inside", "near", "upright", "closed", "not_dropped")), ""), 9)
+        return {"heated": 1, "inside": 2, "on": 3, "near": 4, "upright": 5, "closed": 6}.get(
+            next((k for k in c if k in ("heated", "on", "inside", "near", "upright", "closed", "not_dropped")), ""), 9)
 
     def _fix(self, c, row, rep):
+        if "heated" in c:
+            return self._fix_heated(c, row, rep)
         if "inside" in c:
             return self._fix_inside(c, row, rep)
         if "on" in c:
@@ -127,6 +129,63 @@ class TaskPolicy:
         if "closed" in c:
             return self._fix_closed(c, row)
         return False
+
+    def _fix_heated(self, c, row, rep):
+        """Use the annotated appliance and physical manipulation skills."""
+        appliance = c["appliance"]
+        support = appliance + "/inside_floor"
+        goal_c = float(c["min_temp_c"])
+        done = False
+        for (label, cands), item in zip(self.ev.slots.expand(c["heated"], rep["bindings"]), row["items"]):
+            if item["ok"]:
+                continue
+            for inst in self._order(cands, label):
+                if inst in self.failed:
+                    continue
+                try:
+                    if self.rig.thermal and self.rig.thermal.active:
+                        self.rig.step(120)
+                    else:
+                        art = self.rig.ann.art(appliance)
+                        cavity = art["cavity_aabb"]
+                        pos, _ = self.rig.obj_pose(inst)
+                        already_loaded = all(cavity[i] + 0.005 < pos[i] < cavity[i + 3] - 0.005
+                                             for i in range(3))
+                        if already_loaded:
+                            if self.task.get("demonstrate_microwave_door"):
+                                S.cycle_microwave_door(self.rig, appliance)
+                            elif abs(self.rig.joint(appliance) - art["closed_q"]) > 0.10:
+                                S.close_articulated(self.rig, appliance)
+                            S.press_microwave_start(self.rig, appliance)
+                        else:
+                            # Open the microwave while the gripper is free,
+                            # then fetch food from its refrigerator.
+                            if abs(self.rig.joint(appliance) - art["open_q"]) > 0.10:
+                                S.open_articulated(self.rig, appliance)
+                            if not self._open_to_reach(inst):
+                                continue
+                            if not self._pick(inst, f"heat {label}"):
+                                continue
+                            centre_front = ((cavity[0] + cavity[3]) / 2 - 0.022, cavity[1] + 0.14)
+                            S.place_on(self.rig, inst, support, hint=centre_front, tries=12)
+                            S.close_articulated(self.rig, appliance)
+                            S.press_microwave_start(self.rig, appliance)
+
+                    while self.rig.thermal.temperatures_c[inst] < goal_c and time.time() < self.deadline:
+                        self.rig.step(120)
+                        if not self.rig.thermal.active:
+                            raise SkillFailure("microwave stopped before food reached target temperature")
+                    done = self.rig.thermal.temperatures_c[inst] >= goal_c
+                    if done:
+                        self.rig.thermal.active = False
+                        self.rig.log("microwave_stop", food=inst,
+                                     temp_c=round(self.rig.thermal.temperatures_c[inst], 1))
+                    self.decide("heated", instance=inst, temp_c=round(self.rig.thermal.temperatures_c[inst], 1))
+                    if done:
+                        break
+                except SkillFailure as e:
+                    self.decide("heat_failed", instance=inst, reason=str(e))
+        return done
 
     # ------------------------------------------------------------ primitives
     def _pick(self, inst, why, attempts=2):

@@ -1,0 +1,1135 @@
+{
+ "task": "heat_breakfast_combo",
+ "seed": 0,
+ "instruction": "Open the microwave to inspect the prepared oatmeal, close it and heat the oatmeal, then bring chilled milk from the refrigerator to the dining table and close the refrigerator.",
+ "scene": "tasks/heat_breakfast_combo/scene.usd",
+ "success": true,
+ "written_state": "robot and appliance joint drive targets, base anchor; thermal state is a task-level simulation",
+ "initial": {
+  "task": "heat_breakfast_combo",
+  "success": false,
+  "progress": 0.5,
+  "bindings": {},
+  "conditions": [
+   {
+    "desc": "oatmeal heated to at least 60 C",
+    "items": [
+     {
+      "slot": "oatmeal",
+      "instance": null,
+      "ok": false,
+      "detail": "oatmeal: 4.0 C"
+     }
+    ],
+    "n": 1,
+    "n_ok": 0,
+    "type": "heated",
+    "ok": false
+   },
+   {
+    "desc": "milk on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "items": [
+     {
+      "slot": "milk",
+      "instance": null,
+      "ok": false,
+      "detail": "bottom at (6.04, 3.12, 0.803)"
+     }
+    ],
+    "n": 1,
+    "n_ok": 0,
+    "type": "on",
+    "ok": false
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "decisions": [
+  {
+   "t": 0.5,
+   "kind": "round",
+   "n": 0,
+   "progress": 0.5,
+   "open": [
+    "oatmeal heated to at least 60 C",
+    "milk on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)"
+   ]
+  },
+  {
+   "t": 63.3,
+   "kind": "heated",
+   "instance": "oatmeal",
+   "temp_c": 63.6
+  },
+  {
+   "t": 63.3,
+   "kind": "open_to_reach",
+   "instance": "milk",
+   "part": "breakfast_fridge"
+  }
+ ],
+ "final": {
+  "task": "heat_breakfast_combo",
+  "success": true,
+  "progress": 1.0,
+  "bindings": {},
+  "conditions": [
+   {
+    "desc": "oatmeal heated to at least 60 C",
+    "items": [
+     {
+      "slot": "oatmeal",
+      "instance": "oatmeal",
+      "ok": true,
+      "detail": "oatmeal: 63.6 C"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "heated",
+    "ok": true
+   },
+   {
+    "desc": "milk on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "items": [
+     {
+      "slot": "milk",
+      "instance": "milk",
+      "ok": true,
+      "detail": "milk: TableDiningFactory_1437886_spawn_asset_2104395/surface_2, tilt 0 deg"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "progress": 1.0,
+ "wall_s": 305.6,
+ "sim_s": 203.9,
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "decision",
+   "kind": "round",
+   "n": 0,
+   "progress": 0.5,
+   "open": [
+    "oatmeal heated to at least 60 C",
+    "milk on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)"
+   ]
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     4.59,
+     1.68,
+     75.0
+    ]
+   ]
+  },
+  {
+   "tick": 922,
+   "t": 7.683,
+   "label": "base",
+   "pose": [
+    4.59,
+    1.682,
+    75.0
+   ]
+  },
+  {
+   "tick": 962,
+   "t": 8.017,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0135,
+    0.0135
+   ]
+  },
+  {
+   "tick": 1470,
+   "t": 12.25,
+   "label": "reach",
+   "target": "microwave_door_button_pre",
+   "tcp_err_m": 0.0082,
+   "q_err": 0.0078
+  },
+  {
+   "tick": 1633,
+   "t": 13.608,
+   "label": "reach",
+   "target": "microwave_door_button_align",
+   "tcp_err_m": 0.0056,
+   "q_err": 0.004
+  },
+  {
+   "tick": 2070,
+   "t": 17.25,
+   "label": "reach",
+   "target": "microwave_door_button_press",
+   "tcp_err_m": 0.0237,
+   "q_err": 0.1741,
+   "q": [
+    -0.295,
+    0.375,
+    0.202,
+    3.112,
+    -0.951,
+    1.558,
+    0.048,
+    0.786,
+    -0.056
+   ],
+   "q_cmd": [
+    -0.295,
+    0.385,
+    0.163,
+    3.111,
+    -0.873,
+    1.543,
+    0.112,
+    0.612,
+    -0.123
+   ]
+  },
+  {
+   "tick": 2094,
+   "t": 17.45,
+   "label": "microwave_door_button",
+   "button_error_m": 0.0237
+  },
+  {
+   "tick": 2204,
+   "t": 18.367,
+   "label": "reach",
+   "target": "microwave_door_button_release",
+   "tcp_err_m": 0.0054,
+   "q_err": 0.0074
+  },
+  {
+   "tick": 2938,
+   "t": 24.483,
+   "label": "path",
+   "waypoints": [
+    [
+     5.1,
+     1.6,
+     150.0
+    ]
+   ]
+  },
+  {
+   "tick": 3250,
+   "t": 27.083,
+   "label": "base",
+   "pose": [
+    5.1,
+    1.6,
+    150.0
+   ]
+  },
+  {
+   "tick": 3670,
+   "t": 30.583,
+   "label": "microwave_door_motion",
+   "target": -1.4,
+   "actual": -1.4
+  },
+  {
+   "tick": 4090,
+   "t": 34.083,
+   "label": "microwave_door_motion",
+   "target": 0.0,
+   "actual": -0.0
+  },
+  {
+   "tick": 4093,
+   "t": 34.108,
+   "label": "path",
+   "waypoints": [
+    [
+     4.59,
+     1.68,
+     75.0
+    ]
+   ]
+  },
+  {
+   "tick": 4405,
+   "t": 36.708,
+   "label": "base",
+   "pose": [
+    4.59,
+    1.682,
+    75.0
+   ]
+  },
+  {
+   "tick": 4445,
+   "t": 37.042,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "tick": 5131,
+   "t": 42.758,
+   "label": "reach",
+   "target": "microwave_button_pre",
+   "tcp_err_m": 0.0087,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 5328,
+   "t": 44.4,
+   "label": "reach",
+   "target": "microwave_button_align",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.0037
+  },
+  {
+   "tick": 5781,
+   "t": 48.175,
+   "label": "reach",
+   "target": "microwave_button_press",
+   "tcp_err_m": 0.0237,
+   "q_err": 0.1742,
+   "q": [
+    -0.405,
+    0.375,
+    0.201,
+    3.112,
+    -0.951,
+    1.562,
+    0.044,
+    0.786,
+    -0.063
+   ],
+   "q_cmd": [
+    -0.405,
+    0.384,
+    0.16,
+    3.111,
+    -0.873,
+    1.548,
+    0.11,
+    0.612,
+    -0.129
+   ]
+  },
+  {
+   "tick": 5805,
+   "t": 48.375,
+   "label": "microwave_start",
+   "food": [
+    "oatmeal"
+   ],
+   "button_error_m": 0.0237
+  },
+  {
+   "tick": 5913,
+   "t": 49.275,
+   "label": "reach",
+   "target": "microwave_button_release",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 7593,
+   "t": 63.275,
+   "label": "microwave_stop",
+   "food": "oatmeal",
+   "temp_c": 63.6
+  },
+  {
+   "tick": 7593,
+   "t": 63.3,
+   "label": "decision",
+   "kind": "heated",
+   "instance": "oatmeal",
+   "temp_c": 63.6
+  },
+  {
+   "tick": 7593,
+   "t": 63.3,
+   "label": "decision",
+   "kind": "open_to_reach",
+   "instance": "milk",
+   "part": "breakfast_fridge"
+  },
+  {
+   "tick": 7593,
+   "t": 63.275,
+   "label": "open_park",
+   "park": [
+    6.098,
+    2.473,
+    90.0
+   ],
+   "hook_side": "near"
+  },
+  {
+   "tick": 8508,
+   "t": 70.9,
+   "label": "path",
+   "waypoints": [
+    [
+     6.1,
+     2.47,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 9207,
+   "t": 76.725,
+   "label": "base",
+   "pose": [
+    6.098,
+    2.473,
+    90.0
+   ]
+  },
+  {
+   "tick": 9207,
+   "t": 76.725,
+   "label": "open_at_park",
+   "q_before": -6.006827391047409e-08,
+   "q_now": -7.259048118157807e-08
+  },
+  {
+   "tick": 9237,
+   "t": 76.975,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.0199,
+    0.0199
+   ]
+  },
+  {
+   "tick": 9511,
+   "t": 79.258,
+   "label": "reach",
+   "target": "open_pre_high",
+   "tcp_err_m": 0.0041,
+   "q_err": 0.008
+  },
+  {
+   "tick": 9651,
+   "t": 80.425,
+   "label": "reach",
+   "target": "open_pre",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.0045
+  },
+  {
+   "tick": 9897,
+   "t": 82.475,
+   "label": "reach",
+   "target": "open_handle",
+   "tcp_err_m": 0.0025,
+   "q_err": 0.0077
+  },
+  {
+   "tick": 10017,
+   "t": 83.475,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0129,
+    0.0122
+   ]
+  },
+  {
+   "tick": 10018,
+   "t": 83.483,
+   "label": "ride",
+   "q": -0.0,
+   "cmd": -0.0021,
+   "fingers": [
+    0.0126,
+    0.0125
+   ]
+  },
+  {
+   "tick": 10078,
+   "t": 83.983,
+   "label": "ride",
+   "q": -0.1083,
+   "cmd": -0.1271,
+   "fingers": [
+    0.0076,
+    0.0182
+   ]
+  },
+  {
+   "tick": 10138,
+   "t": 84.483,
+   "label": "ride",
+   "q": -0.2339,
+   "cmd": -0.2521,
+   "fingers": [
+    0.0076,
+    0.0181
+   ]
+  },
+  {
+   "tick": 10198,
+   "t": 84.983,
+   "label": "ride",
+   "q": -0.3602,
+   "cmd": -0.3771,
+   "fingers": [
+    0.0077,
+    0.018
+   ]
+  },
+  {
+   "tick": 10258,
+   "t": 85.483,
+   "label": "ride",
+   "q": -0.4849,
+   "cmd": -0.5021,
+   "fingers": [
+    0.0076,
+    0.0181
+   ]
+  },
+  {
+   "tick": 10308,
+   "t": 85.9,
+   "label": "ride_done",
+   "q": -0.5912846326828003
+  },
+  {
+   "tick": 10408,
+   "t": 86.733,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 10560,
+   "t": 88.0,
+   "label": "reach",
+   "target": "open_back",
+   "tcp_err_m": 0.0025,
+   "q_err": 0.0083
+  },
+  {
+   "tick": 10769,
+   "t": 89.742,
+   "label": "reach",
+   "target": "open_up",
+   "tcp_err_m": 0.0008,
+   "q_err": 0.0032
+  },
+  {
+   "tick": 10829,
+   "t": 90.242,
+   "label": "open_result",
+   "name": "breakfast_fridge",
+   "before": -6.006827391047409e-08,
+   "after": -0.5273439288139343,
+   "goal": -0.611
+  },
+  {
+   "tick": 10829,
+   "t": 90.242,
+   "label": "pick_park",
+   "obj": "milk",
+   "kind": "rim_pinch",
+   "park": [
+    6.246,
+    2.337,
+    135.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 11151,
+   "t": 92.925,
+   "label": "path",
+   "waypoints": [
+    [
+     6.25,
+     2.34,
+     135.0
+    ]
+   ]
+  },
+  {
+   "tick": 11475,
+   "t": 95.625,
+   "label": "base",
+   "pose": [
+    6.246,
+    2.337,
+    135.0
+   ]
+  },
+  {
+   "tick": 11515,
+   "t": 95.958,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.03,
+    0.03
+   ]
+  },
+  {
+   "tick": 11515,
+   "t": 95.958,
+   "label": "joint_detour",
+   "target": "pick_pre_far"
+  },
+  {
+   "tick": 12128,
+   "t": 101.067,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0035,
+   "q_err": 0.0076
+  },
+  {
+   "tick": 12232,
+   "t": 101.933,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0028,
+   "q_err": 0.0091
+  },
+  {
+   "tick": 12290,
+   "t": 102.417,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0056,
+   "q_err": 0.0098
+  },
+  {
+   "tick": 12410,
+   "t": 103.417,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0107,
+    0.0119
+   ]
+  },
+  {
+   "tick": 12618,
+   "t": 105.15,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0058,
+   "q_err": 0.0036
+  },
+  {
+   "tick": 12658,
+   "t": 105.483,
+   "label": "pick_result",
+   "obj": "milk",
+   "kind": "rim_pinch",
+   "lift_m": 0.0708,
+   "fingers": [
+    0.0094,
+    0.0091
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 12658,
+   "t": 105.483,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 12658,
+   "t": 105.483,
+   "label": "place_park",
+   "obj": "milk",
+   "park": [
+    2.444,
+    6.641,
+    0.0
+   ]
+  },
+  {
+   "tick": 12983,
+   "t": 108.192,
+   "label": "base",
+   "pose": [
+    6.493,
+    2.09,
+    135.0
+   ]
+  },
+  {
+   "tick": 13583,
+   "t": 113.192,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.009
+  },
+  {
+   "tick": 13583,
+   "t": 113.192,
+   "label": "path",
+   "waypoints": [
+    [
+     4.13,
+     3.42,
+     150.61
+    ],
+    [
+     3.13,
+     3.42,
+     180.0
+    ],
+    [
+     2.88,
+     3.57,
+     149.04
+    ],
+    [
+     2.78,
+     3.67,
+     135.0
+    ],
+    [
+     2.53,
+     5.27,
+     98.88
+    ],
+    [
+     2.48,
+     5.32,
+     135.0
+    ],
+    [
+     2.44,
+     6.64,
+     0.0
+    ]
+   ]
+  },
+  {
+   "tick": 19023,
+   "t": 158.525,
+   "label": "base",
+   "pose": [
+    2.444,
+    6.641,
+    -0.0
+   ]
+  },
+  {
+   "tick": 19023,
+   "t": 158.525,
+   "label": "place_remeasure",
+   "obj": "milk",
+   "shift_m": 0.016,
+   "hang_m": 0.093,
+   "pos": [
+    2.8326,
+    6.5013,
+    0.9479
+   ]
+  },
+  {
+   "tick": 19567,
+   "t": 163.058,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0045,
+   "q_err": 0.0087
+  },
+  {
+   "tick": 19567,
+   "t": 163.058,
+   "label": "place_after_above",
+   "obj": "milk",
+   "pos": [
+    2.9368,
+    6.6918,
+    1.0018
+   ],
+   "fingers": [
+    0.0098,
+    0.0089
+   ]
+  },
+  {
+   "tick": 19759,
+   "t": 164.658,
+   "label": "reach",
+   "target": "place_lower",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.0032
+  },
+  {
+   "tick": 19789,
+   "t": 164.908,
+   "label": "place_after_lower",
+   "obj": "milk",
+   "pos": [
+    2.9363,
+    6.6887,
+    0.9582
+   ],
+   "fingers": [
+    0.0098,
+    0.0089
+   ]
+  },
+  {
+   "tick": 19789,
+   "t": 164.908,
+   "label": "place_before_release",
+   "obj": "milk",
+   "pos": [
+    2.9363,
+    6.6887,
+    0.9582
+   ],
+   "target": [
+    2.9348,
+    6.6938,
+    0.9485
+   ]
+  },
+  {
+   "tick": 19859,
+   "t": 165.492,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.03,
+    0.03
+   ]
+  },
+  {
+   "tick": 19859,
+   "t": 165.492,
+   "label": "place_after_open",
+   "obj": "milk",
+   "pos": [
+    2.9423,
+    6.6963,
+    0.931
+   ]
+  },
+  {
+   "tick": 19918,
+   "t": 165.983,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.0058,
+   "q_err": 0.009
+  },
+  {
+   "tick": 20008,
+   "t": 166.733,
+   "label": "place_result",
+   "obj": "milk",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "xy_err_m": 0.0079,
+   "on_support": true
+  },
+  {
+   "tick": 20008,
+   "t": 166.733,
+   "label": "close_park",
+   "park": [
+    5.767,
+    2.301,
+    60.0
+   ],
+   "hook_side": "near"
+  },
+  {
+   "tick": 20522,
+   "t": 171.017,
+   "label": "path",
+   "waypoints": [
+    [
+     2.48,
+     5.02,
+     -88.8
+    ],
+    [
+     2.73,
+     4.02,
+     -75.96
+    ],
+    [
+     2.78,
+     3.67,
+     -81.87
+    ],
+    [
+     2.93,
+     3.52,
+     -45.0
+    ],
+    [
+     3.18,
+     3.42,
+     -21.8
+    ],
+    [
+     4.93,
+     2.97,
+     -14.42
+    ],
+    [
+     5.77,
+     2.3,
+     60.0
+    ]
+   ]
+  },
+  {
+   "tick": 22844,
+   "t": 190.367,
+   "label": "base",
+   "pose": [
+    5.767,
+    2.301,
+    60.0
+   ]
+  },
+  {
+   "tick": 22844,
+   "t": 190.367,
+   "label": "close_at_park",
+   "q_before": -0.5273439288139343,
+   "q_now": -0.3941570520401001
+  },
+  {
+   "tick": 22847,
+   "t": 190.392,
+   "label": "path",
+   "waypoints": [
+    [
+     5.88,
+     2.25,
+     60.0
+    ]
+   ]
+  },
+  {
+   "tick": 22931,
+   "t": 191.092,
+   "label": "base",
+   "pose": [
+    5.882,
+    2.252,
+    60.0
+   ]
+  },
+  {
+   "tick": 22961,
+   "t": 191.342,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 23328,
+   "t": 194.4,
+   "label": "reach",
+   "target": "close_pre_high",
+   "tcp_err_m": 0.0076,
+   "q_err": 0.0088
+  },
+  {
+   "tick": 23467,
+   "t": 195.558,
+   "label": "reach",
+   "target": "close_pre",
+   "tcp_err_m": 0.0064,
+   "q_err": 0.0033
+  },
+  {
+   "tick": 23596,
+   "t": 196.633,
+   "label": "reach",
+   "target": "close_handle",
+   "tcp_err_m": 0.0032,
+   "q_err": 0.0073
+  },
+  {
+   "tick": 23716,
+   "t": 197.633,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0125,
+    0.0126
+   ]
+  },
+  {
+   "tick": 23717,
+   "t": 197.642,
+   "label": "ride",
+   "q": -0.395,
+   "cmd": -0.3929,
+   "fingers": [
+    0.0129,
+    0.0124
+   ]
+  },
+  {
+   "tick": 23777,
+   "t": 198.142,
+   "label": "ride",
+   "q": -0.2786,
+   "cmd": -0.2679,
+   "fingers": [
+    0.0174,
+    0.0078
+   ]
+  },
+  {
+   "tick": 23837,
+   "t": 198.642,
+   "label": "ride",
+   "q": -0.1538,
+   "cmd": -0.1429,
+   "fingers": [
+    0.0175,
+    0.0077
+   ]
+  },
+  {
+   "tick": 23897,
+   "t": 199.142,
+   "label": "ride",
+   "q": -0.0288,
+   "cmd": -0.0179,
+   "fingers": [
+    0.0175,
+    0.0077
+   ]
+  },
+  {
+   "tick": 23901,
+   "t": 199.175,
+   "label": "ride_done",
+   "q": -0.018349425867199898
+  },
+  {
+   "tick": 24001,
+   "t": 200.008,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 24105,
+   "t": 200.875,
+   "label": "reach",
+   "target": "close_back",
+   "tcp_err_m": 0.0061,
+   "q_err": 0.0079
+  },
+  {
+   "tick": 24315,
+   "t": 202.625,
+   "label": "reach",
+   "target": "close_up",
+   "tcp_err_m": 0.0016,
+   "q_err": 0.0031
+  },
+  {
+   "tick": 24375,
+   "t": 203.125,
+   "label": "close_result",
+   "name": "breakfast_fridge",
+   "before": -0.3941570520401001,
+   "after": -0.009658396244049072,
+   "goal": 0.0
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/heat_breakfast_combo_door_video/run.mp4"
+}

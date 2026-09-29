@@ -54,8 +54,32 @@ class Rig:
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
         self.held = None
         self.focus_z = None          # follow-camera target height (low for floor picks)
+        self.camera_override = None  # optional (eye, target) for a visible appliance action
         from .evaluator import Geometry
         self.geo = Geometry(ann)
+
+        self.thermal = None
+
+    def configure_thermal(self, task):
+        if task.get("thermal"):
+            from .thermal import ThermalModel
+            self.thermal = ThermalModel(task["thermal"])
+
+    def _advance_thermal(self, dt):
+        if self.thermal is None:
+            return
+        a = self.ann.art(self.thermal.appliance)
+        closed = abs(self.joint(a["name"]) - a["closed_q"]) <= 0.10
+        b = a["cavity_aabb"]
+        inside = []
+        if closed and self.thermal.active:
+            for name in self.thermal.config:
+                if name not in self._bodies:
+                    continue
+                p, _ = self.obj_pose(name)
+                if all(b[i] + 0.005 < p[i] < b[i + 3] - 0.005 for i in range(3)):
+                    inside.append(name)
+        self.thermal.advance(dt, inside, closed)
 
     # ------------------------------------------------------------ state
     def q(self):
@@ -82,7 +106,8 @@ class Rig:
         for name in self.ann.objects:
             p, q = self.obj_pose(name)
             objs[name] = {"pos": p.tolist(), "quat": q.tolist()}
-        return {"objects": objs, "joints": {a["name"]: self.joint(a["name"]) for a in self.ann.articulated}}
+        return {"objects": objs, "joints": {a["name"]: self.joint(a["name"]) for a in self.ann.articulated},
+                "temperatures_c": dict(self.thermal.temperatures_c) if self.thermal else {}}
 
     def sync_world(self):
         """Planner/IK model <- simulator: joint values of every articulated
@@ -107,6 +132,14 @@ class Rig:
     def _overhangs(self, name, st):
         """Object sticking out past its support's edge (pushed for an edge
         pinch): the base column must not drive into it."""
+        p = self.geo.centre(name, st)
+        for a in self.ann.articulated:
+            b = a.get("body_aabb")
+            if b and all(b[i] < p[i] < b[i + 3] for i in range(3)):
+                # The cabinet's own collision shape already blocks the base.
+                # Counting its contents again creates a phantom obstruction
+                # beside the door while the robot follows the hinge.
+                return False
         s = self.geo.support_under(name, st)
         if s is None:
             return False
@@ -132,6 +165,8 @@ class Rig:
             render = bool(self.cams) and self.tick % self.stride == 0
             self.sim.step(render=render)
             self.tick += 1
+            if self.tick % 12 == 0:
+                self._advance_thermal(0.1)
             if render:
                 imgs = []
                 for cam in self.cams.values():
@@ -296,6 +331,9 @@ class Rig:
                 q = P[k] + (P[k + 1] - P[k]) * min(max(f, 0.0), 1.0)
                 self.set_base(q[0], q[1], q[2])
                 self.step(1)
+                if self.held is not None and i % 60 == 0:
+                    from .skills import check_held
+                    check_held(self, "carry")
         self.step(20)
         self.log("base", pose=[round(v, 3) for v in self.base_pose()])
 

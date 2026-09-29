@@ -1,0 +1,84 @@
+{
+  "task": "heat_breakfast_combo",
+  "instruction": "Open the microwave to inspect the prepared oatmeal, close it and heat the oatmeal, then bring chilled milk from the refrigerator to the dining table and close the refrigerator.",
+  "instruction_zh": "打开微波炉查看预置的燕麦粥，关门加热，然后从冰箱取牛奶送到餐桌并关好冰箱门。",
+  "demonstrate_microwave_door": true,
+  "base_scene": "sim/zeno_house_appliances.usd",
+  "base_annotation": "annotations/zeno_house_appliances.json",
+  "robot_start_near": [
+    5.5,
+    2.2
+  ],
+  "objects": {
+    "oatmeal": {
+      "asset": "breakfast_bowl",
+      "supports": [
+        "kitchen_microwave/inside_floor"
+      ],
+      "spawn_xy": [
+        4.5,
+        2.5
+      ],
+      "reach_check": false,
+      "visual_fill": [
+        0.72,
+        0.53,
+        0.32
+      ]
+    },
+    "milk": {
+      "asset": "breakfast_cup",
+      "supports": [
+        "breakfast_fridge/inside_shelf"
+      ],
+      "spawn_xy": [
+        6.04,
+        3.125
+      ],
+      "reach_check": false,
+      "visual_fill": [
+        0.93,
+        0.91,
+        0.84
+      ],
+      "spawn_yaw_deg": -83.0
+    }
+  },
+  "thermal": {
+    "oatmeal": {
+      "initial_c": 4.0,
+      "ambient_c": 21.0,
+      "heating_rate_c_per_s": 4.0
+    }
+  },
+  "goal": {
+    "all": [
+      {
+        "heated": [
+          "oatmeal"
+        ],
+        "appliance": "kitchen_microwave",
+        "min_temp_c": 60.0
+      },
+      {
+        "on": [
+          "milk"
+        ],
+        "support": "dining_table",
+        "upright": true
+      },
+      {
+        "closed": "all"
+      },
+      {
+        "not_dropped": "all"
+      }
+    ]
+  },
+  "place_hints": {
+    "milk": [
+      2.93,
+      6.7
+    ]
+  }
+}

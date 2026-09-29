@@ -1,0 +1,53 @@
+{
+  "task": "heat_breakfast_preloaded",
+  "instruction": "Heat the prepared oatmeal in the microwave until it reaches 60 C, then leave all appliance doors closed.",
+  "instruction_zh": "将微波炉里准备好的燕麦粥加热至 60 摄氏度，并保持电器门关闭。",
+  "base_scene": "sim/zeno_house_appliances.usd",
+  "base_annotation": "annotations/zeno_house_appliances.json",
+  "robot_start_near": [
+    5.5,
+    2.2
+  ],
+  "objects": {
+    "oatmeal": {
+      "asset": "breakfast_bowl",
+      "supports": [
+        "kitchen_microwave/inside_floor"
+      ],
+      "spawn_xy": [
+        4.5,
+        2.5
+      ],
+      "reach_check": false,
+      "visual_fill": [
+        0.72,
+        0.53,
+        0.32
+      ]
+    }
+  },
+  "thermal": {
+    "oatmeal": {
+      "initial_c": 4.0,
+      "ambient_c": 21.0,
+      "heating_rate_c_per_s": 4.0
+    }
+  },
+  "goal": {
+    "all": [
+      {
+        "heated": [
+          "oatmeal"
+        ],
+        "appliance": "kitchen_microwave",
+        "min_temp_c": 60.0
+      },
+      {
+        "closed": "all"
+      },
+      {
+        "not_dropped": "all"
+      }
+    ]
+  }
+}

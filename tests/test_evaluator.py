@@ -86,3 +86,22 @@ def test_breakfast_alternatives():
     st["objects"][bowl]["quat"] = [1, 0, 0, 0]
     rep = ev.evaluate(st)
     assert rep["conditions"][0]["ok"] and rep["conditions"][0]["items"][0]["instance"] == bowl
+
+
+def test_heat_breakfast_requires_measured_temperature():
+    from zeno_skills.thermal import ThermalModel
+    t, ann = load("heat_breakfast")
+    st = start_state(t, ann)
+    model = ThermalModel(t["thermal"])
+    st["temperatures_c"] = dict(model.temperatures_c)
+    ev = TaskEvaluator(t, ann, initial_state=st)
+    assert not ev.evaluate(st)["conditions"][0]["ok"]
+    model.active = True
+    model.advance(15.0, [], True)
+    assert model.temperatures_c["oatmeal"] == 4.0
+    model.advance(14.0, ["oatmeal"], False)
+    assert model.temperatures_c["oatmeal"] == 4.0 and not model.active
+    model.active = True
+    model.advance(14.0, ["oatmeal"], True)
+    st["temperatures_c"] = dict(model.temperatures_c)
+    assert ev.evaluate(st)["conditions"][0]["ok"]

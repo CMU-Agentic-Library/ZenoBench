@@ -54,11 +54,12 @@ def main():
 
     report = {"task": task["task"], "seed": task.get("seed"), "instruction": task["instruction"],
               "scene": task["scene_usd"], "success": False,
-              "written_state": "robot drive targets and base anchor only"}
+              "written_state": "robot and appliance joint drive targets, base anchor; thermal state is a task-level simulation"}
     rig, code = None, 4
     t0 = time.time()
     try:
         rig = make_rig(app, task["scene_usd"], task["annotation"], video=video, res=args.res, stride=args.stride)
+        rig.configure_thermal(task)
         rig.caption = f"TASK: {task['instruction']}"
         rig.step(60)
         st0 = rig.state()

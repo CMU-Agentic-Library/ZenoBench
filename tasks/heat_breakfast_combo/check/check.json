@@ -1,0 +1,143 @@
+{
+ "scene": "tasks/heat_breakfast_combo/scene.usd",
+ "seconds": 3.0,
+ "objects": {
+  "/World/TaskAssets/plate_counter_a/Asset/breakfast_plate": {
+   "drift_m": 0.0,
+   "z0": 0.8746,
+   "z": 0.8746
+  },
+  "/World/TaskAssets/plate_counter_b/Asset/breakfast_plate": {
+   "drift_m": 0.0,
+   "z0": 1.0236,
+   "z": 1.0236
+  },
+  "/World/TaskAssets/plate_dining_cabinet/Asset/breakfast_plate": {
+   "drift_m": 0.0,
+   "z0": 1.2219,
+   "z": 1.2219
+  },
+  "/World/TaskAssets/bowl_dining_cabinet/Asset/breakfast_bowl": {
+   "drift_m": 0.0,
+   "z0": 1.5034,
+   "z": 1.5034
+  },
+  "/World/TaskAssets/bowl_kitchen_cabinet/Asset/breakfast_bowl": {
+   "drift_m": 0.0,
+   "z0": 1.1699,
+   "z": 1.1699
+  },
+  "/World/TaskAssets/bowl_side_table/Asset/breakfast_bowl": {
+   "drift_m": 0.0,
+   "z0": 0.7473,
+   "z": 0.7473
+  },
+  "/World/TaskAssets/cup_kitchen_cabinet/Asset/breakfast_cup": {
+   "drift_m": 0.0,
+   "z0": 1.2644,
+   "z": 1.2644
+  },
+  "/World/TaskAssets/cup_counter_b/Asset/breakfast_cup": {
+   "drift_m": 0.0,
+   "z0": 1.0001,
+   "z": 1.0001
+  },
+  "/World/TaskAssets/cup_side_table/Asset/breakfast_cup": {
+   "drift_m": 0.0001,
+   "z0": 0.7592,
+   "z": 0.7592
+  },
+  "/World/TaskAssets/mug_dining_cabinet/Asset/breakfast_mug": {
+   "drift_m": 0.0,
+   "z0": 1.518,
+   "z": 1.518
+  },
+  "/World/TaskAssets/mug_shelf/Asset/breakfast_mug": {
+   "drift_m": 0.0,
+   "z0": 1.4727,
+   "z": 1.4727
+  },
+  "/World/TaskAssets/mug_counter/Asset/breakfast_mug": {
+   "drift_m": 0.0,
+   "z0": 1.1845,
+   "z": 1.1845
+  },
+  "/World/TaskAssets/spoon_counter/Asset/breakfast_spoon": {
+   "drift_m": 0.0,
+   "z0": 1.0459,
+   "z": 1.0459
+  },
+  "/World/TaskAssets/spoon_kitchen_cabinet/Asset/breakfast_spoon": {
+   "drift_m": 0.0,
+   "z0": 0.8138,
+   "z": 0.8138
+  },
+  "/World/TaskAssets/spoon_side_table/Asset/breakfast_spoon": {
+   "drift_m": 0.0,
+   "z0": 0.7103,
+   "z": 0.7103
+  },
+  "/World/TaskAssets/spoon_target_table/Asset/breakfast_spoon": {
+   "drift_m": 0.0,
+   "z0": 0.8641,
+   "z": 0.8641
+  },
+  "/World/TaskAssets/clutter_cereal_a/Asset/cereal_box": {
+   "drift_m": 0.0,
+   "z0": 1.0068,
+   "z": 1.0068
+  },
+  "/World/TaskAssets/clutter_cereal_b/Asset/cereal_box": {
+   "drift_m": 0.0,
+   "z0": 1.0068,
+   "z": 1.0068
+  },
+  "/World/TaskAssets/plate_inside_kitchen_cabinet/Asset/breakfast_plate": {
+   "drift_m": 0.0,
+   "z0": 0.4264,
+   "z": 0.4264
+  },
+  "/World/TaskAssets/bowl_inside_kitchen_cabinet/Asset/breakfast_bowl": {
+   "drift_m": 0.0,
+   "z0": 0.457,
+   "z": 0.457
+  },
+  "/World/TaskAssets/spoon_inside_kitchen_drawer/Asset/breakfast_spoon": {
+   "drift_m": 0.0,
+   "z0": 0.5886,
+   "z": 0.5886
+  },
+  "/World/Tasks/oatmeal/Asset/breakfast_bowl": {
+   "drift_m": 0.0,
+   "z0": 0.7631,
+   "z": 0.7631
+  },
+  "/World/Tasks/milk/Asset/breakfast_cup": {
+   "drift_m": 0.0,
+   "z0": 0.8775,
+   "z": 0.8775
+  }
+ },
+ "articulations": {
+  "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_3699907_spawn_asset_505866/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_3953568_spawn_asset_9811069/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_6689129_spawn_asset_9539479/joints/drawer_slide": -0.0,
+  "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_7025538_spawn_asset_6631478/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_8238176_spawn_asset_1724097/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_9483010_spawn_asset_2619144/joints/drawer_slide": 0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_1469599_spawn_asset_3066359/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_4324214_spawn_asset_9680651/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_5951754_spawn_asset_7509401/joints/drawer_slide": 0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_6646327_spawn_asset_3005554/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_680597_spawn_asset_3676420/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7330242_spawn_asset_8918727/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7978189_spawn_asset_6928284/joints/drawer_slide": 0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9980582_spawn_asset_7570664/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9985775_spawn_asset_1002201/joints/door_hinge": -0.0,
+  "/World/ArticulatedAssets/kitchen_microwave/joints/microwave_door_hinge": -0.0,
+  "/World/ArticulatedAssets/breakfast_fridge/joints/fridge_door_hinge": -0.0
+ },
+ "robot_drift_m": 0.0,
+ "unstable": [],
+ "pass": true
+}

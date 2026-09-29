@@ -8,8 +8,7 @@ state = {"objects": {name: {"pos": [x, y, z], "quat": [w, x, y, z]}},
          "joints":  {articulated_name: q}}
 
 Pure Python (numpy only): runs inside a rollout, on a saved state, or in a
-unit test.  Every condition is purely geometric; nothing is read from the
-policy.
+unit test.  Every condition reads simulator or task state, never the policy action log.
 
 Conditions (``goal = {"all": [...]}``), slots as in tasks.py:
   on          {"on": slots, "support": place|[places], "upright": bool}
@@ -24,6 +23,7 @@ Conditions (``goal = {"all": [...]}``), slots as in tasks.py:
   near        {"near": slots, "max_dist": m, "support": place}
               one instance per slot (on that support), pairwise within
               max_dist
+  heated      {"heated": slots, "appliance": name, "min_temp_c": C}
   closed      {"closed": "all" | [articulated names], "tol": rad or m}
   not_dropped {"not_dropped": "all"}  no object that started above 10 cm
               lies on the floor (unless it is inside a container)
@@ -174,12 +174,24 @@ class TaskEvaluator(Geometry):
                 "progress": round(n_ok / max(n, 1), 3), "bindings": bindings, "conditions": rows}
 
     def _cond(self, c, st, bindings):
-        kind = next(k for k in ("on", "inside", "upright", "near", "closed", "not_dropped") if k in c)
+        kind = next(k for k in ("heated", "on", "inside", "upright", "near", "closed", "not_dropped") if k in c)
         fn = getattr(self, "_c_" + kind)
         row = fn(c, st, bindings)
         row["type"] = kind
         row["ok"] = row["n_ok"] == row["n"]
         return row
+
+    def _c_heated(self, c, st, bindings):
+        limit = float(c["min_temp_c"])
+        temps = st.get("temperatures_c", {})
+        items = []
+        for label, cands in self.slots.expand(c["heated"], bindings):
+            hit = next((name for name in cands if temps.get(name, float("-inf")) >= limit), None)
+            detail = f"{hit}: {temps[hit]:.1f} C" if hit else \
+                ", ".join(f"{name}: {temps.get(name, float('nan')):.1f} C" for name in cands)
+            items.append({"slot": label, "instance": hit, "ok": hit is not None, "detail": detail})
+        return {"desc": f"{', '.join(c['heated'])} heated to at least {limit:.0f} C",
+                "items": items, "n": len(items), "n_ok": sum(i["ok"] for i in items)}
 
     def _c_on(self, c, st, bindings):
         items = []
