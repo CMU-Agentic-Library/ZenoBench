@@ -1,7 +1,9 @@
 {
  "task": "breakfast_setup",
  "instruction": "Set up the dining table for breakfast.",
+ "instruction_zh": "\u6574\u7406\u65e9\u9910\u9910\u5177",
  "seed": 0,
+ "spec": "task_specs/breakfast_setup.json",
  "scene_usd": "tasks/breakfast_setup/scene.usd",
  "annotation": "tasks/breakfast_setup/annotation.json",
  "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
@@ -10,84 +12,149 @@
   8.4,
   0.0
  ],
- "placed_objects": {},
+ "placed_objects": {
+  "plate": {
+   "asset": "breakfast_plate",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "yaw": 1.5707963267948966,
+   "position": [
+    2.9863009987380496,
+    5.7009055320494255,
+    0.88
+   ]
+  },
+  "bowl": {
+   "asset": "breakfast_bowl",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": -3.1243861495570098,
+   "position": [
+    8.03031658359448,
+    0.3410807530054393,
+    0.5291
+   ]
+  },
+  "cup": {
+   "asset": "breakfast_cup",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": -1.2584473065782806,
+   "position": [
+    7.392796140253163,
+    0.32085719750982095,
+    0.5589999999999999
+   ]
+  },
+  "mug": {
+   "asset": "breakfast_mug",
+   "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "yaw": 1.072064815449135,
+   "position": [
+    1.0551268081795024,
+    -0.40952391645586195,
+    0.7777
+   ]
+  },
+  "spoon": {
+   "asset": "breakfast_spoon",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "yaw": 0.7740076575247476,
+   "position": [
+    2.9797493211433883,
+    7.46019748838238,
+    0.8768
+   ]
+  }
+ },
  "dropped_optional_objects": [],
- "deactivated_base_objects": [
-  "plate_dining_cabinet",
-  "plate_inside_kitchen_cabinet"
- ],
+ "deactivated_base_objects": [],
  "existing_objects": {
-  "plate": [
-   "plate_counter_a",
-   "plate_counter_b",
-   "plate_dining_cabinet",
-   "plate_inside_kitchen_cabinet"
-  ],
-  "bowl_fallback": [
-   "bowl_dining_cabinet",
-   "bowl_kitchen_cabinet",
-   "bowl_side_table",
-   "bowl_inside_kitchen_cabinet"
-  ],
-  "cup": [
-   "cup_counter_b",
-   "cup_kitchen_cabinet",
-   "cup_side_table"
-  ],
-  "mug_fallback": [
-   "mug_counter",
-   "mug_shelf",
-   "mug_dining_cabinet"
-  ],
-  "spoon": [
-   "spoon_counter",
-   "spoon_kitchen_cabinet",
-   "spoon_inside_kitchen_drawer",
-   "spoon_side_table",
-   "spoon_target_table"
-  ],
-  "table_clutter": [
+  "clutter": [
    "clutter_cereal_a",
    "clutter_cereal_b"
   ]
  },
- "candidate_supports": {},
- "alternatives": [
-  "plate missing -> bowl",
-  "cup missing -> mug",
-  "target spot occupied (cereal boxes) -> move clutter off the table first"
- ],
- "success": {
-  "all_of": [
-   {
-    "role": "plate|bowl_fallback",
-    "on_support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
-   },
-   {
-    "role": "cup|mug_fallback",
-    "on_support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
-   },
-   {
-    "role": "spoon",
-    "on_support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
-   }
+ "roles": {
+  "clutter": [
+   "clutter_cereal_a",
+   "clutter_cereal_b"
   ]
  },
- "target": {
-  "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
-  "place_xy": {
-   "plate": [
-    3.16,
-    6.75
-   ],
-   "cup": [
-    3.45,
-    6.75
-   ],
-   "spoon": [
-    3.3,
-    6.45
-   ]
-  }
+ "candidate_supports": {
+  "plate": [
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+  ],
+  "bowl": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+  ],
+  "cup": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+  ],
+  "mug": [
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "spoon": [
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+  ]
+ },
+ "alternatives": [
+  "plate missing (30 %) -> bowl",
+  "cup missing (30 %) -> mug",
+  "hint spot occupied (cereal boxes) -> nearest free spot on the table",
+  "plate is flat and wider than the gripper -> push it over the table edge, pinch the overhang"
+ ],
+ "place_hints": {
+  "plate|bowl": [
+   2.93,
+   6.7
+  ],
+  "cup|mug": [
+   2.95,
+   7.0
+  ],
+  "spoon": [
+   2.95,
+   6.45
+  ]
+ },
+ "goal": {
+  "all": [
+   {
+    "on": [
+     "plate|bowl"
+    ],
+    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+    "upright": true
+   },
+   {
+    "on": [
+     "cup|mug"
+    ],
+    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+    "upright": true
+   },
+   {
+    "on": [
+     "spoon"
+    ],
+    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+   },
+   {
+    "near": [
+     "plate|bowl",
+     "cup|mug",
+     "spoon"
+    ],
+    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+    "max_dist": 0.5
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
  }
 }

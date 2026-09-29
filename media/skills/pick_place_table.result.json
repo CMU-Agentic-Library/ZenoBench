@@ -1,0 +1,376 @@
+{
+ "scene": "tasks/desk_prep/scene.usd",
+ "plan": [
+  "pick pencil",
+  "place pencil bedroom_desk 6.75 -5.35"
+ ],
+ "steps": [
+  {
+   "step": "pick pencil",
+   "success": true,
+   "wall_s": 213.8
+  },
+  {
+   "step": "place pencil bedroom_desk 6.75 -5.35",
+   "success": true,
+   "wall_s": 290.5
+  }
+ ],
+ "success": true,
+ "written_state": "robot drive targets and base anchor only",
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "pick_park",
+   "obj": "pencil",
+   "kind": "top_pinch",
+   "park": [
+    -0.923,
+    -6.632,
+    90.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     2.43,
+     -0.03,
+     129.76
+    ],
+    [
+     2.43,
+     0.37,
+     90.0
+    ],
+    [
+     1.88,
+     0.92,
+     135.0
+    ],
+    [
+     -0.27,
+     1.17,
+     173.37
+    ],
+    [
+     -5.47,
+     1.22,
+     179.45
+    ],
+    [
+     -5.57,
+     1.12,
+     -135.0
+    ],
+    [
+     -5.62,
+     1.07,
+     -135.0
+    ],
+    [
+     -5.67,
+     0.82,
+     -101.31
+    ],
+    [
+     -5.67,
+     -4.18,
+     -90.0
+    ],
+    [
+     -5.52,
+     -4.78,
+     -75.96
+    ],
+    [
+     -5.32,
+     -4.98,
+     -45.0
+    ],
+    [
+     -1.52,
+     -6.63,
+     -23.47
+    ],
+    [
+     -0.92,
+     -6.63,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 9058,
+   "t": 75.483,
+   "label": "base",
+   "pose": [
+    -0.923,
+    -6.632,
+    -270.0
+   ]
+  },
+  {
+   "tick": 9098,
+   "t": 75.817,
+   "label": "grip",
+   "cmd": 0.02055163029747473,
+   "fingers": [
+    0.0206,
+    0.0206
+   ]
+  },
+  {
+   "tick": 9409,
+   "t": 78.408,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0052,
+   "q_err": 0.0093
+  },
+  {
+   "tick": 9581,
+   "t": 79.842,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0052,
+   "q_err": 0.0044
+  },
+  {
+   "tick": 9671,
+   "t": 80.592,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0068,
+   "q_err": 0.0052
+  },
+  {
+   "tick": 9791,
+   "t": 81.592,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.009,
+    0.0085
+   ]
+  },
+  {
+   "tick": 10020,
+   "t": 83.5,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0042,
+   "q_err": 0.0031
+  },
+  {
+   "tick": 10060,
+   "t": 83.833,
+   "label": "pick_result",
+   "obj": "pencil",
+   "kind": "top_pinch",
+   "lift_m": 0.0668,
+   "fingers": [
+    0.009,
+    0.0085
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 10060,
+   "t": 83.833,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 10060,
+   "t": 83.833,
+   "label": "place_park",
+   "obj": "pencil",
+   "park": [
+    6.738,
+    -4.837,
+    -75.0
+   ]
+  },
+  {
+   "tick": 10386,
+   "t": 86.55,
+   "label": "base",
+   "pose": [
+    -0.923,
+    -6.982,
+    -270.0
+   ]
+  },
+  {
+   "tick": 10489,
+   "t": 87.408,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.0046
+  },
+  {
+   "tick": 10585,
+   "t": 88.208,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.0048
+  },
+  {
+   "tick": 10585,
+   "t": 88.208,
+   "label": "carry_clearance",
+   "margin": 0.1
+  },
+  {
+   "tick": 10585,
+   "t": 88.208,
+   "label": "path",
+   "waypoints": [
+    [
+     -5.37,
+     -5.03,
+     156.29
+    ],
+    [
+     -5.57,
+     -4.83,
+     135.0
+    ],
+    [
+     -5.72,
+     -4.18,
+     102.99
+    ],
+    [
+     -5.72,
+     1.07,
+     90.0
+    ],
+    [
+     -5.52,
+     1.27,
+     45.0
+    ],
+    [
+     -5.32,
+     1.32,
+     14.04
+    ],
+    [
+     -4.47,
+     1.32,
+     0.0
+    ],
+    [
+     1.33,
+     1.07,
+     -2.47
+    ],
+    [
+     1.83,
+     1.02,
+     -5.71
+    ],
+    [
+     1.98,
+     0.92,
+     -33.69
+    ],
+    [
+     2.43,
+     0.52,
+     -41.63
+    ],
+    [
+     2.58,
+     0.22,
+     -63.43
+    ],
+    [
+     2.58,
+     -0.33,
+     -90.0
+    ],
+    [
+     2.73,
+     -0.53,
+     -53.13
+    ],
+    [
+     6.74,
+     -4.84,
+     -75.0
+    ]
+   ]
+  },
+  {
+   "tick": 23574,
+   "t": 196.45,
+   "label": "base",
+   "pose": [
+    6.738,
+    -4.837,
+    285.0
+   ]
+  },
+  {
+   "tick": 23574,
+   "t": 196.45,
+   "label": "place_remeasure",
+   "obj": "pencil",
+   "shift_m": 0.001,
+   "hang_m": 0.01
+  },
+  {
+   "tick": 25334,
+   "t": 211.117,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0075,
+   "q_err": 0.0036
+  },
+  {
+   "tick": 25537,
+   "t": 212.808,
+   "label": "reach",
+   "target": "place_lower",
+   "tcp_err_m": 0.0067,
+   "q_err": 0.0023
+  },
+  {
+   "tick": 25637,
+   "t": 213.642,
+   "label": "grip",
+   "cmd": 0.02055163029747473,
+   "fingers": [
+    0.0206,
+    0.0206
+   ]
+  },
+  {
+   "tick": 25778,
+   "t": 214.817,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.0106,
+   "q_err": 0.0043
+  },
+  {
+   "tick": 25868,
+   "t": 215.567,
+   "label": "place_result",
+   "obj": "pencil",
+   "support": "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1",
+   "xy_err_m": 0.0084,
+   "on_support": true
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/skills/a_pick_place/run.mp4"
+}

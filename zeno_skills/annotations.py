@@ -74,20 +74,28 @@ class SceneAnnotations:
     def part_pose(self, a, q):
         return self.motion(a, q) @ np.asarray(a["part_frame"], float)
 
-    def handle_pose(self, a, q, grasp="side"):
+    def handle_pose(self, a, q, grasp="side", flip=False):
         """TCP position/orientation to hold the handle bar at joint value q.
 
         side: slide along the face (from the handle's free side), one finger
               between panel and bar -> pulling loads the bar via the finger's
               normal force, not friction.
         front: approach into the face, fingers across the bar.
+        flip:  hook from the other end (drawers: both ends of the pull are free;
+               doors: the hinge side is not).
         """
         h = a["handle"]
         M = self.motion(a, q)
         c = M[:3, :3] @ np.asarray(h["center"], float) + M[:3, 3]
         out = M[:3, :3] @ np.asarray(h["outward"], float)
         along = M[:3, :3] @ np.asarray(h["along"], float)       # toward the hinge / across bar
+        if flip:
+            along = -along
         if grasp == "side":
+            # wide pulls (drawer plates, 13 cm): hook the near end, pads just
+            # past its edge, so the hand behind the pads stays clear of the plate
+            ext = float(np.abs(np.asarray(h["bar_size"], float)) @ np.abs(np.asarray(h["along"], float)))
+            c = c - along * max(0.0, ext / 2 - 0.008)
             approach, close = along, out
         else:
             approach, close = -out, along

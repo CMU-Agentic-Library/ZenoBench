@@ -24,8 +24,19 @@ R_BASE = 0.28
 
 
 def _ik_sequence(kin, targets, q0=None):
-    """targets: list of (p, R). Continuous, collision-free; returns qs or None."""
-    q = q0
+    """targets: list of (p, R). Continuous, collision-free; returns qs or None.
+    Forward first; if that breaks (IK continuity near the joint limits, e.g.
+    a tilted approach to the floor), solve the last target and chain
+    backwards, which keeps every leg on that final configuration's branch."""
+    qs = _chain(kin, targets, q0)
+    if qs is None and q0 is None and len(targets) > 1:
+        rev = _chain(kin, targets[::-1], None)
+        if rev is not None:
+            qs = rev[::-1]
+    return qs
+
+
+def _chain(kin, targets, q):
     qs = []
     for p, R in targets:
         if q is None:
@@ -41,6 +52,22 @@ def _ik_sequence(kin, targets, q0=None):
     return qs
 
 
+def _segment_free(kin, qa, qb):
+    n = max(4, int(np.max(np.abs(qb - qa)) / 0.05))
+    return all(kin.free(qa + (qb - qa) * u) for u in np.linspace(0, 1, n + 1)[1:])
+
+
+def joint_reachable(kin, qa, qb):
+    """A collision-free joint-space move qa -> qb exists: straight, or through
+    the tucked posture (the options Rig.joint_path executes)."""
+    if _segment_free(kin, qa, qb):
+        return True
+    for via in (kin.rest, np.r_[kin.rest[:2], qb[2:]], np.r_[qb[:2], kin.rest[2:]]):
+        if kin.free(via) and _segment_free(kin, qa, via) and _segment_free(kin, via, qb):
+            return True
+    return False
+
+
 def torque_ratio(kin, q, force):
     """max_i |(J^T F)_i| / effort_limit_i for a TCP force F (world, N)."""
     from .kinematics import effort_limits
@@ -50,9 +77,13 @@ def torque_ratio(kin, q, force):
 
 
 def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
-              yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90), ride=None, max_tries=400,
-              score=None, n_best=1, q_start=None):
+              yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
+              score=None, n_best=1, q_start=None, travel_q=None):
     """Return (x, y, yaw_deg, qs) or None.
+
+    travel_q: arm posture while the base drives there (tucked, or the carry
+              pose); a park where it would already hit the furniture is
+              rejected (the footprint check covers the base column only).
 
     targets: list of (p, R) TCP poses executed in order from this park.
     ride:    optional callable(x, y, yaw_deg, q_last) -> bool that validates a
@@ -78,11 +109,12 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
 
     def reachable(x, y, yaw):
         """Cheap prefilter: right shoulder (base + R(0.09, -0.18)) within arm
-        reach of every target, heights within the torso-lift range."""
+        reach of every target, heights within the torso-lift range (down to
+        the floor: torso fully lowered + waist pitched)."""
         c_, s_ = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
         sh = np.array([x + 0.09 * c_ + 0.18 * s_, y + 0.09 * s_ - 0.18 * c_])
         d = np.linalg.norm(P[:, :2] - sh, axis=1)
-        return bool(np.all(d < 0.78) and np.all((P[:, 2] > 0.15) & (P[:, 2] < 1.5)))
+        return bool(np.all(d < 0.78) and np.all((P[:, 2] > 0.0) & (P[:, 2] < 1.5)))
     tried = 0
     found = []
     for cost, x, y, yaw in cands:
@@ -92,9 +124,17 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         if tried > max_tries:
             break
         kin.set_base((x, y, 0.0), math.radians(yaw))
+        if travel_q is not None and cost >= 0:
+            kw, kin.coll_kw = kin.coll_kw, {"ignore_fingers": kin.coll_kw.get("ignore_fingers", False)}
+            clear = kin.free(travel_q)          # strict: the parked arm touches nothing
+            kin.coll_kw = kw
+            if not clear:
+                continue
         qs = _ik_sequence(kin, targets, q0=q_start if cost < 0 else None)
         if qs is None:
             continue
+        if travel_q is not None and cost >= 0 and not joint_reachable(kin, travel_q, qs[0]):
+            continue                    # the arm cannot unfold to the first target here
         if ride is not None and not ride(x, y, yaw, qs[-1]):
             continue
         if score is None or cost < 0:
@@ -114,6 +154,8 @@ class Grid:
         boxes = np.array(world.boxes[:-1])
         tall = boxes[:, 2] < 1.0                     # anything the column (0..1.05 m) can hit
         self.boxes = boxes[tall]
+        if len(world.base_only):
+            self.boxes = np.vstack([self.boxes, world.base_only])
         lo = self.boxes[:, :2].min(0) - 1.0
         hi = self.boxes[:, 3:5].max(0) + 1.0
         self.lo = lo
@@ -140,11 +182,12 @@ class Grid:
         return self.lo + (np.asarray(ij) + 0.5) * self.res
 
 
-def plan_path(world, start, goal, res=0.05):
+def plan_path(world, start, goal, res=0.05, margin=0.02):
     """start/goal: (x, y, yaw_deg).  Returns waypoints [(x, y, yaw_deg), ...].
     Start/goal cells may be tight (parked next to furniture); the search lets
-    the first/last 0.4 m ignore the clearance check."""
-    g = Grid(world, res)
+    the first/last 0.4 m ignore the clearance check.  ``margin``: extra
+    clearance around the base (larger while carrying something)."""
+    g = Grid(world, res, margin)
     s, t = g.ij(start[:2]), g.ij(goal[:2])
     relax = int(0.4 / res)
 

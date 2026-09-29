@@ -18,6 +18,10 @@ class SkillFailure(RuntimeError):
     pass
 
 
+class Dropped(SkillFailure):
+    """The held object left the hand while carrying it (worth a re-pick)."""
+
+
 class Rig:
     def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=4, log=print):
         import torch
@@ -34,7 +38,7 @@ class Rig:
         self.q_cmd = self.q()
         self.grip_cmd = 0.04
         self.tick, self.stride = 0, stride
-        self.frames = {k: [] for k in self.cams}
+        self.frames = []             # JPEG bytes, composed as they are rendered
         self.events, self.caption, self.trace = [], "", []
         self._log = log
         self._arts, self._bodies = {}, {}
@@ -49,6 +53,9 @@ class Rig:
         x, y, yaw = self.base_pose()
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
         self.held = None
+        self.focus_z = None          # follow-camera target height (low for floor picks)
+        from .evaluator import Geometry
+        self.geo = Geometry(ann)
 
     # ------------------------------------------------------------ state
     def q(self):
@@ -69,13 +76,43 @@ class Rig:
         p = p.cpu().numpy().astype(float)
         return p[0], p[1], math.degrees(2 * math.atan2(float(q[3]), float(q[0])))
 
+    def state(self):
+        """{"objects": {name: {pos, quat}}, "joints": {art: q}} (evaluator format)."""
+        objs = {}
+        for name in self.ann.objects:
+            p, q = self.obj_pose(name)
+            objs[name] = {"pos": p.tolist(), "quat": q.tolist()}
+        return {"objects": objs, "joints": {a["name"]: self.joint(a["name"]) for a in self.ann.articulated}}
+
     def sync_world(self):
         """Planner/IK model <- simulator: joint values of every articulated
-        part and the real base pose (planning moves kin's base around)."""
+        part, the real base pose (planning moves kin's base around) and the
+        free objects low enough to block the base column."""
         for a in self.ann.articulated:
             self.world.set_joint(a["name"], self.joint(a["name"]))
+        st = self.state()
+        boxes = []
+        for name in self.ann.objects:
+            if self.held is not None and name == self.held["name"]:
+                continue
+            b = self.geo.bottom(name, st)
+            if b[2] > 0.25 and not self._overhangs(name, st):
+                continue
+            x0, y0, x1, y1 = self.geo.footprint(name, st, margin=0.01)
+            boxes.append([x0, y0, b[2], x1, y1, b[2] + self.ann.asset_of(self.ann.objects[name])["size"][2]])
+        self.world.set_base_obstacles(boxes)
         x, y, yaw = self.base_pose()
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
+
+    def _overhangs(self, name, st):
+        """Object sticking out past its support's edge (pushed for an edge
+        pinch): the base column must not drive into it."""
+        s = self.geo.support_under(name, st)
+        if s is None:
+            return False
+        x0, y0, x1, y1 = self.geo.footprint(name, st)
+        sx0, sy0, sx1, sy1 = s["aabb_xy"]
+        return x0 < sx0 - 0.01 or y0 < sy0 - 0.01 or x1 > sx1 + 0.01 or y1 > sy1 + 0.01
 
     def log(self, label, **kw):
         ev = {"tick": self.tick, "t": round(self.tick / 120, 3), "label": label, **kw}
@@ -96,9 +133,11 @@ class Rig:
             self.sim.step(render=render)
             self.tick += 1
             if render:
-                for k, cam in self.cams.items():
+                imgs = []
+                for cam in self.cams.values():
                     cam.update(1 / 120)
-                    self.frames[k].append((cam.data.output["rgb"][0, ..., :3].cpu().numpy().copy(), self.caption))
+                    imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
+                self.frames.append(self._compose(imgs, self.caption))
 
     def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01):
         """Waypoints time-scaled to 60% of URDF velocity limits (torso lift is
@@ -133,16 +172,13 @@ class Rig:
                         prev = q
                     qs = dense
             if not ok and q_hint is not None:
-                q_goal, ok2 = np.asarray(q_hint, float), True
-                n = max(2, int(np.max(np.abs(q_goal - self.q_cmd)) / 0.01))
-                qs = [self.q_cmd + (q_goal - self.q_cmd) * u for u in np.linspace(0, 1, n)[1:]]
+                qs = self.joint_path(np.asarray(q_hint, float), label, check=collision)
                 ok = True
             if not ok:
                 q_goal, ok2 = self.kin.ik_global(np.asarray(p, float), R, seeds=[self.q_cmd])
                 if not ok2:
                     raise SkillFailure(f"no IK for {label or p}")
-                n = max(2, int(np.max(np.abs(q_goal - self.q_cmd)) / 0.01))
-                qs = [self.q_cmd + (q_goal - self.q_cmd) * u for u in np.linspace(0, 1, n)[1:]]
+                qs = self.joint_path(q_goal, label, check=collision)
         finally:
             self.kin.scene = scene
         self.follow(qs, steps_per_wp)
@@ -154,6 +190,29 @@ class Rig:
             extra = {"q": np.round(self.q(), 3).tolist(), "q_cmd": np.round(self.q_cmd, 3).tolist()}
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
+
+    def joint_path(self, q_goal, label=None, check=True):
+        """Joint-space move to q_goal, collision-checked (the straight
+        interpolation used to sweep the hand through a cabinet): direct, else
+        through the tucked posture, else fail instead of pushing through."""
+        q0 = self.q_cmd.copy()
+
+        def dense(qa, qb):
+            k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
+            return [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+        from .planner import _segment_free
+        if not check or self.kin.scene is None or _segment_free(self.kin, q0, q_goal):
+            return dense(q0, q_goal)
+        if not self.kin.free(q0) and self.kin.free(q_goal):
+            # starting in contact (hand still at a handle it just released):
+            # no collision-free path can start here, leave the contact directly
+            self.log("joint_from_contact", target=label)
+            return dense(q0, q_goal)
+        for via in (self.kin.rest, np.r_[self.kin.rest[:2], q_goal[2:]], np.r_[q_goal[:2], self.kin.rest[2:]]):
+            if self.kin.free(via) and _segment_free(self.kin, q0, via) and _segment_free(self.kin, via, q_goal):
+                self.log("joint_detour", target=label)
+                return dense(q0, via) + dense(via, q_goal)
+        raise SkillFailure(f"joint move to {label}: every joint-space path collides")
 
     def grip(self, width, steps=100):
         self.grip_cmd = width
@@ -205,35 +264,64 @@ class Rig:
         self.anchor.GetAttribute("physics:localRot0").Set(Gf.Quatf(math.cos(yaw / 2), 0.0, 0.0, math.sin(yaw / 2)))
         self.kin.set_base((x, y, 0.0), yaw)
 
-    def drive_base(self, path, speed=0.35, turn=0.8):
-        """Follow a list of (x, y, yaw_deg) waypoints."""
-        for x, y, yaw_deg in path:
-            x0, y0, yaw0 = self.base_pose()
-            dyaw = (yaw_deg - yaw0 + 180.0) % 360.0 - 180.0
-            n = max(20, int(max(math.hypot(x - x0, y - y0) / speed, abs(math.radians(dyaw)) / turn) * 120))
+    def drive_base(self, path, speed=0.35, turn=0.8, ramp=0.8):
+        """Follow a list of (x, y, yaw_deg) waypoints with one smooth time
+        scaling over the whole path (accelerate over ``ramp`` s, cruise,
+        decelerate) instead of stopping at every waypoint: the stop-and-go
+        jerks shook pinched objects out of the hand."""
+        x0, y0, yaw0 = self.base_pose()
+        pts = [(x0, y0, yaw0)]
+        for x, y, yaw in path:
+            yaw = pts[-1][2] + (yaw - pts[-1][2] + 180.0) % 360.0 - 180.0     # unwrap
+            pts.append((x, y, yaw))
+        P = np.array(pts, float)
+        # segment "durations" at cruise speed: translation or rotation, whichever is slower
+        dur = np.maximum(np.hypot(*np.diff(P[:, :2], axis=0).T) / speed, np.abs(np.radians(np.diff(P[:, 2]))) / turn)
+        cum = np.r_[0.0, np.cumsum(dur)]
+        T = float(cum[-1])
+        if T > 1e-6:
+            r = min(ramp, T / 2)
+            total = T + r                      # time with trapezoidal ramps
+            n = max(20, int(total * 120))
             for i in range(1, n + 1):
-                u = 0.5 - 0.5 * math.cos(math.pi * i / n)
-                self.set_base(x0 + (x - x0) * u, y0 + (y - y0) * u, yaw0 + dyaw * u)
+                t = total * i / n
+                if t < r:
+                    u = 0.5 * t * t / r
+                elif t < total - r:
+                    u = t - 0.5 * r
+                else:
+                    u = T - 0.5 * (total - t) ** 2 / r
+                k = min(len(dur) - 1, int(np.searchsorted(cum, u, side="right")) - 1)
+                f = 0.0 if dur[k] <= 0 else (u - cum[k]) / dur[k]
+                q = P[k] + (P[k + 1] - P[k]) * min(max(f, 0.0), 1.0)
+                self.set_base(q[0], q[1], q[2])
                 self.step(1)
         self.step(20)
         self.log("base", pose=[round(v, 3) for v in self.base_pose()])
 
     # ------------------------------------------------------------ video
+    @staticmethod
+    def _compose(imgs, cap):
+        """Main view + inset of the second camera + caption, JPEG-encoded
+        (raw frames of a long episode do not fit in memory)."""
+        import cv2
+        img = np.ascontiguousarray(imgs[0])
+        h, w = img.shape[:2]
+        if len(imgs) > 1:
+            small = cv2.resize(imgs[1], (w // 3, h // 3))
+            img[h - h // 3 - 10:h - 10, w - w // 3 - 10:w - 10] = small
+        cv2.rectangle(img, (0, 0), (w, 56), (0, 0, 0), -1)
+        cv2.putText(img, f"Zeno Malo | {cap}", (16, 38), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2)
+        ok, buf = cv2.imencode(".jpg", img[..., ::-1], [cv2.IMWRITE_JPEG_QUALITY, 90])
+        return buf
+
     def write_video(self, path, fps=30):
         import cv2
         import imageio.v2 as imageio
-        keys = list(self.frames)
-        if not keys or not self.frames[keys[0]]:
+        if not self.frames:
             return None
-        out = []
-        for i, (img, cap) in enumerate(self.frames[keys[0]]):
-            img = np.ascontiguousarray(img)
-            h, w = img.shape[:2]
-            if len(keys) > 1:
-                small = cv2.resize(self.frames[keys[1]][i][0], (w // 3, h // 3))
-                img[h - h // 3 - 10:h - 10, w - w // 3 - 10:w - 10] = small
-            cv2.rectangle(img, (0, 0), (w, 56), (0, 0, 0), -1)
-            cv2.putText(img, f"Zeno Malo | {cap}", (16, 38), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (255, 255, 255), 2)
-            out.append(img)
-        imageio.mimsave(path, out, fps=fps, macro_block_size=1, quality=8)
+        w = imageio.get_writer(path, fps=fps, macro_block_size=1, quality=8)
+        for buf in self.frames:
+            w.append_data(cv2.imdecode(buf, cv2.IMREAD_COLOR)[..., ::-1])
+        w.close()
         return path

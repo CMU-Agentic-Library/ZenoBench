@@ -3,13 +3,13 @@
       <visual>
          <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
          <geometry>
-            <mesh filename="mesh/teddy_bear.obj" scale="0.212373 0.212373 0.212373" />
+            <mesh filename="mesh/teddy_bear.obj" scale="0.154453 0.154453 0.154453" />
          </geometry>
       </visual>
       <collision>
          <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
          <geometry>
-            <mesh filename="mesh/teddy_bear_collision.obj" scale="0.212373 0.212373 0.212373" />
+            <mesh filename="mesh/teddy_bear_collision.obj" scale="0.154453 0.154453 0.154453" />
          </geometry>
          <gazebo>
             <mu1>0.80</mu1>
@@ -17,9 +17,9 @@
          </gazebo>
       </collision>
       <inertial>
-         <mass value="0.2000" />
+         <mass value="0.1500" />
          <origin xyz="0 0 0" />
-         <inertia ixx="1.558e-03" ixy="0.0" ixz="0.0" iyy="1.103e-03" iyz="0.0" izz="1.158e-03" />
+         <inertia ixx="6.182e-04" ixy="0.0" ixz="0.0" iyy="4.375e-04" iyz="0.0" izz="4.593e-04" />
       </inertial>
       <extra_info>
          <scale>1.035913</scale>

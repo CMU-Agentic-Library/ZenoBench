@@ -6,7 +6,7 @@
    "plate",
    "flat"
   ],
-  "mass": 0.6,
+  "mass": 0.35,
   "collider": "solid",
   "size": [
    0.248,
@@ -38,7 +38,7 @@
    "bowl",
    "container"
   ],
-  "mass": 0.4,
+  "mass": 0.2,
   "collider": "round_container",
   "size": [
    0.1781,
@@ -200,7 +200,7 @@
    "drinking_container",
    "container"
   ],
-  "mass": 0.375,
+  "mass": 0.25,
   "collider": "round_container",
   "size": [
    0.0926,
@@ -852,23 +852,36 @@
    "toy",
    "plush"
   ],
-  "mass": 0.2,
+  "mass": 0.15,
   "collider": "solid",
   "size": [
-   0.1452,
-   0.22,
-   0.2124
+   0.1056,
+   0.16,
+   0.1545
   ],
   "origin_to_bottom_center": [
    0.0,
-   0.0004,
-   -0.1059
+   0.0003,
+   -0.077
   ],
-  "min_pinch_width": 0.1073,
-  "graspable_by_zeno": false,
-  "grasps": [],
+  "min_pinch_width": 0.0592,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "crown": true,
+    "close_yaw": 2.8797932657906435,
+    "width": 0.059171093142126846,
+    "offset_xy": [
+     -0.0203,
+     -0.0335
+    ],
+    "height": 0.13245312899730022,
+    "pre_open": 0.04
+   }
+  ],
   "usd": "usd/assets/teddy_bear.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/teddy_bear/result/teddy_bear_sim.urdf",
+  "source_urdf": "assets/asset3d/teddy_bear/result/teddy_bear_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "toy_block": {

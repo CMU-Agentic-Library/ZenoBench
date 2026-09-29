@@ -264,9 +264,29 @@ def main():
             "room": room_of(static["rooms"], pivot[:2]),
             "category": "microwave" if "microwave" in cab.GetName() else ("drawer" if not rev else "cabinet_door"),
         })
-        lo, hi = bounds(stage.GetPrimAtPath(j.GetBody0Rel().GetTargets()[0]))
-        obstacles.append({"name": cab.GetName() + "/body", "kind": "articulated_body",
-                          "aabb": np.r_[lo, hi].round(3).tolist()})
+        body = stage.GetPrimAtPath(j.GetBody0Rel().GetTargets()[0])
+        lo, hi = bounds(body)
+        articulated[-1]["body_aabb"] = np.r_[lo, hi].round(3).tolist()
+        # carcass as its panels (top, sides, back, shelf...): the inside is free
+        # space, so the arm can reach into an opened cabinet
+        panels = [c for c in Usd.PrimRange(body) if c != body and c.HasAPI(UsdPhysics.CollisionAPI)]
+        if not panels:
+            panels = [body]
+        pb = []
+        for c in panels:
+            plo, phi = bounds(c)
+            pb.append((c.GetName(), plo, phi))
+            obstacles.append({"name": f"{cab.GetName()}/body/{c.GetName()}", "kind": "articulated_panel",
+                              "aabb": np.r_[plo, phi].round(3).tolist()})
+        # horizontal panels inside the carcass (bottom, shelf) hold things too
+        for name, plo, phi in pb:
+            if name in ("bottom", "shelf") and phi[2] - plo[2] < 0.05:
+                above = [q[1][2] for q in pb if q[1][2] > phi[2] + 0.02 and
+                         q[1][0] < phi[0] and q[2][0] > plo[0] and q[1][1] < phi[1] and q[2][1] > plo[1]]
+                supports.append({"name": f"{cab.GetName()}/inside_{name}", "furniture": cab.GetName(),
+                                 "category": "cabinet_inside", "z": round(float(phi[2]), 3),
+                                 "aabb_xy": np.r_[plo[:2], phi[:2]].round(3).tolist(),
+                                 "clearance": round(float(min(above) - phi[2]), 3) if above else 0.3})
         # carcass top is a support surface too
         supports.append({"name": cab.GetName() + "/top", "furniture": cab.GetName(), "category": "cabinet_top",
                          "z": round(float(hi[2]), 3), "aabb_xy": np.r_[lo[:2], hi[:2]].round(3).tolist(),

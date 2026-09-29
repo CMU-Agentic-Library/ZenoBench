@@ -1,0 +1,98 @@
+{
+ "task": "desk_prep",
+ "instruction": "Prepare the study desk with a notebook, a pen, and a mug.",
+ "instruction_zh": "准备工作桌",
+ "robot_start_near": [
+  0.8,
+  -4.6
+ ],
+ "objects": {
+  "notebook": {
+   "asset": "notebook",
+   "supports": [
+    "dining_table"
+   ]
+  },
+  "pen": {
+   "asset": "pen",
+   "supports": [
+    "dining_table",
+    "tv_stand"
+   ],
+   "optional": 0.3
+  },
+  "pencil": {
+   "asset": "pencil",
+   "supports": [
+    "bookcase_north_top"
+   ]
+  },
+  "desk_mug": {
+   "asset": "breakfast_mug",
+   "supports": [
+    "tv_stand",
+    "bookcase_north_top"
+   ]
+  },
+  "desk_cup": {
+   "asset": "breakfast_cup",
+   "supports": [
+    "tv_stand",
+    "bookcase_north_top"
+   ],
+   "optional": 0.5
+  }
+ },
+ "existing": {},
+ "place_hints": {
+  "notebook": [
+   -0.95,
+   -6.12
+  ],
+  "pen|pencil": [
+   -0.55,
+   -6.18
+  ],
+  "mug|cup": [
+   -0.25,
+   -6.12
+  ]
+ },
+ "alternatives": [
+  "mug unreachable/slips -> cup (present in 50 % of the variants)",
+  "pen missing (30 %) -> pencil",
+  "notebook is flat and wider than the gripper -> push it over the edge, pinch the overhang"
+ ],
+ "goal": {
+  "all": [
+   {
+    "on": [
+     "notebook",
+     "pen|pencil"
+    ],
+    "support": "study_desk"
+   },
+   {
+    "on": [
+     "mug|cup"
+    ],
+    "support": "study_desk",
+    "upright": true
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ },
+ "roles": {
+  "mug": [
+   "desk_mug"
+  ],
+  "cup": [
+   "desk_cup"
+  ]
+ }
+}

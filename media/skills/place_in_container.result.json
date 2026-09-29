@@ -1,0 +1,290 @@
+{
+ "scene": "tasks/collect_fruits/scene.usd",
+ "plan": [
+  "pick orange",
+  "place orange in:fruit_basket"
+ ],
+ "steps": [
+  {
+   "step": "pick orange",
+   "success": true,
+   "wall_s": 131.0
+  },
+  {
+   "step": "place orange in:fruit_basket",
+   "success": true,
+   "wall_s": 258.7
+  }
+ ],
+ "success": true,
+ "written_state": "robot drive targets and base anchor only",
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "pick_park",
+   "obj": "orange",
+   "kind": "top_pinch",
+   "park": [
+    3.761,
+    5.173,
+    180.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     2.73,
+     3.82,
+     78.61
+    ],
+    [
+     2.73,
+     4.02,
+     90.0
+    ],
+    [
+     2.78,
+     4.22,
+     75.96
+    ],
+    [
+     3.13,
+     4.77,
+     57.53
+    ],
+    [
+     3.33,
+     4.97,
+     45.0
+    ],
+    [
+     3.76,
+     5.17,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 2294,
+   "t": 19.117,
+   "label": "base",
+   "pose": [
+    3.761,
+    5.173,
+    180.0
+   ]
+  },
+  {
+   "tick": 2334,
+   "t": 19.45,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 2803,
+   "t": 23.358,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0081,
+   "q_err": 0.008
+  },
+  {
+   "tick": 2935,
+   "t": 24.458,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0058,
+   "q_err": 0.0049
+  },
+  {
+   "tick": 3016,
+   "t": 25.133,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0059,
+   "q_err": 0.005
+  },
+  {
+   "tick": 3136,
+   "t": 26.133,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0312,
+    0.0304
+   ]
+  },
+  {
+   "tick": 3365,
+   "t": 28.042,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0054,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 3405,
+   "t": 28.375,
+   "label": "pick_result",
+   "obj": "orange",
+   "kind": "top_pinch",
+   "lift_m": 0.0662,
+   "fingers": [
+    0.0313,
+    0.0304
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 3405,
+   "t": 28.375,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 3405,
+   "t": 28.375,
+   "label": "place_park",
+   "obj": "orange",
+   "park": [
+    0.928,
+    -0.925,
+    180.0
+   ]
+  },
+  {
+   "tick": 3730,
+   "t": 31.083,
+   "label": "base",
+   "pose": [
+    4.111,
+    5.173,
+    180.0
+   ]
+  },
+  {
+   "tick": 3833,
+   "t": 31.942,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0057,
+   "q_err": 0.0074
+  },
+  {
+   "tick": 4879,
+   "t": 40.658,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0051,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 4879,
+   "t": 40.658,
+   "label": "path",
+   "waypoints": [
+    [
+     3.28,
+     4.92,
+     -163.26
+    ],
+    [
+     3.08,
+     4.72,
+     -135.0
+    ],
+    [
+     2.78,
+     4.22,
+     -120.96
+    ],
+    [
+     2.43,
+     1.47,
+     -97.25
+    ],
+    [
+     2.43,
+     -0.33,
+     -90.0
+    ],
+    [
+     2.28,
+     -0.48,
+     -135.0
+    ],
+    [
+     1.38,
+     -0.93,
+     -153.43
+    ],
+    [
+     0.93,
+     -0.93,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 8910,
+   "t": 74.25,
+   "label": "base",
+   "pose": [
+    0.928,
+    -0.925,
+    180.0
+   ]
+  },
+  {
+   "tick": 8910,
+   "t": 74.25,
+   "label": "place_remeasure",
+   "obj": "orange",
+   "shift_m": 0.015,
+   "hang_m": 0.047
+  },
+  {
+   "tick": 10998,
+   "t": 91.65,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0149,
+   "q_err": 0.0066
+  },
+  {
+   "tick": 11068,
+   "t": 92.233,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 11068,
+   "t": 92.233,
+   "label": "retreat_short",
+   "reason": "no IK for place_retreat"
+  },
+  {
+   "tick": 11158,
+   "t": 92.983,
+   "label": "place_result",
+   "obj": "orange",
+   "container": "fruit_basket",
+   "inside": true,
+   "detail": "r 0.011 / 0.143"
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/skills/a_container/run.mp4"
+}

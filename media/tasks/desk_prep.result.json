@@ -1,0 +1,1322 @@
+{
+ "task": "desk_prep",
+ "seed": 0,
+ "instruction": "Prepare the study desk with a notebook, a pen, and a mug.",
+ "scene": "tasks/desk_prep/scene.usd",
+ "success": true,
+ "written_state": "robot drive targets and base anchor only",
+ "initial": {
+  "task": "desk_prep",
+  "success": false,
+  "progress": 0.4,
+  "bindings": {},
+  "conditions": [
+   {
+    "desc": "notebook, pen|pencil on SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+    "items": [
+     {
+      "slot": "notebook",
+      "instance": null,
+      "ok": false,
+      "detail": "bottom at (2.95, 5.68, 0.856)"
+     },
+     {
+      "slot": "pen|pencil",
+      "instance": null,
+      "ok": false,
+      "detail": "bottom at (0.96, -0.49, 0.706)"
+     }
+    ],
+    "n": 2,
+    "n_ok": 0,
+    "type": "on",
+    "ok": false
+   },
+   {
+    "desc": "mug|cup on SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0 (upright)",
+    "items": [
+     {
+      "slot": "mug|cup",
+      "instance": null,
+      "ok": false,
+      "detail": "bottom at (7.73, 0.36, 0.472)"
+     }
+    ],
+    "n": 1,
+    "n_ok": 0,
+    "type": "on",
+    "ok": false
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "decisions": [
+  {
+   "t": 0.5,
+   "kind": "round",
+   "n": 0,
+   "progress": 0.4,
+   "open": [
+    "notebook, pen|pencil on SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+    "mug|cup on SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0 (upright)"
+   ]
+  }
+ ],
+ "final": {
+  "task": "desk_prep",
+  "success": true,
+  "progress": 1.0,
+  "bindings": {},
+  "conditions": [
+   {
+    "desc": "notebook, pen|pencil on SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+    "items": [
+     {
+      "slot": "notebook",
+      "instance": "notebook",
+      "ok": true,
+      "detail": "notebook: SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     },
+     {
+      "slot": "pen|pencil",
+      "instance": "pen",
+      "ok": true,
+      "detail": "pen: SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     }
+    ],
+    "n": 2,
+    "n_ok": 2,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "mug|cup on SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0 (upright)",
+    "items": [
+     {
+      "slot": "mug|cup",
+      "instance": "desk_mug",
+      "ok": true,
+      "detail": "desk_mug: SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0, tilt 1 deg"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "progress": 1.0,
+ "wall_s": 1193.8,
+ "sim_s": 624.9,
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "decision",
+   "kind": "round",
+   "n": 0,
+   "progress": 0.4,
+   "open": [
+    "notebook, pen|pencil on SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+    "mug|cup on SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0 (upright)"
+   ]
+  },
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "flat_edges",
+   "obj": "notebook",
+   "support": "repair/dining_table_top",
+   "edges": [
+    [
+     0.138,
+     [
+      0.0,
+      -1.0
+     ]
+    ],
+    [
+     2.212,
+     [
+      0.0,
+      1.0
+     ]
+    ]
+   ]
+  },
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "push_park",
+   "obj": "notebook",
+   "mode": "push",
+   "dir": [
+    0.0,
+    -1.0
+   ],
+   "d": 0.143,
+   "park": [
+    2.4,
+    5.739,
+    15.0
+   ]
+  },
+  {
+   "tick": 63,
+   "t": 0.525,
+   "label": "path",
+   "waypoints": [
+    [
+     2.43,
+     -0.23,
+     79.98
+    ],
+    [
+     2.73,
+     4.07,
+     86.01
+    ],
+    [
+     2.4,
+     5.74,
+     15.0
+    ]
+   ]
+  },
+  {
+   "tick": 3570,
+   "t": 29.75,
+   "label": "base",
+   "pose": [
+    2.4,
+    5.739,
+    15.0
+   ]
+  },
+  {
+   "tick": 3600,
+   "t": 30.0,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0201,
+    0.0201
+   ]
+  },
+  {
+   "tick": 4534,
+   "t": 37.783,
+   "label": "reach",
+   "target": "push_above",
+   "tcp_err_m": 0.0025,
+   "q_err": 0.0076
+  },
+  {
+   "tick": 4704,
+   "t": 39.2,
+   "label": "reach",
+   "target": "push_down",
+   "tcp_err_m": 0.0097,
+   "q_err": 0.0071
+  },
+  {
+   "tick": 5244,
+   "t": 43.7,
+   "label": "reach",
+   "target": "push_slide",
+   "tcp_err_m": 0.0225,
+   "q_err": 0.0604,
+   "q": [
+    -0.112,
+    0.588,
+    0.07,
+    2.612,
+    -0.347,
+    1.745,
+    1.16,
+    -0.728,
+    0.825
+   ],
+   "q_cmd": [
+    -0.112,
+    0.591,
+    0.063,
+    2.61,
+    -0.328,
+    1.75,
+    1.22,
+    -0.751,
+    0.881
+   ]
+  },
+  {
+   "tick": 5422,
+   "t": 45.183,
+   "label": "reach",
+   "target": "push_up",
+   "tcp_err_m": 0.0034,
+   "q_err": 0.0033
+  },
+  {
+   "tick": 5422,
+   "t": 45.183,
+   "label": "push_result",
+   "obj": "notebook",
+   "moved": 0.14,
+   "total": 0.14
+  },
+  {
+   "tick": 5422,
+   "t": 45.183,
+   "label": "edge_pinch_park",
+   "obj": "notebook",
+   "park": [
+    2.504,
+    5.3,
+    30.0
+   ],
+   "overhang": 0.08
+  },
+  {
+   "tick": 5837,
+   "t": 48.642,
+   "label": "path",
+   "waypoints": [
+    [
+     2.5,
+     5.3,
+     30.0
+    ]
+   ]
+  },
+  {
+   "tick": 6088,
+   "t": 50.733,
+   "label": "base",
+   "pose": [
+    2.504,
+    5.3,
+    30.0
+   ]
+  },
+  {
+   "tick": 6128,
+   "t": 51.067,
+   "label": "grip",
+   "cmd": 0.02655,
+   "fingers": [
+    0.0257,
+    0.0257
+   ]
+  },
+  {
+   "tick": 6591,
+   "t": 54.925,
+   "label": "reach",
+   "target": "edge_pre_far",
+   "tcp_err_m": 0.0057,
+   "q_err": 0.0079
+  },
+  {
+   "tick": 6674,
+   "t": 55.617,
+   "label": "reach",
+   "target": "edge_pre",
+   "tcp_err_m": 0.006,
+   "q_err": 0.0069
+  },
+  {
+   "tick": 6750,
+   "t": 56.25,
+   "label": "reach",
+   "target": "edge_grasp",
+   "tcp_err_m": 0.0051,
+   "q_err": 0.0085
+  },
+  {
+   "tick": 6870,
+   "t": 57.25,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0112,
+    0.0118
+   ]
+  },
+  {
+   "tick": 7310,
+   "t": 60.917,
+   "label": "reach",
+   "target": "edge_lift",
+   "tcp_err_m": 0.0079,
+   "q_err": 0.0209
+  },
+  {
+   "tick": 7350,
+   "t": 61.25,
+   "label": "pick_result",
+   "obj": "notebook",
+   "kind": "edge_pinch",
+   "lift_m": 0.0275,
+   "fingers": [
+    0.008,
+    0.0148
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 7771,
+   "t": 64.758,
+   "label": "reach",
+   "target": "edge_pull",
+   "tcp_err_m": 0.0074,
+   "q_err": 0.0116
+  },
+  {
+   "tick": 7771,
+   "t": 64.758,
+   "label": "place_flat_park",
+   "obj": "notebook",
+   "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+   "centre": [
+    -0.957,
+    -6.283
+   ],
+   "park": [
+    -0.957,
+    -6.851,
+    90.0
+   ]
+  },
+  {
+   "tick": 8097,
+   "t": 67.475,
+   "label": "base",
+   "pose": [
+    2.201,
+    5.125,
+    30.0
+   ]
+  },
+  {
+   "tick": 9632,
+   "t": 80.267,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0047,
+   "q_err": 0.0067
+  },
+  {
+   "tick": 10041,
+   "t": 83.675,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0061,
+   "q_err": 0.0139
+  },
+  {
+   "tick": 10041,
+   "t": 83.675,
+   "label": "path",
+   "waypoints": [
+    [
+     2.73,
+     4.07,
+     -63.42
+    ],
+    [
+     2.73,
+     3.67,
+     -90.0
+    ],
+    [
+     0.28,
+     1.27,
+     -135.59
+    ],
+    [
+     -5.47,
+     1.22,
+     -179.5
+    ],
+    [
+     -5.57,
+     1.12,
+     -135.0
+    ],
+    [
+     -5.62,
+     1.07,
+     -135.0
+    ],
+    [
+     -5.67,
+     0.82,
+     -101.31
+    ],
+    [
+     -5.67,
+     -4.18,
+     -90.0
+    ],
+    [
+     -5.52,
+     -4.78,
+     -75.96
+    ],
+    [
+     -5.32,
+     -4.98,
+     -45.0
+    ],
+    [
+     -1.52,
+     -6.63,
+     -23.47
+    ],
+    [
+     -0.96,
+     -6.85,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 20978,
+   "t": 174.817,
+   "label": "base",
+   "pose": [
+    -0.957,
+    -6.851,
+    90.0
+   ]
+  },
+  {
+   "tick": 21281,
+   "t": 177.342,
+   "label": "reach",
+   "target": "flat_pre",
+   "tcp_err_m": 0.0042,
+   "q_err": 0.0092
+  },
+  {
+   "tick": 21387,
+   "t": 178.225,
+   "label": "reach",
+   "target": "flat_over",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.0098
+  },
+  {
+   "tick": 21463,
+   "t": 178.858,
+   "label": "reach",
+   "target": "flat_lower",
+   "tcp_err_m": 0.0033,
+   "q_err": 0.0096
+  },
+  {
+   "tick": 21563,
+   "t": 179.692,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 21591,
+   "t": 179.925,
+   "label": "reach",
+   "target": "flat_release_down",
+   "tcp_err_m": 0.0092,
+   "q_err": 0.0098
+  },
+  {
+   "tick": 22516,
+   "t": 187.633,
+   "label": "reach",
+   "target": "flat_retreat",
+   "tcp_err_m": 0.0076,
+   "q_err": 0.0077
+  },
+  {
+   "tick": 22556,
+   "t": 187.967,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0135,
+    0.0134
+   ]
+  },
+  {
+   "tick": 22571,
+   "t": 188.092,
+   "label": "reach",
+   "target": "flat_push_down",
+   "tcp_err_m": 0.0067,
+   "q_err": 0.0035
+  },
+  {
+   "tick": 22571,
+   "t": 188.092,
+   "label": "retreat_short",
+   "reason": "no IK for flat_push"
+  },
+  {
+   "tick": 22661,
+   "t": 188.842,
+   "label": "place_result",
+   "obj": "notebook",
+   "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+   "on_support": true,
+   "tilt_deg": 1.2,
+   "detail": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+  },
+  {
+   "tick": 22661,
+   "t": 188.842,
+   "label": "pick_park",
+   "obj": "pen",
+   "kind": "top_pinch",
+   "park": [
+    3.724,
+    5.195,
+    180.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 23010,
+   "t": 191.75,
+   "label": "path",
+   "waypoints": [
+    [
+     -3.07,
+     -6.08,
+     159.92
+    ],
+    [
+     -5.32,
+     -4.98,
+     153.95
+    ],
+    [
+     -5.52,
+     -4.78,
+     135.0
+    ],
+    [
+     -5.67,
+     -4.08,
+     102.09
+    ],
+    [
+     -5.67,
+     0.92,
+     90.0
+    ],
+    [
+     -5.62,
+     1.07,
+     71.57
+    ],
+    [
+     -5.52,
+     1.17,
+     45.0
+    ],
+    [
+     -5.42,
+     1.22,
+     26.57
+    ],
+    [
+     -2.77,
+     1.47,
+     5.39
+    ],
+    [
+     2.48,
+     3.42,
+     20.38
+    ],
+    [
+     2.73,
+     3.67,
+     45.0
+    ],
+    [
+     2.73,
+     4.02,
+     90.0
+    ],
+    [
+     2.78,
+     4.22,
+     75.96
+    ],
+    [
+     3.13,
+     4.77,
+     57.53
+    ],
+    [
+     3.38,
+     5.02,
+     45.0
+    ],
+    [
+     3.72,
+     5.2,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 30828,
+   "t": 256.9,
+   "label": "base",
+   "pose": [
+    3.724,
+    5.195,
+    180.0
+   ]
+  },
+  {
+   "tick": 30868,
+   "t": 257.233,
+   "label": "grip",
+   "cmd": 0.01687398312753505,
+   "fingers": [
+    0.0169,
+    0.0169
+   ]
+  },
+  {
+   "tick": 31352,
+   "t": 261.267,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0068,
+   "q_err": 0.008
+  },
+  {
+   "tick": 31490,
+   "t": 262.417,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0058,
+   "q_err": 0.0049
+  },
+  {
+   "tick": 31566,
+   "t": 263.05,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0063,
+   "q_err": 0.0053
+  },
+  {
+   "tick": 31686,
+   "t": 264.05,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0077,
+    0.007
+   ]
+  },
+  {
+   "tick": 31915,
+   "t": 265.958,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0044,
+   "q_err": 0.0034
+  },
+  {
+   "tick": 31955,
+   "t": 266.292,
+   "label": "pick_result",
+   "obj": "pen",
+   "kind": "top_pinch",
+   "lift_m": 0.0697,
+   "fingers": [
+    0.0075,
+    0.0072
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 31955,
+   "t": 266.292,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 31955,
+   "t": 266.292,
+   "label": "place_park",
+   "obj": "pen",
+   "park": [
+    -0.553,
+    -6.62,
+    90.0
+   ]
+  },
+  {
+   "tick": 32280,
+   "t": 269.0,
+   "label": "base",
+   "pose": [
+    4.074,
+    5.195,
+    180.0
+   ]
+  },
+  {
+   "tick": 32386,
+   "t": 269.883,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0052,
+   "q_err": 0.0044
+  },
+  {
+   "tick": 33396,
+   "t": 278.3,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0057,
+   "q_err": 0.0073
+  },
+  {
+   "tick": 33396,
+   "t": 278.3,
+   "label": "path",
+   "waypoints": [
+    [
+     3.28,
+     4.92,
+     -161.06
+    ],
+    [
+     3.08,
+     4.72,
+     -135.0
+    ],
+    [
+     2.78,
+     4.22,
+     -120.96
+    ],
+    [
+     2.73,
+     3.87,
+     -98.13
+    ],
+    [
+     2.73,
+     3.67,
+     -90.0
+    ],
+    [
+     0.28,
+     1.22,
+     -135.0
+    ],
+    [
+     -5.47,
+     1.22,
+     180.0
+    ],
+    [
+     -5.57,
+     1.12,
+     -135.0
+    ],
+    [
+     -5.62,
+     1.07,
+     -135.0
+    ],
+    [
+     -5.67,
+     0.82,
+     -101.31
+    ],
+    [
+     -5.67,
+     -4.18,
+     -90.0
+    ],
+    [
+     -5.52,
+     -4.78,
+     -75.96
+    ],
+    [
+     -5.32,
+     -4.98,
+     -45.0
+    ],
+    [
+     -1.52,
+     -6.63,
+     -23.47
+    ],
+    [
+     -1.07,
+     -6.73,
+     -12.53
+    ],
+    [
+     -0.55,
+     -6.62,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 44855,
+   "t": 373.792,
+   "label": "base",
+   "pose": [
+    -0.553,
+    -6.62,
+    -270.0
+   ]
+  },
+  {
+   "tick": 44855,
+   "t": 373.792,
+   "label": "place_remeasure",
+   "obj": "pen",
+   "shift_m": 0.052,
+   "hang_m": 0.059
+  },
+  {
+   "tick": 47279,
+   "t": 393.992,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0044,
+   "q_err": 0.0035
+  },
+  {
+   "tick": 47471,
+   "t": 395.592,
+   "label": "reach",
+   "target": "place_lower",
+   "tcp_err_m": 0.004,
+   "q_err": 0.0019
+  },
+  {
+   "tick": 47571,
+   "t": 396.425,
+   "label": "grip",
+   "cmd": 0.01687398312753505,
+   "fingers": [
+    0.0169,
+    0.0169
+   ]
+  },
+  {
+   "tick": 47626,
+   "t": 396.883,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.0076,
+   "q_err": 0.009
+  },
+  {
+   "tick": 47716,
+   "t": 397.633,
+   "label": "place_result",
+   "obj": "pen",
+   "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+   "xy_err_m": 0.0137,
+   "on_support": true
+  },
+  {
+   "tick": 47716,
+   "t": 397.633,
+   "label": "pick_park",
+   "obj": "desk_mug",
+   "kind": "rim_pinch",
+   "park": [
+    7.674,
+    0.823,
+    -90.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 48275,
+   "t": 402.292,
+   "label": "path",
+   "waypoints": [
+    [
+     -1.12,
+     -6.73,
+     -169.25
+    ],
+    [
+     -2.32,
+     -6.43,
+     165.96
+    ],
+    [
+     -5.32,
+     -4.98,
+     154.2
+    ],
+    [
+     -5.52,
+     -4.78,
+     135.0
+    ],
+    [
+     -5.67,
+     -4.08,
+     102.09
+    ],
+    [
+     -5.67,
+     0.92,
+     90.0
+    ],
+    [
+     -5.62,
+     1.07,
+     71.57
+    ],
+    [
+     -5.52,
+     1.17,
+     45.0
+    ],
+    [
+     -5.42,
+     1.22,
+     26.57
+    ],
+    [
+     7.48,
+     0.92,
+     -1.33
+    ],
+    [
+     7.67,
+     0.82,
+     -90.0
+    ]
+   ]
+  },
+  {
+   "tick": 57106,
+   "t": 475.883,
+   "label": "base",
+   "pose": [
+    7.674,
+    0.823,
+    270.0
+   ]
+  },
+  {
+   "tick": 57146,
+   "t": 476.217,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.03,
+    0.03
+   ]
+  },
+  {
+   "tick": 57638,
+   "t": 480.317,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0064,
+   "q_err": 0.0029
+  },
+  {
+   "tick": 57788,
+   "t": 481.567,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0059,
+   "q_err": 0.0043
+  },
+  {
+   "tick": 57873,
+   "t": 482.275,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.008,
+   "q_err": 0.009
+  },
+  {
+   "tick": 57993,
+   "t": 483.275,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0096,
+    0.0111
+   ]
+  },
+  {
+   "tick": 58548,
+   "t": 487.9,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0052,
+   "q_err": 0.0106
+  },
+  {
+   "tick": 58588,
+   "t": 488.233,
+   "label": "pick_result",
+   "obj": "desk_mug",
+   "kind": "rim_pinch",
+   "lift_m": 0.0669,
+   "fingers": [
+    0.0104,
+    0.0085
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 58588,
+   "t": 488.233,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 58588,
+   "t": 488.233,
+   "label": "place_park",
+   "obj": "desk_mug",
+   "park": [
+    -0.02,
+    -6.637,
+    180.0
+   ]
+  },
+  {
+   "tick": 58914,
+   "t": 490.95,
+   "label": "base",
+   "pose": [
+    7.674,
+    1.173,
+    270.0
+   ]
+  },
+  {
+   "tick": 59337,
+   "t": 494.475,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.005,
+   "q_err": 0.0106
+  },
+  {
+   "tick": 59808,
+   "t": 498.4,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0029,
+   "q_err": 0.0107
+  },
+  {
+   "tick": 59808,
+   "t": 498.4,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 59808,
+   "t": 498.4,
+   "label": "path",
+   "waypoints": [
+    [
+     -5.47,
+     1.37,
+     179.13
+    ],
+    [
+     -5.67,
+     1.22,
+     -143.13
+    ],
+    [
+     -5.77,
+     1.07,
+     -123.69
+    ],
+    [
+     -5.77,
+     -4.28,
+     -90.0
+    ],
+    [
+     -5.62,
+     -4.83,
+     -74.74
+    ],
+    [
+     -5.52,
+     -4.98,
+     -56.31
+    ],
+    [
+     -5.42,
+     -5.08,
+     -45.0
+    ],
+    [
+     -1.47,
+     -6.78,
+     -23.29
+    ],
+    [
+     -1.02,
+     -6.88,
+     -12.53
+    ],
+    [
+     -0.42,
+     -6.83,
+     4.76
+    ],
+    [
+     -0.02,
+     -6.64,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 72783,
+   "t": 606.525,
+   "label": "base",
+   "pose": [
+    -0.02,
+    -6.637,
+    -180.0
+   ]
+  },
+  {
+   "tick": 72783,
+   "t": 606.525,
+   "label": "place_remeasure",
+   "obj": "desk_mug",
+   "shift_m": 0.013,
+   "hang_m": 0.069
+  },
+  {
+   "tick": 74639,
+   "t": 621.992,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0131,
+   "q_err": 0.004
+  },
+  {
+   "tick": 74711,
+   "t": 622.592,
+   "label": "reach",
+   "target": "place_lower",
+   "tcp_err_m": 0.0013,
+   "q_err": 0.0074
+  },
+  {
+   "tick": 74811,
+   "t": 623.425,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.03,
+    0.03
+   ]
+  },
+  {
+   "tick": 74811,
+   "t": 623.425,
+   "label": "retreat_short",
+   "reason": "no IK for place_retreat"
+  },
+  {
+   "tick": 74901,
+   "t": 624.175,
+   "label": "place_result",
+   "obj": "desk_mug",
+   "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+   "xy_err_m": 0.0086,
+   "on_support": true
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/v_desk_prep/run.mp4"
+}

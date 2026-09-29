@@ -1,0 +1,246 @@
+{
+ "scene": "tasks/tidy_toys/scene.usd",
+ "plan": [
+  "pick toy_block",
+  "place toy_block in:storage_basket"
+ ],
+ "steps": [
+  {
+   "step": "pick toy_block",
+   "success": true,
+   "wall_s": 83.7
+  },
+  {
+   "step": "place toy_block in:storage_basket",
+   "success": true,
+   "wall_s": 99.5
+  }
+ ],
+ "success": true,
+ "written_state": "robot drive targets and base anchor only",
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "pick_park",
+   "obj": "toy_block",
+   "kind": "top_pinch",
+   "park": [
+    4.532,
+    -2.206,
+    30.0
+   ],
+   "floor": true
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     4.53,
+     -2.21,
+     30.0
+    ]
+   ]
+  },
+  {
+   "tick": 587,
+   "t": 4.892,
+   "label": "base",
+   "pose": [
+    4.532,
+    -2.206,
+    30.0
+   ]
+  },
+  {
+   "tick": 627,
+   "t": 5.225,
+   "label": "grip",
+   "cmd": 0.033359919978907734,
+   "fingers": [
+    0.0334,
+    0.0334
+   ]
+  },
+  {
+   "tick": 1426,
+   "t": 11.883,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.0018
+  },
+  {
+   "tick": 1564,
+   "t": 13.033,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0051,
+   "q_err": 0.0043
+  },
+  {
+   "tick": 1625,
+   "t": 13.542,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0085,
+   "q_err": 0.0063
+  },
+  {
+   "tick": 1649,
+   "t": 13.742,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.0069,
+   "q_err": 0.001
+  },
+  {
+   "tick": 1769,
+   "t": 14.742,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.021,
+    0.0209
+   ]
+  },
+  {
+   "tick": 1964,
+   "t": 16.367,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0048,
+   "q_err": 0.0042
+  },
+  {
+   "tick": 2004,
+   "t": 16.7,
+   "label": "pick_result",
+   "obj": "toy_block",
+   "kind": "top_pinch",
+   "lift_m": 0.0632,
+   "fingers": [
+    0.021,
+    0.0209
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 2004,
+   "t": 16.7,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 2004,
+   "t": 16.7,
+   "label": "place_park",
+   "obj": "toy_block",
+   "park": [
+    1.444,
+    -1.931,
+    180.0
+   ]
+  },
+  {
+   "tick": 2329,
+   "t": 19.408,
+   "label": "base",
+   "pose": [
+    4.229,
+    -2.381,
+    30.0
+   ]
+  },
+  {
+   "tick": 3181,
+   "t": 26.508,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.0043
+  },
+  {
+   "tick": 3236,
+   "t": 26.967,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0048,
+   "q_err": 0.0083
+  },
+  {
+   "tick": 3236,
+   "t": 26.967,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 3236,
+   "t": 26.967,
+   "label": "path",
+   "waypoints": [
+    [
+     1.44,
+     -1.93,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 4705,
+   "t": 39.208,
+   "label": "base",
+   "pose": [
+    1.444,
+    -1.931,
+    180.0
+   ]
+  },
+  {
+   "tick": 4705,
+   "t": 39.208,
+   "label": "place_remeasure",
+   "obj": "toy_block",
+   "shift_m": 0.002,
+   "hang_m": 0.025
+  },
+  {
+   "tick": 7161,
+   "t": 59.675,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0111,
+   "q_err": 0.0047
+  },
+  {
+   "tick": 7231,
+   "t": 60.258,
+   "label": "grip",
+   "cmd": 0.033359919978907734,
+   "fingers": [
+    0.0334,
+    0.0334
+   ]
+  },
+  {
+   "tick": 7340,
+   "t": 61.167,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.0051
+  },
+  {
+   "tick": 7430,
+   "t": 61.917,
+   "label": "place_result",
+   "obj": "toy_block",
+   "container": "storage_basket",
+   "inside": true,
+   "detail": "local (-0.000, 0.001) / (0.177, 0.160)"
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/skills/a_floor/run.mp4"
+}

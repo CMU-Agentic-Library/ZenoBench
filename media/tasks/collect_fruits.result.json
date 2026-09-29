@@ -1,0 +1,698 @@
+{
+ "task": "collect_fruits",
+ "seed": 0,
+ "instruction": "Collect the fruits and place them in a container on the low bookcase in the living room.",
+ "scene": "tasks/collect_fruits/scene.usd",
+ "success": true,
+ "written_state": "robot drive targets and base anchor only",
+ "initial": {
+  "task": "collect_fruits",
+  "success": false,
+  "progress": 0.6,
+  "bindings": {
+   "container": "fruit_basket"
+  },
+  "conditions": [
+   {
+    "desc": "all:fruit inside fruit_basket|serving_tray",
+    "container": "fruit_basket",
+    "items": [
+     {
+      "slot": "apple",
+      "instance": null,
+      "ok": false,
+      "detail": "r 6.361 / 0.143"
+     },
+     {
+      "slot": "orange",
+      "instance": null,
+      "ok": false,
+      "detail": "r 6.657 / 0.143"
+     }
+    ],
+    "n": 2,
+    "n_ok": 0,
+    "type": "inside",
+    "ok": false
+   },
+   {
+    "desc": "$container on SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3 (upright)",
+    "items": [
+     {
+      "slot": "$container",
+      "instance": "fruit_basket",
+      "ok": true,
+      "detail": "fruit_basket: SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3, tilt 0 deg"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "decisions": [
+  {
+   "t": 0.5,
+   "kind": "round",
+   "n": 0,
+   "progress": 0.6,
+   "open": [
+    "all:fruit inside fruit_basket|serving_tray"
+   ]
+  }
+ ],
+ "final": {
+  "task": "collect_fruits",
+  "success": true,
+  "progress": 1.0,
+  "bindings": {
+   "container": "fruit_basket"
+  },
+  "conditions": [
+   {
+    "desc": "all:fruit inside fruit_basket|serving_tray",
+    "container": "fruit_basket",
+    "items": [
+     {
+      "slot": "apple",
+      "instance": "apple",
+      "ok": true,
+      "detail": "in fruit_basket"
+     },
+     {
+      "slot": "orange",
+      "instance": "orange",
+      "ok": true,
+      "detail": "in fruit_basket"
+     }
+    ],
+    "n": 2,
+    "n_ok": 2,
+    "type": "inside",
+    "ok": true
+   },
+   {
+    "desc": "$container on SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3 (upright)",
+    "items": [
+     {
+      "slot": "$container",
+      "instance": "fruit_basket",
+      "ok": true,
+      "detail": "fruit_basket: SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3, tilt 0 deg"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "progress": 1.0,
+ "wall_s": 716.6,
+ "sim_s": 186.1,
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "decision",
+   "kind": "round",
+   "n": 0,
+   "progress": 0.6,
+   "open": [
+    "all:fruit inside fruit_basket|serving_tray"
+   ]
+  },
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "pick_park",
+   "obj": "apple",
+   "kind": "top_pinch",
+   "park": [
+    2.447,
+    5.621,
+    15.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     2.73,
+     3.82,
+     78.61
+    ],
+    [
+     2.63,
+     5.22,
+     94.09
+    ],
+    [
+     2.45,
+     5.62,
+     15.0
+    ]
+   ]
+  },
+  {
+   "tick": 2169,
+   "t": 18.075,
+   "label": "base",
+   "pose": [
+    2.447,
+    5.621,
+    15.0
+   ]
+  },
+  {
+   "tick": 2209,
+   "t": 18.408,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 2386,
+   "t": 19.883,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.004,
+   "q_err": 0.0095
+  },
+  {
+   "tick": 2488,
+   "t": 20.733,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0063,
+   "q_err": 0.0048
+  },
+  {
+   "tick": 2553,
+   "t": 21.275,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0064,
+   "q_err": 0.0048
+  },
+  {
+   "tick": 2673,
+   "t": 22.275,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0292,
+    0.0295
+   ]
+  },
+  {
+   "tick": 2899,
+   "t": 24.158,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0049,
+   "q_err": 0.003
+  },
+  {
+   "tick": 2939,
+   "t": 24.492,
+   "label": "pick_result",
+   "obj": "apple",
+   "kind": "top_pinch",
+   "lift_m": 0.0678,
+   "fingers": [
+    0.03,
+    0.0287
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 2939,
+   "t": 24.492,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 2939,
+   "t": 24.492,
+   "label": "place_park",
+   "obj": "apple",
+   "park": [
+    0.926,
+    -0.925,
+    180.0
+   ]
+  },
+  {
+   "tick": 3265,
+   "t": 27.208,
+   "label": "base",
+   "pose": [
+    2.109,
+    5.531,
+    15.0
+   ]
+  },
+  {
+   "tick": 3341,
+   "t": 27.842,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0071,
+   "q_err": 0.009
+  },
+  {
+   "tick": 3404,
+   "t": 28.367,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0059,
+   "q_err": 0.0074
+  },
+  {
+   "tick": 3404,
+   "t": 28.367,
+   "label": "path",
+   "waypoints": [
+    [
+     2.73,
+     4.07,
+     -67.01
+    ],
+    [
+     2.43,
+     -0.33,
+     -93.9
+    ],
+    [
+     2.28,
+     -0.48,
+     -135.0
+    ],
+    [
+     1.38,
+     -0.93,
+     -153.43
+    ],
+    [
+     0.93,
+     -0.93,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 7269,
+   "t": 60.575,
+   "label": "base",
+   "pose": [
+    0.926,
+    -0.925,
+    -180.0
+   ]
+  },
+  {
+   "tick": 7269,
+   "t": 60.575,
+   "label": "place_remeasure",
+   "obj": "apple",
+   "shift_m": 0.009,
+   "hang_m": 0.046
+  },
+  {
+   "tick": 9349,
+   "t": 77.908,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.011,
+   "q_err": 0.0074
+  },
+  {
+   "tick": 9419,
+   "t": 78.492,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 9419,
+   "t": 78.492,
+   "label": "retreat_short",
+   "reason": "no IK for place_retreat"
+  },
+  {
+   "tick": 9509,
+   "t": 79.242,
+   "label": "place_result",
+   "obj": "apple",
+   "container": "fruit_basket",
+   "inside": true,
+   "detail": "r 0.002 / 0.143"
+  },
+  {
+   "tick": 9509,
+   "t": 79.242,
+   "label": "pick_park",
+   "obj": "orange",
+   "kind": "top_pinch",
+   "park": [
+    3.761,
+    5.173,
+    180.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 10155,
+   "t": 84.625,
+   "label": "path",
+   "waypoints": [
+    [
+     1.43,
+     -0.93,
+     -0.31
+    ],
+    [
+     2.28,
+     -0.48,
+     27.9
+    ],
+    [
+     2.43,
+     -0.33,
+     45.0
+    ],
+    [
+     2.73,
+     4.02,
+     86.05
+    ],
+    [
+     2.78,
+     4.22,
+     75.96
+    ],
+    [
+     3.13,
+     4.77,
+     57.53
+    ],
+    [
+     3.33,
+     4.97,
+     45.0
+    ],
+    [
+     3.76,
+     5.17,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 13383,
+   "t": 111.525,
+   "label": "base",
+   "pose": [
+    3.761,
+    5.173,
+    180.0
+   ]
+  },
+  {
+   "tick": 13423,
+   "t": 111.858,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 13892,
+   "t": 115.767,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0081,
+   "q_err": 0.008
+  },
+  {
+   "tick": 14024,
+   "t": 116.867,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0058,
+   "q_err": 0.0049
+  },
+  {
+   "tick": 14105,
+   "t": 117.542,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0059,
+   "q_err": 0.005
+  },
+  {
+   "tick": 14225,
+   "t": 118.542,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0312,
+    0.0304
+   ]
+  },
+  {
+   "tick": 14454,
+   "t": 120.45,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0054,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 14494,
+   "t": 120.783,
+   "label": "pick_result",
+   "obj": "orange",
+   "kind": "top_pinch",
+   "lift_m": 0.0662,
+   "fingers": [
+    0.0313,
+    0.0304
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 14494,
+   "t": 120.783,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 14494,
+   "t": 120.783,
+   "label": "place_park",
+   "obj": "orange",
+   "park": [
+    0.928,
+    -0.925,
+    180.0
+   ]
+  },
+  {
+   "tick": 14819,
+   "t": 123.492,
+   "label": "base",
+   "pose": [
+    4.111,
+    5.173,
+    180.0
+   ]
+  },
+  {
+   "tick": 14920,
+   "t": 124.333,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0061,
+   "q_err": 0.0074
+  },
+  {
+   "tick": 15966,
+   "t": 133.05,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0051,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 15966,
+   "t": 133.05,
+   "label": "path",
+   "waypoints": [
+    [
+     3.28,
+     4.92,
+     -163.26
+    ],
+    [
+     3.08,
+     4.72,
+     -135.0
+    ],
+    [
+     2.78,
+     4.22,
+     -120.96
+    ],
+    [
+     2.43,
+     1.47,
+     -97.25
+    ],
+    [
+     2.43,
+     -0.33,
+     -90.0
+    ],
+    [
+     2.28,
+     -0.48,
+     -135.0
+    ],
+    [
+     1.38,
+     -0.93,
+     -153.43
+    ],
+    [
+     0.93,
+     -0.93,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 19997,
+   "t": 166.642,
+   "label": "base",
+   "pose": [
+    0.928,
+    -0.925,
+    180.0
+   ]
+  },
+  {
+   "tick": 19997,
+   "t": 166.642,
+   "label": "place_remeasure",
+   "obj": "orange",
+   "shift_m": 0.015,
+   "hang_m": 0.047
+  },
+  {
+   "tick": 22085,
+   "t": 184.042,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0149,
+   "q_err": 0.0066
+  },
+  {
+   "tick": 22155,
+   "t": 184.625,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 22155,
+   "t": 184.625,
+   "label": "retreat_short",
+   "reason": "no IK for place_retreat"
+  },
+  {
+   "tick": 22245,
+   "t": 185.375,
+   "label": "place_result",
+   "obj": "orange",
+   "container": "fruit_basket",
+   "inside": true,
+   "detail": "r 0.077 / 0.143"
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/v_collect_fruits/run.mp4"
+}

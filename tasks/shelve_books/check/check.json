@@ -24,8 +24,8 @@
   },
   "/World/TaskAssets/bowl_kitchen_cabinet/Asset/breakfast_bowl": {
    "drift_m": 0.0,
-   "z0": 1.7896,
-   "z": 1.7896
+   "z0": 1.1699,
+   "z": 1.1699
   },
   "/World/TaskAssets/bowl_side_table/Asset/breakfast_bowl": {
    "drift_m": 0.0,
@@ -114,18 +114,13 @@
   },
   "/World/Tasks/book_green/Asset/book_green": {
    "drift_m": 0.0,
-   "z0": 0.0284,
-   "z": 0.0284
-  },
-  "/World/Tasks/book_blue/Asset/book_blue": {
-   "drift_m": 0.0,
-   "z0": 0.8873,
-   "z": 0.8873
+   "z0": 0.7223,
+   "z": 0.7223
   },
   "/World/Tasks/shelf_blocker/Asset/rubber_duck": {
    "drift_m": 0.0,
-   "z0": 0.485,
-   "z": 0.485
+   "z0": 0.4856,
+   "z": 0.4856
   }
  },
  "articulations": {
@@ -141,7 +136,7 @@
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_6646327_spawn_asset_3005554/joints/door_hinge": -0.0,
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_680597_spawn_asset_3676420/joints/door_hinge": -0.0,
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7330242_spawn_asset_8918727/joints/door_hinge": -0.0,
-  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7978189_spawn_asset_6928284/joints/drawer_slide": -0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7978189_spawn_asset_6928284/joints/drawer_slide": 0.0,
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9980582_spawn_asset_7570664/joints/door_hinge": -0.0,
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9985775_spawn_asset_1002201/joints/door_hinge": -0.0,
   "/World/ArticulatedAssets/kitchen_microwave/joints/microwave_door_hinge": -0.0

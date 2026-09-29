@@ -1,0 +1,76 @@
+{
+ "task": "collect_fruits",
+ "instruction": "Collect the fruits and place them in a container on the low bookcase in the living room.",
+ "instruction_zh": "收集水果",
+ "robot_start_near": [
+  2.2,
+  1.2
+ ],
+ "objects": {
+  "apple": {
+   "asset": "apple",
+   "supports": [
+    "dining_table",
+    "tv_stand"
+   ]
+  },
+  "orange": {
+   "asset": "orange",
+   "supports": [
+    "dining_table",
+    "tv_stand"
+   ]
+  },
+  "fruit_basket": {
+   "asset": "fruit_basket",
+   "supports": [
+    "bookcase_north_top"
+   ],
+   "optional": 0.3
+  },
+  "serving_tray": {
+   "asset": "serving_tray",
+   "supports": [
+    "study_desk",
+    "bookcase_north_top"
+   ]
+  }
+ },
+ "roles": {
+  "fruit": [
+   "apple",
+   "orange"
+  ],
+  "container": [
+   "fruit_basket",
+   "serving_tray"
+  ]
+ },
+ "alternatives": [
+  "fruit_basket missing -> serving_tray"
+ ],
+ "goal": {
+  "all": [
+   {
+    "inside": [
+     "all:fruit"
+    ],
+    "container": "fruit_basket|serving_tray",
+    "bind": "container"
+   },
+   {
+    "on": [
+     "$container"
+    ],
+    "support": "bookcase_north_top",
+    "upright": true
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

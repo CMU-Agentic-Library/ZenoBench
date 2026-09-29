@@ -32,10 +32,10 @@ ANN = ROOT / "annotations" / "assets.json"
 #   collider: solid | round_container | rect_container
 SPECS = {
     # breakfast set (already real-scale from the earlier V2 run)
-    "breakfast_plate": (None, 0.60, ["dish", "plate", "flat"], "solid", None),
-    "breakfast_bowl": (None, 0.40, ["dish", "bowl", "container"], "round_container", None),
+    "breakfast_plate": (None, 0.35, ["dish", "plate", "flat"], "solid", None),
+    "breakfast_bowl": (None, 0.20, ["dish", "bowl", "container"], "round_container", None),
     "breakfast_cup": (None, 0.03, ["dish", "cup", "drinking_container", "container"], "round_container", None),
-    "breakfast_mug": (None, 0.375, ["dish", "mug", "drinking_container", "container"], "round_container", None),
+    "breakfast_mug": (None, 0.25, ["dish", "mug", "drinking_container", "container"], "round_container", None),
     "breakfast_spoon": (None, 0.04, ["utensil", "spoon"], "solid", None),
     "cereal_box": (None, 0.50, ["food", "box", "clutter"], "solid", None),
     # new assets (EmbodiedGen V2 text3d-cli, tools/../assets/gen_v2_assets.sh)
@@ -51,7 +51,7 @@ SPECS = {
     "book_green": (0.220, 0.45, ["book", "flat"], "solid", None),
     "book_blue": (0.200, 0.30, ["book", "flat"], "solid", None),
     "toy_car": (0.120, 0.15, ["toy", "toy_car"], "solid", None),
-    "teddy_bear": (0.220, 0.20, ["toy", "plush"], "solid", None),
+    "teddy_bear": (0.160, 0.15, ["toy", "plush"], "solid", None),   # small plush: crown pinch on the head
     "toy_block": (0.050, 0.04, ["toy", "block"], "solid", None),
     "rubber_duck": (0.090, 0.05, ["toy", "duck"], "solid", None),
     "toy_box": (0.500, 3.00, ["container", "toy_box", "storage"], "rect_container", None),
@@ -59,11 +59,29 @@ SPECS = {
 }
 # rest these with the thinnest axis vertical and the longest along x
 LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", "breakfast_spoon", "banana"}
+
 # containers whose mesh has a carry handle above the body: fraction of the
 # total height that is the body (walls stop there)
 BODY_FRACTION = {"fruit_basket": 0.58}
+
+# your own assets: assets/custom_assets.json (README "Add your own assets")
+#   {"soda_can": {"size": 0.12, "mass": 0.35, "tags": ["can"], "collider": "solid",
+#                 "lay_flat": false, "urdf": "assets/asset3d/soda_can/result/soda_can.urdf"}}
+CUSTOM = ROOT / "assets" / "custom_assets.json"
+if CUSTOM.exists():
+    for _n, _c in json.loads(CUSTOM.read_text()).items():
+        if _n.startswith("_"):
+            continue
+        SPECS[_n] = (_c["size"], _c["mass"], _c.get("tags", []), _c.get("collider", "solid"),
+                     ROOT / _c["urdf"] if _c.get("urdf") else None)
+        if _c.get("lay_flat"):
+            LAY_FLAT.add(_n)
+        if "body_fraction" in _c:
+            BODY_FRACTION[_n] = _c["body_fraction"]
+
 GRIPPER_GAP = 0.080          # Zeno Malo pinch gripper: 2 x 0.04 m
 PINCH_MAX = 0.068            # leave >= 6 mm clearance per side
+CROWN = 0.05                 # crown pinch: top slab the pads straddle
 
 
 def source_urdf(name):
@@ -168,6 +186,35 @@ def grasps(name, mesh, kind, body_fraction=1.0):
                     "offset_xy": [round(float(off[0]), 4), round(float(off[1]), 4)],
                     "height": float(min(top * 0.5, max(top - 0.02, 0.01))),
                     "pre_open": float(min(0.04, width / 2 + 0.012))})
+    # crown pinch: when no full-height slab fits, pinch only the top CROWN
+    # metres (what the 5 cm pads span when the TCP sits 2.2 cm below the top):
+    # the head of a plush toy, a knob, a lid handle.  Below the crown the
+    # object may be wider; the fingertips never reach down there.
+    if kind == "solid" and (best is None or best[2] > PINCH_MAX):
+        topz = float(b[1, 2])
+        crown = v[v[:, 2] > topz - CROWN]
+        cc = crown[:, :2].mean(0)
+        best_c = None
+        for yaw in np.radians(np.arange(0, 180, 15)):
+            d = np.array([math.cos(yaw), math.sin(yaw)])
+            e = np.array([-d[1], d[0]])
+            pd, pe = (crown[:, :2] - cc) @ d, (crown[:, :2] - cc) @ e
+            for off in np.linspace(pe.min() + 0.25 * np.ptp(pe), pe.max() - 0.25 * np.ptp(pe), 5):
+                sel = np.abs(pe - off) < 0.014
+                if sel.sum() < 20:
+                    continue
+                width = float(np.ptp(pd[sel]))
+                centre = float((pd[sel].max() + pd[sel].min()) / 2)
+                score = width + 0.3 * abs(off)
+                if best_c is None or score < best_c[0]:
+                    best_c = (score, float(yaw), width, cc + d * centre + e * off - c0)
+        if best_c is not None and best_c[2] <= PINCH_MAX:
+            _, yaw, width, off = best_c
+            out.append({"type": "top_pinch", "crown": True, "close_yaw": yaw, "width": width,
+                        "offset_xy": [round(float(off[0]), 4), round(float(off[1]), 4)],
+                        "height": float(topz - b[0, 2] - 0.022),
+                        "pre_open": float(min(0.04, width / 2 + 0.012))})
+            best = (best_c[0], yaw, width, off, topz)
     min_w = best[2] if best else float("inf")
     if ext[2] < 0.075 and max(ext[:2]) > GRIPPER_GAP:
         out.append({"type": "edge_pinch_after_push",

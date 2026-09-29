@@ -89,6 +89,14 @@ class WorldModel:
         self.joint_q = {a["name"]: a["closed_q"] for a in ann.articulated}
         self.active = None       # articulation whose moving part the hand may touch
         self.part_margin = 0.06
+        # free objects low enough to block the base column (toys, toy box,
+        # basket on the floor), refreshed from the simulator by Rig.sync_world.
+        # Base footprint and path planning only: the hand must still reach
+        # into a toy box.
+        self.base_only = np.zeros((0, 6))
+
+    def set_base_obstacles(self, boxes):
+        self.base_only = np.asarray(boxes, float).reshape(-1, 6)
 
     def set_joint(self, name, q):
         self.joint_q[name] = float(q)
@@ -140,6 +148,8 @@ class WorldModel:
                         for u in g for v in g for z in (0.15, 0.6)])
         B = self.near_boxes((x, y))
         B = B[B[:, 2] > -0.5]                    # not the floor
+        if len(self.base_only):
+            B = np.vstack([B, self.base_only])
         P = pts[:, None, :]
         d = np.linalg.norm(np.maximum(np.maximum(B[None, :, :3] - margin - P, P - B[None, :, 3:] - margin), 0.0), axis=2)
         if len(B) and np.any(d == 0.0):

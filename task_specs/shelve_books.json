@@ -1,0 +1,70 @@
+{
+ "task": "shelve_books",
+ "instruction": "Collect the books and place them on the bookshelf.",
+ "instruction_zh": "整理书籍",
+ "robot_start_near": [
+  3.0,
+  -3.0
+ ],
+ "objects": {
+  "book_red": {
+   "asset": "book_red",
+   "supports": [
+    "study_desk",
+    "bedroom_desk"
+   ]
+  },
+  "book_green": {
+   "asset": "book_green",
+   "supports": [
+    "study_desk",
+    "bedroom_desk"
+   ]
+  },
+  "shelf_blocker": {
+   "asset": "rubber_duck",
+   "supports": [
+    "bookcase_bedside_middle_shelf"
+   ],
+   "reach_check": false
+  }
+ },
+ "roles": {
+  "book": [
+   "book_red",
+   "book_green"
+  ]
+ },
+ "place_hints": {
+  "book": [
+   "bookcase_north_top",
+   "bookcase_bedside_top",
+   "bookcase_north_middle_shelf",
+   "bookcase_bedside_middle_shelf"
+  ]
+ },
+ "alternatives": [
+  "bookcase top full -> the other bookcase's top, then a shelf level (the middle shelf is blocked by a toy duck)",
+  "book is flat and wider than the gripper -> push it over the support edge, pinch the overhang",
+  "book on the floor -> diagonal corner pinch (bottom edge + top face), lay it on a free surface"
+ ],
+ "goal": {
+  "all": [
+   {
+    "on": [
+     "all:book"
+    ],
+    "support": [
+     "bookcase_bedside",
+     "bookcase_north"
+    ]
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

@@ -1,0 +1,952 @@
+{
+ "task": "tidy_toys",
+ "seed": 0,
+ "instruction": "Collect the toys and store them in the toy box.",
+ "scene": "tasks/tidy_toys/scene.usd",
+ "success": true,
+ "written_state": "robot drive targets and base anchor only",
+ "initial": {
+  "task": "tidy_toys",
+  "success": false,
+  "progress": 0.5,
+  "bindings": {
+   "container": "storage_basket"
+  },
+  "conditions": [
+   {
+    "desc": "all:toy inside toy_box|storage_basket",
+    "container": "storage_basket",
+    "items": [
+     {
+      "slot": "toy_car",
+      "instance": null,
+      "ok": false,
+      "detail": "local (4.275, 2.593) / (0.177, 0.160)"
+     },
+     {
+      "slot": "toy_block",
+      "instance": null,
+      "ok": false,
+      "detail": "local (3.894, -1.202) / (0.177, 0.160)"
+     },
+     {
+      "slot": "rubber_duck",
+      "instance": null,
+      "ok": false,
+      "detail": "height 0.511 m outside [0, 0.410]"
+     }
+    ],
+    "n": 3,
+    "n_ok": 0,
+    "type": "inside",
+    "ok": false
+   },
+   {
+    "desc": "$container upright (<= 20 deg)",
+    "items": [
+     {
+      "slot": "$container",
+      "instance": "storage_basket",
+      "ok": true,
+      "detail": "storage_basket: tilt 0 deg"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "upright",
+    "ok": true
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "decisions": [
+  {
+   "t": 0.5,
+   "kind": "round",
+   "n": 0,
+   "progress": 0.5,
+   "open": [
+    "all:toy inside toy_box|storage_basket"
+   ]
+  },
+  {
+   "t": 0.5,
+   "kind": "alternative",
+   "slot": "toy_box|storage_basket",
+   "instance": "storage_basket",
+   "skipped": [
+    "toy_box"
+   ]
+  }
+ ],
+ "final": {
+  "task": "tidy_toys",
+  "success": true,
+  "progress": 1.0,
+  "bindings": {
+   "container": "storage_basket"
+  },
+  "conditions": [
+   {
+    "desc": "all:toy inside toy_box|storage_basket",
+    "container": "storage_basket",
+    "items": [
+     {
+      "slot": "toy_car",
+      "instance": "toy_car",
+      "ok": true,
+      "detail": "in storage_basket"
+     },
+     {
+      "slot": "toy_block",
+      "instance": "toy_block",
+      "ok": true,
+      "detail": "in storage_basket"
+     },
+     {
+      "slot": "rubber_duck",
+      "instance": "rubber_duck",
+      "ok": true,
+      "detail": "in storage_basket"
+     }
+    ],
+    "n": 3,
+    "n_ok": 3,
+    "type": "inside",
+    "ok": true
+   },
+   {
+    "desc": "$container upright (<= 20 deg)",
+    "items": [
+     {
+      "slot": "$container",
+      "instance": "storage_basket",
+      "ok": true,
+      "detail": "storage_basket: tilt 0 deg"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "upright",
+    "ok": true
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "progress": 1.0,
+ "wall_s": 934.0,
+ "sim_s": 237.9,
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "decision",
+   "kind": "round",
+   "n": 0,
+   "progress": 0.5,
+   "open": [
+    "all:toy inside toy_box|storage_basket"
+   ]
+  },
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "decision",
+   "kind": "alternative",
+   "slot": "toy_box|storage_basket",
+   "instance": "storage_basket",
+   "skipped": [
+    "toy_box"
+   ]
+  },
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "pick_park",
+   "obj": "toy_car",
+   "kind": "top_pinch",
+   "park": [
+    4.133,
+    1.285,
+    75.0
+   ],
+   "floor": true
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     2.68,
+     -0.33,
+     130.91
+    ],
+    [
+     2.68,
+     0.37,
+     90.0
+    ],
+    [
+     2.93,
+     0.67,
+     50.19
+    ],
+    [
+     3.18,
+     0.92,
+     45.0
+    ],
+    [
+     4.13,
+     1.29,
+     75.0
+    ]
+   ]
+  },
+  {
+   "tick": 2258,
+   "t": 18.817,
+   "label": "base",
+   "pose": [
+    4.133,
+    1.285,
+    75.0
+   ]
+  },
+  {
+   "tick": 2298,
+   "t": 19.15,
+   "label": "grip",
+   "cmd": 0.037706470465390565,
+   "fingers": [
+    0.0377,
+    0.0377
+   ]
+  },
+  {
+   "tick": 3049,
+   "t": 25.408,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.0023
+  },
+  {
+   "tick": 3237,
+   "t": 26.975,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.009
+  },
+  {
+   "tick": 3354,
+   "t": 27.95,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.006,
+   "q_err": 0.0087
+  },
+  {
+   "tick": 3474,
+   "t": 28.95,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.027,
+    0.0251
+   ]
+  },
+  {
+   "tick": 3753,
+   "t": 31.275,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0034,
+   "q_err": 0.0026
+  },
+  {
+   "tick": 3793,
+   "t": 31.608,
+   "label": "pick_result",
+   "obj": "toy_car",
+   "kind": "top_pinch",
+   "lift_m": 0.0664,
+   "fingers": [
+    0.0262,
+    0.026
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 3793,
+   "t": 31.608,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 3793,
+   "t": 31.608,
+   "label": "place_park",
+   "obj": "toy_car",
+   "park": [
+    0.894,
+    -1.381,
+    -90.0
+   ]
+  },
+  {
+   "tick": 4119,
+   "t": 34.325,
+   "label": "base",
+   "pose": [
+    4.042,
+    0.947,
+    75.0
+   ]
+  },
+  {
+   "tick": 5257,
+   "t": 43.808,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0028,
+   "q_err": 0.0027
+  },
+  {
+   "tick": 5315,
+   "t": 44.292,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0023,
+   "q_err": 0.0092
+  },
+  {
+   "tick": 5315,
+   "t": 44.292,
+   "label": "carry_clearance",
+   "margin": 0.1
+  },
+  {
+   "tick": 5315,
+   "t": 44.292,
+   "label": "path",
+   "waypoints": [
+    [
+     3.18,
+     1.02,
+     175.06
+    ],
+    [
+     2.78,
+     0.67,
+     -138.81
+    ],
+    [
+     2.53,
+     0.32,
+     -125.54
+    ],
+    [
+     2.53,
+     -0.28,
+     -90.0
+    ],
+    [
+     2.38,
+     -0.48,
+     -126.87
+    ],
+    [
+     1.93,
+     -0.88,
+     -138.37
+    ],
+    [
+     0.89,
+     -1.38,
+     -90.0
+    ]
+   ]
+  },
+  {
+   "tick": 7594,
+   "t": 63.283,
+   "label": "base",
+   "pose": [
+    0.894,
+    -1.381,
+    270.0
+   ]
+  },
+  {
+   "tick": 9874,
+   "t": 82.283,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0082,
+   "q_err": 0.0076
+  },
+  {
+   "tick": 9944,
+   "t": 82.867,
+   "label": "grip",
+   "cmd": 0.037706470465390565,
+   "fingers": [
+    0.0377,
+    0.0377
+   ]
+  },
+  {
+   "tick": 10068,
+   "t": 83.9,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.0044,
+   "q_err": 0.0042
+  },
+  {
+   "tick": 10158,
+   "t": 84.65,
+   "label": "place_result",
+   "obj": "toy_car",
+   "container": "storage_basket",
+   "inside": true,
+   "detail": "local (0.004, 0.004) / (0.177, 0.160)"
+  },
+  {
+   "tick": 10158,
+   "t": 84.65,
+   "label": "pick_park",
+   "obj": "toy_block",
+   "kind": "top_pinch",
+   "park": [
+    4.532,
+    -1.973,
+    -0.0
+   ],
+   "floor": true
+  },
+  {
+   "tick": 10920,
+   "t": 91.0,
+   "label": "path",
+   "waypoints": [
+    [
+     4.53,
+     -1.97,
+     -0.0
+    ]
+   ]
+  },
+  {
+   "tick": 12299,
+   "t": 102.492,
+   "label": "base",
+   "pose": [
+    4.532,
+    -1.973,
+    -360.0
+   ]
+  },
+  {
+   "tick": 12339,
+   "t": 102.825,
+   "label": "grip",
+   "cmd": 0.033359919978907734,
+   "fingers": [
+    0.0334,
+    0.0334
+   ]
+  },
+  {
+   "tick": 13134,
+   "t": 109.45,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.0019
+  },
+  {
+   "tick": 13285,
+   "t": 110.708,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0059,
+   "q_err": 0.0042
+  },
+  {
+   "tick": 13348,
+   "t": 111.233,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0086,
+   "q_err": 0.0072
+  },
+  {
+   "tick": 13372,
+   "t": 111.433,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.007,
+   "q_err": 0.0012
+  },
+  {
+   "tick": 13492,
+   "t": 112.433,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.021,
+    0.0209
+   ]
+  },
+  {
+   "tick": 13687,
+   "t": 114.058,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0052,
+   "q_err": 0.0035
+  },
+  {
+   "tick": 13727,
+   "t": 114.392,
+   "label": "pick_result",
+   "obj": "toy_block",
+   "kind": "top_pinch",
+   "lift_m": 0.0612,
+   "fingers": [
+    0.0209,
+    0.0209
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 13727,
+   "t": 114.392,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 13727,
+   "t": 114.392,
+   "label": "place_park",
+   "obj": "toy_block",
+   "park": [
+    1.444,
+    -1.931,
+    180.0
+   ]
+  },
+  {
+   "tick": 14052,
+   "t": 117.1,
+   "label": "base",
+   "pose": [
+    4.182,
+    -1.973,
+    360.0
+   ]
+  },
+  {
+   "tick": 14904,
+   "t": 124.2,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0056,
+   "q_err": 0.0044
+  },
+  {
+   "tick": 14950,
+   "t": 124.583,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0042,
+   "q_err": 0.0097
+  },
+  {
+   "tick": 14950,
+   "t": 124.583,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 14950,
+   "t": 124.583,
+   "label": "path",
+   "waypoints": [
+    [
+     1.44,
+     -1.93,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 16380,
+   "t": 136.5,
+   "label": "base",
+   "pose": [
+    1.444,
+    -1.931,
+    180.0
+   ]
+  },
+  {
+   "tick": 18788,
+   "t": 156.567,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0098,
+   "q_err": 0.0051
+  },
+  {
+   "tick": 18858,
+   "t": 157.15,
+   "label": "grip",
+   "cmd": 0.033359919978907734,
+   "fingers": [
+    0.0334,
+    0.0334
+   ]
+  },
+  {
+   "tick": 18976,
+   "t": 158.133,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.0054,
+   "q_err": 0.0044
+  },
+  {
+   "tick": 19066,
+   "t": 158.883,
+   "label": "place_result",
+   "obj": "toy_block",
+   "container": "storage_basket",
+   "inside": true,
+   "detail": "local (0.000, 0.002) / (0.177, 0.160)"
+  },
+  {
+   "tick": 19066,
+   "t": 158.883,
+   "label": "pick_park",
+   "obj": "rubber_duck",
+   "kind": "top_pinch",
+   "park": [
+    6.661,
+    0.824,
+    -75.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 19828,
+   "t": 165.233,
+   "label": "path",
+   "waypoints": [
+    [
+     2.68,
+     0.07,
+     58.36
+    ],
+    [
+     2.68,
+     0.37,
+     90.0
+    ],
+    [
+     2.93,
+     0.67,
+     50.19
+    ],
+    [
+     3.18,
+     0.92,
+     45.0
+    ],
+    [
+     6.66,
+     0.82,
+     -75.0
+    ]
+   ]
+  },
+  {
+   "tick": 22302,
+   "t": 185.85,
+   "label": "base",
+   "pose": [
+    6.661,
+    0.824,
+    -75.0
+   ]
+  },
+  {
+   "tick": 22342,
+   "t": 186.183,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.0347,
+    0.0077
+   ]
+  },
+  {
+   "tick": 22973,
+   "t": 191.442,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0045,
+   "q_err": 0.0073
+  },
+  {
+   "tick": 23120,
+   "t": 192.667,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0071,
+   "q_err": 0.0043
+  },
+  {
+   "tick": 23200,
+   "t": 193.333,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0088,
+   "q_err": 0.0053
+  },
+  {
+   "tick": 23212,
+   "t": 193.433,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.0057,
+   "q_err": 0.0025
+  },
+  {
+   "tick": 23332,
+   "t": 194.433,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0297,
+    0.0292
+   ]
+  },
+  {
+   "tick": 23584,
+   "t": 196.533,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.004,
+   "q_err": 0.0036
+  },
+  {
+   "tick": 23624,
+   "t": 196.867,
+   "label": "pick_result",
+   "obj": "rubber_duck",
+   "kind": "top_pinch",
+   "lift_m": 0.0642,
+   "fingers": [
+    0.0303,
+    0.0286
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 23624,
+   "t": 196.867,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 23624,
+   "t": 196.867,
+   "label": "place_park",
+   "obj": "rubber_duck",
+   "park": [
+    0.879,
+    -1.41,
+    -90.0
+   ]
+  },
+  {
+   "tick": 23950,
+   "t": 199.583,
+   "label": "base",
+   "pose": [
+    6.57,
+    1.162,
+    -75.0
+   ]
+  },
+  {
+   "tick": 24084,
+   "t": 200.7,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0029,
+   "q_err": 0.0035
+  },
+  {
+   "tick": 24203,
+   "t": 201.692,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0047,
+   "q_err": 0.0095
+  },
+  {
+   "tick": 24203,
+   "t": 201.692,
+   "label": "carry_clearance",
+   "margin": 0.1
+  },
+  {
+   "tick": 24203,
+   "t": 201.692,
+   "label": "path",
+   "waypoints": [
+    [
+     3.18,
+     1.02,
+     -177.64
+    ],
+    [
+     2.78,
+     0.67,
+     -138.81
+    ],
+    [
+     2.53,
+     0.32,
+     -125.54
+    ],
+    [
+     2.53,
+     -0.28,
+     -90.0
+    ],
+    [
+     2.38,
+     -0.48,
+     -126.87
+    ],
+    [
+     1.48,
+     -1.28,
+     -138.37
+    ],
+    [
+     0.88,
+     -1.41,
+     -90.0
+    ]
+   ]
+  },
+  {
+   "tick": 27724,
+   "t": 231.033,
+   "label": "base",
+   "pose": [
+    0.879,
+    -1.41,
+    -90.0
+   ]
+  },
+  {
+   "tick": 28172,
+   "t": 234.767,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0054,
+   "q_err": 0.0085
+  },
+  {
+   "tick": 28242,
+   "t": 235.35,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 28369,
+   "t": 236.408,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.002,
+   "q_err": 0.0033
+  },
+  {
+   "tick": 28459,
+   "t": 237.158,
+   "label": "place_result",
+   "obj": "rubber_duck",
+   "container": "storage_basket",
+   "inside": true,
+   "detail": "local (-0.082, -0.105) / (0.177, 0.160)"
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/v_tidy_toys/run.mp4"
+}

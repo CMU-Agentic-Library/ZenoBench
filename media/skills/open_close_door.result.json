@@ -1,0 +1,545 @@
+{
+ "scene": "sim/zeno_house.usd",
+ "plan": [
+  "open SingleCabinetFactory_7330242_spawn_asset_8918727",
+  "close SingleCabinetFactory_7330242_spawn_asset_8918727"
+ ],
+ "steps": [
+  {
+   "step": "open SingleCabinetFactory_7330242_spawn_asset_8918727",
+   "result_q": -1.37861967086792,
+   "success": true,
+   "wall_s": 217.6
+  },
+  {
+   "step": "close SingleCabinetFactory_7330242_spawn_asset_8918727",
+   "result_q": -0.01108157355338335,
+   "success": true,
+   "wall_s": 41.4
+  }
+ ],
+ "success": true,
+ "written_state": "robot drive targets and base anchor only",
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "open_park",
+   "park": [
+    7.456,
+    -1.398,
+    75.0
+   ],
+   "hook_side": "near"
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     3.13,
+     0.87,
+     -141.06
+    ],
+    [
+     2.73,
+     0.47,
+     -135.0
+    ],
+    [
+     2.68,
+     0.32,
+     -108.43
+    ],
+    [
+     2.68,
+     -0.33,
+     -90.0
+    ],
+    [
+     2.78,
+     -0.43,
+     -45.0
+    ],
+    [
+     2.93,
+     -0.53,
+     -33.69
+    ],
+    [
+     3.78,
+     -0.83,
+     -19.44
+    ],
+    [
+     7.46,
+     -1.4,
+     75.0
+    ]
+   ]
+  },
+  {
+   "tick": 3375,
+   "t": 28.125,
+   "label": "base",
+   "pose": [
+    7.456,
+    -1.398,
+    -285.0
+   ]
+  },
+  {
+   "tick": 3375,
+   "t": 28.125,
+   "label": "open_at_park",
+   "q_before": -5.7395369706947363e-11,
+   "q_now": -0.0005317951436154544
+  },
+  {
+   "tick": 3405,
+   "t": 28.375,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 3913,
+   "t": 32.608,
+   "label": "reach",
+   "target": "open_pre_high",
+   "tcp_err_m": 0.0114,
+   "q_err": 0.0079
+  },
+  {
+   "tick": 4056,
+   "t": 33.8,
+   "label": "reach",
+   "target": "open_pre",
+   "tcp_err_m": 0.0102,
+   "q_err": 0.0032
+  },
+  {
+   "tick": 4211,
+   "t": 35.092,
+   "label": "reach",
+   "target": "open_handle",
+   "tcp_err_m": 0.0046,
+   "q_err": 0.0078
+  },
+  {
+   "tick": 4331,
+   "t": 36.092,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0127,
+    0.0125
+   ]
+  },
+  {
+   "tick": 4332,
+   "t": 36.1,
+   "label": "ride",
+   "q": -0.0016,
+   "cmd": -0.0037,
+   "fingers": [
+    0.0126,
+    0.0128
+   ]
+  },
+  {
+   "tick": 4392,
+   "t": 36.6,
+   "label": "ride",
+   "q": -0.1303,
+   "cmd": -0.1287,
+   "fingers": [
+    0.0152,
+    0.01
+   ]
+  },
+  {
+   "tick": 4452,
+   "t": 37.1,
+   "label": "ride",
+   "q": -0.2558,
+   "cmd": -0.2537,
+   "fingers": [
+    0.0155,
+    0.0097
+   ]
+  },
+  {
+   "tick": 4512,
+   "t": 37.6,
+   "label": "ride",
+   "q": -0.3807,
+   "cmd": -0.3787,
+   "fingers": [
+    0.0155,
+    0.0097
+   ]
+  },
+  {
+   "tick": 4572,
+   "t": 38.1,
+   "label": "ride",
+   "q": -0.5057,
+   "cmd": -0.5037,
+   "fingers": [
+    0.0155,
+    0.0097
+   ]
+  },
+  {
+   "tick": 4632,
+   "t": 38.6,
+   "label": "ride",
+   "q": -0.6307,
+   "cmd": -0.6287,
+   "fingers": [
+    0.0155,
+    0.0097
+   ]
+  },
+  {
+   "tick": 4692,
+   "t": 39.1,
+   "label": "ride",
+   "q": -0.7557,
+   "cmd": -0.7537,
+   "fingers": [
+    0.0155,
+    0.0097
+   ]
+  },
+  {
+   "tick": 4752,
+   "t": 39.6,
+   "label": "ride",
+   "q": -0.8809,
+   "cmd": -0.8787,
+   "fingers": [
+    0.0156,
+    0.0096
+   ]
+  },
+  {
+   "tick": 4812,
+   "t": 40.1,
+   "label": "ride",
+   "q": -1.0058,
+   "cmd": -1.0037,
+   "fingers": [
+    0.0155,
+    0.0097
+   ]
+  },
+  {
+   "tick": 4872,
+   "t": 40.6,
+   "label": "ride",
+   "q": -1.1309,
+   "cmd": -1.1287,
+   "fingers": [
+    0.0156,
+    0.0096
+   ]
+  },
+  {
+   "tick": 4932,
+   "t": 41.1,
+   "label": "ride",
+   "q": -1.2548,
+   "cmd": -1.2537,
+   "fingers": [
+    0.0148,
+    0.0104
+   ]
+  },
+  {
+   "tick": 4991,
+   "t": 41.592,
+   "label": "ride_done",
+   "q": -1.3808022737503052
+  },
+  {
+   "tick": 5091,
+   "t": 42.425,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 5091,
+   "t": 42.425,
+   "label": "retreat_short",
+   "back": 0.14,
+   "reason": "no IK for open_back"
+  },
+  {
+   "tick": 5199,
+   "t": 43.325,
+   "label": "reach",
+   "target": "open_back",
+   "tcp_err_m": 0.0024,
+   "q_err": 0.0088
+  },
+  {
+   "tick": 5410,
+   "t": 45.083,
+   "label": "reach",
+   "target": "open_up",
+   "tcp_err_m": 0.0018,
+   "q_err": 0.0029
+  },
+  {
+   "tick": 5470,
+   "t": 45.583,
+   "label": "open_result",
+   "name": "SingleCabinetFactory_7330242_spawn_asset_8918727",
+   "before": -5.7395369706947363e-11,
+   "after": -1.37861967086792,
+   "goal": -1.4
+  },
+  {
+   "tick": 5470,
+   "t": 45.583,
+   "label": "close_park",
+   "park": [
+    6.46,
+    -1.398,
+    356.2
+   ],
+   "hook_side": "near"
+  },
+  {
+   "tick": 5470,
+   "t": 45.583,
+   "label": "close_at_park",
+   "q_before": -1.37861967086792,
+   "q_now": -1.37861967086792
+  },
+  {
+   "tick": 5500,
+   "t": 45.833,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 5543,
+   "t": 46.192,
+   "label": "reach",
+   "target": "close_pre_high",
+   "tcp_err_m": 0.0088,
+   "q_err": 0.0081
+  },
+  {
+   "tick": 5687,
+   "t": 47.392,
+   "label": "reach",
+   "target": "close_pre",
+   "tcp_err_m": 0.0088,
+   "q_err": 0.0032
+  },
+  {
+   "tick": 5842,
+   "t": 48.683,
+   "label": "reach",
+   "target": "close_handle",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.008
+  },
+  {
+   "tick": 5962,
+   "t": 49.683,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0127,
+    0.0125
+   ]
+  },
+  {
+   "tick": 5963,
+   "t": 49.692,
+   "label": "ride",
+   "q": -1.38,
+   "cmd": -1.378,
+   "fingers": [
+    0.013,
+    0.0122
+   ]
+  },
+  {
+   "tick": 6023,
+   "t": 50.192,
+   "label": "ride",
+   "q": -1.2628,
+   "cmd": -1.253,
+   "fingers": [
+    0.0162,
+    0.0092
+   ]
+  },
+  {
+   "tick": 6083,
+   "t": 50.692,
+   "label": "ride",
+   "q": -1.138,
+   "cmd": -1.128,
+   "fingers": [
+    0.0163,
+    0.0091
+   ]
+  },
+  {
+   "tick": 6143,
+   "t": 51.192,
+   "label": "ride",
+   "q": -1.013,
+   "cmd": -1.003,
+   "fingers": [
+    0.0163,
+    0.0091
+   ]
+  },
+  {
+   "tick": 6203,
+   "t": 51.692,
+   "label": "ride",
+   "q": -0.8881,
+   "cmd": -0.878,
+   "fingers": [
+    0.0163,
+    0.0091
+   ]
+  },
+  {
+   "tick": 6263,
+   "t": 52.192,
+   "label": "ride",
+   "q": -0.7631,
+   "cmd": -0.753,
+   "fingers": [
+    0.0163,
+    0.009
+   ]
+  },
+  {
+   "tick": 6323,
+   "t": 52.692,
+   "label": "ride",
+   "q": -0.6381,
+   "cmd": -0.628,
+   "fingers": [
+    0.0163,
+    0.009
+   ]
+  },
+  {
+   "tick": 6383,
+   "t": 53.192,
+   "label": "ride",
+   "q": -0.5131,
+   "cmd": -0.503,
+   "fingers": [
+    0.0163,
+    0.009
+   ]
+  },
+  {
+   "tick": 6443,
+   "t": 53.692,
+   "label": "ride",
+   "q": -0.3881,
+   "cmd": -0.378,
+   "fingers": [
+    0.0163,
+    0.009
+   ]
+  },
+  {
+   "tick": 6503,
+   "t": 54.192,
+   "label": "ride",
+   "q": -0.2631,
+   "cmd": -0.253,
+   "fingers": [
+    0.0163,
+    0.009
+   ]
+  },
+  {
+   "tick": 6563,
+   "t": 54.692,
+   "label": "ride",
+   "q": -0.1381,
+   "cmd": -0.128,
+   "fingers": [
+    0.0163,
+    0.009
+   ]
+  },
+  {
+   "tick": 6619,
+   "t": 55.158,
+   "label": "ride_done",
+   "q": -0.019379032775759697
+  },
+  {
+   "tick": 6719,
+   "t": 55.992,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 6719,
+   "t": 55.992,
+   "label": "retreat_short",
+   "back": 0.14,
+   "reason": "no IK for close_back"
+  },
+  {
+   "tick": 6825,
+   "t": 56.875,
+   "label": "reach",
+   "target": "close_back",
+   "tcp_err_m": 0.0021,
+   "q_err": 0.0076
+  },
+  {
+   "tick": 7036,
+   "t": 58.633,
+   "label": "reach",
+   "target": "close_up",
+   "tcp_err_m": 0.0015,
+   "q_err": 0.0029
+  },
+  {
+   "tick": 7096,
+   "t": 59.133,
+   "label": "close_result",
+   "name": "SingleCabinetFactory_7330242_spawn_asset_8918727",
+   "before": -1.37861967086792,
+   "after": -0.01108157355338335,
+   "goal": 0.0
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/skills/a_door/run.mp4"
+}

@@ -155,10 +155,12 @@ def fix_articulation(stage, joint_path, damping=0.05, friction=0.0):
     lin = j.IsA(UsdPhysics.PrismaticJoint)
     d = UsdPhysics.DriveAPI.Apply(j, "linear" if lin else "angular")
     d.CreateStiffnessAttr().Set(0.0)
-    d.CreateDampingAttr().Set(damping * (20.0 if lin else 1.0))
+    d.CreateDampingAttr().Set(damping * (100.0 if lin else 1.0))
     d.CreateMaxForceAttr().Set(1.0e3)
-    # drawers keep a little slide friction so they do not drift open
-    PhysxSchema.PhysxJointAPI.Apply(j).CreateJointFrictionAttr().Set(0.02 if lin else friction)
+    # no joint friction on slides either: 0.02 (scaled by the drawer's
+    # constraint force) held drawers shut against the gripper's pull.  The
+    # viscous damping above keeps them from drifting open when bumped.
+    PhysxSchema.PhysxJointAPI.Apply(j).CreateJointFrictionAttr().Set(friction)
 
 
 # ---------------------------------------------------------------- objects

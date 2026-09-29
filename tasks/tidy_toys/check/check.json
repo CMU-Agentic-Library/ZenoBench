@@ -24,8 +24,8 @@
   },
   "/World/TaskAssets/bowl_kitchen_cabinet/Asset/breakfast_bowl": {
    "drift_m": 0.0,
-   "z0": 1.7896,
-   "z": 1.7896
+   "z0": 1.1699,
+   "z": 1.1699
   },
   "/World/TaskAssets/bowl_side_table/Asset/breakfast_bowl": {
    "drift_m": 0.0,
@@ -112,11 +112,6 @@
    "z0": 0.033,
    "z": 0.033
   },
-  "/World/Tasks/teddy_bear/Asset/teddy_bear": {
-   "drift_m": 0.0,
-   "z0": 0.1107,
-   "z": 0.1107
-  },
   "/World/Tasks/toy_block/Asset/toy_block": {
    "drift_m": 0.0,
    "z0": 0.0349,
@@ -126,11 +121,6 @@
    "drift_m": 0.0,
    "z0": 0.5124,
    "z": 0.5124
-  },
-  "/World/Tasks/toy_box/Asset/toy_box": {
-   "drift_m": 0.0,
-   "z0": 0.2495,
-   "z": 0.2495
   },
   "/World/Tasks/storage_basket/Asset/storage_basket": {
    "drift_m": 0.0,
@@ -151,7 +141,7 @@
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_6646327_spawn_asset_3005554/joints/door_hinge": -0.0,
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_680597_spawn_asset_3676420/joints/door_hinge": -0.0,
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7330242_spawn_asset_8918727/joints/door_hinge": -0.0,
-  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7978189_spawn_asset_6928284/joints/drawer_slide": -0.0,
+  "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7978189_spawn_asset_6928284/joints/drawer_slide": 0.0,
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9980582_spawn_asset_7570664/joints/door_hinge": -0.0,
   "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9985775_spawn_asset_1002201/joints/door_hinge": -0.0,
   "/World/ArticulatedAssets/kitchen_microwave/joints/microwave_door_hinge": -0.0

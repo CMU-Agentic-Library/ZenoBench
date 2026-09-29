@@ -1,0 +1,84 @@
+{
+ "task": "tidy_toys",
+ "instruction": "Collect the toys and store them in the toy box.",
+ "instruction_zh": "收拾玩具",
+ "robot_start_near": [
+  4.3,
+  -2.2
+ ],
+ "objects": {
+  "toy_car": {
+   "asset": "toy_car",
+   "supports": [
+    "floor:living_room",
+    "tv_stand"
+   ]
+  },
+  "toy_block": {
+   "asset": "toy_block",
+   "supports": [
+    "floor:bedroom",
+    "floor:bedroom_west",
+    "bedroom_desk"
+   ]
+  },
+  "rubber_duck": {
+   "asset": "rubber_duck",
+   "supports": [
+    "tv_stand",
+    "floor:living_room"
+   ]
+  },
+  "toy_box": {
+   "asset": "toy_box",
+   "supports": [
+    "floor:bedroom"
+   ],
+   "optional": 0.3
+  },
+  "storage_basket": {
+   "asset": "storage_basket",
+   "supports": [
+    "floor:bedroom_west",
+    "floor:living_room"
+   ]
+  }
+ },
+ "roles": {
+  "toy": [
+   "toy_car",
+   "toy_block",
+   "rubber_duck"
+  ],
+  "container": [
+   "toy_box",
+   "storage_basket"
+  ]
+ },
+ "alternatives": [
+  "toy_box missing -> storage_basket",
+  "toy on the floor -> lower the torso to its minimum"
+ ],
+ "goal": {
+  "all": [
+   {
+    "inside": [
+     "all:toy"
+    ],
+    "container": "toy_box|storage_basket",
+    "bind": "container"
+   },
+   {
+    "upright": [
+     "$container"
+    ]
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

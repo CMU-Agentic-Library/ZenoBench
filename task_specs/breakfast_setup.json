@@ -1,0 +1,111 @@
+{
+ "task": "breakfast_setup",
+ "instruction": "Set up the dining table for breakfast.",
+ "instruction_zh": "整理早餐餐具",
+ "robot_start_near": [
+  1.6,
+  8.4
+ ],
+ "place_hints": {
+  "plate|bowl": [
+   2.93,
+   6.7
+  ],
+  "cup|mug": [
+   2.95,
+   7.0
+  ],
+  "spoon": [
+   2.95,
+   6.45
+  ]
+ },
+ "alternatives": [
+  "plate missing (30 %) -> bowl",
+  "cup missing (30 %) -> mug",
+  "hint spot occupied (cereal boxes) -> nearest free spot on the table",
+  "plate is flat and wider than the gripper -> push it over the table edge, pinch the overhang"
+ ],
+ "goal": {
+  "all": [
+   {
+    "on": [
+     "plate|bowl"
+    ],
+    "support": "dining_table",
+    "upright": true
+   },
+   {
+    "on": [
+     "cup|mug"
+    ],
+    "support": "dining_table",
+    "upright": true
+   },
+   {
+    "on": [
+     "spoon"
+    ],
+    "support": "dining_table"
+   },
+   {
+    "near": [
+     "plate|bowl",
+     "cup|mug",
+     "spoon"
+    ],
+    "support": "dining_table",
+    "max_dist": 0.5
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ },
+ "objects": {
+  "plate": {
+   "asset": "breakfast_plate",
+   "supports": [
+    "dining_table"
+   ],
+   "optional": 0.3
+  },
+  "bowl": {
+   "asset": "breakfast_bowl",
+   "supports": [
+    "tv_stand",
+    "bookcase_north_top"
+   ]
+  },
+  "cup": {
+   "asset": "breakfast_cup",
+   "supports": [
+    "tv_stand",
+    "bookcase_north_top"
+   ],
+   "optional": 0.3
+  },
+  "mug": {
+   "asset": "breakfast_mug",
+   "supports": [
+    "bookcase_north_top",
+    "tv_stand"
+   ]
+  },
+  "spoon": {
+   "asset": "breakfast_spoon",
+   "supports": [
+    "dining_table"
+   ]
+  }
+ },
+ "existing": {
+  "clutter": [
+   "clutter_cereal_a",
+   "clutter_cereal_b"
+  ]
+ }
+}

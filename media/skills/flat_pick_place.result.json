@@ -1,0 +1,530 @@
+{
+ "scene": "tasks/shelve_books/scene.usd",
+ "plan": [
+  "pick book_red",
+  "place book_red bookcase_north_top"
+ ],
+ "steps": [
+  {
+   "step": "pick book_red",
+   "success": true,
+   "wall_s": 206.2
+  },
+  {
+   "step": "place book_red bookcase_north_top",
+   "success": true,
+   "wall_s": 239.9
+  }
+ ],
+ "success": true,
+ "written_state": "robot drive targets and base anchor only",
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "flat_edges",
+   "obj": "book_red",
+   "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+   "edges": [
+    [
+     0.105,
+     [
+      0.0,
+      -1.0
+     ]
+    ]
+   ]
+  },
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "push_park",
+   "obj": "book_red",
+   "mode": "push",
+   "dir": [
+    0.0,
+    -1.0
+   ],
+   "d": 0.11,
+   "park": [
+    -1.241,
+    -6.684,
+    105.0
+   ]
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     2.43,
+     0.37,
+     99.63
+    ],
+    [
+     1.88,
+     0.92,
+     135.0
+    ],
+    [
+     -0.27,
+     1.17,
+     173.37
+    ],
+    [
+     -5.47,
+     1.22,
+     179.45
+    ],
+    [
+     -5.57,
+     1.12,
+     -135.0
+    ],
+    [
+     -5.62,
+     1.07,
+     -135.0
+    ],
+    [
+     -5.67,
+     0.82,
+     -101.31
+    ],
+    [
+     -5.67,
+     -4.18,
+     -90.0
+    ],
+    [
+     -5.52,
+     -4.78,
+     -75.96
+    ],
+    [
+     -5.32,
+     -4.98,
+     -45.0
+    ],
+    [
+     -1.24,
+     -6.68,
+     105.0
+    ]
+   ]
+  },
+  {
+   "tick": 8299,
+   "t": 69.158,
+   "label": "base",
+   "pose": [
+    -1.241,
+    -6.684,
+    -255.0
+   ]
+  },
+  {
+   "tick": 8329,
+   "t": 69.408,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0201,
+    0.0201
+   ]
+  },
+  {
+   "tick": 8615,
+   "t": 71.792,
+   "label": "reach",
+   "target": "push_above",
+   "tcp_err_m": 0.0071,
+   "q_err": 0.0073
+  },
+  {
+   "tick": 8795,
+   "t": 73.292,
+   "label": "reach",
+   "target": "push_down",
+   "tcp_err_m": 0.0088,
+   "q_err": 0.0045
+  },
+  {
+   "tick": 9276,
+   "t": 77.3,
+   "label": "reach",
+   "target": "push_slide",
+   "tcp_err_m": 0.0107,
+   "q_err": 0.0264
+  },
+  {
+   "tick": 9456,
+   "t": 78.8,
+   "label": "reach",
+   "target": "push_up",
+   "tcp_err_m": 0.0044,
+   "q_err": 0.0029
+  },
+  {
+   "tick": 9456,
+   "t": 78.8,
+   "label": "push_result",
+   "obj": "book_red",
+   "moved": 0.109,
+   "total": 0.109
+  },
+  {
+   "tick": 9456,
+   "t": 78.8,
+   "label": "edge_pinch_park",
+   "obj": "book_red",
+   "park": [
+    -1.245,
+    -6.868,
+    90.0
+   ],
+   "overhang": 0.089
+  },
+  {
+   "tick": 9943,
+   "t": 82.858,
+   "label": "path",
+   "waypoints": [
+    [
+     -1.24,
+     -6.87,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 10057,
+   "t": 83.808,
+   "label": "base",
+   "pose": [
+    -1.245,
+    -6.868,
+    -270.0
+   ]
+  },
+  {
+   "tick": 10097,
+   "t": 84.142,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.0265,
+    0.0265
+   ]
+  },
+  {
+   "tick": 10446,
+   "t": 87.05,
+   "label": "reach",
+   "target": "edge_pre_far",
+   "tcp_err_m": 0.0036,
+   "q_err": 0.0079
+  },
+  {
+   "tick": 10505,
+   "t": 87.542,
+   "label": "reach",
+   "target": "edge_pre",
+   "tcp_err_m": 0.0038,
+   "q_err": 0.009
+  },
+  {
+   "tick": 10577,
+   "t": 88.142,
+   "label": "reach",
+   "target": "edge_grasp",
+   "tcp_err_m": 0.0045,
+   "q_err": 0.009
+  },
+  {
+   "tick": 10697,
+   "t": 89.142,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0349,
+    0.0347
+   ]
+  },
+  {
+   "tick": 11134,
+   "t": 92.783,
+   "label": "reach",
+   "target": "edge_lift",
+   "tcp_err_m": 0.0129,
+   "q_err": 0.0388
+  },
+  {
+   "tick": 11174,
+   "t": 93.117,
+   "label": "pick_result",
+   "obj": "book_red",
+   "kind": "edge_pinch",
+   "lift_m": 0.0214,
+   "fingers": [
+    0.0341,
+    0.0355
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 11595,
+   "t": 96.625,
+   "label": "reach",
+   "target": "edge_pull",
+   "tcp_err_m": 0.0137,
+   "q_err": 0.041
+  },
+  {
+   "tick": 11595,
+   "t": 96.625,
+   "label": "place_flat_park",
+   "obj": "book_red",
+   "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "centre": [
+    0.816,
+    -0.562
+   ],
+   "park": [
+    0.699,
+    -1.127,
+    75.0
+   ]
+  },
+  {
+   "tick": 11921,
+   "t": 99.342,
+   "label": "base",
+   "pose": [
+    -1.245,
+    -7.218,
+    -270.0
+   ]
+  },
+  {
+   "tick": 12327,
+   "t": 102.725,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.014,
+   "q_err": 0.0419
+  },
+  {
+   "tick": 12684,
+   "t": 105.7,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0103,
+   "q_err": 0.0426
+  },
+  {
+   "tick": 12684,
+   "t": 105.7,
+   "label": "carry_clearance",
+   "margin": 0.1
+  },
+  {
+   "tick": 12684,
+   "t": 105.7,
+   "label": "path",
+   "waypoints": [
+    [
+     -5.37,
+     -5.03,
+     152.05
+    ],
+    [
+     -5.57,
+     -4.83,
+     135.0
+    ],
+    [
+     -5.72,
+     -4.18,
+     102.99
+    ],
+    [
+     -5.72,
+     1.07,
+     90.0
+    ],
+    [
+     -5.52,
+     1.27,
+     45.0
+    ],
+    [
+     -5.32,
+     1.32,
+     14.04
+    ],
+    [
+     -4.47,
+     1.32,
+     0.0
+    ],
+    [
+     1.33,
+     1.07,
+     -2.47
+    ],
+    [
+     1.83,
+     1.02,
+     -5.71
+    ],
+    [
+     1.98,
+     0.92,
+     -33.69
+    ],
+    [
+     2.43,
+     0.52,
+     -41.63
+    ],
+    [
+     2.53,
+     0.32,
+     -63.43
+    ],
+    [
+     2.53,
+     -0.28,
+     -90.0
+    ],
+    [
+     2.38,
+     -0.48,
+     -126.87
+    ],
+    [
+     2.28,
+     -0.58,
+     -135.0
+    ],
+    [
+     1.33,
+     -1.03,
+     -154.65
+    ],
+    [
+     0.7,
+     -1.13,
+     75.0
+    ]
+   ]
+  },
+  {
+   "tick": 23847,
+   "t": 198.725,
+   "label": "base",
+   "pose": [
+    0.699,
+    -1.127,
+    75.0
+   ]
+  },
+  {
+   "tick": 24179,
+   "t": 201.492,
+   "label": "reach",
+   "target": "flat_pre",
+   "tcp_err_m": 0.0117,
+   "q_err": 0.0426
+  },
+  {
+   "tick": 24601,
+   "t": 205.008,
+   "label": "reach",
+   "target": "flat_over",
+   "tcp_err_m": 0.0151,
+   "q_err": 0.0442
+  },
+  {
+   "tick": 24973,
+   "t": 208.108,
+   "label": "reach",
+   "target": "flat_lower",
+   "tcp_err_m": 0.0099,
+   "q_err": 0.0236
+  },
+  {
+   "tick": 25073,
+   "t": 208.942,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 25106,
+   "t": 209.217,
+   "label": "reach",
+   "target": "flat_release_down",
+   "tcp_err_m": 0.004,
+   "q_err": 0.0081
+  },
+  {
+   "tick": 25190,
+   "t": 209.917,
+   "label": "reach",
+   "target": "flat_retreat",
+   "tcp_err_m": 0.0034,
+   "q_err": 0.0096
+  },
+  {
+   "tick": 25230,
+   "t": 210.25,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0135,
+    0.0135
+   ]
+  },
+  {
+   "tick": 25245,
+   "t": 210.375,
+   "label": "reach",
+   "target": "flat_push_down",
+   "tcp_err_m": 0.0029,
+   "q_err": 0.0024
+  },
+  {
+   "tick": 25447,
+   "t": 212.058,
+   "label": "reach",
+   "target": "flat_push",
+   "tcp_err_m": 0.0062,
+   "q_err": 0.0096
+  },
+  {
+   "tick": 25599,
+   "t": 213.325,
+   "label": "reach",
+   "target": "flat_up",
+   "tcp_err_m": 0.0047,
+   "q_err": 0.0071
+  },
+  {
+   "tick": 25689,
+   "t": 214.075,
+   "label": "place_result",
+   "obj": "book_red",
+   "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "on_support": true,
+   "tilt_deg": 0.4,
+   "detail": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/skills/a_flat/run.mp4"
+}

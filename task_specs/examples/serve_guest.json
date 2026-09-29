@@ -1,0 +1,20 @@
+{
+ "task": "serve_guest",
+ "instruction": "A guest is coming: put a book and a cup on the study desk.",
+ "instruction_zh": "给客人准备物品",
+ "robot_start_near": [0.8, -4.6],
+ "objects": {
+  "guest_book": {"asset": "book_blue", "supports": ["dining_table"]},
+  "guest_cup": {"asset": "breakfast_cup", "supports": ["tv_stand"], "optional": 0.5},
+  "guest_mug": {"asset": "breakfast_mug", "supports": ["bookcase_north_top", "tv_stand"]}
+ },
+ "roles": {"cup_like": ["guest_cup"], "mug": ["guest_mug"]},
+ "place_hints": {"guest_book": [-0.95, -6.12], "cup_like|mug": [-0.5, -6.15]},
+ "alternatives": ["guest_cup missing (50 %) -> the mug"],
+ "goal": {"all": [
+  {"on": ["guest_book"], "support": "study_desk"},
+  {"on": ["cup_like|mug"], "support": "study_desk", "upright": true},
+  {"closed": "all"},
+  {"not_dropped": "all"}
+ ]}
+}

@@ -1,9 +1,14 @@
 """Build task scenes as USD layers over sim/zeno_house.usd (rooms untouched;
-only furniture-top / floor assets are added) + a machine-readable task spec.
+only furniture-top / floor assets are added) + a machine-readable task file.
 
     cd zeno-house   # repository root
     OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} \
         tools/build_tasks.py --task collect_fruits [--seed 0]
+    # a task of your own (any path; see README "Define your own task")
+    ... tools/build_tasks.py --spec my_specs/serve_guest.json [--seed 0] [--out tasks/serve_guest]
+
+The task definition is task_specs/<task>.json (places may be aliases from
+task_specs/places.json).
 
 Output: tasks/<task>/scene.usd (sublayers ../../sim/zeno_house.usd),
         tasks/<task>/task.json.  Then run settle_scene.py / check_scene.py /
@@ -28,113 +33,14 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-
-DINING = "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
-TV = "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
-DESK = "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
-DESK2 = "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
-SHELF_TOP = "CellShelfFactory_2688822_spawn_asset_5011983/surface_4"
-SHELF_MID = "CellShelfFactory_2688822_spawn_asset_5011983/surface_2"
-CELL2 = "CellShelfFactory_867098_spawn_asset_5571502/surface_2"
-COUNTER = "repair/kitchen_counter_top"
-BOOKCASE = "SimpleBookcaseFactory_2318999_spawn_asset_8416993"
-BOOKCASE2 = "SimpleBookcaseFactory_6105320_spawn_asset_9196243"
-MATTRESS = "MattressFactory_4281756_spawn_asset_1415123/surface_0"
-SIDEBOARD = "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
-# floor areas (room, x0, y0, x1, y1): open floor away from furniture
-FLOOR_LIVING = ("floor:living_room", 4.2, 1.6, 6.2, 3.0)
-FLOOR_BEDROOM = ("floor:bedroom", 3.4, -4.4, 6.0, -1.2)
-FLOOR_BEDROOM2 = ("floor:bedroom2", 0.2, -2.6, 2.2, -1.0)
-
-TASKS = {
-    "breakfast_setup": {
-        "instruction": "Set up the dining table for breakfast.",
-        "robot_start_near": (1.6, 8.4),
-        "objects": {},                         # the base scene already holds the breakfast set
-        "existing": {"plate": ["plate_counter_a", "plate_counter_b", "plate_dining_cabinet",
-                               "plate_inside_kitchen_cabinet"],
-                     "bowl_fallback": ["bowl_dining_cabinet", "bowl_kitchen_cabinet", "bowl_side_table",
-                                       "bowl_inside_kitchen_cabinet"],
-                     "cup": ["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"],
-                     "mug_fallback": ["mug_counter", "mug_shelf", "mug_dining_cabinet"],
-                     "spoon": ["spoon_counter", "spoon_kitchen_cabinet", "spoon_inside_kitchen_drawer",
-                               "spoon_side_table", "spoon_target_table"],
-                     "table_clutter": ["clutter_cereal_a", "clutter_cereal_b"]},
-        "drop_existing": {"plate": 0.25, "cup": 0.25},
-        "target": {"support": DINING, "place_xy": {"plate": [3.16, 6.75], "cup": [3.45, 6.75],
-                                                    "spoon": [3.30, 6.45]}},
-        "alternatives": ["plate missing -> bowl", "cup missing -> mug",
-                         "target spot occupied (cereal boxes) -> move clutter off the table first"],
-        "success": {"all_of": [{"role": "plate|bowl_fallback", "on_support": DINING},
-                               {"role": "cup|mug_fallback", "on_support": DINING},
-                               {"role": "spoon", "on_support": DINING}]},
-    },
-    "collect_fruits": {
-        "instruction": "Collect the fruits and place them in a container on the dining table.",
-        "robot_start_near": (3.3, 4.9),
-        "objects": {
-            "apple": {"asset": "apple", "supports": [COUNTER, DINING, TV]},
-            "banana": {"asset": "banana", "supports": [TV, SHELF_TOP, DESK2]},
-            "orange": {"asset": "orange", "supports": [DINING, COUNTER, SHELF_MID]},
-            "fruit_basket": {"asset": "fruit_basket", "supports": [DINING], "optional": 0.3},
-            "serving_tray": {"asset": "serving_tray", "supports": [DINING]},
-        },
-        "alternatives": ["fruit_basket missing -> serving_tray (or the breakfast bowls)"],
-        "success": {"all_of": [{"objects": ["apple", "banana", "orange"],
-                                "inside_container": "fruit_basket|serving_tray"},
-                               {"objects": ["fruit_basket|serving_tray"], "on_support": DINING}]},
-    },
-    "desk_prep": {
-        "instruction": "Prepare the desk with a notebook, a pen, and a mug.",
-        "robot_start_near": (5.4, -3.6),
-        "objects": {
-            "notebook": {"asset": "notebook", "supports": [SHELF_TOP, DINING, TV]},
-            "pen": {"asset": "pen", "supports": [DINING, SHELF_MID, TV], "optional": 0.3},
-            "pencil": {"asset": "pencil", "supports": [f"{BOOKCASE2}/surface_3", DESK2]},
-        },
-        "existing": {"mug": ["mug_shelf", "mug_counter", "mug_dining_cabinet"],
-                     "cup_fallback": ["cup_counter_b", "cup_kitchen_cabinet", "cup_side_table"]},
-        "alternatives": ["mug missing -> cup", "pen missing -> pencil"],
-        "success": {"all_of": [{"objects": ["notebook", "pen|pencil"], "on_support": DESK},
-                               {"role": "mug|cup_fallback", "on_support": DESK}]},
-    },
-    "tidy_toys": {
-        "instruction": "Collect the toys and store them in the toy box.",
-        "robot_start_near": (4.3, -2.2),
-        "objects": {
-            "toy_car": {"asset": "toy_car", "supports": [FLOOR_LIVING, TV]},
-            "teddy_bear": {"asset": "teddy_bear", "supports": [FLOOR_BEDROOM, MATTRESS]},
-            "toy_block": {"asset": "toy_block", "supports": [FLOOR_BEDROOM, FLOOR_BEDROOM2, DESK]},
-            "rubber_duck": {"asset": "rubber_duck", "supports": [TV, FLOOR_LIVING]},
-            "toy_box": {"asset": "toy_box", "supports": [FLOOR_BEDROOM], "optional": 0.3},
-            "storage_basket": {"asset": "storage_basket", "supports": [FLOOR_BEDROOM2, FLOOR_LIVING]},
-        },
-        "alternatives": ["toy_box missing -> storage_basket"],
-        "success": {"all_of": [{"objects": ["toy_car", "teddy_bear", "toy_block", "rubber_duck"],
-                                "inside_container": "toy_box|storage_basket"}]},
-    },
-    "shelve_books": {
-        "instruction": "Collect the books and place them on the bookshelf.",
-        "robot_start_near": (1.2, -3.8),
-        "objects": {
-            "book_red": {"asset": "book_red", "supports": [DESK2, DESK]},
-            "book_green": {"asset": "book_green", "supports": [FLOOR_BEDROOM2, FLOOR_BEDROOM]},
-            "book_blue": {"asset": "book_blue", "supports": [MATTRESS, TV]},
-            "shelf_blocker": {"asset": "rubber_duck", "supports": [f"{BOOKCASE}/surface_1"]},
-        },
-        "alternatives": ["middle shelf occupied (toy duck) -> another shelf level or bookcase "
-                         f"{BOOKCASE2}", "book hard to grasp (flat, wider than the gripper) -> "
-                         "push it over a support edge, then pinch the overhang"],
-        "success": {"all_of": [{"objects": ["book_red", "book_green", "book_blue"],
-                                "on_support_of": [BOOKCASE, BOOKCASE2]}]},
-    },
-}
+from zeno_skills.tasks import place_name  # noqa: E402
 
 
 def support_box(ann, name):
-    if isinstance(name, tuple):                      # floor area
-        _, x0, y0, x1, y1 = name
-        return {"name": name[0], "z": 0.0, "aabb_xy": [x0, y0, x1, y1], "clearance": 2.0}
+    if isinstance(name, dict):                       # floor area
+        x0, y0, x1, y1 = name["xy"]
+        return {"name": place_name(name), "z": 0.0, "aabb_xy": [x0, y0, x1, y1],
+                "clearance": 2.0}
     for s in ann["supports"]:
         if s["name"] == name:
             return s
@@ -143,17 +49,48 @@ def support_box(ann, name):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--task", required=True, choices=sorted(TASKS))
+    ap.add_argument("--task", help="name of a spec in task_specs/")
+    ap.add_argument("--spec", help="path of a task spec JSON (your own task)")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--out", help="output directory (default tasks/<task>)")
+    ap.add_argument("--no-reach-check", action="store_true", help="skip the (slow) arm reachability test")
     args = ap.parse_args()
-    spec = TASKS[args.task]
+    from zeno_skills.tasks import load_places, load_spec, resolve_goal, resolve_place
+    spec = load_spec(args.spec or args.task)
+    args.task = spec["task"]
+    places = load_places()
+    for o in spec.get("objects", {}).values():
+        o["supports"] = [resolve_place(p, places) for p in o["supports"]]
     rng = np.random.default_rng(args.seed)
-    out = ROOT / "tasks" / args.task
+    out = Path(args.out).resolve() if args.out else ROOT / "tasks" / args.task
     out.mkdir(parents=True, exist_ok=True)
     base_ann = json.loads((ROOT / "annotations/zeno_house.json").read_text())
     assets = json.loads((ROOT / "annotations/assets.json").read_text())
 
-    # ---- sample placements (kinematic, collision-free vs placed + existing)
+    # ---- reachability: Zeno must be able to pinch the object where it is put
+    # (a container: drop into it) from some collision-free base pose
+    from zeno_skills.annotations import SceneAnnotations
+    from zeno_skills.collision import WorldModel
+    from zeno_skills.kinematics import ArmKin, gripper_rot
+    from zeno_skills.planner import find_park
+    ann = SceneAnnotations(ROOT / "annotations/zeno_house.json")
+    world = WorldModel(ann)
+    kin = ArmKin()
+    kin.scene = world
+    kin.coll_kw = {"ignore_fingers": True}
+
+    def reachable(x, y, z_top, a):
+        if a.get("container"):                      # drop point: just above the rim
+            z = z_top - a["size"][2] + a["container"]["rim_height"] + 0.05
+        else:
+            z = z_top - min(0.03, a["size"][2] / 2)
+        R = gripper_rot([0, 0, -1.0], [1.0, 0.0, 0.0])
+        p = np.array([x, y, max(z, 0.03)])
+        legs = [(p + np.array([0, 0, 0.08]), R), (p + np.array([0, 0, 0.03]), R), (p, R),
+                (p + np.array([0, 0, 0.07]), R)]
+        return find_park(kin, world, legs, near=(x, y), max_tries=40, travel_q=kin.rest) is not None
+
+    # ---- sample placements (kinematic, collision-free vs placed + existing, reachable)
     taken = [np.array(o["aabb"]) for o in base_ann["objects"]]
     placements, dropped = {}, []
     for name, o in spec.get("objects", {}).items():
@@ -163,8 +100,8 @@ def main():
         a = assets[o["asset"]]
         sx, sy, sz = a["size"]
         ok = False
-        for attempt in range(200):
-            sup = o["supports"][rng.integers(len(o["supports"]))] if attempt > 20 else o["supports"][0]
+        for attempt in range(120):
+            sup = o["supports"][rng.integers(len(o["supports"]))] if attempt > 12 else o["supports"][0]
             s = support_box(base_ann, sup)
             yaw = float(rng.uniform(-math.pi, math.pi)) if "flat" not in a["tags"] else float(rng.choice([0, math.pi / 2]))
             c, sn = abs(math.cos(yaw)), abs(math.sin(yaw))
@@ -175,12 +112,16 @@ def main():
             x, y = rng.uniform(x0 + hx, x1 - hx), rng.uniform(y0 + hy, y1 - hy)
             # reachability-aware: Zeno's arm reaches ~0.4 m past a furniture
             # edge, so objects sit in a band along the edges of big surfaces
-            if not str(s["name"]).startswith("floor:") and \
+            if not str(s["name"]).startswith("floor") and \
                     min(x - x0, x1 - x, y - y0, y1 - y) > max(hx, hy) + 0.12:
                 continue
             box = np.array([x - hx, y - hy, s["z"], x + hx, y + hy, s["z"] + sz])
             if any((box[0] < t[3] and t[0] < box[3] and box[1] < t[4] and t[1] < box[4]
                     and box[2] < t[5] and t[2] < box[5]) for t in taken):
+                continue
+            # floor spots are all reachable (torso down); blockers etc. opt out
+            if not args.no_reach_check and o.get("reach_check", True) and not str(s["name"]).startswith("floor") \
+                    and not reachable(x, y, s["z"] + sz, a):
                 continue
             taken.append(box)
             # body origin = bottom-centre - origin_to_bottom_center (object frame, yaw)
@@ -198,12 +139,12 @@ def main():
         for inst in spec["existing"][role]:
             if rng.random() < p:
                 removed.append(inst)
+    existing = {k: [i for i in v if i not in removed] for k, v in spec.get("existing", {}).items()}
+    roles = dict(existing)
+    for k, v in spec.get("roles", {}).items():
+        roles[k] = [i for i in v if i not in dropped]
 
     # ---- robot start: nearest free base pose
-    from zeno_skills.annotations import SceneAnnotations
-    from zeno_skills.collision import WorldModel
-    ann = SceneAnnotations(ROOT / "annotations/zeno_house.json")
-    world = WorldModel(ann)
     sx0, sy0 = spec["robot_start_near"]
     start = None
     for r in np.arange(0.0, 1.6, 0.1):
@@ -227,7 +168,7 @@ def main():
     path = out / "scene.usd"
     layer = Sdf.Layer.CreateNew(str(path)) if not path.exists() else Sdf.Layer.FindOrOpen(str(path))
     layer.Clear()
-    layer.subLayerPaths.append("../../sim/zeno_house.usd")
+    layer.subLayerPaths.append(os.path.relpath(ROOT / "sim/zeno_house.usd", out))
     layer.Save()
     stage = Usd.Stage.Open(str(path))
     stage.SetEditTarget(stage.GetRootLayer())
@@ -260,16 +201,21 @@ def main():
     stage.GetRootLayer().customLayerData = {"task": args.task, "seed": args.seed}
     stage.GetRootLayer().Save()
 
-    task = {"task": args.task, "instruction": spec["instruction"], "seed": args.seed,
-            "scene_usd": f"tasks/{args.task}/scene.usd", "annotation": f"tasks/{args.task}/annotation.json",
+    rel = os.path.relpath(out, ROOT)
+    hints = spec.get("place_hints", {})
+    hints = {k: (resolve_place(v, places) if isinstance(v, str) or (isinstance(v, list) and v and isinstance(v[0], str))
+                 else v) for k, v in hints.items()}
+    task = {"task": args.task, "instruction": spec["instruction"], "instruction_zh": spec.get("instruction_zh"),
+            "seed": args.seed, "spec": os.path.relpath(Path(args.spec).resolve(), ROOT) if args.spec
+            else f"task_specs/{args.task}.json",
+            "scene_usd": f"{rel}/scene.usd", "annotation": f"{rel}/annotation.json",
             "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
             "robot_start": start, "placed_objects": placements, "dropped_optional_objects": dropped,
-            "deactivated_base_objects": removed, "existing_objects": spec.get("existing", {}),
-            "candidate_supports": {k: [s if isinstance(s, str) else s[0] for s in v["supports"]]
+            "deactivated_base_objects": removed, "existing_objects": existing, "roles": roles,
+            "candidate_supports": {k: [place_name(s) for s in v["supports"]]
                                    for k, v in spec.get("objects", {}).items()},
-            "alternatives": spec["alternatives"], "success": spec["success"]}
-    if "target" in spec:
-        task["target"] = spec["target"]
+            "alternatives": spec.get("alternatives", []), "place_hints": hints,
+            "goal": resolve_goal(spec["goal"], places)}
     (out / "task.json").write_text(json.dumps(task, indent=1))
     print("TASK", args.task, "placed", list(placements), "dropped", dropped, "removed", removed,
           "robot", [round(v, 2) for v in start], flush=True)

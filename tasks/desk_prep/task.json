@@ -1,24 +1,26 @@
 {
  "task": "desk_prep",
- "instruction": "Prepare the desk with a notebook, a pen, and a mug.",
+ "instruction": "Prepare the study desk with a notebook, a pen, and a mug.",
+ "instruction_zh": "\u51c6\u5907\u5de5\u4f5c\u684c",
  "seed": 0,
+ "spec": "task_specs/desk_prep.json",
  "scene_usd": "tasks/desk_prep/scene.usd",
  "annotation": "tasks/desk_prep/annotation.json",
  "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
  "robot_start": [
-  5.4,
-  -3.6,
-  0.0
+  1.7526279441628827,
+  -4.05,
+  -150.0
  ],
  "placed_objects": {
   "notebook": {
    "asset": "notebook",
-   "support": "CellShelfFactory_2688822_spawn_asset_5011983/surface_4",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
    "yaw": 1.5707963267948966,
    "position": [
-    3.574144637477432,
-    4.3304460900582225,
-    0.9561000000000001
+    2.9495297124242215,
+    5.682633582199509,
+    0.8751
    ]
   },
   "pen": {
@@ -34,60 +36,95 @@
   "pencil": {
    "asset": "pencil",
    "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
-   "yaw": -2.0379158390962826,
+   "yaw": -1.2584473065782806,
    "position": [
-    4.178930759516597,
-    -7.717920901525366,
+    0.964535342579661,
+    -0.49469669043255515,
     0.7262
+   ]
+  },
+  "desk_mug": {
+   "asset": "breakfast_mug",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": 1.072064815449135,
+   "position": [
+    7.7275071660269194,
+    0.35586064038935006,
+    0.5437
    ]
   }
  },
- "dropped_optional_objects": [],
+ "dropped_optional_objects": [
+  "desk_cup"
+ ],
  "deactivated_base_objects": [],
- "existing_objects": {
+ "existing_objects": {},
+ "roles": {
   "mug": [
-   "mug_shelf",
-   "mug_counter",
-   "mug_dining_cabinet"
+   "desk_mug"
   ],
-  "cup_fallback": [
-   "cup_counter_b",
-   "cup_kitchen_cabinet",
-   "cup_side_table"
-  ]
+  "cup": []
  },
  "candidate_supports": {
   "notebook": [
-   "CellShelfFactory_2688822_spawn_asset_5011983/surface_4",
-   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
-   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
   ],
   "pen": [
    "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
-   "CellShelfFactory_2688822_spawn_asset_5011983/surface_2",
    "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
   ],
   "pencil": [
-   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
-   "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+  ],
+  "desk_mug": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+  ],
+  "desk_cup": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
   ]
  },
  "alternatives": [
-  "mug missing -> cup",
-  "pen missing -> pencil"
+  "mug unreachable/slips -> cup (present in 50 % of the variants)",
+  "pen missing (30 %) -> pencil",
+  "notebook is flat and wider than the gripper -> push it over the edge, pinch the overhang"
  ],
- "success": {
-  "all_of": [
+ "place_hints": {
+  "notebook": [
+   -0.95,
+   -6.12
+  ],
+  "pen|pencil": [
+   -0.55,
+   -6.18
+  ],
+  "mug|cup": [
+   -0.25,
+   -6.12
+  ]
+ },
+ "goal": {
+  "all": [
    {
-    "objects": [
+    "on": [
      "notebook",
      "pen|pencil"
     ],
-    "on_support": "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
+    "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
    },
    {
-    "role": "mug|cup_fallback",
-    "on_support": "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
+    "on": [
+     "mug|cup"
+    ],
+    "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+    "upright": true
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
    }
   ]
  }

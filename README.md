@@ -7,14 +7,14 @@ Every task object was generated with [EmbodiedGen V2](https://github.com/Horizon
 text-to-3D.
 
 <p align="center">
-  <img src="media/demo_fruit.gif" width="49%" alt="pick an orange, drive around the table, place it in the basket"/>
-  <img src="media/demo_cabinet.gif" width="49%" alt="drive through the doorway, open and close the cabinet"/>
+  <img src="media/tasks/collect_fruits.gif" width="49%" alt="collect_fruits: apple and orange from the dining table into the basket on the living-room bookcase"/>
+  <img src="media/tasks/shelve_books.gif" width="49%" alt="shelve_books: push each book over the desk edge, pinch it, carry it to the bookcase"/>
 </p>
 <p align="center"><sub>
-Left: pick the orange → A* around the dining table → place it in the basket (3 cm from its centre).
-Right: drive through the dining/living-room doorway → open the cabinet door to 80° → close it.
+Whole tasks, run by the goal-driven scripted policy and scored by the success checker (sped up).
+Left: <b>collect_fruits</b>, both fruits into the basket, across two rooms.
+Right: <b>shelve_books</b>, flat books pushed over the desk edge, pinched at the overhang, placed on a bookcase.
 Everything is computed from the annotations: no hand-tuned base poses or grasps.
-Full 98 s video: <a href="media/zeno_house_demo.mp4">media/zeno_house_demo.mp4</a>
 </sub></p>
 
 Physics is real PhysX contact. The rollout only ever writes the robot's joint-drive targets and
@@ -26,11 +26,13 @@ simulator state (joint angle, object pose, finger gap).
 ## Contents
 
 - [Scenes](#scenes)
-- [Tasks covered](#tasks-covered)
+- [Tasks (ZenoBench)](#tasks-zenobench)
 - [GT annotations](#gt-annotations-ik--grasp--rl)
+- [Atomic skills](#atomic-skills)
 - [Skills](#skills)
 - [Physics fixes baked into the scene](#physics-fixes-baked-into-the-scene)
 - [Quick start](#quick-start)
+- [Add your own assets (EmbodiedGen)](#add-your-own-assets-embodiedgen)
 - [Rebuild pipeline](#rebuild-pipeline)
 - [Repository layout](#repository-layout)
 - [Limitations](#limitations)
@@ -40,18 +42,16 @@ simulator state (joint angle, object pose, finger gap).
 ## Scenes
 
 One house (`sim/zeno_house.usd`) contains 10 rooms, 58 pieces of static furniture, 15
-articulated cabinets and drawers, a microwave and the Zeno Malo robot. Each task scene is a thin
+articulated cabinets and drawers, a microwave and the Zeno Malo robot. No cabinet stands in a bathroom
+(the ones the layout generator put there were moved to the living and dining rooms, `tools/relocate_furniture.py`). Each task scene is a thin
 USD layer on top of it (`tasks/<task>/scene.usd`). The rooms themselves are never modified; a
 task only adds assets to furniture tops or to the floor.
 
 | | |
 |---|---|
 | ![](media/scenes/house_topdown.jpg) House, top-down (roofless) | ![](media/scenes/living_room_cabinet.jpg) Articulated cabinet with side-hook handle, living room |
-| ![](media/scenes/breakfast_dining_table.jpg) **breakfast_setup**: dining table with clutter (cereal boxes) and cups | ![](media/scenes/breakfast_counter.jpg) **breakfast_setup**: bowl and mug on a kitchen surface |
-| ![](media/scenes/fruits_table_basket_tray.jpg) **collect_fruits**: basket, fallback tray and clutter on the dining table | ![](media/scenes/fruits_banana_tv_stand.jpg) **collect_fruits**: banana on the living-room TV stand |
-| ![](media/scenes/desk_notebook_on_shelf.jpg) **desk_prep**: notebook on a shelf in another room | ![](media/scenes/desk_target_desk.jpg) **desk_prep**: target desk in the bedroom |
-| ![](media/scenes/toys_toybox_bedroom.jpg) **tidy_toys**: toy box, teddy bear, blocks and Zeno | ![](media/scenes/toys_car_on_rug.jpg) **tidy_toys**: toy car on the living-room rug |
-| ![](media/scenes/books_bookcase_blocked_shelf.jpg) **shelve_books**: bookcase, middle shelf blocked by a duck | ![](media/scenes/books_topdown.jpg) **shelve_books**: books on the desk, bed and floor (top-down) |
+
+The task layouts are shown in the task videos below.
 
 Every scene passes a physics check: after 3 s of simulation every free body has drifted less
 than 1 cm, every articulated part stays closed and the robot holds its pose (see
@@ -59,42 +59,118 @@ than 1 cm, every articulated part stays closed and the robot holds its pose (see
 
 ---
 
-## Tasks covered
+## Tasks (ZenoBench)
 
-### Built task scenes
+Each task is a spec in `task_specs/<task>.json`. `tools/build_tasks.py` samples a variant of it into
+`tasks/<task>/{scene.usd, task.json, annotation.json}`. The spec gives the instruction, the objects
+with their candidate supports, the alternatives, and the goal. A task is **scored by
+`zeno_skills/evaluator.py`** from simulator state only, and **solved by the goal-driven scripted policy
+`zeno_skills/task_policy.py`**, which turns the goal into `pick / place / push / open / close` calls.
+`tools/run_task.py` does evaluate → policy → evaluate, then writes `result.json` and a video.
 
-Each task ships as `tasks/<task>/{scene.usd, task.json, annotation.json}`. `task.json` holds the
-instruction, the objects and their candidate supports, the alternatives/recovery branches, the
-success conditions and the seed. `tools/build_tasks.py --task T --seed N` samples a new variant:
-it picks the support and pose for each object (collision-free, near an edge so Zeno can reach
-it) and drops optional objects to trigger the alternatives.
+<!-- TASK_VIDEOS -->
+| task | rollout (sped up) | result |
+|---|---|---|
+| **collect_fruits** | <img src="media/tasks/collect_fruits.gif" width="420"/><br>[video](media/tasks/collect_fruits.mp4) | **success**, progress 100%<br>186 s simulated |
+| **tidy_toys** | <img src="media/tasks/tidy_toys.gif" width="420"/><br>[video](media/tasks/tidy_toys.mp4) | **success**, progress 100%<br>238 s simulated<br><sub>alternative: storage_basket</sub> |
+| **shelve_books** | <img src="media/tasks/shelve_books.gif" width="420"/><br>[video](media/tasks/shelve_books.mp4) | **success**, progress 100%<br>438 s simulated |
+| **breakfast_setup** | <img src="media/tasks/breakfast_setup.gif" width="420"/><br>[video](media/tasks/breakfast_setup.mp4) | **partial**, progress 67%<br>340 s simulated<br><sub>alternative: mug; dropped: mug</sub> |
+| **desk_prep** | <img src="media/tasks/desk_prep.gif" width="420"/><br>[video](media/tasks/desk_prep.mp4) | **success**, progress 100%<br>625 s simulated |
+<!-- /TASK_VIDEOS -->
 
-| Task | Instruction | Objects (EmbodiedGen V2) | Alternatives / recovery | Success condition |
-|---|---|---|---|---|
-| **breakfast_setup** 整理早餐餐具 | Set up the dining table for breakfast. | plate, bowl, cup, mug, spoon, cereal boxes (clutter) | plate missing → bowl; cup missing → mug; spot occupied → clear the clutter first | plate\|bowl, cup\|mug and spoon on the dining table |
-| **collect_fruits** 收集水果 | Collect the fruits and place them in a container on the dining table. | apple, banana, orange, fruit_basket, serving_tray | basket missing → tray | all fruits in the container; container on the dining table |
-| **desk_prep** 准备工作桌 | Prepare the desk with a notebook, a pen, and a mug. | notebook, pen, pencil (+ mugs, cups) | mug → cup; pen → pencil | notebook, pen\|pencil and mug\|cup on the desk |
-| **tidy_toys** 收拾玩具 | Collect the toys and store them in the toy box. | toy_car, teddy_bear, toy_block, rubber_duck, toy_box, storage_basket | toy box missing → storage basket | all toys in the container |
-| **shelve_books** 整理书籍 | Collect the books and place them on the bookshelf. | book_red, book_green, book_blue (+ duck blocking a shelf) | shelf occupied → other level or bookcase; book too flat → push to an edge, then grasp | all books on a bookcase |
+### Success conditions
 
-### Coverage of the household task list with the current house and assets
+A task succeeds when **every** condition of its goal holds in the final simulator state. `progress` is
+the fraction of satisfied items (one item per object slot), so partial solutions are scored.
 
-| Task | Status |
-|---|---|
-| 整理早餐餐具 / 收集水果 / 准备工作桌 / 收拾玩具 / 整理书籍 | ✅ built (above) |
-| 给客人准备物品 (book + cup to the guest table) | 🟡 all assets and annotations exist; add a `TASKS` entry |
-| 搬运多个物体 (counter → storage table, tray-assisted) | 🟡 tray and objects exist; add a `TASKS` entry |
-| 清理餐桌 (plate, cup, book, box on the table → put away) | 🟡 all but "trash" exist |
-| 整理储物架 (sort shelf objects by category) | 🟡 shelves and annotated shelf levels exist; categories come from asset `tags` |
-| 准备野餐篮 (items into a basket → front door) | 🟡 basket, plate and cup exist; needs napkin and snack-box assets |
-| 整理购物物品 / 收集空容器 | ⬜ needs cans and bottles (one `text3d-cli` call) |
-| 整理鞋子 / 整理卧室杂物 (shoes) | ⬜ needs shoe assets |
-| 准备机器人工作区 (screwdriver, tape, tool case) | ⬜ needs tool assets |
+| Task | Instruction | Goal (all must hold) | Alternatives exercised by the seed |
+|---|---|---|---|
+| **breakfast_setup** 整理早餐餐具 | Set up the dining table for breakfast. | `plate\|bowl` on the dining table, upright · `cup\|mug` on the dining table, upright · `spoon` on the dining table · one of each within 0.5 m of each other (a place setting) · every door/drawer closed · nothing that started above 10 cm lies on the floor | plate missing (30 %) → bowl; cup missing (30 %) → mug; hint spot occupied by cereal boxes → nearest free spot; plate wider than the gripper → push over the table edge, pinch the overhang |
+| **collect_fruits** 收集水果 | Collect the fruits and place them in a container on the low bookcase in the living room. | apple and orange **inside** one container (`fruit_basket\|serving_tray`, bound as `$container`) · `$container` on the bookcase top, upright · all closed · nothing dropped | basket missing (30 %) → tray; a container that keeps rejecting objects → the other one |
+| **desk_prep** 准备工作桌 | Prepare the study desk with a notebook, a pen, and a mug. | notebook and `pen\|pencil` on the study desk · `mug\|cup` on the study desk, upright · all closed · nothing dropped | the mug, else the cup (present in 50 % of the variants); pen missing (30 %) or not graspable → pencil; notebook → push + edge pinch |
+| **tidy_toys** 收拾玩具 | Collect the toys and store them in the toy box. | toy car, block, duck **inside** one of `toy_box\|storage_basket` · that container upright · all closed · nothing dropped | toy box missing (30 %) → storage basket; toys on the floor → torso fully lowered |
+| **shelve_books** 整理书籍 | Collect the books and place them on the bookshelf. | both books on either bookcase (top or a shelf level) · all closed · nothing dropped | a full bookcase top → the other bookcase's top, then shelf levels (the middle shelf is blocked by a duck); books are flat → push over the desk edge, pinch the overhang |
 
-New assets go through the same pipeline (`assets/gen_v2_assets.sh` → `tools/prepare_assets.py`
-→ `tools/fix_textures.py`). A new task is one entry in `TASKS` in `tools/build_tasks.py`.
+Geometric definitions (`zeno_skills/evaluator.py`):
 
----
+| condition | JSON | holds when |
+|---|---|---|
+| `on` | `{"on": [slots], "support": place \| [places], "upright": true}` | object bottom within −2…+5 cm of the surface height and its footprint centre inside the surface's xy box (a spoon resting on a plate still counts); `upright`: tilt ≤ 20° |
+| `inside` | `{"inside": [slots], "container": "a\|b", "bind": "name"}` | object centre inside the container's wall profile, between its floor and 3 cm above the rim; **one** container holds every slot; it is bound for later conditions (`"$name"`) |
+| `upright` | `{"upright": [slots], "max_tilt_deg": 20}` | tilt of the object's z axis ≤ limit |
+| `near` | `{"near": [slots], "support": place, "max_dist": 0.5}` | one instance per slot on that support, pairwise within `max_dist` |
+| `closed` | `{"closed": "all" \| [names], "tol": …}` | every listed articulated joint within 0.10 rad (doors) / 4 cm (drawers) of closed |
+| `not_dropped` | `{"not_dropped": "all"}` | no object that started above 10 cm is on the floor (unless inside a container) |
+
+Slots: `"apple"` = that instance, or any instance of the role `apple`; `"plate|bowl"` = the first present
+alternative, in order; `"all:fruit"` = one slot per instance of the role; `"$container"` = the instance
+bound by an earlier condition.
+
+### Run a task
+
+```bash
+export OMNI_KIT_ACCEPT_EULA=YES
+$ISAACLAB_PYTHON tools/run_task.py --task collect_fruits                  # policy + video -> runs/collect_fruits/
+$ISAACLAB_PYTHON tools/run_task.py --task collect_fruits --evaluate-only  # only score the current state
+$ISAACLAB_PYTHON tools/build_tasks.py --task collect_fruits --seed 3      # a new random variant
+```
+
+`result.json` holds the initial and final evaluation (per condition and per slot, with the reason
+for every failure), every policy decision (`alternative`, `pick_failed`, `dropped`, `container_swapped`,
+…) and every skill event. Exit code 0 = success, 3 = failed, 4 = crash.
+
+To evaluate your own policy, build the scene, run your controller, and call
+
+```python
+from zeno_skills.evaluator import TaskEvaluator, rig_state
+ev = TaskEvaluator(json.load(open("tasks/collect_fruits/task.json")), rig.ann)
+rep = ev.evaluate(rig_state(rig))       # or any {"objects": {name: {pos, quat}}, "joints": {name: q}}
+rep["success"], rep["progress"], rep["conditions"]
+```
+
+### Define your own task
+
+1. Find names: `python tools/list_places.py [--room bedroom]` prints every support surface (room,
+   height, size, headroom), the aliases in `task_specs/places.json`, the object instances already in the
+   house and the asset types in `annotations/assets.json`.
+2. Write a spec (full example: `task_specs/examples/serve_guest.json`, 给客人准备物品):
+
+```jsonc
+{
+ "task": "serve_guest",
+ "instruction": "A guest is coming: put a book and a cup on the study desk.",
+ "robot_start_near": [0.8, -4.6],
+ "objects": {                                          // spawned by the builder
+  "guest_book": {"asset": "book_blue", "supports": ["dining_table"]},
+  "guest_cup":  {"asset": "breakfast_cup", "supports": ["tv_stand"], "optional": 0.5},
+  "guest_mug":  {"asset": "breakfast_mug", "supports": ["bookcase_north_top", "tv_stand"]}
+ },
+ "roles": {"cup_like": ["guest_cup"], "mug": ["guest_mug"]},
+ "place_hints": {"guest_book": [-0.95, -6.12], "cup_like|mug": [-0.5, -6.15]},
+ "goal": {"all": [
+  {"on": ["guest_book"], "support": "study_desk"},
+  {"on": ["cup_like|mug"], "support": "study_desk", "upright": true},  // the cup, else the mug
+  {"closed": "all"}, {"not_dropped": "all"}
+ ]}
+}
+```
+
+   `supports` are sampled by the seed (the first one is preferred); the builder only keeps spots that
+   are collision-free **and reachable by Zeno's arm** (a base pose + IK check), so every generated
+   variant is solvable in principle. `optional` drops the object with that probability, which
+   exercises the alternatives. `place_hints` are either an xy target or an ordered list of surfaces.
+   Objects already in the house can join a role with `"existing": {"role": [instance names]}`.
+3. Build, check and run it:
+
+```bash
+cp task_specs/examples/serve_guest.json task_specs/
+bash tools/make_tasks.sh serve_guest       # build (reachability-checked) + settle + physics check + annotate
+$ISAACLAB_PYTHON tools/run_task.py --task serve_guest
+python -m pytest tests/                    # specs load, aliases resolve, evaluator unit tests
+# a spec kept elsewhere: tools/build_tasks.py --spec my/spec.json --seed 0 --out tasks/my_task
+```
+
+Nothing in the policy or the evaluator is task-specific; a new task is only a JSON file.
 
 ## GT annotations (IK + grasp + RL)
 
@@ -112,10 +188,11 @@ privileged observations and dense rewards for RL.
   - `rim_pinch` / `rim_pinch_rect`: containers. Pinch the wall at the rim; candidates over rim
     azimuth × approach tilt.
   - `top_pinch`: vertical approach across the narrowest cross-section. The cross-section is found
-    by sliding a pad-wide slab along the object, so bananas, pens and cars work; `offset_xy`
+    by sliding a pad-wide slab along the object, so pens, spoons and toy cars work; `offset_xy`
     gives the pinch point.
   - `edge_pinch_after_push`: flat objects wider than the gripper (plate, books, notebook).
-  - Assets marked not graspable by Zeno: cereal box, teddy bear.
+  - Not graspable by Zeno: cereal box (wider than the gripper in every direction). The teddy bear only has a
+    crown pinch on its head (`"crown": true`), which does not survive a carry.
 
 <p align="center"><img src="media/assets_gallery.jpg" width="85%"/></p>
 
@@ -140,23 +217,44 @@ ann.motion(art, q)                                         # rigid motion of the
 
 ---
 
+## Atomic skills
+
+<!-- SKILL_VIDEOS -->
+| | |
+|---|---|
+| <img src="media/skills/open_close_door.gif" width="100%"/><br><sub>Open + close a cabinet door (revolute): side-hook grasp, base rides with the door ([mp4](media/skills/open_close_door.mp4))</sub> | <img src="media/skills/open_close_drawer.gif" width="100%"/><br><sub>Open + close a drawer (prismatic) ([mp4](media/skills/open_close_drawer.mp4))</sub> |
+| <img src="media/skills/pick_place_table.gif" width="100%"/><br><sub>Pick a pencil from the study desk, carry it through two rooms, place it on the bedroom desk ([mp4](media/skills/pick_place_table.mp4))</sub> | <img src="media/skills/place_in_container.gif" width="100%"/><br><sub>Pick an orange, drop it into the fruit basket ([mp4](media/skills/place_in_container.mp4))</sub> |
+| <img src="media/skills/floor_pick.gif" width="100%"/><br><sub>Floor pick (torso fully lowered) into the storage basket ([mp4](media/skills/floor_pick.mp4))</sub> | <img src="media/skills/flat_pick_place.gif" width="100%"/><br><sub>Flat book: push it over the desk edge, pinch the overhang, place it on a bookcase and push it on ([mp4](media/skills/flat_pick_place.mp4))</sub> |
+<!-- /SKILL_VIDEOS -->
+
+Run any sequence of skills on any scene (records `run.mp4` + `result.json`):
+
+```bash
+$ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
+    --ann tasks/collect_fruits/annotation.json --out runs/demo \
+    --plan "pick orange" "place orange in:fruit_basket" \
+           "open KitchenCabinetFactory_7025538_spawn_asset_6631478" "close KitchenCabinetFactory_7025538_spawn_asset_6631478"
+# steps: open <art> | close <art> | pick <obj> | place <obj> in:<container>
+#        place <obj> <surface or alias> [x y] | push <obj> <dx> <dy> | goto <x> <y> <yaw>
+```
+
 ## Skills
 
-`zeno_skills/` (see [`zeno_skills/SKILL.md`](zeno_skills/SKILL.md)) reads everything from the
-annotations; nothing is asset-specific.
+`zeno_skills/skills.py` reads everything from the annotations; nothing is asset-specific. Each skill
+measures its own outcome from simulator state and raises `SkillFailure` otherwise, so a policy can react.
 
 | skill | how |
 |---|---|
-| `navigate` | Fold the arm along a collision-checked path, plan A* over free base cells, drive the holonomic base |
-| `open_articulated` / `close_articulated` | Search base poses where pre-grasp → grasp is a continuous collision-free IK path *and* the robot can ride rigidly with the door or drawer to its goal; prefer the pose with the lowest wrist torque. Side-hook grasp: one finger sits between the panel and the bar, so the pull loads the bar through the finger's normal force, not friction. Closed loop on the measured joint value. |
-| `pick` | Grasp candidates at the object's current pose, a base pose per candidate, approach → close → lift; success = the object rose and is still between the fingers |
-| `place` | Keep the measured TCP→object offset, search the object's yaw about the vertical and a base pose, lower, release; success = the object rests on the target support or container floor |
+| `navigate` | Tuck the arm (or lift and pull in the held object), A* over free base cells, drive the holonomic base; slower while carrying, and the object is checked to still be in the hand afterwards (`Dropped` → the task policy picks it up again) |
+| `open_articulated` / `close_articulated` | Search base poses where pre-grasp → grasp is a continuous collision-free IK path *and* the robot can ride rigidly with the door or drawer to its goal; prefer the lowest wrist torque. Side-hook grasp: one finger sits between the panel and the bar. Closed loop on the measured joint value. Doors (revolute) and drawers (prismatic) |
+| `pick` (pinch) | Grasp candidates at the object's current pose (`top_pinch`, `rim_pinch`), a base pose per candidate, approach → close → lift; floor objects with the torso fully lowered |
+| `push` | Fingers closed and pointing down, pads just above the surface, slide the object along it; if nothing reaches behind the object, press on its top and drag it |
+| `pick` (flat) | Plates, books, notebooks are wider than the 8 cm gripper: push them until they overhang a free support edge (centre of mass kept 5 cm inside), then pinch the overhang horizontally. On the floor: a diagonal corner pinch (side face + top face) |
+| `place` | Keep the measured TCP→object offset, search the object's yaw and a base pose, lower, release; into containers from just above the rim. Edge-held flat objects are slid back over the edge of the target surface |
 
-Kinematics are exact URDF FK plus analytic-Jacobian damped least-squares IK on the fingertip TCP
-(about 17 ms per global solve). Collision uses a sphere model of the robot against the annotation
-boxes and each moving part at its current joint value.
-
----
+Kinematics are exact URDF FK plus analytic-Jacobian damped least-squares IK on the fingertip TCP.
+Collision uses a sphere model of the robot against the annotation boxes and each moving part at its
+current joint value.
 
 ## Physics fixes baked into the scene
 
@@ -191,16 +289,84 @@ export OMNI_KIT_ACCEPT_EULA=YES ISAACLAB_PYTHON=/path/to/isaaclab/python
 $ISAACLAB_PYTHON tools/check_scene.py tasks/collect_fruits/scene.usd --out runs/check \
     --view table 4.4 6.0 1.7 3.5 7.1 0.85
 
-# run skills (records runs/demo/run.mp4 + result.json)
+# a whole task: evaluate -> scripted policy -> evaluate (runs/collect_fruits/{run.mp4,result.json})
+$ISAACLAB_PYTHON tools/run_task.py --task collect_fruits
+
+# single skills (see "Atomic skills")
 $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
-    --ann tasks/collect_fruits/annotation.json --out runs/demo \
-    --plan "pick orange" "place orange in:fruit_basket 0 0" \
-           "open KitchenCabinetFactory_7025538_spawn_asset_6631478" \
-           "close KitchenCabinetFactory_7025538_spawn_asset_6631478"
-# plan steps: open <art> | close <art> | pick <obj> | place <obj> <support|in:container> <x> <y> | goto <x> <y> <yaw>
+    --ann tasks/collect_fruits/annotation.json --out runs/demo --plan "pick orange" "place orange in:fruit_basket"
+
+python -m pytest tests/        # evaluator + task-spec tests (no simulator needed)
 ```
 
 Or open `sim/zeno_house.usd` or `tasks/<task>/scene.usd` in Isaac Sim with `File → Open`.
+
+## Add your own assets (EmbodiedGen)
+
+Every task object in this repo was made with [EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen)
+V2 text-to-3D. The same path works for any new object (cans, bottles, shoes, tools, …).
+
+**1. Install EmbodiedGen** (separate conda env; it needs its own CUDA/PyTorch stack):
+
+```bash
+git clone https://github.com/HorizonRobotics/EmbodiedGen.git && cd EmbodiedGen
+git checkout v2.1.0
+conda create -n embodiedgen python=3.10.13 -y && conda activate embodiedgen
+bash install.sh basic            # ~10 min; `bash install.sh cu128` first on RTX 50-series
+export EMBODIEDGEN_ROOT=$PWD
+```
+
+The text/image-to-3D pipelines use a GPT backend for prompt checks and physical sizing: set it in
+`embodied_gen/utils/gpt_config.yaml` (Azure OpenAI / OpenRouter key, or `agent_type: codex` after
+`codex login`). Without one, the assets still generate, but come out 1 m / 1 kg; step 3 fixes the size.
+Model weights download on first use. See the
+[install guide](https://horizonrobotics.github.io/EmbodiedGen/docs/install.html) for Docker and details.
+
+**2. Generate** (inside the `embodiedgen` env, from `$EMBODIEDGEN_ROOT`):
+
+```bash
+text3d-cli --prompts "an empty aluminium soda can" "a white sneaker" \
+  --asset_names soda_can sneaker \
+  --n_image_retry 2 --n_asset_retry 2 --n_pipe_retry 1 --seed_img 0 \
+  --output_root /path/to/zeno-house/assets/asset3d
+# or from a photo: img3d-cli --image_path my_mug.jpg --output_root .../assets/asset3d
+# -> assets/asset3d/<name>/result/<name>.urdf + textured mesh
+```
+
+`assets/gen_v2_assets*.sh` are the exact commands used for this repo.
+
+**3. Register the asset**: real size, mass, tags and collider type, in `assets/custom_assets.json`
+(no Python edits):
+
+```json
+{
+ "soda_can": {"size": 0.12, "mass": 0.35, "tags": ["can", "container"], "collider": "solid",
+              "urdf": "assets/asset3d/soda_can/result/soda_can.urdf"},
+ "sneaker":  {"size": 0.28, "mass": 0.30, "tags": ["shoe"], "collider": "solid", "lay_flat": false}
+}
+```
+
+`size` is the longest extent in metres (the mesh is rescaled to it). `collider` is `solid`,
+`round_container` or `rect_container`: containers get walls that follow the mesh profile, so things can
+be dropped in. `lay_flat` rests thin objects (books, pens) on their largest face.
+
+**4. Convert to USD and annotate** (Isaac Lab python; `EMBODIEDGEN_ROOT` set for its URDF→USD converter):
+
+```bash
+$ISAACLAB_PYTHON tools/prepare_assets.py --only soda_can sneaker --convert
+$ISAACLAB_PYTHON tools/fix_textures.py
+```
+
+This writes `usd/assets/<name>.usd` and an entry in `annotations/assets.json`: size, bottom offset,
+container profile and **grasp annotations for the Zeno gripper** (`top_pinch` across the narrowest
+section, `rim_pinch` for containers, `edge_pinch_after_push` for flat objects wider than 8 cm).
+`graspable_by_zeno: false` means no pinch fits.
+
+**5. Put it in the house**: use the asset in a task spec (`"objects": {"can_1": {"asset": "soda_can",
+"supports": ["tv_stand", "floor:living_room"]}}`) and build it as in
+[Define your own task](#define-your-own-task). The builder drops it onto the chosen surface with
+the physics settings of the other assets (box inertia, convex-hull or container collider, rubber pads).
+`tools/check_scene.py` then verifies that it rests stably.
 
 ## Rebuild pipeline
 
@@ -211,8 +377,15 @@ tools/fix_textures.py         per-asset textures (run after every --convert)
 tools/settle_scene.py         drop-and-settle, write rest poses
 tools/check_scene.py          physics check + renders
 tools/annotate_scene.py       scene annotations (house part cached in annotations/house_static.json)
-tools/build_tasks.py          task layer + task.json   (tools/make_tasks.sh = build+settle+check+annotate for all)
+tools/relocate_furniture.py   move furniture in the house (the cabinets out of the bathrooms), annotations kept in sync
+tools/cut_doorway.py          cut doorways into wall shells (living room <-> bedroom, west corridor)
+tools/apply_physics_fixes.py  re-apply the articulated-furniture physics fixes to sim/zeno_house.usd
+tools/list_places.py          surfaces, aliases, objects and assets a task spec can refer to
+tools/build_tasks.py          task layer + task.json from task_specs/<task>.json (reachability-checked)
+                              (tools/make_tasks.sh = build + settle + check + annotate)
+tools/run_task.py             evaluate -> scripted policy -> evaluate, record video
 tools/run_skills.py           execute a skill plan, record video
+tools/make_media.py           README media (compressed MP4 + sped-up GIF) from a rollout
 ```
 
 `tools/bake_scene.py` records how `sim/zeno_house.usd` was produced from the original Infinigen
@@ -222,9 +395,12 @@ tools/run_skills.py           execute a skill plan, record video
 
 ```text
 sim/zeno_house.usd      final house scene (+ sim/checks)
-tasks/<task>/           task layer, task.json, annotation.json, check renders
+task_specs/             task definitions (+ places.json aliases, examples/)
+tasks/<task>/           built task: layer, task.json, annotation.json, check renders
 annotations/            assets.json, zeno_house.json, house_static.json
-zeno_skills/            kinematics, collision, annotations, planner, rig, skills, physics
+zeno_skills/            kinematics, collision, annotations, planner, rig, skills, physics,
+                        tasks (spec loading), evaluator (success check), task_policy, runtime
+tests/                  evaluator and spec tests (pytest, no simulator)
 tools/                  pipeline scripts
 usd/                    house, robot and asset USDs (+ materials/textures)
 assets/asset3d/         EmbodiedGen V2 asset sources (URDF + textured OBJ)
@@ -234,13 +410,26 @@ media/                  README media, demo videos, rollout result.json files
 
 ## Limitations
 
-- Validated with rollouts: open and close of an articulated cabinet, and pick/place of tabletop
-  objects, including into a container and across rooms. Floor objects, `edge_pinch_after_push`
-  and complete multi-step task episodes are annotated but not yet executed.
-- Kinematic holonomic base (anchor joint): no wheel dynamics.
+- The scripted policy is a baseline, not an oracle. Known weak spots, all visible in the task videos
+  and `result.json` decisions:
+  - **breakfast_setup** is solved only partially (67 % in the recorded run): the plate and spoon start on
+    the dining table and are regrouped fine, but the rim pinch on the light cup and on the mug missed
+    twice each, so the `cup|mug` slot and the place setting stay open. Plates (pinched at the rim
+    after a push) and bowls held by the rim can also pivot out of the 8 cm pinch during long carries;
+    the policy detects the drop and re-picks, and after two failures takes the alternative object.
+  - **Thin pens** (1 cm) are sometimes missed by the top pinch; desk_prep then takes the pencil.
+  - **Flat objects** are placed over a free edge of the target surface and then pushed fully onto
+    it. Interior shelf levels (28 cm headroom) are not reachable with a book in the hand, so books
+    go to bookcase tops.
+  - The **banana** (curved, pinched off its centre of mass) and the **teddy bear** (plush, crown pinch)
+    are annotated but were taken out of the task specs: their grasps do not survive a carry.
+- Kinematic holonomic base (anchor joint): no wheel dynamics. Base motion uses one smooth
+  time scaling per path (≤ 0.35 m/s, ramps of 0.8 s).
 - Robot links are gravity-compensated, like the real arm controller.
-- Generated asset sizes and masses come from a spec table in `tools/prepare_assets.py`.
-  EmbodiedGen's LLM sizing needs an API key that was not available.
+- Generated asset sizes and masses come from a spec table in `tools/prepare_assets.py` (plus
+  `assets/custom_assets.json`). EmbodiedGen's LLM sizing needs an API key that was not available.
+- Reachability in the task builder is a top-down pinch check with the planner; it does not
+  guarantee that the physical grasp succeeds.
 
 ## Acknowledgements
 

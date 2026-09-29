@@ -124,8 +124,13 @@ class ArmKin:
         if solver is not None:
             assert list(solver.get_joint_names()) == self.names, solver.get_joint_names()
         self.lo, self.hi = _limits(self.names)
+        # stay off the hard limits: the joint drives stall a few hundredths
+        # short of them (a solution at the limit was a 6 cm TCP error)
+        # (arm joints only: floor picks need the torso and waist at their limits)
+        m = np.r_[0.0, 0.0, np.full(len(self.names) - 2, 0.03)]
+        self.lo, self.hi = self.lo + m, self.hi - m
         # A relaxed, elbow-out posture used as a null-space attractor.
-        self.rest = np.clip(np.array([-0.25, 0.25, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0]),
+        self.rest = np.clip(np.array([0.0, 0.0, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0]),
                             self.lo, self.hi)
         self.base_p, self.base_R = np.zeros(3), np.eye(3)
 

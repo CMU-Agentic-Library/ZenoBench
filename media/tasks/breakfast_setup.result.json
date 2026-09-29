@@ -1,0 +1,1984 @@
+{
+ "task": "breakfast_setup",
+ "seed": 0,
+ "instruction": "Set up the dining table for breakfast.",
+ "scene": "tasks/breakfast_setup/scene.usd",
+ "success": false,
+ "written_state": "robot drive targets and base anchor only",
+ "initial": {
+  "task": "breakfast_setup",
+  "success": false,
+  "progress": 0.667,
+  "bindings": {},
+  "conditions": [
+   {
+    "desc": "plate|bowl on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "items": [
+     {
+      "slot": "plate|bowl",
+      "instance": "plate",
+      "ok": true,
+      "detail": "plate: TableDiningFactory_1437886_spawn_asset_2104395/surface_2, tilt 1 deg"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "cup|mug on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "items": [
+     {
+      "slot": "cup|mug",
+      "instance": null,
+      "ok": false,
+      "detail": "bottom at (1.06, -0.41, 0.706)"
+     }
+    ],
+    "n": 1,
+    "n_ok": 0,
+    "type": "on",
+    "ok": false
+   },
+   {
+    "desc": "spoon on TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+    "items": [
+     {
+      "slot": "spoon",
+      "instance": "spoon",
+      "ok": true,
+      "detail": "spoon: TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "plate|bowl, cup|mug, spoon within 0.5 m of each other",
+    "items": [
+     {
+      "slot": "setting",
+      "ok": false,
+      "detail": "a slot has no instance on the support"
+     }
+    ],
+    "n": 1,
+    "n_ok": 0,
+    "type": "near",
+    "ok": false
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "decisions": [
+  {
+   "t": 0.5,
+   "kind": "round",
+   "n": 0,
+   "progress": 0.667,
+   "open": [
+    "cup|mug on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "plate|bowl, cup|mug, spoon within 0.5 m of each other"
+   ]
+  },
+  {
+   "t": 101.4,
+   "kind": "regroup",
+   "slot": "plate|bowl",
+   "instance": "plate",
+   "hint": [
+    2.93,
+    6.7
+   ]
+  },
+  {
+   "t": 128.5,
+   "kind": "pick_failed",
+   "instance": "plate",
+   "attempt": 1,
+   "reason": "push plate: no base pose reaches a push or a drag"
+  },
+  {
+   "t": 128.5,
+   "kind": "regroup",
+   "slot": "spoon",
+   "instance": "spoon",
+   "hint": [
+    2.95,
+    6.45
+   ]
+  },
+  {
+   "t": 162.3,
+   "kind": "round",
+   "n": 1,
+   "progress": 0.667,
+   "open": [
+    "cup|mug on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "plate|bowl, cup|mug, spoon within 0.5 m of each other"
+   ]
+  },
+  {
+   "t": 183.8,
+   "kind": "pick_failed",
+   "instance": "cup",
+   "attempt": 1,
+   "reason": "pick cup: not held (lift -0.000 m)"
+  },
+  {
+   "t": 197.6,
+   "kind": "pick_failed",
+   "instance": "cup",
+   "attempt": 2,
+   "reason": "pick cup: not held (lift -0.000 m)"
+  },
+  {
+   "t": 197.6,
+   "kind": "alternative",
+   "slot": "cup|mug",
+   "instance": "mug",
+   "because": {
+    "cup": "pick cup: not held (lift -0.000 m)"
+   }
+  },
+  {
+   "t": 284.4,
+   "kind": "dropped",
+   "instance": "mug",
+   "n": 1,
+   "reason": "carry: mug slipped out of the hand while carrying it"
+  },
+  {
+   "t": 312.4,
+   "kind": "pick_failed",
+   "instance": "mug",
+   "attempt": 1,
+   "reason": "pick mug: not held (lift -0.000 m)"
+  },
+  {
+   "t": 338.7,
+   "kind": "pick_failed",
+   "instance": "mug",
+   "attempt": 2,
+   "reason": "pick mug: not held (lift 0.000 m)"
+  },
+  {
+   "t": 338.7,
+   "kind": "slot_unsatisfied",
+   "slot": "cup|mug"
+  },
+  {
+   "t": 338.7,
+   "kind": "regroup",
+   "slot": "plate|bowl",
+   "instance": "plate",
+   "hint": [
+    2.93,
+    6.7
+   ]
+  },
+  {
+   "t": 338.7,
+   "kind": "regroup",
+   "slot": "cup|mug",
+   "instance": "cup",
+   "hint": [
+    2.95,
+    7.0
+   ]
+  }
+ ],
+ "final": {
+  "task": "breakfast_setup",
+  "success": false,
+  "progress": 0.667,
+  "bindings": {},
+  "conditions": [
+   {
+    "desc": "plate|bowl on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "items": [
+     {
+      "slot": "plate|bowl",
+      "instance": "plate",
+      "ok": true,
+      "detail": "plate: TableDiningFactory_1437886_spawn_asset_2104395/surface_2, tilt 1 deg"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "cup|mug on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "items": [
+     {
+      "slot": "cup|mug",
+      "instance": null,
+      "ok": false,
+      "detail": "bottom at (2.96, 4.41, 0.059)"
+     }
+    ],
+    "n": 1,
+    "n_ok": 0,
+    "type": "on",
+    "ok": false
+   },
+   {
+    "desc": "spoon on TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+    "items": [
+     {
+      "slot": "spoon",
+      "instance": "spoon",
+      "ok": true,
+      "detail": "spoon: TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "on",
+    "ok": true
+   },
+   {
+    "desc": "plate|bowl, cup|mug, spoon within 0.5 m of each other",
+    "items": [
+     {
+      "slot": "setting",
+      "ok": false,
+      "detail": "plate, cup, spoon: max pairwise 1.51 m"
+     }
+    ],
+    "n": 1,
+    "n_ok": 0,
+    "type": "near",
+    "ok": false
+   },
+   {
+    "desc": "every door and drawer closed",
+    "items": [
+     {
+      "slot": "articulated",
+      "ok": true,
+      "detail": "all closed"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "closed",
+    "ok": true
+   },
+   {
+    "desc": "no object dropped on the floor",
+    "items": [
+     {
+      "slot": "objects",
+      "ok": true,
+      "detail": "none"
+     }
+    ],
+    "n": 1,
+    "n_ok": 1,
+    "type": "not_dropped",
+    "ok": true
+   }
+  ]
+ },
+ "progress": 0.667,
+ "wall_s": 1337.1,
+ "sim_s": 339.5,
+ "events": [
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "decision",
+   "kind": "round",
+   "n": 0,
+   "progress": 0.667,
+   "open": [
+    "cup|mug on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "plate|bowl, cup|mug, spoon within 0.5 m of each other"
+   ]
+  },
+  {
+   "tick": 60,
+   "t": 0.5,
+   "label": "pick_park",
+   "obj": "cup",
+   "kind": "rim_pinch",
+   "park": [
+    7.345,
+    0.814,
+    -90.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 448,
+   "t": 3.733,
+   "label": "path",
+   "waypoints": [
+    [
+     2.48,
+     6.07,
+     -69.34
+    ],
+    [
+     2.48,
+     5.32,
+     -90.0
+    ],
+    [
+     2.78,
+     3.72,
+     -79.38
+    ],
+    [
+     2.78,
+     3.67,
+     -90.0
+    ],
+    [
+     4.53,
+     2.07,
+     -42.44
+    ],
+    [
+     7.34,
+     0.81,
+     -90.0
+    ]
+   ]
+  },
+  {
+   "tick": 4130,
+   "t": 34.417,
+   "label": "base",
+   "pose": [
+    7.345,
+    0.814,
+    -90.0
+   ]
+  },
+  {
+   "tick": 4170,
+   "t": 34.75,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.0297,
+    0.0303
+   ]
+  },
+  {
+   "tick": 4348,
+   "t": 36.233,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0039,
+   "q_err": 0.0098
+  },
+  {
+   "tick": 4500,
+   "t": 37.5,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0072,
+   "q_err": 0.0047
+  },
+  {
+   "tick": 4577,
+   "t": 38.142,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0082,
+   "q_err": 0.0083
+  },
+  {
+   "tick": 4589,
+   "t": 38.242,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.0044,
+   "q_err": 0.0018
+  },
+  {
+   "tick": 4709,
+   "t": 39.242,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0119,
+    0.0133
+   ]
+  },
+  {
+   "tick": 4933,
+   "t": 41.108,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0013,
+   "q_err": 0.0036
+  },
+  {
+   "tick": 4973,
+   "t": 41.442,
+   "label": "pick_result",
+   "obj": "cup",
+   "kind": "rim_pinch",
+   "lift_m": 0.0809,
+   "fingers": [
+    0.0094,
+    0.0088
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 4973,
+   "t": 41.442,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 4973,
+   "t": 41.442,
+   "label": "place_park",
+   "obj": "cup",
+   "park": [
+    2.476,
+    7.032,
+    90.0
+   ]
+  },
+  {
+   "tick": 5299,
+   "t": 44.158,
+   "label": "base",
+   "pose": [
+    7.345,
+    1.164,
+    -90.0
+   ]
+  },
+  {
+   "tick": 5405,
+   "t": 45.042,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0048,
+   "q_err": 0.0018
+  },
+  {
+   "tick": 5482,
+   "t": 45.683,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0072
+  },
+  {
+   "tick": 5482,
+   "t": 45.683,
+   "label": "path",
+   "waypoints": [
+    [
+     2.93,
+     3.52,
+     151.91
+    ],
+    [
+     2.78,
+     3.67,
+     135.0
+    ],
+    [
+     2.53,
+     5.27,
+     98.88
+    ],
+    [
+     2.48,
+     5.32,
+     135.0
+    ],
+    [
+     2.48,
+     7.03,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 9852,
+   "t": 82.1,
+   "label": "base",
+   "pose": [
+    2.476,
+    7.032,
+    -270.0
+   ]
+  },
+  {
+   "tick": 9852,
+   "t": 82.1,
+   "label": "place_remeasure",
+   "obj": "cup",
+   "shift_m": 0.02,
+   "hang_m": 0.099
+  },
+  {
+   "tick": 11692,
+   "t": 97.433,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0176,
+   "q_err": 0.0043
+  },
+  {
+   "tick": 11866,
+   "t": 98.883,
+   "label": "reach",
+   "target": "place_lower",
+   "tcp_err_m": 0.0045,
+   "q_err": 0.0027
+  },
+  {
+   "tick": 11966,
+   "t": 99.717,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.03,
+    0.0301
+   ]
+  },
+  {
+   "tick": 12077,
+   "t": 100.642,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.0074,
+   "q_err": 0.0088
+  },
+  {
+   "tick": 12167,
+   "t": 101.392,
+   "label": "place_result",
+   "obj": "cup",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "xy_err_m": 0.0107,
+   "on_support": true
+  },
+  {
+   "tick": 12167,
+   "t": 101.4,
+   "label": "decision",
+   "kind": "regroup",
+   "slot": "plate|bowl",
+   "instance": "plate",
+   "hint": [
+    2.93,
+    6.7
+   ]
+  },
+  {
+   "tick": 12167,
+   "t": 101.392,
+   "label": "flat_edges",
+   "obj": "plate",
+   "support": "repair/dining_table_top",
+   "edges": [
+    [
+     0.142,
+     [
+      -1.0,
+      0.0
+     ]
+    ],
+    [
+     0.147,
+     [
+      0.0,
+      -1.0
+     ]
+    ],
+    [
+     0.79,
+     [
+      1.0,
+      0.0
+     ]
+    ],
+    [
+     2.185,
+     [
+      0.0,
+      1.0
+     ]
+    ]
+   ]
+  },
+  {
+   "tick": 12167,
+   "t": 101.392,
+   "label": "push_park",
+   "obj": "plate",
+   "mode": "drag",
+   "dir": [
+    -1.0,
+    0.0
+   ],
+   "d": 0.147,
+   "park": [
+    2.429,
+    5.926,
+    -15.0
+   ]
+  },
+  {
+   "tick": 12702,
+   "t": 105.85,
+   "label": "path",
+   "waypoints": [
+    [
+     2.43,
+     5.93,
+     -15.0
+    ]
+   ]
+  },
+  {
+   "tick": 13197,
+   "t": 109.975,
+   "label": "base",
+   "pose": [
+    2.429,
+    5.926,
+    345.0
+   ]
+  },
+  {
+   "tick": 13227,
+   "t": 110.225,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0102,
+    0.0102
+   ]
+  },
+  {
+   "tick": 13423,
+   "t": 111.858,
+   "label": "reach",
+   "target": "push_above",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0072
+  },
+  {
+   "tick": 13494,
+   "t": 112.45,
+   "label": "reach",
+   "target": "drag_down",
+   "tcp_err_m": 0.0083,
+   "q_err": 0.0053
+  },
+  {
+   "tick": 13724,
+   "t": 114.367,
+   "label": "reach",
+   "target": "push_slide",
+   "tcp_err_m": 0.0056,
+   "q_err": 0.0043
+  },
+  {
+   "tick": 13862,
+   "t": 115.517,
+   "label": "reach",
+   "target": "push_up",
+   "tcp_err_m": 0.0044,
+   "q_err": 0.0035
+  },
+  {
+   "tick": 13862,
+   "t": 115.517,
+   "label": "push_result",
+   "obj": "plate",
+   "moved": -0.0,
+   "total": -0.0
+  },
+  {
+   "tick": 13862,
+   "t": 115.517,
+   "label": "edge_failed",
+   "obj": "plate",
+   "dir": [
+    -1.0,
+    0.0
+   ],
+   "reason": "push plate: object did not move"
+  },
+  {
+   "tick": 13862,
+   "t": 115.517,
+   "label": "push_park",
+   "obj": "plate",
+   "mode": "drag",
+   "dir": [
+    0.0,
+    -1.0
+   ],
+   "d": 0.152,
+   "park": [
+    2.761,
+    5.141,
+    75.0
+   ]
+  },
+  {
+   "tick": 14337,
+   "t": 119.475,
+   "label": "path",
+   "waypoints": [
+    [
+     2.76,
+     5.14,
+     75.0
+    ]
+   ]
+  },
+  {
+   "tick": 14745,
+   "t": 122.875,
+   "label": "base",
+   "pose": [
+    2.761,
+    5.141,
+    -285.0
+   ]
+  },
+  {
+   "tick": 14775,
+   "t": 123.125,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "tick": 14971,
+   "t": 124.758,
+   "label": "reach",
+   "target": "push_above",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0072
+  },
+  {
+   "tick": 15040,
+   "t": 125.333,
+   "label": "reach",
+   "target": "drag_down",
+   "tcp_err_m": 0.0074,
+   "q_err": 0.0059
+  },
+  {
+   "tick": 15279,
+   "t": 127.325,
+   "label": "reach",
+   "target": "push_slide",
+   "tcp_err_m": 0.0051,
+   "q_err": 0.0091
+  },
+  {
+   "tick": 15418,
+   "t": 128.483,
+   "label": "reach",
+   "target": "push_up",
+   "tcp_err_m": 0.0041,
+   "q_err": 0.0032
+  },
+  {
+   "tick": 15418,
+   "t": 128.483,
+   "label": "push_result",
+   "obj": "plate",
+   "moved": 0.0,
+   "total": 0.0
+  },
+  {
+   "tick": 15418,
+   "t": 128.483,
+   "label": "edge_failed",
+   "obj": "plate",
+   "dir": [
+    0.0,
+    -1.0
+   ],
+   "reason": "push plate: object did not move"
+  },
+  {
+   "tick": 15418,
+   "t": 128.483,
+   "label": "edge_failed",
+   "obj": "plate",
+   "dir": [
+    1.0,
+    0.0
+   ],
+   "reason": "push plate: no base pose reaches a push or a drag"
+  },
+  {
+   "tick": 15418,
+   "t": 128.5,
+   "label": "decision",
+   "kind": "pick_failed",
+   "instance": "plate",
+   "attempt": 1,
+   "reason": "push plate: no base pose reaches a push or a drag"
+  },
+  {
+   "tick": 15418,
+   "t": 128.5,
+   "label": "decision",
+   "kind": "regroup",
+   "slot": "spoon",
+   "instance": "spoon",
+   "hint": [
+    2.95,
+    6.45
+   ]
+  },
+  {
+   "tick": 15418,
+   "t": 128.483,
+   "label": "pick_park",
+   "obj": "spoon",
+   "kind": "top_pinch",
+   "park": [
+    2.429,
+    7.458,
+    15.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 15893,
+   "t": 132.442,
+   "label": "path",
+   "waypoints": [
+    [
+     2.48,
+     5.57,
+     123.33
+    ],
+    [
+     2.43,
+     7.46,
+     15.0
+    ]
+   ]
+  },
+  {
+   "tick": 16832,
+   "t": 140.267,
+   "label": "base",
+   "pose": [
+    2.429,
+    7.458,
+    -345.0
+   ]
+  },
+  {
+   "tick": 16872,
+   "t": 140.6,
+   "label": "grip",
+   "cmd": 0.01606980010410791,
+   "fingers": [
+    0.0161,
+    0.0161
+   ]
+  },
+  {
+   "tick": 17085,
+   "t": 142.375,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0081
+  },
+  {
+   "tick": 17143,
+   "t": 142.858,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0069,
+   "q_err": 0.0063
+  },
+  {
+   "tick": 17222,
+   "t": 143.517,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0062,
+   "q_err": 0.0076
+  },
+  {
+   "tick": 17342,
+   "t": 144.517,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0095,
+    0.0098
+   ]
+  },
+  {
+   "tick": 17582,
+   "t": 146.517,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0052,
+   "q_err": 0.0042
+  },
+  {
+   "tick": 17622,
+   "t": 146.85,
+   "label": "pick_result",
+   "obj": "spoon",
+   "kind": "top_pinch",
+   "lift_m": 0.071,
+   "fingers": [
+    0.0099,
+    0.0093
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 17622,
+   "t": 146.85,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 17622,
+   "t": 146.85,
+   "label": "place_park",
+   "obj": "spoon",
+   "park": [
+    2.468,
+    6.569,
+    -0.0
+   ]
+  },
+  {
+   "tick": 17947,
+   "t": 149.558,
+   "label": "base",
+   "pose": [
+    2.091,
+    7.368,
+    -345.0
+   ]
+  },
+  {
+   "tick": 18014,
+   "t": 150.117,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0064,
+   "q_err": 0.0097
+  },
+  {
+   "tick": 18138,
+   "t": 151.15,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0065,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 18138,
+   "t": 151.15,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 18138,
+   "t": 151.15,
+   "label": "path",
+   "waypoints": [
+    [
+     2.47,
+     6.57,
+     -0.0
+    ]
+   ]
+  },
+  {
+   "tick": 18678,
+   "t": 155.65,
+   "label": "base",
+   "pose": [
+    2.468,
+    6.569,
+    -360.0
+   ]
+  },
+  {
+   "tick": 18678,
+   "t": 155.65,
+   "label": "place_remeasure",
+   "obj": "spoon",
+   "shift_m": 0.015,
+   "hang_m": 0.029
+  },
+  {
+   "tick": 18966,
+   "t": 158.05,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0028,
+   "q_err": 0.0052
+  },
+  {
+   "tick": 19178,
+   "t": 159.817,
+   "label": "reach",
+   "target": "place_lower",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.003
+  },
+  {
+   "tick": 19278,
+   "t": 160.65,
+   "label": "grip",
+   "cmd": 0.01606980010410791,
+   "fingers": [
+    0.0161,
+    0.0161
+   ]
+  },
+  {
+   "tick": 19383,
+   "t": 161.525,
+   "label": "reach",
+   "target": "place_retreat",
+   "tcp_err_m": 0.0052,
+   "q_err": 0.0047
+  },
+  {
+   "tick": 19473,
+   "t": 162.275,
+   "label": "place_result",
+   "obj": "spoon",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "xy_err_m": 0.0117,
+   "on_support": true
+  },
+  {
+   "tick": 19473,
+   "t": 162.3,
+   "label": "decision",
+   "kind": "round",
+   "n": 1,
+   "progress": 0.667,
+   "open": [
+    "cup|mug on TableDiningFactory_1437886_spawn_asset_2104395/surface_2 (upright)",
+    "plate|bowl, cup|mug, spoon within 0.5 m of each other"
+   ]
+  },
+  {
+   "tick": 19473,
+   "t": 162.275,
+   "label": "pick_park",
+   "obj": "cup",
+   "kind": "rim_pinch",
+   "park": [
+    2.488,
+    7.193,
+    0.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 19978,
+   "t": 166.483,
+   "label": "path",
+   "waypoints": [
+    [
+     2.49,
+     7.19,
+     0.0
+    ]
+   ]
+  },
+  {
+   "tick": 20308,
+   "t": 169.233,
+   "label": "base",
+   "pose": [
+    2.488,
+    7.193,
+    360.0
+   ]
+  },
+  {
+   "tick": 20348,
+   "t": 169.567,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.03,
+    0.03
+   ]
+  },
+  {
+   "tick": 20868,
+   "t": 173.9,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0036,
+   "q_err": 0.0077
+  },
+  {
+   "tick": 20989,
+   "t": 174.908,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.0071
+  },
+  {
+   "tick": 21360,
+   "t": 178.0,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0127,
+   "q_err": 0.0344
+  },
+  {
+   "tick": 21666,
+   "t": 180.55,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.0127,
+   "q_err": 0.0344
+  },
+  {
+   "tick": 21786,
+   "t": 181.55,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "tick": 22020,
+   "t": 183.5,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0049
+  },
+  {
+   "tick": 22060,
+   "t": 183.833,
+   "label": "pick_result",
+   "obj": "cup",
+   "kind": "rim_pinch",
+   "lift_m": -0.0003,
+   "fingers": [
+    0.0,
+    0.0
+   ],
+   "held": false
+  },
+  {
+   "tick": 22060,
+   "t": 183.8,
+   "label": "decision",
+   "kind": "pick_failed",
+   "instance": "cup",
+   "attempt": 1,
+   "reason": "pick cup: not held (lift -0.000 m)"
+  },
+  {
+   "tick": 22060,
+   "t": 183.833,
+   "label": "pick_park",
+   "obj": "cup",
+   "kind": "rim_pinch",
+   "park": [
+    2.453,
+    7.393,
+    -0.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 22613,
+   "t": 188.442,
+   "label": "path",
+   "waypoints": [
+    [
+     2.45,
+     7.39,
+     -0.0
+    ]
+   ]
+  },
+  {
+   "tick": 22737,
+   "t": 189.475,
+   "label": "base",
+   "pose": [
+    2.453,
+    7.393,
+    -360.0
+   ]
+  },
+  {
+   "tick": 22777,
+   "t": 189.808,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.0263,
+    0.0263
+   ]
+  },
+  {
+   "tick": 23222,
+   "t": 193.517,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0029,
+   "q_err": 0.0078
+  },
+  {
+   "tick": 23271,
+   "t": 193.925,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0038,
+   "q_err": 0.0097
+  },
+  {
+   "tick": 23335,
+   "t": 194.458,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.004
+  },
+  {
+   "tick": 23455,
+   "t": 195.458,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0254,
+    0.0279
+   ]
+  },
+  {
+   "tick": 23677,
+   "t": 197.308,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.005,
+   "q_err": 0.0045
+  },
+  {
+   "tick": 23717,
+   "t": 197.642,
+   "label": "pick_result",
+   "obj": "cup",
+   "kind": "rim_pinch",
+   "lift_m": -0.0,
+   "fingers": [
+    0.0,
+    0.0
+   ],
+   "held": false
+  },
+  {
+   "tick": 23717,
+   "t": 197.6,
+   "label": "decision",
+   "kind": "pick_failed",
+   "instance": "cup",
+   "attempt": 2,
+   "reason": "pick cup: not held (lift -0.000 m)"
+  },
+  {
+   "tick": 23717,
+   "t": 197.6,
+   "label": "decision",
+   "kind": "alternative",
+   "slot": "cup|mug",
+   "instance": "mug",
+   "because": {
+    "cup": "pick cup: not held (lift -0.000 m)"
+   }
+  },
+  {
+   "tick": 23717,
+   "t": 197.642,
+   "label": "pick_park",
+   "obj": "mug",
+   "kind": "rim_pinch",
+   "park": [
+    1.549,
+    -0.807,
+    165.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 24165,
+   "t": 201.375,
+   "label": "path",
+   "waypoints": [
+    [
+     2.53,
+     4.37,
+     -88.57
+    ],
+    [
+     2.68,
+     4.22,
+     -45.0
+    ],
+    [
+     2.73,
+     4.02,
+     -75.96
+    ],
+    [
+     2.43,
+     -0.33,
+     -93.95
+    ],
+    [
+     2.23,
+     -0.53,
+     -135.0
+    ],
+    [
+     1.55,
+     -0.81,
+     165.0
+    ]
+   ]
+  },
+  {
+   "tick": 27366,
+   "t": 228.05,
+   "label": "base",
+   "pose": [
+    1.549,
+    -0.807,
+    165.0
+   ]
+  },
+  {
+   "tick": 27406,
+   "t": 228.383,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.0264,
+    0.0264
+   ]
+  },
+  {
+   "tick": 27406,
+   "t": 228.383,
+   "label": "joint_detour",
+   "target": "pick_pre_far"
+  },
+  {
+   "tick": 27989,
+   "t": 233.242,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0074,
+   "q_err": 0.0077
+  },
+  {
+   "tick": 28109,
+   "t": 234.242,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0089,
+   "q_err": 0.0049
+  },
+  {
+   "tick": 28180,
+   "t": 234.833,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0089,
+   "q_err": 0.0049
+  },
+  {
+   "tick": 28192,
+   "t": 234.933,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.0056,
+   "q_err": 0.0018
+  },
+  {
+   "tick": 28312,
+   "t": 235.933,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.017,
+    0.0185
+   ]
+  },
+  {
+   "tick": 28892,
+   "t": 240.767,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0156
+  },
+  {
+   "tick": 28932,
+   "t": 241.1,
+   "label": "pick_result",
+   "obj": "mug",
+   "kind": "rim_pinch",
+   "lift_m": 0.0638,
+   "fingers": [
+    0.0198,
+    0.0156
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 28932,
+   "t": 241.1,
+   "label": "place_yaw",
+   "deg": 90
+  },
+  {
+   "tick": 28932,
+   "t": 241.1,
+   "label": "place_park",
+   "obj": "mug",
+   "park": [
+    2.458,
+    7.134,
+    0.0
+   ]
+  },
+  {
+   "tick": 29258,
+   "t": 243.817,
+   "label": "base",
+   "pose": [
+    1.887,
+    -0.897,
+    165.0
+   ]
+  },
+  {
+   "tick": 29674,
+   "t": 247.283,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0047,
+   "q_err": 0.0157
+  },
+  {
+   "tick": 29893,
+   "t": 249.108,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0064,
+   "q_err": 0.0087
+  },
+  {
+   "tick": 29893,
+   "t": 249.108,
+   "label": "path",
+   "waypoints": [
+    [
+     2.43,
+     -0.33,
+     46.45
+    ],
+    [
+     2.73,
+     4.07,
+     86.1
+    ],
+    [
+     2.48,
+     5.42,
+     100.49
+    ],
+    [
+     2.46,
+     7.13,
+     0.0
+    ]
+   ]
+  },
+  {
+   "tick": 34103,
+   "t": 284.192,
+   "label": "base",
+   "pose": [
+    2.458,
+    7.134,
+    -0.0
+   ]
+  },
+  {
+   "tick": 34103,
+   "t": 284.192,
+   "label": "dropped",
+   "obj": "mug",
+   "during": "carry",
+   "slip_m": 2.59,
+   "fingers": [
+    0.0,
+    0.0
+   ],
+   "at": [
+    2.913,
+    4.526,
+    0.063
+   ]
+  },
+  {
+   "tick": 34123,
+   "t": 284.358,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.0132,
+    0.0133
+   ]
+  },
+  {
+   "tick": 34123,
+   "t": 284.358,
+   "label": "place_retry",
+   "obj": "mug",
+   "xy": [
+    2.936,
+    6.995
+   ],
+   "reason": "carry: mug slipped out of the hand while carrying it"
+  },
+  {
+   "tick": 34123,
+   "t": 284.4,
+   "label": "decision",
+   "kind": "dropped",
+   "instance": "mug",
+   "n": 1,
+   "reason": "carry: mug slipped out of the hand while carrying it"
+  },
+  {
+   "tick": 34123,
+   "t": 284.358,
+   "label": "pick_park",
+   "obj": "mug",
+   "kind": "rim_pinch",
+   "park": [
+    2.886,
+    5.042,
+    -90.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 34493,
+   "t": 287.442,
+   "label": "path",
+   "waypoints": [
+    [
+     2.48,
+     5.47,
+     -89.3
+    ],
+    [
+     2.89,
+     5.04,
+     -90.0
+    ]
+   ]
+  },
+  {
+   "tick": 35382,
+   "t": 294.85,
+   "label": "base",
+   "pose": [
+    2.886,
+    5.042,
+    -90.0
+   ]
+  },
+  {
+   "tick": 35422,
+   "t": 295.183,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.03,
+    0.03
+   ]
+  },
+  {
+   "tick": 36344,
+   "t": 302.867,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0042,
+   "q_err": 0.0019
+  },
+  {
+   "tick": 36448,
+   "t": 303.733,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 36808,
+   "t": 306.733,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0383,
+   "q_err": 0.1164,
+   "q": [
+    -0.54,
+    0.696,
+    0.902,
+    0.022,
+    1.103,
+    1.172,
+    0.829,
+    0.401,
+    -0.688
+   ],
+   "q_cmd": [
+    -0.54,
+    0.698,
+    0.898,
+    0.03,
+    1.099,
+    1.142,
+    0.725,
+    0.517,
+    -0.695
+   ]
+  },
+  {
+   "tick": 37126,
+   "t": 309.383,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.0383,
+   "q_err": 0.1167,
+   "q": [
+    -0.54,
+    0.696,
+    0.903,
+    0.022,
+    1.103,
+    1.171,
+    0.829,
+    0.4,
+    -0.687
+   ],
+   "q_cmd": [
+    -0.54,
+    0.698,
+    0.898,
+    0.03,
+    1.099,
+    1.142,
+    0.725,
+    0.517,
+    -0.695
+   ]
+  },
+  {
+   "tick": 37246,
+   "t": 310.383,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0007,
+    0.0379
+   ]
+  },
+  {
+   "tick": 37447,
+   "t": 312.058,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0038,
+   "q_err": 0.0064
+  },
+  {
+   "tick": 37487,
+   "t": 312.392,
+   "label": "pick_result",
+   "obj": "mug",
+   "kind": "rim_pinch",
+   "lift_m": -0.0,
+   "fingers": [
+    0.0,
+    0.0
+   ],
+   "held": false
+  },
+  {
+   "tick": 37487,
+   "t": 312.4,
+   "label": "decision",
+   "kind": "pick_failed",
+   "instance": "mug",
+   "attempt": 1,
+   "reason": "pick mug: not held (lift -0.000 m)"
+  },
+  {
+   "tick": 37487,
+   "t": 312.392,
+   "label": "pick_park",
+   "obj": "mug",
+   "kind": "rim_pinch",
+   "park": [
+    2.943,
+    5.0,
+    -75.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 38522,
+   "t": 321.017,
+   "label": "path",
+   "waypoints": [
+    [
+     2.94,
+     5.0,
+     -75.0
+    ]
+   ]
+  },
+  {
+   "tick": 38600,
+   "t": 321.667,
+   "label": "base",
+   "pose": [
+    2.943,
+    5.0,
+    -75.0
+   ]
+  },
+  {
+   "tick": 38640,
+   "t": 322.0,
+   "label": "grip",
+   "cmd": 0.03,
+   "fingers": [
+    0.0263,
+    0.0263
+   ]
+  },
+  {
+   "tick": 39475,
+   "t": 328.958,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.002
+  },
+  {
+   "tick": 39609,
+   "t": 330.075,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0077,
+   "q_err": 0.0096
+  },
+  {
+   "tick": 39969,
+   "t": 333.075,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0414,
+   "q_err": 0.1482,
+   "q": [
+    -0.54,
+    0.496,
+    0.62,
+    0.103,
+    0.725,
+    1.062,
+    0.682,
+    0.051,
+    -0.861
+   ],
+   "q_cmd": [
+    -0.54,
+    0.498,
+    0.615,
+    0.103,
+    0.739,
+    1.043,
+    0.557,
+    0.199,
+    -0.834
+   ]
+  },
+  {
+   "tick": 40281,
+   "t": 335.675,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.0414,
+   "q_err": 0.1482,
+   "q": [
+    -0.54,
+    0.496,
+    0.62,
+    0.103,
+    0.725,
+    1.062,
+    0.682,
+    0.051,
+    -0.861
+   ],
+   "q_cmd": [
+    -0.54,
+    0.498,
+    0.615,
+    0.103,
+    0.739,
+    1.043,
+    0.557,
+    0.199,
+    -0.834
+   ]
+  },
+  {
+   "tick": 40401,
+   "t": 336.675,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0184,
+    0.04
+   ]
+  },
+  {
+   "tick": 40606,
+   "t": 338.383,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0047,
+   "q_err": 0.0016
+  },
+  {
+   "tick": 40646,
+   "t": 338.717,
+   "label": "pick_result",
+   "obj": "mug",
+   "kind": "rim_pinch",
+   "lift_m": 0.0,
+   "fingers": [
+    0.0,
+    0.0
+   ],
+   "held": false
+  },
+  {
+   "tick": 40646,
+   "t": 338.7,
+   "label": "decision",
+   "kind": "pick_failed",
+   "instance": "mug",
+   "attempt": 2,
+   "reason": "pick mug: not held (lift 0.000 m)"
+  },
+  {
+   "tick": 40646,
+   "t": 338.7,
+   "label": "decision",
+   "kind": "slot_unsatisfied",
+   "slot": "cup|mug"
+  },
+  {
+   "tick": 40646,
+   "t": 338.7,
+   "label": "decision",
+   "kind": "regroup",
+   "slot": "plate|bowl",
+   "instance": "plate",
+   "hint": [
+    2.93,
+    6.7
+   ]
+  },
+  {
+   "tick": 40646,
+   "t": 338.7,
+   "label": "decision",
+   "kind": "regroup",
+   "slot": "cup|mug",
+   "instance": "cup",
+   "hint": [
+    2.95,
+    7.0
+   ]
+  }
+ ],
+ "video": "/home/all/zihan_workspace/physical_harnessing/zeno-house/runs/r3/v_breakfast_setup/run.mp4"
+}

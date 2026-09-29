@@ -1,14 +1,16 @@
 {
  "task": "shelve_books",
  "instruction": "Collect the books and place them on the bookshelf.",
+ "instruction_zh": "\u6574\u7406\u4e66\u7c4d",
  "seed": 0,
+ "spec": "task_specs/shelve_books.json",
  "scene_usd": "tasks/shelve_books/scene.usd",
  "annotation": "tasks/shelve_books/annotation.json",
  "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
  "robot_start": [
-  1.7,
-  -3.8,
-  180.0
+  3.0,
+  -3.0,
+  0.0
  ],
  "placed_objects": {
   "book_red": {
@@ -23,31 +25,21 @@
   },
   "book_green": {
    "asset": "book_green",
-   "support": "floor:bedroom2",
-   "yaw": 0.0,
-   "position": [
-    1.9181534289055084,
-    -1.6530625367685934,
-    0.039599999999999996
-   ]
-  },
-  "book_blue": {
-   "asset": "book_blue",
-   "support": "MattressFactory_4281756_spawn_asset_1415123/surface_0",
+   "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
    "yaw": 1.5707963267948966,
    "position": [
-    0.6762376443732576,
-    -3.7467696816607527,
-    0.9231
+    -0.34971109474733175,
+    -6.18507395379557,
+    0.7335999999999999
    ]
   },
   "shelf_blocker": {
    "asset": "rubber_duck",
    "support": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_1",
-   "yaw": 2.2456372993781644,
+   "yaw": -2.930568260297326,
    "position": [
-    2.2017360680535907,
-    -5.873637885665811,
+    2.18782466093615,
+    -4.942188680905332,
     0.49770000000000003
    ]
   }
@@ -55,39 +47,54 @@
  "dropped_optional_objects": [],
  "deactivated_base_objects": [],
  "existing_objects": {},
+ "roles": {
+  "book": [
+   "book_red",
+   "book_green"
+  ]
+ },
  "candidate_supports": {
   "book_red": [
    "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
    "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
   ],
   "book_green": [
-   "floor:bedroom2",
-   "floor:bedroom"
-  ],
-  "book_blue": [
-   "MattressFactory_4281756_spawn_asset_1415123/surface_0",
-   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+   "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+   "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
   ],
   "shelf_blocker": [
    "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_1"
   ]
  },
  "alternatives": [
-  "middle shelf occupied (toy duck) -> another shelf level or bookcase SimpleBookcaseFactory_6105320_spawn_asset_9196243",
-  "book hard to grasp (flat, wider than the gripper) -> push it over a support edge, then pinch the overhang"
+  "bookcase top full -> the other bookcase's top, then a shelf level (the middle shelf is blocked by a toy duck)",
+  "book is flat and wider than the gripper -> push it over the support edge, pinch the overhang",
+  "book on the floor -> diagonal corner pinch (bottom edge + top face), lay it on a free surface"
  ],
- "success": {
-  "all_of": [
+ "place_hints": {
+  "book": [
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2",
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_2",
+   "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_1"
+  ]
+ },
+ "goal": {
+  "all": [
    {
-    "objects": [
-     "book_red",
-     "book_green",
-     "book_blue"
+    "on": [
+     "all:book"
     ],
-    "on_support_of": [
+    "support": [
      "SimpleBookcaseFactory_2318999_spawn_asset_8416993",
      "SimpleBookcaseFactory_6105320_spawn_asset_9196243"
     ]
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
    }
   ]
  }
