@@ -191,11 +191,16 @@ def main():
 
     articulated = []
     root = stage.GetPrimAtPath("/World/ArticulatedAssets")
-    for prim in Usd.PrimRange(root):
-        if not (prim.IsA(UsdPhysics.RevoluteJoint) or prim.IsA(UsdPhysics.PrismaticJoint)):
-            continue
+    joint_prims = [p for p in Usd.PrimRange(root) if p.IsA(UsdPhysics.RevoluteJoint) or p.IsA(UsdPhysics.PrismaticJoint)]
+    per_cab = {}
+    for p in joint_prims:
+        per_cab.setdefault(p.GetParent().GetParent().GetPath(), []).append(p)
+    carcass_done = {}
+    for prim in joint_prims:
         j = UsdPhysics.Joint(prim)
         cab = prim.GetParent().GetParent()
+        # one entry per joint; a carcass with several parts names them <carcass>/<part>
+        multi = len(per_cab[cab.GetPath()]) > 1
         b0 = stage.GetPrimAtPath(j.GetBody0Rel().GetTargets()[0])
         b1 = stage.GetPrimAtPath(j.GetBody1Rel().GetTargets()[0])
         M0 = M(b0)
@@ -240,16 +245,30 @@ def main():
             ext = np.array(part_box[1]) - np.array(part_box[0])
             thin = int(np.argmin(ext))
             n = P1[:3, :3][:, thin]
+            if handle.HasAttribute("zeno:outward"):          # imported assets say which way the face points
+                n = P1[:3, :3] @ np.array(handle.GetAttribute("zeno:outward").Get(), float)
             if np.dot(hc - panel_c, n) < 0:
                 n = -n
             n[2] = 0.0
             n /= np.linalg.norm(n)
-            if rev:
-                along = np.cross(axis, n) if np.dot(np.cross(axis, n), pivot - hc) > 0 else -np.cross(axis, n)
+            flip_ok = not rev
+            if handle.HasAttribute("zeno:bar_axis"):
+                # slide across the bar in the face: horizontal bars are hooked from above/below
+                bw = P1[:3, :3] @ np.array(handle.GetAttribute("zeno:bar_axis").Get(), float)
+                along = np.cross(bw, n)
+                along /= np.linalg.norm(along)
+                if rev and abs(np.dot(along, axis)) > 0.9:   # along the hinge: both ends are free
+                    flip_ok = True
+                    along = -along if along[2] > 0 else along   # from above first
+                elif rev and np.dot(along, pivot - hc) < 0:
+                    along = -along
             else:
-                along = np.cross([0, 0, 1.0], n)
-            along[2] = 0.0
-            along /= np.linalg.norm(along)
+                if rev:
+                    along = np.cross(axis, n) if np.dot(np.cross(axis, n), pivot - hc) > 0 else -np.cross(axis, n)
+                else:
+                    along = np.cross([0, 0, 1.0], n)
+                along[2] = 0.0
+                along /= np.linalg.norm(along)
             # pulling the handle along +outward must open the part
             if not rev and np.dot(axis, n) * (open_q - closed) < 0:
                 pass
@@ -269,9 +288,10 @@ def main():
             h = {"prim": str(handle.GetPath()), "center": hc.round(4).tolist(), "outward": n.round(4).tolist(),
                  "along": along.round(4).tolist(), "bar_axis": bar_axis.tolist(),
                  "bar_size": size.round(4).tolist(), "grasp": "side", "gap": round(gap, 4),
-                 "thickness": round(t, 4), "pre_open": round(pre_open, 4)}
+                 "thickness": round(t, 4), "pre_open": round(pre_open, 4), "flip_ok": bool(flip_ok)}
         articulated.append({
-            "name": cab.GetName(), "prim": str(cab.GetPath()), "joint": str(prim.GetPath()),
+            "name": f"{cab.GetName()}/{b1.GetName()}" if multi else cab.GetName(), "prim": str(cab.GetPath()),
+            "joint": str(prim.GetPath()), "dof": prim.GetName(),
             "type": "revolute" if rev else "prismatic", "pivot": pivot.round(4).tolist(),
             "axis": axis.round(4).tolist(), "limits": [lo_l, hi_l], "closed_q": closed,
             "open_q": round(open_q, 3), "part": str(b1.GetPath()), "part_frame": P1.round(5).tolist(),
@@ -283,6 +303,9 @@ def main():
         body = stage.GetPrimAtPath(j.GetBody0Rel().GetTargets()[0])
         lo, hi = bounds(body)
         articulated[-1]["body_aabb"] = np.r_[lo, hi].round(3).tolist()
+        if cab.GetPath() in carcass_done:     # obstacles and supports once per carcass
+            continue
+        carcass_done[cab.GetPath()] = True
         # carcass as its panels (top, sides, back, shelf...): the inside is free
         # space, so the arm can reach into an opened cabinet
         panels = [c for c in Usd.PrimRange(body) if c != body and c.HasAPI(UsdPhysics.CollisionAPI)]
