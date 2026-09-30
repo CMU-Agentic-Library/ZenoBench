@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -190,11 +191,16 @@ def main():
 
     articulated = []
     root = stage.GetPrimAtPath("/World/ArticulatedAssets")
-    for prim in Usd.PrimRange(root):
-        if not (prim.IsA(UsdPhysics.RevoluteJoint) or prim.IsA(UsdPhysics.PrismaticJoint)):
-            continue
+    joint_prims = [p for p in Usd.PrimRange(root) if p.IsA(UsdPhysics.RevoluteJoint) or p.IsA(UsdPhysics.PrismaticJoint)]
+    per_cab = {}
+    for p in joint_prims:
+        per_cab.setdefault(p.GetParent().GetParent().GetPath(), []).append(p)
+    carcass_done = {}
+    for prim in joint_prims:
         j = UsdPhysics.Joint(prim)
         cab = prim.GetParent().GetParent()
+        # one entry per joint; a carcass with several parts names them <carcass>/<part>
+        multi = len(per_cab[cab.GetPath()]) > 1
         b0 = stage.GetPrimAtPath(j.GetBody0Rel().GetTargets()[0])
         b1 = stage.GetPrimAtPath(j.GetBody1Rel().GetTargets()[0])
         M0 = M(b0)
@@ -239,24 +245,53 @@ def main():
             ext = np.array(part_box[1]) - np.array(part_box[0])
             thin = int(np.argmin(ext))
             n = P1[:3, :3][:, thin]
+            if handle.HasAttribute("zeno:outward"):          # imported assets say which way the face points
+                n = P1[:3, :3] @ np.array(handle.GetAttribute("zeno:outward").Get(), float)
             if np.dot(hc - panel_c, n) < 0:
                 n = -n
             n[2] = 0.0
             n /= np.linalg.norm(n)
-            if rev:
-                along = np.cross(axis, n) if np.dot(np.cross(axis, n), pivot - hc) > 0 else -np.cross(axis, n)
+            flip_ok = not rev
+            if handle.HasAttribute("zeno:bar_axis"):
+                # slide across the bar in the face: horizontal bars are hooked from above/below
+                bw = P1[:3, :3] @ np.array(handle.GetAttribute("zeno:bar_axis").Get(), float)
+                along = np.cross(bw, n)
+                along /= np.linalg.norm(along)
+                if rev and abs(np.dot(along, axis)) > 0.9:   # along the hinge: both ends are free
+                    flip_ok = True
+                    along = -along if along[2] > 0 else along   # from above first
+                elif rev and np.dot(along, pivot - hc) < 0:
+                    along = -along
             else:
-                along = np.cross([0, 0, 1.0], n)
-            along[2] = 0.0
-            along /= np.linalg.norm(along)
+                if rev:
+                    along = np.cross(axis, n) if np.dot(np.cross(axis, n), pivot - hc) > 0 else -np.cross(axis, n)
+                else:
+                    along = np.cross([0, 0, 1.0], n)
+                along[2] = 0.0
+                along /= np.linalg.norm(along)
             # pulling the handle along +outward must open the part
             if not rev and np.dot(axis, n) * (open_q - closed) < 0:
                 pass
+            size = hhi - hlo
+            bar_axis = np.zeros(3)
+            bar_axis[int(np.argmax(size))] = 1.0
+            # finger room: bar thickness along the pull, gap between panel front
+            # and bar; pre-open so the inner pad (12 mm) fits in the gap
+            t = float(np.abs(size) @ np.abs(n))
+            face = max(float(np.max(np.array([[x, y, z] for x in (lo[0], hi[0]) for y in (lo[1], hi[1])
+                                              for z in (lo[2], hi[2])]) @ n))
+                       for c2 in Usd.PrimRange(b1) if c2.HasAPI(UsdPhysics.CollisionAPI)
+                       and not c2.GetName().startswith("handle") for lo, hi in [bounds(c2)])
+            gap = float(hc @ n) - t / 2 - face
+            o_hi = gap + t / 2 - 0.012 - 0.004
+            pre_open = 0.04 if o_hi >= 0.04 else max(t / 2 + 0.004, (t / 2 + 0.004 + o_hi) / 2)
             h = {"prim": str(handle.GetPath()), "center": hc.round(4).tolist(), "outward": n.round(4).tolist(),
-                 "along": along.round(4).tolist(), "bar_axis": [0, 0, 1],
-                 "bar_size": (hhi - hlo).round(4).tolist(), "grasp": "side"}
+                 "along": along.round(4).tolist(), "bar_axis": bar_axis.tolist(),
+                 "bar_size": size.round(4).tolist(), "grasp": "side", "gap": round(gap, 4),
+                 "thickness": round(t, 4), "pre_open": round(pre_open, 4), "flip_ok": bool(flip_ok)}
         articulated.append({
-            "name": cab.GetName(), "prim": str(cab.GetPath()), "joint": str(prim.GetPath()),
+            "name": f"{cab.GetName()}/{b1.GetName()}" if multi else cab.GetName(), "prim": str(cab.GetPath()),
+            "joint": str(prim.GetPath()), "dof": prim.GetName(),
             "type": "revolute" if rev else "prismatic", "pivot": pivot.round(4).tolist(),
             "axis": axis.round(4).tolist(), "limits": [lo_l, hi_l], "closed_q": closed,
             "open_q": round(open_q, 3), "part": str(b1.GetPath()), "part_frame": P1.round(5).tolist(),
@@ -268,6 +303,9 @@ def main():
         body = stage.GetPrimAtPath(j.GetBody0Rel().GetTargets()[0])
         lo, hi = bounds(body)
         articulated[-1]["body_aabb"] = np.r_[lo, hi].round(3).tolist()
+        if cab.GetPath() in carcass_done:     # obstacles and supports once per carcass
+            continue
+        carcass_done[cab.GetPath()] = True
         # carcass as its panels (top, sides, back, shelf...): the inside is free
         # space, so the arm can reach into an opened cabinet
         panels = [c for c in Usd.PrimRange(body) if c != body and c.HasAPI(UsdPhysics.CollisionAPI)]
@@ -280,6 +318,8 @@ def main():
             obstacles.append({"name": f"{cab.GetName()}/body/{c.GetName()}", "kind": "articulated_panel",
                               "aabb": np.r_[plo, phi].round(3).tolist()})
         # horizontal panels inside the carcass (bottom, shelf) hold things too
+        # (role names may carry a suffix: shelf_1 is the second shelf)
+        pb = [(re.sub(r"_\d+$", "", n_), plo, phi) for n_, plo, phi in pb]
         for name, plo, phi in pb:
             if name in ("bottom", "shelf", "floor") and phi[2] - plo[2] < 0.05:
                 above = [q[1][2] for q in pb if q[0] in ("roof", "top", "shelf") and q[1][2] > phi[2] + 0.02 and

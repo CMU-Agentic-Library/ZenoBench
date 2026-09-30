@@ -64,13 +64,20 @@ class TaskPolicy:
         """Articulated part whose closed carcass holds the object (a spoon in a
         drawer, a bowl behind a door) while that part is closed, or None."""
         p, _ = self.rig.obj_pose(inst)
+        best = None
         for a in self.rig.ann.articulated:
             b = a.get("body_aabb")
             if b and b[0] < p[0] < b[3] and b[1] < p[1] < b[4] and b[2] < p[2] < b[5] - 0.02:
                 q = self.rig.joint(a["name"])
                 if abs(q - a["open_q"]) > 0.15 * abs(a["open_q"] - a["closed_q"]):
-                    return a["name"]
-        return None
+                    # several doors/drawers on one carcass: the part in front of the object
+                    lo, hi = (np.asarray(v, float) for v in a["part_box"])
+                    T = np.asarray(a["part_frame"], float)
+                    local = T[:3, :3].T @ (np.asarray(p[:3], float) - T[:3, 3])
+                    d = float(np.linalg.norm(np.maximum(np.maximum(lo - local, local - hi), 0.0)))
+                    if best is None or d < best[0]:
+                        best = (d, a["name"])
+        return None if best is None else best[1]
 
     def _enclosed(self, inst):
         return self._enclosing(inst) is not None

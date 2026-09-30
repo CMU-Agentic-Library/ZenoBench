@@ -146,8 +146,8 @@ def _goto_park(rig, park, min_bottom_z=None):
 
 
 # ---------------------------------------------------------------- articulated
-def _handle_targets(rig, a, q, flip=False):
-    p, R, appr = rig.ann.handle_pose(a, q, "side", flip)
+def _handle_targets(rig, a, q, flip=False, tilt=0.0, grasp="side"):
+    p, R, appr = rig.ann.handle_pose(a, q, grasp, flip, tilt)
     return p, R, appr, [(p - TCP_BACKOFF * appr + np.array([0, 0, 0.08]), R),
                         (p - TCP_BACKOFF * appr, R), (p, R)]
 
@@ -225,8 +225,15 @@ def _move_articulated(rig, name, goal, verb):
         return torque_ratio(rig.kin, qs[-1], pull)
     # doors hook from the free side; a drawer pull from either end
     park = None
-    for flip in ((False, True) if a["type"] == "prismatic" else (False,)):
-        p, R, appr, targets = _handle_targets(rig, a, q0, flip)
+    # untilted first; tilted side hooks for bars close to their panel; last a
+    # front pinch across the bar (held by friction), for a handle whose free
+    # side is blocked (the two middle handles of a double door)
+    hooks = [("side", flip, tilt) for tilt in (0.0, math.radians(10), math.radians(20))
+             for flip in ((False, True) if a["type"] == "prismatic" or a["handle"].get("flip_ok") else (False,))]
+    if a["handle"].get("pre_open") is not None:        # imported handles (bar geometry annotated)
+        hooks.append(("front", False, 0.0))
+    for grasp, flip, tilt in hooks:
+        p, R, appr, targets = _handle_targets(rig, a, q0, flip, tilt, grasp)
         if a["category"] == "microwave" and verb == "open" and abs(q0 - a["closed_q"]) < 0.05:
             # Park beside the hinge sweep. A frontal park can be IK-valid yet
             # the tucked robot grazes the door while navigating to it.
@@ -252,7 +259,8 @@ def _move_articulated(rig, name, goal, verb):
     if park is None:
         raise SkillFailure(f"{verb} {name}: no base pose can grasp the handle and ride the motion")
     x, y, yaw, park_qs = park
-    rig.log(f"{verb}_park", park=[round(x, 3), round(y, 3), round(yaw, 1)], hook_side="far" if flip else "near")
+    rig.log(f"{verb}_park", park=[round(x, 3), round(y, 3), round(yaw, 1)], hook_side="far" if flip else "near",
+            tilt_deg=round(math.degrees(tilt)), grasp=grasp)
     rig.caption = f"{verb.upper()} {a['category']}: go to handle"
     bx, by, byaw = rig.base_pose()
     if math.hypot(x - bx, y - by) > 0.02 or abs((yaw - byaw + 180) % 360 - 180) > 2:
@@ -263,27 +271,38 @@ def _move_articulated(rig, name, goal, verb):
     if abs(q_now - q0) > 0.01:          # the part moved meanwhile: re-plan from here
         q0 = q_now
         rig.sync_world()
-        p, R, appr, targets = _handle_targets(rig, a, q0, flip)
+        p, R, appr, targets = _handle_targets(rig, a, q0, flip, tilt, grasp)
         park = find_park(rig.kin, rig.world, targets, near=rig.base_pose(), q_start=rig.q_cmd,
                          ride=_ride_check(rig, a, q0, goal), score=score, n_best=5)
         if park is None:
             raise SkillFailure(f"{verb} {name}: part moved to {q0:.3f} and no base pose reaches it now")
         _goto_park(rig, park)
         park_qs = park[3]
-    rig.caption = f"{verb.upper()} {a['category']}: grasp handle (side hook)"
-    rig.grip(0.04, 30)
+    rig.caption = f"{verb.upper()} {a['category']}: grasp handle ({'side hook' if grasp == 'side' else 'front pinch'})"
+    # a bar close to its panel (PartNet handles, ~3 cm gap): open only as far as
+    # keeps the inner pad between panel and bar
+    pre_open = a["handle"].get("pre_open", 0.04)
+    t = a["handle"].get("thickness", 0.025)
+    if grasp == "front":                  # the fingers straddle the bar across its width
+        t = float(np.abs(np.asarray(a["handle"]["bar_size"], float)) @ np.abs(np.asarray(a["handle"]["along"], float)))
+        pre_open = min(0.04, t / 2 + 0.015)
+    rig.grip(pre_open, 30)
     for (tp, tR), lab, st, qh in zip(targets, ("pre_high", "pre", "handle"), (0.02, 0.01, 0.004), park_qs):
         rig.move_to(tp, tR, step=st, steps_per_wp=4 if lab == "handle" else 3, label=f"{verb}_{lab}", q_hint=qh)
     f = rig.grip(0.0, 120)
-    if not (f.min() > 0.004 and 0.018 < f.sum() < 0.055):
+    # closed on the bar: both fingers stopped by it (thin arched pulls: ~5 mm)
+    if not (f.min() > min(0.004, 0.3 * t) and max(0.6 * t, t - 0.007) < f.sum() < t + 0.03):
         raise SkillFailure(f"{verb} {name}: handle not grasped, fingers {f.round(4).tolist()}")
     rig.caption = f"{verb.upper()} {a['category']}: base follows the joint motion"
-    _ride(rig, a, goal)
+    if grasp == "front":                  # held by friction only: pull gently
+        _ride(rig, a, goal, lead=0.01, rate=0.12)
+    else:
+        _ride(rig, a, goal)
     rig.step(30)
     rig.caption = f"{verb.upper()} {a['category']}: release"
-    rig.grip(0.04, 70)
+    rig.grip(pre_open, 70)
     q = rig.joint(name)
-    p, R, appr = rig.ann.handle_pose(a, q, "side", flip)
+    p, R, appr = rig.ann.handle_pose(a, q, grasp, flip, tilt)
     # the hand is free already: back off as far as the arm allows, then up
     for back in (0.14, 0.08, 0.04):
         try:
@@ -1209,7 +1228,8 @@ def cycle_microwave_door(rig, name="kitchen_microwave"):
         rig.caption = caption
         for i in range(1, 301):
             q = start + (target - start) * i / 300
-            motor.apply_action(ArticulationAction(joint_positions=rig.torch.tensor([q], dtype=rig.torch.float32)))
+            motor.apply_action(ArticulationAction(joint_positions=rig.torch.tensor([q], dtype=rig.torch.float32),
+                                                  joint_indices=rig.torch.tensor([rig._dof[name]])))
             rig.step(1)
         rig.step(120)
         actual = rig.joint(name)

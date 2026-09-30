@@ -41,11 +41,17 @@ class Rig:
         self.frames = []             # JPEG bytes, composed as they are rendered
         self.events, self.caption, self.trace = [], "", []
         self._log = log
-        self._arts, self._bodies = {}, {}
+        self._arts, self._dof, self._bodies = {}, {}, {}
+        by_prim = {}
         for a in ann.articulated:
-            art = SingleArticulation(a["prim"], name=f"art_{a['name']}")
-            art.initialize()
+            # a carcass with several doors/drawers is one articulation, one DOF per part
+            if a["prim"] not in by_prim:
+                art = SingleArticulation(a["prim"], name=f"art_{len(by_prim)}_{a['prim'].rsplit('/', 1)[-1]}")
+                art.initialize()
+                by_prim[a["prim"]] = art
+            art = by_prim[a["prim"]]
             self._arts[a["name"]] = art
+            self._dof[a["name"]] = art.get_dof_index(a["dof"]) if a.get("dof") else 0
         for name, o in ann.objects.items():
             b = SingleRigidPrim(o["body"], name=f"obj_{name}")
             b.initialize()
@@ -89,7 +95,7 @@ class Rig:
         return self.robot.get_joint_positions()[self.fing.long()].cpu().numpy().astype(float)
 
     def joint(self, art_name):
-        return float(self._arts[art_name].get_joint_positions()[0])
+        return float(self._arts[art_name].get_joint_positions()[self._dof[art_name]])
 
     def obj_pose(self, name):
         p, q = self._bodies[name].get_world_pose()
