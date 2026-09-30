@@ -410,6 +410,21 @@ python -m pytest tests/        # evaluator + task-spec tests (no simulator neede
 
 Or open `sim/zeno_house.usd` or `tasks/<task>/scene.usd` in Isaac Sim with `File → Open`.
 
+### Commit attribution
+
+Before committing changes, set your Git author identity in this repository. Use an email
+address verified in your GitHub account (or your GitHub `noreply` address) so GitHub can
+associate new commits with your profile:
+
+```bash
+git config user.name "Your Name"
+git config user.email "you@example.com"
+git var GIT_AUTHOR_IDENT   # check the identity the next commit will use
+```
+
+These settings apply to future commits in this clone. Pushing an existing commit does
+not change its author.
+
 ## Add your own assets (EmbodiedGen)
 
 Every task object in this repo was made with [EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen)
