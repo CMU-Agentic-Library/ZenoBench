@@ -497,9 +497,12 @@ def _pick_pinch(rig, name, max_candidates=12):
     # pose biases the generic park search toward the hinge; seed the open
     # side of this shelf so a reachable rim grasp is considered promptly.
     fridge_shelf = str(obj.get("support", "")).startswith("breakfast_fridge/")
-    microwave = rig.ann.art("kitchen_microwave")
-    cavity = microwave["cavity_aabb"]
-    in_microwave = all(cavity[i] < pos[i] < cavity[i + 3] for i in range(3))
+    microwave = next((a for a in rig.ann.articulated
+                      if a["name"] == "kitchen_microwave" and "cavity_aabb" in a), None)
+    cavity = microwave["cavity_aabb"] if microwave is not None else None
+    in_microwave = microwave is not None and all(
+        cavity[i] < pos[i] < cavity[i + 3] for i in range(3))
+    retrieval_q = None
     if in_microwave:
         if abs(rig.joint("kitchen_microwave") - microwave["open_q"]) > 0.10:
             raise SkillFailure(f"pick {name}: microwave door is closed")

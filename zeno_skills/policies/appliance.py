@@ -25,4 +25,3 @@ class MicrowaveDoorCycle:
         self.open.execute(name)
         self.close.execute(name)
         return True
-
