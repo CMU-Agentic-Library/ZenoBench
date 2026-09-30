@@ -74,7 +74,7 @@ class SceneAnnotations:
     def part_pose(self, a, q):
         return self.motion(a, q) @ np.asarray(a["part_frame"], float)
 
-    def handle_pose(self, a, q, grasp="side", flip=False):
+    def handle_pose(self, a, q, grasp="side", flip=False, tilt=0.0):
         """TCP position/orientation to hold the handle bar at joint value q.
 
         side: slide along the face (from the handle's free side), one finger
@@ -83,6 +83,8 @@ class SceneAnnotations:
         front: approach into the face, fingers across the bar.
         flip:  hook from the other end (drawers: both ends of the pull are free;
                doors: the hinge side is not).
+        tilt:  side grasp yawed by this angle (rad) away from the panel: the
+               wrist behind the TCP clears a panel that the bar sits close to.
         """
         h = a["handle"]
         M = self.motion(a, q)
@@ -96,7 +98,8 @@ class SceneAnnotations:
             # past its edge, so the hand behind the pads stays clear of the plate
             ext = float(np.abs(np.asarray(h["bar_size"], float)) @ np.abs(np.asarray(h["along"], float)))
             c = c - along * max(0.0, ext / 2 - 0.008)
-            approach, close = along, out
+            ct, st = math.cos(tilt), math.sin(tilt)
+            approach, close = ct * along - st * out, ct * out + st * along
         else:
             approach, close = -out, along
         return c, gripper_rot(approach, close), approach

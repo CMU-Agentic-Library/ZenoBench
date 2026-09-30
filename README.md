@@ -448,6 +448,38 @@ $ISAACLAB_PYTHON tools/fix_textures.py
 ```
 </details>
 
+## Add articulated assets (PartNet-Mobility)
+
+Cabinets, fridges and other single-joint objects from
+[PartNet-Mobility](https://sapien.ucsd.edu/browse) can be imported into the house's cabinet layout
+(`base`, `door` + `handle`, `joints/door_hinge`, `root_joint`). Then `annotate_scene.py` annotates them and
+the open/close skills operate them without any per-asset code:
+
+```bash
+# PartNet zip -> usd/partnet/<name>/<name>.usd (+ import.json: scale, joint, handle check)
+$ISAACLAB_PYTHON tools/import_partnet.py --id 48452 --name partnet_cabinet_48452 --height 1.0
+# free wall spot (back to a wall, free area in front, clear of the robot start) -> scene layer
+$ISAACLAB_PYTHON tools/place_partnet.py --asset partnet_cabinet_48452 --name partnet_cabinet
+$ISAACLAB_PYTHON tools/annotate_scene.py sim/zeno_house_partnet.usd annotations/zeno_house_partnet.json
+$ISAACLAB_PYTHON tools/run_skills.py --scene sim/zeno_house_partnet.usd --ann annotations/zeno_house_partnet.json \
+    --out runs/partnet_open --plan "open partnet_cabinet" "close partnet_cabinet"
+```
+
+What the importer derives from the PartNet data:
+
+| from | to |
+|---|---|
+| `mobility.urdf` joint | pivot, axis, limits in the asset frame (door side = −y, bottom centre = origin, scaled to `--height`) |
+| part names (`result.json` / visual names) | one convex-hull collider per part, named by role (`bottom`, `shelf`, `top`, …) so the shelves inside the carcass become supports |
+| `handle` part | sliced parallel to the panel: the bar becomes `handle` (a box), the rest becomes `handle_standoff_*`, so the finger gap stays open. `import.json` reports the gap and bar thickness, and a handle without a ≥ 2 cm gap is marked not hookable |
+| textured OBJ/MTL | UsdPreviewSurface visuals (colliders are invisible) |
+
+The moving part's colliders keep a 1.5 cm floor gap (`--floor-gap`), and the placement stands the asset on
+any rug under its footprint: a door that touches the floor or a rug does not open. The annotation adds
+`gap`, `thickness` and `pre_open` to each handle. For a bar close to its panel, the side hook opens only
+as far as `pre_open` and also tries approaches tilted 10–20° away from the panel. Only objects with one
+movable joint are supported (`Rig` reads one DOF per articulation).
+
 ## Rebuild pipeline
 
 ```text
@@ -455,6 +487,8 @@ tools/generate_assets.py      one command: EmbodiedGen text/image-to-3D -> regis
 assets/gen_v2_assets*.sh      EmbodiedGen V2 text3d-cli commands used for this repo
 tools/prepare_assets.py       real-size scaling, lay-flat alignment, grasp annotation, URDF→USD (--convert)
 tools/fix_textures.py         per-asset textures (run after every --convert)
+tools/import_partnet.py       PartNet-Mobility articulated object -> articulated USD in the house's cabinet layout
+tools/place_partnet.py        put imported articulated assets on a free wall spot (scene layer over the house)
 tools/settle_scene.py         drop-and-settle, write rest poses
 tools/check_scene.py          physics check + renders
 tools/annotate_scene.py       scene annotations (house part cached in annotations/house_static.json)
