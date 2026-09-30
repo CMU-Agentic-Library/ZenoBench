@@ -1,25 +1,33 @@
 # Breakfast transfer task status
 
-The final microwave has a complete shell and a powered door. The refrigerator,
-microwave, and task scenes pass physics checks. The complete task of taking
-chilled oatmeal from the refrigerator, loading it into the microwave, heating
-it, and serving it at the table has **not** passed.
+The seed-0 full refrigerator → microwave → dining-table rollout passed in Isaac
+Sim on 2026-09-30, using the complete-shell microwave and its physical powered
+door. The [recorded video](../../media/tasks/heat_breakfast.mp4) shows the
+complete transfer. The archived [result](../../media/tasks/heat_breakfast.result.json)
+reports `success: true` and `progress: 1.0` after 306.7 simulated seconds.
+Oatmeal started at 4.0 °C in `breakfast_fridge`, was physically placed on
+`kitchen_microwave/inside_floor`, heated to 63.6 °C, retrieved, and placed
+upright on the dining table with 7.3 mm XY placement error. Both appliance
+doors were closed and no object was on the floor at the final evaluation.
 
-Earlier exploratory runs used a prototype with an open right side. They showed
-a refrigerator bowl grasp and carry, but the bowl stalled about 6.5 cm short
-of the microwave floor. Those runs do not establish a valid loading route for
-the current shell. The current generic handle-pull skill also cannot open the
-complete-shell microwave; this task needs to use the powered door and a new
-front-loading trajectory before it can be reported as successful.
+The complete sequence composes the atomic `open`, object-specific `pick`,
+`place`, `close`, `microwave_start`, and `navigate` policies. Loading and
+retrieval use front-entry paths through the open door; after retrieval the
+microwave door closes before carrying the bowl across the kitchen. At the
+dining table, the robot backs away, lifts the bowl above the tabletop, then
+approaches the release point. The class API is in
+[`zeno_skills/policies/`](../../zeno_skills/policies/) and usage is in the
+[README](../../README.md#atomic-gt-policy-class-api).
 
-Run the experimental task with:
+Reproduce from the `zeno-house` repository root with Isaac Lab:
 
 ```bash
-$ISAACLAB_PYTHON tools/run_task.py --task heat_breakfast --no-video
+OMNI_KIT_ACCEPT_EULA=YES $ISAACLAB_PYTHON tools/run_task.py \
+    --task heat_breakfast --no-video --max-seconds 1200 \
+    --out runs/heat_breakfast
 ```
 
-The validated `heat_breakfast_combo` task starts with oatmeal already inside
-the microwave. It presses the blue door button, opens and closes the physical
-door, presses the green start button, heats the oatmeal, and brings chilled
-milk from the refrigerator to the dining table. Its recorded result is
-[`media/tasks/heat_breakfast_combo.result.json`](../../media/tasks/heat_breakfast_combo.result.json).
+This result is one seed-0 rollout, not a measured success rate over seeds or
+newly defined object layouts. The task builder checks spawn reachability and
+scene physics; every new spec still needs a physical rollout to establish task
+success.

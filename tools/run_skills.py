@@ -44,7 +44,8 @@ def main():
     from zeno_skills.runtime import launch
     app = launch(not args.no_video)
     import numpy as np
-    from zeno_skills import skills as S
+    from zeno_skills.policies import PolicySuite
+    from zeno_skills.rig import SkillFailure
     from zeno_skills.runtime import make_rig
     from zeno_skills.tasks import load_places, resolve_place
 
@@ -56,30 +57,31 @@ def main():
         rig = make_rig(app, args.scene, args.ann, video=not args.no_video, res=args.res, stride=args.stride)
         rig.caption = "start"
         rig.step(60)
+        policies = PolicySuite(rig)
         for raw in args.plan:
             tok = raw.split()
             t0 = time.time()
             row = {"step": raw}
             report["steps"].append(row)
             if tok[0] == "open":
-                row["result_q"] = S.open_articulated(rig, tok[1])
+                row["result_q"] = policies.open.execute(tok[1])
             elif tok[0] == "close":
-                row["result_q"] = S.close_articulated(rig, tok[1])
+                row["result_q"] = policies.close.execute(tok[1])
             elif tok[0] == "pick":
-                S.pick(rig, tok[1])
+                policies.pick.execute(tok[1])
             elif tok[0] == "place" and tok[2].startswith("in:"):
-                S.place(rig, tok[1], tok[2])
+                policies.place.execute(tok[1], tok[2])
             elif tok[0] == "place":
                 hint = (float(tok[3]), float(tok[4])) if len(tok) >= 5 else None
-                S.place_on(rig, tok[1], resolve_place(tok[2], places), hint)
+                policies.place.on(tok[1], resolve_place(tok[2], places), hint=hint)
             elif tok[0] == "push":
                 d = np.array([float(tok[2]), float(tok[3])])
                 sup = rig.geo.support_under(tok[1], rig.state())
                 if sup is None:
-                    raise S.SkillFailure(f"push {tok[1]}: not on an annotated support")
-                row["moved_m"] = S.push(rig, tok[1], sup, d / np.linalg.norm(d), float(np.linalg.norm(d)))
+                    raise SkillFailure(f"push {tok[1]}: not on an annotated support")
+                row["moved_m"] = policies.push.execute(tok[1], sup, d / np.linalg.norm(d), float(np.linalg.norm(d)))
             elif tok[0] == "goto":
-                S.navigate(rig, (float(tok[1]), float(tok[2]), float(tok[3])))
+                policies.navigate.execute((float(tok[1]), float(tok[2]), float(tok[3])))
             else:
                 raise ValueError(raw)
             row["success"] = True

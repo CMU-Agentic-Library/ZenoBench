@@ -80,6 +80,7 @@ baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate
 | **shelve_books** | <img src="media/tasks/shelve_books.gif" width="420"/><br>[video](media/tasks/shelve_books.mp4) | **success**, progress 100%<br>438 s simulated |
 | **breakfast_setup** | <img src="media/tasks/breakfast_setup.gif" width="420"/><br>[video](media/tasks/breakfast_setup.mp4) | **partial**, progress 67%<br>340 s simulated<br><sub>alternative: mug; dropped: mug</sub> |
 | **heat_breakfast_combo** | <img src="media/tasks/heat_breakfast_combo.gif" width="420"/><br>[video](media/tasks/heat_breakfast_combo.mp4) | **success**, progress 100%<br>204 s simulated<br><sub>microwave door opened and closed; oatmeal 63.6 °C</sub> |
+| **heat_breakfast** | [video](media/tasks/heat_breakfast.mp4)<br>[result JSON](media/tasks/heat_breakfast.result.json) | **success**, progress 100%<br>306.7 s simulated<br><sub>fridge → microwave → table; oatmeal 63.6 °C</sub> |
 | **desk_prep** | <img src="media/tasks/desk_prep.gif" width="420"/><br>[video](media/tasks/desk_prep.mp4) | **success**, progress 100%<br>625 s simulated |
 <!-- /TASK_VIDEOS -->
 
@@ -103,11 +104,14 @@ appliance layer is `sim/zeno_house_appliances.usd`; the original house is unchan
   Isaac Sim run passed at 100% progress with oatmeal at 63.6 °C; see
   [recorded result](media/tasks/heat_breakfast_combo.result.json) and the [video](media/tasks/heat_breakfast_combo.mp4).
 
-- `heat_breakfast` is the harder refrigerator-to-microwave-to-table transfer.
-  Its scene passes physics checks, but the complete task has **not** passed.
-  Earlier loading experiments used a side-open microwave prototype and do not
-  validate a loading trajectory for the current complete shell; see
-  [task status](tasks/heat_breakfast/STATUS.md).
+- `heat_breakfast` transfers the chilled oatmeal from the refrigerator into
+  the complete-shell microwave, heats it, retrieves it, and serves it upright
+  on the dining table. The seed-0 Isaac Sim rollout passed all four goals at
+  **100% progress**: oatmeal reached 63.6 °C, both appliance doors were closed,
+  and nothing was dropped. See the [recorded result](media/tasks/heat_breakfast.result.json)
+  [video](media/tasks/heat_breakfast.mp4), and
+  [task status](tasks/heat_breakfast/STATUS.md). This is one validated
+  rollout; different objects, spawn positions, or seeds still need testing.
 
 <img src="media/tasks/heat_breakfast_combo_open.png" width="540" alt="Microwave door open with oatmeal inside and complete side panel"/><br>
 The microwave door at its measured open angle of −1.4 rad (frame from the recorded run).
@@ -207,8 +211,9 @@ rep["success"], rep["progress"], rep["conditions"]
 ```
 
    `supports` are sampled by the seed (the first one is preferred); the builder only keeps spots that
-   are collision-free **and reachable by Zeno's arm** (a base pose + IK check), so every generated
-   variant is solvable in principle. `optional` drops the object with that probability, which
+   are collision-free **and reachable by Zeno's arm** (a base pose + IK check). This validates
+   spawning, not the complete manipulation sequence; run and evaluate each generated scene.
+   `optional` drops the object with that probability, which
    exercises the alternatives. `place_hints` are either an xy target or an ordered list of surfaces.
    Objects already in the house can join a role with `"existing": {"role": [instance names]}`.
 3. Build, check and run it:
@@ -222,7 +227,9 @@ python -m pytest tests/                    # specs load, aliases resolve, evalua
 ```
 
 The core goal predicates and handlers are shared across tasks; appliance handling and some
-park preferences are specialized. New task JSON still needs scene validation.
+park preferences are specialized. You can define your own task with these predicates and
+available objects, then build, check and run it. A new predicate or appliance mechanism
+needs a coordinator handler or atomic policy in addition to a task spec.
 
 ## GT annotations (IK + grasp + RL)
 
@@ -290,6 +297,52 @@ $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
 #        place <obj> <surface or alias> [x y] | push <obj> <dx> <dy> | goto <x> <y> <yaw>
 ```
 
+## Atomic GT policy class API
+
+The reusable, target-parameterized policy classes are in `zeno_skills/policies/`.
+Create one `PolicySuite` for a live `Rig`; each class instance holds that rig and
+exposes `execute(...)`. `TaskPolicy` composes these classes from goal predicates,
+while `tools/run_skills.py` lets you give a sequence explicitly. The existing
+`zeno_skills/skills.py` functions remain the motion/control implementation and
+are still importable for older scripts.
+
+| Class (`PolicySuite` attribute) | Call | Scope |
+|---|---|---|
+| `NavigatePolicy` (`navigate`) | `execute((x, y, yaw_deg))` | One base move, with held-object checks. |
+| `OpenPolicy` / `ClosePolicy` (`open`, `close`) | `execute(articulated_name)` | One door/drawer open or close. The microwave dispatches to its powered button/hinge route. |
+| `PickPolicy` (`pick`) | `execute(object_name)` | One object-specific grasp and verified lift. |
+| `PlacePolicy` (`place`) | `execute(object_name, support, xy)` or `on(object_name, support, hint=xy)` | One surface/container placement and state check. Use `"in:" + container_name` for a container. |
+| `PushPolicy` (`push`) | `execute(object_name, support_dict, direction, distance)` | One measured surface push/drag. |
+| `MicrowaveStartPolicy` (`microwave_start`) | `execute("kitchen_microwave")` | One start-button press after food/door checks. |
+
+For example, after creating `rig` with `zeno_skills.runtime.make_rig`:
+
+```python
+from zeno_skills.policies import PolicySuite
+from zeno_skills.rig import SkillFailure, Dropped
+
+policy = PolicySuite(rig)
+try:
+    policy.open.execute("breakfast_fridge")
+    policy.pick.execute("milk")
+    policy.place.on("milk", "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+                    hint=(2.93, 6.7))
+    policy.close.execute("breakfast_fridge")
+except (SkillFailure, Dropped) as exc:
+    print(f"Atomic policy failed: {exc}")
+```
+
+Names must be object and articulated names from the scene annotation; surface
+placement takes an actual support name from `supports[].name`. The task builder
+can resolve the aliases in `task_specs/places.json` for a task spec. For a
+microwave transfer, use separate `policy.open.execute("kitchen_microwave")`
+and `policy.close.execute("kitchen_microwave")` around `pick`/`place`;
+`policy.place.on(object_name, "kitchen_microwave/inside_floor")` uses the
+front-entry path and requires the door to be open. The
+`microwave_door_cycle` convenience object is a **composite demonstration**, not
+an atomic open/close. Policy calls can raise `SkillFailure` or `Dropped`; task
+success is determined by `TaskEvaluator` after the complete sequence.
+
 ## Skills
 
 `zeno_skills/skills.py` uses annotated geometry and simulator feedback. Appliance actions
@@ -305,7 +358,8 @@ outcome from simulator state and raises `SkillFailure` on failure, so a policy c
 | `pick` (flat) | Plates, books, notebooks are wider than the 8 cm gripper: push them until they overhang a free support edge (centre of mass kept 5 cm inside), then pinch the overhang horizontally. On the floor: a diagonal corner pinch (side face + top face) |
 | `place` | Keep the measured TCP→object offset, search the object's yaw and a base pose, lower, release; into containers from just above the rim. Edge-held flat objects are slid back over the edge of the target surface |
 | `press_microwave_start` | Physically press the annotated start button after checking that the door is closed and food is in the cavity; activate the task-level thermal model |
-| `cycle_microwave_door` | Physically press the annotated door button, then use the powered PhysX hinge to open and close the door while checking measured joint angle |
+| `open_microwave_door` / `close_microwave_door` | Separate powered-door actions; opening physically presses the annotated blue button, and both check the measured hinge angle |
+| `cycle_microwave_door` | Composite demonstration that calls the separate microwave open and close actions |
 
 Kinematics are exact URDF FK plus analytic-Jacobian damped least-squares IK on the fingertip TCP.
 Collision uses a sphere model of the robot against the annotation boxes and each moving part at its
@@ -531,7 +585,8 @@ task_specs/             task definitions (+ places.json aliases, examples/)
 tasks/<task>/           built task: layer, task.json, annotation.json, check renders
 annotations/            assets.json, zeno_house.json, house_static.json
 zeno_skills/            kinematics, collision, annotations, planner, rig, skills, physics,
-                        tasks (spec loading), evaluator (success check), task_policy, runtime
+                        policies/ (atomic GT policy classes), tasks (spec loading),
+                        evaluator (success check), task_policy, runtime
 tests/                  evaluator and spec tests (pytest, no simulator)
 tools/                  pipeline scripts
 usd/                    house, robot and asset USDs (+ materials/textures)

@@ -1,6 +1,6 @@
 # Zeno House: atomic GT policy inventory
 
-This document describes the code in this repository as of 2026-09-29. **GT policy means an executable atomic skill policy**: `pick`, `place`, `open`, `close`, `navigate`, and supporting actions such as `push` and microwave control. A call such as `pick(apple)` takes a target and the current privileged simulator/annotation state, selects a feasible strategy, executes it, and checks the actual result. `pick(apple)` and `pick(book_red)` use different branches and grasp geometry; they are not the same action trace.
+This document describes the code in this repository as of 2026-09-30. **GT policy means an executable atomic skill policy**: `pick`, `place`, `open`, `close`, `navigate`, and supporting actions such as `push` and microwave control. A call such as `pick(apple)` takes a target and the current privileged simulator/annotation state, selects a feasible strategy, executes it, and checks the actual result. `pick(apple)` and `pick(book_red)` use different branches and grasp geometry; they are not the same action trace.
 
 `TaskPolicy` is the **task-level coordinator** that chooses and sequences atomic policies to satisfy goal predicates. Despite its Python name, it is the coordinator in the terminology used here. Task specs are benchmark instances, not separate atomic policies or trained models. These policies are annotation-driven scripted controllers with privileged state, not learned vision policies or optimal oracles.
 
@@ -13,23 +13,23 @@ In the Goal → sub-goal → skill sub-graph → contract → policy diagram, a 
 | Task/goal data | `task_specs/*.json`, `tools/build_tasks.py` | Spawned objects, alternatives, placements, goal predicates, seeded USD scene and `task.json`. |
 | GT annotations | `annotations/assets.json`, `annotations/<scene>.json`, `zeno_skills/annotations.py` | Per-asset grasp types, size, mass and container shape; world object/support/obstacle geometry; joint, handle, moving-part, cavity and button geometry. |
 | Task coordinator | `zeno_skills/task_policy.py:TaskPolicy` | Selects an unmet goal, object, alternative and destination; calls atomic policies and reacts to failures. |
-| Atomic GT policies | `zeno_skills/skills.py` | `navigate`, `open_articulated`, `close_articulated`, `pick`, `push`, `place`, `place_on`, `place_flat`, microwave actions. |
+| Atomic GT policies | `zeno_skills/policies/` class API backed by `zeno_skills/skills.py` | Bound `navigate`, `open`, `close`, `pick`, `place`, `push`, and microwave-start policies; target-specific geometry and control live in `skills.py`. |
 | Motion and control | `zeno_skills/planner.py`, `kinematics.py`, `collision.py`, `rig.py` | A* base paths, base-park search, IK, collision checks, joint trajectories and PhysX feedback. |
 | Goal evaluation | `zeno_skills/evaluator.py:TaskEvaluator` | Scores the final simulator state independently of the coordinator decision log. |
 
-`tools/run_task.py` runs the coordinator and records a result and video. `tools/run_skills.py` runs a **manually supplied** atomic-policy sequence (`goto`, `open`, `close`, `pick`, `push`, `place`) for testing. Microwave functions are not currently `run_skills.py` commands.
+`tools/run_task.py` runs the coordinator through `PolicySuite` and records a result and video. `tools/run_skills.py` runs a **manually supplied** atomic-policy sequence through `PolicySuite` (`goto`, `open`, `close`, `pick`, `push`, `place`) for testing. The manual `open`/`close` commands also dispatch to the powered microwave door; the microwave start button is not currently a `run_skills.py` command.
 
 ## Atomic policy interfaces and outcome checks
 
 | Policy call | State needed before/during execution | Action and measured result |
 |---|---|---|
-| `navigate(rig, pose)` | Target `(x, y, yaw)`, obstacle geometry, whether an object is held | Tuck or carry the arm; plan and drive a base path. While carrying, check object-to-hand distance and finger gap; slip raises `Dropped`. No separate final pose assertion is made in this function. |
-| `open_articulated(rig, name)` / `close_articulated(rig, name)` | Annotated articulated part, handle, joint type and limits, feasible arm/base pose | Hook handle, follow measured joint motion, release; compare measured joint value with open/closed target, else raise `SkillFailure`. |
-| `pick(rig, name)` | Asset has at least one annotated grasp type; object pose is known, and a support is needed for the edge branch | Dispatch to object-specific grasp branch, approach, close, lift; require finger separation and measured object lift. Store measured hand-to-object transform in `rig.held`. |
-| `push(rig, name, support, direction, distance)` | Object rests on annotated support with a reachable push or drag path | Push or top-drag in short segments; require measured progress on each segment. |
-| `place(rig, name, support, xy)` / `place_on(...)` | Named object is currently held; target support or container exists | Carry, aim, release, settle; check `geo.on` plus position tolerance or `geo.inside`. Edge-held flat objects dispatch to `place_flat`. |
-| `press_microwave_start(...)` | Thermal state configured; door closed; task food in annotated cavity | Press annotated start button, check fingertip proximity, activate task-level heating. |
-| `cycle_microwave_door(...)` | Door initially closed; annotated blue button and powered hinge available | Press button, move clear, drive the physical hinge open and closed; check both measured joint targets. |
+| `NavigatePolicy.execute(pose)` | Target `(x, y, yaw)`, obstacle geometry, whether an object is held | Tuck or carry the arm; plan and drive a base path. While carrying, check object-to-hand distance and finger gap; slip raises `Dropped`. No separate final pose assertion is made in this function. |
+| `OpenPolicy.execute(name)` / `ClosePolicy.execute(name)` | Annotated articulated part, handle, joint type and limits, feasible arm/base pose | Hook handle, follow measured joint motion, release; compare measured joint value with open/closed target, else raise `SkillFailure`. |
+| `PickPolicy.execute(name)` | Asset has at least one annotated grasp type; object pose is known, and a support is needed for the edge branch | Dispatch to object-specific grasp branch, approach, close, lift; require finger separation and measured object lift. Store measured hand-to-object transform in `rig.held`. |
+| `PushPolicy.execute(name, support, direction, distance)` | Object rests on annotated support with a reachable push or drag path | Push or top-drag in short segments; require measured progress on each segment. |
+| `PlacePolicy.execute(name, support, xy)` / `.on(...)` | Named object is currently held; target support or container exists | Carry, aim, release, settle; check `geo.on` plus position tolerance or `geo.inside`. Edge-held flat objects dispatch to `place_flat`. |
+| `MicrowaveStartPolicy.execute(name)` | Thermal state configured; door closed; task food in annotated cavity | Press annotated start button, check fingertip proximity, activate task-level heating. |
+| `OpenPolicy.execute("kitchen_microwave")` / `ClosePolicy.execute("kitchen_microwave")` | Annotated blue button and powered hinge available | Open: press button, move clear and open the physical hinge. Close: move clear and close it. Each checks the measured joint target. `MicrowaveDoorCycle` composes the two for a demonstration. |
 
 All these calls can fail. The coordinator decides whether to retry, choose another object/support, or re-evaluate the task; a failed atomic call does not itself create a new high-level goal plan.
 
@@ -66,7 +66,7 @@ For ordinary pinch candidates, `_pick_pinch` searches feasible parks. An object 
 - **Edge-held plate/book/notebook onto a surface:** `place_flat` finds a free target edge and room for the object's actual footprint, slides the held edge over the surface, releases, withdraws the lower finger, then pushes the object fully inward. Success needs `geo.on` and tilt at most 20°.
 - **Any held item into `in:<container>`:** aim at the container centre using its annotated rim and current pose. For a deep container (rim height above 12 cm), release 3 cm above the rim instead of driving the wrist between its walls. After settling, require `geo.inside`.
 
-A narrow cabinet or microwave cavity changes the free-spot clearance and park search. The current microwave placement code includes special search preferences and can still fail on the complete-shell appliance. The object can rotate or slip in the gripper during travel, so the policy re-measures its hand-to-object offset before lowering and checks that it remains held. Placement success is measured from the final simulator state, not from the commanded hand pose alone.
+A narrow cabinet or microwave cavity changes the free-spot clearance and park search. The complete-shell microwave uses a front-entry insertion path and checks the loaded object against the cavity floor and cavity bounds. Retrieval uses the same door-clear arm pose and withdraws the bowl horizontally before base motion; the full physical rollout is recorded below. The object can rotate or slip in the gripper during travel, so the policy re-measures its hand-to-object offset before lowering and checks that it remains held. Placement success is measured from the final simulator state, not from the commanded hand pose alone.
 
 ## `open` and `close`: articulated target changes the motion
 
@@ -74,7 +74,7 @@ A narrow cabinet or microwave cavity changes the free-spot clearance and park se
 
 At the handle, the arm uses a side-hook grasp, checks finger separation, and the base follows the **measured** joint state with a small lead. After release and settling, the measured final value must be near the requested target. Revolute joints use a 0.10 rad tolerance. A closing drawer uses 0.04 m; an opening drawer allows some slide-back after release and is accepted within 40% of its travel. If the part moved while navigating to its park, the skill replans from its new joint value.
 
-The complete-shell microwave has a separate control route: `cycle_microwave_door` physically presses the blue door button and then commands its powered PhysX hinge through open and closed targets. This is **not** a successful generic handle pull; `open_articulated` does not currently operate that appliance reliably. `press_microwave_start` similarly presses the green start button and requires a closed door and food inside the cavity before enabling the task-level thermal model.
+The complete-shell microwave has a separate control route: `open_microwave_door` physically presses the blue door button and opens its powered PhysX hinge; `close_microwave_door` separately closes it. `cycle_microwave_door` composes these two actions. This is **not** a successful generic handle pull; `open_articulated` does not currently operate that appliance reliably. `press_microwave_start` similarly presses the green start button and requires a closed door and food inside the cavity before enabling the task-level thermal model.
 
 ## `navigate` and `push`: context-dependent atomic policies
 
@@ -97,9 +97,9 @@ The table below records individual seed-0 rollouts, **not** multi-seed success r
 | `breakfast_setup` | Place plate/bowl, cup/mug and spoon | [Archived result](../media/tasks/breakfast_setup.result.json): 66.7%; cup/mug remains unsatisfied |
 | `heat_breakfast_preloaded` | Microwave start press and thermal wait | Current-scene local run `runs/heat_breakfast_preloaded_current/result.json`: 100% |
 | `heat_breakfast_combo` | Microwave door-button cycle and start, fetch milk from fridge, close fridge | [Archived result](../media/tasks/heat_breakfast_combo.result.json): 100%; [video](../media/tasks/heat_breakfast_combo.mp4) |
-| `heat_breakfast` | Intended fridge bowl → microwave → heat → table chain | **Not passed** on the current complete-shell microwave; see [status](../tasks/heat_breakfast/STATUS.md). |
+| `heat_breakfast` | Fridge bowl pick → microwave front-entry placement → close/start/heat → reopen/retrieve → close → table place → fridge close | [Archived result](../media/tasks/heat_breakfast.result.json): 100% seed-0 rollout; [video](../media/tasks/heat_breakfast.mp4); 63.6 °C, upright at table, doors closed; see [status](../tasks/heat_breakfast/STATUS.md). |
 
-Zeno Malo's base uses a kinematic anchor; its arm and finger joints use drive targets. Object contact and articulated response occur in PhysX; the powered microwave hinge uses its joint drive. Temperature is a separate task-level model (`zeno_skills/thermal.py`), increasing only while the microwave is active, closed, and food is in the annotated cavity. This GT baseline uses no camera image, detector or language model. The current `heat_breakfast_combo` starts with oatmeal **already inside** the microwave, so it does not demonstrate refrigerator-to-microwave food loading.
+Zeno Malo's base uses a kinematic anchor; its arm and finger joints use drive targets. Object contact and articulated response occur in PhysX; the powered microwave hinge uses its joint drive. Temperature is a separate task-level model (`zeno_skills/thermal.py`), increasing only while the microwave is active, closed, and food is in the annotated cavity. This GT baseline uses no camera image, detector or language model. `heat_breakfast_combo` starts with oatmeal **already inside** the microwave; the separate full `heat_breakfast` rollout above demonstrates refrigerator-to-microwave loading and retrieval.
 
 Run a task from the `zeno-house` repository root:
 

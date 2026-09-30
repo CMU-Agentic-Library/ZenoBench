@@ -109,6 +109,9 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None):
         # whatever stands on it (the TV on the TV stand knocked objects out)
         _back_off(rig)
         _carry_pose(rig, min_bottom_z=min_bottom_z)
+        if min_bottom_z is not None:
+            bottom_z = float(rig.geo.bottom(rig.held["name"], rig.state())[2])
+            rig.log("carry_height", bottom_z=round(bottom_z, 3), requested=round(float(min_bottom_z), 3))
         check_held(rig, "carry_up")
     rig.sync_world()
     path = None
@@ -494,7 +497,19 @@ def _pick_pinch(rig, name, max_candidates=12):
     # pose biases the generic park search toward the hinge; seed the open
     # side of this shelf so a reachable rim grasp is considered promptly.
     fridge_shelf = str(obj.get("support", "")).startswith("breakfast_fridge/")
-    if fridge_shelf:
+    microwave = rig.ann.art("kitchen_microwave")
+    cavity = microwave["cavity_aabb"]
+    in_microwave = all(cavity[i] < pos[i] < cavity[i + 3] for i in range(3))
+    if in_microwave:
+        if abs(rig.joint("kitchen_microwave") - microwave["open_q"]) > 0.10:
+            raise SkillFailure(f"pick {name}: microwave door is closed")
+        # The only entry is from the front (low Y). Return to the arm/base
+        # pose that physically cleared the open door during loading.
+        retrieval_q = getattr(rig, "microwave_retrieval_q", None)
+        search_near = (4.8, 1.7, 150.0) if retrieval_q is not None else (4.8, 1.7)
+        cands.sort(key=lambda g: (g["p"][1], -g.get("tilt", 0),
+                                  abs(g["p"][0] - (cavity[0] + cavity[3]) / 2)))
+    elif fridge_shelf:
         search_near = (6.246, 2.337, 135.0)
         cands.sort(key=lambda g: (abs((g.get("azimuth", 0) + 180) % 360 - 180),
                                   -g.get("tilt", 0)))
@@ -504,8 +519,11 @@ def _pick_pinch(rig, name, max_candidates=12):
     park, g = None, None
     for g in cands[:max_candidates]:
         lift = [(g["p"] + np.array([0, 0, 0.07]), g["R"])]
-        park = find_park(rig.kin, rig.world, _grasp_legs(g) + lift, near=search_near, max_tries=120,
-                         q_start=None if fridge_shelf else rig.q_cmd, travel_q=_travel_q(rig))
+        park = find_park(rig.kin, rig.world, _grasp_legs(g) + lift, near=search_near,
+                         max_tries=1 if in_microwave and retrieval_q is not None else 60 if in_microwave else 120,
+                         q_start=retrieval_q if in_microwave and retrieval_q is not None else
+                                 None if in_microwave or fridge_shelf else rig.q_cmd,
+                         travel_q=None if in_microwave and retrieval_q is not None else _travel_q(rig))
         if park:
             break
     if park is None:
@@ -514,7 +532,13 @@ def _pick_pinch(rig, name, max_candidates=12):
     rig.log("pick_park", obj=name, kind=g["kind"], park=[round(x, 3), round(y, 3), round(yaw, 1)],
             floor=bool(floor_z < 0.05))
     rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < 0.05 else "")
-    _goto_park(rig, park)
+    if in_microwave and retrieval_q is not None:
+        rig.sync_world()
+        rig.follow(rig.joint_path(retrieval_q, "microwave_pick_safe"))
+        rig.drive_base([(x, y, yaw)], speed=0.2)
+        rig.sync_world()
+    else:
+        _goto_park(rig, park)
     rig.kin.coll_kw = {"ignore_fingers": True}
     pos, quat = rig.obj_pose(name)          # re-read after driving
     g2 = [c for c in rig.ann.grasp_poses(obj, pos, quat) if c["kind"] == g["kind"]
@@ -545,6 +569,16 @@ def _pick_pinch(rig, name, max_candidates=12):
         raise SkillFailure(f"pick {name}: not held (lift {after[2] - pos[2]:.3f} m)")
     tcp, R = rig.kin.tcp(rig.q_cmd)
     rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp - after, "R": R, "pre_open": g["pre_open"]}
+    if in_microwave:
+        # Lift alone leaves most of the bowl behind the door plane. Withdraw
+        # horizontally through the front before moving the base away.
+        for y, label in ((cavity[1] - 0.10, "microwave_pick_front"),
+                         (cavity[1] - 0.23, "microwave_pick_clear")):
+            tcp_now, _ = rig.kin.tcp(rig.q_cmd)
+            target = tcp_now.copy()
+            target[1] = y
+            rig.move_to(target, R, step=0.004, steps_per_wp=5, label=label)
+            check_held(rig, label)
     return True
 
 
@@ -805,12 +839,128 @@ def _yaw_of(R):
     return math.atan2(R[1, 0], R[0, 0])
 
 
+def place_microwave(rig, name, support):
+    """Carry a rim-held object through the *front* of an open microwave.
+
+    The shell has real side/roof walls. A vertical lowering path chosen from
+    the side can be IK-valid at its endpoint yet cannot enter the cavity.
+    Plan a front staging point and horizontal insertion at release height;
+    the complete shell leaves too little room for a vertical lowering stroke.
+    """
+    if rig.held is None or rig.held["name"] != name:
+        raise SkillFailure(f"place {name}: not holding it")
+    a = rig.ann.art("kitchen_microwave")
+    if abs(rig.joint(a["name"]) - a["open_q"]) > 0.10:
+        raise SkillFailure("microwave loading: door is not open")
+    s = rig.ann.support(support)
+    asset = rig.ann.asset_of(rig.ann.objects[name])
+    cavity = a["cavity_aabb"]
+    half_x, half_y = float(asset["size"][0]) / 2, float(asset["size"][1]) / 2
+    x = (cavity[0] + cavity[3]) / 2 - 0.02
+    y = cavity[1] + half_y + 0.015
+    if not (cavity[0] + half_x + 0.005 < x < cavity[3] - half_x - 0.005 and
+            y + half_y + 0.005 < cavity[4]):
+        raise SkillFailure(f"microwave loading: {name} does not fit the annotated cavity")
+    body = np.array([x, y, s["z"] - asset["origin_to_bottom_center"][2] + 0.006])
+    off0, R0 = rig.held["tcp_minus_body"], rig.held["R"]
+    parks = ((4.8, 1.7, 150.0), (4.8, 1.8, 150.0),
+             (4.8, 1.9, 210.0), (4.8, 2.0, 210.0))
+
+    def legs(off, R):
+        final = body + off + np.array([0, 0, 0.01])
+        front = final.copy()
+        front[1] = cavity[1] - 0.095
+        return [(front, R), (final, R)]
+
+    rig.sync_world()
+    rig.kin.coll_kw = {"ignore_fingers": True}
+    rig.log("microwave_load_grasp", obj=name, offset=np.round(off0, 3).tolist(),
+            orientation=np.round(R0, 3).tolist())
+    found = None
+    # Prefer a park clear of the open door even if rotating the held bowl
+    # requires a different arm yaw. The closest park made the bowl hit the door.
+    for near in parks:
+        for deg in (0, 45, -45, 90, -90, 135, -135, 180):
+            rot = rz(math.radians(deg))
+            R, off = rot @ R0, rot @ off0
+            targets = legs(off, R)
+            park = find_park(rig.kin, rig.world, targets, near=near,
+                             max_tries=1, q_start=None, travel_q=None)
+            if park is not None:
+                found = (park, deg, R, targets)
+                break
+        if found is not None:
+            break
+    if found is None:
+        raise SkillFailure(f"microwave loading: no front-entry IK path for {name}")
+    park, deg, R, targets = found
+    rig.log("microwave_load_park", obj=name, park=[round(v, 3) for v in park[:3]], yaw_deg=deg,
+            body=body.round(3).tolist())
+    rig.caption = f"PLACE {name}: carry to microwave front"
+    rig.focus_z = s["z"]
+    # The open door occupies the robot's carry corridor at bowl height.
+    # Keep the bowl's bottom above the appliance roof while the base moves;
+    # the staged arm trajectory lowers it in front of the cavity afterwards.
+    _goto_park(rig, park, min_bottom_z=cavity[5] + 0.08)
+    check_held(rig, "microwave_load_carry")
+    rig.sync_world()
+    rig.kin.coll_kw = {"ignore_fingers": True}
+    tcp, R_now = rig.kin.tcp(rig.q())
+    body_now, _ = rig.obj_pose(name)
+    hang = float(body_now[2] - _lowest_z(rig, name, rig.state()))
+    body[2] = s["z"] + hang + 0.004
+    off = (R @ R_now.T) @ (tcp - body_now)
+    corrected = legs(off, R)
+    shift = float(np.linalg.norm(corrected[1][0] - targets[1][0]))
+    rig.log("microwave_load_remeasure", obj=name, shift_m=round(shift, 3),
+            hang_m=round(hang, 3), offset=off.round(3).tolist(),
+            target=corrected[1][0].round(3).tolist())
+    replanned = find_park(rig.kin, rig.world, corrected, near=park[:3],
+                          max_tries=1, q_start=None, travel_q=None)
+    if replanned is None:
+        raise SkillFailure(f"microwave loading: held {name} shifted {shift:.3f} m and entry is blocked")
+    rig.caption = f"PLACE {name}: enter microwave from front"
+    for (point, orient), label, step, hint in zip(corrected,
+                                                   ("microwave_front", "microwave_insert"),
+                                                   (0.005, 0.003), replanned[3]):
+        rig.move_to(point, orient, step=step, steps_per_wp=6, label=label, q_hint=hint)
+        check_held(rig, label)
+    rig.grip(rig.held["pre_open"], 70)
+    rig.held = None
+    try:
+        rig.move_to(corrected[1][0] + np.array([0, 0, 0.06]), R, step=0.003,
+                    label="microwave_release_up", collision=False)
+        rig.move_to(corrected[0][0] + np.array([0, 0, 0.06]), R, step=0.004,
+                    label="microwave_retreat", collision=False)
+    except SkillFailure as e:
+        rig.log("retreat_short", reason=str(e))
+    # This arm pose cleared the actual open door during loading. Reuse it as
+    # the travel pose when coming back to retrieve the bowl after heating.
+    rig.microwave_retrieval_q = rig.q_cmd.copy()
+    # The released hand is still at the front opening. Move the base away
+    # with the arm held steady before the next policy tries to fold it.
+    _back_off(rig, dist=0.35)
+    rig.log("microwave_load_clear", base=[round(v, 3) for v in rig.base_pose()])
+    rig.step(90)
+    rig.focus_z = None
+    st = rig.state()
+    on, why = rig.geo.on(name, support, st)
+    pos, _ = rig.obj_pose(name)
+    inside = all(cavity[i] + 0.005 < pos[i] < cavity[i + 3] - 0.005 for i in range(3))
+    rig.log("microwave_load_result", obj=name, on_support=bool(on), in_cavity=bool(inside), detail=why)
+    if not (on and inside):
+        raise SkillFailure(f"microwave loading: {name} not on the cavity floor ({why}; inside={inside})")
+    return True
+
+
 def place(rig, name, support, xy=None):
     """Put the held object down.  support = "in:<container>" (dropped from
     just above the rim of deep containers), or a support surface at xy
     (see place_on for choosing xy)."""
     if rig.held is None or rig.held["name"] != name:
         raise SkillFailure(f"place {name}: not holding it")
+    if not support.startswith("in:") and rig.ann.support(support).get("furniture") == "kitchen_microwave":
+        return place_microwave(rig, name, support)
     if rig.held["kind"] == "edge" and not support.startswith("in:"):
         return place_flat(rig, name, support, xy)
     obj = rig.ann.objects[name]
@@ -878,6 +1028,34 @@ def place(rig, name, support, xy=None):
     rig.focus_z = s["z"]
     _goto_park(rig, park, min_bottom_z=s["z"] + 0.15 if s.get("furniture") == "kitchen_microwave" else None)
     rig.kin.coll_kw = {"ignore_fingers": True}
+    if s.get("category") == "TableDining" and rig.held["kind"] == "pinch":
+        # The compact carry pose can put a bowl below the tabletop. Back the
+        # base far enough to leave room for a forward, high wrist pose outside
+        # the edge; a diagonal lift through the edge knocks the bowl out.
+        base_at_table = rig.base_pose()
+        before = float(geo.bottom(name, rig.state())[2])
+        if before < s["z"] + 0.08:
+            _back_off(rig, dist=0.40)
+            if np.linalg.norm(np.asarray(rig.base_pose()[:2]) - np.asarray(base_at_table[:2])) < 0.35:
+                raise SkillFailure(f"place {name}: no room to clear the table edge before lifting")
+            tcp_lift, R_lift = rig.kin.tcp(rig.q_cmd)
+            # A high wrist pose needs forward reach. Extend while the bowl is
+            # still outside the table footprint, then lift before coming in.
+            forward = tcp_lift.copy()
+            forward[0] += 0.20
+            rig.move_to(forward, R_lift, step=0.005, steps_per_wp=5,
+                        label="table_staging", collision=False)
+            check_held(rig, "table_staging")
+            tcp_lift, R_lift = rig.kin.tcp(rig.q_cmd)
+            bottom = float(geo.bottom(name, rig.state())[2])
+            dz = max(0.0, s["z"] + 0.04 - bottom)
+            rig.log("table_pre_lift_target", obj=name, bottom_z=round(bottom, 3),
+                    target_bottom_z=round(s["z"] + 0.04, 3), tcp=np.round(tcp_lift, 3).tolist())
+            rig.move_to(tcp_lift + np.array([0, 0, dz]), R_lift, step=0.005,
+                        steps_per_wp=5, label="table_pre_lift", collision=False)
+            check_held(rig, "table_pre_lift")
+            rig.drive_base([base_at_table], speed=0.15)
+            check_held(rig, "table_edge_clear")
     if s.get("furniture") == "kitchen_microwave":
         tcp, R_lift = rig.kin.tcp(rig.q_cmd)
         bottom_z = float(geo.bottom(name, rig.state())[2])
@@ -999,6 +1177,8 @@ def free_spots(rig, name, support, hint=None, k=8):
 
 def place_on(rig, name, support, hint=None, tries=4):
     """Place the held object on a support at the best free spot."""
+    if rig.ann.support(support).get("furniture") == "kitchen_microwave":
+        return place_microwave(rig, name, support)
     if rig.held is not None and rig.held["kind"] == "edge":
         return place_flat(rig, name, support, hint)
     spots = free_spots(rig, name, support, hint)
@@ -1178,15 +1358,11 @@ def press_microwave_start(rig, name="kitchen_microwave"):
     return True
 
 
-def cycle_microwave_door(rig, name="kitchen_microwave"):
-    """Press the door control, then open and close its powered physical hinge."""
-    from isaacsim.core.utils.types import ArticulationAction
-
+def _press_microwave_door_control(rig, name):
+    """Press the annotated release button before opening a powered door."""
     a = rig.ann.art(name)
     if "door_button" not in a:
         raise SkillFailure("microwave: no annotated door button")
-    if abs(rig.joint(name) - a["closed_q"]) > 0.10:
-        raise SkillFailure("microwave: door must begin closed for inspection")
     button = a["door_button"]
     p = np.asarray(button["center"], float)
     outward = np.asarray(button["outward"], float)
@@ -1218,13 +1394,17 @@ def cycle_microwave_door(rig, name="kitchen_microwave"):
     rig.log("microwave_door_button", button_error_m=round(distance, 4))
     rig.move_to(pre, R, step=0.005, label="microwave_door_button_release", collision=False)
 
-    # The powered hinge opens after the arm has cleared its sweep. The joint
-    # drive applies torque in PhysX; neither rigid body is teleported.
+
+def _set_microwave_hinge(rig, name, target, caption):
+    """Drive the physical hinge only after the robot has cleared its sweep."""
+    from isaacsim.core.utils.types import ArticulationAction
+
     navigate(rig, (5.1, 1.6, 150.0))
     motor = rig._arts[name]
-
-    def move_hinge(target, caption):
-        start = rig.joint(name)
+    start = rig.joint(name)
+    previous_camera = rig.camera_override
+    rig.camera_override = ([4.78, 1.44, 1.42], [4.5, 2.5, 0.94])
+    try:
         rig.caption = caption
         for i in range(1, 301):
             q = start + (target - start) * i / 300
@@ -1236,11 +1416,37 @@ def cycle_microwave_door(rig, name="kitchen_microwave"):
         rig.log("microwave_door_motion", target=round(target, 3), actual=round(actual, 3))
         if abs(actual - target) > 0.10:
             raise SkillFailure(f"microwave: powered door stopped at {actual:.3f}, target {target:.3f}")
-
-    rig.camera_override = ([4.78, 1.44, 1.42], [4.5, 2.5, 0.94])
-    try:
-        move_hinge(a["open_q"], "OPEN microwave: inspect oatmeal")
-        move_hinge(a["closed_q"], "CLOSE microwave: powered door")
     finally:
-        rig.camera_override = None
+        rig.camera_override = previous_camera
+    return actual
+
+
+def open_microwave_door(rig, name="kitchen_microwave"):
+    """Press the door release and open the powered physical hinge."""
+    a = rig.ann.art(name)
+    q = rig.joint(name)
+    if abs(q - a["open_q"]) <= 0.10:
+        return q
+    if abs(q - a["closed_q"]) > 0.10:
+        raise SkillFailure(f"microwave: door is neither closed nor open ({q:.3f})")
+    _press_microwave_door_control(rig, name)
+    return _set_microwave_hinge(rig, name, a["open_q"], "OPEN microwave: powered door")
+
+
+def close_microwave_door(rig, name="kitchen_microwave"):
+    """Move clear and close the powered physical hinge."""
+    a = rig.ann.art(name)
+    q = rig.joint(name)
+    if abs(q - a["closed_q"]) <= 0.10:
+        return q
+    return _set_microwave_hinge(rig, name, a["closed_q"], "CLOSE microwave: powered door")
+
+
+def cycle_microwave_door(rig, name="kitchen_microwave"):
+    """Composite demonstration: open, then close the powered microwave door."""
+    a = rig.ann.art(name)
+    if abs(rig.joint(name) - a["closed_q"]) > 0.10:
+        raise SkillFailure("microwave: door must begin closed for inspection")
+    open_microwave_door(rig, name)
+    close_microwave_door(rig, name)
     return True

@@ -26,7 +26,7 @@ import time
 
 import numpy as np
 
-from . import skills as S
+from .policies import PolicySuite
 from .rig import Dropped, SkillFailure
 from .tasks import place_name
 
@@ -34,6 +34,7 @@ from .tasks import place_name
 class TaskPolicy:
     def __init__(self, rig, task, evaluator, max_seconds=3600):
         self.rig, self.task, self.ev = rig, task, evaluator
+        self.policies = PolicySuite(rig)
         self.hints = task.get("place_hints", {})
         self.failed = {}            # instance -> reason: never retried
         self.bad_containers = set()
@@ -161,23 +162,23 @@ class TaskPolicy:
                                              for i in range(3))
                         if already_loaded:
                             if self.task.get("demonstrate_microwave_door"):
-                                S.cycle_microwave_door(self.rig, appliance)
+                                self.policies.microwave_door_cycle.execute(appliance)
                             elif abs(self.rig.joint(appliance) - art["closed_q"]) > 0.10:
-                                S.close_articulated(self.rig, appliance)
-                            S.press_microwave_start(self.rig, appliance)
+                                self.policies.close.execute(appliance)
+                            self.policies.microwave_start.execute(appliance)
                         else:
                             # Open the microwave while the gripper is free,
                             # then fetch food from its refrigerator.
                             if abs(self.rig.joint(appliance) - art["open_q"]) > 0.10:
-                                S.open_articulated(self.rig, appliance)
+                                self.policies.open.execute(appliance)
                             if not self._open_to_reach(inst):
                                 continue
                             if not self._pick(inst, f"heat {label}"):
                                 continue
                             centre_front = ((cavity[0] + cavity[3]) / 2 - 0.022, cavity[1] + 0.14)
-                            S.place_on(self.rig, inst, support, hint=centre_front, tries=12)
-                            S.close_articulated(self.rig, appliance)
-                            S.press_microwave_start(self.rig, appliance)
+                            self.policies.place.on(inst, support, hint=centre_front, tries=12)
+                            self.policies.close.execute(appliance)
+                            self.policies.microwave_start.execute(appliance)
 
                     while self.rig.thermal.temperatures_c[inst] < goal_c and time.time() < self.deadline:
                         self.rig.step(120)
@@ -207,7 +208,7 @@ class TaskPolicy:
         reason = ""
         for k in range(attempts):
             try:
-                S.pick(self.rig, inst)
+                self.policies.pick.execute(inst)
                 return True
             except SkillFailure as e:
                 reason = str(e)
@@ -221,9 +222,19 @@ class TaskPolicy:
         """Pick inst and run place(); an object that slips out of the hand on
         the way is picked up again where it fell."""
         for k in range(max_drops + 1):
+            microwave = next((a for a in self.rig.ann.articulated
+                              if a["category"] == "microwave" and "cavity_aabb" in a), None)
+            pos, _ = self.rig.obj_pose(inst)
+            from_microwave = (microwave is not None and
+                              all(microwave["cavity_aabb"][i] < pos[i] < microwave["cavity_aabb"][i + 3]
+                                  for i in range(3)))
             if not self._pick(inst, why):
                 return False
             try:
+                # Once the bowl clears the opening, close the open door
+                # before carrying it across the door's swept corridor.
+                if from_microwave:
+                    self.policies.close.execute(microwave["name"])
                 return place()
             except Dropped as e:
                 self.decide("dropped", instance=inst, n=k + 1, reason=str(e))
@@ -241,7 +252,7 @@ class TaskPolicy:
         self.decide("open_to_reach", instance=inst, part=art)
         try:
             self.rig.caption = f"TASK: open the {self.rig.ann.art(art)['category']} to reach {inst}"
-            S.open_articulated(self.rig, art)
+            self.policies.open.execute(art)
         except SkillFailure as e:
             self.failed[inst] = f"could not open {art}: {e}"
             self.decide("open_failed", instance=inst, part=art, reason=str(e))
@@ -260,7 +271,7 @@ class TaskPolicy:
         src = self.rig.ann.objects[name].get("support")
         try:
             if src:
-                S.place_on(self.rig, name, src)
+                self.policies.place.on(name, src)
                 self.decide("put_back", instance=name, support=src)
                 return
         except SkillFailure as e:
@@ -297,7 +308,7 @@ class TaskPolicy:
         for sname in names:
             try:
                 self.rig.caption = f"TASK: put {inst} on {sname.split('_spawn')[0]}"
-                S.place_on(self.rig, inst, sname, xy)
+                self.policies.place.on(inst, sname, hint=xy)
                 return True
             except Dropped:
                 raise
@@ -362,7 +373,7 @@ class TaskPolicy:
                 if not self._open_to_reach(inst):
                     continue
                 try:
-                    if self._carry(inst, f"{label} -> {cont}", lambda: S.place(self.rig, inst, "in:" + cont)):
+                    if self._carry(inst, f"{label} -> {cont}", lambda: self.policies.place.execute(inst, "in:" + cont)):
                         done = True
                         break
                     continue
@@ -408,7 +419,7 @@ class TaskPolicy:
                 self._put_back_held()
             try:
                 self.rig.caption = f"TASK: close the {a['category']}"
-                S.close_articulated(self.rig, a["name"])
+                self.policies.close.execute(a["name"])
                 done = True
             except SkillFailure as e:
                 self.decide("close_failed", part=a["name"], reason=str(e))
