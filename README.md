@@ -2,7 +2,7 @@
 
 An Isaac Sim house with baked physics, **ground-truth (GT) annotations for every
 asset**, **annotation-driven manipulation skills** (IK + grasp selection + base
-planning), and **six household task scenes**. The house is an Infinigen layout.
+planning), and **eight household task specs**. The house is an Infinigen layout.
 Every task object was generated with [EmbodiedGen V2](https://github.com/HorizonRobotics/EmbodiedGen)
 text-to-3D.
 
@@ -14,12 +14,13 @@ text-to-3D.
 Whole tasks, run by the goal-driven scripted policy and scored by the success checker (sped up).
 Left: <b>collect_fruits</b>, both fruits into the basket, across two rooms.
 Right: <b>shelve_books</b>, flat books pushed over the desk edge, pinched at the overhang, placed on a bookcase.
-Everything is computed from the annotations: no hand-tuned base poses or grasps.
+Core grasp and motion planning use annotations; appliance skills also contain scene-specific park hints.
 </sub></p>
 
-Physics is real PhysX contact. The rollout only ever writes the robot's joint-drive targets and
-the base anchor. Objects and doors are never teleported, and success is measured from the
-simulator state (joint angle, object pose, finger gap).
+Physics is real PhysX contact. The rollout writes robot drive targets, the base anchor,
+and the powered microwave hinge target. Objects and doors are never teleported; food
+temperature uses a separate task-level model. Success is measured from simulator state
+(joint angle, object pose, finger gap, and task temperature).
 
 ---
 
@@ -27,6 +28,7 @@ simulator state (joint angle, object pose, finger gap).
 
 - [Scenes](#scenes)
 - [Tasks (ZenoBench)](#tasks-zenobench)
+- [GT policy inventory](docs/GT_POLICY.md)
 - [GT annotations](#gt-annotations-ik--grasp--rl)
 - [Atomic skills](#atomic-skills)
 - [Skills](#skills)
@@ -66,8 +68,9 @@ Each task is a spec in `task_specs/<task>.json`. `tools/build_tasks.py` samples 
 `tasks/<task>/{scene.usd, task.json, annotation.json}`. The spec gives the instruction, the objects
 with their candidate supports, the alternatives, and the goal. A task is **scored by
 `zeno_skills/evaluator.py`** from simulator state only, and **solved by the goal-driven scripted policy
-`zeno_skills/task_policy.py`**, which turns the goal into `pick / place / push / open / close` calls.
-`tools/run_task.py` does evaluate → policy → evaluate, then writes `result.json` and a video.
+`zeno_skills/task_policy.py`**, which turns the goal into navigation, manipulation,
+and appliance skills. The [GT policy inventory](docs/GT_POLICY.md) separates this scripted
+baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate → policy → evaluate, then writes `result.json` and a video.
 
 <!-- TASK_VIDEOS -->
 | task | rollout (sped up) | result |
@@ -218,13 +221,14 @@ python -m pytest tests/                    # specs load, aliases resolve, evalua
 # a spec kept elsewhere: tools/build_tasks.py --spec my/spec.json --seed 0 --out tasks/my_task
 ```
 
-Nothing in the policy or the evaluator is task-specific; a new task is only a JSON file.
+The core goal predicates and handlers are shared across tasks; appliance handling and some
+park preferences are specialized. New task JSON still needs scene validation.
 
 ## GT annotations (IK + grasp + RL)
 
 **Every object in every scene has an asset annotation, and every articulated part has a handle
-frame.** These give a scripted IK + grasp policy everything it needs, and can serve as
-privileged observations and dense rewards for RL.
+frame.** These supply core geometry for scripted IK and grasp planning, and can serve as
+privileged observations and dense rewards for RL. Appliance actions also use specialized control.
 
 <p align="center"><img src="media/annotation_map.png" width="70%"/></p>
 
@@ -288,8 +292,9 @@ $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
 
 ## Skills
 
-`zeno_skills/skills.py` reads everything from the annotations; nothing is asset-specific. Each skill
-measures its own outcome from simulator state and raises `SkillFailure` otherwise, so a policy can react.
+`zeno_skills/skills.py` uses annotated geometry and simulator feedback. Appliance actions
+also use specialized control and scene-specific parking hints. Each skill measures its own
+outcome from simulator state and raises `SkillFailure` on failure, so a policy can react.
 
 | skill | how |
 |---|---|
@@ -299,6 +304,8 @@ measures its own outcome from simulator state and raises `SkillFailure` otherwis
 | `push` | Fingers closed and pointing down, pads just above the surface, slide the object along it; if nothing reaches behind the object, press on its top and drag it |
 | `pick` (flat) | Plates, books, notebooks are wider than the 8 cm gripper: push them until they overhang a free support edge (centre of mass kept 5 cm inside), then pinch the overhang horizontally. On the floor: a diagonal corner pinch (side face + top face) |
 | `place` | Keep the measured TCP→object offset, search the object's yaw and a base pose, lower, release; into containers from just above the rim. Edge-held flat objects are slid back over the edge of the target surface |
+| `press_microwave_start` | Physically press the annotated start button after checking that the door is closed and food is in the cavity; activate the task-level thermal model |
+| `cycle_microwave_door` | Physically press the annotated door button, then use the powered PhysX hinge to open and close the door while checking measured joint angle |
 
 Kinematics are exact URDF FK plus analytic-Jacobian damped least-squares IK on the fingertip TCP.
 Collision uses a sphere model of the robot against the annotation boxes and each moving part at its

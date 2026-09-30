@@ -1,9 +1,10 @@
 """Goal-driven scripted policy: task.json + annotations -> skill calls.
 
-Nothing is task-specific.  The policy reads the goal conditions (see
-evaluator.py), evaluates them on the simulator state and, for every
-unsatisfied one, chooses an object instance and a skill sequence:
+Shared goal handlers read conditions (see evaluator.py), evaluate them on
+simulator state and, for each unsatisfied condition, choose an object
+instance and a skill sequence:
 
+  heated      use appliance controls to heat food to the goal temperature
   inside  C   pick each missing slot, place "in:<container>"; the container is
               the first present alternative ("toy_box|storage_basket"); a
               container that keeps refusing objects is swapped for the next

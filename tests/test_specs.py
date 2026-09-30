@@ -9,9 +9,7 @@ import pytest
 from zeno_skills.tasks import SPECS, load_places, load_spec, resolve_goal, resolve_place
 
 ROOT = Path(__file__).resolve().parents[1]
-ANN = json.loads((ROOT / "annotations/zeno_house.json").read_text())
-SUPPORTS = {s["name"] for s in ANN["supports"]} | {s.get("furniture") for s in ANN["supports"]}
-CONDITIONS = ("on", "inside", "upright", "near", "closed", "not_dropped")   # evaluator's priority order
+CONDITIONS = ("on", "inside", "upright", "near", "closed", "not_dropped", "heated")
 SPEC_FILES = sorted(p for p in SPECS.rglob("*.json") if p.name != "places.json")
 
 
@@ -31,13 +29,15 @@ def _places_of(goal):
 def test_spec(path):
     spec = load_spec(path)
     places = load_places()
+    annotation = json.loads((ROOT / spec.get("base_annotation", "annotations/zeno_house.json")).read_text())
+    supports = {s["name"] for s in annotation["supports"]} | {s.get("furniture") for s in annotation["supports"]}
     for o in spec.get("objects", {}).values():
         for p in o["supports"]:
             r = resolve_place(p, places)
-            assert isinstance(r, dict) or r in SUPPORTS, f"{p} -> {r}"
+            assert isinstance(r, dict) or r in supports, f"{p} -> {r}"
     goal = resolve_goal(spec["goal"], places)
     for p in _places_of(goal):
-        assert isinstance(p, dict) or p in SUPPORTS, p
+        assert isinstance(p, dict) or p in supports, p
     roles = set(spec.get("roles", {})) | set(spec.get("existing", {}))
     names = set(spec.get("objects", {})) | {i for v in spec.get("existing", {}).values() for i in v}
     for c in goal["all"]:

@@ -1,12 +1,12 @@
 ---
 name: zeno-skills
-description: Annotation-driven manipulation skills for the Zeno Malo mobile manipulator in Isaac Sim (open/close any annotated door or drawer, pick/place any annotated object, navigate). Use when scripting Zeno Malo rollouts, generating GT demonstrations, or needing privileged GT (grasp poses, handle frames, joint axes, support surfaces) for RL in the zeno_house scenes.
+description: Annotation-driven manipulation skills for the Zeno Malo mobile manipulator in Isaac Sim (open/close supported articulated doors and drawers, pick/place annotated objects, navigate, and operate the microwave buttons). Use when scripting Zeno Malo rollouts, generating GT demonstrations, or needing privileged GT (grasp poses, handle frames, joint axes, support surfaces) for RL in the zeno_house scenes.
 ---
 
 # Zeno Malo skills
 
-Everything a skill needs comes from annotations, never from hand-tuned
-constants:
+The core grasp and geometry data come from annotations. Current appliance
+skills also use scene-specific parking and camera defaults:
 
 | file | content |
 |---|---|
@@ -37,6 +37,11 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
   loads the bar through a finger's normal force.  Then closed loop: read the
   real joint value, place the base at the pose rigid with the part at
   (value + lead), repeat.  The part moves only through the grasp.
+* **microwave door / start** — the complete-shell microwave uses two annotated
+  physical buttons. Zeno presses the blue door button, then a powered PhysX
+  hinge opens/closes the door; it presses the green start button to heat food
+  inside the closed cavity. The generic handle-pull skill cannot currently
+  operate this microwave. Heating uses a task-level temperature model.
 * **pick** — grasp candidates from the asset annotation at the object's
   current pose, nearest-first; park search per candidate; approach, close,
   lift 7 cm; success = object rose and is still between the fingers.
