@@ -216,6 +216,8 @@ def _ride(rig, a, goal, lead=0.03, rate=0.25):
 
 def _move_articulated(rig, name, goal, verb):
     a = rig.ann.art(name)
+    if a.get("handle") is None:          # e.g. a PartNet microwave without a handle part
+        raise SkillFailure(f"{verb} {name}: no graspable handle annotated")
     q0 = rig.joint(name)
     rig.sync_world()
     rig.kin.coll_kw = {"hand_touches_part": True}
@@ -233,6 +235,8 @@ def _move_articulated(rig, name, goal, verb):
     # side is blocked (the two middle handles of a double door)
     hooks = [("side", flip, tilt) for tilt in (0.0, math.radians(10), math.radians(20))
              for flip in ((False, True) if a["type"] == "prismatic" or a["handle"].get("flip_ok") else (False,))]
+    if a["handle"].get("grasp") == "front":            # round pull: no gap behind it to hook into
+        hooks = []
     if a["handle"].get("pre_open") is not None:        # imported handles (bar geometry annotated)
         hooks.append(("front", False, 0.0))
     for grasp, flip, tilt in hooks:
