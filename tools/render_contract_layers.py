@@ -90,21 +90,21 @@ def render(catalog):
     height = cursor + 76
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WIDTH} {height}" role="img" aria-labelledby="title desc">',
            tag("title", {"id": "title"}, "八个 contract 与六十个底层 policy 的实现关系"),
-           tag("desc", {"id": "desc"}, "图展开原五层架构中的第四层 contract 与第五层 policy。实心方块是 ContractSpec.executor 的直接类绑定；空心圆是不会自动执行的支撑动作引用。绿色点表示至少一个 Isaac Sim 场景已验证，蓝色点表示独立入口仍待物理验证。第三层通用技能子图规划器尚未实现。"),
+           tag("desc", {"id": "desc"}, "图展示第三层 Contract 与第四层底层 Policy。实心方块是 ContractSpec.executor 的直接类绑定；空心圆是不会自动执行的支撑动作引用。绿色点表示至少一个 Isaac Sim 场景已验证，蓝色点表示独立入口仍待物理验证。上层通用技能子图规划器尚未实现。"),
            '''<defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 10 L5 0 L10 10 Z" fill="#7350b8"/></marker></defs>''',
            '''<style>text{font-family:Inter,"Noto Sans CJK SC","Microsoft YaHei",Arial,sans-serif;fill:#263047}.title{font-size:31px;font-weight:750}.subtitle{font-size:18px;fill:#5b6574}.lane{font-size:20px;font-weight:750}.card-title{font-size:23px;font-weight:700;fill:#fff}.card-desc{font-size:17px;font-weight:650}.key{font-size:14px;font-weight:700;fill:#b45324}.value{font-size:14px;fill:#39465a}.panel-title{font-size:18px;font-weight:700;fill:#6744a6}.policy{font-size:16px;font-weight:550}.legend{font-size:17px;fill:#536071}</style>''',
            rect(0, 0, WIDTH, height, "#fff"),
-           text(34, 51, "Contract ↔ 底层 Policy 实现关系", "title"),
+           text(34, 51, "第3层 Contract ↔ 第4层底层 Policy", "title"),
            text(34, 83, f"8 个 contract · 60 个底层 policy · {counts['verified']} verified / {counts['callable']} callable · 35 direct / 25 support", "subtitle"),
-           text(34, 112, "展开原五层架构的第 4/5 层；实心方块＝直接绑定，空心圆＝支撑引用（不自动执行）；第 3 层通用技能子图尚待扩展", "subtitle")]
+           text(34, 112, "第三层 Contract → 第四层 Policy；实心方块＝直接绑定，空心圆＝支撑引用（不自动执行）；上层技能子图尚待扩展", "subtitle")]
     for row_index, (top, panel_h, group) in enumerate(layout):
         panel_top = top + CARD_H + POLICY_GAP
         out += [rect(16, top-31, WIDTH-32, CARD_H+48, "#fff5ee", radius=16),
                 rect(16, panel_top-31, WIDTH-32, panel_h+46, "#f6f2fc", radius=16),
                 rect(16, top-31, 7, CARD_H+48, "#c75e2d", radius=3),
                 rect(16, panel_top-31, 7, panel_h+46, "#764dc0", radius=3),
-                text(38, top-5, f"Contract layer · 第 {row_index+1} 组", "lane", style="fill:#a94c22"),
-                text(38, panel_top-6, f"Policy layer · 引用关系第 {row_index+1} 组", "lane", style="fill:#6841a8")]
+                text(38, top-5, f"第3层 Contract · 第 {row_index+1} 组", "lane", style="fill:#a94c22"),
+                text(38, panel_top-6, f"第4层 Policy · 引用关系第 {row_index+1} 组", "lane", style="fill:#6841a8")]
         for col, contract_id in enumerate(group):
             x = 32 + col * (COL_WIDTH + GAP)
             direct = relations[contract_id]["direct"]

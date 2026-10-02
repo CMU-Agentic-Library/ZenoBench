@@ -2,7 +2,7 @@
 
 八个 [ContractSpec](../zeno_skills/contracts.py) 定义语义接口与底层 policy 路由。[ContractRunner](../zeno_skills/contract_runtime.py) 现可按顺序执行指定路线，检查共用前置条件与动作后的实测状态，并留下成功或失败记录；[run_contracts.py](../tools/run_contracts.py) 接受 JSON 调用序列。`TaskPolicy` 仍负责已有任务目标的自动动作选择；技能子图规划器和自动路线选择尚未实现。新增目标谓词或物理机制需要研究者扩展评估器或控制器。
 
-## Contract 与 policy 的两层关系（8 × 60）
+## 第三层 Contract 与第四层底层 Policy（8 × 60）
 
 ![八个 contract 与六十个底层 policy 的分层引用关系图](contract_layers_preview.png)
 

@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2080 1881" role="img" aria-labelledby="title desc">
 <title id="title">八个 contract 与六十个底层 policy 的实现关系</title>
-<desc id="desc">图展开原五层架构中的第四层 contract 与第五层 policy。实心方块是 ContractSpec.executor 的直接类绑定；空心圆是不会自动执行的支撑动作引用。绿色点表示至少一个 Isaac Sim 场景已验证，蓝色点表示独立入口仍待物理验证。第三层通用技能子图规划器尚未实现。</desc>
+<desc id="desc">图展示第三层 Contract 与第四层底层 Policy。实心方块是 ContractSpec.executor 的直接类绑定；空心圆是不会自动执行的支撑动作引用。绿色点表示至少一个 Isaac Sim 场景已验证，蓝色点表示独立入口仍待物理验证。上层通用技能子图规划器尚未实现。</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 10 L5 0 L10 10 Z" fill="#7350b8"/></marker></defs>
 <style>text{font-family:Inter,"Noto Sans CJK SC","Microsoft YaHei",Arial,sans-serif;fill:#263047}.title{font-size:31px;font-weight:750}.subtitle{font-size:18px;fill:#5b6574}.lane{font-size:20px;font-weight:750}.card-title{font-size:23px;font-weight:700;fill:#fff}.card-desc{font-size:17px;font-weight:650}.key{font-size:14px;font-weight:700;fill:#b45324}.value{font-size:14px;fill:#39465a}.panel-title{font-size:18px;font-weight:700;fill:#6744a6}.policy{font-size:16px;font-weight:550}.legend{font-size:17px;fill:#536071}</style>
 <rect x="0" y="0" width="2080" height="1881" rx="0" fill="#fff" stroke="none"></rect>
-<text x="34" y="51" class="title">Contract ↔ 底层 Policy 实现关系</text>
+<text x="34" y="51" class="title">第3层 Contract ↔ 第4层底层 Policy</text>
 <text x="34" y="83" class="subtitle">8 个 contract · 60 个底层 policy · 54 verified / 6 callable · 35 direct / 25 support</text>
-<text x="34" y="112" class="subtitle">展开原五层架构的第 4/5 层；实心方块＝直接绑定，空心圆＝支撑引用（不自动执行）；第 3 层通用技能子图尚待扩展</text>
+<text x="34" y="112" class="subtitle">第三层 Contract → 第四层 Policy；实心方块＝直接绑定，空心圆＝支撑引用（不自动执行）；上层技能子图尚待扩展</text>
 <rect x="16" y="116" width="2048" height="310" rx="16" fill="#fff5ee" stroke="none"></rect>
 <rect x="16" y="422" width="2048" height="647" rx="16" fill="#f6f2fc" stroke="none"></rect>
 <rect x="16" y="116" width="7" height="310" rx="3" fill="#c75e2d" stroke="none"></rect>
 <rect x="16" y="422" width="7" height="647" rx="3" fill="#764dc0" stroke="none"></rect>
-<text x="38" y="142" class="lane" style="fill:#a94c22">Contract layer · 第 1 组</text>
-<text x="38" y="447" class="lane" style="fill:#6841a8">Policy layer · 引用关系第 1 组</text>
+<text x="38" y="142" class="lane" style="fill:#a94c22">第3层 Contract · 第 1 组</text>
+<text x="38" y="447" class="lane" style="fill:#6841a8">第4层 Policy · 引用关系第 1 组</text>
 <rect x="32" y="147" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
 <rect x="32" y="147" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
 <rect x="32" y="177" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
@@ -321,8 +321,8 @@
 <rect x="16" y="1371" width="2048" height="407" rx="16" fill="#f6f2fc" stroke="none"></rect>
 <rect x="16" y="1065" width="7" height="310" rx="3" fill="#c75e2d" stroke="none"></rect>
 <rect x="16" y="1371" width="7" height="407" rx="3" fill="#764dc0" stroke="none"></rect>
-<text x="38" y="1091" class="lane" style="fill:#a94c22">Contract layer · 第 2 组</text>
-<text x="38" y="1396" class="lane" style="fill:#6841a8">Policy layer · 引用关系第 2 组</text>
+<text x="38" y="1091" class="lane" style="fill:#a94c22">第3层 Contract · 第 2 组</text>
+<text x="38" y="1396" class="lane" style="fill:#6841a8">第4层 Policy · 引用关系第 2 组</text>
 <rect x="32" y="1096" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
 <rect x="32" y="1096" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
 <rect x="32" y="1126" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>

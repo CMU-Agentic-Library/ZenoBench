@@ -26,7 +26,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 
 [GT policy 梳理](docs/GT_POLICY.md) 说明动作边界；[能力目录](docs/POLICY_CATALOG.md) 与[物理验证记录](docs/POLICY_VERIFICATION.md) 列出 60 项入口中已通过代表性场景的 54 项和仍待验证的 6 项。[Contract 提案](docs/CONTRACT_PROPOSAL.md) 记录八类接口、具体路线及验证要求。
 
-[关系图 PNG](docs/contract_layers_preview.png) 与 [SVG](docs/contract_layers.svg) 展示 8 个 contract 和 60 个 policy 的直接绑定与支撑引用。`ContractRunner` 能执行指定路线并检查共用实测结果；自动技能子图规划和失败后重规划留给上层扩展。
+[关系图 PNG](docs/contract_layers_preview.png) 与 [SVG](docs/contract_layers.svg) 展示第三层 8 个 Contract 和第四层 60 个底层 Policy 的直接绑定与支撑引用。`ContractRunner` 能执行指定路线并检查共用实测结果；自动技能子图规划和失败后重规划留给上层扩展。
 
 ---
 
