@@ -23,12 +23,14 @@ class Dropped(SkillFailure):
 
 
 class Rig:
-    def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=4, log=print):
+    def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=4, log=print,
+                 first_person_camera=None):
         import torch
         from isaacsim.core.prims import SingleArticulation, SingleRigidPrim
         self.torch = torch
         self.sim, self.stage, self.robot, self.kin, self.world, self.ann = sim, stage, robot, kin, world, ann
         self.cams = cams or {}
+        self.first_person_camera = first_person_camera
         self.arm = torch.tensor([robot.dof_names.index(n) for n in kin.names], dtype=torch.int32)
         self.fing = torch.tensor([robot.dof_names.index(n) for n in FINGERS], dtype=torch.int32)
         self.left_kin = ArmKin(side="left")
@@ -176,6 +178,19 @@ class Rig:
         self.events.append(ev)
         self._log("EVENT " + json.dumps(ev, default=float))
 
+    def get_first_person_image(self):
+        """Return the current Malo head-camera RGB image as a uint8 H×W×3 copy.
+
+        Rendering happens on demand without advancing physics. Enable the camera
+        with ``launch(first_person=True)`` and ``make_rig(..., first_person=True)``.
+        """
+        if self.first_person_camera is None:
+            raise RuntimeError("First-person camera is disabled; pass first_person=True to launch() and make_rig().")
+        self.sim.render()
+        self.first_person_camera.update(0.0, force_recompute=True)
+        rgb = self.first_person_camera.data.output["rgb"][0, ..., :3]
+        return rgb.cpu().numpy().copy()
+
     # ------------------------------------------------------------ stepping
     def step(self, n=1):
         from isaacsim.core.utils.types import ArticulationAction
@@ -201,6 +216,42 @@ class Rig:
                     imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
                 self.frames.append(self._compose(imgs, self.caption))
 
+    def follow_smooth(self, qs, steps_per_wp=3, settle=150, tol=0.01):
+        """Follow the same planned joint waypoints with a gentle start and stop.
+
+        Time scaling only changes progress along the existing joint segments;
+        it never rounds a corner into a configuration outside that path.
+        """
+        points = [self.q_cmd.copy()] + [np.asarray(q, float) for q in qs]
+        if len(points) == 1:
+            return
+        vmax = 0.6 * vel_limits(self.kin.names)
+        segment_times = [max(steps_per_wp / 120,
+                             float(np.max(np.abs(b - a) / vmax)))
+                         for a, b in zip(points[:-1], points[1:])]
+        times = np.r_[0.0, np.cumsum(segment_times)]
+        path_time = float(times[-1])
+        ramp = min(0.8, path_time / 2)
+        duration = path_time + ramp
+        ticks = max(2, int(math.ceil(duration * 120)))
+        for i in range(1, ticks + 1):
+            t = duration * i / ticks
+            if t < ramp:
+                progress = 0.5 * (t - ramp / math.pi * math.sin(math.pi * t / ramp))
+            elif t < path_time:
+                progress = t - ramp / 2
+            else:
+                remaining = duration - t
+                progress = path_time - 0.5 * (remaining - ramp / math.pi * math.sin(math.pi * remaining / ramp))
+            segment = min(len(segment_times) - 1, int(np.searchsorted(times, progress, side="right") - 1))
+            fraction = min(1.0, max(0.0, (progress - times[segment]) / segment_times[segment]))
+            self.q_cmd = points[segment] + fraction * (points[segment + 1] - points[segment])
+            self.step(1)
+        for _ in range(settle):
+            if np.max(np.abs(self.q() - self.q_cmd)) < tol:
+                break
+            self.step(2)
+
     def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01):
         """Waypoints time-scaled to 60% of URDF velocity limits (torso lift is
         0.117 m/s; ignoring this was a 0.29 m tracking error)."""
@@ -214,7 +265,8 @@ class Rig:
                 break
             self.step(2)
 
-    def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, collision=True, q_hint=None):
+    def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, collision=True, q_hint=None,
+                smooth=False):
         """Straight TCP line; falls back to the planner-validated step, then to a
         joint-space move to ``q_hint`` (a planner-validated solution)."""
         self.sync_world()
@@ -243,7 +295,7 @@ class Rig:
                 qs = self.joint_path(q_goal, label, check=collision)
         finally:
             self.kin.scene = scene
-        self.follow(qs, steps_per_wp)
+        (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
         tcp, _ = self.kin.tcp(self.q())
         err = float(np.linalg.norm(tcp - p))
         qe = self.q() - self.q_cmd
@@ -276,9 +328,19 @@ class Rig:
                 return dense(q0, via) + dense(via, q_goal)
         raise SkillFailure(f"joint move to {label}: every joint-space path collides")
 
-    def grip(self, width, steps=100):
-        self.grip_cmd = width
-        self.step(steps)
+    def grip(self, width, steps=100, gradual=False):
+        if gradual and steps > 1:
+            start = float(self.grip_cmd)
+            ramp = max(1, steps // 2)
+            for i in range(1, ramp + 1):
+                u = i / ramp
+                self.grip_cmd = start + (width - start) * (3 * u**2 - 2 * u**3)
+                self.step(1)
+            self.grip_cmd = width
+            self.step(steps - ramp)
+        else:
+            self.grip_cmd = width
+            self.step(steps)
         f = self.fingers()
         self.log("grip", cmd=width, fingers=[round(v, 4) for v in f])
         return f

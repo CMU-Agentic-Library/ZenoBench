@@ -34,15 +34,20 @@ def _clear(world, eye, tgt):
     return not bool(inside.any())
 
 
-def launch(video=True):
+def launch(video=True, first_person=False):
+    """Start Isaac Sim with rendering enabled when either camera is requested."""
     from isaaclab.app import AppLauncher
-    return AppLauncher({"headless": True, "enable_cameras": bool(video), "no_splash": True,
+    return AppLauncher({"headless": True, "enable_cameras": bool(video or first_person), "no_splash": True,
                         "fast_shutdown": True}).app
 
 
 def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=None, prepare=None,
-             handle_objects=()):
-    """prepare(stage): optional USD edits before the simulation starts."""
+             handle_objects=(), first_person=False, first_person_res=(480, 640)):
+    """Build a rig; optionally attach an RGB camera to Malo's stereo camera mount.
+
+    ``prepare(stage)`` can make USD edits before the simulation starts.
+    Camera resolutions are (height, width).
+    """
     import omni.usd
     import torch
     import isaaclab.sim as sim_utils
@@ -78,6 +83,16 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
             cams[k] = Camera(CameraCfg(prim_path=f"/World/RunCam_{k}", update_period=0, height=H, width=W,
                                        data_types=["rgb"], spawn=sim_utils.PinholeCameraCfg(
                                            focal_length=f, clipping_range=(0.05, 40.0))))
+    first_person_camera = None
+    if first_person:
+        from isaaclab.sensors import Camera, CameraCfg
+        height, width = first_person_res
+        first_person_camera = Camera(CameraCfg(
+            prim_path="/World/ZenoMalo/Asset/stereo_camera_link/FirstPersonCamera",
+            update_period=0, height=height, width=width, data_types=["rgb"],
+            offset=CameraCfg.OffsetCfg(pos=(0.04, 0.0, 0.0), convention="world"),
+            spawn=sim_utils.PinholeCameraCfg(focal_length=10.0, clipping_range=(0.05, 40.0)),
+        ))
     robot = SingleArticulation("/World/ZenoMalo/Asset", name="zeno")
     sim.reset()
     robot.initialize()
@@ -85,7 +100,8 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
     world = WorldModel(ann)
     kin.scene = world
     rig = Rig(sim, stage, robot, kin, world, ann, cams=cams, stride=stride,
-              log=log or (lambda s: print(s, flush=True)))
+              log=log or (lambda s: print(s, flush=True)),
+              first_person_camera=first_person_camera)
     if cams:
         orig_step = rig.step
         cam_state = {}

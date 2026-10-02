@@ -44,8 +44,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 - [Skills](#skills)
 - [Physics fixes baked into the scene](#physics-fixes-baked-into-the-scene)
 - [Quick start](#quick-start)
-- [Add your own assets (EmbodiedGen)](#add-your-own-assets-embodiedgen)
-- [Rebuild pipeline](#rebuild-pipeline)
+- [新建任务、资产、场景和标注](docs/README.md)
 - [Repository layout](#repository-layout)
 - [Limitations](#limitations)
 
@@ -195,51 +194,7 @@ rep["success"], rep["progress"], rep["conditions"]
 
 ### Define your own task
 
-1. Find names: `python tools/list_places.py [--room bedroom]` prints every support surface (room,
-   height, size, headroom), the aliases in `task_specs/places.json`, the object instances already in the
-   house and the asset types in `annotations/assets.json`.
-2. Write a spec (full example: `task_specs/examples/serve_guest.json`, 给客人准备物品):
-
-```jsonc
-{
- "task": "serve_guest",
- "instruction": "A guest is coming: put a book and a cup on the study desk.",
- "robot_start_near": [0.8, -4.6],
- "objects": {                                          // spawned by the builder
-  "guest_book": {"asset": "book_blue", "supports": ["dining_table"]},
-  "guest_cup":  {"asset": "breakfast_cup", "supports": ["tv_stand"], "optional": 0.5},
-  "guest_mug":  {"asset": "breakfast_mug", "supports": ["bookcase_north_top", "tv_stand"]}
- },
- "roles": {"cup_like": ["guest_cup"], "mug": ["guest_mug"]},
- "place_hints": {"guest_book": [-0.95, -6.12], "cup_like|mug": [-0.5, -6.15]},
- "goal": {"all": [
-  {"on": ["guest_book"], "support": "study_desk"},
-  {"on": ["cup_like|mug"], "support": "study_desk", "upright": true},  // the cup, else the mug
-  {"closed": "all"}, {"not_dropped": "all"}
- ]}
-}
-```
-
-   `supports` are sampled by the seed (the first one is preferred); the builder only keeps spots that
-   are collision-free **and reachable by Zeno's arm** (a base pose + IK check). This validates
-   spawning, not the complete manipulation sequence; run and evaluate each generated scene.
-   `optional` drops the object with that probability, which
-   exercises the alternatives. `place_hints` are either an xy target or an ordered list of surfaces.
-   Objects already in the house can join a role with `"existing": {"role": [instance names]}`.
-3. Build, check and run it:
-
-```bash
-cp task_specs/examples/serve_guest.json task_specs/
-bash tools/make_tasks.sh serve_guest       # build (reachability-checked) + settle + physics check + annotate
-$ISAACLAB_PYTHON tools/run_task.py --task serve_guest
-python -m pytest tests/                    # specs load, aliases resolve, evaluator unit tests
-# a spec kept elsewhere: tools/build_tasks.py --spec my/spec.json --seed 0 --out tasks/my_task
-```
-
-The core goal predicates and handlers are shared across tasks; appliance handling and some
-park preferences are specialized. You can define your own task with these predicates and
-available objects, then build, check and run it. A new predicate or appliance mechanism
-needs a coordinator handler or atomic policy in addition to a task spec.
+See [新建任务、资产、场景和标注](docs/README.md) for the spec, build, settle, check, annotate, and run workflow. The runnable starting point is [`task_specs/examples/serve_guest.json`](task_specs/examples/serve_guest.json).
 
 ## GT annotations (IK + grasp + RL)
 
@@ -338,11 +293,33 @@ Build the scene with the commands in the [verification record](docs/POLICY_VERIF
 
 For a manual policy sequence, use `tools/run_skills.py --plan "pick_round_rim cup" "place_microwave cup"` with a scene and annotation. All route names, scopes, and evidence are in the catalog; `pick_and_carry` and `microwave_door_cycle` are convenience compositions rather than additional atomic entries.
 
+### Malo first-person RGB camera
+
+Malo has a camera mounted on `stereo_camera_link`. Enable it when launching and building the rig, then capture the current view on demand:
+
+```python
+from zeno_skills.runtime import launch, make_rig
+
+app = launch(video=False, first_person=True)
+rig = make_rig(app, "tasks/tidy_toys/scene.usd", "tasks/tidy_toys/annotation.json",
+               video=False, first_person=True)
+rig.step(30)  # let the scene initialize
+rgb = rig.get_first_person_image()  # NumPy uint8 array, (480, 640, 3)
+# imageio.v2.imwrite("runs/malo_first_person.png", rgb)
+app.close()
+```
+
+The camera follows Malo's head. `get_first_person_image()` renders the latest state without advancing physics; `first_person_res=(height, width)` changes the resolution. The camera can be enabled with or without third-person video.
+
 ## Skills
 
 `zeno_skills/skills.py` uses annotated geometry and simulator feedback. Appliance actions
 also use specialized control and scene-specific parking hints. Each skill measures its own
 outcome from simulator state and raises `SkillFailure` on failure, so a policy can react.
+Standard pinch picks, mug-handle picks, and surface/container placements now ease
+into and out of contact along the same planned arm path; their gripper targets close
+and release gradually. The contact-sensitive book edge route retains its original timing.
+Object-specific grasp annotations and measured success checks still apply.
 
 | skill | how |
 |---|---|
@@ -406,170 +383,11 @@ python -m pytest tests/        # evaluator + task-spec tests (no simulator neede
 
 ## Add your own assets (EmbodiedGen V2)
 
-Every task object in this repo was made with [EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen)
-V2 text-to-3D. One command turns a text prompt or a photo into a sim-ready, grasp-annotated asset
-that the skills and the task builder can use (cans, bottles, shoes, tools, …).
-
-**1. Install EmbodiedGen** (separate conda env; it needs its own CUDA/PyTorch stack):
-
-```bash
-git clone https://github.com/HorizonRobotics/EmbodiedGen.git && cd EmbodiedGen
-git checkout v2.1.0
-conda create -n embodiedgen python=3.10.13 -y && conda activate embodiedgen
-bash install.sh basic            # ~10 min; `bash install.sh cu128` first on RTX 50-series
-export EMBODIEDGEN_ROOT=$PWD
-```
-
-The text/image-to-3D pipelines use a GPT backend for prompt checks and physical sizing: set it in
-`embodied_gen/utils/gpt_config.yaml` (Azure OpenAI / OpenRouter key, or `agent_type: codex` after
-`codex login`). Without one, the assets still generate, but come out 1 m / 1 kg; `--size` / `--mass`
-below fix that.
-Model weights download on first use. See the
-[install guide](https://horizonrobotics.github.io/EmbodiedGen/docs/install.html) for Docker and details.
-
-**2. Generate automatically: one command per asset** (`tools/generate_assets.py`). It chains
-text/image → 3D (EmbodiedGen, in the `embodiedgen` env) → real size and mass → URDF→USD → **grasp
-annotation for the Zeno gripper** → per-asset textures, so the asset is sim-ready and usable by the skills:
-
-```bash
-export EMBODIEDGEN_ROOT=/path/to/EmbodiedGen ISAACLAB_PYTHON=/path/to/isaaclab/python
-# optional: EMBODIEDGEN_PYTHON=/path/to/envs/embodiedgen/bin/python (default: conda run -n embodiedgen)
-
-# from a text prompt
-python tools/generate_assets.py --name soda_can --prompt "an empty red aluminium soda can" \
-    --size 0.12 --mass 0.02 --tags can recyclable
-
-# from a photo of a real object (image-to-3D)
-python tools/generate_assets.py --name my_mug --image photos/mug.jpg \
-    --size 0.10 --mass 0.30 --tags mug container --collider round_container
-
-# several at once (see assets/new_assets.example.json: can, bottle, sneaker, screwdriver)
-python tools/generate_assets.py --batch assets/new_assets.example.json
-```
-
-| argument | meaning |
-|---|---|
-| `--size` | longest extent in metres; the generated mesh is rescaled to it |
-| `--mass` | kg; box inertia is computed from the real size |
-| `--collider` | `solid` (convex hull), `round_container` / `rect_container` (walls follow the mesh profile, so objects can be dropped in) |
-| `--lay-flat` | rest thin objects (books, pens, bottles) on their largest face |
-| `--tags` | free labels, usable as roles/categories in task specs |
-| `--skip-generate` | reuse an existing `assets/asset3d/<name>/result/<name>.urdf` (re-annotate after editing the spec) |
-
-What it writes:
-
-| step | output |
-|---|---|
-| generate (`text3d-cli` / `img3d-cli`) | `assets/asset3d/<name>/result/<name>.urdf` + textured mesh |
-| register | `assets/custom_assets.json` (size, mass, tags, collider) |
-| convert + annotate (`tools/prepare_assets.py --convert`) | `usd/assets/<name>.usd`, entry in `annotations/assets.json`: size, bottom offset, container profile, grasps (`top_pinch` across the narrowest section, `rim_pinch` for containers, `edge_pinch_after_push` for flat objects wider than 8 cm; `graspable_by_zeno: false` if no pinch fits) |
-| textures (`tools/fix_textures.py`) | `usd/assets/configuration/materials/textures/<name>_diffuse.png` |
-
-At the end it prints the grasp types found and a spec snippet.
-
-**3. Put it in the house**: name the asset in a task spec and build the scene. The builder drops it
-onto a reachable spot of the chosen surface with the same physics as the other assets:
-
-```bash
-cat > task_specs/tidy_cans.json <<'JSON'
-{
- "task": "tidy_cans", "instruction": "Put the empty can in the storage basket.",
- "robot_start_near": [4.3, 1.6],
- "objects": {"can_1": {"asset": "soda_can", "supports": ["tv_stand", "floor:living_room"]},
-             "storage_basket": {"asset": "storage_basket", "supports": ["floor:living_room"]}},
- "goal": {"all": [{"inside": ["can_1"], "container": "storage_basket"}, {"not_dropped": "all"}]}
-}
-JSON
-bash tools/make_tasks.sh tidy_cans                 # build + settle + physics check (renders) + annotate
-$ISAACLAB_PYTHON tools/run_task.py --task tidy_cans  # scripted policy + success check + video
-```
-
-To try only the grasp: `tools/run_skills.py --scene tasks/tidy_cans/scene.usd --ann tasks/tidy_cans/annotation.json --out runs/can --plan "pick can_1" "place can_1 in:storage_basket"`.
-
-<details><summary>The same steps by hand</summary>
-
-```bash
-# inside the embodiedgen env, from $EMBODIEDGEN_ROOT (assets/gen_v2_assets*.sh are the commands used for this repo)
-text3d-cli --prompts "an empty aluminium soda can" --asset_names soda_can \
-  --n_image_retry 2 --n_asset_retry 2 --n_pipe_retry 1 --seed_img 0 --output_root /path/to/zeno-house/assets
-# -> assets/asset3d/soda_can/result/soda_can.urdf
-
-# register in assets/custom_assets.json:
-#   {"soda_can": {"size": 0.12, "mass": 0.02, "tags": ["can"], "collider": "solid", "lay_flat": false,
-#                 "urdf": "assets/asset3d/soda_can/result/soda_can.urdf"}}
-
-$ISAACLAB_PYTHON tools/prepare_assets.py --only soda_can --convert
-$ISAACLAB_PYTHON tools/fix_textures.py
-```
-</details>
-
-## Add articulated assets (PartNet-Mobility)
-
-Cabinets, dressers, fridges and other articulated objects from
-[PartNet-Mobility](https://sapien.ucsd.edu/browse) can be imported into the house's cabinet layout
-(`base`, one body per door/drawer with its `handle`, `joints/*`, `root_joint`). Then `annotate_scene.py`
-annotates them and the open/close skills operate them without any per-asset code:
-
-```bash
-# PartNet zip -> usd/partnet/<name>/<name>.usd (+ import.json: scale, joint, handle check)
-$ISAACLAB_PYTHON tools/import_partnet.py --id 48452 --name partnet_cabinet_48452 --height 1.0
-# free wall spot (back to a wall, free area in front, clear of the robot start) -> scene layer
-$ISAACLAB_PYTHON tools/place_partnet.py --asset partnet_cabinet_48452 --name partnet_cabinet
-$ISAACLAB_PYTHON tools/annotate_scene.py sim/zeno_house_partnet.usd annotations/zeno_house_partnet.json
-$ISAACLAB_PYTHON tools/run_skills.py --scene sim/zeno_house_partnet.usd --ann annotations/zeno_house_partnet.json \
-    --out runs/partnet_open --plan "open partnet_cabinet" "close partnet_cabinet"
-
-# several parts (2 drawers + 2 doors): one annotation entry per part, named <instance>/<part>
-$ISAACLAB_PYTHON tools/import_partnet.py --id 45194 --name pn_45194 --height 0.9
-$ISAACLAB_PYTHON tools/place_partnet.py --asset pn_45194 --name partnet_dresser
-$ISAACLAB_PYTHON tools/annotate_scene.py sim/zeno_house_partnet.usd annotations/zeno_house_partnet.json
-$ISAACLAB_PYTHON tools/run_skills.py --scene sim/zeno_house_partnet.usd --ann annotations/zeno_house_partnet.json \
-    --out runs/dresser --plan "open partnet_dresser/drawer_0" "close partnet_dresser/drawer_0"
-```
-
-What the importer derives from the PartNet data:
-
-| from | to |
-|---|---|
-| `mobility.urdf` joints | one moving body per door/drawer hinged on the carcass (`door`, or `door_0`, `drawer_0`, … top row first, then left to right): pivot, axis, limits in the asset frame (door side = −y, bottom centre = origin, scaled to `--height`). Joints nested in a moving part (a knob on a door) and continuous joints are fixed |
-| part names (`result.json` / visual names) | one convex-hull collider per part, named by role (`bottom`, `shelf`, `top`, …) so the shelves inside the carcass become supports |
-| `handle` part | sliced parallel to the panel. The material in front of a free, pad-wide slot at the handle's middle is the bar (`handle`, a box; a straight bar or the apex of an arched pull); the rest (standoffs, arch legs) becomes stacked `handle_standoff_*` boxes, so the finger gap stays open. The bar's long axis and the panel normal are authored on it (`zeno:bar_axis`, `zeno:outward`). `import.json` reports gap and bar thickness per part; knobs, recessed grips and handles without a ≥ 2 cm gap are marked not hookable |
-| textured OBJ/MTL | UsdPreviewSurface visuals (colliders are invisible) |
-
-The moving part's colliders keep a 1.5 cm floor gap (`--floor-gap`), and the placement stands the asset on
-any rug under its footprint: a door that touches the floor or a rug does not open. The annotation adds
-`gap`, `thickness` and `pre_open` to each handle. For a bar close to its panel, the side hook opens only
-as far as `pre_open` and also tries approaches tilted 10–20° away from the panel. The hook slides across
-the bar: horizontal bars (drawers) are hooked from above or below. When no side hook fits (the two middle
-handles of a double door leave no room beside them), the skill pinches the bar from the front. A carcass
-with several parts is one articulation. `Rig` reads each part's DOF by its joint name (`dof` in the
-annotation), and the carcass's obstacles and supports are written once.
+See the [creation README](docs/README.md#2-新增可抓取资产) for generation, USD conversion, shared grasp annotations, and task integration.
 
 ## Rebuild pipeline
 
-```text
-tools/generate_assets.py      one command: EmbodiedGen text/image-to-3D -> register -> USD -> grasp annotation -> textures
-assets/gen_v2_assets*.sh      EmbodiedGen V2 text3d-cli commands used for this repo
-tools/prepare_assets.py       real-size scaling, lay-flat alignment, grasp annotation, URDF→USD (--convert)
-tools/fix_textures.py         per-asset textures (run after every --convert)
-tools/import_partnet.py       PartNet-Mobility articulated object -> articulated USD in the house's cabinet layout
-tools/place_partnet.py        put imported articulated assets on a free wall spot (scene layer over the house)
-tools/settle_scene.py         drop-and-settle, write rest poses
-tools/check_scene.py          physics check + renders
-tools/annotate_scene.py       scene annotations (house part cached in annotations/house_static.json)
-tools/relocate_furniture.py   move furniture in the house (the cabinets out of the bathrooms), annotations kept in sync
-tools/cut_doorway.py          cut doorways into wall shells (living room <-> bedroom, west corridor)
-tools/apply_physics_fixes.py  re-apply the articulated-furniture physics fixes to sim/zeno_house.usd
-tools/list_places.py          surfaces, aliases, objects and assets a task spec can refer to
-tools/build_tasks.py          task layer + task.json from task_specs/<task>.json (reachability-checked)
-                              (tools/make_tasks.sh = build + settle + check + annotate)
-tools/run_task.py             evaluate -> scripted policy -> evaluate, record video
-tools/run_skills.py           execute a skill plan, record video
-tools/make_media.py           README media (compressed MP4 + sped-up GIF) from a rollout
-```
-
-`tools/bake_scene.py` records how `sim/zeno_house.usd` was produced from the original Infinigen
-+ Zeno composition. That source is not shipped; `sim/zeno_house.usd` is the source of truth.
+The [creation README](docs/README.md) gives the task, scene, annotation, and PartNet commands in execution order.
 
 ## Repository layout
 

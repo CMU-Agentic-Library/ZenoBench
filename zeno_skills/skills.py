@@ -576,14 +576,14 @@ def _pick_pinch(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinch", "
     rig.grip(g["pre_open"], 40)
     for (tp, tR), lab, st_, spw, qh in zip(_grasp_legs(g), ("pre_far", "pre", "grasp"), (0.02, 0.005, 0.003),
                                            (3, 3, 4), park_qs):
-        err = rig.move_to(tp, tR, step=st_, steps_per_wp=spw, label=f"pick_{lab}", q_hint=qh)
+        err = rig.move_to(tp, tR, step=st_, steps_per_wp=spw, label=f"pick_{lab}", q_hint=qh, smooth=True)
     if err > 0.008:                     # round objects pop out of an off-centre pinch
-        rig.move_to(g["p"], g["R"], step=0.002, steps_per_wp=6, label="pick_grasp_fix", collision=False)
+        rig.move_to(g["p"], g["R"], step=0.002, steps_per_wp=6, label="pick_grasp_fix", collision=False, smooth=True)
     rig.caption = f"PICK {name}: close gripper"
-    rig.grip(0.0, 120)
+    rig.grip(0.0, 120, gradual=True)
     rig.caption = f"PICK {name}: lift"
     rig.move_to(g["p"] + np.array([0, 0, 0.07]), g["R"], step=0.002, steps_per_wp=6, label="pick_lift",
-                collision=False)
+                collision=False, smooth=True)
     rig.step(40)
     after, _ = rig.obj_pose(name)
     f = rig.fingers()
@@ -1176,7 +1176,7 @@ def place(rig, name, support, xy=None):
     planned_legs = legs
     legs = new
     try:
-        err = rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", collision=False,
+        err = rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True, collision=False,
                           q_hint=hints[0])
         if err > 0.03:
             raise SkillFailure(f"place {name}: hand blocked above support ({err:.3f} m)")
@@ -1189,7 +1189,7 @@ def place(rig, name, support, xy=None):
         # reached from the loaded arm configuration.
         rig.log("place_remeasure_fallback", obj=name, reason=str(e))
         legs, hints = planned_legs, park_qs
-        rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", collision=False,
+        rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True, collision=False,
                     q_hint=hints[0])
     stage_pos, _ = rig.obj_pose(name)
     rig.log("place_after_above", obj=name, pos=np.round(stage_pos, 4).tolist(),
@@ -1197,7 +1197,7 @@ def place(rig, name, support, xy=None):
     check_held(rig, "place_above")
     if not drop:
         rig.caption = f"PLACE {name}: lower"
-        err = rig.move_to(legs[1][0], R, step=0.002, steps_per_wp=8, label="place_lower", collision=False,
+        err = rig.move_to(legs[1][0], R, step=0.002, steps_per_wp=8, label="place_lower", smooth=True, collision=False,
                           q_hint=hints[1])
         if err > 0.03:
             raise SkillFailure(f"place {name}: hand blocked at support ({err:.3f} m)")
@@ -1211,15 +1211,26 @@ def place(rig, name, support, xy=None):
     before_release, _ = rig.obj_pose(name)
     rig.log("place_before_release", obj=name, pos=np.round(before_release, 4).tolist(),
             target=[round(float(v), 4) for v in body])
-    rig.grip(rig.held["pre_open"], 70)
+    rig.grip(rig.held["pre_open"], 70, gradual=True)
     after_open, _ = rig.obj_pose(name)
     rig.log("place_after_open", obj=name, pos=np.round(after_open, 4).tolist())
     top = legs[0][0] if drop else legs[1][0]
     rig.held = None                    # released: a short retreat is not part of the outcome
-    try:
-        rig.move_to(top + np.array([0, 0, 0.06]), R, step=0.004, label="place_retreat", collision=False)
-    except SkillFailure as e:
-        rig.log("retreat_short", reason=str(e))
+    tcp, _ = rig.kin.tcp(rig.q_cmd)
+    away = np.asarray(rig.base_pose()[:2]) - np.asarray(xy)
+    away /= max(1e-9, float(np.linalg.norm(away)))
+    retreats = [("place_retreat_up", top + np.array([0, 0, 0.06])),
+                ("place_retreat_back", tcp + 0.08 * R[:, 2]),
+                ("place_retreat_base", tcp + np.r_[0.08 * away, 0.03])]
+    errors = []
+    for label, target in retreats:
+        try:
+            rig.move_to(target, R, step=0.004, label=label, smooth=True, collision=False)
+            break
+        except SkillFailure as e:
+            errors.append(str(e))
+    else:
+        rig.log("retreat_short", reasons=errors)
     rig.step(90)
     rig.focus_z = None
     st = rig.state()
