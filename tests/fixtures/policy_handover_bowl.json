@@ -1,0 +1,26 @@
+{
+  "task": "policy_handover_bowl",
+  "instruction": "Pick a bowl and transfer it from right gripper to left.",
+  "base_scene": "sim/zeno_house_appliances.usd",
+  "base_annotation": "annotations/zeno_house_appliances.json",
+  "robot_start_near": [
+    3.5,
+    5.3
+  ],
+  "objects": {
+    "bowl": {
+      "asset": "breakfast_bowl",
+      "supports": [
+        "dining_table"
+      ],
+      "reach_check": false
+    }
+  },
+  "goal": {
+    "all": [
+      {
+        "not_dropped": "all"
+      }
+    ]
+  }
+}

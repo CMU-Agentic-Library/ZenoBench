@@ -10,7 +10,7 @@ import math
 
 import numpy as np
 
-from .kinematics import FINGERS, LEFT_ARM_FOLD, vel_limits, yaw_quat_wxyz
+from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, vel_limits, yaw_quat_wxyz
 from .physics import ANCHOR, ASSET
 
 
@@ -31,8 +31,13 @@ class Rig:
         self.cams = cams or {}
         self.arm = torch.tensor([robot.dof_names.index(n) for n in kin.names], dtype=torch.int32)
         self.fing = torch.tensor([robot.dof_names.index(n) for n in FINGERS], dtype=torch.int32)
-        self.left = torch.tensor([robot.dof_names.index(n) for n in LEFT_ARM_FOLD], dtype=torch.int32)
-        self.left_q = torch.tensor(list(LEFT_ARM_FOLD.values()), dtype=torch.float32)
+        self.left_kin = ArmKin(side="left")
+        self.left_kin.scene = world
+        self.left = torch.tensor([robot.dof_names.index(n) for n in self.left_kin.names[2:]], dtype=torch.int32)
+        self.left_fing = torch.tensor([robot.dof_names.index(n) for n in
+                                       ("left_gripper_left_finger_axis", "left_gripper_right_finger_axis")], dtype=torch.int32)
+        self.left_q_cmd = np.array([LEFT_ARM_FOLD.get(n, 0.0) for n in self.left_kin.names[2:]], float)
+        self.left_grip_cmd = 0.04
         self.anchor = stage.GetPrimAtPath(ANCHOR)
         self.base_z = float(self.anchor.GetAttribute("physics:localPos0").Get()[2])
         self.q_cmd = self.q()
@@ -58,7 +63,9 @@ class Rig:
             self._bodies[name] = b
         x, y, yaw = self.base_pose()
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
+        self.left_kin.set_base((x, y, 0.0), math.radians(yaw))
         self.held = None
+        self.left_held = None
         self.focus_z = None          # follow-camera target height (low for floor picks)
         self.camera_override = None  # optional (eye, target) for a visible appliance action
         from .evaluator import Geometry
@@ -94,6 +101,13 @@ class Rig:
     def fingers(self):
         return self.robot.get_joint_positions()[self.fing.long()].cpu().numpy().astype(float)
 
+    def left_q(self):
+        arm = self.robot.get_joint_positions()[self.left.long()].cpu().numpy().astype(float)
+        return np.r_[self.q()[:2], arm]
+
+    def left_fingers(self):
+        return self.robot.get_joint_positions()[self.left_fing.long()].cpu().numpy().astype(float)
+
     def joint(self, art_name):
         return float(self._arts[art_name].get_joint_positions()[self._dof[art_name]])
 
@@ -124,7 +138,8 @@ class Rig:
         st = self.state()
         boxes = []
         for name in self.ann.objects:
-            if self.held is not None and name == self.held["name"]:
+            if (self.held is not None and name == self.held["name"]) or \
+               (self.left_held is not None and name == self.left_held["name"]):
                 continue
             b = self.geo.bottom(name, st)
             if b[2] > 0.25 and not self._overhangs(name, st):
@@ -134,6 +149,9 @@ class Rig:
         self.world.set_base_obstacles(boxes)
         x, y, yaw = self.base_pose()
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
+        self.left_kin.set_base((x, y, 0.0), math.radians(yaw))
+        self.world.right_kin, self.world.right_q = self.kin, self.q_cmd.copy()
+        self.world.left_kin, self.world.left_q = self.left_kin, np.r_[self.q_cmd[:2], self.left_q_cmd]
 
     def _overhangs(self, name, st):
         """Object sticking out past its support's edge (pushed for an edge
@@ -167,7 +185,10 @@ class Rig:
                                                        joint_indices=self.arm))
             self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.grip_cmd)),
                                                        joint_indices=self.fing))
-            self.robot.apply_action(ArticulationAction(joint_positions=self.left_q, joint_indices=self.left))
+            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.left_q_cmd, dtype=t.float32),
+                                                       joint_indices=self.left))
+            self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.left_grip_cmd)),
+                                                       joint_indices=self.left_fing))
             render = bool(self.cams) and self.tick % self.stride == 0
             self.sim.step(render=render)
             self.tick += 1
@@ -262,6 +283,97 @@ class Rig:
         self.log("grip", cmd=width, fingers=[round(v, 4) for v in f])
         return f
 
+    def left_grip(self, width, steps=100):
+        self.left_grip_cmd = float(width)
+        self.step(steps)
+        f = self.left_fingers()
+        self.log("left_grip", cmd=width, fingers=[round(v, 4) for v in f])
+        return f
+
+    def left_follow(self, qs, steps_per_wp=3, settle=150, tol=0.02):
+        """Drive left arm and shared torso joints through IK waypoints."""
+        vmax = 0.6 * vel_limits(self.left_kin.names)
+        for q in qs:
+            q = np.asarray(q, float)
+            current = np.r_[self.q_cmd[:2], self.left_q_cmd]
+            need = int(math.ceil(np.max(np.abs(q-current) / vmax) * 120))
+            self.q_cmd[:2] = q[:2]
+            self.left_q_cmd = q[2:].copy()
+            self.step(max(steps_per_wp, need))
+        for _ in range(settle):
+            if np.max(np.abs(self.left_q()-np.r_[self.q_cmd[:2], self.left_q_cmd])) < tol:
+                break
+            self.step(2)
+
+    def follow_both(self, right_goal, left_goal, *, label="bimanual", steps=None):
+        """Drive both arms at once while checking each sampled paired posture."""
+        self.sync_world()
+        self.world.left_active = True
+        qr0 = self.q_cmd.copy()
+        ql0 = np.r_[self.q_cmd[:2], self.left_q_cmd]
+        qr1 = np.asarray(right_goal, float)
+        ql1 = np.asarray(left_goal, float)
+        if qr1.shape != qr0.shape or ql1.shape != ql0.shape:
+            raise ValueError("bimanual joint goals must match both 9-joint chains")
+        if np.max(np.abs(qr1[:2]-ql1[:2])) > 0.005:
+            raise SkillFailure("bimanual: arms request conflicting torso/waist positions")
+        vmax = np.minimum(vel_limits(self.kin.names), vel_limits(self.left_kin.names))
+        duration = max(np.max(np.abs(qr1-qr0)/vmax), np.max(np.abs(ql1-ql0)/vmax))/0.5
+        n = max(steps or 0, 20, int(math.ceil(duration*120)))
+        saved_right, saved_left = self.world.right_q, self.world.left_q
+        try:
+            for u in np.linspace(0, 1, max(3, n//8)):
+                qr = qr0+(qr1-qr0)*u
+                ql = ql0+(ql1-ql0)*u
+                self.world.right_q, self.world.left_q = qr, ql
+                if not self.kin.free(qr) or not self.left_kin.free(ql):
+                    raise SkillFailure(f"{label}: paired-arm path collides at {u:.2f}")
+        finally:
+            self.world.right_q, self.world.left_q = saved_right, saved_left
+        for u in np.linspace(0, 1, n)[1:]:
+            qr = qr0+(qr1-qr0)*u
+            ql = ql0+(ql1-ql0)*u
+            self.q_cmd = qr
+            self.left_q_cmd = ql[2:].copy()
+            self.step(1)
+        self.step(90)
+        right_error = float(np.max(np.abs(self.q()-qr1)))
+        left_error = float(np.max(np.abs(self.left_q()-ql1)))
+        self.log("bimanual_follow", target=label, right_q_err=round(right_error, 4),
+                 left_q_err=round(left_error, 4))
+        if max(right_error, left_error) > 0.06:
+            raise SkillFailure(f"{label}: joint tracking error exceeded 0.06 rad")
+
+    def move_left_to(self, p, R, *, label=None, collision=True):
+        """Collision-checked Cartesian motion for the left fingertip TCP."""
+        self.sync_world()
+        self.world.left_active = True
+        p = np.asarray(p, float)
+        scene = self.left_kin.scene
+        if not collision:
+            self.left_kin.scene = None
+        try:
+            start = np.r_[self.q_cmd[:2], self.left_q_cmd]
+            qs, ok = self.left_kin.cart_path(start, p, R, step=0.015)
+            if not ok:
+                goal, ok = self.left_kin.ik_global(p, R, seeds=[start])
+                if not ok:
+                    raise SkillFailure(f"left arm: no IK for {label or p}")
+                from .planner import _segment_free
+                if collision and not _segment_free(self.left_kin, start, goal):
+                    raise SkillFailure(f"left arm: joint path collides for {label or p}")
+                n = max(2, int(np.max(np.abs(goal-start))/0.01))
+                qs = [start+(goal-start)*u for u in np.linspace(0, 1, n)[1:]]
+        finally:
+            self.left_kin.scene = scene
+        self.left_follow(qs)
+        tcp, _ = self.left_kin.tcp(self.left_q())
+        err = float(np.linalg.norm(tcp-p))
+        self.log("left_reach", target=label, tcp_err_m=round(err, 4))
+        if err > 0.03:
+            raise SkillFailure(f"left arm: TCP missed {label or p} by {err:.3f} m")
+        return err
+
     def tuck(self):
         """Fold the arm to the rest posture without sweeping through furniture
         or an open door: try (direct | up | back+up) Cartesian retreats, then a
@@ -304,8 +416,9 @@ class Rig:
         self.anchor.GetAttribute("physics:localPos0").Set(Gf.Vec3f(float(x), float(y), self.base_z))
         self.anchor.GetAttribute("physics:localRot0").Set(Gf.Quatf(math.cos(yaw / 2), 0.0, 0.0, math.sin(yaw / 2)))
         self.kin.set_base((x, y, 0.0), yaw)
+        self.left_kin.set_base((x, y, 0.0), yaw)
 
-    def drive_base(self, path, speed=0.35, turn=0.8, ramp=0.8):
+    def drive_base(self, path, speed=0.35, turn=0.8, ramp=0.8, on_step=None):
         """Follow a list of (x, y, yaw_deg) waypoints with one smooth time
         scaling over the whole path (accelerate over ``ramp`` s, cruise,
         decelerate) instead of stopping at every waypoint: the stop-and-go
@@ -336,10 +449,15 @@ class Rig:
                 f = 0.0 if dur[k] <= 0 else (u - cum[k]) / dur[k]
                 q = P[k] + (P[k + 1] - P[k]) * min(max(f, 0.0), 1.0)
                 self.set_base(q[0], q[1], q[2])
+                if on_step is not None:
+                    on_step(float(u / T), (float(q[0]), float(q[1]), float(q[2])))
                 self.step(1)
-                if self.held is not None and i % 60 == 0:
-                    from .skills import check_held
-                    check_held(self, "carry")
+                if i % 60 == 0:
+                    from .skills import check_held, check_left_held
+                    if self.held is not None:
+                        check_held(self, "carry")
+                    if self.left_held is not None:
+                        check_left_held(self, "left_carry")
         self.step(20)
         self.log("base", pose=[round(v, 3) for v in self.base_pose()])
 

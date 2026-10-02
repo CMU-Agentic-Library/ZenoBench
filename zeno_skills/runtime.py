@@ -40,7 +40,8 @@ def launch(video=True):
                         "fast_shutdown": True}).app
 
 
-def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=None, prepare=None):
+def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=None, prepare=None,
+             handle_objects=()):
     """prepare(stage): optional USD edits before the simulation starts."""
     import omni.usd
     import torch
@@ -55,6 +56,16 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
     for _ in range(10):
         app.update()
     stage = omni.usd.get_context().get_stage()
+    ann = SceneAnnotations(ROOT / ann_path)
+    from . import physics as P
+    for name in handle_objects:
+        obj = ann.objects[name]
+        asset = ann.asset_of(obj)
+        handle = asset.get("container", {}).get("handle_collider")
+        if handle is None:
+            raise ValueError(f"{name} has no physical handle collider annotation")
+        P.deinstance(stage, obj["prim"])
+        P.add_handle_collider(stage, obj["body"], handle)
     if prepare is not None:
         prepare(stage)
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=1 / 120, device="cpu",
@@ -70,7 +81,6 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
     robot = SingleArticulation("/World/ZenoMalo/Asset", name="zeno")
     sim.reset()
     robot.initialize()
-    ann = SceneAnnotations(ROOT / ann_path)
     kin = ArmKin()
     world = WorldModel(ann)
     kin.scene = world

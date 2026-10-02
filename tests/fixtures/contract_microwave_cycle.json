@@ -1,0 +1,6 @@
+[
+  {"contract": "open.v1", "route": "powered", "args": ["kitchen_microwave"]},
+  {"contract": "pick.v1", "route": "round_rim", "args": ["cup"]},
+  {"contract": "place.v1", "route": "microwave", "args": ["cup", "kitchen_microwave/inside_floor"]},
+  {"contract": "pick.v1", "route": "cavity", "args": ["cup"]}
+]

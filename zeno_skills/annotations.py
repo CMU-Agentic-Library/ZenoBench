@@ -7,6 +7,7 @@ annotations/assets.json  (per asset type, object frame; tools/prepare_assets.py)
       rim_pinch_rect   rectangular container rim
       top_pinch        vertical approach, fingers across the narrowest width
       edge_pinch_after_push  flat & wider than the gripper
+      handle_pinch           mug handle contact (consumed by PickCupHandlePolicy)
 annotations/<scene>.json (per scene, world frame; tools/annotate_scene.py)
     rooms, obstacles (furniture AABBs), supports (horizontal surfaces),
     articulated (joint, pivot/axis, limits, moving-part box, handle frame),

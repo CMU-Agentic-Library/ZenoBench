@@ -22,13 +22,23 @@ and the powered microwave hinge target. Objects and doors are never teleported; 
 temperature uses a separate task-level model. Success is measured from simulator state
 (joint angle, object pose, finger gap, and task temperature).
 
+## Policy 与 contract
+
+[GT policy 梳理](docs/GT_POLICY.md) 说明动作边界；[能力目录](docs/POLICY_CATALOG.md) 与[物理验证记录](docs/POLICY_VERIFICATION.md) 列出 60 项入口中已通过代表性场景的 54 项和仍待验证的 6 项。[Contract 提案](docs/CONTRACT_PROPOSAL.md) 记录八类接口、具体路线及验证要求。
+
+[关系图 PNG](docs/contract_layers_preview.png) 与 [SVG](docs/contract_layers.svg) 展示 8 个 contract 和 60 个 policy 的直接绑定与支撑引用。`ContractRunner` 能执行指定路线并检查共用实测结果；自动技能子图规划和失败后重规划留给上层扩展。
+
 ---
 
 ## Contents
 
+- [Policy 与 contract](#policy-与-contract)
 - [Scenes](#scenes)
 - [Tasks (ZenoBench)](#tasks-zenobench)
 - [GT policy inventory](docs/GT_POLICY.md)
+- [Policy capability catalog (with implementation status)](docs/POLICY_CATALOG.md)
+- [Physical verification report](docs/POLICY_VERIFICATION.md)
+- [Contract proposal (8 reusable templates)](docs/CONTRACT_PROPOSAL.md)
 - [GT annotations](#gt-annotations-ik--grasp--rl)
 - [Atomic skills](#atomic-skills)
 - [Skills](#skills)
@@ -299,49 +309,34 @@ $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
 
 ## Atomic GT policy class API
 
-The reusable, target-parameterized policy classes are in `zeno_skills/policies/`.
-Create one `PolicySuite` for a live `Rig`; each class instance holds that rig and
-exposes `execute(...)`. `TaskPolicy` composes these classes from goal predicates,
-while `tools/run_skills.py` lets you give a sequence explicitly. The existing
-`zeno_skills/skills.py` functions remain the motion/control implementation and
-are still importable for older scripts.
+`zeno_skills/policies/` exposes target-parameterized `AtomicPolicy.execute(...)` classes bound to one live `Rig` through `PolicySuite(rig)`. A policy is atomic at the skill-graph boundary: its internal controller may approach, grasp, lift, and check the result. Asset-specific contact points live in `annotations/assets.json`. `TaskPolicy` currently composes `PolicySuite` calls directly; a general skill-subgraph planner is not implemented.
 
-| Class (`PolicySuite` attribute) | Call | Scope |
-|---|---|---|
-| `NavigatePolicy` (`navigate`) | `execute((x, y, yaw_deg))` | One base move, with held-object checks. |
-| `OpenPolicy` / `ClosePolicy` (`open`, `close`) | `execute(articulated_name)` | One door/drawer open or close. The microwave dispatches to its powered button/hinge route. |
-| `PickPolicy` (`pick`) | `execute(object_name)` | One object-specific grasp and verified lift. |
-| `PlacePolicy` (`place`) | `execute(object_name, support, xy)` or `on(object_name, support, hint=xy)` | One surface/container placement and state check. Use `"in:" + container_name` for a container. |
-| `PushPolicy` (`push`) | `execute(object_name, support_dict, direction, distance)` | One measured surface push/drag. |
-| `MicrowaveStartPolicy` (`microwave_start`) | `execute("kitchen_microwave")` | One start-button press after food/door checks. |
+The [capability catalog](docs/POLICY_CATALOG.md) has **60 OOP entries**: **54** passed at least one stated Isaac Sim scene and **6** remain callable without a successful object-level check. See the [verification record](docs/POLICY_VERIFICATION.md) before choosing a route for a new object or scene. General dispatchers and convenience composites are counted separately.
 
-For example, after creating `rig` with `zeno_skills.runtime.make_rig`:
+| Interface | Representative calls |
+|---|---|
+| General | `policy.navigate.execute((x, y, yaw_deg))`, `policy.pick.execute("cup")`, `policy.place.on("cup", support)`, `policy.open.execute(door)`, `policy.close.execute(door)` |
+| Object-specific grasp | `policy.pick_top.execute("toy_block")`, `policy.pick_round_rim.execute("cup")`, `policy.pick_cup_handle.execute("mug")`, `policy.pick_edge.execute("book_red")` |
+| Motion and posture | `policy.right_tcp_move.execute(position, rotation)`, `policy.right_gripper_open.execute(0.04)`, `policy.lower_torso.execute()`, `policy.pick_while_moving.execute(...)` |
+| Appliance stages | `policy.microwave_button_press.execute(...)`, `policy.microwave_cavity_insert.execute(...)`, `policy.open_powered.execute("kitchen_microwave")` |
 
-```python
-from zeno_skills.policies import PolicySuite
-from zeno_skills.rig import SkillFailure, Dropped
+`pick_cup_handle` needs a physical handle collider: `tools/run_skills.py` and `tools/run_contracts.py` add it for a requested mug route; direct Python setup uses `make_rig(..., handle_objects=("mug",))`. `pick_from_cavity` has only been verified when the same rig just placed the cup inside. The six unverified floor and dual-arm routes are listed in the catalog and should not be assumed to work in new tasks.
 
-policy = PolicySuite(rig)
-try:
-    policy.open.execute("breakfast_fridge")
-    policy.pick.execute("milk")
-    policy.place.on("milk", "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
-                    hint=(2.93, 6.7))
-    policy.close.execute("breakfast_fridge")
-except (SkillFailure, Dropped) as exc:
-    print(f"Atomic policy failed: {exc}")
+### Compose through contracts
+
+Eight [contract interfaces](docs/CONTRACT_PROPOSAL.md) map semantic calls such as `pick.v1` to concrete policy routes. `ContractSpec.bind()` creates a policy instance; `ContractRunner.run()` executes the chosen route, checks common measured pre/postconditions, and records success or failure. It does not select routes or replan after failure. A verified four-step plan is [contract_microwave_cycle.json](tests/fixtures/contract_microwave_cycle.json):
+
+```bash
+OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
+  --scene runs/verify_microwave_fixture/task/scene.usd \
+  --ann runs/verify_microwave_fixture/task/annotation.json \
+  --plan tests/fixtures/contract_microwave_cycle.json \
+  --out runs/my_contract_cycle
 ```
 
-Names must be object and articulated names from the scene annotation; surface
-placement takes an actual support name from `supports[].name`. The task builder
-can resolve the aliases in `task_specs/places.json` for a task spec. For a
-microwave transfer, use separate `policy.open.execute("kitchen_microwave")`
-and `policy.close.execute("kitchen_microwave")` around `pick`/`place`;
-`policy.place.on(object_name, "kitchen_microwave/inside_floor")` uses the
-front-entry path and requires the door to be open. The
-`microwave_door_cycle` convenience object is a **composite demonstration**, not
-an atomic open/close. Policy calls can raise `SkillFailure` or `Dropped`; task
-success is determined by `TaskEvaluator` after the complete sequence.
+Build the scene with the commands in the [verification record](docs/POLICY_VERIFICATION.md). The sequence passed `open.v1/powered → pick.v1/round_rim → place.v1/microwave → pick.v1/cavity` on one rig. Direct Python use is `ContractRunner(rig).run("pick.v1", "round_rim", "cup")`. Failed calls raise `SkillFailure` or `Dropped`; the caller should read the changed simulator state before trying another route. Final task success is scored by `TaskEvaluator`.
+
+For a manual policy sequence, use `tools/run_skills.py --plan "pick_round_rim cup" "place_microwave cup"` with a scene and annotation. All route names, scopes, and evidence are in the catalog; `pick_and_carry` and `microwave_door_cycle` are convenience compositions rather than additional atomic entries.
 
 ## Skills
 
@@ -408,24 +403,8 @@ $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
 python -m pytest tests/        # evaluator + task-spec tests (no simulator needed)
 ```
 
-Or open `sim/zeno_house.usd` or `tasks/<task>/scene.usd` in Isaac Sim with `File → Open`.
 
-### Commit attribution
-
-Before committing changes, set your Git author identity in this repository. Use an email
-address verified in your GitHub account (or your GitHub `noreply` address) so GitHub can
-associate new commits with your profile:
-
-```bash
-git config user.name "Your Name"
-git config user.email "you@example.com"
-git var GIT_AUTHOR_IDENT   # check the identity the next commit will use
-```
-
-These settings apply to future commits in this clone. Pushing an existing commit does
-not change its author.
-
-## Add your own assets (EmbodiedGen)
+## Add your own assets (EmbodiedGen V2)
 
 Every task object in this repo was made with [EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen)
 V2 text-to-3D. One command turns a text prompt or a photo into a sim-ready, grasp-annotated asset

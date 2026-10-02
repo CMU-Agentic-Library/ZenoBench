@@ -24,6 +24,25 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
 # steps: open <art> | close <art> | pick <obj> | place <obj> <support> <x> <y> | goto <x> <y> <yaw>
 ```
 
+## OOP policies and contracts
+
+`PolicySuite(rig)` exposes the [60 policy entries](../docs/POLICY_CATALOG.md).
+Choose a concrete route such as `pick_round_rim`, `pick_cup_handle`, or
+`open_powered` and call its `execute(...)` method. The eight semantic
+[contracts](../docs/CONTRACT_PROPOSAL.md) bind route names to these same policy
+classes. `ContractRunner(rig).run("pick.v1", "round_rim", "cup")` executes one
+route and verifies the measured postcondition; it records failures for an
+upper-layer replanner. The JSON CLI is `tools/run_contracts.py` and the example
+sequence is `tests/fixtures/contract_microwave_cycle.json`.
+
+For an existing scene, construct `make_rig(..., handle_objects=("mug",))` before
+calling `pick_cup_handle.execute("mug")`; the CLI detects this automatically.
+A separate collision bar then represents the mug handle. `pick_from_cavity`
+uses the measured release pose when the same rig has just placed the object
+in the microwave. Its preloaded-object route has not passed physical
+verification. See the [verification record](../docs/POLICY_VERIFICATION.md)
+before selecting a route for a new task.
+
 ## How each skill works
 
 * **navigate** — fold the arm (collision-checked retreat), A* over free base
@@ -55,7 +74,7 @@ Success is measured from simulator state; failures raise `SkillFailure`.
 ## Kinematic / collision model
 
 `kinematics.ArmKin`: exact FK from the URDF chain (torso lift, waist pitch,
-7-DoF right arm), TCP at the finger-pad centre (0.12 m along the gripper's
+7-DoF right arm and a separately driven 7-DoF left arm), TCP at the finger-pad centre (0.12 m along the gripper's
 -Z), damped least-squares pose IK with analytic Jacobian (~17 ms per global
 solve).  `collision.WorldModel`: sphere model of the robot vs. annotation
 AABBs and the moving parts at their current joint values.  The gripper may

@@ -1,0 +1,30 @@
+{
+  "task": "policy_bimanual_basket",
+  "instruction": "Lift a light storage basket from the floor with two arms.",
+  "base_scene": "sim/zeno_house.usd",
+  "base_annotation": "annotations/zeno_house.json",
+  "robot_start_near": [
+    3.5,
+    1.0
+  ],
+  "objects": {
+    "basket": {
+      "asset": "storage_basket",
+      "supports": [
+        "floor:living_room"
+      ],
+      "spawn_xy": [
+        4.55,
+        1.95
+      ],
+      "spawn_yaw_deg": 0
+    }
+  },
+  "goal": {
+    "all": [
+      {
+        "not_dropped": "all"
+      }
+    ]
+  }
+}

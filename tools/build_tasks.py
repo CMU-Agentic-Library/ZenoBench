@@ -192,7 +192,7 @@ def main():
         P.set_box_inertia(stage, f"/World/Tasks/{name}", spec_a["mass"])
         if spec_a.get("container"):
             c = spec_a["container"]
-            P.container_collider(stage, f"/World/Tasks/{name}", c["bands"], shape=c["shape"], mats=mats)
+            P.container_collider(stage, f"/World/Tasks/{name}", c["bands"], shape=c["shape"], mats=mats, handle=c.get("handle_collider"))
         else:
             P.solid_collider(stage, f"/World/Tasks/{name}", mats=mats)
         if o := spec["objects"][name].get("visual_fill"):

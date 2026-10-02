@@ -97,7 +97,7 @@ def main():
         P.set_box_inertia(stage, path, a["mass"])
         if a["collider"] != "solid" and a.get("container"):
             c = a["container"]
-            n = P.container_collider(stage, path, c["bands"], shape=c["shape"], mats=mats)
+            n = P.container_collider(stage, path, c["bands"], shape=c["shape"], mats=mats, handle=c.get("handle_collider"))
             report[inst.GetName()] = f"{t}: container walls x{n}"
         else:
             P.solid_collider(stage, path, mats=mats)

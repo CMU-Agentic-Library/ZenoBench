@@ -1,0 +1,33 @@
+{
+  "task": "policy_microwave_cup",
+  "instruction": "Place the cup from the cabinet top into the microwave, then retrieve it.",
+  "base_scene": "sim/zeno_house_appliances.usd",
+  "base_annotation": "annotations/zeno_house_appliances.json",
+  "robot_start_near": [
+    5.5,
+    2.2
+  ],
+  "objects": {
+    "cup": {
+      "asset": "breakfast_cup",
+      "supports": [
+        "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+      ],
+      "spawn_xy": [
+        3.69,
+        0.36
+      ],
+      "reach_check": false
+    }
+  },
+  "goal": {
+    "all": [
+      {
+        "on": [
+          "cup"
+        ],
+        "support": "kitchen_microwave/inside_floor"
+      }
+    ]
+  }
+}
