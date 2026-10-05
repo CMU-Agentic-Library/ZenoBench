@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "contract",
+  "contract_id": "contract_005",
+  "legacy_id": "close.v1",
+  "description": "Close one annotated door or drawer.",
+  "scope": "One measured closure of an annotated door or drawer.",
+  "inputs": {
+    "articulated": {
+      "type": "articulated_id",
+      "required": true
+    }
+  },
+  "requires": [
+    {
+      "predicate": "articulated_annotated",
+      "args": [
+        "articulated"
+      ],
+      "check": "runner"
+    },
+    {
+      "predicate": "closure_path_clear",
+      "check": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_closed",
+      "args": [
+        "articulated"
+      ],
+      "check": "runner"
+    }
+  ],
+  "outcomes": {
+    "success": "joint closed",
+    "failure": "joint may be partly closed"
+  },
+  "verifier": "measured joint against closed_q",
+  "routes": {
+    "auto": {
+      "policy_id": "policy_063",
+      "legacy_dispatcher": null
+    },
+    "handle": {
+      "policy_id": "policy_023",
+      "legacy_dispatcher": null
+    },
+    "powered": {
+      "policy_id": "policy_025",
+      "legacy_dispatcher": null
+    }
+  }
+}

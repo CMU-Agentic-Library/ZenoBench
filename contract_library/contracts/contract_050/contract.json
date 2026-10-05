@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_050",
+  "skill_id": "skill_042",
+  "name": "Back away while carrying",
+  "description": "Reverse the base while preserving the right-hand grasp.",
+  "scope": {
+    "unit": "One back away while carrying attempt on the grounded scene state.",
+    "includes": [
+      "Reverse the base while preserving the right-hand grasp."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The object currently held in the right hand."
+    },
+    "distance_m": {
+      "type": "positive_number",
+      "required": true,
+      "description": "Requested backward travel distance in metres."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "backward_path_clear",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_backed_off",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "grasp_preserved",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "base_backed_off",
+    "grasp_preserved"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "custom": "back_off"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_035",
+        "args": [
+          {
+            "arg": "distance_m"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "distance_m"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_right_held": true
+    }
+  }
+}

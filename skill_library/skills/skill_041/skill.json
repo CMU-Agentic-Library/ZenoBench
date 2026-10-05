@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_041",
+  "name": "Raise carried object for clearance",
+  "description": "Lift a right-held object until its bottom clears a required height.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The object currently held in the right hand."
+    },
+    "min_bottom_z": {
+      "type": "positive_number",
+      "required": true,
+      "description": "Required minimum world z of the held object bottom."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_object_above_height",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_049",
+  "scope": {
+    "unit": "One raise carried object for clearance attempt on the grounded scene state.",
+    "includes": [
+      "Lift a right-held object until its bottom clears a required height."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_049",
+    "input_order": [
+      "object",
+      "min_bottom_z"
+    ]
+  },
+  "expected_state_change": [
+    "held_object_above_height"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_026"
+    ],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

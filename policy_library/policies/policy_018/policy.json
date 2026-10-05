@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_018",
+  "legacy_id": "microwave_cavity_insert",
+  "name": "Microwave Cavity Insert",
+  "description": "持物从微波炉正面送入腔体，不松爪",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "placement",
+    "effect_summary": "held_object_inside_cavity",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": "kitchen_microwave/inside_floor"
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held_object_inside_cavity",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_018",
+    "legacy_attribute": "microwave_cavity_insert",
+    "class": "MicrowaveCavityInsertPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_013",
+    "contract_022"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_003"
+  ],
+  "evidence": "Isaac Sim: heat_breakfast fridge -> microwave -> dining table, 100% progress, 2026-10-01; runs/heat_breakfast/result.json"
+}

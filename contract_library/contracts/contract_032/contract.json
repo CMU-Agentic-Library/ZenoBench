@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_032",
+  "skill_id": "skill_024",
+  "name": "Close powered microwave door",
+  "description": "Close the annotated powered microwave door and measure its joint.",
+  "scope": {
+    "unit": "One close powered microwave door attempt on the grounded scene state.",
+    "includes": [
+      "Close the annotated powered microwave door and measure its joint."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "appliance": {
+      "type": "appliance_ref",
+      "required": true,
+      "description": "The grounded microwave appliance."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_closed",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "joint_closed"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "legacy_family_contract": "contract_005",
+    "route": "powered"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_025",
+        "args": [
+          {
+            "arg": "appliance"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "appliance"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "appliance": {
+      "argument": "appliance",
+      "kind": "articulated",
+      "source": "rig.ann",
+      "required": true,
+      "category_equals": "microwave",
+      "required_annotation": "door_button"
+    }
+  }
+}

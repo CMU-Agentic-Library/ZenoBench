@@ -780,7 +780,13 @@ def _corner_pinch(rig, name):
     rig.grip(0.04, 40)
     rig.move_to(*legs[0], step=0.02, label="corner_pre_far", q_hint=park[3][0])
     rig.move_to(*legs[1], step=0.005, steps_per_wp=3, label="corner_pre", collision=False)
-    rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label="corner_grasp", collision=False)
+    contact_error = rig.move_to(*legs[2], step=0.003, steps_per_wp=4,
+                                label="corner_grasp", collision=False)
+    if contact_error > 0.02:
+        contact_error = rig.move_to(*legs[2], step=0.002, steps_per_wp=8,
+                                    label="corner_grasp_retry", collision=False, smooth=True)
+    if contact_error > 0.02:
+        raise SkillFailure(f"corner pinch {name}: contact pose missed by {contact_error:.3f} m")
     rig.caption = f"PICK {name}: close across the edge and the top face"
     rig.grip(0.0, 140)
     rig.caption = f"PICK {name}: lift"

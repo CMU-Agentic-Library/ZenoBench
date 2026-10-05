@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_013",
+  "legacy_id": "pick_edge",
+  "name": "Pick Edge",
+  "description": "先推到桌边，再夹住悬出的平物体",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "grasp",
+    "effect_summary": "held(object)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held(object)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_013",
+    "legacy_attribute": "pick_edge",
+    "class": "EdgePickPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_012",
+    "contract_024"
+  ],
+  "legacy_family_contracts": [
+    "contract_002"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: pick_edge book_red, 2026-10-01"
+}

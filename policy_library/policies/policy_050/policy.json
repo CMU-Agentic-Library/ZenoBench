@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_050",
+  "legacy_id": "open_prismatic_drawer",
+  "name": "Open Prismatic Drawer",
+  "description": "只选择滑动抽屉的把手轨迹",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "articulation",
+    "effect_summary": "joint_at(open_q)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "joint_at(open_q)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_050",
+    "legacy_attribute": "open_prismatic_drawer",
+    "class": "OpenPrismaticDrawerPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_011"
+  ],
+  "legacy_family_contracts": [
+    "contract_004"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01",
+  "caveat": "tidy_toys 的第一只抽屉仍未拉动；另一只厨房抽屉已通过独立物理验证"
+}

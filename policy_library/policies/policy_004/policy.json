@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_004",
+  "legacy_id": "set_torso_height",
+  "name": "Set Torso Height",
+  "description": "设置躯干升降关节位置",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "posture",
+    "effect_summary": "torso_at(height_m)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "height",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "torso_at(height_m)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_004",
+    "legacy_attribute": "set_torso_height",
+    "class": "SetTorsoHeightPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_020"
+  ],
+  "legacy_family_contracts": [
+    "contract_008"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: lower_torso/raise_torso, 2026-10-01"
+}

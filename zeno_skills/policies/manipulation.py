@@ -150,7 +150,18 @@ class PushPolicy(AtomicPolicy):
     """Push or drag one object along its current annotated support."""
 
     def execute(self, name, support, direction, distance, *, label="PUSH", enough=None):
-        return skills.push(self.rig, name, support, direction, distance, label=label, enough=enough)
+        if self.rig.held is not None:
+            raise SkillFailure("push: right hand must be empty")
+        surface = self.rig.ann.support(support) if isinstance(support, str) else support
+        actual = self.rig.geo.support_under(name, self.rig.state())
+        if actual is None or actual["name"] != surface["name"]:
+            raise SkillFailure(f"push {name}: object is not on {surface['name']}")
+        n = np.asarray(direction, dtype=float)
+        if n.shape != (2,) or not np.isfinite(n).all() or not np.isclose(np.linalg.norm(n), 1.0, atol=1e-3):
+            raise ValueError("push direction must be a horizontal unit vector")
+        if not np.isfinite(distance) or distance <= 0:
+            raise ValueError("push distance must be positive")
+        return skills.push(self.rig, name, surface, n, float(distance), label=label, enough=enough)
 
 
 def _contact_direction(rig, name, direction, distance):

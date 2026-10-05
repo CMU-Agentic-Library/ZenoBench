@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_015",
+  "legacy_id": "place_surface",
+  "name": "Place Surface",
+  "description": "在指定支撑面寻找空位并放置",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "placement",
+    "effect_summary": "on(object,support)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "hint",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "tries",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 4
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "on(object,support)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_015",
+    "legacy_attribute": "place_surface",
+    "class": "SurfacePlacePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_013",
+    "contract_045",
+    "contract_046",
+    "contract_047"
+  ],
+  "legacy_family_contracts": [
+    "contract_003"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim collect_fruits: apple placed on dining-table support with 0.0139 m XY error and on_support=true, runs/verify_callable_surface_apple, 2026-10-01"
+}

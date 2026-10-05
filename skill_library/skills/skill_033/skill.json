@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_033",
+  "name": "Lean waist forward",
+  "description": "Lean the waist forward to its configured safe posture.",
+  "args": {},
+  "requires": [
+    {
+      "predicate": "joint_path_clear",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "posture_at_target",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_041",
+  "scope": {
+    "unit": "One lean waist forward attempt on the grounded scene state.",
+    "includes": [
+      "Lean the waist forward to its configured safe posture."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_041",
+    "input_order": []
+  },
+  "expected_state_change": [
+    "posture_at_target"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

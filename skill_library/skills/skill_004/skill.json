@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_004",
+  "name": "Pick an object",
+  "description": "Grasp and lift one annotated scene object with the right hand.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The object to pick."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_annotated",
+      "arg": "object",
+      "enforcement": "contract_noun_binding"
+    },
+    {
+      "predicate": "object_reachable",
+      "arg": "object",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_by_right_hand",
+      "arg": "object",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_lifted",
+      "arg": "object",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_012",
+  "scope": {
+    "unit": "one planner-visible pick attempt",
+    "includes": [
+      "select a supported right-hand grasp route",
+      "approach, grasp, lift, and verify the requested object"
+    ],
+    "excludes": [
+      "choosing the task goal",
+      "guaranteeing reachability before execution",
+      "placing or transporting the object to a destination"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_012",
+    "input_order": [
+      "object"
+    ]
+  },
+  "expected_state_change": [
+    "held_by_right_hand",
+    "object_lifted"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_010",
+      "relation_011",
+      "relation_012",
+      "relation_013",
+      "relation_014",
+      "relation_015"
+    ],
+    "incoming": [
+      "relation_009",
+      "relation_028",
+      "relation_030"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": [
+    {
+      "when": "object remains on an annotated support edge and right hand is empty",
+      "skill_id": "skill_016",
+      "reason": "edge-specific grasp may be appropriate"
+    }
+  ]
+}

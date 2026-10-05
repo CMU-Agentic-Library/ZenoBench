@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_003",
+  "legacy_id": "tuck_arm",
+  "name": "Tuck Arm",
+  "description": "碰撞检查后收起右臂",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "posture",
+    "effect_summary": "right_arm_tucked",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "right_arm_tucked",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_003",
+    "legacy_attribute": "tuck_arm",
+    "class": "TuckArmPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_019"
+  ],
+  "legacy_family_contracts": [
+    "contract_008"
+  ],
+  "supporting_family_contracts": [
+    "contract_001"
+  ],
+  "evidence": "Isaac Sim: lower_torso 自动收臂, 2026-10-01"
+}

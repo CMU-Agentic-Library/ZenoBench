@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "contract",
+  "contract_id": "contract_002",
+  "legacy_id": "pick.v1",
+  "description": "Attempt one right-hand grasp and lift of an annotated object.",
+  "scope": "One right-hand grasp and lift attempt for one annotated object.",
+  "inputs": {
+    "object": {
+      "type": "object_id",
+      "required": true
+    },
+    "base_path": {
+      "type": "base_path",
+      "required": false,
+      "routes": [
+        "moving"
+      ]
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "check": "runner"
+    },
+    {
+      "predicate": "object_annotated",
+      "args": [
+        "object"
+      ],
+      "check": "policy_attempt"
+    },
+    {
+      "predicate": "object_reachable",
+      "args": [
+        "object"
+      ],
+      "check": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_by_right_hand",
+      "args": [
+        "object"
+      ],
+      "check": "runner"
+    },
+    {
+      "predicate": "object_lifted",
+      "args": [
+        "object"
+      ],
+      "check": "runner"
+    }
+  ],
+  "outcomes": {
+    "success": "object held",
+    "failure": "object may have moved during attempt"
+  },
+  "verifier": "held object identity, lift and stable grasp",
+  "route_notes": {
+    "floor_corner": "Callable but no successful independent physical verification."
+  },
+  "routes": {
+    "auto": {
+      "policy_id": "policy_061",
+      "legacy_dispatcher": null
+    },
+    "top": {
+      "policy_id": "policy_010",
+      "legacy_dispatcher": null
+    },
+    "round_rim": {
+      "policy_id": "policy_011",
+      "legacy_dispatcher": null
+    },
+    "rect_rim": {
+      "policy_id": "policy_012",
+      "legacy_dispatcher": null
+    },
+    "edge": {
+      "policy_id": "policy_013",
+      "legacy_dispatcher": null
+    },
+    "floor_corner": {
+      "policy_id": "policy_014",
+      "legacy_dispatcher": null
+    },
+    "cup_handle": {
+      "policy_id": "policy_055",
+      "legacy_dispatcher": null
+    },
+    "cavity": {
+      "policy_id": "policy_048",
+      "legacy_dispatcher": null
+    },
+    "moving": {
+      "policy_id": "policy_052",
+      "legacy_dispatcher": null
+    }
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_055",
+  "legacy_id": "pick_cup_handle",
+  "name": "Pick Cup Handle",
+  "description": "从杯把而不是杯沿抓取",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "grasp",
+    "effect_summary": "held(cup) by handle",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held(cup) by handle",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_055",
+    "legacy_attribute": "pick_cup_handle",
+    "class": "PickCupHandlePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_012",
+    "contract_025"
+  ],
+  "legacy_family_contracts": [
+    "contract_002"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim breakfast_setup original scene: mug handle pinch lifted 0.0226 m with fingers 0.0121/0.0102 m open; runs/final_mug_handle, 2026-10-02",
+  "caveat": "需要实际杯柄接触体：CLI 自动为 pick_cup_handle 目标补充，Python make_rig 需传 handle_objects；仅验证 breakfast_mug 的接触与短距离抬升。"
+}

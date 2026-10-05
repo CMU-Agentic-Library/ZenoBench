@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_023",
+  "legacy_id": "close_handle",
+  "name": "Close Handle",
+  "description": "通过把手关闭门或抽屉",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "articulation",
+    "effect_summary": "joint_at(closed_q)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "joint_at(closed_q)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_023",
+    "legacy_attribute": "close_handle",
+    "class": "HandleClosePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_015",
+    "contract_034"
+  ],
+  "legacy_family_contracts": [
+    "contract_005"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: Manual cabinet hinge returned from -1.379 to -0.011 rad, runs/verify_callable_handle_cabinet, 2026-10-01"
+}

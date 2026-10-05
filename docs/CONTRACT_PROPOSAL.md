@@ -1,14 +1,28 @@
 # Zeno House contract 接口与扩展提案
 
-八个 [ContractSpec](../zeno_skills/contracts.py) 定义语义接口与底层 policy 路由。[ContractRunner](../zeno_skills/contract_runtime.py) 现可按顺序执行指定路线，检查共用前置条件与动作后的实测状态，并留下成功或失败记录；[run_contracts.py](../tools/run_contracts.py) 接受 JSON 调用序列。`TaskPolicy` 仍负责已有任务目标的自动动作选择；技能子图规划器和自动路线选择尚未实现。新增目标谓词或物理机制需要研究者扩展评估器或控制器。
+> 此文详细描述 `contract_001`–`contract_008` 兼容 family 的路线与旧关系图。当前上层接口为 [42 个一对一 SkillNode / Contract](../skill_library/README.md)，对应 `contract_009`–`contract_050`；各 Contract 的内部 policy 顺序见 [Contract Library](../contract_library/README.md)。
 
-## 第三层 Contract 与第四层底层 Policy（8 × 60）
+八个 [ContractSpec](../zeno_skills/contracts.py) 定义语义接口与底层 policy 路由。
+公开 ID 为 contract_001–contract_008；本文出现的 navigate.v1、pick.v1 等是
+仍可执行的旧名。逐项 JSON 与说明见 [Contract Library](../contract_library/README.md)，
+新旧 ID 对照见 [INTERFACE_IDS.md](INTERFACE_IDS.md)。
+与上层 Skill Graph 对接时，Contract 是一次执行的可测承诺；供规划器选择的
+Agent Skill 风格能力定义在 [skill_library](../skill_library/README.md)。
+旧 Contract 和新 Skill 的 scope 对照及待改项见
+[skill_library/SCOPE.md](../skill_library/SCOPE.md)。
+当前 8 个 Contract 的机器可读范围、输入和逐谓词检查状态见
+[contract_profiles.json](../zeno_skills/contract_profiles.json)；成功返回已验证谓词，
+失败记录动作后的观测和错误类型。
 
-![八个 contract 与六十个底层 policy 的分层引用关系图](contract_layers_preview.png)
+[ContractRunner](../zeno_skills/contract_runtime.py) 现可按顺序执行指定路线，检查共用前置条件与动作后的实测状态，并留下成功或失败记录；[run_contracts.py](../tools/run_contracts.py) 接受 JSON 调用序列。`TaskPolicy` 仍负责已有任务目标的自动动作选择；技能子图规划器和自动路线选择尚未实现。新增目标谓词或物理机制需要研究者扩展评估器或控制器。
+
+## 第三层 Contract 与第四层底层 Policy（8 × 63，兼容 family）
+
+![八个兼容 family contract 与六十三个底层 policy 的分层引用关系图](contract_layers_preview.png)
 
 [打开高清 PNG](contract_layers_preview.png) · [SVG 原图](contract_layers.svg)
 
-图从当前 [60 项 policy 能力目录](POLICY_CATALOG.md) 和 [ContractSpec 注册表](../zeno_skills/contracts.py) 生成，覆盖全部 **60 个不同的独立 policy**：其中 **35 个**是至少一个 contract 的直接 `executor`，其余 **25 个**目前只作为支撑动作引用。同一 policy 可在多个 contract 下重复出现。实心方块是 `ContractSpec.executor` 可通过 `bind()` 选择的直接类绑定；空心圆是该 contract 使用或准备时可能需要的支撑动作引用，**不会由 `bind()` 自动执行**。绿色表示对应动作已有 Isaac Sim 成功记录，蓝色表示有独立入口但待物理验证。图表示静态关系；`ContractRunner` 可执行直接绑定并检查共用的实测前后状态，技能子图规划器仍未实现。
+此兼容关系图从 [policy 能力目录](POLICY_CATALOG.md) 中的 63 个旧入口 和 [ContractSpec 注册表](../zeno_skills/contracts.py) 生成，覆盖全部 **63 个不同的公开 policy**：其中 **38 个**是至少一个 contract 的直接 `executor`，其余 **25 个**目前只作为支撑动作引用。同一 policy 可在多个 contract 下重复出现。实心方块是 `ContractSpec.executor` 可通过 `bind()` 选择的直接类绑定；空心圆是该 contract 使用或准备时可能需要的支撑动作引用，**不会由 `bind()` 自动执行**。绿色表示对应动作已有 Isaac Sim 成功记录，蓝色表示有独立入口但待物理验证。图表示静态关系；`ContractRunner` 可执行直接绑定并检查共用的实测前后状态，技能子图规划器仍未实现。
 
 ## 抽象边界
 
@@ -147,7 +161,8 @@ requires:
   - 手柄路线可接近且右手空闲；微波炉开门路线可按到 door 按钮并避开门扫掠区
 achieves:
   - joint_open_enough(articulated)
-  - 若填写 required_access_to，则 accessible(required_access_to)
+not_yet_verified:
+  - 若填写 required_access_to，仍需另行检查 accessible(required_access_to)；当前不能由开门成功推断它成立
 outcomes:
   success: 门/抽屉达到所要求开度
   failure: 按钮、手柄、运动路径或关节行程失败；门可能部分打开

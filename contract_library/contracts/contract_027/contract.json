@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_027",
+  "skill_id": "skill_019",
+  "name": "Place on a support while the base moves",
+  "description": "Release one right-held object onto a support during a base move.",
+  "scope": {
+    "unit": "one synchronized moving placement",
+    "includes": [
+      "Release one right-held object onto a support during a base move."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "support"
+    },
+    "base_path": {
+      "type": "pose2d",
+      "required": true,
+      "description": "base path"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_accessible",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "on",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "on",
+    "right_hand_empty"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_003",
+    "route": "moving",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_053",
+        "args": [
+          {
+            "arg": "object"
+          },
+          {
+            "arg": "support"
+          },
+          {
+            "arg": "base_path"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "support",
+    "base_path"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [
+    {
+      "when": "object remains right-held and base motion has stopped",
+      "skill_id": "skill_005",
+      "reason": "stationary support placement is an alternative to mobile placement"
+    }
+  ],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_right_held": true
+    },
+    "support": {
+      "argument": "support",
+      "kind": "support",
+      "source": "rig.ann",
+      "required": true
+    }
+  }
+}

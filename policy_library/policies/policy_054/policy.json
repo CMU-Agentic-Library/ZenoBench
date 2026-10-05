@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_054",
+  "legacy_id": "upright_object",
+  "name": "Upright Object",
+  "description": "把倾倒的物品扶正",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "manipulation",
+    "effect_summary": "upright(object)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "max_tilt_deg",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 15.0
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "upright(object)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_054",
+    "legacy_attribute": "upright_object",
+    "class": "UprightObjectPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_044",
+    "contract_045",
+    "contract_047"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_003"
+  ],
+  "evidence": "Isaac Sim tidy_toys: toy_block physically tipped to 29.129 deg in right grasp, UprightObjectPolicy reduced tilt to 0.951 deg, runs/verify_callable_upright, 2026-10-01",
+  "caveat": "要求右手先抓住物体；倾倒物体姿态修正尚待 Isaac Sim 验证"
+}

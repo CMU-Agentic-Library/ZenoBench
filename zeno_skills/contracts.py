@@ -9,8 +9,13 @@ choose a route or plan a skill graph.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from copy import deepcopy
+import json
+from pathlib import Path
 from types import MappingProxyType
 from typing import Mapping
+
+from .interface_ids import CONTRACT_PUBLIC_IDS
 
 from .policies import (
     AtomicPolicy, CarryNavigatePolicy, ClickPolicy, ClosePolicy, ContainerPlacePolicy,
@@ -29,9 +34,10 @@ from .policies import (
 
 @dataclass(frozen=True)
 class ContractSpec:
-    """Eight-field semantic interface; executor routes reference real policy classes."""
+    """One measured invocation with a machine-readable public scope profile."""
 
     id: str
+    public_id: str
     description: str
     inputs: tuple[str, ...]
     requires: tuple[str, ...]
@@ -39,6 +45,7 @@ class ContractSpec:
     outcomes: Mapping[str, str]
     executor: Mapping[str, type[AtomicPolicy]]
     verifier: str
+    profile: Mapping[str, object]
 
     def bind(self, rig, route: str = "auto") -> AtomicPolicy:
         """Select an existing atomic policy for this contract and one live rig."""
@@ -49,9 +56,16 @@ class ContractSpec:
         return policy_type(rig)
 
 
+_PROFILE_DATA = json.loads(Path(__file__).with_name("contract_profiles.json").read_text())
+if _PROFILE_DATA.get("schema_version") != 1 or _PROFILE_DATA.get("kind") != "contract_profiles":
+    raise ValueError("contract_profiles.json must use schema_version 1")
+_CONTRACT_PROFILES = _PROFILE_DATA["contracts"]
+
+
 def _spec(id, description, inputs, requires, achieves, outcomes, executor, verifier):
     return ContractSpec(
         id=id,
+        public_id=CONTRACT_PUBLIC_IDS[id],
         description=description,
         inputs=tuple(inputs),
         requires=tuple(requires),
@@ -59,24 +73,25 @@ def _spec(id, description, inputs, requires, achieves, outcomes, executor, verif
         outcomes=MappingProxyType(dict(outcomes)),
         executor=MappingProxyType(dict(executor)),
         verifier=verifier,
+        profile=MappingProxyType(_CONTRACT_PROFILES[id]),
     )
 
 
 CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
     "navigate.v1": _spec(
         "navigate.v1", "Move the base to a target pose, preserving any grasp.",
-        ("pose", "carried_object?", "min_bottom_z_m?"),
-        ("target navigable", "held state matches carried_object"),
-        ("base_at(pose)", "held(carried_object) if supplied"),
+        ("pose", "carried_object? (route-specific)", "min_bottom_z_m? (route-specific)"),
+        ("target navigable; policy attempts route", "grasp preservation checked after movement"),
+        ("base_at(pose)", "grasp_preserved"),
         {"success": "arrived", "failure": "may stop partway or drop object"},
         {"auto": NavigatePolicy, "empty": EmptyHandNavigatePolicy, "carry": CarryNavigatePolicy,
          "two_hand_carry": BimanualCarryPolicy},
         "base_pose tolerance; check_held or two-hand hold when carrying",
     ),
     "pick.v1": _spec(
-        "pick.v1", "Grasp and lift one annotated object with the right hand.",
+        "pick.v1", "Attempt one right-hand grasp and lift of an annotated object.",
         ("object", "grasp_route?", "base_path?", "cavity?"),
-        ("right hand empty", "object annotated and reachable"),
+        ("right hand empty", "object annotated; reachability tested during policy attempt"),
         ("held(object)", "object lifted"),
         {"success": "object held", "failure": "object may have moved during attempt"},
         {"auto": PickPolicy, "top": TopPinchPickPolicy, "round_rim": RoundRimPickPolicy,
@@ -86,10 +101,11 @@ CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
         "held object identity, lift and stable grasp",
     ),
     "place.v1": _spec(
-        "place.v1", "Release a held object onto a support or into a container.",
+        "place.v1", "Attempt one release to a named support or container.",
         ("object", "target", "hint_xy_m?", "base_path?"),
-        ("object held", "target annotated and accessible"),
-        ("on(object, target) or inside(object, target)", "hand empty"),
+        ("object right-held", "target annotated; accessibility tested during policy attempt"),
+        ("inside(object, container) if target starts in:", "on(object, support) otherwise",
+         "right hand empty"),
         {"success": "object at target", "failure": "object may be released elsewhere"},
         {"auto": PlacePolicy, "surface": SurfacePlacePolicy, "container": ContainerPlacePolicy,
          "edge": EdgePlacePolicy, "microwave": MicrowavePlacePolicy,
@@ -97,15 +113,16 @@ CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
         "Geometry.on or Geometry.inside; hand empty",
     ),
     "open.v1": _spec(
-        "open.v1", "Open one annotated door or drawer.",
-        ("articulated", "required_access_to?", "left_held_object?"),
-        ("joint annotated", "handle or powered route reachable"),
-        ("joint_open_enough(articulated)", "accessible(object) when requested"),
-        {"success": "opening sufficient", "failure": "joint may be partly open"},
+        "open.v1", "Move one annotated door or drawer to a measured open joint value.",
+        ("articulated", "required_access_to? (not yet verified)", "left_held_object?"),
+        ("joint annotated", "handle or powered route attempted"),
+        ("joint_open_enough(articulated)",),
+        {"success": "joint opening measured; object access not established",
+         "failure": "joint may be partly open"},
         {"auto": OpenPolicy, "handle": HandleOpenPolicy, "powered": PoweredDoorOpenPolicy,
          "revolute": OpenRevoluteDoorPolicy, "prismatic": OpenPrismaticDrawerPolicy,
          "while_left_holds": OpenDoorWhileLeftHoldsPolicy},
-        "measured joint opening; target access when requested",
+        "measured joint opening only; target access needs a separate verifier",
     ),
     "close.v1": _spec(
         "close.v1", "Close one annotated door or drawer.",
@@ -118,16 +135,16 @@ CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
     ),
     "push.v1": _spec(
         "push.v1", "Move an object along its support by contact.",
-        ("object", "support", "direction_xy", "distance_m", "min_progress_m"),
+        ("object", "support", "direction_xy", "distance_m", "enough?"),
         ("right hand empty", "object on annotated support"),
-        ("displacement_along(object, direction_xy) >= min_progress_m",),
+        ("displacement_along(object, direction_xy) >= enough or default threshold",),
         {"success": "measured progress", "failure": "object may have moved or fallen"},
         {"auto": PushPolicy, "behind": PushFromBehindPolicy, "top_drag": TopDragPolicy},
         "compare pre/post object positions along direction",
     ),
     "click.v1": _spec(
         "click.v1", "Press one annotated appliance button.",
-        ("appliance", "button"),
+        ("appliance", "button? (auto keyword; start route fixes start)"),
         ("hand empty", "button reachable", "start requires food, closed door, thermal model"),
         ("button_pressed_this_call", "heating_active if start"),
         {"success": "button action confirmed", "failure": "press or retreat may be partial"},
@@ -136,7 +153,7 @@ CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
     ),
     "set_posture.v1": _spec(
         "set_posture.v1", "Set measured right-arm, torso or waist posture.",
-        ("component", "target?"),
+        ("component (selected by route)", "target? (route-specific)"),
         ("hand empty", "target in joint limits", "collision-free route"),
         ("arm_tucked() if tuck", "joint_at(component, target) otherwise"),
         {"success": "joint settled", "failure": "arm may stop at intermediate posture"},
@@ -147,6 +164,20 @@ CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
         "read measured q against selected joint target",
     ),
 })
+
+
+if set(CONTRACTS) != set(_CONTRACT_PROFILES):
+    raise ValueError("every ContractSpec needs one machine-readable profile")
+
+PUBLIC_CONTRACTS: Mapping[str, ContractSpec] = MappingProxyType({
+    spec.public_id: spec for spec in CONTRACTS.values()
+})
+
+
+def public_contract_profiles() -> dict[str, dict]:
+    """Return JSON-compatible semantic scopes without Python policy classes."""
+    return {spec.public_id: deepcopy(dict(spec.profile))
+            for spec in CONTRACTS.values()}
 
 
 # Supporting actions appear in the contract-policy diagram but are not
@@ -213,10 +244,23 @@ def policy_contract_relations(catalog: list[dict]) -> Mapping[str, Mapping[str, 
         relations[contract_id] = MappingProxyType({"direct": direct, "support": support})
     covered = {policy_id for groups in relations.values()
                for names in groups.values() for policy_id in names}
-    if covered != ids:
-        raise ValueError(f"contract mapping does not cover catalog: {sorted(ids-covered)}")
+    # New one-to-one Skill Contracts can own policies that the eight legacy
+    # family route diagram does not expose (for example thermal waiting).
+    import json
+    from pathlib import Path
+    public_to_old = {row["policy_id"]: row["id"] for row in catalog}
+    active = json.loads(Path(__file__).with_name("node_contracts.json").read_text())
+    active_used = {public_to_old[step["policy_id"]]
+                   for contract in active["contracts"]
+                   for path in (contract["policy_plan"].get("paths") or
+                                [contract["policy_plan"]])
+                   for step in path["steps"]
+                   if step["policy_id"] in public_to_old}
+    if ids != covered | active_used:
+        raise ValueError(f"contract mapping does not cover catalog: {sorted(ids - covered - active_used)}")
     return MappingProxyType(relations)
 
 
-__all__ = ["ContractSpec", "CONTRACTS", "CONTRACT_SUPPORT_POLICY_IDS",
-           "policy_contract_relations"]
+__all__ = ["ContractSpec", "CONTRACTS", "PUBLIC_CONTRACTS",
+           "CONTRACT_SUPPORT_POLICY_IDS",
+           "policy_contract_relations", "public_contract_profiles"]

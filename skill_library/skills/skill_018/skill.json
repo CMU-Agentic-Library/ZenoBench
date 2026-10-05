@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_018",
+  "name": "Pick while the base moves",
+  "description": "Attempt one right-hand pick during a base move to a target pose.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "base_path": {
+      "type": "pose2d",
+      "required": true,
+      "description": "base path"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "object_reachable",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_by_right_hand",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_lifted",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_026",
+  "scope": {
+    "unit": "one synchronized moving pick",
+    "includes": [
+      "Attempt one right-hand pick during a base move to a target pose."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_026",
+    "input_order": [
+      "object",
+      "base_path"
+    ]
+  },
+  "expected_state_change": [
+    "held_by_right_hand",
+    "object_lifted"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_028"
+    ],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": [
+    {
+      "when": "object remains reachable and base motion has stopped",
+      "skill_id": "skill_004",
+      "reason": "stationary pick is an alternative to mobile pick"
+    }
+  ]
+}

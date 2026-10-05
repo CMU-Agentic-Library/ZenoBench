@@ -26,6 +26,9 @@ def main():
     ap.add_argument("--plan", required=True, help="JSON array of contract calls")
     ap.add_argument("--out", required=True)
     ap.add_argument("--video", action="store_true")
+    ap.add_argument("--start-base", nargs=3, type=float,
+                    metavar=("X", "Y", "YAW_DEG"),
+                    help="optional local robot start pose for a reproducible smoke run")
     args = ap.parse_args()
     plan = json.loads(Path(args.plan).read_text())
     if not isinstance(plan, list) or not all(isinstance(row, dict) for row in plan):
@@ -34,21 +37,36 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     from zeno_skills.runtime import launch, make_rig
     from zeno_skills.contract_runtime import ContractRunner
+    from zeno_skills.interface_ids import resolve_contract_id
     app = launch(args.video)
     rig = None
     runner = None
-    report = {"scene": args.scene, "plan": plan, "success": False, "contracts": []}
+    step_index = -1
+    report = {"scene": args.scene, "plan": plan, "start_base": args.start_base,
+              "success": False, "contracts": []}
     try:
         handle_objects = {row["args"][0] for row in plan
-                          if row.get("contract") == "pick.v1" and row.get("route") == "cup_handle"}
+                          if (resolve_contract_id(row.get("contract", "")) == "pick.v1"
+                              and row.get("route") == "cup_handle")
+                          or row.get("contract") == "contract_025"}
         rig = make_rig(app, args.scene, args.ann, video=args.video,
                        handle_objects=handle_objects)
         task_path = (ROOT / args.scene).parent / "task.json"
         if task_path.is_file():
             rig.configure_thermal(json.loads(task_path.read_text()))
+        if args.start_base is not None:
+            rig.set_base(*args.start_base)
         rig.step(60)
         runner = ContractRunner(rig)
-        for row in plan:
+        for step_index, row in enumerate(plan):
+            if "policy" in row:
+                from zeno_skills.policies import PolicySuite
+                from zeno_skills.interface_ids import resolve_policy_id
+                policy_id = row["policy"]
+                getattr(PolicySuite(rig), resolve_policy_id(policy_id)).execute(
+                    *row.get("args", []), **row.get("kwargs", {}))
+                report.setdefault("preparation_policies", []).append(policy_id)
+                continue
             result = runner.run(row["contract"], row.get("route", "auto"),
                                 *row.get("args", []), **row.get("kwargs", {}))
             report["contracts"].append(asdict(result))
@@ -58,6 +76,8 @@ def main():
         if runner is not None:
             report["contracts"] = [asdict(item) for item in runner.trace]
         report["failure"] = f"{type(exc).__name__}: {exc}"
+        report["unreached_contracts"] = [row["contract"] for row in plan[step_index + 1:]
+                                         if "contract" in row]
         report["traceback"] = traceback.format_exc()
         print("FAIL", report["failure"], flush=True)
     finally:

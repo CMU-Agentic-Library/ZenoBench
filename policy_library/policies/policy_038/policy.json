@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_038",
+  "legacy_id": "right_tcp_move",
+  "name": "Right Tcp Move",
+  "description": "右手末端按给定位姿移动",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "arm",
+    "effect_summary": "tcp_at(pose)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "position",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "rotation",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "step",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.01
+    },
+    {
+      "name": "position_tolerance",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.03
+    },
+    {
+      "name": "rotation_tolerance",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.15
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "tcp_at(pose)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_038",
+    "legacy_attribute": "right_tcp_move",
+    "class": "RightTcpMovePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_002",
+    "contract_003",
+    "contract_004",
+    "contract_005",
+    "contract_006",
+    "contract_007",
+    "contract_008"
+  ],
+  "evidence": "Isaac Sim tidy_toys: TCP moved +0.04 m vertically with 0.0039 m position and 0.0086 rad orientation error, runs/verify_callable_arm_v4, 2026-10-01"
+}

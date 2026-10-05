@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_012",
+  "name": "Set torso height",
+  "description": "Move the torso lift to one requested joint height.",
+  "args": {
+    "height_m": {
+      "type": "number",
+      "required": true,
+      "description": "height m"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_within_joint_limits",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "collision_free_motion",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "posture_at_target",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_020",
+  "scope": {
+    "unit": "one torso lift adjustment",
+    "includes": [
+      "Move the torso lift to one requested joint height."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_020",
+    "input_order": [
+      "height_m"
+    ]
+  },
+  "expected_state_change": [
+    "posture_at_target"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

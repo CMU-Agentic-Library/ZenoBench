@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_035",
+  "name": "Expose a flat object edge",
+  "description": "Push a flat object to a measured, graspable support overhang.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_on_annotated_support",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "free_support_edge",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "edge_overhang_ready",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_043",
+  "scope": {
+    "unit": "One expose a flat object edge attempt on the grounded scene state.",
+    "includes": [
+      "Push a flat object to a measured, graspable support overhang."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_043",
+    "input_order": [
+      "object"
+    ]
+  },
+  "expected_state_change": [
+    "edge_overhang_ready"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_019"
+    ],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

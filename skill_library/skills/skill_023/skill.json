@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_023",
+  "name": "Open powered microwave door",
+  "description": "Open the annotated powered microwave door and measure its joint.",
+  "args": {
+    "appliance": {
+      "type": "appliance_ref",
+      "required": true,
+      "description": "The grounded microwave appliance."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_open_enough",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_031",
+  "scope": {
+    "unit": "One open powered microwave door attempt on the grounded scene state.",
+    "includes": [
+      "Open the annotated powered microwave door and measure its joint."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_031",
+    "input_order": [
+      "appliance"
+    ]
+  },
+  "expected_state_change": [
+    "joint_open_enough"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_001",
+      "relation_002",
+      "relation_008"
+    ],
+    "incoming": [
+      "relation_006"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "kind": "skill_subgraph",
+  "subgoal_id": "sg_approach_and_collect_apple",
+  "nodes": [
+    {
+      "id": "n1",
+      "skill_id": "skill_001",
+      "args": {"pose": {"value": [2.447, 5.621, 15.0]}},
+      "depends_on": []
+    },
+    {
+      "id": "n2",
+      "skill_id": "skill_004",
+      "args": {"object": {"ref": "the apple"}},
+      "depends_on": ["n1"]
+    },
+    {
+      "id": "n3",
+      "skill_id": "skill_006",
+      "args": {
+        "object": {"ref": "the apple"},
+        "container": {"ref": "the fruit basket visible on the low bookcase"}
+      },
+      "depends_on": ["n2"]
+    }
+  ]
+}

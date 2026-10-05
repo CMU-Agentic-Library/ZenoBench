@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_007",
+  "legacy_id": "set_waist_pitch",
+  "name": "Set Waist Pitch",
+  "description": "设置腰部前后俯仰角",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "posture",
+    "effect_summary": "waist_at(pitch_rad)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "pitch_rad",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "waist_at(pitch_rad)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_007",
+    "legacy_attribute": "set_waist_pitch",
+    "class": "SetWaistPitchPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_021"
+  ],
+  "legacy_family_contracts": [
+    "contract_008"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: lean_forward/straighten_waist, 2026-10-01"
+}

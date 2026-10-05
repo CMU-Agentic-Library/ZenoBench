@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_062",
+  "legacy_id": "open",
+  "name": "Open",
+  "description": "Annotation-selected open dispatcher",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "articulation",
+    "effect_summary": "joint_open_enough(articulated)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "goal",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "joint_open_enough(articulated)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_062",
+    "legacy_attribute": "open",
+    "class": "OpenPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [
+    "contract_004"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Existing annotation-dispatching policy used by previously verified contract route."
+}

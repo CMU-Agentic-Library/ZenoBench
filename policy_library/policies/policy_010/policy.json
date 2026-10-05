@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_010",
+  "legacy_id": "pick_top",
+  "name": "Pick Top",
+  "description": "按物品标注的顶部接触点夹取",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "grasp",
+    "effect_summary": "held(object)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "max_candidates",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 12
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held(object)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_010",
+    "legacy_attribute": "pick_top",
+    "class": "TopPinchPickPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_012",
+    "contract_035"
+  ],
+  "legacy_family_contracts": [
+    "contract_002"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: pick_top toy_block, 2026-10-01"
+}

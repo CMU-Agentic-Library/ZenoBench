@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_027",
+  "legacy_id": "microwave_button_approach",
+  "name": "Microwave Button Approach",
+  "description": "对齐微波炉开门或启动按钮前方的右手指尖",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "appliance",
+    "effect_summary": "tcp_aligned_to_button",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": "kitchen_microwave"
+    },
+    {
+      "name": "button",
+      "kind": "keyword_only",
+      "required": false,
+      "default": "door"
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "tcp_aligned_to_button",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_027",
+    "legacy_attribute": "microwave_button_approach",
+    "class": "MicrowaveButtonApproachPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_017",
+    "contract_018"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_004",
+    "contract_007"
+  ],
+  "evidence": "Isaac Sim: staged start/door buttons and powered hinge open/close, 2026-10-01; runs/microwave_atomic_smoke/result.json; composed entry points in runs/microwave_composed_smoke/result.json"
+}

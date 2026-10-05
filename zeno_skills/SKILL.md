@@ -5,6 +5,10 @@ description: Annotation-driven manipulation skills for the Zeno Malo mobile mani
 
 # Zeno Malo skills
 
+这里的 skills 指底层注释驱动的控制代码。供上层 Skill Graph 选择的
+Agent Skill 风格能力定义在 [skill_library](../skill_library/README.md)；
+两层边界见 [SCOPE.md](../skill_library/SCOPE.md)。
+
 The core grasp and geometry data come from annotations. Current appliance
 skills also use scene-specific parking and camera defaults:
 
@@ -26,9 +30,15 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
 
 ## OOP policies and contracts
 
-`PolicySuite(rig)` exposes the [60 policy entries](../docs/POLICY_CATALOG.md).
+公开接口现在使用 skill_XXX、contract_XXX 和 policy_XXX。
+旧的 Contract 名称与 PolicySuite 属性仍可用。逐项定义见
+[Skill Library](../skill_library/README.md)、
+[Contract Library](../contract_library/README.md) 和
+[Policy Library](../policy_library/README.md)。
+
+`PolicySuite(rig)` exposes the [64 policy entries](../docs/POLICY_CATALOG.md).
 Choose a concrete route such as `pick_round_rim`, `pick_cup_handle`, or
-`open_powered` and call its `execute(...)` method. The eight semantic
+`open_powered` and call its `execute(...)` method. The eight compatibility family
 [contracts](../docs/CONTRACT_PROPOSAL.md) bind route names to these same policy
 classes. `ContractRunner(rig).run("pick.v1", "round_rim", "cup")` executes one
 route and verifies the measured postcondition; it records failures for an

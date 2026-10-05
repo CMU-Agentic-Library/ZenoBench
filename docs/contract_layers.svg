@@ -1,22 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2080 1881" role="img" aria-labelledby="title desc">
-<title id="title">八个 contract 与六十个底层 policy 的实现关系</title>
-<desc id="desc">图展示第三层 Contract 与第四层底层 Policy。实心方块是 ContractSpec.executor 的直接类绑定；空心圆是不会自动执行的支撑动作引用。绿色点表示至少一个 Isaac Sim 场景已验证，蓝色点表示独立入口仍待物理验证。上层通用技能子图规划器尚未实现。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2080 1941" role="img" aria-labelledby="title desc">
+<title id="title">八个兼容 family contract 与六十三个底层 policy 的实现关系</title>
+<desc id="desc">图展示第三层 Contract 与第四层底层 Policy。实心方块是 ContractSpec.executor 的直接类绑定；空心圆是不会自动执行的支撑动作引用。绿色点表示至少一个 Isaac Sim 场景已验证，蓝色点表示独立入口仍待物理验证。上层 Skill 子图已有静态编译接口，自动规划器尚未实现。</desc>
 <defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 10 L5 0 L10 10 Z" fill="#7350b8"/></marker></defs>
 <style>text{font-family:Inter,"Noto Sans CJK SC","Microsoft YaHei",Arial,sans-serif;fill:#263047}.title{font-size:31px;font-weight:750}.subtitle{font-size:18px;fill:#5b6574}.lane{font-size:20px;font-weight:750}.card-title{font-size:23px;font-weight:700;fill:#fff}.card-desc{font-size:17px;font-weight:650}.key{font-size:14px;font-weight:700;fill:#b45324}.value{font-size:14px;fill:#39465a}.panel-title{font-size:18px;font-weight:700;fill:#6744a6}.policy{font-size:16px;font-weight:550}.legend{font-size:17px;fill:#536071}</style>
-<rect x="0" y="0" width="2080" height="1881" rx="0" fill="#fff" stroke="none"></rect>
+<rect x="0" y="0" width="2080" height="1941" rx="0" fill="#fff" stroke="none"></rect>
 <text x="34" y="51" class="title">第3层 Contract ↔ 第4层底层 Policy</text>
-<text x="34" y="83" class="subtitle">8 个 contract · 60 个底层 policy · 54 verified / 6 callable · 35 direct / 25 support</text>
+<text x="34" y="83" class="subtitle">8 个兼容 family contract · 63 个底层 policy · 57 verified / 6 callable · 38 direct / 25 support</text>
 <text x="34" y="112" class="subtitle">第三层 Contract → 第四层 Policy；实心方块＝直接绑定，空心圆＝支撑引用（不自动执行）；上层技能子图尚待扩展</text>
 <rect x="16" y="116" width="2048" height="310" rx="16" fill="#fff5ee" stroke="none"></rect>
-<rect x="16" y="422" width="2048" height="647" rx="16" fill="#f6f2fc" stroke="none"></rect>
+<rect x="16" y="422" width="2048" height="677" rx="16" fill="#f6f2fc" stroke="none"></rect>
 <rect x="16" y="116" width="7" height="310" rx="3" fill="#c75e2d" stroke="none"></rect>
-<rect x="16" y="422" width="7" height="647" rx="3" fill="#764dc0" stroke="none"></rect>
+<rect x="16" y="422" width="7" height="677" rx="3" fill="#764dc0" stroke="none"></rect>
 <text x="38" y="142" class="lane" style="fill:#a94c22">第3层 Contract · 第 1 组</text>
 <text x="38" y="447" class="lane" style="fill:#6841a8">第4层 Policy · 引用关系第 1 组</text>
 <rect x="32" y="147" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
 <rect x="32" y="147" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
 <rect x="32" y="177" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
-<text x="277.0" y="176" class="card-title" text-anchor="middle">navigate.v1</text>
+<text x="277.0" y="176" class="card-title" text-anchor="middle">contract_001 · navigate.v1</text>
 <text x="47" y="215" class="card-desc">底盘移动与持物导航</text>
 <text x="48" y="244" class="key">inputs</text>
 <text x="133" y="244" class="value">pose / object?</text>
@@ -31,48 +31,48 @@
 <text x="48" y="379" class="key">verifier</text>
 <text x="133" y="379" class="value">底盘位姿与抓持</text>
 <path d="M 277.0 448 L 277.0 415" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
-<rect x="32" y="453" width="490" height="601" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
-<text x="47" y="484" class="panel-title">navigate · 3 direct / 6 support</text>
+<rect x="32" y="453" width="490" height="631" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
+<text x="47" y="484" class="panel-title">contract_001 · 3 direct / 6 support</text>
 <rect x="44" y="502" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="54" y="510" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="75" y="520.5" class="policy">empty_navigate</text>
+<text x="75" y="520.5" class="policy">policy_001 · empty_navigate</text>
 <circle cx="498" cy="515" r="6" fill="#218456"><title>empty_navigate · verified</title></circle>
 <rect x="44" y="532" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="54" y="540" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="75" y="550.5" class="policy">carry_navigate</text>
+<text x="75" y="550.5" class="policy">policy_002 · carry_navigate</text>
 <circle cx="498" cy="545" r="6" fill="#218456"><title>carry_navigate · verified</title></circle>
 <rect x="44" y="562" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="54" y="570" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="75" y="580.5" class="policy">bimanual_carry</text>
+<text x="75" y="580.5" class="policy">policy_058 · bimanual_carry</text>
 <circle cx="498" cy="575" r="6" fill="#3677bb"><title>bimanual_carry · callable</title></circle>
 <rect x="44" y="592" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="605" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="610.5" class="policy">carry_height_adjust</text>
+<text x="75" y="610.5" class="policy">policy_034 · carry_height_adjust</text>
 <circle cx="498" cy="605" r="6" fill="#218456"><title>carry_height_adjust · verified</title></circle>
 <rect x="44" y="622" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="635" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="640.5" class="policy">back_off_with_load</text>
+<text x="75" y="640.5" class="policy">policy_035 · back_off_with_load</text>
 <circle cx="498" cy="635" r="6" fill="#218456"><title>back_off_with_load · verified</title></circle>
 <rect x="44" y="652" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="665" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="670.5" class="policy">base_rotate_in_place</text>
+<text x="75" y="670.5" class="policy">policy_036 · base_rotate_in_place</text>
 <circle cx="498" cy="665" r="6" fill="#218456"><title>base_rotate_in_place · verified</title></circle>
 <rect x="44" y="682" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="695" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="700.5" class="policy">base_translate_local</text>
+<text x="75" y="700.5" class="policy">policy_037 · base_translate_local</text>
 <circle cx="498" cy="695" r="6" fill="#218456"><title>base_translate_local · verified</title></circle>
 <rect x="44" y="712" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="725" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="730.5" class="policy">reach_while_moving</text>
+<text x="75" y="730.5" class="policy">policy_051 · reach_while_moving</text>
 <circle cx="498" cy="725" r="6" fill="#218456"><title>reach_while_moving · verified</title></circle>
 <rect x="44" y="742" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="755" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="760.5" class="policy">tuck_arm</text>
+<text x="75" y="760.5" class="policy">policy_003 · tuck_arm</text>
 <circle cx="498" cy="755" r="6" fill="#218456"><title>tuck_arm · verified</title></circle>
 <rect x="546" y="147" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
 <rect x="546" y="147" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
 <rect x="546" y="177" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
-<text x="791.0" y="176" class="card-title" text-anchor="middle">pick.v1</text>
+<text x="791.0" y="176" class="card-title" text-anchor="middle">contract_002 · pick.v1</text>
 <text x="561" y="215" class="card-desc">按物品标注选择右手抓取</text>
 <text x="562" y="244" class="key">inputs</text>
 <text x="647" y="244" class="value">object / route?</text>
@@ -87,84 +87,88 @@
 <text x="562" y="379" class="key">verifier</text>
 <text x="647" y="379" class="value">物体抬升与夹爪</text>
 <path d="M 791.0 448 L 791.0 415" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
-<rect x="546" y="453" width="490" height="601" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
-<text x="561" y="484" class="panel-title">pick · 8 direct / 10 support</text>
+<rect x="546" y="453" width="490" height="631" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
+<text x="561" y="484" class="panel-title">contract_002 · 9 direct / 10 support</text>
 <rect x="558" y="502" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="510" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="520.5" class="policy">pick_top</text>
-<circle cx="1012" cy="515" r="6" fill="#218456"><title>pick_top · verified</title></circle>
+<text x="589" y="520.5" class="policy">policy_061 · pick</text>
+<circle cx="1012" cy="515" r="6" fill="#218456"><title>pick · verified</title></circle>
 <rect x="558" y="532" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="540" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="550.5" class="policy">pick_round_rim</text>
-<circle cx="1012" cy="545" r="6" fill="#218456"><title>pick_round_rim · verified</title></circle>
+<text x="589" y="550.5" class="policy">policy_010 · pick_top</text>
+<circle cx="1012" cy="545" r="6" fill="#218456"><title>pick_top · verified</title></circle>
 <rect x="558" y="562" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="570" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="580.5" class="policy">pick_rect_rim</text>
-<circle cx="1012" cy="575" r="6" fill="#218456"><title>pick_rect_rim · verified</title></circle>
+<text x="589" y="580.5" class="policy">policy_011 · pick_round_rim</text>
+<circle cx="1012" cy="575" r="6" fill="#218456"><title>pick_round_rim · verified</title></circle>
 <rect x="558" y="592" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="600" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="610.5" class="policy">pick_edge</text>
-<circle cx="1012" cy="605" r="6" fill="#218456"><title>pick_edge · verified</title></circle>
+<text x="589" y="610.5" class="policy">policy_012 · pick_rect_rim</text>
+<circle cx="1012" cy="605" r="6" fill="#218456"><title>pick_rect_rim · verified</title></circle>
 <rect x="558" y="622" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="630" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="640.5" class="policy">pick_floor_corner</text>
-<circle cx="1012" cy="635" r="6" fill="#3677bb"><title>pick_floor_corner · callable</title></circle>
+<text x="589" y="640.5" class="policy">policy_013 · pick_edge</text>
+<circle cx="1012" cy="635" r="6" fill="#218456"><title>pick_edge · verified</title></circle>
 <rect x="558" y="652" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="660" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="670.5" class="policy">pick_cup_handle</text>
-<circle cx="1012" cy="665" r="6" fill="#218456"><title>pick_cup_handle · verified</title></circle>
+<text x="589" y="670.5" class="policy">policy_014 · pick_floor_corner</text>
+<circle cx="1012" cy="665" r="6" fill="#3677bb"><title>pick_floor_corner · callable</title></circle>
 <rect x="558" y="682" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="690" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="700.5" class="policy">pick_from_cavity</text>
-<circle cx="1012" cy="695" r="6" fill="#218456"><title>pick_from_cavity · verified</title></circle>
+<text x="589" y="700.5" class="policy">policy_055 · pick_cup_handle</text>
+<circle cx="1012" cy="695" r="6" fill="#218456"><title>pick_cup_handle · verified</title></circle>
 <rect x="558" y="712" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="720" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="730.5" class="policy">pick_while_moving</text>
-<circle cx="1012" cy="725" r="6" fill="#218456"><title>pick_while_moving · verified</title></circle>
-<rect x="558" y="742" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
-<circle cx="573" cy="755" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="760.5" class="policy">prepare_floor_reach</text>
-<circle cx="1012" cy="755" r="6" fill="#218456"><title>prepare_floor_reach · verified</title></circle>
+<text x="589" y="730.5" class="policy">policy_048 · pick_from_cavity</text>
+<circle cx="1012" cy="725" r="6" fill="#218456"><title>pick_from_cavity · verified</title></circle>
+<rect x="558" y="742" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
+<rect x="568" y="750" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
+<text x="589" y="760.5" class="policy">policy_052 · pick_while_moving</text>
+<circle cx="1012" cy="755" r="6" fill="#218456"><title>pick_while_moving · verified</title></circle>
 <rect x="558" y="772" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="785" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="790.5" class="policy">slide_to_edge</text>
-<circle cx="1012" cy="785" r="6" fill="#218456"><title>slide_to_edge · verified</title></circle>
+<text x="589" y="790.5" class="policy">policy_042 · prepare_floor_reach</text>
+<circle cx="1012" cy="785" r="6" fill="#218456"><title>prepare_floor_reach · verified</title></circle>
 <rect x="558" y="802" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="815" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="820.5" class="policy">right_tcp_move</text>
-<circle cx="1012" cy="815" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<text x="589" y="820.5" class="policy">policy_045 · slide_to_edge</text>
+<circle cx="1012" cy="815" r="6" fill="#218456"><title>slide_to_edge · verified</title></circle>
 <rect x="558" y="832" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="845" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="850.5" class="policy">right_joint_move</text>
-<circle cx="1012" cy="845" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
+<text x="589" y="850.5" class="policy">policy_038 · right_tcp_move</text>
+<circle cx="1012" cy="845" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
 <rect x="558" y="862" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="875" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="880.5" class="policy">right_gripper_open</text>
-<circle cx="1012" cy="875" r="6" fill="#218456"><title>right_gripper_open · verified</title></circle>
+<text x="589" y="880.5" class="policy">policy_039 · right_joint_move</text>
+<circle cx="1012" cy="875" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
 <rect x="558" y="892" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="905" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="910.5" class="policy">right_gripper_close</text>
-<circle cx="1012" cy="905" r="6" fill="#218456"><title>right_gripper_close · verified</title></circle>
+<text x="589" y="910.5" class="policy">policy_040 · right_gripper_open</text>
+<circle cx="1012" cy="905" r="6" fill="#218456"><title>right_gripper_open · verified</title></circle>
 <rect x="558" y="922" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="935" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="940.5" class="policy">reach_while_moving</text>
-<circle cx="1012" cy="935" r="6" fill="#218456"><title>reach_while_moving · verified</title></circle>
+<text x="589" y="940.5" class="policy">policy_041 · right_gripper_close</text>
+<circle cx="1012" cy="935" r="6" fill="#218456"><title>right_gripper_close · verified</title></circle>
 <rect x="558" y="952" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="965" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="970.5" class="policy">bimanual_flat_pick</text>
-<circle cx="1012" cy="965" r="6" fill="#3677bb"><title>bimanual_flat_pick · callable</title></circle>
+<text x="589" y="970.5" class="policy">policy_051 · reach_while_moving</text>
+<circle cx="1012" cy="965" r="6" fill="#218456"><title>reach_while_moving · verified</title></circle>
 <rect x="558" y="982" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="995" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="1000.5" class="policy">bimanual_box_lift</text>
-<circle cx="1012" cy="995" r="6" fill="#3677bb"><title>bimanual_box_lift · callable</title></circle>
+<text x="589" y="1000.5" class="policy">policy_056 · bimanual_flat_pick</text>
+<circle cx="1012" cy="995" r="6" fill="#3677bb"><title>bimanual_flat_pick · callable</title></circle>
 <rect x="558" y="1012" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="1025" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="1030.5" class="policy">handover_right_to_left</text>
-<circle cx="1012" cy="1025" r="6" fill="#3677bb"><title>handover_right_to_left · callable</title></circle>
+<text x="589" y="1030.5" class="policy">policy_057 · bimanual_box_lift</text>
+<circle cx="1012" cy="1025" r="6" fill="#3677bb"><title>bimanual_box_lift · callable</title></circle>
+<rect x="558" y="1042" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
+<circle cx="573" cy="1055" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
+<text x="589" y="1060.5" class="policy">policy_059 · handover_right_to_left</text>
+<circle cx="1012" cy="1055" r="6" fill="#3677bb"><title>handover_right_to_left · callable</title></circle>
 <rect x="1060" y="147" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
 <rect x="1060" y="147" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
 <rect x="1060" y="177" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
-<text x="1305.0" y="176" class="card-title" text-anchor="middle">place.v1</text>
+<text x="1305.0" y="176" class="card-title" text-anchor="middle">contract_003 · place.v1</text>
 <text x="1075" y="215" class="card-desc">将右手物品放到目标</text>
 <text x="1076" y="244" class="key">inputs</text>
 <text x="1161" y="244" class="value">object / target</text>
@@ -179,64 +183,64 @@
 <text x="1076" y="379" class="key">verifier</text>
 <text x="1161" y="379" class="value">最终几何与空手</text>
 <path d="M 1305.0 448 L 1305.0 415" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
-<rect x="1060" y="453" width="490" height="601" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
-<text x="1075" y="484" class="panel-title">place · 5 direct / 8 support</text>
+<rect x="1060" y="453" width="490" height="631" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
+<text x="1075" y="484" class="panel-title">contract_003 · 5 direct / 8 support</text>
 <rect x="1072" y="502" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1082" y="510" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1103" y="520.5" class="policy">place_surface</text>
+<text x="1103" y="520.5" class="policy">policy_015 · place_surface</text>
 <circle cx="1526" cy="515" r="6" fill="#218456"><title>place_surface · verified</title></circle>
 <rect x="1072" y="532" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1082" y="540" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1103" y="550.5" class="policy">place_container</text>
+<text x="1103" y="550.5" class="policy">policy_016 · place_container</text>
 <circle cx="1526" cy="545" r="6" fill="#218456"><title>place_container · verified</title></circle>
 <rect x="1072" y="562" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1082" y="570" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1103" y="580.5" class="policy">place_edge</text>
+<text x="1103" y="580.5" class="policy">policy_017 · place_edge</text>
 <circle cx="1526" cy="575" r="6" fill="#218456"><title>place_edge · verified</title></circle>
 <rect x="1072" y="592" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1082" y="600" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1103" y="610.5" class="policy">place_microwave</text>
+<text x="1103" y="610.5" class="policy">policy_021 · place_microwave</text>
 <circle cx="1526" cy="605" r="6" fill="#218456"><title>place_microwave · verified</title></circle>
 <rect x="1072" y="622" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1082" y="630" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1103" y="640.5" class="policy">place_while_moving</text>
+<text x="1103" y="640.5" class="policy">policy_053 · place_while_moving</text>
 <circle cx="1526" cy="635" r="6" fill="#218456"><title>place_while_moving · verified</title></circle>
 <rect x="1072" y="652" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="665" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="670.5" class="policy">microwave_cavity_insert</text>
+<text x="1103" y="670.5" class="policy">policy_018 · microwave_cavity_insert</text>
 <circle cx="1526" cy="665" r="6" fill="#218456"><title>microwave_cavity_insert · verified</title></circle>
 <rect x="1072" y="682" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="695" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="700.5" class="policy">microwave_cavity_release</text>
+<text x="1103" y="700.5" class="policy">policy_019 · microwave_cavity_release</text>
 <circle cx="1526" cy="695" r="6" fill="#218456"><title>microwave_cavity_release · verified</title></circle>
 <rect x="1072" y="712" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="725" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="730.5" class="policy">microwave_cavity_withdraw</text>
+<text x="1103" y="730.5" class="policy">policy_020 · microwave_cavity_withdraw</text>
 <circle cx="1526" cy="725" r="6" fill="#218456"><title>microwave_cavity_withdraw · verified</title></circle>
 <rect x="1072" y="742" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="755" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="760.5" class="policy">upright_object</text>
+<text x="1103" y="760.5" class="policy">policy_054 · upright_object</text>
 <circle cx="1526" cy="755" r="6" fill="#218456"><title>upright_object · verified</title></circle>
 <rect x="1072" y="772" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="785" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="790.5" class="policy">right_tcp_move</text>
+<text x="1103" y="790.5" class="policy">policy_038 · right_tcp_move</text>
 <circle cx="1526" cy="785" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
 <rect x="1072" y="802" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="815" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="820.5" class="policy">right_joint_move</text>
+<text x="1103" y="820.5" class="policy">policy_039 · right_joint_move</text>
 <circle cx="1526" cy="815" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
 <rect x="1072" y="832" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="845" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="850.5" class="policy">right_gripper_open</text>
+<text x="1103" y="850.5" class="policy">policy_040 · right_gripper_open</text>
 <circle cx="1526" cy="845" r="6" fill="#218456"><title>right_gripper_open · verified</title></circle>
 <rect x="1072" y="862" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="875" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="880.5" class="policy">right_gripper_close</text>
+<text x="1103" y="880.5" class="policy">policy_041 · right_gripper_close</text>
 <circle cx="1526" cy="875" r="6" fill="#218456"><title>right_gripper_close · verified</title></circle>
 <rect x="1574" y="147" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
 <rect x="1574" y="147" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
 <rect x="1574" y="177" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
-<text x="1819.0" y="176" class="card-title" text-anchor="middle">open.v1</text>
+<text x="1819.0" y="176" class="card-title" text-anchor="middle">contract_004 · open.v1</text>
 <text x="1589" y="215" class="card-desc">打开门或抽屉</text>
 <text x="1590" y="244" class="key">inputs</text>
 <text x="1675" y="244" class="value">articulated</text>
@@ -251,298 +255,306 @@
 <text x="1590" y="379" class="key">verifier</text>
 <text x="1675" y="379" class="value">实测关节开度</text>
 <path d="M 1819.0 448 L 1819.0 415" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
-<rect x="1574" y="453" width="490" height="601" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
-<text x="1589" y="484" class="panel-title">open · 5 direct / 11 support</text>
+<rect x="1574" y="453" width="490" height="631" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
+<text x="1589" y="484" class="panel-title">contract_004 · 6 direct / 11 support</text>
 <rect x="1586" y="502" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="510" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="520.5" class="policy">open_handle</text>
-<circle cx="2040" cy="515" r="6" fill="#218456"><title>open_handle · verified</title></circle>
+<text x="1617" y="520.5" class="policy">policy_062 · open</text>
+<circle cx="2040" cy="515" r="6" fill="#218456"><title>open · verified</title></circle>
 <rect x="1586" y="532" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="540" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="550.5" class="policy">open_powered</text>
-<circle cx="2040" cy="545" r="6" fill="#218456"><title>open_powered · verified</title></circle>
+<text x="1617" y="550.5" class="policy">policy_022 · open_handle</text>
+<circle cx="2040" cy="545" r="6" fill="#218456"><title>open_handle · verified</title></circle>
 <rect x="1586" y="562" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="570" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="580.5" class="policy">open_revolute_door</text>
-<circle cx="2040" cy="575" r="6" fill="#218456"><title>open_revolute_door · verified</title></circle>
+<text x="1617" y="580.5" class="policy">policy_024 · open_powered</text>
+<circle cx="2040" cy="575" r="6" fill="#218456"><title>open_powered · verified</title></circle>
 <rect x="1586" y="592" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="600" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="610.5" class="policy">open_prismatic_drawer</text>
-<circle cx="2040" cy="605" r="6" fill="#218456"><title>open_prismatic_drawer · verified</title></circle>
+<text x="1617" y="610.5" class="policy">policy_049 · open_revolute_door</text>
+<circle cx="2040" cy="605" r="6" fill="#218456"><title>open_revolute_door · verified</title></circle>
 <rect x="1586" y="622" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="630" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="640.5" class="policy">open_door_while_left_holds</text>
-<circle cx="2040" cy="635" r="6" fill="#3677bb"><title>open_door_while_left_holds · callable</title></circle>
-<rect x="1586" y="652" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
-<circle cx="1601" cy="665" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="670.5" class="policy">grasp_articulated_handle</text>
-<circle cx="2040" cy="665" r="6" fill="#218456"><title>grasp_articulated_handle · verified</title></circle>
+<text x="1617" y="640.5" class="policy">policy_050 · open_prismatic_drawer</text>
+<circle cx="2040" cy="635" r="6" fill="#218456"><title>open_prismatic_drawer · verified</title></circle>
+<rect x="1586" y="652" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
+<rect x="1596" y="660" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
+<text x="1617" y="670.5" class="policy">policy_060 · open_door_while_left_holds</text>
+<circle cx="2040" cy="665" r="6" fill="#3677bb"><title>open_door_while_left_holds · callable</title></circle>
 <rect x="1586" y="682" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="695" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="700.5" class="policy">release_articulated_handle</text>
-<circle cx="2040" cy="695" r="6" fill="#218456"><title>release_articulated_handle · verified</title></circle>
+<text x="1617" y="700.5" class="policy">policy_046 · grasp_articulated_handle</text>
+<circle cx="2040" cy="695" r="6" fill="#218456"><title>grasp_articulated_handle · verified</title></circle>
 <rect x="1586" y="712" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="725" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="730.5" class="policy">microwave_button_approach</text>
-<circle cx="2040" cy="725" r="6" fill="#218456"><title>microwave_button_approach · verified</title></circle>
+<text x="1617" y="730.5" class="policy">policy_047 · release_articulated_handle</text>
+<circle cx="2040" cy="725" r="6" fill="#218456"><title>release_articulated_handle · verified</title></circle>
 <rect x="1586" y="742" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="755" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="760.5" class="policy">microwave_button_press</text>
-<circle cx="2040" cy="755" r="6" fill="#218456"><title>microwave_button_press · verified</title></circle>
+<text x="1617" y="760.5" class="policy">policy_027 · microwave_button_approach</text>
+<circle cx="2040" cy="755" r="6" fill="#218456"><title>microwave_button_approach · verified</title></circle>
 <rect x="1586" y="772" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="785" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="790.5" class="policy">microwave_button_retract</text>
-<circle cx="2040" cy="785" r="6" fill="#218456"><title>microwave_button_retract · verified</title></circle>
+<text x="1617" y="790.5" class="policy">policy_028 · microwave_button_press</text>
+<circle cx="2040" cy="785" r="6" fill="#218456"><title>microwave_button_press · verified</title></circle>
 <rect x="1586" y="802" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="815" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="820.5" class="policy">microwave_door_clear</text>
-<circle cx="2040" cy="815" r="6" fill="#218456"><title>microwave_door_clear · verified</title></circle>
+<text x="1617" y="820.5" class="policy">policy_029 · microwave_button_retract</text>
+<circle cx="2040" cy="815" r="6" fill="#218456"><title>microwave_button_retract · verified</title></circle>
 <rect x="1586" y="832" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="845" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="850.5" class="policy">microwave_hinge_drive</text>
-<circle cx="2040" cy="845" r="6" fill="#218456"><title>microwave_hinge_drive · verified</title></circle>
+<text x="1617" y="850.5" class="policy">policy_030 · microwave_door_clear</text>
+<circle cx="2040" cy="845" r="6" fill="#218456"><title>microwave_door_clear · verified</title></circle>
 <rect x="1586" y="862" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="875" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="880.5" class="policy">right_tcp_move</text>
-<circle cx="2040" cy="875" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<text x="1617" y="880.5" class="policy">policy_031 · microwave_hinge_drive</text>
+<circle cx="2040" cy="875" r="6" fill="#218456"><title>microwave_hinge_drive · verified</title></circle>
 <rect x="1586" y="892" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="905" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="910.5" class="policy">right_joint_move</text>
-<circle cx="2040" cy="905" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
+<text x="1617" y="910.5" class="policy">policy_038 · right_tcp_move</text>
+<circle cx="2040" cy="905" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
 <rect x="1586" y="922" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="935" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="940.5" class="policy">right_gripper_open</text>
-<circle cx="2040" cy="935" r="6" fill="#218456"><title>right_gripper_open · verified</title></circle>
+<text x="1617" y="940.5" class="policy">policy_039 · right_joint_move</text>
+<circle cx="2040" cy="935" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
 <rect x="1586" y="952" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="965" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="970.5" class="policy">right_gripper_close</text>
-<circle cx="2040" cy="965" r="6" fill="#218456"><title>right_gripper_close · verified</title></circle>
-<rect x="16" y="1065" width="2048" height="310" rx="16" fill="#fff5ee" stroke="none"></rect>
-<rect x="16" y="1371" width="2048" height="407" rx="16" fill="#f6f2fc" stroke="none"></rect>
-<rect x="16" y="1065" width="7" height="310" rx="3" fill="#c75e2d" stroke="none"></rect>
-<rect x="16" y="1371" width="7" height="407" rx="3" fill="#764dc0" stroke="none"></rect>
-<text x="38" y="1091" class="lane" style="fill:#a94c22">第3层 Contract · 第 2 组</text>
-<text x="38" y="1396" class="lane" style="fill:#6841a8">第4层 Policy · 引用关系第 2 组</text>
-<rect x="32" y="1096" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
-<rect x="32" y="1096" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
-<rect x="32" y="1126" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
-<text x="277.0" y="1125" class="card-title" text-anchor="middle">close.v1</text>
-<text x="47" y="1164" class="card-desc">关闭门或抽屉</text>
-<text x="48" y="1193" class="key">inputs</text>
-<text x="133" y="1193" class="value">articulated</text>
-<text x="48" y="1220" class="key">requires</text>
-<text x="133" y="1220" class="value">关闭路径无阻挡</text>
-<text x="48" y="1247" class="key">achieves</text>
-<text x="133" y="1247" class="value">closed(articulated)</text>
-<text x="48" y="1274" class="key">outcomes</text>
-<text x="133" y="1274" class="value">关上 / 部分关闭</text>
-<text x="48" y="1301" class="key">executor</text>
-<text x="133" y="1301" class="value">手柄 / 动力</text>
-<text x="48" y="1328" class="key">verifier</text>
-<text x="133" y="1328" class="value">实测关节闭合</text>
-<path d="M 277.0 1397 L 277.0 1364" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
-<rect x="32" y="1402" width="490" height="361" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
-<text x="47" y="1433" class="panel-title">close · 2 direct / 8 support</text>
-<rect x="44" y="1451" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
-<rect x="54" y="1459" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="75" y="1469.5" class="policy">close_handle</text>
-<circle cx="498" cy="1464" r="6" fill="#218456"><title>close_handle · verified</title></circle>
+<text x="1617" y="970.5" class="policy">policy_040 · right_gripper_open</text>
+<circle cx="2040" cy="965" r="6" fill="#218456"><title>right_gripper_open · verified</title></circle>
+<rect x="1586" y="982" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
+<circle cx="1601" cy="995" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
+<text x="1617" y="1000.5" class="policy">policy_041 · right_gripper_close</text>
+<circle cx="2040" cy="995" r="6" fill="#218456"><title>right_gripper_close · verified</title></circle>
+<rect x="16" y="1095" width="2048" height="310" rx="16" fill="#fff5ee" stroke="none"></rect>
+<rect x="16" y="1401" width="2048" height="437" rx="16" fill="#f6f2fc" stroke="none"></rect>
+<rect x="16" y="1095" width="7" height="310" rx="3" fill="#c75e2d" stroke="none"></rect>
+<rect x="16" y="1401" width="7" height="437" rx="3" fill="#764dc0" stroke="none"></rect>
+<text x="38" y="1121" class="lane" style="fill:#a94c22">第3层 Contract · 第 2 组</text>
+<text x="38" y="1426" class="lane" style="fill:#6841a8">第4层 Policy · 引用关系第 2 组</text>
+<rect x="32" y="1126" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
+<rect x="32" y="1126" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
+<rect x="32" y="1156" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
+<text x="277.0" y="1155" class="card-title" text-anchor="middle">contract_005 · close.v1</text>
+<text x="47" y="1194" class="card-desc">关闭门或抽屉</text>
+<text x="48" y="1223" class="key">inputs</text>
+<text x="133" y="1223" class="value">articulated</text>
+<text x="48" y="1250" class="key">requires</text>
+<text x="133" y="1250" class="value">关闭路径无阻挡</text>
+<text x="48" y="1277" class="key">achieves</text>
+<text x="133" y="1277" class="value">closed(articulated)</text>
+<text x="48" y="1304" class="key">outcomes</text>
+<text x="133" y="1304" class="value">关上 / 部分关闭</text>
+<text x="48" y="1331" class="key">executor</text>
+<text x="133" y="1331" class="value">手柄 / 动力</text>
+<text x="48" y="1358" class="key">verifier</text>
+<text x="133" y="1358" class="value">实测关节闭合</text>
+<path d="M 277.0 1427 L 277.0 1394" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
+<rect x="32" y="1432" width="490" height="391" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
+<text x="47" y="1463" class="panel-title">contract_005 · 3 direct / 8 support</text>
 <rect x="44" y="1481" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="54" y="1489" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="75" y="1499.5" class="policy">close_powered</text>
-<circle cx="498" cy="1494" r="6" fill="#218456"><title>close_powered · verified</title></circle>
-<rect x="44" y="1511" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
-<circle cx="59" cy="1524" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="1529.5" class="policy">grasp_articulated_handle</text>
-<circle cx="498" cy="1524" r="6" fill="#218456"><title>grasp_articulated_handle · verified</title></circle>
-<rect x="44" y="1541" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
-<circle cx="59" cy="1554" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="1559.5" class="policy">release_articulated_handle</text>
-<circle cx="498" cy="1554" r="6" fill="#218456"><title>release_articulated_handle · verified</title></circle>
+<text x="75" y="1499.5" class="policy">policy_063 · close</text>
+<circle cx="498" cy="1494" r="6" fill="#218456"><title>close · verified</title></circle>
+<rect x="44" y="1511" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
+<rect x="54" y="1519" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
+<text x="75" y="1529.5" class="policy">policy_023 · close_handle</text>
+<circle cx="498" cy="1524" r="6" fill="#218456"><title>close_handle · verified</title></circle>
+<rect x="44" y="1541" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
+<rect x="54" y="1549" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
+<text x="75" y="1559.5" class="policy">policy_025 · close_powered</text>
+<circle cx="498" cy="1554" r="6" fill="#218456"><title>close_powered · verified</title></circle>
 <rect x="44" y="1571" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="1584" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="1589.5" class="policy">microwave_door_clear</text>
-<circle cx="498" cy="1584" r="6" fill="#218456"><title>microwave_door_clear · verified</title></circle>
+<text x="75" y="1589.5" class="policy">policy_046 · grasp_articulated_handle</text>
+<circle cx="498" cy="1584" r="6" fill="#218456"><title>grasp_articulated_handle · verified</title></circle>
 <rect x="44" y="1601" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="1614" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="1619.5" class="policy">microwave_hinge_drive</text>
-<circle cx="498" cy="1614" r="6" fill="#218456"><title>microwave_hinge_drive · verified</title></circle>
+<text x="75" y="1619.5" class="policy">policy_047 · release_articulated_handle</text>
+<circle cx="498" cy="1614" r="6" fill="#218456"><title>release_articulated_handle · verified</title></circle>
 <rect x="44" y="1631" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="1644" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="1649.5" class="policy">right_tcp_move</text>
-<circle cx="498" cy="1644" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<text x="75" y="1649.5" class="policy">policy_030 · microwave_door_clear</text>
+<circle cx="498" cy="1644" r="6" fill="#218456"><title>microwave_door_clear · verified</title></circle>
 <rect x="44" y="1661" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="1674" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="1679.5" class="policy">right_joint_move</text>
-<circle cx="498" cy="1674" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
+<text x="75" y="1679.5" class="policy">policy_031 · microwave_hinge_drive</text>
+<circle cx="498" cy="1674" r="6" fill="#218456"><title>microwave_hinge_drive · verified</title></circle>
 <rect x="44" y="1691" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="1704" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="1709.5" class="policy">right_gripper_open</text>
-<circle cx="498" cy="1704" r="6" fill="#218456"><title>right_gripper_open · verified</title></circle>
+<text x="75" y="1709.5" class="policy">policy_038 · right_tcp_move</text>
+<circle cx="498" cy="1704" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
 <rect x="44" y="1721" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="59" cy="1734" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="75" y="1739.5" class="policy">right_gripper_close</text>
-<circle cx="498" cy="1734" r="6" fill="#218456"><title>right_gripper_close · verified</title></circle>
-<rect x="546" y="1096" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
-<rect x="546" y="1096" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
-<rect x="546" y="1126" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
-<text x="791.0" y="1125" class="card-title" text-anchor="middle">push.v1</text>
-<text x="561" y="1164" class="card-desc">沿支撑面推动物体</text>
-<text x="562" y="1193" class="key">inputs</text>
-<text x="647" y="1193" class="value">object / direction</text>
-<text x="562" y="1220" class="key">requires</text>
-<text x="647" y="1220" class="value">物体在支撑面上</text>
-<text x="562" y="1247" class="key">achieves</text>
-<text x="647" y="1247" class="value">measured displacement</text>
-<text x="562" y="1274" class="key">outcomes</text>
-<text x="647" y="1274" class="value">移动 / 跌落 / 未动</text>
-<text x="562" y="1301" class="key">executor</text>
-<text x="647" y="1301" class="value">背推 / 顶部拖动</text>
-<text x="562" y="1328" class="key">verifier</text>
-<text x="647" y="1328" class="value">动作前后位移</text>
-<path d="M 791.0 1397 L 791.0 1364" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
-<rect x="546" y="1402" width="490" height="361" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
-<text x="561" y="1433" class="panel-title">push · 3 direct / 3 support</text>
-<rect x="558" y="1451" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
-<rect x="568" y="1459" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="1469.5" class="policy">push</text>
-<circle cx="1012" cy="1464" r="6" fill="#218456"><title>push · verified</title></circle>
+<text x="75" y="1739.5" class="policy">policy_039 · right_joint_move</text>
+<circle cx="498" cy="1734" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
+<rect x="44" y="1751" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
+<circle cx="59" cy="1764" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
+<text x="75" y="1769.5" class="policy">policy_040 · right_gripper_open</text>
+<circle cx="498" cy="1764" r="6" fill="#218456"><title>right_gripper_open · verified</title></circle>
+<rect x="44" y="1781" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
+<circle cx="59" cy="1794" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
+<text x="75" y="1799.5" class="policy">policy_041 · right_gripper_close</text>
+<circle cx="498" cy="1794" r="6" fill="#218456"><title>right_gripper_close · verified</title></circle>
+<rect x="546" y="1126" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
+<rect x="546" y="1126" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
+<rect x="546" y="1156" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
+<text x="791.0" y="1155" class="card-title" text-anchor="middle">contract_006 · push.v1</text>
+<text x="561" y="1194" class="card-desc">沿支撑面推动物体</text>
+<text x="562" y="1223" class="key">inputs</text>
+<text x="647" y="1223" class="value">object / direction</text>
+<text x="562" y="1250" class="key">requires</text>
+<text x="647" y="1250" class="value">物体在支撑面上</text>
+<text x="562" y="1277" class="key">achieves</text>
+<text x="647" y="1277" class="value">measured displacement</text>
+<text x="562" y="1304" class="key">outcomes</text>
+<text x="647" y="1304" class="value">移动 / 跌落 / 未动</text>
+<text x="562" y="1331" class="key">executor</text>
+<text x="647" y="1331" class="value">背推 / 顶部拖动</text>
+<text x="562" y="1358" class="key">verifier</text>
+<text x="647" y="1358" class="value">动作前后位移</text>
+<path d="M 791.0 1427 L 791.0 1394" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
+<rect x="546" y="1432" width="490" height="391" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
+<text x="561" y="1463" class="panel-title">contract_006 · 3 direct / 3 support</text>
 <rect x="558" y="1481" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="1489" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="1499.5" class="policy">push_from_behind</text>
-<circle cx="1012" cy="1494" r="6" fill="#218456"><title>push_from_behind · verified</title></circle>
+<text x="589" y="1499.5" class="policy">policy_026 · push</text>
+<circle cx="1012" cy="1494" r="6" fill="#218456"><title>push · verified</title></circle>
 <rect x="558" y="1511" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="568" y="1519" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="589" y="1529.5" class="policy">top_drag</text>
-<circle cx="1012" cy="1524" r="6" fill="#218456"><title>top_drag · verified</title></circle>
-<rect x="558" y="1541" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
-<circle cx="573" cy="1554" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="1559.5" class="policy">slide_to_edge</text>
-<circle cx="1012" cy="1554" r="6" fill="#218456"><title>slide_to_edge · verified</title></circle>
+<text x="589" y="1529.5" class="policy">policy_043 · push_from_behind</text>
+<circle cx="1012" cy="1524" r="6" fill="#218456"><title>push_from_behind · verified</title></circle>
+<rect x="558" y="1541" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
+<rect x="568" y="1549" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
+<text x="589" y="1559.5" class="policy">policy_044 · top_drag</text>
+<circle cx="1012" cy="1554" r="6" fill="#218456"><title>top_drag · verified</title></circle>
 <rect x="558" y="1571" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="1584" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="1589.5" class="policy">right_tcp_move</text>
-<circle cx="1012" cy="1584" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<text x="589" y="1589.5" class="policy">policy_045 · slide_to_edge</text>
+<circle cx="1012" cy="1584" r="6" fill="#218456"><title>slide_to_edge · verified</title></circle>
 <rect x="558" y="1601" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="573" cy="1614" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="589" y="1619.5" class="policy">right_joint_move</text>
-<circle cx="1012" cy="1614" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
-<rect x="1060" y="1096" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
-<rect x="1060" y="1096" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
-<rect x="1060" y="1126" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
-<text x="1305.0" y="1125" class="card-title" text-anchor="middle">click.v1</text>
-<text x="1075" y="1164" class="card-desc">按下电器按钮</text>
-<text x="1076" y="1193" class="key">inputs</text>
-<text x="1161" y="1193" class="value">appliance / button</text>
-<text x="1076" y="1220" class="key">requires</text>
-<text x="1161" y="1220" class="value">按钮可达；启动前置满足</text>
-<text x="1076" y="1247" class="key">achieves</text>
-<text x="1161" y="1247" class="value">button_pressed</text>
-<text x="1076" y="1274" class="key">outcomes</text>
-<text x="1161" y="1274" class="value">按下 / 未触达</text>
-<text x="1076" y="1301" class="key">executor</text>
-<text x="1161" y="1301" class="value">微波炉门 / 启动</text>
-<text x="1076" y="1328" class="key">verifier</text>
-<text x="1161" y="1328" class="value">本次接触与电器状态</text>
-<path d="M 1305.0 1397 L 1305.0 1364" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
-<rect x="1060" y="1402" width="490" height="361" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
-<text x="1075" y="1433" class="panel-title">click · 2 direct / 5 support</text>
-<rect x="1072" y="1451" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
-<rect x="1082" y="1459" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1103" y="1469.5" class="policy">click</text>
-<circle cx="1526" cy="1464" r="6" fill="#218456"><title>click · verified</title></circle>
+<text x="589" y="1619.5" class="policy">policy_038 · right_tcp_move</text>
+<circle cx="1012" cy="1614" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<rect x="558" y="1631" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
+<circle cx="573" cy="1644" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
+<text x="589" y="1649.5" class="policy">policy_039 · right_joint_move</text>
+<circle cx="1012" cy="1644" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
+<rect x="1060" y="1126" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
+<rect x="1060" y="1126" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
+<rect x="1060" y="1156" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
+<text x="1305.0" y="1155" class="card-title" text-anchor="middle">contract_007 · click.v1</text>
+<text x="1075" y="1194" class="card-desc">按下电器按钮</text>
+<text x="1076" y="1223" class="key">inputs</text>
+<text x="1161" y="1223" class="value">appliance / button</text>
+<text x="1076" y="1250" class="key">requires</text>
+<text x="1161" y="1250" class="value">按钮可达；启动前置满足</text>
+<text x="1076" y="1277" class="key">achieves</text>
+<text x="1161" y="1277" class="value">button_pressed</text>
+<text x="1076" y="1304" class="key">outcomes</text>
+<text x="1161" y="1304" class="value">按下 / 未触达</text>
+<text x="1076" y="1331" class="key">executor</text>
+<text x="1161" y="1331" class="value">微波炉门 / 启动</text>
+<text x="1076" y="1358" class="key">verifier</text>
+<text x="1161" y="1358" class="value">本次接触与电器状态</text>
+<path d="M 1305.0 1427 L 1305.0 1394" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
+<rect x="1060" y="1432" width="490" height="391" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
+<text x="1075" y="1463" class="panel-title">contract_007 · 2 direct / 5 support</text>
 <rect x="1072" y="1481" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1082" y="1489" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1103" y="1499.5" class="policy">microwave_start</text>
-<circle cx="1526" cy="1494" r="6" fill="#218456"><title>microwave_start · verified</title></circle>
-<rect x="1072" y="1511" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
-<circle cx="1087" cy="1524" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="1529.5" class="policy">microwave_button_approach</text>
-<circle cx="1526" cy="1524" r="6" fill="#218456"><title>microwave_button_approach · verified</title></circle>
+<text x="1103" y="1499.5" class="policy">policy_033 · click</text>
+<circle cx="1526" cy="1494" r="6" fill="#218456"><title>click · verified</title></circle>
+<rect x="1072" y="1511" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
+<rect x="1082" y="1519" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
+<text x="1103" y="1529.5" class="policy">policy_032 · microwave_start</text>
+<circle cx="1526" cy="1524" r="6" fill="#218456"><title>microwave_start · verified</title></circle>
 <rect x="1072" y="1541" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="1554" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="1559.5" class="policy">microwave_button_press</text>
-<circle cx="1526" cy="1554" r="6" fill="#218456"><title>microwave_button_press · verified</title></circle>
+<text x="1103" y="1559.5" class="policy">policy_027 · microwave_button_approach</text>
+<circle cx="1526" cy="1554" r="6" fill="#218456"><title>microwave_button_approach · verified</title></circle>
 <rect x="1072" y="1571" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="1584" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="1589.5" class="policy">microwave_button_retract</text>
-<circle cx="1526" cy="1584" r="6" fill="#218456"><title>microwave_button_retract · verified</title></circle>
+<text x="1103" y="1589.5" class="policy">policy_028 · microwave_button_press</text>
+<circle cx="1526" cy="1584" r="6" fill="#218456"><title>microwave_button_press · verified</title></circle>
 <rect x="1072" y="1601" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="1614" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="1619.5" class="policy">right_tcp_move</text>
-<circle cx="1526" cy="1614" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<text x="1103" y="1619.5" class="policy">policy_029 · microwave_button_retract</text>
+<circle cx="1526" cy="1614" r="6" fill="#218456"><title>microwave_button_retract · verified</title></circle>
 <rect x="1072" y="1631" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1087" cy="1644" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1103" y="1649.5" class="policy">right_joint_move</text>
-<circle cx="1526" cy="1644" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
-<rect x="1574" y="1096" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
-<rect x="1574" y="1096" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
-<rect x="1574" y="1126" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
-<text x="1819.0" y="1125" class="card-title" text-anchor="middle">set_posture.v1</text>
-<text x="1589" y="1164" class="card-desc">调整机器人躯干与右臂</text>
-<text x="1590" y="1193" class="key">inputs</text>
-<text x="1675" y="1193" class="value">component / target</text>
-<text x="1590" y="1220" class="key">requires</text>
-<text x="1675" y="1220" class="value">关节限位；路径无碰撞</text>
-<text x="1590" y="1247" class="key">achieves</text>
-<text x="1675" y="1247" class="value">joint_at(target)</text>
-<text x="1590" y="1274" class="key">outcomes</text>
-<text x="1675" y="1274" class="value">到位 / 中途阻挡</text>
-<text x="1590" y="1301" class="key">executor</text>
-<text x="1675" y="1301" class="value">收臂 / 躯干 / 腰部</text>
-<text x="1590" y="1328" class="key">verifier</text>
-<text x="1675" y="1328" class="value">实测关节或 TCP</text>
-<path d="M 1819.0 1397 L 1819.0 1364" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
-<rect x="1574" y="1402" width="490" height="361" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
-<text x="1589" y="1433" class="panel-title">set_posture · 7 direct / 3 support</text>
-<rect x="1586" y="1451" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
-<rect x="1596" y="1459" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="1469.5" class="policy">tuck_arm</text>
-<circle cx="2040" cy="1464" r="6" fill="#218456"><title>tuck_arm · verified</title></circle>
+<text x="1103" y="1649.5" class="policy">policy_038 · right_tcp_move</text>
+<circle cx="1526" cy="1644" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<rect x="1072" y="1661" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
+<circle cx="1087" cy="1674" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
+<text x="1103" y="1679.5" class="policy">policy_039 · right_joint_move</text>
+<circle cx="1526" cy="1674" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
+<rect x="1574" y="1126" width="490" height="262" rx="12" fill="#fffdfb" stroke="#c56130" stroke-width="2"></rect>
+<rect x="1574" y="1126" width="490" height="43" rx="12" fill="#bf592b" stroke="none"></rect>
+<rect x="1574" y="1156" width="490" height="13" rx="0" fill="#bf592b" stroke="none"></rect>
+<text x="1819.0" y="1155" class="card-title" text-anchor="middle">contract_008 · set_posture.v1</text>
+<text x="1589" y="1194" class="card-desc">调整机器人躯干与右臂</text>
+<text x="1590" y="1223" class="key">inputs</text>
+<text x="1675" y="1223" class="value">component / target</text>
+<text x="1590" y="1250" class="key">requires</text>
+<text x="1675" y="1250" class="value">关节限位；路径无碰撞</text>
+<text x="1590" y="1277" class="key">achieves</text>
+<text x="1675" y="1277" class="value">joint_at(target)</text>
+<text x="1590" y="1304" class="key">outcomes</text>
+<text x="1675" y="1304" class="value">到位 / 中途阻挡</text>
+<text x="1590" y="1331" class="key">executor</text>
+<text x="1675" y="1331" class="value">收臂 / 躯干 / 腰部</text>
+<text x="1590" y="1358" class="key">verifier</text>
+<text x="1675" y="1358" class="value">实测关节或 TCP</text>
+<path d="M 1819.0 1427 L 1819.0 1394" fill="none" stroke="#7350b8" stroke-width="2.6" marker-end="url(#arrow)"></path>
+<rect x="1574" y="1432" width="490" height="391" rx="13" fill="#fff" stroke="#9270cf" stroke-width="2" stroke-dasharray="7 5"></rect>
+<text x="1589" y="1463" class="panel-title">contract_008 · 7 direct / 3 support</text>
 <rect x="1586" y="1481" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="1489" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="1499.5" class="policy">set_torso_height</text>
-<circle cx="2040" cy="1494" r="6" fill="#218456"><title>set_torso_height · verified</title></circle>
+<text x="1617" y="1499.5" class="policy">policy_003 · tuck_arm</text>
+<circle cx="2040" cy="1494" r="6" fill="#218456"><title>tuck_arm · verified</title></circle>
 <rect x="1586" y="1511" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="1519" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="1529.5" class="policy">lower_torso</text>
-<circle cx="2040" cy="1524" r="6" fill="#218456"><title>lower_torso · verified</title></circle>
+<text x="1617" y="1529.5" class="policy">policy_004 · set_torso_height</text>
+<circle cx="2040" cy="1524" r="6" fill="#218456"><title>set_torso_height · verified</title></circle>
 <rect x="1586" y="1541" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="1549" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="1559.5" class="policy">raise_torso</text>
-<circle cx="2040" cy="1554" r="6" fill="#218456"><title>raise_torso · verified</title></circle>
+<text x="1617" y="1559.5" class="policy">policy_005 · lower_torso</text>
+<circle cx="2040" cy="1554" r="6" fill="#218456"><title>lower_torso · verified</title></circle>
 <rect x="1586" y="1571" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="1579" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="1589.5" class="policy">set_waist_pitch</text>
-<circle cx="2040" cy="1584" r="6" fill="#218456"><title>set_waist_pitch · verified</title></circle>
+<text x="1617" y="1589.5" class="policy">policy_006 · raise_torso</text>
+<circle cx="2040" cy="1584" r="6" fill="#218456"><title>raise_torso · verified</title></circle>
 <rect x="1586" y="1601" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="1609" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="1619.5" class="policy">lean_forward</text>
-<circle cx="2040" cy="1614" r="6" fill="#218456"><title>lean_forward · verified</title></circle>
+<text x="1617" y="1619.5" class="policy">policy_007 · set_waist_pitch</text>
+<circle cx="2040" cy="1614" r="6" fill="#218456"><title>set_waist_pitch · verified</title></circle>
 <rect x="1586" y="1631" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
 <rect x="1596" y="1639" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="1617" y="1649.5" class="policy">straighten_waist</text>
-<circle cx="2040" cy="1644" r="6" fill="#218456"><title>straighten_waist · verified</title></circle>
-<rect x="1586" y="1661" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
-<circle cx="1601" cy="1674" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="1679.5" class="policy">prepare_floor_reach</text>
-<circle cx="2040" cy="1674" r="6" fill="#218456"><title>prepare_floor_reach · verified</title></circle>
+<text x="1617" y="1649.5" class="policy">policy_008 · lean_forward</text>
+<circle cx="2040" cy="1644" r="6" fill="#218456"><title>lean_forward · verified</title></circle>
+<rect x="1586" y="1661" width="466" height="26" rx="9" fill="#f1eafd" stroke="#916fc8"></rect>
+<rect x="1596" y="1669" width="10" height="10" rx="2" fill="#7048b4" stroke="none"></rect>
+<text x="1617" y="1679.5" class="policy">policy_009 · straighten_waist</text>
+<circle cx="2040" cy="1674" r="6" fill="#218456"><title>straighten_waist · verified</title></circle>
 <rect x="1586" y="1691" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="1704" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="1709.5" class="policy">right_tcp_move</text>
-<circle cx="2040" cy="1704" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<text x="1617" y="1709.5" class="policy">policy_042 · prepare_floor_reach</text>
+<circle cx="2040" cy="1704" r="6" fill="#218456"><title>prepare_floor_reach · verified</title></circle>
 <rect x="1586" y="1721" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
 <circle cx="1601" cy="1734" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="1617" y="1739.5" class="policy">right_joint_move</text>
-<circle cx="2040" cy="1734" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
-<rect x="31" y="1795" width="2018" height="68" rx="10" fill="#f8fafc" stroke="none"></rect>
-<rect x="53" y="1817" width="11" height="11" rx="2" fill="#7048b4" stroke="none"></rect>
-<text x="74" y="1828" class="legend">直接 executor</text>
-<circle cx="280" cy="1822.5" r="6" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
-<text x="297" y="1828" class="legend">支撑动作</text>
-<circle cx="500" cy="1822.5" r="6" fill="#218456"></circle>
-<text x="517" y="1828" class="legend">verified · 场景物理通过</text>
-<circle cx="775" cy="1822.5" r="6" fill="#3677bb"></circle>
-<text x="792" y="1828" class="legend">callable · 待物理验证</text>
-<text x="1124" y="1828" class="legend">ContractRunner 已执行直接路线及共用实测检查；图不代表自动规划</text>
+<text x="1617" y="1739.5" class="policy">policy_038 · right_tcp_move</text>
+<circle cx="2040" cy="1734" r="6" fill="#218456"><title>right_tcp_move · verified</title></circle>
+<rect x="1586" y="1751" width="466" height="26" rx="9" fill="#fff" stroke="#bdadd8" stroke-dasharray="4 3"></rect>
+<circle cx="1601" cy="1764" r="5" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
+<text x="1617" y="1769.5" class="policy">policy_039 · right_joint_move</text>
+<circle cx="2040" cy="1764" r="6" fill="#218456"><title>right_joint_move · verified</title></circle>
+<rect x="31" y="1855" width="2018" height="68" rx="10" fill="#f8fafc" stroke="none"></rect>
+<rect x="53" y="1877" width="11" height="11" rx="2" fill="#7048b4" stroke="none"></rect>
+<text x="74" y="1888" class="legend">直接 executor</text>
+<circle cx="280" cy="1882.5" r="6" fill="#fff" stroke="#8165b0" stroke-width="1.6"></circle>
+<text x="297" y="1888" class="legend">支撑动作</text>
+<circle cx="500" cy="1882.5" r="6" fill="#218456"></circle>
+<text x="517" y="1888" class="legend">verified · 场景物理通过</text>
+<circle cx="775" cy="1882.5" r="6" fill="#3677bb"></circle>
+<text x="792" y="1888" class="legend">callable · 待物理验证</text>
+<text x="1124" y="1888" class="legend">ContractRunner 已执行直接路线及共用实测检查；图不代表自动规划</text>
 </svg>

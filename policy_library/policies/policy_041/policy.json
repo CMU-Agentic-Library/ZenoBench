@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_041",
+  "legacy_id": "right_gripper_close",
+  "name": "Right Gripper Close",
+  "description": "闭合空右夹爪到指定位置并读回指关节；不单独判定抓取",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "gripper",
+    "effect_summary": "finger_positions_measured",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "width",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": 0.0
+    },
+    {
+      "name": "tolerance",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.005
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "finger_positions_measured",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_041",
+    "legacy_attribute": "right_gripper_close",
+    "class": "RightGripperClosePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_002",
+    "contract_003",
+    "contract_004",
+    "contract_005"
+  ],
+  "evidence": "Isaac Sim: right_gripper_open 0.04 / right_gripper_close 0.0, 2026-10-01; runs/atomic_gripper_smoke/result.json"
+}

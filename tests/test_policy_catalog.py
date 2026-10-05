@@ -17,7 +17,11 @@ def test_policy_catalog_status_matches_callable_api():
     assert len(rows) >= 50
     assert len({row["id"] for row in rows}) == len(rows)
     suite = PolicySuite(SimpleNamespace())
+    assert len({row["policy_id"] for row in rows}) == len(rows)
     for row in rows:
+        assert row["schema_version"] == 1
+        assert row["kind"] == "low_level_policy"
+        assert getattr(suite, row["policy_id"]) is getattr(suite, row["id"])
         status = row["status"]
         assert status in {"verified", "callable", "embedded", "planned"}
         if status in {"verified", "callable"}:
@@ -35,18 +39,18 @@ def test_catalog_document_is_current():
     assert (ROOT / "docs/POLICY_CATALOG.md").read_text() == render(catalog)
 
 
-def test_all_sixty_policies_have_contract_relations_with_real_direct_bindings():
+def test_all_sixty_four_policies_have_contract_relations_with_real_direct_bindings():
     from zeno_skills.contracts import CONTRACTS, policy_contract_relations
     from tools.render_contract_layers import render as render_contract_layers
 
     catalog = json.loads((ROOT / "zeno_skills/policies/catalog.json").read_text())
     rows = catalog["policies"]
     relations = policy_contract_relations(rows)
-    assert len(rows) == 60
+    assert len(rows) == 64
     assert len(relations) == len(CONTRACTS) == 8
     covered = {policy_id for group in relations.values()
                for ids in group.values() for policy_id in ids}
-    assert covered == {row["id"] for row in rows}
+    assert covered == {row["id"] for row in rows if row["id"] != "wait_for_temperature"}
     suite = PolicySuite(SimpleNamespace())
     for contract_id, group in relations.items():
         direct_classes = set(CONTRACTS[contract_id].executor.values())

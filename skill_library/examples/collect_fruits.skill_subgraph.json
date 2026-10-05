@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "kind": "skill_subgraph",
+  "subgoal_id": "sg_1",
+  "nodes": [
+    {
+      "id": "n1",
+      "skill_id": "skill_004",
+      "args": {"object": {"ref": "the apple"}},
+      "depends_on": []
+    },
+    {
+      "id": "n2",
+      "skill_id": "skill_006",
+      "args": {
+        "object": {"ref": "the apple"},
+        "container": {"ref": "the fruit basket visible on the low bookcase"}
+      },
+      "depends_on": ["n1"]
+    },
+    {
+      "id": "n3",
+      "skill_id": "skill_004",
+      "args": {"object": {"ref": "the orange"}},
+      "depends_on": ["n2"]
+    },
+    {
+      "id": "n4",
+      "skill_id": "skill_006",
+      "args": {
+        "object": {"ref": "the orange"},
+        "container": {"ref": "the fruit basket visible on the low bookcase"}
+      },
+      "depends_on": ["n3"]
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_038",
+  "skill_id": "skill_030",
+  "name": "Place an edge-held flat object",
+  "description": "Place one edge-held flat item onto an annotated support.",
+  "scope": {
+    "unit": "One place an edge-held flat object attempt on the grounded scene state.",
+    "includes": [
+      "Place one edge-held flat item onto an annotated support."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "The grounded target support."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "held_with_edge_grasp",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "on",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "on",
+    "right_hand_empty"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "legacy_family_contract": "contract_003",
+    "route": "edge"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_017",
+        "args": [
+          {
+            "arg": "object"
+          },
+          {
+            "arg": "support"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "support"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_held_kind": "edge",
+      "requires_right_held": true
+    },
+    "support": {
+      "argument": "support",
+      "kind": "support",
+      "source": "rig.ann",
+      "required": true
+    }
+  }
+}

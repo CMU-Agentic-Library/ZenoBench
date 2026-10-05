@@ -13,8 +13,11 @@ from dataclasses import dataclass
 import numpy as np
 
 from .contracts import CONTRACTS
+from .interface_ids import resolve_contract_id
 from .rig import SkillFailure
 from . import skills
+from .node_contracts import NODE_CONTRACTS
+from .noun_binding import bind_contract_nouns, select_policy_path
 
 
 @dataclass(frozen=True)
@@ -24,6 +27,7 @@ class ContractResult:
     success: bool
     observations: dict
     error: str | None = None
+    error_code: str | None = None
 
 
 class ContractRunner:
@@ -34,18 +38,224 @@ class ContractRunner:
         self.trace: list[ContractResult] = []
 
     def run(self, contract_id: str, route: str, *args, **kwargs) -> ContractResult:
-        spec = CONTRACTS[contract_id]
-        policy = spec.bind(self.rig, route)
+        if contract_id in NODE_CONTRACTS:
+            return self._run_node_contract(contract_id, route, args, kwargs)
+        legacy_id = resolve_contract_id(contract_id)
         try:
-            before = self._before(contract_id, route, args)
+            spec = CONTRACTS[legacy_id]
+            policy = spec.bind(self.rig, route)
+            before = self._before(legacy_id, route, args)
             policy.execute(*args, **kwargs)
-            observations = self._verify(contract_id, route, args, kwargs, before)
+            observations = self._verify(legacy_id, route, args, kwargs, before)
+            observations["verified_predicates"] = self._verified_predicates(
+                spec, route, args, kwargs
+            )
         except Exception as exc:
-            self.trace.append(ContractResult(contract_id, route, False, {}, str(exc)))
+            self.trace.append(ContractResult(
+                contract_id, route, False, self._after_snapshot(legacy_id, route, args),
+                str(exc), type(exc).__name__
+            ))
             raise
         result = ContractResult(contract_id, route, True, observations)
         self.trace.append(result)
         return result
+
+    def run_bound(self, contract_id: str, **named_args) -> ContractResult:
+        """Fill a Contract's named noun/value slots with grounded scene IDs."""
+        if contract_id not in NODE_CONTRACTS:
+            raise ValueError(f"{contract_id}: run_bound requires an active Skill Contract")
+        order = NODE_CONTRACTS[contract_id]["legacy_call_args"]
+        if set(named_args) != set(order):
+            raise ValueError(f"{contract_id}: expected named inputs {order}")
+        return self.run(contract_id, "compose", *(named_args[name] for name in order))
+
+    def _run_node_contract(self, contract_id, route, args, kwargs):
+        """Run a local policy sequence, then verify its advertised state change."""
+        from .policies import PolicySuite
+
+        row = NODE_CONTRACTS[contract_id]
+        if route != "compose" or kwargs:
+            raise ValueError(f"{contract_id}: expected compose route without keyword arguments")
+        order = row["legacy_call_args"]
+        if len(args) != len(order):
+            raise ValueError(f"{contract_id}: expected {len(order)} arguments")
+        values = dict(zip(order, args))
+        verifier = row["verifier"]
+        family_id = resolve_contract_id(verifier["legacy_family_contract"]) if verifier.get("legacy_family_contract") else None
+        family_route = verifier.get("route", "compose")
+        family_order = verifier.get("family_arg_order", order)
+        family_args = tuple(
+            row["argument_transforms"].get(name, "") + values[name]
+            if name in row["argument_transforms"] else values[name]
+            for name in family_order
+        )
+        completed = []
+        failed_step = None
+        noun_context = {}
+        selected_path = None
+        try:
+            noun_context = bind_contract_nouns(row, values, self.rig)
+            before = (self._before(family_id, family_route, family_args) if family_id
+                      else {"base_pose": tuple(self.rig.base_pose()),
+                            "held": None if self.rig.held is None else self.rig.held["name"],
+                            "events": len(self.rig.events)})
+            selected_path, steps = select_policy_path(row["policy_plan"], noun_context)
+            suite = PolicySuite(self.rig)
+            for index, step in enumerate(steps, 1):
+                failed_step = {"index": index, "policy_id": step["policy_id"]}
+                policy_args = [values[item["arg"]] for item in step["args"]]
+                policy_kwargs = {
+                    name: values[value["arg"]] if isinstance(value, dict) else value
+                    for name, value in step.get("kwargs", {}).items()
+                }
+                getattr(suite, step["policy_id"]).execute(*policy_args, **policy_kwargs)
+                completed.append(failed_step)
+                failed_step = None
+            observations = (self._verify(family_id, family_route, family_args, {}, before)
+                            if family_id else {})
+            observations.update(self._verify_node_effects(verifier, values, before))
+            observations["verified_predicates"] = [
+                item["predicate"] for item in row["achieves"]
+            ]
+            observations["policy_steps"] = completed
+            observations["bound_nouns"] = noun_context
+            observations["selected_policy_path"] = selected_path
+        except Exception as exc:
+            snapshot = self._after_snapshot(family_id or "node.v1", family_route, family_args)
+            snapshot["completed_policy_steps"] = completed
+            snapshot["failed_policy_step"] = failed_step
+            snapshot["bound_nouns"] = noun_context
+            snapshot["selected_policy_path"] = selected_path
+            self.trace.append(ContractResult(
+                contract_id, route, False, snapshot, str(exc), type(exc).__name__
+            ))
+            raise
+        result = ContractResult(contract_id, route, True, observations)
+        self.trace.append(result)
+        return result
+
+    def _verify_node_effects(self, verifier, values, before):
+        """Check extra effects that are not part of the eight legacy families."""
+        from .evaluator import tilt_deg
+
+        rig = self.rig
+        checks = list(verifier.get("extra_checks", []))
+        if verifier.get("custom"):
+            checks.append(verifier["custom"])
+        out = {}
+        for check in checks:
+            if check == "upright":
+                name = values["object"]
+                angle = float(tilt_deg(rig.obj_pose(name)[1]))
+                if angle > 20.0:
+                    raise SkillFailure(f"upright contract: {name} is tilted {angle:.1f} deg")
+                out["object_tilt_deg"] = angle
+            elif check == "within_hint":
+                name = values["object"]
+                bottom = rig.geo.bottom(name, rig.state())
+                error = float(np.linalg.norm(bottom[:2] - np.asarray(values["hint_xy"], float)))
+                if error > values["max_offset_m"]:
+                    raise SkillFailure(f"near-hint contract: object is {error:.3f} m from hint")
+                out["hint_error_m"] = error
+            elif check == "temperature":
+                thermal = rig.thermal
+                name = values["object"]
+                actual = float(thermal.temperatures_c[name])
+                if actual < float(values["min_temp_c"]):
+                    raise SkillFailure(f"temperature contract: {actual:.1f} C below target")
+                out["temperature_c"] = actual
+            elif check == "carry_height":
+                held = rig.held
+                if held is None or held["name"] != before["held"]:
+                    raise SkillFailure("carry-height contract: held object changed")
+                actual = float(rig.geo.bottom(held["name"], rig.state())[2])
+                if actual < float(values["min_bottom_z"]) - 0.02:
+                    raise SkillFailure("carry-height contract: object remains too low")
+                out["held_bottom_z"] = actual
+            elif check == "back_off":
+                if rig.held is None or rig.held["name"] != before["held"]:
+                    raise SkillFailure("back-off contract: held object changed")
+                x0, y0, _ = before["base_pose"]
+                x1, y1, _ = rig.base_pose()
+                moved = math.hypot(x1 - x0, y1 - y0)
+                if moved < 0.09:
+                    raise SkillFailure("back-off contract: base did not move enough")
+                out["base_moved_m"] = moved
+            elif check == "edge_ready":
+                name = values["object"]
+                events = [e for e in rig.events[before["events"]:]
+                          if e.get("label") == "slide_to_edge_result" and e.get("obj") == name]
+                if not events:
+                    raise SkillFailure("edge-ready contract: no fresh overhang measurement")
+                event = events[-1]
+                direction = np.asarray(event["direction"], float)
+                st = rig.state()
+                support = rig.geo.support_under(name, st)
+                if support is None or support["name"] != event["support"]:
+                    raise SkillFailure("edge-ready contract: support changed")
+                obj = rig.ann.objects[name]
+                size = np.asarray(rig.ann.asset_of(obj)["size"], float)
+                bottom = rig.geo.bottom(name, st)
+                half = skills._half_along(size, skills._yaw(st["objects"][name]["quat"]), direction)
+                overhang = float(direction @ bottom[:2]) + half - skills._edge_coord(support, direction)
+                if (overhang < skills.EDGE_MIN_OVERHANG - 0.01
+                        or overhang > half - skills.COM_MARGIN + 0.015):
+                    raise SkillFailure("edge-ready contract: current overhang is unsafe")
+                out["overhang_m"] = overhang
+            else:
+                raise ValueError(f"unknown node verifier {check}")
+        return out
+
+    @staticmethod
+    def _verified_predicates(spec, route, args, kwargs):
+        """Name only postconditions actually checked by this invocation."""
+        target = args[1] if spec.id == "place.v1" and len(args) > 1 else ""
+        button = "start" if route == "start" else kwargs.get("button", "door")
+        names = []
+        for row in spec.profile["achieves"]:
+            if row["check"] != "runner":
+                continue
+            when = row.get("when")
+            if when == "target starts with in:" and not target.startswith("in:"):
+                continue
+            if when == "target does not start with in:" and target.startswith("in:"):
+                continue
+            if when == "button is start" and button != "start":
+                continue
+            names.append(row["predicate"])
+        return names
+
+    def _after_snapshot(self, contract_id, route, args):
+        """Best-effort measured state after failure, including partial effects."""
+        rig = self.rig
+        held = getattr(rig, "held", None)
+        left_held = getattr(rig, "left_held", None)
+        out = {
+            "held_right": None if held is None else held.get("name"),
+            "held_left": None if left_held is None else left_held.get("name"),
+        }
+        try:
+            out["base_pose"] = [float(v) for v in rig.base_pose()]
+        except Exception:
+            pass
+        try:
+            out["scene_state"] = rig.state()
+        except Exception:
+            pass
+        kind = contract_id.split(".", 1)[0]
+        if args and kind in ("pick", "place", "push"):
+            try:
+                out["object"] = str(args[0])
+                out["object_position"] = [float(v) for v in rig.obj_pose(args[0])[0]]
+            except Exception:
+                pass
+        if args and kind in ("open", "close"):
+            try:
+                name = args[1] if kind == "open" and route == "while_left_holds" else args[0]
+                out["joint"] = {"name": str(name), "position": float(rig.joint(name))}
+            except Exception:
+                pass
+        return out
 
     def _before(self, contract_id, route, args):
         rig = self.rig
@@ -63,6 +273,11 @@ class ContractRunner:
         if kind == "place":
             if rig.held is None or rig.held["name"] != args[0]:
                 raise SkillFailure("place contract: object is not right-held")
+            target = args[1]
+            if route == "container" and not target.startswith("in:"):
+                raise SkillFailure("place contract: container target must start with in:")
+            if route in ("surface", "edge") and target.startswith("in:"):
+                raise SkillFailure("place contract: surface/edge route cannot target a container")
         if kind in ("open", "close"):
             art_name = args[1] if kind == "open" and route == "while_left_holds" else args[0]
             rig.ann.art(art_name)
@@ -102,8 +317,8 @@ class ContractRunner:
                     "fingers_m": rig.fingers().tolist()}
         if kind == "place":
             name, target = args[:2]
-            if rig.held is not None and rig.held["name"] == name:
-                raise SkillFailure("place contract: right hand still holds object")
+            if rig.held is not None:
+                raise SkillFailure("place contract: right hand is not empty")
             state = rig.state()
             if target.startswith("in:"):
                 ok, detail = rig.geo.inside(name, target[3:], state)

@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_012",
+  "skill_id": "skill_004",
+  "name": "Pick an object",
+  "description": "Grasp and lift one annotated scene object with the right hand.",
+  "scope": {
+    "unit": "one planner-visible pick attempt",
+    "includes": [
+      "select a supported right-hand grasp route",
+      "approach, grasp, lift, and verify the requested object"
+    ],
+    "excludes": [
+      "choosing the task goal",
+      "guaranteeing reachability before execution",
+      "placing or transporting the object to a destination"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The object to pick."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_annotated",
+      "arg": "object",
+      "enforcement": "contract_noun_binding"
+    },
+    {
+      "predicate": "object_reachable",
+      "arg": "object",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_by_right_hand",
+      "arg": "object",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_lifted",
+      "arg": "object",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "held_by_right_hand",
+    "object_lifted"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_002",
+    "route": "auto",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "choice",
+    "selection": "first_matching_before_execution",
+    "on_no_match": "raise_without_moving",
+    "paths": [
+      {
+        "path_id": "microwave_cavity",
+        "when": [
+          {
+            "noun": "object",
+            "field": "location",
+            "equals": "microwave_cavity"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_048",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "floor_corner",
+        "when": [
+          {
+            "noun": "object",
+            "field": "on_floor",
+            "equals": true
+          },
+          {
+            "noun": "object",
+            "field": "grasp_types",
+            "contains": "edge_pinch_after_push"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_014",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "rectangular_rim",
+        "when": [
+          {
+            "noun": "object",
+            "field": "grasp_types",
+            "contains": "rim_pinch_rect"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_012",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "round_rim",
+        "when": [
+          {
+            "noun": "object",
+            "field": "grasp_types",
+            "contains": "rim_pinch"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_011",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "top_pinch",
+        "when": [
+          {
+            "noun": "object",
+            "field": "grasp_types",
+            "contains": "top_pinch"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_010",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "flat_edge",
+        "when": [
+          {
+            "noun": "object",
+            "field": "on_floor",
+            "equals": false
+          },
+          {
+            "noun": "object",
+            "field": "grasp_types",
+            "contains": "edge_pinch_after_push"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_013",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "handle_only",
+        "when": [
+          {
+            "noun": "object",
+            "field": "grasp_types",
+            "contains": "handle_pinch"
+          },
+          {
+            "noun": "object",
+            "field": "handle_collider",
+            "equals": true
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_055",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [
+    {
+      "when": "object remains on an annotated support edge and right hand is empty",
+      "skill_id": "skill_016",
+      "reason": "edge-specific grasp may be appropriate"
+    }
+  ],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true
+    }
+  }
+}

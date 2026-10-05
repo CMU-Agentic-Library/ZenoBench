@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "kind": "contract",
+  "contract_id": "contract_007",
+  "legacy_id": "click.v1",
+  "description": "Press one annotated appliance button.",
+  "scope": "One fresh physical button press; start may also activate the task-level heating model.",
+  "inputs": {
+    "appliance": {
+      "type": "articulated_id",
+      "required": true
+    },
+    "button": {
+      "type": "enum",
+      "values": [
+        "door",
+        "start"
+      ],
+      "required": false,
+      "default": "door",
+      "description": "Only accepted as a keyword on the auto route; start route always selects start."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "check": "runner"
+    },
+    {
+      "predicate": "button_reachable",
+      "args": [
+        "button"
+      ],
+      "check": "policy_attempt"
+    },
+    {
+      "predicate": "start_conditions",
+      "when": "button is start",
+      "check": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "button_pressed_this_call",
+      "args": [
+        "button"
+      ],
+      "check": "runner"
+    },
+    {
+      "predicate": "heating_active",
+      "when": "button is start",
+      "check": "runner"
+    }
+  ],
+  "outcomes": {
+    "success": "button action confirmed",
+    "failure": "press or retreat may be partial"
+  },
+  "verifier": "fresh button event and thermal.active for start",
+  "not_guaranteed": [
+    "food reached a requested temperature"
+  ],
+  "routes": {
+    "auto": {
+      "policy_id": "policy_033",
+      "legacy_dispatcher": null
+    },
+    "start": {
+      "policy_id": "policy_032",
+      "legacy_dispatcher": null
+    }
+  }
+}

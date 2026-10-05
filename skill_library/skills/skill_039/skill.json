@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_039",
+  "name": "Place an upright object near a support hint",
+  "description": "Orient and place a held object near a supplied xy hint, then verify both.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "The grounded target support."
+    },
+    "hint_xy": {
+      "type": "xy",
+      "required": true,
+      "description": "Desired [x_m,y_m] point on the support."
+    },
+    "max_offset_m": {
+      "type": "positive_number",
+      "required": true,
+      "description": "Maximum final xy distance from hint in metres."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "on",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_upright",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "within_hint_radius",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_047",
+  "scope": {
+    "unit": "One place an upright object near a support hint attempt on the grounded scene state.",
+    "includes": [
+      "Orient and place a held object near a supplied xy hint, then verify both."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_047",
+    "input_order": [
+      "object",
+      "support",
+      "hint_xy",
+      "max_offset_m"
+    ]
+  },
+  "expected_state_change": [
+    "on",
+    "right_hand_empty",
+    "object_upright",
+    "within_hint_radius"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [
+      "relation_015",
+      "relation_025"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

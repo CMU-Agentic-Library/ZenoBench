@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_006",
+  "name": "Place an object in a container",
+  "description": "Release a right-held object into an annotated container and verify the final geometry.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The held object to place."
+    },
+    "container": {
+      "type": "container_ref",
+      "required": true,
+      "description": "The target container."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "arg": "object",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "container_annotated",
+      "arg": "container",
+      "enforcement": "contract_noun_binding"
+    },
+    {
+      "predicate": "container_accessible",
+      "arg": "container",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "inside",
+      "args": [
+        "object",
+        "container"
+      ],
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_014",
+  "scope": {
+    "unit": "one planner-visible place-in-container attempt",
+    "includes": [
+      "move the right-held object to one annotated container",
+      "release and verify inside(object, container)"
+    ],
+    "excludes": [
+      "placing on a bare support surface",
+      "choosing another container when this one is missing",
+      "checking the entire task goal"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_014",
+    "input_order": [
+      "object",
+      "container"
+    ]
+  },
+  "expected_state_change": [
+    "inside",
+    "right_hand_empty"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_032",
+      "relation_038"
+    ],
+    "incoming": [
+      "relation_012",
+      "relation_018"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

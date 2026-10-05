@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_001",
+  "legacy_id": "empty_navigate",
+  "name": "Empty Navigate",
+  "description": "空手移动到底盘目标位姿",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "navigation",
+    "effect_summary": "base_at(pose)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "pose",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "base_at(pose)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_001",
+    "legacy_attribute": "empty_navigate",
+    "class": "EmptyHandNavigatePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_009"
+  ],
+  "legacy_family_contracts": [
+    "contract_001"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim tidy_toys: empty_goto reached (4.492,-2.146,30°), runs/verify_callable_toy_chain, 2026-10-01"
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_052",
+  "legacy_id": "pick_while_moving",
+  "name": "Pick While Moving",
+  "description": "底盘未停下时完成接触、闭爪和抬起",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "mobile_manipulation",
+    "effect_summary": "held(object) while base_moves",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "base_path",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "speed",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.02
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held(object) while base_moves",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_052",
+    "legacy_attribute": "pick_while_moving",
+    "class": "PickWhileMovingPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_026"
+  ],
+  "legacy_family_contracts": [
+    "contract_002"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim tidy_toys: toy_block grasped while base traveled 0.072 m; closure tick 1138, lift tick 1255, base motion ended tick 1403; object lifted 0.065 m, 2026-10-01"
+}

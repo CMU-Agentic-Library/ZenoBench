@@ -74,6 +74,7 @@ def main():
     app = launch(not args.no_video)
     import numpy as np
     from zeno_skills.policies import PolicySuite
+    from zeno_skills.interface_ids import resolve_policy_id
     from zeno_skills.rig import SkillFailure
     from zeno_skills.runtime import make_rig
     from zeno_skills.tasks import load_places, resolve_place
@@ -84,7 +85,8 @@ def main():
     rig = None
     try:
         handle_objects = {raw.split()[1] for raw in args.plan
-                          if raw.split()[0] == "pick_cup_handle" and len(raw.split()) > 1}
+                          if resolve_policy_id(raw.split()[0]) == "pick_cup_handle"
+                          and len(raw.split()) > 1}
         rig = make_rig(app, args.scene, args.ann, video=not args.no_video,
                        res=args.res, stride=args.stride, handle_objects=handle_objects)
         task_path = (ROOT / args.scene).parent / "task.json"
@@ -100,6 +102,7 @@ def main():
         policies = PolicySuite(rig)
         for raw in args.plan:
             tok = raw.split()
+            tok[0] = resolve_policy_id(tok[0])
             t0 = time.time()
             row = {"step": raw}
             report["steps"].append(row)

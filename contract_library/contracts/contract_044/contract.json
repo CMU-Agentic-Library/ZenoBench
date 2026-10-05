@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_044",
+  "skill_id": "skill_036",
+  "name": "Upright a held object",
+  "description": "Rotate a right-held object until its local up axis is within 20 degrees of vertical.",
+  "scope": {
+    "unit": "One upright a held object attempt on the grounded scene state.",
+    "includes": [
+      "Rotate a right-held object until its local up axis is within 20 degrees of vertical."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "object_upright",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "object_upright"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "custom": "upright"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_054",
+        "args": [
+          {
+            "arg": "object"
+          }
+        ],
+        "kwargs": {
+          "max_tilt_deg": 20.0
+        }
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_right_held": true
+    }
+  }
+}

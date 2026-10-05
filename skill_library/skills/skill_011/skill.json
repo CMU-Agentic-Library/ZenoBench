@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_011",
+  "name": "Tuck the right arm",
+  "description": "Move the right arm into the measured travel posture.",
+  "args": {},
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_within_joint_limits",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "collision_free_motion",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "posture_at_target",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_019",
+  "scope": {
+    "unit": "one arm tuck",
+    "includes": [
+      "Move the right arm into the measured travel posture."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_019",
+    "input_order": []
+  },
+  "expected_state_change": [
+    "posture_at_target"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

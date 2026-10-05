@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_002",
+  "legacy_id": "carry_navigate",
+  "name": "Carry Navigate",
+  "description": "右手持物移动并监测滑落",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "navigation",
+    "effect_summary": "base_at(pose) and held",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "pose",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "name",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "min_bottom_z",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "base_at(pose) and held",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_002",
+    "legacy_attribute": "carry_navigate",
+    "class": "CarryNavigatePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_010"
+  ],
+  "legacy_family_contracts": [
+    "contract_001"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: pick_and_carry toy_block, 2026-10-01"
+}

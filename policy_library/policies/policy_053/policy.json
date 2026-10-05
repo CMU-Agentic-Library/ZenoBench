@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_053",
+  "legacy_id": "place_while_moving",
+  "name": "Place While Moving",
+  "description": "底盘未停下时完成放置和松手",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "mobile_manipulation",
+    "effect_summary": "on(object,support) while base_moves",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "base_path",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "xy",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    },
+    {
+      "name": "speed",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.02
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "on(object,support) while base_moves",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_053",
+    "legacy_attribute": "place_while_moving",
+    "class": "PlaceWhileMovingPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_027"
+  ],
+  "legacy_family_contracts": [
+    "contract_003"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim collect_fruits: apple released onto dining table at tick 3257 while base moved 0.078 m; base ended tick 3472, support bottom error 0.0377 m, runs/verify_callable_place_while_moving_apple_v2, 2026-10-01"
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_048",
+  "legacy_id": "pick_from_cavity",
+  "name": "Pick From Cavity",
+  "description": "从狭窄腔体正面取物并后撤",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "grasp",
+    "effect_summary": "held(object) and outside_cavity",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "cavity",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": "kitchen_microwave"
+    },
+    {
+      "name": "max_candidates",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 12
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held(object) and outside_cavity",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_048",
+    "legacy_attribute": "pick_from_cavity",
+    "class": "PickFromCavityPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_012",
+    "contract_023"
+  ],
+  "legacy_family_contracts": [
+    "contract_002"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim dedicated microwave cup fixture: open, rim pick, cavity place, same-rig cavity retrieval; four contract postconditions passed, cup lift 0.0742 m and body 0.047 m outside mouth; runs/final_contract_microwave, 2026-10-02",
+  "caveat": "仅验证同一 rig 刚放入杯子的回取路线；预置碗仍无可达抓取记录。中间上方位 TCP 一次短暂偏差 0.182 m，最终接触位偏差 0.0075 m。"
+}

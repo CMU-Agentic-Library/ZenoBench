@@ -1,0 +1,308 @@
+{
+  "schema_version": 1,
+  "kind": "contract_catalog",
+  "legacy_family_contracts": [
+    {
+      "contract_id": "contract_001",
+      "name": "navigate",
+      "legacy_id": "navigate.v1",
+      "definition": "contracts/contract_001/contract.json"
+    },
+    {
+      "contract_id": "contract_002",
+      "name": "pick",
+      "legacy_id": "pick.v1",
+      "definition": "contracts/contract_002/contract.json"
+    },
+    {
+      "contract_id": "contract_003",
+      "name": "place",
+      "legacy_id": "place.v1",
+      "definition": "contracts/contract_003/contract.json"
+    },
+    {
+      "contract_id": "contract_004",
+      "name": "open",
+      "legacy_id": "open.v1",
+      "definition": "contracts/contract_004/contract.json"
+    },
+    {
+      "contract_id": "contract_005",
+      "name": "close",
+      "legacy_id": "close.v1",
+      "definition": "contracts/contract_005/contract.json"
+    },
+    {
+      "contract_id": "contract_006",
+      "name": "push",
+      "legacy_id": "push.v1",
+      "definition": "contracts/contract_006/contract.json"
+    },
+    {
+      "contract_id": "contract_007",
+      "name": "click",
+      "legacy_id": "click.v1",
+      "definition": "contracts/contract_007/contract.json"
+    },
+    {
+      "contract_id": "contract_008",
+      "name": "set_posture",
+      "legacy_id": "set_posture.v1",
+      "definition": "contracts/contract_008/contract.json"
+    }
+  ],
+  "contracts": [
+    {
+      "contract_id": "contract_009",
+      "skill_id": "skill_001",
+      "name": "Navigate empty-handed",
+      "definition": "contracts/contract_009/contract.json"
+    },
+    {
+      "contract_id": "contract_010",
+      "skill_id": "skill_002",
+      "name": "Navigate while carrying",
+      "definition": "contracts/contract_010/contract.json"
+    },
+    {
+      "contract_id": "contract_011",
+      "skill_id": "skill_003",
+      "name": "Open an articulated door or drawer",
+      "definition": "contracts/contract_011/contract.json"
+    },
+    {
+      "contract_id": "contract_012",
+      "skill_id": "skill_004",
+      "name": "Pick an object",
+      "definition": "contracts/contract_012/contract.json"
+    },
+    {
+      "contract_id": "contract_013",
+      "skill_id": "skill_005",
+      "name": "Place an object on a support",
+      "definition": "contracts/contract_013/contract.json"
+    },
+    {
+      "contract_id": "contract_014",
+      "skill_id": "skill_006",
+      "name": "Place an object in a container",
+      "definition": "contracts/contract_014/contract.json"
+    },
+    {
+      "contract_id": "contract_015",
+      "skill_id": "skill_007",
+      "name": "Close an articulated door or drawer",
+      "definition": "contracts/contract_015/contract.json"
+    },
+    {
+      "contract_id": "contract_016",
+      "skill_id": "skill_008",
+      "name": "Push an object along a support",
+      "definition": "contracts/contract_016/contract.json"
+    },
+    {
+      "contract_id": "contract_017",
+      "skill_id": "skill_009",
+      "name": "Press the appliance door button",
+      "definition": "contracts/contract_017/contract.json"
+    },
+    {
+      "contract_id": "contract_018",
+      "skill_id": "skill_010",
+      "name": "Start microwave heating",
+      "definition": "contracts/contract_018/contract.json"
+    },
+    {
+      "contract_id": "contract_019",
+      "skill_id": "skill_011",
+      "name": "Tuck the right arm",
+      "definition": "contracts/contract_019/contract.json"
+    },
+    {
+      "contract_id": "contract_020",
+      "skill_id": "skill_012",
+      "name": "Set torso height",
+      "definition": "contracts/contract_020/contract.json"
+    },
+    {
+      "contract_id": "contract_021",
+      "skill_id": "skill_013",
+      "name": "Set waist pitch",
+      "definition": "contracts/contract_021/contract.json"
+    },
+    {
+      "contract_id": "contract_022",
+      "skill_id": "skill_014",
+      "name": "Place an object on the microwave cavity support",
+      "definition": "contracts/contract_022/contract.json"
+    },
+    {
+      "contract_id": "contract_023",
+      "skill_id": "skill_015",
+      "name": "Pick an object from a cavity",
+      "definition": "contracts/contract_023/contract.json"
+    },
+    {
+      "contract_id": "contract_024",
+      "skill_id": "skill_016",
+      "name": "Pick a flat object at an edge",
+      "definition": "contracts/contract_024/contract.json"
+    },
+    {
+      "contract_id": "contract_025",
+      "skill_id": "skill_017",
+      "name": "Pick a cup by its handle",
+      "definition": "contracts/contract_025/contract.json"
+    },
+    {
+      "contract_id": "contract_026",
+      "skill_id": "skill_018",
+      "name": "Pick while the base moves",
+      "definition": "contracts/contract_026/contract.json"
+    },
+    {
+      "contract_id": "contract_027",
+      "skill_id": "skill_019",
+      "name": "Place on a support while the base moves",
+      "definition": "contracts/contract_027/contract.json"
+    },
+    {
+      "contract_id": "contract_028",
+      "skill_id": "skill_020",
+      "name": "Pick a flat object from a floor corner",
+      "definition": "contracts/contract_028/contract.json"
+    },
+    {
+      "contract_id": "contract_029",
+      "skill_id": "skill_021",
+      "name": "Carry a large object with both hands",
+      "definition": "contracts/contract_029/contract.json"
+    },
+    {
+      "contract_id": "contract_030",
+      "skill_id": "skill_022",
+      "name": "Open a door while the left hand holds an object",
+      "definition": "contracts/contract_030/contract.json"
+    },
+    {
+      "contract_id": "contract_031",
+      "skill_id": "skill_023",
+      "name": "Open powered microwave door",
+      "definition": "contracts/contract_031/contract.json"
+    },
+    {
+      "contract_id": "contract_032",
+      "skill_id": "skill_024",
+      "name": "Close powered microwave door",
+      "definition": "contracts/contract_032/contract.json"
+    },
+    {
+      "contract_id": "contract_033",
+      "skill_id": "skill_025",
+      "name": "Open a manual handle",
+      "definition": "contracts/contract_033/contract.json"
+    },
+    {
+      "contract_id": "contract_034",
+      "skill_id": "skill_026",
+      "name": "Close a manual handle",
+      "definition": "contracts/contract_034/contract.json"
+    },
+    {
+      "contract_id": "contract_035",
+      "skill_id": "skill_027",
+      "name": "Pick by top pinch",
+      "definition": "contracts/contract_035/contract.json"
+    },
+    {
+      "contract_id": "contract_036",
+      "skill_id": "skill_028",
+      "name": "Pick by round rim",
+      "definition": "contracts/contract_036/contract.json"
+    },
+    {
+      "contract_id": "contract_037",
+      "skill_id": "skill_029",
+      "name": "Pick by rectangular rim",
+      "definition": "contracts/contract_037/contract.json"
+    },
+    {
+      "contract_id": "contract_038",
+      "skill_id": "skill_030",
+      "name": "Place an edge-held flat object",
+      "definition": "contracts/contract_038/contract.json"
+    },
+    {
+      "contract_id": "contract_039",
+      "skill_id": "skill_031",
+      "name": "Lower torso for floor reach",
+      "definition": "contracts/contract_039/contract.json"
+    },
+    {
+      "contract_id": "contract_040",
+      "skill_id": "skill_032",
+      "name": "Raise torso for work surface",
+      "definition": "contracts/contract_040/contract.json"
+    },
+    {
+      "contract_id": "contract_041",
+      "skill_id": "skill_033",
+      "name": "Lean waist forward",
+      "definition": "contracts/contract_041/contract.json"
+    },
+    {
+      "contract_id": "contract_042",
+      "skill_id": "skill_034",
+      "name": "Straighten waist",
+      "definition": "contracts/contract_042/contract.json"
+    },
+    {
+      "contract_id": "contract_043",
+      "skill_id": "skill_035",
+      "name": "Expose a flat object edge",
+      "definition": "contracts/contract_043/contract.json"
+    },
+    {
+      "contract_id": "contract_044",
+      "skill_id": "skill_036",
+      "name": "Upright a held object",
+      "definition": "contracts/contract_044/contract.json"
+    },
+    {
+      "contract_id": "contract_045",
+      "skill_id": "skill_037",
+      "name": "Place an object upright on a support",
+      "definition": "contracts/contract_045/contract.json"
+    },
+    {
+      "contract_id": "contract_046",
+      "skill_id": "skill_038",
+      "name": "Place an object near a support hint",
+      "definition": "contracts/contract_046/contract.json"
+    },
+    {
+      "contract_id": "contract_047",
+      "skill_id": "skill_039",
+      "name": "Place an upright object near a support hint",
+      "definition": "contracts/contract_047/contract.json"
+    },
+    {
+      "contract_id": "contract_048",
+      "skill_id": "skill_040",
+      "name": "Wait for food to reach target temperature",
+      "definition": "contracts/contract_048/contract.json"
+    },
+    {
+      "contract_id": "contract_049",
+      "skill_id": "skill_041",
+      "name": "Raise carried object for clearance",
+      "definition": "contracts/contract_049/contract.json"
+    },
+    {
+      "contract_id": "contract_050",
+      "skill_id": "skill_042",
+      "name": "Back away while carrying",
+      "definition": "contracts/contract_050/contract.json"
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_048",
+  "skill_id": "skill_040",
+  "name": "Wait for food to reach target temperature",
+  "description": "Advance the live thermal simulation until the named food reaches its target temperature.",
+  "scope": {
+    "unit": "One wait for food to reach target temperature attempt on the grounded scene state.",
+    "includes": [
+      "Advance the live thermal simulation until the named food reaches its target temperature."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    },
+    "min_temp_c": {
+      "type": "positive_number",
+      "required": true,
+      "description": "Required target temperature in Celsius."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "thermal_model_configured",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "heating_active_or_already_hot",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "temperature_at_least",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "temperature_at_least"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "custom": "temperature"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_064",
+        "args": [
+          {
+            "arg": "object"
+          },
+          {
+            "arg": "min_temp_c"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "min_temp_c"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true
+    }
+  }
+}

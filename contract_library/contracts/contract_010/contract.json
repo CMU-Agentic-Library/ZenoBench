@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_010",
+  "skill_id": "skill_002",
+  "name": "Navigate while carrying",
+  "description": "Move the base while preserving the current right-hand grasp.",
+  "scope": {
+    "unit": "one loaded base move",
+    "includes": [
+      "Move the base while preserving the current right-hand grasp."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The object currently held in the right hand."
+    },
+    "pose": {
+      "type": "pose2d",
+      "required": true,
+      "description": "pose"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "target_navigable",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "carried_object_matches_state",
+      "enforcement": "not_enforced"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_at",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "grasp_preserved",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "base_at",
+    "grasp_preserved"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_001",
+    "route": "carry",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop",
+    "family_arg_order": [
+      "pose"
+    ]
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_002",
+        "args": [
+          {
+            "arg": "pose"
+          }
+        ],
+        "kwargs": {
+          "name": {
+            "arg": "object"
+          }
+        }
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "pose"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_right_held": true
+    }
+  }
+}

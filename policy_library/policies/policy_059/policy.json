@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_059",
+  "legacy_id": "handover_right_to_left",
+  "name": "Handover Right To Left",
+  "description": "把右手物品交给左手",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "bimanual",
+    "effect_summary": "held_by_left_hand",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held_by_left_hand",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_059",
+    "legacy_attribute": "handover_right_to_left",
+    "class": "HandoverRightToLeftPolicy"
+  },
+  "availability": "callable",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_002"
+  ],
+  "caveat": "toy_block 无分离的第二抓点；breakfast_bowl 右手抓取成功，但 15 个独立左手预抓候选即使忽略碰撞也超出关节可达性（runs/repair_handover_bowl_v3）；反向夹爪姿态的 30 个候选仍不可达（v5）。"
+}

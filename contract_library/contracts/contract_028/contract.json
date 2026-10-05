@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_028",
+  "skill_id": "skill_020",
+  "name": "Pick a flat object from a floor corner",
+  "description": "Attempt one floor-corner grasp and verify right-hand lift.",
+  "scope": {
+    "unit": "one floor-corner pick",
+    "includes": [
+      "Attempt one floor-corner grasp and verify right-hand lift."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "object_reachable",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_by_right_hand",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_lifted",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "held_by_right_hand",
+    "object_lifted"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_002",
+    "route": "floor_corner",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_014",
+        "args": [
+          {
+            "arg": "object"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object"
+  ],
+  "argument_transforms": {},
+  "availability": "experimental_callable",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_grasp_type": "edge_pinch_after_push"
+    }
+  }
+}

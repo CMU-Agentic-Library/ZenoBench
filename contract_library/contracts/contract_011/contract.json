@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_011",
+  "skill_id": "skill_003",
+  "name": "Open an articulated door or drawer",
+  "description": "Open one annotated articulated target and verify its joint position.",
+  "scope": {
+    "unit": "one articulated opening",
+    "includes": [
+      "Open one annotated articulated target and verify its joint position."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "articulated": {
+      "type": "articulated_ref",
+      "required": true,
+      "description": "articulated"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "articulated_annotated",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "opening_route_feasible",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_open_enough",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "joint_open_enough"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_004",
+    "route": "auto",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "choice",
+    "selection": "first_matching_before_execution",
+    "on_no_match": "raise_without_moving",
+    "paths": [
+      {
+        "path_id": "powered_microwave",
+        "when": [
+          {
+            "noun": "articulated",
+            "field": "powered_microwave",
+            "equals": true
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_024",
+            "args": [
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "manual_drawer",
+        "when": [
+          {
+            "noun": "articulated",
+            "field": "type",
+            "equals": "prismatic"
+          },
+          {
+            "noun": "articulated",
+            "field": "has_handle",
+            "equals": true
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_050",
+            "args": [
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "manual_hinged_door",
+        "when": [
+          {
+            "noun": "articulated",
+            "field": "type",
+            "equals": "revolute"
+          },
+          {
+            "noun": "articulated",
+            "field": "has_handle",
+            "equals": true
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_049",
+            "args": [
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "articulated"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "articulated": {
+      "argument": "articulated",
+      "kind": "articulated",
+      "source": "rig.ann",
+      "required": true
+    }
+  }
+}

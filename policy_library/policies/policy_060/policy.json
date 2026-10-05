@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_060",
+  "legacy_id": "open_door_while_left_holds",
+  "name": "Open Door While Left Holds",
+  "description": "左手持物同时用右手开门",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "bimanual",
+    "effect_summary": "left_holds(object) and door_open",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "object_name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "door_name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "left_holds(object) and door_open",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_060",
+    "legacy_attribute": "open_door_while_left_holds",
+    "class": "OpenDoorWhileLeftHoldsPolicy"
+  },
+  "availability": "callable",
+  "direct_contracts": [
+    "contract_030"
+  ],
+  "legacy_family_contracts": [
+    "contract_004"
+  ],
+  "supporting_family_contracts": [],
+  "caveat": "依赖稳定左手持物；handover 尚未通过，未建立可验证的左手持物开门前置状态。"
+}

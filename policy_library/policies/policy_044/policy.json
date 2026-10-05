@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_044",
+  "legacy_id": "top_drag",
+  "name": "Top Drag",
+  "description": "压住物体顶部沿支撑面拖动",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "contact",
+    "effect_summary": "object_displaced",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "direction",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "distance",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "enough",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "object_displaced",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_044",
+    "legacy_attribute": "top_drag",
+    "class": "TopDragPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [
+    "contract_006"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01"
+}

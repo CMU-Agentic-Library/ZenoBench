@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_024",
+  "legacy_id": "open_powered",
+  "name": "Open Powered",
+  "description": "按钮释放并打开动力微波炉门",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "articulation",
+    "effect_summary": "joint_at(open_q)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "joint_at(open_q)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_024",
+    "legacy_attribute": "open_powered",
+    "class": "PoweredDoorOpenPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_011",
+    "contract_031"
+  ],
+  "legacy_family_contracts": [
+    "contract_004"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim heat_breakfast_combo: powered microwave opened to -1.400 rad, runs/verify_callable_microwave, 2026-10-01"
+}

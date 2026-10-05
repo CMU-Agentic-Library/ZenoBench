@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_026",
+  "name": "Close a manual handle",
+  "description": "Close one handle-operated door or drawer.",
+  "args": {
+    "articulated": {
+      "type": "articulated_ref",
+      "required": true,
+      "description": "The uniquely grounded door or drawer."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_closed",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_034",
+  "scope": {
+    "unit": "One close a manual handle attempt on the grounded scene state.",
+    "includes": [
+      "Close one handle-operated door or drawer."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_034",
+    "input_order": [
+      "articulated"
+    ]
+  },
+  "expected_state_change": [
+    "joint_closed"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [
+      "relation_010",
+      "relation_035"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

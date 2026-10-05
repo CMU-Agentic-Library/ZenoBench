@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_019",
+  "skill_id": "skill_011",
+  "name": "Tuck the right arm",
+  "description": "Move the right arm into the measured travel posture.",
+  "scope": {
+    "unit": "one arm tuck",
+    "includes": [
+      "Move the right arm into the measured travel posture."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {},
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_within_joint_limits",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "collision_free_motion",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "posture_at_target",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "posture_at_target"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_008",
+    "route": "tuck",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_003",
+        "args": []
+      }
+    ]
+  },
+  "legacy_call_args": [],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {}
+}

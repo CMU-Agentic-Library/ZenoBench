@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "kind": "skill_catalog",
+  "skills": [
+    {
+      "skill_id": "skill_001",
+      "definition": "skills/skill_001/skill.json"
+    },
+    {
+      "skill_id": "skill_002",
+      "definition": "skills/skill_002/skill.json"
+    },
+    {
+      "skill_id": "skill_003",
+      "definition": "skills/skill_003/skill.json"
+    },
+    {
+      "skill_id": "skill_004",
+      "definition": "skills/skill_004/skill.json"
+    },
+    {
+      "skill_id": "skill_005",
+      "definition": "skills/skill_005/skill.json"
+    },
+    {
+      "skill_id": "skill_006",
+      "definition": "skills/skill_006/skill.json"
+    },
+    {
+      "skill_id": "skill_007",
+      "definition": "skills/skill_007/skill.json"
+    },
+    {
+      "skill_id": "skill_008",
+      "definition": "skills/skill_008/skill.json"
+    },
+    {
+      "skill_id": "skill_009",
+      "definition": "skills/skill_009/skill.json"
+    },
+    {
+      "skill_id": "skill_010",
+      "definition": "skills/skill_010/skill.json"
+    },
+    {
+      "skill_id": "skill_011",
+      "definition": "skills/skill_011/skill.json"
+    },
+    {
+      "skill_id": "skill_012",
+      "definition": "skills/skill_012/skill.json"
+    },
+    {
+      "skill_id": "skill_013",
+      "definition": "skills/skill_013/skill.json"
+    },
+    {
+      "skill_id": "skill_014",
+      "definition": "skills/skill_014/skill.json"
+    },
+    {
+      "skill_id": "skill_015",
+      "definition": "skills/skill_015/skill.json"
+    },
+    {
+      "skill_id": "skill_016",
+      "definition": "skills/skill_016/skill.json"
+    },
+    {
+      "skill_id": "skill_017",
+      "definition": "skills/skill_017/skill.json"
+    },
+    {
+      "skill_id": "skill_018",
+      "definition": "skills/skill_018/skill.json"
+    },
+    {
+      "skill_id": "skill_019",
+      "definition": "skills/skill_019/skill.json"
+    },
+    {
+      "skill_id": "skill_020",
+      "definition": "skills/skill_020/skill.json"
+    },
+    {
+      "skill_id": "skill_021",
+      "definition": "skills/skill_021/skill.json"
+    },
+    {
+      "skill_id": "skill_022",
+      "definition": "skills/skill_022/skill.json"
+    },
+    {
+      "skill_id": "skill_023",
+      "definition": "skills/skill_023/skill.json"
+    },
+    {
+      "skill_id": "skill_024",
+      "definition": "skills/skill_024/skill.json"
+    },
+    {
+      "skill_id": "skill_025",
+      "definition": "skills/skill_025/skill.json"
+    },
+    {
+      "skill_id": "skill_026",
+      "definition": "skills/skill_026/skill.json"
+    },
+    {
+      "skill_id": "skill_027",
+      "definition": "skills/skill_027/skill.json"
+    },
+    {
+      "skill_id": "skill_028",
+      "definition": "skills/skill_028/skill.json"
+    },
+    {
+      "skill_id": "skill_029",
+      "definition": "skills/skill_029/skill.json"
+    },
+    {
+      "skill_id": "skill_030",
+      "definition": "skills/skill_030/skill.json"
+    },
+    {
+      "skill_id": "skill_031",
+      "definition": "skills/skill_031/skill.json"
+    },
+    {
+      "skill_id": "skill_032",
+      "definition": "skills/skill_032/skill.json"
+    },
+    {
+      "skill_id": "skill_033",
+      "definition": "skills/skill_033/skill.json"
+    },
+    {
+      "skill_id": "skill_034",
+      "definition": "skills/skill_034/skill.json"
+    },
+    {
+      "skill_id": "skill_035",
+      "definition": "skills/skill_035/skill.json"
+    },
+    {
+      "skill_id": "skill_036",
+      "definition": "skills/skill_036/skill.json"
+    },
+    {
+      "skill_id": "skill_037",
+      "definition": "skills/skill_037/skill.json"
+    },
+    {
+      "skill_id": "skill_038",
+      "definition": "skills/skill_038/skill.json"
+    },
+    {
+      "skill_id": "skill_039",
+      "definition": "skills/skill_039/skill.json"
+    },
+    {
+      "skill_id": "skill_040",
+      "definition": "skills/skill_040/skill.json"
+    },
+    {
+      "skill_id": "skill_041",
+      "definition": "skills/skill_041/skill.json"
+    },
+    {
+      "skill_id": "skill_042",
+      "definition": "skills/skill_042/skill.json"
+    }
+  ]
+}

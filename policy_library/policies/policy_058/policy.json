@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_058",
+  "legacy_id": "bimanual_carry",
+  "name": "Bimanual Carry",
+  "description": "两只手共同稳定携带大物品",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "bimanual",
+    "effect_summary": "base_at(pose) and two_hand_hold",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "pose",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "base_at(pose) and two_hand_hold",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_058",
+    "legacy_attribute": "bimanual_carry",
+    "class": "BimanualCarryPolicy"
+  },
+  "availability": "callable",
+  "direct_contracts": [
+    "contract_029"
+  ],
+  "legacy_family_contracts": [
+    "contract_001"
+  ],
+  "supporting_family_contracts": [],
+  "caveat": "旧 book_red 双手短时抬起后左手在底盘移动时滑脱；当前没有稳定双手抓持前置状态（runs/bimanual_carry_new_policy）。"
+}

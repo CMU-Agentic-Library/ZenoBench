@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_031",
+  "name": "Lower torso for floor reach",
+  "description": "Lower the robot torso to its configured minimum before floor interaction.",
+  "args": {},
+  "requires": [
+    {
+      "predicate": "joint_path_clear",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "posture_at_target",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_039",
+  "scope": {
+    "unit": "One lower torso for floor reach attempt on the grounded scene state.",
+    "includes": [
+      "Lower the robot torso to its configured minimum before floor interaction."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_039",
+    "input_order": []
+  },
+  "expected_state_change": [
+    "posture_at_target"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_021"
+    ],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

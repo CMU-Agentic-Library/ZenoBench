@@ -1,0 +1,577 @@
+{
+  "schema_version": 1,
+  "kind": "skill_task_coverage_audit",
+  "meaning": "Every declared benchmark goal clause has an action path or terminal invariant check; physical success still depends on grounding, reachability and execution.",
+  "tasks": [
+    {
+      "task": "breakfast_setup",
+      "task_file": "tasks/breakfast_setup/task.json",
+      "goal_clause_count": 6,
+      "clauses": [
+        {
+          "goal_clause": {
+            "on": [
+              "plate|bowl"
+            ],
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+            "upright": true
+          },
+          "goal_type": "on_upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_037",
+            "skill_039"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry and post-release tilt",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "on": [
+              "cup|mug"
+            ],
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+            "upright": true
+          },
+          "goal_type": "on_upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_037",
+            "skill_039"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry and post-release tilt",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "on": [
+              "spoon"
+            ],
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+          },
+          "goal_type": "on",
+          "skill_ids": [
+            "skill_004",
+            "skill_005",
+            "skill_030",
+            "skill_038"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "near": [
+              "plate|bowl",
+              "cup|mug",
+              "spoon"
+            ],
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+            "max_dist": 0.5
+          },
+          "goal_type": "near",
+          "skill_ids": [
+            "skill_004",
+            "skill_038",
+            "skill_039"
+          ],
+          "terminal_check": "TaskEvaluator.near checks pairwise bottom-centre distances on the support",
+          "conditions": "Place each selected item within max_dist/2 of one shared hint; then run the pairwise task evaluator. Single-skill hint checks alone do not establish the group predicate."
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action."
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode."
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    },
+    {
+      "task": "collect_fruits",
+      "task_file": "tasks/collect_fruits/task.json",
+      "goal_clause_count": 4,
+      "clauses": [
+        {
+          "goal_clause": {
+            "inside": [
+              "all:fruit"
+            ],
+            "container": "fruit_basket|serving_tray",
+            "bind": "container"
+          },
+          "goal_type": "inside",
+          "skill_ids": [
+            "skill_004",
+            "skill_006",
+            "skill_029"
+          ],
+          "terminal_check": "TaskEvaluator.inside checks all selected items in one grounded container",
+          "conditions": "Select one present container alternative and repeat pick/place for each item; relocate the container first if the task also requires on(support)."
+        },
+        {
+          "goal_clause": {
+            "on": [
+              "$container"
+            ],
+            "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+            "upright": true
+          },
+          "goal_type": "on_upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_037",
+            "skill_039"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry and post-release tilt",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action."
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode."
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    },
+    {
+      "task": "desk_prep",
+      "task_file": "tasks/desk_prep/task.json",
+      "goal_clause_count": 4,
+      "clauses": [
+        {
+          "goal_clause": {
+            "on": [
+              "notebook",
+              "pen|pencil"
+            ],
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+          },
+          "goal_type": "on",
+          "skill_ids": [
+            "skill_004",
+            "skill_005",
+            "skill_030",
+            "skill_038"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "on": [
+              "mug|cup"
+            ],
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+            "upright": true
+          },
+          "goal_type": "on_upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_037",
+            "skill_039"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry and post-release tilt",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action."
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode."
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    },
+    {
+      "task": "heat_breakfast",
+      "task_file": "tasks/heat_breakfast/task.json",
+      "goal_clause_count": 4,
+      "clauses": [
+        {
+          "goal_clause": {
+            "heated": [
+              "oatmeal"
+            ],
+            "appliance": "kitchen_microwave",
+            "min_temp_c": 60.0
+          },
+          "goal_type": "heated",
+          "skill_ids": [
+            "skill_023",
+            "skill_014",
+            "skill_024",
+            "skill_010",
+            "skill_040"
+          ],
+          "terminal_check": "TaskEvaluator.heated reads measured temperatures_c",
+          "conditions": "If food is preloaded, omit open/load; if it is in a fridge, open/pick first. Start only after loading and closing; wait to min_temp_c."
+        },
+        {
+          "goal_clause": {
+            "on": [
+              "oatmeal"
+            ],
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+            "upright": true
+          },
+          "goal_type": "on_upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_037",
+            "skill_039"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry and post-release tilt",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action."
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode."
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    },
+    {
+      "task": "heat_breakfast_combo",
+      "task_file": "tasks/heat_breakfast_combo/task.json",
+      "goal_clause_count": 4,
+      "clauses": [
+        {
+          "goal_clause": {
+            "heated": [
+              "oatmeal"
+            ],
+            "appliance": "kitchen_microwave",
+            "min_temp_c": 60.0
+          },
+          "goal_type": "heated",
+          "skill_ids": [
+            "skill_023",
+            "skill_014",
+            "skill_024",
+            "skill_010",
+            "skill_040"
+          ],
+          "terminal_check": "TaskEvaluator.heated reads measured temperatures_c",
+          "conditions": "If food is preloaded, omit open/load; if it is in a fridge, open/pick first. Start only after loading and closing; wait to min_temp_c."
+        },
+        {
+          "goal_clause": {
+            "on": [
+              "milk"
+            ],
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+            "upright": true
+          },
+          "goal_type": "on_upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_037",
+            "skill_039"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry and post-release tilt",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action."
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode."
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    },
+    {
+      "task": "heat_breakfast_preloaded",
+      "task_file": "tasks/heat_breakfast_preloaded/task.json",
+      "goal_clause_count": 3,
+      "clauses": [
+        {
+          "goal_clause": {
+            "heated": [
+              "oatmeal"
+            ],
+            "appliance": "kitchen_microwave",
+            "min_temp_c": 60.0
+          },
+          "goal_type": "heated",
+          "skill_ids": [
+            "skill_023",
+            "skill_014",
+            "skill_024",
+            "skill_010",
+            "skill_040"
+          ],
+          "terminal_check": "TaskEvaluator.heated reads measured temperatures_c",
+          "conditions": "If food is preloaded, omit open/load; if it is in a fridge, open/pick first. Start only after loading and closing; wait to min_temp_c."
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action."
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode."
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    },
+    {
+      "task": "shelve_books",
+      "task_file": "tasks/shelve_books/task.json",
+      "goal_clause_count": 3,
+      "clauses": [
+        {
+          "goal_clause": {
+            "on": [
+              "all:book"
+            ],
+            "support": [
+              "SimpleBookcaseFactory_2318999_spawn_asset_8416993",
+              "SimpleBookcaseFactory_6105320_spawn_asset_9196243"
+            ]
+          },
+          "goal_type": "on",
+          "skill_ids": [
+            "skill_004",
+            "skill_005",
+            "skill_030",
+            "skill_038"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it."
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action."
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode."
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    },
+    {
+      "task": "tidy_toys",
+      "task_file": "tasks/tidy_toys/task.json",
+      "goal_clause_count": 4,
+      "clauses": [
+        {
+          "goal_clause": {
+            "inside": [
+              "all:toy"
+            ],
+            "container": "toy_box|storage_basket",
+            "bind": "container"
+          },
+          "goal_type": "inside",
+          "skill_ids": [
+            "skill_004",
+            "skill_006",
+            "skill_029"
+          ],
+          "terminal_check": "TaskEvaluator.inside checks all selected items in one grounded container",
+          "conditions": "Select one present container alternative and repeat pick/place for each item; relocate the container first if the task also requires on(support)."
+        },
+        {
+          "goal_clause": {
+            "upright": [
+              "$container"
+            ]
+          },
+          "goal_type": "upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_036",
+            "skill_037"
+          ],
+          "terminal_check": "TaskEvaluator.upright reads measured object quaternion",
+          "conditions": "For a disturbed container, grasp it before orienting; floor placement recovery is not independently verified. Already-upright objects need no action."
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action."
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode."
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    }
+  ]
+}

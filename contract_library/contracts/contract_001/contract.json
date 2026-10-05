@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "contract",
+  "contract_id": "contract_001",
+  "legacy_id": "navigate.v1",
+  "description": "Move the base to a target pose, preserving any grasp.",
+  "scope": "One base move to a target pose, preserving any current grasp.",
+  "inputs": {
+    "pose": {
+      "type": "pose2d",
+      "required": true
+    },
+    "carried_object": {
+      "type": "object_id",
+      "required": false
+    },
+    "min_bottom_z_m": {
+      "type": "number",
+      "required": false
+    }
+  },
+  "requires": [
+    {
+      "predicate": "target_navigable",
+      "check": "policy_attempt"
+    },
+    {
+      "predicate": "carried_object_matches_state",
+      "check": "not_enforced"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_at",
+      "args": [
+        "pose"
+      ],
+      "check": "runner"
+    },
+    {
+      "predicate": "grasp_preserved",
+      "check": "runner"
+    }
+  ],
+  "outcomes": {
+    "success": "arrived",
+    "failure": "may stop partway or drop object"
+  },
+  "verifier": "base_pose tolerance; check_held or two-hand hold when carrying",
+  "route_notes": {
+    "two_hand_carry": "Callable route without a verified stable two-hand precondition."
+  },
+  "routes": {
+    "auto": {
+      "policy_id": null,
+      "legacy_dispatcher": "NavigatePolicy"
+    },
+    "empty": {
+      "policy_id": "policy_001",
+      "legacy_dispatcher": null
+    },
+    "carry": {
+      "policy_id": "policy_002",
+      "legacy_dispatcher": null
+    },
+    "two_hand_carry": {
+      "policy_id": "policy_058",
+      "legacy_dispatcher": null
+    }
+  }
+}

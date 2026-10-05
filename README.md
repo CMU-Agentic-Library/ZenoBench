@@ -24,9 +24,9 @@ temperature uses a separate task-level model. Success is measured from simulator
 
 ## Policy 与 contract
 
-[GT policy 梳理](docs/GT_POLICY.md) 说明动作边界；[能力目录](docs/POLICY_CATALOG.md) 与[物理验证记录](docs/POLICY_VERIFICATION.md) 列出 60 项入口中已通过代表性场景的 54 项和仍待验证的 6 项。[Contract 提案](docs/CONTRACT_PROPOSAL.md) 记录八类接口、具体路线及验证要求。
+[GT policy 梳理](docs/GT_POLICY.md) 说明动作边界；[能力目录](docs/POLICY_CATALOG.md) 与[物理验证记录](docs/POLICY_VERIFICATION.md) 列出 64 项公开入口及各自的验证状态。[Contract 提案](docs/CONTRACT_PROPOSAL.md) 记录八类接口、具体路线及验证要求。
 
-[关系图 PNG](docs/contract_layers_preview.png) 与 [SVG](docs/contract_layers.svg) 展示第三层 8 个 Contract 和第四层 60 个底层 Policy 的直接绑定与支撑引用。`ContractRunner` 能执行指定路线并检查共用实测结果；自动技能子图规划和失败后重规划留给上层扩展。
+[关系图 PNG](docs/contract_layers_preview.png) 与 [SVG](docs/contract_layers.svg) 展示八个兼容 family Contract 和 63 个底层 Policy 的直接绑定与支撑引用。新的 [SkillNode Library](skill_library/README.md) 提供 42 个 SkillNode 与 42 个一对一 Contract；`ContractRunner` 执行 Contract 内部 policy 顺序并检查实测结果。自动技能子图规划和失败后重规划留给上层扩展。
 
 ---
 
@@ -261,6 +261,15 @@ $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
 # steps: open <art> | close <art> | pick <obj> | place <obj> in:<container>
 #        place <obj> <surface or alias> [x y] | push <obj> <dx> <dy> | goto <x> <y> <yaw>
 ```
+
+## Skill / Contract / Policy public IDs
+
+The [Skill Library](skill_library/README.md) provides 22 task-level Skill records.
+The [Contract Library](contract_library/README.md) provides 8 measured execution
+interfaces, and the [Policy Library](policy_library/README.md) records all 60
+low-level controllers. Public IDs use skill_XXX, contract_XXX, and policy_XXX;
+[the mapping](docs/INTERFACE_IDS.md) lists every legacy alias. Existing scripts
+and Python policy class names remain callable.
 
 ## Atomic GT policy class API
 

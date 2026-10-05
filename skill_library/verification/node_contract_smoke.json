@@ -1,0 +1,1618 @@
+{
+  "schema_version": 1,
+  "kind": "node_contract_physical_verification",
+  "runs": [
+    {
+      "scene": "tasks/collect_fruits/scene.usd",
+      "source_report": "runs/node_contract_one_fruit/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_061"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_014",
+          "success": true,
+          "verified_predicates": [
+            "inside",
+            "right_hand_empty"
+          ],
+          "policy_steps": [
+            "policy_016"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_microwave_fixture/task/scene.usd",
+      "source_report": "runs/node_contract_microwave_place/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "open.v1",
+          "success": true,
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "pick.v1",
+          "success": true,
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_022",
+          "success": true,
+          "verified_predicates": [
+            "on",
+            "right_hand_empty"
+          ],
+          "policy_steps": [
+            "policy_018",
+            "policy_019",
+            "policy_020"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/heat_breakfast_preloaded/scene.usd",
+      "source_report": "runs/node_contract_heat_wait/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_018",
+          "success": true,
+          "verified_predicates": [
+            "button_pressed_this_call",
+            "heating_active"
+          ],
+          "policy_steps": [
+            "policy_027",
+            "policy_028",
+            "policy_029"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_048",
+          "success": true,
+          "verified_predicates": [
+            "temperature_at_least"
+          ],
+          "policy_steps": [
+            "policy_064"
+          ],
+          "temperature_c": 63.599999999999845,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/collect_fruits/scene.usd",
+      "source_report": "runs/node_contract_near_apple/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_061"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_046",
+          "success": true,
+          "verified_predicates": [
+            "on",
+            "right_hand_empty",
+            "within_hint_radius"
+          ],
+          "policy_steps": [
+            "policy_015"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": 0.020889516994517656
+        }
+      ]
+    },
+    {
+      "scene": "tasks/collect_fruits/scene.usd",
+      "source_report": "runs/node_contract_upright_near_apple_threshold20/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_061"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_047",
+          "success": true,
+          "verified_predicates": [
+            "on",
+            "right_hand_empty",
+            "object_upright",
+            "within_hint_radius"
+          ],
+          "policy_steps": [
+            "policy_054",
+            "policy_015"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": 17.135228688900124,
+          "hint_error_m": 0.020889516994517656
+        }
+      ]
+    },
+    {
+      "scene": "tasks/breakfast_setup/scene.usd",
+      "source_report": "runs/node_contract_upright_near/result.json",
+      "success": false,
+      "failure": "Dropped: carry: bowl slipped out of the hand while carrying it",
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_061"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_047",
+          "success": false,
+          "verified_predicates": [],
+          "policy_steps": [],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/collect_fruits/scene.usd",
+      "source_report": "runs/node_contract_upright_near_apple/result.json",
+      "success": false,
+      "failure": "SkillFailure: no IK for upright_clear",
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_061"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_047",
+          "success": false,
+          "verified_predicates": [],
+          "policy_steps": [],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/collect_fruits/scene.usd",
+      "source_report": "runs/noun_path_one_fruit/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "selected_policy_path": "top_pinch",
+          "bound_nouns": {
+            "object": "apple"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_014",
+          "success": true,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "apple",
+            "container": "fruit_basket"
+          },
+          "verified_predicates": [
+            "inside",
+            "right_hand_empty"
+          ],
+          "policy_steps": [
+            "policy_016"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_microwave_fixture/task/scene.usd",
+      "source_report": "runs/noun_path_microwave/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "open.v1",
+          "success": true,
+          "selected_policy_path": null,
+          "bound_nouns": {},
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "pick.v1",
+          "success": true,
+          "selected_policy_path": null,
+          "bound_nouns": {},
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_013",
+          "success": true,
+          "selected_policy_path": "microwave_support",
+          "bound_nouns": {
+            "object": "cup",
+            "support": "kitchen_microwave/inside_floor"
+          },
+          "verified_predicates": [
+            "on",
+            "right_hand_empty"
+          ],
+          "policy_steps": [
+            "policy_018",
+            "policy_019",
+            "policy_020"
+          ],
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "sim/zeno_house.usd",
+      "source_report": "runs/check_42_posture/result.json",
+      "success": false,
+      "failure": "ValueError: torso_lift_joint target 0.150 outside [-0.540, -0.000]",
+      "contracts": [
+        {
+          "contract_id": "contract_019",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_003"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_039",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_005"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_040",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_006"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_020",
+          "success": false,
+          "error": "torso_lift_joint target 0.150 outside [-0.540, -0.000]",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_004",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "sim/zeno_house.usd",
+      "source_report": "runs/check_42_posture_corrected/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_019",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_003"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_039",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_005"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_040",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_006"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_020",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_004"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_041",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_008"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_042",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_009"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_021",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "posture_at_target"
+          ],
+          "policy_steps": [
+            "policy_007"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/tidy_toys/scene.usd",
+      "source_report": "runs/check_42_toy_carry/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_009",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "base_at"
+          ],
+          "policy_steps": [
+            "policy_001"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_035",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_049",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [
+            "held_object_above_height"
+          ],
+          "policy_steps": [
+            "policy_034"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_050",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [
+            "base_backed_off",
+            "grasp_preserved"
+          ],
+          "policy_steps": [
+            "policy_035"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_010",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [
+            "base_at",
+            "grasp_preserved"
+          ],
+          "policy_steps": [
+            "policy_002"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_044",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [
+            "object_upright"
+          ],
+          "policy_steps": [
+            "policy_054"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": 1.5581944734954778,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "sim/zeno_house.usd",
+      "source_report": "runs/check_42_manual_doors/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_033",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "articulated": "SingleCabinetFactory_7330242_spawn_asset_8918727"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_022"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_034",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "articulated": "SingleCabinetFactory_7330242_spawn_asset_8918727"
+          },
+          "verified_predicates": [
+            "joint_closed"
+          ],
+          "policy_steps": [
+            "policy_023"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_011",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "manual_drawer",
+          "bound_nouns": {
+            "articulated": "KitchenCabinetFactory_9483010_spawn_asset_2619144"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_050"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_015",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "manual_handle",
+          "bound_nouns": {
+            "articulated": "KitchenCabinetFactory_9483010_spawn_asset_2619144"
+          },
+          "verified_predicates": [
+            "joint_closed"
+          ],
+          "policy_steps": [
+            "policy_023"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_microwave_fixture/task/scene.usd",
+      "source_report": "runs/check_42_powered_doors/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_031",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "appliance": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_024"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_032",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "appliance": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "joint_closed"
+          ],
+          "policy_steps": [
+            "policy_025"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_017",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "appliance": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "button_pressed_this_call"
+          ],
+          "policy_steps": [
+            "policy_027",
+            "policy_028",
+            "policy_029"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_015",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "powered_microwave",
+          "bound_nouns": {
+            "articulated": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "joint_closed"
+          ],
+          "policy_steps": [
+            "policy_025"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_011",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "powered_microwave",
+          "bound_nouns": {
+            "articulated": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_024"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/shelve_books/scene.usd",
+      "source_report": "runs/check_42_flat_edge/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_043",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_red"
+          },
+          "verified_predicates": [
+            "edge_overhang_ready"
+          ],
+          "policy_steps": [
+            "policy_045"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_024",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_red"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_013"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_038",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_red",
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+          },
+          "verified_predicates": [
+            "on",
+            "right_hand_empty"
+          ],
+          "policy_steps": [
+            "policy_017"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_microwave_fixture/task/scene.usd",
+      "source_report": "runs/check_42_cavity_round/result.json",
+      "success": false,
+      "failure": "SkillFailure: pick from cavity cup: contact missed by 0.229 m",
+      "contracts": [
+        {
+          "contract_id": "contract_031",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "appliance": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_024"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_036",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "cup"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_011"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_022",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "cup",
+            "support": "kitchen_microwave/inside_floor"
+          },
+          "verified_predicates": [
+            "on",
+            "right_hand_empty"
+          ],
+          "policy_steps": [
+            "policy_018",
+            "policy_019",
+            "policy_020"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_023",
+          "success": false,
+          "error": "pick from cavity cup: contact missed by 0.229 m",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "cup",
+            "cavity": "kitchen_microwave"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_048",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/shelve_books/scene.usd",
+      "source_report": "runs/check_42_push/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_016",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_red",
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+          },
+          "verified_predicates": [
+            "displacement_along"
+          ],
+          "policy_steps": [
+            "policy_026"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/tidy_toys/scene.usd",
+      "source_report": "runs/check_42_moving_pick/result.json",
+      "success": false,
+      "failure": "SkillFailure: pick while moving: no pregrasp from current base pose",
+      "contracts": [
+        {
+          "contract_id": "contract_026",
+          "success": false,
+          "error": "pick while moving: no pregrasp from current base pose",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_052",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/tidy_toys/scene.usd",
+      "source_report": "runs/check_42_moving_pick_local/result.json",
+      "success": false,
+      "failure": "SkillFailure: pick while moving: no pregrasp from current base pose",
+      "contracts": [
+        {
+          "contract_id": "contract_026",
+          "success": false,
+          "error": "pick while moving: no pregrasp from current base pose",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_052",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/collect_fruits/scene.usd",
+      "source_report": "runs/check_42_moving_place/result.json",
+      "success": true,
+      "failure": null,
+      "contracts": [
+        {
+          "contract_id": "contract_035",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "apple"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_027",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "apple",
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+          },
+          "verified_predicates": [
+            "on",
+            "right_hand_empty"
+          ],
+          "policy_steps": [
+            "policy_053"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/collect_fruits/scene.usd",
+      "source_report": "runs/check_42_upright_place/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_035",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "apple"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_045",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "apple",
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+          },
+          "verified_predicates": [
+            "on",
+            "right_hand_empty",
+            "object_upright"
+          ],
+          "policy_steps": [
+            "policy_054",
+            "policy_015"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": 17.134743361921338,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/collect_fruits/scene.usd",
+      "source_report": "runs/check_42_rect_pick/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_037",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "serving_tray"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_012"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/breakfast_setup/scene.usd",
+      "source_report": "runs/check_42_handle_pick/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_025",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "mug"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_055"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_floor_book_fixture/task/scene.usd",
+      "source_report": "runs/check_42_floor_corner/result.json",
+      "success": false,
+      "failure": "SkillFailure: corner pinch book_green: not held (lift 0.000 m)",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_028",
+          "success": false,
+          "error": "corner pinch book_green: not held (lift 0.000 m)",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_green"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_014",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/tidy_toys/scene.usd",
+      "source_report": "runs/check_42_moving_pick_near/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": [
+        4.492,
+        -2.146,
+        30.0
+      ],
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_026",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_052"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_floor_book_fixture/task/scene.usd",
+      "source_report": "runs/check_42_floor_corner_retry/result.json",
+      "success": false,
+      "failure": "SkillFailure: corner pinch book_green: contact pose missed by 0.068 m",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_028",
+          "success": false,
+          "error": "corner pinch book_green: contact pose missed by 0.068 m",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_green"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_014",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/shelve_books/scene.usd",
+      "source_report": "runs/check_42_bimanual_carry/result.json",
+      "success": false,
+      "failure": "SkillFailure: bimanual_flat_pick: two-hand lift/contact check failed",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [
+        "contract_029"
+      ],
+      "contracts": []
+    },
+    {
+      "scene": "tasks/tidy_toys/scene.usd",
+      "source_report": "runs/check_42_left_hold_door/result.json",
+      "success": false,
+      "failure": "SkillFailure: handover: no independent left contact on toy_block",
+      "start_base": null,
+      "preparation_policies": [
+        "policy_034"
+      ],
+      "unreached_contracts": [
+        "contract_030"
+      ],
+      "contracts": [
+        {
+          "contract_id": "contract_035",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_block"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_microwave_fixture/task/scene.usd",
+      "source_report": "runs/check_42_cavity_retry/result.json",
+      "success": false,
+      "failure": "SkillFailure: pick from cavity cup: contact missed by 0.229 m",
+      "start_base": null,
+      "preparation_policies": [
+        "policy_021"
+      ],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_031",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "appliance": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_024"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_036",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "cup"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_011"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_023",
+          "success": false,
+          "error": "pick from cavity cup: contact missed by 0.229 m",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "cup",
+            "cavity": "kitchen_microwave"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_048",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/tidy_toys/scene.usd",
+      "source_report": "runs/check_42_floor_corner_toycar/result.json",
+      "success": false,
+      "failure": "SkillFailure: corner pinch toy_car: not held (lift 0.000 m)",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_028",
+          "success": false,
+          "error": "corner pinch toy_car: not held (lift 0.000 m)",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "toy_car"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_014",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_microwave_fixture/task/scene.usd",
+      "source_report": "runs/check_42_cavity_replanned/result.json",
+      "success": false,
+      "failure": "SkillFailure: pick cup: no reachable grasp from any base pose",
+      "start_base": null,
+      "preparation_policies": [
+        "policy_021"
+      ],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_031",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "appliance": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_024"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_036",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "cup"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_011"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_023",
+          "success": false,
+          "error": "pick cup: no reachable grasp from any base pose",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "cup",
+            "cavity": "kitchen_microwave"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_048",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    }
+  ]
+}

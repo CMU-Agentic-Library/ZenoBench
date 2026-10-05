@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_018",
+  "skill_id": "skill_010",
+  "name": "Start microwave heating",
+  "description": "Press the start button and verify that heating became active.",
+  "scope": {
+    "unit": "one start-button press",
+    "includes": [
+      "Press the start button and verify that heating became active."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "appliance": {
+      "type": "appliance_ref",
+      "required": true,
+      "description": "appliance"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "button_reachable",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "start_conditions",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "button_pressed_this_call",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "heating_active",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "button_pressed_this_call",
+    "heating_active"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_007",
+    "route": "start",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_027",
+        "args": [
+          {
+            "arg": "appliance"
+          }
+        ],
+        "kwargs": {
+          "button": "start"
+        }
+      },
+      {
+        "policy_id": "policy_028",
+        "args": [
+          {
+            "arg": "appliance"
+          }
+        ],
+        "kwargs": {
+          "button": "start"
+        }
+      },
+      {
+        "policy_id": "policy_029",
+        "args": [
+          {
+            "arg": "appliance"
+          }
+        ],
+        "kwargs": {
+          "button": "start"
+        }
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "appliance"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "appliance": {
+      "argument": "appliance",
+      "kind": "articulated",
+      "source": "rig.ann",
+      "required": true,
+      "category_equals": "microwave",
+      "required_annotation": "start_button"
+    }
+  }
+}

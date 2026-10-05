@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_020",
+  "skill_id": "skill_012",
+  "name": "Set torso height",
+  "description": "Move the torso lift to one requested joint height.",
+  "scope": {
+    "unit": "one torso lift adjustment",
+    "includes": [
+      "Move the torso lift to one requested joint height."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "height_m": {
+      "type": "number",
+      "required": true,
+      "description": "height m"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_within_joint_limits",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "collision_free_motion",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "posture_at_target",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "posture_at_target"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_008",
+    "route": "torso",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_004",
+        "args": [
+          {
+            "arg": "height_m"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "height_m"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {}
+}

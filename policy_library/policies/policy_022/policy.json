@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_022",
+  "legacy_id": "open_handle",
+  "name": "Open Handle",
+  "description": "通过把手打开门或抽屉",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "articulation",
+    "effect_summary": "joint_at(open_q)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "goal",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "joint_at(open_q)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_022",
+    "legacy_attribute": "open_handle",
+    "class": "HandleOpenPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_033"
+  ],
+  "legacy_family_contracts": [
+    "contract_004"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: Manual cabinet hinge moved from closed to -1.379 rad, runs/verify_callable_handle_cabinet, 2026-10-01"
+}

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_009",
+  "legacy_id": "straighten_waist",
+  "name": "Straighten Waist",
+  "description": "腰部返回中立姿态",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "posture",
+    "effect_summary": "waist_neutral",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "waist_neutral",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_009",
+    "legacy_attribute": "straighten_waist",
+    "class": "StraightenWaistPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_042"
+  ],
+  "legacy_family_contracts": [
+    "contract_008"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: straighten_waist, 2026-10-01"
+}

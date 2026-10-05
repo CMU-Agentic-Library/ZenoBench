@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_020",
+  "legacy_id": "microwave_cavity_withdraw",
+  "name": "Microwave Cavity Withdraw",
+  "description": "松爪后撤回手和底盘并验证物体落在炉腔支撑面",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "placement",
+    "effect_summary": "on(object,cavity_support)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "on(object,cavity_support)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_020",
+    "legacy_attribute": "microwave_cavity_withdraw",
+    "class": "MicrowaveCavityWithdrawPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_013",
+    "contract_022"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_003"
+  ],
+  "evidence": "Isaac Sim: heat_breakfast fridge -> microwave -> dining table, 100% progress, 2026-10-01; runs/heat_breakfast/result.json"
+}

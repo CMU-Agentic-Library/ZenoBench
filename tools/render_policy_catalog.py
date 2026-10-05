@@ -37,7 +37,7 @@ def render(catalog):
         "# Zeno House policy 能力目录",
         "",
         f"本目录列出 **{len(rows)} 个目标能力**。状态记录的是当前代码与物理验证程度，",
-        "独立代码入口不等于在目标场景物理通过。通用分发入口 `pick/place/open/close/navigate`",
+        "独立代码入口不等于在目标场景物理通过。`pick/open/close` 已纳入本目录；其余通用分发入口 `place/navigate`",
         "以及顺序组合 `pick_and_carry`、`microwave_door_cycle` 不计入本目录。",
         "",
         f"- `verified`（{counts['verified']}）：可调用，且对应物理动作通过过 Isaac Sim smoke run。",
@@ -50,6 +50,8 @@ def render(catalog):
         "`bimanual_flat_pick` 曾在 Isaac Sim 中短时抬起书本，但左手在后续携带中滑脱，稳定抓持仍在调试。",
         "",
         "机器可读源文件：[catalog.json](../zeno_skills/policies/catalog.json)。",
+        "稳定公开 ID 为 `policy_001`–`policy_064`；原描述性名称保留为兼容别名。",
+        "每项的独立 JSON 与说明见 [policy_library](../policy_library/catalog.json)。",
         "`input` 和 `effect` 是能力摘要，后续 contract 的 `requires/achieves/verifier`",
         "需要逐项细化，不能直接把本目录当作可执行 contract。",
         "",
@@ -58,13 +60,13 @@ def render(catalog):
     for row in rows:
         grouped[row["group"]].append(row)
     for group, group_rows in grouped.items():
-        text.extend([f"## {GROUPS[group]}", "", "| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |", "|---|---|---|---|---|---|"])
+        text.extend([f"## {GROUPS[group]}", "", "| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |", "|---|---|---|---|---|---|---|"])
         for row in group_rows:
             route = row.get("executor") or row.get("basis") or row.get("gap", "")
             if row.get("caveat"):
                 route += "；" + row["caveat"]
             route = route.replace("|", "\\|")
-            text.append(f"| `{row['id']}` | {row['description']} | `{row['input']}` | `{row['effect']}` | `{row['status']}` | {route} |")
+            text.append(f"| `{row['policy_id']}` | `{row['id']}` | {row['description']} | `{row['input']}` | `{row['effect']}` | `{row['status']}` | {route} |")
         text.append("")
     text.extend(["## 验证记录", "", "本地仿真 smoke 记录（日期和动作；`runs/` 默认不纳入 Git）：", ""])
     for row in rows:

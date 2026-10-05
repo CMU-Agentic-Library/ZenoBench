@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_026",
+  "skill_id": "skill_018",
+  "name": "Pick while the base moves",
+  "description": "Attempt one right-hand pick during a base move to a target pose.",
+  "scope": {
+    "unit": "one synchronized moving pick",
+    "includes": [
+      "Attempt one right-hand pick during a base move to a target pose."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "base_path": {
+      "type": "pose2d",
+      "required": true,
+      "description": "base path"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "object_reachable",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_by_right_hand",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_lifted",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "held_by_right_hand",
+    "object_lifted"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_002",
+    "route": "moving",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_052",
+        "args": [
+          {
+            "arg": "object"
+          },
+          {
+            "arg": "base_path"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "base_path"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [
+    {
+      "when": "object remains reachable and base motion has stopped",
+      "skill_id": "skill_004",
+      "reason": "stationary pick is an alternative to mobile pick"
+    }
+  ],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true
+    }
+  }
+}

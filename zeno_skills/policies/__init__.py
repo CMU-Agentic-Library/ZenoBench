@@ -12,6 +12,7 @@ from .appliance import (ClickPolicy, MicrowaveButtonApproachPolicy, MicrowaveBut
 from .articulation import (ClosePolicy, HandleClosePolicy, HandleOpenPolicy,
                            OpenPolicy, PoweredDoorClosePolicy, PoweredDoorOpenPolicy)
 from .base import AtomicPolicy
+from ..interface_ids import POLICY_PUBLIC_IDS
 from .bimanual import (BimanualBoxLiftPolicy, BimanualCarryPolicy, BimanualFlatPickPolicy,
                        HandoverRightToLeftPolicy, OpenDoorWhileLeftHoldsPolicy)
 from .embedded import (GraspArticulatedHandlePolicy, OpenPrismaticDrawerPolicy,
@@ -31,6 +32,7 @@ from .navigation import (BackOffWithLoadPolicy, BaseRotateInPlacePolicy, BaseTra
 from .primitives import (RightGripperClosePolicy, RightGripperOpenPolicy, RightJointMovePolicy,
                          RightTcpMovePolicy)
 from .orientation import UprightObjectPolicy
+from .thermal_wait import WaitForTemperaturePolicy
 from .posture import (LeanForwardPolicy, LowerTorsoPolicy, RaiseTorsoPolicy, SetTorsoHeightPolicy,
                       SetWaistPitchPolicy, StraightenWaistPolicy, TuckArmPolicy)
 
@@ -67,6 +69,7 @@ class PolicySuite:
         self.pick_while_moving = PickWhileMovingPolicy(rig)
         self.place_while_moving = PlaceWhileMovingPolicy(rig)
         self.upright_object = UprightObjectPolicy(rig)
+        self.wait_for_temperature = WaitForTemperaturePolicy(rig)
         self.pick_cup_handle = PickCupHandlePolicy(rig)
         self.bimanual_flat_pick = BimanualFlatPickPolicy(rig)
         self.bimanual_box_lift = BimanualBoxLiftPolicy(rig)
@@ -112,12 +115,16 @@ class PolicySuite:
         self.pick_and_carry = PickAndCarryPolicy(rig)
         self.microwave_door_cycle = MicrowaveDoorCycle(rig)
 
+        # Public stable IDs coexist with historical descriptive attributes.
+        for legacy_id, public_id in POLICY_PUBLIC_IDS.items():
+            setattr(self, public_id, getattr(self, legacy_id))
+
 
 __all__ = [
     "PrepareFloorReachPolicy", "SlideToEdgePolicy", "GraspArticulatedHandlePolicy",
     "ReleaseArticulatedHandlePolicy", "PickFromCavityPolicy", "OpenRevoluteDoorPolicy",
     "OpenPrismaticDrawerPolicy", "ReachWhileMovingPolicy", "PickWhileMovingPolicy",
-    "PlaceWhileMovingPolicy", "UprightObjectPolicy", "PickCupHandlePolicy",
+    "PlaceWhileMovingPolicy", "UprightObjectPolicy", "WaitForTemperaturePolicy", "PickCupHandlePolicy",
     "BimanualFlatPickPolicy",
     "BimanualBoxLiftPolicy", "BimanualCarryPolicy", "HandoverRightToLeftPolicy",
     "OpenDoorWhileLeftHoldsPolicy",

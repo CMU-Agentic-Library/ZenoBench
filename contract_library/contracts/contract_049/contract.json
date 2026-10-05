@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_049",
+  "skill_id": "skill_041",
+  "name": "Raise carried object for clearance",
+  "description": "Lift a right-held object until its bottom clears a required height.",
+  "scope": {
+    "unit": "One raise carried object for clearance attempt on the grounded scene state.",
+    "includes": [
+      "Lift a right-held object until its bottom clears a required height."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The object currently held in the right hand."
+    },
+    "min_bottom_z": {
+      "type": "positive_number",
+      "required": true,
+      "description": "Required minimum world z of the held object bottom."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_object_above_height",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "held_object_above_height"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "custom": "carry_height"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_034",
+        "args": [
+          {
+            "arg": "min_bottom_z"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "min_bottom_z"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_right_held": true
+    }
+  }
+}

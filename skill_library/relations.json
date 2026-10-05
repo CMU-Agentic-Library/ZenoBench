@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "kind": "skill_relations",
+  "scope": "conditional_hints_not_fixed_task_graph",
+  "relations": [
+    {
+      "id": "relation_001",
+      "from": "skill_023",
+      "to": "skill_014",
+      "kind": "enables",
+      "when": "microwave cavity must be opened before loading",
+      "reason": "Open joint makes the cavity physically accessible.",
+      "automatic": false
+    },
+    {
+      "id": "relation_002",
+      "from": "skill_023",
+      "to": "skill_015",
+      "kind": "enables",
+      "when": "food must be retrieved from a closed microwave",
+      "reason": "Open joint makes the cavity physically accessible.",
+      "automatic": false
+    },
+    {
+      "id": "relation_003",
+      "from": "skill_014",
+      "to": "skill_024",
+      "kind": "follows",
+      "when": "microwave food is loaded and heating is next",
+      "reason": "The door must be closed before the start button can heat food.",
+      "automatic": false
+    },
+    {
+      "id": "relation_004",
+      "from": "skill_024",
+      "to": "skill_010",
+      "kind": "enables",
+      "when": "configured food is inside the microwave",
+      "reason": "Start requires a closed microwave door.",
+      "automatic": false
+    },
+    {
+      "id": "relation_005",
+      "from": "skill_010",
+      "to": "skill_040",
+      "kind": "enables",
+      "when": "heating was started but target temperature is unmet",
+      "reason": "The thermal wait advances the live model and verifies the threshold.",
+      "automatic": false
+    },
+    {
+      "id": "relation_006",
+      "from": "skill_040",
+      "to": "skill_023",
+      "kind": "follows",
+      "when": "heated food must be removed for serving",
+      "reason": "Open the microwave after heating has stopped.",
+      "automatic": false
+    },
+    {
+      "id": "relation_007",
+      "from": "skill_015",
+      "to": "skill_037",
+      "kind": "follows",
+      "when": "retrieved food must be served upright",
+      "reason": "Place the still-held item and verify support and tilt.",
+      "automatic": false
+    },
+    {
+      "id": "relation_008",
+      "from": "skill_023",
+      "to": "skill_024",
+      "kind": "follows",
+      "when": "microwave inspection is complete without retrieval",
+      "reason": "Close the open door to satisfy the terminal closed condition.",
+      "automatic": false
+    },
+    {
+      "id": "relation_009",
+      "from": "skill_025",
+      "to": "skill_004",
+      "kind": "enables",
+      "when": "the target object is enclosed by a closed manual door or drawer",
+      "reason": "Open access before attempting a general pick.",
+      "automatic": false
+    },
+    {
+      "id": "relation_010",
+      "from": "skill_004",
+      "to": "skill_026",
+      "kind": "follows",
+      "when": "an object was removed and the manual access must be closed",
+      "reason": "Restore the door or drawer to its measured closed joint.",
+      "automatic": false
+    },
+    {
+      "id": "relation_011",
+      "from": "skill_004",
+      "to": "skill_005",
+      "kind": "enables",
+      "when": "the task requires the grasped object on a support",
+      "reason": "Right-hand holding is the place precondition.",
+      "automatic": false
+    },
+    {
+      "id": "relation_012",
+      "from": "skill_004",
+      "to": "skill_006",
+      "kind": "enables",
+      "when": "the task requires the grasped object inside a container",
+      "reason": "Right-hand holding is the container-place precondition.",
+      "automatic": false
+    },
+    {
+      "id": "relation_013",
+      "from": "skill_004",
+      "to": "skill_037",
+      "kind": "enables",
+      "when": "the task requires the object upright on a support",
+      "reason": "Orient before release, then verify upright after placement.",
+      "automatic": false
+    },
+    {
+      "id": "relation_014",
+      "from": "skill_004",
+      "to": "skill_038",
+      "kind": "enables",
+      "when": "the task requires a target area on a support",
+      "reason": "A held object can be placed near an xy hint.",
+      "automatic": false
+    },
+    {
+      "id": "relation_015",
+      "from": "skill_004",
+      "to": "skill_039",
+      "kind": "enables",
+      "when": "the task requires both upright and near-hint placement",
+      "reason": "Both final predicates are checked after release.",
+      "automatic": false
+    },
+    {
+      "id": "relation_016",
+      "from": "skill_027",
+      "to": "skill_005",
+      "kind": "enables",
+      "when": "an object was top-pinched for transfer",
+      "reason": "Place uses the successful right-hand grasp.",
+      "automatic": false
+    },
+    {
+      "id": "relation_017",
+      "from": "skill_028",
+      "to": "skill_037",
+      "kind": "enables",
+      "when": "a rim-grasped vessel must end upright on a support",
+      "reason": "Orient and place the held vessel.",
+      "automatic": false
+    },
+    {
+      "id": "relation_018",
+      "from": "skill_029",
+      "to": "skill_006",
+      "kind": "enables",
+      "when": "a rectangular-rim container was grasped for relocation",
+      "reason": "Relocate the held container before loading objects into it.",
+      "automatic": false
+    },
+    {
+      "id": "relation_019",
+      "from": "skill_035",
+      "to": "skill_016",
+      "kind": "preparation",
+      "when": "a flat object needs a graspable support overhang",
+      "reason": "The edge exposure step verifies the overhang before the edge pick.",
+      "automatic": false
+    },
+    {
+      "id": "relation_020",
+      "from": "skill_016",
+      "to": "skill_030",
+      "kind": "enables",
+      "when": "the flat object is edge-held and must be placed on a shelf",
+      "reason": "Edge placement matches the grasp mode.",
+      "automatic": false
+    },
+    {
+      "id": "relation_021",
+      "from": "skill_031",
+      "to": "skill_020",
+      "kind": "preparation",
+      "when": "a flat object lies on the floor and is hard to reach",
+      "reason": "Lowering the torso can improve floor reach.",
+      "automatic": false
+    },
+    {
+      "id": "relation_022",
+      "from": "skill_020",
+      "to": "skill_005",
+      "kind": "enables",
+      "when": "a floor object was lifted and needs a support",
+      "reason": "Place the recovered object after observing the grasp.",
+      "automatic": false
+    },
+    {
+      "id": "relation_023",
+      "from": "skill_036",
+      "to": "skill_037",
+      "kind": "preparation",
+      "when": "a held object must be placed upright",
+      "reason": "The combined placement Contract checks upright again after release.",
+      "automatic": false
+    },
+    {
+      "id": "relation_024",
+      "from": "skill_037",
+      "to": "skill_038",
+      "kind": "alternative",
+      "when": "the task needs near placement but upright is already satisfied or unnecessary",
+      "reason": "Use the proximity-specific contract when orientation is not part of the goal.",
+      "automatic": false
+    },
+    {
+      "id": "relation_025",
+      "from": "skill_038",
+      "to": "skill_039",
+      "kind": "alternative",
+      "when": "the task also requires upright after release",
+      "reason": "Use the combined contract with both final checks.",
+      "automatic": false
+    },
+    {
+      "id": "relation_026",
+      "from": "skill_041",
+      "to": "skill_002",
+      "kind": "preparation",
+      "when": "a carried object needs height clearance before travel",
+      "reason": "Raise the load before using the carry-navigation policy.",
+      "automatic": false
+    },
+    {
+      "id": "relation_027",
+      "from": "skill_042",
+      "to": "skill_002",
+      "kind": "preparation",
+      "when": "a load needs clearance from furniture before travel",
+      "reason": "Back away, then select a new travel pose.",
+      "automatic": false
+    },
+    {
+      "id": "relation_028",
+      "from": "skill_018",
+      "to": "skill_004",
+      "kind": "recovery",
+      "when": "moving pick failed and the object is stationary and reachable",
+      "reason": "Retry through a stationary grasp only after fresh observation.",
+      "automatic": false
+    },
+    {
+      "id": "relation_029",
+      "from": "skill_019",
+      "to": "skill_005",
+      "kind": "recovery",
+      "when": "moving place failed and the object remains right-held",
+      "reason": "Try stationary support placement after fresh observation.",
+      "automatic": false
+    },
+    {
+      "id": "relation_030",
+      "from": "skill_027",
+      "to": "skill_004",
+      "kind": "alternative",
+      "when": "top pinch geometry is absent or fails but another grasp exists",
+      "reason": "The general dispatcher can select another annotated grasp.",
+      "automatic": false
+    },
+    {
+      "id": "relation_031",
+      "from": "skill_028",
+      "to": "skill_017",
+      "kind": "alternative",
+      "when": "round-rim grasp fails and the cup has an annotated handle",
+      "reason": "Handle grasp is a distinct physical strategy.",
+      "automatic": false
+    },
+    {
+      "id": "relation_032",
+      "from": "skill_006",
+      "to": "skill_005",
+      "kind": "alternative",
+      "when": "the chosen container is unavailable but the task permits a support destination",
+      "reason": "Replan the semantic goal; do not silently weaken an inside requirement.",
+      "automatic": false
+    },
+    {
+      "id": "relation_033",
+      "from": "skill_005",
+      "to": "skill_030",
+      "kind": "alternative",
+      "when": "the object is edge-held and surface place is unsuitable",
+      "reason": "Use the edge-specific place policy.",
+      "automatic": false
+    },
+    {
+      "id": "relation_034",
+      "from": "skill_003",
+      "to": "skill_025",
+      "kind": "alternative",
+      "when": "a manual door must use an explicit handle route",
+      "reason": "Select the handle-specific operation when annotation supports it.",
+      "automatic": false
+    },
+    {
+      "id": "relation_035",
+      "from": "skill_007",
+      "to": "skill_026",
+      "kind": "alternative",
+      "when": "a manual door close needs an explicit handle route",
+      "reason": "Select the handle-specific closure.",
+      "automatic": false
+    },
+    {
+      "id": "relation_036",
+      "from": "skill_007",
+      "to": "skill_024",
+      "kind": "alternative",
+      "when": "a powered microwave door must close",
+      "reason": "Use the powered closure policy.",
+      "automatic": false
+    },
+    {
+      "id": "relation_037",
+      "from": "skill_005",
+      "to": "skill_007",
+      "kind": "follows",
+      "when": "manipulation used an articulated compartment and the task requires closed doors",
+      "reason": "Close the relevant compartment after manipulation.",
+      "automatic": false
+    },
+    {
+      "id": "relation_038",
+      "from": "skill_006",
+      "to": "skill_007",
+      "kind": "follows",
+      "when": "container placement used an articulated compartment and the task requires closed doors",
+      "reason": "Close the relevant compartment after placement.",
+      "automatic": false
+    }
+  ]
+}

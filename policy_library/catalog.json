@@ -1,0 +1,390 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy_catalog",
+  "policies": [
+    {
+      "policy_id": "policy_001",
+      "name": "empty_navigate",
+      "legacy_id": "empty_navigate",
+      "definition": "policies/policy_001/policy.json"
+    },
+    {
+      "policy_id": "policy_002",
+      "name": "carry_navigate",
+      "legacy_id": "carry_navigate",
+      "definition": "policies/policy_002/policy.json"
+    },
+    {
+      "policy_id": "policy_003",
+      "name": "tuck_arm",
+      "legacy_id": "tuck_arm",
+      "definition": "policies/policy_003/policy.json"
+    },
+    {
+      "policy_id": "policy_004",
+      "name": "set_torso_height",
+      "legacy_id": "set_torso_height",
+      "definition": "policies/policy_004/policy.json"
+    },
+    {
+      "policy_id": "policy_005",
+      "name": "lower_torso",
+      "legacy_id": "lower_torso",
+      "definition": "policies/policy_005/policy.json"
+    },
+    {
+      "policy_id": "policy_006",
+      "name": "raise_torso",
+      "legacy_id": "raise_torso",
+      "definition": "policies/policy_006/policy.json"
+    },
+    {
+      "policy_id": "policy_007",
+      "name": "set_waist_pitch",
+      "legacy_id": "set_waist_pitch",
+      "definition": "policies/policy_007/policy.json"
+    },
+    {
+      "policy_id": "policy_008",
+      "name": "lean_forward",
+      "legacy_id": "lean_forward",
+      "definition": "policies/policy_008/policy.json"
+    },
+    {
+      "policy_id": "policy_009",
+      "name": "straighten_waist",
+      "legacy_id": "straighten_waist",
+      "definition": "policies/policy_009/policy.json"
+    },
+    {
+      "policy_id": "policy_010",
+      "name": "pick_top",
+      "legacy_id": "pick_top",
+      "definition": "policies/policy_010/policy.json"
+    },
+    {
+      "policy_id": "policy_011",
+      "name": "pick_round_rim",
+      "legacy_id": "pick_round_rim",
+      "definition": "policies/policy_011/policy.json"
+    },
+    {
+      "policy_id": "policy_012",
+      "name": "pick_rect_rim",
+      "legacy_id": "pick_rect_rim",
+      "definition": "policies/policy_012/policy.json"
+    },
+    {
+      "policy_id": "policy_013",
+      "name": "pick_edge",
+      "legacy_id": "pick_edge",
+      "definition": "policies/policy_013/policy.json"
+    },
+    {
+      "policy_id": "policy_014",
+      "name": "pick_floor_corner",
+      "legacy_id": "pick_floor_corner",
+      "definition": "policies/policy_014/policy.json"
+    },
+    {
+      "policy_id": "policy_015",
+      "name": "place_surface",
+      "legacy_id": "place_surface",
+      "definition": "policies/policy_015/policy.json"
+    },
+    {
+      "policy_id": "policy_016",
+      "name": "place_container",
+      "legacy_id": "place_container",
+      "definition": "policies/policy_016/policy.json"
+    },
+    {
+      "policy_id": "policy_017",
+      "name": "place_edge",
+      "legacy_id": "place_edge",
+      "definition": "policies/policy_017/policy.json"
+    },
+    {
+      "policy_id": "policy_018",
+      "name": "microwave_cavity_insert",
+      "legacy_id": "microwave_cavity_insert",
+      "definition": "policies/policy_018/policy.json"
+    },
+    {
+      "policy_id": "policy_019",
+      "name": "microwave_cavity_release",
+      "legacy_id": "microwave_cavity_release",
+      "definition": "policies/policy_019/policy.json"
+    },
+    {
+      "policy_id": "policy_020",
+      "name": "microwave_cavity_withdraw",
+      "legacy_id": "microwave_cavity_withdraw",
+      "definition": "policies/policy_020/policy.json"
+    },
+    {
+      "policy_id": "policy_021",
+      "name": "place_microwave",
+      "legacy_id": "place_microwave",
+      "definition": "policies/policy_021/policy.json"
+    },
+    {
+      "policy_id": "policy_022",
+      "name": "open_handle",
+      "legacy_id": "open_handle",
+      "definition": "policies/policy_022/policy.json"
+    },
+    {
+      "policy_id": "policy_023",
+      "name": "close_handle",
+      "legacy_id": "close_handle",
+      "definition": "policies/policy_023/policy.json"
+    },
+    {
+      "policy_id": "policy_024",
+      "name": "open_powered",
+      "legacy_id": "open_powered",
+      "definition": "policies/policy_024/policy.json"
+    },
+    {
+      "policy_id": "policy_025",
+      "name": "close_powered",
+      "legacy_id": "close_powered",
+      "definition": "policies/policy_025/policy.json"
+    },
+    {
+      "policy_id": "policy_026",
+      "name": "push",
+      "legacy_id": "push",
+      "definition": "policies/policy_026/policy.json"
+    },
+    {
+      "policy_id": "policy_027",
+      "name": "microwave_button_approach",
+      "legacy_id": "microwave_button_approach",
+      "definition": "policies/policy_027/policy.json"
+    },
+    {
+      "policy_id": "policy_028",
+      "name": "microwave_button_press",
+      "legacy_id": "microwave_button_press",
+      "definition": "policies/policy_028/policy.json"
+    },
+    {
+      "policy_id": "policy_029",
+      "name": "microwave_button_retract",
+      "legacy_id": "microwave_button_retract",
+      "definition": "policies/policy_029/policy.json"
+    },
+    {
+      "policy_id": "policy_030",
+      "name": "microwave_door_clear",
+      "legacy_id": "microwave_door_clear",
+      "definition": "policies/policy_030/policy.json"
+    },
+    {
+      "policy_id": "policy_031",
+      "name": "microwave_hinge_drive",
+      "legacy_id": "microwave_hinge_drive",
+      "definition": "policies/policy_031/policy.json"
+    },
+    {
+      "policy_id": "policy_032",
+      "name": "microwave_start",
+      "legacy_id": "microwave_start",
+      "definition": "policies/policy_032/policy.json"
+    },
+    {
+      "policy_id": "policy_033",
+      "name": "click",
+      "legacy_id": "click",
+      "definition": "policies/policy_033/policy.json"
+    },
+    {
+      "policy_id": "policy_034",
+      "name": "carry_height_adjust",
+      "legacy_id": "carry_height_adjust",
+      "definition": "policies/policy_034/policy.json"
+    },
+    {
+      "policy_id": "policy_035",
+      "name": "back_off_with_load",
+      "legacy_id": "back_off_with_load",
+      "definition": "policies/policy_035/policy.json"
+    },
+    {
+      "policy_id": "policy_036",
+      "name": "base_rotate_in_place",
+      "legacy_id": "base_rotate_in_place",
+      "definition": "policies/policy_036/policy.json"
+    },
+    {
+      "policy_id": "policy_037",
+      "name": "base_translate_local",
+      "legacy_id": "base_translate_local",
+      "definition": "policies/policy_037/policy.json"
+    },
+    {
+      "policy_id": "policy_038",
+      "name": "right_tcp_move",
+      "legacy_id": "right_tcp_move",
+      "definition": "policies/policy_038/policy.json"
+    },
+    {
+      "policy_id": "policy_039",
+      "name": "right_joint_move",
+      "legacy_id": "right_joint_move",
+      "definition": "policies/policy_039/policy.json"
+    },
+    {
+      "policy_id": "policy_040",
+      "name": "right_gripper_open",
+      "legacy_id": "right_gripper_open",
+      "definition": "policies/policy_040/policy.json"
+    },
+    {
+      "policy_id": "policy_041",
+      "name": "right_gripper_close",
+      "legacy_id": "right_gripper_close",
+      "definition": "policies/policy_041/policy.json"
+    },
+    {
+      "policy_id": "policy_042",
+      "name": "prepare_floor_reach",
+      "legacy_id": "prepare_floor_reach",
+      "definition": "policies/policy_042/policy.json"
+    },
+    {
+      "policy_id": "policy_043",
+      "name": "push_from_behind",
+      "legacy_id": "push_from_behind",
+      "definition": "policies/policy_043/policy.json"
+    },
+    {
+      "policy_id": "policy_044",
+      "name": "top_drag",
+      "legacy_id": "top_drag",
+      "definition": "policies/policy_044/policy.json"
+    },
+    {
+      "policy_id": "policy_045",
+      "name": "slide_to_edge",
+      "legacy_id": "slide_to_edge",
+      "definition": "policies/policy_045/policy.json"
+    },
+    {
+      "policy_id": "policy_046",
+      "name": "grasp_articulated_handle",
+      "legacy_id": "grasp_articulated_handle",
+      "definition": "policies/policy_046/policy.json"
+    },
+    {
+      "policy_id": "policy_047",
+      "name": "release_articulated_handle",
+      "legacy_id": "release_articulated_handle",
+      "definition": "policies/policy_047/policy.json"
+    },
+    {
+      "policy_id": "policy_048",
+      "name": "pick_from_cavity",
+      "legacy_id": "pick_from_cavity",
+      "definition": "policies/policy_048/policy.json"
+    },
+    {
+      "policy_id": "policy_049",
+      "name": "open_revolute_door",
+      "legacy_id": "open_revolute_door",
+      "definition": "policies/policy_049/policy.json"
+    },
+    {
+      "policy_id": "policy_050",
+      "name": "open_prismatic_drawer",
+      "legacy_id": "open_prismatic_drawer",
+      "definition": "policies/policy_050/policy.json"
+    },
+    {
+      "policy_id": "policy_051",
+      "name": "reach_while_moving",
+      "legacy_id": "reach_while_moving",
+      "definition": "policies/policy_051/policy.json"
+    },
+    {
+      "policy_id": "policy_052",
+      "name": "pick_while_moving",
+      "legacy_id": "pick_while_moving",
+      "definition": "policies/policy_052/policy.json"
+    },
+    {
+      "policy_id": "policy_053",
+      "name": "place_while_moving",
+      "legacy_id": "place_while_moving",
+      "definition": "policies/policy_053/policy.json"
+    },
+    {
+      "policy_id": "policy_054",
+      "name": "upright_object",
+      "legacy_id": "upright_object",
+      "definition": "policies/policy_054/policy.json"
+    },
+    {
+      "policy_id": "policy_055",
+      "name": "pick_cup_handle",
+      "legacy_id": "pick_cup_handle",
+      "definition": "policies/policy_055/policy.json"
+    },
+    {
+      "policy_id": "policy_056",
+      "name": "bimanual_flat_pick",
+      "legacy_id": "bimanual_flat_pick",
+      "definition": "policies/policy_056/policy.json"
+    },
+    {
+      "policy_id": "policy_057",
+      "name": "bimanual_box_lift",
+      "legacy_id": "bimanual_box_lift",
+      "definition": "policies/policy_057/policy.json"
+    },
+    {
+      "policy_id": "policy_058",
+      "name": "bimanual_carry",
+      "legacy_id": "bimanual_carry",
+      "definition": "policies/policy_058/policy.json"
+    },
+    {
+      "policy_id": "policy_059",
+      "name": "handover_right_to_left",
+      "legacy_id": "handover_right_to_left",
+      "definition": "policies/policy_059/policy.json"
+    },
+    {
+      "policy_id": "policy_060",
+      "name": "open_door_while_left_holds",
+      "legacy_id": "open_door_while_left_holds",
+      "definition": "policies/policy_060/policy.json"
+    },
+    {
+      "policy_id": "policy_061",
+      "name": "pick",
+      "legacy_id": "pick",
+      "definition": "policies/policy_061/policy.json"
+    },
+    {
+      "policy_id": "policy_062",
+      "name": "open",
+      "legacy_id": "open",
+      "definition": "policies/policy_062/policy.json"
+    },
+    {
+      "policy_id": "policy_063",
+      "name": "close",
+      "legacy_id": "close",
+      "definition": "policies/policy_063/policy.json"
+    },
+    {
+      "policy_id": "policy_064",
+      "name": "wait_for_temperature",
+      "legacy_id": "wait_for_temperature",
+      "definition": "policies/policy_064/policy.json"
+    }
+  ]
+}

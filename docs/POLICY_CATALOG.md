@@ -1,10 +1,10 @@
 # Zeno House policy 能力目录
 
-本目录列出 **60 个目标能力**。状态记录的是当前代码与物理验证程度，
-独立代码入口不等于在目标场景物理通过。通用分发入口 `pick/place/open/close/navigate`
+本目录列出 **64 个目标能力**。状态记录的是当前代码与物理验证程度，
+独立代码入口不等于在目标场景物理通过。`pick/open/close` 已纳入本目录；其余通用分发入口 `place/navigate`
 以及顺序组合 `pick_and_carry`、`microwave_door_cycle` 不计入本目录。
 
-- `verified`（54）：可调用，且对应物理动作通过过 Isaac Sim smoke run。
+- `verified`（58）：可调用，且对应物理动作通过过 Isaac Sim smoke run。
 - `callable`（6）：有独立 OOP 入口，但尚无该入口成功通过 Isaac Sim 的物理验证；部分路线正在调试。
 - `embedded`（0）：动作片段已在较大 policy 内执行，尚无独立入口和结果检查。
 - `planned`（0）：当前没有完成该动作的控制器。
@@ -14,128 +14,134 @@
 `bimanual_flat_pick` 曾在 Isaac Sim 中短时抬起书本，但左手在后续携带中滑脱，稳定抓持仍在调试。
 
 机器可读源文件：[catalog.json](../zeno_skills/policies/catalog.json)。
+稳定公开 ID 为 `policy_001`–`policy_064`；原描述性名称保留为兼容别名。
+每项的独立 JSON 与说明见 [policy_library](../policy_library/catalog.json)。
 `input` 和 `effect` 是能力摘要，后续 contract 的 `requires/achieves/verifier`
 需要逐项细化，不能直接把本目录当作可执行 contract。
 
 ## 导航与携物移动
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `empty_navigate` | 空手移动到底盘目标位姿 | `pose` | `base_at(pose)` | `verified` | empty_navigate |
-| `carry_navigate` | 右手持物移动并监测滑落 | `pose, held_object` | `base_at(pose) and held` | `verified` | carry_navigate |
-| `carry_height_adjust` | 持物时把物品抬到安全携带高度 | `held_object, min_height` | `held_above(min_height)` | `verified` | carry_height_adjust |
-| `back_off_with_load` | 持物从家具旁后退到安全距离 | `held_object, distance` | `base_reversed(distance) and held(object)` | `verified` | back_off_with_load |
-| `base_rotate_in_place` | 空手收臂后检查占用空间并原地旋转 | `delta_yaw_deg` | `base_yaw_changed` | `verified` | base_rotate_in_place |
-| `base_translate_local` | 空手收臂后沿底盘局部坐标短距离直线移动 | `forward_m, left_m` | `base_translated` | `verified` | base_translate_local |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_001` | `empty_navigate` | 空手移动到底盘目标位姿 | `pose` | `base_at(pose)` | `verified` | empty_navigate |
+| `policy_002` | `carry_navigate` | 右手持物移动并监测滑落 | `pose, held_object` | `base_at(pose) and held` | `verified` | carry_navigate |
+| `policy_034` | `carry_height_adjust` | 持物时把物品抬到安全携带高度 | `held_object, min_height` | `held_above(min_height)` | `verified` | carry_height_adjust |
+| `policy_035` | `back_off_with_load` | 持物从家具旁后退到安全距离 | `held_object, distance` | `base_reversed(distance) and held(object)` | `verified` | back_off_with_load |
+| `policy_036` | `base_rotate_in_place` | 空手收臂后检查占用空间并原地旋转 | `delta_yaw_deg` | `base_yaw_changed` | `verified` | base_rotate_in_place |
+| `policy_037` | `base_translate_local` | 空手收臂后沿底盘局部坐标短距离直线移动 | `forward_m, left_m` | `base_translated` | `verified` | base_translate_local |
 
 ## 躯干与姿态
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `tuck_arm` | 碰撞检查后收起右臂 | `none` | `right_arm_tucked` | `verified` | tuck_arm |
-| `set_torso_height` | 设置躯干升降关节位置 | `height_m` | `torso_at(height_m)` | `verified` | set_torso_height |
-| `lower_torso` | 降躯干到低位或指定高度 | `height_m?` | `torso_lowered` | `verified` | lower_torso |
-| `raise_torso` | 升躯干到高位或指定高度 | `height_m?` | `torso_raised` | `verified` | raise_torso |
-| `set_waist_pitch` | 设置腰部前后俯仰角 | `pitch_rad` | `waist_at(pitch_rad)` | `verified` | set_waist_pitch |
-| `lean_forward` | 腰部前俯到指定角度 | `pitch_rad?` | `waist_leaned` | `verified` | lean_forward |
-| `straighten_waist` | 腰部返回中立姿态 | `none` | `waist_neutral` | `verified` | straighten_waist |
-| `prepare_floor_reach` | 协调躯干、腰部和右臂进入地面可达姿态 | `floor_target` | `floor_target_reachable` | `verified` | prepare_floor_reach |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_003` | `tuck_arm` | 碰撞检查后收起右臂 | `none` | `right_arm_tucked` | `verified` | tuck_arm |
+| `policy_004` | `set_torso_height` | 设置躯干升降关节位置 | `height_m` | `torso_at(height_m)` | `verified` | set_torso_height |
+| `policy_005` | `lower_torso` | 降躯干到低位或指定高度 | `height_m?` | `torso_lowered` | `verified` | lower_torso |
+| `policy_006` | `raise_torso` | 升躯干到高位或指定高度 | `height_m?` | `torso_raised` | `verified` | raise_torso |
+| `policy_007` | `set_waist_pitch` | 设置腰部前后俯仰角 | `pitch_rad` | `waist_at(pitch_rad)` | `verified` | set_waist_pitch |
+| `policy_008` | `lean_forward` | 腰部前俯到指定角度 | `pitch_rad?` | `waist_leaned` | `verified` | lean_forward |
+| `policy_009` | `straighten_waist` | 腰部返回中立姿态 | `none` | `waist_neutral` | `verified` | straighten_waist |
+| `policy_042` | `prepare_floor_reach` | 协调躯干、腰部和右臂进入地面可达姿态 | `floor_target` | `floor_target_reachable` | `verified` | prepare_floor_reach |
 
 ## 抓取
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `pick_top` | 按物品标注的顶部接触点夹取 | `object` | `held(object)` | `verified` | pick_top |
-| `pick_round_rim` | 沿圆形容器口沿夹取 | `object` | `held(object)` | `verified` | pick_round_rim |
-| `pick_rect_rim` | 沿矩形容器口沿夹取 | `object` | `held(object)` | `verified` | pick_rect_rim；该托盘后续携带时滑脱；单步抓取成功不保证持物移动稳定 |
-| `pick_edge` | 先推到桌边，再夹住悬出的平物体 | `object` | `held(object)` | `verified` | pick_edge |
-| `pick_floor_corner` | 从地面平物体侧面和顶部夹角抓取 | `object` | `held(object)` | `callable` | pick_floor_corner；toy_car、地面平书和薄 notebook 均未通过稳定夹持；薄 notebook 接触误差 0.0142 m，但抬升 0 m（runs/repair_floor_notebook_v1）；先执行 prepare_floor_reach 的路径也在关节移动时碰撞（v2）。 |
-| `grasp_articulated_handle` | 抓住门或抽屉把手 | `articulated_target` | `handle_held` | `verified` | grasp_articulated_handle |
-| `release_articulated_handle` | 完成关节移动后放开把手 | `articulated_target` | `handle_released` | `verified` | release_articulated_handle |
-| `pick_from_cavity` | 从狭窄腔体正面取物并后撤 | `object, cavity` | `held(object) and outside_cavity` | `verified` | pick_from_cavity；仅验证同一 rig 刚放入杯子的回取路线；预置碗仍无可达抓取记录。中间上方位 TCP 一次短暂偏差 0.182 m，最终接触位偏差 0.0075 m。 |
-| `pick_cup_handle` | 从杯把而不是杯沿抓取 | `cup` | `held(cup) by handle` | `verified` | pick_cup_handle；需要实际杯柄接触体：CLI 自动为 pick_cup_handle 目标补充，Python make_rig 需传 handle_objects；仅验证 breakfast_mug 的接触与短距离抬升。 |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_010` | `pick_top` | 按物品标注的顶部接触点夹取 | `object` | `held(object)` | `verified` | pick_top |
+| `policy_011` | `pick_round_rim` | 沿圆形容器口沿夹取 | `object` | `held(object)` | `verified` | pick_round_rim |
+| `policy_012` | `pick_rect_rim` | 沿矩形容器口沿夹取 | `object` | `held(object)` | `verified` | pick_rect_rim；该托盘后续携带时滑脱；单步抓取成功不保证持物移动稳定 |
+| `policy_013` | `pick_edge` | 先推到桌边，再夹住悬出的平物体 | `object` | `held(object)` | `verified` | pick_edge |
+| `policy_014` | `pick_floor_corner` | 从地面平物体侧面和顶部夹角抓取 | `object` | `held(object)` | `callable` | pick_floor_corner；toy_car、地面平书和薄 notebook 均未通过稳定夹持；薄 notebook 接触误差 0.0142 m，但抬升 0 m（runs/repair_floor_notebook_v1）；先执行 prepare_floor_reach 的路径也在关节移动时碰撞（v2）。 |
+| `policy_046` | `grasp_articulated_handle` | 抓住门或抽屉把手 | `articulated_target` | `handle_held` | `verified` | grasp_articulated_handle |
+| `policy_047` | `release_articulated_handle` | 完成关节移动后放开把手 | `articulated_target` | `handle_released` | `verified` | release_articulated_handle |
+| `policy_048` | `pick_from_cavity` | 从狭窄腔体正面取物并后撤 | `object, cavity` | `held(object) and outside_cavity` | `verified` | pick_from_cavity；仅验证同一 rig 刚放入杯子的回取路线；预置碗仍无可达抓取记录。中间上方位 TCP 一次短暂偏差 0.182 m，最终接触位偏差 0.0075 m。 |
+| `policy_055` | `pick_cup_handle` | 从杯把而不是杯沿抓取 | `cup` | `held(cup) by handle` | `verified` | pick_cup_handle；需要实际杯柄接触体：CLI 自动为 pick_cup_handle 目标补充，Python make_rig 需传 handle_objects；仅验证 breakfast_mug 的接触与短距离抬升。 |
 
 ## 放置
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `place_surface` | 在指定支撑面寻找空位并放置 | `object, support` | `on(object,support)` | `verified` | place_surface |
-| `place_container` | 把物品放进容器 | `object, container` | `inside(object,container)` | `verified` | place_container |
-| `place_edge` | 把边缘持握的平物体滑回支撑面 | `object, support` | `on(object,support)` | `verified` | place_edge |
-| `microwave_cavity_insert` | 持物从微波炉正面送入腔体，不松爪 | `object, cavity_support` | `held_object_inside_cavity` | `verified` | microwave_cavity_insert |
-| `microwave_cavity_release` | 送入腔体后张开夹爪并测量手指位置 | `object` | `object_released_in_cavity` | `verified` | microwave_cavity_release |
-| `microwave_cavity_withdraw` | 松爪后撤回手和底盘并验证物体落在炉腔支撑面 | `object` | `on(object,cavity_support)` | `verified` | microwave_cavity_withdraw |
-| `place_microwave` | 从正面把物品送入微波炉腔体 | `object, cavity_support` | `inside(object,cavity)` | `verified` | place_microwave |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_015` | `place_surface` | 在指定支撑面寻找空位并放置 | `object, support` | `on(object,support)` | `verified` | place_surface |
+| `policy_016` | `place_container` | 把物品放进容器 | `object, container` | `inside(object,container)` | `verified` | place_container |
+| `policy_017` | `place_edge` | 把边缘持握的平物体滑回支撑面 | `object, support` | `on(object,support)` | `verified` | place_edge |
+| `policy_018` | `microwave_cavity_insert` | 持物从微波炉正面送入腔体，不松爪 | `object, cavity_support` | `held_object_inside_cavity` | `verified` | microwave_cavity_insert |
+| `policy_019` | `microwave_cavity_release` | 送入腔体后张开夹爪并测量手指位置 | `object` | `object_released_in_cavity` | `verified` | microwave_cavity_release |
+| `policy_020` | `microwave_cavity_withdraw` | 松爪后撤回手和底盘并验证物体落在炉腔支撑面 | `object` | `on(object,cavity_support)` | `verified` | microwave_cavity_withdraw |
+| `policy_021` | `place_microwave` | 从正面把物品送入微波炉腔体 | `object, cavity_support` | `inside(object,cavity)` | `verified` | place_microwave |
 
 ## 门与抽屉
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `open_handle` | 通过把手打开门或抽屉 | `articulated_target` | `joint_at(open_q)` | `verified` | open_handle |
-| `close_handle` | 通过把手关闭门或抽屉 | `articulated_target` | `joint_at(closed_q)` | `verified` | close_handle |
-| `open_powered` | 按钮释放并打开动力微波炉门 | `microwave` | `joint_at(open_q)` | `verified` | open_powered |
-| `close_powered` | 关闭动力微波炉门 | `microwave` | `joint_at(closed_q)` | `verified` | close_powered |
-| `open_revolute_door` | 只选择旋转铰链门的把手轨迹 | `door` | `joint_at(open_q)` | `verified` | open_revolute_door |
-| `open_prismatic_drawer` | 只选择滑动抽屉的把手轨迹 | `drawer` | `joint_at(open_q)` | `verified` | open_prismatic_drawer；tidy_toys 的第一只抽屉仍未拉动；另一只厨房抽屉已通过独立物理验证 |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_022` | `open_handle` | 通过把手打开门或抽屉 | `articulated_target` | `joint_at(open_q)` | `verified` | open_handle |
+| `policy_023` | `close_handle` | 通过把手关闭门或抽屉 | `articulated_target` | `joint_at(closed_q)` | `verified` | close_handle |
+| `policy_024` | `open_powered` | 按钮释放并打开动力微波炉门 | `microwave` | `joint_at(open_q)` | `verified` | open_powered |
+| `policy_025` | `close_powered` | 关闭动力微波炉门 | `microwave` | `joint_at(closed_q)` | `verified` | close_powered |
+| `policy_049` | `open_revolute_door` | 只选择旋转铰链门的把手轨迹 | `door` | `joint_at(open_q)` | `verified` | open_revolute_door |
+| `policy_050` | `open_prismatic_drawer` | 只选择滑动抽屉的把手轨迹 | `drawer` | `joint_at(open_q)` | `verified` | open_prismatic_drawer；tidy_toys 的第一只抽屉仍未拉动；另一只厨房抽屉已通过独立物理验证 |
+| `policy_062` | `open` | Annotation-selected open dispatcher | `articulated` | `joint_open_enough(articulated)` | `verified` | open |
+| `policy_063` | `close` | Annotation-selected close dispatcher | `articulated` | `joint_closed(articulated)` | `verified` | close |
 
 ## 推动与接触
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `push` | 按可达性选择推或顶部拖动物品 | `object, support, direction, distance` | `object_displaced` | `verified` | push |
-| `push_from_behind` | 从物体后侧水平推动 | `object, support, direction, distance` | `object_displaced` | `verified` | push_from_behind |
-| `top_drag` | 压住物体顶部沿支撑面拖动 | `object, support, direction, distance` | `object_displaced` | `verified` | top_drag |
-| `slide_to_edge` | 把平物体推到可夹取的支撑面悬边 | `object, support_edge` | `graspable_overhang` | `verified` | slide_to_edge |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_026` | `push` | 按可达性选择推或顶部拖动物品 | `object, support, direction, distance` | `object_displaced` | `verified` | push |
+| `policy_043` | `push_from_behind` | 从物体后侧水平推动 | `object, support, direction, distance` | `object_displaced` | `verified` | push_from_behind |
+| `policy_044` | `top_drag` | 压住物体顶部沿支撑面拖动 | `object, support, direction, distance` | `object_displaced` | `verified` | top_drag |
+| `policy_045` | `slide_to_edge` | 把平物体推到可夹取的支撑面悬边 | `object, support_edge` | `graspable_overhang` | `verified` | slide_to_edge |
 
 ## 按钮与电器
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `microwave_button_approach` | 对齐微波炉开门或启动按钮前方的右手指尖 | `microwave, button` | `tcp_aligned_to_button` | `verified` | microwave_button_approach |
-| `microwave_button_press` | 从对齐位姿按下微波炉按钮并测量接触位姿 | `microwave, button` | `button_pressed` | `verified` | microwave_button_press |
-| `microwave_button_retract` | 按键后撤回右手并检查离开按钮 | `microwave, button` | `tcp_retracted_from_button` | `verified` | microwave_button_retract |
-| `microwave_door_clear` | 收臂并退到微波炉门运动区域之外 | `microwave` | `robot_clear_of_door_sweep` | `verified` | microwave_door_clear |
-| `microwave_hinge_drive` | 在机器人退离后驱动微波炉门到开或关位置 | `microwave, target` | `joint_at(target)` | `verified` | microwave_hinge_drive |
-| `microwave_start` | 按启动按钮并启动任务级加热 | `microwave` | `heating_active` | `verified` | microwave_start |
-| `click` | 物理按下有标注的门/启动按钮 | `microwave, button` | `button_contact` | `verified` | click |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_027` | `microwave_button_approach` | 对齐微波炉开门或启动按钮前方的右手指尖 | `microwave, button` | `tcp_aligned_to_button` | `verified` | microwave_button_approach |
+| `policy_028` | `microwave_button_press` | 从对齐位姿按下微波炉按钮并测量接触位姿 | `microwave, button` | `button_pressed` | `verified` | microwave_button_press |
+| `policy_029` | `microwave_button_retract` | 按键后撤回右手并检查离开按钮 | `microwave, button` | `tcp_retracted_from_button` | `verified` | microwave_button_retract |
+| `policy_030` | `microwave_door_clear` | 收臂并退到微波炉门运动区域之外 | `microwave` | `robot_clear_of_door_sweep` | `verified` | microwave_door_clear |
+| `policy_031` | `microwave_hinge_drive` | 在机器人退离后驱动微波炉门到开或关位置 | `microwave, target` | `joint_at(target)` | `verified` | microwave_hinge_drive |
+| `policy_032` | `microwave_start` | 按启动按钮并启动任务级加热 | `microwave` | `heating_active` | `verified` | microwave_start |
+| `policy_033` | `click` | 物理按下有标注的门/启动按钮 | `microwave, button` | `button_contact` | `verified` | click |
+| `policy_064` | `wait_for_temperature` | 在已启动的热模型中等待食品达到目标温度 | `object, min_temp_c` | `temperature_at_least(object, min_temp_c)` | `verified` | wait_for_temperature；Uses task-level temperature model and bounded live simulation steps; requires physical start first. |
 
 ## 右臂运动
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `right_tcp_move` | 右手末端按给定位姿移动 | `tcp_pose` | `tcp_at(pose)` | `verified` | right_tcp_move |
-| `right_joint_move` | 右臂关节沿碰撞检查路径移动 | `joint_target` | `arm_at(joint_target)` | `verified` | right_joint_move |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_038` | `right_tcp_move` | 右手末端按给定位姿移动 | `tcp_pose` | `tcp_at(pose)` | `verified` | right_tcp_move |
+| `policy_039` | `right_joint_move` | 右臂关节沿碰撞检查路径移动 | `joint_target` | `arm_at(joint_target)` | `verified` | right_joint_move |
 
 ## 右夹爪
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `right_gripper_open` | 张开右夹爪到指定宽度 | `width_m` | `finger_gap_at(width_m)` | `verified` | right_gripper_open |
-| `right_gripper_close` | 闭合空右夹爪到指定位置并读回指关节；不单独判定抓取 | `width_m` | `finger_positions_measured` | `verified` | right_gripper_close |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_040` | `right_gripper_open` | 张开右夹爪到指定宽度 | `width_m` | `finger_gap_at(width_m)` | `verified` | right_gripper_open |
+| `policy_041` | `right_gripper_close` | 闭合空右夹爪到指定位置并读回指关节；不单独判定抓取 | `width_m` | `finger_positions_measured` | `verified` | right_gripper_close |
 
 ## 移动中操作
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `reach_while_moving` | 底盘行进期间同步右臂接近目标 | `target, base_path` | `tcp_at_pregrasp` | `verified` | reach_while_moving |
-| `pick_while_moving` | 底盘未停下时完成接触、闭爪和抬起 | `object, base_path` | `held(object) while base_moves` | `verified` | pick_while_moving |
-| `place_while_moving` | 底盘未停下时完成放置和松手 | `object, support, base_path` | `on(object,support) while base_moves` | `verified` | place_while_moving |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_051` | `reach_while_moving` | 底盘行进期间同步右臂接近目标 | `target, base_path` | `tcp_at_pregrasp` | `verified` | reach_while_moving |
+| `policy_052` | `pick_while_moving` | 底盘未停下时完成接触、闭爪和抬起 | `object, base_path` | `held(object) while base_moves` | `verified` | pick_while_moving |
+| `policy_053` | `place_while_moving` | 底盘未停下时完成放置和松手 | `object, support, base_path` | `on(object,support) while base_moves` | `verified` | place_while_moving |
 
 ## 物体姿态修正
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `upright_object` | 把倾倒的物品扶正 | `object` | `upright(object)` | `verified` | upright_object；要求右手先抓住物体；倾倒物体姿态修正尚待 Isaac Sim 验证 |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_054` | `upright_object` | 把倾倒的物品扶正 | `object` | `upright(object)` | `verified` | upright_object；要求右手先抓住物体；倾倒物体姿态修正尚待 Isaac Sim 验证 |
+| `policy_061` | `pick` | Annotation-selected right-hand pick dispatcher | `object` | `held_by_right_hand(object)` | `verified` | pick |
 
 ## 双臂协作
 
-| ID | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
-|---|---|---|---|---|---|
-| `bimanual_flat_pick` | 左右手同时抓取宽书本或托盘 | `flat_object` | `held_by_both_hands` | `callable` | bimanual_flat_pick；book_red 同步接触后物体偏移 0.034 m、双指闭到零且抬升 0 m（runs/repair_bimanual_book_v7）；接触点移入物体 0.035 m 后无法找到无碰撞共享站位（v8）。旧试验短时抬起 0.037 m 后左手滑脱。 |
-| `bimanual_box_lift` | 左右手从两侧协同抬起箱子 | `box` | `box_lifted_by_both_hands` | `callable` | bimanual_box_lift；serving_tray 与地面轻篮的双臂接触搜索在 45 秒预算内均找不到无碰撞共享站位（runs/repair_bimanual_box_v3、repair_bimanual_basket_v3）。 |
-| `bimanual_carry` | 两只手共同稳定携带大物品 | `held_large_object, pose` | `base_at(pose) and two_hand_hold` | `callable` | bimanual_carry；旧 book_red 双手短时抬起后左手在底盘移动时滑脱；当前没有稳定双手抓持前置状态（runs/bimanual_carry_new_policy）。 |
-| `handover_right_to_left` | 把右手物品交给左手 | `object` | `held_by_left_hand` | `callable` | handover_right_to_left；toy_block 无分离的第二抓点；breakfast_bowl 右手抓取成功，但 15 个独立左手预抓候选即使忽略碰撞也超出关节可达性（runs/repair_handover_bowl_v3）；反向夹爪姿态的 30 个候选仍不可达（v5）。 |
-| `open_door_while_left_holds` | 左手持物同时用右手开门 | `object, door` | `left_holds(object) and door_open` | `callable` | open_door_while_left_holds；依赖稳定左手持物；handover 尚未通过，未建立可验证的左手持物开门前置状态。 |
+| 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
+|---|---|---|---|---|---|---|
+| `policy_056` | `bimanual_flat_pick` | 左右手同时抓取宽书本或托盘 | `flat_object` | `held_by_both_hands` | `callable` | bimanual_flat_pick；book_red 同步接触后物体偏移 0.034 m、双指闭到零且抬升 0 m（runs/repair_bimanual_book_v7）；接触点移入物体 0.035 m 后无法找到无碰撞共享站位（v8）。旧试验短时抬起 0.037 m 后左手滑脱。 |
+| `policy_057` | `bimanual_box_lift` | 左右手从两侧协同抬起箱子 | `box` | `box_lifted_by_both_hands` | `callable` | bimanual_box_lift；serving_tray 与地面轻篮的双臂接触搜索在 45 秒预算内均找不到无碰撞共享站位（runs/repair_bimanual_box_v3、repair_bimanual_basket_v3）。 |
+| `policy_058` | `bimanual_carry` | 两只手共同稳定携带大物品 | `held_large_object, pose` | `base_at(pose) and two_hand_hold` | `callable` | bimanual_carry；旧 book_red 双手短时抬起后左手在底盘移动时滑脱；当前没有稳定双手抓持前置状态（runs/bimanual_carry_new_policy）。 |
+| `policy_059` | `handover_right_to_left` | 把右手物品交给左手 | `object` | `held_by_left_hand` | `callable` | handover_right_to_left；toy_block 无分离的第二抓点；breakfast_bowl 右手抓取成功，但 15 个独立左手预抓候选即使忽略碰撞也超出关节可达性（runs/repair_handover_bowl_v3）；反向夹爪姿态的 30 个候选仍不可达（v5）。 |
+| `policy_060` | `open_door_while_left_holds` | 左手持物同时用右手开门 | `object, door` | `left_holds(object) and door_open` | `callable` | open_door_while_left_holds；依赖稳定左手持物；handover 尚未通过，未建立可验证的左手持物开门前置状态。 |
 
 ## 验证记录
 
@@ -195,3 +201,7 @@
 - `place_while_moving`：Isaac Sim collect_fruits: apple released onto dining table at tick 3257 while base moved 0.078 m; base ended tick 3472, support bottom error 0.0377 m, runs/verify_callable_place_while_moving_apple_v2, 2026-10-01
 - `upright_object`：Isaac Sim tidy_toys: toy_block physically tipped to 29.129 deg in right grasp, UprightObjectPolicy reduced tilt to 0.951 deg, runs/verify_callable_upright, 2026-10-01
 - `pick_cup_handle`：Isaac Sim breakfast_setup original scene: mug handle pinch lifted 0.0226 m with fingers 0.0121/0.0102 m open; runs/final_mug_handle, 2026-10-02
+- `pick`：Existing annotation-dispatching policy used by previously verified contract route.
+- `open`：Existing annotation-dispatching policy used by previously verified contract route.
+- `close`：Existing annotation-dispatching policy used by previously verified contract route.
+- `wait_for_temperature`：Isaac Sim heat_breakfast_preloaded: contract_048 waited from 4 C to 63.6 C after physical start-button press, runs/node_contract_heat_wait/result.json, 2026-10-05

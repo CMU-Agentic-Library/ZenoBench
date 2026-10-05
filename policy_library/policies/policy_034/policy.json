@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_034",
+  "legacy_id": "carry_height_adjust",
+  "name": "Carry Height Adjust",
+  "description": "持物时把物品抬到安全携带高度",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "navigation",
+    "effect_summary": "held_above(min_height)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "min_bottom_z",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": 0.55
+    },
+    {
+      "name": "tolerance",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.02
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held_above(min_height)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_034",
+    "legacy_attribute": "carry_height_adjust",
+    "class": "CarryHeightAdjustPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_049"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_001"
+  ],
+  "evidence": "Isaac Sim tidy_toys: held toy_block bottom raised to 0.1459 m for 0.15 m target (0.02 m tolerance), runs/verify_callable_toy_chain, 2026-10-01"
+}

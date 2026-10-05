@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_063",
+  "legacy_id": "close",
+  "name": "Close",
+  "description": "Annotation-selected close dispatcher",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "articulation",
+    "effect_summary": "joint_closed(articulated)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "joint_closed(articulated)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_063",
+    "legacy_attribute": "close",
+    "class": "ClosePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [
+    "contract_005"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Existing annotation-dispatching policy used by previously verified contract route."
+}

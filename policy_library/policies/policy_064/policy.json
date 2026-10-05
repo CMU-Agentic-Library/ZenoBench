@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_064",
+  "legacy_id": "wait_for_temperature",
+  "name": "Wait For Temperature",
+  "description": "在已启动的热模型中等待食品达到目标温度",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "appliance",
+    "effect_summary": "temperature_at_least(object, min_temp_c)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "min_temp_c",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "max_wait_s",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 60.0
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "temperature_at_least(object, min_temp_c)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_064",
+    "legacy_attribute": "wait_for_temperature",
+    "class": "WaitForTemperaturePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_048"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim heat_breakfast_preloaded: contract_048 waited from 4 C to 63.6 C after physical start-button press, runs/node_contract_heat_wait/result.json, 2026-10-05",
+  "caveat": "Uses task-level temperature model and bounded live simulation steps; requires physical start first."
+}

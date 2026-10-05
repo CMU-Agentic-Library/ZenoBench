@@ -230,7 +230,18 @@ class PickFromCavityPolicy(AtomicPolicy):
             err = rig.move_to(target, R, step=0.003, steps_per_wp=5,
                               label="cavity_pick_contact", collision=False)
             if err > 0.02:
-                raise SkillFailure(f"pick from cavity {name}: contact missed by {err:.3f} m")
+                # A measured insertion-reversal pose may be kinematically valid
+                # yet blocked by the shell in dynamics. Replan a different
+                # annotated rim contact before attempting to close the fingers.
+                rig.log("cavity_retrieval_replan", obj=name,
+                        contact_error_m=round(float(err), 4))
+                result = skills._pick_pinch(rig, name, max_candidates=max_candidates)
+                body, _ = rig.obj_pose(name)
+                mouth = bounds[axis] if sign < 0 else bounds[axis+3]
+                if rig.held is None or rig.held["name"] != name or sign*(body[axis]-mouth) < 0.02:
+                    raise SkillFailure(f"pick from cavity {name}: fallback did not withdraw through the front")
+                skills.check_held(rig, "pick_from_cavity_replan")
+                return result
             fingers = rig.grip(0.0, 120)
             rig.move_to(target+np.array([0, 0, 0.07]), R, step=0.003,
                         steps_per_wp=5, label="cavity_pick_lift", collision=False)

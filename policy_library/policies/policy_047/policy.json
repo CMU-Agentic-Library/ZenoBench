@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_047",
+  "legacy_id": "release_articulated_handle",
+  "name": "Release Articulated Handle",
+  "description": "完成关节移动后放开把手",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "grasp",
+    "effect_summary": "handle_released",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "handle_released",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_047",
+    "legacy_attribute": "release_articulated_handle",
+    "class": "ReleaseArticulatedHandlePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_004",
+    "contract_005"
+  ],
+  "evidence": "Isaac Sim: release_articulated_handle breakfast_fridge, both fingers opened, 2026-10-01"
+}

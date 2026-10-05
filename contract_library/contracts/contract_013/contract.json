@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_013",
+  "skill_id": "skill_005",
+  "name": "Place an object on a support",
+  "description": "Release one right-held object onto one annotated support.",
+  "scope": {
+    "unit": "one surface placement",
+    "includes": [
+      "Release one right-held object onto one annotated support."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "support"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_accessible",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "on",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "on",
+    "right_hand_empty"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_003",
+    "route": "surface",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "choice",
+    "selection": "first_matching_before_execution",
+    "on_no_match": "raise_without_moving",
+    "paths": [
+      {
+        "path_id": "microwave_support",
+        "when": [
+          {
+            "noun": "support",
+            "field": "furniture",
+            "equals": "kitchen_microwave"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_018",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              }
+            ]
+          },
+          {
+            "policy_id": "policy_019",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          },
+          {
+            "policy_id": "policy_020",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "edge_held",
+        "when": [
+          {
+            "noun": "object",
+            "field": "held_kind",
+            "equals": "edge"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_017",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path_id": "ordinary_surface",
+        "when": [
+          {
+            "noun": "support",
+            "field": "kind",
+            "equals": "support"
+          }
+        ],
+        "steps": [
+          {
+            "policy_id": "policy_015",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "support"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_right_held": true
+    },
+    "support": {
+      "argument": "support",
+      "kind": "support",
+      "source": "rig.ann",
+      "required": true
+    }
+  }
+}

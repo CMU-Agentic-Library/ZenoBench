@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_012",
+  "legacy_id": "pick_rect_rim",
+  "name": "Pick Rect Rim",
+  "description": "沿矩形容器口沿夹取",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "grasp",
+    "effect_summary": "held(object)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "max_candidates",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 12
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held(object)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_012",
+    "legacy_attribute": "pick_rect_rim",
+    "class": "RectRimPickPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_012",
+    "contract_037"
+  ],
+  "legacy_family_contracts": [
+    "contract_002"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim collect_fruits: serving_tray rim pinch lifted 0.0293 m with both fingers in contact; tray slipped during later carry, runs/verify_callable_rect_tray_v3, 2026-10-01",
+  "caveat": "该托盘后续携带时滑脱；单步抓取成功不保证持物移动稳定"
+}

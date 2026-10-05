@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "kind": "contract",
+  "contract_id": "contract_003",
+  "legacy_id": "place.v1",
+  "description": "Attempt one release to a named support or container.",
+  "scope": "One right-hand release onto one support or into one container; target type selects the verifier branch.",
+  "inputs": {
+    "object": {
+      "type": "object_id",
+      "required": true
+    },
+    "target": {
+      "type": "support_or_container_target",
+      "required": true
+    },
+    "hint_xy_m": {
+      "type": "xy",
+      "required": false
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "args": [
+        "object"
+      ],
+      "check": "runner"
+    },
+    {
+      "predicate": "target_annotated",
+      "args": [
+        "target"
+      ],
+      "check": "policy_attempt"
+    },
+    {
+      "predicate": "target_accessible",
+      "args": [
+        "target"
+      ],
+      "check": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "inside",
+      "args": [
+        "object",
+        "container"
+      ],
+      "when": "target starts with in:",
+      "check": "runner"
+    },
+    {
+      "predicate": "on",
+      "args": [
+        "object",
+        "support"
+      ],
+      "when": "target does not start with in:",
+      "check": "runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "check": "runner"
+    }
+  ],
+  "outcomes": {
+    "success": "object at target",
+    "failure": "object may be released elsewhere"
+  },
+  "verifier": "Geometry.on or Geometry.inside; hand empty",
+  "routes": {
+    "auto": {
+      "policy_id": null,
+      "legacy_dispatcher": "PlacePolicy"
+    },
+    "surface": {
+      "policy_id": "policy_015",
+      "legacy_dispatcher": null
+    },
+    "container": {
+      "policy_id": "policy_016",
+      "legacy_dispatcher": null
+    },
+    "edge": {
+      "policy_id": "policy_017",
+      "legacy_dispatcher": null
+    },
+    "microwave": {
+      "policy_id": "policy_021",
+      "legacy_dispatcher": null
+    },
+    "moving": {
+      "policy_id": "policy_053",
+      "legacy_dispatcher": null
+    }
+  }
+}

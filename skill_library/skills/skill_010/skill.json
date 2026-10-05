@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_010",
+  "name": "Start microwave heating",
+  "description": "Press the start button and verify that heating became active.",
+  "args": {
+    "appliance": {
+      "type": "appliance_ref",
+      "required": true,
+      "description": "appliance"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "button_reachable",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "start_conditions",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "button_pressed_this_call",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "heating_active",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_018",
+  "scope": {
+    "unit": "one start-button press",
+    "includes": [
+      "Press the start button and verify that heating became active."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_018",
+    "input_order": [
+      "appliance"
+    ]
+  },
+  "expected_state_change": [
+    "button_pressed_this_call",
+    "heating_active"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_005"
+    ],
+    "incoming": [
+      "relation_004"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

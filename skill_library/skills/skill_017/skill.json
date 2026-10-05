@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_017",
+  "name": "Pick a cup by its handle",
+  "description": "Attempt one handle grasp of a cup and verify grasp and lift.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "object_reachable",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "handle_collision_body_prepared",
+      "enforcement": "not_enforced"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_by_right_hand",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_lifted",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_025",
+  "scope": {
+    "unit": "one cup-handle pick",
+    "includes": [
+      "Attempt one handle grasp of a cup and verify grasp and lift."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_025",
+    "input_order": [
+      "object"
+    ]
+  },
+  "expected_state_change": [
+    "held_by_right_hand",
+    "object_lifted"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [
+      "relation_031"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

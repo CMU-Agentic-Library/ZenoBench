@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_042",
+  "legacy_id": "prepare_floor_reach",
+  "name": "Prepare Floor Reach",
+  "description": "协调躯干、腰部和右臂进入地面可达姿态",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "posture",
+    "effect_summary": "floor_target_reachable",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "clearance_m",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.1
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "floor_target_reachable",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_042",
+    "legacy_attribute": "prepare_floor_reach",
+    "class": "PrepareFloorReachPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_002",
+    "contract_008"
+  ],
+  "evidence": "Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01"
+}

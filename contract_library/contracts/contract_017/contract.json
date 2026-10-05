@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_017",
+  "skill_id": "skill_009",
+  "name": "Press the appliance door button",
+  "description": "Physically press one annotated appliance door button.",
+  "scope": {
+    "unit": "one door-button press",
+    "includes": [
+      "Physically press one annotated appliance door button."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "appliance": {
+      "type": "appliance_ref",
+      "required": true,
+      "description": "appliance"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "button_reachable",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "start_conditions",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "button_pressed_this_call",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "button_pressed_this_call"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_007",
+    "route": "auto",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_027",
+        "args": [
+          {
+            "arg": "appliance"
+          }
+        ],
+        "kwargs": {
+          "button": "door"
+        }
+      },
+      {
+        "policy_id": "policy_028",
+        "args": [
+          {
+            "arg": "appliance"
+          }
+        ],
+        "kwargs": {
+          "button": "door"
+        }
+      },
+      {
+        "policy_id": "policy_029",
+        "args": [
+          {
+            "arg": "appliance"
+          }
+        ],
+        "kwargs": {
+          "button": "door"
+        }
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "appliance"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "appliance": {
+      "argument": "appliance",
+      "kind": "articulated",
+      "source": "rig.ann",
+      "required": true,
+      "category_equals": "microwave",
+      "required_annotation": "door_button"
+    }
+  }
+}

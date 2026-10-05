@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_056",
+  "legacy_id": "bimanual_flat_pick",
+  "name": "Bimanual Flat Pick",
+  "description": "左右手同时抓取宽书本或托盘",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "bimanual",
+    "effect_summary": "held_by_both_hands",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "held_by_both_hands",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_056",
+    "legacy_attribute": "bimanual_flat_pick",
+    "class": "BimanualFlatPickPolicy"
+  },
+  "availability": "callable",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_002"
+  ],
+  "caveat": "book_red 同步接触后物体偏移 0.034 m、双指闭到零且抬升 0 m（runs/repair_bimanual_book_v7）；接触点移入物体 0.035 m 后无法找到无碰撞共享站位（v8）。旧试验短时抬起 0.037 m 后左手滑脱。"
+}

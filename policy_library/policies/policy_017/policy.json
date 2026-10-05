@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_017",
+  "legacy_id": "place_edge",
+  "name": "Place Edge",
+  "description": "把边缘持握的平物体滑回支撑面",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "placement",
+    "effect_summary": "on(object,support)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "hint",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "on(object,support)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_017",
+    "legacy_attribute": "place_edge",
+    "class": "EdgePlacePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_013",
+    "contract_038"
+  ],
+  "legacy_family_contracts": [
+    "contract_003"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim shelve_books: edge-held book_red released onto desk support, on_support true and tilt 1.1 deg, runs/verify_callable_place_edge, 2026-10-01"
+}

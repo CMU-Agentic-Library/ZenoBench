@@ -1,0 +1,4290 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract_catalog",
+  "contracts": [
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_009",
+      "skill_id": "skill_001",
+      "name": "Navigate empty-handed",
+      "description": "Move the empty-handed robot base to one target pose.",
+      "scope": {
+        "unit": "one empty-handed base move",
+        "includes": [
+          "Move the empty-handed robot base to one target pose."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "pose": {
+          "type": "pose2d",
+          "required": true,
+          "description": "pose"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "target_navigable",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "carried_object_matches_state",
+          "enforcement": "not_enforced"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "base_at",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "base_at"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_001",
+        "route": "empty",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_001",
+            "args": [
+              {
+                "arg": "pose"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "pose"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [
+        {
+          "when": "base path blocked and right hand remains empty",
+          "skill_id": "skill_011",
+          "reason": "tuck the arm before proposing a new navigation attempt"
+        }
+      ],
+      "noun_bindings": {}
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_010",
+      "skill_id": "skill_002",
+      "name": "Navigate while carrying",
+      "description": "Move the base while preserving the current right-hand grasp.",
+      "scope": {
+        "unit": "one loaded base move",
+        "includes": [
+          "Move the base while preserving the current right-hand grasp."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The object currently held in the right hand."
+        },
+        "pose": {
+          "type": "pose2d",
+          "required": true,
+          "description": "pose"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "target_navigable",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "carried_object_matches_state",
+          "enforcement": "not_enforced"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "base_at",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "grasp_preserved",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "base_at",
+        "grasp_preserved"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_001",
+        "route": "carry",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop",
+        "family_arg_order": [
+          "pose"
+        ]
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_002",
+            "args": [
+              {
+                "arg": "pose"
+              }
+            ],
+            "kwargs": {
+              "name": {
+                "arg": "object"
+              }
+            }
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "pose"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_011",
+      "skill_id": "skill_003",
+      "name": "Open an articulated door or drawer",
+      "description": "Open one annotated articulated target and verify its joint position.",
+      "scope": {
+        "unit": "one articulated opening",
+        "includes": [
+          "Open one annotated articulated target and verify its joint position."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "articulated": {
+          "type": "articulated_ref",
+          "required": true,
+          "description": "articulated"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "articulated_annotated",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "opening_route_feasible",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_open_enough",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_open_enough"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_004",
+        "route": "auto",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "choice",
+        "selection": "first_matching_before_execution",
+        "on_no_match": "raise_without_moving",
+        "paths": [
+          {
+            "path_id": "powered_microwave",
+            "when": [
+              {
+                "noun": "articulated",
+                "field": "powered_microwave",
+                "equals": true
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_024",
+                "args": [
+                  {
+                    "arg": "articulated"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "manual_drawer",
+            "when": [
+              {
+                "noun": "articulated",
+                "field": "type",
+                "equals": "prismatic"
+              },
+              {
+                "noun": "articulated",
+                "field": "has_handle",
+                "equals": true
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_050",
+                "args": [
+                  {
+                    "arg": "articulated"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "manual_hinged_door",
+            "when": [
+              {
+                "noun": "articulated",
+                "field": "type",
+                "equals": "revolute"
+              },
+              {
+                "noun": "articulated",
+                "field": "has_handle",
+                "equals": true
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_049",
+                "args": [
+                  {
+                    "arg": "articulated"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "articulated"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "articulated": {
+          "argument": "articulated",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_012",
+      "skill_id": "skill_004",
+      "name": "Pick an object",
+      "description": "Grasp and lift one annotated scene object with the right hand.",
+      "scope": {
+        "unit": "one planner-visible pick attempt",
+        "includes": [
+          "select a supported right-hand grasp route",
+          "approach, grasp, lift, and verify the requested object"
+        ],
+        "excludes": [
+          "choosing the task goal",
+          "guaranteeing reachability before execution",
+          "placing or transporting the object to a destination"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The object to pick."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_annotated",
+          "arg": "object",
+          "enforcement": "contract_noun_binding"
+        },
+        {
+          "predicate": "object_reachable",
+          "arg": "object",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "arg": "object",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "arg": "object",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_002",
+        "route": "auto",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "choice",
+        "selection": "first_matching_before_execution",
+        "on_no_match": "raise_without_moving",
+        "paths": [
+          {
+            "path_id": "microwave_cavity",
+            "when": [
+              {
+                "noun": "object",
+                "field": "location",
+                "equals": "microwave_cavity"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_048",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "floor_corner",
+            "when": [
+              {
+                "noun": "object",
+                "field": "on_floor",
+                "equals": true
+              },
+              {
+                "noun": "object",
+                "field": "grasp_types",
+                "contains": "edge_pinch_after_push"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_014",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "rectangular_rim",
+            "when": [
+              {
+                "noun": "object",
+                "field": "grasp_types",
+                "contains": "rim_pinch_rect"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_012",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "round_rim",
+            "when": [
+              {
+                "noun": "object",
+                "field": "grasp_types",
+                "contains": "rim_pinch"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_011",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "top_pinch",
+            "when": [
+              {
+                "noun": "object",
+                "field": "grasp_types",
+                "contains": "top_pinch"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_010",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "flat_edge",
+            "when": [
+              {
+                "noun": "object",
+                "field": "on_floor",
+                "equals": false
+              },
+              {
+                "noun": "object",
+                "field": "grasp_types",
+                "contains": "edge_pinch_after_push"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_013",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "handle_only",
+            "when": [
+              {
+                "noun": "object",
+                "field": "grasp_types",
+                "contains": "handle_pinch"
+              },
+              {
+                "noun": "object",
+                "field": "handle_collider",
+                "equals": true
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_055",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [
+        {
+          "when": "object remains on an annotated support edge and right hand is empty",
+          "skill_id": "skill_016",
+          "reason": "edge-specific grasp may be appropriate"
+        }
+      ],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_013",
+      "skill_id": "skill_005",
+      "name": "Place an object on a support",
+      "description": "Release one right-held object onto one annotated support.",
+      "scope": {
+        "unit": "one surface placement",
+        "includes": [
+          "Release one right-held object onto one annotated support."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "support"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_accessible",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "on",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "right_hand_empty",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "on",
+        "right_hand_empty"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_003",
+        "route": "surface",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "choice",
+        "selection": "first_matching_before_execution",
+        "on_no_match": "raise_without_moving",
+        "paths": [
+          {
+            "path_id": "microwave_support",
+            "when": [
+              {
+                "noun": "support",
+                "field": "furniture",
+                "equals": "kitchen_microwave"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_018",
+                "args": [
+                  {
+                    "arg": "object"
+                  },
+                  {
+                    "arg": "support"
+                  }
+                ]
+              },
+              {
+                "policy_id": "policy_019",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              },
+              {
+                "policy_id": "policy_020",
+                "args": [
+                  {
+                    "arg": "object"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "edge_held",
+            "when": [
+              {
+                "noun": "object",
+                "field": "held_kind",
+                "equals": "edge"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_017",
+                "args": [
+                  {
+                    "arg": "object"
+                  },
+                  {
+                    "arg": "support"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "ordinary_surface",
+            "when": [
+              {
+                "noun": "support",
+                "field": "kind",
+                "equals": "support"
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_015",
+                "args": [
+                  {
+                    "arg": "object"
+                  },
+                  {
+                    "arg": "support"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_014",
+      "skill_id": "skill_006",
+      "name": "Place an object in a container",
+      "description": "Release a right-held object into an annotated container and verify the final geometry.",
+      "scope": {
+        "unit": "one planner-visible place-in-container attempt",
+        "includes": [
+          "move the right-held object to one annotated container",
+          "release and verify inside(object, container)"
+        ],
+        "excludes": [
+          "placing on a bare support surface",
+          "choosing another container when this one is missing",
+          "checking the entire task goal"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The held object to place."
+        },
+        "container": {
+          "type": "container_ref",
+          "required": true,
+          "description": "The target container."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "arg": "object",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "container_annotated",
+          "arg": "container",
+          "enforcement": "contract_noun_binding"
+        },
+        {
+          "predicate": "container_accessible",
+          "arg": "container",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "inside",
+          "args": [
+            "object",
+            "container"
+          ],
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "right_hand_empty",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "inside",
+        "right_hand_empty"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_003",
+        "route": "container",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_016",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "container"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "container"
+      ],
+      "argument_transforms": {
+        "container": "in:"
+      },
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        },
+        "container": {
+          "argument": "container",
+          "kind": "container",
+          "source": "rig.ann",
+          "required": true,
+          "required_annotation": "asset.container"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_015",
+      "skill_id": "skill_007",
+      "name": "Close an articulated door or drawer",
+      "description": "Close one annotated articulated target and verify its joint position.",
+      "scope": {
+        "unit": "one articulated closure",
+        "includes": [
+          "Close one annotated articulated target and verify its joint position."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "articulated": {
+          "type": "articulated_ref",
+          "required": true,
+          "description": "articulated"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "articulated_annotated",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "closure_path_clear",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_closed",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_closed"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_005",
+        "route": "auto",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "choice",
+        "selection": "first_matching_before_execution",
+        "on_no_match": "raise_without_moving",
+        "paths": [
+          {
+            "path_id": "powered_microwave",
+            "when": [
+              {
+                "noun": "articulated",
+                "field": "powered_microwave",
+                "equals": true
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_025",
+                "args": [
+                  {
+                    "arg": "articulated"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "path_id": "manual_handle",
+            "when": [
+              {
+                "noun": "articulated",
+                "field": "has_handle",
+                "equals": true
+              }
+            ],
+            "steps": [
+              {
+                "policy_id": "policy_023",
+                "args": [
+                  {
+                    "arg": "articulated"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "articulated"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "articulated": {
+          "argument": "articulated",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_016",
+      "skill_id": "skill_008",
+      "name": "Push an object along a support",
+      "description": "Move one object by directed contact and measure progress.",
+      "scope": {
+        "unit": "one directed contact move",
+        "includes": [
+          "Move one object by directed contact and measure progress."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "support"
+        },
+        "direction_xy": {
+          "type": "unit_vec2",
+          "required": true,
+          "description": "direction xy"
+        },
+        "distance_m": {
+          "type": "positive_number",
+          "required": true,
+          "description": "distance m"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_on_support",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "displacement_along",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "displacement_along"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_006",
+        "route": "auto",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_026",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              },
+              {
+                "arg": "direction_xy"
+              },
+              {
+                "arg": "distance_m"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support",
+        "direction_xy",
+        "distance_m"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_017",
+      "skill_id": "skill_009",
+      "name": "Press the appliance door button",
+      "description": "Physically press one annotated appliance door button.",
+      "scope": {
+        "unit": "one door-button press",
+        "includes": [
+          "Physically press one annotated appliance door button."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "appliance": {
+          "type": "appliance_ref",
+          "required": true,
+          "description": "appliance"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "button_reachable",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "start_conditions",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "button_pressed_this_call",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "button_pressed_this_call"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_007",
+        "route": "auto",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_027",
+            "args": [
+              {
+                "arg": "appliance"
+              }
+            ],
+            "kwargs": {
+              "button": "door"
+            }
+          },
+          {
+            "policy_id": "policy_028",
+            "args": [
+              {
+                "arg": "appliance"
+              }
+            ],
+            "kwargs": {
+              "button": "door"
+            }
+          },
+          {
+            "policy_id": "policy_029",
+            "args": [
+              {
+                "arg": "appliance"
+              }
+            ],
+            "kwargs": {
+              "button": "door"
+            }
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "appliance"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "appliance": {
+          "argument": "appliance",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "category_equals": "microwave",
+          "required_annotation": "door_button"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_018",
+      "skill_id": "skill_010",
+      "name": "Start microwave heating",
+      "description": "Press the start button and verify that heating became active.",
+      "scope": {
+        "unit": "one start-button press",
+        "includes": [
+          "Press the start button and verify that heating became active."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "appliance": {
+          "type": "appliance_ref",
+          "required": true,
+          "description": "appliance"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "button_reachable",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "start_conditions",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "button_pressed_this_call",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "heating_active",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "button_pressed_this_call",
+        "heating_active"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_007",
+        "route": "start",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_027",
+            "args": [
+              {
+                "arg": "appliance"
+              }
+            ],
+            "kwargs": {
+              "button": "start"
+            }
+          },
+          {
+            "policy_id": "policy_028",
+            "args": [
+              {
+                "arg": "appliance"
+              }
+            ],
+            "kwargs": {
+              "button": "start"
+            }
+          },
+          {
+            "policy_id": "policy_029",
+            "args": [
+              {
+                "arg": "appliance"
+              }
+            ],
+            "kwargs": {
+              "button": "start"
+            }
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "appliance"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "appliance": {
+          "argument": "appliance",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "category_equals": "microwave",
+          "required_annotation": "start_button"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_019",
+      "skill_id": "skill_011",
+      "name": "Tuck the right arm",
+      "description": "Move the right arm into the measured travel posture.",
+      "scope": {
+        "unit": "one arm tuck",
+        "includes": [
+          "Move the right arm into the measured travel posture."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {},
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_within_joint_limits",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "collision_free_motion",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "posture_at_target",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "posture_at_target"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_008",
+        "route": "tuck",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_003",
+            "args": []
+          }
+        ]
+      },
+      "legacy_call_args": [],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {}
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_020",
+      "skill_id": "skill_012",
+      "name": "Set torso height",
+      "description": "Move the torso lift to one requested joint height.",
+      "scope": {
+        "unit": "one torso lift adjustment",
+        "includes": [
+          "Move the torso lift to one requested joint height."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "height_m": {
+          "type": "number",
+          "required": true,
+          "description": "height m"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_within_joint_limits",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "collision_free_motion",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "posture_at_target",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "posture_at_target"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_008",
+        "route": "torso",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_004",
+            "args": [
+              {
+                "arg": "height_m"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "height_m"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {}
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_021",
+      "skill_id": "skill_013",
+      "name": "Set waist pitch",
+      "description": "Move the waist to one requested pitch angle in radians.",
+      "scope": {
+        "unit": "one waist pitch adjustment",
+        "includes": [
+          "Move the waist to one requested pitch angle in radians."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "pitch_rad": {
+          "type": "number",
+          "required": true,
+          "description": "pitch rad"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_within_joint_limits",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "collision_free_motion",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "posture_at_target",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "posture_at_target"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_008",
+        "route": "waist",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_007",
+            "args": [
+              {
+                "arg": "pitch_rad"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "pitch_rad"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {}
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_022",
+      "skill_id": "skill_014",
+      "name": "Place an object on the microwave cavity support",
+      "description": "Release one right-held object onto the annotated microwave cavity support.",
+      "scope": {
+        "unit": "one microwave support placement",
+        "includes": [
+          "Release one right-held object onto the annotated microwave cavity support."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "support": {
+          "type": "microwave_support_ref",
+          "required": true,
+          "description": "Annotated microwave cavity support."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_accessible",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "on",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "right_hand_empty",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "on",
+        "right_hand_empty"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_003",
+        "route": "microwave",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_018",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              }
+            ]
+          },
+          {
+            "policy_id": "policy_019",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          },
+          {
+            "policy_id": "policy_020",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true,
+          "furniture_equals": "kitchen_microwave"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_023",
+      "skill_id": "skill_015",
+      "name": "Pick an object from a cavity",
+      "description": "Attempt one right-hand cavity retrieval and verify grasp and lift.",
+      "scope": {
+        "unit": "one cavity-route pick",
+        "includes": [
+          "Attempt one right-hand cavity retrieval and verify grasp and lift."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "cavity": {
+          "type": "appliance_ref",
+          "required": true,
+          "description": "The annotated microwave cavity appliance."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "object_reachable",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_002",
+        "route": "cavity",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_048",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "cavity"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "cavity"
+      ],
+      "argument_transforms": {},
+      "availability": "experimental_callable",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        },
+        "cavity": {
+          "argument": "cavity",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "category_equals": "microwave",
+          "required_annotation": "cavity_aabb"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_024",
+      "skill_id": "skill_016",
+      "name": "Pick a flat object at an edge",
+      "description": "Attempt one edge grasp of a flat object and verify grasp and lift.",
+      "scope": {
+        "unit": "one edge-route pick",
+        "includes": [
+          "Attempt one edge grasp of a flat object and verify grasp and lift."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "object_reachable",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_002",
+        "route": "edge",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_013",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_grasp_type": "edge_pinch_after_push"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_025",
+      "skill_id": "skill_017",
+      "name": "Pick a cup by its handle",
+      "description": "Attempt one handle grasp of a cup and verify grasp and lift.",
+      "scope": {
+        "unit": "one cup-handle pick",
+        "includes": [
+          "Attempt one handle grasp of a cup and verify grasp and lift."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "object_reachable",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "handle_collision_body_prepared",
+          "enforcement": "not_enforced"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_002",
+        "route": "cup_handle",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_055",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_grasp_type": "handle_pinch"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_026",
+      "skill_id": "skill_018",
+      "name": "Pick while the base moves",
+      "description": "Attempt one right-hand pick during a base move to a target pose.",
+      "scope": {
+        "unit": "one synchronized moving pick",
+        "includes": [
+          "Attempt one right-hand pick during a base move to a target pose."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "base_path": {
+          "type": "pose2d",
+          "required": true,
+          "description": "base path"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "object_reachable",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_002",
+        "route": "moving",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_052",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "base_path"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "base_path"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [
+        {
+          "when": "object remains reachable and base motion has stopped",
+          "skill_id": "skill_004",
+          "reason": "stationary pick is an alternative to mobile pick"
+        }
+      ],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_027",
+      "skill_id": "skill_019",
+      "name": "Place on a support while the base moves",
+      "description": "Release one right-held object onto a support during a base move.",
+      "scope": {
+        "unit": "one synchronized moving placement",
+        "includes": [
+          "Release one right-held object onto a support during a base move."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "support"
+        },
+        "base_path": {
+          "type": "pose2d",
+          "required": true,
+          "description": "base path"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_accessible",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "on",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "right_hand_empty",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "on",
+        "right_hand_empty"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_003",
+        "route": "moving",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_053",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              },
+              {
+                "arg": "base_path"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support",
+        "base_path"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [
+        {
+          "when": "object remains right-held and base motion has stopped",
+          "skill_id": "skill_005",
+          "reason": "stationary support placement is an alternative to mobile placement"
+        }
+      ],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_028",
+      "skill_id": "skill_020",
+      "name": "Pick a flat object from a floor corner",
+      "description": "Attempt one floor-corner grasp and verify right-hand lift.",
+      "scope": {
+        "unit": "one floor-corner pick",
+        "includes": [
+          "Attempt one floor-corner grasp and verify right-hand lift."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "object_reachable",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_002",
+        "route": "floor_corner",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_014",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "experimental_callable",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_grasp_type": "edge_pinch_after_push"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_029",
+      "skill_id": "skill_021",
+      "name": "Carry a large object with both hands",
+      "description": "Move a currently two-hand-held object to one base pose.",
+      "scope": {
+        "unit": "one two-hand carry move",
+        "includes": [
+          "Move a currently two-hand-held object to one base pose."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "pose": {
+          "type": "pose2d",
+          "required": true,
+          "description": "pose"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "target_navigable",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "carried_object_matches_state",
+          "enforcement": "not_enforced"
+        },
+        {
+          "predicate": "two_hand_hold",
+          "enforcement": "not_enforced"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "base_at",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "grasp_preserved",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "base_at",
+        "grasp_preserved"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_001",
+        "route": "two_hand_carry",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_058",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "pose"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "pose"
+      ],
+      "argument_transforms": {},
+      "availability": "experimental_callable",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_030",
+      "skill_id": "skill_022",
+      "name": "Open a door while the left hand holds an object",
+      "description": "Open one annotated door while preserving an existing left-hand hold.",
+      "scope": {
+        "unit": "one left-hold opening",
+        "includes": [
+          "Open one annotated door while preserving an existing left-hand hold."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "articulated": {
+          "type": "articulated_ref",
+          "required": true,
+          "description": "articulated"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "articulated_annotated",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "opening_route_feasible",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "held_by_left_hand",
+          "enforcement": "not_enforced"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_open_enough",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_open_enough"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_004",
+        "route": "while_left_holds",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_060",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "articulated"
+      ],
+      "argument_transforms": {},
+      "availability": "experimental_callable",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        },
+        "articulated": {
+          "argument": "articulated",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_031",
+      "skill_id": "skill_023",
+      "name": "Open powered microwave door",
+      "description": "Open the annotated powered microwave door and measure its joint.",
+      "scope": {
+        "unit": "One open powered microwave door attempt on the grounded scene state.",
+        "includes": [
+          "Open the annotated powered microwave door and measure its joint."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "appliance": {
+          "type": "appliance_ref",
+          "required": true,
+          "description": "The grounded microwave appliance."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_open_enough",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_open_enough"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_004",
+        "route": "powered"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_024",
+            "args": [
+              {
+                "arg": "appliance"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "appliance"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "appliance": {
+          "argument": "appliance",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "category_equals": "microwave",
+          "required_annotation": "door_button"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_032",
+      "skill_id": "skill_024",
+      "name": "Close powered microwave door",
+      "description": "Close the annotated powered microwave door and measure its joint.",
+      "scope": {
+        "unit": "One close powered microwave door attempt on the grounded scene state.",
+        "includes": [
+          "Close the annotated powered microwave door and measure its joint."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "appliance": {
+          "type": "appliance_ref",
+          "required": true,
+          "description": "The grounded microwave appliance."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_closed",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_closed"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_005",
+        "route": "powered"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_025",
+            "args": [
+              {
+                "arg": "appliance"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "appliance"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "appliance": {
+          "argument": "appliance",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "category_equals": "microwave",
+          "required_annotation": "door_button"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_033",
+      "skill_id": "skill_025",
+      "name": "Open a manual handle",
+      "description": "Open one handle-operated door or drawer.",
+      "scope": {
+        "unit": "One open a manual handle attempt on the grounded scene state.",
+        "includes": [
+          "Open one handle-operated door or drawer."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "articulated": {
+          "type": "articulated_ref",
+          "required": true,
+          "description": "The uniquely grounded door or drawer."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_open_enough",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_open_enough"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_004",
+        "route": "handle"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_022",
+            "args": [
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "articulated"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "articulated": {
+          "argument": "articulated",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "required_annotation": "handle",
+          "forbid_annotation": "door_button"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_034",
+      "skill_id": "skill_026",
+      "name": "Close a manual handle",
+      "description": "Close one handle-operated door or drawer.",
+      "scope": {
+        "unit": "One close a manual handle attempt on the grounded scene state.",
+        "includes": [
+          "Close one handle-operated door or drawer."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "articulated": {
+          "type": "articulated_ref",
+          "required": true,
+          "description": "The uniquely grounded door or drawer."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_closed",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_closed"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_005",
+        "route": "handle"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_023",
+            "args": [
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "articulated"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "articulated": {
+          "argument": "articulated",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "required_annotation": "handle",
+          "forbid_annotation": "door_button"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_035",
+      "skill_id": "skill_027",
+      "name": "Pick by top pinch",
+      "description": "Grasp an annotated object from its top pinch region.",
+      "scope": {
+        "unit": "One pick by top pinch attempt on the grounded scene state.",
+        "includes": [
+          "Grasp an annotated object from its top pinch region."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_002",
+        "route": "top"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_010",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_grasp_type": "top_pinch"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_036",
+      "skill_id": "skill_028",
+      "name": "Pick by round rim",
+      "description": "Grasp a bowl or cup by its annotated round rim.",
+      "scope": {
+        "unit": "One pick by round rim attempt on the grounded scene state.",
+        "includes": [
+          "Grasp a bowl or cup by its annotated round rim."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_002",
+        "route": "round_rim"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_011",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_grasp_type": "rim_pinch"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_037",
+      "skill_id": "skill_029",
+      "name": "Pick by rectangular rim",
+      "description": "Grasp a rectangular tray or box by its annotated rim.",
+      "scope": {
+        "unit": "One pick by rectangular rim attempt on the grounded scene state.",
+        "includes": [
+          "Grasp a rectangular tray or box by its annotated rim."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_by_right_hand",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_lifted",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_by_right_hand",
+        "object_lifted"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_002",
+        "route": "rect_rim"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_012",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_grasp_type": "rim_pinch_rect"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_038",
+      "skill_id": "skill_030",
+      "name": "Place an edge-held flat object",
+      "description": "Place one edge-held flat item onto an annotated support.",
+      "scope": {
+        "unit": "One place an edge-held flat object attempt on the grounded scene state.",
+        "includes": [
+          "Place one edge-held flat item onto an annotated support."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "The grounded target support."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "held_with_edge_grasp",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "on",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "right_hand_empty",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "on",
+        "right_hand_empty"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_003",
+        "route": "edge"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_017",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_held_kind": "edge",
+          "requires_right_held": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_039",
+      "skill_id": "skill_031",
+      "name": "Lower torso for floor reach",
+      "description": "Lower the robot torso to its configured minimum before floor interaction.",
+      "scope": {
+        "unit": "One lower torso for floor reach attempt on the grounded scene state.",
+        "includes": [
+          "Lower the robot torso to its configured minimum before floor interaction."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {},
+      "requires": [
+        {
+          "predicate": "joint_path_clear",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "posture_at_target",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "posture_at_target"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_008",
+        "route": "lower"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_005",
+            "args": []
+          }
+        ]
+      },
+      "legacy_call_args": [],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {}
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_040",
+      "skill_id": "skill_032",
+      "name": "Raise torso for work surface",
+      "description": "Raise the robot torso to its configured maximum.",
+      "scope": {
+        "unit": "One raise torso for work surface attempt on the grounded scene state.",
+        "includes": [
+          "Raise the robot torso to its configured maximum."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {},
+      "requires": [
+        {
+          "predicate": "joint_path_clear",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "posture_at_target",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "posture_at_target"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_008",
+        "route": "raise"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_006",
+            "args": []
+          }
+        ]
+      },
+      "legacy_call_args": [],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {}
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_041",
+      "skill_id": "skill_033",
+      "name": "Lean waist forward",
+      "description": "Lean the waist forward to its configured safe posture.",
+      "scope": {
+        "unit": "One lean waist forward attempt on the grounded scene state.",
+        "includes": [
+          "Lean the waist forward to its configured safe posture."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {},
+      "requires": [
+        {
+          "predicate": "joint_path_clear",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "posture_at_target",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "posture_at_target"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_008",
+        "route": "lean"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_008",
+            "args": []
+          }
+        ]
+      },
+      "legacy_call_args": [],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {}
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_042",
+      "skill_id": "skill_034",
+      "name": "Straighten waist",
+      "description": "Return the waist pitch to neutral.",
+      "scope": {
+        "unit": "One straighten waist attempt on the grounded scene state.",
+        "includes": [
+          "Return the waist pitch to neutral."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {},
+      "requires": [
+        {
+          "predicate": "joint_path_clear",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "posture_at_target",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "posture_at_target"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_008",
+        "route": "straighten"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_009",
+            "args": []
+          }
+        ]
+      },
+      "legacy_call_args": [],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {}
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_043",
+      "skill_id": "skill_035",
+      "name": "Expose a flat object edge",
+      "description": "Push a flat object to a measured, graspable support overhang.",
+      "scope": {
+        "unit": "One expose a flat object edge attempt on the grounded scene state.",
+        "includes": [
+          "Push a flat object to a measured, graspable support overhang."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_on_annotated_support",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "free_support_edge",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "edge_overhang_ready",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "edge_overhang_ready"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "edge_ready"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_045",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_grasp_type": "edge_pinch_after_push"
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_044",
+      "skill_id": "skill_036",
+      "name": "Upright a held object",
+      "description": "Rotate a right-held object until its local up axis is within 20 degrees of vertical.",
+      "scope": {
+        "unit": "One upright a held object attempt on the grounded scene state.",
+        "includes": [
+          "Rotate a right-held object until its local up axis is within 20 degrees of vertical."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "object_upright",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "object_upright"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "upright"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_054",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ],
+            "kwargs": {
+              "max_tilt_deg": 20.0
+            }
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_045",
+      "skill_id": "skill_037",
+      "name": "Place an object upright on a support",
+      "description": "Orient a held object, place it on a support, then verify support and tilt.",
+      "scope": {
+        "unit": "One place an object upright on a support attempt on the grounded scene state.",
+        "includes": [
+          "Orient a held object, place it on a support, then verify support and tilt."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "The grounded target support."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "on",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "right_hand_empty",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_upright",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "on",
+        "right_hand_empty",
+        "object_upright"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_003",
+        "route": "surface",
+        "extra_checks": [
+          "upright"
+        ]
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_054",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ],
+            "kwargs": {
+              "max_tilt_deg": 20.0
+            }
+          },
+          {
+            "policy_id": "policy_015",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support"
+      ],
+      "argument_transforms": {},
+      "availability": "experimental_callable",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_046",
+      "skill_id": "skill_038",
+      "name": "Place an object near a support hint",
+      "description": "Place a held object near a supplied xy hint and verify the final offset.",
+      "scope": {
+        "unit": "One place an object near a support hint attempt on the grounded scene state.",
+        "includes": [
+          "Place a held object near a supplied xy hint and verify the final offset."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "The grounded target support."
+        },
+        "hint_xy": {
+          "type": "xy",
+          "required": true,
+          "description": "Desired [x_m,y_m] point on the support."
+        },
+        "max_offset_m": {
+          "type": "positive_number",
+          "required": true,
+          "description": "Maximum final xy distance from hint in metres."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "on",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "right_hand_empty",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "within_hint_radius",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "on",
+        "right_hand_empty",
+        "within_hint_radius"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_003",
+        "route": "surface",
+        "extra_checks": [
+          "within_hint"
+        ]
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_015",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              }
+            ],
+            "kwargs": {
+              "hint": {
+                "arg": "hint_xy"
+              }
+            }
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support",
+        "hint_xy",
+        "max_offset_m"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_047",
+      "skill_id": "skill_039",
+      "name": "Place an upright object near a support hint",
+      "description": "Orient and place a held object near a supplied xy hint, then verify both.",
+      "scope": {
+        "unit": "One place an upright object near a support hint attempt on the grounded scene state.",
+        "includes": [
+          "Orient and place a held object near a supplied xy hint, then verify both."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "The grounded target support."
+        },
+        "hint_xy": {
+          "type": "xy",
+          "required": true,
+          "description": "Desired [x_m,y_m] point on the support."
+        },
+        "max_offset_m": {
+          "type": "positive_number",
+          "required": true,
+          "description": "Maximum final xy distance from hint in metres."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "on",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "right_hand_empty",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "object_upright",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "within_hint_radius",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "on",
+        "right_hand_empty",
+        "object_upright",
+        "within_hint_radius"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_003",
+        "route": "surface",
+        "extra_checks": [
+          "upright",
+          "within_hint"
+        ]
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_054",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ],
+            "kwargs": {
+              "max_tilt_deg": 20.0
+            }
+          },
+          {
+            "policy_id": "policy_015",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              }
+            ],
+            "kwargs": {
+              "hint": {
+                "arg": "hint_xy"
+              }
+            }
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support",
+        "hint_xy",
+        "max_offset_m"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_048",
+      "skill_id": "skill_040",
+      "name": "Wait for food to reach target temperature",
+      "description": "Advance the live thermal simulation until the named food reaches its target temperature.",
+      "scope": {
+        "unit": "One wait for food to reach target temperature attempt on the grounded scene state.",
+        "includes": [
+          "Advance the live thermal simulation until the named food reaches its target temperature."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        },
+        "min_temp_c": {
+          "type": "positive_number",
+          "required": true,
+          "description": "Required target temperature in Celsius."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "thermal_model_configured",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "heating_active_or_already_hot",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "temperature_at_least",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "temperature_at_least"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "temperature"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_064",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "min_temp_c"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "min_temp_c"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_049",
+      "skill_id": "skill_041",
+      "name": "Raise carried object for clearance",
+      "description": "Lift a right-held object until its bottom clears a required height.",
+      "scope": {
+        "unit": "One raise carried object for clearance attempt on the grounded scene state.",
+        "includes": [
+          "Lift a right-held object until its bottom clears a required height."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The object currently held in the right hand."
+        },
+        "min_bottom_z": {
+          "type": "positive_number",
+          "required": true,
+          "description": "Required minimum world z of the held object bottom."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "held_object_above_height",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "held_object_above_height"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "carry_height"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_034",
+            "args": [
+              {
+                "arg": "min_bottom_z"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "min_bottom_z"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        }
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_050",
+      "skill_id": "skill_042",
+      "name": "Back away while carrying",
+      "description": "Reverse the base while preserving the right-hand grasp.",
+      "scope": {
+        "unit": "One back away while carrying attempt on the grounded scene state.",
+        "includes": [
+          "Reverse the base while preserving the right-hand grasp."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The object currently held in the right hand."
+        },
+        "distance_m": {
+          "type": "positive_number",
+          "required": true,
+          "description": "Requested backward travel distance in metres."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "held_by_right_hand",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "backward_path_clear",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "base_backed_off",
+          "verification": "contract_runner"
+        },
+        {
+          "predicate": "grasp_preserved",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "base_backed_off",
+        "grasp_preserved"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "back_off"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_035",
+            "args": [
+              {
+                "arg": "distance_m"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "distance_m"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true,
+          "requires_right_held": true
+        }
+      }
+    }
+  ]
+}

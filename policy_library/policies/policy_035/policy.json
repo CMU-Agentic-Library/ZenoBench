@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_035",
+  "legacy_id": "back_off_with_load",
+  "name": "Back Off With Load",
+  "description": "持物从家具旁后退到安全距离",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "navigation",
+    "effect_summary": "base_reversed(distance) and held(object)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "distance",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": 0.35
+    },
+    {
+      "name": "min_distance",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.1
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "base_reversed(distance) and held(object)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_035",
+    "legacy_attribute": "back_off_with_load",
+    "class": "BackOffWithLoadPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_050"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_001"
+  ],
+  "evidence": "Isaac Sim tidy_toys: held toy_block while base reversed 0.120 m, runs/verify_callable_toy_chain, 2026-10-01"
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_021",
+  "name": "Carry a large object with both hands",
+  "description": "Move a currently two-hand-held object to one base pose.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "pose": {
+      "type": "pose2d",
+      "required": true,
+      "description": "pose"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "target_navigable",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "carried_object_matches_state",
+      "enforcement": "not_enforced"
+    },
+    {
+      "predicate": "two_hand_hold",
+      "enforcement": "not_enforced"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_at",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "grasp_preserved",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "experimental_callable",
+  "contract_id": "contract_029",
+  "scope": {
+    "unit": "one two-hand carry move",
+    "includes": [
+      "Move a currently two-hand-held object to one base pose."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_029",
+    "input_order": [
+      "object",
+      "pose"
+    ]
+  },
+  "expected_state_change": [
+    "base_at",
+    "grasp_preserved"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_040",
+  "name": "Wait for food to reach target temperature",
+  "description": "Advance the live thermal simulation until the named food reaches its target temperature.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    },
+    "min_temp_c": {
+      "type": "positive_number",
+      "required": true,
+      "description": "Required target temperature in Celsius."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "thermal_model_configured",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "heating_active_or_already_hot",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "temperature_at_least",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_048",
+  "scope": {
+    "unit": "One wait for food to reach target temperature attempt on the grounded scene state.",
+    "includes": [
+      "Advance the live thermal simulation until the named food reaches its target temperature."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_048",
+    "input_order": [
+      "object",
+      "min_temp_c"
+    ]
+  },
+  "expected_state_change": [
+    "temperature_at_least"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_006"
+    ],
+    "incoming": [
+      "relation_005"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

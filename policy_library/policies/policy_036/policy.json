@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_036",
+  "legacy_id": "base_rotate_in_place",
+  "name": "Base Rotate In Place",
+  "description": "空手收臂后检查占用空间并原地旋转",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "navigation",
+    "effect_summary": "base_yaw_changed",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "delta_yaw_deg",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "tolerance_deg",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 2.0
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "base_yaw_changed",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_036",
+    "legacy_attribute": "base_rotate_in_place",
+    "class": "BaseRotateInPlacePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_001"
+  ],
+  "evidence": "Isaac Sim: tuck_arm; base_rotate_in_place 10; base_translate_local 0.1, 2026-10-01; runs/atomic_base_smoke/result.json"
+}

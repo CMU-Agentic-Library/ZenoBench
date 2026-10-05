@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_019",
+  "name": "Place on a support while the base moves",
+  "description": "Release one right-held object onto a support during a base move.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "support"
+    },
+    "base_path": {
+      "type": "pose2d",
+      "required": true,
+      "description": "base path"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_accessible",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "on",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_027",
+  "scope": {
+    "unit": "one synchronized moving placement",
+    "includes": [
+      "Release one right-held object onto a support during a base move."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_027",
+    "input_order": [
+      "object",
+      "support",
+      "base_path"
+    ]
+  },
+  "expected_state_change": [
+    "on",
+    "right_hand_empty"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_029"
+    ],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": [
+    {
+      "when": "object remains right-held and base motion has stopped",
+      "skill_id": "skill_005",
+      "reason": "stationary support placement is an alternative to mobile placement"
+    }
+  ]
+}

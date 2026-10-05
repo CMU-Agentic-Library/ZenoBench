@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_019",
+  "legacy_id": "microwave_cavity_release",
+  "name": "Microwave Cavity Release",
+  "description": "送入腔体后张开夹爪并测量手指位置",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "placement",
+    "effect_summary": "object_released_in_cavity",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "object_released_in_cavity",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_019",
+    "legacy_attribute": "microwave_cavity_release",
+    "class": "MicrowaveCavityReleasePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_013",
+    "contract_022"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_003"
+  ],
+  "evidence": "Isaac Sim: heat_breakfast fridge -> microwave -> dining table, 100% progress, 2026-10-01; runs/heat_breakfast/result.json"
+}

@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_037",
+  "name": "Place an object upright on a support",
+  "description": "Orient a held object, place it on a support, then verify support and tilt.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "The grounded target support."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "on",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_upright",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "experimental_callable",
+  "contract_id": "contract_045",
+  "scope": {
+    "unit": "One place an object upright on a support attempt on the grounded scene state.",
+    "includes": [
+      "Orient a held object, place it on a support, then verify support and tilt."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_045",
+    "input_order": [
+      "object",
+      "support"
+    ]
+  },
+  "expected_state_change": [
+    "on",
+    "right_hand_empty",
+    "object_upright"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_024"
+    ],
+    "incoming": [
+      "relation_007",
+      "relation_013",
+      "relation_017",
+      "relation_023"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_003",
+  "name": "Open an articulated door or drawer",
+  "description": "Open one annotated articulated target and verify its joint position.",
+  "args": {
+    "articulated": {
+      "type": "articulated_ref",
+      "required": true,
+      "description": "articulated"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "articulated_annotated",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "opening_route_feasible",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_open_enough",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_011",
+  "scope": {
+    "unit": "one articulated opening",
+    "includes": [
+      "Open one annotated articulated target and verify its joint position."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_011",
+    "input_order": [
+      "articulated"
+    ]
+  },
+  "expected_state_change": [
+    "joint_open_enough"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_034"
+    ],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

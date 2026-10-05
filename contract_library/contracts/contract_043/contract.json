@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_043",
+  "skill_id": "skill_035",
+  "name": "Expose a flat object edge",
+  "description": "Push a flat object to a measured, graspable support overhang.",
+  "scope": {
+    "unit": "One expose a flat object edge attempt on the grounded scene state.",
+    "includes": [
+      "Push a flat object to a measured, graspable support overhang."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_on_annotated_support",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "free_support_edge",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "edge_overhang_ready",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "edge_overhang_ready"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "custom": "edge_ready"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_045",
+        "args": [
+          {
+            "arg": "object"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_grasp_type": "edge_pinch_after_push"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_029",
+  "name": "Pick by rectangular rim",
+  "description": "Grasp a rectangular tray or box by its annotated rim.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "held_by_right_hand",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "object_lifted",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_037",
+  "scope": {
+    "unit": "One pick by rectangular rim attempt on the grounded scene state.",
+    "includes": [
+      "Grasp a rectangular tray or box by its annotated rim."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_037",
+    "input_order": [
+      "object"
+    ]
+  },
+  "expected_state_change": [
+    "held_by_right_hand",
+    "object_lifted"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_018"
+    ],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_033",
+  "legacy_id": "click",
+  "name": "Click",
+  "description": "物理按下有标注的门/启动按钮",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "appliance",
+    "effect_summary": "button_contact",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": "kitchen_microwave"
+    },
+    {
+      "name": "button",
+      "kind": "keyword_only",
+      "required": false,
+      "default": "door"
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "button_contact",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_033",
+    "legacy_attribute": "click",
+    "class": "ClickPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [
+    "contract_007"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: click kitchen_microwave door, 2026-10-01"
+}

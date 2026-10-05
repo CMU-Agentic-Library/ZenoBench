@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_043",
+  "legacy_id": "push_from_behind",
+  "name": "Push From Behind",
+  "description": "从物体后侧水平推动",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "contact",
+    "effect_summary": "object_displaced",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "direction",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "distance",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "enough",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "object_displaced",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_043",
+    "legacy_attribute": "push_from_behind",
+    "class": "PushFromBehindPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [
+    "contract_006"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01"
+}

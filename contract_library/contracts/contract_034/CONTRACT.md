@@ -1,0 +1,37 @@
+# contract_034 — Close a manual handle
+
+Close one handle-operated door or drawer.
+
+Paired SkillNode: `skill_026`. Status: `representative_runs_only`.
+
+## Inputs
+
+- `articulated`: articulated_ref
+
+## Preconditions
+
+- `right_hand_empty` — policy_attempt
+- `target_annotated` — policy_attempt
+
+## Measured postconditions
+
+- `joint_closed` — contract_runner
+
+## Grounded noun slots
+
+- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'handle', 'forbid_annotation': 'door_button'}`
+
+## Policy paths
+
+### fixed
+
+Match before execution: `[]`.
+
+1. `policy_023` with ['articulated']
+
+
+## Failure
+
+Stop, return completed policy steps and measured state; upper layer replans.
+
+Verifier: `contract_005` / `handle`.

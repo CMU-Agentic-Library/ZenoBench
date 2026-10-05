@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "contract",
+  "contract_id": "contract_008",
+  "legacy_id": "set_posture.v1",
+  "description": "Set measured right-arm, torso or waist posture.",
+  "scope": "One measured right-arm, torso, or waist posture adjustment.",
+  "inputs": {
+    "component": {
+      "type": "enum",
+      "values": [
+        "tuck",
+        "torso",
+        "waist"
+      ],
+      "required": true,
+      "description": "Selected by the route, not passed as a positional execute argument."
+    },
+    "target": {
+      "type": "number",
+      "required": false
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "check": "policy_attempt"
+    },
+    {
+      "predicate": "target_within_joint_limits",
+      "check": "policy_attempt"
+    },
+    {
+      "predicate": "collision_free_motion",
+      "check": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "posture_at_target",
+      "check": "runner"
+    }
+  ],
+  "outcomes": {
+    "success": "joint settled",
+    "failure": "arm may stop at intermediate posture"
+  },
+  "verifier": "read measured q against selected joint target",
+  "not_guaranteed": [
+    "a task target became reachable solely because posture changed"
+  ],
+  "routes": {
+    "tuck": {
+      "policy_id": "policy_003",
+      "legacy_dispatcher": null
+    },
+    "torso": {
+      "policy_id": "policy_004",
+      "legacy_dispatcher": null
+    },
+    "lower": {
+      "policy_id": "policy_005",
+      "legacy_dispatcher": null
+    },
+    "raise": {
+      "policy_id": "policy_006",
+      "legacy_dispatcher": null
+    },
+    "waist": {
+      "policy_id": "policy_007",
+      "legacy_dispatcher": null
+    },
+    "lean": {
+      "policy_id": "policy_008",
+      "legacy_dispatcher": null
+    },
+    "straighten": {
+      "policy_id": "policy_009",
+      "legacy_dispatcher": null
+    }
+  }
+}

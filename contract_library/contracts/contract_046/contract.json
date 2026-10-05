@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_046",
+  "skill_id": "skill_038",
+  "name": "Place an object near a support hint",
+  "description": "Place a held object near a supplied xy hint and verify the final offset.",
+  "scope": {
+    "unit": "One place an object near a support hint attempt on the grounded scene state.",
+    "includes": [
+      "Place a held object near a supplied xy hint and verify the final offset."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "The grounded target support."
+    },
+    "hint_xy": {
+      "type": "xy",
+      "required": true,
+      "description": "Desired [x_m,y_m] point on the support."
+    },
+    "max_offset_m": {
+      "type": "positive_number",
+      "required": true,
+      "description": "Maximum final xy distance from hint in metres."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "on",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "within_hint_radius",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "on",
+    "right_hand_empty",
+    "within_hint_radius"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "legacy_family_contract": "contract_003",
+    "route": "surface",
+    "extra_checks": [
+      "within_hint"
+    ]
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_015",
+        "args": [
+          {
+            "arg": "object"
+          },
+          {
+            "arg": "support"
+          }
+        ],
+        "kwargs": {
+          "hint": {
+            "arg": "hint_xy"
+          }
+        }
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "object",
+    "support",
+    "hint_xy",
+    "max_offset_m"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "object": {
+      "argument": "object",
+      "kind": "scene_object",
+      "source": "rig.ann",
+      "required": true,
+      "requires_right_held": true
+    },
+    "support": {
+      "argument": "support",
+      "kind": "support",
+      "source": "rig.ann",
+      "required": true
+    }
+  }
+}

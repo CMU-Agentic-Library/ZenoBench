@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_009",
+  "skill_id": "skill_001",
+  "name": "Navigate empty-handed",
+  "description": "Move the empty-handed robot base to one target pose.",
+  "scope": {
+    "unit": "one empty-handed base move",
+    "includes": [
+      "Move the empty-handed robot base to one target pose."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "pose": {
+      "type": "pose2d",
+      "required": true,
+      "description": "pose"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "target_navigable",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "carried_object_matches_state",
+      "enforcement": "not_enforced"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_at",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "base_at"
+  ],
+  "verifier": {
+    "legacy_family_contract": "contract_001",
+    "route": "empty",
+    "check": "ContractRunner._before + _verify",
+    "on_failure": "record partial state and stop"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_001",
+        "args": [
+          {
+            "arg": "pose"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "pose"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [
+    {
+      "when": "base path blocked and right hand remains empty",
+      "skill_id": "skill_011",
+      "reason": "tuck the arm before proposing a new navigation attempt"
+    }
+  ],
+  "noun_bindings": {}
+}

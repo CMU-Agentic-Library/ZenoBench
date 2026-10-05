@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_026",
+  "legacy_id": "push",
+  "name": "Push",
+  "description": "按可达性选择推或顶部拖动物品",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "contact",
+    "effect_summary": "object_displaced",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "direction",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "distance",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "label",
+      "kind": "keyword_only",
+      "required": false,
+      "default": "PUSH"
+    },
+    {
+      "name": "enough",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "object_displaced",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_026",
+    "legacy_attribute": "push",
+    "class": "PushPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_016"
+  ],
+  "legacy_family_contracts": [
+    "contract_006"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: pick_edge book_red 内部推书, 2026-10-01"
+}

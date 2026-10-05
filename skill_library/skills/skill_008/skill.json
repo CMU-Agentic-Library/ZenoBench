@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_008",
+  "name": "Push an object along a support",
+  "description": "Move one object by directed contact and measure progress.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "support"
+    },
+    "direction_xy": {
+      "type": "unit_vec2",
+      "required": true,
+      "description": "direction xy"
+    },
+    "distance_m": {
+      "type": "positive_number",
+      "required": true,
+      "description": "distance m"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_on_support",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "displacement_along",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_016",
+  "scope": {
+    "unit": "one directed contact move",
+    "includes": [
+      "Move one object by directed contact and measure progress."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_016",
+    "input_order": [
+      "object",
+      "support",
+      "direction_xy",
+      "distance_m"
+    ]
+  },
+  "expected_state_change": [
+    "displacement_along"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

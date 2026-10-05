@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "kind": "contract",
+  "contract_id": "contract_004",
+  "legacy_id": "open.v1",
+  "description": "Move one annotated door or drawer to a measured open joint value.",
+  "scope": "One measured joint opening of an annotated door or drawer; object access is a separate predicate.",
+  "inputs": {
+    "articulated": {
+      "type": "articulated_id",
+      "required": true
+    },
+    "required_access_to": {
+      "type": "object_id",
+      "required": false,
+      "status": "not_verified"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "articulated_annotated",
+      "args": [
+        "articulated"
+      ],
+      "check": "runner"
+    },
+    {
+      "predicate": "opening_route_feasible",
+      "check": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_open_enough",
+      "args": [
+        "articulated"
+      ],
+      "check": "runner"
+    }
+  ],
+  "outcomes": {
+    "success": "joint opening measured; object access not established",
+    "failure": "joint may be partly open"
+  },
+  "verifier": "measured joint opening only; target access needs a separate verifier",
+  "route_notes": {
+    "while_left_holds": "Callable route lacking a verified left-hand-hold prerequisite."
+  },
+  "not_guaranteed": [
+    "accessible(required_access_to)"
+  ],
+  "routes": {
+    "auto": {
+      "policy_id": "policy_062",
+      "legacy_dispatcher": null
+    },
+    "handle": {
+      "policy_id": "policy_022",
+      "legacy_dispatcher": null
+    },
+    "powered": {
+      "policy_id": "policy_024",
+      "legacy_dispatcher": null
+    },
+    "revolute": {
+      "policy_id": "policy_049",
+      "legacy_dispatcher": null
+    },
+    "prismatic": {
+      "policy_id": "policy_050",
+      "legacy_dispatcher": null
+    },
+    "while_left_holds": {
+      "policy_id": "policy_060",
+      "legacy_dispatcher": null
+    }
+  }
+}

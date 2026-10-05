@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_021",
+  "legacy_id": "place_microwave",
+  "name": "Place Microwave",
+  "description": "从正面把物品送入微波炉腔体",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "placement",
+    "effect_summary": "inside(object,cavity)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": "kitchen_microwave/inside_floor"
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "inside(object,cavity)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_021",
+    "legacy_attribute": "place_microwave",
+    "class": "MicrowavePlacePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [
+    "contract_003"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim dedicated appliance fixture: cup picked from cabinet top and physically inserted through open microwave door; measured on inside_floor true, in_cavity true, tilt 0 deg; runs/verify_callable_microwave_cycle_cup, 2026-10-01"
+}

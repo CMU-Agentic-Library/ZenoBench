@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_008",
+  "legacy_id": "lean_forward",
+  "name": "Lean Forward",
+  "description": "腰部前俯到指定角度",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "posture",
+    "effect_summary": "waist_leaned",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "pitch_rad",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "waist_leaned",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_008",
+    "legacy_attribute": "lean_forward",
+    "class": "LeanForwardPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [
+    "contract_041"
+  ],
+  "legacy_family_contracts": [
+    "contract_008"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim: lean_forward, 2026-10-01"
+}

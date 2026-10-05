@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_032",
+  "legacy_id": "microwave_start",
+  "name": "Microwave Start",
+  "description": "按启动按钮并启动任务级加热",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "appliance",
+    "effect_summary": "heating_active",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": "kitchen_microwave"
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "heating_active",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_032",
+    "legacy_attribute": "microwave_start",
+    "class": "MicrowaveStartPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [
+    "contract_007"
+  ],
+  "supporting_family_contracts": [],
+  "evidence": "Isaac Sim heat_breakfast_combo: start button activated heating with oatmeal inside, runs/verify_callable_microwave, 2026-10-01"
+}

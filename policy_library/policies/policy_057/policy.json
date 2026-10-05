@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_057",
+  "legacy_id": "bimanual_box_lift",
+  "name": "Bimanual Box Lift",
+  "description": "左右手从两侧协同抬起箱子",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "bimanual",
+    "effect_summary": "box_lifted_by_both_hands",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "box_lifted_by_both_hands",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_057",
+    "legacy_attribute": "bimanual_box_lift",
+    "class": "BimanualBoxLiftPolicy"
+  },
+  "availability": "callable",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_002"
+  ],
+  "caveat": "serving_tray 与地面轻篮的双臂接触搜索在 45 秒预算内均找不到无碰撞共享站位（runs/repair_bimanual_box_v3、repair_bimanual_basket_v3）。"
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_041",
+  "skill_id": "skill_033",
+  "name": "Lean waist forward",
+  "description": "Lean the waist forward to its configured safe posture.",
+  "scope": {
+    "unit": "One lean waist forward attempt on the grounded scene state.",
+    "includes": [
+      "Lean the waist forward to its configured safe posture."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {},
+  "requires": [
+    {
+      "predicate": "joint_path_clear",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "posture_at_target",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "posture_at_target"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "legacy_family_contract": "contract_008",
+    "route": "lean"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_008",
+        "args": []
+      }
+    ]
+  },
+  "legacy_call_args": [],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {}
+}

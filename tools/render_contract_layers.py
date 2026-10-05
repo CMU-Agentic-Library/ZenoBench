@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from zeno_skills.contracts import policy_contract_relations
+from zeno_skills.interface_ids import CONTRACT_PUBLIC_IDS
 CATALOG = ROOT / "zeno_skills/policies/catalog.json"
 SVG = ROOT / "docs/contract_layers.svg"
 PNG = ROOT / "docs/contract_layers_preview.png"
@@ -72,9 +73,9 @@ def rect(x, y, w, h, fill, stroke="none", radius=0, **attrs):
 
 
 def render(catalog):
-    rows = catalog["policies"]
-    if len(rows) != 60 or len({row["id"] for row in rows}) != 60:
-        raise ValueError("contract diagram requires the 60 unique policy catalog entries")
+    rows = [row for row in catalog["policies"] if row["id"] != "wait_for_temperature"]
+    if len(rows) != 63 or len({row["id"] for row in rows}) != 63:
+        raise ValueError("contract diagram requires the 63 unique policy catalog entries")
     relations = policy_contract_relations(rows)
     by_id = {row["id"]: row for row in rows}
     counts = Counter(row["status"] for row in rows)
@@ -89,13 +90,13 @@ def render(catalog):
         cursor += CARD_H + POLICY_GAP + panel_h + ROW_GAP
     height = cursor + 76
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WIDTH} {height}" role="img" aria-labelledby="title desc">',
-           tag("title", {"id": "title"}, "八个 contract 与六十个底层 policy 的实现关系"),
-           tag("desc", {"id": "desc"}, "图展示第三层 Contract 与第四层底层 Policy。实心方块是 ContractSpec.executor 的直接类绑定；空心圆是不会自动执行的支撑动作引用。绿色点表示至少一个 Isaac Sim 场景已验证，蓝色点表示独立入口仍待物理验证。上层通用技能子图规划器尚未实现。"),
+           tag("title", {"id": "title"}, "八个兼容 family contract 与六十三个底层 policy 的实现关系"),
+           tag("desc", {"id": "desc"}, "图展示第三层 Contract 与第四层底层 Policy。实心方块是 ContractSpec.executor 的直接类绑定；空心圆是不会自动执行的支撑动作引用。绿色点表示至少一个 Isaac Sim 场景已验证，蓝色点表示独立入口仍待物理验证。上层 Skill 子图已有静态编译接口，自动规划器尚未实现。"),
            '''<defs><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M0 10 L5 0 L10 10 Z" fill="#7350b8"/></marker></defs>''',
            '''<style>text{font-family:Inter,"Noto Sans CJK SC","Microsoft YaHei",Arial,sans-serif;fill:#263047}.title{font-size:31px;font-weight:750}.subtitle{font-size:18px;fill:#5b6574}.lane{font-size:20px;font-weight:750}.card-title{font-size:23px;font-weight:700;fill:#fff}.card-desc{font-size:17px;font-weight:650}.key{font-size:14px;font-weight:700;fill:#b45324}.value{font-size:14px;fill:#39465a}.panel-title{font-size:18px;font-weight:700;fill:#6744a6}.policy{font-size:16px;font-weight:550}.legend{font-size:17px;fill:#536071}</style>''',
            rect(0, 0, WIDTH, height, "#fff"),
            text(34, 51, "第3层 Contract ↔ 第4层底层 Policy", "title"),
-           text(34, 83, f"8 个 contract · 60 个底层 policy · {counts['verified']} verified / {counts['callable']} callable · 35 direct / 25 support", "subtitle"),
+           text(34, 83, f"8 个兼容 family contract · 63 个底层 policy · {counts['verified']} verified / {counts['callable']} callable · 38 direct / 25 support", "subtitle"),
            text(34, 112, "第三层 Contract → 第四层 Policy；实心方块＝直接绑定，空心圆＝支撑引用（不自动执行）；上层技能子图尚待扩展", "subtitle")]
     for row_index, (top, panel_h, group) in enumerate(layout):
         panel_top = top + CARD_H + POLICY_GAP
@@ -113,7 +114,9 @@ def render(catalog):
             out += [rect(x, top, COL_WIDTH, CARD_H, "#fffdfb", "#c56130", 12, **{"stroke-width": 2}),
                     rect(x, top, COL_WIDTH, 43, "#bf592b", radius=12),
                     rect(x, top+30, COL_WIDTH, 13, "#bf592b"),
-                    text(x+COL_WIDTH/2, top+29, contract_id, "card-title", **{"text-anchor": "middle"}),
+                    text(x+COL_WIDTH/2, top+29,
+                         f"{CONTRACT_PUBLIC_IDS[contract_id]} · {contract_id}",
+                         "card-title", **{"text-anchor": "middle"}),
                     text(x+15, top+68, meta[0], "card-desc")]
             for idx, (key, value) in enumerate(zip(("inputs", "requires", "achieves", "outcomes", "executor", "verifier"), meta[1:])):
                 y = top+97+idx*27
@@ -123,7 +126,7 @@ def render(catalog):
                                   "marker-end": "url(#arrow)"})]
             out += [rect(x, panel_top, COL_WIDTH, panel_h, "#fff", "#9270cf", 13,
                          **{"stroke-width": 2, "stroke-dasharray": "7 5"}),
-                    text(x+15, panel_top+31, f"{contract_id.removesuffix('.v1')} · {len(direct)} direct / {len(support)} support", "panel-title")]
+                    text(x+15, panel_top+31, f"{CONTRACT_PUBLIC_IDS[contract_id]} · {len(direct)} direct / {len(support)} support", "panel-title")]
             for n, policy_id in enumerate((*direct, *support)):
                 row = by_id[policy_id]
                 y = panel_top+PANEL_HEAD+n*(PILL_H+PILL_GAP)
@@ -137,7 +140,7 @@ def render(catalog):
                 else:
                     out.append(tag("circle", {"cx": x+27, "cy": y+13, "r": 5,
                                                       "fill": "#fff", "stroke": "#8165b0", "stroke-width": 1.6}))
-                out.append(text(x+43, y+18.5, policy_id, "policy"))
+                out.append(text(x+43, y+18.5, f"{row['policy_id']} · {policy_id}", "policy"))
                 color = "#218456" if row["status"] == "verified" else "#3677bb"
                 out.append(tag("circle", {"cx": x+COL_WIDTH-24, "cy": y+13, "r": 6,
                                                  "fill": color},

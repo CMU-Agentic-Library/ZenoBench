@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_051",
+  "legacy_id": "reach_while_moving",
+  "name": "Reach While Moving",
+  "description": "底盘行进期间同步右臂接近目标",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "mobile_manipulation",
+    "effect_summary": "tcp_at_pregrasp",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "position",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "rotation",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "base_path",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "speed",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.08
+    },
+    {
+      "name": "tolerance",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.04
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "tcp_at_pregrasp",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_051",
+    "legacy_attribute": "reach_while_moving",
+    "class": "ReachWhileMovingPolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_001",
+    "contract_002"
+  ],
+  "evidence": "Isaac Sim: 0.10 m base travel with concurrent right-arm reach, 0.003 m TCP error, 2026-10-01"
+}

@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "kind": "skill_node",
+  "skill_id": "skill_014",
+  "name": "Place an object on the microwave cavity support",
+  "description": "Release one right-held object onto the annotated microwave cavity support.",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "support": {
+      "type": "microwave_support_ref",
+      "required": true,
+      "description": "Annotated microwave cavity support."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "held_by_right_hand",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_accessible",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "on",
+      "verification": "contract_runner"
+    },
+    {
+      "predicate": "right_hand_empty",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_022",
+  "scope": {
+    "unit": "one microwave support placement",
+    "includes": [
+      "Release one right-held object onto the annotated microwave cavity support."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_022",
+    "input_order": [
+      "object",
+      "support"
+    ]
+  },
+  "expected_state_change": [
+    "on",
+    "right_hand_empty"
+  ],
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_003"
+    ],
+    "incoming": [
+      "relation_001"
+    ],
+    "automatic": false
+  },
+  "fallback_hints": []
+}

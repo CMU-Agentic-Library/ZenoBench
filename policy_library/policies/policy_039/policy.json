@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_039",
+  "legacy_id": "right_joint_move",
+  "name": "Right Joint Move",
+  "description": "右臂关节沿碰撞检查路径移动",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "arm",
+    "effect_summary": "arm_at(joint_target)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "target",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "tolerance",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.03
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "arm_at(joint_target)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_039",
+    "legacy_attribute": "right_joint_move",
+    "class": "RightJointMovePolicy"
+  },
+  "availability": "verified",
+  "direct_contracts": [],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [
+    "contract_002",
+    "contract_003",
+    "contract_004",
+    "contract_005",
+    "contract_006",
+    "contract_007",
+    "contract_008"
+  ],
+  "evidence": "Isaac Sim tidy_toys: right_arm_joint_5 moved to 0.0318 rad for 0.04 rad command (0.03 rad tolerance), runs/verify_callable_arm_v4, 2026-10-01"
+}
