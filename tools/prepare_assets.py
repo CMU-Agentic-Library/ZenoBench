@@ -220,6 +220,13 @@ def grasps(name, mesh, kind, body_fraction=1.0):
         out.append({"type": "edge_pinch_after_push",
                     "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
                     "thickness": float(ext[2])})
+    if name == "breakfast_mug":
+        # Collision OBJ is rotated +90 deg about X by the URDF.  Its handle
+        # protrudes in object -Y at mid-height, separate from the rim contact.
+        out.append({"type": "handle_pinch", "center": [0.0, -0.080, 0.025],
+                    "approach": [0.0, 1.0, 0.0], "close_dir": [1.0, 0.0, 0.0],
+                    "pre_open": 0.03,
+                    "note": "TCP sits 19 mm outside the -Y handle bar so fingertip pads pinch the bar without contacting the mug wall; mesh transformed by +90 deg about X"})
     return out, min_w
 
 
@@ -271,6 +278,11 @@ def write_sim_urdf(name):
            "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"}
     if kind != "solid":
         ann["container"] = container_profile(mesh, kind, body_fraction=bf)
+        if name == "breakfast_mug":
+            # The imported mug handle is a thin bar, about 14 mm wide at
+            # local y=-61 mm; the round-wall approximation omits it.
+            ann["container"]["handle_collider"] = {
+                "center": [0.0, -0.061, 0.025], "size": [0.014, 0.008, 0.055]}
     return out, ann
 
 

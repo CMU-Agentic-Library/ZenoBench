@@ -205,7 +205,7 @@ def set_box_inertia(stage, root_path, mass):
                                                mass * (sx * sx + sy * sy) / 12))
 
 
-def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="round", mats=None):
+def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="round", mats=None, handle=None):
     """Thin-walled containers (bowl, cup, basket, box, tray) were imported with
     a single convex hull or a cavity-filling decomposition: a *solid* object
     that cannot hold anything or be rim-pinched.  Rebuild the collider as wall
@@ -238,7 +238,7 @@ def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="r
             Gf.Matrix4d().SetTranslate(Gf.Vec3d(*center))
         cube.ClearXformOpOrder()
         cube.AddTransformOp().Set(world * Minv)
-        UsdPhysics.CollisionAPI.Apply(cube.GetPrim())
+        UsdPhysics.CollisionAPI.Apply(cube.GetPrim()).CreateCollisionEnabledAttr().Set(True)
         bind(cube.GetPrim(), mats[OBJECT_MATERIAL])
 
     base_r = None
@@ -265,7 +265,29 @@ def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="r
         add_box((cx, cy, z0 + 0.006), (1.5 * base_r, 1.5 * base_r, 0.012), math.pi / 4)
     else:
         add_box((cx, cy, z0 + 0.006), (2 * base_r[0], 2 * base_r[1], 0.012), 0.0)
+    if handle is not None:
+        add_handle_collider(stage, str(body.GetPath()), handle, mats)
+        k += 1
     return k
+
+
+def add_handle_collider(stage, body_path, handle, mats=None):
+    """Idempotently attach one narrow mug handle bar to an existing rigid body."""
+    from pxr import Gf, UsdGeom, UsdPhysics
+    mats = mats or materials(stage)
+    body = stage.GetPrimAtPath(body_path)
+    if not body:
+        raise ValueError(f"missing rigid body {body_path}")
+    cube = UsdGeom.Cube.Define(stage, f"{body_path}/handle_collider")
+    cube.CreateSizeAttr(1.0)
+    cube.CreatePurposeAttr().Set("guide")
+    cube.ClearXformOpOrder()
+    cube.AddTransformOp().Set(
+        Gf.Matrix4d().SetScale(Gf.Vec3d(*handle["size"])) *
+        Gf.Matrix4d().SetTranslate(Gf.Vec3d(*handle["center"])))
+    UsdPhysics.CollisionAPI.Apply(cube.GetPrim()).CreateCollisionEnabledAttr().Set(True)
+    bind(cube.GetPrim(), mats[OBJECT_MATERIAL])
+    return cube.GetPrim()
 
 
 def solid_collider(stage, root_path, approximation="convexHull", mats=None):

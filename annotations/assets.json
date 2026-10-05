@@ -240,6 +240,26 @@
      0.2
     ],
     "pre_open": 0.03
+   },
+   {
+    "type": "handle_pinch",
+    "center": [
+     0.0,
+     -0.08,
+     0.025
+    ],
+    "approach": [
+     0.0,
+     1.0,
+     0.0
+    ],
+    "close_dir": [
+     1.0,
+     0.0,
+     0.0
+    ],
+    "pre_open": 0.03,
+    "note": "TCP sits 19 mm outside the -Y handle bar so fingertip pads pinch the bar without contacting the mug wall; mesh transformed by +90 deg about X"
    }
   ],
   "usd": "usd/assets/breakfast_mug.usd",
@@ -270,7 +290,19 @@
     ]
    ],
    "rim_height": 0.12,
-   "rim_radius": 0.0566
+   "rim_radius": 0.0566,
+   "handle_collider": {
+    "center": [
+     0.0,
+     -0.061,
+     0.025
+    ],
+    "size": [
+     0.014,
+     0.008,
+     0.055
+    ]
+   }
   }
  },
  "breakfast_spoon": {

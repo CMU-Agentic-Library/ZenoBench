@@ -1,0 +1,30 @@
+{
+  "task": "policy_floor_notebook",
+  "instruction": "Lift a thin notebook from the floor by one corner.",
+  "base_scene": "sim/zeno_house.usd",
+  "base_annotation": "annotations/zeno_house.json",
+  "robot_start_near": [
+    3.5,
+    1.0
+  ],
+  "objects": {
+    "notebook": {
+      "asset": "notebook",
+      "supports": [
+        "floor:living_room"
+      ],
+      "spawn_xy": [
+        4.4,
+        1.8
+      ],
+      "spawn_yaw_deg": 0
+    }
+  },
+  "goal": {
+    "all": [
+      {
+        "not_dropped": "all"
+      }
+    ]
+  }
+}

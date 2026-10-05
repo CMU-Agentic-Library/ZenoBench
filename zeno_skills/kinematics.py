@@ -1,4 +1,4 @@
-"""Zeno Malo right-arm kinematics around the *fingertip* TCP (not the wrist flange).
+"""Zeno Malo arm kinematics around the *fingertip* TCP (not the wrist flange).
 
 Pure numpy (exact FK from the URDF chain, analytic Jacobian, damped least
 squares IK with a null-space posture term).  An optional collision checker
@@ -25,7 +25,7 @@ URDF = ROOT / "robot_sources/zeno_malo_description-master/zeno_malo_edu.isaac.ur
 FRAME = "right_gripper_link"
 FINGERS = ("right_gripper_left_finger_axis", "right_gripper_right_finger_axis")
 FINGER_OPEN = 0.04          # m per finger (8 cm max gap)
-# left arm is held folded so it never hangs into the floor/furniture
+# default left-arm travel posture; Rig can command all seven left joints
 LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_joint_4": 2.3}
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
 # -0.12985, pads span -0.14..-0.09 on the finger links).
@@ -73,11 +73,13 @@ def _limits(names):
     return np.array(lo), np.array(hi)
 
 
-def _chain():
-    """base_link -> right_gripper_link joints (all URDF rpy are zero)."""
+def _chain(side="right"):
+    """base_link -> selected gripper link joints (all URDF rpy are zero)."""
+    if side not in ("right", "left"):
+        raise ValueError(f"unknown arm side: {side}")
     root = ET.parse(URDF).getroot()
     by_child = {j.find("child").get("link"): j for j in root.findall("joint")}
-    out, link = [], "right_gripper_link"
+    out, link = [], f"{side}_gripper_link"
     while link in by_child:
         j = by_child[link]
         xyz = np.array([float(v) for v in j.find("origin").get("xyz").split()])
@@ -115,9 +117,10 @@ def _rotvec(R):
 
 
 class ArmKin:
-    def __init__(self, solver=None):
+    def __init__(self, solver=None, side="right"):
         self.solver = solver
-        chain = _chain()
+        self.side = side
+        chain = _chain(side)
         self.children = [c[4] for c in chain]
         self.chain = [c[:4] for c in chain]
         self.names = [c[0] for c in self.chain if c[1] != "fixed"]
@@ -130,8 +133,9 @@ class ArmKin:
         m = np.r_[0.0, 0.0, np.full(len(self.names) - 2, 0.03)]
         self.lo, self.hi = self.lo + m, self.hi - m
         # A relaxed, elbow-out posture used as a null-space attractor.
-        self.rest = np.clip(np.array([0.0, 0.0, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0]),
-                            self.lo, self.hi)
+        posture = ([0.0, 0.0, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0] if side == "right" else
+                   [0.0, 0.0, 0.2, 0.35, 0.0, 2.3, 0.0, 0.0, 0.0])
+        self.rest = np.clip(np.array(posture), self.lo, self.hi)
         self.base_p, self.base_R = np.zeros(3), np.eye(3)
 
     def set_base(self, xyz, yaw):

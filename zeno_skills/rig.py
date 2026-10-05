@@ -10,7 +10,7 @@ import math
 
 import numpy as np
 
-from .kinematics import FINGERS, LEFT_ARM_FOLD, vel_limits, yaw_quat_wxyz
+from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, vel_limits, yaw_quat_wxyz
 from .physics import ANCHOR, ASSET
 
 
@@ -23,16 +23,23 @@ class Dropped(SkillFailure):
 
 
 class Rig:
-    def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=4, log=print):
+    def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=4, log=print,
+                 first_person_camera=None):
         import torch
         from isaacsim.core.prims import SingleArticulation, SingleRigidPrim
         self.torch = torch
         self.sim, self.stage, self.robot, self.kin, self.world, self.ann = sim, stage, robot, kin, world, ann
         self.cams = cams or {}
+        self.first_person_camera = first_person_camera
         self.arm = torch.tensor([robot.dof_names.index(n) for n in kin.names], dtype=torch.int32)
         self.fing = torch.tensor([robot.dof_names.index(n) for n in FINGERS], dtype=torch.int32)
-        self.left = torch.tensor([robot.dof_names.index(n) for n in LEFT_ARM_FOLD], dtype=torch.int32)
-        self.left_q = torch.tensor(list(LEFT_ARM_FOLD.values()), dtype=torch.float32)
+        self.left_kin = ArmKin(side="left")
+        self.left_kin.scene = world
+        self.left = torch.tensor([robot.dof_names.index(n) for n in self.left_kin.names[2:]], dtype=torch.int32)
+        self.left_fing = torch.tensor([robot.dof_names.index(n) for n in
+                                       ("left_gripper_left_finger_axis", "left_gripper_right_finger_axis")], dtype=torch.int32)
+        self.left_q_cmd = np.array([LEFT_ARM_FOLD.get(n, 0.0) for n in self.left_kin.names[2:]], float)
+        self.left_grip_cmd = 0.04
         self.anchor = stage.GetPrimAtPath(ANCHOR)
         self.base_z = float(self.anchor.GetAttribute("physics:localPos0").Get()[2])
         self.q_cmd = self.q()
@@ -58,7 +65,9 @@ class Rig:
             self._bodies[name] = b
         x, y, yaw = self.base_pose()
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
+        self.left_kin.set_base((x, y, 0.0), math.radians(yaw))
         self.held = None
+        self.left_held = None
         self.focus_z = None          # follow-camera target height (low for floor picks)
         self.camera_override = None  # optional (eye, target) for a visible appliance action
         from .evaluator import Geometry
@@ -94,6 +103,13 @@ class Rig:
     def fingers(self):
         return self.robot.get_joint_positions()[self.fing.long()].cpu().numpy().astype(float)
 
+    def left_q(self):
+        arm = self.robot.get_joint_positions()[self.left.long()].cpu().numpy().astype(float)
+        return np.r_[self.q()[:2], arm]
+
+    def left_fingers(self):
+        return self.robot.get_joint_positions()[self.left_fing.long()].cpu().numpy().astype(float)
+
     def joint(self, art_name):
         return float(self._arts[art_name].get_joint_positions()[self._dof[art_name]])
 
@@ -124,7 +140,8 @@ class Rig:
         st = self.state()
         boxes = []
         for name in self.ann.objects:
-            if self.held is not None and name == self.held["name"]:
+            if (self.held is not None and name == self.held["name"]) or \
+               (self.left_held is not None and name == self.left_held["name"]):
                 continue
             b = self.geo.bottom(name, st)
             if b[2] > 0.25 and not self._overhangs(name, st):
@@ -134,6 +151,9 @@ class Rig:
         self.world.set_base_obstacles(boxes)
         x, y, yaw = self.base_pose()
         self.kin.set_base((x, y, 0.0), math.radians(yaw))
+        self.left_kin.set_base((x, y, 0.0), math.radians(yaw))
+        self.world.right_kin, self.world.right_q = self.kin, self.q_cmd.copy()
+        self.world.left_kin, self.world.left_q = self.left_kin, np.r_[self.q_cmd[:2], self.left_q_cmd]
 
     def _overhangs(self, name, st):
         """Object sticking out past its support's edge (pushed for an edge
@@ -158,6 +178,19 @@ class Rig:
         self.events.append(ev)
         self._log("EVENT " + json.dumps(ev, default=float))
 
+    def get_first_person_image(self):
+        """Return the current Malo head-camera RGB image as a uint8 H×W×3 copy.
+
+        Rendering happens on demand without advancing physics. Enable the camera
+        with ``launch(first_person=True)`` and ``make_rig(..., first_person=True)``.
+        """
+        if self.first_person_camera is None:
+            raise RuntimeError("First-person camera is disabled; pass first_person=True to launch() and make_rig().")
+        self.sim.render()
+        self.first_person_camera.update(0.0, force_recompute=True)
+        rgb = self.first_person_camera.data.output["rgb"][0, ..., :3]
+        return rgb.cpu().numpy().copy()
+
     # ------------------------------------------------------------ stepping
     def step(self, n=1):
         from isaacsim.core.utils.types import ArticulationAction
@@ -167,7 +200,10 @@ class Rig:
                                                        joint_indices=self.arm))
             self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.grip_cmd)),
                                                        joint_indices=self.fing))
-            self.robot.apply_action(ArticulationAction(joint_positions=self.left_q, joint_indices=self.left))
+            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.left_q_cmd, dtype=t.float32),
+                                                       joint_indices=self.left))
+            self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.left_grip_cmd)),
+                                                       joint_indices=self.left_fing))
             render = bool(self.cams) and self.tick % self.stride == 0
             self.sim.step(render=render)
             self.tick += 1
@@ -179,6 +215,42 @@ class Rig:
                     cam.update(1 / 120)
                     imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
                 self.frames.append(self._compose(imgs, self.caption))
+
+    def follow_smooth(self, qs, steps_per_wp=3, settle=150, tol=0.01):
+        """Follow the same planned joint waypoints with a gentle start and stop.
+
+        Time scaling only changes progress along the existing joint segments;
+        it never rounds a corner into a configuration outside that path.
+        """
+        points = [self.q_cmd.copy()] + [np.asarray(q, float) for q in qs]
+        if len(points) == 1:
+            return
+        vmax = 0.6 * vel_limits(self.kin.names)
+        segment_times = [max(steps_per_wp / 120,
+                             float(np.max(np.abs(b - a) / vmax)))
+                         for a, b in zip(points[:-1], points[1:])]
+        times = np.r_[0.0, np.cumsum(segment_times)]
+        path_time = float(times[-1])
+        ramp = min(0.8, path_time / 2)
+        duration = path_time + ramp
+        ticks = max(2, int(math.ceil(duration * 120)))
+        for i in range(1, ticks + 1):
+            t = duration * i / ticks
+            if t < ramp:
+                progress = 0.5 * (t - ramp / math.pi * math.sin(math.pi * t / ramp))
+            elif t < path_time:
+                progress = t - ramp / 2
+            else:
+                remaining = duration - t
+                progress = path_time - 0.5 * (remaining - ramp / math.pi * math.sin(math.pi * remaining / ramp))
+            segment = min(len(segment_times) - 1, int(np.searchsorted(times, progress, side="right") - 1))
+            fraction = min(1.0, max(0.0, (progress - times[segment]) / segment_times[segment]))
+            self.q_cmd = points[segment] + fraction * (points[segment + 1] - points[segment])
+            self.step(1)
+        for _ in range(settle):
+            if np.max(np.abs(self.q() - self.q_cmd)) < tol:
+                break
+            self.step(2)
 
     def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01):
         """Waypoints time-scaled to 60% of URDF velocity limits (torso lift is
@@ -193,7 +265,8 @@ class Rig:
                 break
             self.step(2)
 
-    def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, collision=True, q_hint=None):
+    def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, collision=True, q_hint=None,
+                smooth=False):
         """Straight TCP line; falls back to the planner-validated step, then to a
         joint-space move to ``q_hint`` (a planner-validated solution)."""
         self.sync_world()
@@ -222,7 +295,7 @@ class Rig:
                 qs = self.joint_path(q_goal, label, check=collision)
         finally:
             self.kin.scene = scene
-        self.follow(qs, steps_per_wp)
+        (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
         tcp, _ = self.kin.tcp(self.q())
         err = float(np.linalg.norm(tcp - p))
         qe = self.q() - self.q_cmd
@@ -255,12 +328,113 @@ class Rig:
                 return dense(q0, via) + dense(via, q_goal)
         raise SkillFailure(f"joint move to {label}: every joint-space path collides")
 
-    def grip(self, width, steps=100):
-        self.grip_cmd = width
-        self.step(steps)
+    def grip(self, width, steps=100, gradual=False):
+        if gradual and steps > 1:
+            start = float(self.grip_cmd)
+            ramp = max(1, steps // 2)
+            for i in range(1, ramp + 1):
+                u = i / ramp
+                self.grip_cmd = start + (width - start) * (3 * u**2 - 2 * u**3)
+                self.step(1)
+            self.grip_cmd = width
+            self.step(steps - ramp)
+        else:
+            self.grip_cmd = width
+            self.step(steps)
         f = self.fingers()
         self.log("grip", cmd=width, fingers=[round(v, 4) for v in f])
         return f
+
+    def left_grip(self, width, steps=100):
+        self.left_grip_cmd = float(width)
+        self.step(steps)
+        f = self.left_fingers()
+        self.log("left_grip", cmd=width, fingers=[round(v, 4) for v in f])
+        return f
+
+    def left_follow(self, qs, steps_per_wp=3, settle=150, tol=0.02):
+        """Drive left arm and shared torso joints through IK waypoints."""
+        vmax = 0.6 * vel_limits(self.left_kin.names)
+        for q in qs:
+            q = np.asarray(q, float)
+            current = np.r_[self.q_cmd[:2], self.left_q_cmd]
+            need = int(math.ceil(np.max(np.abs(q-current) / vmax) * 120))
+            self.q_cmd[:2] = q[:2]
+            self.left_q_cmd = q[2:].copy()
+            self.step(max(steps_per_wp, need))
+        for _ in range(settle):
+            if np.max(np.abs(self.left_q()-np.r_[self.q_cmd[:2], self.left_q_cmd])) < tol:
+                break
+            self.step(2)
+
+    def follow_both(self, right_goal, left_goal, *, label="bimanual", steps=None):
+        """Drive both arms at once while checking each sampled paired posture."""
+        self.sync_world()
+        self.world.left_active = True
+        qr0 = self.q_cmd.copy()
+        ql0 = np.r_[self.q_cmd[:2], self.left_q_cmd]
+        qr1 = np.asarray(right_goal, float)
+        ql1 = np.asarray(left_goal, float)
+        if qr1.shape != qr0.shape or ql1.shape != ql0.shape:
+            raise ValueError("bimanual joint goals must match both 9-joint chains")
+        if np.max(np.abs(qr1[:2]-ql1[:2])) > 0.005:
+            raise SkillFailure("bimanual: arms request conflicting torso/waist positions")
+        vmax = np.minimum(vel_limits(self.kin.names), vel_limits(self.left_kin.names))
+        duration = max(np.max(np.abs(qr1-qr0)/vmax), np.max(np.abs(ql1-ql0)/vmax))/0.5
+        n = max(steps or 0, 20, int(math.ceil(duration*120)))
+        saved_right, saved_left = self.world.right_q, self.world.left_q
+        try:
+            for u in np.linspace(0, 1, max(3, n//8)):
+                qr = qr0+(qr1-qr0)*u
+                ql = ql0+(ql1-ql0)*u
+                self.world.right_q, self.world.left_q = qr, ql
+                if not self.kin.free(qr) or not self.left_kin.free(ql):
+                    raise SkillFailure(f"{label}: paired-arm path collides at {u:.2f}")
+        finally:
+            self.world.right_q, self.world.left_q = saved_right, saved_left
+        for u in np.linspace(0, 1, n)[1:]:
+            qr = qr0+(qr1-qr0)*u
+            ql = ql0+(ql1-ql0)*u
+            self.q_cmd = qr
+            self.left_q_cmd = ql[2:].copy()
+            self.step(1)
+        self.step(90)
+        right_error = float(np.max(np.abs(self.q()-qr1)))
+        left_error = float(np.max(np.abs(self.left_q()-ql1)))
+        self.log("bimanual_follow", target=label, right_q_err=round(right_error, 4),
+                 left_q_err=round(left_error, 4))
+        if max(right_error, left_error) > 0.06:
+            raise SkillFailure(f"{label}: joint tracking error exceeded 0.06 rad")
+
+    def move_left_to(self, p, R, *, label=None, collision=True):
+        """Collision-checked Cartesian motion for the left fingertip TCP."""
+        self.sync_world()
+        self.world.left_active = True
+        p = np.asarray(p, float)
+        scene = self.left_kin.scene
+        if not collision:
+            self.left_kin.scene = None
+        try:
+            start = np.r_[self.q_cmd[:2], self.left_q_cmd]
+            qs, ok = self.left_kin.cart_path(start, p, R, step=0.015)
+            if not ok:
+                goal, ok = self.left_kin.ik_global(p, R, seeds=[start])
+                if not ok:
+                    raise SkillFailure(f"left arm: no IK for {label or p}")
+                from .planner import _segment_free
+                if collision and not _segment_free(self.left_kin, start, goal):
+                    raise SkillFailure(f"left arm: joint path collides for {label or p}")
+                n = max(2, int(np.max(np.abs(goal-start))/0.01))
+                qs = [start+(goal-start)*u for u in np.linspace(0, 1, n)[1:]]
+        finally:
+            self.left_kin.scene = scene
+        self.left_follow(qs)
+        tcp, _ = self.left_kin.tcp(self.left_q())
+        err = float(np.linalg.norm(tcp-p))
+        self.log("left_reach", target=label, tcp_err_m=round(err, 4))
+        if err > 0.03:
+            raise SkillFailure(f"left arm: TCP missed {label or p} by {err:.3f} m")
+        return err
 
     def tuck(self):
         """Fold the arm to the rest posture without sweeping through furniture
@@ -304,8 +478,9 @@ class Rig:
         self.anchor.GetAttribute("physics:localPos0").Set(Gf.Vec3f(float(x), float(y), self.base_z))
         self.anchor.GetAttribute("physics:localRot0").Set(Gf.Quatf(math.cos(yaw / 2), 0.0, 0.0, math.sin(yaw / 2)))
         self.kin.set_base((x, y, 0.0), yaw)
+        self.left_kin.set_base((x, y, 0.0), yaw)
 
-    def drive_base(self, path, speed=0.35, turn=0.8, ramp=0.8):
+    def drive_base(self, path, speed=0.35, turn=0.8, ramp=0.8, on_step=None):
         """Follow a list of (x, y, yaw_deg) waypoints with one smooth time
         scaling over the whole path (accelerate over ``ramp`` s, cruise,
         decelerate) instead of stopping at every waypoint: the stop-and-go
@@ -336,10 +511,15 @@ class Rig:
                 f = 0.0 if dur[k] <= 0 else (u - cum[k]) / dur[k]
                 q = P[k] + (P[k + 1] - P[k]) * min(max(f, 0.0), 1.0)
                 self.set_base(q[0], q[1], q[2])
+                if on_step is not None:
+                    on_step(float(u / T), (float(q[0]), float(q[1]), float(q[2])))
                 self.step(1)
-                if self.held is not None and i % 60 == 0:
-                    from .skills import check_held
-                    check_held(self, "carry")
+                if i % 60 == 0:
+                    from .skills import check_held, check_left_held
+                    if self.held is not None:
+                        check_held(self, "carry")
+                    if self.left_held is not None:
+                        check_left_held(self, "left_carry")
         self.step(20)
         self.log("base", pose=[round(v, 3) for v in self.base_pose()])
 

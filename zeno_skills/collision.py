@@ -15,8 +15,9 @@ from scipy.spatial.transform import Rotation
 from .kinematics import _axis_rot
 
 # Sphere model per link frame (centre xyz, radius), from the collision mesh
-# bounds of zeno_malo_edu.isaac.urdf.  The left arm is held folded
-# (kinematics.LEFT_ARM_FOLD) and modelled in the torso frame.
+# bounds of zeno_malo_edu.isaac.urdf.  Right-only plans keep the default
+# folded-left envelope in the torso frame; active two-arm plans also evaluate
+# moving left-arm spheres and inter-arm clearance.
 SPHERES = {
     "torso_link": [((0, 0, 0.03), 0.12), ((0, 0, 0.13), 0.12), ((0, 0, 0.23), 0.12),
                    ((0.01, 0, 0.42), 0.10),
@@ -31,7 +32,13 @@ SPHERES = {
     "right_arm_link_7": [((0, -0.006, -0.02), 0.03)],
     "right_gripper_link": [((0.018, 0, -0.02), 0.045), ((0.018, 0, -0.06), 0.045)],
 }
-HAND_LINKS = ("right_gripper_link", "right_arm_link_7", "right_arm_link_6", "right_arm_link_5")
+LEFT_SPHERES = {"torso_link": SPHERES["torso_link"][:4]}
+for _link, _parts in SPHERES.items():
+    if _link.startswith("right_"):
+        LEFT_SPHERES[_link.replace("right_", "left_", 1)] = [
+            ((c[0], -c[1], c[2]), radius) for c, radius in _parts]
+HAND_LINKS = ("right_gripper_link", "right_arm_link_7", "right_arm_link_6", "right_arm_link_5",
+              "left_gripper_link", "left_arm_link_7", "left_arm_link_6", "left_arm_link_5")
 FINGER_SPHERES = [((0, 0, -0.10), 0.03), ((0, 0, -0.13), 0.025)]
 BASE_HALF = 0.26   # base column half size (0.244) + margin
 
@@ -55,14 +62,16 @@ def link_frames(kin, q):
 def robot_spheres(kin, q, hand_is_finger=False, with_link=False):
     fr = link_frames(kin, np.asarray(q, float))
     pts, rad, fin, links = [], [], [], []
-    for link, sph in SPHERES.items():
+    side = getattr(kin, "side", "right")
+    spheres = LEFT_SPHERES if side == "left" else SPHERES
+    for link, sph in spheres.items():
         p, R = fr[link]
         for c, r in sph:
             pts.append(p + R @ np.asarray(c, float))
             rad.append(r)
             fin.append(False)
             links.append(link)
-    p, R = fr["right_gripper_link"]
+    p, R = fr[f"{side}_gripper_link"]
     for c, r in FINGER_SPHERES:
         pts.append(p + R @ np.asarray(c, float))
         rad.append(r)
@@ -94,6 +103,9 @@ class WorldModel:
         # Base footprint and path planning only: the hand must still reach
         # into a toy box.
         self.base_only = np.zeros((0, 6))
+        self.left_active = False
+        self.right_kin = self.left_kin = None
+        self.right_q = self.left_q = None
 
     def set_base_obstacles(self, boxes):
         self.base_only = np.asarray(boxes, float).reshape(-1, 6)
@@ -138,6 +150,17 @@ class WorldModel:
             if hand_touches_part:
                 extra = np.where(np.isin(links[m], HAND_LINKS), 0.0, self.part_margin)
             c = min(c, float((self.moving_part_dist(pts[m]) - rad[m] - extra).min()))
+        if self.left_active and self.right_kin is not None and self.left_kin is not None:
+            side = getattr(kin, "side", "right")
+            other_kin = self.right_kin if side == "left" else self.left_kin
+            other_q = self.right_q if side == "left" else self.left_q
+            if other_q is not None:
+                op, orad, _, olinks = robot_spheres(other_kin, other_q, with_link=True)
+                own = np.array(["arm_link_" in link or "gripper_link" in link for link in links])
+                other = np.array(["arm_link_" in link or "gripper_link" in link for link in olinks])
+                if own.any() and other.any():
+                    dd = np.linalg.norm(pts[own, None, :]-op[None, other, :], axis=2)
+                    c = min(c, float((dd-rad[own, None]-orad[None, other]).min()))
         return c
 
     def footprint_clear(self, x, y, yaw, margin=0.03):

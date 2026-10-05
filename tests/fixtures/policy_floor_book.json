@@ -1,0 +1,30 @@
+{
+  "task": "policy_floor_book",
+  "instruction": "Lift a flat book from the living-room floor.",
+  "base_scene": "sim/zeno_house.usd",
+  "base_annotation": "annotations/zeno_house.json",
+  "robot_start_near": [
+    3.5,
+    1.0
+  ],
+  "objects": {
+    "book_green": {
+      "asset": "book_green",
+      "supports": [
+        "floor:living_room"
+      ],
+      "spawn_xy": [
+        4.4,
+        1.8
+      ],
+      "spawn_yaw_deg": 0
+    }
+  },
+  "goal": {
+    "all": [
+      {
+        "not_dropped": "all"
+      }
+    ]
+  }
+}
