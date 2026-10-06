@@ -60,11 +60,12 @@ USD layer on top of it (`tasks/<task>/scene.usd`); the breakfast heating tasks l
 appliance scene (`sim/zeno_house_appliances.usd`). The rooms themselves are never modified; a
 task only adds assets to furniture tops or to the floor.
 
-| | |
-|---|---|
-| ![](media/scenes/house_topdown.jpg) House, top-down (roofless) | ![](media/scenes/living_room_cabinet.jpg) Articulated cabinet with side-hook handle, living room |
+| | | |
+|---|---|---|
+| ![](media/scenes/house_topdown.jpg) House, top-down (roofless) | ![](media/scenes/living_room_cabinet.jpg) Articulated cabinet with side-hook handle, living room | ![](scenes/kitchen_pot/check/pot_close.png) Cooking pot on the kitchen counter |
 
-The task layouts are shown in the task videos below.
+The task layouts are shown in the task videos below. The [kitchen pot demo](scenes/kitchen_pot/scene.usd)
+is outside the ten benchmark tasks; a physical lift remains unverified.
 
 The base house, task scenes, and kitchen pot demo have recorded three-second physics
 checks: free bodies drift less than 1 cm, articulated parts stay closed, and the robot
@@ -101,25 +102,6 @@ All **12 procedural assets** have generated visual and collision meshes, URDF, U
 | `rolling_pin` | 22 × 4.4 × 4.4 | top pinch or edge route | side dining table; annotated, physical pick pending |
 | `shallow_sorting_tray` | 27 × 20 × 5.5 | rectangular rim pinch | bookcase target; annotated, insertion pending |
 | `handled_cooking_pot` | 30 × 18 × 16 | top bail pinch, side handles, or round rim | kitchen counter; no passing lift yet (reach planner blocked) |
-
-### Kitchen cooking pot (grasp demo)
-
-The [kitchen pot scene](scenes/kitchen_pot/scene.usd) places `handled_cooking_pot` on the
-kitchen counter. The open pot has two side handles and a rigid overhead bail; the bail's
-26 mm grip fits within the robot's 80 mm gripper opening. The shared asset annotation
-includes bail, side-handle, and rim grasp candidates, and the handles have collision
-geometry. The [scene spec](scene_specs/kitchen_pot.json) and [scene annotation](scenes/kitchen_pot/annotation.json)
-are committed. This is a demo scene outside the ten benchmark tasks.
-
-| Kitchen placement | Pot and graspable bail |
-| --- | --- |
-| <img src="scenes/kitchen_pot/check/kitchen.png" width="420" alt="Cooking pot on the kitchen counter in the existing house"/> | <img src="scenes/kitchen_pot/check/pot_close.png" width="420" alt="Close view of the cooking pot, side handles, and overhead bail"/> |
-
-The [three-second scene check](scenes/kitchen_pot/check/check.json) passes with no unstable
-bodies and zero robot drift. **A physical lift has not passed yet:** the current handle
-Contract (`contract_025`) cannot find a reachable contact path from this setup. See the
-[pot scene README](scenes/kitchen_pot/README.md) for rebuild and smoke-test commands and
-the [physical findings](skill_library/verification/FINDINGS.md) for the failure record.
 
 [Procedural asset guide](assets/PROCEDURAL_ASSETS.md) gives the generation and conversion commands; both [recycling](task_specs/recycle_and_store.json) and [utility-item](task_specs/organize_utility_items.json) specs have committed task scenes and annotations. Their [recycling scene check](tasks/recycle_and_store/check/check.json) and [utility scene check](tasks/organize_utility_items/check/check.json) report `pass: true`, no unstable bodies, and 0 m robot drift. These are scene-stability results. The complete tasks are not yet physically solved; see [physical findings](skill_library/verification/FINDINGS.md).
 
@@ -465,8 +447,6 @@ The [creation README](docs/README.md) gives the task, scene, annotation, and Par
 sim/zeno_house.usd      final house scene (+ sim/checks)
 task_specs/             task definitions (+ places.json aliases, examples/)
 tasks/<task>/           built task: layer, task.json, annotation.json, check renders
-scene_specs/            standalone demo scene specifications (including kitchen_pot.json)
-scenes/                 built demo scenes, annotations, physics checks, and smoke plans
 skill_library/          50 planner-visible SkillNodes, relations, subgraph examples, verification
 contract_library/       one-to-one Contract definitions and exports
 policy_library/         public low-level policy records
