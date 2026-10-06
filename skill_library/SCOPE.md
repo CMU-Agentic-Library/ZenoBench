@@ -10,4 +10,4 @@
 
 [relations.json](relations.json) 只提供有条件的规划提示；`depends_on` 是 VLM 为当前任务提出的具体依赖。Graph Manager 校验 ID、参数和 DAG；运行时还须看 live observation。失败时停止本 Contract 的剩余 policy，记录已完成步骤、失败步骤和可读取的动作后状态。上层据此重试或换路，Contract 不自动调用替代 Skill。
 
-前置条件标记为 `contract_precheck` 的项目会在执行前检查；`policy_attempt` 由控制器在尝试时确认，不能当成静态保证。后置条件只有被 ContractRunner 测量通过才可宣称。任务审计中的“覆盖”指 9 个任务全部 36 条目标子句可表达或可终态检验；不承诺全部场景的物理成功。`skill_015`、`skill_020`–`skill_022` 仍无配对 Contract 的物理通过记录；`skill_040` 的温度等待和 `skill_038/039` 的区域放置已有代表性实跑，但其他物体和更长搬运路径仍需验证。
+前置条件标记为 `contract_precheck` 的项目会在执行前检查；`policy_attempt` 由控制器在尝试时确认，不能当成静态保证。后置条件只有被 ContractRunner 测量通过才可宣称。任务审计中的“覆盖”指 10 个任务全部 42 条目标子句可表达或可终态检验；不承诺全部场景的物理成功。`skill_015`、`skill_020`–`skill_022` 仍无配对 Contract 的物理通过记录；`skill_040` 的温度等待和 `skill_038/039` 的区域放置已有代表性实跑，但其他物体和更长搬运路径仍需验证。

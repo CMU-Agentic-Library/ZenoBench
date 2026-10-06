@@ -59,6 +59,6 @@
 
 ## 与 ZenoBench 任务目标的关系
 
-[goal_predicates.json](goal_predicates.json) 把 8 类目标子句映射到候选动作和最终 TaskEvaluator 检查。[task_coverage.json](task_coverage.json) 对照当前 9 个任务的 36 条子句。
+[goal_predicates.json](goal_predicates.json) 把 8 类目标子句映射到候选动作和最终 TaskEvaluator 检查。[task_coverage.json](task_coverage.json) 对照当前 10 个任务的 42 条子句。
 
 `near` 是组内两两距离，单次 `within_hint_radius` 只检查一个物体到提示点；`not_dropped` 是跨动作的不变量，不可能由单个 Skill 谓词保证。目标可表达不代表所有场景都物理成功。

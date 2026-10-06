@@ -117,8 +117,12 @@ def build() -> dict[Path, str]:
         signature = ", ".join(action["arguments"])
         facts = ", ".join(f"`{fact}`" for fact in action["verified_by"])
         lines.append(f"| `{row['skill_id']}` | `{action['name']}({signature})` | {facts} |")
+    task_files = sorted((ROOT / "tasks").glob("*/task.json"))
+    task_count = len(task_files)
+    clause_count = sum(len(json.loads(path.read_text())["goal"]["all"])
+                       for path in task_files)
     lines += ["", "## 与 ZenoBench 任务目标的关系", "",
-              "[goal_predicates.json](goal_predicates.json) 把 8 类目标子句映射到候选动作和最终 TaskEvaluator 检查。[task_coverage.json](task_coverage.json) 对照当前 9 个任务的 36 条子句。", "",
+              f"[goal_predicates.json](goal_predicates.json) 把 8 类目标子句映射到候选动作和最终 TaskEvaluator 检查。[task_coverage.json](task_coverage.json) 对照当前 {task_count} 个任务的 {clause_count} 条子句。", "",
               "`near` 是组内两两距离，单次 `within_hint_radius` 只检查一个物体到提示点；`not_dropped` 是跨动作的不变量，不可能由单个 Skill 谓词保证。目标可表达不代表所有场景都物理成功。", ""]
     files[ROOT / "skill_library/ACTION_PREDICATES.md"] = "\n".join(lines)
 

@@ -1,0 +1,5 @@
+<robot name="plastic_cup"><link name="plastic_cup">
+<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/plastic_cup.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/plastic_cup_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
+<inertial><mass value="0.0800" /><origin xyz="0 0 0" /><inertia ixx="1.028e-04" ixy="0.0" ixz="0.0" iyy="1.028e-04" iyz="0.0" izz="8.533e-05" /></inertial>
+</link></robot>

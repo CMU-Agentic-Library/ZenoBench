@@ -1304,5 +1304,266 @@
    ],
    "rim_height": 0.14
   }
+ },
+ "juice_bottle": {
+  "name": "juice_bottle",
+  "tags": [
+   "bottle",
+   "recyclable"
+  ],
+  "mass": 0.2,
+  "collider": "solid",
+  "size": [
+   0.058,
+   0.058,
+   0.18
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": 0.0579,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.5235987755982988,
+    "width": 0.057920509906425666,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.09,
+    "pre_open": 0.04
+   }
+  ],
+  "usd": "usd/assets/juice_bottle.usd",
+  "source_urdf": "assets/asset3d/juice_bottle/result/juice_bottle_sim.urdf",
+  "generator": "procedural_mesh_v1"
+ },
+ "plastic_cup": {
+  "name": "plastic_cup",
+  "tags": [
+   "cup",
+   "container"
+  ],
+  "mass": 0.08,
+  "collider": "round_container",
+  "size": [
+   0.08,
+   0.08,
+   0.095
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": 0.08,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch",
+    "radius": 0.0365,
+    "rim_height": 0.095,
+    "depth": 0.035,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.35,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/plastic_cup.usd",
+  "source_urdf": "assets/asset3d/plastic_cup/result/plastic_cup_sim.urdf",
+  "generator": "procedural_mesh_v1",
+  "container": {
+   "shape": "round",
+   "bands": [
+    [
+     0.0741,
+     0.095,
+     0.0365
+    ]
+   ],
+   "rim_height": 0.095,
+   "rim_radius": 0.0365
+  }
+ },
+ "paperback_book": {
+  "name": "paperback_book",
+  "tags": [
+   "book",
+   "flat"
+  ],
+  "mass": 0.25,
+  "collider": "solid",
+  "size": [
+   0.18,
+   0.12,
+   0.025
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": 0.1008,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.025
+   }
+  ],
+  "usd": "usd/assets/paperback_book.usd",
+  "source_urdf": "assets/asset3d/paperback_book/result/paperback_book_sim.urdf",
+  "generator": "procedural_mesh_v1"
+ },
+ "tissue_box": {
+  "name": "tissue_box",
+  "tags": [
+   "box",
+   "flat"
+  ],
+  "mass": 0.17,
+  "collider": "solid",
+  "size": [
+   0.14,
+   0.09,
+   0.06
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": 0.09,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.06
+   }
+  ],
+  "usd": "usd/assets/tissue_box.usd",
+  "source_urdf": "assets/asset3d/tissue_box/result/tissue_box_sim.urdf",
+  "generator": "procedural_mesh_v1"
+ },
+ "rolling_pin": {
+  "name": "rolling_pin",
+  "tags": [
+   "utensil",
+   "cylinder"
+  ],
+  "mass": 0.26,
+  "collider": "solid",
+  "size": [
+   0.22,
+   0.044,
+   0.044
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   -0.0
+  ],
+  "min_pinch_width": 0.0061,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.0471975511965976,
+    "width": 0.006148711084837211,
+    "offset_xy": [
+     0.0104,
+     -0.0245
+    ],
+    "height": 0.018116860000000002,
+    "pre_open": 0.015074355542418606
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.044
+   }
+  ],
+  "usd": "usd/assets/rolling_pin.usd",
+  "source_urdf": "assets/asset3d/rolling_pin/result/rolling_pin_sim.urdf",
+  "generator": "procedural_mesh_v1"
+ },
+ "shallow_sorting_tray": {
+  "name": "shallow_sorting_tray",
+  "tags": [
+   "container",
+   "tray",
+   "storage"
+  ],
+  "mass": 0.32,
+  "collider": "rect_container",
+  "size": [
+   0.27,
+   0.2,
+   0.055
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": Infinity,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch_rect",
+    "half_x": 0.135,
+    "half_y": 0.1,
+    "rim_height": 0.055,
+    "depth": 0.03,
+    "tilts": [
+     0.4,
+     0.2
+    ],
+    "pre_open": 0.03
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.055
+   }
+  ],
+  "usd": "usd/assets/shallow_sorting_tray.usd",
+  "source_urdf": "assets/asset3d/shallow_sorting_tray/result/shallow_sorting_tray_sim.urdf",
+  "generator": "procedural_mesh_v1",
+  "container": {
+   "shape": "rect",
+   "bands": [
+    [
+     0.0,
+     0.055,
+     0.1315,
+     0.0965
+    ]
+   ],
+   "rim_height": 0.055
+  }
  }
 }

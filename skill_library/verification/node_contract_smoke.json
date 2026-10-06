@@ -2175,6 +2175,100 @@
           "hint_error_m": null
         }
       ]
+    },
+    {
+      "scene": "tasks/organize_utility_items/scene.usd",
+      "source_report": "runs/check_new_juice_bottle_pick/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": [
+        8.15,
+        0.81,
+        -90.0
+      ],
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "top_pinch",
+          "bound_nouns": {
+            "object": "juice_bottle"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/organize_utility_items/scene.usd",
+      "source_report": "runs/check_new_plastic_cup_pick_default/result.json",
+      "success": false,
+      "failure": "SkillFailure: navigate: no base path to (-7.639033819046816, 6.517560529263229, 90.0)",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_036",
+          "success": false,
+          "error": "navigate: no base path to (-7.639033819046816, 6.517560529263229, 90.0)",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "plastic_cup"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_011",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/organize_utility_items/scene.usd",
+      "source_report": "runs/check_new_plastic_cup_pick_park/result.json",
+      "success": false,
+      "failure": "SkillFailure: joint move to pick_pre_far: every joint-space path collides",
+      "start_base": [
+        -7.639,
+        6.518,
+        90.0
+      ],
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_036",
+          "success": false,
+          "error": "joint move to pick_pre_far: every joint-space path collides",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "plastic_cup"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_011",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
     }
   ]
 }

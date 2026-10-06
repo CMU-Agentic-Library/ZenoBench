@@ -60,5 +60,78 @@
     "lay_flat": false,
     "urdf": "assets/asset3d/wide_storage_bin/result/wide_storage_bin.urdf",
     "generator": "procedural_mesh_v1"
+  },
+  "juice_bottle": {
+    "size": 0.18,
+    "mass": 0.2,
+    "tags": [
+      "bottle",
+      "recyclable"
+    ],
+    "collider": "solid",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/juice_bottle/result/juice_bottle.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "plastic_cup": {
+    "size": 0.095,
+    "mass": 0.08,
+    "tags": [
+      "cup",
+      "container"
+    ],
+    "collider": "round_container",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/plastic_cup/result/plastic_cup.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "paperback_book": {
+    "size": 0.18,
+    "mass": 0.25,
+    "tags": [
+      "book",
+      "flat"
+    ],
+    "collider": "solid",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/paperback_book/result/paperback_book.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "tissue_box": {
+    "size": 0.14,
+    "mass": 0.17,
+    "tags": [
+      "box",
+      "flat"
+    ],
+    "collider": "solid",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/tissue_box/result/tissue_box.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "rolling_pin": {
+    "size": 0.22,
+    "mass": 0.26,
+    "tags": [
+      "utensil",
+      "cylinder"
+    ],
+    "collider": "solid",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/rolling_pin/result/rolling_pin.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "shallow_sorting_tray": {
+    "size": 0.27,
+    "mass": 0.32,
+    "tags": [
+      "container",
+      "tray",
+      "storage"
+    ],
+    "collider": "rect_container",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/shallow_sorting_tray/result/shallow_sorting_tray.urdf",
+    "generator": "procedural_mesh_v1"
   }
 }

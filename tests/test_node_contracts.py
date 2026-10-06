@@ -174,8 +174,8 @@ def test_relations_and_task_clause_audit_are_complete():
     relations = load_relations(skills)
     assert len(relations) >= 30
     audit = build()
-    assert len(audit['tasks']) == 9
-    assert sum(task['goal_clause_count'] for task in audit['tasks']) == 36
+    assert len(audit['tasks']) == 10
+    assert sum(task['goal_clause_count'] for task in audit['tasks']) == 42
     types = {row['goal_type'] for task in audit['tasks'] for row in task['clauses']}
     assert types == {'heated','inside','on','on_upright','near','upright','closed','not_dropped'}
     assert all(not task['physical_success_guaranteed'] for task in audit['tasks'])

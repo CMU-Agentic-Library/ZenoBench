@@ -630,6 +630,152 @@
       "physical_success_guaranteed": false
     },
     {
+      "task": "organize_utility_items",
+      "task_file": "tasks/organize_utility_items/task.json",
+      "goal_clause_count": 6,
+      "clauses": [
+        {
+          "goal_clause": {
+            "inside": [
+              "all:sort_into_tray"
+            ],
+            "container": "shallow_sorting_tray"
+          },
+          "goal_type": "inside",
+          "skill_ids": [
+            "skill_004",
+            "skill_006",
+            "skill_029"
+          ],
+          "terminal_check": "TaskEvaluator.inside checks all selected items in one grounded container",
+          "conditions": "Select one present container alternative and repeat pick/place for each item; relocate the container first if the task also requires on(support).",
+          "action_predicates": [
+            "insert_object_in_container"
+          ],
+          "verified_state_facts": [
+            "inside"
+          ],
+          "task_evaluator_predicate": "inside"
+        },
+        {
+          "goal_clause": {
+            "on": [
+              "paperback_book"
+            ],
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+          },
+          "goal_type": "on",
+          "skill_ids": [
+            "skill_004",
+            "skill_005",
+            "skill_030",
+            "skill_038"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it.",
+          "action_predicates": [
+            "deposit_object_on_support",
+            "lay_edge_held_flat_object",
+            "position_object_near_hint"
+          ],
+          "verified_state_facts": [
+            "on"
+          ],
+          "task_evaluator_predicate": "on"
+        },
+        {
+          "goal_clause": {
+            "on": [
+              "juice_bottle",
+              "plastic_cup"
+            ],
+            "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+            "upright": true
+          },
+          "goal_type": "on_upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_037",
+            "skill_039"
+          ],
+          "terminal_check": "TaskEvaluator.on checks support geometry and post-release tilt",
+          "conditions": "Ground an available object alternative and a valid support. Use edge placement when the grasp mode requires it.",
+          "action_predicates": [
+            "stand_object_on_support",
+            "align_upright_object_near_hint"
+          ],
+          "verified_state_facts": [
+            "on",
+            "object_upright"
+          ],
+          "task_evaluator_predicate": "on"
+        },
+        {
+          "goal_clause": {
+            "upright": [
+              "shallow_sorting_tray"
+            ]
+          },
+          "goal_type": "upright",
+          "skill_ids": [
+            "skill_004",
+            "skill_036",
+            "skill_037"
+          ],
+          "terminal_check": "TaskEvaluator.upright reads measured object quaternion",
+          "conditions": "For a disturbed container, grasp it before orienting; floor placement recovery is not independently verified. Already-upright objects need no action.",
+          "action_predicates": [
+            "stand_object_on_support"
+          ],
+          "verified_state_facts": [
+            "object_upright"
+          ],
+          "task_evaluator_predicate": "upright"
+        },
+        {
+          "goal_clause": {
+            "closed": "all"
+          },
+          "goal_type": "closed",
+          "skill_ids": [
+            "skill_007",
+            "skill_024",
+            "skill_026"
+          ],
+          "terminal_check": "TaskEvaluator.closed checks every requested articulated joint",
+          "conditions": "Repeat the appropriate close Skill for each measured open joint; already-closed joints need no action.",
+          "action_predicates": [
+            "close_articulated_joint",
+            "shut_microwave_door",
+            "push_manual_handle"
+          ],
+          "verified_state_facts": [
+            "joint_closed"
+          ],
+          "task_evaluator_predicate": "closed"
+        },
+        {
+          "goal_clause": {
+            "not_dropped": "all"
+          },
+          "goal_type": "not_dropped",
+          "skill_ids": [
+            "skill_004",
+            "skill_020",
+            "skill_005",
+            "skill_006"
+          ],
+          "terminal_check": "TaskEvaluator.not_dropped checks the global initial-to-final scene invariant",
+          "conditions": "Prevent drops during each action. If a recoverable item falls, pick and replace it; this global invariant is not guaranteed by one SkillNode.",
+          "action_predicates": [],
+          "verified_state_facts": [],
+          "task_evaluator_predicate": "not_dropped"
+        }
+      ],
+      "coverage": "nominal_plan_expressible",
+      "physical_success_guaranteed": false
+    },
+    {
       "task": "recycle_and_store",
       "task_file": "tasks/recycle_and_store/task.json",
       "goal_clause_count": 4,

@@ -1,0 +1,5 @@
+<robot name="shallow_sorting_tray"><link name="shallow_sorting_tray">
+<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/shallow_sorting_tray.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/shallow_sorting_tray_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
+<inertial><mass value="0.3200" /><origin xyz="0 0 0" /><inertia ixx="1.147e-03" ixy="0.0" ixz="0.0" iyy="2.025e-03" iyz="0.0" izz="3.011e-03" /></inertial>
+</link></robot>

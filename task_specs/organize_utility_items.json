@@ -1,0 +1,31 @@
+{
+  "task": "organize_utility_items",
+  "instruction": "Put the tissue box and rolling pin in the shallow sorting tray, shelve the paperback book on the study desk, and place the juice bottle and plastic cup upright on the dining table.",
+  "instruction_zh": "把纸巾盒和擀面杖放进浅收纳托盘，把平装书放到书房桌面，并把果汁瓶和塑料杯直立放在餐桌上。",
+  "robot_start_near": [4.3, 2.0],
+  "objects": {
+    "juice_bottle": {"asset": "juice_bottle", "supports": ["tv_stand"]},
+    "plastic_cup": {"asset": "plastic_cup", "supports": ["side_dining_table"]},
+    "paperback_book": {"asset": "paperback_book", "supports": ["dining_table"]},
+    "tissue_box": {"asset": "tissue_box", "supports": ["tv_stand"]},
+    "rolling_pin": {"asset": "rolling_pin", "supports": ["side_dining_table"]},
+    "shallow_sorting_tray": {"asset": "shallow_sorting_tray", "supports": ["bookcase_north_top"]}
+  },
+  "roles": {
+    "sort_into_tray": ["tissue_box", "rolling_pin"]
+  },
+  "alternatives": [
+    "flat objects wider than the gripper -> expose an edge before a horizontal pinch",
+    "failed tray insertion -> reobserve the tray and choose another free placement region"
+  ],
+  "goal": {
+    "all": [
+      {"inside": ["all:sort_into_tray"], "container": "shallow_sorting_tray"},
+      {"on": ["paperback_book"], "support": "study_desk"},
+      {"on": ["juice_bottle", "plastic_cup"], "support": "dining_table", "upright": true},
+      {"upright": ["shallow_sorting_tray"]},
+      {"closed": "all"},
+      {"not_dropped": "all"}
+    ]
+  }
+}

@@ -1,0 +1,5 @@
+<robot name="paperback_book"><link name="paperback_book">
+<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/paperback_book.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/paperback_book_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
+<inertial><mass value="0.2500" /><origin xyz="0 0 0" /><inertia ixx="3.130e-04" ixy="0.0" ixz="0.0" iyy="6.880e-04" iyz="0.0" izz="9.750e-04" /></inertial>
+</link></robot>

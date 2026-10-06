@@ -1,0 +1,149 @@
+{
+ "task": "organize_utility_items",
+ "instruction": "Put the tissue box and rolling pin in the shallow sorting tray, shelve the paperback book on the study desk, and place the juice bottle and plastic cup upright on the dining table.",
+ "instruction_zh": "\u628a\u7eb8\u5dfe\u76d2\u548c\u64c0\u9762\u6756\u653e\u8fdb\u6d45\u6536\u7eb3\u6258\u76d8\uff0c\u628a\u5e73\u88c5\u4e66\u653e\u5230\u4e66\u623f\u684c\u9762\uff0c\u5e76\u628a\u679c\u6c41\u74f6\u548c\u5851\u6599\u676f\u76f4\u7acb\u653e\u5728\u9910\u684c\u4e0a\u3002",
+ "seed": 0,
+ "spec": "task_specs/organize_utility_items.json",
+ "scene_usd": "tasks/organize_utility_items/scene.usd",
+ "annotation": "tasks/organize_utility_items/annotation.json",
+ "base_scene": "sim/zeno_house.usd",
+ "thermal": {},
+ "demonstrate_microwave_door": false,
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  4.3,
+  2.0,
+  0.0
+ ],
+ "placed_objects": {
+  "juice_bottle": {
+   "asset": "juice_bottle",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": 1.9683349641197863,
+   "position": [
+    8.154577924572276,
+    0.36241021480502916,
+    0.484
+   ]
+  },
+  "plastic_cup": {
+   "asset": "plastic_cup",
+   "support": "TableDiningFactory_7009684_spawn_asset_2322328/surface_2",
+   "yaw": -3.1243861495570098,
+   "position": [
+    -7.683531357380391,
+    6.99223998622351,
+    0.712
+   ]
+  },
+  "paperback_book": {
+   "asset": "paperback_book",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "yaw": 0.0,
+   "position": [
+    3.020189522222659,
+    7.108222435401894,
+    0.864
+   ]
+  },
+  "tissue_box": {
+   "asset": "tissue_box",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": 0.0,
+   "position": [
+    7.682077667221881,
+    0.33705349830602155,
+    0.484
+   ]
+  },
+  "rolling_pin": {
+   "asset": "rolling_pin",
+   "support": "TableDiningFactory_7009684_spawn_asset_2322328/surface_2",
+   "yaw": -0.08899906526957402,
+   "position": [
+    -7.709046634263081,
+    8.677270998057836,
+    0.712
+   ]
+  },
+  "shallow_sorting_tray": {
+   "asset": "shallow_sorting_tray",
+   "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "yaw": 0.4494351814662769,
+   "position": [
+    0.9643878412753157,
+    -0.4278442690798414,
+    0.718
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "roles": {
+  "sort_into_tray": [
+   "tissue_box",
+   "rolling_pin"
+  ]
+ },
+ "candidate_supports": {
+  "juice_bottle": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "plastic_cup": [
+   "TableDiningFactory_7009684_spawn_asset_2322328/surface_2"
+  ],
+  "paperback_book": [
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+  ],
+  "tissue_box": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "rolling_pin": [
+   "TableDiningFactory_7009684_spawn_asset_2322328/surface_2"
+  ],
+  "shallow_sorting_tray": [
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+  ]
+ },
+ "alternatives": [
+  "flat objects wider than the gripper -> expose an edge before a horizontal pinch",
+  "failed tray insertion -> reobserve the tray and choose another free placement region"
+ ],
+ "place_hints": {},
+ "goal": {
+  "all": [
+   {
+    "inside": [
+     "all:sort_into_tray"
+    ],
+    "container": "shallow_sorting_tray"
+   },
+   {
+    "on": [
+     "paperback_book"
+    ],
+    "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+   },
+   {
+    "on": [
+     "juice_bottle",
+     "plastic_cup"
+    ],
+    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+    "upright": true
+   },
+   {
+    "upright": [
+     "shallow_sorting_tray"
+    ]
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

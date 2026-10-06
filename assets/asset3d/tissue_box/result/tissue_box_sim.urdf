@@ -1,0 +1,5 @@
+<robot name="tissue_box"><link name="tissue_box">
+<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/tissue_box.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/tissue_box_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
+<inertial><mass value="0.1700" /><origin xyz="0 0 0" /><inertia ixx="1.657e-04" ixy="0.0" ixz="0.0" iyy="3.287e-04" iyz="0.0" izz="3.924e-04" /></inertial>
+</link></robot>

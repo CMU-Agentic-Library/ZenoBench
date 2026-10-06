@@ -13,7 +13,7 @@ Contract 是该节点的执行与验证边界。上层 SkillNode 保留抽象的
 | 抓取与准备 | `004`, `015–018`, `020`, `027–029`, `035–036`, `049` | 常规、边缘、杯柄、腔体、地面抓取；制造可抓边缘及扶正 |
 | 放置与推动 | `005–006`, `008`, `014`, `019`, `030`, `037–039`, `045–046` | 支撑面、容器、炉腔、薄物边缘、指定区域放置；推动 |
 
-`skill_043`–`skill_050` 补充底盘微调、专用接触搬移、门型专用打开、地面预抓取和微波炉门让位。五个新资产及新场景的生成方法见 [资产说明](../assets/PROCEDURAL_ASSETS.md)。这些动作扩展了可选路径；是否能完成具体任务仍由场景和实测结果决定。新三物件收纳任务的首个“抓罐→入盒”链已通过，但完整六节点控制图在第二次抓取前的收臂环节停止，见[验证发现](verification/FINDINGS.md)。
+`skill_043`–`skill_050` 补充底盘微调、专用接触搬移、门型专用打开、地面预抓取和微波炉门让位。11 个程序化资产及两个新场景的生成方法见 [资产说明](../assets/PROCEDURAL_ASSETS.md)。这些动作扩展了可选路径；是否能完成具体任务仍由场景和实测结果决定。新三物件收纳任务的首个“抓罐→入盒”链已通过，但完整六节点控制图在第二次抓取前的收臂环节停止，见[验证发现](verification/FINDINGS.md)。
 
 此前的节点补齐任务谓词：`skill_040` 验证食品达到指定温度；`skill_037` 和 `skill_039` 在放下后验证直立；`skill_038` 和 `skill_039` 验证与同一个放置提示点的距离。薄物体可以先用 `skill_035` 制造安全悬边，再尝试 `skill_016` 边缘抓取。每项的物理适用条件和验证状态见其 `SKILL.md`。
 
@@ -39,7 +39,7 @@ Contract 是该节点的执行与验证边界。上层 SkillNode 保留抽象的
 }
 ```
 
-名词绑定为 `{"the soda can": "soda_can", "the wide storage bin": "wide_storage_bin"}`。更多物品可以继续接在 `depends_on` 链中；需要移动底盘或准备抓取时，也可插入相应节点。完整六节点示例见[收纳子图](examples/recycle_and_store.skill_subgraph.json)。目前 9 个任务的 36 条目标子句都有可表达的调用路径，但这只是规划覆盖。该三物件场景中“抓罐→入盒”已实测通过，完整任务在第二次抓取前的收臂环节失败，见[验证发现](verification/FINDINGS.md)。
+名词绑定为 `{"the soda can": "soda_can", "the wide storage bin": "wide_storage_bin"}`。更多物品可以继续接在 `depends_on` 链中；需要移动底盘或准备抓取时，也可插入相应节点。完整六节点示例见[收纳子图](examples/recycle_and_store.skill_subgraph.json)。目前 10 个任务的 42 条目标子句都有可表达的调用路径，但这只是规划覆盖。该三物件场景中“抓罐→入盒”已实测通过，完整任务在第二次抓取前的收臂环节失败，见[验证发现](verification/FINDINGS.md)。
 
 ### 动词、可填写参数与验证谓词
 
@@ -100,11 +100,11 @@ Contract 是该节点的执行与验证边界。上层 SkillNode 保留抽象的
 | `skill_050` | `clear` | `clear_microwave_door_sweep` | `articulated: articulated_ref` | `microwave_sweep_clear` |
 <!-- action-signatures:end -->
 
-[50 个动作谓词总表](ACTION_PREDICATES.md)列出动作与验证事实，[任务目标映射](goal_predicates.json)把它们接到 `inside`、`on`、`upright`、`near`、`heated`、`closed` 等目标。`near` 要由最终评估器检查组内两两距离；`not_dropped` 是全程不变量，不能由单个动作谓词保证。现有 9 个任务的 36 条目标子句均有名义上的动作路径或最终检查；这不等于物理场景全部成功。
+[50 个动作谓词总表](ACTION_PREDICATES.md)列出动作与验证事实，[任务目标映射](goal_predicates.json)把它们接到 `inside`、`on`、`upright`、`near`、`heated`、`closed` 等目标。`near` 要由最终评估器检查组内两两距离；`not_dropped` 是全程不变量，不能由单个动作谓词保证。现有 10 个任务的 42 条目标子句均有名义上的动作路径或最终检查；这不等于物理场景全部成功。
 
 ## 与上层如何对接
 
-VLM 根据任务目标及当前观察生成当前子目标的 `skill_subgraph`：每个节点只有 `id`、`skill_id`、`args`、`depends_on`。对象引用用 `{"ref":"the apple"}`；数值用 `{"value":...}`。Grounding 模块另提供 ref 到唯一场景实例 ID 的绑定。见 [四节点水果示例](examples/collect_fruits.skill_subgraph.json)、[六节点收纳示例](examples/recycle_and_store.skill_subgraph.json)、[加热示例](examples/heat_preloaded.skill_subgraph.json) 和 [子图 Schema](subgraph.schema.json)。收纳示例的名词绑定见 [bindings](examples/recycle_and_store.bindings.json)；它是模拟器控制图，不是 GPT 生成结果。
+VLM 根据任务目标及当前观察生成当前子目标的 `skill_subgraph`：每个节点只有 `id`、`skill_id`、`args`、`depends_on`。对象引用用 `{"ref":"the apple"}`；数值用 `{"value":...}`。Grounding 模块另提供 ref 到唯一场景实例 ID 的绑定。见 [四节点水果示例](examples/collect_fruits.skill_subgraph.json)、[六节点收纳示例](examples/recycle_and_store.skill_subgraph.json)、[十二节点新资产示例](examples/organize_utility_items.skill_subgraph.json)、[加热示例](examples/heat_preloaded.skill_subgraph.json) 和 [子图 Schema](subgraph.schema.json)。收纳示例的名词绑定见 [bindings](examples/recycle_and_store.bindings.json)，新资产示例的名词绑定见 [bindings](examples/organize_utility_items.bindings.json)；两者都是模拟器控制图，不是 GPT 生成结果。
 
 [关系目录](relations.json) 提供 47 条**有条件的**准备、使能、后续、替代和恢复提示。例如“微波炉关门 → 启动加热 → 等待温度达标”，以及“薄物制造悬边 → 边缘抓取”。这些关系帮助 VLM 提出 `depends_on`，不是固定的全局任务图；Graph Manager 必须根据实时状态、参数类型和任务目标验证，再按需执行。失败后返回测得的部分状态，上层重新规划；关系和 fallback 不会自动触发其他动作。
 
@@ -114,7 +114,7 @@ Graph Manager 在 [graph.py](graph.py) 中检查 ID、参数、依赖 DAG、场�
 
 ## 任务覆盖的含义
 
-[逐任务蓝图](TASK_PLANS.md) 给出条件化动作链；[逐任务审计](task_coverage.json) 对照 `tasks/*/task.json`：9 个任务的 **36 条目标子句**均有可表达的动作路径或终态检查，涉及 `inside`、`on`、直立、成组靠近、加热、关门和 `not_dropped`。例如 `near` 是**成组两两距离**；单次 `skill_038` 只验证一个物体与提示点的距离。上层应选共同提示点，把每个物体放在任务阈值一半以内，再用 `TaskEvaluator` 核对整个组。
+[逐任务蓝图](TASK_PLANS.md) 给出条件化动作链；[逐任务审计](task_coverage.json) 对照 `tasks/*/task.json`：10 个任务的 **42 条目标子句**均有可表达的动作路径或终态检查，涉及 `inside`、`on`、直立、成组靠近、加热、关门和 `not_dropped`。例如 `near` 是**成组两两距离**；单次 `skill_038` 只验证一个物体与提示点的距离。上层应选共同提示点，把每个物体放在任务阈值一半以内，再用 `TaskEvaluator` 核对整个组。
 
 [GPT 规划与 ZenoBench 实验协议](../experiments/gpt_skill_baseline/README.md) 区分 JSON 规划有效性、Contract 执行和最终任务成功。
 
