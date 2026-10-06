@@ -23,6 +23,19 @@ SPECS = {
     'tissue_box': {'size': 0.14, 'mass': 0.17, 'tags': ['box','flat'], 'collider': 'solid'},
     'rolling_pin': {'size': 0.22, 'mass': 0.26, 'tags': ['utensil','cylinder'], 'collider': 'solid'},
     'shallow_sorting_tray': {'size': 0.27, 'mass': 0.32, 'tags': ['container','tray','storage'], 'collider': 'rect_container'},
+    'handled_cooking_pot': {'size': 0.30, 'mass': 0.65, 'tags': ['cookware','pot','container','handled'], 'collider': 'round_container',
+                            'container_profile': {'shape': 'round', 'bands': [[0.0, 0.075, 0.086]],
+                                                  'rim_height': 0.075, 'rim_radius': 0.086},
+                            'top_grasp': {'type': 'top_pinch', 'close_yaw': 0.0, 'width': 0.026,
+                                          'offset_xy': [0.0, 0.0], 'height': 0.135, 'pre_open': 0.028},
+                            'handle_grasp': {'type': 'handle_pinch', 'center': [0.0, 0.0, 0.142],
+                                             'approach': [0.0, 0.0, -1.0], 'close_dir': [1.0, 0.0, 0.0],
+                                             'pre_open': 0.028},
+                            'handle_collider': {'center': [0.0, 0.0, 0.135], 'size': [0.026, 0.026, 0.050]},
+                            'extra_handle_colliders': [
+                                {'center': [-0.1125, 0.0, 0.060], 'size': [0.075, 0.024, 0.018]},
+                                {'center': [0.1125, 0.0, 0.060], 'size': [0.075, 0.024, 0.018]},
+                                {'center': [0.0, 0.0, 0.105], 'size': [0.18, 0.020, 0.012]}]},
 }
 
 
@@ -71,6 +84,16 @@ def geometry(name):
         return box((0.18, 0.12, 0.025), (0, 0, 0.0125))
     if name == 'tissue_box':
         return box((0.14, 0.09, 0.06), (0, 0, 0.03))
+    if name == 'handled_cooking_pot':
+        wall = trimesh.creation.annulus(r_min=0.083, r_max=0.090, height=0.075, sections=48)
+        wall.apply_translation((0, 0, 0.0375))
+        floor = trimesh.creation.cylinder(radius=0.090, height=0.006, sections=48)
+        floor.apply_translation((0, 0, 0.003))
+        handles = [box((0.075, 0.024, 0.018), (sign * 0.1125, 0, 0.060))
+                   for sign in (-1, 1)]
+        bail = box((0.18, 0.020, 0.012), (0, 0, 0.105))
+        grip = box((0.026, 0.026, 0.050), (0, 0, 0.135))
+        return trimesh.util.concatenate([floor, wall, *handles, bail, grip])
     if name == 'rolling_pin':
         mesh = trimesh.creation.cylinder(radius=0.022, height=0.22, sections=40)
         mesh.apply_transform(trimesh.transformations.rotation_matrix(1.5707963268, (0, 1, 0)))

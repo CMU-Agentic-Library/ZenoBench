@@ -1,6 +1,6 @@
 # Deterministic procedural assets
 
-`tools/generate_procedural_assets.py` produces **11 real-size assets** with visual and collision OBJ meshes, URDFs, source registry entries and a reproducible generator. `tools/prepare_assets.py` converts them to simulator USD and writes `annotations/assets.json` grasp and container geometry. These assets use geometric meshes rather than EmbodiedGen textures.
+`tools/generate_procedural_assets.py` produces **12 real-size assets** with visual and collision OBJ meshes, URDFs, source registry entries and a reproducible generator. `tools/prepare_assets.py` converts them to simulator USD and writes `annotations/assets.json` grasp and container geometry. These assets use geometric meshes rather than EmbodiedGen textures.
 
 | Asset | Size (cm) | Annotated contact route | Example scene |
 | --- | --- | --- | --- |
@@ -15,13 +15,17 @@
 | `tissue_box` | 14 × 9 × 6 | push to edge, then pinch | `organize_utility_items`, TV stand |
 | `rolling_pin` | 22 × 4.4 × 4.4 | top pinch or edge route | `organize_utility_items`, side dining table |
 | `shallow_sorting_tray` | 27 × 20 × 5.5 | rectangular rim pinch | `organize_utility_items`, bookcase target |
+| `handled_cooking_pot` | 30 × 18 × 16 | narrow overhead bail pinch; round rim alternative | `kitchen_pot` demo, kitchen counter |
 
 ```bash
 $ISAACLAB_PYTHON tools/generate_procedural_assets.py
-OMNI_KIT_ACCEPT_EULA=YES $ISAACLAB_PYTHON tools/prepare_assets.py --only foam_cube soda_can snack_carton small_storage_bin wide_storage_bin juice_bottle plastic_cup paperback_book tissue_box rolling_pin shallow_sorting_tray --convert
+OMNI_KIT_ACCEPT_EULA=YES $ISAACLAB_PYTHON tools/prepare_assets.py --only foam_cube soda_can snack_carton small_storage_bin wide_storage_bin juice_bottle plastic_cup paperback_book tissue_box rolling_pin shallow_sorting_tray handled_cooking_pot --convert
 OMNI_KIT_ACCEPT_EULA=YES $ISAACLAB_PYTHON tools/build_tasks.py --spec task_specs/recycle_and_store.json --seed 0
 OMNI_KIT_ACCEPT_EULA=YES $ISAACLAB_PYTHON tools/build_tasks.py --spec task_specs/organize_utility_items.json --seed 0
+OMNI_KIT_ACCEPT_EULA=YES $ISAACLAB_PYTHON tools/build_tasks.py --spec scene_specs/kitchen_pot.json --out scenes/kitchen_pot --seed 0
 ```
+
+The [pot demo scene](../scenes/kitchen_pot/scene.usd) keeps the pot on the kitchen counter and exposes an annotated 26 mm wide bail grip to Zeno’s 80 mm gripper. Its [kitchen view](../scenes/kitchen_pot/check/pot_close.png), [scene check](../scenes/kitchen_pot/check/check.json), [scene annotation](../scenes/kitchen_pot/annotation.json), and [handle-pick plan](../scenes/kitchen_pot/pick_handle.plan.json) are committed. The pot is an additional scene asset; this demo is outside the ten canonical task specs. The [pot scene notes](../scenes/kitchen_pot/README.md) distinguish geometric grasp compatibility from measured execution: `contract_025` currently fails before contact with no reachable path, so a physical lift is not verified.
 
 The committed task layers, annotations and [scene checks](../tasks/organize_utility_items/check/check.json) are ready to use; rebuilds additionally need `tools/settle_scene.py` and `tools/annotate_scene.py` as described in [the task guide](../docs/README.md). Both seed-0 scenes passed three-second physics stability checks. The `organize_utility_items` scene contains all six assets from the second batch, with the shallow tray as a task target. Its [12-node saved graph](../skill_library/examples/organize_utility_items.skill_subgraph.json) and [noun bindings](../skill_library/examples/organize_utility_items.bindings.json) compile as an upper-layer plan, but the full graph has not been physically executed.
 

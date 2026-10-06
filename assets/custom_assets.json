@@ -133,5 +133,111 @@
     "lay_flat": false,
     "urdf": "assets/asset3d/shallow_sorting_tray/result/shallow_sorting_tray.urdf",
     "generator": "procedural_mesh_v1"
+  },
+  "handled_cooking_pot": {
+    "size": 0.3,
+    "mass": 0.65,
+    "tags": [
+      "cookware",
+      "pot",
+      "container",
+      "handled"
+    ],
+    "collider": "round_container",
+    "container_profile": {
+      "shape": "round",
+      "bands": [
+        [
+          0.0,
+          0.075,
+          0.086
+        ]
+      ],
+      "rim_height": 0.075,
+      "rim_radius": 0.086
+    },
+    "top_grasp": {
+      "type": "top_pinch",
+      "close_yaw": 0.0,
+      "width": 0.026,
+      "offset_xy": [
+        0.0,
+        0.0
+      ],
+      "height": 0.135,
+      "pre_open": 0.028
+    },
+    "handle_grasp": {
+      "type": "handle_pinch",
+      "center": [
+        0.0,
+        0.0,
+        0.142
+      ],
+      "approach": [
+        0.0,
+        0.0,
+        -1.0
+      ],
+      "close_dir": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "pre_open": 0.028
+    },
+    "handle_collider": {
+      "center": [
+        0.0,
+        0.0,
+        0.135
+      ],
+      "size": [
+        0.026,
+        0.026,
+        0.05
+      ]
+    },
+    "extra_handle_colliders": [
+      {
+        "center": [
+          -0.1125,
+          0.0,
+          0.06
+        ],
+        "size": [
+          0.075,
+          0.024,
+          0.018
+        ]
+      },
+      {
+        "center": [
+          0.1125,
+          0.0,
+          0.06
+        ],
+        "size": [
+          0.075,
+          0.024,
+          0.018
+        ]
+      },
+      {
+        "center": [
+          0.0,
+          0.0,
+          0.105
+        ],
+        "size": [
+          0.18,
+          0.02,
+          0.012
+        ]
+      }
+    ],
+    "lay_flat": false,
+    "urdf": "assets/asset3d/handled_cooking_pot/result/handled_cooking_pot.urdf",
+    "generator": "procedural_mesh_v1"
   }
 }

@@ -1,0 +1,5 @@
+<robot name="handled_cooking_pot"><link name="handled_cooking_pot">
+<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/handled_cooking_pot.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/handled_cooking_pot_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
+<inertial><mass value="0.6500" /><origin xyz="0 0 0" /><inertia ixx="3.142e-03" ixy="0.0" ixz="0.0" iyy="6.262e-03" iyz="0.0" izz="6.630e-03" /></inertial>
+</link></robot>

@@ -205,7 +205,7 @@ def set_box_inertia(stage, root_path, mass):
                                                mass * (sx * sx + sy * sy) / 12))
 
 
-def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="round", mats=None, handle=None):
+def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="round", mats=None, handle=None, extra_handles=()):
     """Thin-walled containers (bowl, cup, basket, box, tray) were imported with
     a single convex hull or a cavity-filling decomposition: a *solid* object
     that cannot hold anything or be rim-pinched.  Rebuild the collider as wall
@@ -268,17 +268,20 @@ def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="r
     if handle is not None:
         add_handle_collider(stage, str(body.GetPath()), handle, mats)
         k += 1
+    for i, other in enumerate(extra_handles, start=1):
+        add_handle_collider(stage, str(body.GetPath()), other, mats, name=f"handle_collider_{i}")
+        k += 1
     return k
 
 
-def add_handle_collider(stage, body_path, handle, mats=None):
-    """Idempotently attach one narrow mug handle bar to an existing rigid body."""
+def add_handle_collider(stage, body_path, handle, mats=None, name="handle_collider"):
+    """Idempotently attach a named grasp handle collider to an existing rigid body."""
     from pxr import Gf, UsdGeom, UsdPhysics
     mats = mats or materials(stage)
     body = stage.GetPrimAtPath(body_path)
     if not body:
         raise ValueError(f"missing rigid body {body_path}")
-    cube = UsdGeom.Cube.Define(stage, f"{body_path}/handle_collider")
+    cube = UsdGeom.Cube.Define(stage, f"{body_path}/{name}")
     cube.CreateSizeAttr(1.0)
     cube.CreatePurposeAttr().Set("guide")
     cube.ClearXformOpOrder()

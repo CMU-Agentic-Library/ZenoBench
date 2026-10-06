@@ -1,0 +1,56 @@
+{
+ "task": "kitchen_pot_demo",
+ "instruction": "A handled cooking pot stands on the kitchen counter for gripper grasp testing.",
+ "instruction_zh": "\u4e00\u53e3\u5e26\u53cc\u4fa7\u628a\u624b\u7684\u9505\u653e\u5728\u53a8\u623f\u53f0\u9762\u4e0a\uff0c\u7528\u4e8e\u5939\u722a\u6293\u53d6\u6d4b\u8bd5\u3002",
+ "seed": 0,
+ "spec": "scene_specs/kitchen_pot.json",
+ "scene_usd": "scenes/kitchen_pot/scene.usd",
+ "annotation": "scenes/kitchen_pot/annotation.json",
+ "base_scene": "sim/zeno_house.usd",
+ "thermal": {},
+ "demonstrate_microwave_door": false,
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  -1.1660254037844386,
+  7.3,
+  -30.000000000000004
+ ],
+ "placed_objects": {
+  "handled_cooking_pot": {
+   "asset": "handled_cooking_pot",
+   "support": "repair/kitchen_counter_top",
+   "yaw": 1.5707963267948966,
+   "position": [
+    -0.63,
+    7.66,
+    0.872
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "roles": {},
+ "candidate_supports": {
+  "handled_cooking_pot": [
+   "repair/kitchen_counter_top"
+  ]
+ },
+ "alternatives": [],
+ "place_hints": {},
+ "goal": {
+  "all": [
+   {
+    "on": [
+     "handled_cooking_pot"
+    ],
+    "support": "repair/kitchen_counter_top"
+   },
+   {
+    "upright": [
+     "handled_cooking_pot"
+    ]
+   }
+  ]
+ }
+}

@@ -2269,6 +2269,33 @@
           "hint_error_m": null
         }
       ]
+    },
+    {
+      "scene": "scenes/kitchen_pot/scene.usd",
+      "source_report": "runs/kitchen_pot_bail_pick/result.json",
+      "success": false,
+      "failure": "SkillFailure: pick cup handle handled_cooking_pot: no reachable contact path",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_025",
+          "success": false,
+          "error": "pick cup handle handled_cooking_pot: no reachable contact path",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "handled_cooking_pot"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_055",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
     }
   ]
 }

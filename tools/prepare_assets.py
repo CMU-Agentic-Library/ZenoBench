@@ -144,14 +144,14 @@ def container_profile(mesh, kind, wall=0.007, body_fraction=1.0):
             "rim_radius": bands[-1][2] if bands else None}
 
 
-def grasps(name, mesh, kind, body_fraction=1.0):
+def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
     """Grasp primitives in the object frame (origin = bbox centre of the
     bottom face, z up).  Consumed by zeno_skills.annotations.grasp_poses."""
     b = mesh.bounds
     ext = b[1] - b[0]
     out = []
     if kind == "round_container":
-        prof = container_profile(mesh, kind, body_fraction=body_fraction)
+        prof = profile or container_profile(mesh, kind, body_fraction=body_fraction)
         out.append({"type": "rim_pinch", "radius": prof["rim_radius"], "rim_height": prof["rim_height"],
                     "depth": 0.035, "azimuths_deg": list(range(0, 360, 30)), "tilts": [0.5, 0.35, 0.2],
                     "pre_open": 0.03})
@@ -226,6 +226,10 @@ def grasps(name, mesh, kind, body_fraction=1.0):
                     "approach": [0.0, 1.0, 0.0], "close_dir": [1.0, 0.0, 0.0],
                     "pre_open": 0.03,
                     "note": "TCP sits 19 mm outside the -Y handle bar so fingertip pads pinch the bar without contacting the mug wall; mesh transformed by +90 deg about X"})
+    if "top_grasp" in CUSTOM_RECORDS.get(name, {}):
+        out.append(CUSTOM_RECORDS[name]["top_grasp"])
+    if "handle_grasp" in CUSTOM_RECORDS.get(name, {}):
+        out.append(CUSTOM_RECORDS[name]["handle_grasp"])
     return out, min_w
 
 
@@ -263,7 +267,10 @@ def write_sim_urdf(name):
     tree.write(out)
     b = mesh.bounds
     bf = BODY_FRACTION.get(name, 1.0)
-    g, min_width = grasps(name, mesh, kind, bf)
+    custom = CUSTOM_RECORDS.get(name, {})
+    profile = custom.get("container_profile") or (container_profile(mesh, kind, body_fraction=bf)
+                                                   if kind != "solid" else None)
+    g, min_width = grasps(name, mesh, kind, bf, profile)
     ann = {"name": name, "tags": tags, "mass": mass, "collider": kind,
            "size": [round(float(v), 4) for v in ext],
            # vector from the rigid-body origin to the bottom-centre of the bbox
@@ -276,7 +283,11 @@ def write_sim_urdf(name):
            "source_urdf": str(out.relative_to(ROOT)),
            "generator": CUSTOM_RECORDS.get(name, {}).get("generator", "EmbodiedGen V2 text3d-cli (SAM3D backend)")}
     if kind != "solid":
-        ann["container"] = container_profile(mesh, kind, body_fraction=bf)
+        ann["container"] = profile
+        if "handle_collider" in custom:
+            ann["container"]["handle_collider"] = custom["handle_collider"]
+        if "extra_handle_colliders" in custom:
+            ann["container"]["extra_handle_colliders"] = custom["extra_handle_colliders"]
         if name == "breakfast_mug":
             # The imported mug handle is a thin bar, about 14 mm wide at
             # local y=-61 mm; the round-wall approximation omits it.

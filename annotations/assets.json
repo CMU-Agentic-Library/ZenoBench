@@ -1565,5 +1565,151 @@
    ],
    "rim_height": 0.055
   }
+ },
+ "handled_cooking_pot": {
+  "name": "handled_cooking_pot",
+  "tags": [
+   "cookware",
+   "pot",
+   "container",
+   "handled"
+  ],
+  "mass": 0.65,
+  "collider": "round_container",
+  "size": [
+   0.3,
+   0.18,
+   0.16
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": 0.09,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch",
+    "radius": 0.086,
+    "rim_height": 0.075,
+    "depth": 0.035,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.35,
+     0.2
+    ],
+    "pre_open": 0.03
+   },
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.0,
+    "width": 0.026,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.135,
+    "pre_open": 0.028
+   },
+   {
+    "type": "handle_pinch",
+    "center": [
+     0.0,
+     0.0,
+     0.142
+    ],
+    "approach": [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    "close_dir": [
+     1.0,
+     0.0,
+     0.0
+    ],
+    "pre_open": 0.028
+   }
+  ],
+  "usd": "usd/assets/handled_cooking_pot.usd",
+  "source_urdf": "assets/asset3d/handled_cooking_pot/result/handled_cooking_pot_sim.urdf",
+  "generator": "procedural_mesh_v1",
+  "container": {
+   "shape": "round",
+   "bands": [
+    [
+     0.0,
+     0.075,
+     0.086
+    ]
+   ],
+   "rim_height": 0.075,
+   "rim_radius": 0.086,
+   "handle_collider": {
+    "center": [
+     0.0,
+     0.0,
+     0.135
+    ],
+    "size": [
+     0.026,
+     0.026,
+     0.05
+    ]
+   },
+   "extra_handle_colliders": [
+    {
+     "center": [
+      -0.1125,
+      0.0,
+      0.06
+     ],
+     "size": [
+      0.075,
+      0.024,
+      0.018
+     ]
+    },
+    {
+     "center": [
+      0.1125,
+      0.0,
+      0.06
+     ],
+     "size": [
+      0.075,
+      0.024,
+      0.018
+     ]
+    },
+    {
+     "center": [
+      0.0,
+      0.0,
+      0.105
+     ],
+     "size": [
+      0.18,
+      0.02,
+      0.012
+     ]
+    }
+   ]
+  }
  }
 }
