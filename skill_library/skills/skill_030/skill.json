@@ -64,6 +64,19 @@
     "on",
     "right_hand_empty"
   ],
+  "action_predicate": {
+    "name": "lay_edge_held_flat_object",
+    "verb": "lay",
+    "noun": "edge_held_flat_object",
+    "arguments": [
+      "object",
+      "support"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

@@ -25,8 +25,9 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).push_from_behind.execute(...)`
 - Class: `PushFromBehindPolicy`
 - Availability: `verified`
+- Direct Contract routes: contract_053
 - Legacy family Contracts: contract_006
 
 ## Recorded evidence
 
-Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01
+Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01 Active Contract rear-push pass on book_red: runs/check_50_rear_push, 2026-10-06.

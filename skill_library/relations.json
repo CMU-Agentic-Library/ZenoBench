@@ -344,6 +344,87 @@
       "when": "container placement used an articulated compartment and the task requires closed doors",
       "reason": "Close the relevant compartment after placement.",
       "automatic": false
+    },
+    {
+      "id": "relation_039",
+      "from": "skill_011",
+      "to": "skill_043",
+      "kind": "preparation",
+      "when": "after arm tucking and a local orientation correction is needed",
+      "reason": "Tucked arm allows a direct local base turn.",
+      "automatic": false
+    },
+    {
+      "id": "relation_040",
+      "from": "skill_011",
+      "to": "skill_044",
+      "kind": "preparation",
+      "when": "after arm tucking and a short straight reposition is needed",
+      "reason": "Tucked arm allows a direct local translation.",
+      "automatic": false
+    },
+    {
+      "id": "relation_041",
+      "from": "skill_045",
+      "to": "skill_035",
+      "kind": "recovery",
+      "when": "rear contact could not make required progress on a flat object",
+      "reason": "Slide to edge offers an alternate flat-object contact route.",
+      "automatic": false
+    },
+    {
+      "id": "relation_042",
+      "from": "skill_046",
+      "to": "skill_035",
+      "kind": "recovery",
+      "when": "top drag could not make required progress on a flat object",
+      "reason": "An edge overhang can enable the next grasp attempt.",
+      "automatic": false
+    },
+    {
+      "id": "relation_043",
+      "from": "skill_047",
+      "to": "skill_004",
+      "kind": "enables",
+      "when": "object lies behind the opened hinged door",
+      "reason": "Access permits a grounded pick attempt.",
+      "automatic": false
+    },
+    {
+      "id": "relation_044",
+      "from": "skill_048",
+      "to": "skill_004",
+      "kind": "enables",
+      "when": "object lies inside the opened drawer",
+      "reason": "Access permits a grounded pick attempt.",
+      "automatic": false
+    },
+    {
+      "id": "relation_045",
+      "from": "skill_049",
+      "to": "skill_020",
+      "kind": "preparation",
+      "when": "a floor item has a verified pregrasp and corner pick is appropriate",
+      "reason": "Prepared arm pose can precede the floor-corner grasp.",
+      "automatic": false
+    },
+    {
+      "id": "relation_046",
+      "from": "skill_050",
+      "to": "skill_023",
+      "kind": "preparation",
+      "when": "microwave door sweep is clear and powered opening is next",
+      "reason": "Measured clearance permits hinge motion.",
+      "automatic": false
+    },
+    {
+      "id": "relation_047",
+      "from": "skill_001",
+      "to": "skill_049",
+      "kind": "preparation",
+      "when": "floor target is beyond the current arm reach",
+      "reason": "Navigate to a collision-free stance near the grounded floor object before preparing a pregrasp.",
+      "automatic": false
     }
   ]
 }

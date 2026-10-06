@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "skill_id": "skill_043",
+  "name": "Pivot base in place",
+  "description": "Rotate an empty, tucked robot by a bounded signed angle and verify its new yaw.",
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "arm_tucked",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "turn_arc_clear",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_yaw_changed",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_051",
+  "scope": {
+    "unit": "One pivot base in place attempt on grounded scene state.",
+    "includes": [
+      "Rotate an empty, tucked robot by a bounded signed angle and verify its new yaw."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "expected_state_change": [
+    "base_yaw_changed"
+  ],
+  "action_predicate": {
+    "name": "pivot_base",
+    "verb": "pivot",
+    "noun": "base",
+    "arguments": [
+      "delta_yaw_deg"
+    ],
+    "verified_by": [
+      "base_yaw_changed"
+    ]
+  },
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "kind": "skill_node",
+  "args": {
+    "delta_yaw_deg": {
+      "type": "number",
+      "required": true,
+      "description": "delta yaw deg"
+    }
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_051",
+    "input_order": [
+      "delta_yaw_deg"
+    ]
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [
+      "relation_039"
+    ],
+    "automatic": false
+  }
+}

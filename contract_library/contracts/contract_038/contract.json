@@ -104,5 +104,18 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "lay_edge_held_flat_object",
+    "verb": "lay",
+    "noun": "edge_held_flat_object",
+    "arguments": [
+      "object",
+      "support"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty"
+    ]
   }
 }

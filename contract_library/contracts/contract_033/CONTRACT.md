@@ -13,6 +13,10 @@ Paired SkillNode: `skill_025`. Status: `representative_runs_only`.
 - `right_hand_empty` — policy_attempt
 - `target_annotated` — policy_attempt
 
+## Planner action predicate
+
+`pull_manual_handle(articulated)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `joint_open_enough` — contract_runner

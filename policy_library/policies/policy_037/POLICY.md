@@ -23,6 +23,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).base_translate_local.execute(...)`
 - Class: `BaseTranslateLocalPolicy`
 - Availability: `verified`
+- Direct Contract routes: contract_052
 - Referenced as support by legacy families: contract_001
 
 ## Recorded evidence

@@ -27,4 +27,4 @@ Policy-specific checks remain inside the controller and are not all normalized i
 
 ## Recorded evidence
 
-Isaac Sim collect_fruits: apple placed inside fruit_basket (measured radial offset 0.075 m < 0.143 m), runs/verify_callable_container_apple, 2026-10-01
+Isaac Sim collect_fruits: apple placed inside fruit_basket (measured radial offset 0.075 m < 0.143 m), runs/verify_callable_container_apple, 2026-10-01; recycle_and_store: soda_can into 14 cm-rim wide_storage_bin with vertical prelift, 0.000 m bin shift, inside=true, runs/check_tall_bin_prelift/result.json, 2026-10-06

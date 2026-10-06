@@ -15,6 +15,10 @@ Paired SkillNode: `skill_014`. Status: `representative_runs_only`.
 - `target_annotated` — policy_attempt
 - `target_accessible` — policy_attempt
 
+## Planner action predicate
+
+`load_microwave_cavity(object, support)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `on` — contract_runner

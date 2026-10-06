@@ -5,9 +5,18 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 LIB = ROOT / 'skill_library'
+
+
+def skill_name(title: str) -> str:
+    """Make a stable, readable Agent Skill name from the public skill title."""
+    name = re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')
+    if not name:
+        raise ValueError(f'invalid Skill title: {title!r}')
+    return name
 
 
 def build() -> dict[Path, str]:
@@ -16,13 +25,18 @@ def build() -> dict[Path, str]:
                  json.loads((ROOT / 'zeno_skills/node_contracts.json').read_text())['contracts']}
     relations = json.loads((LIB / 'relations.json').read_text())['relations']
     files = {}
+    names = set()
     for entry in catalog['skills']:
         path = LIB / entry['definition']
         spec = json.loads(path.read_text())
         sid = spec['skill_id']
+        name = skill_name(spec['name'])
+        if name in names:
+            raise ValueError(f'duplicate Agent Skill name: {name}')
+        names.add(name)
         contract = contracts[sid]
-        lines = ['---', f'name: {sid}', f'description: {spec["description"]}', '---', '',
-                 f'# {sid} — {spec["name"]}', '', '## When to use', '',
+        lines = ['---', f'name: {name}', f'description: {spec["description"]}', '---', '',
+                 f'# {spec["name"]} ({sid})', '', '## When to use', '',
                  spec['description'], '', '## Inputs', '']
         if spec['args']:
             for name, meta in spec['args'].items():
@@ -32,7 +46,13 @@ def build() -> dict[Path, str]:
         lines += ['', '## Preconditions', '']
         lines += [f'- `{row["predicate"]}` — `{row["enforcement"]}`'
                   for row in spec['requires']]
-        lines += ['', '## Expected state change', '']
+        action = spec['action_predicate']
+        signature = ', '.join(action['arguments'])
+        lines += ['', '## Planner action predicate', '',
+                  f'`{action["name"]}({signature})` — bind the listed argument slots to the current scene.',
+                  'This action predicate is reported only after its measured state facts pass.',
+                  f'Verified facts: `{action["verified_by"]}`.', '']
+        lines += ['## Expected state change', '']
         lines += [f'- `{row["predicate"]}` — measured by `{row["verification"]}`'
                   for row in spec['achieves']]
         lines += ['', '## Invocation and policy plan', '',

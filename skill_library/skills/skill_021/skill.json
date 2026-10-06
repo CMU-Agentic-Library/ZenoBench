@@ -64,6 +64,19 @@
     "base_at",
     "grasp_preserved"
   ],
+  "action_predicate": {
+    "name": "convoy_bimanual_load",
+    "verb": "convoy",
+    "noun": "bimanual_load",
+    "arguments": [
+      "object",
+      "pose"
+    ],
+    "verified_by": [
+      "base_at",
+      "grasp_preserved"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

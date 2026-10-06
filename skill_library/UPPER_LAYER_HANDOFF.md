@@ -2,9 +2,9 @@
 
 ## 当前能做什么
 
-42 个 SkillNode 是可复用的状态变化。上层可反复使用同一个 `skill_id`，为当前任务填不同名词，输出一个 `skill_subgraph`；`depends_on` 表达这次任务的先后关系。例如水果收纳是 `skill_004` 抓苹果 → `skill_006` 放入篮子 → 再抓橙子 → 再放入同一篮子。Graph Manager 会检查 Skill ID、参数类型、依赖 DAG 和 ref 到场景实例的绑定，然后把每个节点编译成唯一配对的 Contract 调用。
+50 个 SkillNode 是可复用的状态变化。上层可反复使用同一个 `skill_id`，为当前任务填不同名词，输出一个 `skill_subgraph`；`depends_on` 表达这次任务的先后关系。例如水果收纳是 `skill_004` 抓苹果 → `skill_006` 放入篮子 → 再抓橙子 → 再放入同一篮子。Graph Manager 会检查 Skill ID、参数类型、依赖 DAG 和 ref 到场景实例的绑定，然后把每个节点编译成唯一配对的 Contract 调用。
 
-[relations.json](relations.json) 目前有 38 条关系：15 条 `enables`、5 条 `preparation`、7 条 `follows`、9 条 `alternative`、2 条 `recovery`。每条都有 `when` 和 `reason`。这是一组**条件提示**，不是一张必须照搬的任务图。例如移动抓取失败后，只有物体已经静止、仍可达且右手空，才考虑 `skill_018 → skill_004`。`skill_006 → skill_005` 的替代还要求任务本身允许把 `inside` 目标改成 `on`；单纯放到桌上不能算完成“放进篮子”。
+[relations.json](relations.json) 目前有 47 条关系：17 条 `enables`、10 条 `preparation`、7 条 `follows`、9 条 `alternative`、4 条 `recovery`。每条都有 `when` 和 `reason`。这是一组**条件提示**，不是一张必须照搬的任务图。例如移动抓取失败后，只有物体已经静止、仍可达且右手空，才考虑 `skill_018 → skill_004`。`skill_006 → skill_005` 的替代还要求任务本身允许把 `inside` 目标改成 `on`；单纯放到桌上不能算完成“放进篮子”。
 
 Contract 内还有按已绑定名词和状态选择的 policy 路径。这与上层 Skill 之间的 alternative 是两层选择：前者在**同一个 Contract 内**选具体控制路线；后者由 VLM 根据新观察提出**新的 SkillNode**。
 
@@ -15,7 +15,7 @@ from skill_library.planner_handoff import planner_catalog, replan_request
 from skill_library.graph import compile_grounded_nodes
 from skill_library.runtime import run_grounded_nodes
 
-catalog = planner_catalog()  # 42 个公开 Skill 摘要 + 38 条条件关系
+catalog = planner_catalog()  # 50 个公开 Skill 摘要 + 47 条条件关系
 # 上层 VLM 根据 goal、最新 observation、catalog 生成一个 skill_subgraph JSON。
 calls = compile_grounded_nodes(graph, bindings, annotation)
 result = run_grounded_nodes(rig, calls)
@@ -25,6 +25,8 @@ if result["status"] == "failed":
     # 将 request 和 catalog 交回 VLM，生成新的子图与必要的新 bindings。
     # 新子图仍须调用 compile_grounded_nodes 校验，再执行。
 ```
+
+`planner_catalog()` 也给出每个 Skill 独有的动词＋名词 `action_predicate` 及其 `verified_by` 共享状态事实；运行结果在成功时给出已绑定名词的 `verified_action_predicate`，失败时只给出 `requested_action_predicate`。
 
 `replan_request` 包括成功且已验证的节点、失败节点及错误、尚未执行的节点、动作后的真实观察、当前 bindings、来自关系库的 `alternative/recovery` 和该 Skill 的 `fallback_hints`。候选 Skill 附带输入、前置/后置条件及 `availability`，使上层知道哪些路线仍是实验性。它只打包候选，不调用下一步动作。
 
@@ -39,4 +41,4 @@ if result["status"] == "failed":
 
 ## 当前边界
 
-仓库提供**目录、关系提示、子图校验、Contract 执行结果和失败交接**；尚未集成某个具体 VLM 的调用、提示词评测或自动多轮重规划器。因此“可以让上层 VLM 推理和做 fallback”的准确含义是：接口已经能支持上层实现这个闭环，不能说当前系统会自主选对 fallback。Graph Manager 的静态校验也无法证明物理前置条件成立；Contract 和实时观测负责运行时检查。42 个节点中 38 个有代表性物理通过记录，4 个仍有物理阻碍，见 [验证状态](verification/STATUS.md)。
+仓库提供**目录、关系提示、子图校验、Contract 执行结果和失败交接**；尚未集成某个具体 VLM 的调用、提示词评测或自动多轮重规划器。因此“可以让上层 VLM 推理和做 fallback”的准确含义是：接口已经能支持上层实现这个闭环，不能说当前系统会自主选对 fallback。Graph Manager 的静态校验也无法证明物理前置条件成立；Contract 和实时观测负责运行时检查。50 个节点中 46 个有代表性物理通过记录；剩余 4 个旧节点仍有物理阻碍，见 [验证状态](verification/STATUS.md)。

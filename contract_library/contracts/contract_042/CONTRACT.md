@@ -11,6 +11,10 @@ Paired SkillNode: `skill_034`. Status: `representative_runs_only`.
 
 - `joint_path_clear` — policy_attempt
 
+## Planner action predicate
+
+`straighten_waist()` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `posture_at_target` — contract_runner

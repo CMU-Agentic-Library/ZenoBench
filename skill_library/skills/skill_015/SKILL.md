@@ -1,9 +1,9 @@
 ---
-name: skill_015
+name: pick-an-object-from-a-cavity
 description: Attempt one right-hand cavity retrieval and verify grasp and lift.
 ---
 
-# skill_015 — Pick an object from a cavity
+# Pick an object from a cavity (skill_015)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Attempt one right-hand cavity retrieval and verify grasp and lift.
 - `right_hand_empty` — `contract_precheck`
 - `object_annotated` — `policy_attempt`
 - `object_reachable` — `policy_attempt`
+
+## Planner action predicate
+
+`retrieve_cavity_object(object, cavity)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 

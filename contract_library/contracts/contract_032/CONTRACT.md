@@ -13,6 +13,10 @@ Paired SkillNode: `skill_024`. Status: `representative_runs_only`.
 - `right_hand_empty` — policy_attempt
 - `target_annotated` — policy_attempt
 
+## Planner action predicate
+
+`shut_microwave_door(appliance)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `joint_closed` — contract_runner

@@ -21,9 +21,9 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).open_revolute_door.execute(...)`
 - Class: `OpenRevoluteDoorPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_011
+- Direct Contract routes: contract_011, contract_055
 - Legacy family Contracts: contract_004
 
 ## Recorded evidence
 
-Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01
+Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01 Active Contract hinged-door pass: runs/check_50_manual, 2026-10-06.

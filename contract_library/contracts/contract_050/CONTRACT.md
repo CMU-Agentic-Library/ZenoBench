@@ -14,6 +14,10 @@ Paired SkillNode: `skill_042`. Status: `representative_runs_only`.
 - `held_by_right_hand` — policy_attempt
 - `backward_path_clear` — policy_attempt
 
+## Planner action predicate
+
+`retreat_carried_object(object, distance_m)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `base_backed_off` — contract_runner

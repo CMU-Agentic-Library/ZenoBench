@@ -12,6 +12,10 @@ Paired SkillNode: `skill_036`. Status: `representative_runs_only`.
 
 - `held_by_right_hand` — policy_attempt
 
+## Planner action predicate
+
+`orient_held_object(object)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `object_upright` — contract_runner

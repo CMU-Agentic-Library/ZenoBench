@@ -1,6 +1,6 @@
 # Remaining physical findings
 
-The 42 SkillNodes have been checked as interfaces and each has a physical verification outcome in [STATUS.md](STATUS.md). A physical pass means at least one representative Contract call met its measured postconditions. It does not cover every noun, path, or random scene.
+The original 42 SkillNodes have been checked as interfaces and each has a physical verification outcome in [STATUS.md](STATUS.md). A physical pass means at least one representative Contract call met its measured postconditions. It does not cover every noun, path, or random scene.
 
 | SkillNode | Current result | Measured blocker | Next engineering step |
 | --- | --- | --- | --- |
@@ -9,4 +9,12 @@ The 42 SkillNodes have been checked as interfaces and each has a physical verifi
 | `skill_021` / `contract_029` two-hand carry | Blocked by preparation | `policy_056` failed to lift the book with two contacts in the current run; the carry Contract was never invoked. | Establish a repeatable bimanual grasp and then test a short base move with contact checks. |
 | `skill_022` / `contract_030` open door while left hand holds | Blocked by preparation | After right-hand pick and height adjustment, `policy_059` found no independent left contact on the toy block; the door Contract was never invoked. | Add a feasible left-grasp presentation/handover route, then verify retained left grasp throughout door opening. |
 
+The eight new SkillNodes `skill_043`–`skill_050` each have a passing Contract smoke run. The push/drag evidence is object-specific: top drag reached 0.024 m on book_green but failed to move book_red. Floor pregrasp passed on a nearby foam cube and failed from the default distant base pose; `skill_001 → skill_049` now records the navigation prerequisite. These passes do not establish success on every noun or task.
+
+An additional cavity retrieval rerun after a previously successful legacy placement still missed contact by 0.229 m. The new storage bin also failed the separate `policy_057` bimanual-box search: no collision-free shared base pose was found. These runs remain negative evidence.
+
 The first two nodes remain callable but are marked experimental because their active Contracts have no passing physical run. The latter two were already marked experimental. Failures and setup plans are preserved in [node_contract_smoke.json](node_contract_smoke.json); each row links to its full `runs/.../result.json` report in the local workspace.
+
+The GT `place_container` route was changed to lift a held object above tall container rims before moving over the opening, and to abort if the container shifts before release. In a fresh Isaac Sim run, `soda_can` passed `contract_012` and `contract_014`, landed inside `wide_storage_bin`, and did not shift the bin (`runs/check_tall_bin_prelift/result.json`). The earlier short-rim and diagonal-motion failures remain useful negative evidence.
+
+The expanded `recycle_and_store` task has a six-node saved control graph. It validates structurally, and its first two nodes (`skill_004` pick soda can, `skill_006` insert into wide bin) physically pass. In the full-task run, the next `skill_004` call for the snack carton stops before navigation because the collision-checked empty-arm tuck is blocked at the bookcase. Returning the hand to its reachable outside-bin staging pose succeeded, but did not make the fold feasible (`runs/recycle_control_exit_exact/result.json`). The full three-object task is **not yet physically solved**; the next GT work is a collision-checked arm/base departure from that bookcase pose, followed by new multi-object placement tests.

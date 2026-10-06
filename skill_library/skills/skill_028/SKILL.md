@@ -1,9 +1,9 @@
 ---
-name: skill_028
+name: pick-by-round-rim
 description: Grasp a bowl or cup by its annotated round rim.
 ---
 
-# skill_028 — Pick by round rim
+# Pick by round rim (skill_028)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Grasp a bowl or cup by its annotated round rim.
 
 - `right_hand_empty` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`grasp_round_rim(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 

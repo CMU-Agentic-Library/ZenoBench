@@ -1,6 +1,6 @@
 # 三层接口的稳定 ID 与旧名
 
-新子图使用 `skill_001` 等 Skill ID；活跃执行层使用 `contract_009`–`contract_050`；旧 family 层保留 `contract_001`–`contract_008`；
+新子图使用 `skill_001` 等 Skill ID；活跃执行层使用 `contract_009`–`contract_058`；旧 family 层保留 `contract_001`–`contract_008`；
 底层使用 `policy_001` 等 policy ID。ID 保持稳定，描述性名称可以在
 不改变语义的前提下修改。现有脚本使用的旧 Contract/Policy 名称保留为兼容别名。
 
@@ -50,6 +50,14 @@
 | `skill_040` | `contract_048` |
 | `skill_041` | `contract_049` |
 | `skill_042` | `contract_050` |
+| `skill_043` | `contract_051` |
+| `skill_044` | `contract_052` |
+| `skill_045` | `contract_053` |
+| `skill_046` | `contract_054` |
+| `skill_047` | `contract_055` |
+| `skill_048` | `contract_056` |
+| `skill_049` | `contract_057` |
+| `skill_050` | `contract_058` |
 
 ## 兼容 family Contract
 

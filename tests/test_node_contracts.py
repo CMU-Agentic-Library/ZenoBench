@@ -11,7 +11,7 @@ from zeno_skills.node_contracts import NODE_CONTRACTS
 
 def test_public_skill_nodes_pair_bijectively_with_measured_contracts():
     skills = load_skills()
-    assert len(skills) == len(NODE_CONTRACTS) == 42
+    assert len(skills) == len(NODE_CONTRACTS) == 50
     assert {row['contract_id'] for row in skills.values()} == set(NODE_CONTRACTS)
     for skill in skills.values():
         contract = NODE_CONTRACTS[skill['contract_id']]
@@ -58,6 +58,10 @@ def test_three_policy_place_sequence_and_final_verifier(monkeypatch):
     result = ContractRunner(rig).run('contract_022', 'compose', 'apple', 'cavity_floor')
     assert [name for name, _ in calls] == ['policy_018', 'policy_019', 'policy_020']
     assert result.observations['verified_predicates'] == ['on', 'right_hand_empty']
+    assert result.observations['verified_action_predicate'] == {
+        'name': 'load_microwave_cavity',
+        'arguments': {'object': 'apple', 'support': 'cavity_floor'},
+    }
     assert len(result.observations['policy_steps']) == 3
 
 
@@ -90,6 +94,8 @@ def test_policy_failure_stops_sequence_and_reports_partial_effects(monkeypatch):
     ]
     assert trace.observations['failed_policy_step'] == {'index': 2, 'policy_id': 'policy_019'}
     assert trace.observations['held_right'] is None
+    assert trace.observations['requested_action_predicate']['name'] == 'load_microwave_cavity'
+    assert 'verified_action_predicate' not in trace.observations
 
 
 def test_wrong_route_and_arity_are_rejected_before_policy_execution():
@@ -168,11 +174,15 @@ def test_relations_and_task_clause_audit_are_complete():
     relations = load_relations(skills)
     assert len(relations) >= 30
     audit = build()
-    assert len(audit['tasks']) == 8
-    assert sum(task['goal_clause_count'] for task in audit['tasks']) == 32
+    assert len(audit['tasks']) == 9
+    assert sum(task['goal_clause_count'] for task in audit['tasks']) == 36
     types = {row['goal_type'] for task in audit['tasks'] for row in task['clauses']}
     assert types == {'heated','inside','on','on_upright','near','upright','closed','not_dropped'}
     assert all(not task['physical_success_guaranteed'] for task in audit['tasks'])
+    verbs = [row['action_predicate']['verb'] for row in skills.values()]
+    assert len(set(verbs)) == 50
+    assert all('action_predicates' in clause and 'task_evaluator_predicate' in clause
+               for task in audit['tasks'] for clause in task['clauses'])
 
 
 def _annotated_rig(annotation='tasks/collect_fruits/annotation.json', *, floor=False):

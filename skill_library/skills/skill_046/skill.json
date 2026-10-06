@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "skill_id": "skill_046",
+  "name": "Drag object from above",
+  "description": "Drag an object using top contact along its annotated support and measure progress.",
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "object_on_support",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "displacement_along",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_054",
+  "scope": {
+    "unit": "One drag object from above attempt on grounded scene state.",
+    "includes": [
+      "Drag an object using top contact along its annotated support and measure progress."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "expected_state_change": [
+    "displacement_along"
+  ],
+  "action_predicate": {
+    "name": "drag_supported_object",
+    "verb": "drag",
+    "noun": "supported_object",
+    "arguments": [
+      "object",
+      "support",
+      "direction_xy",
+      "distance_m"
+    ],
+    "verified_by": [
+      "displacement_along"
+    ]
+  },
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "kind": "skill_node",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "object"
+    },
+    "support": {
+      "type": "support_ref",
+      "required": true,
+      "description": "support"
+    },
+    "direction_xy": {
+      "type": "unit_vec2",
+      "required": true,
+      "description": "direction xy"
+    },
+    "distance_m": {
+      "type": "positive_number",
+      "required": true,
+      "description": "distance m"
+    }
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_054",
+    "input_order": [
+      "object",
+      "support",
+      "direction_xy",
+      "distance_m"
+    ]
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_042"
+    ],
+    "incoming": [],
+    "automatic": false
+  }
+}

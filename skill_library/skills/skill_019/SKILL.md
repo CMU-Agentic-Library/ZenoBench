@@ -1,9 +1,9 @@
 ---
-name: skill_019
+name: place-on-a-support-while-the-base-moves
 description: Release one right-held object onto a support during a base move.
 ---
 
-# skill_019 — Place on a support while the base moves
+# Place on a support while the base moves (skill_019)
 
 ## When to use
 
@@ -20,6 +20,12 @@ Release one right-held object onto a support during a base move.
 - `held_by_right_hand` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
 - `target_accessible` — `policy_attempt`
+
+## Planner action predicate
+
+`deliver_object(object, support, base_path)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['on', 'right_hand_empty']`.
 
 ## Expected state change
 

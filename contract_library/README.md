@@ -1,6 +1,6 @@
 # Contract Library
 
-当前上层接口包含 **42 个 Skill Contract**：`contract_009`–`contract_050`，分别对应 `skill_001`–`skill_042`。每个 `contracts/<id>/contract.json` 定义输入、`noun_bindings` 名词槽位与约束、前置条件、固定或按名词选择的 policy 路径、可测后置条件、verifier 和失败记录；`CONTRACT.md` 是逐项说明。机器可读主源为 [node_contracts.json](../zeno_skills/node_contracts.json)。
+当前上层接口包含 **50 个 Skill Contract**：`contract_009`–`contract_058`，分别对应 `skill_001`–`skill_050`。每个 `contracts/<id>/contract.json` 定义输入、`noun_bindings` 名词槽位与约束、前置条件、固定或按名词选择的 policy 路径、可测后置条件、verifier 和失败记录；`CONTRACT.md` 是逐项说明。机器可读主源为 [node_contracts.json](../zeno_skills/node_contracts.json)。
 
 同一个 SkillNode/Contract 是**参数化能力**，不会在库里写死“苹果”或“碗”。例如 `skill_004` / `contract_012` 的 `object` 槽位可填场景实例 `apple`、`bowl_side_table` 或 `serving_tray`；Contract 查询 `rig.ann.objects` 与对应 asset 的 `grasps`，执行前分别选 `top_pinch → policy_010`、`round_rim → policy_011` 或 `rectangular_rim → policy_012`。薄物体还区分地面和支撑面抓法。`contract_011` 对抽屉、铰链门和有动力按钮的微波炉也按注释选择不同开门路径。选择是声明式 `policy_plan.paths[].when`，按顺序取第一条匹配路径；若名词无效或没有匹配路径，立即报错而不移动。
 

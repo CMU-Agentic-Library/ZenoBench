@@ -55,5 +55,14 @@
     "automatic_fallback": false
   },
   "fallback_hints": [],
-  "noun_bindings": {}
+  "noun_bindings": {},
+  "action_predicate": {
+    "name": "lower_torso",
+    "verb": "lower",
+    "noun": "torso",
+    "arguments": [],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  }
 }

@@ -1613,6 +1613,568 @@
           "hint_error_m": null
         }
       ]
+    },
+    {
+      "scene": "sim/zeno_house.usd",
+      "source_report": "runs/check_50_base/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [
+        "policy_003"
+      ],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_051",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "base_yaw_changed"
+          ],
+          "policy_steps": [
+            "policy_036"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_052",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {},
+          "verified_predicates": [
+            "base_translated_locally"
+          ],
+          "policy_steps": [
+            "policy_037"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "sim/zeno_house.usd",
+      "source_report": "runs/check_50_manual/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_055",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "articulated": "SingleCabinetFactory_7330242_spawn_asset_8918727"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_049"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_056",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "articulated": "KitchenCabinetFactory_9483010_spawn_asset_2619144"
+          },
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [
+            "policy_050"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/shelve_books/scene.usd",
+      "source_report": "runs/check_50_rear_push/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_053",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_red",
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+          },
+          "verified_predicates": [
+            "displacement_along"
+          ],
+          "policy_steps": [
+            "policy_043"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_microwave_fixture/task/scene.usd",
+      "source_report": "runs/check_50_cavity_legacy_prep/result.json",
+      "success": false,
+      "failure": "SkillFailure: pick cup: no reachable grasp from any base pose",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "open.v1",
+          "success": true,
+          "error": null,
+          "selected_policy_path": null,
+          "bound_nouns": {},
+          "verified_predicates": [
+            "joint_open_enough"
+          ],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "pick.v1",
+          "success": true,
+          "error": null,
+          "selected_policy_path": null,
+          "bound_nouns": {},
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "place.v1",
+          "success": true,
+          "error": null,
+          "selected_policy_path": null,
+          "bound_nouns": {},
+          "verified_predicates": [
+            "on",
+            "right_hand_empty"
+          ],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_023",
+          "success": false,
+          "error": "pick cup: no reachable grasp from any base pose",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "cup",
+            "cavity": "kitchen_microwave"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_048",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/shelve_books/scene.usd",
+      "source_report": "runs/check_50_top_drag/result.json",
+      "success": false,
+      "failure": "SkillFailure: push book_red: object did not move",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_054",
+          "success": false,
+          "error": "push book_red: object did not move",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_red",
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_044",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "runs/verify_microwave_fixture/task/scene.usd",
+      "source_report": "runs/check_50_microwave_clear/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_058",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "articulated": "kitchen_microwave"
+          },
+          "verified_predicates": [
+            "microwave_sweep_clear"
+          ],
+          "policy_steps": [
+            "policy_030"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/shelve_books/scene.usd",
+      "source_report": "runs/check_50_top_drag_green/result.json",
+      "success": false,
+      "failure": "SkillFailure: push book_green: object did not move",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_054",
+          "success": false,
+          "error": "push book_green: object did not move",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_green",
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_044",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/recycle_and_store/scene_v0.usd",
+      "source_report": "runs/check_50_floor_ready/result.json",
+      "success": false,
+      "failure": "SkillFailure: prepare floor reach: no clear pregrasp above foam_cube",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_057",
+          "success": false,
+          "error": "prepare floor reach: no clear pregrasp above foam_cube",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "foam_cube"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_042",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/recycle_and_store/scene_v0.usd",
+      "source_report": "runs/check_50_floor_ready_near/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": [
+        5.2,
+        2.35,
+        0.0
+      ],
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_057",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "foam_cube"
+          },
+          "verified_predicates": [
+            "floor_reach_ready"
+          ],
+          "policy_steps": [
+            "policy_042"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/shelve_books/scene.usd",
+      "source_report": "runs/check_50_top_drag_green_fixed/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_054",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "book_green",
+            "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+          },
+          "verified_predicates": [
+            "displacement_along"
+          ],
+          "policy_steps": [
+            "policy_044"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/recycle_and_store/scene.usd",
+      "source_report": "runs/check_tall_scene_foam_pick/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": [
+        4.5,
+        1.7,
+        0.0
+      ],
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "top_pinch",
+          "bound_nouns": {
+            "object": "foam_cube"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/recycle_and_store/scene.usd",
+      "source_report": "runs/check_tall_bin_shift/result.json",
+      "success": false,
+      "failure": "SkillFailure: place soda_can: container shifted 0.174 m before release",
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "top_pinch",
+          "bound_nouns": {
+            "object": "soda_can"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_014",
+          "success": false,
+          "error": "place soda_can: container shifted 0.174 m before release",
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "soda_can",
+            "container": "wide_storage_bin"
+          },
+          "verified_predicates": [],
+          "policy_steps": [],
+          "completed_policy_steps": [],
+          "failed_policy_step": "policy_016",
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/recycle_and_store/scene.usd",
+      "source_report": "runs/check_snack_carton_pick/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "top_pinch",
+          "bound_nouns": {
+            "object": "snack_carton"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
+    },
+    {
+      "scene": "tasks/recycle_and_store/scene.usd",
+      "source_report": "runs/check_tall_bin_prelift/result.json",
+      "success": true,
+      "failure": null,
+      "start_base": null,
+      "preparation_policies": [],
+      "unreached_contracts": [],
+      "contracts": [
+        {
+          "contract_id": "contract_012",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "top_pinch",
+          "bound_nouns": {
+            "object": "soda_can"
+          },
+          "verified_predicates": [
+            "held_by_right_hand",
+            "object_lifted"
+          ],
+          "policy_steps": [
+            "policy_010"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        },
+        {
+          "contract_id": "contract_014",
+          "success": true,
+          "error": null,
+          "selected_policy_path": "fixed",
+          "bound_nouns": {
+            "object": "soda_can",
+            "container": "wide_storage_bin"
+          },
+          "verified_predicates": [
+            "inside",
+            "right_hand_empty"
+          ],
+          "policy_steps": [
+            "policy_016"
+          ],
+          "completed_policy_steps": [],
+          "failed_policy_step": null,
+          "temperature_c": null,
+          "object_tilt_deg": null,
+          "hint_error_m": null
+        }
+      ]
     }
   ]
 }

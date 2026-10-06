@@ -16,6 +16,10 @@ Paired SkillNode: `skill_008`. Status: `representative_runs_only`.
 - `right_hand_empty` — contract_precheck
 - `object_on_support` — policy_attempt
 
+## Planner action predicate
+
+`shove_object_along_support(object, support, direction_xy, distance_m)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `displacement_along` — contract_runner

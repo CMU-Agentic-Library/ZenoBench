@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_058",
+  "skill_id": "skill_050",
+  "name": "Clear microwave door sweep",
+  "description": "Move the robot to the microwave hinge clearance pose and verify a fresh clearance event.",
+  "scope": {
+    "unit": "One open powered microwave door attempt on the grounded scene state.",
+    "includes": [
+      "Open the annotated powered microwave door and measure its joint."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "articulated": {
+      "type": "articulated_ref",
+      "required": true,
+      "description": "Grounded powered microwave door."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "microwave_annotated",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "clearance_path_open",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "microwave_sweep_clear",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "microwave_sweep_clear"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "custom": "microwave_clear"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_030",
+        "args": [
+          {
+            "arg": "articulated"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "articulated"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "articulated": {
+      "argument": "articulated",
+      "kind": "articulated",
+      "source": "rig.ann",
+      "required": true,
+      "category_equals": "microwave",
+      "required_annotation": "door_button"
+    }
+  },
+  "action_predicate": {
+    "name": "clear_microwave_door_sweep",
+    "verb": "clear",
+    "noun": "microwave_door_sweep",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "microwave_sweep_clear"
+    ]
+  }
+}

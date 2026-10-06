@@ -51,6 +51,18 @@
   "expected_state_change": [
     "held_object_above_height"
   ],
+  "action_predicate": {
+    "name": "hoist_carried_object",
+    "verb": "hoist",
+    "noun": "carried_object",
+    "arguments": [
+      "object",
+      "min_bottom_z"
+    ],
+    "verified_by": [
+      "held_object_above_height"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

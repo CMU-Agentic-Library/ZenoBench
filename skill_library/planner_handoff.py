@@ -21,7 +21,7 @@ def planner_catalog() -> dict[str, Any]:
         "skills": [
             {key: spec[key] for key in (
                 "skill_id", "name", "description", "args", "requires",
-                "achieves", "availability", "contract_id", "fallback_hints"
+                "achieves", "action_predicate", "availability", "contract_id", "fallback_hints"
             )}
             for spec in skills.values()
         ],
@@ -85,7 +85,8 @@ def replan_request(
         "subgoal_id": graph["subgoal_id"],
         "completed": [
             {"node_id": row["node_id"], "skill_id": row["skill_id"],
-             "verified_predicates": row.get("verified_predicates", [])}
+             "verified_predicates": row.get("verified_predicates", []),
+             "verified_action_predicate": row.get("verified_action_predicate")}
             for row in results[:-1]
         ],
         "failed": {
@@ -95,6 +96,7 @@ def replan_request(
             "error_code": failed.get("error_code"),
             "error": failed.get("error"),
             "contract_observations": failed.get("contract_observations", {}),
+            "requested_action_predicate": failed.get("requested_action_predicate"),
         },
         "unexecuted": [node["id"] for node in ordered[len(results):]],
         "last_observation": execution["last_observation"],
@@ -104,7 +106,7 @@ def replan_request(
         "candidate_skills": [
             {key: skills[sid][key] for key in (
                 "skill_id", "name", "description", "args", "requires",
-                "achieves", "availability", "contract_id"
+                "achieves", "action_predicate", "availability", "contract_id"
             )}
             for sid in candidate_ids
         ],

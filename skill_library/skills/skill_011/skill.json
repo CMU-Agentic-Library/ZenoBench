@@ -45,6 +45,15 @@
   "expected_state_change": [
     "posture_at_target"
   ],
+  "action_predicate": {
+    "name": "tuck_right_arm",
+    "verb": "tuck",
+    "noun": "right_arm",
+    "arguments": [],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",
@@ -53,7 +62,10 @@
   "relations": {
     "mode": "conditional_agentic_hints",
     "catalog": "../../relations.json",
-    "outgoing": [],
+    "outgoing": [
+      "relation_039",
+      "relation_040"
+    ],
     "incoming": [],
     "automatic": false
   },

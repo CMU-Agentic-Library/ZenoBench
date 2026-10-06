@@ -21,6 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).microwave_door_clear.execute(...)`
 - Class: `MicrowaveDoorClearPolicy`
 - Availability: `verified`
+- Direct Contract routes: contract_058
 - Referenced as support by legacy families: contract_004, contract_005
 
 ## Recorded evidence

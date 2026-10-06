@@ -1,9 +1,9 @@
 ---
-name: skill_013
+name: set-waist-pitch
 description: Move the waist to one requested pitch angle in radians.
 ---
 
-# skill_013 — Set waist pitch
+# Set waist pitch (skill_013)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Move the waist to one requested pitch angle in radians.
 - `right_hand_empty` — `policy_attempt`
 - `target_within_joint_limits` — `policy_attempt`
 - `collision_free_motion` — `policy_attempt`
+
+## Planner action predicate
+
+`pitch_waist(pitch_rad)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['posture_at_target']`.
 
 ## Expected state change
 

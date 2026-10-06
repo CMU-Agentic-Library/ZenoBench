@@ -15,6 +15,10 @@ Paired SkillNode: `skill_030`. Status: `representative_runs_only`.
 - `target_annotated` — policy_attempt
 - `held_with_edge_grasp` — policy_attempt
 
+## Planner action predicate
+
+`lay_edge_held_flat_object(object, support)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `on` — contract_runner

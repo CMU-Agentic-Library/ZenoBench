@@ -64,6 +64,19 @@
     "on",
     "right_hand_empty"
   ],
+  "action_predicate": {
+    "name": "load_microwave_cavity",
+    "verb": "load",
+    "noun": "microwave_cavity",
+    "arguments": [
+      "object",
+      "support"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

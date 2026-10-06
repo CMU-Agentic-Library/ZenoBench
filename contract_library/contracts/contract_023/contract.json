@@ -104,5 +104,18 @@
       "category_equals": "microwave",
       "required_annotation": "cavity_aabb"
     }
+  },
+  "action_predicate": {
+    "name": "retrieve_cavity_object",
+    "verb": "retrieve",
+    "noun": "cavity_object",
+    "arguments": [
+      "object",
+      "cavity"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
   }
 }

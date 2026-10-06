@@ -1,9 +1,9 @@
 ---
-name: skill_018
+name: pick-while-the-base-moves
 description: Attempt one right-hand pick during a base move to a target pose.
 ---
 
-# skill_018 — Pick while the base moves
+# Pick while the base moves (skill_018)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Attempt one right-hand pick during a base move to a target pose.
 - `right_hand_empty` — `contract_precheck`
 - `object_annotated` — `policy_attempt`
 - `object_reachable` — `policy_attempt`
+
+## Planner action predicate
+
+`intercept_moving_object(object, base_path)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 

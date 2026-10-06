@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<robot name="snack_carton"><link name="snack_carton">
+<visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="mesh/snack_carton.obj" scale="1 1 1"/></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="mesh/snack_carton_collision.obj" scale="1 1 1"/></geometry></collision>
+<inertial><mass value="0.18"/><origin xyz="0 0 0"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+</link></robot>

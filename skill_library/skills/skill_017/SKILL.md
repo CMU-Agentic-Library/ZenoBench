@@ -1,9 +1,9 @@
 ---
-name: skill_017
+name: pick-a-cup-by-its-handle
 description: Attempt one handle grasp of a cup and verify grasp and lift.
 ---
 
-# skill_017 — Pick a cup by its handle
+# Pick a cup by its handle (skill_017)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Attempt one handle grasp of a cup and verify grasp and lift.
 - `object_annotated` — `policy_attempt`
 - `object_reachable` — `policy_attempt`
 - `handle_collision_body_prepared` — `not_enforced`
+
+## Planner action predicate
+
+`grip_cup_handle(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 

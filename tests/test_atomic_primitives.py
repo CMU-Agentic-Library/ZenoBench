@@ -57,8 +57,10 @@ def test_joint_motion_rejects_limits_and_unsettled_result():
 def test_explicit_contact_policy_fixes_mode(monkeypatch):
     modes = []
     monkeypatch.setattr(skills, "push", lambda *a, **kw: modes.append(kw["mode"]) or 0.12)
-    rig = SimpleNamespace(held=None, ann=SimpleNamespace(objects={"book": {}}))
-    support = {"z": 0.7}
+    support = {"name": "table", "z": 0.7}
+    rig = SimpleNamespace(held=None, ann=SimpleNamespace(objects={"book": {}}),
+                          geo=SimpleNamespace(support_under=lambda name, state: support),
+                          state=lambda: {})
     assert PushFromBehindPolicy(rig).execute("book", support, [1, 0], 0.12) == 0.12
     assert TopDragPolicy(rig).execute("book", support, [1, 0], 0.12) == 0.12
     assert modes == ["push", "drag"]

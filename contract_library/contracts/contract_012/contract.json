@@ -248,5 +248,17 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "acquire_object",
+    "verb": "acquire",
+    "noun": "object",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
   }
 }

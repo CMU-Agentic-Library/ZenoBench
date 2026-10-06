@@ -1,0 +1,5 @@
+<robot name="wide_storage_bin"><link name="wide_storage_bin">
+<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/wide_storage_bin.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/wide_storage_bin_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
+<inertial><mass value="1.2000" /><origin xyz="0 0 0" /><inertia ixx="1.096e-02" ixy="0.0" ixz="0.0" iyy="1.352e-02" iyz="0.0" izz="2.056e-02" /></inertial>
+</link></robot>

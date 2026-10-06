@@ -1,9 +1,9 @@
 ---
-name: skill_024
+name: close-powered-microwave-door
 description: Close the annotated powered microwave door and measure its joint.
 ---
 
-# skill_024 — Close powered microwave door
+# Close powered microwave door (skill_024)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Close the annotated powered microwave door and measure its joint.
 
 - `right_hand_empty` — `policy_attempt`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`shut_microwave_door(appliance)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['joint_closed']`.
 
 ## Expected state change
 

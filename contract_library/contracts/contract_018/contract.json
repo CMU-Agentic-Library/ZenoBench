@@ -114,5 +114,17 @@
       "category_equals": "microwave",
       "required_annotation": "start_button"
     }
+  },
+  "action_predicate": {
+    "name": "start_microwave_heating",
+    "verb": "start",
+    "noun": "microwave_heating",
+    "arguments": [
+      "appliance"
+    ],
+    "verified_by": [
+      "button_pressed_this_call",
+      "heating_active"
+    ]
   }
 }

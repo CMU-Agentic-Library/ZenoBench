@@ -1,9 +1,9 @@
 ---
-name: skill_040
+name: wait-for-food-to-reach-target-temperature
 description: Advance the live thermal simulation until the named food reaches its target temperature.
 ---
 
-# skill_040 — Wait for food to reach target temperature
+# Wait for food to reach target temperature (skill_040)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Advance the live thermal simulation until the named food reaches its target temp
 
 - `thermal_model_configured` — `policy_attempt`
 - `heating_active_or_already_hot` — `policy_attempt`
+
+## Planner action predicate
+
+`attain_food_temperature(object, min_temp_c)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['temperature_at_least']`.
 
 ## Expected state change
 

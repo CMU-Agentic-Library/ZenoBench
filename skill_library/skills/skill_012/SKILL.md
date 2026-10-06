@@ -1,9 +1,9 @@
 ---
-name: skill_012
+name: set-torso-height
 description: Move the torso lift to one requested joint height.
 ---
 
-# skill_012 — Set torso height
+# Set torso height (skill_012)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Move the torso lift to one requested joint height.
 - `right_hand_empty` — `policy_attempt`
 - `target_within_joint_limits` — `policy_attempt`
 - `collision_free_motion` — `policy_attempt`
+
+## Planner action predicate
+
+`set_torso_height(height_m)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['posture_at_target']`.
 
 ## Expected state change
 

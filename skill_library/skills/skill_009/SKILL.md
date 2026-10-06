@@ -1,9 +1,9 @@
 ---
-name: skill_009
+name: press-the-appliance-door-button
 description: Physically press one annotated appliance door button.
 ---
 
-# skill_009 — Press the appliance door button
+# Press the appliance door button (skill_009)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Physically press one annotated appliance door button.
 - `right_hand_empty` — `contract_precheck`
 - `button_reachable` — `policy_attempt`
 - `start_conditions` — `policy_attempt`
+
+## Planner action predicate
+
+`press_appliance_door_button(appliance)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['button_pressed_this_call']`.
 
 ## Expected state change
 

@@ -1,9 +1,9 @@
 ---
-name: skill_014
+name: place-an-object-on-the-microwave-cavity-support
 description: Release one right-held object onto the annotated microwave cavity support.
 ---
 
-# skill_014 — Place an object on the microwave cavity support
+# Place an object on the microwave cavity support (skill_014)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Release one right-held object onto the annotated microwave cavity support.
 - `held_by_right_hand` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
 - `target_accessible` — `policy_attempt`
+
+## Planner action predicate
+
+`load_microwave_cavity(object, support)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['on', 'right_hand_empty']`.
 
 ## Expected state change
 

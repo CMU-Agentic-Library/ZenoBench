@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_052",
+  "skill_id": "skill_044",
+  "name": "Translate base locally",
+  "description": "Move an empty, tucked robot along a short local forward axis and measure displacement.",
+  "scope": {
+    "unit": "one empty-handed base move",
+    "includes": [
+      "Move the empty-handed robot base to one target pose."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "forward_m": {
+      "type": "number",
+      "required": true,
+      "description": "forward m"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "arm_tucked",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "straight_path_clear",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_translated_locally",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "base_translated_locally"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "custom": "base_translate"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_037",
+        "args": [
+          {
+            "arg": "forward_m"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "forward_m"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {},
+  "action_predicate": {
+    "name": "translate_base",
+    "verb": "translate",
+    "noun": "base",
+    "arguments": [
+      "forward_m"
+    ],
+    "verified_by": [
+      "base_translated_locally"
+    ]
+  }
+}

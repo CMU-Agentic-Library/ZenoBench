@@ -5,6 +5,7 @@ from __future__ import annotations
 import inspect
 import json
 from pathlib import Path
+import re
 
 
 SOURCE = Path(__file__).with_name("node_contracts.json")
@@ -15,6 +16,10 @@ CUSTOM_VERIFIER_PREDICATES = {
     "temperature": {"temperature_at_least"},
     "carry_height": {"held_object_above_height"},
     "back_off": {"base_backed_off", "grasp_preserved"},
+    "base_rotate": {"base_yaw_changed"},
+    "base_translate": {"base_translated_locally"},
+    "floor_reach": {"floor_reach_ready"},
+    "microwave_clear": {"microwave_sweep_clear"},
 }
 EXTRA_CHECK_PREDICATES = {
     "upright": {"object_upright"},
@@ -31,6 +36,7 @@ def load_node_contracts(path: Path = SOURCE) -> dict[str, dict]:
     policies = {row["policy_id"]: row for row in policy_catalog["policies"]}
     result = {}
     skills = set()
+    action_verbs = set()
     from .contracts import CONTRACTS
     from .interface_ids import resolve_contract_id
     from .policies import PolicySuite
@@ -137,6 +143,18 @@ def load_node_contracts(path: Path = SOURCE) -> dict[str, dict]:
         claims = {item["predicate"] for item in row["achieves"]}
         if row.get("expected_state_change") != [item["predicate"] for item in row["achieves"]]:
             raise ValueError(f"{cid}: expected state change differs from postconditions")
+        action = row.get("action_predicate")
+        if not isinstance(action, dict) or set(action) != {
+                "name", "verb", "noun", "arguments", "verified_by"}:
+            raise ValueError(f"{cid}: invalid action predicate")
+        verb, noun = action["verb"], action["noun"]
+        if (not isinstance(verb, str) or not re.fullmatch(r"[a-z]+", verb)
+                or not isinstance(noun, str) or not re.fullmatch(r"[a-z][a-z0-9_]*", noun)
+                or action["name"] != f"{verb}_{noun}" or verb in action_verbs
+                or action["arguments"] != row["legacy_call_args"]
+                or action["verified_by"] != row["expected_state_change"]):
+            raise ValueError(f"{cid}: action predicate must be unique verb+noun with verified inputs")
+        action_verbs.add(verb)
         if not claims <= guaranteed:
             raise ValueError(f"{cid}: unverified postconditions {claims-guaranteed}")
         result[cid] = row

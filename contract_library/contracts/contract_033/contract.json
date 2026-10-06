@@ -80,5 +80,16 @@
       "required_annotation": "handle",
       "forbid_annotation": "door_button"
     }
+  },
+  "action_predicate": {
+    "name": "pull_manual_handle",
+    "verb": "pull",
+    "noun": "manual_handle",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "joint_open_enough"
+    ]
   }
 }

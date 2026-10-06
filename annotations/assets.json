@@ -1091,5 +1091,218 @@
    ],
    "rim_height": 0.38
   }
+ },
+ "foam_cube": {
+  "name": "foam_cube",
+  "tags": [
+   "toy",
+   "block",
+   "floor_pick"
+  ],
+  "mass": 0.035,
+  "collider": "solid",
+  "size": [
+   0.06,
+   0.06,
+   0.06
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": 0.06,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.0,
+    "width": 0.06,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.03,
+    "pre_open": 0.04
+   }
+  ],
+  "usd": "usd/assets/foam_cube.usd",
+  "source_urdf": "assets/asset3d/foam_cube/result/foam_cube_sim.urdf",
+  "generator": "procedural_mesh_v1"
+ },
+ "soda_can": {
+  "name": "soda_can",
+  "tags": [
+   "can",
+   "recyclable"
+  ],
+  "mass": 0.15,
+  "collider": "solid",
+  "size": [
+   0.066,
+   0.066,
+   0.12
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": 0.066,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.7853981633974483,
+    "width": 0.06599998931093247,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.06,
+    "pre_open": 0.04
+   }
+  ],
+  "usd": "usd/assets/soda_can.usd",
+  "source_urdf": "assets/asset3d/soda_can/result/soda_can_sim.urdf",
+  "generator": "procedural_mesh_v1"
+ },
+ "snack_carton": {
+  "name": "snack_carton",
+  "tags": [
+   "food",
+   "box"
+  ],
+  "mass": 0.18,
+  "collider": "solid",
+  "size": [
+   0.06,
+   0.11,
+   0.17
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": 0.06,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.0,
+    "width": 0.06,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.085,
+    "pre_open": 0.04
+   }
+  ],
+  "usd": "usd/assets/snack_carton.usd",
+  "source_urdf": "assets/asset3d/snack_carton/result/snack_carton_sim.urdf",
+  "generator": "procedural_mesh_v1"
+ },
+ "small_storage_bin": {
+  "name": "small_storage_bin",
+  "tags": [
+   "container",
+   "storage"
+  ],
+  "mass": 0.3,
+  "collider": "rect_container",
+  "size": [
+   0.22,
+   0.17,
+   0.09
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": Infinity,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch_rect",
+    "half_x": 0.11,
+    "half_y": 0.085,
+    "rim_height": 0.09,
+    "depth": 0.03,
+    "tilts": [
+     0.4,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/small_storage_bin.usd",
+  "source_urdf": "assets/asset3d/small_storage_bin/result/small_storage_bin_sim.urdf",
+  "generator": "procedural_mesh_v1",
+  "container": {
+   "shape": "rect",
+   "bands": [
+    [
+     0.0,
+     0.09,
+     0.1065,
+     0.0815
+    ]
+   ],
+   "rim_height": 0.09
+  }
+ },
+ "wide_storage_bin": {
+  "name": "wide_storage_bin",
+  "tags": [
+   "container",
+   "storage",
+   "recycling"
+  ],
+  "mass": 1.2,
+  "collider": "rect_container",
+  "size": [
+   0.34,
+   0.3,
+   0.14
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "min_pinch_width": Infinity,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch_rect",
+    "half_x": 0.17,
+    "half_y": 0.15,
+    "rim_height": 0.14,
+    "depth": 0.03,
+    "tilts": [
+     0.4,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/wide_storage_bin.usd",
+  "source_urdf": "assets/asset3d/wide_storage_bin/result/wide_storage_bin_sim.urdf",
+  "generator": "procedural_mesh_v1",
+  "container": {
+   "shape": "rect",
+   "bands": [
+    [
+     0.0,
+     0.14,
+     0.1665,
+     0.1465
+    ]
+   ],
+   "rim_height": 0.14
+  }
  }
 }

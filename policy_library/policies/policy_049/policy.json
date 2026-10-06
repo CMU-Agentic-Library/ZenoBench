@@ -39,11 +39,12 @@
   },
   "availability": "verified",
   "direct_contracts": [
-    "contract_011"
+    "contract_011",
+    "contract_055"
   ],
   "legacy_family_contracts": [
     "contract_004"
   ],
   "supporting_family_contracts": [],
-  "evidence": "Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01"
+  "evidence": "Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01 Active Contract hinged-door pass: runs/check_50_manual, 2026-10-06."
 }

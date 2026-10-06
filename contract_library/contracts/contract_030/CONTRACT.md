@@ -15,6 +15,10 @@ Paired SkillNode: `skill_022`. Status: `experimental_callable`.
 - `opening_route_feasible` — policy_attempt
 - `held_by_left_hand` — not_enforced
 
+## Planner action predicate
+
+`swing_articulated_door(object, articulated)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `joint_open_enough` — contract_runner

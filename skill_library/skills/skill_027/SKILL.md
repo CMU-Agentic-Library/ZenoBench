@@ -1,9 +1,9 @@
 ---
-name: skill_027
+name: pick-by-top-pinch
 description: Grasp an annotated object from its top pinch region.
 ---
 
-# skill_027 — Pick by top pinch
+# Pick by top pinch (skill_027)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Grasp an annotated object from its top pinch region.
 
 - `right_hand_empty` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`clamp_object_top(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 

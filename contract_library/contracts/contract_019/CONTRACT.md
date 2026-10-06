@@ -13,6 +13,10 @@ Paired SkillNode: `skill_011`. Status: `representative_runs_only`.
 - `target_within_joint_limits` — policy_attempt
 - `collision_free_motion` — policy_attempt
 
+## Planner action predicate
+
+`tuck_right_arm()` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `posture_at_target` — contract_runner

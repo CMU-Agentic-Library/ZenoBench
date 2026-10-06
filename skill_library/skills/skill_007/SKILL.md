@@ -1,9 +1,9 @@
 ---
-name: skill_007
+name: close-an-articulated-door-or-drawer
 description: Close one annotated articulated target and verify its joint position.
 ---
 
-# skill_007 — Close an articulated door or drawer
+# Close an articulated door or drawer (skill_007)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Close one annotated articulated target and verify its joint position.
 
 - `articulated_annotated` — `contract_precheck`
 - `closure_path_clear` — `policy_attempt`
+
+## Planner action predicate
+
+`close_articulated_joint(articulated)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['joint_closed']`.
 
 ## Expected state change
 

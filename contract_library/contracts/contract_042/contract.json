@@ -55,5 +55,14 @@
     "automatic_fallback": false
   },
   "fallback_hints": [],
-  "noun_bindings": {}
+  "noun_bindings": {},
+  "action_predicate": {
+    "name": "straighten_waist",
+    "verb": "straighten",
+    "noun": "waist",
+    "arguments": [],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  }
 }

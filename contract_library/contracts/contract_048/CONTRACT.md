@@ -14,6 +14,10 @@ Paired SkillNode: `skill_040`. Status: `representative_runs_only`.
 - `thermal_model_configured` — policy_attempt
 - `heating_active_or_already_hot` — policy_attempt
 
+## Planner action predicate
+
+`attain_food_temperature(object, min_temp_c)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `temperature_at_least` — contract_runner

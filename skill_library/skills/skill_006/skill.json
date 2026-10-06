@@ -73,6 +73,19 @@
     "inside",
     "right_hand_empty"
   ],
+  "action_predicate": {
+    "name": "insert_object_in_container",
+    "verb": "insert",
+    "noun": "object_in_container",
+    "arguments": [
+      "object",
+      "container"
+    ],
+    "verified_by": [
+      "inside",
+      "right_hand_empty"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

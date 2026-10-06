@@ -1,9 +1,9 @@
 ---
-name: skill_005
+name: place-an-object-on-a-support
 description: Release one right-held object onto one annotated support.
 ---
 
-# skill_005 — Place an object on a support
+# Place an object on a support (skill_005)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Release one right-held object onto one annotated support.
 - `held_by_right_hand` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
 - `target_accessible` — `policy_attempt`
+
+## Planner action predicate
+
+`deposit_object_on_support(object, support)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['on', 'right_hand_empty']`.
 
 ## Expected state change
 

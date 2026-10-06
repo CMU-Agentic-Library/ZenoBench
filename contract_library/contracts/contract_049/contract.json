@@ -80,5 +80,17 @@
       "required": true,
       "requires_right_held": true
     }
+  },
+  "action_predicate": {
+    "name": "hoist_carried_object",
+    "verb": "hoist",
+    "noun": "carried_object",
+    "arguments": [
+      "object",
+      "min_bottom_z"
+    ],
+    "verified_by": [
+      "held_object_above_height"
+    ]
   }
 }

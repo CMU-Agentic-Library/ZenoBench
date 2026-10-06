@@ -25,4 +25,4 @@ Policy-specific checks remain inside the controller and are not all normalized i
 
 ## Caveat
 
-serving_tray 与地面轻篮的双臂接触搜索在 45 秒预算内均找不到无碰撞共享站位（runs/repair_bimanual_box_v3、repair_bimanual_basket_v3）。
+serving_tray 与地面轻篮的双臂接触搜索在 45 秒预算内均找不到无碰撞共享站位（runs/repair_bimanual_box_v3、repair_bimanual_basket_v3）。 新生成的 small_storage_bin 在书架顶部也未找到无碰撞双手共享站位（runs/check_new_bin_bimanual）。

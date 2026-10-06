@@ -77,5 +77,16 @@
       "reason": "tuck the arm before proposing a new navigation attempt"
     }
   ],
-  "noun_bindings": {}
+  "noun_bindings": {},
+  "action_predicate": {
+    "name": "navigate_base",
+    "verb": "navigate",
+    "noun": "base",
+    "arguments": [
+      "pose"
+    ],
+    "verified_by": [
+      "base_at"
+    ]
+  }
 }

@@ -1,9 +1,9 @@
 ---
-name: skill_020
+name: pick-a-flat-object-from-a-floor-corner
 description: Attempt one floor-corner grasp and verify right-hand lift.
 ---
 
-# skill_020 — Pick a flat object from a floor corner
+# Pick a flat object from a floor corner (skill_020)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Attempt one floor-corner grasp and verify right-hand lift.
 - `right_hand_empty` — `contract_precheck`
 - `object_annotated` — `policy_attempt`
 - `object_reachable` — `policy_attempt`
+
+## Planner action predicate
+
+`scoop_floor_object(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 
@@ -45,6 +51,7 @@ Verifier: `contract_002 / floor_corner`.
 
 - `skill_005` (`enables`) when a floor object was lifted and needs a support — Place the recovered object after observing the grasp.
 - May follow `skill_031` (`preparation`) when a flat object lies on the floor and is hard to reach.
+- May follow `skill_049` (`preparation`) when a floor item has a verified pregrasp and corner pick is appropriate.
 
 ## Failure
 

@@ -58,6 +58,18 @@
     "held_by_right_hand",
     "object_lifted"
   ],
+  "action_predicate": {
+    "name": "pinch_flat_object_edge",
+    "verb": "pinch",
+    "noun": "flat_object_edge",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

@@ -14,6 +14,10 @@ Paired SkillNode: `skill_037`. Status: `experimental_callable`.
 - `held_by_right_hand` — contract_precheck
 - `target_annotated` — policy_attempt
 
+## Planner action predicate
+
+`stand_object_on_support(object, support)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `on` — contract_runner

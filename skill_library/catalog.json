@@ -169,6 +169,38 @@
     {
       "skill_id": "skill_042",
       "definition": "skills/skill_042/skill.json"
+    },
+    {
+      "skill_id": "skill_043",
+      "definition": "skills/skill_043/skill.json"
+    },
+    {
+      "skill_id": "skill_044",
+      "definition": "skills/skill_044/skill.json"
+    },
+    {
+      "skill_id": "skill_045",
+      "definition": "skills/skill_045/skill.json"
+    },
+    {
+      "skill_id": "skill_046",
+      "definition": "skills/skill_046/skill.json"
+    },
+    {
+      "skill_id": "skill_047",
+      "definition": "skills/skill_047/skill.json"
+    },
+    {
+      "skill_id": "skill_048",
+      "definition": "skills/skill_048/skill.json"
+    },
+    {
+      "skill_id": "skill_049",
+      "definition": "skills/skill_049/skill.json"
+    },
+    {
+      "skill_id": "skill_050",
+      "definition": "skills/skill_050/skill.json"
     }
   ]
 }

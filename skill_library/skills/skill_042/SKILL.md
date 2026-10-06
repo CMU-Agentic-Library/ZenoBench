@@ -1,9 +1,9 @@
 ---
-name: skill_042
+name: back-away-while-carrying
 description: Reverse the base while preserving the right-hand grasp.
 ---
 
-# skill_042 — Back away while carrying
+# Back away while carrying (skill_042)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Reverse the base while preserving the right-hand grasp.
 
 - `held_by_right_hand` — `policy_attempt`
 - `backward_path_clear` — `policy_attempt`
+
+## Planner action predicate
+
+`retreat_carried_object(object, distance_m)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['base_backed_off', 'grasp_preserved']`.
 
 ## Expected state change
 

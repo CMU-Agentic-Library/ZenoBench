@@ -1,6 +1,6 @@
 # SkillNode physical verification status
 
-All 42 SkillNode/Contract definitions pass the static pairing and schema checks. A physical pass means at least one Contract invocation finished with its measured postconditions true in Isaac Sim; it does not guarantee success for every noun or scene.
+All 50 SkillNode/Contract definitions pass the static pairing and schema checks. A physical pass means at least one Contract invocation finished with its measured postconditions true in Isaac Sim; it does not guarantee success for every noun or scene.
 
 | SkillNode | Contract | Status | Successful path(s) | Evidence |
 | --- | --- | --- | --- | --- |
@@ -18,7 +18,7 @@ All 42 SkillNode/Contract definitions pass the static pairing and schema checks.
 | `skill_012` | `contract_020` | physical pass | `fixed` | [check_42_posture_corrected](../../runs/check_42_posture_corrected/result.json) |
 | `skill_013` | `contract_021` | physical pass | `fixed` | [check_42_posture_corrected](../../runs/check_42_posture_corrected/result.json) |
 | `skill_014` | `contract_022` | physical pass | `fixed` | [node_contract_microwave_place](../../runs/node_contract_microwave_place/result.json), [check_42_cavity_round](../../runs/check_42_cavity_round/result.json) |
-| `skill_015` | `contract_023` | attempted; no pass | — | [check_42_cavity_replanned](../../runs/check_42_cavity_replanned/result.json) |
+| `skill_015` | `contract_023` | attempted; no pass | — | [check_50_cavity_legacy_prep](../../runs/check_50_cavity_legacy_prep/result.json) |
 | `skill_016` | `contract_024` | physical pass | `fixed` | [check_42_flat_edge](../../runs/check_42_flat_edge/result.json) |
 | `skill_017` | `contract_025` | physical pass | `fixed` | [check_42_handle_pick](../../runs/check_42_handle_pick/result.json) |
 | `skill_018` | `contract_026` | physical pass | `fixed` | [check_42_moving_pick_near](../../runs/check_42_moving_pick_near/result.json) |
@@ -46,7 +46,15 @@ All 42 SkillNode/Contract definitions pass the static pairing and schema checks.
 | `skill_040` | `contract_048` | physical pass | `fixed` | [node_contract_heat_wait](../../runs/node_contract_heat_wait/result.json) |
 | `skill_041` | `contract_049` | physical pass | `fixed` | [check_42_toy_carry](../../runs/check_42_toy_carry/result.json) |
 | `skill_042` | `contract_050` | physical pass | `fixed` | [check_42_toy_carry](../../runs/check_42_toy_carry/result.json) |
+| `skill_043` | `contract_051` | physical pass | `fixed` | [check_50_base](../../runs/check_50_base/result.json) |
+| `skill_044` | `contract_052` | physical pass | `fixed` | [check_50_base](../../runs/check_50_base/result.json) |
+| `skill_045` | `contract_053` | physical pass | `fixed` | [check_50_rear_push](../../runs/check_50_rear_push/result.json) |
+| `skill_046` | `contract_054` | physical pass | `fixed` | [check_50_top_drag_green_fixed](../../runs/check_50_top_drag_green_fixed/result.json) |
+| `skill_047` | `contract_055` | physical pass | `fixed` | [check_50_manual](../../runs/check_50_manual/result.json) |
+| `skill_048` | `contract_056` | physical pass | `fixed` | [check_50_manual](../../runs/check_50_manual/result.json) |
+| `skill_049` | `contract_057` | physical pass | `fixed` | [check_50_floor_ready_near](../../runs/check_50_floor_ready_near/result.json) |
+| `skill_050` | `contract_058` | physical pass | `fixed` | [check_50_microwave_clear](../../runs/check_50_microwave_clear/result.json) |
 
-**Physical passes: 38/42.** Remaining: 4.
+**Physical passes: 46/50.** Remaining: 4.
 
 Full observations, failures, and scene paths are in [node_contract_smoke.json](node_contract_smoke.json). Remaining blockers are in [FINDINGS.md](FINDINGS.md).

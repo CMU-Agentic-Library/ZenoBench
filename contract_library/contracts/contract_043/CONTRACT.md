@@ -14,6 +14,10 @@ Paired SkillNode: `skill_035`. Status: `representative_runs_only`.
 - `object_on_annotated_support` — policy_attempt
 - `free_support_edge` — policy_attempt
 
+## Planner action predicate
+
+`expose_flat_object_edge(object)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `edge_overhang_ready` — contract_runner

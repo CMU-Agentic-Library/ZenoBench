@@ -74,6 +74,7 @@ def run_grounded_nodes(rig: Any, calls: list[dict], *, runner: Any = None) -> di
                 "error_code": last.error_code if last else type(exc).__name__,
                 "error": str(exc),
                 "contract_observations": _plain(last.observations) if last else {},
+                "requested_action_predicate": call.get("action_predicate"),
                 "verified_predicates": [],
                 "observed_state": _observation(rig, call["resolved_args"]),
             }
@@ -90,6 +91,8 @@ def run_grounded_nodes(rig: Any, calls: list[dict], *, runner: Any = None) -> di
             "error": None,
             "contract_observations": _plain(contract_result.observations),
             "verified_predicates": contract_result.observations.get("verified_predicates", []),
+            "verified_action_predicate": contract_result.observations.get(
+                "verified_action_predicate", call.get("action_predicate")),
             "observed_state": _observation(rig, call["resolved_args"]),
         }
         results.append(result)

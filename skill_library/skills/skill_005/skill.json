@@ -64,6 +64,19 @@
     "on",
     "right_hand_empty"
   ],
+  "action_predicate": {
+    "name": "deposit_object_on_support",
+    "verb": "deposit",
+    "noun": "object_on_support",
+    "arguments": [
+      "object",
+      "support"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

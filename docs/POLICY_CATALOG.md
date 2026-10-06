@@ -138,7 +138,7 @@
 | 公开 ID | 旧名 | 能力 | 输入 | 目标状态 | 状态 | 当前入口或缺口 |
 |---|---|---|---|---|---|---|
 | `policy_056` | `bimanual_flat_pick` | 左右手同时抓取宽书本或托盘 | `flat_object` | `held_by_both_hands` | `callable` | bimanual_flat_pick；book_red 同步接触后物体偏移 0.034 m、双指闭到零且抬升 0 m（runs/repair_bimanual_book_v7）；接触点移入物体 0.035 m 后无法找到无碰撞共享站位（v8）。旧试验短时抬起 0.037 m 后左手滑脱。 |
-| `policy_057` | `bimanual_box_lift` | 左右手从两侧协同抬起箱子 | `box` | `box_lifted_by_both_hands` | `callable` | bimanual_box_lift；serving_tray 与地面轻篮的双臂接触搜索在 45 秒预算内均找不到无碰撞共享站位（runs/repair_bimanual_box_v3、repair_bimanual_basket_v3）。 |
+| `policy_057` | `bimanual_box_lift` | 左右手从两侧协同抬起箱子 | `box` | `box_lifted_by_both_hands` | `callable` | bimanual_box_lift；serving_tray 与地面轻篮的双臂接触搜索在 45 秒预算内均找不到无碰撞共享站位（runs/repair_bimanual_box_v3、repair_bimanual_basket_v3）。 新生成的 small_storage_bin 在书架顶部也未找到无碰撞双手共享站位（runs/check_new_bin_bimanual）。 |
 | `policy_058` | `bimanual_carry` | 两只手共同稳定携带大物品 | `held_large_object, pose` | `base_at(pose) and two_hand_hold` | `callable` | bimanual_carry；旧 book_red 双手短时抬起后左手在底盘移动时滑脱；当前没有稳定双手抓持前置状态（runs/bimanual_carry_new_policy）。 |
 | `policy_059` | `handover_right_to_left` | 把右手物品交给左手 | `object` | `held_by_left_hand` | `callable` | handover_right_to_left；toy_block 无分离的第二抓点；breakfast_bowl 右手抓取成功，但 15 个独立左手预抓候选即使忽略碰撞也超出关节可达性（runs/repair_handover_bowl_v3）；反向夹爪姿态的 30 个候选仍不可达（v5）。 |
 | `policy_060` | `open_door_while_left_holds` | 左手持物同时用右手开门 | `object, door` | `left_holds(object) and door_open` | `callable` | open_door_while_left_holds；依赖稳定左手持物；handover 尚未通过，未建立可验证的左手持物开门前置状态。 |
@@ -161,7 +161,7 @@
 - `pick_rect_rim`：Isaac Sim collect_fruits: serving_tray rim pinch lifted 0.0293 m with both fingers in contact; tray slipped during later carry, runs/verify_callable_rect_tray_v3, 2026-10-01
 - `pick_edge`：Isaac Sim: pick_edge book_red, 2026-10-01
 - `place_surface`：Isaac Sim collect_fruits: apple placed on dining-table support with 0.0139 m XY error and on_support=true, runs/verify_callable_surface_apple, 2026-10-01
-- `place_container`：Isaac Sim collect_fruits: apple placed inside fruit_basket (measured radial offset 0.075 m < 0.143 m), runs/verify_callable_container_apple, 2026-10-01
+- `place_container`：Isaac Sim collect_fruits: apple placed inside fruit_basket (measured radial offset 0.075 m < 0.143 m), runs/verify_callable_container_apple, 2026-10-01; recycle_and_store: soda_can into 14 cm-rim wide_storage_bin with vertical prelift, 0.000 m bin shift, inside=true, runs/check_tall_bin_prelift/result.json, 2026-10-06
 - `place_edge`：Isaac Sim shelve_books: edge-held book_red released onto desk support, on_support true and tilt 1.1 deg, runs/verify_callable_place_edge, 2026-10-01
 - `microwave_cavity_insert`：Isaac Sim: heat_breakfast fridge -> microwave -> dining table, 100% progress, 2026-10-01; runs/heat_breakfast/result.json
 - `microwave_cavity_release`：Isaac Sim: heat_breakfast fridge -> microwave -> dining table, 100% progress, 2026-10-01; runs/heat_breakfast/result.json
@@ -187,15 +187,15 @@
 - `right_joint_move`：Isaac Sim tidy_toys: right_arm_joint_5 moved to 0.0318 rad for 0.04 rad command (0.03 rad tolerance), runs/verify_callable_arm_v4, 2026-10-01
 - `right_gripper_open`：Isaac Sim: right_gripper_open 0.04 / right_gripper_close 0.0, 2026-10-01; runs/atomic_gripper_smoke/result.json
 - `right_gripper_close`：Isaac Sim: right_gripper_open 0.04 / right_gripper_close 0.0, 2026-10-01; runs/atomic_gripper_smoke/result.json
-- `prepare_floor_reach`：Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01
-- `push_from_behind`：Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01
-- `top_drag`：Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01
+- `prepare_floor_reach`：Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01 Active Contract floor-pregrasp pass on foam_cube from nearby base: runs/check_50_floor_ready_near, 2026-10-06.
+- `push_from_behind`：Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01 Active Contract rear-push pass on book_red: runs/check_50_rear_push, 2026-10-06.
+- `top_drag`：Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01 Active Contract top-drag pass on book_green: 0.024 m measured progress for 0.040 m request, runs/check_50_top_drag_green_fixed, 2026-10-06; book_red case still failed to move.
 - `slide_to_edge`：Isaac Sim: slide_to_edge book_red, 0.0885 m overhang, 2026-10-01
 - `grasp_articulated_handle`：Isaac Sim: grasp_articulated_handle breakfast_fridge, both fingers contacted, 2026-10-01
 - `release_articulated_handle`：Isaac Sim: release_articulated_handle breakfast_fridge, both fingers opened, 2026-10-01
 - `pick_from_cavity`：Isaac Sim dedicated microwave cup fixture: open, rim pick, cavity place, same-rig cavity retrieval; four contract postconditions passed, cup lift 0.0742 m and body 0.047 m outside mouth; runs/final_contract_microwave, 2026-10-02
-- `open_revolute_door`：Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01
-- `open_prismatic_drawer`：Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01
+- `open_revolute_door`：Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01 Active Contract hinged-door pass: runs/check_50_manual, 2026-10-06.
+- `open_prismatic_drawer`：Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01 Active Contract drawer pass: runs/check_50_manual, 2026-10-06.
 - `reach_while_moving`：Isaac Sim: 0.10 m base travel with concurrent right-arm reach, 0.003 m TCP error, 2026-10-01
 - `pick_while_moving`：Isaac Sim tidy_toys: toy_block grasped while base traveled 0.072 m; closure tick 1138, lift tick 1255, base motion ended tick 1403; object lifted 0.065 m, 2026-10-01
 - `place_while_moving`：Isaac Sim collect_fruits: apple released onto dining table at tick 3257 while base moved 0.078 m; base ended tick 3472, support bottom error 0.0377 m, runs/verify_callable_place_while_moving_apple_v2, 2026-10-01

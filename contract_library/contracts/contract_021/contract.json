@@ -75,5 +75,16 @@
     "automatic_fallback": false
   },
   "fallback_hints": [],
-  "noun_bindings": {}
+  "noun_bindings": {},
+  "action_predicate": {
+    "name": "pitch_waist",
+    "verb": "pitch",
+    "noun": "waist",
+    "arguments": [
+      "pitch_rad"
+    ],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  }
 }

@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).open_prismatic_drawer.execute(...)`
 - Class: `OpenPrismaticDrawerPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_011
+- Direct Contract routes: contract_011, contract_056
 - Legacy family Contracts: contract_004
 
 ## Caveat
@@ -30,4 +30,4 @@ tidy_toys 的第一只抽屉仍未拉动；另一只厨房抽屉已通过独立�
 
 ## Recorded evidence
 
-Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01
+Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01 Active Contract drawer pass: runs/check_50_manual, 2026-10-06.

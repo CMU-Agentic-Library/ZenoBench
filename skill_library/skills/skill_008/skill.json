@@ -67,6 +67,20 @@
   "expected_state_change": [
     "displacement_along"
   ],
+  "action_predicate": {
+    "name": "shove_object_along_support",
+    "verb": "shove",
+    "noun": "object_along_support",
+    "arguments": [
+      "object",
+      "support",
+      "direction_xy",
+      "distance_m"
+    ],
+    "verified_by": [
+      "displacement_along"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

@@ -118,5 +118,19 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "stand_object_on_support",
+    "verb": "stand",
+    "noun": "object_on_support",
+    "arguments": [
+      "object",
+      "support"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty",
+      "object_upright"
+    ]
   }
 }

@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "skill_id": "skill_050",
+  "name": "Clear microwave door sweep",
+  "description": "Move the robot to the microwave hinge clearance pose and verify a fresh clearance event.",
+  "requires": [
+    {
+      "predicate": "microwave_annotated",
+      "enforcement": "contract_precheck"
+    },
+    {
+      "predicate": "clearance_path_open",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "microwave_sweep_clear",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_058",
+  "scope": {
+    "unit": "One clear microwave door sweep attempt on grounded scene state.",
+    "includes": [
+      "Move the robot to the microwave hinge clearance pose and verify a fresh clearance event."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "expected_state_change": [
+    "microwave_sweep_clear"
+  ],
+  "action_predicate": {
+    "name": "clear_microwave_door_sweep",
+    "verb": "clear",
+    "noun": "microwave_door_sweep",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "microwave_sweep_clear"
+    ]
+  },
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "kind": "skill_node",
+  "args": {
+    "articulated": {
+      "type": "articulated_ref",
+      "required": true,
+      "description": "Grounded powered microwave door."
+    }
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_058",
+    "input_order": [
+      "articulated"
+    ]
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_046"
+    ],
+    "incoming": [],
+    "automatic": false
+  }
+}

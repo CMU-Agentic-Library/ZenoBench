@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_051",
+  "skill_id": "skill_043",
+  "name": "Pivot base in place",
+  "description": "Rotate an empty, tucked robot by a bounded signed angle and verify its new yaw.",
+  "scope": {
+    "unit": "one arm tuck",
+    "includes": [
+      "Move the right arm into the measured travel posture."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "delta_yaw_deg": {
+      "type": "number",
+      "required": true,
+      "description": "delta yaw deg"
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "arm_tucked",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "turn_arc_clear",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_yaw_changed",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "base_yaw_changed"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "custom": "base_rotate"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_036",
+        "args": [
+          {
+            "arg": "delta_yaw_deg"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "delta_yaw_deg"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {},
+  "action_predicate": {
+    "name": "pivot_base",
+    "verb": "pivot",
+    "noun": "base",
+    "arguments": [
+      "delta_yaw_deg"
+    ],
+    "verified_by": [
+      "base_yaw_changed"
+    ]
+  }
+}

@@ -81,6 +81,8 @@ def bind_contract_nouns(contract: dict, values: dict, rig) -> dict[str, dict]:
                     raise SkillFailure(f'{slot}: {name} lacks {binding["required_annotation"]} annotation')
                 if binding.get('forbid_annotation') and binding['forbid_annotation'] in art:
                     raise SkillFailure(f'{slot}: {name} is not a manual handle target')
+                if binding.get('requires_joint_type') and item['type'] != binding['requires_joint_type']:
+                    raise SkillFailure(f'{slot}: {name} is not a {binding["requires_joint_type"]} joint')
             else:
                 raise ValueError(f'{slot}: unknown noun kind {kind}')
         except (KeyError, IndexError) as exc:

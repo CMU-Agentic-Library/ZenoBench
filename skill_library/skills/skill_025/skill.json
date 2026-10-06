@@ -49,6 +49,17 @@
   "expected_state_change": [
     "joint_open_enough"
   ],
+  "action_predicate": {
+    "name": "pull_manual_handle",
+    "verb": "pull",
+    "noun": "manual_handle",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "joint_open_enough"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

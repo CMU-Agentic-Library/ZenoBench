@@ -77,5 +77,16 @@
       "required": true,
       "requires_right_held": true
     }
+  },
+  "action_predicate": {
+    "name": "orient_held_object",
+    "verb": "orient",
+    "noun": "held_object",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "object_upright"
+    ]
   }
 }

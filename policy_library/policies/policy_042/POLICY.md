@@ -22,8 +22,9 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).prepare_floor_reach.execute(...)`
 - Class: `PrepareFloorReachPolicy`
 - Availability: `verified`
+- Direct Contract routes: contract_057
 - Referenced as support by legacy families: contract_002, contract_008
 
 ## Recorded evidence
 
-Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01
+Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01 Active Contract floor-pregrasp pass on foam_cube from nearby base: runs/check_50_floor_ready_near, 2026-10-06.

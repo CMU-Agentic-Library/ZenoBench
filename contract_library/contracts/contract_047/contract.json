@@ -141,5 +141,22 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "align_upright_object_near_hint",
+    "verb": "align",
+    "noun": "upright_object_near_hint",
+    "arguments": [
+      "object",
+      "support",
+      "hint_xy",
+      "max_offset_m"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty",
+      "object_upright",
+      "within_hint_radius"
+    ]
   }
 }

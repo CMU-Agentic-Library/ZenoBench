@@ -112,5 +112,16 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "close_articulated_joint",
+    "verb": "close",
+    "noun": "articulated_joint",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "joint_closed"
+    ]
   }
 }

@@ -45,6 +45,17 @@
   "expected_state_change": [
     "object_upright"
   ],
+  "action_predicate": {
+    "name": "orient_held_object",
+    "verb": "orient",
+    "noun": "held_object",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "object_upright"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

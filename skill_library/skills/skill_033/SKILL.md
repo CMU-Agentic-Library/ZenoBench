@@ -1,9 +1,9 @@
 ---
-name: skill_033
+name: lean-waist-forward
 description: Lean the waist forward to its configured safe posture.
 ---
 
-# skill_033 — Lean waist forward
+# Lean waist forward (skill_033)
 
 ## When to use
 
@@ -16,6 +16,12 @@ Lean the waist forward to its configured safe posture.
 ## Preconditions
 
 - `joint_path_clear` — `policy_attempt`
+
+## Planner action predicate
+
+`lean_waist()` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['posture_at_target']`.
 
 ## Expected state change
 

@@ -1,0 +1,5 @@
+<robot name="soda_can"><link name="soda_can">
+<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/soda_can.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/soda_can_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
+<inertial><mass value="0.1500" /><origin xyz="0 0 0" /><inertia ixx="2.345e-04" ixy="0.0" ixz="0.0" iyy="2.345e-04" iyz="0.0" izz="1.089e-04" /></inertial>
+</link></robot>

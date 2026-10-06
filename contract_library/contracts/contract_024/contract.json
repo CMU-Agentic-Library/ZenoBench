@@ -88,5 +88,17 @@
       "required": true,
       "requires_grasp_type": "edge_pinch_after_push"
     }
+  },
+  "action_predicate": {
+    "name": "pinch_flat_object_edge",
+    "verb": "pinch",
+    "noun": "flat_object_edge",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
   }
 }

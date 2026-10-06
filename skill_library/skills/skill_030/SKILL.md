@@ -1,9 +1,9 @@
 ---
-name: skill_030
+name: place-an-edge-held-flat-object
 description: Place one edge-held flat item onto an annotated support.
 ---
 
-# skill_030 — Place an edge-held flat object
+# Place an edge-held flat object (skill_030)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Place one edge-held flat item onto an annotated support.
 - `held_by_right_hand` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
 - `held_with_edge_grasp` — `policy_attempt`
+
+## Planner action predicate
+
+`lay_edge_held_flat_object(object, support)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['on', 'right_hand_empty']`.
 
 ## Expected state change
 

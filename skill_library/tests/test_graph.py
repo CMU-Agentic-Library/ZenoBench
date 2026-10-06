@@ -36,6 +36,11 @@ class SkillSubgraphTests(unittest.TestCase):
              compile_grounded_nodes(self.graph, self.bindings, self.annotation)],
             ["n1", "n2", "n3", "n4"],
         )
+        grounded = compile_grounded_nodes(self.graph, self.bindings, self.annotation)
+        self.assertEqual(grounded[1]["action_predicate"], {
+            "name": "insert_object_in_container",
+            "arguments": {"object": "apple", "container": "fruit_basket"},
+        })
 
     def test_preloaded_heating_example_compiles_to_start_then_wait(self):
         graph = read_json(HERE / "examples/heat_preloaded.skill_subgraph.json")
@@ -49,8 +54,8 @@ class SkillSubgraphTests(unittest.TestCase):
 
     def test_all_published_skill_records_load(self):
         skills = load_skills()
-        self.assertEqual(len(skills), 42)
-        self.assertEqual(set(skills), {f"skill_{i:03d}" for i in range(1, 43)})
+        self.assertEqual(len(skills), 50)
+        self.assertEqual(set(skills), {f"skill_{i:03d}" for i in range(1, 51)})
         self.assertEqual(skills["skill_011"]["invocation"]["input_order"], [])
 
     def test_typed_navigation_and_push_compile(self):

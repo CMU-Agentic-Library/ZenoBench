@@ -115,5 +115,18 @@
       "required": true,
       "required_annotation": "asset.container"
     }
+  },
+  "action_predicate": {
+    "name": "insert_object_in_container",
+    "verb": "insert",
+    "noun": "object_in_container",
+    "arguments": [
+      "object",
+      "container"
+    ],
+    "verified_by": [
+      "inside",
+      "right_hand_empty"
+    ]
   }
 }

@@ -1,9 +1,9 @@
 ---
-name: skill_010
+name: start-microwave-heating
 description: Press the start button and verify that heating became active.
 ---
 
-# skill_010 — Start microwave heating
+# Start microwave heating (skill_010)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Press the start button and verify that heating became active.
 - `right_hand_empty` — `contract_precheck`
 - `button_reachable` — `policy_attempt`
 - `start_conditions` — `policy_attempt`
+
+## Planner action predicate
+
+`start_microwave_heating(appliance)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['button_pressed_this_call', 'heating_active']`.
 
 ## Expected state change
 

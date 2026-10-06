@@ -1,9 +1,9 @@
 ---
-name: skill_001
+name: navigate-empty-handed
 description: Move the empty-handed robot base to one target pose.
 ---
 
-# skill_001 — Navigate empty-handed
+# Navigate empty-handed (skill_001)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Move the empty-handed robot base to one target pose.
 
 - `target_navigable` — `policy_attempt`
 - `carried_object_matches_state` — `not_enforced`
+
+## Planner action predicate
+
+`navigate_base(pose)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['base_at']`.
 
 ## Expected state change
 
@@ -40,7 +46,7 @@ Verifier: `contract_001 / empty`.
 
 ## Related Skills
 
-- No fixed relation; select the next node from the task goal and observation.
+- `skill_049` (`preparation`) when floor target is beyond the current arm reach — Navigate to a collision-free stance near the grounded floor object before preparing a pregrasp.
 
 ## Failure
 

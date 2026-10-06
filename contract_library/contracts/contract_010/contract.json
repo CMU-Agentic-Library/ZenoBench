@@ -98,5 +98,18 @@
       "required": true,
       "requires_right_held": true
     }
+  },
+  "action_predicate": {
+    "name": "transport_carried_object",
+    "verb": "transport",
+    "noun": "carried_object",
+    "arguments": [
+      "object",
+      "pose"
+    ],
+    "verified_by": [
+      "base_at",
+      "grasp_preserved"
+    ]
   }
 }

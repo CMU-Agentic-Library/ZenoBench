@@ -42,6 +42,7 @@ class RuntimeResultTests(unittest.TestCase):
             "node_id": "n1", "skill_id": "skill_004",
             "contract": "pick.v1", "route": "auto", "args": ["apple"],
             "resolved_args": {"object": "apple"},
+            "action_predicate": {"name": "acquire_object", "arguments": {"object": "apple"}},
         }]
         result = run_grounded_nodes(rig, calls, runner=SuccessfulRunner())
         self.assertEqual(result["status"], "success")
@@ -49,6 +50,8 @@ class RuntimeResultTests(unittest.TestCase):
         self.assertEqual(result["results"][0]["verified_predicates"],
                          ["held_by_right_hand", "object_lifted"])
         self.assertEqual(result["results"][0]["contract_observations"]["lift_m"], 0.07)
+        self.assertEqual(result["results"][0]["verified_action_predicate"],
+                         {"name": "acquire_object", "arguments": {"object": "apple"}})
 
     def test_failure_returns_post_action_observation_and_stops(self):
         rig = FakeRig()

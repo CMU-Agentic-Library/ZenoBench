@@ -1,9 +1,9 @@
 ---
-name: skill_023
+name: open-powered-microwave-door
 description: Open the annotated powered microwave door and measure its joint.
 ---
 
-# skill_023 — Open powered microwave door
+# Open powered microwave door (skill_023)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Open the annotated powered microwave door and measure its joint.
 
 - `right_hand_empty` — `policy_attempt`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`trigger_microwave_door_opening(appliance)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['joint_open_enough']`.
 
 ## Expected state change
 
@@ -45,6 +51,7 @@ Verifier: `contract_004 / powered`.
 - `skill_015` (`enables`) when food must be retrieved from a closed microwave — Open joint makes the cavity physically accessible.
 - `skill_024` (`follows`) when microwave inspection is complete without retrieval — Close the open door to satisfy the terminal closed condition.
 - May follow `skill_040` (`follows`) when heated food must be removed for serving.
+- May follow `skill_050` (`preparation`) when microwave door sweep is clear and powered opening is next.
 
 ## Failure
 

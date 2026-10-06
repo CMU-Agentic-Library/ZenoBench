@@ -13,6 +13,10 @@ Paired SkillNode: `skill_007`. Status: `representative_runs_only`.
 - `articulated_annotated` — contract_precheck
 - `closure_path_clear` — policy_attempt
 
+## Planner action predicate
+
+`close_articulated_joint(articulated)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `joint_closed` — contract_runner

@@ -16,6 +16,10 @@ Paired SkillNode: `skill_019`. Status: `representative_runs_only`.
 - `target_annotated` — policy_attempt
 - `target_accessible` — policy_attempt
 
+## Planner action predicate
+
+`deliver_object(object, support, base_path)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `on` — contract_runner

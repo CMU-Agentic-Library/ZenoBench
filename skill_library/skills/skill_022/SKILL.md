@@ -1,9 +1,9 @@
 ---
-name: skill_022
+name: open-a-door-while-the-left-hand-holds-an-object
 description: Open one annotated door while preserving an existing left-hand hold.
 ---
 
-# skill_022 — Open a door while the left hand holds an object
+# Open a door while the left hand holds an object (skill_022)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Open one annotated door while preserving an existing left-hand hold.
 - `articulated_annotated` — `contract_precheck`
 - `opening_route_feasible` — `policy_attempt`
 - `held_by_left_hand` — `not_enforced`
+
+## Planner action predicate
+
+`swing_articulated_door(object, articulated)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['joint_open_enough']`.
 
 ## Expected state change
 

@@ -1,9 +1,9 @@
 ---
-name: skill_031
+name: lower-torso-for-floor-reach
 description: Lower the robot torso to its configured minimum before floor interaction.
 ---
 
-# skill_031 — Lower torso for floor reach
+# Lower torso for floor reach (skill_031)
 
 ## When to use
 
@@ -16,6 +16,12 @@ Lower the robot torso to its configured minimum before floor interaction.
 ## Preconditions
 
 - `joint_path_clear` — `policy_attempt`
+
+## Planner action predicate
+
+`lower_torso()` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['posture_at_target']`.
 
 ## Expected state change
 

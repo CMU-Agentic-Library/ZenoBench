@@ -303,6 +303,54 @@
       "skill_id": "skill_042",
       "name": "Back away while carrying",
       "definition": "contracts/contract_050/contract.json"
+    },
+    {
+      "contract_id": "contract_051",
+      "skill_id": "skill_043",
+      "name": "Pivot base in place",
+      "definition": "contracts/contract_051/contract.json"
+    },
+    {
+      "contract_id": "contract_052",
+      "skill_id": "skill_044",
+      "name": "Translate base locally",
+      "definition": "contracts/contract_052/contract.json"
+    },
+    {
+      "contract_id": "contract_053",
+      "skill_id": "skill_045",
+      "name": "Nudge object from behind",
+      "definition": "contracts/contract_053/contract.json"
+    },
+    {
+      "contract_id": "contract_054",
+      "skill_id": "skill_046",
+      "name": "Drag object from above",
+      "definition": "contracts/contract_054/contract.json"
+    },
+    {
+      "contract_id": "contract_055",
+      "skill_id": "skill_047",
+      "name": "Open a hinged door",
+      "definition": "contracts/contract_055/contract.json"
+    },
+    {
+      "contract_id": "contract_056",
+      "skill_id": "skill_048",
+      "name": "Extend a drawer",
+      "definition": "contracts/contract_056/contract.json"
+    },
+    {
+      "contract_id": "contract_057",
+      "skill_id": "skill_049",
+      "name": "Ready floor reach",
+      "definition": "contracts/contract_057/contract.json"
+    },
+    {
+      "contract_id": "contract_058",
+      "skill_id": "skill_050",
+      "name": "Clear microwave door sweep",
+      "definition": "contracts/contract_058/contract.json"
     }
   ]
 }

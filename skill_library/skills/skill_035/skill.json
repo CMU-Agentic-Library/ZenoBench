@@ -53,6 +53,17 @@
   "expected_state_change": [
     "edge_overhang_ready"
   ],
+  "action_predicate": {
+    "name": "expose_flat_object_edge",
+    "verb": "expose",
+    "noun": "flat_object_edge",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "edge_overhang_ready"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",
@@ -64,7 +75,10 @@
     "outgoing": [
       "relation_019"
     ],
-    "incoming": [],
+    "incoming": [
+      "relation_041",
+      "relation_042"
+    ],
     "automatic": false
   },
   "fallback_hints": []

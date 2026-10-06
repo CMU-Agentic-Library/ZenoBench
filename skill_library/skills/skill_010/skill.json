@@ -58,6 +58,18 @@
     "button_pressed_this_call",
     "heating_active"
   ],
+  "action_predicate": {
+    "name": "start_microwave_heating",
+    "verb": "start",
+    "noun": "microwave_heating",
+    "arguments": [
+      "appliance"
+    ],
+    "verified_by": [
+      "button_pressed_this_call",
+      "heating_active"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

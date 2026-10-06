@@ -49,6 +49,17 @@
   "expected_state_change": [
     "base_at"
   ],
+  "action_predicate": {
+    "name": "navigate_base",
+    "verb": "navigate",
+    "noun": "base",
+    "arguments": [
+      "pose"
+    ],
+    "verified_by": [
+      "base_at"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",
@@ -57,7 +68,9 @@
   "relations": {
     "mode": "conditional_agentic_hints",
     "catalog": "../../relations.json",
-    "outgoing": [],
+    "outgoing": [
+      "relation_047"
+    ],
     "incoming": [],
     "automatic": false
   },

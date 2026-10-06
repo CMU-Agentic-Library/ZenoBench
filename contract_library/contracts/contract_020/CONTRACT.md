@@ -14,6 +14,10 @@ Paired SkillNode: `skill_012`. Status: `representative_runs_only`.
 - `target_within_joint_limits` — policy_attempt
 - `collision_free_motion` — policy_attempt
 
+## Planner action predicate
+
+`set_torso_height(height_m)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `posture_at_target` — contract_runner

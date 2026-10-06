@@ -37,6 +37,15 @@
   "expected_state_change": [
     "posture_at_target"
   ],
+  "action_predicate": {
+    "name": "lean_waist",
+    "verb": "lean",
+    "noun": "waist",
+    "arguments": [],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

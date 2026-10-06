@@ -109,5 +109,16 @@
       "category_equals": "microwave",
       "required_annotation": "door_button"
     }
+  },
+  "action_predicate": {
+    "name": "press_appliance_door_button",
+    "verb": "press",
+    "noun": "appliance_door_button",
+    "arguments": [
+      "appliance"
+    ],
+    "verified_by": [
+      "button_pressed_this_call"
+    ]
   }
 }

@@ -1,0 +1,71 @@
+{
+  "task": "recycle_and_store",
+  "instruction": "Place the soda can, snack carton, and foam cube in the wide storage bin, then leave doors closed.",
+  "instruction_zh": "把饮料罐、零食纸盒和泡沫方块放进宽收纳盒，并保持门关闭。",
+  "robot_start_near": [
+    4.3,
+    2.0
+  ],
+  "objects": {
+    "soda_can": {
+      "asset": "soda_can",
+      "supports": [
+        "tv_stand"
+      ]
+    },
+    "snack_carton": {
+      "asset": "snack_carton",
+      "supports": [
+        "tv_stand"
+      ]
+    },
+    "foam_cube": {
+      "asset": "foam_cube",
+      "supports": [
+        "floor:living_room",
+        "tv_stand"
+      ]
+    },
+    "wide_storage_bin": {
+      "asset": "wide_storage_bin",
+      "supports": [
+        "bookcase_north_top"
+      ]
+    }
+  },
+  "roles": {
+    "portable": [
+      "soda_can",
+      "snack_carton",
+      "foam_cube"
+    ],
+    "container": [
+      "wide_storage_bin"
+    ]
+  },
+  "alternatives": [
+    "foam cube on floor -> navigate near the cube, prepare floor reach, then test an annotated grasp route",
+    "blocked top contact -> choose a different grasp path or reobserve"
+  ],
+  "goal": {
+    "all": [
+      {
+        "inside": [
+          "all:portable"
+        ],
+        "container": "wide_storage_bin"
+      },
+      {
+        "upright": [
+          "wide_storage_bin"
+        ]
+      },
+      {
+        "closed": "all"
+      },
+      {
+        "not_dropped": "all"
+      }
+    ]
+  }
+}

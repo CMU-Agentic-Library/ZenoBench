@@ -84,5 +84,17 @@
       "required": true,
       "requires_grasp_type": "top_pinch"
     }
+  },
+  "action_predicate": {
+    "name": "clamp_object_top",
+    "verb": "clamp",
+    "noun": "object_top",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
   }
 }

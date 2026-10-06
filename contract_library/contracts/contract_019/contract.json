@@ -63,5 +63,14 @@
     "automatic_fallback": false
   },
   "fallback_hints": [],
-  "noun_bindings": {}
+  "noun_bindings": {},
+  "action_predicate": {
+    "name": "tuck_right_arm",
+    "verb": "tuck",
+    "noun": "right_arm",
+    "arguments": [],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  }
 }

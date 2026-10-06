@@ -80,5 +80,16 @@
       "category_equals": "microwave",
       "required_annotation": "door_button"
     }
+  },
+  "action_predicate": {
+    "name": "trigger_microwave_door_opening",
+    "verb": "trigger",
+    "noun": "microwave_door_opening",
+    "arguments": [
+      "appliance"
+    ],
+    "verified_by": [
+      "joint_open_enough"
+    ]
   }
 }

@@ -164,25 +164,29 @@ class PushPolicy(AtomicPolicy):
         return skills.push(self.rig, name, surface, n, float(distance), label=label, enough=enough)
 
 
-def _contact_direction(rig, name, direction, distance):
+def _contact_direction(rig, name, support, direction, distance):
     if rig.held is not None:
         raise SkillFailure("contact motion: release the held object first")
     if name not in rig.ann.objects:
         raise SkillFailure(f"contact motion: unknown object {name}")
+    surface = rig.ann.support(support) if isinstance(support, str) else support
+    actual = rig.geo.support_under(name, rig.state())
+    if actual is None or actual["name"] != surface["name"]:
+        raise SkillFailure(f"contact motion {name}: object is not on {surface['name']}")
     n = np.asarray(direction, dtype=float)
     if n.shape != (2,) or not np.all(np.isfinite(n)) or not np.isclose(np.linalg.norm(n), 1.0, atol=1e-3):
         raise ValueError("contact direction must be a horizontal unit vector")
     if not np.isfinite(distance) or distance <= 0:
         raise ValueError("contact distance must be positive")
-    return n
+    return surface, n
 
 
 class PushFromBehindPolicy(AtomicPolicy):
     """Use only the rear-contact push route; report measured displacement."""
 
     def execute(self, name, support, direction, distance, *, enough=None):
-        n = _contact_direction(self.rig, name, direction, distance)
-        return skills.push(self.rig, name, support, n, distance, label="PUSH_FROM_BEHIND",
+        surface, n = _contact_direction(self.rig, name, support, direction, distance)
+        return skills.push(self.rig, name, surface, n, distance, label="PUSH_FROM_BEHIND",
                            enough=enough, mode="push")
 
 
@@ -190,6 +194,10 @@ class TopDragPolicy(AtomicPolicy):
     """Use only fingertip contact on top of an object; report displacement."""
 
     def execute(self, name, support, direction, distance, *, enough=None):
-        n = _contact_direction(self.rig, name, direction, distance)
-        return skills.push(self.rig, name, support, n, distance, label="TOP_DRAG",
-                           enough=enough, mode="drag")
+        surface, n = _contact_direction(self.rig, name, support, direction, distance)
+        # The paired push Contract accepts at least half the requested motion.
+        # Stop after that measured progress: extra contact legs can slip an
+        # already moved object while re-parking the base.
+        minimum = enough if enough is not None else max(0.01, float(distance) * 0.5)
+        return skills.push(self.rig, name, surface, n, distance, label="TOP_DRAG",
+                           enough=minimum, mode="drag")

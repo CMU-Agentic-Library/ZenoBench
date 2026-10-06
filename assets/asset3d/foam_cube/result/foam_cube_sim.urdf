@@ -1,0 +1,5 @@
+<robot name="foam_cube"><link name="foam_cube">
+<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/foam_cube.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
+<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/foam_cube_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
+<inertial><mass value="0.0350" /><origin xyz="0 0 0" /><inertia ixx="2.100e-05" ixy="0.0" ixz="0.0" iyy="2.100e-05" iyz="0.0" izz="2.100e-05" /></inertial>
+</link></robot>

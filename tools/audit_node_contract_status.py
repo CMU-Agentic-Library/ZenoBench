@@ -23,7 +23,7 @@ def build() -> str:
             observed.setdefault(contract['contract_id'], []).append(
                 (run['source_report'], contract))
     lines = ['# SkillNode physical verification status', '',
-             'All 42 SkillNode/Contract definitions pass the static pairing and schema checks. '
+             f'All {len(catalog["skills"])} SkillNode/Contract definitions pass the static pairing and schema checks. '
              'A physical pass means at least one Contract invocation finished with its measured '
              'postconditions true in Isaac Sim; it does not guarantee success for every noun or scene.', '',
              '| SkillNode | Contract | Status | Successful path(s) | Evidence |',

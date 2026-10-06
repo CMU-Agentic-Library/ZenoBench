@@ -1,9 +1,9 @@
 ---
-name: skill_008
+name: push-an-object-along-a-support
 description: Move one object by directed contact and measure progress.
 ---
 
-# skill_008 — Push an object along a support
+# Push an object along a support (skill_008)
 
 ## When to use
 
@@ -20,6 +20,12 @@ Move one object by directed contact and measure progress.
 
 - `right_hand_empty` — `contract_precheck`
 - `object_on_support` — `policy_attempt`
+
+## Planner action predicate
+
+`shove_object_along_support(object, support, direction_xy, distance_m)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['displacement_along']`.
 
 ## Expected state change
 

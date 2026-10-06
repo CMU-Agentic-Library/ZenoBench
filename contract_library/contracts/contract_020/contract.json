@@ -75,5 +75,16 @@
     "automatic_fallback": false
   },
   "fallback_hints": [],
-  "noun_bindings": {}
+  "noun_bindings": {},
+  "action_predicate": {
+    "name": "set_torso_height",
+    "verb": "set",
+    "noun": "torso_height",
+    "arguments": [
+      "height_m"
+    ],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  }
 }

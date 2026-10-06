@@ -82,5 +82,16 @@
       "required": true,
       "requires_grasp_type": "edge_pinch_after_push"
     }
+  },
+  "action_predicate": {
+    "name": "expose_flat_object_edge",
+    "verb": "expose",
+    "noun": "flat_object_edge",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "edge_overhang_ready"
+    ]
   }
 }

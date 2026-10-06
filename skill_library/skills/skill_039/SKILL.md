@@ -1,9 +1,9 @@
 ---
-name: skill_039
+name: place-an-upright-object-near-a-support-hint
 description: Orient and place a held object near a supplied xy hint, then verify both.
 ---
 
-# skill_039 — Place an upright object near a support hint
+# Place an upright object near a support hint (skill_039)
 
 ## When to use
 
@@ -20,6 +20,12 @@ Orient and place a held object near a supplied xy hint, then verify both.
 
 - `held_by_right_hand` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`align_upright_object_near_hint(object, support, hint_xy, max_offset_m)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['on', 'right_hand_empty', 'object_upright', 'within_hint_radius']`.
 
 ## Expected state change
 

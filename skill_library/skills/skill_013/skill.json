@@ -53,6 +53,17 @@
   "expected_state_change": [
     "posture_at_target"
   ],
+  "action_predicate": {
+    "name": "pitch_waist",
+    "verb": "pitch",
+    "noun": "waist",
+    "arguments": [
+      "pitch_rad"
+    ],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

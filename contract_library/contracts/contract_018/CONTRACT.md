@@ -14,6 +14,10 @@ Paired SkillNode: `skill_010`. Status: `representative_runs_only`.
 - `button_reachable` — policy_attempt
 - `start_conditions` — policy_attempt
 
+## Planner action predicate
+
+`start_microwave_heating(appliance)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `button_pressed_this_call` — contract_runner

@@ -1,9 +1,9 @@
 ---
-name: skill_016
+name: pick-a-flat-object-at-an-edge
 description: Attempt one edge grasp of a flat object and verify grasp and lift.
 ---
 
-# skill_016 — Pick a flat object at an edge
+# Pick a flat object at an edge (skill_016)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Attempt one edge grasp of a flat object and verify grasp and lift.
 - `right_hand_empty` — `contract_precheck`
 - `object_annotated` — `policy_attempt`
 - `object_reachable` — `policy_attempt`
+
+## Planner action predicate
+
+`pinch_flat_object_edge(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 

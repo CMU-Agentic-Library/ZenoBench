@@ -118,5 +118,19 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "deliver_object",
+    "verb": "deliver",
+    "noun": "object",
+    "arguments": [
+      "object",
+      "support",
+      "base_path"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty"
+    ]
   }
 }

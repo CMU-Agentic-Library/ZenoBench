@@ -1,0 +1,64 @@
+{
+  "foam_cube": {
+    "size": 0.06,
+    "mass": 0.035,
+    "tags": [
+      "toy",
+      "block",
+      "floor_pick"
+    ],
+    "collider": "solid",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/foam_cube/result/foam_cube.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "soda_can": {
+    "size": 0.12,
+    "mass": 0.15,
+    "tags": [
+      "can",
+      "recyclable"
+    ],
+    "collider": "solid",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/soda_can/result/soda_can.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "snack_carton": {
+    "size": 0.17,
+    "mass": 0.18,
+    "tags": [
+      "food",
+      "box"
+    ],
+    "collider": "solid",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/snack_carton/result/snack_carton.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "small_storage_bin": {
+    "size": 0.22,
+    "mass": 0.3,
+    "tags": [
+      "container",
+      "storage"
+    ],
+    "collider": "rect_container",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/small_storage_bin/result/small_storage_bin.urdf",
+    "generator": "procedural_mesh_v1"
+  },
+  "wide_storage_bin": {
+    "size": 0.34,
+    "mass": 1.2,
+    "tags": [
+      "container",
+      "storage",
+      "recycling"
+    ],
+    "collider": "rect_container",
+    "lay_flat": false,
+    "urdf": "assets/asset3d/wide_storage_bin/result/wide_storage_bin.urdf",
+    "generator": "procedural_mesh_v1"
+  }
+}

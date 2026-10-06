@@ -70,6 +70,20 @@
     "on",
     "right_hand_empty"
   ],
+  "action_predicate": {
+    "name": "deliver_object",
+    "verb": "deliver",
+    "noun": "object",
+    "arguments": [
+      "object",
+      "support",
+      "base_path"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

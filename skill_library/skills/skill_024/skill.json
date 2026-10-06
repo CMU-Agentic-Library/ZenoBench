@@ -49,6 +49,17 @@
   "expected_state_change": [
     "joint_closed"
   ],
+  "action_predicate": {
+    "name": "shut_microwave_door",
+    "verb": "shut",
+    "noun": "microwave_door",
+    "arguments": [
+      "appliance"
+    ],
+    "verified_by": [
+      "joint_closed"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

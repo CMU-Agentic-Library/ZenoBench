@@ -60,6 +60,19 @@
     "base_at",
     "grasp_preserved"
   ],
+  "action_predicate": {
+    "name": "transport_carried_object",
+    "verb": "transport",
+    "noun": "carried_object",
+    "arguments": [
+      "object",
+      "pose"
+    ],
+    "verified_by": [
+      "base_at",
+      "grasp_preserved"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

@@ -68,17 +68,16 @@ BODY_FRACTION = {"fruit_basket": 0.58}
 #   {"soda_can": {"size": 0.12, "mass": 0.35, "tags": ["can"], "collider": "solid",
 #                 "lay_flat": false, "urdf": "assets/asset3d/soda_can/result/soda_can.urdf"}}
 CUSTOM = ROOT / "assets" / "custom_assets.json"
-if CUSTOM.exists():
-    for _n, _c in json.loads(CUSTOM.read_text()).items():
-        if _n.startswith("_"):
-            continue
-        SPECS[_n] = (_c["size"], _c["mass"], _c.get("tags", []), _c.get("collider", "solid"),
-                     ROOT / _c["urdf"] if _c.get("urdf") else None)
-        if _c.get("lay_flat"):
-            LAY_FLAT.add(_n)
-        if "body_fraction" in _c:
-            BODY_FRACTION[_n] = _c["body_fraction"]
-
+CUSTOM_RECORDS = json.loads(CUSTOM.read_text()) if CUSTOM.exists() else {}
+for _n, _c in CUSTOM_RECORDS.items():
+    if _n.startswith("_"):
+        continue
+    SPECS[_n] = (_c["size"], _c["mass"], _c.get("tags", []), _c.get("collider", "solid"),
+                 ROOT / _c["urdf"] if _c.get("urdf") else None)
+    if _c.get("lay_flat"):
+        LAY_FLAT.add(_n)
+    if "body_fraction" in _c:
+        BODY_FRACTION[_n] = _c["body_fraction"]
 GRIPPER_GAP = 0.080          # Zeno Malo pinch gripper: 2 x 0.04 m
 PINCH_MAX = 0.068            # leave >= 6 mm clearance per side
 CROWN = 0.05                 # crown pinch: top slab the pads straddle
@@ -275,7 +274,7 @@ def write_sim_urdf(name):
            "grasps": g,
            "usd": f"usd/assets/{name}.usd",
            "source_urdf": str(out.relative_to(ROOT)),
-           "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"}
+           "generator": CUSTOM_RECORDS.get(name, {}).get("generator", "EmbodiedGen V2 text3d-cli (SAM3D backend)")}
     if kind != "solid":
         ann["container"] = container_profile(mesh, kind, body_fraction=bf)
         if name == "breakfast_mug":

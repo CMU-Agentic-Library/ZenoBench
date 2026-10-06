@@ -89,5 +89,18 @@
       "required": true,
       "requires_right_held": true
     }
+  },
+  "action_predicate": {
+    "name": "retreat_carried_object",
+    "verb": "retreat",
+    "noun": "carried_object",
+    "arguments": [
+      "object",
+      "distance_m"
+    ],
+    "verified_by": [
+      "base_backed_off",
+      "grasp_preserved"
+    ]
   }
 }

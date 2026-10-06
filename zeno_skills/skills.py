@@ -1181,10 +1181,30 @@ def place(rig, name, support, xy=None):
     new = [(body + off + np.array([0, 0, 0.06]), R), (body + off + np.array([0, 0, 0.01]), R)]
     moved = float(np.linalg.norm(new[1][0] - legs[1][0]))
     rig.log("place_remeasure", obj=name, shift_m=round(moved, 3), hang_m=round(hang, 3),
-            pos=np.round(body_now, 4).tolist())
+            pos=np.round(body_now, 4).tolist(),
+            container_pos=(np.round(rig.obj_pose(container)[0], 4).tolist() if container else None))
     hints = park_qs if moved < 0.02 else (None, None)
     planned_legs = legs
     legs = new
+    container_exit_pose = None
+    if container and drop:
+        # At a deep bin the loaded hand can start below the rim after travel.
+        # Lift outside the bin first; a direct diagonal to its centre sweeps
+        # the carried object through the wall and pushes the bin away.
+        current_bottom = float(geo.bottom(name, rig.state())[2])
+        rim_z = float(geo.bottom(container, rig.state())[2] + ca["container"]["rim_height"])
+        prelift = max(0.0, rim_z + 0.05 - current_bottom)
+        if prelift > 0.01:
+            tcp_lift, R_lift = rig.kin.tcp(rig.q_cmd)
+            rig.move_to(tcp_lift + np.array([0, 0, prelift]), R_lift,
+                        step=0.005, steps_per_wp=6, label="container_pre_lift", collision=False)
+            check_held(rig, "container_pre_lift")
+            rig.log("container_pre_lift_result", obj=name, container=container,
+                    bottom_z=round(float(geo.bottom(name, rig.state())[2]), 4),
+                    rim_z=round(rim_z, 4),
+                    container_pos=np.round(rig.obj_pose(container)[0], 4).tolist())
+        exit_position, exit_orientation = rig.kin.tcp(rig.q_cmd)
+        container_exit_pose = (exit_position.copy(), exit_orientation.copy())
     try:
         err = rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True, collision=False,
                           q_hint=hints[0])
@@ -1203,7 +1223,8 @@ def place(rig, name, support, xy=None):
                     q_hint=hints[0])
     stage_pos, _ = rig.obj_pose(name)
     rig.log("place_after_above", obj=name, pos=np.round(stage_pos, 4).tolist(),
-            fingers=np.round(rig.fingers(), 4).tolist())
+            fingers=np.round(rig.fingers(), 4).tolist(),
+            container_pos=(np.round(rig.obj_pose(container)[0], 4).tolist() if container else None))
     check_held(rig, "place_above")
     if not drop:
         rig.caption = f"PLACE {name}: lower"
@@ -1219,11 +1240,19 @@ def place(rig, name, support, xy=None):
     rig.caption = f"PLACE {name}: release" + (f" into the {container}" if container else "")
     kind = rig.held["kind"]
     before_release, _ = rig.obj_pose(name)
+    if container:
+        current_container, _ = rig.obj_pose(container)
+        shift = float(np.linalg.norm(current_container[:2] - np.asarray(xy)))
+        rig.log("place_container_shift", obj=name, container=container,
+                shift_m=round(shift, 4), pos=np.round(current_container, 4).tolist())
+        if shift > 0.05:
+            raise SkillFailure(f"place {name}: container shifted {shift:.3f} m before release")
     rig.log("place_before_release", obj=name, pos=np.round(before_release, 4).tolist(),
             target=[round(float(v), 4) for v in body])
     rig.grip(rig.held["pre_open"], 70, gradual=True)
     after_open, _ = rig.obj_pose(name)
-    rig.log("place_after_open", obj=name, pos=np.round(after_open, 4).tolist())
+    rig.log("place_after_open", obj=name, pos=np.round(after_open, 4).tolist(),
+            container_pos=(np.round(rig.obj_pose(container)[0], 4).tolist() if container else None))
     top = legs[0][0] if drop else legs[1][0]
     rig.held = None                    # released: a short retreat is not part of the outcome
     tcp, _ = rig.kin.tcp(rig.q_cmd)
@@ -1241,6 +1270,16 @@ def place(rig, name, support, xy=None):
             errors.append(str(e))
     else:
         rig.log("retreat_short", reasons=errors)
+    if container_exit_pose is not None:
+        # The release retreat only clears the object vertically. Return the
+        # empty hand to its known outside-of-bin staging position as well, so
+        # the next navigation can fold the arm without sweeping the rim.
+        exit_target, exit_orientation = container_exit_pose
+        try:
+            rig.move_to(exit_target, exit_orientation, step=0.005, steps_per_wp=6,
+                        label="container_exit", collision=False)
+        except SkillFailure as e:
+            rig.log("container_exit_short", reason=str(e))
     rig.step(90)
     rig.focus_z = None
     st = rig.state()

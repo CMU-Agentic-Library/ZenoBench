@@ -84,5 +84,17 @@
       "required": true,
       "requires_grasp_type": "rim_pinch"
     }
+  },
+  "action_predicate": {
+    "name": "grasp_round_rim",
+    "verb": "grasp",
+    "noun": "round_rim",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
   }
 }

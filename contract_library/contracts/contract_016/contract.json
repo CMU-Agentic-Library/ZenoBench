@@ -111,5 +111,19 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "shove_object_along_support",
+    "verb": "shove",
+    "noun": "object_along_support",
+    "arguments": [
+      "object",
+      "support",
+      "direction_xy",
+      "distance_m"
+    ],
+    "verified_by": [
+      "displacement_along"
+    ]
   }
 }

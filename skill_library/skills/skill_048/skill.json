@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "skill_id": "skill_048",
+  "name": "Extend a drawer",
+  "description": "Open a manual prismatic drawer and read back its sliding joint.",
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_open_enough",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_056",
+  "scope": {
+    "unit": "One extend a drawer attempt on grounded scene state.",
+    "includes": [
+      "Open a manual prismatic drawer and read back its sliding joint."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "expected_state_change": [
+    "joint_open_enough"
+  ],
+  "action_predicate": {
+    "name": "extend_drawer",
+    "verb": "extend",
+    "noun": "drawer",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "joint_open_enough"
+    ]
+  },
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "kind": "skill_node",
+  "args": {
+    "articulated": {
+      "type": "articulated_ref",
+      "required": true,
+      "description": "The uniquely grounded door or drawer."
+    }
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_056",
+    "input_order": [
+      "articulated"
+    ]
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_044"
+    ],
+    "incoming": [],
+    "automatic": false
+  }
+}

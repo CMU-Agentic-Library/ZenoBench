@@ -14,6 +14,10 @@ Paired SkillNode: `skill_002`. Status: `representative_runs_only`.
 - `target_navigable` — policy_attempt
 - `carried_object_matches_state` — not_enforced
 
+## Planner action predicate
+
+`transport_carried_object(object, pose)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `base_at` — contract_runner

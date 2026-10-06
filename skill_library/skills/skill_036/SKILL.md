@@ -1,9 +1,9 @@
 ---
-name: skill_036
+name: upright-a-held-object
 description: Rotate a right-held object until its local up axis is within 20 degrees of vertical.
 ---
 
-# skill_036 — Upright a held object
+# Upright a held object (skill_036)
 
 ## When to use
 
@@ -16,6 +16,12 @@ Rotate a right-held object until its local up axis is within 20 degrees of verti
 ## Preconditions
 
 - `held_by_right_hand` — `policy_attempt`
+
+## Planner action predicate
+
+`orient_held_object(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['object_upright']`.
 
 ## Expected state change
 

@@ -1,9 +1,9 @@
 ---
-name: skill_029
+name: pick-by-rectangular-rim
 description: Grasp a rectangular tray or box by its annotated rim.
 ---
 
-# skill_029 — Pick by rectangular rim
+# Pick by rectangular rim (skill_029)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Grasp a rectangular tray or box by its annotated rim.
 
 - `right_hand_empty` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`clasp_rectangular_rim(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 

@@ -1,9 +1,9 @@
 ---
-name: skill_034
+name: straighten-waist
 description: Return the waist pitch to neutral.
 ---
 
-# skill_034 — Straighten waist
+# Straighten waist (skill_034)
 
 ## When to use
 
@@ -16,6 +16,12 @@ Return the waist pitch to neutral.
 ## Preconditions
 
 - `joint_path_clear` — `policy_attempt`
+
+## Planner action predicate
+
+`straighten_waist()` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['posture_at_target']`.
 
 ## Expected state change
 

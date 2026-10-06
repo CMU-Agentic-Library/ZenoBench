@@ -84,5 +84,17 @@
       "required": true,
       "requires_grasp_type": "rim_pinch_rect"
     }
+  },
+  "action_predicate": {
+    "name": "clasp_rectangular_rim",
+    "verb": "clasp",
+    "noun": "rectangular_rim",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
   }
 }

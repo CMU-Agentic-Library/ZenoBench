@@ -1,9 +1,9 @@
 ---
-name: skill_032
+name: raise-torso-for-work-surface
 description: Raise the robot torso to its configured maximum.
 ---
 
-# skill_032 — Raise torso for work surface
+# Raise torso for work surface (skill_032)
 
 ## When to use
 
@@ -16,6 +16,12 @@ Raise the robot torso to its configured maximum.
 ## Preconditions
 
 - `joint_path_clear` — `policy_attempt`
+
+## Planner action predicate
+
+`raise_torso()` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['posture_at_target']`.
 
 ## Expected state change
 

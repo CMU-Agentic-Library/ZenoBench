@@ -15,6 +15,10 @@ Paired SkillNode: `skill_021`. Status: `experimental_callable`.
 - `carried_object_matches_state` — not_enforced
 - `two_hand_hold` — not_enforced
 
+## Planner action predicate
+
+`convoy_bimanual_load(object, pose)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `base_at` — contract_runner

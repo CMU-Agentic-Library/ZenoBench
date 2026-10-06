@@ -1,9 +1,9 @@
 ---
-name: skill_037
+name: place-an-object-upright-on-a-support
 description: Orient a held object, place it on a support, then verify support and tilt.
 ---
 
-# skill_037 — Place an object upright on a support
+# Place an object upright on a support (skill_037)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Orient a held object, place it on a support, then verify support and tilt.
 
 - `held_by_right_hand` — `contract_precheck`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`stand_object_on_support(object, support)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['on', 'right_hand_empty', 'object_upright']`.
 
 ## Expected state change
 

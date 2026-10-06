@@ -1,9 +1,9 @@
 ---
-name: skill_003
+name: open-an-articulated-door-or-drawer
 description: Open one annotated articulated target and verify its joint position.
 ---
 
-# skill_003 — Open an articulated door or drawer
+# Open an articulated door or drawer (skill_003)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Open one annotated articulated target and verify its joint position.
 
 - `articulated_annotated` — `contract_precheck`
 - `opening_route_feasible` — `policy_attempt`
+
+## Planner action predicate
+
+`open_articulated_joint(articulated)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['joint_open_enough']`.
 
 ## Expected state change
 

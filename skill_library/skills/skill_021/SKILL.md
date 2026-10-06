@@ -1,9 +1,9 @@
 ---
-name: skill_021
+name: carry-a-large-object-with-both-hands
 description: Move a currently two-hand-held object to one base pose.
 ---
 
-# skill_021 — Carry a large object with both hands
+# Carry a large object with both hands (skill_021)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Move a currently two-hand-held object to one base pose.
 - `target_navigable` — `policy_attempt`
 - `carried_object_matches_state` — `not_enforced`
 - `two_hand_hold` — `not_enforced`
+
+## Planner action predicate
+
+`convoy_bimanual_load(object, pose)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['base_at', 'grasp_preserved']`.
 
 ## Expected state change
 

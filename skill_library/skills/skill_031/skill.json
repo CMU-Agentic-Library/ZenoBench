@@ -37,6 +37,15 @@
   "expected_state_change": [
     "posture_at_target"
   ],
+  "action_predicate": {
+    "name": "lower_torso",
+    "verb": "lower",
+    "noun": "torso",
+    "arguments": [],
+    "verified_by": [
+      "posture_at_target"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

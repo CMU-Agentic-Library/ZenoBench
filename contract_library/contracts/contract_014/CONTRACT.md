@@ -15,6 +15,10 @@ Paired SkillNode: `skill_006`. Status: `representative_runs_only`.
 - `container_annotated` — contract_noun_binding
 - `container_accessible` — policy_attempt
 
+## Planner action predicate
+
+`insert_object_in_container(object, container)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `inside` — contract_runner

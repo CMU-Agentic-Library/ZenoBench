@@ -55,6 +55,18 @@
   "expected_state_change": [
     "temperature_at_least"
   ],
+  "action_predicate": {
+    "name": "attain_food_temperature",
+    "verb": "attain",
+    "noun": "food_temperature",
+    "arguments": [
+      "object",
+      "min_temp_c"
+    ],
+    "verified_by": [
+      "temperature_at_least"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

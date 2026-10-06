@@ -1,9 +1,9 @@
 ---
-name: skill_004
+name: pick-an-object
 description: Grasp and lift one annotated scene object with the right hand.
 ---
 
-# skill_004 — Pick an object
+# Pick an object (skill_004)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Grasp and lift one annotated scene object with the right hand.
 - `right_hand_empty` — `contract_precheck`
 - `object_annotated` — `contract_noun_binding`
 - `object_reachable` — `policy_attempt`
+
+## Planner action predicate
+
+`acquire_object(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_by_right_hand', 'object_lifted']`.
 
 ## Expected state change
 
@@ -88,6 +94,8 @@ Verifier: `contract_002 / auto`.
 - May follow `skill_025` (`enables`) when the target object is enclosed by a closed manual door or drawer.
 - May follow `skill_018` (`recovery`) when moving pick failed and the object is stationary and reachable.
 - May follow `skill_027` (`alternative`) when top pinch geometry is absent or fails but another grasp exists.
+- May follow `skill_047` (`enables`) when object lies behind the opened hinged door.
+- May follow `skill_048` (`enables`) when object lies inside the opened drawer.
 
 ## Failure
 

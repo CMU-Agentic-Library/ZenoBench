@@ -13,6 +13,10 @@ Paired SkillNode: `skill_003`. Status: `representative_runs_only`.
 - `articulated_annotated` — contract_precheck
 - `opening_route_feasible` — policy_attempt
 
+## Planner action predicate
+
+`open_articulated_joint(articulated)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `joint_open_enough` — contract_runner

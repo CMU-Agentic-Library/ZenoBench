@@ -50,7 +50,9 @@
     "class": "BaseTranslateLocalPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "direct_contracts": [
+    "contract_052"
+  ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_001"

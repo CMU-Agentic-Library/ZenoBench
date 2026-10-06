@@ -1,9 +1,9 @@
 ---
-name: skill_006
+name: place-an-object-in-a-container
 description: Release a right-held object into an annotated container and verify the final geometry.
 ---
 
-# skill_006 — Place an object in a container
+# Place an object in a container (skill_006)
 
 ## When to use
 
@@ -19,6 +19,12 @@ Release a right-held object into an annotated container and verify the final geo
 - `held_by_right_hand` — `contract_precheck`
 - `container_annotated` — `contract_noun_binding`
 - `container_accessible` — `policy_attempt`
+
+## Planner action predicate
+
+`insert_object_in_container(object, container)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['inside', 'right_hand_empty']`.
 
 ## Expected state change
 

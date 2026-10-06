@@ -1,9 +1,9 @@
 ---
-name: skill_035
+name: expose-a-flat-object-edge
 description: Push a flat object to a measured, graspable support overhang.
 ---
 
-# skill_035 — Expose a flat object edge
+# Expose a flat object edge (skill_035)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Push a flat object to a measured, graspable support overhang.
 - `right_hand_empty` — `contract_precheck`
 - `object_on_annotated_support` — `policy_attempt`
 - `free_support_edge` — `policy_attempt`
+
+## Planner action predicate
+
+`expose_flat_object_edge(object)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['edge_overhang_ready']`.
 
 ## Expected state change
 
@@ -43,6 +49,8 @@ Verifier: `edge_ready`.
 ## Related Skills
 
 - `skill_016` (`preparation`) when a flat object needs a graspable support overhang — The edge exposure step verifies the overhang before the edge pick.
+- May follow `skill_045` (`recovery`) when rear contact could not make required progress on a flat object.
+- May follow `skill_046` (`recovery`) when top drag could not make required progress on a flat object.
 
 ## Failure
 

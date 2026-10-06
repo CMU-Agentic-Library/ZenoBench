@@ -15,6 +15,10 @@ Paired SkillNode: `skill_015`. Status: `experimental_callable`.
 - `object_annotated` — policy_attempt
 - `object_reachable` — policy_attempt
 
+## Planner action predicate
+
+`retrieve_cavity_object(object, cavity)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `held_by_right_hand` — contract_runner

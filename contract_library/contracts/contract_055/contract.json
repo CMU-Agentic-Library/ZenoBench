@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "skill_contract",
+  "contract_id": "contract_055",
+  "skill_id": "skill_047",
+  "name": "Open a hinged door",
+  "description": "Open a manual revolute door and read back its hinge joint.",
+  "scope": {
+    "unit": "One open a manual handle attempt on the grounded scene state.",
+    "includes": [
+      "Open one handle-operated door or drawer."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "inputs": {
+    "articulated": {
+      "type": "articulated_ref",
+      "required": true,
+      "description": "The uniquely grounded door or drawer."
+    }
+  },
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "target_annotated",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "joint_open_enough",
+      "verification": "contract_runner"
+    }
+  ],
+  "expected_state_change": [
+    "joint_open_enough"
+  ],
+  "verifier": {
+    "check": "ContractRunner measured post-state",
+    "on_failure": "record partial state and stop",
+    "legacy_family_contract": "contract_004",
+    "route": "handle"
+  },
+  "policy_plan": {
+    "kind": "sequence",
+    "steps": [
+      {
+        "policy_id": "policy_049",
+        "args": [
+          {
+            "arg": "articulated"
+          }
+        ]
+      }
+    ]
+  },
+  "legacy_call_args": [
+    "articulated"
+  ],
+  "argument_transforms": {},
+  "availability": "representative_runs_only",
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "noun_bindings": {
+    "articulated": {
+      "argument": "articulated",
+      "kind": "articulated",
+      "source": "rig.ann",
+      "required": true,
+      "required_annotation": "handle",
+      "forbid_annotation": "door_button",
+      "requires_joint_type": "revolute"
+    }
+  },
+  "action_predicate": {
+    "name": "unfold_hinged_door",
+    "verb": "unfold",
+    "noun": "hinged_door",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "joint_open_enough"
+    ]
+  }
+}

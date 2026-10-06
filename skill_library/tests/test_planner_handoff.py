@@ -8,8 +8,8 @@ from skill_library.planner_handoff import planner_catalog, replan_request
 class PlannerHandoffTests(unittest.TestCase):
     def test_catalog_contains_all_skills_and_conditional_relations(self):
         catalog = planner_catalog()
-        self.assertEqual(len(catalog["skills"]), 42)
-        self.assertEqual(len(catalog["relations"]), 38)
+        self.assertEqual(len(catalog["skills"]), 50)
+        self.assertEqual(len(catalog["relations"]), 47)
         self.assertTrue(all(row["automatic"] is False for row in catalog["relations"]))
 
     def test_failed_mobile_pick_yields_stationary_recovery_with_live_state(self):

@@ -92,5 +92,17 @@
       "required": true,
       "requires_grasp_type": "handle_pinch"
     }
+  },
+  "action_predicate": {
+    "name": "grip_cup_handle",
+    "verb": "grip",
+    "noun": "cup_handle",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
   }
 }

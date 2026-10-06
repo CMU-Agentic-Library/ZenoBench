@@ -97,5 +97,17 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "swing_articulated_door",
+    "verb": "swing",
+    "noun": "articulated_door",
+    "arguments": [
+      "object",
+      "articulated"
+    ],
+    "verified_by": [
+      "joint_open_enough"
+    ]
   }
 }

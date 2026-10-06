@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "skill_id": "skill_044",
+  "name": "Translate base locally",
+  "description": "Move an empty, tucked robot along a short local forward axis and measure displacement.",
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "arm_tucked",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "straight_path_clear",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "base_translated_locally",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_052",
+  "scope": {
+    "unit": "One translate base locally attempt on grounded scene state.",
+    "includes": [
+      "Move an empty, tucked robot along a short local forward axis and measure displacement."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "expected_state_change": [
+    "base_translated_locally"
+  ],
+  "action_predicate": {
+    "name": "translate_base",
+    "verb": "translate",
+    "noun": "base",
+    "arguments": [
+      "forward_m"
+    ],
+    "verified_by": [
+      "base_translated_locally"
+    ]
+  },
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [],
+  "kind": "skill_node",
+  "args": {
+    "forward_m": {
+      "type": "number",
+      "required": true,
+      "description": "forward m"
+    }
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_052",
+    "input_order": [
+      "forward_m"
+    ]
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [],
+    "incoming": [
+      "relation_040"
+    ],
+    "automatic": false
+  }
+}

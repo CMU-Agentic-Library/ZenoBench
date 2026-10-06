@@ -1,9 +1,9 @@
 ---
-name: skill_025
+name: open-a-manual-handle
 description: Open one handle-operated door or drawer.
 ---
 
-# skill_025 — Open a manual handle
+# Open a manual handle (skill_025)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Open one handle-operated door or drawer.
 
 - `right_hand_empty` — `policy_attempt`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`pull_manual_handle(articulated)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['joint_open_enough']`.
 
 ## Expected state change
 

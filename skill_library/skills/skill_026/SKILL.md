@@ -1,9 +1,9 @@
 ---
-name: skill_026
+name: close-a-manual-handle
 description: Close one handle-operated door or drawer.
 ---
 
-# skill_026 — Close a manual handle
+# Close a manual handle (skill_026)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Close one handle-operated door or drawer.
 
 - `right_hand_empty` — `policy_attempt`
 - `target_annotated` — `policy_attempt`
+
+## Planner action predicate
+
+`push_manual_handle(articulated)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['joint_closed']`.
 
 ## Expected state change
 

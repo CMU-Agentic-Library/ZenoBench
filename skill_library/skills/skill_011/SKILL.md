@@ -1,9 +1,9 @@
 ---
-name: skill_011
+name: tuck-the-right-arm
 description: Move the right arm into the measured travel posture.
 ---
 
-# skill_011 — Tuck the right arm
+# Tuck the right arm (skill_011)
 
 ## When to use
 
@@ -18,6 +18,12 @@ Move the right arm into the measured travel posture.
 - `right_hand_empty` — `policy_attempt`
 - `target_within_joint_limits` — `policy_attempt`
 - `collision_free_motion` — `policy_attempt`
+
+## Planner action predicate
+
+`tuck_right_arm()` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['posture_at_target']`.
 
 ## Expected state change
 
@@ -41,7 +47,8 @@ Verifier: `contract_008 / tuck`.
 
 ## Related Skills
 
-- No fixed relation; select the next node from the task goal and observation.
+- `skill_043` (`preparation`) when after arm tucking and a local orientation correction is needed — Tucked arm allows a direct local base turn.
+- `skill_044` (`preparation`) when after arm tucking and a short straight reposition is needed — Tucked arm allows a direct local translation.
 
 ## Failure
 

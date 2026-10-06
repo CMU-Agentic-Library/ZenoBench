@@ -25,8 +25,9 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).top_drag.execute(...)`
 - Class: `TopDragPolicy`
 - Availability: `verified`
+- Direct Contract routes: contract_054
 - Legacy family Contracts: contract_006
 
 ## Recorded evidence
 
-Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01
+Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01 Active Contract top-drag pass on book_green: 0.024 m measured progress for 0.040 m request, runs/check_50_top_drag_green_fixed, 2026-10-06; book_red case still failed to move.

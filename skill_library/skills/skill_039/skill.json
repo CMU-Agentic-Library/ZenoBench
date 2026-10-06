@@ -82,6 +82,23 @@
     "object_upright",
     "within_hint_radius"
   ],
+  "action_predicate": {
+    "name": "align_upright_object_near_hint",
+    "verb": "align",
+    "noun": "upright_object_near_hint",
+    "arguments": [
+      "object",
+      "support",
+      "hint_xy",
+      "max_offset_m"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty",
+      "object_upright",
+      "within_hint_radius"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

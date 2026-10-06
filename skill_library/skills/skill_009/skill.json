@@ -53,6 +53,17 @@
   "expected_state_change": [
     "button_pressed_this_call"
   ],
+  "action_predicate": {
+    "name": "press_appliance_door_button",
+    "verb": "press",
+    "noun": "appliance_door_button",
+    "arguments": [
+      "appliance"
+    ],
+    "verified_by": [
+      "button_pressed_this_call"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

@@ -60,6 +60,8 @@ def load_skills(library_dir: str | Path = HERE) -> dict[str, dict]:
             raise GraphValidationError(f"{skill_id}: invocation input order differs")
         if spec.get("expected_state_change") != contract["expected_state_change"]:
             raise GraphValidationError(f"{skill_id}: expected state change differs")
+        if spec.get("action_predicate") != contract["action_predicate"]:
+            raise GraphValidationError(f"{skill_id}: action predicate differs")
         if spec.get("fallback_hints", []) != contract.get("fallback_hints", []):
             raise GraphValidationError(f"{skill_id}: fallback hints differ")
         seen_contracts.add(cid)
@@ -228,6 +230,10 @@ def compile_grounded_nodes(
             "skill_id": node["skill_id"],
             "depends_on": node["depends_on"],
             "resolved_args": resolved,
+            "action_predicate": {
+                "name": skill["action_predicate"]["name"],
+                "arguments": {name: resolved[name] for name in skill["action_predicate"]["arguments"]},
+            },
             "contract": skill["contract_id"],
             "route": "compose",
             "args": call_args,

@@ -142,5 +142,16 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "open_articulated_joint",
+    "verb": "open",
+    "noun": "articulated_joint",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "joint_open_enough"
+    ]
   }
 }

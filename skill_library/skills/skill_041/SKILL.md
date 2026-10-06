@@ -1,9 +1,9 @@
 ---
-name: skill_041
+name: raise-carried-object-for-clearance
 description: Lift a right-held object until its bottom clears a required height.
 ---
 
-# skill_041 — Raise carried object for clearance
+# Raise carried object for clearance (skill_041)
 
 ## When to use
 
@@ -17,6 +17,12 @@ Lift a right-held object until its bottom clears a required height.
 ## Preconditions
 
 - `held_by_right_hand` — `policy_attempt`
+
+## Planner action predicate
+
+`hoist_carried_object(object, min_bottom_z)` — bind the listed argument slots to the current scene.
+This action predicate is reported only after its measured state facts pass.
+Verified facts: `['held_object_above_height']`.
 
 ## Expected state change
 

@@ -16,6 +16,10 @@ Paired SkillNode: `skill_039`. Status: `representative_runs_only`.
 - `held_by_right_hand` — contract_precheck
 - `target_annotated` — policy_attempt
 
+## Planner action predicate
+
+`align_upright_object_near_hint(object, support, hint_xy, max_offset_m)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `on` — contract_runner

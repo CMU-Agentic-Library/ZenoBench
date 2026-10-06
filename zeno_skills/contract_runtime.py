@@ -117,6 +117,10 @@ class ContractRunner:
             observations["verified_predicates"] = [
                 item["predicate"] for item in row["achieves"]
             ]
+            observations["verified_action_predicate"] = {
+                "name": row["action_predicate"]["name"],
+                "arguments": {name: values[name] for name in row["action_predicate"]["arguments"]},
+            }
             observations["policy_steps"] = completed
             observations["bound_nouns"] = noun_context
             observations["selected_policy_path"] = selected_path
@@ -126,6 +130,10 @@ class ContractRunner:
             snapshot["failed_policy_step"] = failed_step
             snapshot["bound_nouns"] = noun_context
             snapshot["selected_policy_path"] = selected_path
+            snapshot["requested_action_predicate"] = {
+                "name": row["action_predicate"]["name"],
+                "arguments": {name: values[name] for name in row["action_predicate"]["arguments"]},
+            }
             self.trace.append(ContractResult(
                 contract_id, route, False, snapshot, str(exc), type(exc).__name__
             ))
@@ -181,6 +189,44 @@ class ContractRunner:
                 if moved < 0.09:
                     raise SkillFailure("back-off contract: base did not move enough")
                 out["base_moved_m"] = moved
+            elif check == "base_rotate":
+                x0, y0, yaw0 = before["base_pose"]
+                x1, y1, yaw1 = rig.base_pose()
+                target = yaw0 + float(values["delta_yaw_deg"])
+                yaw_error = abs((yaw1 - target + 180) % 360 - 180)
+                if math.hypot(x1-x0, y1-y0) > 0.02 or yaw_error > 2.0:
+                    raise SkillFailure("base-rotate contract: measured pose missed target")
+                out.update(base_yaw_deg=yaw1, yaw_error_deg=yaw_error)
+            elif check == "base_translate":
+                x0, y0, yaw0 = before["base_pose"]
+                x1, y1, yaw1 = rig.base_pose()
+                requested = float(values["forward_m"])
+                actual = ((x1-x0)*math.cos(math.radians(yaw0))
+                          + (y1-y0)*math.sin(math.radians(yaw0)))
+                lateral = abs(-(x1-x0)*math.sin(math.radians(yaw0))
+                              + (y1-y0)*math.cos(math.radians(yaw0)))
+                if abs(actual-requested) > 0.03 or lateral > 0.03 or abs((yaw1-yaw0+180)%360-180) > 2:
+                    raise SkillFailure("base-translate contract: measured pose missed target")
+                out.update(base_forward_m=actual, lateral_error_m=lateral)
+            elif check == "floor_reach":
+                events = [e for e in rig.events[before["events"]:]
+                          if e.get("label") == "floor_reach_ready" and e.get("obj") == values["object"]]
+                if not events or float(events[-1].get("error_m", 1)) > 0.03 or rig.held is not None:
+                    raise SkillFailure("floor-reach contract: no fresh clear pregrasp")
+                out["pregrasp_error_m"] = float(events[-1]["error_m"])
+            elif check == "microwave_clear":
+                name = values["articulated"]
+                events = [e for e in rig.events[before["events"]:]
+                          if e.get("label") == "microwave_sweep_clear"]
+                x,y,yaw = rig.base_pose()
+                state = getattr(rig, "_microwave_clear", None)
+                held = rig.held["name"] if rig.held else None
+                if (not events or not isinstance(state, dict) or state.get("name") != name
+                        or state.get("held") != held or held != before["held"]
+                        or math.hypot(x-5.1,y-1.6)>0.05
+                        or abs((yaw-150+180)%360-180)>5):
+                    raise SkillFailure("microwave-clear contract: door sweep not clear")
+                out["clear_base_pose"] = [x,y,yaw]
             elif check == "edge_ready":
                 name = values["object"]
                 events = [e for e in rig.events[before["events"]:]

@@ -13,6 +13,10 @@ Paired SkillNode: `skill_041`. Status: `representative_runs_only`.
 
 - `held_by_right_hand` — policy_attempt
 
+## Planner action predicate
+
+`hoist_carried_object(object, min_bottom_z)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `held_object_above_height` — contract_runner

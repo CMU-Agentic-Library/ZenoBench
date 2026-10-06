@@ -139,7 +139,10 @@ def build():
             lines.append(f"- `{name}`: {meta['type']}")
         lines += ["", "## Preconditions", ""]
         lines += [f"- `{x['predicate']}` — {x['enforcement']}" for x in record["requires"]]
-        lines += ["", "## Measured postconditions", ""]
+        action = record["action_predicate"]
+        lines += ["", "## Planner action predicate", "",
+                  f"`{action['name']}({', '.join(action['arguments'])})` — reported only after the measured state facts pass.", ""]
+        lines += ["## Measured postconditions", ""]
         lines += [f"- `{x['predicate']}` — {x['verification']}" for x in record["achieves"]]
         lines += ["", "## Grounded noun slots", ""]
         for name, binding in record["noun_bindings"].items():

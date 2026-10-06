@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "skill_id": "skill_049",
+  "name": "Ready floor reach",
+  "description": "Lower and lean toward a floor object, then verify a fresh reachable pregrasp.",
+  "requires": [
+    {
+      "predicate": "right_hand_empty",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "object_on_floor",
+      "enforcement": "policy_attempt"
+    },
+    {
+      "predicate": "pregrasp_reachable",
+      "enforcement": "policy_attempt"
+    }
+  ],
+  "achieves": [
+    {
+      "predicate": "floor_reach_ready",
+      "verification": "contract_runner"
+    }
+  ],
+  "availability": "representative_runs_only",
+  "contract_id": "contract_057",
+  "scope": {
+    "unit": "One ready floor reach attempt on grounded scene state.",
+    "includes": [
+      "Lower and lean toward a floor object, then verify a fresh reachable pregrasp."
+    ],
+    "excludes": [
+      "choosing the whole-task goal",
+      "guaranteeing success for untested scene states"
+    ]
+  },
+  "expected_state_change": [
+    "floor_reach_ready"
+  ],
+  "action_predicate": {
+    "name": "ready_floor_object",
+    "verb": "ready",
+    "noun": "floor_object",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "floor_reach_ready"
+    ]
+  },
+  "failure": {
+    "action": "stop_and_reobserve",
+    "fallback": "upper_layer_replans_from_measured_state",
+    "automatic_fallback": false
+  },
+  "fallback_hints": [
+    {
+      "when": "floor pregrasp is unreachable from the current base pose and the right hand is empty",
+      "skill_id": "skill_001",
+      "reason": "Move to a safe pose near the floor target, then retry floor pregrasp."
+    }
+  ],
+  "kind": "skill_node",
+  "args": {
+    "object": {
+      "type": "object_ref",
+      "required": true,
+      "description": "The uniquely grounded scene object."
+    }
+  },
+  "invocation": {
+    "api": "ContractRunner.run",
+    "contract_id": "contract_057",
+    "input_order": [
+      "object"
+    ]
+  },
+  "relations": {
+    "mode": "conditional_agentic_hints",
+    "catalog": "../../relations.json",
+    "outgoing": [
+      "relation_045"
+    ],
+    "incoming": [
+      "relation_047"
+    ],
+    "automatic": false
+  }
+}

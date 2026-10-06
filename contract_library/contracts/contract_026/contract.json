@@ -102,5 +102,18 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "intercept_moving_object",
+    "verb": "intercept",
+    "noun": "moving_object",
+    "arguments": [
+      "object",
+      "base_path"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
   }
 }

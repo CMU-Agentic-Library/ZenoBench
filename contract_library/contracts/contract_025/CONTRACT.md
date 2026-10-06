@@ -15,6 +15,10 @@ Paired SkillNode: `skill_017`. Status: `representative_runs_only`.
 - `object_reachable` — policy_attempt
 - `handle_collision_body_prepared` — not_enforced
 
+## Planner action predicate
+
+`grip_cup_handle(object)` — reported only after the measured state facts pass.
+
 ## Measured postconditions
 
 - `held_by_right_hand` — contract_runner

@@ -44,7 +44,9 @@
     "class": "BaseRotateInPlacePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "direct_contracts": [
+    "contract_051"
+  ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_001"

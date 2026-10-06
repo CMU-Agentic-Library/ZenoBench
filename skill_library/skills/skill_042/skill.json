@@ -60,6 +60,19 @@
     "base_backed_off",
     "grasp_preserved"
   ],
+  "action_predicate": {
+    "name": "retreat_carried_object",
+    "verb": "retreat",
+    "noun": "carried_object",
+    "arguments": [
+      "object",
+      "distance_m"
+    ],
+    "verified_by": [
+      "base_backed_off",
+      "grasp_preserved"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

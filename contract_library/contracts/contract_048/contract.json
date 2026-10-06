@@ -86,5 +86,17 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "attain_food_temperature",
+    "verb": "attain",
+    "noun": "food_temperature",
+    "arguments": [
+      "object",
+      "min_temp_c"
+    ],
+    "verified_by": [
+      "temperature_at_least"
+    ]
   }
 }

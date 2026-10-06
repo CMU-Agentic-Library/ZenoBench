@@ -80,5 +80,16 @@
       "category_equals": "microwave",
       "required_annotation": "door_button"
     }
+  },
+  "action_predicate": {
+    "name": "shut_microwave_door",
+    "verb": "shut",
+    "noun": "microwave_door",
+    "arguments": [
+      "appliance"
+    ],
+    "verified_by": [
+      "joint_closed"
+    ]
   }
 }

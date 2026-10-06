@@ -64,6 +64,18 @@
     "held_by_right_hand",
     "object_lifted"
   ],
+  "action_predicate": {
+    "name": "acquire_object",
+    "verb": "acquire",
+    "noun": "object",
+    "arguments": [
+      "object"
+    ],
+    "verified_by": [
+      "held_by_right_hand",
+      "object_lifted"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",
@@ -83,7 +95,9 @@
     "incoming": [
       "relation_009",
       "relation_028",
-      "relation_030"
+      "relation_030",
+      "relation_043",
+      "relation_044"
     ],
     "automatic": false
   },

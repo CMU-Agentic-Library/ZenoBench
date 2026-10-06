@@ -179,5 +179,18 @@
       "source": "rig.ann",
       "required": true
     }
+  },
+  "action_predicate": {
+    "name": "deposit_object_on_support",
+    "verb": "deposit",
+    "noun": "object_on_support",
+    "arguments": [
+      "object",
+      "support"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty"
+    ]
   }
 }

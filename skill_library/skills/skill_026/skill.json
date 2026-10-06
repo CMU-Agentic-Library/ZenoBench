@@ -49,6 +49,17 @@
   "expected_state_change": [
     "joint_closed"
   ],
+  "action_predicate": {
+    "name": "push_manual_handle",
+    "verb": "push",
+    "noun": "manual_handle",
+    "arguments": [
+      "articulated"
+    ],
+    "verified_by": [
+      "joint_closed"
+    ]
+  },
   "failure": {
     "action": "stop_and_reobserve",
     "fallback": "upper_layer_replans_from_measured_state",

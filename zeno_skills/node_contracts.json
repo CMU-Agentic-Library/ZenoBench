@@ -81,7 +81,18 @@
           "reason": "tuck the arm before proposing a new navigation attempt"
         }
       ],
-      "noun_bindings": {}
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "navigate_base",
+        "verb": "navigate",
+        "noun": "base",
+        "arguments": [
+          "pose"
+        ],
+        "verified_by": [
+          "base_at"
+        ]
+      }
     },
     {
       "schema_version": 1,
@@ -183,6 +194,19 @@
           "required": true,
           "requires_right_held": true
         }
+      },
+      "action_predicate": {
+        "name": "transport_carried_object",
+        "verb": "transport",
+        "noun": "carried_object",
+        "arguments": [
+          "object",
+          "pose"
+        ],
+        "verified_by": [
+          "base_at",
+          "grasp_preserved"
+        ]
       }
     },
     {
@@ -329,6 +353,17 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "open_articulated_joint",
+        "verb": "open",
+        "noun": "articulated_joint",
+        "arguments": [
+          "articulated"
+        ],
+        "verified_by": [
+          "joint_open_enough"
+        ]
       }
     },
     {
@@ -581,6 +616,18 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "acquire_object",
+        "verb": "acquire",
+        "noun": "object",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -764,6 +811,19 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "deposit_object_on_support",
+        "verb": "deposit",
+        "noun": "object_on_support",
+        "arguments": [
+          "object",
+          "support"
+        ],
+        "verified_by": [
+          "on",
+          "right_hand_empty"
+        ]
       }
     },
     {
@@ -883,6 +943,19 @@
           "required": true,
           "required_annotation": "asset.container"
         }
+      },
+      "action_predicate": {
+        "name": "insert_object_in_container",
+        "verb": "insert",
+        "noun": "object_in_container",
+        "arguments": [
+          "object",
+          "container"
+        ],
+        "verified_by": [
+          "inside",
+          "right_hand_empty"
+        ]
       }
     },
     {
@@ -999,6 +1072,17 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "close_articulated_joint",
+        "verb": "close",
+        "noun": "articulated_joint",
+        "arguments": [
+          "articulated"
+        ],
+        "verified_by": [
+          "joint_closed"
+        ]
       }
     },
     {
@@ -1114,6 +1198,20 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "shove_object_along_support",
+        "verb": "shove",
+        "noun": "object_along_support",
+        "arguments": [
+          "object",
+          "support",
+          "direction_xy",
+          "distance_m"
+        ],
+        "verified_by": [
+          "displacement_along"
+        ]
       }
     },
     {
@@ -1227,6 +1325,17 @@
           "category_equals": "microwave",
           "required_annotation": "door_button"
         }
+      },
+      "action_predicate": {
+        "name": "press_appliance_door_button",
+        "verb": "press",
+        "noun": "appliance_door_button",
+        "arguments": [
+          "appliance"
+        ],
+        "verified_by": [
+          "button_pressed_this_call"
+        ]
       }
     },
     {
@@ -1345,6 +1454,18 @@
           "category_equals": "microwave",
           "required_annotation": "start_button"
         }
+      },
+      "action_predicate": {
+        "name": "start_microwave_heating",
+        "verb": "start",
+        "noun": "microwave_heating",
+        "arguments": [
+          "appliance"
+        ],
+        "verified_by": [
+          "button_pressed_this_call",
+          "heating_active"
+        ]
       }
     },
     {
@@ -1412,7 +1533,16 @@
         "automatic_fallback": false
       },
       "fallback_hints": [],
-      "noun_bindings": {}
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "tuck_right_arm",
+        "verb": "tuck",
+        "noun": "right_arm",
+        "arguments": [],
+        "verified_by": [
+          "posture_at_target"
+        ]
+      }
     },
     {
       "schema_version": 1,
@@ -1491,7 +1621,18 @@
         "automatic_fallback": false
       },
       "fallback_hints": [],
-      "noun_bindings": {}
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "set_torso_height",
+        "verb": "set",
+        "noun": "torso_height",
+        "arguments": [
+          "height_m"
+        ],
+        "verified_by": [
+          "posture_at_target"
+        ]
+      }
     },
     {
       "schema_version": 1,
@@ -1570,7 +1711,18 @@
         "automatic_fallback": false
       },
       "fallback_hints": [],
-      "noun_bindings": {}
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "pitch_waist",
+        "verb": "pitch",
+        "noun": "waist",
+        "arguments": [
+          "pitch_rad"
+        ],
+        "verified_by": [
+          "posture_at_target"
+        ]
+      }
     },
     {
       "schema_version": 1,
@@ -1694,6 +1846,19 @@
           "required": true,
           "furniture_equals": "kitchen_microwave"
         }
+      },
+      "action_predicate": {
+        "name": "load_microwave_cavity",
+        "verb": "load",
+        "noun": "microwave_cavity",
+        "arguments": [
+          "object",
+          "support"
+        ],
+        "verified_by": [
+          "on",
+          "right_hand_empty"
+        ]
       }
     },
     {
@@ -1802,6 +1967,19 @@
           "category_equals": "microwave",
           "required_annotation": "cavity_aabb"
         }
+      },
+      "action_predicate": {
+        "name": "retrieve_cavity_object",
+        "verb": "retrieve",
+        "noun": "cavity_object",
+        "arguments": [
+          "object",
+          "cavity"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -1894,6 +2072,18 @@
           "required": true,
           "requires_grasp_type": "edge_pinch_after_push"
         }
+      },
+      "action_predicate": {
+        "name": "pinch_flat_object_edge",
+        "verb": "pinch",
+        "noun": "flat_object_edge",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -1990,6 +2180,18 @@
           "required": true,
           "requires_grasp_type": "handle_pinch"
         }
+      },
+      "action_predicate": {
+        "name": "grip_cup_handle",
+        "verb": "grip",
+        "noun": "cup_handle",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -2096,6 +2298,19 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "intercept_moving_object",
+        "verb": "intercept",
+        "noun": "moving_object",
+        "arguments": [
+          "object",
+          "base_path"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -2218,6 +2433,20 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "deliver_object",
+        "verb": "deliver",
+        "noun": "object",
+        "arguments": [
+          "object",
+          "support",
+          "base_path"
+        ],
+        "verified_by": [
+          "on",
+          "right_hand_empty"
+        ]
       }
     },
     {
@@ -2310,6 +2539,18 @@
           "required": true,
           "requires_grasp_type": "edge_pinch_after_push"
         }
+      },
+      "action_predicate": {
+        "name": "scoop_floor_object",
+        "verb": "scoop",
+        "noun": "floor_object",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -2410,6 +2651,19 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "convoy_bimanual_load",
+        "verb": "convoy",
+        "noun": "bimanual_load",
+        "arguments": [
+          "object",
+          "pose"
+        ],
+        "verified_by": [
+          "base_at",
+          "grasp_preserved"
+        ]
       }
     },
     {
@@ -2511,6 +2765,18 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "swing_articulated_door",
+        "verb": "swing",
+        "noun": "articulated_door",
+        "arguments": [
+          "object",
+          "articulated"
+        ],
+        "verified_by": [
+          "joint_open_enough"
+        ]
       }
     },
     {
@@ -2595,6 +2861,17 @@
           "category_equals": "microwave",
           "required_annotation": "door_button"
         }
+      },
+      "action_predicate": {
+        "name": "trigger_microwave_door_opening",
+        "verb": "trigger",
+        "noun": "microwave_door_opening",
+        "arguments": [
+          "appliance"
+        ],
+        "verified_by": [
+          "joint_open_enough"
+        ]
       }
     },
     {
@@ -2679,6 +2956,17 @@
           "category_equals": "microwave",
           "required_annotation": "door_button"
         }
+      },
+      "action_predicate": {
+        "name": "shut_microwave_door",
+        "verb": "shut",
+        "noun": "microwave_door",
+        "arguments": [
+          "appliance"
+        ],
+        "verified_by": [
+          "joint_closed"
+        ]
       }
     },
     {
@@ -2763,6 +3051,17 @@
           "required_annotation": "handle",
           "forbid_annotation": "door_button"
         }
+      },
+      "action_predicate": {
+        "name": "pull_manual_handle",
+        "verb": "pull",
+        "noun": "manual_handle",
+        "arguments": [
+          "articulated"
+        ],
+        "verified_by": [
+          "joint_open_enough"
+        ]
       }
     },
     {
@@ -2847,6 +3146,17 @@
           "required_annotation": "handle",
           "forbid_annotation": "door_button"
         }
+      },
+      "action_predicate": {
+        "name": "push_manual_handle",
+        "verb": "push",
+        "noun": "manual_handle",
+        "arguments": [
+          "articulated"
+        ],
+        "verified_by": [
+          "joint_closed"
+        ]
       }
     },
     {
@@ -2935,6 +3245,18 @@
           "required": true,
           "requires_grasp_type": "top_pinch"
         }
+      },
+      "action_predicate": {
+        "name": "clamp_object_top",
+        "verb": "clamp",
+        "noun": "object_top",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -3023,6 +3345,18 @@
           "required": true,
           "requires_grasp_type": "rim_pinch"
         }
+      },
+      "action_predicate": {
+        "name": "grasp_round_rim",
+        "verb": "grasp",
+        "noun": "round_rim",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -3111,6 +3445,18 @@
           "required": true,
           "requires_grasp_type": "rim_pinch_rect"
         }
+      },
+      "action_predicate": {
+        "name": "clasp_rectangular_rim",
+        "verb": "clasp",
+        "noun": "rectangular_rim",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "held_by_right_hand",
+          "object_lifted"
+        ]
       }
     },
     {
@@ -3219,6 +3565,19 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "lay_edge_held_flat_object",
+        "verb": "lay",
+        "noun": "edge_held_flat_object",
+        "arguments": [
+          "object",
+          "support"
+        ],
+        "verified_by": [
+          "on",
+          "right_hand_empty"
+        ]
       }
     },
     {
@@ -3278,7 +3637,16 @@
         "automatic_fallback": false
       },
       "fallback_hints": [],
-      "noun_bindings": {}
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "lower_torso",
+        "verb": "lower",
+        "noun": "torso",
+        "arguments": [],
+        "verified_by": [
+          "posture_at_target"
+        ]
+      }
     },
     {
       "schema_version": 1,
@@ -3337,7 +3705,16 @@
         "automatic_fallback": false
       },
       "fallback_hints": [],
-      "noun_bindings": {}
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "raise_torso",
+        "verb": "raise",
+        "noun": "torso",
+        "arguments": [],
+        "verified_by": [
+          "posture_at_target"
+        ]
+      }
     },
     {
       "schema_version": 1,
@@ -3396,7 +3773,16 @@
         "automatic_fallback": false
       },
       "fallback_hints": [],
-      "noun_bindings": {}
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "lean_waist",
+        "verb": "lean",
+        "noun": "waist",
+        "arguments": [],
+        "verified_by": [
+          "posture_at_target"
+        ]
+      }
     },
     {
       "schema_version": 1,
@@ -3455,7 +3841,16 @@
         "automatic_fallback": false
       },
       "fallback_hints": [],
-      "noun_bindings": {}
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "straighten_waist",
+        "verb": "straighten",
+        "noun": "waist",
+        "arguments": [],
+        "verified_by": [
+          "posture_at_target"
+        ]
+      }
     },
     {
       "schema_version": 1,
@@ -3541,6 +3936,17 @@
           "required": true,
           "requires_grasp_type": "edge_pinch_after_push"
         }
+      },
+      "action_predicate": {
+        "name": "expose_flat_object_edge",
+        "verb": "expose",
+        "noun": "flat_object_edge",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "edge_overhang_ready"
+        ]
       }
     },
     {
@@ -3622,6 +4028,17 @@
           "required": true,
           "requires_right_held": true
         }
+      },
+      "action_predicate": {
+        "name": "orient_held_object",
+        "verb": "orient",
+        "noun": "held_object",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "object_upright"
+        ]
       }
     },
     {
@@ -3744,6 +4161,20 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "stand_object_on_support",
+        "verb": "stand",
+        "noun": "object_on_support",
+        "arguments": [
+          "object",
+          "support"
+        ],
+        "verified_by": [
+          "on",
+          "right_hand_empty",
+          "object_upright"
+        ]
       }
     },
     {
@@ -3872,6 +4303,22 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "position_object_near_hint",
+        "verb": "position",
+        "noun": "object_near_hint",
+        "arguments": [
+          "object",
+          "support",
+          "hint_xy",
+          "max_offset_m"
+        ],
+        "verified_by": [
+          "on",
+          "right_hand_empty",
+          "within_hint_radius"
+        ]
       }
     },
     {
@@ -4017,6 +4464,23 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "align_upright_object_near_hint",
+        "verb": "align",
+        "noun": "upright_object_near_hint",
+        "arguments": [
+          "object",
+          "support",
+          "hint_xy",
+          "max_offset_m"
+        ],
+        "verified_by": [
+          "on",
+          "right_hand_empty",
+          "object_upright",
+          "within_hint_radius"
+        ]
       }
     },
     {
@@ -4107,6 +4571,18 @@
           "source": "rig.ann",
           "required": true
         }
+      },
+      "action_predicate": {
+        "name": "attain_food_temperature",
+        "verb": "attain",
+        "noun": "food_temperature",
+        "arguments": [
+          "object",
+          "min_temp_c"
+        ],
+        "verified_by": [
+          "temperature_at_least"
+        ]
       }
     },
     {
@@ -4191,6 +4667,18 @@
           "required": true,
           "requires_right_held": true
         }
+      },
+      "action_predicate": {
+        "name": "hoist_carried_object",
+        "verb": "hoist",
+        "noun": "carried_object",
+        "arguments": [
+          "object",
+          "min_bottom_z"
+        ],
+        "verified_by": [
+          "held_object_above_height"
+        ]
       }
     },
     {
@@ -4284,6 +4772,843 @@
           "required": true,
           "requires_right_held": true
         }
+      },
+      "action_predicate": {
+        "name": "retreat_carried_object",
+        "verb": "retreat",
+        "noun": "carried_object",
+        "arguments": [
+          "object",
+          "distance_m"
+        ],
+        "verified_by": [
+          "base_backed_off",
+          "grasp_preserved"
+        ]
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_051",
+      "skill_id": "skill_043",
+      "name": "Pivot base in place",
+      "description": "Rotate an empty, tucked robot by a bounded signed angle and verify its new yaw.",
+      "scope": {
+        "unit": "one arm tuck",
+        "includes": [
+          "Move the right arm into the measured travel posture."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "delta_yaw_deg": {
+          "type": "number",
+          "required": true,
+          "description": "delta yaw deg"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "arm_tucked",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "turn_arc_clear",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "base_yaw_changed",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "base_yaw_changed"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "base_rotate"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_036",
+            "args": [
+              {
+                "arg": "delta_yaw_deg"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "delta_yaw_deg"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "pivot_base",
+        "verb": "pivot",
+        "noun": "base",
+        "arguments": [
+          "delta_yaw_deg"
+        ],
+        "verified_by": [
+          "base_yaw_changed"
+        ]
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_052",
+      "skill_id": "skill_044",
+      "name": "Translate base locally",
+      "description": "Move an empty, tucked robot along a short local forward axis and measure displacement.",
+      "scope": {
+        "unit": "one empty-handed base move",
+        "includes": [
+          "Move the empty-handed robot base to one target pose."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "forward_m": {
+          "type": "number",
+          "required": true,
+          "description": "forward m"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "arm_tucked",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "straight_path_clear",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "base_translated_locally",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "base_translated_locally"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "base_translate"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_037",
+            "args": [
+              {
+                "arg": "forward_m"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "forward_m"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {},
+      "action_predicate": {
+        "name": "translate_base",
+        "verb": "translate",
+        "noun": "base",
+        "arguments": [
+          "forward_m"
+        ],
+        "verified_by": [
+          "base_translated_locally"
+        ]
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_053",
+      "skill_id": "skill_045",
+      "name": "Nudge object from behind",
+      "description": "Push an object from rear contact along its annotated support and measure progress.",
+      "scope": {
+        "unit": "one directed contact move",
+        "includes": [
+          "Move one object by directed contact and measure progress."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "support"
+        },
+        "direction_xy": {
+          "type": "unit_vec2",
+          "required": true,
+          "description": "direction xy"
+        },
+        "distance_m": {
+          "type": "positive_number",
+          "required": true,
+          "description": "distance m"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_on_support",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "displacement_along",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "displacement_along"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_006",
+        "route": "auto",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_043",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              },
+              {
+                "arg": "direction_xy"
+              },
+              {
+                "arg": "distance_m"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support",
+        "direction_xy",
+        "distance_m"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      },
+      "action_predicate": {
+        "name": "nudge_supported_object",
+        "verb": "nudge",
+        "noun": "supported_object",
+        "arguments": [
+          "object",
+          "support",
+          "direction_xy",
+          "distance_m"
+        ],
+        "verified_by": [
+          "displacement_along"
+        ]
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_054",
+      "skill_id": "skill_046",
+      "name": "Drag object from above",
+      "description": "Drag an object using top contact along its annotated support and measure progress.",
+      "scope": {
+        "unit": "one directed contact move",
+        "includes": [
+          "Move one object by directed contact and measure progress."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "object"
+        },
+        "support": {
+          "type": "support_ref",
+          "required": true,
+          "description": "support"
+        },
+        "direction_xy": {
+          "type": "unit_vec2",
+          "required": true,
+          "description": "direction xy"
+        },
+        "distance_m": {
+          "type": "positive_number",
+          "required": true,
+          "description": "distance m"
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "object_on_support",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "displacement_along",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "displacement_along"
+      ],
+      "verifier": {
+        "legacy_family_contract": "contract_006",
+        "route": "auto",
+        "check": "ContractRunner._before + _verify",
+        "on_failure": "record partial state and stop"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_044",
+            "args": [
+              {
+                "arg": "object"
+              },
+              {
+                "arg": "support"
+              },
+              {
+                "arg": "direction_xy"
+              },
+              {
+                "arg": "distance_m"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object",
+        "support",
+        "direction_xy",
+        "distance_m"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        },
+        "support": {
+          "argument": "support",
+          "kind": "support",
+          "source": "rig.ann",
+          "required": true
+        }
+      },
+      "action_predicate": {
+        "name": "drag_supported_object",
+        "verb": "drag",
+        "noun": "supported_object",
+        "arguments": [
+          "object",
+          "support",
+          "direction_xy",
+          "distance_m"
+        ],
+        "verified_by": [
+          "displacement_along"
+        ]
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_055",
+      "skill_id": "skill_047",
+      "name": "Open a hinged door",
+      "description": "Open a manual revolute door and read back its hinge joint.",
+      "scope": {
+        "unit": "One open a manual handle attempt on the grounded scene state.",
+        "includes": [
+          "Open one handle-operated door or drawer."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "articulated": {
+          "type": "articulated_ref",
+          "required": true,
+          "description": "The uniquely grounded door or drawer."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_open_enough",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_open_enough"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_004",
+        "route": "handle"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_049",
+            "args": [
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "articulated"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "articulated": {
+          "argument": "articulated",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "required_annotation": "handle",
+          "forbid_annotation": "door_button",
+          "requires_joint_type": "revolute"
+        }
+      },
+      "action_predicate": {
+        "name": "unfold_hinged_door",
+        "verb": "unfold",
+        "noun": "hinged_door",
+        "arguments": [
+          "articulated"
+        ],
+        "verified_by": [
+          "joint_open_enough"
+        ]
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_056",
+      "skill_id": "skill_048",
+      "name": "Extend a drawer",
+      "description": "Open a manual prismatic drawer and read back its sliding joint.",
+      "scope": {
+        "unit": "One open a manual handle attempt on the grounded scene state.",
+        "includes": [
+          "Open one handle-operated door or drawer."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "articulated": {
+          "type": "articulated_ref",
+          "required": true,
+          "description": "The uniquely grounded door or drawer."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "target_annotated",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "joint_open_enough",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "joint_open_enough"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "legacy_family_contract": "contract_004",
+        "route": "handle"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_050",
+            "args": [
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "articulated"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "articulated": {
+          "argument": "articulated",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "required_annotation": "handle",
+          "forbid_annotation": "door_button",
+          "requires_joint_type": "prismatic"
+        }
+      },
+      "action_predicate": {
+        "name": "extend_drawer",
+        "verb": "extend",
+        "noun": "drawer",
+        "arguments": [
+          "articulated"
+        ],
+        "verified_by": [
+          "joint_open_enough"
+        ]
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_057",
+      "skill_id": "skill_049",
+      "name": "Ready floor reach",
+      "description": "Lower and lean toward a floor object, then verify a fresh reachable pregrasp.",
+      "scope": {
+        "unit": "One expose a flat object edge attempt on the grounded scene state.",
+        "includes": [
+          "Push a flat object to a measured, graspable support overhang."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "object": {
+          "type": "object_ref",
+          "required": true,
+          "description": "The uniquely grounded scene object."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "right_hand_empty",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "object_on_floor",
+          "enforcement": "policy_attempt"
+        },
+        {
+          "predicate": "pregrasp_reachable",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "floor_reach_ready",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "floor_reach_ready"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "floor_reach"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_042",
+            "args": [
+              {
+                "arg": "object"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "object"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [
+        {
+          "when": "floor pregrasp is unreachable from the current base pose and the right hand is empty",
+          "skill_id": "skill_001",
+          "reason": "Move to a safe pose near the floor target, then retry floor pregrasp."
+        }
+      ],
+      "noun_bindings": {
+        "object": {
+          "argument": "object",
+          "kind": "scene_object",
+          "source": "rig.ann",
+          "required": true
+        }
+      },
+      "action_predicate": {
+        "name": "ready_floor_object",
+        "verb": "ready",
+        "noun": "floor_object",
+        "arguments": [
+          "object"
+        ],
+        "verified_by": [
+          "floor_reach_ready"
+        ]
+      }
+    },
+    {
+      "schema_version": 1,
+      "kind": "skill_contract",
+      "contract_id": "contract_058",
+      "skill_id": "skill_050",
+      "name": "Clear microwave door sweep",
+      "description": "Move the robot to the microwave hinge clearance pose and verify a fresh clearance event.",
+      "scope": {
+        "unit": "One open powered microwave door attempt on the grounded scene state.",
+        "includes": [
+          "Open the annotated powered microwave door and measure its joint."
+        ],
+        "excludes": [
+          "choosing the whole-task goal",
+          "guaranteeing success for untested scene states"
+        ]
+      },
+      "inputs": {
+        "articulated": {
+          "type": "articulated_ref",
+          "required": true,
+          "description": "Grounded powered microwave door."
+        }
+      },
+      "requires": [
+        {
+          "predicate": "microwave_annotated",
+          "enforcement": "contract_precheck"
+        },
+        {
+          "predicate": "clearance_path_open",
+          "enforcement": "policy_attempt"
+        }
+      ],
+      "achieves": [
+        {
+          "predicate": "microwave_sweep_clear",
+          "verification": "contract_runner"
+        }
+      ],
+      "expected_state_change": [
+        "microwave_sweep_clear"
+      ],
+      "verifier": {
+        "check": "ContractRunner measured post-state",
+        "on_failure": "record partial state and stop",
+        "custom": "microwave_clear"
+      },
+      "policy_plan": {
+        "kind": "sequence",
+        "steps": [
+          {
+            "policy_id": "policy_030",
+            "args": [
+              {
+                "arg": "articulated"
+              }
+            ]
+          }
+        ]
+      },
+      "legacy_call_args": [
+        "articulated"
+      ],
+      "argument_transforms": {},
+      "availability": "representative_runs_only",
+      "failure": {
+        "action": "stop_and_reobserve",
+        "fallback": "upper_layer_replans_from_measured_state",
+        "automatic_fallback": false
+      },
+      "fallback_hints": [],
+      "noun_bindings": {
+        "articulated": {
+          "argument": "articulated",
+          "kind": "articulated",
+          "source": "rig.ann",
+          "required": true,
+          "category_equals": "microwave",
+          "required_annotation": "door_button"
+        }
+      },
+      "action_predicate": {
+        "name": "clear_microwave_door_sweep",
+        "verb": "clear",
+        "noun": "microwave_door_sweep",
+        "arguments": [
+          "articulated"
+        ],
+        "verified_by": [
+          "microwave_sweep_clear"
+        ]
       }
     }
   ]

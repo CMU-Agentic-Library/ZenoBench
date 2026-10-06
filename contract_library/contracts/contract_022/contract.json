@@ -120,5 +120,18 @@
       "required": true,
       "furniture_equals": "kitchen_microwave"
     }
+  },
+  "action_predicate": {
+    "name": "load_microwave_cavity",
+    "verb": "load",
+    "noun": "microwave_cavity",
+    "arguments": [
+      "object",
+      "support"
+    ],
+    "verified_by": [
+      "on",
+      "right_hand_empty"
+    ]
   }
 }
