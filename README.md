@@ -66,9 +66,10 @@ task only adds assets to furniture tops or to the floor.
 
 The task layouts are shown in the task videos below.
 
-Every scene passes a physics check: after 3 s of simulation every free body has drifted less
-than 1 cm, every articulated part stays closed and the robot holds its pose (see
-`sim/checks/`, `tasks/*/check/`).
+The base house, task scenes, and kitchen pot demo have recorded three-second physics
+checks: free bodies drift less than 1 cm, articulated parts stay closed, and the robot
+holds its pose (see `sim/checks/`, `tasks/*/check/`, and
+`scenes/kitchen_pot/check/`). These checks establish scene stability, not task completion.
 
 ## New procedural assets and task scenes
 
@@ -97,11 +98,28 @@ All **12 procedural assets** have generated visual and collision meshes, URDF, U
 | `plastic_cup` | 8 × 8 × 9.5 | round rim pinch | side dining table; rim pick attempted, base/arm path blocked |
 | `paperback_book` | 18 × 12 × 2.5 | push to edge, then pinch | dining table; annotated, physical pick pending |
 | `tissue_box` | 14 × 9 × 6 | push to edge, then pinch | TV stand; annotated, physical pick pending |
-| `rolling_pin` | 22 × 4.4 × 4.4 | top pinch or edge route | side dining table; rim pick attempted, base/arm path blocked |
+| `rolling_pin` | 22 × 4.4 × 4.4 | top pinch or edge route | side dining table; annotated, physical pick pending |
 | `shallow_sorting_tray` | 27 × 20 × 5.5 | rectangular rim pinch | bookcase target; annotated, insertion pending |
 | `handled_cooking_pot` | 30 × 18 × 16 | top bail pinch, side handles, or round rim | kitchen counter; no passing lift yet (reach planner blocked) |
 
-A separate [kitchen pot scene](scenes/kitchen_pot/scene.usd) places an open cooking pot with two side handles and a rigid overhead bail on the kitchen counter. The [close view](scenes/kitchen_pot/check/pot_close.png) shows its placement; the narrow bail grip has explicit top and handle pinch annotations, and all handles have physical collision boxes. This is a grasp demo scene outside the ten benchmark tasks. The scene is stable, but the current handle Contract has not lifted the pot: its contact-path planner found no reachable pose; see [the pot scene notes](scenes/kitchen_pot/README.md).
+### Kitchen cooking pot (grasp demo)
+
+The [kitchen pot scene](scenes/kitchen_pot/scene.usd) places `handled_cooking_pot` on the
+kitchen counter. The open pot has two side handles and a rigid overhead bail; the bail's
+26 mm grip fits within the robot's 80 mm gripper opening. The shared asset annotation
+includes bail, side-handle, and rim grasp candidates, and the handles have collision
+geometry. The [scene spec](scene_specs/kitchen_pot.json) and [scene annotation](scenes/kitchen_pot/annotation.json)
+are committed. This is a demo scene outside the ten benchmark tasks.
+
+| Kitchen placement | Pot and graspable bail |
+| --- | --- |
+| <img src="scenes/kitchen_pot/check/kitchen.png" width="420" alt="Cooking pot on the kitchen counter in the existing house"/> | <img src="scenes/kitchen_pot/check/pot_close.png" width="420" alt="Close view of the cooking pot, side handles, and overhead bail"/> |
+
+The [three-second scene check](scenes/kitchen_pot/check/check.json) passes with no unstable
+bodies and zero robot drift. **A physical lift has not passed yet:** the current handle
+Contract (`contract_025`) cannot find a reachable contact path from this setup. See the
+[pot scene README](scenes/kitchen_pot/README.md) for rebuild and smoke-test commands and
+the [physical findings](skill_library/verification/FINDINGS.md) for the failure record.
 
 [Procedural asset guide](assets/PROCEDURAL_ASSETS.md) gives the generation and conversion commands; both [recycling](task_specs/recycle_and_store.json) and [utility-item](task_specs/organize_utility_items.json) specs have committed task scenes and annotations. Their [recycling scene check](tasks/recycle_and_store/check/check.json) and [utility scene check](tasks/organize_utility_items/check/check.json) report `pass: true`, no unstable bodies, and 0 m robot drift. These are scene-stability results. The complete tasks are not yet physically solved; see [physical findings](skill_library/verification/FINDINGS.md).
 
@@ -447,6 +465,8 @@ The [creation README](docs/README.md) gives the task, scene, annotation, and Par
 sim/zeno_house.usd      final house scene (+ sim/checks)
 task_specs/             task definitions (+ places.json aliases, examples/)
 tasks/<task>/           built task: layer, task.json, annotation.json, check renders
+scene_specs/            standalone demo scene specifications (including kitchen_pot.json)
+scenes/                 built demo scenes, annotations, physics checks, and smoke plans
 skill_library/          50 planner-visible SkillNodes, relations, subgraph examples, verification
 contract_library/       one-to-one Contract definitions and exports
 policy_library/         public low-level policy records
