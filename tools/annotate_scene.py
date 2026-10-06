@@ -285,9 +285,11 @@ def main():
             gap = float(hc @ n) - t / 2 - face
             o_hi = gap + t / 2 - 0.012 - 0.004
             pre_open = 0.04 if o_hi >= 0.04 else max(t / 2 + 0.004, (t / 2 + 0.004 + o_hi) / 2)
+            # imported round / short pulls without a finger gap: front pinch only
+            grasp = handle.GetAttribute("zeno:grasp").Get() if handle.HasAttribute("zeno:grasp") else "side"
             h = {"prim": str(handle.GetPath()), "center": hc.round(4).tolist(), "outward": n.round(4).tolist(),
                  "along": along.round(4).tolist(), "bar_axis": bar_axis.tolist(),
-                 "bar_size": size.round(4).tolist(), "grasp": "side", "gap": round(gap, 4),
+                 "bar_size": size.round(4).tolist(), "grasp": grasp, "gap": round(gap, 4),
                  "thickness": round(t, 4), "pre_open": round(pre_open, 4), "flip_ok": bool(flip_ok)}
         articulated.append({
             "name": f"{cab.GetName()}/{b1.GetName()}" if multi else cab.GetName(), "prim": str(cab.GetPath()),

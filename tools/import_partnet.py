@@ -203,6 +203,56 @@ def handle_geometry(H, face_n, n_dir, long_ax, slot=0.03):
 
 
 # ---------------------------------------------------------------- main
+def joint_axis(J):
+    """Unit joint axis (some PartNet URDFs store e.g. 0 0 -0.961)."""
+    a = np.array([float(x) for x in (J.find("axis").get("xyz") if J.find("axis") is not None else "1 0 0").split()])
+    return a / (np.linalg.norm(a) or 1.0)
+
+
+def front_dir(elems, top, world):
+    """Horizontal unit axis (+-x or +-y, URDF frame) the moving parts face.
+
+    Each door/drawer votes, weighted by its face area: a drawer slides along
+    the normal; a door on a vertical hinge is thinnest along it; a door on a
+    horizontal hinge (oven, flap) has the normal perpendicular to the hinge.
+    The sign is the side of the carcass box the part sits on.  (The mean of
+    the part vertices, the fallback, is pulled sideways by uneven meshes: a
+    microwave door beside its control panel.)"""
+    base_v = [e["v"] for e in elems if e["owner"] is None]
+    allv = np.concatenate([e["v"] for e in elems])
+    bv = np.concatenate(base_v) if base_v else allv
+    bc = (bv.min(0) + bv.max(0)) / 2
+    votes = np.zeros((2, 2))                       # [axis x/y][sign -/+]
+    for J in top:
+        mine = [e["v"] for e in elems if e["owner"] is J]
+        if not mine:
+            continue
+        v = np.concatenate(mine)
+        ext = np.ptp(v, axis=0)
+        ax = world(J.find("child").get("link"))[:3, :3] @ joint_axis(J)
+        if J.get("type") == "prismatic":
+            if abs(ax[2]) > 0.7:                   # vertical slider: says nothing about the front
+                continue
+            k = int(np.argmax(np.abs(ax[:2])))
+        elif abs(ax[2]) > 0.7:
+            k = int(np.argmin(ext[:2]))
+        else:
+            k = 1 - int(np.argmax(np.abs(ax[:2])))
+        s = (v[:, k].min() + v[:, k].max()) / 2 - bc[k]
+        if abs(s) < 1e-6:
+            continue
+        votes[k, int(s > 0)] += ext[1 - k] * ext[2]
+    out = np.zeros(3)
+    if votes.max() > 0:
+        k, s = np.unravel_index(int(np.argmax(votes)), votes.shape)
+        out[k] = 1.0 if s else -1.0
+        return out
+    d = np.concatenate([e["v"] for e in elems if e["owner"] is not None]).mean(0) - bv.mean(0)
+    k = int(np.argmax(np.abs(d[:2])))
+    out[k] = np.sign(d[k]) or 1.0
+    return out
+
+
 def load(zip_path, mid):
     f = zipfile.ZipFile(zip_path)
     meta = json.loads(f.read(f"{mid}/meta.json"))
@@ -263,14 +313,7 @@ def build(args):
 
     # canonical frame: the side of the object with the moving parts faces -y
     allv = np.concatenate([e["v"] for e in elems])
-    base_v = [e["v"] for e in elems if e["owner"] is None]
-    base_c = (np.concatenate(base_v) if base_v else allv).mean(0)
-    part_v = np.concatenate([e["v"] for e in elems if e["owner"] is not None])
-    d = part_v.mean(0) - base_c
-    d[2] = 0.0
-    k = int(np.argmax(np.abs(d[:2])))
-    out_dir = np.zeros(3)
-    out_dir[k] = np.sign(d[k]) or 1.0
+    out_dir = front_dir(elems, top, world)
     yaw = math.atan2(-1.0, 0.0) - math.atan2(out_dir[1], out_dir[0])
     R = rz(yaw)
     rot = (R[:3, :3] @ allv.T).T
@@ -296,7 +339,7 @@ def build(args):
             continue
         Tc = world(J.find("child").get("link"))
         pivot = A[:3, :3] @ Tc[:3, 3] + A[:3, 3]
-        axis = R[:3, :3] @ Tc[:3, :3] @ np.array([float(x) for x in J.find("axis").get("xyz").split()])
+        axis = R[:3, :3] @ Tc[:3, :3] @ joint_axis(J)
         ai = int(np.argmax(np.abs(axis)))
         if abs(axis[ai]) < 0.98:
             raise SystemExit(f"{args.id}: joint {J.get('name')} axis {axis.round(3)} is not along x/y/z")
@@ -338,6 +381,9 @@ def build(args):
             long_ax = 0 if np.ptp(H.vertices[:, 0]) > np.ptp(H.vertices[:, 2]) else 2
             hinfo = handle_geometry(H, face_n, n_dir, long_ax)
             hinfo["part"] = handle_id
+            hinfo["long_axis"] = "xyz"[long_ax]
+            # round pulls (fixed cabinet "knobs") and short pulls without a finger gap: pinched from the front
+            hinfo["grasp"] = "side" if hinfo["hookable"] else "front"
         c = np.concatenate([e["v"] for e in mine]).mean(0)
         parts.append({"J": J, "elems": mine, "rev": rev, "pivot": pivot, "ai": ai, "limits": (lo_l, hi_l),
                       "hinfo": hinfo, "handle_id": handle_id, "centre": c})
@@ -403,6 +449,8 @@ def write_usd(args, meta, elems, parts, zf):
         UsdPhysics.FilteredPairsAPI.Apply(bodies[p["body"]]).CreateFilteredPairsRel().AddTarget(
             bodies["base"].GetPath())
     hooked = {p["handle_id"]: p for p in parts if p["hinfo"].get("hookable")}
+    pinched = {p["handle_id"]: p for p in parts if p["handle_id"] is not None and not p["hinfo"].get("hookable")}
+    pinch_pts = {}                          # body -> handle vertices (one hull, front pinch)
 
     # materials (UsdPreviewSurface, textures copied next to the asset)
     looks, mat_cache = UsdGeom.Scope.Define(stage, f"{rootp}/Looks"), {}
@@ -492,6 +540,9 @@ def write_usd(args, meta, elems, parts, zf):
             UsdShade.MaterialBindingAPI.Apply(vm.GetPrim()).Bind(material(e["mtl"].get(mname), e["mtl_dir"]))
         if e["part_id"] in hooked and hooked[e["part_id"]]["body"] == b:
             continue                        # replaced by the bar + standoff boxes below
+        if e["part_id"] in pinched and pinched[e["part_id"]]["body"] == b:
+            pinch_pts.setdefault(b, []).append(e["v"])      # one "handle" hull below
+            continue
         role = ROLES.get(e["part"], re.sub(r"[^a-z0-9_]", "_", e["part"].lower()))
         if role == "handle":
             role = "handle_part"             # only the hooked bar is called "handle"
@@ -516,6 +567,15 @@ def write_usd(args, meta, elems, parts, zf):
             bar.GetPrim().CreateAttribute("zeno:outward", Sdf.ValueTypeNames.Float3).Set(Gf.Vec3f(0.0, -1.0, 0.0))
             for k, (lo, hi) in enumerate(h["standoffs"]):
                 box(f"{rootp}/{b}/handle_standoff_{k}", np.asarray(lo) - pv, np.asarray(hi) - pv)
+        elif b in pinch_pts:
+            # round / short pull (rigid on the part): its hull is the handle, zeno:grasp = front
+            hp = np.concatenate(pinch_pts[b])
+            hp[:, 2] = np.maximum(hp[:, 2], args.floor_gap)
+            hc = collider(f"{rootp}/{b}/handle", hp - pv)
+            hc.GetPrim().CreateAttribute("zeno:bar_axis", Sdf.ValueTypeNames.Float3).Set(
+                Gf.Vec3f(*np.eye(3)["xyz".index(h["long_axis"])].tolist()))
+            hc.GetPrim().CreateAttribute("zeno:outward", Sdf.ValueTypeNames.Float3).Set(Gf.Vec3f(0.0, -1.0, 0.0))
+            hc.GetPrim().CreateAttribute("zeno:grasp", Sdf.ValueTypeNames.String).Set("front")
         J = (UsdPhysics.RevoluteJoint if p["rev"] else UsdPhysics.PrismaticJoint).Define(
             stage, f"{rootp}/joints/{p['joint_name']}")
         J.CreateBody0Rel().SetTargets([bodies["base"].GetPath()])
