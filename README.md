@@ -26,7 +26,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 
 [GT policy 梳理](docs/GT_POLICY.md) 说明动作边界；[能力目录](docs/POLICY_CATALOG.md) 与[物理验证记录](docs/POLICY_VERIFICATION.md) 列出 64 项公开入口及各自的验证状态。[Contract 提案](docs/CONTRACT_PROPOSAL.md) 记录八类接口、具体路线及验证要求。
 
-[关系图 PNG](docs/contract_layers_preview.png) 与 [SVG](docs/contract_layers.svg) 展示八个兼容 family Contract 和 63 个底层 Policy 的直接绑定与支撑引用。新的 [SkillNode Library](skill_library/README.md) 提供 50 个 SkillNode 与 50 个一对一 Contract；`ContractRunner` 执行 Contract 内部 policy 顺序并检查实测结果。自动技能子图规划和失败后重规划留给上层扩展。
+[旧版 family 关系图 PNG](docs/contract_layers_preview.png) 与 [SVG](docs/contract_layers.svg) 展示八类通用 Contract 的历史接口视图；当前一对一 SkillNode／Contract 目录以 [SkillNode Library](skill_library/README.md) 为准：**50 个 SkillNode、50 个配对 Contract、64 个公开底层 policy 入口**。`ContractRunner` 根据已绑定名词选择 Contract 内的 policy 路径并检查实测结果。已有子图校验与执行接口；VLM 规划及失败后的重规划由上层调用。
 
 ---
 
@@ -34,6 +34,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 
 - [Policy 与 contract](#policy-与-contract)
 - [Scenes](#scenes)
+- [New procedural assets and task scene](#new-procedural-assets-and-task-scene)
 - [Tasks (ZenoBench)](#tasks-zenobench)
 - [GT policy inventory](docs/GT_POLICY.md)
 - [Policy capability catalog (with implementation status)](docs/POLICY_CATALOG.md)
@@ -69,6 +70,26 @@ Every scene passes a physics check: after 3 s of simulation every free body has 
 than 1 cm, every articulated part stays closed and the robot holds its pose (see
 `sim/checks/`, `tasks/*/check/`).
 
+## New procedural assets and task scene
+
+The [recycle-and-store scene](tasks/recycle_and_store/scene.usd) is a new **task layer on the same house**, not a replacement house. It puts a soda can and snack carton on the living-room TV stand, a foam cube on the floor, and a wide storage bin on the bookcase. The goal is to move all three portable items into the bin while keeping it upright and all doors closed. The image below is the actual seed-0 scene after the physics-settle check.
+
+| New task scene | Source objects | Destination |
+| --- | --- | --- |
+| <img src="tasks/recycle_and_store/check/overview.png" width="350" alt="Roofless top-down view of the recycle-and-store task in the existing house"/> | <img src="tasks/recycle_and_store/check/tv_stand.png" width="350" alt="Soda can and snack carton placed on the living-room TV stand"/> | <img src="tasks/recycle_and_store/check/bin_close.png" width="350" alt="Wide storage bin on the bookcase, viewed from the robot approach"/> |
+
+The five new objects have **generated visual and collision meshes, URDF, USD, and shared grasp annotations**. Their dimensions below are in centimetres; the small bin is an additional asset for scene variants, while the wide bin is the current task target.
+
+| Asset | Size (cm) | Grasp annotation | Role in the seed-0 scene |
+| --- | --- | --- | --- |
+| `foam_cube` | 6 × 6 × 6 | top pinch | floor object; individual pick passed |
+| `soda_can` | 6.6 × 6.6 × 12 | top pinch | TV stand object; pick and insert into wide bin passed |
+| `snack_carton` | 6 × 11 × 17 | top pinch | TV stand object; individual pick passed |
+| `small_storage_bin` | 22 × 17 × 9 | rectangular rim pinch | available variant; can placement was not verified |
+| `wide_storage_bin` | 34 × 30 × 14 | rectangular rim pinch | bookcase target; can landed inside without shifting it |
+
+[Procedural asset guide](assets/PROCEDURAL_ASSETS.md) gives the generation and conversion commands; [task spec](task_specs/recycle_and_store.json) and [built annotations](tasks/recycle_and_store/annotation.json) define the scene. [Scene check](tasks/recycle_and_store/check/check.json) reports `pass: true`, no unstable bodies, and 0 m robot drift. This is a scene-stability result. The complete three-object SkillNode run is still incomplete; see [physical findings](skill_library/verification/FINDINGS.md).
+
 ---
 
 ## Tasks (ZenoBench)
@@ -78,8 +99,8 @@ Each task is a spec in `task_specs/<task>.json`. `tools/build_tasks.py` samples 
 with their candidate supports, the alternatives, and the goal. A task is **scored by
 `zeno_skills/evaluator.py`** from simulator state only, and **solved by the goal-driven scripted policy
 `zeno_skills/task_policy.py`**, which turns the goal into navigation, manipulation,
-and appliance skills. The [GT policy inventory](docs/GT_POLICY.md) separates this scripted
-baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate → policy → evaluate, then writes `result.json` and a video.
+and appliance skills for the original task set. The [GT policy inventory](docs/GT_POLICY.md) separates this scripted
+baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate → policy → evaluate, then writes `result.json` and a video. The new `recycle_and_store` scene also has a saved six-node SkillNode control graph; its full-task result is reported separately below.
 
 <!-- TASK_VIDEOS -->
 | task | rollout (sped up) | result |
@@ -93,7 +114,7 @@ baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate
 | **desk_prep** | <img src="media/tasks/desk_prep.gif" width="420"/><br>[video](media/tasks/desk_prep.mp4) | **success**, progress 100%<br>625 s simulated |
 <!-- /TASK_VIDEOS -->
 
-[recycle_and_store](task_specs/recycle_and_store.json) adds five procedural props and a ninth task scene. Its scene passes physics stability checks; Contract tests and full-task rollout status are tracked separately in [SkillNode verification](skill_library/verification/STATUS.md).
+[recycle_and_store](task_specs/recycle_and_store.json) is the ninth task: put the soda can, snack carton and foam cube into the wide storage bin on the bookcase. Its [scene preview](tasks/recycle_and_store/check/overview.png) and physics check pass; the first pick→insert pair passed its Contracts. The saved [six-node control graph](skill_library/examples/recycle_and_store.skill_subgraph.json) has **not** completed the whole task: navigation to the second object cannot safely fold the arm at the bookcase. See the [measured finding](skill_library/verification/FINDINGS.md).
 
 ### Breakfast heating (appliance tasks)
 
@@ -266,16 +287,13 @@ $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
 
 ## Skill / Contract / Policy public IDs
 
-The [Skill Library](skill_library/README.md) provides 22 task-level Skill records.
-The [Contract Library](contract_library/README.md) provides 8 measured execution
-interfaces, and the [Policy Library](policy_library/README.md) records all 60
-low-level controllers. Public IDs use skill_XXX, contract_XXX, and policy_XXX;
-[the mapping](docs/INTERFACE_IDS.md) lists every legacy alias. Existing scripts
-and Python policy class names remain callable.
+The [Skill Library](skill_library/README.md) provides **50 planner-visible SkillNodes**, each with a distinct verb+noun action predicate and typed, fillable arguments. The [Contract Library](contract_library/README.md) has **50 one-to-one executable Contracts** for those nodes. The [Policy Library](policy_library/README.md) records **64 public low-level policy entries** that Contracts may compose. Public IDs use `skill_XXX`, `contract_XXX`, and `policy_XXX`; [the mapping](docs/INTERFACE_IDS.md) lists legacy aliases. The older eight family Contract interfaces remain compatible. Existing scripts and Python policy class names remain callable.
+
+The [README action table](skill_library/README.md#动词可填写参数与验证谓词) lists every verb, noun slot, numeric parameter and measured postcondition. The [SkillNode verification report](skill_library/verification/STATUS.md) records **46/50 nodes with at least one representative physical pass**; this is not a guarantee for every object or task scene.
 
 ## Atomic GT policy class API
 
-`zeno_skills/policies/` exposes target-parameterized `AtomicPolicy.execute(...)` classes bound to one live `Rig` through `PolicySuite(rig)`. A policy is atomic at the skill-graph boundary: its internal controller may approach, grasp, lift, and check the result. Asset-specific contact points live in `annotations/assets.json`. `TaskPolicy` currently composes `PolicySuite` calls directly; a general skill-subgraph planner is not implemented.
+`zeno_skills/policies/` exposes target-parameterized `AtomicPolicy.execute(...)` classes bound to one live `Rig` through `PolicySuite(rig)`. A policy is atomic at the skill-graph boundary: its internal controller may approach, grasp, lift, and check the result. Asset-specific contact points live in `annotations/assets.json`. `TaskPolicy` still composes `PolicySuite` calls for the scripted baseline. The separate `skill_library` validates and executes caller-proposed SkillNode DAGs; [the GPT experiment runner](tools/run_gpt_skill_task.py) can propose them, but its existence is not evidence of full-task success.
 
 The [capability catalog](docs/POLICY_CATALOG.md) has **64 public entries**: **58** passed at least one stated Isaac Sim scene and **6** remain callable without a successful object-level check. See the [verification record](docs/POLICY_VERIFICATION.md) before choosing a route for a new object or scene. General dispatchers and convenience composites are counted separately.
 
@@ -286,11 +304,11 @@ The [capability catalog](docs/POLICY_CATALOG.md) has **64 public entries**: **58
 | Motion and posture | `policy.right_tcp_move.execute(position, rotation)`, `policy.right_gripper_open.execute(0.04)`, `policy.lower_torso.execute()`, `policy.pick_while_moving.execute(...)` |
 | Appliance stages | `policy.microwave_button_press.execute(...)`, `policy.microwave_cavity_insert.execute(...)`, `policy.open_powered.execute("kitchen_microwave")` |
 
-`pick_cup_handle` needs a physical handle collider: `tools/run_skills.py` and `tools/run_contracts.py` add it for a requested mug route; direct Python setup uses `make_rig(..., handle_objects=("mug",))`. `pick_from_cavity` has only been verified when the same rig just placed the cup inside. The six unverified floor and dual-arm routes are listed in the catalog and should not be assumed to work in new tasks.
+`pick_cup_handle` needs a physical handle collider: `tools/run_skills.py` and `tools/run_contracts.py` add it for a requested mug route; direct Python setup uses `make_rig(..., handle_objects=("mug",))`. `pick_from_cavity` has only been verified when the same rig just placed the cup inside. The six public policy entries without a successful representative object-level check are listed in the catalog and should be treated as experimental.
 
 ### Compose through contracts
 
-Eight [contract interfaces](docs/CONTRACT_PROPOSAL.md) map semantic calls such as `pick.v1` to concrete policy routes. `ContractSpec.bind()` creates a policy instance; `ContractRunner.run()` executes the chosen route, checks common measured pre/postconditions, and records success or failure. It does not select routes or replan after failure. A verified four-step plan is [contract_microwave_cycle.json](tests/fixtures/contract_microwave_cycle.json):
+The older eight [family Contract interfaces](docs/CONTRACT_PROPOSAL.md) map semantic calls such as `pick.v1` to policy routes. The newer [50 one-to-one Contracts](contract_library/README.md) accept typed noun arguments and can choose a path based on the bound object's annotations. `ContractRunner` executes the path, checks measured pre/postconditions and records failure for the caller to handle. It does not replan automatically. A verified legacy four-step plan is [contract_microwave_cycle.json](tests/fixtures/contract_microwave_cycle.json):
 
 ```bash
 OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
@@ -388,13 +406,19 @@ $ISAACLAB_PYTHON tools/run_task.py --task collect_fruits
 $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
     --ann tasks/collect_fruits/annotation.json --out runs/demo --plan "pick orange" "place orange in:fruit_basket"
 
-python -m pytest tests/        # evaluator + task-spec tests (no simulator needed)
+# validate a six-node SkillNode control graph and its noun bindings without starting Isaac Sim
+python tools/run_gpt_skill_task.py --task recycle_and_store --validate-only \
+    --proposal-file skill_library/examples/recycle_and_store.skill_subgraph.json \
+    --bindings-file skill_library/examples/recycle_and_store.bindings.json \
+    --out runs/recycle_control_validation
+
+python -m pytest tests/ skill_library/tests/   # simulator-free regression tests
 ```
 
 
-## Add your own assets (EmbodiedGen V2)
+## Add your own assets
 
-See the [creation README](docs/README.md#2-新增可抓取资产) for generation, USD conversion, shared grasp annotations, and task integration.
+For text-to-3D objects, see the [EmbodiedGen creation guide](docs/README.md#2-新增可抓取资产). For the five new deterministic physical props, see [procedural assets](assets/PROCEDURAL_ASSETS.md) and [their generator](tools/generate_procedural_assets.py). Both routes feed the same grasp annotations, USD conversion and task builder.
 
 ## Rebuild pipeline
 
@@ -406,6 +430,9 @@ The [creation README](docs/README.md) gives the task, scene, annotation, and Par
 sim/zeno_house.usd      final house scene (+ sim/checks)
 task_specs/             task definitions (+ places.json aliases, examples/)
 tasks/<task>/           built task: layer, task.json, annotation.json, check renders
+skill_library/          50 planner-visible SkillNodes, relations, subgraph examples, verification
+contract_library/       one-to-one Contract definitions and exports
+policy_library/         public low-level policy records
 annotations/            assets.json, zeno_house.json, house_static.json
 zeno_skills/            kinematics, collision, annotations, planner, rig, skills, physics,
                         policies/ (atomic GT policy classes), tasks (spec loading),
@@ -413,7 +440,8 @@ zeno_skills/            kinematics, collision, annotations, planner, rig, skills
 tests/                  evaluator and spec tests (pytest, no simulator)
 tools/                  pipeline scripts
 usd/                    house, robot and asset USDs (+ materials/textures)
-assets/asset3d/         EmbodiedGen V2 asset sources (URDF + textured OBJ)
+assets/asset3d/         EmbodiedGen V2 and procedural asset sources (URDF + OBJ)
+assets/custom_assets.json   dimensions and provenance of procedural props
 robot_sources/          Zeno Malo URDF + meshes
 media/                  README media, demo videos, rollout result.json files
 ```
@@ -433,6 +461,7 @@ media/                  README media, demo videos, rollout result.json files
     go to bookcase tops.
   - The **banana** (curved, pinched off its centre of mass) and the **teddy bear** (plush, crown pinch)
     are annotated but were taken out of the task specs: their grasps do not survive a carry.
+- The new three-object `recycle_and_store` task is not yet solved end to end: a can was picked and placed inside the wide bin, but the next navigation failed a collision-checked arm fold at the bookcase. The [verification findings](skill_library/verification/FINDINGS.md) include this trace and the four SkillNodes still lacking a representative Contract pass.
 - Kinematic holonomic base (anchor joint): no wheel dynamics. Base motion uses one smooth
   time scaling per path (≤ 0.35 m/s, ramps of 0.8 s).
 - Robot links are gravity-compensated, like the real arm controller.

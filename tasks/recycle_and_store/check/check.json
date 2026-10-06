@@ -1,6 +1,6 @@
 {
  "scene": "tasks/recycle_and_store/scene.usd",
- "seconds": 1.0,
+ "seconds": 3.0,
  "objects": {
   "/World/TaskAssets/plate_counter_a/Asset/breakfast_plate": {
    "drift_m": 0.0,
