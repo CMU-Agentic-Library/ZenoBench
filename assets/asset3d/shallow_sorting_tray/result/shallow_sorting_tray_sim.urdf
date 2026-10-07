@@ -1,5 +1,46 @@
-<robot name="shallow_sorting_tray"><link name="shallow_sorting_tray">
-<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/shallow_sorting_tray.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/shallow_sorting_tray_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
-<inertial><mass value="0.3200" /><origin xyz="0 0 0" /><inertia ixx="1.147e-03" ixy="0.0" ixz="0.0" iyy="2.025e-03" iyz="0.0" izz="3.011e-03" /></inertial>
-</link></robot>
+<robot name="shallow_sorting_tray">
+   <link name="shallow_sorting_tray">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/shallow_sorting_tray.obj" scale="1.167161 0.578956 0.576512" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/shallow_sorting_tray_collision.obj" scale="1.167161 0.578956 0.576512" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.3200" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="1.147e-03" ixy="0.0" ixz="0.0" iyy="2.025e-03" iyz="0.0" izz="3.011e-03" />
+      </inertial>
+      <extra_info>
+         <scale>0.346915</scale>
+         <version>v2.1.0</version>
+         <category>shallow_sorting_tray</category>
+         <description>gray rectangular plastic tray with tapered walls, rounded corners, and a wide flared rim.</description>
+         <min_height>0.07</min_height>
+         <max_height>0.12</max_height>
+         <real_height>0.095</real_height>
+         <min_mass>0.2</min_mass>
+         <max_mass>0.5</max_mass>
+         <generate_time>20261006201744</generate_time>
+         <gs_model>mesh/shallow_sorting_tray_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.251339912414551</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

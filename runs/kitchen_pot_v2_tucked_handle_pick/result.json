@@ -1,0 +1,521 @@
+{
+  "scene": "scenes/kitchen_pot/scene.usd",
+  "plan": [
+    {
+      "contract": "contract_025",
+      "route": "compose",
+      "args": [
+        "handled_cooking_pot"
+      ]
+    }
+  ],
+  "start_base": [
+    -1.0,
+    7.45,
+    60.0
+  ],
+  "success": false,
+  "contracts": [
+    {
+      "contract_id": "contract_025",
+      "route": "compose",
+      "success": false,
+      "observations": {
+        "held_right": null,
+        "held_left": null,
+        "base_pose": [
+          -0.9139638543128967,
+          7.591990947723389,
+          -0.020770965176120697
+        ],
+        "scene_state": {
+          "objects": {
+            "plate_counter_a": {
+              "pos": [
+                -0.020932933315634727,
+                8.419528007507324,
+                0.8745770454406738
+              ],
+              "quat": [
+                0.9999595880508423,
+                0.0019416275899857283,
+                -0.008775370195508003,
+                -0.00020522908016573638
+              ]
+            },
+            "plate_counter_b": {
+              "pos": [
+                0.04856417700648308,
+                8.043715476989746,
+                1.0236271619796753
+              ],
+              "quat": [
+                0.9760321974754333,
+                0.004208373371511698,
+                -0.008118107914924622,
+                0.21743419766426086
+              ]
+            },
+            "plate_dining_cabinet": {
+              "pos": [
+                -4.450247287750244,
+                8.880020141601562,
+                1.2218906879425049
+              ],
+              "quat": [
+                0.9921554923057556,
+                0.00083392538363114,
+                -0.00894882157444954,
+                -0.12468645721673965
+              ]
+            },
+            "bowl_dining_cabinet": {
+              "pos": [
+                0.8599998950958252,
+                8.040000915527344,
+                1.5034159421920776
+              ],
+              "quat": [
+                1.0,
+                -4.522378027616014e-09,
+                5.819819648422708e-08,
+                2.81266778756617e-07
+              ]
+            },
+            "bowl_kitchen_cabinet": {
+              "pos": [
+                0.8299998044967651,
+                5.230000019073486,
+                1.1698830127716064
+              ],
+              "quat": [
+                0.9887710809707642,
+                -7.57247764493485e-10,
+                -6.547132613832218e-08,
+                0.14943808317184448
+              ]
+            },
+            "bowl_side_table": {
+              "pos": [
+                -8.10000228881836,
+                7.449999809265137,
+                0.7472882866859436
+              ],
+              "quat": [
+                0.9950042963027954,
+                1.72101647422096e-06,
+                1.3062776815786492e-07,
+                -0.09983205795288086
+              ]
+            },
+            "cup_kitchen_cabinet": {
+              "pos": [
+                2.4999966621398926,
+                10.000003814697266,
+                1.264373540878296
+              ],
+              "quat": [
+                1.0,
+                4.909413178211253e-07,
+                4.828331157114008e-07,
+                -8.175622951966943e-07
+              ]
+            },
+            "cup_counter_b": {
+              "pos": [
+                -0.34000298380851746,
+                8.19999885559082,
+                1.0001493692398071
+              ],
+              "quat": [
+                0.9950037002563477,
+                2.1638332725615328e-07,
+                6.690170266665518e-07,
+                0.09983845055103302
+              ]
+            },
+            "cup_side_table": {
+              "pos": [
+                -7.829986572265625,
+                8.249734878540039,
+                0.7592251300811768
+              ],
+              "quat": [
+                0.9848333597183228,
+                -6.431014298868831e-07,
+                -3.896594080288196e-06,
+                -0.17350329458713531
+              ]
+            },
+            "mug_dining_cabinet": {
+              "pos": [
+                0.8699999451637268,
+                8.280000686645508,
+                1.518003225326538
+              ],
+              "quat": [
+                1.0,
+                1.4181557261849775e-08,
+                -2.4875138393554153e-08,
+                4.934146886625967e-07
+              ]
+            },
+            "mug_shelf": {
+              "pos": [
+                5.120004653930664,
+                8.55000114440918,
+                1.4727081060409546
+              ],
+              "quat": [
+                0.9624252915382385,
+                -1.4484828625427326e-07,
+                1.472423809900647e-05,
+                0.2715468108654022
+              ]
+            },
+            "mug_counter": {
+              "pos": [
+                0.8271377682685852,
+                5.550925254821777,
+                1.1844701766967773
+              ],
+              "quat": [
+                0.17410850524902344,
+                -6.111842143496915e-10,
+                -2.01203098626479e-09,
+                0.9847264885902405
+              ]
+            },
+            "spoon_counter": {
+              "pos": [
+                0.000577695609536022,
+                7.960729598999023,
+                1.0458704233169556
+              ],
+              "quat": [
+                0.8961241245269775,
+                -0.026784854009747505,
+                -0.06861940026283264,
+                0.4376477301120758
+              ]
+            },
+            "spoon_kitchen_cabinet": {
+              "pos": [
+                3.4990696907043457,
+                0.35914477705955505,
+                0.8138295412063599
+              ],
+              "quat": [
+                0.9906497001647949,
+                0.042884938418865204,
+                -0.04109034687280655,
+                0.12282361090183258
+              ]
+            },
+            "spoon_side_table": {
+              "pos": [
+                -8.251325607299805,
+                8.120338439941406,
+                0.7102832794189453
+              ],
+              "quat": [
+                0.9371166825294495,
+                0.019375920295715332,
+                -0.05616917833685875,
+                -0.3439213037490845
+              ]
+            },
+            "spoon_target_table": {
+              "pos": [
+                3.679166078567505,
+                7.379059791564941,
+                0.8640978932380676
+              ],
+              "quat": [
+                0.9832714796066284,
+                0.04489518702030182,
+                -0.038892537355422974,
+                0.17218920588493347
+              ]
+            },
+            "clutter_cereal_a": {
+              "pos": [
+                3.1493823528289795,
+                6.09927225112915,
+                1.0067589282989502
+              ],
+              "quat": [
+                0.9985643029212952,
+                -0.0002338123886147514,
+                0.0002192845131503418,
+                0.053565867245197296
+              ]
+            },
+            "clutter_cereal_b": {
+              "pos": [
+                3.479154586791992,
+                7.149616718292236,
+                1.0067596435546875
+              ],
+              "quat": [
+                0.989372968673706,
+                -0.0001874865120043978,
+                0.0002611052186693996,
+                -0.14539989829063416
+              ]
+            },
+            "plate_inside_kitchen_cabinet": {
+              "pos": [
+                3.629749059677124,
+                0.3599238693714142,
+                0.42644795775413513
+              ],
+              "quat": [
+                0.9999595880508423,
+                0.0019428938394412398,
+                -0.008775020018219948,
+                -2.959328776341863e-05
+              ]
+            },
+            "bowl_inside_kitchen_cabinet": {
+              "pos": [
+                3.3600008487701416,
+                0.35999995470046997,
+                0.45697441697120667
+              ],
+              "quat": [
+                1.0,
+                1.0901314295708175e-09,
+                7.650576172579804e-09,
+                -2.1286047058310942e-07
+              ]
+            },
+            "spoon_inside_kitchen_drawer": {
+              "pos": [
+                2.627920389175415,
+                9.961297988891602,
+                0.5885518193244934
+              ],
+              "quat": [
+                -0.018721381202340126,
+                0.8884448409080505,
+                0.4584607183933258,
+                0.011368237435817719
+              ]
+            },
+            "handled_cooking_pot": {
+              "pos": [
+                -0.20979858934879303,
+                7.449657440185547,
+                1.0895849466323853
+              ],
+              "quat": [
+                0.7070976495742798,
+                7.596690466016298e-06,
+                5.159608008398209e-06,
+                0.7071160078048706
+              ]
+            }
+          },
+          "joints": {
+            "KitchenCabinetFactory_3699907_spawn_asset_505866": -7.082474190456267e-11,
+            "KitchenCabinetFactory_3953568_spawn_asset_9811069": -8.721814936940575e-11,
+            "KitchenCabinetFactory_6689129_spawn_asset_9539479": -3.9592741529759223e-08,
+            "KitchenCabinetFactory_7025538_spawn_asset_6631478": -8.016466779281473e-08,
+            "KitchenCabinetFactory_8238176_spawn_asset_1724097": -3.2327415744326515e-10,
+            "KitchenCabinetFactory_9483010_spawn_asset_2619144": -6.498437908708334e-19,
+            "SingleCabinetFactory_1469599_spawn_asset_3066359": -5.2671911277002437e-08,
+            "SingleCabinetFactory_4324214_spawn_asset_9680651": -3.6177788542701705e-10,
+            "SingleCabinetFactory_5951754_spawn_asset_7509401": 0.0,
+            "SingleCabinetFactory_6646327_spawn_asset_3005554": -2.0295261304870138e-10,
+            "SingleCabinetFactory_680597_spawn_asset_3676420": -3.2472505240299654e-10,
+            "SingleCabinetFactory_7330242_spawn_asset_8918727": -5.7395369706947363e-11,
+            "SingleCabinetFactory_7978189_spawn_asset_6928284": -1.6959012014927027e-20,
+            "SingleCabinetFactory_9980582_spawn_asset_7570664": -9.920216870185072e-10,
+            "SingleCabinetFactory_9985775_spawn_asset_1002201": -4.888458526863815e-10,
+            "kitchen_microwave": -7.649317623759089e-09
+          },
+          "temperatures_c": {}
+        },
+        "object": "handled_cooking_pot",
+        "object_position": [
+          -0.20979858934879303,
+          7.449657440185547,
+          1.0895849466323853
+        ],
+        "completed_policy_steps": [],
+        "failed_policy_step": {
+          "index": 1,
+          "policy_id": "policy_055"
+        },
+        "bound_nouns": {
+          "object": {
+            "instance": "handled_cooking_pot",
+            "kind": "scene_object",
+            "asset": "handled_cooking_pot",
+            "grasp_types": [
+              "rim_pinch",
+              "handle_pinch"
+            ],
+            "held_kind": null,
+            "handle_collider": true,
+            "location": null,
+            "on_floor": false
+          }
+        },
+        "selected_policy_path": "fixed",
+        "requested_action_predicate": {
+          "name": "grip_cup_handle",
+          "arguments": {
+            "object": "handled_cooking_pot"
+          }
+        }
+      },
+      "error": "pick cup handle handled_cooking_pot: failed contact/lift, 0.000 m",
+      "error_code": "SkillFailure"
+    }
+  ],
+  "failure": "SkillFailure: pick cup handle handled_cooking_pot: failed contact/lift, 0.000 m",
+  "unreached_contracts": [],
+  "traceback": "Traceback (most recent call last):\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/tools/run_contracts.py\", line 70, in main\n    result = runner.run(row[\"contract\"], row.get(\"route\", \"auto\"),\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/zeno_skills/contract_runtime.py\", line 42, in run\n    return self._run_node_contract(contract_id, route, args, kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/zeno_skills/contract_runtime.py\", line 111, in _run_node_contract\n    getattr(suite, step[\"policy_id\"]).execute(*policy_args, **policy_kwargs)\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/zeno_skills/policies/handle_grasp.py\", line 65, in execute\n    raise SkillFailure(f\"pick cup handle {name}: failed contact/lift, {lift_m:.3f} m\")\nzeno_skills.rig.SkillFailure: pick cup handle handled_cooking_pot: failed contact/lift, 0.000 m\n",
+  "events": [
+    {
+      "tick": 666,
+      "t": 5.55,
+      "label": "path",
+      "waypoints": [
+        [
+          -0.91,
+          7.59,
+          -0.0
+        ]
+      ]
+    },
+    {
+      "tick": 921,
+      "t": 7.675,
+      "label": "base",
+      "pose": [
+        -0.914,
+        7.592,
+        -0.01
+      ]
+    },
+    {
+      "tick": 961,
+      "t": 8.008,
+      "label": "grip",
+      "cmd": 0.03,
+      "fingers": [
+        0.03,
+        0.03
+      ]
+    },
+    {
+      "tick": 961,
+      "t": 8.008,
+      "label": "joint_detour",
+      "target": "handle_pick_pre"
+    },
+    {
+      "tick": 2708,
+      "t": 22.567,
+      "label": "reach",
+      "target": "handle_pick_pre",
+      "tcp_err_m": 0.2455,
+      "q_err": 0.245,
+      "q": [
+        -0.0,
+        0.314,
+        0.5,
+        3.112,
+        -0.218,
+        1.285,
+        1.54,
+        -0.471,
+        0.229
+      ],
+      "q_cmd": [
+        -0.245,
+        0.314,
+        0.5,
+        3.111,
+        -0.218,
+        1.285,
+        1.54,
+        -0.471,
+        0.229
+      ]
+    },
+    {
+      "tick": 3200,
+      "t": 26.667,
+      "label": "reach",
+      "target": "handle_pick_contact",
+      "tcp_err_m": 0.1808,
+      "q_err": 0.1799,
+      "q": [
+        0.0,
+        0.425,
+        0.414,
+        3.112,
+        -0.18,
+        1.509,
+        1.54,
+        -0.05,
+        0.179
+      ],
+      "q_cmd": [
+        -0.18,
+        0.429,
+        0.415,
+        3.111,
+        -0.18,
+        1.508,
+        1.541,
+        -0.049,
+        0.18
+      ]
+    },
+    {
+      "tick": 3320,
+      "t": 27.667,
+      "label": "grip",
+      "cmd": 0.0,
+      "fingers": [
+        0.0,
+        0.0027
+      ]
+    },
+    {
+      "tick": 3831,
+      "t": 31.925,
+      "label": "reach",
+      "target": "handle_pick_lift",
+      "tcp_err_m": 0.1024,
+      "q_err": 0.1009,
+      "q": [
+        0.0,
+        0.425,
+        0.415,
+        3.112,
+        -0.181,
+        1.504,
+        1.54,
+        -0.056,
+        0.18
+      ],
+      "q_cmd": [
+        -0.101,
+        0.43,
+        0.416,
+        3.111,
+        -0.18,
+        1.503,
+        1.541,
+        -0.054,
+        0.18
+      ]
+    }
+  ]
+}

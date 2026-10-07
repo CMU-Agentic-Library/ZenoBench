@@ -1,5 +1,46 @@
-<robot name="juice_bottle"><link name="juice_bottle">
-<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/juice_bottle.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/juice_bottle_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
-<inertial><mass value="0.2000" /><origin xyz="0 0 0" /><inertia ixx="5.961e-04" ixy="0.0" ixz="0.0" iyy="5.961e-04" iyz="0.0" izz="1.121e-04" /></inertial>
-</link></robot>
+<robot name="juice_bottle">
+   <link name="juice_bottle">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/juice_bottle.obj" scale="0.625124 0.765960 0.628041" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/juice_bottle_collision.obj" scale="0.625124 0.765960 0.628041" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.2000" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="5.961e-04" ixy="0.0" ixz="0.0" iyy="5.961e-04" iyz="0.0" izz="1.121e-04" />
+      </inertial>
+      <extra_info>
+         <scale>0.235000</scale>
+         <version>v2.1.0</version>
+         <category>juice_bottle</category>
+         <description>orange juice-filled plastic bottle with a green ribbed screw cap and contoured body.</description>
+         <min_height>0.2</min_height>
+         <max_height>0.27</max_height>
+         <real_height>0.235</real_height>
+         <min_mass>0.5</min_mass>
+         <max_mass>1.0</max_mass>
+         <generate_time>20261006202505</generate_time>
+         <gs_model>mesh/juice_bottle_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.738131523132324</ImageAestheticChecker>
+         <overall>YES</overall>
+      </quality>
+   </custom_data>
+</robot>

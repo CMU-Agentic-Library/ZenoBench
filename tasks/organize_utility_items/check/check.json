@@ -109,33 +109,33 @@
   },
   "/World/Tasks/juice_bottle/Asset/juice_bottle": {
    "drift_m": 0.0,
-   "z0": 0.4723,
-   "z": 0.4723
+   "z0": 0.5625,
+   "z": 0.5625
   },
   "/World/Tasks/plastic_cup/Asset/plastic_cup": {
    "drift_m": 0.0,
-   "z0": 0.7022,
-   "z": 0.7022
+   "z0": 0.7497,
+   "z": 0.7497
   },
   "/World/Tasks/paperback_book/Asset/paperback_book": {
    "drift_m": 0.0,
-   "z0": 0.856,
-   "z": 0.856
+   "z0": 0.8682,
+   "z": 0.8682
   },
   "/World/Tasks/tissue_box/Asset/tissue_box": {
    "drift_m": 0.0,
-   "z0": 0.4723,
-   "z": 0.4723
+   "z0": 0.5021,
+   "z": 0.5021
   },
   "/World/Tasks/rolling_pin/Asset/rolling_pin": {
    "drift_m": 0.0,
-   "z0": 0.7022,
-   "z": 0.7022
+   "z0": 0.7235,
+   "z": 0.7235
   },
   "/World/Tasks/shallow_sorting_tray/Asset/shallow_sorting_tray": {
    "drift_m": 0.0,
-   "z0": 0.7063,
-   "z": 0.7063
+   "z0": 0.734,
+   "z": 0.734
   }
  },
  "articulations": {

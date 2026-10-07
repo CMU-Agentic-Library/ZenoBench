@@ -1,5 +1,46 @@
-<robot name="wide_storage_bin"><link name="wide_storage_bin">
-<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/wide_storage_bin.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/wide_storage_bin_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
-<inertial><mass value="1.2000" /><origin xyz="0 0 0" /><inertia ixx="1.096e-02" ixy="0.0" ixz="0.0" iyy="1.352e-02" iyz="0.0" izz="2.056e-02" /></inertial>
-</link></robot>
+<robot name="wide_storage_bin">
+   <link name="wide_storage_bin">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/wide_storage_bin.obj" scale="0.515594 0.280002 0.639872" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/wide_storage_bin_collision.obj" scale="0.515594 0.280002 0.639872" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="1.2000" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="1.096e-02" ixy="0.0" ixz="0.0" iyy="1.352e-02" iyz="0.0" izz="2.056e-02" />
+      </inertial>
+      <extra_info>
+         <scale>0.659434</scale>
+         <version>v2.1.0</version>
+         <category>wide_storage_bin</category>
+         <description>blue plastic storage bin with tapered walls, broad reinforced rim, and side handles.</description>
+         <min_height>0.4</min_height>
+         <max_height>0.6</max_height>
+         <real_height>0.5</real_height>
+         <min_mass>2.0</min_mass>
+         <max_mass>4.5</max_mass>
+         <generate_time>20261006200430</generate_time>
+         <gs_model>mesh/wide_storage_bin_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.611843109130859</ImageAestheticChecker>
+         <overall>YES</overall>
+      </quality>
+   </custom_data>
+</robot>

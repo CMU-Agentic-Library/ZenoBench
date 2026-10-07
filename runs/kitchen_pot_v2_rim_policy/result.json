@@ -1,0 +1,25 @@
+{
+  "scene": "scenes/kitchen_pot/scene.usd",
+  "plan": [
+    {
+      "policy": "policy_011",
+      "args": [
+        "handled_cooking_pot"
+      ],
+      "kwargs": {
+        "max_candidates": 2
+      }
+    }
+  ],
+  "start_base": [
+    -1.0,
+    7.45,
+    60.0
+  ],
+  "success": false,
+  "contracts": [],
+  "failure": "SkillFailure: pick handled_cooking_pot: no reachable grasp from any base pose",
+  "unreached_contracts": [],
+  "traceback": "Traceback (most recent call last):\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/tools/run_contracts.py\", line 66, in main\n    getattr(PolicySuite(rig), resolve_policy_id(policy_id)).execute(\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/zeno_skills/policies/manipulation.py\", line 43, in execute\n    return skills._pick_pinch(self.rig, name, max_candidates, kinds=(\"rim_pinch\",))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/zeno_skills/skills.py\", line 560, in _pick_pinch\n    raise SkillFailure(f\"pick {name}: no reachable grasp from any base pose\")\nzeno_skills.rig.SkillFailure: pick handled_cooking_pot: no reachable grasp from any base pose\n",
+  "events": []
+}

@@ -1,0 +1,221 @@
+{
+  "scene": "tasks/recycle_and_store/scene.usd",
+  "plan": [
+    {
+      "contract": "contract_012",
+      "route": "compose",
+      "args": [
+        "soda_can"
+      ]
+    }
+  ],
+  "start_base": null,
+  "success": true,
+  "contracts": [
+    {
+      "contract_id": "contract_012",
+      "route": "compose",
+      "success": true,
+      "observations": {
+        "object": "soda_can",
+        "lift_m": 0.058508217334747314,
+        "fingers_m": [
+          0.03351937234401703,
+          0.031867865473032
+        ],
+        "verified_predicates": [
+          "held_by_right_hand",
+          "object_lifted"
+        ],
+        "verified_action_predicate": {
+          "name": "acquire_object",
+          "arguments": {
+            "object": "soda_can"
+          }
+        },
+        "policy_steps": [
+          {
+            "index": 1,
+            "policy_id": "policy_010"
+          }
+        ],
+        "bound_nouns": {
+          "object": {
+            "instance": "soda_can",
+            "kind": "scene_object",
+            "asset": "soda_can",
+            "grasp_types": [
+              "top_pinch"
+            ],
+            "held_kind": null,
+            "handle_collider": false,
+            "location": null,
+            "on_floor": false
+          }
+        },
+        "selected_policy_path": "top_pinch"
+      },
+      "error": null,
+      "error_code": null
+    }
+  ],
+  "events": [
+    {
+      "tick": 60,
+      "t": 0.5,
+      "label": "pick_park",
+      "obj": "soda_can",
+      "kind": "top_pinch",
+      "park": [
+        8.267,
+        0.796,
+        -90.0
+      ],
+      "floor": false
+    },
+    {
+      "tick": 448,
+      "t": 3.733,
+      "label": "path",
+      "waypoints": [
+        [
+          5.58,
+          2.07,
+          3.22
+        ],
+        [
+          8.27,
+          0.8,
+          -90.0
+        ]
+      ]
+    },
+    {
+      "tick": 2023,
+      "t": 16.858,
+      "label": "base",
+      "pose": [
+        8.267,
+        0.796,
+        -90.0
+      ]
+    },
+    {
+      "tick": 2063,
+      "t": 17.192,
+      "label": "grip",
+      "cmd": 0.04,
+      "fingers": [
+        0.0396,
+        0.04
+      ]
+    },
+    {
+      "tick": 2644,
+      "t": 22.033,
+      "label": "reach",
+      "target": "pick_pre_far",
+      "tcp_err_m": 0.0022,
+      "q_err": 0.0004
+    },
+    {
+      "tick": 2949,
+      "t": 24.575,
+      "label": "reach",
+      "target": "pick_pre",
+      "tcp_err_m": 0.0022,
+      "q_err": 0.0004
+    },
+    {
+      "tick": 3413,
+      "t": 28.442,
+      "label": "reach",
+      "target": "pick_grasp",
+      "tcp_err_m": 0.0231,
+      "q_err": 0.1556,
+      "q": [
+        -0.451,
+        0.52,
+        0.054,
+        2.828,
+        -0.58,
+        2.126,
+        0.69,
+        -0.009,
+        0.982
+      ],
+      "q_cmd": [
+        -0.452,
+        0.526,
+        0.025,
+        2.828,
+        -0.563,
+        2.145,
+        0.704,
+        0.007,
+        0.826
+      ]
+    },
+    {
+      "tick": 3732,
+      "t": 31.1,
+      "label": "reach",
+      "target": "pick_grasp_fix",
+      "tcp_err_m": 0.0231,
+      "q_err": 0.1556,
+      "q": [
+        -0.451,
+        0.52,
+        0.054,
+        2.828,
+        -0.58,
+        2.126,
+        0.69,
+        -0.009,
+        0.982
+      ],
+      "q_cmd": [
+        -0.452,
+        0.526,
+        0.025,
+        2.828,
+        -0.563,
+        2.145,
+        0.704,
+        0.007,
+        0.826
+      ]
+    },
+    {
+      "tick": 3852,
+      "t": 32.1,
+      "label": "grip",
+      "cmd": 0.0,
+      "fingers": [
+        0.0314,
+        0.034
+      ]
+    },
+    {
+      "tick": 4160,
+      "t": 34.667,
+      "label": "reach",
+      "target": "pick_lift",
+      "tcp_err_m": 0.0022,
+      "q_err": 0.0046
+    },
+    {
+      "tick": 4200,
+      "t": 35.0,
+      "label": "pick_result",
+      "obj": "soda_can",
+      "kind": "top_pinch",
+      "lift_m": 0.0585,
+      "fingers": [
+        0.0335,
+        0.0319
+      ],
+      "held": 1.0
+    }
+  ]
+}

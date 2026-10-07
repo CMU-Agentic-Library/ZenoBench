@@ -72443,17 +72443,17 @@
    "body": "/World/Tasks/juice_bottle/Asset/juice_bottle",
    "asset": "juice_bottle",
    "position": [
-    8.1546,
-    0.3624,
-    0.4723
+    8.1535,
+    0.3618,
+    0.5625
    ],
    "aabb": [
-    8.1166,
-    0.3244,
-    0.4723,
-    8.1925,
+    8.1145,
+    0.3234,
+    0.4721,
+    8.1924,
     0.4004,
-    0.6523
+    0.6529
    ],
    "room": "living_room_0_0",
    "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
@@ -72465,12 +72465,12 @@
    "asset": "plastic_cup",
    "position": [
     -7.6835,
-    6.9922,
-    0.7022
+    6.9923,
+    0.7497
    ],
    "aabb": [
     -7.7242,
-    6.9516,
+    6.9515,
     0.7022,
     -7.6428,
     7.0329,
@@ -72485,15 +72485,15 @@
    "body": "/World/Tasks/paperback_book/Asset/paperback_book",
    "asset": "paperback_book",
    "position": [
-    3.0202,
-    7.1082,
-    0.856
+    3.0201,
+    7.1081,
+    0.8682
    ],
    "aabb": [
-    2.9302,
-    7.0482,
-    0.856,
-    3.1102,
+    2.9301,
+    7.0481,
+    0.8557,
+    3.1101,
     7.1682,
     0.881
    ],
@@ -72507,16 +72507,16 @@
    "asset": "tissue_box",
    "position": [
     7.6821,
-    0.3371,
-    0.4723
+    0.337,
+    0.5021
    ],
    "aabb": [
     7.6121,
-    0.2921,
-    0.4723,
+    0.292,
+    0.4718,
     7.7521,
     0.3821,
-    0.5323
+    0.532
    ],
    "room": "living_room_0_0",
    "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
@@ -72527,17 +72527,17 @@
    "body": "/World/Tasks/rolling_pin/Asset/rolling_pin",
    "asset": "rolling_pin",
    "position": [
-    -7.709,
-    8.6773,
-    0.7022
+    -7.7102,
+    8.6717,
+    0.7235
    ],
    "aabb": [
-    -7.8206,
-    8.6456,
-    0.7022,
-    -7.5975,
-    8.709,
-    0.7462
+    -7.8219,
+    8.6322,
+    0.6907,
+    -7.5984,
+    8.711,
+    0.756
    ],
    "room": "dining_room_0_0",
    "support": "TableDiningFactory_7009684_spawn_asset_2322328/surface_2"
@@ -72548,13 +72548,13 @@
    "body": "/World/Tasks/shallow_sorting_tray/Asset/shallow_sorting_tray",
    "asset": "shallow_sorting_tray",
    "position": [
-    0.9644,
+    0.9643,
     -0.4278,
-    0.7063
+    0.734
    ],
    "aabb": [
     0.7993,
-    -0.5766,
+    -0.5765,
     0.7063,
     1.1294,
     -0.2791,

@@ -109,8 +109,8 @@
   },
   "/World/Tasks/handled_cooking_pot/Asset/handled_cooking_pot": {
    "drift_m": 0.0,
-   "z0": 0.86,
-   "z": 0.86
+   "z0": 1.0896,
+   "z": 1.0896
   }
  },
  "articulations": {

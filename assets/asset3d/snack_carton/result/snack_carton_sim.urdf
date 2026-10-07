@@ -1,5 +1,46 @@
-<robot name="snack_carton"><link name="snack_carton">
-<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/snack_carton.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/snack_carton_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
-<inertial><mass value="0.1800" /><origin xyz="0 0 0" /><inertia ixx="6.150e-04" ixy="0.0" ixz="0.0" iyy="4.875e-04" iyz="0.0" izz="2.355e-04" /></inertial>
-</link></robot>
+<robot name="snack_carton">
+   <link name="snack_carton">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/snack_carton.obj" scale="0.497357 0.680003 1.058788" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/snack_carton_collision.obj" scale="0.497357 0.680003 1.058788" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.1800" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="6.150e-04" ixy="0.0" ixz="0.0" iyy="4.875e-04" iyz="0.0" izz="2.355e-04" />
+      </inertial>
+      <extra_info>
+         <scale>0.250000</scale>
+         <version>v2.1.0</version>
+         <category>snack_carton</category>
+         <description>yellow folded paperboard snack carton with rectangular body, raised tabs, and circular handle cutouts.</description>
+         <min_height>0.2</min_height>
+         <max_height>0.3</max_height>
+         <real_height>0.25</real_height>
+         <min_mass>0.02</min_mass>
+         <max_mass>0.06</max_mass>
+         <generate_time>20261006202310</generate_time>
+         <gs_model>mesh/snack_carton_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.3918633460998535</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

@@ -1,5 +1,46 @@
-<robot name="paperback_book"><link name="paperback_book">
-<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/paperback_book.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/paperback_book_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
-<inertial><mass value="0.2500" /><origin xyz="0 0 0" /><inertia ixx="3.130e-04" ixy="0.0" ixz="0.0" iyy="6.880e-04" iyz="0.0" izz="9.750e-04" /></inertial>
-</link></robot>
+<robot name="paperback_book">
+   <link name="paperback_book">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/paperback_book.obj" scale="0.906093 0.384619 0.887722" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/paperback_book_collision.obj" scale="0.906093 0.384619 0.887722" />
+         </geometry>
+         <gazebo>
+            <mu1>0.70</mu1>
+            <mu2>0.50</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.2500" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="3.130e-04" ixy="0.0" ixz="0.0" iyy="6.880e-04" iyz="0.0" izz="9.750e-04" />
+      </inertial>
+      <extra_info>
+         <scale>0.198655</scale>
+         <version>v2.1.0</version>
+         <category>paperback_book</category>
+         <description>thick closed paperback book with plain green cover and white page edges.</description>
+         <min_height>0.05</min_height>
+         <max_height>0.08</max_height>
+         <real_height>0.065</real_height>
+         <min_mass>0.6</min_mass>
+         <max_mass>1.2</max_mass>
+         <generate_time>20261006202801</generate_time>
+         <gs_model>mesh/paperback_book_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.12485408782959</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

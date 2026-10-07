@@ -1107,9 +1107,9 @@
    0.06
   ],
   "origin_to_bottom_center": [
-   0.0,
-   0.0,
-   0.0
+   -0.0002,
+   0.0001,
+   -0.03
   ],
   "min_pinch_width": 0.06,
   "graspable_by_zeno": true,
@@ -1117,18 +1117,18 @@
    {
     "type": "top_pinch",
     "close_yaw": 0.0,
-    "width": 0.06,
+    "width": 0.05999281779833871,
     "offset_xy": [
-     0.0,
+     -0.0,
      0.0
     ],
-    "height": 0.03,
+    "height": 0.02999972063806884,
     "pre_open": 0.04
    }
   ],
   "usd": "usd/assets/foam_cube.usd",
   "source_urdf": "assets/asset3d/foam_cube/result/foam_cube_sim.urdf",
-  "generator": "procedural_mesh_v1"
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "soda_can": {
   "name": "soda_can",
@@ -1144,20 +1144,20 @@
    0.12
   ],
   "origin_to_bottom_center": [
+   -0.0,
    0.0,
-   0.0,
-   0.0
+   -0.0599
   ],
-  "min_pinch_width": 0.066,
+  "min_pinch_width": 0.0656,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "top_pinch",
-    "close_yaw": 0.7853981633974483,
-    "width": 0.06599998931093247,
+    "close_yaw": 2.0943951023931953,
+    "width": 0.06555155009861503,
     "offset_xy": [
      0.0,
-     0.0
+     -0.0
     ],
     "height": 0.06,
     "pre_open": 0.04
@@ -1165,7 +1165,7 @@
   ],
   "usd": "usd/assets/soda_can.usd",
   "source_urdf": "assets/asset3d/soda_can/result/soda_can_sim.urdf",
-  "generator": "procedural_mesh_v1"
+  "generator": "EmbodiedGen V2 img3d-cli (SAM3D backend; V2 generated condition image)"
  },
  "snack_carton": {
   "name": "snack_carton",
@@ -1181,28 +1181,28 @@
    0.17
   ],
   "origin_to_bottom_center": [
-   0.0,
-   0.0,
-   0.0
+   -0.0,
+   -0.0002,
+   -0.0849
   ],
-  "min_pinch_width": 0.06,
+  "min_pinch_width": 0.0592,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "top_pinch",
     "close_yaw": 0.0,
-    "width": 0.06,
+    "width": 0.05918505023557328,
     "offset_xy": [
-     0.0,
+     0.0002,
      0.0
     ],
-    "height": 0.085,
+    "height": 0.08496831825853142,
     "pre_open": 0.04
    }
   ],
   "usd": "usd/assets/snack_carton.usd",
   "source_urdf": "assets/asset3d/snack_carton/result/snack_carton_sim.urdf",
-  "generator": "procedural_mesh_v1"
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "small_storage_bin": {
   "name": "small_storage_bin",
@@ -1220,16 +1220,16 @@
   "origin_to_bottom_center": [
    0.0,
    0.0,
-   0.0
+   -0.0452
   ],
-  "min_pinch_width": Infinity,
+  "min_pinch_width": 0.1411,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "rim_pinch_rect",
-    "half_x": 0.11,
+    "half_x": 0.11000000000000001,
     "half_y": 0.085,
-    "rim_height": 0.09,
+    "rim_height": 0.09000000000000001,
     "depth": 0.03,
     "tilts": [
      0.4,
@@ -1240,7 +1240,7 @@
   ],
   "usd": "usd/assets/small_storage_bin.usd",
   "source_urdf": "assets/asset3d/small_storage_bin/result/small_storage_bin_sim.urdf",
-  "generator": "procedural_mesh_v1",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "rect",
    "bands": [
@@ -1270,16 +1270,16 @@
   ],
   "origin_to_bottom_center": [
    0.0,
-   0.0,
-   0.0
+   0.0001,
+   -0.0697
   ],
-  "min_pinch_width": Infinity,
+  "min_pinch_width": 0.2398,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "rim_pinch_rect",
     "half_x": 0.17,
-    "half_y": 0.15,
+    "half_y": 0.15000000000000002,
     "rim_height": 0.14,
     "depth": 0.03,
     "tilts": [
@@ -1291,7 +1291,7 @@
   ],
   "usd": "usd/assets/wide_storage_bin.usd",
   "source_urdf": "assets/asset3d/wide_storage_bin/result/wide_storage_bin_sim.urdf",
-  "generator": "procedural_mesh_v1",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "rect",
    "bands": [
@@ -1319,17 +1319,17 @@
    0.18
   ],
   "origin_to_bottom_center": [
-   0.0,
-   0.0,
-   0.0
+   0.0001,
+   -0.0,
+   -0.09
   ],
-  "min_pinch_width": 0.0579,
+  "min_pinch_width": 0.058,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "top_pinch",
-    "close_yaw": 0.5235987755982988,
-    "width": 0.057920509906425666,
+    "close_yaw": 1.5707963267948966,
+    "width": 0.058,
     "offset_xy": [
      0.0,
      0.0
@@ -1340,7 +1340,7 @@
   ],
   "usd": "usd/assets/juice_bottle.usd",
   "source_urdf": "assets/asset3d/juice_bottle/result/juice_bottle_sim.urdf",
-  "generator": "procedural_mesh_v1"
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "plastic_cup": {
   "name": "plastic_cup",
@@ -1356,16 +1356,16 @@
    0.095
   ],
   "origin_to_bottom_center": [
-   0.0,
-   0.0,
-   0.0
+   -0.0,
+   0.0001,
+   -0.0475
   ],
   "min_pinch_width": 0.08,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.0365,
+    "radius": 0.0364,
     "rim_height": 0.095,
     "depth": 0.035,
     "azimuths_deg": [
@@ -1392,18 +1392,33 @@
   ],
   "usd": "usd/assets/plastic_cup.usd",
   "source_urdf": "assets/asset3d/plastic_cup/result/plastic_cup_sim.urdf",
-  "generator": "procedural_mesh_v1",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "round",
    "bands": [
     [
+     0.0114,
+     0.0323,
+     0.0264
+    ],
+    [
+     0.0323,
+     0.0532,
+     0.0289
+    ],
+    [
+     0.0532,
+     0.0741,
+     0.0314
+    ],
+    [
      0.0741,
      0.095,
-     0.0365
+     0.0364
     ]
    ],
    "rim_height": 0.095,
-   "rim_radius": 0.0365
+   "rim_radius": 0.0364
   }
  },
  "paperback_book": {
@@ -1420,22 +1435,22 @@
    0.025
   ],
   "origin_to_bottom_center": [
-   0.0,
-   0.0,
-   0.0
+   0.0001,
+   0.0001,
+   -0.0123
   ],
-  "min_pinch_width": 0.1008,
+  "min_pinch_width": 0.1196,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "edge_pinch_after_push",
     "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.025
+    "thickness": 0.025000000000000005
    }
   ],
   "usd": "usd/assets/paperback_book.usd",
   "source_urdf": "assets/asset3d/paperback_book/result/paperback_book_sim.urdf",
-  "generator": "procedural_mesh_v1"
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "tissue_box": {
   "name": "tissue_box",
@@ -1451,9 +1466,9 @@
    0.06
   ],
   "origin_to_bottom_center": [
+   -0.0,
    0.0,
-   0.0,
-   0.0
+   -0.0302
   ],
   "min_pinch_width": 0.09,
   "graspable_by_zeno": true,
@@ -1466,7 +1481,7 @@
   ],
   "usd": "usd/assets/tissue_box.usd",
   "source_urdf": "assets/asset3d/tissue_box/result/tissue_box_sim.urdf",
-  "generator": "procedural_mesh_v1"
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "rolling_pin": {
   "name": "rolling_pin",
@@ -1478,37 +1493,37 @@
   "collider": "solid",
   "size": [
    0.22,
-   0.044,
-   0.044
+   0.0463,
+   0.0461
   ],
   "origin_to_bottom_center": [
    0.0,
-   0.0,
-   -0.0
+   -0.0002,
+   -0.0231
   ],
-  "min_pinch_width": 0.0061,
+  "min_pinch_width": 0.0462,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "top_pinch",
-    "close_yaw": 1.0471975511965976,
-    "width": 0.006148711084837211,
+    "close_yaw": 1.5707963267948966,
+    "width": 0.04620851433630682,
     "offset_xy": [
-     0.0104,
-     -0.0245
+     0.0,
+     0.0001
     ],
-    "height": 0.018116860000000002,
-    "pre_open": 0.015074355542418606
+    "height": 0.0230648388545207,
+    "pre_open": 0.03510425716815341
    },
    {
     "type": "edge_pinch_after_push",
     "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.044
+    "thickness": 0.04612967770904141
    }
   ],
   "usd": "usd/assets/rolling_pin.usd",
   "source_urdf": "assets/asset3d/rolling_pin/result/rolling_pin_sim.urdf",
-  "generator": "procedural_mesh_v1"
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "shallow_sorting_tray": {
   "name": "shallow_sorting_tray",
@@ -1525,18 +1540,18 @@
    0.055
   ],
   "origin_to_bottom_center": [
-   0.0,
-   0.0,
-   0.0
+   0.0001,
+   -0.0001,
+   -0.0277
   ],
-  "min_pinch_width": Infinity,
+  "min_pinch_width": 0.1551,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "rim_pinch_rect",
     "half_x": 0.135,
     "half_y": 0.1,
-    "rim_height": 0.055,
+    "rim_height": 0.05499999999999999,
     "depth": 0.03,
     "tilts": [
      0.4,
@@ -1547,12 +1562,12 @@
    {
     "type": "edge_pinch_after_push",
     "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.055
+    "thickness": 0.05499999999999999
    }
   ],
   "usd": "usd/assets/shallow_sorting_tray.usd",
   "source_urdf": "assets/asset3d/shallow_sorting_tray/result/shallow_sorting_tray_sim.urdf",
-  "generator": "procedural_mesh_v1",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "rect",
    "bands": [
@@ -1577,22 +1592,22 @@
   "mass": 0.65,
   "collider": "round_container",
   "size": [
+   0.26,
    0.3,
-   0.18,
    0.16
   ],
   "origin_to_bottom_center": [
-   0.0,
-   0.0,
-   0.0
+   0.0003,
+   0.0002,
+   -0.0805
   ],
-  "min_pinch_width": 0.09,
+  "min_pinch_width": 0.1938,
   "graspable_by_zeno": true,
   "grasps": [
    {
     "type": "rim_pinch",
-    "radius": 0.086,
-    "rim_height": 0.075,
+    "radius": 0.115,
+    "rim_height": 0.16,
     "depth": 0.035,
     "azimuths_deg": [
      0,
@@ -1616,97 +1631,62 @@
     "pre_open": 0.03
    },
    {
-    "type": "top_pinch",
-    "close_yaw": 0.0,
-    "width": 0.026,
-    "offset_xy": [
-     0.0,
-     0.0
-    ],
-    "height": 0.135,
-    "pre_open": 0.028
-   },
-   {
     "type": "handle_pinch",
     "center": [
      0.0,
-     0.0,
-     0.142
+     0.14,
+     0.073
     ],
     "approach": [
      0.0,
-     0.0,
-     -1.0
-    ],
-    "close_dir": [
-     1.0,
-     0.0,
+     -1.0,
      0.0
     ],
-    "pre_open": 0.028
+    "close_dir": [
+     0.0,
+     0.0,
+     1.0
+    ],
+    "pre_open": 0.03
    }
   ],
   "usd": "usd/assets/handled_cooking_pot.usd",
   "source_urdf": "assets/asset3d/handled_cooking_pot/result/handled_cooking_pot_sim.urdf",
-  "generator": "procedural_mesh_v1",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "round",
    "bands": [
     [
      0.0,
-     0.075,
-     0.086
+     0.16,
+     0.115
     ]
    ],
-   "rim_height": 0.075,
-   "rim_radius": 0.086,
+   "rim_height": 0.16,
+   "rim_radius": 0.115,
    "handle_collider": {
     "center": [
      0.0,
-     0.0,
-     0.135
+     0.14,
+     0.073
     ],
     "size": [
-     0.026,
-     0.026,
-     0.05
+     0.06,
+     0.02,
+     0.013
     ]
    },
    "extra_handle_colliders": [
     {
      "center": [
-      -0.1125,
       0.0,
-      0.06
+      -0.14,
+      0.073
      ],
      "size": [
-      0.075,
-      0.024,
-      0.018
-     ]
-    },
-    {
-     "center": [
-      0.1125,
-      0.0,
-      0.06
-     ],
-     "size": [
-      0.075,
-      0.024,
-      0.018
-     ]
-    },
-    {
-     "center": [
-      0.0,
-      0.0,
-      0.105
-     ],
-     "size": [
-      0.18,
+      0.06,
       0.02,
-      0.012
+      0.013
      ]
     }
    ]

@@ -72443,17 +72443,17 @@
    "body": "/World/Tasks/soda_can/Asset/soda_can",
    "asset": "soda_can",
    "position": [
-    8.1503,
-    0.3613,
-    0.4723
+    8.1504,
+    0.361,
+    0.5324
    ],
    "aabb": [
-    8.1071,
-    0.3181,
+    8.107,
+    0.3175,
     0.4723,
-    8.1935,
+    8.1938,
     0.4045,
-    0.5923
+    0.5927
    ],
    "room": "living_room_0_0",
    "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
@@ -72464,17 +72464,17 @@
    "body": "/World/Tasks/snack_carton/Asset/snack_carton",
    "asset": "snack_carton",
    "position": [
-    7.0149,
+    7.0145,
     0.3943,
-    0.4723
+    0.558
    ],
    "aabb": [
-    6.9566,
-    0.3576,
-    0.4723,
+    6.9562,
+    0.3574,
+    0.4729,
     7.0733,
     0.4311,
-    0.6423
+    0.6432
    ],
    "room": "living_room_0_0",
    "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
@@ -72485,17 +72485,17 @@
    "body": "/World/Tasks/foam_cube/Asset/foam_cube",
    "asset": "foam_cube",
    "position": [
-    5.0543,
-    1.6941,
-    0.0126
+    5.0555,
+    1.6938,
+    0.0427
    ],
    "aabb": [
     5.0165,
-    1.6564,
-    0.0126,
-    5.0921,
+    1.656,
+    0.0111,
+    5.0944,
     1.7319,
-    0.0726
+    0.0743
    ],
    "room": "living_room_0_0",
    "support": null
@@ -72507,15 +72507,15 @@
    "asset": "wide_storage_bin",
    "position": [
     1.0889,
-    -0.4278,
-    0.7063
+    -0.4277,
+    0.776
    ],
    "aabb": [
-    0.9163,
-    -0.5808,
+    0.9162,
+    -0.5807,
     0.7063,
-    1.2615,
-    -0.2749,
+    1.2614,
+    -0.2748,
     0.8463
    ],
    "room": "bedroom_0_1",

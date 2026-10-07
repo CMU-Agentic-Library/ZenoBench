@@ -237,23 +237,39 @@ def write_sim_urdf(name):
     L, mass, tags, kind, _ = SPECS[name]
     src = source_urdf(name)
     mesh = mesh_zup(src)
+    custom = CUSTOM_RECORDS.get(name, {})
+    target_size = custom.get("target_size")
     s = 1.0 if L is None else L / float(np.max(mesh.extents))
     tree = ET.parse(src)
     link = tree.getroot().find("link")
     Rf = flat_rotation(mesh) if (name in LAY_FLAT and L is not None) else np.eye(3)
+    if target_size is not None:
+        if name in LAY_FLAT:
+            raise ValueError(f"{name}: target_size with lay_flat is unsupported")
+        target = np.asarray(target_size, dtype=float)
+        if target.shape != (3,) or np.any(target <= 0):
+            raise ValueError(f"{name}: target_size must contain three positive dimensions")
+        world_scale = target / mesh.extents
+    else:
+        world_scale = np.full(3, s)
     from scipy.spatial.transform import Rotation
     for tag in ("visual", "collision"):
         for el in link.findall(tag):
             m = el.find("geometry").find("mesh")
-            old = [float(v) for v in (m.get("scale") or "1 1 1").split()]
-            m.set("scale", " ".join(f"{o * s:.6f}" for o in old))
+            old = np.asarray([float(v) for v in (m.get("scale") or "1 1 1").split()])
             o = el.find("origin")
             R0 = Rotation.from_euler("xyz", [float(v) for v in o.get("rpy").split()]).as_matrix()
+            axes = np.abs(Rf @ R0)
+            if target_size is not None and not (np.allclose(axes.sum(axis=0), 1, atol=1e-3)
+                                                and np.allclose(axes.sum(axis=1), 1, atol=1e-3)):
+                raise ValueError(f"{name}: target_size requires an axis-aligned URDF orientation")
+            local_scale = axes.T @ world_scale if target_size is not None else world_scale
+            m.set("scale", " ".join(f"{v:.6f}" for v in old * local_scale))
             o.set("rpy", " ".join(f"{v:.6f}" for v in Rotation.from_matrix(Rf @ R0).as_euler("xyz")))
     T = np.eye(4)
     T[:3, :3] = Rf
     mesh.apply_transform(T)
-    mesh.apply_scale(s)
+    mesh.apply_scale(world_scale)
     ext = mesh.extents
     inert = link.find("inertial")
     inert.find("mass").set("value", f"{mass:.4f}")

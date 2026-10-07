@@ -1,5 +1,46 @@
-<robot name="tissue_box"><link name="tissue_box">
-<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/tissue_box.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/tissue_box_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
-<inertial><mass value="0.1700" /><origin xyz="0 0 0" /><inertia ixx="1.657e-04" ixy="0.0" ixz="0.0" iyy="3.287e-04" iyz="0.0" izz="3.924e-04" /></inertial>
-</link></robot>
+<robot name="tissue_box">
+   <link name="tissue_box">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/tissue_box.obj" scale="0.940791 0.500002 0.625238" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/tissue_box_collision.obj" scale="0.940791 0.500002 0.625238" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.1700" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="1.657e-04" ixy="0.0" ixz="0.0" iyy="3.287e-04" iyz="0.0" izz="3.924e-04" />
+      </inertial>
+      <extra_info>
+         <scale>0.148811</scale>
+         <version>v2.1.0</version>
+         <category>tissue_box</category>
+         <description>blue rectangular tissue box with pale marbled patterns and slightly rounded corners.</description>
+         <min_height>0.1</min_height>
+         <max_height>0.14</max_height>
+         <real_height>0.12</real_height>
+         <min_mass>0.1</min_mass>
+         <max_mass>0.3</max_mass>
+         <generate_time>20261006202955</generate_time>
+         <gs_model>mesh/tissue_box_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>3.892594814300537</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

@@ -72443,27 +72443,27 @@
    "body": "/World/Tasks/handled_cooking_pot/Asset/handled_cooking_pot",
    "asset": "handled_cooking_pot",
    "position": [
-    -0.63,
-    7.66,
-    0.86
+    -0.2098,
+    7.4497,
+    1.0896
    ],
    "aabb": [
-    -0.72,
-    7.51,
-    0.86,
-    -0.54,
-    7.81,
-    1.02
+    -0.36,
+    7.32,
+    1.0091,
+    -0.0599,
+    7.58,
+    1.1691
    ],
    "room": "kitchen_0_1",
-   "support": "repair/kitchen_counter_top"
+   "support": "KitchenSpaceFactory_2359716_spawn_asset_5713391/surface_0"
   }
  ],
  "robot": {
   "prim": "/World/ZenoMalo",
   "xy": [
-   -1.1660254037844386,
-   7.3
+   -1.0794228634059948,
+   7.25
   ],
   "yaw_deg": -30.0,
   "base_anchor": "/World/ZenoMalo/base_anchor",

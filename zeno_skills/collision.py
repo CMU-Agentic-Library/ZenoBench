@@ -91,7 +91,25 @@ class WorldModel:
 
     def __init__(self, ann, ignore=()):
         self.ann = ann
-        self.boxes = [np.asarray(o["aabb"], float) for o in ann.obstacles if o["name"] not in ignore]
+        self.boxes = []
+        for obstacle in ann.obstacles:
+            if obstacle["name"] in ignore:
+                continue
+            box = np.asarray(obstacle["aabb"], float)
+            if obstacle["name"].startswith("KitchenSpaceFactory_"):
+                # The kitchen fixture's single AABB spans its counter and
+                # upper cabinets. Its support levels expose an open band
+                # between them; keeping one solid box makes every counter
+                # grasp collision-infeasible even while the robot is clear.
+                levels = sorted({float(s["z"]) for s in ann.supports
+                                 if s.get("furniture") == obstacle["name"]})
+                if len(levels) >= 2 and levels[1] - levels[0] > 0.25:
+                    lower, upper = box.copy(), box.copy()
+                    lower[5] = levels[0]
+                    upper[2] = levels[1]
+                    self.boxes.extend((lower, upper))
+                    continue
+            self.boxes.append(box)
         self.boxes.append(np.array([-50, -50, -1.0, 50, 50, 0.0]))      # floor
         self.B = np.array(self.boxes)
         self._near_key, self._near = None, None

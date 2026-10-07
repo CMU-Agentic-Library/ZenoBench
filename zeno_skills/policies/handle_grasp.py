@@ -38,21 +38,23 @@ class PickCupHandlePolicy(AtomicPolicy):
             R = gripper_rot(approach, close)
             return pos, p, R, approach
 
+        if not rig.tuck():
+            raise SkillFailure(f"pick cup handle {name}: cannot prepare a collision-free arm posture")
         before, p, R, approach = contact()
         pre = p-0.10*approach+np.array([0, 0, 0.02])
         lift = p+np.array([0, 0, 0.08])
         rig.sync_world()
         park = find_park(rig.kin, rig.world, [(pre, R), (p, R), (lift, R)],
                          near=rig.base_pose(), q_start=rig.q_cmd,
-                         travel_q=skills._travel_q(rig), max_tries=160)
+                         travel_q=rig.q_cmd, max_tries=160)
         if park is None:
             raise SkillFailure(f"pick cup handle {name}: no reachable contact path")
         skills._goto_park(rig, park)
         before, p, R, approach = contact()
         pre = p-0.10*approach+np.array([0, 0, 0.02])
         rig.grip(float(spec["pre_open"]), 40)
-        rig.move_to(pre, R, step=0.01, label="handle_pick_pre", smooth=True)
-        rig.move_to(p, R, step=0.004, label="handle_pick_contact", smooth=True)
+        rig.move_to(pre, R, step=0.01, label="handle_pick_pre", smooth=True, q_hint=park[3][0])
+        rig.move_to(p, R, step=0.004, label="handle_pick_contact", smooth=True, q_hint=park[3][1])
         fingers = rig.grip(0.0, 120, gradual=True)
         rig.move_to(p+np.array([0, 0, 0.08]), R, step=0.004,
                     steps_per_wp=5, label="handle_pick_lift", smooth=True, collision=False)

@@ -1,5 +1,46 @@
-<robot name="foam_cube"><link name="foam_cube">
-<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/foam_cube.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/foam_cube_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
-<inertial><mass value="0.0350" /><origin xyz="0 0 0" /><inertia ixx="2.100e-05" ixy="0.0" ixz="0.0" iyy="2.100e-05" iyz="0.0" izz="2.100e-05" /></inertial>
-</link></robot>
+<robot name="foam_cube">
+   <link name="foam_cube">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/foam_cube.obj" scale="0.417327 0.400002 0.401666" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/foam_cube_collision.obj" scale="0.417327 0.400002 0.401666" />
+         </geometry>
+         <gazebo>
+            <mu1>0.80</mu1>
+            <mu2>0.60</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.0350" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="2.100e-05" ixy="0.0" ixz="0.0" iyy="2.100e-05" iyz="0.0" izz="2.100e-05" />
+      </inertial>
+      <extra_info>
+         <scale>0.150000</scale>
+         <version>v2.1.0</version>
+         <category>foam_cube</category>
+         <description>blue foam cube with smooth matte faces and softly rounded edges.</description>
+         <min_height>0.1</min_height>
+         <max_height>0.2</max_height>
+         <real_height>0.15</real_height>
+         <min_mass>0.03</min_mass>
+         <max_mass>0.3</max_mass>
+         <generate_time>20261006202121</generate_time>
+         <gs_model>mesh/foam_cube_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.266197681427002</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

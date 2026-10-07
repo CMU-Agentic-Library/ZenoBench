@@ -93,8 +93,10 @@ def register(name, spec):
     d[name] = {"size": float(spec["size"]), "mass": float(spec["mass"]), "tags": list(spec.get("tags", [])),
                "collider": c, "lay_flat": bool(spec.get("lay_flat", False)),
                "urdf": f"assets/asset3d/{name}/result/{name}.urdf"}
-    if "body_fraction" in spec:
-        d[name]["body_fraction"] = spec["body_fraction"]
+    for key in ("body_fraction", "target_size", "generator", "prompt", "container_profile",
+                "top_grasp", "handle_grasp", "handle_collider", "extra_handle_colliders"):
+        if key in spec:
+            d[name][key] = spec[key]
     CUSTOM.write_text(json.dumps(d, indent=1) + "\n")
     print("REGISTERED", name, d[name], flush=True)
 

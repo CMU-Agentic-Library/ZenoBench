@@ -109,23 +109,23 @@
   },
   "/World/Tasks/soda_can/Asset/soda_can": {
    "drift_m": 0.0,
-   "z0": 0.4723,
-   "z": 0.4723
+   "z0": 0.5324,
+   "z": 0.5324
   },
   "/World/Tasks/snack_carton/Asset/snack_carton": {
-   "drift_m": 0.0,
-   "z0": 0.4723,
-   "z": 0.4723
+   "drift_m": 0.0002,
+   "z0": 0.558,
+   "z": 0.558
   },
   "/World/Tasks/foam_cube/Asset/foam_cube": {
    "drift_m": 0.0,
-   "z0": 0.0126,
-   "z": 0.0126
+   "z0": 0.0427,
+   "z": 0.0427
   },
   "/World/Tasks/wide_storage_bin/Asset/wide_storage_bin": {
    "drift_m": 0.0,
-   "z0": 0.7063,
-   "z": 0.7063
+   "z0": 0.776,
+   "z": 0.776
   }
  },
  "articulations": {

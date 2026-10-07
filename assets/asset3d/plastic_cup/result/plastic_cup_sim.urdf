@@ -1,5 +1,46 @@
-<robot name="plastic_cup"><link name="plastic_cup">
-<visual><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/plastic_cup.obj" scale="1.000000 1.000000 1.000000" /></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0.000000 0.000000 0.000000" /><geometry><mesh filename="mesh/plastic_cup_collision.obj" scale="1.000000 1.000000 1.000000" /></geometry></collision>
-<inertial><mass value="0.0800" /><origin xyz="0 0 0" /><inertia ixx="1.028e-04" ixy="0.0" ixz="0.0" iyy="1.028e-04" iyz="0.0" izz="8.533e-05" /></inertial>
-</link></robot>
+<robot name="plastic_cup">
+   <link name="plastic_cup">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/plastic_cup.obj" scale="0.650835 0.678572 0.636108" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/plastic_cup_collision.obj" scale="0.650835 0.678572 0.636108" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.0800" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="1.028e-04" ixy="0.0" ixz="0.0" iyy="1.028e-04" iyz="0.0" izz="8.533e-05" />
+      </inertial>
+      <extra_info>
+         <scale>0.140000</scale>
+         <version>v2.1.0</version>
+         <category>plastic_cup</category>
+         <description>blue tapered plastic cup with smooth sides, circular base, and slightly flared rim.</description>
+         <min_height>0.12</min_height>
+         <max_height>0.16</max_height>
+         <real_height>0.14</real_height>
+         <min_mass>0.01</min_mass>
+         <max_mass>0.04</max_mass>
+         <generate_time>20261006201545</generate_time>
+         <gs_model>mesh/plastic_cup_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.690972805023193</ImageAestheticChecker>
+         <overall>YES</overall>
+      </quality>
+   </custom_data>
+</robot>

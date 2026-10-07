@@ -1,0 +1,11 @@
+[
+  {
+    "policy": "policy_011",
+    "args": [
+      "handled_cooking_pot"
+    ],
+    "kwargs": {
+      "max_candidates": 2
+    }
+  }
+]

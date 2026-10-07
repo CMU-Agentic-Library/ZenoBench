@@ -1,243 +1,275 @@
 {
-  "foam_cube": {
-    "size": 0.06,
-    "mass": 0.035,
-    "tags": [
-      "toy",
-      "block",
-      "floor_pick"
-    ],
-    "collider": "solid",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/foam_cube/result/foam_cube.urdf",
-    "generator": "procedural_mesh_v1"
+ "foam_cube": {
+  "size": 0.06,
+  "mass": 0.035,
+  "tags": [
+   "toy",
+   "block",
+   "floor_pick"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/foam_cube/result/foam_cube.urdf",
+  "target_size": [
+   0.06,
+   0.06,
+   0.06
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "small blue foam toy cube with rounded edges, isolated product"
+ },
+ "soda_can": {
+  "size": 0.12,
+  "mass": 0.15,
+  "tags": [
+   "can",
+   "recyclable"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/soda_can/result/soda_can.urdf",
+  "target_size": [
+   0.066,
+   0.066,
+   0.12
+  ],
+  "generator": "EmbodiedGen V2 img3d-cli (SAM3D backend; V2 generated condition image)",
+  "prompt": "a single empty red aluminum soda can with a silver top, standing upright, isolated on a plain white background, no other objects"
+ },
+ "snack_carton": {
+  "size": 0.17,
+  "mass": 0.18,
+  "tags": [
+   "food",
+   "box"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/snack_carton/result/snack_carton.urdf",
+  "target_size": [
+   0.06,
+   0.11,
+   0.17
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "upright orange cardboard snack carton with printed label, sealed, isolated product"
+ },
+ "small_storage_bin": {
+  "size": 0.22,
+  "mass": 0.3,
+  "tags": [
+   "container",
+   "storage"
+  ],
+  "collider": "rect_container",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/small_storage_bin/result/small_storage_bin.urdf",
+  "target_size": [
+   0.22,
+   0.17,
+   0.09
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "one empty open-top gray plastic rectangular storage bin, shallow walls, no lid, clearly visible hollow interior, isolated product photo"
+ },
+ "wide_storage_bin": {
+  "size": 0.34,
+  "mass": 1.2,
+  "tags": [
+   "container",
+   "storage",
+   "recycling"
+  ],
+  "collider": "rect_container",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/wide_storage_bin/result/wide_storage_bin.urdf",
+  "target_size": [
+   0.34,
+   0.3,
+   0.14
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "one empty open-top blue plastic wide rectangular storage bin, thick rim, no lid, clearly visible hollow interior, isolated product photo"
+ },
+ "juice_bottle": {
+  "size": 0.18,
+  "mass": 0.2,
+  "tags": [
+   "bottle",
+   "recyclable"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/juice_bottle/result/juice_bottle.urdf",
+  "target_size": [
+   0.058,
+   0.058,
+   0.18
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "clear plastic orange juice bottle with green cap, standing upright, isolated product"
+ },
+ "plastic_cup": {
+  "size": 0.095,
+  "mass": 0.08,
+  "tags": [
+   "cup",
+   "container"
+  ],
+  "collider": "round_container",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/plastic_cup/result/plastic_cup.urdf",
+  "target_size": [
+   0.08,
+   0.08,
+   0.095
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "empty translucent blue plastic drinking cup, standing upright, open top, isolated product"
+ },
+ "paperback_book": {
+  "size": 0.18,
+  "mass": 0.25,
+  "tags": [
+   "book",
+   "flat"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/paperback_book/result/paperback_book.urdf",
+  "target_size": [
+   0.18,
+   0.12,
+   0.025
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "one closed green paperback book lying flat, isolated product"
+ },
+ "tissue_box": {
+  "size": 0.14,
+  "mass": 0.17,
+  "tags": [
+   "box",
+   "flat"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/tissue_box/result/tissue_box.urdf",
+  "target_size": [
+   0.14,
+   0.09,
+   0.06
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "rectangular patterned tissue box with one white tissue emerging, isolated product"
+ },
+ "rolling_pin": {
+  "size": 0.22,
+  "mass": 0.26,
+  "tags": [
+   "utensil",
+   "cylinder"
+  ],
+  "collider": "solid",
+  "lay_flat": true,
+  "urdf": "assets/asset3d/rolling_pin/result/rolling_pin.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "wooden rolling pin lying horizontally with cylindrical roller and short handles, isolated product"
+ },
+ "shallow_sorting_tray": {
+  "size": 0.27,
+  "mass": 0.32,
+  "tags": [
+   "container",
+   "tray",
+   "storage"
+  ],
+  "collider": "rect_container",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/shallow_sorting_tray/result/shallow_sorting_tray.urdf",
+  "target_size": [
+   0.27,
+   0.2,
+   0.055
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "empty shallow white plastic rectangular sorting tray with low walls and open top, isolated product"
+ },
+ "handled_cooking_pot": {
+  "size": 0.3,
+  "mass": 0.65,
+  "tags": [
+   "cookware",
+   "pot",
+   "container",
+   "handled"
+  ],
+  "collider": "round_container",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/handled_cooking_pot/result/handled_cooking_pot.urdf",
+  "target_size": [
+   0.26,
+   0.3,
+   0.16
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "open silver cooking pot with two side handles, no lid, isolated product",
+  "container_profile": {
+   "shape": "round",
+   "bands": [
+    [
+     0.0,
+     0.16,
+     0.115
+    ]
+   ],
+   "rim_height": 0.16,
+   "rim_radius": 0.115
   },
-  "soda_can": {
-    "size": 0.12,
-    "mass": 0.15,
-    "tags": [
-      "can",
-      "recyclable"
-    ],
-    "collider": "solid",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/soda_can/result/soda_can.urdf",
-    "generator": "procedural_mesh_v1"
+  "handle_grasp": {
+   "type": "handle_pinch",
+   "center": [
+    0.0,
+    0.14,
+    0.073
+   ],
+   "approach": [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   "close_dir": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "pre_open": 0.03
   },
-  "snack_carton": {
-    "size": 0.17,
-    "mass": 0.18,
-    "tags": [
-      "food",
-      "box"
-    ],
-    "collider": "solid",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/snack_carton/result/snack_carton.urdf",
-    "generator": "procedural_mesh_v1"
+  "handle_collider": {
+   "center": [
+    0.0,
+    0.14,
+    0.073
+   ],
+   "size": [
+    0.06,
+    0.02,
+    0.013
+   ]
   },
-  "small_storage_bin": {
-    "size": 0.22,
-    "mass": 0.3,
-    "tags": [
-      "container",
-      "storage"
+  "extra_handle_colliders": [
+   {
+    "center": [
+     0.0,
+     -0.14,
+     0.073
     ],
-    "collider": "rect_container",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/small_storage_bin/result/small_storage_bin.urdf",
-    "generator": "procedural_mesh_v1"
-  },
-  "wide_storage_bin": {
-    "size": 0.34,
-    "mass": 1.2,
-    "tags": [
-      "container",
-      "storage",
-      "recycling"
-    ],
-    "collider": "rect_container",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/wide_storage_bin/result/wide_storage_bin.urdf",
-    "generator": "procedural_mesh_v1"
-  },
-  "juice_bottle": {
-    "size": 0.18,
-    "mass": 0.2,
-    "tags": [
-      "bottle",
-      "recyclable"
-    ],
-    "collider": "solid",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/juice_bottle/result/juice_bottle.urdf",
-    "generator": "procedural_mesh_v1"
-  },
-  "plastic_cup": {
-    "size": 0.095,
-    "mass": 0.08,
-    "tags": [
-      "cup",
-      "container"
-    ],
-    "collider": "round_container",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/plastic_cup/result/plastic_cup.urdf",
-    "generator": "procedural_mesh_v1"
-  },
-  "paperback_book": {
-    "size": 0.18,
-    "mass": 0.25,
-    "tags": [
-      "book",
-      "flat"
-    ],
-    "collider": "solid",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/paperback_book/result/paperback_book.urdf",
-    "generator": "procedural_mesh_v1"
-  },
-  "tissue_box": {
-    "size": 0.14,
-    "mass": 0.17,
-    "tags": [
-      "box",
-      "flat"
-    ],
-    "collider": "solid",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/tissue_box/result/tissue_box.urdf",
-    "generator": "procedural_mesh_v1"
-  },
-  "rolling_pin": {
-    "size": 0.22,
-    "mass": 0.26,
-    "tags": [
-      "utensil",
-      "cylinder"
-    ],
-    "collider": "solid",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/rolling_pin/result/rolling_pin.urdf",
-    "generator": "procedural_mesh_v1"
-  },
-  "shallow_sorting_tray": {
-    "size": 0.27,
-    "mass": 0.32,
-    "tags": [
-      "container",
-      "tray",
-      "storage"
-    ],
-    "collider": "rect_container",
-    "lay_flat": false,
-    "urdf": "assets/asset3d/shallow_sorting_tray/result/shallow_sorting_tray.urdf",
-    "generator": "procedural_mesh_v1"
-  },
-  "handled_cooking_pot": {
-    "size": 0.3,
-    "mass": 0.65,
-    "tags": [
-      "cookware",
-      "pot",
-      "container",
-      "handled"
-    ],
-    "collider": "round_container",
-    "container_profile": {
-      "shape": "round",
-      "bands": [
-        [
-          0.0,
-          0.075,
-          0.086
-        ]
-      ],
-      "rim_height": 0.075,
-      "rim_radius": 0.086
-    },
-    "top_grasp": {
-      "type": "top_pinch",
-      "close_yaw": 0.0,
-      "width": 0.026,
-      "offset_xy": [
-        0.0,
-        0.0
-      ],
-      "height": 0.135,
-      "pre_open": 0.028
-    },
-    "handle_grasp": {
-      "type": "handle_pinch",
-      "center": [
-        0.0,
-        0.0,
-        0.142
-      ],
-      "approach": [
-        0.0,
-        0.0,
-        -1.0
-      ],
-      "close_dir": [
-        1.0,
-        0.0,
-        0.0
-      ],
-      "pre_open": 0.028
-    },
-    "handle_collider": {
-      "center": [
-        0.0,
-        0.0,
-        0.135
-      ],
-      "size": [
-        0.026,
-        0.026,
-        0.05
-      ]
-    },
-    "extra_handle_colliders": [
-      {
-        "center": [
-          -0.1125,
-          0.0,
-          0.06
-        ],
-        "size": [
-          0.075,
-          0.024,
-          0.018
-        ]
-      },
-      {
-        "center": [
-          0.1125,
-          0.0,
-          0.06
-        ],
-        "size": [
-          0.075,
-          0.024,
-          0.018
-        ]
-      },
-      {
-        "center": [
-          0.0,
-          0.0,
-          0.105
-        ],
-        "size": [
-          0.18,
-          0.02,
-          0.012
-        ]
-      }
-    ],
-    "lay_flat": false,
-    "urdf": "assets/asset3d/handled_cooking_pot/result/handled_cooking_pot.urdf",
-    "generator": "procedural_mesh_v1"
-  }
+    "size": [
+     0.06,
+     0.02,
+     0.013
+    ]
+   }
+  ]
+ }
 }

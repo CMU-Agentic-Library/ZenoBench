@@ -1,6 +1,47 @@
-<?xml version="1.0"?>
-<robot name="juice_bottle"><link name="juice_bottle">
-<visual><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="mesh/juice_bottle.obj" scale="1 1 1"/></geometry></visual>
-<collision><origin xyz="0 0 0" rpy="0 0 0"/><geometry><mesh filename="mesh/juice_bottle_collision.obj" scale="1 1 1"/></geometry></collision>
-<inertial><mass value="0.2"/><origin xyz="0 0 0"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
-</link></robot>
+<?xml version="1.0" ?>
+<robot name="juice_bottle">
+   <link name="juice_bottle">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/juice_bottle.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/juice_bottle_collision.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.7500"/>
+         <origin xyz="0 0 0"/>
+         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+      <extra_info>
+         <scale>0.235000</scale>
+         <version>v2.1.0</version>
+         <category>juice_bottle</category>
+         <description>orange juice-filled plastic bottle with a green ribbed screw cap and contoured body.</description>
+         <min_height>0.2</min_height>
+         <max_height>0.27</max_height>
+         <real_height>0.235</real_height>
+         <min_mass>0.5</min_mass>
+         <max_mass>1.0</max_mass>
+         <generate_time>20261006202505</generate_time>
+         <gs_model>mesh/juice_bottle_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.738131523132324</ImageAestheticChecker>
+         <overall>YES</overall>
+      </quality>
+   </custom_data>
+</robot>

@@ -20,7 +20,32 @@
  "bookcase_north": "SimpleBookcaseFactory_6105320_spawn_asset_9196243",
  "bookcase_north_middle_shelf": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_2",
  "bookcase_north_top": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
- "floor:living_room": {"room": "living_room_0_0", "xy": [4.2, 1.6, 6.2, 3.0]},
- "floor:bedroom": {"room": "bedroom_0_1", "xy": [3.4, -4.4, 6.0, -1.2]},
- "floor:bedroom_west": {"room": "bedroom_0_1", "xy": [0.2, -2.6, 2.2, -1.1]}
+ "floor:living_room": {
+  "room": "living_room_0_0",
+  "xy": [
+   4.2,
+   1.6,
+   6.2,
+   3.0
+  ]
+ },
+ "floor:bedroom": {
+  "room": "bedroom_0_1",
+  "xy": [
+   3.4,
+   -4.4,
+   6.0,
+   -1.2
+  ]
+ },
+ "floor:bedroom_west": {
+  "room": "bedroom_0_1",
+  "xy": [
+   0.2,
+   -2.6,
+   2.2,
+   -1.1
+  ]
+ },
+ "kitchen_counter_surface": "KitchenSpaceFactory_2359716_spawn_asset_5713391/surface_0"
 }
