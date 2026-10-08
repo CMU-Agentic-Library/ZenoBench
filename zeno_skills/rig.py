@@ -472,7 +472,10 @@ class Rig:
                     q = seg[-1]
                 if not ok:
                     continue
-                for target in (self.kin.rest, np.zeros_like(self.kin.rest)):
+                # (not the all-zero posture: that arm hangs straight down at the
+                # side, and turning the base swept it through table-height
+                # objects -- a block knocked over beside the island)
+                for target in (self.kin.rest,):
                     if not self.kin.free(target):
                         continue
                     n = max(2, int(np.max(np.abs(target - q)) / 0.01))

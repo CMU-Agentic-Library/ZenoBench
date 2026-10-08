@@ -135,7 +135,13 @@ class ArmKin:
         # A relaxed, elbow-out posture used as a null-space attractor.
         posture = ([0.0, 0.0, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0] if side == "right" else
                    [0.0, 0.0, 0.2, 0.35, 0.0, 2.3, 0.0, 0.0, 0.0])
-        self.rest = np.clip(np.array(posture), self.lo, self.hi)
+        self.posture = np.clip(np.array(posture), self.lo, self.hi)
+        # Travel (tucked) posture.  The right arm folds in close to the chest:
+        # the elbow-out posture held the hand 0.49 m to the side, and turning
+        # the base beside a counter swept objects off it.  Hand 0.29 m to the
+        # side, 0.33 m ahead, every joint above 1.05 m.
+        travel = ([0.0, 0.0, 1.05, 0.46, 0.42, 2.04, -0.06, -0.26, 0.42] if side == "right" else posture)
+        self.rest = np.clip(np.array(travel), self.lo, self.hi)
         self.base_p, self.base_R = np.zeros(3), np.eye(3)
 
     def set_base(self, xyz, yaw):
@@ -204,7 +210,7 @@ class ArmKin:
             step = Jw.T @ np.linalg.solve(JJt, ew)
             if not polish:
                 N = np.eye(len(q)) - Jw.T @ np.linalg.solve(JJt, Jw)
-                step += 0.05 * N @ (self.rest - q)
+                step += 0.05 * N @ (self.posture - q)
             n = np.linalg.norm(step)
             if n > 0.2:
                 step *= 0.2 / n
@@ -222,7 +228,7 @@ class ArmKin:
 
     def ik_global(self, p_t, R_t, seeds=None):
         """Try several seeds and return the first collision-free solution."""
-        cands = list(seeds or []) + [self.rest]
+        cands = list(seeds or []) + [self.posture, self.rest]
         rng = np.random.default_rng(0)
         cands += [rng.uniform(self.lo, self.hi) for _ in range(14)]
         for c in cands:

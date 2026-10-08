@@ -25,12 +25,6 @@
      }
     },
     {
-     "skill": "approach",
-     "args": {
-      "target": "prep_bowl"
-     }
-    },
-    {
      "skill": "pick",
      "args": {
       "object": "prep_bowl"

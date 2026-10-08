@@ -750,7 +750,15 @@ def _pick_pinch(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinch", "
         rig.log("pick_waist_relaxed", obj=name)
     finally:
         rig.kin.hi[widx] = hi
-    return _pick_pinch_impl(rig, name, max_candidates, kinds)   # high knobs need the bow
+    try:
+        return _pick_pinch_impl(rig, name, max_candidates, kinds)   # high knobs need the bow
+    except SkillFailure as exc:
+        if "no reachable grasp" not in str(exc):
+            raise
+        # last resort: neighbours as whole boxes over-constrain a pick from a
+        # tight cluster at a counter edge; the finger slots are still checked
+        rig.log("pick_neighbours_relaxed", obj=name)
+        return _pick_pinch_impl(rig, name, max_candidates, kinds, use_neighbours=False)
 
 
 def _neighbour_boxes(rig, name, st, radius=0.30):
@@ -782,22 +790,16 @@ def _neighbour_boxes(rig, name, st, radius=0.30):
     return out
 
 
-def _pick_pinch_impl(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinch", "rim_pinch_rect")):
+def _pick_pinch_impl(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinch", "rim_pinch_rect"),
+                     use_neighbours=True):
     world = getattr(rig, "world", None)
     if world is None or not hasattr(world, "temp_obstacles"):          # minimal rig stubs in unit tests
         return _pick_pinch_core(rig, name, max_candidates, kinds)
-    boxes = _neighbour_boxes(rig, name, rig.state())
+    boxes = _neighbour_boxes(rig, name, rig.state()) if use_neighbours else []
     if boxes:
         rig.log("pick_neighbour_obstacles", obj=name, n=len(boxes))
-        try:
-            with rig.world.temp_obstacles(boxes):
-                return _pick_pinch_core(rig, name, max_candidates, kinds)
-        except SkillFailure as exc:
-            if "no reachable grasp" not in str(exc):
-                raise
-            # neighbours as whole boxes over-constrain a pick from a tight
-            # cluster at a counter edge; the finger slots are still checked
-            rig.log("pick_neighbours_relaxed", obj=name)
+        with rig.world.temp_obstacles(boxes):
+            return _pick_pinch_core(rig, name, max_candidates, kinds)
     return _pick_pinch_core(rig, name, max_candidates, kinds)
 
 
