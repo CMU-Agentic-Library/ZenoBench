@@ -1,5 +1,7 @@
 # Policy 物理验证记录（2026-10-01 至 2026-10-02）
 
+> 本文是 `policy_001`–`policy_064` 单步验证的历史记录。动词 SkillNode 库新增的 policy（`policy_065` 起）通过 Skill Contract 场景验证，前后条件在 GT 状态上测量，结果见 [skill_library/verification/STATUS.md](../skill_library/verification/STATUS.md)。
+
 本轮从 **32/60 已验证、28/60 待验证** 开始。用 Isaac Sim 的刚体、关节和夹爪实际读数判定动作，不把 Python 类可调用或运动规划成功等同于物理动作成功。当前为 **54/60 在至少一个明确场景通过单步物理验证、6/60 仍待验证**。这里的 `verified` 只说明列出的场景和动作通过，不是跨物品或多种初态的可靠性保证。权威状态见 [POLICY_CATALOG.md](POLICY_CATALOG.md) 与 [catalog.json](../zeno_skills/policies/catalog.json)。
 
 ## 本轮通过的 20 项
@@ -35,7 +37,7 @@
 
 | policy | 最新物理试验与阻碍 |
 |---|---|
-| `pick_floor_corner` | 旧地面书本接触误差 **6.8 cm**，薄 `notebook` 降至 **1.42 cm**，但闭爪后抬升仍为 **0 m**；`runs/repair_floor_notebook_v1/result.json`。先单独降低躯干的试验在关节路径上碰撞；`runs/repair_floor_notebook_v2/result.json`。需要物体边缘翻起或更合适的地面夹爪接触控制。 |
+| `pick_floor_corner` | 旧地面书本接触误差 **6.8 cm**，薄 `notebook` 降至 **1.42 cm**，但闭爪后抬升仍为 **0 m**；`runs/repair_floor_notebook_v1/result.json`。先单独降低躯干的试验在关节路径上碰撞；`runs/repair_floor_notebook_v2/result.json`。需要物体边缘翻起或更合适的地面夹爪接触控制。**已退役**：几何上平行夹爪在平地上无法夹住平放物体（见 [PHYSICS_AUDIT.md](PHYSICS_AUDIT.md)），SkillNode 不再使用。 |
 | `bimanual_flat_pick` | `book_red` 可找到共享站位；同步接触后书本偏移 **3.4 cm**，双手闭合到零、抬升 **0 m**；`runs/repair_bimanual_book_v7/result.json`。接触点再内移 **3.5 cm** 后共享站位因碰撞不可达（v8）。旧试验短时抬起 **3.7 cm**，随后左手在携带时滑脱。 |
 | `bimanual_box_lift` | `serving_tray` 和地面轻篮的双臂接触搜索在 **45 s** 上限内均未找到无碰撞共享站位；`runs/repair_bimanual_box_v3/result.json`、`runs/repair_bimanual_basket_v3/result.json`。搜索现在有明确时间上限，不会无限阻塞任务。 |
 | `bimanual_carry` | 曾在书本双手短时抬起后发生左手滑脱；`runs/bimanual_carry_new_policy/result.json`。当前没有稳定的双手持物前置状态，不能称为已验证的携带。 |

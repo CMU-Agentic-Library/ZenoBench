@@ -1,46 +1,21 @@
-# contract_045 — Place an object upright on a support
+# contract_045 — Wipe a surface
 
-Orient a held object, place it on a support, then verify support and tilt.
+Press a held sponge on a support and sweep a 30 cm strip twice; succeeds when the sponge stayed in contact over at least half of the strip.
 
-Paired SkillNode: `skill_037`. Status: `experimental_callable`.
+Paired SkillNode: `skill_037` (`wipe-surface`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
+- [all paths] `holding(hand=right, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `base_near(place=$surface)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — contract_precheck
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`stand_object_on_support(object, support)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `on` — contract_runner
-- `right_hand_empty` — contract_runner
-- `object_upright` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `wiped(support=$surface)` — GT: robot_memory (tool-bottom contact samples)
+- [all paths] `holding(hand=right, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `sponge_strip` when 'wiping_tool' in tool.tags: `policy_084($tool, $surface)`
 
-Match before execution: `[]`.
-
-1. `policy_054` with ['object']
-2. `policy_015` with ['object', 'support']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_003` / `surface`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

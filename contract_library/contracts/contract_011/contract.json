@@ -1,157 +1,178 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_011",
-  "skill_id": "skill_003",
-  "name": "Open an articulated door or drawer",
-  "description": "Open one annotated articulated target and verify its joint position.",
-  "scope": {
-    "unit": "one articulated opening",
-    "includes": [
-      "Open one annotated articulated target and verify its joint position."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "articulated": {
-      "type": "articulated_ref",
-      "required": true,
-      "description": "articulated"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "articulated_annotated",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "opening_route_feasible",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "joint_open_enough",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "joint_open_enough"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_004",
-    "route": "auto",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "choice",
-    "selection": "first_matching_before_execution",
-    "on_no_match": "raise_without_moving",
-    "paths": [
-      {
-        "path_id": "powered_microwave",
-        "when": [
-          {
-            "noun": "articulated",
-            "field": "powered_microwave",
-            "equals": true
-          }
-        ],
-        "steps": [
-          {
-            "policy_id": "policy_024",
-            "args": [
-              {
-                "arg": "articulated"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "path_id": "manual_drawer",
-        "when": [
-          {
-            "noun": "articulated",
-            "field": "type",
-            "equals": "prismatic"
-          },
-          {
-            "noun": "articulated",
-            "field": "has_handle",
-            "equals": true
-          }
-        ],
-        "steps": [
-          {
-            "policy_id": "policy_050",
-            "args": [
-              {
-                "arg": "articulated"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "path_id": "manual_hinged_door",
-        "when": [
-          {
-            "noun": "articulated",
-            "field": "type",
-            "equals": "revolute"
-          },
-          {
-            "noun": "articulated",
-            "field": "has_handle",
-            "equals": true
-          }
-        ],
-        "steps": [
-          {
-            "policy_id": "policy_049",
-            "args": [
-              {
-                "arg": "articulated"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "articulated"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "articulated": {
-      "argument": "articulated",
-      "kind": "articulated",
-      "source": "rig.ann",
-      "required": true
-    }
-  },
-  "action_predicate": {
-    "name": "open_articulated_joint",
-    "verb": "open",
-    "noun": "articulated_joint",
-    "arguments": [
-      "articulated"
-    ],
-    "verified_by": [
-      "joint_open_enough"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_011",
+ "skill_id": "skill_003",
+ "verb": "face",
+ "noun": "target",
+ "name": "Face a target",
+ "description": "Rotate the base in place until it faces the target (heading error <= 20 deg).",
+ "group": "base_and_body",
+ "inputs": {
+  "target": {
+   "type": "entity_ref",
+   "required": true,
+   "description": "What to face."
   }
+ },
+ "outputs": {
+  "base_yaw_deg": {
+   "type": "number",
+   "description": "Measured heading after the turn."
+  }
+ },
+ "requires": [],
+ "ensures": [
+  {
+   "pred": "facing",
+   "args": {
+    "target": "$target"
+   }
+  }
+ ],
+ "invalidates": [
+  "reachable(*)",
+  "in_view(*)",
+  "pointing_at(*)"
+ ],
+ "precheck": [],
+ "verifier": [
+  {
+   "predicate": "facing(target=$target)",
+   "name": "facing",
+   "args": {
+    "target": "$target"
+   },
+   "negated": false,
+   "meaning": "Base heading within 20 deg of the target bearing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "scene_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "target": {
+   "type": "entity_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "face_target",
+  "verb": "face",
+  "noun": "target",
+  "arguments": [
+   "target"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "rotate_empty",
+    "when": [
+     {
+      "noun": "robot",
+      "field": "right_held",
+      "op": "falsy",
+      "value": true
+     },
+     {
+      "noun": "robot",
+      "field": "left_held",
+      "op": "falsy",
+      "value": true
+     },
+     {
+      "noun": "robot",
+      "field": "right_arm_stowed",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_099",
+      "args": [
+       "$target"
+      ],
+      "kwargs": {},
+      "as": "heading"
+     },
+     {
+      "policy": "policy_036",
+      "args": [
+       "#heading.delta_yaw_deg"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": "Tucked and empty: the measured in-place rotation primitive."
+   },
+   {
+    "path_id": "rotate_loaded",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_066",
+      "args": [
+       "$target"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": "With a load or unfolded arm: slower turn with grasp checks."
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "look",
+   "when": "the target must be observed",
+   "bind": {
+    "target": "$target"
+   },
+   "reason": "",
+   "to_skill_id": "skill_011",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "sequence",
+   "to": "point",
+   "when": "the target must be indicated",
+   "bind": {
+    "target": "$target"
+   },
+   "reason": "",
+   "to_skill_id": "skill_015",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "alternative",
+   "to": "navigate",
+   "when": "turning in place is blocked by furniture",
+   "bind": {
+    "destination": "$target"
+   },
+   "reason": "",
+   "to_skill_id": "skill_001"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

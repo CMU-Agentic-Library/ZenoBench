@@ -23,7 +23,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).wait_for_temperature.execute(...)`
 - Class: `WaitForTemperaturePolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_048
+- Skill Contract paths: contract_051:heat/microwave
 
 ## Caveat
 

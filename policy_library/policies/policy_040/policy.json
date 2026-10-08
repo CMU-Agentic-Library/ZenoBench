@@ -45,7 +45,9 @@
     "class": "RightGripperOpenPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_018:reset/joint_home"
+  ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_002",

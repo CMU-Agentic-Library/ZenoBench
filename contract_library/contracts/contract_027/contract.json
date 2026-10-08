@@ -1,136 +1,223 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_027",
-  "skill_id": "skill_019",
-  "name": "Place on a support while the base moves",
-  "description": "Release one right-held object onto a support during a base move.",
-  "scope": {
-    "unit": "one synchronized moving placement",
-    "includes": [
-      "Release one right-held object onto a support during a base move."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_027",
+ "skill_id": "skill_019",
+ "verb": "drop",
+ "noun": "object",
+ "name": "Drop an object into a container",
+ "description": "Hold the object 5 cm above a container's opening, centred, and let go; the object falls in.",
+ "group": "grasp_and_hand",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "The held object."
   },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "object"
-    },
-    "support": {
-      "type": "support_ref",
-      "required": true,
-      "description": "support"
-    },
-    "base_path": {
-      "type": "pose2d",
-      "required": true,
-      "description": "base path"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "held_by_right_hand",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "target_annotated",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "target_accessible",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "on",
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "right_hand_empty",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "on",
-    "right_hand_empty"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_003",
-    "route": "moving",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_053",
-        "args": [
-          {
-            "arg": "object"
-          },
-          {
-            "arg": "support"
-          },
-          {
-            "arg": "base_path"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object",
-    "support",
-    "base_path"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [
-    {
-      "when": "object remains right-held and base motion has stopped",
-      "skill_id": "skill_005",
-      "reason": "stationary support placement is an alternative to mobile placement"
-    }
-  ],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true,
-      "requires_right_held": true
-    },
-    "support": {
-      "argument": "support",
-      "kind": "support",
-      "source": "rig.ann",
-      "required": true
-    }
-  },
-  "action_predicate": {
-    "name": "deliver_object",
-    "verb": "deliver",
-    "noun": "object",
-    "arguments": [
-      "object",
-      "support",
-      "base_path"
-    ],
-    "verified_by": [
-      "on",
-      "right_hand_empty"
-    ]
+  "container": {
+   "type": "container_ref",
+   "required": true,
+   "description": "The open container."
   }
+ },
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   }
+  },
+  {
+   "pred": "base_near",
+   "args": {
+    "place": "$container"
+   }
+  },
+  {
+   "pred": "uncovered",
+   "args": {
+    "container": "$container"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "inside",
+   "args": {
+    "object": "$object",
+    "container": "$container"
+   }
+  },
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  }
+ ],
+ "invalidates": [
+  "holding(right,$object)"
+ ],
+ "precheck": [
+  {
+   "predicate": "holding(hand=right, object=$object)",
+   "name": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "base_near(place=$container)",
+   "name": "base_near",
+   "args": {
+    "place": "$container"
+   },
+   "negated": false,
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "scene_annotation"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "uncovered(container=$container)",
+   "name": "uncovered",
+   "args": {
+    "container": "$container"
+   },
+   "negated": false,
+   "meaning": "No lid rests on the container rim.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose",
+    "container_profile",
+    "asset_tags"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "inside(object=$object, container=$container)",
+   "name": "inside",
+   "args": {
+    "object": "$object",
+    "container": "$container"
+   },
+   "negated": false,
+   "meaning": "Object centre inside the container's wall profile, between its floor and 3 cm above the rim.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose",
+    "container_profile"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  },
+  "container": {
+   "type": "container_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "drop_object",
+  "verb": "drop",
+  "noun": "object",
+  "arguments": [
+   "object",
+   "container"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "above_opening",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_073",
+      "args": [
+       "$object",
+       "$container"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "pick",
+   "when": "more items go into the same container",
+   "bind": {},
+   "reason": "the hand is free again",
+   "to_skill_id": "skill_017",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "alternative",
+   "to": "place",
+   "when": "a gentle release inside is needed",
+   "bind": {
+    "object": "$object",
+    "receptacle": "$container"
+   },
+   "reason": "",
+   "to_skill_id": "skill_018"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

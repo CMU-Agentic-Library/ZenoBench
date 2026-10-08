@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_072",
+  "legacy_id": "present_held",
+  "name": "Present Held",
+  "description": "Hold the carried object in front of the head camera.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "gesture",
+    "effect_summary": "presenting(name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "presenting(name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_072",
+    "legacy_attribute": "present_held",
+    "class": "PresentHeldPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_024:present/front_of_head"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

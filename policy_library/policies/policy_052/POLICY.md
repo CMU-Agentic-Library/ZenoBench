@@ -23,7 +23,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).pick_while_moving.execute(...)`
 - Class: `PickWhileMovingPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_026
+- Skill Contract paths: contract_025:pick/on_the_move
 - Legacy family Contracts: contract_002
 
 ## Recorded evidence

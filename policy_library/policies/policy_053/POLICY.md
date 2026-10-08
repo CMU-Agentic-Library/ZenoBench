@@ -25,7 +25,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).place_while_moving.execute(...)`
 - Class: `PlaceWhileMovingPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_027
+- Skill Contract paths: contract_026:place/on_the_move
 - Legacy family Contracts: contract_003
 
 ## Recorded evidence

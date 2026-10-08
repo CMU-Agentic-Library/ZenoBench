@@ -1,44 +1,20 @@
-# contract_017 — Press the appliance door button
+# contract_017 — Tuck an arm
 
-Physically press one annotated appliance door button.
+Fold an empty arm to its travel posture along a collision-checked path.
 
-Paired SkillNode: `skill_009`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_009` (`tuck-arm`).
 
-## Inputs
+## Precheck
 
-- `appliance`: appliance_ref
+- [all paths] `hand_empty(hand=$hand)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `button_reachable` — policy_attempt
-- `start_conditions` — policy_attempt
-
-## Planner action predicate
-
-`press_appliance_door_button(appliance)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `button_pressed_this_call` — contract_runner
-
-## Grounded noun slots
-
-- `appliance`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'door_button'}`
+- [all paths] `arm_stowed(hand=$hand)` — GT: arm_joints
 
 ## Policy paths
 
-### fixed
+- `left` when args.hand == 'left': `policy_091()`
+- `right` when always: `policy_003()`
 
-Match before execution: `[]`.
-
-1. `policy_027` with ['appliance']
-2. `policy_028` with ['appliance']
-3. `policy_029` with ['appliance']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_007` / `auto`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

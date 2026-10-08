@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_094",
+  "legacy_id": "press_button",
+  "name": "Press Button",
+  "description": "Press any annotated appliance button.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "appliance",
+    "effect_summary": "button_pressed(button)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "button",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "state",
+      "kind": "keyword_only",
+      "required": false,
+      "default": null
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "button_pressed(button)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_094",
+    "legacy_attribute": "press_button",
+    "class": "PressButtonPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_050:press/generic_key",
+    "contract_051:heat/stove_pot",
+    "contract_076:stop/stove_key_off"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

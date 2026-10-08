@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_076",
+  "legacy_id": "regrasp",
+  "name": "Regrasp",
+  "description": "Set an object down and grasp it again.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "manipulation",
+    "effect_summary": "holding(right, name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "support",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "holding(right, name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_076",
+    "legacy_attribute": "regrasp",
+    "class": "RegraspPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_034:regrasp/set_down_and_pick"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

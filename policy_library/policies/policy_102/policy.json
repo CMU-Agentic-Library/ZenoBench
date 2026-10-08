@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_102",
+  "legacy_id": "shake_held",
+  "name": "Shake Held",
+  "description": "Oscillate a held object sideways.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "manipulation",
+    "effect_summary": "shaken(name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "cycles",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 3
+    },
+    {
+      "name": "amplitude",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.02
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "shaken(name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_102",
+    "legacy_attribute": "shake_held",
+    "class": "ShakeHeldPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_070:shake/lateral"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

@@ -21,7 +21,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).pick_floor_corner.execute(...)`
 - Class: `FloorCornerPickPolicy`
 - Availability: `callable`
-- Direct Contract routes: contract_012, contract_028
 - Legacy family Contracts: contract_002
 
 ## Caveat

@@ -1,62 +1,66 @@
 ---
-name: clear-microwave-door-sweep
-description: Move the robot to the microwave hinge clearance pose and verify a fresh clearance event.
+name: clear-support
+description: Remove every object from a support surface to a destination receptacle.
 ---
 
-# Clear microwave door sweep (skill_050)
+# Clear a support (`skill_050`)
+
+`clear(support: support_ref, receptacle: receptacle_ref)`
+
+Remove every object from a support surface to a destination receptacle.
 
 ## When to use
 
-Move the robot to the microwave hinge clearance pose and verify a fresh clearance event.
+Every object must be removed from one support.
+
+## Not to be confused with
+
+- `collect`: clear is defined by the source support, not by a list of objects.
 
 ## Inputs
 
-- `articulated` (`articulated_ref`): Grounded powered microwave door.
+- `support` (`support_ref`): The surface to clear.
+- `receptacle` (`receptacle_ref`): Where the objects go.
 
-## Preconditions
+## Outputs
 
-- `microwave_annotated` — `contract_precheck`
-- `clearance_path_open` — `policy_attempt`
+- `moved` (`object_list`): Objects that were removed.
 
-## Planner action predicate
+## Applicability
 
-`clear_microwave_door_sweep(articulated)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['microwave_sweep_clear']`.
+Requires hand_empty(hand=right).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `microwave_sweep_clear` — measured by `contract_runner`
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_050` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_058", "compose", ...)`.
+- `support_clear(support=$support)` — No annotated object rests on the support. GT: object_pose, support_annotation.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'door_button'}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `support_clear(support=$support)` (all paths)
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_030(articulated)`
+### `fetch_each_on_support` — when always (default path)
 
+1. `for each item in @support.objects: [fetch](object=$item, receptacle=$receptacle)`
 
-Verifier: `microwave_clear`.
+## Relations
 
-## Related Skills
-
-- `skill_023` (`preparation`) when microwave door sweep is clear and powered opening is next — Measured clearance permits hinge motion.
+- Next step: `wipe` (`skill_037`) (then) — the cleared surface is wiped
+- Next step: `arrange` (`skill_052`) (then) — a new layout is set on the cleared surface
+- Is a fallback for: `wipe` (`skill_037`) (recover) — objects cover the surface
+- Is a fallback for: `arrange` (`skill_052`) (recover) — the support is too crowded
+- Alternative: `empty` (`skill_051`) — the items lie on a surface instead
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One clear microwave door sweep attempt on grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_058`.

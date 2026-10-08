@@ -45,9 +45,8 @@
     "class": "MicrowaveButtonPressPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_017",
-    "contract_018"
+  "skill_contract_paths": [
+    "contract_050:press/microwave_start_staged"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [

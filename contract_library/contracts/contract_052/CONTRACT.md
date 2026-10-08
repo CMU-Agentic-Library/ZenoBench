@@ -1,41 +1,20 @@
-# contract_052 — Translate base locally
+# contract_052 — Chill food
 
-Move an empty, tucked robot along a short local forward axis and measure displacement.
+Keep food in the closed refrigerator until it is at or below a target temperature.
 
-Paired SkillNode: `skill_044`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_044` (`chill-food`).
 
-## Inputs
+## Precheck
 
-- `forward_m`: number
+- [all paths] `in_appliance(object=$food, appliance=$appliance)` — GT: object_pose, appliance_annotation
+- [all paths] `is_closed(articulated=$appliance)` — GT: articulation_joint, articulation_annotation
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `arm_tucked` — policy_attempt
-- `straight_path_clear` — policy_attempt
-
-## Planner action predicate
-
-`translate_base(forward_m)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `base_translated_locally` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `temperature_at_most(object=$food, temp_c=$temp_c)` — GT: thermal_state
 
 ## Policy paths
 
-### fixed
+- `fridge_wait` when appliance.category == 'refrigerator': `policy_089($food, $temp_c, $appliance)`
 
-Match before execution: `[]`.
-
-1. `policy_037` with ['forward_m']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: custom `base_translate`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

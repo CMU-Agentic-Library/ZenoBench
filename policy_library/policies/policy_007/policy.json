@@ -38,8 +38,8 @@
     "class": "SetWaistPitchPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_021"
+  "skill_contract_paths": [
+    "contract_015:bend/to_pitch"
   ],
   "legacy_family_contracts": [
     "contract_008"

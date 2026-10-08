@@ -74,7 +74,7 @@
  },
  "wide_storage_bin": {
   "size": 0.34,
-  "mass": 1.2,
+  "mass": 0.5,
   "tags": [
    "container",
    "storage",
@@ -89,7 +89,38 @@
    0.14
   ],
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
-  "prompt": "one empty open-top blue plastic wide rectangular storage bin, thick rim, no lid, clearly visible hollow interior, isolated product photo"
+  "prompt": "one empty open-top blue plastic wide rectangular storage bin, thick rim, no lid, clearly visible hollow interior, isolated product photo",
+  "extra_handle_colliders": [
+   {
+    "center": [
+     0.1825,
+     0.0,
+     0.0353
+    ],
+    "size": [
+     0.025,
+     0.24,
+     0.02
+    ],
+    "visual": true,
+    "note": "end grip bar (+x end wall), 3.5 cm below the rim"
+   },
+   {
+    "center": [
+     -0.1825,
+     0.0,
+     0.0353
+    ],
+    "size": [
+     0.025,
+     0.24,
+     0.02
+    ],
+    "visual": true,
+    "note": "end grip bar (-x end wall)"
+   }
+  ],
+  "mass_note": "0.5 kg: an empty 34 cm plastic bin (1.2 kg exceeded the two-arm lift at the reachable posture)"
  },
  "juice_bottle": {
   "size": 0.18,
@@ -107,7 +138,8 @@
    0.18
   ],
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
-  "prompt": "clear plastic orange juice bottle with green cap, standing upright, isolated product"
+  "prompt": "clear plastic orange juice bottle with green cap, standing upright, isolated product",
+  "round_top": true
  },
  "plastic_cup": {
   "size": 0.095,
@@ -271,5 +303,127 @@
     ]
    }
   ]
+ },
+ "pot_lid": {
+  "size": 0.25,
+  "mass": 0.22,
+  "tags": [
+   "lid",
+   "cookware"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/pot_lid/result/pot_lid.urdf",
+  "target_size": [
+   0.25,
+   0.25,
+   0.06
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a round stainless steel cooking pot lid with a small black round knob handle in the centre on top, isolated product, plain white background",
+  "top_grasp": {
+   "type": "top_pinch",
+   "crown": true,
+   "round": true,
+   "close_yaw": 0.0,
+   "width": 0.022,
+   "offset_xy": [
+    0.0,
+    0.0
+   ],
+   "height": 0.087,
+   "pre_open": 0.025,
+   "note": "pinch the knob post; pads span 6.2-11.2 cm above the lid rim plane"
+  },
+  "knob_collider": {
+   "center": [
+    0.0,
+    0.0,
+    0.045
+   ],
+   "size": [
+    0.022,
+    0.022,
+    0.035
+   ],
+   "note": "post on top of the low mushroom knob (body frame); the knob alone is too flat for 5 cm pads"
+  }
+ },
+ "kitchen_sponge": {
+  "size": 0.09,
+  "mass": 0.03,
+  "tags": [
+   "sponge",
+   "cleaning_tool",
+   "wiping_tool"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/kitchen_sponge/result/kitchen_sponge.urdf",
+  "target_size": [
+   0.09,
+   0.06,
+   0.035
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a rectangular yellow kitchen cleaning sponge with a green scrub layer on top, isolated product, plain white background"
+ },
+ "trash_can": {
+  "size": 0.3,
+  "mass": 0.9,
+  "tags": [
+   "bin",
+   "trash",
+   "container",
+   "floor_container"
+  ],
+  "collider": "round_container",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/trash_can/result/trash_can.urdf",
+  "target_size": [
+   0.26,
+   0.26,
+   0.3
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a small round open-top grey plastic trash can without lid, isolated product, plain white background"
+ },
+ "cherry_tomato": {
+  "size": 0.028,
+  "mass": 0.012,
+  "tags": [
+   "food",
+   "small_item",
+   "pourable"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/cherry_tomato/result/cherry_tomato.urdf",
+  "target_size": [
+   0.028,
+   0.028,
+   0.026
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a single small round red cherry tomato with a tiny green stem, isolated product, plain white background"
+ },
+ "wooden_block": {
+  "size": 0.05,
+  "mass": 0.06,
+  "tags": [
+   "toy",
+   "block",
+   "stackable"
+  ],
+  "collider": "solid",
+  "lay_flat": false,
+  "urdf": "assets/asset3d/wooden_block/result/wooden_block.urdf",
+  "target_size": [
+   0.05,
+   0.05,
+   0.05
+  ],
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "prompt": "a single plain natural wood toy building block cube with smooth edges, isolated product, plain white background"
  }
 }

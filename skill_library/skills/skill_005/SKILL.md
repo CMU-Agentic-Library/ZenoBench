@@ -1,86 +1,71 @@
 ---
-name: place-an-object-on-a-support
-description: Release one right-held object onto one annotated support.
+name: crouch-torso
+description: Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.
 ---
 
-# Place an object on a support (skill_005)
+# Crouch the torso (`skill_005`)
+
+`crouch(height_m: number?)`
+
+Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.
 
 ## When to use
 
-Release one right-held object onto one annotated support.
+The next target is low (floor, low shelf) or the head must look under something.
+
+## Not to be confused with
+
+- `bend`: bend pitches the waist forward; crouch lowers the torso vertically.
 
 ## Inputs
 
-- `object` (`object_ref`): object
-- `support` (`support_ref`): support
+- `height_m` (`number`, optional): Optional torso joint target in [-0.54, 0]; omit for the lowest.
 
-## Preconditions
+## Applicability
 
-- `held_by_right_hand` — `contract_precheck`
-- `target_annotated` — `policy_attempt`
-- `target_accessible` — `policy_attempt`
+Always applicable.
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`deposit_object_on_support(object, support)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['on', 'right_hand_empty']`.
+- none
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `on` — measured by `contract_runner`
-- `right_hand_empty` — measured by `contract_runner`
+- `not torso_raised()` — Torso lift within 3 cm of its highest position (travel height). GT: torso_joint.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_005` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_013", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `not torso_raised()` (all paths)
+- `torso_at(height_m=$height_m)` (path to_height)
+- `torso_lowered()` (path lowest)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+## May invalidate
 
-### Policy path: microwave_support
+`torso_raised()`, `torso_lowered()`, `torso_at(*)`, `reachable(*)`, `in_view(*)`
 
-Match before execution: `[{'noun': 'support', 'field': 'furniture', 'equals': 'kitchen_microwave'}]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_018(object, support)`
-2. `policy_019(object)`
-3. `policy_020(object)`
+### `to_height` — when args.height_m
 
-### Policy path: edge_held
+1. `policy_004($height_m)`
+- extra postcondition `torso_at(height_m=$height_m)`
 
-Match before execution: `[{'noun': 'object', 'field': 'held_kind', 'equals': 'edge'}]`.
+### `lowest` — when always (default path)
 
-1. `policy_017(object, support)`
+1. `policy_005()`
+- extra postcondition `torso_lowered()`
 
-### Policy path: ordinary_surface
+## Relations
 
-Match before execution: `[{'noun': 'support', 'field': 'kind', 'equals': 'support'}]`.
-
-1. `policy_015(object, support)`
-
-
-Verifier: `contract_003 / surface`.
-
-## Related Skills
-
-- `skill_030` (`alternative`) when the object is edge-held and surface place is unsuitable — Use the edge-specific place policy.
-- `skill_007` (`follows`) when manipulation used an articulated compartment and the task requires closed doors — Close the relevant compartment after manipulation.
-- May follow `skill_004` (`enables`) when the task requires the grasped object on a support.
-- May follow `skill_027` (`enables`) when an object was top-pinched for transfer.
-- May follow `skill_020` (`enables`) when a floor object was lifted and needs a support.
-- May follow `skill_019` (`recovery`) when moving place failed and the object remains right-held.
-- May follow `skill_006` (`alternative`) when the chosen container is unavailable but the task permits a support destination.
+- Next step: `pick` (`skill_017`) (then) — the object is on the floor or a low shelf
+- Next step: `stand` (`skill_006`) (then) — low work is done
+- Is a fallback for: `pick` (`skill_017`) (recover) — the object is on the floor or a low shelf
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one surface placement
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_013`.

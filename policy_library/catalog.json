@@ -385,6 +385,312 @@
       "name": "wait_for_temperature",
       "legacy_id": "wait_for_temperature",
       "definition": "policies/policy_064/policy.json"
+    },
+    {
+      "policy_id": "policy_065",
+      "name": "approach_target",
+      "legacy_id": "approach_target",
+      "definition": "policies/policy_065/policy.json"
+    },
+    {
+      "policy_id": "policy_066",
+      "name": "face_target",
+      "legacy_id": "face_target",
+      "definition": "policies/policy_066/policy.json"
+    },
+    {
+      "policy_id": "policy_067",
+      "name": "retreat_from",
+      "legacy_id": "retreat_from",
+      "definition": "policies/policy_067/policy.json"
+    },
+    {
+      "policy_id": "policy_068",
+      "name": "look_at",
+      "legacy_id": "look_at",
+      "definition": "policies/policy_068/policy.json"
+    },
+    {
+      "policy_id": "policy_069",
+      "name": "explore_room",
+      "legacy_id": "explore_room",
+      "definition": "policies/policy_069/policy.json"
+    },
+    {
+      "policy_id": "policy_070",
+      "name": "search_object",
+      "legacy_id": "search_object",
+      "definition": "policies/policy_070/policy.json"
+    },
+    {
+      "policy_id": "policy_071",
+      "name": "point_at",
+      "legacy_id": "point_at",
+      "definition": "policies/policy_071/policy.json"
+    },
+    {
+      "policy_id": "policy_072",
+      "name": "present_held",
+      "legacy_id": "present_held",
+      "definition": "policies/policy_072/policy.json"
+    },
+    {
+      "policy_id": "policy_073",
+      "name": "drop_into",
+      "legacy_id": "drop_into",
+      "definition": "policies/policy_073/policy.json"
+    },
+    {
+      "policy_id": "policy_074",
+      "name": "stack_on",
+      "legacy_id": "stack_on",
+      "definition": "policies/policy_074/policy.json"
+    },
+    {
+      "policy_id": "policy_075",
+      "name": "rotate_held",
+      "legacy_id": "rotate_held",
+      "definition": "policies/policy_075/policy.json"
+    },
+    {
+      "policy_id": "policy_076",
+      "name": "regrasp",
+      "legacy_id": "regrasp",
+      "definition": "policies/policy_076/policy.json"
+    },
+    {
+      "policy_id": "policy_077",
+      "name": "left_steady",
+      "legacy_id": "left_steady",
+      "definition": "policies/policy_077/policy.json"
+    },
+    {
+      "policy_id": "policy_078",
+      "name": "flip_flat",
+      "legacy_id": "flip_flat",
+      "definition": "policies/policy_078/policy.json"
+    },
+    {
+      "policy_id": "policy_079",
+      "name": "pull_toward_base",
+      "legacy_id": "pull_toward_base",
+      "definition": "policies/policy_079/policy.json"
+    },
+    {
+      "policy_id": "policy_080",
+      "name": "separate_from_neighbour",
+      "legacy_id": "separate_from_neighbour",
+      "definition": "policies/policy_080/policy.json"
+    },
+    {
+      "policy_id": "policy_081",
+      "name": "roll_cylinder",
+      "legacy_id": "roll_cylinder",
+      "definition": "policies/policy_081/policy.json"
+    },
+    {
+      "policy_id": "policy_082",
+      "name": "tip_over",
+      "legacy_id": "tip_over",
+      "definition": "policies/policy_082/policy.json"
+    },
+    {
+      "policy_id": "policy_083",
+      "name": "center_on_support",
+      "legacy_id": "center_on_support",
+      "definition": "policies/policy_083/policy.json"
+    },
+    {
+      "policy_id": "policy_084",
+      "name": "wipe_surface",
+      "legacy_id": "wipe_surface",
+      "definition": "policies/policy_084/policy.json"
+    },
+    {
+      "policy_id": "policy_085",
+      "name": "stir_container",
+      "legacy_id": "stir_container",
+      "definition": "policies/policy_085/policy.json"
+    },
+    {
+      "policy_id": "policy_086",
+      "name": "pour_into",
+      "legacy_id": "pour_into",
+      "definition": "policies/policy_086/policy.json"
+    },
+    {
+      "policy_id": "policy_087",
+      "name": "cover_with_lid",
+      "legacy_id": "cover_with_lid",
+      "definition": "policies/policy_087/policy.json"
+    },
+    {
+      "policy_id": "policy_088",
+      "name": "inspect_receptacle",
+      "legacy_id": "inspect_receptacle",
+      "definition": "policies/policy_088/policy.json"
+    },
+    {
+      "policy_id": "policy_089",
+      "name": "wait_cool",
+      "legacy_id": "wait_cool",
+      "definition": "policies/policy_089/policy.json"
+    },
+    {
+      "policy_id": "policy_090",
+      "name": "wait_heat",
+      "legacy_id": "wait_heat",
+      "definition": "policies/policy_090/policy.json"
+    },
+    {
+      "policy_id": "policy_091",
+      "name": "left_arm_fold",
+      "legacy_id": "left_arm_fold",
+      "definition": "policies/policy_091/policy.json"
+    },
+    {
+      "policy_id": "policy_092",
+      "name": "navigate_to_place",
+      "legacy_id": "navigate_to_place",
+      "definition": "policies/policy_092/policy.json"
+    },
+    {
+      "policy_id": "policy_093",
+      "name": "set_held_height",
+      "legacy_id": "set_held_height",
+      "definition": "policies/policy_093/policy.json"
+    },
+    {
+      "policy_id": "policy_094",
+      "name": "press_button",
+      "legacy_id": "press_button",
+      "definition": "policies/policy_094/policy.json"
+    },
+    {
+      "policy_id": "policy_095",
+      "name": "plan_home",
+      "legacy_id": "plan_home",
+      "definition": "policies/policy_095/policy.json"
+    },
+    {
+      "policy_id": "policy_096",
+      "name": "release_in_place",
+      "legacy_id": "release_in_place",
+      "definition": "policies/policy_096/policy.json"
+    },
+    {
+      "policy_id": "policy_097",
+      "name": "plan_standoff",
+      "legacy_id": "plan_standoff",
+      "definition": "policies/policy_097/policy.json"
+    },
+    {
+      "policy_id": "policy_098",
+      "name": "plan_reach",
+      "legacy_id": "plan_reach",
+      "definition": "policies/policy_098/policy.json"
+    },
+    {
+      "policy_id": "policy_099",
+      "name": "plan_heading",
+      "legacy_id": "plan_heading",
+      "definition": "policies/policy_099/policy.json"
+    },
+    {
+      "policy_id": "policy_100",
+      "name": "plan_retreat",
+      "legacy_id": "plan_retreat",
+      "definition": "policies/policy_100/policy.json"
+    },
+    {
+      "policy_id": "policy_101",
+      "name": "plan_point",
+      "legacy_id": "plan_point",
+      "definition": "policies/policy_101/policy.json"
+    },
+    {
+      "policy_id": "policy_102",
+      "name": "shake_held",
+      "legacy_id": "shake_held",
+      "definition": "policies/policy_102/policy.json"
+    },
+    {
+      "policy_id": "policy_103",
+      "name": "wait_seconds",
+      "legacy_id": "wait_seconds",
+      "definition": "policies/policy_103/policy.json"
+    },
+    {
+      "policy_id": "policy_104",
+      "name": "wave_hand",
+      "legacy_id": "wave_hand",
+      "definition": "policies/policy_104/policy.json"
+    },
+    {
+      "policy_id": "policy_105",
+      "name": "nod_head",
+      "legacy_id": "nod_head",
+      "definition": "policies/policy_105/policy.json"
+    },
+    {
+      "policy_id": "policy_106",
+      "name": "knock_panel",
+      "legacy_id": "knock_panel",
+      "definition": "policies/policy_106/policy.json"
+    },
+    {
+      "policy_id": "policy_107",
+      "name": "touch_object",
+      "legacy_id": "touch_object",
+      "definition": "policies/policy_107/policy.json"
+    },
+    {
+      "policy_id": "policy_108",
+      "name": "plan_square_yaw",
+      "legacy_id": "plan_square_yaw",
+      "definition": "policies/policy_108/policy.json"
+    },
+    {
+      "policy_id": "policy_109",
+      "name": "sweep_together",
+      "legacy_id": "sweep_together",
+      "definition": "policies/policy_109/policy.json"
+    },
+    {
+      "policy_id": "policy_110",
+      "name": "identify_object",
+      "legacy_id": "identify_object",
+      "definition": "policies/policy_110/policy.json"
+    },
+    {
+      "policy_id": "policy_111",
+      "name": "measure_object",
+      "legacy_id": "measure_object",
+      "definition": "policies/policy_111/policy.json"
+    },
+    {
+      "policy_id": "policy_112",
+      "name": "count_category",
+      "legacy_id": "count_category",
+      "definition": "policies/policy_112/policy.json"
+    },
+    {
+      "policy_id": "policy_113",
+      "name": "dip_utensil",
+      "legacy_id": "dip_utensil",
+      "definition": "policies/policy_113/policy.json"
+    },
+    {
+      "policy_id": "policy_114",
+      "name": "sidestep_base",
+      "legacy_id": "sidestep_base",
+      "definition": "policies/policy_114/policy.json"
+    },
+    {
+      "policy_id": "policy_115",
+      "name": "hover_over",
+      "legacy_id": "hover_over",
+      "definition": "policies/policy_115/policy.json"
     }
   ]
 }

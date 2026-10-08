@@ -1,62 +1,75 @@
 ---
-name: set-torso-height
-description: Move the torso lift to one requested joint height.
+name: inspect-receptacle
+description: Look into a container, a cabinet, an appliance cavity or onto a support and report the objects inside or on it. A closed cabinet is opened for the look and closed again.
 ---
 
-# Set torso height (skill_012)
+# Inspect a receptacle (`skill_012`)
+
+`inspect(receptacle: entity_ref)`
+
+Look into a container, a cabinet, an appliance cavity or onto a support and report the objects inside or on it. A closed cabinet is opened for the look and closed again.
 
 ## When to use
 
-Move the torso lift to one requested joint height.
+The contents of a container or cabinet must be seen (opens it if needed).
+
+## Not to be confused with
+
+- `look`: look reports nothing about contents.
+- `search`: inspect examines one given receptacle; search chooses where to look.
 
 ## Inputs
 
-- `height_m` (`number`): height m
+- `receptacle` (`entity_ref`): Container, articulated cabinet/appliance or support to examine.
 
-## Preconditions
+## Outputs
 
-- `right_hand_empty` — `policy_attempt`
-- `target_within_joint_limits` — `policy_attempt`
-- `collision_free_motion` — `policy_attempt`
+- `contents` (`object_list`): Objects found inside/on the receptacle and visible.
 
-## Planner action predicate
+## Applicability
 
-`set_torso_height(height_m)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['posture_at_target']`.
+Requires base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: closed_cabinet (receptacle.kind == 'articulated' and not receptacle.is_open): hand_empty(hand=right).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `posture_at_target` — measured by `contract_runner`
+- `base_near(place=$receptacle)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_012` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_020", "compose", ...)`.
+- `observed(target=$receptacle)` — The robot saw the target in its head camera during this episode (set by look, search, inspect, explore). GT: robot_memory.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `observed(target=$receptacle)` (all paths)
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_004(height_m)`
+### `closed_cabinet` — when receptacle.kind == 'articulated' and not receptacle.is_open
 
+1. `policy_003()`
+2. `policy_062($receptacle)`
+3. `policy_088($receptacle)`
+4. `policy_003()`
+5. `policy_063($receptacle)`
+- extra precondition `hand_empty(hand=right)`
+- Open with the annotation-selected route, look, close again.
 
-Verifier: `contract_008 / torso`.
+### `open_view` — when always (default path)
 
-## Related Skills
+1. `policy_088($receptacle)`
 
-- No fixed relation; select the next node from the task goal and observation.
+## Relations
+
+- Next step: `pick` (`skill_017`) (then) — an object found inside must be taken out
+- Next step: `empty` (`skill_051`) (then) — every object inside must be removed
+- Is a fallback for: `search` (`skill_013`) (substitute) — the object may be inside a closed cabinet
+- Alternative: `look` (`skill_011`) — only the receptacle itself must be seen
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one torso lift adjustment
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_020`.

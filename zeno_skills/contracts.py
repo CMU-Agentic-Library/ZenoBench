@@ -249,13 +249,19 @@ def policy_contract_relations(catalog: list[dict]) -> Mapping[str, Mapping[str, 
     import json
     from pathlib import Path
     public_to_old = {row["policy_id"]: row["id"] for row in catalog}
-    active = json.loads(Path(__file__).with_name("node_contracts.json").read_text())
-    active_used = {public_to_old[step["policy_id"]]
+    active = json.loads((Path(__file__).resolve().parents[1] / "contract_library/skill_contracts.json").read_text())
+
+    def _walk(steps):
+        for step in steps:
+            if "foreach" in step:
+                yield from _walk(step["steps"])
+            elif "policy" in step:
+                yield step["policy"]
+    active_used = {public_to_old[pid]
                    for contract in active["contracts"]
-                   for path in (contract["policy_plan"].get("paths") or
-                                [contract["policy_plan"]])
-                   for step in path["steps"]
-                   if step["policy_id"] in public_to_old}
+                   for path in contract["policy_plan"]["paths"]
+                   for pid in _walk(path["steps"])
+                   if pid in public_to_old}
     if ids != covered | active_used:
         raise ValueError(f"contract mapping does not cover catalog: {sorted(ids - covered - active_used)}")
     return MappingProxyType(relations)

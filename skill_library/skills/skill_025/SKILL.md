@@ -1,63 +1,63 @@
 ---
-name: open-a-manual-handle
-description: Open one handle-operated door or drawer.
+name: rotate-object
+description: Turn the held object about the vertical axis by the requested angle (e.g. align a book's spine).
 ---
 
-# Open a manual handle (skill_025)
+# Rotate a held object (`skill_025`)
+
+`rotate(object: object_ref, degrees: number)`
+
+Turn the held object about the vertical axis by the requested angle (e.g. align a book's spine).
 
 ## When to use
 
-Open one handle-operated door or drawer.
+A held object must turn about the vertical axis (align a handle or label).
+
+## Not to be confused with
+
+- `flip`: flip turns an object upside down; rotate keeps it level.
 
 ## Inputs
 
-- `articulated` (`articulated_ref`): The uniquely grounded door or drawer.
+- `object` (`object_ref`): The held object.
+- `degrees` (`number`): Yaw change in degrees (positive = counter-clockwise).
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `policy_attempt`
-- `target_annotated` — `policy_attempt`
+Requires holding(hand=right, object=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`pull_manual_handle(articulated)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_open_enough']`.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `joint_open_enough` — measured by `contract_runner`
+- `yaw_rotated(object=$object, degrees=$degrees)` — Object yaw changed by the requested angle within 10 deg. GT: object_pose (before/after).
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_025` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_033", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `yaw_rotated(object=$object, degrees=$degrees)` (all paths)
+- `holding(hand=right, object=$object)` (all paths)
 
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'handle', 'forbid_annotation': 'door_button'}`
+## Policy paths (first match on the bound nouns)
 
-### Policy path: fixed
+### `wrist_yaw` — when always (default path)
 
-Match before execution: `[]`.
+1. `policy_075($object, $degrees)`
 
-1. `policy_022(articulated)`
+## Relations
 
-
-Verifier: `contract_004 / handle`.
-
-## Related Skills
-
-- `skill_004` (`enables`) when the target object is enclosed by a closed manual door or drawer — Open access before attempting a general pick.
-- May follow `skill_003` (`alternative`) when a manual door must use an explicit handle route.
+- Next step: `place` (`skill_018`) (enables) — the object is set down in the new orientation
+- Alternative: `regrasp` (`skill_026`) — the grasp, not the yaw, must change
+- Alternative: `shake` (`skill_062`) — the orientation, not the contents, matters
+- Alternative: `square` (`skill_064`) — the object is already in the hand
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One open a manual handle attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_033`.

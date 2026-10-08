@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_075",
+  "legacy_id": "rotate_held",
+  "name": "Rotate Held",
+  "description": "Turn a held object about the vertical axis.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "manipulation",
+    "effect_summary": "yaw_rotated(name, degrees)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "degrees",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "yaw_rotated(name, degrees)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_075",
+    "legacy_attribute": "rotate_held",
+    "class": "RotateHeldPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_033:rotate/wrist_yaw",
+    "contract_072:square/pick_rotate_place"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

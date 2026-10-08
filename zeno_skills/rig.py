@@ -40,6 +40,9 @@ class Rig:
                                        ("left_gripper_left_finger_axis", "left_gripper_right_finger_axis")], dtype=torch.int32)
         self.left_q_cmd = np.array([LEFT_ARM_FOLD.get(n, 0.0) for n in self.left_kin.names[2:]], float)
         self.left_grip_cmd = 0.04
+        self.head = torch.tensor([robot.dof_names.index(n) for n in ("head_yaw_joint", "head_pitch_joint")],
+                                 dtype=torch.int32)
+        self.head_cmd = np.zeros(2)
         self.anchor = stage.GetPrimAtPath(ANCHOR)
         self.base_z = float(self.anchor.GetAttribute("physics:localPos0").Get()[2])
         self.q_cmd = self.q()
@@ -74,27 +77,19 @@ class Rig:
         self.geo = Geometry(ann)
 
         self.thermal = None
+        # Facts the robot recorded (seen objects, wiped surfaces ...) and the
+        # support each object started on; see predicates.memory().
+        self.memory = {"observed": {}, "wiped": {}, "stirred": {}, "explored": {},
+                       "initial_support": {n: o.get("support") for n, o in ann.objects.items()}}
 
     def configure_thermal(self, task):
         if task.get("thermal"):
             from .thermal import ThermalModel
-            self.thermal = ThermalModel(task["thermal"])
+            self.thermal = ThermalModel(task["thermal"], sources=task.get("thermal_sources"))
 
     def _advance_thermal(self, dt):
-        if self.thermal is None:
-            return
-        a = self.ann.art(self.thermal.appliance)
-        closed = abs(self.joint(a["name"]) - a["closed_q"]) <= 0.10
-        b = a["cavity_aabb"]
-        inside = []
-        if closed and self.thermal.active:
-            for name in self.thermal.config:
-                if name not in self._bodies:
-                    continue
-                p, _ = self.obj_pose(name)
-                if all(b[i] + 0.005 < p[i] < b[i + 3] - 0.005 for i in range(3)):
-                    inside.append(name)
-        self.thermal.advance(dt, inside, closed)
+        if self.thermal is not None:
+            self.thermal.step(self, dt)
 
     # ------------------------------------------------------------ state
     def q(self):
@@ -106,6 +101,10 @@ class Rig:
     def left_q(self):
         arm = self.robot.get_joint_positions()[self.left.long()].cpu().numpy().astype(float)
         return np.r_[self.q()[:2], arm]
+
+    def head_q(self):
+        v = self.robot.get_joint_positions()[self.head.long()].cpu().numpy().astype(float)
+        return {"head_yaw_joint": float(v[0]), "head_pitch_joint": float(v[1])}
 
     def left_fingers(self):
         return self.robot.get_joint_positions()[self.left_fing.long()].cpu().numpy().astype(float)
@@ -204,6 +203,8 @@ class Rig:
                                                        joint_indices=self.left))
             self.robot.apply_action(ArticulationAction(joint_positions=t.full((2,), float(self.left_grip_cmd)),
                                                        joint_indices=self.left_fing))
+            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.head_cmd, dtype=t.float32),
+                                                       joint_indices=self.head))
             render = bool(self.cams) and self.tick % self.stride == 0
             self.sim.step(render=render)
             self.tick += 1
@@ -286,7 +287,12 @@ class Rig:
                         prev = q
                     qs = dense
             if not ok and q_hint is not None:
-                qs = self.joint_path(np.asarray(q_hint, float), label, check=collision)
+                # a large joint-space swing is always collision-checked, even for
+                # contact moves (a 2 rad swing put the forearm through a trash can)
+                big = float(np.max(np.abs(np.asarray(q_hint, float) - self.q_cmd))) > 1.0
+                if big:
+                    self.kin.scene = scene          # restored for this check even in contact moves
+                qs = self.joint_path(np.asarray(q_hint, float), label, check=collision or big)
                 ok = True
             if not ok:
                 q_goal, ok2 = self.kin.ik_global(np.asarray(p, float), R, seeds=[self.q_cmd])
@@ -304,6 +310,15 @@ class Rig:
             extra = {"q": np.round(self.q(), 3).tolist(), "q_cmd": np.round(self.q_cmd, 3).tolist()}
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
+
+    def joint_path_via(self, vias):
+        """Dense joint waypoints from q_cmd through ``vias`` (already checked)."""
+        out, qa = [], self.q_cmd.copy()
+        for qb in vias:
+            k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
+            out += [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+            qa = qb
+        return out
 
     def joint_path(self, q_goal, label=None, check=True):
         """Joint-space move to q_goal, collision-checked (the straight
@@ -465,7 +480,44 @@ class Rig:
                     if all(self.kin.free(f) for f in fold[::3]):
                         self.follow(qs + fold)
                         return True
-            self.log("tuck_blocked")
+            # the straight fold clips the furniture/door: fold one joint at a
+            # time (wrist first or shoulder first), then via random postures
+            from .planner import _segment_free
+            rest = self.kin.rest
+            # only with an open hand: closed on a handle, the arm must not
+            # fold away (the caller backs the base out and pulls instead)
+            if self.kin.free(rest) and float(self.grip_cmd) > 0.02:
+                arm = list(range(2, len(rest)))
+                for order in (arm[::-1], arm):
+                    q, path = self.q_cmd.copy(), []
+                    for j in order:
+                        nxt = q.copy()
+                        nxt[j] = rest[j]
+                        if not _segment_free(self.kin, q, nxt):
+                            break
+                        path.append(nxt)
+                        q = nxt
+                    else:
+                        if _segment_free(self.kin, q, rest):
+                            self.log("tuck_jointwise")
+                            self.follow(self.joint_path_via([*path, rest]))
+                            return True
+                rng = np.random.default_rng(0)
+                for _ in range(300):
+                    u = rng.uniform(0.2, 0.8)
+                    via = self.q_cmd + (rest - self.q_cmd) * u
+                    via[2:] += rng.normal(0.0, 0.5, len(rest) - 2)
+                    via = np.clip(via, self.kin.lo, self.kin.hi)
+                    via[:2] = self.q_cmd[:2]
+                    if self.kin.free(via) and _segment_free(self.kin, self.q_cmd, via) and \
+                            _segment_free(self.kin, via, rest):
+                        self.log("tuck_via_random")
+                        self.follow(self.joint_path_via([via, rest]))
+                        return True
+            self.log("tuck_blocked", rest_clearance=round(float(self.world.clearance(self.kin, self.kin.rest,
+                                                                                     **self.kin.coll_kw)), 4),
+                     current_clearance=round(float(self.world.clearance(self.kin, self.q_cmd, **self.kin.coll_kw)), 4),
+                     left_active=bool(getattr(self.world, "left_active", False)))
             return False
         finally:
             self.kin.coll_kw = kw
@@ -484,7 +536,19 @@ class Rig:
         """Follow a list of (x, y, yaw_deg) waypoints with one smooth time
         scaling over the whole path (accelerate over ``ramp`` s, cruise,
         decelerate) instead of stopping at every waypoint: the stop-and-go
-        jerks shook pinched objects out of the hand."""
+        jerks shook pinched objects out of the hand.
+
+        A container held by a one-hand rim pinch hangs off a thin wall and
+        pivots under base accelerations: it is driven at half speed with a
+        longer ramp."""
+        if self.held is not None and self.held.get("kind") != "bimanual":
+            a = self.ann.asset_of(self.ann.objects[self.held["name"]]) if self.held["name"] in self.ann.objects else {}
+            if a.get("container"):
+                speed, turn, ramp = min(speed, 0.18), min(turn, 0.35), max(ramp, 1.8)
+        if getattr(self, "left_held", None) is not None and self.held is None:
+            # a load in the left hand alone (after a handover) hangs from one
+            # pinch: drive gently (a full-speed drive shook a rolling pin out)
+            speed, turn, ramp = min(speed, 0.18), min(turn, 0.35), max(ramp, 1.8)
         x0, y0, yaw0 = self.base_pose()
         pts = [(x0, y0, yaw0)]
         for x, y, yaw in path:

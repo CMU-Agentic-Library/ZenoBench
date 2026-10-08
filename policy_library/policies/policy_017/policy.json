@@ -49,9 +49,8 @@
     "class": "EdgePlacePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_013",
-    "contract_038"
+  "skill_contract_paths": [
+    "contract_026:place/edge_held_flat"
   ],
   "legacy_family_contracts": [
     "contract_003"

@@ -1,47 +1,19 @@
-# contract_022 — Place an object on the microwave cavity support
+# contract_022 — Explore a room
 
-Release one right-held object onto the annotated microwave cavity support.
+Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen.
 
-Paired SkillNode: `skill_014`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_014` (`explore-room`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: microwave_support_ref
+- none
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — contract_precheck
-- `target_annotated` — policy_attempt
-- `target_accessible` — policy_attempt
-
-## Planner action predicate
-
-`load_microwave_cavity(object, support)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `on` — contract_runner
-- `right_hand_empty` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True, 'furniture_equals': 'kitchen_microwave'}`
+- [all paths] `room_explored(room=$room)` — GT: robot_memory, room_annotation
 
 ## Policy paths
 
-### fixed
+- `viewpoints` when always: `policy_069($room)`
 
-Match before execution: `[]`.
-
-1. `policy_018` with ['object', 'support']
-2. `policy_019` with ['object']
-3. `policy_020` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_003` / `microwave`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

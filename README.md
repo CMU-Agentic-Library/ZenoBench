@@ -2,9 +2,11 @@
 
 An Isaac Sim house with baked physics, **ground-truth (GT) annotations for every
 asset**, **annotation-driven manipulation skills** (IK + grasp selection + base
-planning), and **ten canonical household task specs plus two added task scenes**. The house is an Infinigen layout.
-Most task objects were generated with [EmbodiedGen V2](https://github.com/HorizonRobotics/EmbodiedGen)
-text-to-3D, including the twelve textured task props documented in [the V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md).
+planning), a **verb-based SkillNode library** for an upper-layer VLM (one verb + one noun per skill, GT-checked
+pre/postconditions, noun-selected policy paths), and **ten canonical household task specs plus a kitchen skills
+scene**. The house is an Infinigen layout. Most task objects were generated with
+[EmbodiedGen V2](https://github.com/HorizonRobotics/EmbodiedGen) text-to-3D, including the seventeen textured props
+documented in [the V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md).
 
 <p align="center">
   <img src="media/tasks/collect_fruits.gif" width="49%" alt="collect_fruits: apple and orange from the dining table into the basket on the living-room bookcase"/>
@@ -22,17 +24,73 @@ and the powered microwave hinge target. Objects and doors are never teleported; 
 temperature uses a separate task-level model. Success is measured from simulator state
 (joint angle, object pose, finger gap, and task temperature).
 
-## Policy 与 contract
+## SkillNode / Contract / Policy
 
-[GT policy 梳理](docs/GT_POLICY.md) 说明动作边界；[能力目录](docs/POLICY_CATALOG.md) 与[物理验证记录](docs/POLICY_VERIFICATION.md) 列出 64 项公开入口及各自的验证状态。[Contract 提案](docs/CONTRACT_PROPOSAL.md) 记录八类接口、具体路线及验证要求。
+<!-- library:start -->
+**70 个动词 SkillNode**，一一对应 70 个 Contract，共 120 条按名词选择的 policy 路径，覆盖 114/115 个底层 policy（退役 1 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 71 个 GT 谓词；关系图有 98 条上一步/下一步、43 条 fallback、45 条 alternative。
 
-[旧版 family 关系图 PNG](docs/contract_layers_preview.png) 与 [SVG](docs/contract_layers.svg) 展示八类通用 Contract 的历史接口视图；当前一对一 SkillNode／Contract 目录以 [SkillNode Library](skill_library/README.md) 为准：**50 个 SkillNode、50 个配对 Contract、64 个公开底层 policy 入口**。`ContractRunner` 根据已绑定名词选择 Contract 内的 policy 路径并检查实测结果。已有子图校验与执行接口；VLM 规划及失败后的重规划由上层调用。
+| 类别 | 动词 |
+|---|---|
+| 底盘与身体 | `navigate`, `approach`, `face`, `retreat`, `crouch`, `stand`, `bend`, `straighten`, `tuck`, `reset`, `sidestep`, `wait` |
+| 感知与手势 | `look`, `inspect`, `search`, `explore`, `point`, `present`, `identify`, `measure`, `count`, `wave`, `nod` |
+| 抓取与手 | `pick`, `place`, `drop`, `stack`, `release`, `handover`, `lift`, `lower`, `rotate`, `regrasp`, `brace`, `flip`, `shake`, `hover`, `square` |
+| 非抓取接触与工具 | `push`, `pull`, `expose`, `separate`, `center`, `roll`, `tip`, `upright`, `wipe`, `stir`, `pour`, `touch`, `knock`, `sweep`, `dip` |
+| 门、抽屉与电器 | `open`, `close`, `press`, `heat`, `chill`, `cover`, `uncover`, `stop` |
+| 多物体（嵌套 Contract） | `fetch`, `collect`, `sort`, `clear`, `empty`, `arrange`, `restore`, `swap`, `hide` |
+<!-- library:end -->
+
+上层 VLM 读取 [vlm_skill_catalog.json](skill_library/vlm_skill_catalog.json)（或单个 `skill_library/skills/skill_XXX/skill.json`），输出 schema 2 技能子图；[graph.py](skill_library/graph.py) 校验并 grounding，[runtime.py](skill_library/runtime.py) 逐节点调用 Contract。每次调用都在执行前评估 GT 前置条件，按名词选择 policy 路径，执行后评估 GT 后置条件，失败时返回测得的谓词与 fallback 候选。设计、关系类型和生成方式见 [SkillNode Library](skill_library/README.md)，Contract 与 policy 见 [Contract Library](contract_library/README.md) 和 [Policy Library](policy_library/README.md)。
+
+<!-- verification:start -->
+<!-- verification:end -->
+
+<!-- plans:start -->
+**任务分解**：[tasks.json](skill_library/tasks.json) 中 35/35 个任务由符号规划器（同一套 GT 谓词与导出的前后条件）分解为 SkillNode 链，子图在 [plans/](skill_library/plans/)。
+
+| 任务 | 步数 | SkillNode 链（动词/路径） |
+|---|---|---|
+| `collect_fruits` | 8 | navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/top_pinch → navigate/carry → place/container |
+| `tidy_toys` | 12 | navigate/empty → pick/floor_top → navigate/carry → place/container → navigate/empty → pick/floor_top → navigate/carry → place/container → navigate/empty → pick/top_pinch → navigate/carry → place/container |
+| `shelve_books` | 8 | navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat |
+| `desk_prep` | 12 | navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/top_pinch → navigate/carry → place/surface → navigate/empty → pick/round_rim → navigate/carry → place/surface |
+| `breakfast_setup` | 1 | arrange/place_near_common_spot |
+| `heat_breakfast` | 19 | navigate/empty → open/refrigerator → navigate/empty → open/powered_microwave → navigate/empty → pick/inside_cabinet_or_fridge → navigate/carry → place/microwave_staged → close/powered → navigate/empty → heat/microwave → stop/microwave_door → pick/microwave_cavity → navigate/carry → place/surface → navigate/empty → close/handle_push → navigate/empty → close/powered |
+| `heat_breakfast_preloaded` | 2 | navigate/empty → heat/microwave |
+| `heat_breakfast_combo` | 10 | navigate/empty → heat/microwave → navigate/empty → open/refrigerator → navigate/empty → pick/inside_cabinet_or_fridge → navigate/carry → place/surface → navigate/empty → close/handle_push |
+| `recycle_and_store` | 12 | navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/floor_top → navigate/carry → place/container |
+| `organize_utility_items` | 12 | navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat |
+| `cook_tomato_soup` | 14 | navigate/empty → uncover/knob_lift_aside → navigate/empty → pick/top_pinch → navigate/carry → stir/circle_below_rim → navigate/carry → place/surface → pick/top_pinch → navigate/carry → place/container → heat/stove_pot → pick/top_pinch → cover/rim_plane |
+| `heat_without_microwave` | 5 | navigate/empty → pick/round_rim → navigate/carry → place/stove_burner → heat/stove_pot |
+| `heat_can_in_microwave` | 9 | navigate/empty → open/powered_microwave → navigate/empty → pick/top_pinch → navigate/carry → place/microwave_staged → close/powered → navigate/empty → heat/microwave |
+| `chill_drink` | 8 | navigate/empty → open/refrigerator → navigate/empty → pick/top_pinch → navigate/carry → place/cabinet_or_fridge_shelf → close/handle_push → chill/fridge_wait |
+| `throw_away_can` | 4 | navigate/empty → pick/top_pinch → navigate/carry → place/container |
+| `stack_blocks` | 3 | navigate/empty → pick/top_pinch → stack/top_face |
+| `wipe_island` | 4 | navigate/empty → pick/top_pinch → wipe/sponge_strip → place/surface |
+| `lay_down_bottle` | 2 | navigate/empty → tip/push_high |
+| `roll_pin` | 2 | navigate/empty → roll/push_above_axis |
+| `flip_book` | 2 | navigate/empty → flip/edge_roll |
+| `hide_block` | 3 | navigate/empty → uncover/knob_lift_aside → hide/container_with_lid |
+| `greet_and_point` | 3 | wave/raised_swing → nod/pitch_cycles → point/front |
+| `find_lid` | 1 | look/head_only |
+| `explore_living_room` | 1 | explore/viewpoints |
+| `count_tomatoes` | 1 | count/head_sweep |
+| `inspect_cabinet` | 1 | look/turn_then_head |
+| `knock_then_open` | 3 | navigate/empty → knock/panel_taps → open/hinged_door |
+| `square_block` | 2 | navigate/empty → square/pick_rotate_place |
+| `swap_blocks` | 1 | swap/via_buffer |
+| `sort_items` | 2 | fetch/to_container → fetch/to_container |
+| `empty_mug` | 3 | fetch/to_surface → fetch/to_surface → fetch/to_surface |
+| `clear_tv_stand` | 2 | fetch/to_surface → fetch/to_surface |
+| `sweep_blocks` | 1 | sweep/push_to_centroid |
+| `present_block` | 3 | navigate/empty → pick/top_pinch → present/front_of_head |
+| `serve_in_left_hand` | 4 | navigate/empty → brace/left_rim_pinch → navigate/empty → open/left_holds_load |
+<!-- plans:end -->
 
 ---
 
 ## Contents
 
-- [Policy 与 contract](#policy-与-contract)
+- [SkillNode / Contract / Policy](#skillnode--contract--policy)
 - [Scenes](#scenes)
 - [New EmbodiedGen V2 assets and task scenes](#new-embodiedgen-v2-assets-and-task-scenes)
 - [Tasks (ZenoBench)](#tasks-zenobench)
@@ -86,9 +144,17 @@ The [organize-utility-items scene](tasks/organize_utility_items/scene.usd) place
 | --- | --- | --- | --- |
 | <img src="tasks/organize_utility_items/check/overview.png" width="255" alt="Utility task overview"/> | <img src="tasks/organize_utility_items/check/side_table.png" width="255" alt="V2 cup and rolling pin"/> | <img src="tasks/organize_utility_items/check/tv_stand.png" width="255" alt="V2 bottle and tissue box"/> | <img src="tasks/organize_utility_items/check/bookcase.png" width="255" alt="V2 sorting tray"/> |
 
-All 12 additions have textured V2 visual meshes, collision meshes, URDFs, converted USDs, and shared grasp annotations. The smaller storage bin is an available scene variant. The [V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md) lists their dimensions and rebuild commands. The [kitchen pot demo](scenes/kitchen_pot/scene.usd) uses an open V2 pot with two side handles; its handle and rim are grasp candidates. All three rebuilt V2 scenes pass their three-second stability checks ([recycling](tasks/recycle_and_store/check/check.json), [utility](tasks/organize_utility_items/check/check.json), [pot](scenes/kitchen_pot/check/check.json)). A V2 soda-can pick passed `contract_012` with 5.85 cm lift, then a separate two-Contract run placed the can inside the V2 wide bin (`contract_014`, `inside=true`). The V2 pot handle has no passing physical lift yet. See [physical findings](skill_library/verification/FINDINGS.md). Earlier Contract passes on the replaced procedural meshes are historical results and do not establish success on the V2 meshes.
+All 17 V2 props (the 12 task props and the 5 SkillNode-library props) have textured visual meshes, collision meshes, URDFs, converted USDs, and shared grasp annotations; the gallery below shows them in its last three rows. The smaller storage bin is an available scene variant. The [V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md) lists their dimensions and rebuild commands. The [kitchen pot demo](scenes/kitchen_pot/scene.usd) uses an open V2 pot with two side handles; its handle and rim are grasp candidates. The rebuilt V2 scenes pass their three-second stability checks ([recycling](tasks/recycle_and_store/check/check.json), [utility](tasks/organize_utility_items/check/check.json), [pot](scenes/kitchen_pot/check/check.json), [kitchen skills](tasks/kitchen_skills/check/check.json)). Physical Skill Contract results on these assets are listed per verb in [verification/STATUS.md](skill_library/verification/STATUS.md).
 
 ---
+
+### Kitchen skills scene
+
+`tools/build_kitchen_scene.py` adds a cooking corner to the living room as a layer over the appliance scene (`sim/zeno_house_kitchen.usd`): a 1.7 m prep island and an electric stove with two burner discs and a physical power key. The footprint was chosen by a search that keeps the base paths between the start, microwave, refrigerator, dining table, bookcase and TV stand open. The stove is a task-level heat source: pressing its key toggles the burner, and food inside a vessel standing on a burner heats (`zeno_skills/thermal.py`, which also models refrigerator cooling). The [`kitchen_skills`](task_specs/kitchen_skills.json) scene places the five new props from [`embodiedgen_skill_assets.json`](assets/embodiedgen_skill_assets.json) (pot lid, sponge, trash can, cherry tomatoes, wooden blocks) next to existing ones, so that every verb in the SkillNode library has an object to act on. `tools/make_kitchen_scene.sh` rebuilds, settles, checks and annotates it.
+
+| Prep island | Stove (pot with lid, free burner, power key) and trash can |
+| --- | --- |
+| <img src="tasks/kitchen_skills/check/island.png" width="420" alt="Prep island with rolling pin, bottle, blocks, spoon, book, mug of tomatoes, sponge and can"/> | <img src="tasks/kitchen_skills/check/stove.png" width="420" alt="Stove with covered pot, free burner, power key and trash can"/> |
 
 ## Tasks (ZenoBench)
 
@@ -98,7 +164,7 @@ with their candidate supports, the alternatives, and the goal. A task is **score
 `zeno_skills/evaluator.py`** from simulator state only, and **solved by the goal-driven scripted policy
 `zeno_skills/task_policy.py`**, which turns the goal into navigation, manipulation,
 and appliance skills for the original task set. The [GT policy inventory](docs/GT_POLICY.md) separates this scripted
-baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate → policy → evaluate, then writes `result.json` and a video. The new `recycle_and_store` scene also has a saved six-node SkillNode control graph; its full-task result is reported separately below.
+baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate → policy → evaluate, then writes `result.json` and a video. Each task can also be solved as a SkillNode subgraph: `python -m skill_library.planner --task <task>` writes one to `skill_library/plans/`, and `tools/run_gpt_skill_task.py --proposal-file` executes it through the Skill Contracts.
 
 <!-- TASK_VIDEOS -->
 | task | rollout (sped up) | result |
@@ -112,9 +178,9 @@ baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate
 | **desk_prep** | <img src="media/tasks/desk_prep.gif" width="420"/><br>[video](media/tasks/desk_prep.mp4) | **success**, progress 100%<br>625 s simulated |
 <!-- /TASK_VIDEOS -->
 
-[recycle_and_store](task_specs/recycle_and_store.json) is the ninth task: put the soda can, snack carton and foam cube into the wide storage bin on the bookcase. Its [scene preview](tasks/recycle_and_store/check/overview.png) and physics check pass; the first pick→insert pair passed its Contracts. The saved [six-node control graph](skill_library/examples/recycle_and_store.skill_subgraph.json) has **not** completed the whole task: navigation to the second object cannot safely fold the arm at the bookcase. See the [measured finding](skill_library/verification/FINDINGS.md).
+[recycle_and_store](task_specs/recycle_and_store.json) is the ninth task: put the soda can, snack carton and foam cube into the wide storage bin on the bookcase. Its [scene preview](tasks/recycle_and_store/check/overview.png) and physics check pass. Its SkillNode decomposition is in [plans/](skill_library/plans/recycle_and_store.skill_subgraph.json); the fold-blocked-at-the-bookcase failure of the earlier run is fixed (navigation backs out before folding).
 
-[organize_utility_items](task_specs/organize_utility_items.json) is the tenth task, adding six differently shaped objects across the house. Its [scene](tasks/organize_utility_items/check/overview.png) passes physics checks; `juice_bottle` passed one pick Contract. A [12-node, noun-bound SkillNode graph](skill_library/examples/organize_utility_items.skill_subgraph.json) validates structurally, but its complete task result is not yet established. Object-specific cup-rim, flat-edge, rolling-pin and shallow-tray routes require separate physical evidence.
+[organize_utility_items](task_specs/organize_utility_items.json) is the tenth task, adding six differently shaped objects across the house. Its [scene](tasks/organize_utility_items/check/overview.png) passes physics checks, and its SkillNode decomposition is in [plans/](skill_library/plans/organize_utility_items.skill_subgraph.json).
 
 ### Breakfast heating (appliance tasks)
 
@@ -287,15 +353,15 @@ $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
 
 ## Skill / Contract / Policy public IDs
 
-The [Skill Library](skill_library/README.md) provides **50 planner-visible SkillNodes**, each with a distinct verb+noun action predicate and typed, fillable arguments. The [Contract Library](contract_library/README.md) has **50 one-to-one executable Contracts** for those nodes. The [Policy Library](policy_library/README.md) records **64 public low-level policy entries** that Contracts may compose. Public IDs use `skill_XXX`, `contract_XXX`, and `policy_XXX`; [the mapping](docs/INTERFACE_IDS.md) lists legacy aliases. The older eight family Contract interfaces remain compatible. Existing scripts and Python policy class names remain callable.
+The [Skill Library](skill_library/README.md) provides the planner-visible verb SkillNodes (see the counts above), each one verb + one noun with typed inputs and outputs. The [Contract Library](contract_library/README.md) has one executable Contract per SkillNode, and the [Policy Library](policy_library/README.md) records every public low-level policy that the Contracts compose. Public IDs use `skill_XXX`, `contract_XXX` and `policy_XXX`; [the mapping](docs/INTERFACE_IDS.md) lists legacy aliases. The eight older family Contracts and the Python policy class names remain callable.
 
-The [README action table](skill_library/README.md#动词可填写参数与验证谓词) lists every verb, noun slot, numeric parameter and measured postcondition. The [SkillNode verification report](skill_library/verification/STATUS.md) records **46/50 nodes with at least one representative physical pass**; this is not a guarantee for every object or task scene.
+The [SkillNode table](skill_library/SKILLS.md) lists every verb, its signature, noun-selected paths and postconditions; [verification/STATUS.md](skill_library/verification/STATUS.md) records which verbs and paths passed in Isaac Sim with the measured GT facts.
 
 ## Atomic GT policy class API
 
 `zeno_skills/policies/` exposes target-parameterized `AtomicPolicy.execute(...)` classes bound to one live `Rig` through `PolicySuite(rig)`. A policy is atomic at the skill-graph boundary: its internal controller may approach, grasp, lift, and check the result. Asset-specific contact points live in `annotations/assets.json`. `TaskPolicy` still composes `PolicySuite` calls for the scripted baseline. The separate `skill_library` validates and executes caller-proposed SkillNode DAGs; [the GPT experiment runner](tools/run_gpt_skill_task.py) can propose them, but its existence is not evidence of full-task success.
 
-The [capability catalog](docs/POLICY_CATALOG.md) has **64 public entries**: **58** passed at least one stated Isaac Sim scene and **6** remain callable without a successful object-level check. See the [verification record](docs/POLICY_VERIFICATION.md) before choosing a route for a new object or scene. General dispatchers and convenience composites are counted separately.
+The [capability catalog](docs/POLICY_CATALOG.md) lists every public entry with its implementation status, and [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md) shows which SkillNode paths call it. See the [verification record](docs/POLICY_VERIFICATION.md) for the single-step checks of the original entries. General dispatchers and convenience composites are counted separately.
 
 | Interface | Representative calls |
 |---|---|
@@ -308,7 +374,7 @@ The [capability catalog](docs/POLICY_CATALOG.md) has **64 public entries**: **58
 
 ### Compose through contracts
 
-The older eight [family Contract interfaces](docs/CONTRACT_PROPOSAL.md) map semantic calls such as `pick.v1` to policy routes. The newer [50 one-to-one Contracts](contract_library/README.md) accept typed noun arguments and can choose a path based on the bound object's annotations. `ContractRunner` executes the path, checks measured pre/postconditions and records failure for the caller to handle. It does not replan automatically. A verified legacy four-step plan is [contract_microwave_cycle.json](tests/fixtures/contract_microwave_cycle.json):
+The older eight [family Contract interfaces](docs/CONTRACT_PROPOSAL.md) map semantic calls such as `pick.v1` to policy routes. The verb [Skill Contracts](contract_library/README.md) take named noun arguments and choose a path from the bound object's annotation and state: `SkillContractRunner(rig).run("pick", {"object": "apple"})`, or `ContractRunner(rig).run_skill(...)`. They check GT pre/postconditions and record failure for the caller to handle; nothing is replanned automatically. A verified legacy four-step plan is [contract_microwave_cycle.json](tests/fixtures/contract_microwave_cycle.json):
 
 ```bash
 OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
@@ -383,6 +449,11 @@ Each fix removes a bug found in the URDF→USD import. The code is in `zeno_skil
 | Hinges with no damping; joint friction made doors un-openable | Viscous damping only on hinges; small friction on drawers |
 | Objects spawned floating or interpenetrating | Drop-and-settle, rest poses written back |
 | Every generated asset shared one texture file (`material_0.png`) | Per-asset textures (`tools/fix_textures.py`) |
+| Round containers had a gap between the floor plate and the wall; small items fell through | Floor tiles out to the wall |
+| Small light bodies tunnelled and rolled forever | Per-body CCD and angular damping for objects < 6 cm |
+| Dangling `lidar_link` visual reference in the robot USD | Empty prim at the referenced path |
+
+The full list, including what was checked and kept, is in [the physics and asset audit](docs/PHYSICS_AUDIT.md).
 
 ---
 
@@ -406,11 +477,13 @@ $ISAACLAB_PYTHON tools/run_task.py --task collect_fruits
 $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
     --ann tasks/collect_fruits/annotation.json --out runs/demo --plan "pick orange" "place orange in:fruit_basket"
 
-# validate a six-node SkillNode control graph and its noun bindings without starting Isaac Sim
+# plan a task as a SkillNode subgraph and validate it without starting Isaac Sim
+python -m skill_library.planner --task recycle_and_store
 python tools/run_gpt_skill_task.py --task recycle_and_store --validate-only \
-    --proposal-file skill_library/examples/recycle_and_store.skill_subgraph.json \
-    --bindings-file skill_library/examples/recycle_and_store.bindings.json \
-    --out runs/recycle_control_validation
+    --proposal-file skill_library/plans/recycle_and_store.skill_subgraph.json --out runs/recycle_plan_validation
+
+# run SkillNode verification scenarios (GT pre/postconditions measured per call)
+$ISAACLAB_PYTHON tools/verify_skills.py --id k_trash --video
 
 python -m pytest tests/ skill_library/tests/   # simulator-free regression tests
 ```
@@ -427,16 +500,17 @@ The [creation README](docs/README.md) gives the task, scene, annotation, and Par
 ## Repository layout
 
 ```text
-sim/zeno_house.usd      final house scene (+ sim/checks)
+sim/zeno_house.usd      final house scene (+ sim/checks); zeno_house_appliances.usd, zeno_house_kitchen.usd layers
 task_specs/             task definitions (+ places.json aliases, examples/)
 tasks/<task>/           built task: layer, task.json, annotation.json, check renders
-skill_library/          50 planner-visible SkillNodes, relations, subgraph examples, verification
-contract_library/       one-to-one Contract definitions and exports
-policy_library/         public low-level policy records
+skill_library/          verb SkillNodes (definitions.py -> skills/, catalogs), relations, planner, tasks, verification
+contract_library/       one Skill Contract per SkillNode (generated) + legacy family Contracts
+policy_library/         public low-level policy records and coverage (generated)
 annotations/            assets.json, zeno_house.json, house_static.json
 zeno_skills/            kinematics, collision, annotations, planner, rig, skills, physics,
-                        policies/ (atomic GT policy classes), tasks (spec loading),
-                        evaluator (success check), task_policy, runtime
+                        predicates (GT pre/postconditions), skill_runtime (Skill Contract runner),
+                        perception (head camera), thermal, policies/ (atomic GT policy classes),
+                        tasks (spec loading), evaluator (success check), task_policy, runtime
 tests/                  evaluator and spec tests (pytest, no simulator)
 tools/                  pipeline scripts
 usd/                    house, robot and asset USDs (+ materials/textures)
@@ -461,7 +535,7 @@ media/                  README media, demo videos, rollout result.json files
     go to bookcase tops.
   - The **banana** (curved, pinched off its centre of mass) and the **teddy bear** (plush, crown pinch)
     are annotated but were taken out of the task specs: their grasps do not survive a carry.
-- The new three-object `recycle_and_store` task is not yet solved end to end: a can was picked and placed inside the wide bin, but the next navigation failed a collision-checked arm fold at the bookcase. The [verification findings](skill_library/verification/FINDINGS.md) include this trace and the four SkillNodes still lacking a representative Contract pass.
+- SkillNode verification measures every pre/postcondition on GT state, but a pass is one scene and one start state; [verification/STATUS.md](skill_library/verification/STATUS.md) lists which verbs and paths have passed and why the others fail. Task plans in `skill_library/plans/` are symbolic; executing a whole plan can still fail at a step that passed on its own (long carries of rim-held containers are the most fragile).
 - Kinematic holonomic base (anchor joint): no wheel dynamics. Base motion uses one smooth
   time scaling per path (≤ 0.35 m/s, ramps of 0.8 s).
 - Robot links are gravity-compensated, like the real arm controller.

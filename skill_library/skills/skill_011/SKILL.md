@@ -1,63 +1,79 @@
 ---
-name: tuck-the-right-arm
-description: Move the right arm into the measured travel posture.
+name: look-target
+description: Aim the head camera at a target (turning the base if it is outside the head yaw range) and record every annotated object in view as observed.
 ---
 
-# Tuck the right arm (skill_011)
+# Look at a target (`skill_011`)
+
+`look(target: entity_ref)`
+
+Aim the head camera at a target (turning the base if it is outside the head yaw range) and record every annotated object in view as observed.
 
 ## When to use
 
-Move the right arm into the measured travel posture.
+A known target must be brought into the head camera view.
+
+## Not to be confused with
+
+- `inspect`: inspect reports a receptacle's contents; look only aims the camera.
+- `search`: search visits several places to find an unseen object.
 
 ## Inputs
 
-- None.
+- `target` (`entity_ref`): What to look at.
 
-## Preconditions
+## Outputs
 
-- `right_hand_empty` — `policy_attempt`
-- `target_within_joint_limits` — `policy_attempt`
-- `collision_free_motion` — `policy_attempt`
+- `seen` (`object_list`): Objects in the head camera frustum with clear line of sight.
 
-## Planner action predicate
+## Applicability
 
-`tuck_right_arm()` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['posture_at_target']`.
+Always applicable.
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `posture_at_target` — measured by `contract_runner`
+- none
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_011` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_019", "compose", ...)`.
+- `in_view(target=$target)` — Target point inside the head camera frustum, within 5 m, line of sight not blocked by furniture boxes. GT: base_pose, head_joints, head_fk, collision_model.
+- `observed(target=$target)` — The robot saw the target in its head camera during this episode (set by look, search, inspect, explore). GT: robot_memory.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `in_view(target=$target)` (all paths)
+- `observed(target=$target)` (all paths)
 
-Match before execution: `[]`.
+## May invalidate
 
-1. `policy_003()`
+`in_view(*)`
 
+## Policy paths (first match on the bound nouns)
 
-Verifier: `contract_008 / tuck`.
+### `head_only` — when target.bearing_abs_deg <= 55
 
-## Related Skills
+1. `policy_068($target)`
 
-- `skill_043` (`preparation`) when after arm tucking and a local orientation correction is needed — Tucked arm allows a direct local base turn.
-- `skill_044` (`preparation`) when after arm tucking and a short straight reposition is needed — Tucked arm allows a direct local translation.
+### `turn_then_head` — when always (default path)
+
+1. `policy_066($target)`
+2. `policy_068($target)`
+
+## Relations
+
+- Previous step: `navigate` (`skill_001`) (then) — the destination must be observed first
+- Previous step: `face` (`skill_003`) (then) — the target must be observed
+- Previous step: `nod` (`skill_061`) (then) — the robot looks back at a target
+- Next step: `approach` (`skill_002`) (then) — the observed target will be manipulated
+- Fallback on failure: `navigate` (`skill_001`) (repair) — the line of sight is blocked
+- Alternative: `inspect` (`skill_012`) — the target is a receptacle whose contents matter
+- Alternative: `point` (`skill_015`) — a gaze is enough to indicate the target
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one arm tuck
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_019`.

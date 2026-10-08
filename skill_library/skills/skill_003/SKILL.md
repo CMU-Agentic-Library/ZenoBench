@@ -1,74 +1,75 @@
 ---
-name: open-an-articulated-door-or-drawer
-description: Open one annotated articulated target and verify its joint position.
+name: face-target
+description: Rotate the base in place until it faces the target (heading error <= 20 deg).
 ---
 
-# Open an articulated door or drawer (skill_003)
+# Face a target (`skill_003`)
+
+`face(target: entity_ref)`
+
+Rotate the base in place until it faces the target (heading error <= 20 deg).
 
 ## When to use
 
-Open one annotated articulated target and verify its joint position.
+The target is beside or behind the robot and only the heading must change.
+
+## Not to be confused with
+
+- `look`: look moves the head only; face moves the whole base.
 
 ## Inputs
 
-- `articulated` (`articulated_ref`): articulated
+- `target` (`entity_ref`): What to face.
 
-## Preconditions
+## Outputs
 
-- `articulated_annotated` — `contract_precheck`
-- `opening_route_feasible` — `policy_attempt`
+- `base_yaw_deg` (`number`): Measured heading after the turn.
 
-## Planner action predicate
+## Applicability
 
-`open_articulated_joint(articulated)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_open_enough']`.
+Always applicable.
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `joint_open_enough` — measured by `contract_runner`
+- none
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_003` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_011", "compose", ...)`.
+- `facing(target=$target)` — Base heading within 20 deg of the target bearing. GT: base_pose, scene_annotation.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: powered_microwave
+- `facing(target=$target)` (all paths)
 
-Match before execution: `[{'noun': 'articulated', 'field': 'powered_microwave', 'equals': True}]`.
+## May invalidate
 
-1. `policy_024(articulated)`
+`reachable(*)`, `in_view(*)`, `pointing_at(*)`
 
-### Policy path: manual_drawer
+## Policy paths (first match on the bound nouns)
 
-Match before execution: `[{'noun': 'articulated', 'field': 'type', 'equals': 'prismatic'}, {'noun': 'articulated', 'field': 'has_handle', 'equals': True}]`.
+### `rotate_empty` — when not robot.right_held and not robot.left_held and robot.right_arm_stowed
 
-1. `policy_050(articulated)`
+1. `policy_099($target) as heading`
+2. `policy_036(#heading.delta_yaw_deg)`
+- Tucked and empty: the measured in-place rotation primitive.
 
-### Policy path: manual_hinged_door
+### `rotate_loaded` — when always (default path)
 
-Match before execution: `[{'noun': 'articulated', 'field': 'type', 'equals': 'revolute'}, {'noun': 'articulated', 'field': 'has_handle', 'equals': True}]`.
+1. `policy_066($target)`
+- With a load or unfolded arm: slower turn with grasp checks.
 
-1. `policy_049(articulated)`
+## Relations
 
-
-Verifier: `contract_004 / auto`.
-
-## Related Skills
-
-- `skill_025` (`alternative`) when a manual door must use an explicit handle route — Select the handle-specific operation when annotation supports it.
+- Next step: `look` (`skill_011`) (then) — the target must be observed
+- Next step: `point` (`skill_015`) (then) — the target must be indicated
+- Alternative: `navigate` (`skill_001`) — turning in place is blocked by furniture
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
+- turning in place would hit furniture
 
-one articulated opening
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_011`.

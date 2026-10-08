@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_108",
+  "legacy_id": "plan_square_yaw",
+  "name": "Plan Square Yaw",
+  "description": "Yaw correction that aligns an object with its support axes (no motion).",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "planner",
+    "effect_summary": "returns degrees, xy (no state change)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "returns degrees, xy (no state change)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_108",
+    "legacy_attribute": "plan_square_yaw",
+    "class": "PlanSquareYawPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_072:square/pick_rotate_place"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

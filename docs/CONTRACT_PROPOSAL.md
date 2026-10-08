@@ -1,6 +1,6 @@
 # Zeno House contract 接口与扩展提案
 
-> 此文详细描述 `contract_001`–`contract_008` 兼容 family 的路线与旧关系图。当前上层接口为 [42 个一对一 SkillNode / Contract](../skill_library/README.md)，对应 `contract_009`–`contract_050`；各 Contract 的内部 policy 顺序见 [Contract Library](../contract_library/README.md)。
+> 此文是历史记录：描述 `contract_001`–`contract_008` 兼容 family 的路线与旧关系图。当前上层接口是 [动词 SkillNode 库](../skill_library/README.md)，每个 SkillNode 一一对应一个 Contract（`contract_009` 起），其按名词选择的 policy 路径、GT 前后条件与 verifier 见 [Contract Library](../contract_library/README.md)。
 
 八个 [ContractSpec](../zeno_skills/contracts.py) 定义语义接口与底层 policy 路由。
 公开 ID 为 contract_001–contract_008；本文出现的 navigate.v1、pick.v1 等是
@@ -8,8 +8,8 @@
 新旧 ID 对照见 [INTERFACE_IDS.md](INTERFACE_IDS.md)。
 与上层 Skill Graph 对接时，Contract 是一次执行的可测承诺；供规划器选择的
 Agent Skill 风格能力定义在 [skill_library](../skill_library/README.md)。
-旧 Contract 和新 Skill 的 scope 对照及待改项见
-[skill_library/SCOPE.md](../skill_library/SCOPE.md)。
+新 Skill Contract 的范围、前后条件与路径由
+[skill_library/definitions.py](../skill_library/definitions.py) 生成。
 当前 8 个 Contract 的机器可读范围、输入和逐谓词检查状态见
 [contract_profiles.json](../zeno_skills/contract_profiles.json)；成功返回已验证谓词，
 失败记录动作后的观测和错误类型。

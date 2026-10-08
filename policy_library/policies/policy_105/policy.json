@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_105",
+  "legacy_id": "nod_head",
+  "name": "Nod Head",
+  "description": "Pitch the head down and up.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "gesture",
+    "effect_summary": "nodded()",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "times",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 2
+    },
+    {
+      "name": "depth",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.35
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "nodded()",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_105",
+    "legacy_attribute": "nod_head",
+    "class": "NodHeadPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_069:nod/pitch_cycles"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

@@ -1,0 +1,12 @@
+[
+ {
+  "task": "sort_items",
+  "solved": true,
+  "expansions": 14,
+  "length": 2,
+  "verbs": [
+   "fetch/to_container",
+   "fetch/to_container"
+  ]
+ }
+]

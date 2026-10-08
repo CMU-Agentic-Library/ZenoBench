@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).set_waist_pitch.execute(...)`
 - Class: `SetWaistPitchPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_021
+- Skill Contract paths: contract_015:bend/to_pitch
 - Legacy family Contracts: contract_008
 
 ## Recorded evidence

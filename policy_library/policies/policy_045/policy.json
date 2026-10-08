@@ -38,8 +38,11 @@
     "class": "SlideToEdgePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_043"
+  "skill_contract_paths": [
+    "contract_025:pick/two_hand_flat",
+    "contract_025:pick/flat_edge",
+    "contract_036:flip/edge_roll",
+    "contract_039:expose/slide_to_edge"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [

@@ -1,43 +1,20 @@
-# contract_010 — Navigate while carrying
+# contract_010 — Approach a manipulation target
 
-Move the base while preserving the current right-hand grasp.
+Park the base where the right arm has a collision-free IK solution at the target's reach pose: 10 cm above an object or support, the handle pre-grasp of a door or drawer, 8 cm in front of a button.
 
-Paired SkillNode: `skill_002`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_002` (`approach-target`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `pose`: pose2d
+- [all paths] `base_near(place=$target)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `target_navigable` — policy_attempt
-- `carried_object_matches_state` — not_enforced
-
-## Planner action predicate
-
-`transport_carried_object(object, pose)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `base_at` — contract_runner
-- `grasp_preserved` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
+- [all paths] `reachable(target=$target)` — GT: base_pose, arm_ik, collision_model, object_pose, grasp_annotation
 
 ## Policy paths
 
-### fixed
+- `reach_on_the_move` when args.pass_by: `policy_098($target) as reach` -> `policy_051(#reach.position, #reach.rotation, $pass_by)`
+- `park` when always: `policy_065($target)`
 
-Match before execution: `[]`.
-
-1. `policy_002` with ['pose']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_001` / `carry`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

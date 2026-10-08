@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "contract_catalog",
+  "contracts": [
+    {
+      "contract_id": "contract_001",
+      "name": "navigate",
+      "legacy_id": "navigate.v1",
+      "definition": "contracts/contract_001/contract.json"
+    },
+    {
+      "contract_id": "contract_002",
+      "name": "pick",
+      "legacy_id": "pick.v1",
+      "definition": "contracts/contract_002/contract.json"
+    },
+    {
+      "contract_id": "contract_003",
+      "name": "place",
+      "legacy_id": "place.v1",
+      "definition": "contracts/contract_003/contract.json"
+    },
+    {
+      "contract_id": "contract_004",
+      "name": "open",
+      "legacy_id": "open.v1",
+      "definition": "contracts/contract_004/contract.json"
+    },
+    {
+      "contract_id": "contract_005",
+      "name": "close",
+      "legacy_id": "close.v1",
+      "definition": "contracts/contract_005/contract.json"
+    },
+    {
+      "contract_id": "contract_006",
+      "name": "push",
+      "legacy_id": "push.v1",
+      "definition": "contracts/contract_006/contract.json"
+    },
+    {
+      "contract_id": "contract_007",
+      "name": "click",
+      "legacy_id": "click.v1",
+      "definition": "contracts/contract_007/contract.json"
+    },
+    {
+      "contract_id": "contract_008",
+      "name": "set_posture",
+      "legacy_id": "set_posture.v1",
+      "definition": "contracts/contract_008/contract.json"
+    }
+  ]
+}

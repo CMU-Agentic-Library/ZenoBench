@@ -59,8 +59,8 @@
     "class": "TopDragPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_054"
+  "skill_contract_paths": [
+    "contract_037:push/drag_from_top"
   ],
   "legacy_family_contracts": [
     "contract_006"

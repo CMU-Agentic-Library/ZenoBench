@@ -44,10 +44,8 @@
     "class": "UprightObjectPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_044",
-    "contract_045",
-    "contract_047"
+  "skill_contract_paths": [
+    "contract_044:upright/pick_orient_place"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [

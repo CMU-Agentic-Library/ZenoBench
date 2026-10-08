@@ -1,45 +1,21 @@
-# contract_038 — Place an edge-held flat object
+# contract_038 — Pull an object closer
 
-Place one edge-held flat item onto an annotated support.
+Drag an object toward the robot with the pads pressed on its top until it is within reach (e.g. from the back of a deep counter); if the pads slide over a round or slippery top, the fingers hook the far side and push it toward the robot.
 
-Paired SkillNode: `skill_030`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_030` (`pull-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — contract_precheck
-- `target_annotated` — policy_attempt
-- `held_with_edge_grasp` — policy_attempt
-
-## Planner action predicate
-
-`lay_edge_held_flat_object(object, support)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `on` — contract_runner
-- `right_hand_empty` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_held_kind': 'edge', 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `moved_toward_base(object=$object, distance_m=$distance_m)` — GT: object_pose (before/after), base_pose
+- [all paths] `reachable(target=$object)` — GT: base_pose, arm_ik, collision_model, object_pose, grasp_annotation
 
 ## Policy paths
 
-### fixed
+- `top_drag` when always: `policy_041()` -> `policy_079($object, $distance_m)`
 
-Match before execution: `[]`.
-
-1. `policy_017` with ['object', 'support']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_003` / `edge`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

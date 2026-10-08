@@ -23,7 +23,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).pick_from_cavity.execute(...)`
 - Class: `PickFromCavityPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_012, contract_023
+- Skill Contract paths: contract_025:pick/microwave_cavity
 - Legacy family Contracts: contract_002
 
 ## Caveat

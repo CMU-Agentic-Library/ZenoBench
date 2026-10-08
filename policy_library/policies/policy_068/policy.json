@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_068",
+  "legacy_id": "look_at",
+  "name": "Look At",
+  "description": "Aim head yaw/pitch at a target; record visible objects.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "perception",
+    "effect_summary": "in_view(target), observed(target)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "target",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "in_view(target), observed(target)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_068",
+    "legacy_attribute": "look_at",
+    "class": "LookAtPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_019:look/head_only",
+    "contract_019:look/turn_then_head"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

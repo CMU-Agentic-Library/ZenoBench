@@ -92,7 +92,17 @@ class SlideToEdgePolicy(AtomicPolicy):
             if target_overhang < skills.EDGE_MIN_OVERHANG:
                 continue
             current = float(direction @ b[:2]) + half - skills._edge_coord(support, direction)
-            choices.append((max(0.0, target_overhang-current), direction, target_overhang))
+            need = max(0.0, target_overhang - current)
+            if need > 0.45:
+                continue                     # a long slide sweeps through everything on the way
+            # the swept footprint must be free of other objects
+            fp = rig.geo.footprint(name, st)
+            dx, dy = direction * need
+            box = [min(fp[0], fp[0] + dx), min(fp[1], fp[1] + dy), support["z"] + 0.005,
+                   max(fp[2], fp[2] + dx), max(fp[3], fp[3] + dy), support["z"] + size[2]]
+            if need > 0.012 and skills._overlaps_objects(rig, box, {name}, st, margin=0.01):
+                continue
+            choices.append((need, direction, target_overhang))
         if not choices:
             raise SkillFailure(f"slide to edge: no graspable free edge of {support['name']}")
         choices.sort(key=lambda item: item[0])
@@ -252,23 +262,32 @@ class PickFromCavityPolicy(AtomicPolicy):
             tcp, actual_R = rig.kin.tcp(rig.q())
             rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp-after,
                         "R": actual_R, "pre_open": stage["pre_open"]}
-            for y in (bounds[1]-0.10, bounds[1]-0.23):
+            # the whole bowl must leave the cavity (centre 1.8 cm past the mouth
+            # left half of it inside; the carry then knocked it out of the pinch)
+            clear = 0.5*float(max(rig.ann.asset_of(rig.ann.objects[name])["size"][:2])) + 0.02
+            for y in (bounds[1]-0.10, bounds[1]-0.16, bounds[1]-0.23, bounds[1]-0.30):
                 tcp, _ = rig.kin.tcp(rig.q())
                 front = tcp.copy()
                 front[1] = y
-                rig.move_to(front, actual_R, label="cavity_pick_withdraw")
+                try:
+                    rig.move_to(front, actual_R, label="cavity_pick_withdraw")
+                except SkillFailure as exc:
+                    if rig.held is None:
+                        raise
+                    rig.log("cavity_withdraw_short", y=round(float(y), 3), reason=str(exc))
+                    continue
                 skills.check_held(rig, "cavity_pick_withdraw")
                 body, _ = rig.obj_pose(name)
                 rig.log("cavity_withdraw_check", obj=name,
                         body=body.round(3).tolist(), mouth=float(bounds[1]))
-                if body[1] < bounds[1]-0.02:
+                if body[1] < bounds[1]-clear:
                     break
             result = True
         else:
             result = skills._pick_pinch(rig, name, max_candidates=max_candidates)
         pos, _ = rig.obj_pose(name)
         mouth = bounds[axis] if sign < 0 else bounds[axis+3]
-        if rig.held is None or rig.held["name"] != name or sign*(pos[axis]-mouth) < 0.02:
+        if rig.held is None or rig.held["name"] != name or sign*(pos[axis]-mouth) < 0.015:
             raise SkillFailure(f"pick from cavity {name}: did not withdraw through the front")
         skills.check_held(rig, "pick_from_cavity")
         return result

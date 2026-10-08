@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_087",
+  "legacy_id": "cover_with_lid",
+  "name": "Cover With Lid",
+  "description": "Lay a held lid centred on a container rim.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "manipulation",
+    "effect_summary": "covered(container, lid)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "lid",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "container",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "covered(container, lid)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_087",
+    "legacy_attribute": "cover_with_lid",
+    "class": "CoverWithLidPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_053:cover/rim_plane"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

@@ -34,7 +34,18 @@
       "check": "policy_attempt"
     },
     {
-      "predicate": "start_conditions",
+      "predicate": "microwave_door_closed",
+      "args": [
+        "appliance"
+      ],
+      "when": "button is start",
+      "check": "policy_attempt"
+    },
+    {
+      "predicate": "task_food_inside_cavity",
+      "args": [
+        "appliance"
+      ],
       "when": "button is start",
       "check": "policy_attempt"
     }

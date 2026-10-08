@@ -1,42 +1,19 @@
-# contract_057 — Ready floor reach
+# contract_057 — Sort objects by category
 
-Lower and lean toward a floor object, then verify a fresh reachable pregrasp.
+Put each listed object into the container mapped to its category tag (e.g. fruit -> basket, toy -> toy box).
 
-Paired SkillNode: `skill_049`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_049` (`sort-objects`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `object_on_floor` — policy_attempt
-- `pregrasp_reachable` — policy_attempt
-
-## Planner action predicate
-
-`ready_floor_object(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `floor_reach_ready` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `sorted_by_category(objects=$objects, rule=$rule)` — GT: object_pose, asset_tags, container_profile
 
 ## Policy paths
 
-### fixed
+- `fetch_by_tag` when always: `for each item in $objects: [fetch](object=$item, receptacle=@item.sort_target)`
 
-Match before execution: `[]`.
-
-1. `policy_042` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: custom `floor_reach`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -185,6 +185,37 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
                     "offset_xy": [round(float(off[0]), 4), round(float(off[1]), 4)],
                     "height": float(min(top * 0.5, max(top - 0.02, 0.01))),
                     "pre_open": float(min(0.04, width / 2 + 0.012))})
+        # Round in top view (can, bottle, fruit): the 2-D hull fills ~pi/4 of
+        # its bounding box, and any diameter is a valid closing direction.
+        from scipy.spatial import ConvexHull
+        hull_area = ConvexHull(mesh.vertices[:, :2]).volume
+        if (hull_area / max(ext[0] * ext[1], 1e-9) < 0.86 and abs(ext[0] - ext[1]) < 0.12 * max(ext[:2])) \
+                or CUSTOM_RECORDS.get(name, {}).get("round_top"):
+            out[-1]["round"] = True
+        # Long thin objects (rolling pin, spoon, pen): extra pinch points along
+        # the long axis, so a second hand finds a contact away from the first.
+        # Only points whose cross-section is no wider than the centre's are
+        # kept (a spoon's bowl or a brush head is not a pinch point).
+        if max(ext[:2]) >= 0.15 and max(ext[:2]) >= 2.5 * min(ext[:2]):
+            ax = int(np.argmax(ext[:2]))
+            v = mesh.vertices
+            mid = 0.5 * (v[:, ax].min() + v[:, ax].max())
+
+            def under_pads(o):
+                # widest cross-section and tallest point under the 2.8 cm pads centred at o
+                ws, hs = [], []
+                for d in np.linspace(-0.03, 0.03, 9):     # pad span plus 1.5 cm reach tolerance
+                    sel = np.abs(v[:, ax] - (mid + o + d)) < 0.004
+                    ws.append(float(np.ptp(v[sel, 1 - ax])) if sel.sum() > 3 else 0.0)
+                    hs.append(float(v[sel, 2].max() - v[:, 2].min()) if sel.sum() > 3 else 0.0)
+                return max(ws), max(hs)
+            offs = [round(k * 0.3 * float(max(ext[:2])), 3) for k in (-1, 0, 1)]
+            prof = {o: under_pads(o) for o in offs}
+            w_min = min(w for w, _ in prof.values())
+            keep = [o for o in offs if prof[o][0] <= 1.5 * w_min + 0.005]
+            # uniform section first: a bowl or head rising under the pads stops
+            # the descent and the pads wedge on its flank (spoon); ties: centre
+            out[-1]["along_offsets"] = sorted(keep, key=lambda o: (round(prof[o][1], 3), round(prof[o][0], 3), abs(o)))
     # crown pinch: when no full-height slab fits, pinch only the top CROWN
     # metres (what the 5 cm pads span when the TCP sits 2.2 cm below the top):
     # the head of a plush toy, a knob, a lid handle.  Below the crown the
@@ -298,6 +329,8 @@ def write_sim_urdf(name):
            "usd": f"usd/assets/{name}.usd",
            "source_urdf": str(out.relative_to(ROOT)),
            "generator": CUSTOM_RECORDS.get(name, {}).get("generator", "EmbodiedGen V2 text3d-cli (SAM3D backend)")}
+    if "knob_collider" in custom:
+        ann["knob_collider"] = custom["knob_collider"]
     if kind != "solid":
         ann["container"] = profile
         if "handle_collider" in custom:

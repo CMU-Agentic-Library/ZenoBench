@@ -1,47 +1,22 @@
-# contract_046 — Place an object near a support hint
+# contract_046 — Stir a container
 
-Place a held object near a supplied xy hint and verify the final offset.
+Dip a held spoon's far end into a container and move it in a circle below the rim; succeeds after one full turn inside.
 
-Paired SkillNode: `skill_038`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_038` (`stir-container`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
-- `hint_xy`: xy
-- `max_offset_m`: positive_number
+- [all paths] `holding(hand=right, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `base_near(place=$container)` — GT: base_pose, scene_annotation
+- [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — contract_precheck
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`position_object_near_hint(object, support, hint_xy, max_offset_m)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `on` — contract_runner
-- `right_hand_empty` — contract_runner
-- `within_hint_radius` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `stirred(container=$container)` — GT: robot_memory (tool-tip samples)
+- [all paths] `holding(hand=right, object=$tool)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `circle_below_rim` when 'utensil' in tool.tags: `policy_085($tool, $container)`
 
-Match before execution: `[]`.
-
-1. `policy_015` with ['object', 'support']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_003` / `surface`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

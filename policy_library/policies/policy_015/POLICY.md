@@ -24,7 +24,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).place_surface.execute(...)`
 - Class: `SurfacePlacePolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_013, contract_045, contract_046, contract_047
+- Skill Contract paths: contract_026:place/cabinet_or_fridge_shelf, contract_026:place/stove_burner, contract_026:place/surface, contract_044:upright/pick_orient_place, contract_054:uncover/knob_lift_aside, contract_061:restore/dispatch_pick_place, contract_072:square/pick_rotate_place
 - Legacy family Contracts: contract_003
 
 ## Recorded evidence

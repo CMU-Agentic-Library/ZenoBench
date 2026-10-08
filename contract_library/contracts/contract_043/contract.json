@@ -1,97 +1,200 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_043",
-  "skill_id": "skill_035",
-  "name": "Expose a flat object edge",
-  "description": "Push a flat object to a measured, graspable support overhang.",
-  "scope": {
-    "unit": "One expose a flat object edge attempt on the grounded scene state.",
-    "includes": [
-      "Push a flat object to a measured, graspable support overhang."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "The uniquely grounded scene object."
-    }
-  },
-  "requires": [
-    {
-      "predicate": "right_hand_empty",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "object_on_annotated_support",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "free_support_edge",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "edge_overhang_ready",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "edge_overhang_ready"
-  ],
-  "verifier": {
-    "check": "ContractRunner measured post-state",
-    "on_failure": "record partial state and stop",
-    "custom": "edge_ready"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_045",
-        "args": [
-          {
-            "arg": "object"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true,
-      "requires_grasp_type": "edge_pinch_after_push"
-    }
-  },
-  "action_predicate": {
-    "name": "expose_flat_object_edge",
-    "verb": "expose",
-    "noun": "flat_object_edge",
-    "arguments": [
-      "object"
-    ],
-    "verified_by": [
-      "edge_overhang_ready"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_043",
+ "skill_id": "skill_035",
+ "verb": "tip",
+ "noun": "object",
+ "name": "Tip an object over",
+ "description": "Push a standing tall object near its top so it falls onto its side on the same support (lays down a carton or bottle that is too tall to top-pinch).",
+ "group": "contact",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "A standing tall object."
   }
+ },
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  },
+  {
+   "pred": "base_near",
+   "args": {
+    "place": "$object"
+   }
+  },
+  {
+   "pred": "upright",
+   "args": {
+    "object": "$object"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "lying",
+   "args": {
+    "object": "$object"
+   }
+  }
+ ],
+ "invalidates": [
+  "upright($object)",
+  "at_initial_place($object)"
+ ],
+ "precheck": [
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "base_near(place=$object)",
+   "name": "base_near",
+   "args": {
+    "place": "$object"
+   },
+   "negated": false,
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "scene_annotation"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "upright(object=$object)",
+   "name": "upright",
+   "args": {
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "Object z axis within 20 deg of vertical.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "lying(object=$object)",
+   "name": "lying",
+   "args": {
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose",
+    "asset_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "tip_object",
+  "verb": "tip",
+  "noun": "object",
+  "arguments": [
+   "object"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "push_high",
+    "when": [
+     {
+      "noun": "object",
+      "field": "tall",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_082",
+      "args": [
+       "$object"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "roll",
+   "when": "the lying cylinder is rolled",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_034",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "sequence",
+   "to": "pick",
+   "when": "the lying object is pinched across its side",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_017",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "alternative",
+   "to": "upright",
+   "when": "opposite effect",
+   "bind": {},
+   "reason": "",
+   "to_skill_id": "skill_036"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

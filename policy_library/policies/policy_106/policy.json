@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_106",
+  "legacy_id": "knock_panel",
+  "name": "Knock Panel",
+  "description": "Tap a closed panel twice with closed fingertips.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "contact",
+    "effect_summary": "knocked(name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "taps",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 2
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "knocked(name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_106",
+    "legacy_attribute": "knock_panel",
+    "class": "KnockPanelPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_074:knock/panel_taps"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

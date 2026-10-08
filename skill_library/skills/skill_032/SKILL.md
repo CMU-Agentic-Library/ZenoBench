@@ -1,60 +1,64 @@
 ---
-name: raise-torso-for-work-surface
-description: Raise the robot torso to its configured maximum.
+name: separate-object
+description: Push an object straight away from its closest neighbour until there is room for a finger (>= 3.5 cm gap) without leaving the support.
 ---
 
-# Raise torso for work surface (skill_032)
+# Separate an object from its neighbour (`skill_032`)
+
+`separate(object: object_ref)`
+
+Push an object straight away from its closest neighbour until there is room for a finger (>= 3.5 cm gap) without leaving the support.
 
 ## When to use
 
-Raise the robot torso to its configured maximum.
+Two objects are too close for the fingers to fit beside one of them.
+
+## Not to be confused with
+
+- `push`: separate pushes until a finger fits beside the object.
 
 ## Inputs
 
-- None.
+- `object` (`object_ref`): The crowded object.
 
-## Preconditions
+## Applicability
 
-- `joint_path_clear` — `policy_attempt`
+Requires hand_empty(hand=right); base_near(place=$object); not grasp_clearance(object=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`raise_torso()` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['posture_at_target']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `not grasp_clearance(object=$object)` — Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. GT: object_pose, asset_annotation.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `posture_at_target` — measured by `contract_runner`
+- `grasp_clearance(object=$object)` — Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. GT: object_pose, asset_annotation.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_032` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_040", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `grasp_clearance(object=$object)` (all paths)
 
+## May invalidate
 
-### Policy path: fixed
+`at_initial_place($object)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_006()`
+### `push_apart` — when always (default path)
 
+1. `policy_080($object)`
 
-Verifier: `contract_008 / raise`.
+## Relations
 
-## Related Skills
-
-- No fixed relation; select the next node from the task goal and observation.
+- Next step: `pick` (`skill_017`) (enables) — grasp the freed object
+- Is a fallback for: `pick` (`skill_017`) (repair) — fingers have no room beside the object (grasp_clearance false)
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One raise torso for work surface attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_040`.

@@ -21,6 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).handover_right_to_left.execute(...)`
 - Class: `HandoverRightToLeftPolicy`
 - Availability: `callable`
+- Skill Contract paths: contract_030:handover/right_to_left
 - Referenced as support by legacy families: contract_002
 
 ## Caveat

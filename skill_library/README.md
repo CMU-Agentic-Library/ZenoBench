@@ -1,136 +1,159 @@
-# ZenoBench Agent SkillNode Library
+# ZenoBench 动词 SkillNode 库（schema 2）
 
-上层可选择 **50 个 SkillNode**（`skill_001`–`skill_050`）；每个节点恰好对应一个可执行 Contract（`contract_009`–`contract_058`）。节点目录采用 Agent Skill 风格：`SKILL.md` 有名称、用途、参数、前置条件、预期状态变化、调用方式、内部 policy 计划、相关 Skill、失败处理与适用边界；同目录的 `skill.json` 供程序读取。
+<!-- counts:start -->
+**70 个 SkillNode**（`skill_001`–`skill_070`，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_078`），共 **120 条按名词选择的 policy 路径**，覆盖 **114/115 个底层 policy**（1 个因物理上不可行而退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **71 个 GT 谓词**。关系图有 49 条 enables、49 条 then、43 条 fallback （repair 14、recover 26、substitute 3）和 45 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
+<!-- counts:end -->
 
-Contract 是该节点的执行与验证边界。上层 SkillNode 保留抽象的 `object_ref`、`support_ref` 等名词槽位；场景实例 ID 由 Graph Manager grounding 后填入配对 Contract。Contract 对已填名词做标注与状态检查，可在执行前按名词属性选一个 policy 路径，每条路径再顺序组合一个或多个底层 policy。底层现有 64 个公开 policy 入口；不是每个控制阶段都要成为上层节点。任务目标仍由 `TaskEvaluator` 在整条子图执行后判断。
+## 设计
 
-## 能力分组
+每个 SkillNode 是 **一个动词 + 一个名词**，动词之间不是近义词。同一个动作只保留一个动词：抓取不再拆成 acquire / grasp / clamp / clasp / pinch 等多个节点，只有 `pick(object)`；放置只有 `place(object, receptacle)`。名词绑定到场景实例后，Contract 根据该实例的 GT 标注和实时状态选择 **policy 路径**，每条路径顺序调用一个或多个底层 policy。例如：
 
-| 范围 | SkillNode | 上层可规划的变化 |
-| --- | --- | --- |
-| 底盘、姿态、携物 | `001–002`, `011–013`, `021`, `031–034`, `041–044` | 导航、调整姿态、抬高携物、后退让位 |
-| 门与电器 | `003`, `007`, `009–010`, `022–026`, `040`, `047–048`, `050` | 手柄或动力门开关、按钮按压、等待温度达标 |
-| 抓取与准备 | `004`, `015–018`, `020`, `027–029`, `035–036`, `049` | 常规、边缘、杯柄、腔体、地面抓取；制造可抓边缘及扶正 |
-| 放置与推动 | `005–006`, `008`, `014`, `019`, `030`, `037–039`, `045–046` | 支撑面、容器、炉腔、薄物边缘、指定区域放置；推动 |
+| 动词 | 名词绑定 | 选中的路径 | policy 链 |
+| --- | --- | --- | --- |
+| `pick` | 苹果（`top_pinch` 标注） | `top_pinch` | `policy_010` |
+| `pick` | 平放的书（只有 `edge_pinch` 标注） | `flat_edge` | `policy_045` 推到桌边 → `policy_013` 夹悬出部分 |
+| `pick` | 地上的积木 | `floor_top` | `policy_065` 靠近 → `policy_042` 降躯干前倾预抓 → `policy_010` 顶部夹取 |
+| `pick` | 微波炉腔内的碗 | `microwave_cavity` | `policy_048`（路径前置条件：`is_open(微波炉)`） |
+| `heat` | `kitchen_microwave` | `microwave` | `policy_032` 按启动键 → `policy_064` 等待温度 |
+| `heat` | `kitchen_stove` | `stove_pot` | `policy_094` 按电源键 → `policy_090` 等待温度并关火 |
+| `open` | 冰箱 / 抽屉 / 铰链门 / 微波炉 | 各自路径 | 收臂 → 抓把手 → 随门运动 → 松手；微波炉按门键 + 铰链驱动 |
 
-`skill_043`–`skill_050` 补充底盘微调、专用接触搬移、门型专用打开、地面预抓取和微波炉门让位。12 个 EmbodiedGen V2 纹理资产、两个任务场景及厨房锅示例的接入方法见 [资产说明](../assets/EMBODIEDGEN_V2_ASSETS.md)。这些动作扩展了可选路径；是否能完成具体任务仍由场景和实测结果决定。旧程序化网格上的首个“抓罐→入盒”链曾通过；V2 网格需要重新执行物理验证，见[验证发现](verification/FINDINGS.md)。
+多物体动词（`fetch`、`collect`、`sort`、`clear`、`empty`、`arrange`、`restore`、`swap`、`hide`）的路径调用其他 Skill Contract，嵌套的每一步都各自检查前后条件。
 
-此前的节点补齐任务谓词：`skill_040` 验证食品达到指定温度；`skill_037` 和 `skill_039` 在放下后验证直立；`skill_038` 和 `skill_039` 验证与同一个放置提示点的距离。薄物体可以先用 `skill_035` 制造安全悬边，再尝试 `skill_016` 边缘抓取。每项的物理适用条件和验证状态见其 `SKILL.md`。
+## 前置条件、后置条件与 verifier
 
-## 动作谓词与任务目标
+前后条件都是 [`zeno_skills/predicates.py`](../zeno_skills/predicates.py) 中带参数的谓词，例如 `holding(hand=right, object=$object)`、`is_open(articulated=@object.appliance)`、`in_cookware_on_burner(food=$food, appliance=$appliance)`。每个谓词：
 
-每个 SkillNode 和配对 Contract 都有一个**唯一动词＋名词**的 `action_predicate`，动词在 50 个节点中不重复。它的 `arguments` 是名词或数值槽位，Graph Manager 会绑定到场景实例；Contract 只在 `verified_by` 中的状态事实全部通过后报告 `verified_action_predicate`。例如 `skill_006` 的动作是 `insert_object_in_container(object, container)`，而可共享的实测事实是 `inside` 与 `right_hand_empty`。不同 Skill 可以产生同一个状态事实，这是任务拼接所需要的。
+- 有类型化参数（`object_ref`、`support_ref`、`hand` …），由检查器核对；
+- 有 GT 评估函数，读取仿真器真值：物体位姿、关节角、手指间隙、头相机正运动学、温度状态、事件日志等（每个谓词的 `gt_sources` 写在导出的 JSON 里）；
+- 分为 `fluent`（当前状态）、`memory`（机器人记录的事实，如看到过、擦过）和 `relative`（相对 Contract 开始时的变化，如 `object_moved`，只能作后置条件）。
 
-### 任务如何由多个 SkillNode 完成
+`SkillContractRunner`（[`zeno_skills/skill_runtime.py`](../zeno_skills/skill_runtime.py)）执行一次调用：
 
-可以。上层把任务拆成当前子目标，按顺序或依赖关系输出多个 SkillNode；Graph Manager 检查参数、名词绑定和依赖 DAG，再逐个调用配对 Contract。每个 Contract 会选择适用于当前名词和状态的底层 policy 路径，并返回测得的结果。上层依据结果继续执行或重新规划，最后由 `TaskEvaluator` 判断整个任务目标。
+1. 校验输入类型，绑定名词并计算 GT 属性（抓取标注、所在支撑面、是否在冰箱或柜子里、盖着的锅盖、离边缘远近等）；
+2. **执行前**在实时状态上评估全部前置条件，任何一条为假就不动作并返回 `PRECONDITION_FAILED`；
+3. 选择第一条名词条件全部成立的路径，再检查该路径的额外前置条件；
+4. 依次执行 policy、嵌套 Contract 或循环；
+5. **执行后**评估技能级和路径级后置条件，全部成立才报告成功；
+6. 返回实测输出、选中的路径、每个谓词的测量值；失败时附带关系图中可修复失败谓词的 fallback 候选。顶层调用不会自动重试（由上层决定）；多物体技能内部的嵌套调用如果因某个前置条件失败、且关系图里有修复这个谓词的 `repair` fallback（例如 `pick` 的 `grasp_clearance` → `separate`），运行器先执行该修复技能，再重试一次。
 
-例如“把饮料罐放进宽收纳盒”需要先 `skill_004` 抓罐，再 `skill_006` 入盒。`object` 和 `container` 是可填写的输入槽位：
+## 关系：上一步、下一步、fallback、alternative
+
+[relations.json](relations.json) 中的每条边都被检查器核对：
+
+- `sequence`（导出为上一步 / 下一步）：`enables` 表示前一技能的某个后置条件与后一技能的某个前置条件在参数绑定下匹配；`then` 是较松的顺序，必须给出共享名词绑定或理由。
+- `fallback`：`repair` 表示失败后用另一个技能建立缺失的前置条件再重试，例如 `pick` 夹不起平放物体时先 `expose`（用手把它推出桌边，保证 `edge_overhang`）再 `pick`；`recover` 表示消除导致 policy 失败的状态，需写明理由；`substitute` 表示用其他方式达到同一效果。
+- `alternative`：用不同手段达到相同效果，例如 `heat(food, kitchen_microwave)` 不可用时改用 `heat(food, kitchen_stove)`，在灶台上用锅或杯子加热。
+
+## 给上层 VLM 的 JSON
+
+- [vlm_skill_catalog.json](vlm_skill_catalog.json)：全部 SkillNode 的 `skill.json` 和谓词表，可直接放进 VLM 提示。
+- `skills/skill_XXX/skill.json`：单个节点，包括 `signature`、`inputs`、`outputs`、带 GT 来源的 `preconditions` / `postconditions`、`invalidates`、按名词选择的 `policy_paths`、`relations.previous/next/fallback/fallback_for/alternative` 和失败码。
+- `skills/skill_XXX/SKILL.md`：同一内容的 Agent Skill 格式。
+
+VLM 输出 schema 2 子图（[subgraph.schema.json](subgraph.schema.json)），参数可以是场景名词 `{"ref": "..."}`、字面值 `{"value": ...}`，或前一节点的实测输出 `{"from": "n1.found_on"}`：
 
 ```json
-{
-  "schema_version": 1,
-  "kind": "skill_subgraph",
-  "subgoal_id": "sg_store_can",
-  "nodes": [
-    {"id": "n1", "skill_id": "skill_004", "args": {"object": {"ref": "the soda can"}}, "depends_on": []},
-    {"id": "n2", "skill_id": "skill_006", "args": {"object": {"ref": "the soda can"}, "container": {"ref": "the wide storage bin"}}, "depends_on": ["n1"]}
-  ]
-}
+{"schema_version": 2, "kind": "skill_subgraph", "subgoal_id": "find_lid", "nodes": [
+  {"id": "n1", "skill": "search", "args": {"object": {"ref": "pot_lid"}}, "depends_on": []},
+  {"id": "n2", "skill": "navigate", "args": {"destination": {"from": "n1.found_on"}}, "depends_on": ["n1"]},
+  {"id": "n3", "skill": "uncover", "args": {"container": {"ref": "handled_cooking_pot"}}, "depends_on": ["n2"]}]}
 ```
 
-名词绑定为 `{"the soda can": "soda_can", "the wide storage bin": "wide_storage_bin"}`。更多物品可以继续接在 `depends_on` 链中；需要移动底盘或准备抓取时，也可插入相应节点。完整六节点示例见[收纳子图](examples/recycle_and_store.skill_subgraph.json)。目前 10 个任务的 42 条目标子句都有可表达的调用路径，但这只是规划覆盖。该三物件场景中“抓罐→入盒”已实测通过，完整任务在第二次抓取前的收臂环节失败，见[验证发现](verification/FINDINGS.md)。
+[graph.py](graph.py) 校验与 grounding，[runtime.py](runtime.py) 的 `run_subgraph(rig, graph, bindings)` 执行；失败时返回 `replan_request`。[gpt_experiment.py](gpt_experiment.py) 与 [tools/run_gpt_skill_task.py](../tools/run_gpt_skill_task.py) 用同一组卡片让 GPT 规划。
 
-### 动词、可填写参数与验证谓词
+## 任务可组合性
 
-下表给出全部 50 个动词＋名词动作谓词。上层**填写参数**，不自行填写 `inside`、`on` 等结果谓词：它们由 Contract 在执行后测量。`*_ref` 参数用 `{"ref":"场景中的描述"}`，由 grounding 绑定到实例 ID；`pose2d`、`xy`、`unit_vec2` 和数值参数用 `{"value": ...}`。例如 `{"value":[1.0,2.0,90.0]}` 是一个 `pose2d`，`{"value":[1.0,0.0]}` 是一个二维方向。具体名词资格、前置条件和失败处理以各节点的 `skill.json`／`SKILL.md` 为准。
+[tasks.json](tasks.json) 用 GT 谓词描述本场景可完成的任务：10 个原有 ZenoBench 任务，加上厨房场景的灶台煮汤、无微波炉时用灶台加热、冰箱冷却、丢垃圾、叠积木、擦台面、翻书、藏物、找东西、探索房间、计数、敲门、分类、清空等。[planner.py](planner.py) 用同一套 GT 谓词从标注场景构造初始状态，按导出的前置/后置/invalidates 做符号搜索，证明每个任务都能由 SkillNode 链完成，结果写到 [plans/](plans/)。这些是规划层结果；物理执行结果见下节。
 
-<!-- action-signatures:start -->
-| SkillNode | 动词 | 动词＋名词动作谓词 | 可填写参数及类型 | Contract 验证的状态 |
-| --- | --- | --- | --- | --- |
-| `skill_001` | `navigate` | `navigate_base` | `pose: pose2d` | `base_at` |
-| `skill_002` | `transport` | `transport_carried_object` | `object: object_ref`, `pose: pose2d` | `base_at`, `grasp_preserved` |
-| `skill_003` | `open` | `open_articulated_joint` | `articulated: articulated_ref` | `joint_open_enough` |
-| `skill_004` | `acquire` | `acquire_object` | `object: object_ref` | `held_by_right_hand`, `object_lifted` |
-| `skill_005` | `deposit` | `deposit_object_on_support` | `object: object_ref`, `support: support_ref` | `on`, `right_hand_empty` |
-| `skill_006` | `insert` | `insert_object_in_container` | `object: object_ref`, `container: container_ref` | `inside`, `right_hand_empty` |
-| `skill_007` | `close` | `close_articulated_joint` | `articulated: articulated_ref` | `joint_closed` |
-| `skill_008` | `shove` | `shove_object_along_support` | `object: object_ref`, `support: support_ref`, `direction_xy: unit_vec2`, `distance_m: positive_number` | `displacement_along` |
-| `skill_009` | `press` | `press_appliance_door_button` | `appliance: appliance_ref` | `button_pressed_this_call` |
-| `skill_010` | `start` | `start_microwave_heating` | `appliance: appliance_ref` | `button_pressed_this_call`, `heating_active` |
-| `skill_011` | `tuck` | `tuck_right_arm` | 无 | `posture_at_target` |
-| `skill_012` | `set` | `set_torso_height` | `height_m: number` | `posture_at_target` |
-| `skill_013` | `pitch` | `pitch_waist` | `pitch_rad: number` | `posture_at_target` |
-| `skill_014` | `load` | `load_microwave_cavity` | `object: object_ref`, `support: microwave_support_ref` | `on`, `right_hand_empty` |
-| `skill_015` | `retrieve` | `retrieve_cavity_object` | `object: object_ref`, `cavity: appliance_ref` | `held_by_right_hand`, `object_lifted` |
-| `skill_016` | `pinch` | `pinch_flat_object_edge` | `object: object_ref` | `held_by_right_hand`, `object_lifted` |
-| `skill_017` | `grip` | `grip_cup_handle` | `object: object_ref` | `held_by_right_hand`, `object_lifted` |
-| `skill_018` | `intercept` | `intercept_moving_object` | `object: object_ref`, `base_path: pose2d` | `held_by_right_hand`, `object_lifted` |
-| `skill_019` | `deliver` | `deliver_object` | `object: object_ref`, `support: support_ref`, `base_path: pose2d` | `on`, `right_hand_empty` |
-| `skill_020` | `scoop` | `scoop_floor_object` | `object: object_ref` | `held_by_right_hand`, `object_lifted` |
-| `skill_021` | `convoy` | `convoy_bimanual_load` | `object: object_ref`, `pose: pose2d` | `base_at`, `grasp_preserved` |
-| `skill_022` | `swing` | `swing_articulated_door` | `object: object_ref`, `articulated: articulated_ref` | `joint_open_enough` |
-| `skill_023` | `trigger` | `trigger_microwave_door_opening` | `appliance: appliance_ref` | `joint_open_enough` |
-| `skill_024` | `shut` | `shut_microwave_door` | `appliance: appliance_ref` | `joint_closed` |
-| `skill_025` | `pull` | `pull_manual_handle` | `articulated: articulated_ref` | `joint_open_enough` |
-| `skill_026` | `push` | `push_manual_handle` | `articulated: articulated_ref` | `joint_closed` |
-| `skill_027` | `clamp` | `clamp_object_top` | `object: object_ref` | `held_by_right_hand`, `object_lifted` |
-| `skill_028` | `grasp` | `grasp_round_rim` | `object: object_ref` | `held_by_right_hand`, `object_lifted` |
-| `skill_029` | `clasp` | `clasp_rectangular_rim` | `object: object_ref` | `held_by_right_hand`, `object_lifted` |
-| `skill_030` | `lay` | `lay_edge_held_flat_object` | `object: object_ref`, `support: support_ref` | `on`, `right_hand_empty` |
-| `skill_031` | `lower` | `lower_torso` | 无 | `posture_at_target` |
-| `skill_032` | `raise` | `raise_torso` | 无 | `posture_at_target` |
-| `skill_033` | `lean` | `lean_waist` | 无 | `posture_at_target` |
-| `skill_034` | `straighten` | `straighten_waist` | 无 | `posture_at_target` |
-| `skill_035` | `expose` | `expose_flat_object_edge` | `object: object_ref` | `edge_overhang_ready` |
-| `skill_036` | `orient` | `orient_held_object` | `object: object_ref` | `object_upright` |
-| `skill_037` | `stand` | `stand_object_on_support` | `object: object_ref`, `support: support_ref` | `on`, `right_hand_empty`, `object_upright` |
-| `skill_038` | `position` | `position_object_near_hint` | `object: object_ref`, `support: support_ref`, `hint_xy: xy`, `max_offset_m: positive_number` | `on`, `right_hand_empty`, `within_hint_radius` |
-| `skill_039` | `align` | `align_upright_object_near_hint` | `object: object_ref`, `support: support_ref`, `hint_xy: xy`, `max_offset_m: positive_number` | `on`, `right_hand_empty`, `object_upright`, `within_hint_radius` |
-| `skill_040` | `attain` | `attain_food_temperature` | `object: object_ref`, `min_temp_c: positive_number` | `temperature_at_least` |
-| `skill_041` | `hoist` | `hoist_carried_object` | `object: object_ref`, `min_bottom_z: positive_number` | `held_object_above_height` |
-| `skill_042` | `retreat` | `retreat_carried_object` | `object: object_ref`, `distance_m: positive_number` | `base_backed_off`, `grasp_preserved` |
-| `skill_043` | `pivot` | `pivot_base` | `delta_yaw_deg: number` | `base_yaw_changed` |
-| `skill_044` | `translate` | `translate_base` | `forward_m: number` | `base_translated_locally` |
-| `skill_045` | `nudge` | `nudge_supported_object` | `object: object_ref`, `support: support_ref`, `direction_xy: unit_vec2`, `distance_m: positive_number` | `displacement_along` |
-| `skill_046` | `drag` | `drag_supported_object` | `object: object_ref`, `support: support_ref`, `direction_xy: unit_vec2`, `distance_m: positive_number` | `displacement_along` |
-| `skill_047` | `unfold` | `unfold_hinged_door` | `articulated: articulated_ref` | `joint_open_enough` |
-| `skill_048` | `extend` | `extend_drawer` | `articulated: articulated_ref` | `joint_open_enough` |
-| `skill_049` | `ready` | `ready_floor_object` | `object: object_ref` | `floor_reach_ready` |
-| `skill_050` | `clear` | `clear_microwave_door_sweep` | `articulated: articulated_ref` | `microwave_sweep_clear` |
-<!-- action-signatures:end -->
+## 物理验证
 
-[50 个动作谓词总表](ACTION_PREDICATES.md)列出动作与验证事实，[任务目标映射](goal_predicates.json)把它们接到 `inside`、`on`、`upright`、`near`、`heated`、`closed` 等目标。`near` 要由最终评估器检查组内两两距离；`not_dropped` 是全程不变量，不能由单个动作谓词保证。现有 10 个任务的 42 条目标子句均有名义上的动作路径或最终检查；这不等于物理场景全部成功。
-
-## 与上层如何对接
-
-VLM 根据任务目标及当前观察生成当前子目标的 `skill_subgraph`：每个节点只有 `id`、`skill_id`、`args`、`depends_on`。对象引用用 `{"ref":"the apple"}`；数值用 `{"value":...}`。Grounding 模块另提供 ref 到唯一场景实例 ID 的绑定。见 [四节点水果示例](examples/collect_fruits.skill_subgraph.json)、[六节点收纳示例](examples/recycle_and_store.skill_subgraph.json)、[十二节点新资产示例](examples/organize_utility_items.skill_subgraph.json)、[加热示例](examples/heat_preloaded.skill_subgraph.json) 和 [子图 Schema](subgraph.schema.json)。收纳示例的名词绑定见 [bindings](examples/recycle_and_store.bindings.json)，新资产示例的名词绑定见 [bindings](examples/organize_utility_items.bindings.json)；两者都是模拟器控制图，不是 GPT 生成结果。
-
-[关系目录](relations.json) 提供 47 条**有条件的**准备、使能、后续、替代和恢复提示。例如“微波炉关门 → 启动加热 → 等待温度达标”，以及“薄物制造悬边 → 边缘抓取”。这些关系帮助 VLM 提出 `depends_on`，不是固定的全局任务图；Graph Manager 必须根据实时状态、参数类型和任务目标验证，再按需执行。失败后返回测得的部分状态，上层重新规划；关系和 fallback 不会自动触发其他动作。
-
-上层获取公开目录和失败后的恢复候选可用 [planner_handoff.py](planner_handoff.py)；请求字段、恢复循环和当前边界见 [上层对接说明](UPPER_LAYER_HANDOFF.md)。
-
-Graph Manager 在 [graph.py](graph.py) 中检查 ID、参数、依赖 DAG、场景绑定和 SkillNode／Contract 一对一关系，然后编译为 `ContractRunner.run(contract_id, "compose", *args)`。直接调用时也可用 `ContractRunner.run_bound("contract_012", object="apple")` 按名词槽位填写。选中的路径与绑定属性写入结果的 `selected_policy_path`、`bound_nouns`；无匹配路径时不执行 policy。已有 rig 时使用 `skill_library.runtime.run_subgraph(rig, graph, bindings)`。
-
-## 任务覆盖的含义
-
-[逐任务蓝图](TASK_PLANS.md) 给出条件化动作链；[逐任务审计](task_coverage.json) 对照 `tasks/*/task.json`：10 个任务的 **42 条目标子句**均有可表达的动作路径或终态检查，涉及 `inside`、`on`、直立、成组靠近、加热、关门和 `not_dropped`。例如 `near` 是**成组两两距离**；单次 `skill_038` 只验证一个物体与提示点的距离。上层应选共同提示点，把每个物体放在任务阈值一半以内，再用 `TaskEvaluator` 核对整个组。
-
-[GPT 规划与 ZenoBench 实验协议](../experiments/gpt_skill_baseline/README.md) 区分 JSON 规划有效性、Contract 执行和最终任务成功。
-
-这是**目标表达覆盖**，不等于所有随机场景都物理成功。`not_dropped` 和 `closed: all` 是终态条件，分别要靠各动作维持或逐门修复，并由任务评估器最终核对。可达性、抓持稳定性、候选物是否存在等仍是运行时问题；地面容器翻倒后的复位尚无独立实跑保证。
+[verification/scenarios.json](verification/scenarios.json) 中的场景在 Isaac Sim 中逐条执行 Contract（`tools/verify_skills.py`），每一步都测量前后条件。结果汇总见 [verification/STATUS.md](verification/STATUS.md)，由 `tools/verify_summary.py --write` 生成。
 
 ## 生成与检查
 
 ```bash
-python -m skill_library.graph --graph skill_library/examples/collect_fruits.skill_subgraph.json \
-  --bindings skill_library/examples/collect_fruits.bindings.json \
-  --ann tasks/collect_fruits/annotation.json --format upper
-PYTHONDONTWRITEBYTECODE=1 python -m pytest tests -q
-PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s skill_library/tests -q
-PYTHONDONTWRITEBYTECODE=1 python tools/export_agent_skill_docs.py --check
-PYTHONDONTWRITEBYTECODE=1 python tools/export_interface_libraries.py --check
-PYTHONDONTWRITEBYTECODE=1 python tools/audit_skill_task_coverage.py --check
+python tools/build_skill_library.py --check        # 定义 -> 导出是否一致，库是否通过全部静态检查
+python -m skill_library.planner --all              # 每个任务的 SkillNode 链
+python -m pytest tests skill_library/tests -q
+$ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 ```
 
-Contract 明细见 [Contract Library](../contract_library/README.md)，policy 明细见 [Policy Library](../policy_library/README.md)，逐技能实跑状态见 [50 节点验证清单](verification/STATUS.md)，未通过的四项见 [物理测试发现](verification/FINDINGS.md)，完整成功与失败轨迹见 [验证摘要](verification/node_contract_smoke.json)。其中温度达到 63.6°C；区域放置误差约 2.1 cm；另有早餐碗搬运滑脱案例。
+源文件只有 [definitions.py](definitions.py)（技能）和 [zeno_skills/predicates.py](../zeno_skills/predicates.py)（谓词）。`skills/`、`contract_library/`、`relations.json`、`vlm_skill_catalog.json`、`SKILLS.md`、`docs/INTERFACE_IDS.md` 都由 `tools/build_skill_library.py` 生成。
+
+<!-- skills:start -->
+## 全部 SkillNode
+
+| SkillNode | Verb + noun | Signature | Paths (noun-selected) | Postconditions |
+|---|---|---|---|---|
+| `skill_001` | **navigate** place | `navigate(destination)` | two_hand_carry, carry, empty | `base_near` |
+| `skill_002` | **approach** target | `approach(target, pass_by?)` | reach_on_the_move, park | `reachable` |
+| `skill_003` | **face** target | `face(target)` | rotate_empty, rotate_loaded | `facing` |
+| `skill_004` | **retreat** obstacle | `retreat(obstacle, distance_m)` | microwave_door_sweep, bimanual_or_left_load, loaded, empty | `base_clear_of` |
+| `skill_005` | **crouch** torso | `crouch(height_m?)` | to_height, lowest | `torso_raised` + `torso_at`, `torso_lowered` |
+| `skill_006` | **stand** torso | `stand()` | highest | `torso_raised` |
+| `skill_007` | **bend** waist | `bend(pitch_rad?)` | to_pitch, full | `waist_bent` |
+| `skill_008` | **straighten** waist | `straighten()` | upright | `waist_straight` |
+| `skill_009` | **tuck** arm | `tuck(hand)` | left, right | `arm_stowed` |
+| `skill_010` | **reset** posture | `reset()` | joint_home | `arm_stowed`, `torso_raised`, `waist_straight` |
+| `skill_011` | **look** target | `look(target)` | head_only, turn_then_head | `in_view`, `observed` |
+| `skill_012` | **inspect** receptacle | `inspect(receptacle)` | closed_cabinet, open_view | `observed` |
+| `skill_013` | **search** object | `search(object, region?)` | room_sweep | `observed` |
+| `skill_014` | **explore** room | `explore(room)` | viewpoints | `room_explored` |
+| `skill_015` | **point** target | `point(target)` | front, turn_and_point | `pointing_at`, `hand_empty` |
+| `skill_016` | **present** object | `present(object)` | front_of_head | `presenting`, `holding` |
+| `skill_017` | **pick** object | `pick(object, hands?, grasp?, pass_by?)` | microwave_cavity, inside_cabinet_or_fridge, handle_requested, on_the_move, two_hand_box, two_hand_flat, floor_top, flat_overhang_ready, flat_edge, rect_rim, round_rim, handle, top_pinch, annotation_dispatch | `holding` + `holding` |
+| `skill_018` | **place** object | `place(object, receptacle, hint_xy?, pass_by?)` | microwave_staged, microwave, cabinet_or_fridge_shelf, container, on_the_move, edge_held_flat, stove_burner, surface | `hand_empty` + `in_appliance`, `inside`, `on`, `on_burner` |
+| `skill_019` | **drop** object | `drop(object, container)` | above_opening | `inside`, `hand_empty` |
+| `skill_020` | **stack** object | `stack(object, base)` | top_face | `on_top_of`, `hand_empty` |
+| `skill_021` | **release** object | `release(object, hand)` | open_in_place | `hand_empty` |
+| `skill_022` | **handover** object | `handover(object)` | right_to_left | `holding`, `hand_empty` |
+| `skill_023` | **lift** object | `lift(object, height_m)` | raise | `held_above`, `holding` |
+| `skill_024` | **lower** object | `lower(object, height_m)` | descend | `held_below`, `holding` |
+| `skill_025` | **rotate** object | `rotate(object, degrees)` | wrist_yaw | `yaw_rotated`, `holding` |
+| `skill_026` | **regrasp** object | `regrasp(object, support)` | set_down_and_pick | `holding` |
+| `skill_027` | **brace** object | `brace(object)` | left_rim_pinch | `steadied`, `holding` |
+| `skill_028` | **flip** object | `flip(object)` | edge_roll | `flipped`, `hand_empty` |
+| `skill_029` | **push** object | `push(object, direction_xy, distance_m)` | drag_from_top, thin_auto, from_behind | `object_moved` |
+| `skill_030` | **pull** object | `pull(object, distance_m)` | top_drag | `moved_toward_base`, `reachable` |
+| `skill_031` | **expose** object | `expose(object)` | slide_to_edge | `edge_overhang` |
+| `skill_032` | **separate** object | `separate(object)` | push_apart | `grasp_clearance` |
+| `skill_033` | **center** object | `center(object, margin_m)` | push_inward | `away_from_edge` |
+| `skill_034` | **roll** object | `roll(object, distance_m)` | push_above_axis | `object_rolled` |
+| `skill_035` | **tip** object | `tip(object)` | push_high | `lying` |
+| `skill_036` | **upright** object | `upright(object)` | pick_orient_place | `upright`, `hand_empty` + `on` |
+| `skill_037` | **wipe** surface | `wipe(surface, tool)` | sponge_strip | `wiped`, `holding` |
+| `skill_038` | **stir** container | `stir(container, tool)` | circle_below_rim | `stirred`, `holding` |
+| `skill_039` | **pour** contents | `pour(source, target)` | tilt_over_rim | `poured_into`, `holding` |
+| `skill_040` | **open** articulated | `open(articulated)` | powered_microwave, left_holds_load, refrigerator, drawer, hinged_door | `is_open` |
+| `skill_041` | **close** articulated | `close(articulated)` | powered_loaded, powered, handle_push, dispatch | `is_closed` |
+| `skill_042` | **press** button | `press(button)` | microwave_start_staged, microwave_door_key, generic_key | `button_pressed`, `hand_empty` + `heating` |
+| `skill_043` | **heat** food | `heat(food, appliance, temp_c)` | microwave, stove_pot | `temperature_at_least`, `heating` |
+| `skill_044` | **chill** food | `chill(food, appliance, temp_c)` | fridge_wait | `temperature_at_most` |
+| `skill_045` | **cover** container | `cover(container, lid)` | rim_plane | `covered`, `hand_empty` |
+| `skill_046` | **uncover** container | `uncover(container)` | knob_lift_aside | `uncovered`, `hand_empty` + `on` |
+| `skill_047` | **fetch** object | `fetch(object, receptacle)` | to_container, to_surface | `hand_empty` + `inside`, `on` |
+| `skill_048` | **collect** objects | `collect(objects, container)` | fetch_each | `all_inside` |
+| `skill_049` | **sort** objects | `sort(objects, rule)` | fetch_by_tag | `sorted_by_category` |
+| `skill_050` | **clear** support | `clear(support, receptacle)` | fetch_each_on_support | `support_clear` |
+| `skill_051` | **empty** container | `empty(container, receptacle)` | pour_out, pick_each_inside | `container_empty` |
+| `skill_052` | **arrange** objects | `arrange(objects, support, max_dist_m)` | place_near_common_spot | `grouped` |
+| `skill_053` | **restore** object | `restore(object)` | dispatch_pick_place | `at_initial_place`, `hand_empty` |
+| `skill_054` | **swap** objects | `swap(a, b)` | via_buffer | `positions_swapped`, `hand_empty` |
+| `skill_055` | **sidestep** base | `sidestep(distance_m)` | empty_tucked, loaded | `sidestepped` |
+| `skill_056` | **wait** duration | `wait(seconds)` | idle | `waited` |
+| `skill_057` | **identify** object | `identify(object)` | look_and_label | `identified`, `in_view` |
+| `skill_058` | **measure** object | `measure(object)` | look_and_size | `measured`, `in_view` |
+| `skill_059` | **count** category | `count(category)` | head_sweep | `counted` |
+| `skill_060` | **wave** hand | `wave()` | raised_swing | `waved`, `hand_empty` |
+| `skill_061` | **nod** head | `nod()` | pitch_cycles | `nodded` |
+| `skill_062` | **shake** object | `shake(object)` | lateral | `shaken`, `holding` |
+| `skill_063` | **hover** object | `hover(object, target)` | above_target | `hovering_over`, `holding` |
+| `skill_064` | **square** object | `square(object)` | pick_rotate_place | `squared`, `hand_empty` |
+| `skill_065` | **touch** object | `touch(object)` | fingertip_top | `touched`, `hand_empty` |
+| `skill_066` | **knock** articulated | `knock(articulated)` | panel_taps | `knocked`, `is_closed` |
+| `skill_067` | **sweep** objects | `sweep(objects, radius_m)` | push_to_centroid | `clustered` |
+| `skill_068` | **stop** appliance | `stop(appliance)` | stove_key_off, microwave_door | `heating` + `is_open` |
+| `skill_069` | **dip** utensil | `dip(tool, container)` | tip_below_rim | `dipped`, `holding` |
+| `skill_070` | **hide** object | `hide(object, receptacle, lid?)` | container_with_lid, closed_cabinet | `hidden`, `hand_empty` |
+<!-- skills:end -->

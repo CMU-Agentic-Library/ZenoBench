@@ -1,38 +1,21 @@
-# contract_040 — Raise torso for work surface
+# contract_040 — Separate an object from its neighbour
 
-Raise the robot torso to its configured maximum.
+Push an object straight away from its closest neighbour until there is room for a finger (>= 3.5 cm gap) without leaving the support.
 
-Paired SkillNode: `skill_032`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_032` (`separate-object`).
 
-## Inputs
+## Precheck
 
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
+- [all paths] `not grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
 
-## Preconditions
+## Verifier
 
-- `joint_path_clear` — policy_attempt
-
-## Planner action predicate
-
-`raise_torso()` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `posture_at_target` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
 
 ## Policy paths
 
-### fixed
+- `push_apart` when always: `policy_080($object)`
 
-Match before execution: `[]`.
-
-1. `policy_006` with []
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_008` / `raise`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

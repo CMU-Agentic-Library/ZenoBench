@@ -39,8 +39,8 @@
     "class": "LeanForwardPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_041"
+  "skill_contract_paths": [
+    "contract_015:bend/full"
   ],
   "legacy_family_contracts": [
     "contract_008"

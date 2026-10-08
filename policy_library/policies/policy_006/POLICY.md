@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).raise_torso.execute(...)`
 - Class: `RaiseTorsoPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_040
+- Skill Contract paths: contract_014:stand/highest
 - Legacy family Contracts: contract_008
 
 ## Recorded evidence

@@ -1,68 +1,71 @@
 ---
-name: place-on-a-support-while-the-base-moves
-description: Release one right-held object onto a support during a base move.
+name: drop-object
+description: Hold the object 5 cm above a container's opening, centred, and let go; the object falls in.
 ---
 
-# Place on a support while the base moves (skill_019)
+# Drop an object into a container (`skill_019`)
+
+`drop(object: object_ref, container: container_ref)`
+
+Hold the object 5 cm above a container's opening, centred, and let go; the object falls in.
 
 ## When to use
 
-Release one right-held object onto a support during a base move.
+A held object must go into an open container from above without a precise pose.
+
+## Not to be confused with
+
+- `place`: place lowers the object onto the container floor before opening.
 
 ## Inputs
 
-- `object` (`object_ref`): object
-- `support` (`support_ref`): support
-- `base_path` (`pose2d`): base path
+- `object` (`object_ref`): The held object.
+- `container` (`container_ref`): The open container.
 
-## Preconditions
+## Applicability
 
-- `held_by_right_hand` — `contract_precheck`
-- `target_annotated` — `policy_attempt`
-- `target_accessible` — `policy_attempt`
+Requires holding(hand=right, object=$object); base_near(place=$container); uncovered(container=$container).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`deliver_object(object, support, base_path)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['on', 'right_hand_empty']`.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `on` — measured by `contract_runner`
-- `right_hand_empty` — measured by `contract_runner`
+- `inside(object=$object, container=$container)` — Object centre inside the container's wall profile, between its floor and 3 cm above the rim. GT: object_pose, container_profile.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_019` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_027", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `inside(object=$object, container=$container)` (all paths)
+- `hand_empty(hand=right)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+## May invalidate
 
-### Policy path: fixed
+`holding(right,$object)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_053(object, support, base_path)`
+### `above_opening` — when always (default path)
 
+1. `policy_073($object, $container)`
 
-Verifier: `contract_003 / moving`.
+## Relations
 
-## Related Skills
-
-- `skill_005` (`recovery`) when moving place failed and the object remains right-held — Try stationary support placement after fresh observation.
+- Previous step: `lift` (`skill_023`) (enables) — the object is released over a tall container
+- Previous step: `hover` (`skill_063`) (enables) — the object is released into the container under it
+- Next step: `pick` (`skill_017`) (enables) — more items go into the same container
+- Is a fallback for: `place` (`skill_018`) (substitute) — a deep container leaves no room to lower the hand inside
+- Alternative: `place` (`skill_018`) — a gentle release inside is needed
+- Alternative: `release` (`skill_021`) — the object should fall into a container
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
-- Conditional fallback `skill_005` when object remains right-held and base motion has stopped: stationary support placement is an alternative to mobile placement
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one synchronized moving placement
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_027`.

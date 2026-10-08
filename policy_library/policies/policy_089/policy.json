@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_089",
+  "legacy_id": "wait_cool",
+  "name": "Wait Cool",
+  "description": "Wait until food in the closed fridge cools.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "appliance",
+    "effect_summary": "temperature_at_most(name, t)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "max_temp_c",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "appliance",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": "breakfast_fridge"
+    },
+    {
+      "name": "max_wait_s",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 120.0
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "temperature_at_most(name, t)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_089",
+    "legacy_attribute": "wait_cool",
+    "class": "WaitCoolPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_052:chill/fridge_wait"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

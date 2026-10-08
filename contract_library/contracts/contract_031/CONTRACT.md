@@ -1,41 +1,20 @@
-# contract_031 — Open powered microwave door
+# contract_031 — Lift a held object
 
-Open the annotated powered microwave door and measure its joint.
+Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).
 
-Paired SkillNode: `skill_023`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_023` (`lift-object`).
 
-## Inputs
+## Precheck
 
-- `appliance`: appliance_ref
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`trigger_microwave_door_opening(appliance)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `joint_open_enough` — contract_runner
-
-## Grounded noun slots
-
-- `appliance`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'door_button'}`
+- [all paths] `held_above(object=$object, height_m=$height_m)` — GT: object_pose, gripper_state
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `raise` when always: `policy_034($height_m)`
 
-Match before execution: `[]`.
-
-1. `policy_024` with ['appliance']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_004` / `powered`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

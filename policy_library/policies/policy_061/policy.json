@@ -44,7 +44,12 @@
     "class": "PickPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_025:pick/inside_cabinet_or_fridge",
+    "contract_025:pick/annotation_dispatch",
+    "contract_059:empty/pick_each_inside",
+    "contract_061:restore/dispatch_pick_place"
+  ],
   "legacy_family_contracts": [
     "contract_002"
   ],

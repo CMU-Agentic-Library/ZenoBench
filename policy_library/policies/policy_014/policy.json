@@ -38,10 +38,7 @@
     "class": "FloorCornerPickPolicy"
   },
   "availability": "callable",
-  "direct_contracts": [
-    "contract_012",
-    "contract_028"
-  ],
+  "skill_contract_paths": [],
   "legacy_family_contracts": [
     "contract_002"
   ],

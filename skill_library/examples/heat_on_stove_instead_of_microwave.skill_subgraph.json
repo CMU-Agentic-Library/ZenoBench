@@ -1,0 +1,74 @@
+{
+ "schema_version": 2,
+ "kind": "skill_subgraph",
+ "subgoal_id": "heat_tomatoes_on_stove",
+ "nodes": [
+  {
+   "id": "n1",
+   "skill": "navigate",
+   "args": {
+    "destination": {
+     "ref": "the mug"
+    }
+   },
+   "depends_on": []
+  },
+  {
+   "id": "n2",
+   "skill": "pick",
+   "args": {
+    "object": {
+     "ref": "the mug"
+    }
+   },
+   "depends_on": [
+    "n1"
+   ]
+  },
+  {
+   "id": "n3",
+   "skill": "navigate",
+   "args": {
+    "destination": {
+     "ref": "the cooktop"
+    }
+   },
+   "depends_on": [
+    "n2"
+   ]
+  },
+  {
+   "id": "n4",
+   "skill": "place",
+   "args": {
+    "object": {
+     "ref": "the mug"
+    },
+    "receptacle": {
+     "ref": "the cooktop"
+    }
+   },
+   "depends_on": [
+    "n3"
+   ]
+  },
+  {
+   "id": "n5",
+   "skill": "heat",
+   "args": {
+    "food": {
+     "ref": "a tomato"
+    },
+    "appliance": {
+     "ref": "the stove"
+    },
+    "temp_c": {
+     "value": 45
+    }
+   },
+   "depends_on": [
+    "n4"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_085",
+  "legacy_id": "stir_container",
+  "name": "Stir Container",
+  "description": "Circle a held spoon inside a container below its rim.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "tool_use",
+    "effect_summary": "stirred(container)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "tool",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "container",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "turns",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 1.25
+    },
+    {
+      "name": "tilt_deg",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 50.0
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "stirred(container)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_085",
+    "legacy_attribute": "stir_container",
+    "class": "StirContainerPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_046:stir/circle_below_rim"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

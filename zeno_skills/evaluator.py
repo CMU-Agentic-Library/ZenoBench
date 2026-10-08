@@ -141,8 +141,15 @@ class Geometry:
         return ok, f"local ({local[0]:.3f}, {local[1]:.3f}) / ({hx:.3f}, {hy:.3f})"
 
     def support_under(self, name, st):
-        """The highest annotated surface the object rests on (None = floor/unknown)."""
-        b = self.bottom(name, st)
+        """The highest annotated surface the object rests on (None = floor/unknown).
+
+        Uses the lowest point of the rotated box, so a bottle lying on its side
+        still rests on its table."""
+        o = st["objects"][name]
+        R = quat_R(o["quat"])
+        c = self.centre(name, st)
+        size = np.asarray(self._asset(name)["size"], float)
+        b = np.array([c[0], c[1], c[2] - 0.5 * float(np.abs(R[2, :]) @ size)])
         best = None
         for s in self.ann.supports:
             x0, y0, x1, y1 = s["aabb_xy"]

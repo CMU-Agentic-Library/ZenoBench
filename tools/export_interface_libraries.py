@@ -117,62 +117,27 @@ def build():
             lines += [f"- {x}" for x in record["not_guaranteed"]]
         lines += ["", f"Legacy alias: `{legacy_id}`. Runtime binding: `zeno_skills.contracts.CONTRACTS`.", ""]
         files[base / "CONTRACT.md"] = "\n".join(lines)
-    # Active planner-facing contracts are paired one-to-one with SkillNodes.
-    # Preserve the eight family records as compatibility details.
-    from zeno_skills.node_contracts import NODE_CONTRACTS
-    contract_index["legacy_family_contracts"] = contract_index.pop("contracts")
-    contract_index["contracts"] = []
+    # The planner-facing one-to-one Skill Contracts (schema 2) are exported by
+    # tools/build_skill_library.py; here we only record which skill paths use
+    # each policy.
     legacy_direct = {key: list(value) for key, value in direct.items()}
     direct = {row["id"]: [] for row in rows}
-    for cid, record in NODE_CONTRACTS.items():
-        base = Path("contract_library/contracts") / cid
-        files[base / "contract.json"] = _json(record)
-        contract_index["contracts"].append({
-            "contract_id": cid, "skill_id": record["skill_id"],
-            "name": record["name"],
-            "definition": str(base.relative_to("contract_library") / "contract.json"),
-        })
-        lines = [f"# {cid} — {record['name']}", "", record["description"], "",
-                 f"Paired SkillNode: `{record['skill_id']}`. Status: `{record['availability']}`.", "",
-                 "## Inputs", ""]
-        for name, meta in record["inputs"].items():
-            lines.append(f"- `{name}`: {meta['type']}")
-        lines += ["", "## Preconditions", ""]
-        lines += [f"- `{x['predicate']}` — {x['enforcement']}" for x in record["requires"]]
-        action = record["action_predicate"]
-        lines += ["", "## Planner action predicate", "",
-                  f"`{action['name']}({', '.join(action['arguments'])})` — reported only after the measured state facts pass.", ""]
-        lines += ["## Measured postconditions", ""]
-        lines += [f"- `{x['predicate']}` — {x['verification']}" for x in record["achieves"]]
-        lines += ["", "## Grounded noun slots", ""]
-        for name, binding in record["noun_bindings"].items():
-            constraints = {key: value for key, value in binding.items()
-                           if key not in ("argument", "kind")}
-            lines.append(f"- `{name}`: `{binding['kind']}`; constraints `{constraints}`")
-        lines += ["", "## Policy paths", ""]
-        plan = record["policy_plan"]
-        paths = plan.get("paths") or [{"path_id": "fixed", "when": [], "steps": plan["steps"]}]
-        for path in paths:
-            lines.append(f"### {path['path_id']}")
-            lines.append("")
-            lines.append(f"Match before execution: `{path['when']}`.")
-            lines.append("")
-            for index, step in enumerate(path["steps"], 1):
-                lines.append(f"{index}. `{step['policy_id']}` with {[x['arg'] for x in step['args']]}")
-                old_policy = next((old for old, public in POLICY_PUBLIC_IDS.items()
-                                   if public == step["policy_id"]), None)
-                if old_policy is not None and cid not in direct[old_policy]:
-                    direct[old_policy].append(cid)
-            lines.append("")
-        verifier = record["verifier"]
-        verifier_label = (f"`{verifier['legacy_family_contract']}` / `{verifier['route']}`"
-                          if verifier.get("legacy_family_contract")
-                          else f"custom `{verifier['custom']}`")
-        lines += ["", "## Failure", "",
-                  "Stop, return completed policy steps and measured state; upper layer replans.", "",
-                  f"Verifier: {verifier_label}.", ""]
-        files[base / "CONTRACT.md"] = "\n".join(lines)
-    files[Path("contract_library/catalog.json")] = _json(contract_index)
+    public_to_old = {row["policy_id"]: row["id"] for row in rows}
+    skill_catalog = json.loads((ROOT / "contract_library/skill_contracts.json").read_text())
+
+    def _walk(steps):
+        for step in steps:
+            if "foreach" in step:
+                yield from _walk(step["steps"])
+            elif "policy" in step:
+                yield step["policy"]
+    for contract in skill_catalog["contracts"]:
+        for path in contract["policy_plan"]["paths"]:
+            for pid in _walk(path["steps"]):
+                tag = f"{contract['contract_id']}:{contract['verb']}/{path['path_id']}"
+                if tag not in direct[public_to_old[pid]]:
+                    direct[public_to_old[pid]].append(tag)
+    files[Path("contract_library/legacy_family_catalog.json")] = _json(contract_index)
 
     policy_index = {"schema_version": 1, "kind": "low_level_policy_catalog", "policies": []}
     for row in rows:
@@ -196,7 +161,7 @@ def build():
             "binding": {"api": "PolicySuite", "attribute": policy_id,
                         "legacy_attribute": legacy_id, "class": type(policy).__name__},
             "availability": row["status"],
-            "direct_contracts": direct[legacy_id],
+            "skill_contract_paths": direct[legacy_id],
             "legacy_family_contracts": legacy_direct[legacy_id],
             "supporting_family_contracts": support[legacy_id],
         }
@@ -230,7 +195,7 @@ def build():
                   f"- Class: `{type(policy).__name__}`",
                   f"- Availability: `{row['status']}`"]
         if direct[legacy_id]:
-            lines.append(f"- Direct Contract routes: {', '.join(direct[legacy_id])}")
+            lines.append(f"- Skill Contract paths: {', '.join(direct[legacy_id])}")
         if legacy_direct[legacy_id]:
             lines.append(f"- Legacy family Contracts: {', '.join(legacy_direct[legacy_id])}")
         if support[legacy_id]:

@@ -25,7 +25,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).push_from_behind.execute(...)`
 - Class: `PushFromBehindPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_053
+- Skill Contract paths: contract_037:push/from_behind
 - Legacy family Contracts: contract_006
 
 ## Recorded evidence

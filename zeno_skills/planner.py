@@ -76,9 +76,13 @@ def torque_ratio(kin, q, force):
     return float(np.max(np.abs(tau) / effort_limits(kin.names)))
 
 
+LAST_PARK_DIAG: dict = {}      # rejection counts of the last find_park call (for failure messages)
+
+
 def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
               yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
-              score=None, n_best=1, q_start=None, travel_q=None):
+              score=None, n_best=1, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None,
+              travel_boxes=()):
     """Return (x, y, yaw_deg, qs) or None.
 
     travel_q: arm posture while the base drives there (tucked, or the carry
@@ -112,30 +116,54 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         reach of every target, heights within the torso-lift range (down to
         the floor: torso fully lowered + waist pitched)."""
         c_, s_ = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
-        sh = np.array([x + 0.09 * c_ + 0.18 * s_, y + 0.09 * s_ - 0.18 * c_])
+        sh = np.array([x + shoulder[0] * c_ - shoulder[1] * s_, y + shoulder[0] * s_ + shoulder[1] * c_])
         d = np.linalg.norm(P[:, :2] - sh, axis=1)
         return bool(np.all(d < 0.78) and np.all((P[:, 2] > 0.0) & (P[:, 2] < 1.5)))
     tried = 0
     found = []
+    diag = {"candidates": len(cands), "out_of_reach": 0, "footprint": 0, "travel_pose": 0, "ik": 0,
+            "unfold": 0, "ride": 0}
+    LAST_PARK_DIAG.clear()
+    LAST_PARK_DIAG.update(diag)
     for cost, x, y, yaw in cands:
-        if not reachable(x, y, yaw) or not world.footprint_clear(x, y, math.radians(yaw)):
+        if not reachable(x, y, yaw):
+            LAST_PARK_DIAG["out_of_reach"] += 1
+            continue
+        if not world.footprint_clear(x, y, math.radians(yaw)):
+            LAST_PARK_DIAG["footprint"] += 1
             continue
         tried += 1
         if tried > max_tries:
             break
         kin.set_base((x, y, 0.0), math.radians(yaw))
         if travel_q is not None and cost >= 0:
+            # travel_boxes (the pick target itself): the folded arm swings
+            # through them while the base turns into this pose
             kw, kin.coll_kw = kin.coll_kw, {"ignore_fingers": kin.coll_kw.get("ignore_fingers", False)}
-            clear = kin.free(travel_q)          # strict: the parked arm touches nothing
+            if len(travel_boxes) and hasattr(world, "temp_obstacles"):
+                with world.temp_obstacles(list(travel_boxes)):
+                    clear = kin.free(travel_q)
+            else:
+                clear = kin.free(travel_q)          # strict: the parked arm touches nothing
             kin.coll_kw = kw
             if not clear:
+                LAST_PARK_DIAG["travel_pose"] += 1
                 continue
         qs = _ik_sequence(kin, targets, q0=q_start if cost < 0 else None)
         if qs is None:
+            LAST_PARK_DIAG["ik"] += 1
             continue
         if travel_q is not None and cost >= 0 and not joint_reachable(kin, travel_q, qs[0]):
+            LAST_PARK_DIAG["unfold"] += 1
             continue                    # the arm cannot unfold to the first target here
         if ride is not None and not ride(x, y, yaw, qs[-1]):
+            LAST_PARK_DIAG["ride"] += 1
+            continue
+        origin = path_from if path_from is not None else (near if near is not None and len(near) == 3 else None)
+        if origin is not None and cost >= 0 and \
+                math.hypot(x - origin[0], y - origin[1]) > 0.05 and plan_path(world, origin, (x, y, yaw)) is None:
+            # footprint-clear but enclosed (e.g. behind a counter): not drivable from here
+            LAST_PARK_DIAG["no_path"] = LAST_PARK_DIAG.get("no_path", 0) + 1
             continue
         if score is None or cost < 0:
             return x, y, yaw, qs
@@ -161,6 +189,16 @@ class Grid:
         self.lo = lo
         self.shape = np.ceil((hi - lo) / res).astype(int)
         self.cache = {}
+
+    def not_inside(self, ij, r=0.20):
+        """Lenient check for the tight cells next to a parked start/goal: the
+        base centre stays 0.2 m from every box (a skipped check let a short
+        re-park cut straight through the island corner and knock objects off)."""
+        x, y = self.lo + (np.asarray(ij) + 0.5) * self.res
+        b = self.boxes
+        dx = np.maximum(np.maximum(b[:, 0] - x, x - b[:, 3]), 0)
+        dy = np.maximum(np.maximum(b[:, 1] - y, y - b[:, 4]), 0)
+        return bool(np.all(np.hypot(dx, dy) > r))
 
     def free(self, ij):
         if ij in self.cache:
@@ -194,7 +232,7 @@ def plan_path(world, start, goal, res=0.05, margin=0.02):
     def ok(ij):
         near_end = max(abs(ij[0] - s[0]), abs(ij[1] - s[1])) <= relax or \
             max(abs(ij[0] - t[0]), abs(ij[1] - t[1])) <= relax
-        return near_end or g.free(ij)
+        return (near_end and g.not_inside(ij)) or g.free(ij)
 
     openq = [(0.0, s)]
     came, cost = {s: None}, {s: 0.0}
@@ -233,6 +271,8 @@ def plan_path(world, start, goal, res=0.05, margin=0.02):
             j -= 1
         pts.append(g.xy(cells[j]))
         i = j
+    if len(pts) == 1:                     # start and goal in the same cell: one short move (and turn)
+        pts.append(np.asarray(goal[:2], float))
     pts[-1] = np.asarray(goal[:2], float)
     out = []
     for k, p in enumerate(pts[1:], 1):

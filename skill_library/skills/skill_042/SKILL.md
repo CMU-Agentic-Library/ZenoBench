@@ -1,64 +1,81 @@
 ---
-name: back-away-while-carrying
-description: Reverse the base while preserving the right-hand grasp.
+name: press-button
+description: Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).
 ---
 
-# Back away while carrying (skill_042)
+# Press a button (`skill_042`)
+
+`press(button: button_ref)`
+
+Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).
 
 ## When to use
 
-Reverse the base while preserving the right-hand grasp.
+A button (microwave keys, stove power key) must be pressed.
+
+## Not to be confused with
+
+- `heat`: heat guarantees a temperature; press guarantees only the key press.
+- `open`: open guarantees the door is open.
 
 ## Inputs
 
-- `object` (`object_ref`): The object currently held in the right hand.
-- `distance_m` (`positive_number`): Requested backward travel distance in metres.
+- `button` (`button_ref`): E.g. kitchen_microwave/door_button, kitchen_stove/power_button.
 
-## Preconditions
+## Applicability
 
-- `held_by_right_hand` — `policy_attempt`
-- `backward_path_clear` — `policy_attempt`
+Requires hand_empty(hand=right); base_near(place=@button.appliance). Depending on the bound nouns, the chosen path also needs: microwave_start_staged (button.button == 'start_button'): is_closed(articulated=@button.appliance).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`retreat_carried_object(object, distance_m)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['base_backed_off', 'grasp_preserved']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `base_near(place=@button.appliance)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `base_backed_off` — measured by `contract_runner`
-- `grasp_preserved` — measured by `contract_runner`
+- `button_pressed(button=$button)` — A measured press of this button happened during the Contract. GT: event_log (measured fingertip contact).
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_042` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_050", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `button_pressed(button=$button)` (all paths)
+- `hand_empty(hand=right)` (all paths)
+- `heating(appliance=@button.appliance)` (path microwave_start_staged)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
+## May invalidate
 
-### Policy path: fixed
+`arm_stowed(right)`, `reachable(*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_035(distance_m)`
+### `microwave_start_staged` — when button.button == 'start_button'
 
+1. `policy_027(@button.appliance, button=start)`
+2. `policy_028(@button.appliance, button=start)`
+3. `policy_029(@button.appliance, button=start)`
+- extra precondition `is_closed(articulated=@button.appliance)`
+- extra postcondition `heating(appliance=@button.appliance)`
 
-Verifier: `back_off`.
+### `microwave_door_key` — when button.button == 'door_button'
 
-## Related Skills
+1. `policy_033(@button.appliance, button=door)`
 
-- `skill_002` (`preparation`) when a load needs clearance from furniture before travel — Back away, then select a new travel pose.
+### `generic_key` — when always (default path)
+
+1. `policy_094($button)`
+
+## Relations
+
+- Previous step: `approach` (`skill_002`) (then) — the target is a button
+- Next step: `heat` (`skill_043`) (enables) — the start key began a cycle
+- Next step: `tuck` (`skill_009`) (enables) — the hand is free again
+- Alternative: `open` (`skill_040`) — the door key is pressed only to open the microwave door
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One back away while carrying attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_050`.

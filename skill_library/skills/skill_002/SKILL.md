@@ -1,65 +1,87 @@
 ---
-name: navigate-while-carrying
-description: Move the base while preserving the current right-hand grasp.
+name: approach-target
+description: Park the base where the right arm has a collision-free IK solution at the target's reach pose: 10 cm above an object or support, the handle pre-grasp of a door or drawer, 8 cm in front of a button.
 ---
 
-# Navigate while carrying (skill_002)
+# Approach a manipulation target (`skill_002`)
+
+`approach(target: entity_ref, pass_by: pose2d?)`
+
+Park the base where the right arm has a collision-free IK solution at the target's reach pose: 10 cm above an object or support, the handle pre-grasp of a door or drawer, 8 cm in front of a button.
 
 ## When to use
 
-Move the base while preserving the current right-hand grasp.
+Right before a contact action on one specific target.
+
+## Not to be confused with
+
+- `navigate`: navigate goes to a region; approach verifies arm IK for one target.
 
 ## Inputs
 
-- `object` (`object_ref`): The object currently held in the right hand.
-- `pose` (`pose2d`): pose
+- `target` (`entity_ref`): The object, support, handle-bearing part or button to reach.
+- `pass_by` (`pose2d`, optional): Optional base waypoint: reach toward the target while driving past it.
 
-## Preconditions
+## Outputs
 
-- `target_navigable` — `policy_attempt`
-- `carried_object_matches_state` — `not_enforced`
+- `base_pose` (`pose2d`): Base pose at which reachability was verified.
 
-## Planner action predicate
+## Applicability
 
-`transport_carried_object(object, pose)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['base_at', 'grasp_preserved']`.
+Requires base_near(place=$target).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `base_at` — measured by `contract_runner`
-- `grasp_preserved` — measured by `contract_runner`
+- `base_near(place=$target)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_002` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_010", "compose", ...)`.
+- `reachable(target=$target)` — From the current base pose the right TCP has a collision-free IK solution 10 cm above the target (handle pre-grasp for doors, 8 cm in front of a button). GT: base_pose, arm_ik, collision_model, object_pose, grasp_annotation.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `reachable(target=$target)` (all paths)
 
-Match before execution: `[]`.
+## May invalidate
 
-1. `policy_002(pose, name=object)`
+`reachable(*)`, `facing(*)`, `in_view(*)`, `pointing_at(*)`
 
+## Policy paths (first match on the bound nouns)
 
-Verifier: `contract_001 / carry`.
+### `reach_on_the_move` — when args.pass_by
 
-## Related Skills
+1. `policy_098($target) as reach`
+2. `policy_051(#reach.position, #reach.rotation, $pass_by)`
+- Extend the arm toward the reach pose while the base follows the given waypoint.
 
-- May follow `skill_041` (`preparation`) when a carried object needs height clearance before travel.
-- May follow `skill_042` (`preparation`) when a load needs clearance from furniture before travel.
+### `park` — when always (default path)
+
+1. `policy_065($target)`
+
+## Relations
+
+- Previous step: `navigate` (`skill_001`) (enables) — a manipulation target is on the destination
+- Previous step: `bend` (`skill_007`) (then) — the target was just out of reach
+- Previous step: `look` (`skill_011`) (then) — the observed target will be manipulated
+- Previous step: `sidestep` (`skill_055`) (then) — the target is now in front of the arm
+- Next step: `pick` (`skill_017`) (then) — the target is an object to grasp
+- Next step: `open` (`skill_040`) (then) — the target is a door or drawer
+- Next step: `press` (`skill_042`) (then) — the target is a button
+- Fallback on failure: `navigate` (`skill_001`) (repair, repairs base_near) — no base pose near the current one reaches the target
+- Fallback on failure: `bend` (`skill_007`) (recover) — the target is just beyond the arm envelope
+- Fallback on failure: `pull` (`skill_030`) (substitute) — the object sits too deep on its support
+- Is a fallback for: `pick` (`skill_017`) (recover) — no grasp is reachable from base poses near the current one
+- Is a fallback for: `place` (`skill_018`) (recover) — the receptacle is out of reach
+- Is a fallback for: `expose` (`skill_031`) (repair) — no base pose reaches behind the object
+- Is a fallback for: `open` (`skill_040`) (recover) — the handle is out of reach
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
+- no base pose reaches the target
+- IK fails after parking
 
-one loaded base move
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_010`.

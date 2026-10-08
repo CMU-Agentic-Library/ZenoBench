@@ -1,0 +1,157 @@
+{
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_065",
+ "skill_id": "skill_057",
+ "verb": "identify",
+ "noun": "object",
+ "name": "Identify an object",
+ "description": "Look at an object and report its category and tags (asset annotation) once it is in the head camera view.",
+ "group": "perception_and_gesture",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "The object to identify."
+  }
+ },
+ "outputs": {
+  "category": {
+   "type": "tag",
+   "description": "Asset category."
+  },
+  "tags": {
+   "type": "object_list",
+   "description": "Annotated tags."
+  }
+ },
+ "requires": [],
+ "ensures": [
+  {
+   "pred": "identified",
+   "args": {
+    "object": "$object"
+   }
+  },
+  {
+   "pred": "in_view",
+   "args": {
+    "target": "$object"
+   }
+  }
+ ],
+ "invalidates": [],
+ "precheck": [],
+ "verifier": [
+  {
+   "predicate": "identified(object=$object)",
+   "name": "identified",
+   "args": {
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The robot recorded the object's category while it was in the head camera view.",
+   "kind": "memory",
+   "gt_sources": [
+    "robot_memory",
+    "asset_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "in_view(target=$object)",
+   "name": "in_view",
+   "args": {
+    "target": "$object"
+   },
+   "negated": false,
+   "meaning": "Target point inside the head camera frustum, within 5 m, line of sight not blocked by furniture boxes.",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "head_joints",
+    "head_fk",
+    "collision_model"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "identify_object",
+  "verb": "identify",
+  "noun": "object",
+  "arguments": [
+   "object"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "look_and_label",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_110",
+      "args": [
+       "$object"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "sort",
+   "when": "the category decides the destination",
+   "bind": {},
+   "reason": "category output",
+   "to_skill_id": "skill_049",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "alternative",
+   "to": "measure",
+   "when": "the size, not the category, is needed",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_058"
+  },
+  {
+   "kind": "fallback",
+   "to": "navigate",
+   "when": "the object is not visible from here",
+   "bind": {
+    "destination": "$object"
+   },
+   "reason": "a closer view",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_001"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
+}

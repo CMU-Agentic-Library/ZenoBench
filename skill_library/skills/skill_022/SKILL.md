@@ -1,65 +1,68 @@
 ---
-name: open-a-door-while-the-left-hand-holds-an-object
-description: Open one annotated door while preserving an existing left-hand hold.
+name: handover-object
+description: Transfer a right-held object into the left gripper and open the right gripper.
 ---
 
-# Open a door while the left hand holds an object (skill_022)
+# Hand an object over to the left hand (`skill_022`)
+
+`handover(object: object_ref)`
+
+Transfer a right-held object into the left gripper and open the right gripper.
 
 ## When to use
 
-Open one annotated door while preserving an existing left-hand hold.
+The right hand must be freed while the object stays held (by the left hand).
+
+## Not to be confused with
+
+- `release`: release lets the object go; handover keeps it held by the left hand.
 
 ## Inputs
 
-- `object` (`object_ref`): object
-- `articulated` (`articulated_ref`): articulated
+- `object` (`object_ref`): The right-held object.
 
-## Preconditions
+## Applicability
 
-- `articulated_annotated` — `contract_precheck`
-- `opening_route_feasible` — `policy_attempt`
-- `held_by_left_hand` — `not_enforced`
+Requires holding(hand=right, object=$object); hand_empty(hand=left).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`swing_articulated_door(object, articulated)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_open_enough']`.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `hand_empty(hand=left)` — The given gripper holds nothing. GT: gripper_state.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `joint_open_enough` — measured by `contract_runner`
+- `holding(hand=left, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_022` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_030", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `holding(hand=left, object=$object)` (all paths)
+- `hand_empty(hand=right)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True}`
+## May invalidate
 
-### Policy path: fixed
+`holding(right,$object)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_060(object, articulated)`
+### `right_to_left` — when always (default path)
 
+1. `policy_059($object)`
 
-Verifier: `contract_004 / while_left_holds`.
+## Relations
 
-## Related Skills
-
-- No fixed relation; select the next node from the task goal and observation.
+- Previous step: `present` (`skill_016`) (enables) — the object is passed to the left hand
+- Next step: `open` (`skill_040`) (enables) — the right hand must open a door while the left carries the load
+- Next step: `pick` (`skill_017`) (enables) — a second object is picked with the free right hand
+- Is a fallback for: `open` (`skill_040`) (repair) — the right hand still holds a load
+- Alternative: `brace` (`skill_027`) — the left hand should hold an object that stays on its support
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one left-hold opening
-
-Availability: `experimental_callable`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_030`.

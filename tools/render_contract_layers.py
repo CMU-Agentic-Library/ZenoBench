@@ -73,7 +73,10 @@ def rect(x, y, w, h, fill, stroke="none", radius=0, **attrs):
 
 
 def render(catalog):
-    rows = [row for row in catalog["policies"] if row["id"] != "wait_for_temperature"]
+    # Historical family-contract view: only the original 64 entries; newer
+    # policies are reached through the verb Skill Contracts (POLICY_COVERAGE.md).
+    rows = [row for row in catalog["policies"]
+            if row["id"] != "wait_for_temperature" and int(row["policy_id"].split("_")[1]) <= 64]
     if len(rows) != 63 or len({row["id"] for row in rows}) != 63:
         raise ValueError("contract diagram requires the 63 unique policy catalog entries")
     relations = policy_contract_relations(rows)

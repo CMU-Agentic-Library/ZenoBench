@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_092",
+  "legacy_id": "navigate_to_place",
+  "name": "Navigate To Place",
+  "description": "Drive to a free stand-off pose near a room/furniture/support/object.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "navigation",
+    "effect_summary": "base_near(place)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "place",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "max_tries",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 6
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "base_near(place)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_092",
+    "legacy_attribute": "navigate_to_place",
+    "class": "NavigateToPlacePolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_059:empty/pick_each_inside",
+    "contract_061:restore/dispatch_pick_place"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

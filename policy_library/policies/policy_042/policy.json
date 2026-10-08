@@ -44,8 +44,8 @@
     "class": "PrepareFloorReachPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_057"
+  "skill_contract_paths": [
+    "contract_025:pick/floor_top"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [

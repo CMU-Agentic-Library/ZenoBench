@@ -1,62 +1,90 @@
 ---
-name: raise-carried-object-for-clearance
-description: Lift a right-held object until its bottom clears a required height.
+name: close-articulated
+description: Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load.
 ---
 
-# Raise carried object for clearance (skill_041)
+# Close a door or drawer (`skill_041`)
+
+`close(articulated: articulated_ref)`
+
+Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load.
 
 ## When to use
 
-Lift a right-held object until its bottom clears a required height.
+A door, drawer or appliance must be closed (before heating, after taking out).
+
+## Not to be confused with
+
+- `open`: opposite direction.
 
 ## Inputs
 
-- `object` (`object_ref`): The object currently held in the right hand.
-- `min_bottom_z` (`positive_number`): Required minimum world z of the held object bottom.
+- `articulated` (`articulated_ref`): The open part.
 
-## Preconditions
+## Outputs
 
-- `held_by_right_hand` — `policy_attempt`
+- `joint` (`number`): Measured joint value.
 
-## Planner action predicate
+## Applicability
 
-`hoist_carried_object(object, min_bottom_z)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['held_object_above_height']`.
+Requires base_near(place=$articulated). Depending on the bound nouns, the chosen path also needs: handle_push (articulated.has_handle): hand_empty(hand=right); dispatch (always (default path)): hand_empty(hand=right).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `held_object_above_height` — measured by `contract_runner`
+- `base_near(place=$articulated)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_041` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_049", "compose", ...)`.
+- `is_closed(articulated=$articulated)` — Joint within 0.10 rad (doors) or 4 cm (drawers) of closed. GT: articulation_joint, articulation_annotation.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `is_closed(articulated=$articulated)` (all paths)
 
-Match before execution: `[]`.
+## May invalidate
 
-1. `policy_034(min_bottom_z)`
+`is_open($articulated)`, `base_near(*)`, `reachable(*)`, `facing(*)`
 
+## Policy paths (first match on the bound nouns)
 
-Verifier: `carry_height`.
+### `powered_loaded` — when articulated.powered and robot.right_held
 
-## Related Skills
+1. `policy_030($articulated)`
+2. `policy_031($articulated, target=close)`
 
-- `skill_002` (`preparation`) when a carried object needs height clearance before travel — Raise the load before using the carry-navigation policy.
+### `powered` — when articulated.powered
+
+1. `policy_025($articulated)`
+
+### `handle_push` — when articulated.has_handle
+
+1. `policy_003()`
+2. `policy_023($articulated)`
+- extra precondition `hand_empty(hand=right)`
+
+### `dispatch` — when always (default path)
+
+1. `policy_063($articulated)`
+- extra precondition `hand_empty(hand=right)`
+
+## Relations
+
+- Previous step: `place` (`skill_018`) (enables) — the object went into a cabinet or appliance whose door must be shut
+- Previous step: `open` (`skill_040`) (then) — the door must be shut afterwards
+- Previous step: `collect` (`skill_048`) (then) — the container sits in a cabinet that must be closed
+- Previous step: `sort` (`skill_049`) (then) — a sorted container sits in a cabinet
+- Next step: `heat` (`skill_043`) (enables) — a microwave or fridge must be closed before its cycle
+- Next step: `chill` (`skill_044`) (enables) — the fridge must be closed while cooling
+- Next step: `navigate` (`skill_001`) (then) — the robot leaves
+- Fallback on failure: `retreat` (`skill_004`) (recover) — the door swing hits the base
+- Is a fallback for: `heat` (`skill_043`) (repair) — the microwave door is open
+- Is a fallback for: `chill` (`skill_044`) (repair) — the fridge door is open
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One raise carried object for clearance attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_049`.

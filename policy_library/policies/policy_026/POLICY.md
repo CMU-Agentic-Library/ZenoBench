@@ -26,7 +26,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).push.execute(...)`
 - Class: `PushPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_016
+- Skill Contract paths: contract_037:push/thin_auto
 - Legacy family Contracts: contract_006
 
 ## Recorded evidence

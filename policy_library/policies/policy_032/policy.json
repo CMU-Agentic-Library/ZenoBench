@@ -39,7 +39,9 @@
     "class": "MicrowaveStartPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_051:heat/microwave"
+  ],
   "legacy_family_contracts": [
     "contract_007"
   ],

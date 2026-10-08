@@ -1,41 +1,23 @@
-# contract_055 — Open a hinged door
+# contract_055 — Fetch an object to a receptacle
 
-Open a manual revolute door and read back its hinge joint.
+Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.
 
-Paired SkillNode: `skill_047`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_047` (`fetch-object`).
 
-## Inputs
+## Precheck
 
-- `articulated`: articulated_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [path to_container] `uncovered(container=$receptacle)` — GT: object_pose, container_profile, asset_tags
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`unfold_hinged_door(articulated)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `joint_open_enough` — contract_runner
-
-## Grounded noun slots
-
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'handle', 'forbid_annotation': 'door_button', 'requires_joint_type': 'revolute'}`
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [path to_container] `inside(object=$object, container=$receptacle)` — GT: object_pose, container_profile
+- [path to_surface] `on(object=$object, support=$receptacle)` — GT: object_pose, asset_annotation, support_annotation
 
 ## Policy paths
 
-### fixed
+- `to_container` when receptacle.kind == 'object': `[navigate](destination=$object)` -> `[pick](object=$object)` -> `[navigate](destination=$receptacle)` -> `[place](object=$object, receptacle=$receptacle)`
+- `to_surface` when receptacle.kind == 'support': `[navigate](destination=$object)` -> `[pick](object=$object)` -> `[navigate](destination=$receptacle)` -> `[place](object=$object, receptacle=$receptacle)`
 
-Match before execution: `[]`.
-
-1. `policy_049` with ['articulated']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_004` / `handle`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

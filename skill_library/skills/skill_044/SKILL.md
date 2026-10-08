@@ -1,62 +1,66 @@
 ---
-name: translate-base-locally
-description: Move an empty, tucked robot along a short local forward axis and measure displacement.
+name: chill-food
+description: Keep food in the closed refrigerator until it is at or below a target temperature.
 ---
 
-# Translate base locally (skill_044)
+# Chill food (`skill_044`)
+
+`chill(food: object_ref, appliance: appliance_ref, temp_c: number)`
+
+Keep food in the closed refrigerator until it is at or below a target temperature.
 
 ## When to use
 
-Move an empty, tucked robot along a short local forward axis and measure displacement.
+Food or a drink must cool in the refrigerator.
+
+## Not to be confused with
+
+- `heat`: opposite direction, with the microwave or stove.
 
 ## Inputs
 
-- `forward_m` (`number`): forward m
+- `food` (`object_ref`): The food item with thermal state.
+- `appliance` (`appliance_ref`, default 'breakfast_fridge'): The refrigerator.
+- `temp_c` (`number`, default 8.0): Maximum temperature in degC.
 
-## Preconditions
+## Outputs
 
-- `right_hand_empty` — `policy_attempt`
-- `arm_tucked` — `policy_attempt`
-- `straight_path_clear` — `policy_attempt`
+- `temp_c` (`number`): Measured final temperature.
 
-## Planner action predicate
+## Applicability
 
-`translate_base(forward_m)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['base_translated_locally']`.
+Requires in_appliance(object=$food, appliance=$appliance); is_closed(articulated=$appliance).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `base_translated_locally` — measured by `contract_runner`
+- `in_appliance(object=$food, appliance=$appliance)` — Object centre inside the appliance cavity box (microwave) or body box (refrigerator). GT: object_pose, appliance_annotation.
+- `is_closed(articulated=$appliance)` — Joint within 0.10 rad (doors) or 4 cm (drawers) of closed. GT: articulation_joint, articulation_annotation.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_044` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_052", "compose", ...)`.
+- `temperature_at_most(object=$food, temp_c=$temp_c)` — Task-level food temperature at or below the threshold. GT: thermal_state.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `temperature_at_most(object=$food, temp_c=$temp_c)` (all paths)
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_037(forward_m)`
+### `fridge_wait` — when appliance.category == 'refrigerator'
 
+1. `policy_089($food, $temp_c, $appliance)`
 
-Verifier: `base_translate`.
+## Relations
 
-## Related Skills
-
-- May follow `skill_011` (`preparation`) when after arm tucking and a short straight reposition is needed.
+- Previous step: `close` (`skill_041`) (enables) — the fridge must be closed while cooling
+- Next step: `open` (`skill_040`) (then) — the chilled food is taken out
+- Fallback on failure: `close` (`skill_041`) (repair, repairs is_closed) — the fridge door is open
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One translate base locally attempt on grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_052`.

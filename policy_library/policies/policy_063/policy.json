@@ -38,7 +38,10 @@
     "class": "ClosePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_020:inspect/closed_cabinet",
+    "contract_049:close/dispatch"
+  ],
   "legacy_family_contracts": [
     "contract_005"
   ],

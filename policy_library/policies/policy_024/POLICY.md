@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).open_powered.execute(...)`
 - Class: `PoweredDoorOpenPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_011, contract_031
+- Skill Contract paths: contract_048:open/powered_microwave, contract_076:stop/microwave_door
 - Legacy family Contracts: contract_004
 
 ## Recorded evidence

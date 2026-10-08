@@ -44,9 +44,8 @@
     "class": "RoundRimPickPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_012",
-    "contract_036"
+  "skill_contract_paths": [
+    "contract_025:pick/round_rim"
   ],
   "legacy_family_contracts": [
     "contract_002"

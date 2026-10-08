@@ -1,65 +1,66 @@
 ---
-name: carry-a-large-object-with-both-hands
-description: Move a currently two-hand-held object to one base pose.
+name: release-object
+description: Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.
 ---
 
-# Carry a large object with both hands (skill_021)
+# Release an object (`skill_021`)
+
+`release(object: object_ref, hand: hand)`
+
+Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.
 
 ## When to use
 
-Move a currently two-hand-held object to one base pose.
+The hand must open in place (the object is already supported).
+
+## Not to be confused with
+
+- `drop`: drop moves above a container first; release does not move the object.
+- `place`: place moves to a pose first; release only opens the hand.
 
 ## Inputs
 
-- `object` (`object_ref`): object
-- `pose` (`pose2d`): pose
+- `object` (`object_ref`): The object in the hand.
+- `hand` (`hand`, default 'right'): Which gripper opens.
 
-## Preconditions
+## Applicability
 
-- `target_navigable` — `policy_attempt`
-- `carried_object_matches_state` — `not_enforced`
-- `two_hand_hold` — `not_enforced`
+Requires holding(hand=$hand, object=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`convoy_bimanual_load(object, pose)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['base_at', 'grasp_preserved']`.
+- `holding(hand=$hand, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `base_at` — measured by `contract_runner`
-- `grasp_preserved` — measured by `contract_runner`
+- `hand_empty(hand=$hand)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_021` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_029", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `hand_empty(hand=$hand)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
+## May invalidate
 
-### Policy path: fixed
+`holding($hand,$object)`, `steadied($object)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_058(object, pose)`
+### `open_in_place` — when always (default path)
 
+1. `policy_096($object, $hand)`
 
-Verifier: `contract_001 / two_hand_carry`.
+## Relations
 
-## Related Skills
-
-- No fixed relation; select the next node from the task goal and observation.
+- Previous step: `brace` (`skill_027`) (enables) — bracing is finished
+- Previous step: `hover` (`skill_063`) (enables) — the object is let go right there
+- Next step: `tuck` (`skill_009`) (enables) — the arm is folded after letting go
+- Alternative: `drop` (`skill_019`) — the object should fall into a container
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one two-hand carry move
-
-Availability: `experimental_callable`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_029`.

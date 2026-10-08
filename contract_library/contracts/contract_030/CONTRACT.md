@@ -1,44 +1,21 @@
-# contract_030 — Open a door while the left hand holds an object
+# contract_030 — Hand an object over to the left hand
 
-Open one annotated door while preserving an existing left-hand hold.
+Transfer a right-held object into the left gripper and open the right gripper.
 
-Paired SkillNode: `skill_022`. Status: `experimental_callable`.
+Paired SkillNode: `skill_022` (`handover-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `articulated`: articulated_ref
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `hand_empty(hand=left)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `articulated_annotated` — contract_precheck
-- `opening_route_feasible` — policy_attempt
-- `held_by_left_hand` — not_enforced
-
-## Planner action predicate
-
-`swing_articulated_door(object, articulated)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `joint_open_enough` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `holding(hand=left, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
 ## Policy paths
 
-### fixed
+- `right_to_left` when always: `policy_059($object)`
 
-Match before execution: `[]`.
-
-1. `policy_060` with ['object', 'articulated']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_004` / `while_left_holds`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

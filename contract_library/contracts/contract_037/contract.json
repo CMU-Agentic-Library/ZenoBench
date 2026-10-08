@@ -1,100 +1,248 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_037",
-  "skill_id": "skill_029",
-  "name": "Pick by rectangular rim",
-  "description": "Grasp a rectangular tray or box by its annotated rim.",
-  "scope": {
-    "unit": "One pick by rectangular rim attempt on the grounded scene state.",
-    "includes": [
-      "Grasp a rectangular tray or box by its annotated rim."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_037",
+ "skill_id": "skill_029",
+ "verb": "push",
+ "noun": "object",
+ "name": "Push an object",
+ "description": "Slide an object along its support in a direction with closed fingers: from behind when there is room, or by pressing on its top and dragging when it stands against a wall or closed edge.",
+ "group": "contact",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "The object to slide."
   },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "The uniquely grounded scene object."
-    }
+  "direction_xy": {
+   "type": "unit_vec2",
+   "required": true,
+   "description": "World horizontal direction."
   },
-  "requires": [
-    {
-      "predicate": "right_hand_empty",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "target_annotated",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "held_by_right_hand",
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "object_lifted",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "held_by_right_hand",
-    "object_lifted"
-  ],
-  "verifier": {
-    "check": "ContractRunner measured post-state",
-    "on_failure": "record partial state and stop",
-    "legacy_family_contract": "contract_002",
-    "route": "rect_rim"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_012",
-        "args": [
-          {
-            "arg": "object"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true,
-      "requires_grasp_type": "rim_pinch_rect"
-    }
-  },
-  "action_predicate": {
-    "name": "clasp_rectangular_rim",
-    "verb": "clasp",
-    "noun": "rectangular_rim",
-    "arguments": [
-      "object"
-    ],
-    "verified_by": [
-      "held_by_right_hand",
-      "object_lifted"
-    ]
+  "distance_m": {
+   "type": "positive_number",
+   "required": true,
+   "description": "Requested travel."
   }
+ },
+ "outputs": {
+  "moved_m": {
+   "type": "number",
+   "description": "Measured displacement along the direction."
+  }
+ },
+ "requires": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  },
+  {
+   "pred": "base_near",
+   "args": {
+    "place": "$object"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "object_moved",
+   "args": {
+    "object": "$object",
+    "direction_xy": "$direction_xy",
+    "distance_m": "$distance_m"
+   }
+  }
+ ],
+ "invalidates": [
+  "edge_overhang($object)",
+  "grasp_clearance($object)",
+  "away_from_edge($object,*)",
+  "at_initial_place($object)"
+ ],
+ "precheck": [
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "base_near(place=$object)",
+   "name": "base_near",
+   "args": {
+    "place": "$object"
+   },
+   "negated": false,
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "scene_annotation"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "object_moved(object=$object, direction_xy=$direction_xy, distance_m=$distance_m)",
+   "name": "object_moved",
+   "args": {
+    "object": "$object",
+    "direction_xy": "$direction_xy",
+    "distance_m": "$distance_m"
+   },
+   "negated": false,
+   "meaning": "Object displaced along the direction by at least half the requested distance.",
+   "kind": "relative",
+   "gt_sources": [
+    "object_pose (before/after)"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "push_object",
+  "verb": "push",
+  "noun": "object",
+  "arguments": [
+   "object",
+   "direction_xy",
+   "distance_m"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "drag_from_top",
+    "when": [
+     {
+      "noun": "object",
+      "field": "near_closed_edge",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_041",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_044",
+      "args": [
+       "$object",
+       "@object.support",
+       "$direction_xy",
+       "$distance_m"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   },
+   {
+    "path_id": "thin_auto",
+    "when": [
+     {
+      "noun": "object",
+      "field": "flat",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_026",
+      "args": [
+       "$object",
+       "@object.support",
+       "$direction_xy",
+       "$distance_m"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": "The dispatcher chooses push or drag for thin items."
+   },
+   {
+    "path_id": "from_behind",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_041",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_043",
+      "args": [
+       "$object",
+       "@object.support",
+       "$direction_xy",
+       "$distance_m"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "pick",
+   "when": "the object was pushed into a graspable spot",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_017",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "alternative",
+   "to": "pull",
+   "when": "the object should come toward the robot",
+   "bind": {},
+   "reason": "",
+   "to_skill_id": "skill_030"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

@@ -39,8 +39,8 @@
     "class": "RaiseTorsoPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_040"
+  "skill_contract_paths": [
+    "contract_014:stand/highest"
   ],
   "legacy_family_contracts": [
     "contract_008"

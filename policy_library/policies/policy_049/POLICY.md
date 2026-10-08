@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).open_revolute_door.execute(...)`
 - Class: `OpenRevoluteDoorPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_011, contract_055
+- Skill Contract paths: contract_048:open/hinged_door
 - Legacy family Contracts: contract_004
 
 ## Recorded evidence

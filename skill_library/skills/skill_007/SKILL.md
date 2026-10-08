@@ -1,71 +1,67 @@
 ---
-name: close-an-articulated-door-or-drawer
-description: Close one annotated articulated target and verify its joint position.
+name: bend-waist
+description: Pitch the waist forward to extend the reach over a deep surface.
 ---
 
-# Close an articulated door or drawer (skill_007)
+# Bend the waist (`skill_007`)
+
+`bend(pitch_rad: positive_number?)`
+
+Pitch the waist forward to extend the reach over a deep surface.
 
 ## When to use
 
-Close one annotated articulated target and verify its joint position.
+A target is just beyond arm reach over a counter and leaning forward helps.
+
+## Not to be confused with
+
+- `crouch`: crouch lowers the torso; bend tilts the waist.
 
 ## Inputs
 
-- `articulated` (`articulated_ref`): articulated
+- `pitch_rad` (`positive_number`, optional): Forward pitch in rad (max 0.69); omit for the maximum.
 
-## Preconditions
+## Applicability
 
-- `articulated_annotated` — `contract_precheck`
-- `closure_path_clear` — `policy_attempt`
+Always applicable.
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`close_articulated_joint(articulated)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_closed']`.
+- none
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `joint_closed` — measured by `contract_runner`
+- `waist_bent(min_pitch_rad=0.2)` — Waist pitched forward by at least the given angle. GT: waist_joint.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_007` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_015", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `waist_bent(min_pitch_rad=0.2)` (all paths)
 
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True}`
+## May invalidate
 
-### Policy path: powered_microwave
+`waist_straight()`, `reachable(*)`, `in_view(*)`
 
-Match before execution: `[{'noun': 'articulated', 'field': 'powered_microwave', 'equals': True}]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_025(articulated)`
+### `to_pitch` — when args.pitch_rad
 
-### Policy path: manual_handle
+1. `policy_007($pitch_rad)`
 
-Match before execution: `[{'noun': 'articulated', 'field': 'has_handle', 'equals': True}]`.
+### `full` — when always (default path)
 
-1. `policy_023(articulated)`
+1. `policy_008()`
 
+## Relations
 
-Verifier: `contract_005 / auto`.
-
-## Related Skills
-
-- `skill_026` (`alternative`) when a manual door close needs an explicit handle route — Select the handle-specific closure.
-- `skill_024` (`alternative`) when a powered microwave door must close — Use the powered closure policy.
-- May follow `skill_005` (`follows`) when manipulation used an articulated compartment and the task requires closed doors.
-- May follow `skill_006` (`follows`) when container placement used an articulated compartment and the task requires closed doors.
+- Next step: `straighten` (`skill_008`) (then) — the reach is done
+- Next step: `approach` (`skill_002`) (then) — the target was just out of reach
+- Is a fallback for: `approach` (`skill_002`) (recover) — the target is just beyond the arm envelope
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one articulated closure
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_015`.

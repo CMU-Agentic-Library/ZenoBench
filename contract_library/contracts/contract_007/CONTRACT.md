@@ -15,7 +15,8 @@ One fresh physical button press; start may also activate the task-level heating 
 
 - `right_hand_empty` — runner
 - `button_reachable` — policy_attempt
-- `start_conditions` — policy_attempt
+- `microwave_door_closed` — policy_attempt
+- `task_food_inside_cavity` — policy_attempt
 
 ## Achieves on success
 

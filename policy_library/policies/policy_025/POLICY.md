@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).close_powered.execute(...)`
 - Class: `PoweredDoorClosePolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_015, contract_032
+- Skill Contract paths: contract_049:close/powered
 - Legacy family Contracts: contract_005
 
 ## Recorded evidence

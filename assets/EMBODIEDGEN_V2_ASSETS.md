@@ -37,3 +37,26 @@ OMNI_KIT_ACCEPT_EULA=YES "$ISAACLAB_PYTHON" tools/build_tasks.py --spec scene_sp
 To generate an individual source again, use `python tools/generate_assets.py --name ... --prompt ... --size ... --mass ...`, or pass the batch manifest without `--skip-generate`. EmbodiedGen V2 outputs should be visually inspected before replacing a committed asset, since the same prompt can produce different geometry. The source scale is corrected in `tools/prepare_assets.py`; its `target_size` setting preserves the intended X/Y/Z footprint for upright assets. The book and tissue box use explicit X/Y/Z sizes. The rolling pin is rotated to a flat resting pose and scaled to a 22 cm longest side.
 
 All three seed-0 scenes passed three-second stability checks after `tools/settle_scene.py`, `tools/check_scene.py`, and `tools/annotate_scene.py`. Contract results from the **previous procedural meshes** are retained as historical evidence in [`FINDINGS.md`](../skill_library/verification/FINDINGS.md); they do not establish that these V2 meshes have passed the same grasps. Task completion requires a fresh rollout on the rebuilt scenes.
+
+## Props for the verb SkillNode library
+
+Five more V2 props come from [`embodiedgen_skill_assets.json`](embodiedgen_skill_assets.json). They give the verbs `cover`/`uncover`, `wipe`, `drop`, `pour` and `stack` physical objects to act on and are used in the [`kitchen_skills`](../task_specs/kitchen_skills.json) scene.
+
+| Asset | Target size (cm) | Mass (g) | Collider | Grasp annotation | Used by |
+| --- | --- | --- | --- | --- | --- |
+| `pot_lid` | 25 × 25 × 6 | 220 | convex hull | knob `top_pinch` (any diameter, `round`) | cover, uncover, hide |
+| `kitchen_sponge` | 9 × 6 × 3.5 | 30 | convex hull | `top_pinch` | wipe, shake |
+| `trash_can` | 26 × 26 × 30 | 900 | round container walls + floor | `rim_pinch` | drop, fetch, collect, sort |
+| `cherry_tomato` | 2.8 × 2.8 × 2.6 | 12 | convex hull, CCD, angular damping | `top_pinch` (`round`) | pour, heat, count |
+| `wooden_block` | 5 × 5 × 5 | 60 | convex hull | `top_pinch` | stack, square, sweep, swap |
+
+The lid's 6.3 cm knob is too small for the automatic crown search, so its grasp comes from `top_grasp` in `assets/custom_assets.json`. Generation used `GPT_PROVIDER=codex` and the batch command below; `tools/generate_assets.py` accepts a run whose CLI exits non-zero after writing a complete URDF.
+
+```bash
+GPT_PROVIDER=codex python tools/generate_assets.py --batch assets/embodiedgen_skill_assets.json --skip-convert
+OMNI_KIT_ACCEPT_EULA=YES "$ISAACLAB_PYTHON" tools/prepare_assets.py --only pot_lid kitchen_sponge trash_can cherry_tomato wooden_block --convert
+OMNI_KIT_ACCEPT_EULA=YES "$ISAACLAB_PYTHON" tools/fix_textures.py
+ISAACLAB_PYTHON=... bash tools/make_kitchen_scene.sh      # kitchen layer + kitchen_skills task scene
+```
+
+`tools/prepare_assets.py` marks top grasps of objects that are round in top view (`"round": true`, any closing diameter) and adds `along_offsets` to long thin objects (rolling pin, spoon, pencil) so a second hand finds a contact away from the first.

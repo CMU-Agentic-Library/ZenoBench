@@ -60,8 +60,8 @@
     "class": "PlaceWhileMovingPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_027"
+  "skill_contract_paths": [
+    "contract_026:place/on_the_move"
   ],
   "legacy_family_contracts": [
     "contract_003"

@@ -50,8 +50,9 @@
     "class": "BaseTranslateLocalPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_052"
+  "skill_contract_paths": [
+    "contract_012:retreat/empty",
+    "contract_063:sidestep/empty_tucked"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [

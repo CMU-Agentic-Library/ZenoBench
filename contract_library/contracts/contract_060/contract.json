@@ -1,0 +1,170 @@
+{
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_060",
+ "skill_id": "skill_052",
+ "verb": "arrange",
+ "noun": "objects",
+ "name": "Arrange objects together",
+ "description": "Place the listed objects on one support so that they are pairwise within a distance (a place setting).",
+ "group": "multi_object",
+ "inputs": {
+  "objects": {
+   "type": "object_list",
+   "required": true,
+   "description": "Objects to group."
+  },
+  "support": {
+   "type": "support_ref",
+   "required": true,
+   "description": "The surface."
+  },
+  "max_dist_m": {
+   "type": "positive_number",
+   "required": true,
+   "description": "Pairwise distance limit.",
+   "default": 0.5
+  }
+ },
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "grouped",
+   "args": {
+    "objects": "$objects",
+    "support": "$support",
+    "max_dist_m": "$max_dist_m"
+   }
+  }
+ ],
+ "invalidates": [],
+ "precheck": [
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "grouped(objects=$objects, support=$support, max_dist_m=$max_dist_m)",
+   "name": "grouped",
+   "args": {
+    "objects": "$objects",
+    "support": "$support",
+    "max_dist_m": "$max_dist_m"
+   },
+   "negated": false,
+   "meaning": "Every listed object is on the support and pairwise within the distance.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose",
+    "support_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "support": {
+   "type": "support_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "arrange_objects",
+  "verb": "arrange",
+  "noun": "objects",
+  "arguments": [
+   "objects",
+   "support",
+   "max_dist_m"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "place_near_common_spot",
+    "when": [],
+    "steps": [
+     {
+      "foreach": "$objects",
+      "as": "item",
+      "steps": [
+       {
+        "call": "navigate",
+        "args": {
+         "destination": "$item"
+        }
+       },
+       {
+        "call": "pick",
+        "args": {
+         "object": "$item"
+        }
+       },
+       {
+        "call": "navigate",
+        "args": {
+         "destination": "$support"
+        }
+       },
+       {
+        "call": "place",
+        "args": {
+         "object": "$item",
+         "receptacle": "$support",
+         "hint_xy": "@support.roomiest_xy"
+        }
+       }
+      ]
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "fallback",
+   "to": "clear",
+   "when": "the support is too crowded",
+   "bind": {
+    "support": "$support"
+   },
+   "reason": "frees room for the place setting",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_050"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
+}

@@ -1,41 +1,20 @@
-# contract_032 — Close powered microwave door
+# contract_032 — Lower a held object
 
-Close the annotated powered microwave door and measure its joint.
+Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).
 
-Paired SkillNode: `skill_024`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_024` (`lower-object`).
 
-## Inputs
+## Precheck
 
-- `appliance`: appliance_ref
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`shut_microwave_door(appliance)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `joint_closed` — contract_runner
-
-## Grounded noun slots
-
-- `appliance`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'door_button'}`
+- [all paths] `held_below(object=$object, height_m=$height_m)` — GT: object_pose, gripper_state
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `descend` when always: `policy_093($object, $height_m)`
 
-Match before execution: `[]`.
-
-1. `policy_025` with ['appliance']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_005` / `powered`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

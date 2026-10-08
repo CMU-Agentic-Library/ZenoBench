@@ -43,8 +43,8 @@
     "class": "ContainerPlacePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_014"
+  "skill_contract_paths": [
+    "contract_026:place/container"
   ],
   "legacy_family_contracts": [
     "contract_003"

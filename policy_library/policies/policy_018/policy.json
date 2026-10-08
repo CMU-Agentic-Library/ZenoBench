@@ -44,9 +44,8 @@
     "class": "MicrowaveCavityInsertPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_013",
-    "contract_022"
+  "skill_contract_paths": [
+    "contract_026:place/microwave_staged"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [

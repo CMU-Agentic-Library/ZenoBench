@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).bimanual_carry.execute(...)`
 - Class: `BimanualCarryPolicy`
 - Availability: `callable`
-- Direct Contract routes: contract_029
+- Skill Contract paths: contract_009:navigate/two_hand_carry
 - Legacy family Contracts: contract_001
 
 ## Caveat

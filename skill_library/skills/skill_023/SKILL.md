@@ -1,66 +1,72 @@
 ---
-name: open-powered-microwave-door
-description: Open the annotated powered microwave door and measure its joint.
+name: lift-object
+description: Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).
 ---
 
-# Open powered microwave door (skill_023)
+# Lift a held object (`skill_023`)
+
+`lift(object: object_ref, height_m: positive_number)`
+
+Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).
 
 ## When to use
 
-Open the annotated powered microwave door and measure its joint.
+A held object must be raised to a height (clear an obstacle, show it).
+
+## Not to be confused with
+
+- `stand`: stand moves the torso, not the held object.
+- `lower`: opposite direction.
+- `pick`: lift raises an object already held.
 
 ## Inputs
 
-- `appliance` (`appliance_ref`): The grounded microwave appliance.
+- `object` (`object_ref`): The held object.
+- `height_m` (`positive_number`, default 0.55): Minimum world height of the object's bottom.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `policy_attempt`
-- `target_annotated` — `policy_attempt`
+Requires holding(hand=right, object=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`trigger_microwave_door_opening(appliance)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_open_enough']`.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `joint_open_enough` — measured by `contract_runner`
+- `held_above(object=$object, height_m=$height_m)` — Right-held object's bottom at or above the given world height (2 cm tolerance). GT: object_pose, gripper_state.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_023` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_031", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `held_above(object=$object, height_m=$height_m)` (all paths)
+- `holding(hand=right, object=$object)` (all paths)
 
-- `appliance`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'door_button'}`
+## May invalidate
 
-### Policy path: fixed
+`held_below($object,*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_024(appliance)`
+### `raise` — when always (default path)
 
+1. `policy_034($height_m)`
 
-Verifier: `contract_004 / powered`.
+## Relations
 
-## Related Skills
-
-- `skill_014` (`enables`) when microwave cavity must be opened before loading — Open joint makes the cavity physically accessible.
-- `skill_015` (`enables`) when food must be retrieved from a closed microwave — Open joint makes the cavity physically accessible.
-- `skill_024` (`follows`) when microwave inspection is complete without retrieval — Close the open door to satisfy the terminal closed condition.
-- May follow `skill_040` (`follows`) when heated food must be removed for serving.
-- May follow `skill_050` (`preparation`) when microwave door sweep is clear and powered opening is next.
+- Previous step: `pick` (`skill_017`) (enables) — the object must clear a high rim while carried
+- Next step: `navigate` (`skill_001`) (then) — the object is carried over furniture
+- Next step: `drop` (`skill_019`) (enables) — the object is released over a tall container
+- Is a fallback for: `navigate` (`skill_001`) (recover) — a carried object hangs too low for the doorway clearance
+- Alternative: `present` (`skill_016`) — only the height of the load matters
+- Alternative: `lower` (`skill_024`) — opposite direction
+- Alternative: `hover` (`skill_063`) — only a height matters
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One open powered microwave door attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_031`.

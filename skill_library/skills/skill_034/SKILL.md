@@ -1,60 +1,66 @@
 ---
-name: straighten-waist
-description: Return the waist pitch to neutral.
+name: roll-object
+description: Roll a lying constant-radius cylinder (rolling pin, can on its side) along its support by pressing on its top; the object must rotate, not slide. A bottle with a neck rolls in an arc around the neck and is not a valid noun.
 ---
 
-# Straighten waist (skill_034)
+# Roll a cylinder (`skill_034`)
+
+`roll(object: object_ref, distance_m: positive_number)`
+
+Roll a lying constant-radius cylinder (rolling pin, can on its side) along its support by pressing on its top; the object must rotate, not slide. A bottle with a neck rolls in an arc around the neck and is not a valid noun.
 
 ## When to use
 
-Return the waist pitch to neutral.
+A lying cylinder must move along the support by rotating.
+
+## Not to be confused with
+
+- `push`: push slides the object; roll makes it rotate.
 
 ## Inputs
 
-- None.
+- `object` (`object_ref`): A lying cylinder.
+- `distance_m` (`positive_number`, default 0.1): Requested travel.
 
-## Preconditions
+## Applicability
 
-- `joint_path_clear` — `policy_attempt`
+Requires hand_empty(hand=right); base_near(place=$object); lying(object=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`straighten_waist()` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['posture_at_target']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `lying(object=$object)` — Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length. GT: object_pose, asset_annotation.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `posture_at_target` — measured by `contract_runner`
+- `object_rolled(object=$object)` — Object rotated at least 45 deg about a horizontal axis while staying on its side. GT: object_pose (before/after).
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_034` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_042", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `object_rolled(object=$object)` (all paths)
 
+## May invalidate
 
-### Policy path: fixed
+`at_initial_place($object)`, `grasp_clearance($object)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_009()`
+### `push_above_axis` — when always (default path)
 
+1. `policy_081($object, $distance_m)`
 
-Verifier: `contract_008 / straighten`.
+## Relations
 
-## Related Skills
-
-- No fixed relation; select the next node from the task goal and observation.
+- Previous step: `tip` (`skill_035`) (enables) — the lying cylinder is rolled
+- Next step: `pick` (`skill_017`) (then) — the rolled object is then grasped
+- Alternative: `push` (`skill_029`) — sliding is acceptable
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One straighten waist attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_042`.

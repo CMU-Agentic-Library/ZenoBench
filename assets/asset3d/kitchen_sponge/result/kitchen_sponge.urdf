@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<robot name="kitchen_sponge">
+   <link name="kitchen_sponge">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/kitchen_sponge.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/kitchen_sponge_collision.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+         <gazebo>
+            <mu1>0.80</mu1>
+            <mu2>0.60</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.0200"/>
+         <origin xyz="0 0 0"/>
+         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+      <extra_info>
+         <scale>0.085881</scale>
+         <version>v2.1.0</version>
+         <category>kitchen_sponge</category>
+         <description>rectangular yellow porous sponge with rounded corners and a rough green scrubbing surface on top.</description>
+         <min_height>0.06</min_height>
+         <max_height>0.09</max_height>
+         <real_height>0.075</real_height>
+         <min_mass>0.01</min_mass>
+         <max_mass>0.03</max_mass>
+         <generate_time>20261006220151</generate_time>
+         <gs_model>mesh/kitchen_sponge_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.605386734008789</ImageAestheticChecker>
+         <overall>YES</overall>
+      </quality>
+   </custom_data>
+</robot>

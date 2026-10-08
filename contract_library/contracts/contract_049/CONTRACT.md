@@ -1,41 +1,24 @@
-# contract_049 — Raise carried object for clearance
+# contract_049 — Close a door or drawer
 
-Lift a right-held object until its bottom clears a required height.
+Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load.
 
-Paired SkillNode: `skill_041`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_041` (`close-articulated`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `min_bottom_z`: positive_number
+- [all paths] `base_near(place=$articulated)` — GT: base_pose, scene_annotation
+- [path handle_push] `hand_empty(hand=right)` — GT: gripper_state
+- [path dispatch] `hand_empty(hand=right)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — policy_attempt
-
-## Planner action predicate
-
-`hoist_carried_object(object, min_bottom_z)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `held_object_above_height` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
+- [all paths] `is_closed(articulated=$articulated)` — GT: articulation_joint, articulation_annotation
 
 ## Policy paths
 
-### fixed
+- `powered_loaded` when articulated.powered and robot.right_held: `policy_030($articulated)` -> `policy_031($articulated, target=close)`
+- `powered` when articulated.powered: `policy_025($articulated)`
+- `handle_push` when articulated.has_handle: `policy_003()` -> `policy_023($articulated)`
+- `dispatch` when always: `policy_063($articulated)`
 
-Match before execution: `[]`.
-
-1. `policy_034` with ['min_bottom_z']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: custom `carry_height`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

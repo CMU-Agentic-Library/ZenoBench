@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_088",
+  "legacy_id": "inspect_receptacle",
+  "name": "Inspect Receptacle",
+  "description": "Look into a receptacle and list its contents.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "perception",
+    "effect_summary": "observed(contents)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "receptacle",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "observed(contents)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_088",
+    "legacy_attribute": "inspect_receptacle",
+    "class": "InspectReceptaclePolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_020:inspect/closed_cabinet",
+    "contract_020:inspect/open_view"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

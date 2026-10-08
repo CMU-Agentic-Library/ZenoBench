@@ -38,9 +38,9 @@
     "class": "PickCupHandlePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_012",
-    "contract_025"
+  "skill_contract_paths": [
+    "contract_025:pick/handle_requested",
+    "contract_025:pick/handle"
   ],
   "legacy_family_contracts": [
     "contract_002"

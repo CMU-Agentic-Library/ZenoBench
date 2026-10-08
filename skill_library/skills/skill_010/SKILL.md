@@ -1,67 +1,70 @@
 ---
-name: start-microwave-heating
-description: Press the start button and verify that heating became active.
+name: reset-posture
+description: Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.
 ---
 
-# Start microwave heating (skill_010)
+# Reset the posture (`skill_010`)
+
+`reset()`
+
+Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.
 
 ## When to use
 
-Press the start button and verify that heating became active.
+Start or end of a task, or after a failure, to return to a known posture.
+
+## Not to be confused with
+
+- `tuck`: tuck only folds one arm; reset also restores torso and waist.
 
 ## Inputs
 
-- `appliance` (`appliance_ref`): appliance
+- none
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `contract_precheck`
-- `button_reachable` — `policy_attempt`
-- `start_conditions` — `policy_attempt`
+Requires hand_empty(hand=right).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`start_microwave_heating(appliance)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['button_pressed_this_call', 'heating_active']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `button_pressed_this_call` — measured by `contract_runner`
-- `heating_active` — measured by `contract_runner`
+- `arm_stowed(hand=right)` — The arm is folded at its travel posture. GT: arm_joints.
+- `torso_raised()` — Torso lift within 3 cm of its highest position (travel height). GT: torso_joint.
+- `waist_straight()` — Waist pitch within 0.05 rad of upright. GT: waist_joint.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_010` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_018", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `arm_stowed(hand=right)` (all paths)
+- `torso_raised()` (all paths)
+- `waist_straight()` (all paths)
 
-- `appliance`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'start_button'}`
+## May invalidate
 
-### Policy path: fixed
+`torso_lowered()`, `waist_bent(*)`, `reachable(*)`, `pointing_at(*)`, `in_view(*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_027(appliance, button=start)`
-2. `policy_028(appliance, button=start)`
-3. `policy_029(appliance, button=start)`
+### `joint_home` — when always (default path)
 
+1. `policy_040()`
+2. `policy_003()`
+3. `policy_095() as home`
+4. `policy_039(#home.target)`
 
-Verifier: `contract_007 / start`.
+## Relations
 
-## Related Skills
-
-- `skill_040` (`enables`) when heating was started but target temperature is unmet — The thermal wait advances the live model and verifies the threshold.
-- May follow `skill_024` (`enables`) when configured food is inside the microwave.
+- Next step: `navigate` (`skill_001`) (then) — after a failed manipulation, before driving on
+- Alternative: `stand` (`skill_006`) — the arm and waist must also be restored
+- Alternative: `straighten` (`skill_008`) — the arm and torso must also be restored
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one start-button press
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_018`.

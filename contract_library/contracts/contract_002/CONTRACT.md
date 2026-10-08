@@ -15,7 +15,7 @@ One right-hand grasp and lift attempt for one annotated object.
 
 - `right_hand_empty` — runner
 - `object_annotated` — policy_attempt
-- `object_reachable` — policy_attempt
+- `selected_grasp_route_feasible` — policy_attempt
 
 ## Achieves on success
 

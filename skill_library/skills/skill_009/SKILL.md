@@ -1,65 +1,74 @@
 ---
-name: press-the-appliance-door-button
-description: Physically press one annotated appliance door button.
+name: tuck-arm
+description: Fold an empty arm to its travel posture along a collision-checked path.
 ---
 
-# Press the appliance door button (skill_009)
+# Tuck an arm (`skill_009`)
+
+`tuck(hand: hand)`
+
+Fold an empty arm to its travel posture along a collision-checked path.
 
 ## When to use
 
-Physically press one annotated appliance door button.
+Before driving through a narrow passage or after a hand action left the arm out.
+
+## Not to be confused with
+
+- `reset`: reset also restores torso, waist and head; tuck only folds the arm.
 
 ## Inputs
 
-- `appliance` (`appliance_ref`): appliance
+- `hand` (`hand`, default 'right'): Which arm to fold.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `contract_precheck`
-- `button_reachable` — `policy_attempt`
-- `start_conditions` — `policy_attempt`
+Requires hand_empty(hand=$hand).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`press_appliance_door_button(appliance)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['button_pressed_this_call']`.
+- `hand_empty(hand=$hand)` — The given gripper holds nothing. GT: gripper_state.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `button_pressed_this_call` — measured by `contract_runner`
+- `arm_stowed(hand=$hand)` — The arm is folded at its travel posture. GT: arm_joints.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_009` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_017", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `arm_stowed(hand=$hand)` (all paths)
 
-- `appliance`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'door_button'}`
+## May invalidate
 
-### Policy path: fixed
+`reachable(*)`, `pointing_at(*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_027(appliance, button=door)`
-2. `policy_028(appliance, button=door)`
-3. `policy_029(appliance, button=door)`
+### `left` — when args.hand == 'left'
 
+1. `policy_091()`
 
-Verifier: `contract_007 / auto`.
+### `right` — when always (default path)
 
-## Related Skills
+1. `policy_003()`
 
-- No fixed relation; select the next node from the task goal and observation.
+## Relations
+
+- Previous step: `point` (`skill_015`) (enables) — the gesture is finished
+- Previous step: `place` (`skill_018`) (enables) — the hand is empty and the robot drives next
+- Previous step: `release` (`skill_021`) (enables) — the arm is folded after letting go
+- Previous step: `press` (`skill_042`) (enables) — the hand is free again
+- Previous step: `restore` (`skill_053`) (enables) — the robot drives on
+- Previous step: `swap` (`skill_054`) (enables) — the robot drives on
+- Previous step: `hide` (`skill_070`) (enables) — the robot leaves
+- Next step: `navigate` (`skill_001`) (then) — the robot drives next
+- Fallback on failure: `retreat` (`skill_004`) (recover) — the fold collides with furniture
+- Is a fallback for: `navigate` (`skill_001`) (recover) — navigation fails because the empty arm cannot fold
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one door-button press
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_017`.

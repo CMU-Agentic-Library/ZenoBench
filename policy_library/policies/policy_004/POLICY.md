@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).set_torso_height.execute(...)`
 - Class: `SetTorsoHeightPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_020
+- Skill Contract paths: contract_013:crouch/to_height
 - Legacy family Contracts: contract_008
 
 ## Recorded evidence

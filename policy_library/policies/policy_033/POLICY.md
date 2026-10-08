@@ -22,6 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).click.execute(...)`
 - Class: `ClickPolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_050:press/microwave_door_key
 - Legacy family Contracts: contract_007
 
 ## Recorded evidence

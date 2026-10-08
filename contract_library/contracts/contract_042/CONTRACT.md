@@ -1,38 +1,21 @@
-# contract_042 — Straighten waist
+# contract_042 — Roll a cylinder
 
-Return the waist pitch to neutral.
+Roll a lying constant-radius cylinder (rolling pin, can on its side) along its support by pressing on its top; the object must rotate, not slide. A bottle with a neck rolls in an arc around the neck and is not a valid noun.
 
-Paired SkillNode: `skill_034`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_034` (`roll-object`).
 
-## Inputs
+## Precheck
 
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
+- [all paths] `lying(object=$object)` — GT: object_pose, asset_annotation
 
-## Preconditions
+## Verifier
 
-- `joint_path_clear` — policy_attempt
-
-## Planner action predicate
-
-`straighten_waist()` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `posture_at_target` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `object_rolled(object=$object)` — GT: object_pose (before/after)
 
 ## Policy paths
 
-### fixed
+- `push_above_axis` when always: `policy_081($object, $distance_m)`
 
-Match before execution: `[]`.
-
-1. `policy_009` with []
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_008` / `straighten`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

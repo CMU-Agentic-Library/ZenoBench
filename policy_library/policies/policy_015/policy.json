@@ -55,11 +55,14 @@
     "class": "SurfacePlacePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_013",
-    "contract_045",
-    "contract_046",
-    "contract_047"
+  "skill_contract_paths": [
+    "contract_026:place/cabinet_or_fridge_shelf",
+    "contract_026:place/stove_burner",
+    "contract_026:place/surface",
+    "contract_044:upright/pick_orient_place",
+    "contract_054:uncover/knob_lift_aside",
+    "contract_061:restore/dispatch_pick_place",
+    "contract_072:square/pick_rotate_place"
   ],
   "legacy_family_contracts": [
     "contract_003"

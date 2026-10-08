@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_071",
+  "legacy_id": "point_at",
+  "name": "Point At",
+  "description": "Point closed right fingers at a target.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "gesture",
+    "effect_summary": "pointing_at(target)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "target",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "pointing_at(target)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_071",
+    "legacy_attribute": "point_at",
+    "class": "PointAtPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_023:point/turn_and_point"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

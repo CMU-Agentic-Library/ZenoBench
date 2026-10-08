@@ -1,113 +1,157 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_029",
-  "skill_id": "skill_021",
-  "name": "Carry a large object with both hands",
-  "description": "Move a currently two-hand-held object to one base pose.",
-  "scope": {
-    "unit": "one two-hand carry move",
-    "includes": [
-      "Move a currently two-hand-held object to one base pose."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_029",
+ "skill_id": "skill_021",
+ "verb": "release",
+ "noun": "object",
+ "name": "Release an object",
+ "description": "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.",
+ "group": "grasp_and_hand",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "The object in the hand."
   },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "object"
-    },
-    "pose": {
-      "type": "pose2d",
-      "required": true,
-      "description": "pose"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "target_navigable",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "carried_object_matches_state",
-      "enforcement": "not_enforced"
-    },
-    {
-      "predicate": "two_hand_hold",
-      "enforcement": "not_enforced"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "base_at",
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "grasp_preserved",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "base_at",
-    "grasp_preserved"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_001",
-    "route": "two_hand_carry",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_058",
-        "args": [
-          {
-            "arg": "object"
-          },
-          {
-            "arg": "pose"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object",
-    "pose"
-  ],
-  "argument_transforms": {},
-  "availability": "experimental_callable",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true
-    }
-  },
-  "action_predicate": {
-    "name": "convoy_bimanual_load",
-    "verb": "convoy",
-    "noun": "bimanual_load",
-    "arguments": [
-      "object",
-      "pose"
-    ],
-    "verified_by": [
-      "base_at",
-      "grasp_preserved"
-    ]
+  "hand": {
+   "type": "hand",
+   "required": true,
+   "description": "Which gripper opens.",
+   "default": "right",
+   "enum": [
+    "right",
+    "left"
+   ]
   }
+ },
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "holding",
+   "args": {
+    "hand": "$hand",
+    "object": "$object"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "$hand"
+   }
+  }
+ ],
+ "invalidates": [
+  "holding($hand,$object)",
+  "steadied($object)"
+ ],
+ "precheck": [
+  {
+   "predicate": "holding(hand=$hand, object=$object)",
+   "name": "holding",
+   "args": {
+    "hand": "$hand",
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "hand_empty(hand=$hand)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "$hand"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "release_object",
+  "verb": "release",
+  "noun": "object",
+  "arguments": [
+   "object",
+   "hand"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "open_in_place",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_096",
+      "args": [
+       "$object",
+       "$hand"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "tuck",
+   "when": "the arm is folded after letting go",
+   "bind": {
+    "hand": "$hand"
+   },
+   "reason": "",
+   "to_skill_id": "skill_009",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "alternative",
+   "to": "drop",
+   "when": "the object should fall into a container",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_019"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

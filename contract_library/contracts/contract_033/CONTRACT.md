@@ -1,41 +1,20 @@
-# contract_033 — Open a manual handle
+# contract_033 — Rotate a held object
 
-Open one handle-operated door or drawer.
+Turn the held object about the vertical axis by the requested angle (e.g. align a book's spine).
 
-Paired SkillNode: `skill_025`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_025` (`rotate-object`).
 
-## Inputs
+## Precheck
 
-- `articulated`: articulated_ref
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`pull_manual_handle(articulated)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `joint_open_enough` — contract_runner
-
-## Grounded noun slots
-
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'handle', 'forbid_annotation': 'door_button'}`
+- [all paths] `yaw_rotated(object=$object, degrees=$degrees)` — GT: object_pose (before/after)
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `wrist_yaw` when always: `policy_075($object, $degrees)`
 
-Match before execution: `[]`.
-
-1. `policy_022` with ['articulated']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_004` / `handle`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -1,43 +1,20 @@
-# contract_024 — Pick a flat object at an edge
+# contract_024 — Present a held object
 
-Attempt one edge grasp of a flat object and verify grasp and lift.
+Hold the carried object in front of the body at 0.9-1.4 m height, inside the head camera view.
 
-Paired SkillNode: `skill_016`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_016` (`present-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `object_annotated` — policy_attempt
-- `object_reachable` — policy_attempt
-
-## Planner action predicate
-
-`pinch_flat_object_edge(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `held_by_right_hand` — contract_runner
-- `object_lifted` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'edge_pinch_after_push'}`
+- [all paths] `presenting(object=$object)` — GT: object_pose, base_pose, head_fk
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `front_of_head` when always: `policy_072($object)`
 
-Match before execution: `[]`.
-
-1. `policy_013` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_002` / `edge`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

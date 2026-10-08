@@ -38,9 +38,8 @@
     "class": "HandleClosePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_015",
-    "contract_034"
+  "skill_contract_paths": [
+    "contract_049:close/handle_push"
   ],
   "legacy_family_contracts": [
     "contract_005"

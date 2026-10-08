@@ -1,49 +1,23 @@
-# contract_047 — Place an upright object near a support hint
+# contract_047 — Pour contents into a container
 
-Orient and place a held object near a supplied xy hint, then verify both.
+Hold the cup's far lip over a container, turn the cup about that lip up to 90 deg and return it upright; succeeds when at least half of the loose items that were in the cup are inside the target. A rim-held cup tilts away from the pinch; a handle-held cup rolls sideways about the forearm.
 
-Paired SkillNode: `skill_039`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_039` (`pour-contents`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
-- `hint_xy`: xy
-- `max_offset_m`: positive_number
+- [all paths] `holding(hand=right, object=$source)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `base_near(place=$target)` — GT: base_pose, scene_annotation
+- [all paths] `uncovered(container=$target)` — GT: object_pose, container_profile, asset_tags
+- [all paths] `not container_empty(container=$source)` — GT: object_pose, container_profile
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — contract_precheck
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`align_upright_object_near_hint(object, support, hint_xy, max_offset_m)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `on` — contract_runner
-- `right_hand_empty` — contract_runner
-- `object_upright` — contract_runner
-- `within_hint_radius` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `poured_into(source=$source, target=$target)` — GT: object_pose (before/after), container_profile
+- [all paths] `holding(hand=right, object=$source)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `tilt_over_rim` when source.is_container: `policy_086($source, $target)`
 
-Match before execution: `[]`.
-
-1. `policy_054` with ['object']
-2. `policy_015` with ['object', 'support']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_003` / `surface`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

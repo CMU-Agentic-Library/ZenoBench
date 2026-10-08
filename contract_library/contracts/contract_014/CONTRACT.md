@@ -1,45 +1,19 @@
-# contract_014 — Place an object in a container
+# contract_014 — Stand up to full height
 
-Release a right-held object into an annotated container and verify the final geometry.
+Raise the torso lift to its top travel height.
 
-Paired SkillNode: `skill_006`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_006` (`stand-torso`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `container`: container_ref
+- none
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — contract_precheck
-- `container_annotated` — contract_noun_binding
-- `container_accessible` — policy_attempt
-
-## Planner action predicate
-
-`insert_object_in_container(object, container)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `inside` — contract_runner
-- `right_hand_empty` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `container`: `container`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'asset.container'}`
+- [all paths] `torso_raised()` — GT: torso_joint
 
 ## Policy paths
 
-### fixed
+- `highest` when always: `policy_006()`
 
-Match before execution: `[]`.
-
-1. `policy_016` with ['object', 'container']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_003` / `container`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

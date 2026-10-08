@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).place_container.execute(...)`
 - Class: `ContainerPlacePolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_014
+- Skill Contract paths: contract_026:place/container
 - Legacy family Contracts: contract_003
 
 ## Recorded evidence

@@ -38,9 +38,8 @@
     "class": "OpenPrismaticDrawerPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_011",
-    "contract_056"
+  "skill_contract_paths": [
+    "contract_048:open/drawer"
   ],
   "legacy_family_contracts": [
     "contract_004"

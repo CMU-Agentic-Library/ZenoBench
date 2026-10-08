@@ -22,6 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).place_microwave.execute(...)`
 - Class: `MicrowavePlacePolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_026:place/microwave
 - Legacy family Contracts: contract_003
 
 ## Recorded evidence

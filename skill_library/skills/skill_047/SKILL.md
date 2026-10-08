@@ -1,62 +1,84 @@
 ---
-name: open-a-hinged-door
-description: Open a manual revolute door and read back its hinge joint.
+name: fetch-object
+description: Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.
 ---
 
-# Open a hinged door (skill_047)
+# Fetch an object to a receptacle (`skill_047`)
+
+`fetch(object: object_ref, receptacle: receptacle_ref)`
+
+Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.
 
 ## When to use
 
-Open a manual revolute door and read back its hinge joint.
+One object must be brought to a destination (navigate, pick, carry, place in one node).
+
+## Not to be confused with
+
+- `restore`: restore's destination is the object's starting support.
+- `collect`: collect moves a list into one container.
+- `pick`: fetch also carries and places the object.
 
 ## Inputs
 
-- `articulated` (`articulated_ref`): The uniquely grounded door or drawer.
+- `object` (`object_ref`): What to bring.
+- `receptacle` (`receptacle_ref`): Destination support or open container.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `policy_attempt`
-- `target_annotated` — `policy_attempt`
+Requires hand_empty(hand=right). Depending on the bound nouns, the chosen path also needs: to_container (receptacle.kind == 'object'): uncovered(container=$receptacle).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`unfold_hinged_door(articulated)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_open_enough']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `joint_open_enough` — measured by `contract_runner`
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_047` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_055", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `hand_empty(hand=right)` (all paths)
+- `inside(object=$object, container=$receptacle)` (path to_container)
+- `on(object=$object, support=$receptacle)` (path to_surface)
 
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'handle', 'forbid_annotation': 'door_button', 'requires_joint_type': 'revolute'}`
+## May invalidate
 
-### Policy path: fixed
+`on($object,*)`, `inside($object,*)`, `at_initial_place($object)`, `base_near(*)`, `reachable(*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_049(articulated)`
+### `to_container` — when receptacle.kind == 'object'
 
+1. `[navigate](destination=$object)`
+2. `[pick](object=$object)`
+3. `[navigate](destination=$receptacle)`
+4. `[place](object=$object, receptacle=$receptacle)`
+- extra precondition `uncovered(container=$receptacle)`
+- extra postcondition `inside(object=$object, container=$receptacle)`
 
-Verifier: `contract_004 / handle`.
+### `to_surface` — when receptacle.kind == 'support'
 
-## Related Skills
+1. `[navigate](destination=$object)`
+2. `[pick](object=$object)`
+3. `[navigate](destination=$receptacle)`
+4. `[place](object=$object, receptacle=$receptacle)`
+- extra postcondition `on(object=$object, support=$receptacle)`
 
-- `skill_004` (`enables`) when object lies behind the opened hinged door — Access permits a grounded pick attempt.
+## Relations
+
+- Previous step: `fetch` (`skill_047`) (enables) — more objects go to the same place
+- Next step: `fetch` (`skill_047`) (enables) — more objects go to the same place
+- Fallback on failure: `search` (`skill_013`) (recover) — the object is not where expected
+- Alternative: `restore` (`skill_053`) — the object should return to its starting support
+- Alternative: `swap` (`skill_054`) — only one object needs to move
+- Alternative: `hide` (`skill_070`) — the object only needs to move
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One open a hinged door attempt on grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_055`.

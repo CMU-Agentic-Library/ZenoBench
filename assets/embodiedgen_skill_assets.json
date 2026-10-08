@@ -1,0 +1,115 @@
+{
+  "_note": "EmbodiedGen V2 props added for the verb-based SkillNode library (cover/uncover, wipe, drop, pour, stack). Generate with tools/generate_assets.py --batch in the EmbodiedGen V2 environment.",
+  "pot_lid": {
+    "prompt": "a round stainless steel cooking pot lid with a small black round knob handle in the centre on top, isolated product, plain white background",
+    "size": 0.25,
+    "mass": 0.22,
+    "tags": [
+      "lid",
+      "cookware"
+    ],
+    "collider": "solid",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.25,
+      0.25,
+      0.06
+    ],
+    "top_grasp": {
+      "type": "top_pinch",
+      "crown": true,
+      "round": true,
+      "close_yaw": 0.0,
+      "width": 0.022,
+      "offset_xy": [
+        0.0,
+        0.0
+      ],
+      "height": 0.087,
+      "pre_open": 0.025,
+      "note": "pinch the knob post; pads span 6.2-11.2 cm above the lid rim plane"
+    },
+    "knob_collider": {
+      "center": [
+        0.0,
+        0.0,
+        0.045
+      ],
+      "size": [
+        0.022,
+        0.022,
+        0.035
+      ],
+      "note": "post on top of the low mushroom knob (body frame); the knob alone is too flat for 5 cm pads"
+    }
+  },
+  "kitchen_sponge": {
+    "prompt": "a rectangular yellow kitchen cleaning sponge with a green scrub layer on top, isolated product, plain white background",
+    "size": 0.09,
+    "mass": 0.03,
+    "tags": [
+      "sponge",
+      "cleaning_tool",
+      "wiping_tool"
+    ],
+    "collider": "solid",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.09,
+      0.06,
+      0.035
+    ]
+  },
+  "trash_can": {
+    "prompt": "a small round open-top grey plastic trash can without lid, isolated product, plain white background",
+    "size": 0.3,
+    "mass": 0.9,
+    "tags": [
+      "bin",
+      "trash",
+      "container",
+      "floor_container"
+    ],
+    "collider": "round_container",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.26,
+      0.26,
+      0.3
+    ]
+  },
+  "cherry_tomato": {
+    "prompt": "a single small round red cherry tomato with a tiny green stem, isolated product, plain white background",
+    "size": 0.028,
+    "mass": 0.012,
+    "tags": [
+      "food",
+      "small_item",
+      "pourable"
+    ],
+    "collider": "solid",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.028,
+      0.028,
+      0.026
+    ]
+  },
+  "wooden_block": {
+    "prompt": "a single plain natural wood toy building block cube with smooth edges, isolated product, plain white background",
+    "size": 0.05,
+    "mass": 0.06,
+    "tags": [
+      "toy",
+      "block",
+      "stackable"
+    ],
+    "collider": "solid",
+    "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+    "target_size": [
+      0.05,
+      0.05,
+      0.05
+    ]
+  }
+}

@@ -38,8 +38,8 @@
     "class": "SetTorsoHeightPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_020"
+  "skill_contract_paths": [
+    "contract_013:crouch/to_height"
   ],
   "legacy_family_contracts": [
     "contract_008"

@@ -1,42 +1,21 @@
-# contract_035 — Pick by top pinch
+# contract_035 — Brace an object with the left hand
 
-Grasp an annotated object from its top pinch region.
+Pinch a resting container with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.
 
-Paired SkillNode: `skill_027`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_027` (`brace-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- [all paths] `hand_empty(hand=left)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`clamp_object_top(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `held_by_right_hand` — contract_runner
-- `object_lifted` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'top_pinch'}`
+- [all paths] `steadied(object=$object)` — GT: left_gripper_state, object_pose
+- [all paths] `holding(hand=left, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `left_rim_pinch` when object.location in ['support', 'floor', 'container']: `policy_077($object)`
 
-Match before execution: `[]`.
-
-1. `policy_010` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_002` / `top`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

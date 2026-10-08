@@ -1,45 +1,19 @@
-# contract_016 — Push an object along a support
+# contract_016 — Straighten the waist
 
-Move one object by directed contact and measure progress.
+Return the waist pitch to upright.
 
-Paired SkillNode: `skill_008`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_008` (`straighten-waist`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
-- `direction_xy`: unit_vec2
-- `distance_m`: positive_number
+- none
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `object_on_support` — policy_attempt
-
-## Planner action predicate
-
-`shove_object_along_support(object, support, direction_xy, distance_m)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `displacement_along` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `waist_straight()` — GT: waist_joint
 
 ## Policy paths
 
-### fixed
+- `upright` when always: `policy_009()`
 
-Match before execution: `[]`.
-
-1. `policy_026` with ['object', 'support', 'direction_xy', 'distance_m']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_006` / `auto`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

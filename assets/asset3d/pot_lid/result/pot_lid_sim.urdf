@@ -1,0 +1,46 @@
+<robot name="pot_lid">
+   <link name="pot_lid">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/pot_lid.obj" scale="0.868360 0.521741 0.869021" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/pot_lid_collision.obj" scale="0.868360 0.521741 0.869021" />
+         </geometry>
+         <gazebo>
+            <mu1>0.70</mu1>
+            <mu2>0.50</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.2200" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="1.212e-03" ixy="0.0" ixz="0.0" iyy="1.212e-03" iyz="0.0" izz="2.292e-03" />
+      </inertial>
+      <extra_info>
+         <scale>0.287899</scale>
+         <version>v2.1.0</version>
+         <category>pot_lid</category>
+         <description>round gray metal lid with deep rim and centered black knob.</description>
+         <min_height>0.09</min_height>
+         <max_height>0.14</max_height>
+         <real_height>0.115</real_height>
+         <min_mass>0.4</min_mass>
+         <max_mass>0.9</max_mass>
+         <generate_time>20261006215804</generate_time>
+         <gs_model>mesh/pot_lid_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.092156887054443</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

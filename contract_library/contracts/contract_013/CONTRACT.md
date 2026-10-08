@@ -1,59 +1,22 @@
-# contract_013 — Place an object on a support
+# contract_013 — Crouch the torso
 
-Release one right-held object onto one annotated support.
+Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.
 
-Paired SkillNode: `skill_005`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_005` (`crouch-torso`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
+- none
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — contract_precheck
-- `target_annotated` — policy_attempt
-- `target_accessible` — policy_attempt
-
-## Planner action predicate
-
-`deposit_object_on_support(object, support)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `on` — contract_runner
-- `right_hand_empty` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `not torso_raised()` — GT: torso_joint
+- [path to_height] `torso_at(height_m=$height_m)` — GT: torso_joint
+- [path lowest] `torso_lowered()` — GT: torso_joint
 
 ## Policy paths
 
-### microwave_support
+- `to_height` when args.height_m: `policy_004($height_m)`
+- `lowest` when always: `policy_005()`
 
-Match before execution: `[{'noun': 'support', 'field': 'furniture', 'equals': 'kitchen_microwave'}]`.
-
-1. `policy_018` with ['object', 'support']
-2. `policy_019` with ['object']
-3. `policy_020` with ['object']
-
-### edge_held
-
-Match before execution: `[{'noun': 'object', 'field': 'held_kind', 'equals': 'edge'}]`.
-
-1. `policy_017` with ['object', 'support']
-
-### ordinary_surface
-
-Match before execution: `[{'noun': 'support', 'field': 'kind', 'equals': 'support'}]`.
-
-1. `policy_015` with ['object', 'support']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_003` / `surface`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

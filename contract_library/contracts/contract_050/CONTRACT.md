@@ -1,43 +1,25 @@
-# contract_050 — Back away while carrying
+# contract_050 — Press a button
 
-Reverse the base while preserving the right-hand grasp.
+Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).
 
-Paired SkillNode: `skill_042`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_042` (`press-button`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `distance_m`: positive_number
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=@button.appliance)` — GT: base_pose, scene_annotation
+- [path microwave_start_staged] `is_closed(articulated=@button.appliance)` — GT: articulation_joint, articulation_annotation
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — policy_attempt
-- `backward_path_clear` — policy_attempt
-
-## Planner action predicate
-
-`retreat_carried_object(object, distance_m)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `base_backed_off` — contract_runner
-- `grasp_preserved` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
+- [all paths] `button_pressed(button=$button)` — GT: event_log (measured fingertip contact)
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [path microwave_start_staged] `heating(appliance=@button.appliance)` — GT: thermal_state
 
 ## Policy paths
 
-### fixed
+- `microwave_start_staged` when button.button == 'start_button': `policy_027(@button.appliance, button=start)` -> `policy_028(@button.appliance, button=start)` -> `policy_029(@button.appliance, button=start)`
+- `microwave_door_key` when button.button == 'door_button': `policy_033(@button.appliance, button=door)`
+- `generic_key` when always: `policy_094($button)`
 
-Match before execution: `[]`.
-
-1. `policy_035` with ['distance_m']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: custom `back_off`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

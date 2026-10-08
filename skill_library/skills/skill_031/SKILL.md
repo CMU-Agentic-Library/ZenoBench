@@ -1,60 +1,65 @@
 ---
-name: lower-torso-for-floor-reach
-description: Lower the robot torso to its configured minimum before floor interaction.
+name: expose-object
+description: Push a flat object (book, plate, notebook) until it overhangs a free support edge by >= 5.5 cm while its centre of mass stays on the support, so the overhang can be pinched.
 ---
 
-# Lower torso for floor reach (skill_031)
+# Expose a grasp edge (`skill_031`)
+
+`expose(object: object_ref)`
+
+Push a flat object (book, plate, notebook) until it overhangs a free support edge by >= 5.5 cm while its centre of mass stays on the support, so the overhang can be pinched.
 
 ## When to use
 
-Lower the robot torso to its configured minimum before floor interaction.
+A flat object is wider than the gripper and must overhang an edge before pick.
+
+## Not to be confused with
+
+- `push`: expose pushes toward a free edge until a pinchable overhang exists.
 
 ## Inputs
 
-- None.
+- `object` (`object_ref`): A flat object on a support.
 
-## Preconditions
+## Applicability
 
-- `joint_path_clear` — `policy_attempt`
+Requires hand_empty(hand=right); base_near(place=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`lower_torso()` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['posture_at_target']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `posture_at_target` — measured by `contract_runner`
+- `edge_overhang(object=$object)` — A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge. GT: object_pose, asset_annotation, support_annotation.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_031` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_039", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `edge_overhang(object=$object)` (all paths)
 
+## May invalidate
 
-### Policy path: fixed
+`at_initial_place($object)`, `away_from_edge($object,*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_005()`
+### `slide_to_edge` — when object.flat
 
+1. `policy_045($object)`
 
-Verifier: `contract_008 / lower`.
+## Relations
 
-## Related Skills
-
-- `skill_020` (`preparation`) when a flat object lies on the floor and is hard to reach — Lowering the torso can improve floor reach.
+- Next step: `pick` (`skill_017`) (enables) — pinch the overhang
+- Next step: `flip` (`skill_028`) (then) — turn the object over
+- Fallback on failure: `approach` (`skill_002`) (repair) — no base pose reaches behind the object
+- Is a fallback for: `pick` (`skill_017`) (repair) — a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One lower torso for floor reach attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_039`.

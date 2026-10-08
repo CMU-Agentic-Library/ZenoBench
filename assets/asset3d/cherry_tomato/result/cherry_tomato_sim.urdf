@@ -1,0 +1,46 @@
+<robot name="cherry_tomato">
+   <link name="cherry_tomato">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/cherry_tomato.obj" scale="0.938001 0.742861 0.940478" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/cherry_tomato_collision.obj" scale="0.938001 0.742861 0.940478" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.0120" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="1.460e-06" ixy="0.0" ixz="0.0" iyy="1.460e-06" iyz="0.0" izz="1.568e-06" />
+      </inertial>
+      <extra_info>
+         <scale>0.035000</scale>
+         <version>v2.1.0</version>
+         <category>cherry_tomato</category>
+         <description>smooth, round red tomato with a short green stem and thin pointed sepals.</description>
+         <min_height>0.025</min_height>
+         <max_height>0.045</max_height>
+         <real_height>0.035</real_height>
+         <min_mass>0.01</min_mass>
+         <max_mass>0.03</max_mass>
+         <generate_time>20261006220939</generate_time>
+         <gs_model>mesh/cherry_tomato_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>5.354373455047607</ImageAestheticChecker>
+         <overall>YES</overall>
+      </quality>
+   </custom_data>
+</robot>

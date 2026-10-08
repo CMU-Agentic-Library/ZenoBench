@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).open_prismatic_drawer.execute(...)`
 - Class: `OpenPrismaticDrawerPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_011, contract_056
+- Skill Contract paths: contract_048:open/drawer
 - Legacy family Contracts: contract_004
 
 ## Caveat

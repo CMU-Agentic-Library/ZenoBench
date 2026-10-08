@@ -51,9 +51,12 @@ def eg_cmd(tool):
     return ["conda", "run", "--no-capture-output", "-n", "embodiedgen", tool]
 
 
-def run(cmd, cwd=None, env=None):
+def run(cmd, cwd=None, env=None, check=True):
     print("+", " ".join(str(c) for c in cmd), flush=True)
-    subprocess.run([str(c) for c in cmd], cwd=cwd, env=env, check=True)
+    done = subprocess.run([str(c) for c in cmd], cwd=cwd, env=env)
+    if check and done.returncode != 0:
+        raise subprocess.CalledProcessError(done.returncode, cmd)
+    return done.returncode
 
 
 def generate(name, spec, retries):
@@ -65,14 +68,20 @@ def generate(name, spec, retries):
         tmp = Path(tmp)
         if spec.get("image"):
             img = Path(spec["image"]).resolve()
-            run(eg_cmd("img3d-cli") + ["--image_path", img, "--n_retry", retries, "--output_root", tmp], cwd=repo)
+            code = run(eg_cmd("img3d-cli") + ["--image_path", img, "--n_retry", retries, "--output_root", tmp],
+                       cwd=repo, check=False)
         else:
-            run(eg_cmd("text3d-cli") + ["--prompts", spec["prompt"], "--asset_names", name,
-                                        "--n_image_retry", retries, "--n_asset_retry", retries, "--n_pipe_retry", 1,
-                                        "--seed_img", spec.get("seed", 0), "--output_root", tmp], cwd=repo)
+            code = run(eg_cmd("text3d-cli") + ["--prompts", spec["prompt"], "--asset_names", name,
+                                               "--n_image_retry", retries, "--n_asset_retry", retries, "--n_pipe_retry", 1,
+                                               "--seed_img", spec.get("seed", 0), "--output_root", tmp], cwd=repo,
+                       check=False)
         urdfs = sorted(tmp.rglob("result/*.urdf"))
         if not urdfs:
             sys.exit(f"{name}: EmbodiedGen produced no URDF (see its log above)")
+        if code:
+            # The V2 CLIs can exit nonzero during teardown after saving a
+            # complete result; the URDF and meshes are what matter here.
+            print(f"{name}: generator exited with {code} after writing {urdfs[0]}", flush=True)
         res = urdfs[0].parent
         dst = GEN / name / "result"
         if dst.exists():
@@ -94,7 +103,8 @@ def register(name, spec):
                "collider": c, "lay_flat": bool(spec.get("lay_flat", False)),
                "urdf": f"assets/asset3d/{name}/result/{name}.urdf"}
     for key in ("body_fraction", "target_size", "generator", "prompt", "container_profile",
-                "top_grasp", "handle_grasp", "handle_collider", "extra_handle_colliders"):
+                "top_grasp", "handle_grasp", "handle_collider", "extra_handle_colliders", "knob_collider",
+                "round_top"):
         if key in spec:
             d[name][key] = spec[key]
     CUSTOM.write_text(json.dumps(d, indent=1) + "\n")

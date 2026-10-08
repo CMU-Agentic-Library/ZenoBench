@@ -32,8 +32,14 @@
     "class": "TuckArmPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_019"
+  "skill_contract_paths": [
+    "contract_017:tuck/right",
+    "contract_018:reset/joint_home",
+    "contract_020:inspect/closed_cabinet",
+    "contract_048:open/refrigerator",
+    "contract_048:open/drawer",
+    "contract_048:open/hinged_door",
+    "contract_049:close/handle_push"
   ],
   "legacy_family_contracts": [
     "contract_008"

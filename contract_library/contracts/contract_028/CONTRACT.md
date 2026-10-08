@@ -1,43 +1,22 @@
-# contract_028 — Pick a flat object from a floor corner
+# contract_028 — Stack an object on another
 
-Attempt one floor-corner grasp and verify right-hand lift.
+Set the held object centred on the top face of another object (block on block, plate on plate).
 
-Paired SkillNode: `skill_020`. Status: `experimental_callable`.
+Paired SkillNode: `skill_020` (`stack-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `base_near(place=$base)` — GT: base_pose, scene_annotation
+- [all paths] `top_clear(object=$base)` — GT: object_pose, asset_annotation
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `object_annotated` — policy_attempt
-- `object_reachable` — policy_attempt
-
-## Planner action predicate
-
-`scoop_floor_object(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `held_by_right_hand` — contract_runner
-- `object_lifted` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'edge_pinch_after_push'}`
+- [all paths] `on_top_of(object=$object, base=$base)` — GT: object_pose, asset_annotation
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
 ## Policy paths
 
-### fixed
+- `top_face` when always: `policy_074($object, $base)`
 
-Match before execution: `[]`.
-
-1. `policy_014` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_002` / `floor_corner`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

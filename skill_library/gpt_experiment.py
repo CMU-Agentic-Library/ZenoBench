@@ -1,8 +1,10 @@
-"""Names-and-descriptions GPT planning baseline for the ZenoBench task set.
+"""GPT/VLM planning against the verb-based SkillNode catalog (schema 2).
 
-The model sees public Skill names/descriptions plus typed argument signatures,
-not Contract plans or low-level policies. Its JSON is validated and grounded
-before any simulator action. This module has no Isaac Sim dependency.
+The model sees one card per SkillNode (verb, noun, signature, description,
+typed inputs/outputs, GT pre/postconditions as text, and optionally the
+previous/next/fallback/alternative relations) plus the task goal and the exact
+scene IDs.  Its JSON subgraph is validated and grounded before any simulator
+action.  This module has no Isaac Sim dependency.
 """
 
 from __future__ import annotations
@@ -14,43 +16,41 @@ import urllib.error
 import urllib.request
 from typing import Any
 
-from .graph import compile_grounded_nodes, load_skills
-from .relations import load_relations
+from .graph import ground, load_skills
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MODEL = "gpt-5"
 
 
-def skill_cards(*, overrides: dict[str, dict] | None = None,
-                with_predicates: bool = False) -> list[dict]:
-    """Give GPT all 50 names/descriptions and the minimum callable signature."""
+def skill_cards(*, overrides: dict[str, dict] | None = None, with_predicates: bool = True,
+                with_relations: bool = False) -> list[dict]:
+    """One planner card per SkillNode, taken from the exported skill.json."""
     skills = load_skills()
     overrides = overrides or {}
     if not set(overrides) <= set(skills):
         raise ValueError("card overrides contain unknown skill IDs")
     result = []
     for sid, skill in skills.items():
-        card = {
-            "skill_id": sid,
-            "name": skill["name"],
-            "description": skill["description"],
-            "args": {key: {"type": value["type"], "required": value["required"]}
-                     for key, value in skill["args"].items()},
-        }
+        card = {"skill_id": sid, "verb": skill["verb"], "noun": skill["noun"], "name": skill["title"],
+                "signature": skill["signature"], "description": skill["description"],
+                "use_when": skill["use_when"],
+                "inputs": {k: {"type": v["type"], "required": v["required"]} for k, v in skill["inputs"].items()},
+                "outputs": {k: v["type"] for k, v in skill["outputs"].items()}}
         if with_predicates:
-            card["action_predicate"] = skill["action_predicate"]
+            card["preconditions"] = [p["predicate"] for p in skill["preconditions"]]
+            card["postconditions"] = [p["predicate"] for p in skill["postconditions"]]
+            card["path_conditions"] = {p["path_id"]: p["when"] for p in skill["policy_paths"]}
+        if with_relations:
+            card["relations"] = {k: [r["verb"] + ": " + r["when"] for r in v] for k, v in skill["relations"].items()}
         if sid in overrides:
             replacement = overrides[sid]
             if set(replacement) != {"name", "description"} or any(
-                not isinstance(replacement[key], str) or not replacement[key].strip()
-                for key in ("name", "description")
-            ):
+                    not isinstance(replacement[k], str) or not replacement[k].strip() for k in ("name", "description")):
                 raise ValueError(f"{sid}: override needs nonempty name and description")
             card.update(replacement)
         result.append(card)
-    names = [row["name"].casefold() for row in result]
-    if len(set(names)) != len(names):
-        raise ValueError("Skill cards have duplicate names")
+    if len({c["verb"] for c in result}) != len(result):
+        raise ValueError("Skill cards have duplicate verbs")
     return result
 
 
@@ -108,7 +108,7 @@ def identity_bindings(graph: dict) -> dict[str, str]:
 
 def compile_proposal(graph: dict, annotation: dict,
                      bindings: dict[str, str] | None = None) -> list[dict]:
-    return compile_grounded_nodes(graph, bindings or identity_bindings(graph), annotation)
+    return ground(graph, bindings or identity_bindings(graph), annotation)
 
 
 PLAN_SCHEMA = {
@@ -117,22 +117,20 @@ PLAN_SCHEMA = {
         "type": "object", "additionalProperties": False,
         "required": ["schema_version", "kind", "subgoal_id", "nodes"],
         "properties": {
-            "schema_version": {"type": "integer", "enum": [1]},
+            "schema_version": {"type": "integer", "enum": [2]},
             "kind": {"type": "string", "enum": ["skill_subgraph"]},
             "subgoal_id": {"type": "string"},
             "nodes": {"type": "array", "minItems": 1, "items": {
                 "type": "object", "additionalProperties": False,
-                "required": ["id", "skill_id", "args", "depends_on"],
+                "required": ["id", "skill", "args", "depends_on"],
                 "properties": {
                     "id": {"type": "string"},
-                    "skill_id": {"type": "string"},
+                    "skill": {"type": "string"},
                     "args": {"type": "object", "additionalProperties": {
                         "type": "object", "properties": {
                             "ref": {"type": "string"},
-                            "value": {"anyOf": [
-                                {"type": "number"},
-                                {"type": "array", "items": {"type": "number"}}]},
-                        }}},
+                            "from": {"type": "string"},
+                            "value": {}}}},
                     "depends_on": {"type": "array", "items": {"type": "string"}},
                 },
             }},
@@ -144,30 +142,29 @@ PLAN_SCHEMA = {
 def planning_payload(task: dict, annotation: dict, *, state: dict | None = None,
                      evaluation: dict | None = None, previous: dict | None = None,
                      with_relations: bool = False,
-                     with_predicates: bool = False,
+                     with_predicates: bool = True,
                      card_overrides: dict[str, dict] | None = None) -> dict:
     payload = {
         "task": task["task"], "instruction": task["instruction"],
         "goal": task["goal"], "scene": task_scene_view(task, annotation, state),
         "evaluation": evaluation, "skills": skill_cards(
-            overrides=card_overrides, with_predicates=with_predicates),
+            overrides=card_overrides, with_predicates=with_predicates, with_relations=with_relations),
         "previous_attempt": previous,
     }
-    if with_relations:
-        payload["conditional_relations"] = load_relations(load_skills())
     return payload
 
 
-SYSTEM_PROMPT = """You plan ZenoBench robot tasks using only the provided Skill catalog.
-Return one JSON object with key graph containing a skill_subgraph. Use only listed
-skill_ids and valid args. Every ref MUST be an exact object, support, or articulated
-name from the scene vocabulary; do not invent IDs. A ref is {"ref":"exact ID"};
-a numeric or vector literal is {"value":number_or_array}. depends_on names
-prior graph node IDs. Order manipulation of one right-hand-held object correctly.
-Plan toward the unchanged task goal, including closure and terminal invariants.
-Only the current simulator state and evaluation are authoritative. If a prior
-attempt failed, revise from the new state; do not assume its effects succeeded.
-Choose at most 32 nodes. Output JSON only. Do not claim physical success."""
+SYSTEM_PROMPT = """You plan robot tasks with the provided SkillNode catalog (one verb + one noun each).
+Return one JSON object {"graph": skill_subgraph}. A node is {"id", "skill" (a verb or
+skill_id), "args", "depends_on"}. Argument values: {"ref": "<exact scene ID>"} for scene
+nouns, {"value": literal} for numbers, vectors, hands, lists and maps, or
+{"from": "<node_id>.<output>"} to use a measured output of an earlier node.
+Use only exact object, support, articulated, appliance, button or room IDs from the scene.
+Every precondition is checked on the real scene before a skill runs and every
+postcondition after it; chain skills so the postconditions of earlier nodes satisfy
+the preconditions of later ones (e.g. navigate -> pick -> navigate -> place).
+Prefer the relations' fallback skills when a previous attempt failed. Plan toward the
+unchanged task goal including closed doors. Choose at most 40 nodes. Output JSON only."""
 
 
 def _response_text(response: dict) -> str:

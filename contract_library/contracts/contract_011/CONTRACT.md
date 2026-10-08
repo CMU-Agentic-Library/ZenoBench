@@ -1,53 +1,20 @@
-# contract_011 — Open an articulated door or drawer
+# contract_011 — Face a target
 
-Open one annotated articulated target and verify its joint position.
+Rotate the base in place until it faces the target (heading error <= 20 deg).
 
-Paired SkillNode: `skill_003`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_003` (`face-target`).
 
-## Inputs
+## Precheck
 
-- `articulated`: articulated_ref
+- none
 
-## Preconditions
+## Verifier
 
-- `articulated_annotated` — contract_precheck
-- `opening_route_feasible` — policy_attempt
-
-## Planner action predicate
-
-`open_articulated_joint(articulated)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `joint_open_enough` — contract_runner
-
-## Grounded noun slots
-
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `facing(target=$target)` — GT: base_pose, scene_annotation
 
 ## Policy paths
 
-### powered_microwave
+- `rotate_empty` when not robot.right_held and not robot.left_held and robot.right_arm_stowed: `policy_099($target) as heading` -> `policy_036(#heading.delta_yaw_deg)`
+- `rotate_loaded` when always: `policy_066($target)`
 
-Match before execution: `[{'noun': 'articulated', 'field': 'powered_microwave', 'equals': True}]`.
-
-1. `policy_024` with ['articulated']
-
-### manual_drawer
-
-Match before execution: `[{'noun': 'articulated', 'field': 'type', 'equals': 'prismatic'}, {'noun': 'articulated', 'field': 'has_handle', 'equals': True}]`.
-
-1. `policy_050` with ['articulated']
-
-### manual_hinged_door
-
-Match before execution: `[{'noun': 'articulated', 'field': 'type', 'equals': 'revolute'}, {'noun': 'articulated', 'field': 'has_handle', 'equals': True}]`.
-
-1. `policy_049` with ['articulated']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_004` / `auto`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -1,38 +1,20 @@
-# contract_039 — Lower torso for floor reach
+# contract_039 — Expose a grasp edge
 
-Lower the robot torso to its configured minimum before floor interaction.
+Push a flat object (book, plate, notebook) until it overhangs a free support edge by >= 5.5 cm while its centre of mass stays on the support, so the overhang can be pinched.
 
-Paired SkillNode: `skill_031`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_031` (`expose-object`).
 
-## Inputs
+## Precheck
 
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `joint_path_clear` — policy_attempt
-
-## Planner action predicate
-
-`lower_torso()` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `posture_at_target` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `edge_overhang(object=$object)` — GT: object_pose, asset_annotation, support_annotation
 
 ## Policy paths
 
-### fixed
+- `slide_to_edge` when object.flat: `policy_045($object)`
 
-Match before execution: `[]`.
-
-1. `policy_005` with []
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_008` / `lower`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

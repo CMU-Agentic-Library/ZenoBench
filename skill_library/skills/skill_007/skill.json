@@ -1,82 +1,169 @@
 {
-  "schema_version": 1,
-  "kind": "skill_node",
-  "skill_id": "skill_007",
-  "name": "Close an articulated door or drawer",
-  "description": "Close one annotated articulated target and verify its joint position.",
-  "args": {
-    "articulated": {
-      "type": "articulated_ref",
-      "required": true,
-      "description": "articulated"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "articulated_annotated",
-      "enforcement": "contract_precheck"
+ "schema_version": 2,
+ "kind": "skill_node",
+ "skill_id": "skill_007",
+ "name": "bend-waist",
+ "verb": "bend",
+ "noun": "waist",
+ "title": "Bend the waist",
+ "group": "base_and_body",
+ "signature": "bend(pitch_rad: positive_number?)",
+ "action_predicate": {
+  "name": "bend_waist",
+  "verb": "bend",
+  "noun": "waist",
+  "arguments": [
+   "pitch_rad"
+  ]
+ },
+ "description": "Pitch the waist forward to extend the reach over a deep surface.",
+ "use_when": "A target is just beyond arm reach over a counter and leaning forward helps.",
+ "not_to_be_confused_with": {
+  "crouch": "crouch lowers the torso; bend tilts the waist."
+ },
+ "inputs": {
+  "pitch_rad": {
+   "type": "positive_number",
+   "required": false,
+   "description": "Forward pitch in rad (max 0.69); omit for the maximum."
+  }
+ },
+ "required_inputs": [],
+ "outputs": {},
+ "applicability": {
+  "always": true,
+  "summary": "Always applicable."
+ },
+ "preconditions": [],
+ "postconditions": [
+  {
+   "predicate": "waist_bent(min_pitch_rad=0.2)",
+   "name": "waist_bent",
+   "args": {
+    "min_pitch_rad": 0.2
+   },
+   "negated": false,
+   "meaning": "Waist pitched forward by at least the given angle.",
+   "kind": "fluent",
+   "gt_sources": [
+    "waist_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true"
+  }
+ ],
+ "verifier": {
+  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
+  "checks": [
+   {
+    "predicate": "waist_bent(min_pitch_rad=0.2)",
+    "name": "waist_bent",
+    "args": {
+     "min_pitch_rad": 0.2
     },
-    {
-      "predicate": "closure_path_clear",
-      "enforcement": "policy_attempt"
-    }
+    "negated": false,
+    "meaning": "Waist pitched forward by at least the given angle.",
+    "kind": "fluent",
+    "gt_sources": [
+     "waist_joint"
+    ],
+    "checked": "after the policy chain on live GT state; the action is reported only if true",
+    "scope": "all paths"
+   }
+  ]
+ },
+ "invalidates": [
+  "waist_straight()",
+  "reachable(*)",
+  "in_view(*)"
+ ],
+ "policy_paths": [
+  {
+   "path_id": "to_pitch",
+   "when": [
+    "args.pitch_rad"
+   ],
+   "extra_preconditions": [],
+   "extra_postconditions": [],
+   "chain": [
+    "policy_007($pitch_rad)"
+   ],
+   "policies": [
+    "policy_007"
+   ],
+   "note": ""
+  },
+  {
+   "path_id": "full",
+   "when": [
+    "always (default path)"
+   ],
+   "extra_preconditions": [],
+   "extra_postconditions": [],
+   "chain": [
+    "policy_008()"
+   ],
+   "policies": [
+    "policy_008"
+   ],
+   "note": ""
+  }
+ ],
+ "relations": {
+  "previous": [],
+  "next": [
+   {
+    "skill_id": "skill_008",
+    "verb": "straighten",
+    "when": "the reach is done",
+    "bind": {},
+    "reason": "restore upright posture",
+    "type": "then"
+   },
+   {
+    "skill_id": "skill_002",
+    "verb": "approach",
+    "when": "the target was just out of reach",
+    "bind": {},
+    "reason": "extra reach",
+    "type": "then"
+   }
   ],
-  "achieves": [
-    {
-      "predicate": "joint_closed",
-      "verification": "contract_runner"
-    }
+  "fallback": [],
+  "fallback_for": [
+   {
+    "skill_id": "skill_002",
+    "verb": "approach",
+    "when": "the target is just beyond the arm envelope",
+    "type": "recover"
+   }
   ],
-  "availability": "representative_runs_only",
-  "contract_id": "contract_015",
-  "scope": {
-    "unit": "one articulated closure",
-    "includes": [
-      "Close one annotated articulated target and verify its joint position."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "invocation": {
-    "api": "ContractRunner.run",
-    "contract_id": "contract_015",
-    "input_order": [
-      "articulated"
-    ]
-  },
-  "expected_state_change": [
-    "joint_closed"
+  "alternative": []
+ },
+ "failure": {
+  "codes": [
+   "INPUT_MISSING",
+   "NOUN_INVALID",
+   "PRECONDITION_FAILED",
+   "NO_PATH",
+   "POLICY_FAILED",
+   "SUBSKILL_FAILED",
+   "POSTCONDITION_FAILED"
   ],
-  "action_predicate": {
-    "name": "close_articulated_joint",
-    "verb": "close",
-    "noun": "articulated_joint",
-    "arguments": [
-      "articulated"
-    ],
-    "verified_by": [
-      "joint_closed"
-    ]
+  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "typical": []
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ },
+ "contract_id": "contract_015",
+ "invocation": {
+  "skill_subgraph_node": {
+   "id": "n1",
+   "skill_id": "skill_007",
+   "args": {},
+   "depends_on": []
   },
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "relations": {
-    "mode": "conditional_agentic_hints",
-    "catalog": "../../relations.json",
-    "outgoing": [
-      "relation_035",
-      "relation_036"
-    ],
-    "incoming": [
-      "relation_037",
-      "relation_038"
-    ],
-    "automatic": false
-  },
-  "fallback_hints": []
+  "python": "SkillContractRunner(rig).run(\"bend\", {})"
+ }
 }

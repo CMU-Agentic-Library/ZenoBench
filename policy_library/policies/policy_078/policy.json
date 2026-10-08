@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_078",
+  "legacy_id": "flip_flat",
+  "name": "Flip Flat",
+  "description": "Turn an edge-held flat object over and lay it back.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "manipulation",
+    "effect_summary": "flipped(name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "release_deg",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 105.0
+    },
+    {
+      "name": "step_deg",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 10.0
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "flipped(name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_078",
+    "legacy_attribute": "flip_flat",
+    "class": "FlipFlatPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_036:flip/edge_roll"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

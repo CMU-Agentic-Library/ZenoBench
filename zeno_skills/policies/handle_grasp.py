@@ -64,7 +64,7 @@ class PickCupHandlePolicy(AtomicPolicy):
         if fingers.min() < 0.003 or lift_m < 0.02:
             raise SkillFailure(f"pick cup handle {name}: failed contact/lift, {lift_m:.3f} m")
         tcp, actual_R = rig.kin.tcp(rig.q())
-        rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp-after,
+        rig.held = {"name": name, "kind": "pinch", "grasp": "handle", "tcp_minus_body": tcp-after,
                     "R": actual_R, "pre_open": float(spec["pre_open"])}
         skills.check_held(rig, "pick_cup_handle")
         rig.log("pick_cup_handle_result", obj=name, lift_m=round(lift_m, 4),

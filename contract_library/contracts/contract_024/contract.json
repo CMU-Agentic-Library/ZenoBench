@@ -1,104 +1,183 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_024",
-  "skill_id": "skill_016",
-  "name": "Pick a flat object at an edge",
-  "description": "Attempt one edge grasp of a flat object and verify grasp and lift.",
-  "scope": {
-    "unit": "one edge-route pick",
-    "includes": [
-      "Attempt one edge grasp of a flat object and verify grasp and lift."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "object"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "right_hand_empty",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "object_annotated",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "object_reachable",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "held_by_right_hand",
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "object_lifted",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "held_by_right_hand",
-    "object_lifted"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_002",
-    "route": "edge",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_013",
-        "args": [
-          {
-            "arg": "object"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true,
-      "requires_grasp_type": "edge_pinch_after_push"
-    }
-  },
-  "action_predicate": {
-    "name": "pinch_flat_object_edge",
-    "verb": "pinch",
-    "noun": "flat_object_edge",
-    "arguments": [
-      "object"
-    ],
-    "verified_by": [
-      "held_by_right_hand",
-      "object_lifted"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_024",
+ "skill_id": "skill_016",
+ "verb": "present",
+ "noun": "object",
+ "name": "Present a held object",
+ "description": "Hold the carried object in front of the body at 0.9-1.4 m height, inside the head camera view.",
+ "group": "perception_and_gesture",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "The right-held object to show."
   }
+ },
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "presenting",
+   "args": {
+    "object": "$object"
+   }
+  },
+  {
+   "pred": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   }
+  }
+ ],
+ "invalidates": [
+  "reachable(*)"
+ ],
+ "precheck": [
+  {
+   "predicate": "holding(hand=right, object=$object)",
+   "name": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "presenting(object=$object)",
+   "name": "presenting",
+   "args": {
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose",
+    "base_pose",
+    "head_fk"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "holding(hand=right, object=$object)",
+   "name": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "present_object",
+  "verb": "present",
+  "noun": "object",
+  "arguments": [
+   "object"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "front_of_head",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_072",
+      "args": [
+       "$object"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "place",
+   "when": "the object is put away after showing it",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_018",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "sequence",
+   "to": "handover",
+   "when": "the object is passed to the left hand",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_022",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "alternative",
+   "to": "lift",
+   "when": "only the height of the load matters",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_023"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

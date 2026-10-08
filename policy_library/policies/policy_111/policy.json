@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_111",
+  "legacy_id": "measure_object",
+  "name": "Measure Object",
+  "description": "Look at an object and record its size.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "perception",
+    "effect_summary": "measured(name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "measured(name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_111",
+    "legacy_attribute": "measure_object",
+    "class": "MeasureObjectPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_066:measure/look_and_size"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

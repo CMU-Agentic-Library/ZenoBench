@@ -1,38 +1,20 @@
-# contract_041 — Lean waist forward
+# contract_041 — Center an object on its support
 
-Lean the waist forward to its configured safe posture.
+Push an object back from the support edges until every edge margin is at least the requested value (secures an item left overhanging).
 
-Paired SkillNode: `skill_033`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_033` (`center-object`).
 
-## Inputs
+## Precheck
 
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `joint_path_clear` — policy_attempt
-
-## Planner action predicate
-
-`lean_waist()` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `posture_at_target` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `away_from_edge(object=$object, margin_m=$margin_m)` — GT: object_pose, support_annotation
 
 ## Policy paths
 
-### fixed
+- `push_inward` when always: `policy_083($object, $margin_m)`
 
-Match before execution: `[]`.
-
-1. `policy_008` with []
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_008` / `lean`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

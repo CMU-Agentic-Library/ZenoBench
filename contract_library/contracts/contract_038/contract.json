@@ -1,121 +1,193 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_038",
-  "skill_id": "skill_030",
-  "name": "Place an edge-held flat object",
-  "description": "Place one edge-held flat item onto an annotated support.",
-  "scope": {
-    "unit": "One place an edge-held flat object attempt on the grounded scene state.",
-    "includes": [
-      "Place one edge-held flat item onto an annotated support."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_038",
+ "skill_id": "skill_030",
+ "verb": "pull",
+ "noun": "object",
+ "name": "Pull an object closer",
+ "description": "Drag an object toward the robot with the pads pressed on its top until it is within reach (e.g. from the back of a deep counter); if the pads slide over a round or slippery top, the fingers hook the far side and push it toward the robot.",
+ "group": "contact",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "The object to drag."
   },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "The uniquely grounded scene object."
-    },
-    "support": {
-      "type": "support_ref",
-      "required": true,
-      "description": "The grounded target support."
-    }
-  },
-  "requires": [
-    {
-      "predicate": "held_by_right_hand",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "target_annotated",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "held_with_edge_grasp",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "on",
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "right_hand_empty",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "on",
-    "right_hand_empty"
-  ],
-  "verifier": {
-    "check": "ContractRunner measured post-state",
-    "on_failure": "record partial state and stop",
-    "legacy_family_contract": "contract_003",
-    "route": "edge"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_017",
-        "args": [
-          {
-            "arg": "object"
-          },
-          {
-            "arg": "support"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object",
-    "support"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true,
-      "requires_held_kind": "edge",
-      "requires_right_held": true
-    },
-    "support": {
-      "argument": "support",
-      "kind": "support",
-      "source": "rig.ann",
-      "required": true
-    }
-  },
-  "action_predicate": {
-    "name": "lay_edge_held_flat_object",
-    "verb": "lay",
-    "noun": "edge_held_flat_object",
-    "arguments": [
-      "object",
-      "support"
-    ],
-    "verified_by": [
-      "on",
-      "right_hand_empty"
-    ]
+  "distance_m": {
+   "type": "positive_number",
+   "required": true,
+   "description": "Requested travel toward the base.",
+   "default": 0.15
   }
+ },
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  },
+  {
+   "pred": "base_near",
+   "args": {
+    "place": "$object"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "moved_toward_base",
+   "args": {
+    "object": "$object",
+    "distance_m": "$distance_m"
+   }
+  },
+  {
+   "pred": "reachable",
+   "args": {
+    "target": "$object"
+   }
+  }
+ ],
+ "invalidates": [
+  "grasp_clearance($object)",
+  "at_initial_place($object)"
+ ],
+ "precheck": [
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "base_near(place=$object)",
+   "name": "base_near",
+   "args": {
+    "place": "$object"
+   },
+   "negated": false,
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "scene_annotation"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "moved_toward_base(object=$object, distance_m=$distance_m)",
+   "name": "moved_toward_base",
+   "args": {
+    "object": "$object",
+    "distance_m": "$distance_m"
+   },
+   "negated": false,
+   "meaning": "Object's horizontal distance to the base decreased by at least half the requested distance.",
+   "kind": "relative",
+   "gt_sources": [
+    "object_pose (before/after)",
+    "base_pose"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "reachable(target=$object)",
+   "name": "reachable",
+   "args": {
+    "target": "$object"
+   },
+   "negated": false,
+   "meaning": "From the current base pose the right TCP has a collision-free IK solution 10 cm above the target (handle pre-grasp for doors, 8 cm in front of a button).",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "arm_ik",
+    "collision_model",
+    "object_pose",
+    "grasp_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "pull_object",
+  "verb": "pull",
+  "noun": "object",
+  "arguments": [
+   "object",
+   "distance_m"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "top_drag",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_041",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_079",
+      "args": [
+       "$object",
+       "$distance_m"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "pick",
+   "when": "the object is now close enough to grasp",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_017",
+   "sequence_type": "then"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

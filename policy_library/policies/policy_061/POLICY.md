@@ -22,6 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).pick.execute(...)`
 - Class: `PickPolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_025:pick/inside_cabinet_or_fridge, contract_025:pick/annotation_dispatch, contract_059:empty/pick_each_inside, contract_061:restore/dispatch_pick_place
 - Legacy family Contracts: contract_002
 
 ## Recorded evidence

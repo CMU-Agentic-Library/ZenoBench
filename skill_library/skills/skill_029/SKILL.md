@@ -1,63 +1,89 @@
 ---
-name: pick-by-rectangular-rim
-description: Grasp a rectangular tray or box by its annotated rim.
+name: push-object
+description: Slide an object along its support in a direction with closed fingers: from behind when there is room, or by pressing on its top and dragging when it stands against a wall or closed edge.
 ---
 
-# Pick by rectangular rim (skill_029)
+# Push an object (`skill_029`)
+
+`push(object: object_ref, direction_xy: unit_vec2, distance_m: positive_number)`
+
+Slide an object along its support in a direction with closed fingers: from behind when there is room, or by pressing on its top and dragging when it stands against a wall or closed edge.
 
 ## When to use
 
-Grasp a rectangular tray or box by its annotated rim.
+An object must slide along its support without grasping it.
+
+## Not to be confused with
+
+- `pull`: pull drags toward the base to make an object reachable.
+- `expose`: expose pushes until a graspable overhang exists.
+- `separate`: separate pushes away from the nearest neighbour.
+- `center`: center pushes away from the support edges.
+- `roll`: roll makes a cylinder rotate instead of slide.
+- `tip`: tip pushes high so the object falls over.
+- `sweep`: sweep gathers several objects.
 
 ## Inputs
 
-- `object` (`object_ref`): The uniquely grounded scene object.
+- `object` (`object_ref`): The object to slide.
+- `direction_xy` (`unit_vec2`): World horizontal direction.
+- `distance_m` (`positive_number`): Requested travel.
 
-## Preconditions
+## Outputs
 
-- `right_hand_empty` — `contract_precheck`
-- `target_annotated` — `policy_attempt`
+- `moved_m` (`number`): Measured displacement along the direction.
 
-## Planner action predicate
+## Applicability
 
-`clasp_rectangular_rim(object)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['held_by_right_hand', 'object_lifted']`.
+Requires hand_empty(hand=right); base_near(place=$object).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `held_by_right_hand` — measured by `contract_runner`
-- `object_lifted` — measured by `contract_runner`
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_029` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_037", "compose", ...)`.
+- `object_moved(object=$object, direction_xy=$direction_xy, distance_m=$distance_m)` — Object displaced along the direction by at least half the requested distance. GT: object_pose (before/after).
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'rim_pinch_rect'}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `object_moved(object=$object, direction_xy=$direction_xy, distance_m=$distance_m)` (all paths)
 
-Match before execution: `[]`.
+## May invalidate
 
-1. `policy_012(object)`
+`edge_overhang($object)`, `grasp_clearance($object)`, `away_from_edge($object,*)`, `at_initial_place($object)`
 
+## Policy paths (first match on the bound nouns)
 
-Verifier: `contract_002 / rect_rim`.
+### `drag_from_top` — when object.near_closed_edge
 
-## Related Skills
+1. `policy_041()`
+2. `policy_044($object, @object.support, $direction_xy, $distance_m)`
 
-- `skill_006` (`enables`) when a rectangular-rim container was grasped for relocation — Relocate the held container before loading objects into it.
+### `thin_auto` — when object.flat
+
+1. `policy_026($object, @object.support, $direction_xy, $distance_m)`
+- The dispatcher chooses push or drag for thin items.
+
+### `from_behind` — when always (default path)
+
+1. `policy_041()`
+2. `policy_043($object, @object.support, $direction_xy, $distance_m)`
+
+## Relations
+
+- Next step: `pick` (`skill_017`) (then) — the object was pushed into a graspable spot
+- Alternative: `pull` (`skill_030`) — the object should come toward the robot
+- Alternative: `center` (`skill_033`) — a specific direction is wanted
+- Alternative: `roll` (`skill_034`) — sliding is acceptable
+- Alternative: `sweep` (`skill_067`) — only one object has to move
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One pick by rectangular rim attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_037`.

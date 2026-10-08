@@ -38,7 +38,9 @@
     "class": "BimanualFlatPickPolicy"
   },
   "availability": "callable",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_025:pick/two_hand_flat"
+  ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_002"

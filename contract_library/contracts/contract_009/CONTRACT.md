@@ -1,40 +1,21 @@
-# contract_009 — Navigate empty-handed
+# contract_009 — Navigate to a place
 
-Move the empty-handed robot base to one target pose.
+Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.
 
-Paired SkillNode: `skill_001`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_001` (`navigate-place`).
 
-## Inputs
+## Precheck
 
-- `pose`: pose2d
+- none
 
-## Preconditions
+## Verifier
 
-- `target_navigable` — policy_attempt
-- `carried_object_matches_state` — not_enforced
-
-## Planner action predicate
-
-`navigate_base(pose)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `base_at` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `base_near(place=$destination)` — GT: base_pose, scene_annotation
 
 ## Policy paths
 
-### fixed
+- `two_hand_carry` when robot.both_hold_same: `policy_097($destination) as plan` -> `policy_058(@robot.right_object, #plan.pose)`
+- `carry` when robot.right_held: `policy_097($destination) as plan` -> `policy_002(#plan.pose, name=@robot.right_object, min_bottom_z=#plan.carry_bottom_z)`
+- `empty` when always: `policy_097($destination) as plan` -> `policy_001(#plan.pose)`
 
-Match before execution: `[]`.
-
-1. `policy_001` with ['pose']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_001` / `empty`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

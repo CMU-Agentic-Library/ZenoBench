@@ -1,127 +1,131 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_015",
-  "skill_id": "skill_007",
-  "name": "Close an articulated door or drawer",
-  "description": "Close one annotated articulated target and verify its joint position.",
-  "scope": {
-    "unit": "one articulated closure",
-    "includes": [
-      "Close one annotated articulated target and verify its joint position."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "articulated": {
-      "type": "articulated_ref",
-      "required": true,
-      "description": "articulated"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "articulated_annotated",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "closure_path_clear",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "joint_closed",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "joint_closed"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_005",
-    "route": "auto",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "choice",
-    "selection": "first_matching_before_execution",
-    "on_no_match": "raise_without_moving",
-    "paths": [
-      {
-        "path_id": "powered_microwave",
-        "when": [
-          {
-            "noun": "articulated",
-            "field": "powered_microwave",
-            "equals": true
-          }
-        ],
-        "steps": [
-          {
-            "policy_id": "policy_025",
-            "args": [
-              {
-                "arg": "articulated"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "path_id": "manual_handle",
-        "when": [
-          {
-            "noun": "articulated",
-            "field": "has_handle",
-            "equals": true
-          }
-        ],
-        "steps": [
-          {
-            "policy_id": "policy_023",
-            "args": [
-              {
-                "arg": "articulated"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "articulated"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "articulated": {
-      "argument": "articulated",
-      "kind": "articulated",
-      "source": "rig.ann",
-      "required": true
-    }
-  },
-  "action_predicate": {
-    "name": "close_articulated_joint",
-    "verb": "close",
-    "noun": "articulated_joint",
-    "arguments": [
-      "articulated"
-    ],
-    "verified_by": [
-      "joint_closed"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_015",
+ "skill_id": "skill_007",
+ "verb": "bend",
+ "noun": "waist",
+ "name": "Bend the waist",
+ "description": "Pitch the waist forward to extend the reach over a deep surface.",
+ "group": "base_and_body",
+ "inputs": {
+  "pitch_rad": {
+   "type": "positive_number",
+   "required": false,
+   "description": "Forward pitch in rad (max 0.69); omit for the maximum."
   }
+ },
+ "outputs": {},
+ "requires": [],
+ "ensures": [
+  {
+   "pred": "waist_bent",
+   "args": {
+    "min_pitch_rad": 0.2
+   }
+  }
+ ],
+ "invalidates": [
+  "waist_straight()",
+  "reachable(*)",
+  "in_view(*)"
+ ],
+ "precheck": [],
+ "verifier": [
+  {
+   "predicate": "waist_bent(min_pitch_rad=0.2)",
+   "name": "waist_bent",
+   "args": {
+    "min_pitch_rad": 0.2
+   },
+   "negated": false,
+   "meaning": "Waist pitched forward by at least the given angle.",
+   "kind": "fluent",
+   "gt_sources": [
+    "waist_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {},
+ "action_predicate": {
+  "name": "bend_waist",
+  "verb": "bend",
+  "noun": "waist",
+  "arguments": [
+   "pitch_rad"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "to_pitch",
+    "when": [
+     {
+      "noun": "args",
+      "field": "pitch_rad",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_007",
+      "args": [
+       "$pitch_rad"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   },
+   {
+    "path_id": "full",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_008",
+      "args": [],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "straighten",
+   "when": "the reach is done",
+   "bind": {},
+   "reason": "restore upright posture",
+   "to_skill_id": "skill_008",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "sequence",
+   "to": "approach",
+   "when": "the target was just out of reach",
+   "bind": {},
+   "reason": "extra reach",
+   "to_skill_id": "skill_002",
+   "sequence_type": "then"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

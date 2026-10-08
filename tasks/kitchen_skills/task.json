@@ -1,0 +1,398 @@
+{
+ "task": "kitchen_skills",
+ "instruction": "Cook tomato soup on the stove, then tidy the prep island.",
+ "instruction_zh": "\u5728\u7076\u53f0\u4e0a\u7528\u9505\u716e\u756a\u8304\u6c64\uff0c\u7136\u540e\u6574\u7406\u6599\u7406\u53f0\u3002",
+ "seed": 0,
+ "spec": "task_specs/kitchen_skills.json",
+ "scene_usd": "tasks/kitchen_skills/scene.usd",
+ "annotation": "tasks/kitchen_skills/annotation.json",
+ "base_scene": "sim/zeno_house_kitchen.usd",
+ "thermal": {
+  "cherry_tomato_1": {
+   "initial_c": 20.0,
+   "stove_rate_c_per_s": 3.0,
+   "cooling_rate_c_per_s": 1.5,
+   "heating_rate_c_per_s": 4.0
+  },
+  "cherry_tomato_2": {
+   "initial_c": 20.0,
+   "stove_rate_c_per_s": 3.0,
+   "cooling_rate_c_per_s": 1.5,
+   "heating_rate_c_per_s": 4.0
+  },
+  "cherry_tomato_3": {
+   "initial_c": 20.0,
+   "stove_rate_c_per_s": 3.0,
+   "cooling_rate_c_per_s": 1.5,
+   "heating_rate_c_per_s": 4.0
+  },
+  "soda_can": {
+   "initial_c": 22.0,
+   "heating_rate_c_per_s": 4.0,
+   "cooling_rate_c_per_s": 1.5
+  },
+  "juice_bottle": {
+   "initial_c": 22.0,
+   "heating_rate_c_per_s": 4.0,
+   "cooling_rate_c_per_s": 1.5
+  },
+  "oatmeal": {
+   "initial_c": 4.0,
+   "heating_rate_c_per_s": 4.0,
+   "stove_rate_c_per_s": 2.0,
+   "cooling_rate_c_per_s": 1.0
+  },
+  "cherry_tomato_4": {
+   "initial_c": 20.0,
+   "stove_rate_c_per_s": 3.0,
+   "cooling_rate_c_per_s": 1.5,
+   "heating_rate_c_per_s": 4.0
+  },
+  "cherry_tomato_5": {
+   "initial_c": 20.0,
+   "stove_rate_c_per_s": 3.0,
+   "cooling_rate_c_per_s": 1.5,
+   "heating_rate_c_per_s": 4.0
+  },
+  "cherry_tomato_6": {
+   "initial_c": 20.0,
+   "stove_rate_c_per_s": 3.0,
+   "cooling_rate_c_per_s": 1.5,
+   "heating_rate_c_per_s": 4.0
+  }
+ },
+ "demonstrate_microwave_door": false,
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  7.5,
+  1.0,
+  0.0
+ ],
+ "placed_objects": {
+  "handled_cooking_pot": {
+   "asset": "handled_cooking_pot",
+   "support": "kitchen_stove/top",
+   "yaw": 0.0,
+   "position": [
+    8.4097,
+    1.7248,
+    0.7925
+   ]
+  },
+  "pot_lid": {
+   "asset": "pot_lid",
+   "support": null,
+   "yaw": 0.0,
+   "on_object": "handled_cooking_pot",
+   "position": [
+    8.41,
+    1.725,
+    0.906
+   ]
+  },
+  "mug": {
+   "asset": "breakfast_mug",
+   "support": "kitchen_island/top",
+   "yaw": 0.0,
+   "position": [
+    7.95,
+    1.665,
+    0.9317
+   ]
+  },
+  "cherry_tomato_1": {
+   "asset": "cherry_tomato",
+   "support": null,
+   "yaw": 0.0,
+   "inside": "mug",
+   "position": [
+    7.97,
+    1.665,
+    0.9
+   ]
+  },
+  "cherry_tomato_2": {
+   "asset": "cherry_tomato",
+   "support": null,
+   "yaw": 0.0,
+   "inside": "mug",
+   "position": [
+    7.94,
+    1.682320508075689,
+    0.9
+   ]
+  },
+  "cherry_tomato_3": {
+   "asset": "cherry_tomato",
+   "support": null,
+   "yaw": 0.0,
+   "inside": "mug",
+   "position": [
+    7.94,
+    1.6476794919243112,
+    0.9
+   ]
+  },
+  "breakfast_spoon": {
+   "asset": "breakfast_spoon",
+   "support": "kitchen_island/top",
+   "yaw": 2.281920468786123,
+   "position": [
+    7.463395929074017,
+    1.6968249003800684,
+    0.8848
+   ]
+  },
+  "kitchen_sponge": {
+   "asset": "kitchen_sponge",
+   "support": "kitchen_island/top",
+   "yaw": 3.124062163134476,
+   "position": [
+    8.16412909188671,
+    1.8183577690818582,
+    0.8887
+   ]
+  },
+  "wooden_block_a": {
+   "asset": "wooden_block",
+   "support": "kitchen_island/top",
+   "yaw": 0.0,
+   "position": [
+    7.22,
+    1.625,
+    0.897
+   ]
+  },
+  "wooden_block_b": {
+   "asset": "wooden_block",
+   "support": "kitchen_island/top",
+   "yaw": 0.0,
+   "position": [
+    7.07,
+    1.625,
+    0.897
+   ]
+  },
+  "juice_bottle": {
+   "asset": "juice_bottle",
+   "support": "kitchen_island/top",
+   "yaw": 0.0,
+   "position": [
+    7.649900000000001,
+    1.66,
+    0.962
+   ]
+  },
+  "rolling_pin": {
+   "asset": "rolling_pin",
+   "support": "kitchen_island/top",
+   "yaw": 0.0,
+   "position": [
+    6.7,
+    1.6352,
+    0.8951
+   ]
+  },
+  "paperback_book": {
+   "asset": "paperback_book",
+   "support": "kitchen_island/top",
+   "yaw": 0.0,
+   "position": [
+    7.898866221480097,
+    1.838900475321492,
+    0.8843
+   ]
+  },
+  "soda_can": {
+   "asset": "soda_can",
+   "support": "kitchen_island/top",
+   "yaw": 0.0,
+   "position": [
+    8.18,
+    1.645,
+    0.9319
+   ]
+  },
+  "trash_can": {
+   "asset": "trash_can",
+   "support": "floor:living_room_0_0",
+   "yaw": 0.0,
+   "position": [
+    9.05,
+    1.82,
+    0.162
+   ]
+  },
+  "wide_storage_bin": {
+   "asset": "wide_storage_bin",
+   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "yaw": 1.5707963267948966,
+   "position": [
+    2.9851,
+    6.6,
+    0.9337
+   ]
+  },
+  "oatmeal": {
+   "asset": "breakfast_bowl",
+   "support": "kitchen_island/top",
+   "yaw": 2.9408797896104453,
+   "position": [
+    6.68992194432298,
+    1.8301179292639038,
+    0.9171
+   ]
+  },
+  "floor_block": {
+   "asset": "wooden_block",
+   "support": "floor:living_room_0_0",
+   "yaw": 0.0,
+   "position": [
+    5.6,
+    1.05,
+    0.037000000000000005
+   ]
+  },
+  "prep_bowl": {
+   "asset": "breakfast_bowl",
+   "support": "kitchen_island/top",
+   "yaw": 0.0,
+   "position": [
+    7.2001,
+    1.8699000000000001,
+    0.9171
+   ]
+  },
+  "cherry_tomato_4": {
+   "asset": "cherry_tomato",
+   "support": null,
+   "yaw": 0.0,
+   "inside": "prep_bowl",
+   "position": [
+    7.2250000000000005,
+    1.87,
+    0.9
+   ]
+  },
+  "cherry_tomato_5": {
+   "asset": "cherry_tomato",
+   "support": null,
+   "yaw": 0.0,
+   "inside": "prep_bowl",
+   "position": [
+    7.1875,
+    1.8916506350946112,
+    0.9
+   ]
+  },
+  "cherry_tomato_6": {
+   "asset": "cherry_tomato",
+   "support": null,
+   "yaw": 0.0,
+   "inside": "prep_bowl",
+   "position": [
+    7.1875,
+    1.8483493649053893,
+    0.9
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "roles": {
+  "food": [
+   "cherry_tomato_1",
+   "cherry_tomato_2",
+   "cherry_tomato_3"
+  ]
+ },
+ "candidate_supports": {
+  "handled_cooking_pot": [
+   "kitchen_stove/top"
+  ],
+  "pot_lid": [],
+  "mug": [
+   "kitchen_island/top"
+  ],
+  "cherry_tomato_1": [],
+  "cherry_tomato_2": [],
+  "cherry_tomato_3": [],
+  "breakfast_spoon": [
+   "kitchen_island/top"
+  ],
+  "kitchen_sponge": [
+   "kitchen_island/top"
+  ],
+  "wooden_block_a": [
+   "kitchen_island/top"
+  ],
+  "wooden_block_b": [
+   "kitchen_island/top"
+  ],
+  "juice_bottle": [
+   "kitchen_island/top"
+  ],
+  "rolling_pin": [
+   "kitchen_island/top"
+  ],
+  "paperback_book": [
+   "kitchen_island/top"
+  ],
+  "soda_can": [
+   "kitchen_island/top"
+  ],
+  "trash_can": [
+   "floor:living_room_0_0"
+  ],
+  "wide_storage_bin": [
+   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+  ],
+  "oatmeal": [
+   "kitchen_island/top"
+  ],
+  "floor_block": [
+   "floor:living_room_0_0"
+  ],
+  "prep_bowl": [
+   "kitchen_island/top"
+  ],
+  "cherry_tomato_4": [],
+  "cherry_tomato_5": [],
+  "cherry_tomato_6": []
+ },
+ "alternatives": [
+  "no microwave: heat the tomatoes in the pot on the stove",
+  "flat book cannot be top-pinched: expose its edge, then pick"
+ ],
+ "place_hints": {},
+ "goal": {
+  "all": [
+   {
+    "heated": [
+     "all:food"
+    ],
+    "appliance": "kitchen_stove",
+    "min_temp_c": 60
+   },
+   {
+    "inside": [
+     "all:food"
+    ],
+    "container": "handled_cooking_pot"
+   },
+   {
+    "inside": [
+     "soda_can"
+    ],
+    "container": "trash_can"
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

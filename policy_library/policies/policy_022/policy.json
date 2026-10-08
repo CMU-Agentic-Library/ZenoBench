@@ -44,8 +44,8 @@
     "class": "HandleOpenPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_033"
+  "skill_contract_paths": [
+    "contract_048:open/refrigerator"
   ],
   "legacy_family_contracts": [
     "contract_004"

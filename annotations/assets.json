@@ -28,7 +28,7 @@
    }
   ],
   "usd": "usd/assets/breakfast_plate.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/breakfast_plate/result/breakfast_plate_sim.urdf",
+  "source_urdf": "assets/asset3d/breakfast_plate/result/breakfast_plate_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "breakfast_bowl": {
@@ -81,7 +81,7 @@
    }
   ],
   "usd": "usd/assets/breakfast_bowl.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/breakfast_bowl/result/breakfast_bowl_sim.urdf",
+  "source_urdf": "assets/asset3d/breakfast_bowl/result/breakfast_bowl_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "round",
@@ -162,7 +162,7 @@
    }
   ],
   "usd": "usd/assets/breakfast_cup.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/breakfast_cup/result/breakfast_cup_sim.urdf",
+  "source_urdf": "assets/asset3d/breakfast_cup/result/breakfast_cup_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "round",
@@ -263,7 +263,7 @@
    }
   ],
   "usd": "usd/assets/breakfast_mug.usd",
-  "source_urdf": "outputs/validation/textto3d/asset3d/breakfast_mug/result/breakfast_mug_sim.urdf",
+  "source_urdf": "assets/asset3d/breakfast_mug/result/breakfast_mug_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "round",
@@ -335,7 +335,10 @@
      -0.0003
     ],
     "height": 0.008372752446625184,
-    "pre_open": 0.01606980010410791
+    "pre_open": 0.01606980010410791,
+    "along_offsets": [
+     -0.054
+    ]
    },
    {
     "type": "edge_pinch_after_push",
@@ -344,7 +347,7 @@
    }
   ],
   "usd": "usd/assets/breakfast_spoon.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/breakfast_spoon/result/breakfast_spoon_sim.urdf",
+  "source_urdf": "assets/asset3d/breakfast_spoon/result/breakfast_spoon_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "cereal_box": {
@@ -370,7 +373,7 @@
   "graspable_by_zeno": false,
   "grasps": [],
   "usd": "usd/assets/cereal_box.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/cereal_box/result/cereal_box_sim.urdf",
+  "source_urdf": "assets/asset3d/cereal_box/result/cereal_box_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "apple": {
@@ -403,11 +406,12 @@
      0.0
     ],
     "height": 0.035,
-    "pre_open": 0.04
+    "pre_open": 0.04,
+    "round": true
    }
   ],
   "usd": "usd/assets/apple.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/apple/result/apple_sim.urdf",
+  "source_urdf": "assets/asset3d/apple/result/apple_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "banana": {
@@ -449,7 +453,7 @@
    }
   ],
   "usd": "usd/assets/banana.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/banana/result/banana_sim.urdf",
+  "source_urdf": "assets/asset3d/banana/result/banana_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "orange": {
@@ -482,11 +486,12 @@
      -0.0001
     ],
     "height": 0.029300826603697927,
-    "pre_open": 0.04
+    "pre_open": 0.04,
+    "round": true
    }
   ],
   "usd": "usd/assets/orange.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/orange/result/orange_sim.urdf",
+  "source_urdf": "assets/asset3d/orange/result/orange_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "fruit_basket": {
@@ -539,7 +544,7 @@
    }
   ],
   "usd": "usd/assets/fruit_basket.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/fruit_basket/result/fruit_basket_sim.urdf",
+  "source_urdf": "assets/asset3d/fruit_basket/result/fruit_basket_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "round",
@@ -610,7 +615,7 @@
    }
   ],
   "usd": "usd/assets/serving_tray.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/serving_tray/result/serving_tray_sim.urdf",
+  "source_urdf": "assets/asset3d/serving_tray/result/serving_tray_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "rect",
@@ -654,7 +659,7 @@
    }
   ],
   "usd": "usd/assets/notebook.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/notebook/result/notebook_sim.urdf",
+  "source_urdf": "assets/asset3d/notebook/result/notebook_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "pen": {
@@ -697,7 +702,7 @@
    }
   ],
   "usd": "usd/assets/pen.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/pen/result/pen_sim.urdf",
+  "source_urdf": "assets/asset3d/pen/result/pen_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "pencil": {
@@ -731,7 +736,12 @@
      -0.0001
     ],
     "height": 0.00826204801113052,
-    "pre_open": 0.02055163029747473
+    "pre_open": 0.02055163029747473,
+    "along_offsets": [
+     -0.054,
+     0.0,
+     0.054
+    ]
    },
    {
     "type": "edge_pinch_after_push",
@@ -740,7 +750,7 @@
    }
   ],
   "usd": "usd/assets/pencil.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/pencil/result/pencil_sim.urdf",
+  "source_urdf": "assets/asset3d/pencil/result/pencil_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "book_red": {
@@ -771,7 +781,7 @@
    }
   ],
   "usd": "usd/assets/book_red.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/book_red/result/book_red_sim.urdf",
+  "source_urdf": "assets/asset3d/book_red/result/book_red_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "book_green": {
@@ -802,7 +812,7 @@
    }
   ],
   "usd": "usd/assets/book_green.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/book_green/result/book_green_sim.urdf",
+  "source_urdf": "assets/asset3d/book_green/result/book_green_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "book_blue": {
@@ -833,7 +843,7 @@
    }
   ],
   "usd": "usd/assets/book_blue.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/book_blue/result/book_blue_sim.urdf",
+  "source_urdf": "assets/asset3d/book_blue/result/book_blue_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "toy_car": {
@@ -875,7 +885,7 @@
    }
   ],
   "usd": "usd/assets/toy_car.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/toy_car/result/toy_car_sim.urdf",
+  "source_urdf": "assets/asset3d/toy_car/result/toy_car_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "teddy_bear": {
@@ -950,7 +960,7 @@
    }
   ],
   "usd": "usd/assets/toy_block.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/toy_block/result/toy_block_sim.urdf",
+  "source_urdf": "assets/asset3d/toy_block/result/toy_block_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "rubber_duck": {
@@ -987,7 +997,7 @@
    }
   ],
   "usd": "usd/assets/rubber_duck.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/rubber_duck/result/rubber_duck_sim.urdf",
+  "source_urdf": "assets/asset3d/rubber_duck/result/rubber_duck_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  },
  "toy_box": {
@@ -1026,7 +1036,7 @@
    }
   ],
   "usd": "usd/assets/toy_box.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/toy_box/result/toy_box_sim.urdf",
+  "source_urdf": "assets/asset3d/toy_box/result/toy_box_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "rect",
@@ -1077,7 +1087,7 @@
    }
   ],
   "usd": "usd/assets/storage_basket.usd",
-  "source_urdf": "outputs/breakfast_multiroom/assets/asset3d/storage_basket/result/storage_basket_sim.urdf",
+  "source_urdf": "assets/asset3d/storage_basket/result/storage_basket_sim.urdf",
   "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
   "container": {
    "shape": "rect",
@@ -1160,7 +1170,8 @@
      -0.0
     ],
     "height": 0.06,
-    "pre_open": 0.04
+    "pre_open": 0.04,
+    "round": true
    }
   ],
   "usd": "usd/assets/soda_can.usd",
@@ -1261,7 +1272,7 @@
    "storage",
    "recycling"
   ],
-  "mass": 1.2,
+  "mass": 0.5,
   "collider": "rect_container",
   "size": [
    0.34,
@@ -1302,7 +1313,37 @@
      0.1465
     ]
    ],
-   "rim_height": 0.14
+   "rim_height": 0.14,
+   "extra_handle_colliders": [
+    {
+     "center": [
+      0.1825,
+      0.0,
+      0.0353
+     ],
+     "size": [
+      0.025,
+      0.24,
+      0.02
+     ],
+     "visual": true,
+     "note": "end grip bar (+x end wall), 3.5 cm below the rim"
+    },
+    {
+     "center": [
+      -0.1825,
+      0.0,
+      0.0353
+     ],
+     "size": [
+      0.025,
+      0.24,
+      0.02
+     ],
+     "visual": true,
+     "note": "end grip bar (-x end wall)"
+    }
+   ]
   }
  },
  "juice_bottle": {
@@ -1335,7 +1376,8 @@
      0.0
     ],
     "height": 0.09,
-    "pre_open": 0.04
+    "pre_open": 0.04,
+    "round": true
    }
   ],
   "usd": "usd/assets/juice_bottle.usd",
@@ -1513,7 +1555,12 @@
      0.0001
     ],
     "height": 0.0230648388545207,
-    "pre_open": 0.03510425716815341
+    "pre_open": 0.03510425716815341,
+    "along_offsets": [
+     0.0,
+     -0.066,
+     0.066
+    ]
    },
    {
     "type": "edge_pinch_after_push",
@@ -1691,5 +1738,264 @@
     }
    ]
   }
+ },
+ "pot_lid": {
+  "name": "pot_lid",
+  "tags": [
+   "lid",
+   "cookware"
+  ],
+  "mass": 0.22,
+  "collider": "solid",
+  "size": [
+   0.25,
+   0.25,
+   0.06
+  ],
+  "origin_to_bottom_center": [
+   -0.0,
+   -0.0,
+   -0.03
+  ],
+  "min_pinch_width": 0.2164,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.060000000000000005
+   },
+   {
+    "type": "top_pinch",
+    "crown": true,
+    "round": true,
+    "close_yaw": 0.0,
+    "width": 0.022,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.087,
+    "pre_open": 0.025,
+    "note": "pinch the knob post; pads span 6.2-11.2 cm above the lid rim plane"
+   }
+  ],
+  "usd": "usd/assets/pot_lid.usd",
+  "source_urdf": "assets/asset3d/pot_lid/result/pot_lid_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "knob_collider": {
+   "center": [
+    0.0,
+    0.0,
+    0.045
+   ],
+   "size": [
+    0.022,
+    0.022,
+    0.035
+   ],
+   "note": "post on top of the low mushroom knob (body frame); the knob alone is too flat for 5 cm pads"
+  }
+ },
+ "kitchen_sponge": {
+  "name": "kitchen_sponge",
+  "tags": [
+   "sponge",
+   "cleaning_tool",
+   "wiping_tool"
+  ],
+  "mass": 0.03,
+  "collider": "solid",
+  "size": [
+   0.09,
+   0.06,
+   0.035
+  ],
+  "origin_to_bottom_center": [
+   0.0001,
+   0.0,
+   -0.0167
+  ],
+  "min_pinch_width": 0.0599,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.5707963267948966,
+    "width": 0.059925372427930994,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.015000000000000003,
+    "pre_open": 0.04
+   },
+   {
+    "type": "edge_pinch_after_push",
+    "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
+    "thickness": 0.035
+   }
+  ],
+  "usd": "usd/assets/kitchen_sponge.usd",
+  "source_urdf": "assets/asset3d/kitchen_sponge/result/kitchen_sponge_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "trash_can": {
+  "name": "trash_can",
+  "tags": [
+   "bin",
+   "trash",
+   "container",
+   "floor_container"
+  ],
+  "mass": 0.9,
+  "collider": "round_container",
+  "size": [
+   0.26,
+   0.26,
+   0.3
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   -0.0,
+   -0.15
+  ],
+  "min_pinch_width": 0.2233,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "rim_pinch",
+    "radius": 0.1264,
+    "rim_height": 0.3,
+    "depth": 0.035,
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ],
+    "tilts": [
+     0.5,
+     0.35,
+     0.2
+    ],
+    "pre_open": 0.03
+   }
+  ],
+  "usd": "usd/assets/trash_can.usd",
+  "source_urdf": "assets/asset3d/trash_can/result/trash_can_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)",
+  "container": {
+   "shape": "round",
+   "bands": [
+    [
+     0.036,
+     0.102,
+     0.1073
+    ],
+    [
+     0.102,
+     0.168,
+     0.1116
+    ],
+    [
+     0.168,
+     0.234,
+     0.1156
+    ],
+    [
+     0.234,
+     0.3,
+     0.1264
+    ]
+   ],
+   "rim_height": 0.3,
+   "rim_radius": 0.1264
+  }
+ },
+ "cherry_tomato": {
+  "name": "cherry_tomato",
+  "tags": [
+   "food",
+   "small_item",
+   "pourable"
+  ],
+  "mass": 0.012,
+  "collider": "solid",
+  "size": [
+   0.028,
+   0.028,
+   0.026
+  ],
+  "origin_to_bottom_center": [
+   -0.0,
+   0.0,
+   -0.013
+  ],
+  "min_pinch_width": 0.0278,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 0.7853981633974483,
+    "width": 0.027825647011988135,
+    "offset_xy": [
+     -0.0,
+     -0.0
+    ],
+    "height": 0.01,
+    "pre_open": 0.025912823505994068,
+    "round": true
+   }
+  ],
+  "usd": "usd/assets/cherry_tomato.usd",
+  "source_urdf": "assets/asset3d/cherry_tomato/result/cherry_tomato_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
+ },
+ "wooden_block": {
+  "name": "wooden_block",
+  "tags": [
+   "toy",
+   "block",
+   "stackable"
+  ],
+  "mass": 0.06,
+  "collider": "solid",
+  "size": [
+   0.05,
+   0.05,
+   0.05
+  ],
+  "origin_to_bottom_center": [
+   0.0,
+   0.0,
+   -0.025
+  ],
+  "min_pinch_width": 0.05,
+  "graspable_by_zeno": true,
+  "grasps": [
+   {
+    "type": "top_pinch",
+    "close_yaw": 1.5707963267948966,
+    "width": 0.04997869629133749,
+    "offset_xy": [
+     0.0,
+     0.0
+    ],
+    "height": 0.024999979698407757,
+    "pre_open": 0.036989348145668746
+   }
+  ],
+  "usd": "usd/assets/wooden_block.usd",
+  "source_urdf": "assets/asset3d/wooden_block/result/wooden_block_sim.urdf",
+  "generator": "EmbodiedGen V2 text3d-cli (SAM3D backend)"
  }
 }

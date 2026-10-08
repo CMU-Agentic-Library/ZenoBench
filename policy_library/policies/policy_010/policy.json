@@ -44,9 +44,12 @@
     "class": "TopPinchPickPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_012",
-    "contract_035"
+  "skill_contract_paths": [
+    "contract_025:pick/floor_top",
+    "contract_025:pick/top_pinch",
+    "contract_044:upright/pick_orient_place",
+    "contract_054:uncover/knob_lift_aside",
+    "contract_072:square/pick_rotate_place"
   ],
   "legacy_family_contracts": [
     "contract_002"

@@ -14,11 +14,24 @@ class TuckArmPolicy(AtomicPolicy):
     def execute(self):
         if self.rig.held is not None:
             raise SkillFailure("tuck arm: release the held object first")
-        if not self.rig.tuck():
+        if not self.rig.tuck() and not self._recover():
             raise SkillFailure("tuck arm: no collision-free retreat")
         if np.max(np.abs(self.rig.q() - self.rig.q_cmd)) > 0.05:
             raise SkillFailure("tuck arm: posture did not settle")
         return True
+
+    def _recover(self):
+        """Blocked next to an open door or furniture: back the base out, or
+        shift/turn it to where the folded arm is free, then fold again."""
+        from .. import skills
+        rig = self.rig
+        if skills._back_off(rig, dist=0.30) > 0.05 and rig.tuck():
+            rig.log("tuck_recovered", how="back_off")
+            return True
+        if skills._clear_for_tuck(rig) and rig.tuck():
+            rig.log("tuck_recovered", how="base_shift")
+            return True
+        return False
 
 
 def _move_posture_joint(rig, joint_name, target, tolerance):
@@ -43,7 +56,17 @@ def _move_posture_joint(rig, joint_name, target, tolerance):
             rig.sync_world()
             q_goal = rig.q_cmd.copy()
             q_goal[idx] = target
-            path = rig.joint_path(q_goal, joint_name)
+            try:
+                path = rig.joint_path(q_goal, joint_name)
+            except SkillFailure:
+                # the tucked hand would sweep into the furniture in front:
+                # back the base away and try once more
+                from .. import skills
+                skills._back_off(rig, 0.35)
+                rig.sync_world()
+                q_goal = rig.q_cmd.copy()
+                q_goal[idx] = target
+                path = rig.joint_path(q_goal, joint_name)
         rig.follow(path)
     finally:
         rig.kin.coll_kw = old_kw

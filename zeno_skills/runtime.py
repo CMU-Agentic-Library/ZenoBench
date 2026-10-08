@@ -63,6 +63,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
     stage = omni.usd.get_context().get_stage()
     ann = SceneAnnotations(ROOT / ann_path)
     from . import physics as P
+    P.patch_left_gripper(stage)
     for name in handle_objects:
         obj = ann.objects[name]
         asset = ann.asset_of(obj)

@@ -1,0 +1,1453 @@
+{
+ "schema_version": 2,
+ "kind": "skill_verification_scenarios",
+ "scenarios": [
+  {
+   "id": "k_soup_stove",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "uncover",
+     "args": {
+      "container": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "prep_bowl"
+     }
+    },
+    {
+     "skill": "approach",
+     "args": {
+      "target": "prep_bowl"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "prep_bowl"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "hover",
+     "args": {
+      "object": "prep_bowl",
+      "target": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "pour",
+     "args": {
+      "source": "prep_bowl",
+      "target": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "prep_bowl",
+      "receptacle": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_stove"
+     }
+    },
+    {
+     "skill": "heat",
+     "args": {
+      "food": "cherry_tomato_4",
+      "appliance": "kitchen_stove",
+      "temp_c": 60
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_stir_cover",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "uncover",
+     "args": {
+      "container": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "breakfast_spoon"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "breakfast_spoon"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "dip",
+     "args": {
+      "tool": "breakfast_spoon",
+      "container": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "stir",
+     "args": {
+      "container": "handled_cooking_pot",
+      "tool": "breakfast_spoon"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "breakfast_spoon",
+      "receptacle": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "pot_lid"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "pot_lid"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "cover",
+     "args": {
+      "container": "handled_cooking_pot",
+      "lid": "pot_lid"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_mug_on_burner",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "mug"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "mug"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_stove/top"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "mug",
+      "receptacle": "kitchen_stove/top"
+     }
+    },
+    {
+     "skill": "press",
+     "args": {
+      "button": "kitchen_stove/power_button"
+     }
+    },
+    {
+     "skill": "wait",
+     "args": {
+      "seconds": 3
+     }
+    },
+    {
+     "skill": "stop",
+     "args": {
+      "appliance": "kitchen_stove"
+     }
+    },
+    {
+     "skill": "heat",
+     "args": {
+      "food": "cherry_tomato_2",
+      "appliance": "kitchen_stove",
+      "temp_c": 45
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_wipe",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_sponge"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "kitchen_sponge"
+     }
+    },
+    {
+     "skill": "wipe",
+     "args": {
+      "surface": "kitchen_island/top",
+      "tool": "kitchen_sponge"
+     }
+    },
+    {
+     "skill": "shake",
+     "args": {
+      "object": "kitchen_sponge"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "kitchen_sponge",
+      "receptacle": "kitchen_island/top"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_blocks",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "wooden_block_a"
+     }
+    },
+    {
+     "skill": "square",
+     "args": {
+      "object": "wooden_block_a"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "wooden_block_b"
+     }
+    },
+    {
+     "skill": "rotate",
+     "args": {
+      "object": "wooden_block_b",
+      "degrees": 30
+     }
+    },
+    {
+     "skill": "stack",
+     "args": {
+      "object": "wooden_block_b",
+      "base": "wooden_block_a"
+     }
+    },
+    {
+     "skill": "touch",
+     "args": {
+      "object": "wooden_block_b"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_bottle",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "juice_bottle"
+     }
+    },
+    {
+     "skill": "tip",
+     "args": {
+      "object": "juice_bottle"
+     }
+    },
+    {
+     "skill": "upright",
+     "args": {
+      "object": "juice_bottle"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_pin",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "rolling_pin"
+     }
+    },
+    {
+     "skill": "roll",
+     "args": {
+      "object": "rolling_pin",
+      "distance_m": 0.1
+     }
+    },
+    {
+     "skill": "pull",
+     "args": {
+      "object": "rolling_pin",
+      "distance_m": 0.08
+     }
+    },
+    {
+     "skill": "center",
+     "args": {
+      "object": "rolling_pin",
+      "margin_m": 0.06
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_book",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "paperback_book"
+     }
+    },
+    {
+     "skill": "expose",
+     "args": {
+      "object": "paperback_book"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "paperback_book"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "paperback_book",
+      "receptacle": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "flip",
+     "args": {
+      "object": "paperback_book"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_trash",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "soda_can"
+     }
+    },
+    {
+     "skill": "approach",
+     "args": {
+      "target": "soda_can"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "soda_can"
+     }
+    },
+    {
+     "skill": "retreat",
+     "args": {
+      "obstacle": "kitchen_island",
+      "distance_m": 0.5
+     }
+    },
+    {
+     "skill": "lift",
+     "args": {
+      "object": "soda_can",
+      "height_m": 0.95
+     }
+    },
+    {
+     "skill": "lower",
+     "args": {
+      "object": "soda_can",
+      "height_m": 0.92
+     }
+    },
+    {
+     "skill": "face",
+     "args": {
+      "target": "trash_can"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "trash_can"
+     }
+    },
+    {
+     "skill": "hover",
+     "args": {
+      "object": "soda_can",
+      "target": "trash_can"
+     }
+    },
+    {
+     "skill": "drop",
+     "args": {
+      "object": "soda_can",
+      "container": "trash_can"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_fridge_chill",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "breakfast_fridge"
+     }
+    },
+    {
+     "skill": "open",
+     "args": {
+      "articulated": "breakfast_fridge"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "soda_can"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "soda_can"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "breakfast_fridge"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "soda_can",
+      "receptacle": "breakfast_fridge/inside_shelf"
+     }
+    },
+    {
+     "skill": "close",
+     "args": {
+      "articulated": "breakfast_fridge"
+     }
+    },
+    {
+     "skill": "chill",
+     "args": {
+      "food": "soda_can",
+      "appliance": "breakfast_fridge",
+      "temp_c": 8
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_microwave",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_microwave"
+     }
+    },
+    {
+     "skill": "open",
+     "args": {
+      "articulated": "kitchen_microwave"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "oatmeal"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "oatmeal"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_microwave"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "oatmeal",
+      "receptacle": "kitchen_microwave/inside_floor"
+     }
+    },
+    {
+     "skill": "close",
+     "args": {
+      "articulated": "kitchen_microwave"
+     }
+    },
+    {
+     "skill": "heat",
+     "args": {
+      "food": "oatmeal",
+      "appliance": "kitchen_microwave",
+      "temp_c": 40
+     }
+    },
+    {
+     "skill": "press",
+     "args": {
+      "button": "kitchen_microwave/start_button"
+     }
+    },
+    {
+     "skill": "stop",
+     "args": {
+      "appliance": "kitchen_microwave"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "oatmeal"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "oatmeal",
+      "receptacle": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_microwave"
+     }
+    },
+    {
+     "skill": "close",
+     "args": {
+      "articulated": "kitchen_microwave"
+     }
+    },
+    {
+     "skill": "retreat",
+     "args": {
+      "obstacle": "kitchen_microwave",
+      "distance_m": 0.4
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_perceive",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "look",
+     "args": {
+      "target": "juice_bottle"
+     }
+    },
+    {
+     "skill": "identify",
+     "args": {
+      "object": "soda_can"
+     }
+    },
+    {
+     "skill": "measure",
+     "args": {
+      "object": "juice_bottle"
+     }
+    },
+    {
+     "skill": "count",
+     "args": {
+      "category": "cherry_tomato"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "mug"
+     }
+    },
+    {
+     "skill": "inspect",
+     "args": {
+      "receptacle": "mug"
+     }
+    },
+    {
+     "skill": "point",
+     "args": {
+      "target": "trash_can"
+     }
+    },
+    {
+     "skill": "face",
+     "args": {
+      "target": "breakfast_fridge"
+     }
+    },
+    {
+     "skill": "point",
+     "args": {
+      "target": "kitchen_microwave"
+     }
+    },
+    {
+     "skill": "look",
+     "args": {
+      "target": "paperback_book"
+     }
+    },
+    {
+     "skill": "search",
+     "args": {
+      "object": "pot_lid"
+     }
+    },
+    {
+     "skill": "explore",
+     "args": {
+      "room": "living_room_0_0"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_body",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "wave",
+     "args": {}
+    },
+    {
+     "skill": "nod",
+     "args": {}
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "sidestep",
+     "args": {
+      "distance_m": 0.2
+     }
+    },
+    {
+     "skill": "retreat",
+     "args": {
+      "obstacle": "kitchen_island",
+      "distance_m": 0.6
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_posture",
+   "task": "tasks/kitchen_skills",
+   "start": [
+    6.0,
+    1.0,
+    0.0
+   ],
+   "steps": [
+    {
+     "skill": "crouch",
+     "args": {}
+    },
+    {
+     "skill": "stand",
+     "args": {}
+    },
+    {
+     "skill": "crouch",
+     "args": {
+      "height_m": -0.3
+     }
+    },
+    {
+     "skill": "bend",
+     "args": {}
+    },
+    {
+     "skill": "straighten",
+     "args": {}
+    },
+    {
+     "skill": "bend",
+     "args": {
+      "pitch_rad": 0.3
+     }
+    },
+    {
+     "skill": "reset",
+     "args": {}
+    },
+    {
+     "skill": "wait",
+     "args": {
+      "seconds": 2
+     }
+    },
+    {
+     "skill": "tuck",
+     "args": {
+      "hand": "right"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_present",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "wooden_block_b"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "wooden_block_b"
+     }
+    },
+    {
+     "skill": "present",
+     "args": {
+      "object": "wooden_block_b"
+     }
+    },
+    {
+     "skill": "shake",
+     "args": {
+      "object": "wooden_block_b"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "wooden_block_b",
+      "receptacle": "kitchen_island/top"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_hands",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "rolling_pin"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "rolling_pin"
+     }
+    },
+    {
+     "skill": "regrasp",
+     "args": {
+      "object": "rolling_pin",
+      "support": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "handover",
+     "args": {
+      "object": "rolling_pin"
+     }
+    },
+    {
+     "skill": "retreat",
+     "args": {
+      "obstacle": "kitchen_island",
+      "distance_m": 0.6
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     }
+    },
+    {
+     "skill": "open",
+     "args": {
+      "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     }
+    },
+    {
+     "skill": "close",
+     "args": {
+      "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_brace",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "mug"
+     }
+    },
+    {
+     "skill": "brace",
+     "args": {
+      "object": "mug"
+     }
+    },
+    {
+     "skill": "release",
+     "args": {
+      "object": "mug",
+      "hand": "left"
+     }
+    },
+    {
+     "skill": "tuck",
+     "args": {
+      "hand": "left"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_cabinet",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     }
+    },
+    {
+     "skill": "knock",
+     "args": {
+      "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     }
+    },
+    {
+     "skill": "inspect",
+     "args": {
+      "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     }
+    },
+    {
+     "skill": "open",
+     "args": {
+      "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     }
+    },
+    {
+     "skill": "close",
+     "args": {
+      "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "KitchenCabinetFactory_9483010_spawn_asset_2619144"
+     }
+    },
+    {
+     "skill": "open",
+     "args": {
+      "articulated": "KitchenCabinetFactory_9483010_spawn_asset_2619144"
+     }
+    },
+    {
+     "skill": "close",
+     "args": {
+      "articulated": "KitchenCabinetFactory_9483010_spawn_asset_2619144"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_sweep",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "wooden_block_a"
+     }
+    },
+    {
+     "skill": "sweep",
+     "args": {
+      "objects": [
+       "wooden_block_a",
+       "wooden_block_b"
+      ],
+      "radius_m": 0.05
+     }
+    },
+    {
+     "skill": "push",
+     "args": {
+      "object": "wooden_block_a",
+      "direction_xy": [
+       1.0,
+       0.0
+      ],
+      "distance_m": 0.1
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_separate",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "wooden_block_b"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "wooden_block_b"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "wooden_block_b",
+      "receptacle": "kitchen_island/top",
+      "hint_xy": [
+       7.22,
+       1.69
+      ]
+     }
+    },
+    {
+     "skill": "separate",
+     "args": {
+      "object": "wooden_block_a"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "wooden_block_a"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_fetch_collect",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "fetch",
+     "args": {
+      "object": "soda_can",
+      "receptacle": "trash_can"
+     }
+    },
+    {
+     "skill": "collect",
+     "args": {
+      "objects": [
+       "wooden_block_a",
+       "wooden_block_b"
+      ],
+      "container": "trash_can"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_restore_swap",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "fetch",
+     "args": {
+      "object": "wooden_block_a",
+      "receptacle": "kitchen_stove/top"
+     }
+    },
+    {
+     "skill": "restore",
+     "args": {
+      "object": "wooden_block_a"
+     }
+    },
+    {
+     "skill": "swap",
+     "args": {
+      "a": "wooden_block_a",
+      "b": "soda_can"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_arrange_sort",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "arrange",
+     "args": {
+      "objects": [
+       "wooden_block_a",
+       "wooden_block_b",
+       "soda_can"
+      ],
+      "support": "kitchen_island/top",
+      "max_dist_m": 0.3
+     }
+    },
+    {
+     "skill": "sort",
+     "args": {
+      "objects": [
+       "soda_can",
+       "wooden_block_b"
+      ],
+      "rule": {
+       "recyclable": "trash_can",
+       "block": "kitchen_stove/top"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_empty_hide",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "uncover",
+     "args": {
+      "container": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "empty",
+     "args": {
+      "container": "prep_bowl",
+      "receptacle": "handled_cooking_pot"
+     }
+    },
+    {
+     "skill": "hide",
+     "args": {
+      "object": "wooden_block_b",
+      "receptacle": "handled_cooking_pot",
+      "lid": "pot_lid"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_floor",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "floor_block"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "floor_block"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "kitchen_island/top"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "floor_block",
+      "receptacle": "kitchen_island/top"
+     }
+    }
+   ]
+  },
+  {
+   "id": "k_handle_mug",
+   "task": "tasks/kitchen_skills",
+   "handle_objects": [
+    "mug"
+   ],
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "mug"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "mug",
+      "grasp": "handle"
+     }
+    }
+   ]
+  },
+  {
+   "id": "t_floor_moving",
+   "task": "tasks/tidy_toys",
+   "start": [
+    4.492,
+    -2.146,
+    30.0
+   ],
+   "steps": [
+    {
+     "skill": "pick",
+     "args": {
+      "object": "toy_block",
+      "pass_by": [
+       4.55,
+       -2.146,
+       30.0
+      ]
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "storage_basket"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "toy_block",
+      "receptacle": "storage_basket"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "toy_car"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "toy_car"
+     }
+    }
+   ]
+  },
+  {
+   "id": "c_tray_moving",
+   "task": "tasks/collect_fruits",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "apple"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "apple"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "apple",
+      "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+      "pass_by": [
+       2.397,
+       5.681,
+       15.0
+      ]
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "serving_tray"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "serving_tray"
+     }
+    }
+   ]
+  },
+  {
+   "id": "b_books",
+   "task": "tasks/shelve_books",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "book_red"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "book_red"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     }
+    },
+    {
+     "skill": "place",
+     "args": {
+      "object": "book_red",
+      "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "book_green"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "book_green",
+      "hands": "both"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679"
+     }
+    }
+   ]
+  },
+  {
+   "id": "r_bimanual_box",
+   "task": "tasks/kitchen_skills",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "wide_storage_bin"
+     }
+    },
+    {
+     "skill": "pick",
+     "args": {
+      "object": "wide_storage_bin",
+      "hands": "both"
+     }
+    },
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "TableDiningFactory_1437886_spawn_asset_2104395"
+     }
+    }
+   ]
+  },
+  {
+   "id": "o_clear",
+   "task": "tasks/recycle_and_store",
+   "steps": [
+    {
+     "skill": "clear",
+     "args": {
+      "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+      "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     }
+    }
+   ]
+  },
+  {
+   "id": "g_expose_then_pick_book",
+   "task": "tasks/kitchen_skills",
+   "subgraph": "skill_library/examples/expose_then_pick_book.skill_subgraph.json",
+   "bindings": "skill_library/examples/expose_then_pick_book.bindings.json"
+  },
+  {
+   "id": "g_heat_on_stove_instead_of_microwave",
+   "task": "tasks/kitchen_skills",
+   "subgraph": "skill_library/examples/heat_on_stove_instead_of_microwave.skill_subgraph.json",
+   "bindings": "skill_library/examples/heat_on_stove_instead_of_microwave.bindings.json"
+  },
+  {
+   "id": "g_search_then_fetch",
+   "task": "tasks/kitchen_skills",
+   "subgraph": "skill_library/examples/search_then_fetch.skill_subgraph.json",
+   "bindings": "skill_library/examples/search_then_fetch.bindings.json"
+  },
+  {
+   "id": "c_approach_moving",
+   "task": "tasks/collect_fruits",
+   "steps": [
+    {
+     "skill": "navigate",
+     "args": {
+      "destination": "apple"
+     }
+    },
+    {
+     "skill": "approach",
+     "args": {
+      "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+      "pass_by": [
+       2.397,
+       5.681,
+       15.0
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

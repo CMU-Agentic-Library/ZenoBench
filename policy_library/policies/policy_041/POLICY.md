@@ -22,6 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).right_gripper_close.execute(...)`
 - Class: `RightGripperClosePolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_023:point/front, contract_037:push/drag_from_top, contract_037:push/from_behind, contract_038:pull/top_drag
 - Referenced as support by legacy families: contract_002, contract_003, contract_004, contract_005
 
 ## Recorded evidence

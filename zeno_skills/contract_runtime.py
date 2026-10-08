@@ -16,8 +16,6 @@ from .contracts import CONTRACTS
 from .interface_ids import resolve_contract_id
 from .rig import SkillFailure
 from . import skills
-from .node_contracts import NODE_CONTRACTS
-from .noun_binding import bind_contract_nouns, select_policy_path
 
 
 @dataclass(frozen=True)
@@ -38,8 +36,12 @@ class ContractRunner:
         self.trace: list[ContractResult] = []
 
     def run(self, contract_id: str, route: str, *args, **kwargs) -> ContractResult:
-        if contract_id in NODE_CONTRACTS:
-            return self._run_node_contract(contract_id, route, args, kwargs)
+        """Run a legacy family Contract route (contract_001..008).
+
+        Planner-facing verb Contracts (contract_009 and up) go through
+        :meth:`run_skill`, which checks their GT pre/postconditions."""
+        if self._skill_runner().by_id.get(contract_id):
+            raise ValueError(f"{contract_id} is a Skill Contract: use run_skill(contract_id, args)")
         legacy_id = resolve_contract_id(contract_id)
         try:
             spec = CONTRACTS[legacy_id]
@@ -60,197 +62,22 @@ class ContractRunner:
         self.trace.append(result)
         return result
 
-    def run_bound(self, contract_id: str, **named_args) -> ContractResult:
-        """Fill a Contract's named noun/value slots with grounded scene IDs."""
-        if contract_id not in NODE_CONTRACTS:
-            raise ValueError(f"{contract_id}: run_bound requires an active Skill Contract")
-        order = NODE_CONTRACTS[contract_id]["legacy_call_args"]
-        if set(named_args) != set(order):
-            raise ValueError(f"{contract_id}: expected named inputs {order}")
-        return self.run(contract_id, "compose", *(named_args[name] for name in order))
+    def _skill_runner(self):
+        if getattr(self, "_skills", None) is None:
+            from .skill_runtime import SkillContractRunner
+            self._skills = SkillContractRunner(self.rig)
+        return self._skills
 
-    def _run_node_contract(self, contract_id, route, args, kwargs):
-        """Run a local policy sequence, then verify its advertised state change."""
-        from .policies import PolicySuite
-
-        row = NODE_CONTRACTS[contract_id]
-        if route != "compose" or kwargs:
-            raise ValueError(f"{contract_id}: expected compose route without keyword arguments")
-        order = row["legacy_call_args"]
-        if len(args) != len(order):
-            raise ValueError(f"{contract_id}: expected {len(order)} arguments")
-        values = dict(zip(order, args))
-        verifier = row["verifier"]
-        family_id = resolve_contract_id(verifier["legacy_family_contract"]) if verifier.get("legacy_family_contract") else None
-        family_route = verifier.get("route", "compose")
-        family_order = verifier.get("family_arg_order", order)
-        family_args = tuple(
-            row["argument_transforms"].get(name, "") + values[name]
-            if name in row["argument_transforms"] else values[name]
-            for name in family_order
-        )
-        completed = []
-        failed_step = None
-        noun_context = {}
-        selected_path = None
-        try:
-            noun_context = bind_contract_nouns(row, values, self.rig)
-            before = (self._before(family_id, family_route, family_args) if family_id
-                      else {"base_pose": tuple(self.rig.base_pose()),
-                            "held": None if self.rig.held is None else self.rig.held["name"],
-                            "events": len(self.rig.events)})
-            selected_path, steps = select_policy_path(row["policy_plan"], noun_context)
-            suite = PolicySuite(self.rig)
-            for index, step in enumerate(steps, 1):
-                failed_step = {"index": index, "policy_id": step["policy_id"]}
-                policy_args = [values[item["arg"]] for item in step["args"]]
-                policy_kwargs = {
-                    name: values[value["arg"]] if isinstance(value, dict) else value
-                    for name, value in step.get("kwargs", {}).items()
-                }
-                getattr(suite, step["policy_id"]).execute(*policy_args, **policy_kwargs)
-                completed.append(failed_step)
-                failed_step = None
-            observations = (self._verify(family_id, family_route, family_args, {}, before)
-                            if family_id else {})
-            observations.update(self._verify_node_effects(verifier, values, before))
-            observations["verified_predicates"] = [
-                item["predicate"] for item in row["achieves"]
-            ]
-            observations["verified_action_predicate"] = {
-                "name": row["action_predicate"]["name"],
-                "arguments": {name: values[name] for name in row["action_predicate"]["arguments"]},
-            }
-            observations["policy_steps"] = completed
-            observations["bound_nouns"] = noun_context
-            observations["selected_policy_path"] = selected_path
-        except Exception as exc:
-            snapshot = self._after_snapshot(family_id or "node.v1", family_route, family_args)
-            snapshot["completed_policy_steps"] = completed
-            snapshot["failed_policy_step"] = failed_step
-            snapshot["bound_nouns"] = noun_context
-            snapshot["selected_policy_path"] = selected_path
-            snapshot["requested_action_predicate"] = {
-                "name": row["action_predicate"]["name"],
-                "arguments": {name: values[name] for name in row["action_predicate"]["arguments"]},
-            }
-            self.trace.append(ContractResult(
-                contract_id, route, False, snapshot, str(exc), type(exc).__name__
-            ))
-            raise
-        result = ContractResult(contract_id, route, True, observations)
-        self.trace.append(result)
+    def run_skill(self, key: str, args: dict):
+        """Run a verb Skill Contract (ID, skill ID or verb) with named inputs;
+        raises ContractError with the measured report if it does not succeed."""
+        result = self._skill_runner().run_or_raise(key, args)
+        self.trace.append(ContractResult(result.contract_id, result.selected_path or "", True, result.asdict()))
         return result
 
-    def _verify_node_effects(self, verifier, values, before):
-        """Check extra effects that are not part of the eight legacy families."""
-        from .evaluator import tilt_deg
-
-        rig = self.rig
-        checks = list(verifier.get("extra_checks", []))
-        if verifier.get("custom"):
-            checks.append(verifier["custom"])
-        out = {}
-        for check in checks:
-            if check == "upright":
-                name = values["object"]
-                angle = float(tilt_deg(rig.obj_pose(name)[1]))
-                if angle > 20.0:
-                    raise SkillFailure(f"upright contract: {name} is tilted {angle:.1f} deg")
-                out["object_tilt_deg"] = angle
-            elif check == "within_hint":
-                name = values["object"]
-                bottom = rig.geo.bottom(name, rig.state())
-                error = float(np.linalg.norm(bottom[:2] - np.asarray(values["hint_xy"], float)))
-                if error > values["max_offset_m"]:
-                    raise SkillFailure(f"near-hint contract: object is {error:.3f} m from hint")
-                out["hint_error_m"] = error
-            elif check == "temperature":
-                thermal = rig.thermal
-                name = values["object"]
-                actual = float(thermal.temperatures_c[name])
-                if actual < float(values["min_temp_c"]):
-                    raise SkillFailure(f"temperature contract: {actual:.1f} C below target")
-                out["temperature_c"] = actual
-            elif check == "carry_height":
-                held = rig.held
-                if held is None or held["name"] != before["held"]:
-                    raise SkillFailure("carry-height contract: held object changed")
-                actual = float(rig.geo.bottom(held["name"], rig.state())[2])
-                if actual < float(values["min_bottom_z"]) - 0.02:
-                    raise SkillFailure("carry-height contract: object remains too low")
-                out["held_bottom_z"] = actual
-            elif check == "back_off":
-                if rig.held is None or rig.held["name"] != before["held"]:
-                    raise SkillFailure("back-off contract: held object changed")
-                x0, y0, _ = before["base_pose"]
-                x1, y1, _ = rig.base_pose()
-                moved = math.hypot(x1 - x0, y1 - y0)
-                if moved < 0.09:
-                    raise SkillFailure("back-off contract: base did not move enough")
-                out["base_moved_m"] = moved
-            elif check == "base_rotate":
-                x0, y0, yaw0 = before["base_pose"]
-                x1, y1, yaw1 = rig.base_pose()
-                target = yaw0 + float(values["delta_yaw_deg"])
-                yaw_error = abs((yaw1 - target + 180) % 360 - 180)
-                if math.hypot(x1-x0, y1-y0) > 0.02 or yaw_error > 2.0:
-                    raise SkillFailure("base-rotate contract: measured pose missed target")
-                out.update(base_yaw_deg=yaw1, yaw_error_deg=yaw_error)
-            elif check == "base_translate":
-                x0, y0, yaw0 = before["base_pose"]
-                x1, y1, yaw1 = rig.base_pose()
-                requested = float(values["forward_m"])
-                actual = ((x1-x0)*math.cos(math.radians(yaw0))
-                          + (y1-y0)*math.sin(math.radians(yaw0)))
-                lateral = abs(-(x1-x0)*math.sin(math.radians(yaw0))
-                              + (y1-y0)*math.cos(math.radians(yaw0)))
-                if abs(actual-requested) > 0.03 or lateral > 0.03 or abs((yaw1-yaw0+180)%360-180) > 2:
-                    raise SkillFailure("base-translate contract: measured pose missed target")
-                out.update(base_forward_m=actual, lateral_error_m=lateral)
-            elif check == "floor_reach":
-                events = [e for e in rig.events[before["events"]:]
-                          if e.get("label") == "floor_reach_ready" and e.get("obj") == values["object"]]
-                if not events or float(events[-1].get("error_m", 1)) > 0.03 or rig.held is not None:
-                    raise SkillFailure("floor-reach contract: no fresh clear pregrasp")
-                out["pregrasp_error_m"] = float(events[-1]["error_m"])
-            elif check == "microwave_clear":
-                name = values["articulated"]
-                events = [e for e in rig.events[before["events"]:]
-                          if e.get("label") == "microwave_sweep_clear"]
-                x,y,yaw = rig.base_pose()
-                state = getattr(rig, "_microwave_clear", None)
-                held = rig.held["name"] if rig.held else None
-                if (not events or not isinstance(state, dict) or state.get("name") != name
-                        or state.get("held") != held or held != before["held"]
-                        or math.hypot(x-5.1,y-1.6)>0.05
-                        or abs((yaw-150+180)%360-180)>5):
-                    raise SkillFailure("microwave-clear contract: door sweep not clear")
-                out["clear_base_pose"] = [x,y,yaw]
-            elif check == "edge_ready":
-                name = values["object"]
-                events = [e for e in rig.events[before["events"]:]
-                          if e.get("label") == "slide_to_edge_result" and e.get("obj") == name]
-                if not events:
-                    raise SkillFailure("edge-ready contract: no fresh overhang measurement")
-                event = events[-1]
-                direction = np.asarray(event["direction"], float)
-                st = rig.state()
-                support = rig.geo.support_under(name, st)
-                if support is None or support["name"] != event["support"]:
-                    raise SkillFailure("edge-ready contract: support changed")
-                obj = rig.ann.objects[name]
-                size = np.asarray(rig.ann.asset_of(obj)["size"], float)
-                bottom = rig.geo.bottom(name, st)
-                half = skills._half_along(size, skills._yaw(st["objects"][name]["quat"]), direction)
-                overhang = float(direction @ bottom[:2]) + half - skills._edge_coord(support, direction)
-                if (overhang < skills.EDGE_MIN_OVERHANG - 0.01
-                        or overhang > half - skills.COM_MARGIN + 0.015):
-                    raise SkillFailure("edge-ready contract: current overhang is unsafe")
-                out["overhang_m"] = overhang
-            else:
-                raise ValueError(f"unknown node verifier {check}")
-        return out
+    def run_bound(self, contract_id: str, **named_args):
+        """Backward-compatible name for :meth:`run_skill`."""
+        return self.run_skill(contract_id, named_args)
 
     @staticmethod
     def _verified_predicates(spec, route, args, kwargs):

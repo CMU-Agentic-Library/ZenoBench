@@ -1,102 +1,450 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_048",
-  "skill_id": "skill_040",
-  "name": "Wait for food to reach target temperature",
-  "description": "Advance the live thermal simulation until the named food reaches its target temperature.",
-  "scope": {
-    "unit": "One wait for food to reach target temperature attempt on the grounded scene state.",
-    "includes": [
-      "Advance the live thermal simulation until the named food reaches its target temperature."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "The uniquely grounded scene object."
-    },
-    "min_temp_c": {
-      "type": "positive_number",
-      "required": true,
-      "description": "Required target temperature in Celsius."
-    }
-  },
-  "requires": [
-    {
-      "predicate": "thermal_model_configured",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "heating_active_or_already_hot",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "temperature_at_least",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "temperature_at_least"
-  ],
-  "verifier": {
-    "check": "ContractRunner measured post-state",
-    "on_failure": "record partial state and stop",
-    "custom": "temperature"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_064",
-        "args": [
-          {
-            "arg": "object"
-          },
-          {
-            "arg": "min_temp_c"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object",
-    "min_temp_c"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true
-    }
-  },
-  "action_predicate": {
-    "name": "attain_food_temperature",
-    "verb": "attain",
-    "noun": "food_temperature",
-    "arguments": [
-      "object",
-      "min_temp_c"
-    ],
-    "verified_by": [
-      "temperature_at_least"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_048",
+ "skill_id": "skill_040",
+ "verb": "open",
+ "noun": "articulated",
+ "name": "Open a door or drawer",
+ "description": "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.",
+ "group": "articulated_and_appliance",
+ "inputs": {
+  "articulated": {
+   "type": "articulated_ref",
+   "required": true,
+   "description": "The door, drawer or appliance door."
   }
+ },
+ "outputs": {
+  "joint": {
+   "type": "number",
+   "description": "Measured joint value."
+  }
+ },
+ "requires": [
+  {
+   "pred": "base_near",
+   "args": {
+    "place": "$articulated"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "is_open",
+   "args": {
+    "articulated": "$articulated"
+   }
+  }
+ ],
+ "invalidates": [
+  "is_closed($articulated)",
+  "base_near(*)",
+  "reachable(*)",
+  "facing(*)"
+ ],
+ "precheck": [
+  {
+   "predicate": "base_near(place=$articulated)",
+   "name": "base_near",
+   "args": {
+    "place": "$articulated"
+   },
+   "negated": false,
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "scene_annotation"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "path powered_microwave"
+  },
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "path left_holds_load"
+  },
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "path refrigerator"
+  },
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "path drawer"
+  },
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "path hinged_door"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "is_open(articulated=$articulated)",
+   "name": "is_open",
+   "args": {
+    "articulated": "$articulated"
+   },
+   "negated": false,
+   "meaning": "Joint at least 60 % of the way from closed to its annotated open value.",
+   "kind": "fluent",
+   "gt_sources": [
+    "articulation_joint",
+    "articulation_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "articulated": {
+   "type": "articulated_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "open_articulated",
+  "verb": "open",
+  "noun": "articulated",
+  "arguments": [
+   "articulated"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "powered_microwave",
+    "when": [
+     {
+      "noun": "articulated",
+      "field": "powered",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_024",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [
+     {
+      "pred": "hand_empty",
+      "args": {
+       "hand": "right"
+      }
+     }
+    ],
+    "ensures": [],
+    "note": ""
+   },
+   {
+    "path_id": "left_holds_load",
+    "when": [
+     {
+      "noun": "robot",
+      "field": "left_held",
+      "op": "truthy",
+      "value": true
+     },
+     {
+      "noun": "articulated",
+      "field": "type",
+      "op": "equals",
+      "value": "revolute"
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_060",
+      "args": [
+       "@robot.left_object",
+       "$articulated"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [
+     {
+      "pred": "hand_empty",
+      "args": {
+       "hand": "right"
+      }
+     }
+    ],
+    "ensures": [],
+    "note": ""
+   },
+   {
+    "path_id": "refrigerator",
+    "when": [
+     {
+      "noun": "articulated",
+      "field": "category",
+      "op": "equals",
+      "value": "refrigerator"
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_003",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_022",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {
+       "goal": "@articulated.wide_open_q"
+      }
+     }
+    ],
+    "requires": [
+     {
+      "pred": "hand_empty",
+      "args": {
+       "hand": "right"
+      }
+     }
+    ],
+    "ensures": [],
+    "note": "Rides the door to 75 % of its annotated range (60 deg), wide enough to put a can on the shelf."
+   },
+   {
+    "path_id": "drawer",
+    "when": [
+     {
+      "noun": "articulated",
+      "field": "type",
+      "op": "equals",
+      "value": "prismatic"
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_003",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_046",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_050",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_047",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [
+     {
+      "pred": "hand_empty",
+      "args": {
+       "hand": "right"
+      }
+     }
+    ],
+    "ensures": [],
+    "note": ""
+   },
+   {
+    "path_id": "hinged_door",
+    "when": [
+     {
+      "noun": "articulated",
+      "field": "type",
+      "op": "equals",
+      "value": "revolute"
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_003",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_046",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_049",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_047",
+      "args": [
+       "$articulated"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [
+     {
+      "pred": "hand_empty",
+      "args": {
+       "hand": "right"
+      }
+     }
+    ],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "pick",
+   "when": "an object inside must be taken out",
+   "bind": {},
+   "reason": "is_open is a cavity-pick precondition",
+   "to_skill_id": "skill_017",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "sequence",
+   "to": "place",
+   "when": "an object must go inside",
+   "bind": {},
+   "reason": "is_open is a cavity-place precondition",
+   "to_skill_id": "skill_018",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "sequence",
+   "to": "close",
+   "when": "the door must be shut afterwards",
+   "bind": {
+    "articulated": "$articulated"
+   },
+   "reason": "",
+   "to_skill_id": "skill_041",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "fallback",
+   "to": "retreat",
+   "when": "the door swing hits the base",
+   "bind": {
+    "obstacle": "$articulated"
+   },
+   "reason": "room for the door's sweep",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_004"
+  },
+  {
+   "kind": "fallback",
+   "to": "handover",
+   "when": "the right hand still holds a load",
+   "bind": {},
+   "reason": "",
+   "fallback_type": "repair",
+   "repairs": "hand_empty",
+   "to_skill_id": "skill_022"
+  },
+  {
+   "kind": "fallback",
+   "to": "approach",
+   "when": "the handle is out of reach",
+   "bind": {
+    "target": "$articulated"
+   },
+   "reason": "a base pose with verified IK at the handle",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_002"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

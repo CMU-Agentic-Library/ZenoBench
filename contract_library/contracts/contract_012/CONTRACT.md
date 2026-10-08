@@ -1,79 +1,22 @@
-# contract_012 — Pick an object
+# contract_012 — Retreat from an obstacle
 
-Grasp and lift one annotated scene object with the right hand.
+Back the base straight away from a piece of furniture, appliance or object until it is at least the given distance away; a held load stays held.
 
-Paired SkillNode: `skill_004`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_004` (`retreat-obstacle`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- none
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `object_annotated` — contract_noun_binding
-- `object_reachable` — policy_attempt
-
-## Planner action predicate
-
-`acquire_object(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `held_by_right_hand` — contract_runner
-- `object_lifted` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `base_clear_of(place=$obstacle, distance_m=$distance_m)` — GT: base_pose, scene_annotation
 
 ## Policy paths
 
-### microwave_cavity
+- `microwave_door_sweep` when obstacle.instance == 'kitchen_microwave': `policy_030($obstacle)`
+- `bimanual_or_left_load` when robot.left_held: `policy_067($obstacle, $distance_m)`
+- `loaded` when robot.right_held: `policy_035($distance_m)`
+- `empty` when always: `policy_100($obstacle, $distance_m) as plan` -> `policy_037(#plan.forward_m)`
 
-Match before execution: `[{'noun': 'object', 'field': 'location', 'equals': 'microwave_cavity'}]`.
-
-1. `policy_048` with ['object']
-
-### floor_corner
-
-Match before execution: `[{'noun': 'object', 'field': 'on_floor', 'equals': True}, {'noun': 'object', 'field': 'grasp_types', 'contains': 'edge_pinch_after_push'}]`.
-
-1. `policy_014` with ['object']
-
-### rectangular_rim
-
-Match before execution: `[{'noun': 'object', 'field': 'grasp_types', 'contains': 'rim_pinch_rect'}]`.
-
-1. `policy_012` with ['object']
-
-### round_rim
-
-Match before execution: `[{'noun': 'object', 'field': 'grasp_types', 'contains': 'rim_pinch'}]`.
-
-1. `policy_011` with ['object']
-
-### top_pinch
-
-Match before execution: `[{'noun': 'object', 'field': 'grasp_types', 'contains': 'top_pinch'}]`.
-
-1. `policy_010` with ['object']
-
-### flat_edge
-
-Match before execution: `[{'noun': 'object', 'field': 'on_floor', 'equals': False}, {'noun': 'object', 'field': 'grasp_types', 'contains': 'edge_pinch_after_push'}]`.
-
-1. `policy_013` with ['object']
-
-### handle_only
-
-Match before execution: `[{'noun': 'object', 'field': 'grasp_types', 'contains': 'handle_pinch'}, {'noun': 'object', 'field': 'handle_collider', 'equals': True}]`.
-
-1. `policy_055` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_002` / `auto`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

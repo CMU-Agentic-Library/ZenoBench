@@ -52,9 +52,7 @@ class CarryHeightAdjustPolicy(AtomicPolicy):
         name = held["name"]
         bottom = float(self.rig.geo.bottom(name, self.rig.state())[2])
         if bottom < target - tolerance:
-            tcp, R = self.rig.kin.tcp(self.rig.q())
-            goal = np.asarray(tcp, float) + np.array([0.0, 0.0, target - bottom])
-            self.rig.move_to(goal, R, step=0.005, steps_per_wp=5, label="carry_height_adjust")
+            skills.held_vertical_move(self.rig, target - bottom, "carry_height_adjust")
         skills.check_held(self.rig, "carry_height_adjust")
         actual = float(self.rig.geo.bottom(name, self.rig.state())[2])
         if actual < target - tolerance:

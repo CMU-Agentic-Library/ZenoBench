@@ -1,40 +1,23 @@
-# contract_044 — Upright a held object
+# contract_044 — Stand an object upright
 
-Rotate a right-held object until its local up axis is within 20 degrees of vertical.
+Make a lying object stand: pinch it, rotate its local up axis to vertical in the hand, and set it down upright on the same support.
 
-Paired SkillNode: `skill_036`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_036` (`upright-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
+- [all paths] `lying(object=$object)` — GT: object_pose, asset_annotation
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — policy_attempt
-
-## Planner action predicate
-
-`orient_held_object(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `object_upright` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
+- [all paths] `upright(object=$object)` — GT: object_pose
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [path pick_orient_place] `on(object=$object, support=@object.support)` — GT: object_pose, asset_annotation, support_annotation
 
 ## Policy paths
 
-### fixed
+- `pick_orient_place` when 'top_pinch' in object.grasp_types: `policy_010($object)` -> `policy_054($object, max_tilt_deg=15.0)` -> `policy_015($object, @object.support)`
 
-Match before execution: `[]`.
-
-1. `policy_054` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: custom `upright`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

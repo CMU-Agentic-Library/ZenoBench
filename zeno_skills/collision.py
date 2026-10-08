@@ -142,6 +142,23 @@ class WorldModel:
                 d = np.minimum(d, _aabb_dist(local, np.asarray(lo), np.asarray(hi)))
         return d
 
+    from contextlib import contextmanager
+
+    @contextmanager
+    def temp_obstacles(self, boxes):
+        """Extra arm obstacles (loose objects next to a pick target) for the
+        duration of a motion; the static boxes are restored afterwards."""
+        boxes = np.asarray(boxes, float).reshape(-1, 6)
+        saved = self.B
+        if len(boxes):
+            self.B = np.vstack([saved[:-1], boxes, saved[-1:]])       # keep the floor last
+            self._near_key = None
+        try:
+            yield
+        finally:
+            self.B = saved
+            self._near_key = None
+
     def near_boxes(self, xy, r=1.6):
         key = (round(float(xy[0]), 2), round(float(xy[1]), 2))
         if key != self._near_key:

@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).microwave_button_approach.execute(...)`
 - Class: `MicrowaveButtonApproachPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_017, contract_018
+- Skill Contract paths: contract_050:press/microwave_start_staged
 - Referenced as support by legacy families: contract_004, contract_007
 
 ## Recorded evidence

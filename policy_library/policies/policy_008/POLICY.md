@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).lean_forward.execute(...)`
 - Class: `LeanForwardPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_041
+- Skill Contract paths: contract_015:bend/full
 - Legacy family Contracts: contract_008
 
 ## Recorded evidence

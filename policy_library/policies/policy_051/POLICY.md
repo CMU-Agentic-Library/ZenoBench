@@ -25,6 +25,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).reach_while_moving.execute(...)`
 - Class: `ReachWhileMovingPolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_010:approach/reach_on_the_move
 - Referenced as support by legacy families: contract_001, contract_002
 
 ## Recorded evidence

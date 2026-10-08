@@ -59,8 +59,8 @@
     "class": "PushFromBehindPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_053"
+  "skill_contract_paths": [
+    "contract_037:push/from_behind"
   ],
   "legacy_family_contracts": [
     "contract_006"

@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).straighten_waist.execute(...)`
 - Class: `StraightenWaistPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_042
+- Skill Contract paths: contract_016:straighten/upright
 - Legacy family Contracts: contract_008
 
 ## Recorded evidence

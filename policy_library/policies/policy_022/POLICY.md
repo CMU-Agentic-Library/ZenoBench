@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).open_handle.execute(...)`
 - Class: `HandleOpenPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_033
+- Skill Contract paths: contract_048:open/refrigerator
 - Legacy family Contracts: contract_004
 
 ## Recorded evidence

@@ -1,0 +1,46 @@
+<robot name="trash_can">
+   <link name="trash_can">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/trash_can.obj" scale="0.782495 0.800004 0.769681" />
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.570800 0.000000 0.000000" />
+         <geometry>
+            <mesh filename="mesh/trash_can_collision.obj" scale="0.782495 0.800004 0.769681" />
+         </geometry>
+         <gazebo>
+            <mu1>0.60</mu1>
+            <mu2>0.45</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.9000" />
+         <origin xyz="0 0 0" />
+         <inertia ixx="1.182e-02" ixy="0.0" ixz="0.0" iyy="1.182e-02" iyz="0.0" izz="1.014e-02" />
+      </inertial>
+      <extra_info>
+         <scale>0.375000</scale>
+         <version>v2.1.0</version>
+         <category>trash_can</category>
+         <description>gray tapered cylindrical trash can with a thick upper rim and smooth plastic walls.</description>
+         <min_height>0.3</min_height>
+         <max_height>0.45</max_height>
+         <real_height>0.375</real_height>
+         <min_mass>0.5</min_mass>
+         <max_mass>1.2</max_mass>
+         <generate_time>20261006220511</generate_time>
+         <gs_model>mesh/trash_can_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.3165764808654785</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

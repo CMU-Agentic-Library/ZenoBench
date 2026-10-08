@@ -1,62 +1,71 @@
 ---
-name: set-waist-pitch
-description: Move the waist to one requested pitch angle in radians.
+name: search-object
+description: Find an object whose location is unknown: visit the supports of a room in order of distance and aim the head at each surface until the object is seen.
 ---
 
-# Set waist pitch (skill_013)
+# Search for an object (`skill_013`)
+
+`search(object: object_ref, region: room_ref?)`
+
+Find an object whose location is unknown: visit the supports of a room in order of distance and aim the head at each surface until the object is seen.
 
 ## When to use
 
-Move the waist to one requested pitch angle in radians.
+The location of an object is unknown in the current room.
+
+## Not to be confused with
+
+- `explore`: explore covers a room without a target.
 
 ## Inputs
 
-- `pitch_rad` (`number`): pitch rad
+- `object` (`object_ref`): The object to find.
+- `region` (`room_ref`, optional): Room to search; default the robot's room.
 
-## Preconditions
+## Outputs
 
-- `right_hand_empty` — `policy_attempt`
-- `target_within_joint_limits` — `policy_attempt`
-- `collision_free_motion` — `policy_attempt`
+- `found_on` (`support_ref`): Support under the object when it was seen.
+- `visited` (`object_list`): Furniture visited in order.
 
-## Planner action predicate
+## Applicability
 
-`pitch_waist(pitch_rad)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['posture_at_target']`.
+Always applicable.
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `posture_at_target` — measured by `contract_runner`
+- none
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_013` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_021", "compose", ...)`.
+- `observed(target=$object)` — The robot saw the target in its head camera during this episode (set by look, search, inspect, explore). GT: robot_memory.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `observed(target=$object)` (all paths)
 
-Match before execution: `[]`.
+## May invalidate
 
-1. `policy_007(pitch_rad)`
+`base_near(*)`, `reachable(*)`, `facing(*)`, `in_view(*)`
 
+## Policy paths (first match on the bound nouns)
 
-Verifier: `contract_008 / waist`.
+### `room_sweep` — when always (default path)
 
-## Related Skills
+1. `policy_070($object, $region)`
 
-- No fixed relation; select the next node from the task goal and observation.
+## Relations
+
+- Previous step: `explore` (`skill_014`) (then) — a specific object must then be located
+- Next step: `navigate` (`skill_001`) (then) — the found object must be fetched
+- Fallback on failure: `explore` (`skill_014`) (recover) — the object is not on any visited support
+- Fallback on failure: `inspect` (`skill_012`) (substitute) — the object may be inside a closed cabinet
+- Is a fallback for: `fetch` (`skill_047`) (recover) — the object is not where expected
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one waist pitch adjustment
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_021`.

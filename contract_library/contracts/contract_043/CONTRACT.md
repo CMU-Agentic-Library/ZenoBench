@@ -1,42 +1,21 @@
-# contract_043 — Expose a flat object edge
+# contract_043 — Tip an object over
 
-Push a flat object to a measured, graspable support overhang.
+Push a standing tall object near its top so it falls onto its side on the same support (lays down a carton or bottle that is too tall to top-pinch).
 
-Paired SkillNode: `skill_035`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_035` (`tip-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
+- [all paths] `upright(object=$object)` — GT: object_pose
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `object_on_annotated_support` — policy_attempt
-- `free_support_edge` — policy_attempt
-
-## Planner action predicate
-
-`expose_flat_object_edge(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `edge_overhang_ready` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'edge_pinch_after_push'}`
+- [all paths] `lying(object=$object)` — GT: object_pose, asset_annotation
 
 ## Policy paths
 
-### fixed
+- `push_high` when object.tall: `policy_082($object)`
 
-Match before execution: `[]`.
-
-1. `policy_045` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: custom `edge_ready`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

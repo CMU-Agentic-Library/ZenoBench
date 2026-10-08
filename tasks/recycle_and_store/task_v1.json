@@ -1,0 +1,114 @@
+{
+ "task": "recycle_and_store",
+ "instruction": "Place the soda can, snack carton, and foam cube in the small storage bin, then leave doors closed.",
+ "instruction_zh": "\u628a\u996e\u6599\u7f50\u3001\u96f6\u98df\u7eb8\u76d2\u548c\u6ce1\u6cab\u65b9\u5757\u653e\u8fdb\u5c0f\u6536\u7eb3\u76d2\uff0c\u5e76\u4fdd\u6301\u95e8\u5173\u95ed\u3002",
+ "seed": 0,
+ "spec": "task_specs/recycle_and_store.json",
+ "scene_usd": "tasks/recycle_and_store/scene.usd",
+ "annotation": "tasks/recycle_and_store/annotation.json",
+ "base_scene": "sim/zeno_house.usd",
+ "thermal": {},
+ "demonstrate_microwave_door": false,
+ "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
+ "robot_start": [
+  4.3,
+  2.0,
+  0.0
+ ],
+ "placed_objects": {
+  "soda_can": {
+   "asset": "soda_can",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": 1.9683349641197863,
+   "position": [
+    8.150254997377353,
+    0.3612933826641871,
+    0.484
+   ]
+  },
+  "snack_carton": {
+   "asset": "snack_carton",
+   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "yaw": 1.4429677267223928,
+   "position": [
+    7.014942865339719,
+    0.39434048621933293,
+    0.484
+   ]
+  },
+  "foam_cube": {
+   "asset": "foam_cube",
+   "support": "floor:living_room",
+   "yaw": -1.2584473065782806,
+   "position": [
+    5.054306739647717,
+    1.6941429150215945,
+    0.012
+   ]
+  },
+  "small_storage_bin": {
+   "asset": "small_storage_bin",
+   "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "yaw": 1.072064815449135,
+   "position": [
+    1.0405476298816572,
+    -0.42482861435186303,
+    0.718
+   ]
+  }
+ },
+ "dropped_optional_objects": [],
+ "deactivated_base_objects": [],
+ "existing_objects": {},
+ "roles": {
+  "portable": [
+   "soda_can",
+   "snack_carton",
+   "foam_cube"
+  ],
+  "container": [
+   "small_storage_bin"
+  ]
+ },
+ "candidate_supports": {
+  "soda_can": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "snack_carton": [
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "foam_cube": [
+   "floor:living_room",
+   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+  ],
+  "small_storage_bin": [
+   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+  ]
+ },
+ "alternatives": [
+  "foam cube on floor -> ready floor reach and try a measured pick route",
+  "blocked top contact -> choose a different grasp path or reobserve"
+ ],
+ "place_hints": {},
+ "goal": {
+  "all": [
+   {
+    "inside": [
+     "all:portable"
+    ],
+    "container": "small_storage_bin"
+   },
+   {
+    "upright": [
+     "small_storage_bin"
+    ]
+   },
+   {
+    "closed": "all"
+   },
+   {
+    "not_dropped": "all"
+   }
+  ]
+ }
+}

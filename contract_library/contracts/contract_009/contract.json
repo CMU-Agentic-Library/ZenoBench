@@ -1,92 +1,239 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_009",
-  "skill_id": "skill_001",
-  "name": "Navigate empty-handed",
-  "description": "Move the empty-handed robot base to one target pose.",
-  "scope": {
-    "unit": "one empty-handed base move",
-    "includes": [
-      "Move the empty-handed robot base to one target pose."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "pose": {
-      "type": "pose2d",
-      "required": true,
-      "description": "pose"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "target_navigable",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "carried_object_matches_state",
-      "enforcement": "not_enforced"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "base_at",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "base_at"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_001",
-    "route": "empty",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_001",
-        "args": [
-          {
-            "arg": "pose"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "pose"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [
-    {
-      "when": "base path blocked and right hand remains empty",
-      "skill_id": "skill_011",
-      "reason": "tuck the arm before proposing a new navigation attempt"
-    }
-  ],
-  "noun_bindings": {},
-  "action_predicate": {
-    "name": "navigate_base",
-    "verb": "navigate",
-    "noun": "base",
-    "arguments": [
-      "pose"
-    ],
-    "verified_by": [
-      "base_at"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_009",
+ "skill_id": "skill_001",
+ "verb": "navigate",
+ "noun": "place",
+ "name": "Navigate to a place",
+ "description": "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.",
+ "group": "base_and_body",
+ "inputs": {
+  "destination": {
+   "type": "place_ref",
+   "required": true,
+   "description": "Where to go: a room, furniture, support, articulated part or object."
   }
+ },
+ "outputs": {
+  "base_pose": {
+   "type": "pose2d",
+   "description": "Measured base pose [x, y, yaw_deg] at arrival."
+  }
+ },
+ "requires": [],
+ "ensures": [
+  {
+   "pred": "base_near",
+   "args": {
+    "place": "$destination"
+   }
+  }
+ ],
+ "invalidates": [
+  "base_near(*)",
+  "reachable(*)",
+  "facing(*)",
+  "in_view(*)",
+  "base_clear_of(*)",
+  "pointing_at(*)",
+  "presenting(*)"
+ ],
+ "precheck": [],
+ "verifier": [
+  {
+   "predicate": "base_near(place=$destination)",
+   "name": "base_near",
+   "args": {
+    "place": "$destination"
+   },
+   "negated": false,
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "scene_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "destination": {
+   "type": "place_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "navigate_place",
+  "verb": "navigate",
+  "noun": "place",
+  "arguments": [
+   "destination"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "two_hand_carry",
+    "when": [
+     {
+      "noun": "robot",
+      "field": "both_hold_same",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_097",
+      "args": [
+       "$destination"
+      ],
+      "kwargs": {},
+      "as": "plan"
+     },
+     {
+      "policy": "policy_058",
+      "args": [
+       "@robot.right_object",
+       "#plan.pose"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": "An object held by both grippers moves at the slow bimanual carry speed."
+   },
+   {
+    "path_id": "carry",
+    "when": [
+     {
+      "noun": "robot",
+      "field": "right_held",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_097",
+      "args": [
+       "$destination"
+      ],
+      "kwargs": {},
+      "as": "plan"
+     },
+     {
+      "policy": "policy_002",
+      "args": [
+       "#plan.pose"
+      ],
+      "kwargs": {
+       "name": "@robot.right_object",
+       "min_bottom_z": "#plan.carry_bottom_z"
+      }
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": "Back off, lift the load to carry height, plan with extra clearance, drive slowly."
+   },
+   {
+    "path_id": "empty",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_097",
+      "args": [
+       "$destination"
+      ],
+      "kwargs": {},
+      "as": "plan"
+     },
+     {
+      "policy": "policy_001",
+      "args": [
+       "#plan.pose"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "approach",
+   "when": "a manipulation target is on the destination",
+   "bind": {
+    "target": "$destination"
+   },
+   "reason": "navigate leaves the base near; approach makes the target IK-reachable.",
+   "to_skill_id": "skill_002",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "sequence",
+   "to": "look",
+   "when": "the destination must be observed first",
+   "bind": {
+    "target": "$destination"
+   },
+   "reason": "",
+   "to_skill_id": "skill_011",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "fallback",
+   "to": "retreat",
+   "when": "navigation fails because the base or load is wedged against furniture",
+   "bind": {},
+   "reason": "Backing out frees the planner's start cell, then navigate again.",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_004"
+  },
+  {
+   "kind": "fallback",
+   "to": "tuck",
+   "when": "navigation fails because the empty arm cannot fold",
+   "bind": {
+    "hand": "right"
+   },
+   "reason": "A separately planned fold clears the arm before the base path.",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_009"
+  },
+  {
+   "kind": "fallback",
+   "to": "lift",
+   "when": "a carried object hangs too low for the doorway clearance",
+   "bind": {},
+   "reason": "Raising the load restores the carry clearance.",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_023"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [
+   "stand-off pose search around the noun's footprint",
+   "A* base path",
+   "carry posture if loaded"
+  ],
+  "excludes": [
+   "arm reachability of a specific target",
+   "grasping"
+  ]
+ }
 }

@@ -1,64 +1,64 @@
 ---
-name: pick-by-round-rim
-description: Grasp a bowl or cup by its annotated round rim.
+name: flip-object
+description: Turn a flat object upside down where it lies: slide it to an edge, pinch the overhang, lift, roll the hand 180 deg, lay it back and release.
 ---
 
-# Pick by round rim (skill_028)
+# Flip a flat object over (`skill_028`)
+
+`flip(object: object_ref)`
+
+Turn a flat object upside down where it lies: slide it to an edge, pinch the overhang, lift, roll the hand 180 deg, lay it back and release.
 
 ## When to use
 
-Grasp a bowl or cup by its annotated round rim.
+A flat object must be turned upside down.
+
+## Not to be confused with
+
+- `rotate`: rotate turns about the vertical axis; flip turns the object upside down.
 
 ## Inputs
 
-- `object` (`object_ref`): The uniquely grounded scene object.
+- `object` (`object_ref`): A flat object (book, plate, notebook) on a support.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `contract_precheck`
-- `target_annotated` — `policy_attempt`
+Requires hand_empty(hand=right); base_near(place=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`grasp_round_rim(object)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['held_by_right_hand', 'object_lifted']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `held_by_right_hand` — measured by `contract_runner`
-- `object_lifted` — measured by `contract_runner`
+- `flipped(object=$object)` — Object's local z axis now points opposite to its direction at the start (dot <= -0.7). GT: object_pose (before/after).
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_028` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_036", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `flipped(object=$object)` (all paths)
+- `hand_empty(hand=right)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'rim_pinch'}`
+## Policy paths (first match on the bound nouns)
 
-### Policy path: fixed
+### `edge_roll` — when object.flat
 
-Match before execution: `[]`.
+1. `policy_045($object)`
+2. `policy_013($object)`
+3. `policy_078($object)`
 
-1. `policy_011(object)`
+## Relations
 
-
-Verifier: `contract_002 / round_rim`.
-
-## Related Skills
-
-- `skill_037` (`enables`) when a rim-grasped vessel must end upright on a support — Orient and place the held vessel.
-- `skill_017` (`alternative`) when round-rim grasp fails and the cup has an annotated handle — Handle grasp is a distinct physical strategy.
+- Previous step: `expose` (`skill_031`) (then) — turn the object over
+- Next step: `center` (`skill_033`) (enables) — the object is left overhanging the edge
+- Fallback on failure: `center` (`skill_033`) (recover) — the flipped object landed too close to the edge
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One pick by round rim attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_036`.

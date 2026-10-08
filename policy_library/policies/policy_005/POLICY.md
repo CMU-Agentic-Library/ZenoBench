@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).lower_torso.execute(...)`
 - Class: `LowerTorsoPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_039
+- Skill Contract paths: contract_013:crouch/lowest
 - Legacy family Contracts: contract_008
 
 ## Recorded evidence

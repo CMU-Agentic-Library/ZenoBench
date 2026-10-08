@@ -1,41 +1,20 @@
-# contract_034 — Close a manual handle
+# contract_034 — Regrasp a held object
 
-Close one handle-operated door or drawer.
+Set the held object down on a support and grasp it again with a fresh, centred grasp (recovery when the object has pivoted in the pinch).
 
-Paired SkillNode: `skill_026`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_026` (`regrasp-object`).
 
-## Inputs
+## Precheck
 
-- `articulated`: articulated_ref
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `base_near(place=$support)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`push_manual_handle(articulated)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `joint_closed` — contract_runner
-
-## Grounded noun slots
-
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'handle', 'forbid_annotation': 'door_button'}`
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
 ## Policy paths
 
-### fixed
+- `set_down_and_pick` when always: `policy_076($object, $support)`
 
-Match before execution: `[]`.
-
-1. `policy_023` with ['articulated']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_005` / `handle`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

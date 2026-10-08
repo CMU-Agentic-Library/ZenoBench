@@ -1,45 +1,22 @@
-# contract_053 — Nudge object from behind
+# contract_053 — Cover a container with a lid
 
-Push an object from rear contact along its annotated support and measure progress.
+Lay the held lid centred on the container rim (within 3 cm, tilt <= 12 deg) and release it.
 
-Paired SkillNode: `skill_045`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_045` (`cover-container`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
-- `direction_xy`: unit_vec2
-- `distance_m`: positive_number
+- [all paths] `holding(hand=right, object=$lid)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `base_near(place=$container)` — GT: base_pose, scene_annotation
+- [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `object_on_support` — policy_attempt
-
-## Planner action predicate
-
-`nudge_supported_object(object, support, direction_xy, distance_m)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `displacement_along` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `covered(container=$container, lid=$lid)` — GT: object_pose, container_profile
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
 ## Policy paths
 
-### fixed
+- `rim_plane` when lid.is_lid: `policy_087($lid, $container)`
 
-Match before execution: `[]`.
-
-1. `policy_043` with ['object', 'support', 'direction_xy', 'distance_m']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_006` / `auto`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

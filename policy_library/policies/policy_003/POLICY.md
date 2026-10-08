@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).tuck_arm.execute(...)`
 - Class: `TuckArmPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_019
+- Skill Contract paths: contract_017:tuck/right, contract_018:reset/joint_home, contract_020:inspect/closed_cabinet, contract_048:open/refrigerator, contract_048:open/drawer, contract_048:open/hinged_door, contract_049:close/handle_push
 - Legacy family Contracts: contract_008
 - Referenced as support by legacy families: contract_001
 

@@ -39,8 +39,9 @@
     "class": "MicrowaveDoorClearPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_058"
+  "skill_contract_paths": [
+    "contract_012:retreat/microwave_door_sweep",
+    "contract_049:close/powered_loaded"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [

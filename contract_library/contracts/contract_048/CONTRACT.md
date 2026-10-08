@@ -1,42 +1,28 @@
-# contract_048 — Wait for food to reach target temperature
+# contract_048 — Open a door or drawer
 
-Advance the live thermal simulation until the named food reaches its target temperature.
+Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.
 
-Paired SkillNode: `skill_040`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_040` (`open-articulated`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `min_temp_c`: positive_number
+- [all paths] `base_near(place=$articulated)` — GT: base_pose, scene_annotation
+- [path powered_microwave] `hand_empty(hand=right)` — GT: gripper_state
+- [path left_holds_load] `hand_empty(hand=right)` — GT: gripper_state
+- [path refrigerator] `hand_empty(hand=right)` — GT: gripper_state
+- [path drawer] `hand_empty(hand=right)` — GT: gripper_state
+- [path hinged_door] `hand_empty(hand=right)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `thermal_model_configured` — policy_attempt
-- `heating_active_or_already_hot` — policy_attempt
-
-## Planner action predicate
-
-`attain_food_temperature(object, min_temp_c)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `temperature_at_least` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `is_open(articulated=$articulated)` — GT: articulation_joint, articulation_annotation
 
 ## Policy paths
 
-### fixed
+- `powered_microwave` when articulated.powered: `policy_024($articulated)`
+- `left_holds_load` when robot.left_held and articulated.type == 'revolute': `policy_060(@robot.left_object, $articulated)`
+- `refrigerator` when articulated.category == 'refrigerator': `policy_003()` -> `policy_022($articulated, goal=@articulated.wide_open_q)`
+- `drawer` when articulated.type == 'prismatic': `policy_003()` -> `policy_046($articulated)` -> `policy_050($articulated)` -> `policy_047($articulated)`
+- `hinged_door` when articulated.type == 'revolute': `policy_003()` -> `policy_046($articulated)` -> `policy_049($articulated)` -> `policy_047($articulated)`
 
-Match before execution: `[]`.
-
-1. `policy_064` with ['object', 'min_temp_c']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: custom `temperature`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -44,9 +44,8 @@
     "class": "RectRimPickPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_012",
-    "contract_037"
+  "skill_contract_paths": [
+    "contract_025:pick/rect_rim"
   ],
   "legacy_family_contracts": [
     "contract_002"

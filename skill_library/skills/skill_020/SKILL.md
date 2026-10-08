@@ -1,66 +1,69 @@
 ---
-name: pick-a-flat-object-from-a-floor-corner
-description: Attempt one floor-corner grasp and verify right-hand lift.
+name: stack-object
+description: Set the held object centred on the top face of another object (block on block, plate on plate).
 ---
 
-# Pick a flat object from a floor corner (skill_020)
+# Stack an object on another (`skill_020`)
+
+`stack(object: object_ref, base: object_ref)`
+
+Set the held object centred on the top face of another object (block on block, plate on plate).
 
 ## When to use
 
-Attempt one floor-corner grasp and verify right-hand lift.
+A held object must be put on top of another object.
+
+## Not to be confused with
+
+- `place`: place targets a support or container; stack targets the top face of an object.
 
 ## Inputs
 
-- `object` (`object_ref`): object
+- `object` (`object_ref`): The held object.
+- `base` (`object_ref`): The object to stack onto.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `contract_precheck`
-- `object_annotated` — `policy_attempt`
-- `object_reachable` — `policy_attempt`
+Requires holding(hand=right, object=$object); base_near(place=$base); top_clear(object=$base).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`scoop_floor_object(object)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['held_by_right_hand', 'object_lifted']`.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `base_near(place=$base)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `top_clear(object=$base)` — No other object rests on the object's top face. GT: object_pose, asset_annotation.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `held_by_right_hand` — measured by `contract_runner`
-- `object_lifted` — measured by `contract_runner`
+- `on_top_of(object=$object, base=$base)` — Object rests on the base object's top face: bottom within 2 cm of it, centre over its footprint. GT: object_pose, asset_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_020` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_028", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `on_top_of(object=$object, base=$base)` (all paths)
+- `hand_empty(hand=right)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'edge_pinch_after_push'}`
+## May invalidate
 
-### Policy path: fixed
+`holding(right,$object)`, `top_clear($base)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_014(object)`
+### `top_face` — when always (default path)
 
+1. `policy_074($object, $base)`
 
-Verifier: `contract_002 / floor_corner`.
+## Relations
 
-## Related Skills
-
-- `skill_005` (`enables`) when a floor object was lifted and needs a support — Place the recovered object after observing the grasp.
-- May follow `skill_031` (`preparation`) when a flat object lies on the floor and is hard to reach.
-- May follow `skill_049` (`preparation`) when a floor item has a verified pregrasp and corner pick is appropriate.
+- Previous step: `square` (`skill_064`) (then) — squared blocks stack cleanly
+- Next step: `pick` (`skill_017`) (enables) — a taller stack is built
+- Fallback on failure: `pick` (`skill_017`) (recover) — the base's top is occupied: remove the top object first
+- Alternative: `place` (`skill_018`) — a support surface is acceptable instead
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one floor-corner pick
-
-Availability: `experimental_callable`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_028`.

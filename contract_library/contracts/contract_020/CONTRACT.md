@@ -1,41 +1,21 @@
-# contract_020 — Set torso height
+# contract_020 — Inspect a receptacle
 
-Move the torso lift to one requested joint height.
+Look into a container, a cabinet, an appliance cavity or onto a support and report the objects inside or on it. A closed cabinet is opened for the look and closed again.
 
-Paired SkillNode: `skill_012`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_012` (`inspect-receptacle`).
 
-## Inputs
+## Precheck
 
-- `height_m`: number
+- [all paths] `base_near(place=$receptacle)` — GT: base_pose, scene_annotation
+- [path closed_cabinet] `hand_empty(hand=right)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `target_within_joint_limits` — policy_attempt
-- `collision_free_motion` — policy_attempt
-
-## Planner action predicate
-
-`set_torso_height(height_m)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `posture_at_target` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `observed(target=$receptacle)` — GT: robot_memory
 
 ## Policy paths
 
-### fixed
+- `closed_cabinet` when receptacle.kind == 'articulated' and not receptacle.is_open: `policy_003()` -> `policy_062($receptacle)` -> `policy_088($receptacle)` -> `policy_003()` -> `policy_063($receptacle)`
+- `open_view` when always: `policy_088($receptacle)`
 
-Match before execution: `[]`.
-
-1. `policy_004` with ['height_m']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_008` / `torso`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

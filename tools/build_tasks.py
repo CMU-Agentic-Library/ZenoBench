@@ -100,6 +100,30 @@ def main():
             dropped.append(name)
             continue
         a = assets[o["asset"]]
+        if o.get("inside") or o.get("on_object"):
+            # Spawned in or on an already placed object: inside a container
+            # (a ring of small items above its floor) or resting on its rim/top.
+            host = o.get("inside") or o.get("on_object")
+            hp = placements[host]
+            ha = assets[hp["asset"]]
+            hb = np.array(hp["position"]) + np.r_[np.array([[math.cos(hp["yaw"]), -math.sin(hp["yaw"])],
+                                                            [math.sin(hp["yaw"]), math.cos(hp["yaw"])]])
+                                                  @ np.array(ha["origin_to_bottom_center"][:2]),
+                                                  ha["origin_to_bottom_center"][2]]
+            ob = np.array(a["origin_to_bottom_center"])
+            if o.get("inside"):
+                k = sum(1 for v in placements.values() if v.get("inside") == host)
+                ring = float(o.get("ring_m", 0.02))
+                ang = 2 * math.pi / 3 * (k % 3) + (math.pi / 3 if (k // 3) % 2 else 0.0)
+                z = hb[2] + 0.015 + a["size"][2] * 0.95 * (k // 3)
+                x, y = hb[0] + ring * math.cos(ang), hb[1] + ring * math.sin(ang)
+            else:
+                rim = ha["container"]["rim_height"] if ha.get("container") else ha["size"][2]
+                x, y, z = hb[0], hb[1], hb[2] + rim + 0.004
+            placements[name] = {"asset": o["asset"], "support": None, "yaw": 0.0,
+                                ("inside" if o.get("inside") else "on_object"): host,
+                                "position": [float(x - ob[0]), float(y - ob[1]), float(z - ob[2])]}
+            continue
         sx, sy, sz = a["size"]
         ok = False
         for attempt in range(120):
@@ -120,16 +144,25 @@ def main():
                     raise ValueError(f"{name}: spawn_xy outside {s['name']} safe region")
             # reachability-aware: Zeno's arm reaches ~0.4 m past a furniture
             # edge, so objects sit in a band along the edges of big surfaces
+            fixed = attempt == 0 and o.get("spawn_xy") is not None
             if not str(s["name"]).startswith("floor") and \
                     min(x - x0, x1 - x, y - y0, y1 - y) > max(hx, hy) + 0.12:
+                if fixed:
+                    print(f"WARN {name}: spawn_xy too far from every edge of {s['name']}; sampling instead")
                 continue
             box = np.array([x - hx, y - hy, s["z"], x + hx, y + hy, s["z"] + sz])
-            if any((box[0] < t[3] and t[0] < box[3] and box[1] < t[4] and t[1] < box[4]
-                    and box[2] < t[5] and t[2] < box[5]) for t in taken):
+            hit = [t for t in taken if box[0] < t[3] and t[0] < box[3] and box[1] < t[4] and t[1] < box[4]
+                   and box[2] < t[5] and t[2] < box[5]]
+            if hit:
+                if fixed:
+                    print(f"WARN {name}: spawn_xy box {np.round(box, 3).tolist()} overlaps "
+                          f"{[np.round(t, 3).tolist() for t in hit]}; sampling instead")
                 continue
             # floor spots are all reachable (torso down); blockers etc. opt out
             if not args.no_reach_check and o.get("reach_check", True) and not str(s["name"]).startswith("floor") \
                     and not reachable(x, y, s["z"] + sz, a):
+                if fixed:
+                    print(f"WARN {name}: spawn_xy not reachable; sampling instead")
                 continue
             taken.append(box)
             # body origin = bottom-centre - origin_to_bottom_center (object frame, yaw)
@@ -190,13 +223,41 @@ def main():
         a.GetReferences().AddReference(os.path.relpath(ROOT / assets[pl["asset"]]["usd"], out))
         spec_a = assets[pl["asset"]]
         P.set_box_inertia(stage, f"/World/Tasks/{name}", spec_a["mass"])
+        if max(spec_a["size"]) < 0.06:
+            # small, light bodies tunnel through thin walls without CCD
+            from pxr import PhysxSchema
+            rb = PhysxSchema.PhysxRigidBodyAPI.Apply(P.body_prim(stage, f"/World/Tasks/{name}"))
+            rb.CreateEnableCCDAttr().Set(True)
+            # PhysX has no rolling resistance: small round items otherwise roll
+            # around a cup floor forever.  Angular damping stands in for it.
+            rb.CreateAngularDampingAttr().Set(3.0)
         if spec_a.get("container"):
             c = spec_a["container"]
             P.container_collider(stage, f"/World/Tasks/{name}", c["bands"], shape=c["shape"],
                                  mats=mats, handle=c.get("handle_collider"),
                                  extra_handles=c.get("extra_handle_colliders", []))
+            # grip bars added to an asset (storage bin end handles) also get a visible mesh
+            body = P.body_prim(stage, f"/World/Tasks/{name}")
+            for i, hc in enumerate(c.get("extra_handle_colliders", []), start=1):
+                if not hc.get("visual"):
+                    continue
+                bar = UsdGeom.Cube.Define(stage, f"{body.GetPath()}/grip_bar_{i}")
+                bar.CreateSizeAttr(1.0)
+                bar.AddTransformOp().Set(Gf.Matrix4d().SetScale(Gf.Vec3d(*hc["size"])) *
+                                         Gf.Matrix4d().SetTranslate(Gf.Vec3d(*hc["center"])))
+                bar.CreateDisplayColorAttr([Gf.Vec3f(0.12, 0.25, 0.55)])
         else:
             P.solid_collider(stage, f"/World/Tasks/{name}", mats=mats)
+            if spec_a.get("knob_collider"):
+                # a grasp post on a flat knob: collider + matching dark visual
+                body = P.body_prim(stage, f"/World/Tasks/{name}")
+                kc = spec_a["knob_collider"]
+                P.add_handle_collider(stage, str(body.GetPath()), kc, mats=mats, name="knob_collider")
+                post = UsdGeom.Cylinder.Define(stage, f"{body.GetPath()}/knob_post")
+                post.CreateRadiusAttr(kc["size"][0] / 2)
+                post.CreateHeightAttr(kc["size"][2])
+                post.AddTranslateOp().Set(Gf.Vec3d(*kc["center"]))
+                post.CreateDisplayColorAttr([Gf.Vec3f(0.05, 0.05, 0.05)])
         if o := spec["objects"][name].get("visual_fill"):
             # Food-colored visual inside a pre-existing bowl; no extra collider
             # or rigid body, so the generated object's mass and grasp stay the

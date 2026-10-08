@@ -1,66 +1,69 @@
 ---
-name: nudge-object-from-behind
-description: Push an object from rear contact along its annotated support and measure progress.
+name: cover-container
+description: Lay the held lid centred on the container rim (within 3 cm, tilt <= 12 deg) and release it.
 ---
 
-# Nudge object from behind (skill_045)
+# Cover a container with a lid (`skill_045`)
+
+`cover(container: container_ref, lid: lid_ref)`
+
+Lay the held lid centred on the container rim (within 3 cm, tilt <= 12 deg) and release it.
 
 ## When to use
 
-Push an object from rear contact along its annotated support and measure progress.
+A container must be closed with its lid.
+
+## Not to be confused with
+
+- `uncover`: opposite direction.
+- `place`: cover rests the lid on the rim.
 
 ## Inputs
 
-- `object` (`object_ref`): object
-- `support` (`support_ref`): support
-- `direction_xy` (`unit_vec2`): direction xy
-- `distance_m` (`positive_number`): distance m
+- `container` (`container_ref`): The pot or box to cover.
+- `lid` (`lid_ref`): The held lid.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `contract_precheck`
-- `object_on_support` — `policy_attempt`
+Requires holding(hand=right, object=$lid); base_near(place=$container); uncovered(container=$container).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`nudge_supported_object(object, support, direction_xy, distance_m)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['displacement_along']`.
+- `holding(hand=right, object=$lid)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `displacement_along` — measured by `contract_runner`
+- `covered(container=$container, lid=$lid)` — The lid rests centred on the container rim (3 cm xy, 3 cm height, 12 deg tilt). GT: object_pose, container_profile.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_045` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_053", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `covered(container=$container, lid=$lid)` (all paths)
+- `hand_empty(hand=right)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+## May invalidate
 
-### Policy path: fixed
+`uncovered($container)`, `holding(right,$lid)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_043(object, support, direction_xy, distance_m)`
+### `rim_plane` — when lid.is_lid
 
+1. `policy_087($lid, $container)`
 
-Verifier: `contract_006 / auto`.
+## Relations
 
-## Related Skills
-
-- `skill_035` (`recovery`) when rear contact could not make required progress on a flat object — Slide to edge offers an alternate flat-object contact route.
+- Previous step: `stir` (`skill_038`) (enables) — the pot is covered again
+- Next step: `heat` (`skill_043`) (enables) — the covered pot is heated
+- Alternative: `uncover` (`skill_046`) — opposite effect
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One nudge object from behind attempt on grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_053`.

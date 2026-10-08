@@ -39,18 +39,25 @@ def test_catalog_document_is_current():
     assert (ROOT / "docs/POLICY_CATALOG.md").read_text() == render(catalog)
 
 
-def test_all_sixty_four_policies_have_contract_relations_with_real_direct_bindings():
+def test_every_policy_is_reached_by_a_family_or_skill_contract():
     from zeno_skills.contracts import CONTRACTS, policy_contract_relations
     from tools.render_contract_layers import render as render_contract_layers
 
     catalog = json.loads((ROOT / "zeno_skills/policies/catalog.json").read_text())
     rows = catalog["policies"]
     relations = policy_contract_relations(rows)
-    assert len(rows) == 64
     assert len(relations) == len(CONTRACTS) == 8
-    covered = {policy_id for group in relations.values()
-               for ids in group.values() for policy_id in ids}
-    assert covered == {row["id"] for row in rows if row["id"] != "wait_for_temperature"}
+    skill_contracts = json.loads((ROOT / "contract_library/skill_contracts.json").read_text())["contracts"]
+
+    def walk(steps):
+        for step in steps:
+            if "foreach" in step:
+                yield from walk(step["steps"])
+            elif "policy" in step:
+                yield step["policy"]
+    used = {pid for c in skill_contracts for p in c["policy_plan"]["paths"] for pid in walk(p["steps"])}
+    from skill_library.check import RETIRED_POLICIES
+    assert used == {row["policy_id"] for row in rows} - set(RETIRED_POLICIES)
     suite = PolicySuite(SimpleNamespace())
     for contract_id, group in relations.items():
         direct_classes = set(CONTRACTS[contract_id].executor.values())

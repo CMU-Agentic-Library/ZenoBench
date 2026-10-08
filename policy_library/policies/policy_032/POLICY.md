@@ -21,6 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).microwave_start.execute(...)`
 - Class: `MicrowaveStartPolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_051:heat/microwave
 - Legacy family Contracts: contract_007
 
 ## Recorded evidence

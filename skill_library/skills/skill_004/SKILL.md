@@ -1,112 +1,87 @@
 ---
-name: pick-an-object
-description: Grasp and lift one annotated scene object with the right hand.
+name: retreat-obstacle
+description: Back the base straight away from a piece of furniture, appliance or object until it is at least the given distance away; a held load stays held.
 ---
 
-# Pick an object (skill_004)
+# Retreat from an obstacle (`skill_004`)
+
+`retreat(obstacle: place_ref, distance_m: positive_number)`
+
+Back the base straight away from a piece of furniture, appliance or object until it is at least the given distance away; a held load stays held.
 
 ## When to use
 
-Grasp and lift one annotated scene object with the right hand.
+The base is too close to open a door, turn, or start a path.
+
+## Not to be confused with
+
+- `navigate`: retreat has no destination; it only increases clearance.
 
 ## Inputs
 
-- `object` (`object_ref`): The object to pick.
+- `obstacle` (`place_ref`): What to back away from.
+- `distance_m` (`positive_number`, default 0.4): Required clearance from the obstacle footprint.
 
-## Preconditions
+## Outputs
 
-- `right_hand_empty` — `contract_precheck`
-- `object_annotated` — `contract_noun_binding`
-- `object_reachable` — `policy_attempt`
+- `moved_m` (`number`): Measured base displacement.
 
-## Planner action predicate
+## Applicability
 
-`acquire_object(object)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['held_by_right_hand', 'object_lifted']`.
+Always applicable.
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `held_by_right_hand` — measured by `contract_runner`
-- `object_lifted` — measured by `contract_runner`
+- none
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_004` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_012", "compose", ...)`.
+- `base_clear_of(place=$obstacle, distance_m=$distance_m)` — Base centre at least the given distance from the place's footprint. GT: base_pose, scene_annotation.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: microwave_cavity
+- `base_clear_of(place=$obstacle, distance_m=$distance_m)` (all paths)
 
-Match before execution: `[{'noun': 'object', 'field': 'location', 'equals': 'microwave_cavity'}]`.
+## May invalidate
 
-1. `policy_048(object)`
+`base_near(*)`, `reachable(*)`, `facing(*)`, `in_view(*)`
 
-### Policy path: floor_corner
+## Policy paths (first match on the bound nouns)
 
-Match before execution: `[{'noun': 'object', 'field': 'on_floor', 'equals': True}, {'noun': 'object', 'field': 'grasp_types', 'contains': 'edge_pinch_after_push'}]`.
+### `microwave_door_sweep` — when obstacle.instance == 'kitchen_microwave'
 
-1. `policy_014(object)`
+1. `policy_030($obstacle)`
+- The microwave's measured hinge-clearance pose (also when loaded).
 
-### Policy path: rectangular_rim
+### `bimanual_or_left_load` — when robot.left_held
 
-Match before execution: `[{'noun': 'object', 'field': 'grasp_types', 'contains': 'rim_pinch_rect'}]`.
+1. `policy_067($obstacle, $distance_m)`
 
-1. `policy_012(object)`
+### `loaded` — when robot.right_held
 
-### Policy path: round_rim
+1. `policy_035($distance_m)`
+- Straight reverse with the right-hand load.
 
-Match before execution: `[{'noun': 'object', 'field': 'grasp_types', 'contains': 'rim_pinch'}]`.
+### `empty` — when always (default path)
 
-1. `policy_011(object)`
+1. `policy_100($obstacle, $distance_m) as plan`
+2. `policy_037(#plan.forward_m)`
 
-### Policy path: top_pinch
+## Relations
 
-Match before execution: `[{'noun': 'object', 'field': 'grasp_types', 'contains': 'top_pinch'}]`.
-
-1. `policy_010(object)`
-
-### Policy path: flat_edge
-
-Match before execution: `[{'noun': 'object', 'field': 'on_floor', 'equals': False}, {'noun': 'object', 'field': 'grasp_types', 'contains': 'edge_pinch_after_push'}]`.
-
-1. `policy_013(object)`
-
-### Policy path: handle_only
-
-Match before execution: `[{'noun': 'object', 'field': 'grasp_types', 'contains': 'handle_pinch'}, {'noun': 'object', 'field': 'handle_collider', 'equals': True}]`.
-
-1. `policy_055(object)`
-
-
-Verifier: `contract_002 / auto`.
-
-## Related Skills
-
-- `skill_026` (`follows`) when an object was removed and the manual access must be closed — Restore the door or drawer to its measured closed joint.
-- `skill_005` (`enables`) when the task requires the grasped object on a support — Right-hand holding is the place precondition.
-- `skill_006` (`enables`) when the task requires the grasped object inside a container — Right-hand holding is the container-place precondition.
-- `skill_037` (`enables`) when the task requires the object upright on a support — Orient before release, then verify upright after placement.
-- `skill_038` (`enables`) when the task requires a target area on a support — A held object can be placed near an xy hint.
-- `skill_039` (`enables`) when the task requires both upright and near-hint placement — Both final predicates are checked after release.
-- May follow `skill_025` (`enables`) when the target object is enclosed by a closed manual door or drawer.
-- May follow `skill_018` (`recovery`) when moving pick failed and the object is stationary and reachable.
-- May follow `skill_027` (`alternative`) when top pinch geometry is absent or fails but another grasp exists.
-- May follow `skill_047` (`enables`) when object lies behind the opened hinged door.
-- May follow `skill_048` (`enables`) when object lies inside the opened drawer.
+- Next step: `navigate` (`skill_001`) (then) — the robot must leave after backing out
+- Next step: `open` (`skill_040`) (then) — a door's swing needs room in front of the robot
+- Is a fallback for: `navigate` (`skill_001`) (recover) — navigation fails because the base or load is wedged against furniture
+- Is a fallback for: `tuck` (`skill_009`) (recover) — the fold collides with furniture
+- Is a fallback for: `open` (`skill_040`) (recover) — the door swing hits the base
+- Is a fallback for: `close` (`skill_041`) (recover) — the door swing hits the base
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
-- Conditional fallback `skill_016` when object remains on an annotated support edge and right hand is empty: edge-specific grasp may be appropriate
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
+- the path behind the base is blocked
 
-one planner-visible pick attempt
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the task goal
-- Outside scope: guaranteeing reachability before execution
-- Outside scope: placing or transporting the object to a destination
+Paired Contract: `contract_012`.

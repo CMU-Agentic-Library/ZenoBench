@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_115",
+  "legacy_id": "hover_over",
+  "name": "Hover Over",
+  "description": "Hold the carried object just above a target.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "manipulation",
+    "effect_summary": "hovering_over(name, target)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "target",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "clearance_m",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.06
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "hovering_over(name, target)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_115",
+    "legacy_attribute": "hover_over",
+    "class": "HoverOverPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_071:hover/above_target"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

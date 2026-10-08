@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_081",
+  "legacy_id": "roll_cylinder",
+  "name": "Roll Cylinder",
+  "description": "Roll a lying cylinder by pushing above its axis.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "contact",
+    "effect_summary": "object_rolled(name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "distance_m",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": 0.1
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "object_rolled(name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_081",
+    "legacy_attribute": "roll_cylinder",
+    "class": "RollCylinderPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_042:roll/push_above_axis"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

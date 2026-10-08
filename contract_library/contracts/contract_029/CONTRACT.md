@@ -1,44 +1,19 @@
-# contract_029 — Carry a large object with both hands
+# contract_029 — Release an object
 
-Move a currently two-hand-held object to one base pose.
+Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.
 
-Paired SkillNode: `skill_021`. Status: `experimental_callable`.
+Paired SkillNode: `skill_021` (`release-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `pose`: pose2d
+- [all paths] `holding(hand=$hand, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
 
-## Preconditions
+## Verifier
 
-- `target_navigable` — policy_attempt
-- `carried_object_matches_state` — not_enforced
-- `two_hand_hold` — not_enforced
-
-## Planner action predicate
-
-`convoy_bimanual_load(object, pose)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `base_at` — contract_runner
-- `grasp_preserved` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `hand_empty(hand=$hand)` — GT: gripper_state
 
 ## Policy paths
 
-### fixed
+- `open_in_place` when always: `policy_096($object, $hand)`
 
-Match before execution: `[]`.
-
-1. `policy_058` with ['object', 'pose']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_001` / `two_hand_carry`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).prepare_floor_reach.execute(...)`
 - Class: `PrepareFloorReachPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_057
+- Skill Contract paths: contract_025:pick/floor_top
 - Referenced as support by legacy families: contract_002, contract_008
 
 ## Recorded evidence

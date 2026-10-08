@@ -1,430 +1,2446 @@
 {
-  "schema_version": 1,
-  "kind": "skill_relations",
-  "scope": "conditional_hints_not_fixed_task_graph",
-  "relations": [
-    {
-      "id": "relation_001",
-      "from": "skill_023",
-      "to": "skill_014",
-      "kind": "enables",
-      "when": "microwave cavity must be opened before loading",
-      "reason": "Open joint makes the cavity physically accessible.",
-      "automatic": false
-    },
-    {
-      "id": "relation_002",
-      "from": "skill_023",
-      "to": "skill_015",
-      "kind": "enables",
-      "when": "food must be retrieved from a closed microwave",
-      "reason": "Open joint makes the cavity physically accessible.",
-      "automatic": false
-    },
-    {
-      "id": "relation_003",
-      "from": "skill_014",
-      "to": "skill_024",
-      "kind": "follows",
-      "when": "microwave food is loaded and heating is next",
-      "reason": "The door must be closed before the start button can heat food.",
-      "automatic": false
-    },
-    {
-      "id": "relation_004",
-      "from": "skill_024",
-      "to": "skill_010",
-      "kind": "enables",
-      "when": "configured food is inside the microwave",
-      "reason": "Start requires a closed microwave door.",
-      "automatic": false
-    },
-    {
-      "id": "relation_005",
-      "from": "skill_010",
-      "to": "skill_040",
-      "kind": "enables",
-      "when": "heating was started but target temperature is unmet",
-      "reason": "The thermal wait advances the live model and verifies the threshold.",
-      "automatic": false
-    },
-    {
-      "id": "relation_006",
-      "from": "skill_040",
-      "to": "skill_023",
-      "kind": "follows",
-      "when": "heated food must be removed for serving",
-      "reason": "Open the microwave after heating has stopped.",
-      "automatic": false
-    },
-    {
-      "id": "relation_007",
-      "from": "skill_015",
-      "to": "skill_037",
-      "kind": "follows",
-      "when": "retrieved food must be served upright",
-      "reason": "Place the still-held item and verify support and tilt.",
-      "automatic": false
-    },
-    {
-      "id": "relation_008",
-      "from": "skill_023",
-      "to": "skill_024",
-      "kind": "follows",
-      "when": "microwave inspection is complete without retrieval",
-      "reason": "Close the open door to satisfy the terminal closed condition.",
-      "automatic": false
-    },
-    {
-      "id": "relation_009",
-      "from": "skill_025",
-      "to": "skill_004",
-      "kind": "enables",
-      "when": "the target object is enclosed by a closed manual door or drawer",
-      "reason": "Open access before attempting a general pick.",
-      "automatic": false
-    },
-    {
-      "id": "relation_010",
-      "from": "skill_004",
-      "to": "skill_026",
-      "kind": "follows",
-      "when": "an object was removed and the manual access must be closed",
-      "reason": "Restore the door or drawer to its measured closed joint.",
-      "automatic": false
-    },
-    {
-      "id": "relation_011",
-      "from": "skill_004",
-      "to": "skill_005",
-      "kind": "enables",
-      "when": "the task requires the grasped object on a support",
-      "reason": "Right-hand holding is the place precondition.",
-      "automatic": false
-    },
-    {
-      "id": "relation_012",
-      "from": "skill_004",
-      "to": "skill_006",
-      "kind": "enables",
-      "when": "the task requires the grasped object inside a container",
-      "reason": "Right-hand holding is the container-place precondition.",
-      "automatic": false
-    },
-    {
-      "id": "relation_013",
-      "from": "skill_004",
-      "to": "skill_037",
-      "kind": "enables",
-      "when": "the task requires the object upright on a support",
-      "reason": "Orient before release, then verify upright after placement.",
-      "automatic": false
-    },
-    {
-      "id": "relation_014",
-      "from": "skill_004",
-      "to": "skill_038",
-      "kind": "enables",
-      "when": "the task requires a target area on a support",
-      "reason": "A held object can be placed near an xy hint.",
-      "automatic": false
-    },
-    {
-      "id": "relation_015",
-      "from": "skill_004",
-      "to": "skill_039",
-      "kind": "enables",
-      "when": "the task requires both upright and near-hint placement",
-      "reason": "Both final predicates are checked after release.",
-      "automatic": false
-    },
-    {
-      "id": "relation_016",
-      "from": "skill_027",
-      "to": "skill_005",
-      "kind": "enables",
-      "when": "an object was top-pinched for transfer",
-      "reason": "Place uses the successful right-hand grasp.",
-      "automatic": false
-    },
-    {
-      "id": "relation_017",
-      "from": "skill_028",
-      "to": "skill_037",
-      "kind": "enables",
-      "when": "a rim-grasped vessel must end upright on a support",
-      "reason": "Orient and place the held vessel.",
-      "automatic": false
-    },
-    {
-      "id": "relation_018",
-      "from": "skill_029",
-      "to": "skill_006",
-      "kind": "enables",
-      "when": "a rectangular-rim container was grasped for relocation",
-      "reason": "Relocate the held container before loading objects into it.",
-      "automatic": false
-    },
-    {
-      "id": "relation_019",
-      "from": "skill_035",
-      "to": "skill_016",
-      "kind": "preparation",
-      "when": "a flat object needs a graspable support overhang",
-      "reason": "The edge exposure step verifies the overhang before the edge pick.",
-      "automatic": false
-    },
-    {
-      "id": "relation_020",
-      "from": "skill_016",
-      "to": "skill_030",
-      "kind": "enables",
-      "when": "the flat object is edge-held and must be placed on a shelf",
-      "reason": "Edge placement matches the grasp mode.",
-      "automatic": false
-    },
-    {
-      "id": "relation_021",
-      "from": "skill_031",
-      "to": "skill_020",
-      "kind": "preparation",
-      "when": "a flat object lies on the floor and is hard to reach",
-      "reason": "Lowering the torso can improve floor reach.",
-      "automatic": false
-    },
-    {
-      "id": "relation_022",
-      "from": "skill_020",
-      "to": "skill_005",
-      "kind": "enables",
-      "when": "a floor object was lifted and needs a support",
-      "reason": "Place the recovered object after observing the grasp.",
-      "automatic": false
-    },
-    {
-      "id": "relation_023",
-      "from": "skill_036",
-      "to": "skill_037",
-      "kind": "preparation",
-      "when": "a held object must be placed upright",
-      "reason": "The combined placement Contract checks upright again after release.",
-      "automatic": false
-    },
-    {
-      "id": "relation_024",
-      "from": "skill_037",
-      "to": "skill_038",
-      "kind": "alternative",
-      "when": "the task needs near placement but upright is already satisfied or unnecessary",
-      "reason": "Use the proximity-specific contract when orientation is not part of the goal.",
-      "automatic": false
-    },
-    {
-      "id": "relation_025",
-      "from": "skill_038",
-      "to": "skill_039",
-      "kind": "alternative",
-      "when": "the task also requires upright after release",
-      "reason": "Use the combined contract with both final checks.",
-      "automatic": false
-    },
-    {
-      "id": "relation_026",
-      "from": "skill_041",
-      "to": "skill_002",
-      "kind": "preparation",
-      "when": "a carried object needs height clearance before travel",
-      "reason": "Raise the load before using the carry-navigation policy.",
-      "automatic": false
-    },
-    {
-      "id": "relation_027",
-      "from": "skill_042",
-      "to": "skill_002",
-      "kind": "preparation",
-      "when": "a load needs clearance from furniture before travel",
-      "reason": "Back away, then select a new travel pose.",
-      "automatic": false
-    },
-    {
-      "id": "relation_028",
-      "from": "skill_018",
-      "to": "skill_004",
-      "kind": "recovery",
-      "when": "moving pick failed and the object is stationary and reachable",
-      "reason": "Retry through a stationary grasp only after fresh observation.",
-      "automatic": false
-    },
-    {
-      "id": "relation_029",
-      "from": "skill_019",
-      "to": "skill_005",
-      "kind": "recovery",
-      "when": "moving place failed and the object remains right-held",
-      "reason": "Try stationary support placement after fresh observation.",
-      "automatic": false
-    },
-    {
-      "id": "relation_030",
-      "from": "skill_027",
-      "to": "skill_004",
-      "kind": "alternative",
-      "when": "top pinch geometry is absent or fails but another grasp exists",
-      "reason": "The general dispatcher can select another annotated grasp.",
-      "automatic": false
-    },
-    {
-      "id": "relation_031",
-      "from": "skill_028",
-      "to": "skill_017",
-      "kind": "alternative",
-      "when": "round-rim grasp fails and the cup has an annotated handle",
-      "reason": "Handle grasp is a distinct physical strategy.",
-      "automatic": false
-    },
-    {
-      "id": "relation_032",
-      "from": "skill_006",
-      "to": "skill_005",
-      "kind": "alternative",
-      "when": "the chosen container is unavailable but the task permits a support destination",
-      "reason": "Replan the semantic goal; do not silently weaken an inside requirement.",
-      "automatic": false
-    },
-    {
-      "id": "relation_033",
-      "from": "skill_005",
-      "to": "skill_030",
-      "kind": "alternative",
-      "when": "the object is edge-held and surface place is unsuitable",
-      "reason": "Use the edge-specific place policy.",
-      "automatic": false
-    },
-    {
-      "id": "relation_034",
-      "from": "skill_003",
-      "to": "skill_025",
-      "kind": "alternative",
-      "when": "a manual door must use an explicit handle route",
-      "reason": "Select the handle-specific operation when annotation supports it.",
-      "automatic": false
-    },
-    {
-      "id": "relation_035",
-      "from": "skill_007",
-      "to": "skill_026",
-      "kind": "alternative",
-      "when": "a manual door close needs an explicit handle route",
-      "reason": "Select the handle-specific closure.",
-      "automatic": false
-    },
-    {
-      "id": "relation_036",
-      "from": "skill_007",
-      "to": "skill_024",
-      "kind": "alternative",
-      "when": "a powered microwave door must close",
-      "reason": "Use the powered closure policy.",
-      "automatic": false
-    },
-    {
-      "id": "relation_037",
-      "from": "skill_005",
-      "to": "skill_007",
-      "kind": "follows",
-      "when": "manipulation used an articulated compartment and the task requires closed doors",
-      "reason": "Close the relevant compartment after manipulation.",
-      "automatic": false
-    },
-    {
-      "id": "relation_038",
-      "from": "skill_006",
-      "to": "skill_007",
-      "kind": "follows",
-      "when": "container placement used an articulated compartment and the task requires closed doors",
-      "reason": "Close the relevant compartment after placement.",
-      "automatic": false
-    },
-    {
-      "id": "relation_039",
-      "from": "skill_011",
-      "to": "skill_043",
-      "kind": "preparation",
-      "when": "after arm tucking and a local orientation correction is needed",
-      "reason": "Tucked arm allows a direct local base turn.",
-      "automatic": false
-    },
-    {
-      "id": "relation_040",
-      "from": "skill_011",
-      "to": "skill_044",
-      "kind": "preparation",
-      "when": "after arm tucking and a short straight reposition is needed",
-      "reason": "Tucked arm allows a direct local translation.",
-      "automatic": false
-    },
-    {
-      "id": "relation_041",
-      "from": "skill_045",
-      "to": "skill_035",
-      "kind": "recovery",
-      "when": "rear contact could not make required progress on a flat object",
-      "reason": "Slide to edge offers an alternate flat-object contact route.",
-      "automatic": false
-    },
-    {
-      "id": "relation_042",
-      "from": "skill_046",
-      "to": "skill_035",
-      "kind": "recovery",
-      "when": "top drag could not make required progress on a flat object",
-      "reason": "An edge overhang can enable the next grasp attempt.",
-      "automatic": false
-    },
-    {
-      "id": "relation_043",
-      "from": "skill_047",
-      "to": "skill_004",
-      "kind": "enables",
-      "when": "object lies behind the opened hinged door",
-      "reason": "Access permits a grounded pick attempt.",
-      "automatic": false
-    },
-    {
-      "id": "relation_044",
-      "from": "skill_048",
-      "to": "skill_004",
-      "kind": "enables",
-      "when": "object lies inside the opened drawer",
-      "reason": "Access permits a grounded pick attempt.",
-      "automatic": false
-    },
-    {
-      "id": "relation_045",
-      "from": "skill_049",
-      "to": "skill_020",
-      "kind": "preparation",
-      "when": "a floor item has a verified pregrasp and corner pick is appropriate",
-      "reason": "Prepared arm pose can precede the floor-corner grasp.",
-      "automatic": false
-    },
-    {
-      "id": "relation_046",
-      "from": "skill_050",
-      "to": "skill_023",
-      "kind": "preparation",
-      "when": "microwave door sweep is clear and powered opening is next",
-      "reason": "Measured clearance permits hinge motion.",
-      "automatic": false
-    },
-    {
-      "id": "relation_047",
-      "from": "skill_001",
-      "to": "skill_049",
-      "kind": "preparation",
-      "when": "floor target is beyond the current arm reach",
-      "reason": "Navigate to a collision-free stance near the grounded floor object before preparing a pregrasp.",
-      "automatic": false
-    }
-  ]
+ "schema_version": 2,
+ "kind": "skill_relations",
+ "semantics": {
+  "sequence": "to is a natural next step after from (loose); a postcondition of from matches a precondition of to",
+  "fallback": "when from fails: repair = to establishes a failed precondition, then retry from; substitute = to reaches from's effect another way",
+  "alternative": "same effect by other means"
+ },
+ "relations": [
+  {
+   "id": "relation_001",
+   "from": "skill_001",
+   "from_verb": "navigate",
+   "to": "skill_002",
+   "to_verb": "approach",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "a manipulation target is on the destination",
+   "bind": {
+    "target": "$destination"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_002",
+   "from": "skill_001",
+   "from_verb": "navigate",
+   "to": "skill_011",
+   "to_verb": "look",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the destination must be observed first",
+   "bind": {
+    "target": "$destination"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_003",
+   "from": "skill_001",
+   "from_verb": "navigate",
+   "to": "skill_004",
+   "to_verb": "retreat",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "navigation fails because the base or load is wedged against furniture",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_004",
+   "from": "skill_001",
+   "from_verb": "navigate",
+   "to": "skill_009",
+   "to_verb": "tuck",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "navigation fails because the empty arm cannot fold",
+   "bind": {
+    "hand": "right"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_005",
+   "from": "skill_001",
+   "from_verb": "navigate",
+   "to": "skill_023",
+   "to_verb": "lift",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "a carried object hangs too low for the doorway clearance",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_006",
+   "from": "skill_002",
+   "from_verb": "approach",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the target is an object to grasp",
+   "bind": {
+    "object": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_007",
+   "from": "skill_002",
+   "from_verb": "approach",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the target is a door or drawer",
+   "bind": {
+    "articulated": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_008",
+   "from": "skill_002",
+   "from_verb": "approach",
+   "to": "skill_042",
+   "to_verb": "press",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the target is a button",
+   "bind": {
+    "button": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_009",
+   "from": "skill_002",
+   "from_verb": "approach",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "base_near",
+   "when": "no base pose near the current one reaches the target",
+   "bind": {
+    "destination": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_010",
+   "from": "skill_002",
+   "from_verb": "approach",
+   "to": "skill_007",
+   "to_verb": "bend",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the target is just beyond the arm envelope",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_011",
+   "from": "skill_002",
+   "from_verb": "approach",
+   "to": "skill_030",
+   "to_verb": "pull",
+   "kind": "fallback",
+   "fallback_type": "substitute",
+   "when": "the object sits too deep on its support",
+   "bind": {
+    "object": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_012",
+   "from": "skill_003",
+   "from_verb": "face",
+   "to": "skill_011",
+   "to_verb": "look",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the target must be observed",
+   "bind": {
+    "target": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_013",
+   "from": "skill_003",
+   "from_verb": "face",
+   "to": "skill_015",
+   "to_verb": "point",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the target must be indicated",
+   "bind": {
+    "target": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_014",
+   "from": "skill_003",
+   "from_verb": "face",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "alternative",
+   "when": "turning in place is blocked by furniture",
+   "bind": {
+    "destination": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_015",
+   "from": "skill_004",
+   "from_verb": "retreat",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the robot must leave after backing out",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_016",
+   "from": "skill_004",
+   "from_verb": "retreat",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "a door's swing needs room in front of the robot",
+   "bind": {
+    "articulated": "$obstacle"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_017",
+   "from": "skill_005",
+   "from_verb": "crouch",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the object is on the floor or a low shelf",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_018",
+   "from": "skill_005",
+   "from_verb": "crouch",
+   "to": "skill_006",
+   "to_verb": "stand",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "low work is done",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_019",
+   "from": "skill_006",
+   "from_verb": "stand",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the robot drives after low work",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_020",
+   "from": "skill_006",
+   "from_verb": "stand",
+   "to": "skill_010",
+   "to_verb": "reset",
+   "kind": "alternative",
+   "when": "the arm and waist must also be restored",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_021",
+   "from": "skill_007",
+   "from_verb": "bend",
+   "to": "skill_008",
+   "to_verb": "straighten",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the reach is done",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_022",
+   "from": "skill_007",
+   "from_verb": "bend",
+   "to": "skill_002",
+   "to_verb": "approach",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the target was just out of reach",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_023",
+   "from": "skill_008",
+   "from_verb": "straighten",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the robot drives after a bent reach",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_024",
+   "from": "skill_008",
+   "from_verb": "straighten",
+   "to": "skill_010",
+   "to_verb": "reset",
+   "kind": "alternative",
+   "when": "the arm and torso must also be restored",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_025",
+   "from": "skill_009",
+   "from_verb": "tuck",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the robot drives next",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_026",
+   "from": "skill_009",
+   "from_verb": "tuck",
+   "to": "skill_004",
+   "to_verb": "retreat",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the fold collides with furniture",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_027",
+   "from": "skill_010",
+   "from_verb": "reset",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "after a failed manipulation, before driving on",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_028",
+   "from": "skill_011",
+   "from_verb": "look",
+   "to": "skill_002",
+   "to_verb": "approach",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the observed target will be manipulated",
+   "bind": {
+    "target": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_029",
+   "from": "skill_011",
+   "from_verb": "look",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "when": "the line of sight is blocked",
+   "bind": {
+    "destination": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_030",
+   "from": "skill_011",
+   "from_verb": "look",
+   "to": "skill_012",
+   "to_verb": "inspect",
+   "kind": "alternative",
+   "when": "the target is a receptacle whose contents matter",
+   "bind": {
+    "receptacle": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_031",
+   "from": "skill_012",
+   "from_verb": "inspect",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "an object found inside must be taken out",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_032",
+   "from": "skill_012",
+   "from_verb": "inspect",
+   "to": "skill_051",
+   "to_verb": "empty",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "every object inside must be removed",
+   "bind": {
+    "container": "$receptacle"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_033",
+   "from": "skill_012",
+   "from_verb": "inspect",
+   "to": "skill_011",
+   "to_verb": "look",
+   "kind": "alternative",
+   "when": "only the receptacle itself must be seen",
+   "bind": {
+    "target": "$receptacle"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_034",
+   "from": "skill_013",
+   "from_verb": "search",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the found object must be fetched",
+   "bind": {
+    "destination": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_035",
+   "from": "skill_013",
+   "from_verb": "search",
+   "to": "skill_014",
+   "to_verb": "explore",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the object is not on any visited support",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_036",
+   "from": "skill_013",
+   "from_verb": "search",
+   "to": "skill_012",
+   "to_verb": "inspect",
+   "kind": "fallback",
+   "fallback_type": "substitute",
+   "when": "the object may be inside a closed cabinet",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_037",
+   "from": "skill_014",
+   "from_verb": "explore",
+   "to": "skill_013",
+   "to_verb": "search",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "a specific object must then be located",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_038",
+   "from": "skill_015",
+   "from_verb": "point",
+   "to": "skill_009",
+   "to_verb": "tuck",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the gesture is finished",
+   "bind": {
+    "hand": "right"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_039",
+   "from": "skill_015",
+   "from_verb": "point",
+   "to": "skill_011",
+   "to_verb": "look",
+   "kind": "alternative",
+   "when": "a gaze is enough to indicate the target",
+   "bind": {
+    "target": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_040",
+   "from": "skill_016",
+   "from_verb": "present",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object is put away after showing it",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_041",
+   "from": "skill_016",
+   "from_verb": "present",
+   "to": "skill_022",
+   "to_verb": "handover",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object is passed to the left hand",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_042",
+   "from": "skill_016",
+   "from_verb": "present",
+   "to": "skill_023",
+   "to_verb": "lift",
+   "kind": "alternative",
+   "when": "only the height of the load matters",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_043",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the object must be carried elsewhere",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_044",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object goes onto a surface or into a container",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_045",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_023",
+   "to_verb": "lift",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object must clear a high rim while carried",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_046",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_031",
+   "to_verb": "expose",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "edge_overhang",
+   "when": "a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_047",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_032",
+   "to_verb": "separate",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "grasp_clearance",
+   "when": "fingers have no room beside the object (grasp_clearance false)",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_048",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_030",
+   "to_verb": "pull",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the object sits too deep to reach",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_049",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_002",
+   "to_verb": "approach",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "no grasp is reachable from base poses near the current one",
+   "bind": {
+    "target": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_050",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_036",
+   "to_verb": "upright",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "a tall object fell over and its top pinch is gone",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_051",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_005",
+   "to_verb": "crouch",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the object is on the floor or a low shelf",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_052",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_046",
+   "to_verb": "uncover",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the object to take is a lid-covered container's content",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_053",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "is_open",
+   "when": "the object is inside a closed cabinet or appliance",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_054",
+   "from": "skill_017",
+   "from_verb": "pick",
+   "to": "skill_026",
+   "to_verb": "regrasp",
+   "kind": "alternative",
+   "when": "the object is already in the hand but badly held",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_055",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_041",
+   "to_verb": "close",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object went into a cabinet or appliance whose door must be shut",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_056",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_043",
+   "to_verb": "heat",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the food went into the microwave or onto the stove",
+   "bind": {
+    "food": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_057",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_009",
+   "to_verb": "tuck",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the hand is empty and the robot drives next",
+   "bind": {
+    "hand": "right"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_058",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_019",
+   "to_verb": "drop",
+   "kind": "fallback",
+   "fallback_type": "substitute",
+   "when": "a deep container leaves no room to lower the hand inside",
+   "bind": {
+    "object": "$object",
+    "container": "$receptacle"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_059",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_002",
+   "to_verb": "approach",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the receptacle is out of reach",
+   "bind": {
+    "target": "$receptacle"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_060",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "is_open",
+   "when": "the receptacle is behind a closed door",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_061",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_046",
+   "to_verb": "uncover",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "uncovered",
+   "when": "the container has its lid on",
+   "bind": {
+    "container": "$receptacle"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_062",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_026",
+   "to_verb": "regrasp",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the object turned in the hand and no longer clears the target",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_063",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_020",
+   "to_verb": "stack",
+   "kind": "alternative",
+   "when": "the object should rest on another object",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_064",
+   "from": "skill_018",
+   "from_verb": "place",
+   "to": "skill_019",
+   "to_verb": "drop",
+   "kind": "alternative",
+   "when": "the target is a deep bin and a gentle release is not required",
+   "bind": {
+    "object": "$object",
+    "container": "$receptacle"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_065",
+   "from": "skill_019",
+   "from_verb": "drop",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "more items go into the same container",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_066",
+   "from": "skill_019",
+   "from_verb": "drop",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "alternative",
+   "when": "a gentle release inside is needed",
+   "bind": {
+    "object": "$object",
+    "receptacle": "$container"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_067",
+   "from": "skill_020",
+   "from_verb": "stack",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "a taller stack is built",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_068",
+   "from": "skill_020",
+   "from_verb": "stack",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the base's top is occupied: remove the top object first",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_069",
+   "from": "skill_020",
+   "from_verb": "stack",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "alternative",
+   "when": "a support surface is acceptable instead",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_070",
+   "from": "skill_021",
+   "from_verb": "release",
+   "to": "skill_009",
+   "to_verb": "tuck",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the arm is folded after letting go",
+   "bind": {
+    "hand": "$hand"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_071",
+   "from": "skill_021",
+   "from_verb": "release",
+   "to": "skill_019",
+   "to_verb": "drop",
+   "kind": "alternative",
+   "when": "the object should fall into a container",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_072",
+   "from": "skill_022",
+   "from_verb": "handover",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the right hand must open a door while the left carries the load",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_073",
+   "from": "skill_022",
+   "from_verb": "handover",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "a second object is picked with the free right hand",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_074",
+   "from": "skill_022",
+   "from_verb": "handover",
+   "to": "skill_027",
+   "to_verb": "brace",
+   "kind": "alternative",
+   "when": "the left hand should hold an object that stays on its support",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_075",
+   "from": "skill_023",
+   "from_verb": "lift",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the object is carried over furniture",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_076",
+   "from": "skill_023",
+   "from_verb": "lift",
+   "to": "skill_019",
+   "to_verb": "drop",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object is released over a tall container",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_077",
+   "from": "skill_024",
+   "from_verb": "lower",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object goes onto a low shelf or into the fridge",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_078",
+   "from": "skill_024",
+   "from_verb": "lower",
+   "to": "skill_023",
+   "to_verb": "lift",
+   "kind": "alternative",
+   "when": "opposite direction",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_079",
+   "from": "skill_025",
+   "from_verb": "rotate",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object is set down in the new orientation",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_080",
+   "from": "skill_025",
+   "from_verb": "rotate",
+   "to": "skill_026",
+   "to_verb": "regrasp",
+   "kind": "alternative",
+   "when": "the grasp, not the yaw, must change",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_081",
+   "from": "skill_026",
+   "from_verb": "regrasp",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the corrected grasp is used to place precisely",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_082",
+   "from": "skill_027",
+   "from_verb": "brace",
+   "to": "skill_038",
+   "to_verb": "stir",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the braced container is stirred",
+   "bind": {
+    "container": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_083",
+   "from": "skill_027",
+   "from_verb": "brace",
+   "to": "skill_021",
+   "to_verb": "release",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "bracing is finished",
+   "bind": {
+    "object": "$object",
+    "hand": "left"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_084",
+   "from": "skill_028",
+   "from_verb": "flip",
+   "to": "skill_033",
+   "to_verb": "center",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object is left overhanging the edge",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_085",
+   "from": "skill_028",
+   "from_verb": "flip",
+   "to": "skill_033",
+   "to_verb": "center",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the flipped object landed too close to the edge",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_086",
+   "from": "skill_029",
+   "from_verb": "push",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the object was pushed into a graspable spot",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_087",
+   "from": "skill_029",
+   "from_verb": "push",
+   "to": "skill_030",
+   "to_verb": "pull",
+   "kind": "alternative",
+   "when": "the object should come toward the robot",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_088",
+   "from": "skill_030",
+   "from_verb": "pull",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the object is now close enough to grasp",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_089",
+   "from": "skill_031",
+   "from_verb": "expose",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "pinch the overhang",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_090",
+   "from": "skill_031",
+   "from_verb": "expose",
+   "to": "skill_028",
+   "to_verb": "flip",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "turn the object over",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_091",
+   "from": "skill_031",
+   "from_verb": "expose",
+   "to": "skill_002",
+   "to_verb": "approach",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "when": "no base pose reaches behind the object",
+   "bind": {
+    "target": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_092",
+   "from": "skill_032",
+   "from_verb": "separate",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "grasp the freed object",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_093",
+   "from": "skill_033",
+   "from_verb": "center",
+   "to": "skill_029",
+   "to_verb": "push",
+   "kind": "alternative",
+   "when": "a specific direction is wanted",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_094",
+   "from": "skill_033",
+   "from_verb": "center",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the secured object is grasped later",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_095",
+   "from": "skill_034",
+   "from_verb": "roll",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the rolled object is then grasped",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_096",
+   "from": "skill_034",
+   "from_verb": "roll",
+   "to": "skill_029",
+   "to_verb": "push",
+   "kind": "alternative",
+   "when": "sliding is acceptable",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_097",
+   "from": "skill_035",
+   "from_verb": "tip",
+   "to": "skill_034",
+   "to_verb": "roll",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the lying cylinder is rolled",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_098",
+   "from": "skill_035",
+   "from_verb": "tip",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the lying object is pinched across its side",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_099",
+   "from": "skill_035",
+   "from_verb": "tip",
+   "to": "skill_036",
+   "to_verb": "upright",
+   "kind": "alternative",
+   "when": "opposite effect",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_100",
+   "from": "skill_036",
+   "from_verb": "upright",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the standing object is then grasped by its top",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_101",
+   "from": "skill_036",
+   "from_verb": "upright",
+   "to": "skill_035",
+   "to_verb": "tip",
+   "kind": "alternative",
+   "when": "opposite effect",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_102",
+   "from": "skill_037",
+   "from_verb": "wipe",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the sponge is put back",
+   "bind": {
+    "object": "$tool"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_103",
+   "from": "skill_037",
+   "from_verb": "wipe",
+   "to": "skill_050",
+   "to_verb": "clear",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "objects cover the surface",
+   "bind": {
+    "support": "$surface"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_104",
+   "from": "skill_038",
+   "from_verb": "stir",
+   "to": "skill_045",
+   "to_verb": "cover",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the pot is covered again",
+   "bind": {
+    "container": "$container"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_105",
+   "from": "skill_038",
+   "from_verb": "stir",
+   "to": "skill_043",
+   "to_verb": "heat",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the stirred food is heated",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_106",
+   "from": "skill_038",
+   "from_verb": "stir",
+   "to": "skill_027",
+   "to_verb": "brace",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the container slides while stirring",
+   "bind": {
+    "object": "$container"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_107",
+   "from": "skill_039",
+   "from_verb": "pour",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the empty cup is put down",
+   "bind": {
+    "object": "$source"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_108",
+   "from": "skill_039",
+   "from_verb": "pour",
+   "to": "skill_038",
+   "to_verb": "stir",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the poured food is stirred",
+   "bind": {
+    "container": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_109",
+   "from": "skill_039",
+   "from_verb": "pour",
+   "to": "skill_046",
+   "to_verb": "uncover",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "uncovered",
+   "when": "the target has its lid on",
+   "bind": {
+    "container": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_110",
+   "from": "skill_040",
+   "from_verb": "open",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "an object inside must be taken out",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_111",
+   "from": "skill_040",
+   "from_verb": "open",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "an object must go inside",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_112",
+   "from": "skill_040",
+   "from_verb": "open",
+   "to": "skill_041",
+   "to_verb": "close",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the door must be shut afterwards",
+   "bind": {
+    "articulated": "$articulated"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_113",
+   "from": "skill_040",
+   "from_verb": "open",
+   "to": "skill_004",
+   "to_verb": "retreat",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the door swing hits the base",
+   "bind": {
+    "obstacle": "$articulated"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_114",
+   "from": "skill_040",
+   "from_verb": "open",
+   "to": "skill_022",
+   "to_verb": "handover",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "hand_empty",
+   "when": "the right hand still holds a load",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_115",
+   "from": "skill_040",
+   "from_verb": "open",
+   "to": "skill_002",
+   "to_verb": "approach",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the handle is out of reach",
+   "bind": {
+    "target": "$articulated"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_116",
+   "from": "skill_041",
+   "from_verb": "close",
+   "to": "skill_043",
+   "to_verb": "heat",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "a microwave or fridge must be closed before its cycle",
+   "bind": {
+    "appliance": "$articulated"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_117",
+   "from": "skill_041",
+   "from_verb": "close",
+   "to": "skill_044",
+   "to_verb": "chill",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the fridge must be closed while cooling",
+   "bind": {
+    "appliance": "$articulated"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_118",
+   "from": "skill_041",
+   "from_verb": "close",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the robot leaves",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_119",
+   "from": "skill_041",
+   "from_verb": "close",
+   "to": "skill_004",
+   "to_verb": "retreat",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the door swing hits the base",
+   "bind": {
+    "obstacle": "$articulated"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_120",
+   "from": "skill_042",
+   "from_verb": "press",
+   "to": "skill_043",
+   "to_verb": "heat",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the start key began a cycle",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_121",
+   "from": "skill_042",
+   "from_verb": "press",
+   "to": "skill_009",
+   "to_verb": "tuck",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the hand is free again",
+   "bind": {
+    "hand": "right"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_122",
+   "from": "skill_042",
+   "from_verb": "press",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "alternative",
+   "when": "the door key is pressed only to open the microwave door",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_123",
+   "from": "skill_043",
+   "from_verb": "heat",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the heated food is taken out of the microwave",
+   "bind": {
+    "articulated": "$appliance"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_124",
+   "from": "skill_043",
+   "from_verb": "heat",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the heated food is served",
+   "bind": {
+    "object": "$food"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_125",
+   "from": "skill_043",
+   "from_verb": "heat",
+   "to": "skill_043",
+   "to_verb": "heat",
+   "kind": "alternative",
+   "when": "no microwave is available: heat in a pot on the stove",
+   "bind": {
+    "food": "$food",
+    "appliance": "kitchen_stove"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_126",
+   "from": "skill_043",
+   "from_verb": "heat",
+   "to": "skill_041",
+   "to_verb": "close",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "is_closed",
+   "when": "the microwave door is open",
+   "bind": {
+    "articulated": "$appliance"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_127",
+   "from": "skill_043",
+   "from_verb": "heat",
+   "to": "skill_018",
+   "to_verb": "place",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "in_appliance",
+   "when": "the food is not in the appliance",
+   "bind": {
+    "object": "$food"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_128",
+   "from": "skill_043",
+   "from_verb": "heat",
+   "to": "skill_056",
+   "to_verb": "wait",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the food is still below the target when the time budget ends",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_129",
+   "from": "skill_043",
+   "from_verb": "heat",
+   "to": "skill_039",
+   "to_verb": "pour",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the food is in a cup, not in the pot on the burner",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_130",
+   "from": "skill_044",
+   "from_verb": "chill",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the chilled food is taken out",
+   "bind": {
+    "articulated": "$appliance"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_131",
+   "from": "skill_044",
+   "from_verb": "chill",
+   "to": "skill_041",
+   "to_verb": "close",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "is_closed",
+   "when": "the fridge door is open",
+   "bind": {
+    "articulated": "$appliance"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_132",
+   "from": "skill_045",
+   "from_verb": "cover",
+   "to": "skill_043",
+   "to_verb": "heat",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the covered pot is heated",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_133",
+   "from": "skill_045",
+   "from_verb": "cover",
+   "to": "skill_046",
+   "to_verb": "uncover",
+   "kind": "alternative",
+   "when": "opposite effect",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_134",
+   "from": "skill_046",
+   "from_verb": "uncover",
+   "to": "skill_039",
+   "to_verb": "pour",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "food is poured into the opened pot",
+   "bind": {
+    "target": "$container"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_135",
+   "from": "skill_046",
+   "from_verb": "uncover",
+   "to": "skill_038",
+   "to_verb": "stir",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the opened pot is stirred",
+   "bind": {
+    "container": "$container"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_136",
+   "from": "skill_046",
+   "from_verb": "uncover",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "something inside is taken out",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_137",
+   "from": "skill_046",
+   "from_verb": "uncover",
+   "to": "skill_045",
+   "to_verb": "cover",
+   "kind": "alternative",
+   "when": "opposite effect",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_138",
+   "from": "skill_047",
+   "from_verb": "fetch",
+   "to": "skill_047",
+   "to_verb": "fetch",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "more objects go to the same place",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_139",
+   "from": "skill_047",
+   "from_verb": "fetch",
+   "to": "skill_053",
+   "to_verb": "restore",
+   "kind": "alternative",
+   "when": "the object should return to its starting support",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_140",
+   "from": "skill_047",
+   "from_verb": "fetch",
+   "to": "skill_013",
+   "to_verb": "search",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the object is not where expected",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_141",
+   "from": "skill_048",
+   "from_verb": "collect",
+   "to": "skill_041",
+   "to_verb": "close",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the container sits in a cabinet that must be closed",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_142",
+   "from": "skill_048",
+   "from_verb": "collect",
+   "to": "skill_049",
+   "to_verb": "sort",
+   "kind": "alternative",
+   "when": "the objects belong in different containers",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_143",
+   "from": "skill_049",
+   "from_verb": "sort",
+   "to": "skill_048",
+   "to_verb": "collect",
+   "kind": "alternative",
+   "when": "all objects go into one container",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_144",
+   "from": "skill_049",
+   "from_verb": "sort",
+   "to": "skill_041",
+   "to_verb": "close",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "a sorted container sits in a cabinet",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_145",
+   "from": "skill_050",
+   "from_verb": "clear",
+   "to": "skill_037",
+   "to_verb": "wipe",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the cleared surface is wiped",
+   "bind": {
+    "surface": "$support"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_146",
+   "from": "skill_050",
+   "from_verb": "clear",
+   "to": "skill_052",
+   "to_verb": "arrange",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "a new layout is set on the cleared surface",
+   "bind": {
+    "support": "$support"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_147",
+   "from": "skill_051",
+   "from_verb": "empty",
+   "to": "skill_050",
+   "to_verb": "clear",
+   "kind": "alternative",
+   "when": "the items lie on a surface instead",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_148",
+   "from": "skill_051",
+   "from_verb": "empty",
+   "to": "skill_046",
+   "to_verb": "uncover",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "uncovered",
+   "when": "the container has its lid on",
+   "bind": {
+    "container": "$container"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_149",
+   "from": "skill_052",
+   "from_verb": "arrange",
+   "to": "skill_050",
+   "to_verb": "clear",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the support is too crowded",
+   "bind": {
+    "support": "$support"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_150",
+   "from": "skill_053",
+   "from_verb": "restore",
+   "to": "skill_047",
+   "to_verb": "fetch",
+   "kind": "alternative",
+   "when": "a different destination is wanted",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_151",
+   "from": "skill_053",
+   "from_verb": "restore",
+   "to": "skill_009",
+   "to_verb": "tuck",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the robot drives on",
+   "bind": {
+    "hand": "right"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_152",
+   "from": "skill_054",
+   "from_verb": "swap",
+   "to": "skill_047",
+   "to_verb": "fetch",
+   "kind": "alternative",
+   "when": "only one object needs to move",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_153",
+   "from": "skill_054",
+   "from_verb": "swap",
+   "to": "skill_009",
+   "to_verb": "tuck",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the robot drives on",
+   "bind": {
+    "hand": "right"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_154",
+   "from": "skill_055",
+   "from_verb": "sidestep",
+   "to": "skill_002",
+   "to_verb": "approach",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the target is now in front of the arm",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_155",
+   "from": "skill_055",
+   "from_verb": "sidestep",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "alternative",
+   "when": "a larger move is needed",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_156",
+   "from": "skill_056",
+   "from_verb": "wait",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "a cycle finished and the door is opened",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_157",
+   "from": "skill_057",
+   "from_verb": "identify",
+   "to": "skill_049",
+   "to_verb": "sort",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the category decides the destination",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_158",
+   "from": "skill_057",
+   "from_verb": "identify",
+   "to": "skill_058",
+   "to_verb": "measure",
+   "kind": "alternative",
+   "when": "the size, not the category, is needed",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_159",
+   "from": "skill_057",
+   "from_verb": "identify",
+   "to": "skill_001",
+   "to_verb": "navigate",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "the object is not visible from here",
+   "bind": {
+    "destination": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_160",
+   "from": "skill_058",
+   "from_verb": "measure",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the size decides the grasp",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_161",
+   "from": "skill_058",
+   "from_verb": "measure",
+   "to": "skill_057",
+   "to_verb": "identify",
+   "kind": "alternative",
+   "when": "the category is needed",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_162",
+   "from": "skill_059",
+   "from_verb": "count",
+   "to": "skill_048",
+   "to_verb": "collect",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the counted objects are gathered",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_163",
+   "from": "skill_059",
+   "from_verb": "count",
+   "to": "skill_014",
+   "to_verb": "explore",
+   "kind": "fallback",
+   "fallback_type": "recover",
+   "when": "objects of the category may be out of view",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_164",
+   "from": "skill_060",
+   "from_verb": "wave",
+   "to": "skill_015",
+   "to_verb": "point",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the robot then indicates something",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_165",
+   "from": "skill_060",
+   "from_verb": "wave",
+   "to": "skill_061",
+   "to_verb": "nod",
+   "kind": "alternative",
+   "when": "an acknowledgement without the arm",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_166",
+   "from": "skill_061",
+   "from_verb": "nod",
+   "to": "skill_011",
+   "to_verb": "look",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the robot looks back at a target",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_167",
+   "from": "skill_061",
+   "from_verb": "nod",
+   "to": "skill_060",
+   "to_verb": "wave",
+   "kind": "alternative",
+   "when": "a bigger gesture is needed",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_168",
+   "from": "skill_062",
+   "from_verb": "shake",
+   "to": "skill_039",
+   "to_verb": "pour",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "loose contents are poured out",
+   "bind": {
+    "source": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_169",
+   "from": "skill_062",
+   "from_verb": "shake",
+   "to": "skill_025",
+   "to_verb": "rotate",
+   "kind": "alternative",
+   "when": "the orientation, not the contents, matters",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_170",
+   "from": "skill_063",
+   "from_verb": "hover",
+   "to": "skill_019",
+   "to_verb": "drop",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object is released into the container under it",
+   "bind": {
+    "object": "$object",
+    "container": "$target"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_171",
+   "from": "skill_063",
+   "from_verb": "hover",
+   "to": "skill_021",
+   "to_verb": "release",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the object is let go right there",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_172",
+   "from": "skill_063",
+   "from_verb": "hover",
+   "to": "skill_023",
+   "to_verb": "lift",
+   "kind": "alternative",
+   "when": "only a height matters",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_173",
+   "from": "skill_064",
+   "from_verb": "square",
+   "to": "skill_020",
+   "to_verb": "stack",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "squared blocks stack cleanly",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_174",
+   "from": "skill_064",
+   "from_verb": "square",
+   "to": "skill_025",
+   "to_verb": "rotate",
+   "kind": "alternative",
+   "when": "the object is already in the hand",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_175",
+   "from": "skill_065",
+   "from_verb": "touch",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the touched object is then grasped",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_176",
+   "from": "skill_065",
+   "from_verb": "touch",
+   "to": "skill_015",
+   "to_verb": "point",
+   "kind": "alternative",
+   "when": "contact is not allowed",
+   "bind": {
+    "target": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_177",
+   "from": "skill_066",
+   "from_verb": "knock",
+   "to": "skill_040",
+   "to_verb": "open",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the door is opened after knocking",
+   "bind": {
+    "articulated": "$articulated"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_178",
+   "from": "skill_066",
+   "from_verb": "knock",
+   "to": "skill_065",
+   "to_verb": "touch",
+   "kind": "alternative",
+   "when": "an object, not a door, is to be tapped",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_179",
+   "from": "skill_067",
+   "from_verb": "sweep",
+   "to": "skill_048",
+   "to_verb": "collect",
+   "kind": "sequence",
+   "sequence_type": "then",
+   "when": "the cluster is then put into a container",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_180",
+   "from": "skill_067",
+   "from_verb": "sweep",
+   "to": "skill_029",
+   "to_verb": "push",
+   "kind": "alternative",
+   "when": "only one object has to move",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_181",
+   "from": "skill_068",
+   "from_verb": "stop",
+   "to": "skill_017",
+   "to_verb": "pick",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the food is taken off the heat",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_182",
+   "from": "skill_068",
+   "from_verb": "stop",
+   "to": "skill_043",
+   "to_verb": "heat",
+   "kind": "alternative",
+   "when": "heat stops automatically at a target temperature",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_183",
+   "from": "skill_069",
+   "from_verb": "dip",
+   "to": "skill_038",
+   "to_verb": "stir",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the utensil then stirs",
+   "bind": {
+    "tool": "$tool",
+    "container": "$container"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_184",
+   "from": "skill_069",
+   "from_verb": "dip",
+   "to": "skill_038",
+   "to_verb": "stir",
+   "kind": "alternative",
+   "when": "the contents must be mixed",
+   "bind": {
+    "tool": "$tool",
+    "container": "$container"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_185",
+   "from": "skill_070",
+   "from_verb": "hide",
+   "to": "skill_047",
+   "to_verb": "fetch",
+   "kind": "alternative",
+   "when": "the object only needs to move",
+   "bind": {
+    "object": "$object"
+   },
+   "automatic": false
+  },
+  {
+   "id": "relation_186",
+   "from": "skill_070",
+   "from_verb": "hide",
+   "to": "skill_009",
+   "to_verb": "tuck",
+   "kind": "sequence",
+   "sequence_type": "enables",
+   "when": "the robot leaves",
+   "bind": {
+    "hand": "right"
+   },
+   "automatic": false
+  }
+ ]
 }

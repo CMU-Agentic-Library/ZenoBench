@@ -1,96 +1,303 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_055",
-  "skill_id": "skill_047",
-  "name": "Open a hinged door",
-  "description": "Open a manual revolute door and read back its hinge joint.",
-  "scope": {
-    "unit": "One open a manual handle attempt on the grounded scene state.",
-    "includes": [
-      "Open one handle-operated door or drawer."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_055",
+ "skill_id": "skill_047",
+ "verb": "fetch",
+ "noun": "object",
+ "name": "Fetch an object to a receptacle",
+ "description": "Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.",
+ "group": "multi_object",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "What to bring."
   },
-  "inputs": {
-    "articulated": {
-      "type": "articulated_ref",
-      "required": true,
-      "description": "The uniquely grounded door or drawer."
-    }
-  },
-  "requires": [
-    {
-      "predicate": "right_hand_empty",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "target_annotated",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "joint_open_enough",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "joint_open_enough"
-  ],
-  "verifier": {
-    "check": "ContractRunner measured post-state",
-    "on_failure": "record partial state and stop",
-    "legacy_family_contract": "contract_004",
-    "route": "handle"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_049",
-        "args": [
-          {
-            "arg": "articulated"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "articulated"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "articulated": {
-      "argument": "articulated",
-      "kind": "articulated",
-      "source": "rig.ann",
-      "required": true,
-      "required_annotation": "handle",
-      "forbid_annotation": "door_button",
-      "requires_joint_type": "revolute"
-    }
-  },
-  "action_predicate": {
-    "name": "unfold_hinged_door",
-    "verb": "unfold",
-    "noun": "hinged_door",
-    "arguments": [
-      "articulated"
-    ],
-    "verified_by": [
-      "joint_open_enough"
-    ]
+  "receptacle": {
+   "type": "receptacle_ref",
+   "required": true,
+   "description": "Destination support or open container."
   }
+ },
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  }
+ ],
+ "invalidates": [
+  "on($object,*)",
+  "inside($object,*)",
+  "at_initial_place($object)",
+  "base_near(*)",
+  "reachable(*)"
+ ],
+ "precheck": [
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "uncovered(container=$receptacle)",
+   "name": "uncovered",
+   "args": {
+    "container": "$receptacle"
+   },
+   "negated": false,
+   "meaning": "No lid rests on the container rim.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose",
+    "container_profile",
+    "asset_tags"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "path to_container"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "inside(object=$object, container=$receptacle)",
+   "name": "inside",
+   "args": {
+    "object": "$object",
+    "container": "$receptacle"
+   },
+   "negated": false,
+   "meaning": "Object centre inside the container's wall profile, between its floor and 3 cm above the rim.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose",
+    "container_profile"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "path to_container"
+  },
+  {
+   "predicate": "on(object=$object, support=$receptacle)",
+   "name": "on",
+   "args": {
+    "object": "$object",
+    "support": "$receptacle"
+   },
+   "negated": false,
+   "meaning": "Object bottom within -2..+5 cm of the support height with its centre over the support box.",
+   "kind": "fluent",
+   "gt_sources": [
+    "object_pose",
+    "asset_annotation",
+    "support_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "path to_surface"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  },
+  "receptacle": {
+   "type": "receptacle_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "fetch_object",
+  "verb": "fetch",
+  "noun": "object",
+  "arguments": [
+   "object",
+   "receptacle"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "to_container",
+    "when": [
+     {
+      "noun": "receptacle",
+      "field": "kind",
+      "op": "equals",
+      "value": "object"
+     }
+    ],
+    "steps": [
+     {
+      "call": "navigate",
+      "args": {
+       "destination": "$object"
+      }
+     },
+     {
+      "call": "pick",
+      "args": {
+       "object": "$object"
+      }
+     },
+     {
+      "call": "navigate",
+      "args": {
+       "destination": "$receptacle"
+      }
+     },
+     {
+      "call": "place",
+      "args": {
+       "object": "$object",
+       "receptacle": "$receptacle"
+      }
+     }
+    ],
+    "requires": [
+     {
+      "pred": "uncovered",
+      "args": {
+       "container": "$receptacle"
+      }
+     }
+    ],
+    "ensures": [
+     {
+      "pred": "inside",
+      "args": {
+       "object": "$object",
+       "container": "$receptacle"
+      }
+     }
+    ],
+    "note": ""
+   },
+   {
+    "path_id": "to_surface",
+    "when": [
+     {
+      "noun": "receptacle",
+      "field": "kind",
+      "op": "equals",
+      "value": "support"
+     }
+    ],
+    "steps": [
+     {
+      "call": "navigate",
+      "args": {
+       "destination": "$object"
+      }
+     },
+     {
+      "call": "pick",
+      "args": {
+       "object": "$object"
+      }
+     },
+     {
+      "call": "navigate",
+      "args": {
+       "destination": "$receptacle"
+      }
+     },
+     {
+      "call": "place",
+      "args": {
+       "object": "$object",
+       "receptacle": "$receptacle"
+      }
+     }
+    ],
+    "requires": [],
+    "ensures": [
+     {
+      "pred": "on",
+      "args": {
+       "object": "$object",
+       "support": "$receptacle"
+      }
+     }
+    ],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "fetch",
+   "when": "more objects go to the same place",
+   "bind": {},
+   "reason": "the hand is free again",
+   "to_skill_id": "skill_047",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "alternative",
+   "to": "restore",
+   "when": "the object should return to its starting support",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_053"
+  },
+  {
+   "kind": "fallback",
+   "to": "search",
+   "when": "the object is not where expected",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "locates the object and reports its support",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_013"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

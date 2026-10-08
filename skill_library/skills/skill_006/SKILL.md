@@ -1,70 +1,64 @@
 ---
-name: place-an-object-in-a-container
-description: Release a right-held object into an annotated container and verify the final geometry.
+name: stand-torso
+description: Raise the torso lift to its top travel height.
 ---
 
-# Place an object in a container (skill_006)
+# Stand up to full height (`skill_006`)
+
+`stand()`
+
+Raise the torso lift to its top travel height.
 
 ## When to use
 
-Release a right-held object into an annotated container and verify the final geometry.
+After a crouch, before driving or reaching high.
+
+## Not to be confused with
+
+- `lift`: lift raises a held object, stand raises the body.
+- `straighten`: straighten undoes a waist bend; stand raises the torso.
 
 ## Inputs
 
-- `object` (`object_ref`): The held object to place.
-- `container` (`container_ref`): The target container.
+- none
 
-## Preconditions
+## Applicability
 
-- `held_by_right_hand` — `contract_precheck`
-- `container_annotated` — `contract_noun_binding`
-- `container_accessible` — `policy_attempt`
+Always applicable.
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`insert_object_in_container(object, container)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['inside', 'right_hand_empty']`.
+- none
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `inside` — measured by `contract_runner`
-- `right_hand_empty` — measured by `contract_runner`
+- `torso_raised()` — Torso lift within 3 cm of its highest position (travel height). GT: torso_joint.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_006` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_014", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `torso_raised()` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `container`: `container`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'asset.container'}`
+## May invalidate
 
-### Policy path: fixed
+`torso_lowered()`, `reachable(*)`, `in_view(*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_016(object, container)`
+### `highest` — when always (default path)
 
+1. `policy_006()`
 
-Verifier: `contract_003 / container`.
+## Relations
 
-## Related Skills
-
-- `skill_005` (`alternative`) when the chosen container is unavailable but the task permits a support destination — Replan the semantic goal; do not silently weaken an inside requirement.
-- `skill_007` (`follows`) when container placement used an articulated compartment and the task requires closed doors — Close the relevant compartment after placement.
-- May follow `skill_004` (`enables`) when the task requires the grasped object inside a container.
-- May follow `skill_029` (`enables`) when a rectangular-rim container was grasped for relocation.
+- Previous step: `crouch` (`skill_005`) (then) — low work is done
+- Next step: `navigate` (`skill_001`) (then) — the robot drives after low work
+- Alternative: `reset` (`skill_010`) — the arm and waist must also be restored
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one planner-visible place-in-container attempt
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: placing on a bare support surface
-- Outside scope: choosing another container when this one is missing
-- Outside scope: checking the entire task goal
+Paired Contract: `contract_014`.

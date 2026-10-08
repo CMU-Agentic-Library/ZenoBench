@@ -1,4 +1,5 @@
-"""Extend the existing asset gallery with EmbodiedGen V2 mesh renders.
+"""Extend the existing asset gallery with EmbodiedGen V2 mesh renders
+(the twelve task props and the five SkillNode-library props).
 
 Run after V2 generation and annotation: python tools/render_asset_gallery.py
 The first four rows are retained from the existing gallery; rerunning is idempotent.
@@ -15,6 +16,8 @@ GALLERY = ROOT / "media/assets_gallery.jpg"
 NAMES = (
     "foam_cube", "soda_can", "snack_carton", "small_storage_bin", "wide_storage_bin", "juice_bottle",
     "plastic_cup", "paperback_book", "tissue_box", "rolling_pin", "shallow_sorting_tray", "handled_cooking_pot",
+    # props added for the verb SkillNode library (assets/embodiedgen_skill_assets.json)
+    "pot_lid", "kitchen_sponge", "trash_can", "cherry_tomato", "wooden_block",
 )
 VIEW = {name: "0000" for name in NAMES}
 
@@ -37,7 +40,8 @@ def main() -> None:
     with Image.open(GALLERY) as original:
         if original.width != 6 * tile or original.height < old_rows * tile:
             raise ValueError(f"Unexpected gallery size: {original.size}")
-        gallery = Image.new("RGB", (6 * tile, 6 * tile), "black")
+        rows = old_rows + -(-len(NAMES) // 6)
+        gallery = Image.new("RGB", (6 * tile, rows * tile), "black")
         gallery.paste(original.convert("RGB").crop((0, 0, 6 * tile, old_rows * tile)))
     label_font = ImageFont.truetype("DejaVuSansMono.ttf", 13)
     grasp_font = ImageFont.truetype("DejaVuSansMono.ttf", 11)

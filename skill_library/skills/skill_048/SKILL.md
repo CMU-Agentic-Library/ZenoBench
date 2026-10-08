@@ -1,62 +1,62 @@
 ---
-name: extend-a-drawer
-description: Open a manual prismatic drawer and read back its sliding joint.
+name: collect-objects
+description: Put every listed object into one container (fetch each in turn).
 ---
 
-# Extend a drawer (skill_048)
+# Collect objects into a container (`skill_048`)
+
+`collect(objects: object_list, container: container_ref)`
+
+Put every listed object into one container (fetch each in turn).
 
 ## When to use
 
-Open a manual prismatic drawer and read back its sliding joint.
+Several objects must go into one container.
+
+## Not to be confused with
+
+- `fetch`: collect repeats fetch into one container.
 
 ## Inputs
 
-- `articulated` (`articulated_ref`): The uniquely grounded door or drawer.
+- `objects` (`object_list`): Objects to gather.
+- `container` (`container_ref`): The container.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `policy_attempt`
-- `target_annotated` — `policy_attempt`
+Requires hand_empty(hand=right); uncovered(container=$container).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`extend_drawer(articulated)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_open_enough']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `joint_open_enough` — measured by `contract_runner`
+- `all_inside(objects=$objects, container=$container)` — Every listed object is inside the container. GT: object_pose, container_profile.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_048` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_056", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `all_inside(objects=$objects, container=$container)` (all paths)
 
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'handle', 'forbid_annotation': 'door_button', 'requires_joint_type': 'prismatic'}`
+## Policy paths (first match on the bound nouns)
 
-### Policy path: fixed
+### `fetch_each` — when always (default path)
 
-Match before execution: `[]`.
+1. `for each item in $objects: [fetch](object=$item, receptacle=$container)`
 
-1. `policy_050(articulated)`
+## Relations
 
-
-Verifier: `contract_004 / handle`.
-
-## Related Skills
-
-- `skill_004` (`enables`) when object lies inside the opened drawer — Access permits a grounded pick attempt.
+- Previous step: `count` (`skill_059`) (then) — the counted objects are gathered
+- Previous step: `sweep` (`skill_067`) (then) — the cluster is then put into a container
+- Next step: `close` (`skill_041`) (then) — the container sits in a cabinet that must be closed
+- Alternative: `sort` (`skill_049`) — the objects belong in different containers
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One extend a drawer attempt on grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_056`.

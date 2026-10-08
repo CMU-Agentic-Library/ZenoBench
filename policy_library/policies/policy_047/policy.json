@@ -38,7 +38,10 @@
     "class": "ReleaseArticulatedHandlePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_048:open/drawer",
+    "contract_048:open/hinged_door"
+  ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_004",

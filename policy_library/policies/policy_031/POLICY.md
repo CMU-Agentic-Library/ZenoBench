@@ -22,6 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).microwave_hinge_drive.execute(...)`
 - Class: `MicrowaveHingeDrivePolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_049:close/powered_loaded
 - Referenced as support by legacy families: contract_004, contract_005
 
 ## Recorded evidence

@@ -189,6 +189,45 @@ def main():
                          "z": round(float(hi[2]), 3), "aabb_xy": np.round(np.r_[lo[:2], hi[:2]], 3).tolist(),
                          "clearance": 0.8})
 
+    # static fixtures from tools/build_kitchen_scene.py: counters and a stove
+    appliances = []
+    fixtures = stage.GetPrimAtPath("/World/Appliances")
+    for fx in (fixtures.GetChildren() if fixtures else []):
+        kind = fx.GetCustomDataByKey("zeno:fixture")
+        if not kind:
+            continue
+        lo, hi = bounds(fx)
+        top = fx.GetChild("top") or fx.GetChild("cooktop")
+        tlo, thi = bounds(top) if top else (lo, hi)
+        obstacles.append({"name": fx.GetName(), "kind": "furniture",
+                          "aabb": np.r_[lo, hi].round(3).tolist()})
+        supports.append({"name": f"{fx.GetName()}/top", "furniture": fx.GetName(),
+                         "category": "cooktop" if kind == "stove" else "counter",
+                         "z": round(float(thi[2]), 3), "aabb_xy": np.r_[tlo[:2], thi[:2]].round(3).tolist(),
+                         "clearance": 1.0})
+        if kind == "stove":
+            burners = []
+            for child in fx.GetChildren():
+                if child.GetCustomDataByKey("zeno:burner_radius"):
+                    clo, chi = bounds(child)
+                    burners.append({"name": child.GetName(),
+                                    "center": [round(float((clo[0] + chi[0]) / 2), 4),
+                                               round(float((clo[1] + chi[1]) / 2), 4), round(float(thi[2]), 4)],
+                                    "radius": float(child.GetCustomDataByKey("zeno:burner_radius"))})
+            burner = fx.GetChild("burner")
+            blo, bhi = bounds(burner)
+            key = next(c for c in fx.GetChildren() if c.GetCustomDataByKey("zeno:button"))
+            klo, khi = bounds(key)
+            appliances.append({
+                "name": fx.GetName(), "category": "stove", "prim": str(fx.GetPath()),
+                "body_aabb": np.r_[lo, hi].round(3).tolist(), "room": room_of(static["rooms"], (lo[:2] + hi[:2]) / 2),
+                "burner": {"center": [round(float((blo[0] + bhi[0]) / 2), 4), round(float((blo[1] + bhi[1]) / 2), 4),
+                                      round(float(thi[2]), 4)],
+                           "radius": float(burner.GetCustomDataByKey("zeno:burner_radius") or (bhi[0] - blo[0]) / 2)},
+                "burners": burners,
+                "power_button": {"center": ((klo + khi) / 2).round(4).tolist(), "outward": [0.0, -1.0, 0.0],
+                                 "prim": str(key.GetPath())}})
+
     articulated = []
     root = stage.GetPrimAtPath("/World/ArticulatedAssets")
     joint_prims = [p for p in Usd.PrimRange(root) if p.IsA(UsdPhysics.RevoluteJoint) or p.IsA(UsdPhysics.PrismaticJoint)]
@@ -397,6 +436,7 @@ def main():
     rel = os.path.relpath(scene, ROOT)
     out.write_text(json.dumps({"scene_usd": rel, "rooms": static["rooms"], "obstacles": obstacles,
                                "supports": supports, "articulated": articulated, "objects": objects,
+                               "appliances": appliances,
                                "robot": robot}, indent=1))
     print("ANNOTATION", out, "articulated", len(articulated), "objects", len(objects),
           "supports", len(supports), "obstacles", len(obstacles), flush=True)

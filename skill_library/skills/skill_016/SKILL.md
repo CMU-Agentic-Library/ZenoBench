@@ -1,65 +1,65 @@
 ---
-name: pick-a-flat-object-at-an-edge
-description: Attempt one edge grasp of a flat object and verify grasp and lift.
+name: present-object
+description: Hold the carried object in front of the body at 0.9-1.4 m height, inside the head camera view.
 ---
 
-# Pick a flat object at an edge (skill_016)
+# Present a held object (`skill_016`)
+
+`present(object: object_ref)`
+
+Hold the carried object in front of the body at 0.9-1.4 m height, inside the head camera view.
 
 ## When to use
 
-Attempt one edge grasp of a flat object and verify grasp and lift.
+A held object must be shown to the head camera or a person.
+
+## Not to be confused with
+
+- `lift`: lift only changes the height; present holds the object in front of the head.
 
 ## Inputs
 
-- `object` (`object_ref`): object
+- `object` (`object_ref`): The right-held object to show.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `contract_precheck`
-- `object_annotated` — `policy_attempt`
-- `object_reachable` — `policy_attempt`
+Requires holding(hand=right, object=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`pinch_flat_object_edge(object)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['held_by_right_hand', 'object_lifted']`.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `held_by_right_hand` — measured by `contract_runner`
-- `object_lifted` — measured by `contract_runner`
+- `presenting(object=$object)` — The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view. GT: object_pose, base_pose, head_fk.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_016` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_024", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `presenting(object=$object)` (all paths)
+- `holding(hand=right, object=$object)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'edge_pinch_after_push'}`
+## May invalidate
 
-### Policy path: fixed
+`reachable(*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_013(object)`
+### `front_of_head` — when always (default path)
 
+1. `policy_072($object)`
 
-Verifier: `contract_002 / edge`.
+## Relations
 
-## Related Skills
-
-- `skill_030` (`enables`) when the flat object is edge-held and must be placed on a shelf — Edge placement matches the grasp mode.
-- May follow `skill_035` (`preparation`) when a flat object needs a graspable support overhang.
+- Next step: `place` (`skill_018`) (enables) — the object is put away after showing it
+- Next step: `handover` (`skill_022`) (enables) — the object is passed to the left hand
+- Alternative: `lift` (`skill_023`) — only the height of the load matters
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one edge-route pick
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_024`.

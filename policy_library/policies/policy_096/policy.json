@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_096",
+  "legacy_id": "release_in_place",
+  "name": "Release In Place",
+  "description": "Open one gripper where the object rests.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "manipulation",
+    "effect_summary": "hand_empty(hand)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "hand",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": "right"
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "hand_empty(hand)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_096",
+    "legacy_attribute": "release_in_place",
+    "class": "ReleaseInPlacePolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_029:release/open_in_place"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

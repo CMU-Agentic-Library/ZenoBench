@@ -67,6 +67,31 @@ def bind(prim, material):
 
 
 # ---------------------------------------------------------------- robot
+def patch_left_gripper(stage, finger_kp=1.0e4, finger_kd=300.0):
+    """Runtime fix for scenes baked before it: the left gripper's left finger
+    kept its fused wedge collider (jammed open) and both left finger joints
+    had torso-lift gains.  Pad box collider + finger gains, idempotent."""
+    from pxr import Gf, PhysxSchema, Usd, UsdGeom, UsdPhysics
+    path = f"{ASSET}/left_gripper_left_finger_link"
+    if stage.GetPrimAtPath(path) and not stage.GetPrimAtPath(f"{path}/pad_collider"):
+        disable_colliders(stage, path)
+        pad = UsdGeom.Cube.Define(stage, f"{path}/pad_collider")
+        pad.CreateSizeAttr(1.0)
+        pad.AddTranslateOp().Set(Gf.Vec3d(0.0, 0.006, 0.0175))
+        pad.AddScaleOp().Set(Gf.Vec3d(0.028, 0.012, 0.055))
+        pad.CreatePurposeAttr().Set("guide")
+        UsdPhysics.CollisionAPI.Apply(pad.GetPrim())
+        PhysxSchema.PhysxCollisionAPI.Apply(pad.GetPrim()).CreateContactOffsetAttr().Set(0.002)
+        mats = materials(stage)
+        bind(pad.GetPrim(), mats[GRIP_MATERIAL])
+    for prim in Usd.PrimRange(stage.GetPrimAtPath(ASSET)) if stage.GetPrimAtPath(ASSET) else []:
+        if prim.GetName() in ("left_gripper_left_finger_axis", "left_gripper_right_finger_axis"):
+            drive = UsdPhysics.DriveAPI.Get(prim, "linear")
+            if drive:
+                drive.GetStiffnessAttr().Set(finger_kp)
+                drive.GetDampingAttr().Set(finger_kd)
+
+
 def fix_robot(stage, x, y, yaw_deg, arm_kp=800.0, arm_kd=40.0, finger_kp=1.0e4, finger_kd=300.0):
     """Zeno Malo as imported from URDF had: zero damping on every drive, a free
     floating base on 2 N·m wheel drives (the base, not the door, moved when the
@@ -104,7 +129,7 @@ def fix_robot(stage, x, y, yaw_deg, arm_kp=800.0, arm_kd=40.0, finger_kp=1.0e4, 
         drive = UsdPhysics.DriveAPI.Get(prim, "linear" if lin else "angular")
         if not drive or "wheel" in name or "steering" in name:
             continue
-        if name in FINGERS:
+        if name in FINGERS or name in ("left_gripper_left_finger_axis", "left_gripper_right_finger_axis"):
             drive.GetStiffnessAttr().Set(finger_kp)
             drive.GetDampingAttr().Set(finger_kd)
             drive.CreateTargetPositionAttr().Set(0.04)
@@ -127,8 +152,10 @@ def fix_robot(stage, x, y, yaw_deg, arm_kp=800.0, arm_kd=40.0, finger_kp=1.0e4, 
     # Finger pads: the convex decomposition fused pad + slide rail into a
     # wedge reaching ~2 cm into the grasp gap.  Pad-sized boxes instead
     # (finger frame: x +-0.014, |y| 0..0.012, z -0.01..0.045).
+    # (all four fingers: the left gripper's left finger had been missed and its
+    # fused wedge collider jammed it open, so left grasps closed one finger only)
     for link, sign in (("right_gripper_left_finger_link", 1.0), ("right_gripper_right_finger_link", -1.0),
-                       ("left_gripper_right_finger_link", -1.0)):
+                       ("left_gripper_left_finger_link", 1.0), ("left_gripper_right_finger_link", -1.0)):
         path = f"{ASSET}/{link}"
         if not stage.GetPrimAtPath(path):
             continue
@@ -263,6 +290,14 @@ def container_collider(stage, root_path, profile, n_seg=24, wall=0.007, shape="r
     if shape == "round":
         add_box((cx, cy, z0 + 0.006), (1.5 * base_r, 1.5 * base_r, 0.012), 0.0)
         add_box((cx, cy, z0 + 0.006), (1.5 * base_r, 1.5 * base_r, 0.012), math.pi / 4)
+        # The two squares only cover ~0.75 r; tiles out to the wall close the
+        # ring where small items (cherry tomatoes) used to fall through.
+        tile_w = 2 * math.pi * base_r / n_seg * 1.15
+        for i in range(n_seg):
+            a = 2 * math.pi * i / n_seg
+            rm = 0.82 * base_r
+            add_box((cx + rm * math.cos(a), cy + rm * math.sin(a), z0 + 0.006),
+                    (0.36 * base_r + wall / 2, tile_w, 0.012), a)
     else:
         add_box((cx, cy, z0 + 0.006), (2 * base_r[0], 2 * base_r[1], 0.012), 0.0)
     if handle is not None:

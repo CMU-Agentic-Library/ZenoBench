@@ -38,9 +38,9 @@
     "class": "PoweredDoorOpenPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_011",
-    "contract_031"
+  "skill_contract_paths": [
+    "contract_048:open/powered_microwave",
+    "contract_076:stop/microwave_door"
   ],
   "legacy_family_contracts": [
     "contract_004"

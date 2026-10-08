@@ -33,6 +33,40 @@ from .primitives import (RightGripperClosePolicy, RightGripperOpenPolicy, RightJ
                          RightTcpMovePolicy)
 from .orientation import UprightObjectPolicy
 from .thermal_wait import WaitForTemperaturePolicy
+from .extra import (ShakeHeldPolicy, WaitPolicy, WaveHandPolicy, NodHeadPolicy, KnockPanelPolicy, TouchObjectPolicy, PlanSquareYawPolicy, SweepTogetherPolicy, IdentifyObjectPolicy, MeasureObjectPolicy, CountCategoryPolicy, DipUtensilPolicy, SidestepPolicy, HoverOverPolicy)
+from .plan_helpers import (PlanHeadingPolicy, PlanHomePolicy, PlanPointPolicy, PlanReachPolicy,
+                           PlanRetreatPolicy, PlanStandoffPolicy)
+from .base_motion import ApproachTargetPolicy
+from .base_motion import FaceTargetPolicy
+from .base_motion import RetreatFromPolicy
+from .perceive import LookAtPolicy
+from .perceive import ExploreRoomPolicy
+from .perceive import SearchObjectPolicy
+from .perceive import PointAtPolicy
+from .perceive import PresentHeldPolicy
+from .hand import DropIntoPolicy
+from .hand import StackOnPolicy
+from .hand import RotateHeldPolicy
+from .hand import RegraspPolicy
+from .hand import LeftSteadyPolicy
+from .hand import FlipFlatPolicy
+from .contact import PullTowardBasePolicy
+from .contact import SeparateFromNeighbourPolicy
+from .contact import RollCylinderPolicy
+from .contact import TipOverPolicy
+from .contact import CenterOnSupportPolicy
+from .tooluse import WipeSurfacePolicy
+from .tooluse import StirContainerPolicy
+from .tooluse import PourIntoPolicy
+from .hand import CoverWithLidPolicy
+from .perceive import InspectReceptaclePolicy
+from .appliance_generic import WaitCoolPolicy
+from .appliance_generic import WaitHeatPolicy
+from .base_motion import LeftArmFoldPolicy
+from .base_motion import NavigateToPlacePolicy
+from .hand import SetHeldHeightPolicy
+from .appliance_generic import PressButtonPolicy
+from .hand import ReleaseInPlacePolicy
 from .posture import (LeanForwardPolicy, LowerTorsoPolicy, RaiseTorsoPolicy, SetTorsoHeightPolicy,
                       SetWaistPitchPolicy, StraightenWaistPolicy, TuckArmPolicy)
 
@@ -110,6 +144,61 @@ class PolicySuite:
         self.close_handle = HandleClosePolicy(rig)
         self.open_powered = PoweredDoorOpenPolicy(rig)
         self.close_powered = PoweredDoorClosePolicy(rig)
+
+        # Skill library v2 policies (noun-addressed, GT-verified)
+        self.approach_target = ApproachTargetPolicy(rig)
+        self.face_target = FaceTargetPolicy(rig)
+        self.retreat_from = RetreatFromPolicy(rig)
+        self.look_at = LookAtPolicy(rig)
+        self.explore_room = ExploreRoomPolicy(rig)
+        self.search_object = SearchObjectPolicy(rig)
+        self.point_at = PointAtPolicy(rig)
+        self.present_held = PresentHeldPolicy(rig)
+        self.drop_into = DropIntoPolicy(rig)
+        self.stack_on = StackOnPolicy(rig)
+        self.rotate_held = RotateHeldPolicy(rig)
+        self.regrasp = RegraspPolicy(rig)
+        self.left_steady = LeftSteadyPolicy(rig)
+        self.flip_flat = FlipFlatPolicy(rig)
+        self.pull_toward_base = PullTowardBasePolicy(rig)
+        self.separate_from_neighbour = SeparateFromNeighbourPolicy(rig)
+        self.roll_cylinder = RollCylinderPolicy(rig)
+        self.tip_over = TipOverPolicy(rig)
+        self.center_on_support = CenterOnSupportPolicy(rig)
+        self.wipe_surface = WipeSurfacePolicy(rig)
+        self.stir_container = StirContainerPolicy(rig)
+        self.pour_into = PourIntoPolicy(rig)
+        self.cover_with_lid = CoverWithLidPolicy(rig)
+        self.inspect_receptacle = InspectReceptaclePolicy(rig)
+        self.wait_cool = WaitCoolPolicy(rig)
+        self.wait_heat = WaitHeatPolicy(rig)
+        self.left_arm_fold = LeftArmFoldPolicy(rig)
+        self.navigate_to_place = NavigateToPlacePolicy(rig)
+        self.set_held_height = SetHeldHeightPolicy(rig)
+        self.press_button = PressButtonPolicy(rig)
+        self.release_in_place = ReleaseInPlacePolicy(rig)
+
+        self.plan_home = PlanHomePolicy(rig)
+        self.plan_standoff = PlanStandoffPolicy(rig)
+        self.plan_reach = PlanReachPolicy(rig)
+        self.plan_heading = PlanHeadingPolicy(rig)
+        self.plan_retreat = PlanRetreatPolicy(rig)
+        self.plan_point = PlanPointPolicy(rig)
+
+        self.shake_held = ShakeHeldPolicy(rig)
+        self.wait_seconds = WaitPolicy(rig)
+        self.wave_hand = WaveHandPolicy(rig)
+        self.nod_head = NodHeadPolicy(rig)
+        self.knock_panel = KnockPanelPolicy(rig)
+        self.touch_object = TouchObjectPolicy(rig)
+        self.plan_square_yaw = PlanSquareYawPolicy(rig)
+        self.sweep_together = SweepTogetherPolicy(rig)
+        self.identify_object = IdentifyObjectPolicy(rig)
+        self.measure_object = MeasureObjectPolicy(rig)
+        self.count_category = CountCategoryPolicy(rig)
+        self.dip_utensil = DipUtensilPolicy(rig)
+        self.sidestep_base = SidestepPolicy(rig)
+        self.hover_over = HoverOverPolicy(rig)
 
         # Composites are convenience sequences, not atomic policies.
         self.pick_and_carry = PickAndCarryPolicy(rig)

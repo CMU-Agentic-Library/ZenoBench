@@ -1,71 +1,67 @@
 ---
-name: place-an-object-upright-on-a-support
-description: Orient a held object, place it on a support, then verify support and tilt.
+name: wipe-surface
+description: Press a held sponge on a support and sweep a 30 cm strip twice; succeeds when the sponge stayed in contact over at least half of the strip.
 ---
 
-# Place an object upright on a support (skill_037)
+# Wipe a surface (`skill_037`)
+
+`wipe(surface: support_ref, tool: tool_ref)`
+
+Press a held sponge on a support and sweep a 30 cm strip twice; succeeds when the sponge stayed in contact over at least half of the strip.
 
 ## When to use
 
-Orient a held object, place it on a support, then verify support and tilt.
+A surface must be wiped with a held sponge or cloth.
+
+## Not to be confused with
+
+- `sweep`: wipe uses a held tool on the surface itself.
 
 ## Inputs
 
-- `object` (`object_ref`): The uniquely grounded scene object.
-- `support` (`support_ref`): The grounded target support.
+- `surface` (`support_ref`): The support to clean.
+- `tool` (`tool_ref`): The held wiping tool (sponge).
 
-## Preconditions
+## Outputs
 
-- `held_by_right_hand` — `contract_precheck`
-- `target_annotated` — `policy_attempt`
+- `coverage` (`number`): Fraction of the strip wiped in contact.
 
-## Planner action predicate
+## Applicability
 
-`stand_object_on_support(object, support)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['on', 'right_hand_empty', 'object_upright']`.
+Requires holding(hand=right, object=$tool); base_near(place=$surface).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `on` — measured by `contract_runner`
-- `right_hand_empty` — measured by `contract_runner`
-- `object_upright` — measured by `contract_runner`
+- `holding(hand=right, object=$tool)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `base_near(place=$surface)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_037` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_045", "compose", ...)`.
+- `wiped(support=$surface)` — A held wiping tool stayed in contact with at least 50 % of the requested strip of the support. GT: robot_memory (tool-bottom contact samples).
+- `holding(hand=right, object=$tool)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `wiped(support=$surface)` (all paths)
+- `holding(hand=right, object=$tool)` (all paths)
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_054(object, max_tilt_deg=20.0)`
-2. `policy_015(object, support)`
+### `sponge_strip` — when 'wiping_tool' in tool.tags
 
+1. `policy_084($tool, $surface)`
 
-Verifier: `contract_003 / surface` plus `upright`.
+## Relations
 
-## Related Skills
-
-- `skill_038` (`alternative`) when the task needs near placement but upright is already satisfied or unnecessary — Use the proximity-specific contract when orientation is not part of the goal.
-- May follow `skill_015` (`follows`) when retrieved food must be served upright.
-- May follow `skill_004` (`enables`) when the task requires the object upright on a support.
-- May follow `skill_028` (`enables`) when a rim-grasped vessel must end upright on a support.
-- May follow `skill_036` (`preparation`) when a held object must be placed upright.
+- Previous step: `clear` (`skill_050`) (then) — the cleared surface is wiped
+- Next step: `place` (`skill_018`) (enables) — the sponge is put back
+- Fallback on failure: `clear` (`skill_050`) (recover) — objects cover the surface
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One place an object upright on a support attempt on the grounded scene state.
-
-Availability: `experimental_callable`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_045`.

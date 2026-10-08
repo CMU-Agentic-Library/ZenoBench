@@ -17,9 +17,9 @@
          </gazebo>
       </collision>
       <inertial>
-         <mass value="0.6000" />
+         <mass value="0.3500" />
          <origin xyz="0 0 0" />
-         <inertia ixx="3.131e-03" ixy="0.0" ixz="0.0" iyy="3.128e-03" iyz="0.0" izz="6.154e-03" />
+         <inertia ixx="1.827e-03" ixy="0.0" ixz="0.0" iyy="1.825e-03" iyz="0.0" izz="3.590e-03" />
       </inertial>
       <extra_info>
          <scale>0.248135</scale>

@@ -1,63 +1,67 @@
 ---
-name: close-a-manual-handle
-description: Close one handle-operated door or drawer.
+name: regrasp-object
+description: Set the held object down on a support and grasp it again with a fresh, centred grasp (recovery when the object has pivoted in the pinch).
 ---
 
-# Close a manual handle (skill_026)
+# Regrasp a held object (`skill_026`)
+
+`regrasp(object: object_ref, support: support_ref)`
+
+Set the held object down on a support and grasp it again with a fresh, centred grasp (recovery when the object has pivoted in the pinch).
 
 ## When to use
 
-Close one handle-operated door or drawer.
+The current grasp is unsuitable (wrong end, slipping) and the object can be set down.
+
+## Not to be confused with
+
+- `pick`: pick starts from an empty hand.
+- `rotate`: rotate keeps the grasp; regrasp sets the object down and grasps again.
 
 ## Inputs
 
-- `articulated` (`articulated_ref`): The uniquely grounded door or drawer.
+- `object` (`object_ref`): The held object.
+- `support` (`support_ref`): Where to set it down briefly.
 
-## Preconditions
+## Outputs
 
-- `right_hand_empty` — `policy_attempt`
-- `target_annotated` — `policy_attempt`
+- `grasp` (`hand`): Grasp kind after the regrasp.
 
-## Planner action predicate
+## Applicability
 
-`push_manual_handle(articulated)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_closed']`.
+Requires holding(hand=right, object=$object); base_near(place=$support).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `joint_closed` — measured by `contract_runner`
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `base_near(place=$support)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_026` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_034", "compose", ...)`.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'required_annotation': 'handle', 'forbid_annotation': 'door_button'}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `holding(hand=right, object=$object)` (all paths)
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_023(articulated)`
+### `set_down_and_pick` — when always (default path)
 
+1. `policy_076($object, $support)`
 
-Verifier: `contract_005 / handle`.
+## Relations
 
-## Related Skills
-
-- May follow `skill_004` (`follows`) when an object was removed and the manual access must be closed.
-- May follow `skill_007` (`alternative`) when a manual door close needs an explicit handle route.
+- Next step: `place` (`skill_018`) (enables) — the corrected grasp is used to place precisely
+- Is a fallback for: `place` (`skill_018`) (recover) — the object turned in the hand and no longer clears the target
+- Alternative: `pick` (`skill_017`) — the object is already in the hand but badly held
+- Alternative: `rotate` (`skill_025`) — the grasp, not the yaw, must change
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One close a manual handle attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_034`.

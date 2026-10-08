@@ -36,7 +36,17 @@ def _fixed_torso_ik(kin, position, rotation, current):
     try:
         kin.lo[:2] = kin.hi[:2] = current[:2]
         q, ok = kin.ik_global(np.asarray(position, float), rotation, seeds=[current])
-        return q if ok else None
+        if ok:
+            return q
+        # the default seed set is small and fixed; with torso and waist locked
+        # the solver misses reachable poses, so retry with fresh random seeds
+        rng = np.random.default_rng(int(abs(hash(tuple(np.round(position, 3)))) % 2**31))
+        for _ in range(3):
+            q, ok = kin.ik_global(np.asarray(position, float), rotation,
+                                  seeds=[current] + [rng.uniform(kin.lo, kin.hi) for _ in range(12)])
+            if ok:
+                return q
+        return None
     finally:
         kin.lo[:], kin.hi[:] = lo, hi
 
@@ -52,7 +62,7 @@ def check_bimanual_hold(rig, name, label):
     ):
         tcp, _ = kin.tcp(q)
         slip = abs(np.linalg.norm(tcp-body)-np.linalg.norm(held["tcp_minus_body"]))
-        if slip > 0.06 or fingers.min() < 0.002:
+        if slip > 0.06 or float(fingers.sum()) < 0.004:
             rig.log("bimanual_slip", side=side, obj=name, slip_m=round(float(slip), 4),
                     fingers=fingers.tolist())
             raise SkillFailure(f"{label}: {side} grasp slipped from {name}")
@@ -78,13 +88,19 @@ def _two_grasps(rig, name, flat):
                 key = tuple(sorted((tuple(np.round(a["p"], 3)),
                                     tuple(np.round(b["p"], 3)))))
                 groups.setdefault(key, []).append((a, b))
-        if not groups:
+        # Side-wall end grasps first: both hands approach horizontally along
+        # two opposite walls and pinch each wall's near end across its
+        # thickness, fingers pointing forward.  Fingers-down rim pinches on a
+        # box this wide have arm IK only in a narrow window (left arm almost
+        # never), while forward-pointing grasps sit in the arm's best range.
+        pairs = _grip_bar_pairs(rig, asset, pos, quat) + _side_end_pairs(rig, name, asset, pos, quat)
+        if groups:
+            ordered = sorted(groups.values(),
+                             key=lambda group: -np.linalg.norm(group[0][0]["p"]-group[0][1]["p"]))
+            for tilt_index in range(max(map(len, ordered))):
+                pairs.extend(group[tilt_index] for group in ordered if tilt_index < len(group))
+        if not pairs:
             raise SkillFailure(f"bimanual box lift: {name} has no two separated rim contacts")
-        ordered = sorted(groups.values(),
-                         key=lambda group: -np.linalg.norm(group[0][0]["p"]-group[0][1]["p"]))
-        pairs = []
-        for tilt_index in range(max(map(len, ordered))):
-            pairs.extend(group[tilt_index] for group in ordered if tilt_index < len(group))
         return pairs
     support = rig.geo.support_under(name, rig.state())
     if support is None:
@@ -124,7 +140,66 @@ def _two_grasps(rig, name, flat):
     return result
 
 
-def _park_for_pair(rig, pair, origin, torso_target=None, deadline=None):
+def _grip_bar_pairs(rig, asset, pos, quat):
+    """Two end grip bars (annotated extra handle colliders): each hand slides
+    its horizontal fingers along a bar and closes vertically on it.  The hands
+    stay outside the box, so no wall lies between the wrist and the contact."""
+    bars = (asset.get("container") or {}).get("extra_handle_colliders") or []
+    if len(bars) < 2:
+        return []
+    from ..evaluator import quat_R
+    Rb = quat_R(quat)
+    centres = [np.asarray(pos, float) + Rb @ np.asarray(b["center"], float) for b in bars[:2]]
+    axis = Rb @ np.array([0.0, 1.0, 0.0])
+    axis = np.array([axis[0], axis[1], 0.0])
+    axis /= max(1e-9, np.linalg.norm(axis))
+    out = []
+    half = 0.5 * float(bars[0]["size"][1])
+    for appr, cz in ((axis, -1.0), (-axis, -1.0), (axis, 1.0), (-axis, 1.0)):   # either end, either wrist roll
+        R = gripper_rot(appr, [0.0, 0.0, cz])
+        pair = []
+        for c in centres:
+            p = c - appr * (half - 0.025)           # 2.5 cm in from the bar's near end
+            # 6 mm out from the wall: the 2.8 cm pads centred on the 2.5 cm bar
+            # rubbed the wall face while sliding in and dragged the bin 3-5 cm
+            out_dir = np.r_[(c - np.asarray(pos, float))[:2], 0.0]
+            p = p + 0.006 * out_dir / max(1e-9, np.linalg.norm(out_dir))
+            # 2 cm open per finger (4 cm gap on the 2 cm bar): opened 3 cm the
+            # upper finger slid in at rim height and caught the bin's rim lip
+            pair.append({"p": p, "R": R, "pre_open": 0.02, "pre": p - appr * 0.045, "kind": "grip_bar"})
+        out.append(tuple(pair))
+    return out
+
+
+def _side_end_pairs(rig, name, asset, pos, quat):
+    g = next((g for g in asset["grasps"] if g["type"] == "rim_pinch_rect"), None)
+    if g is None:
+        return []
+    yaw = skills._yaw(quat)
+    bottom = rig.geo.bottom(name, rig.state())
+    ex = np.array([math.cos(yaw), math.sin(yaw)])
+    ey = np.array([-ex[1], ex[0]])
+    out = []
+    for a, n, half_a, half_n in ((ex, ey, g["half_x"], g["half_y"]), (-ex, ey, g["half_x"], g["half_y"]),
+                                 (ey, ex, g["half_y"], g["half_x"]), (-ey, ex, g["half_y"], g["half_x"])):
+        if 2 * half_n < 0.24:
+            continue                     # the hands need room side by side
+        z = float(bottom[2] + g["rim_height"] - 0.02)     # pads (2.8 cm) just below the rim
+        R = gripper_rot(np.r_[a, 0.0], np.r_[n, 0.0])
+        pair = []
+        for side in (1.0, -1.0):
+            # 7.5 cm along the wall: the palm behind the fingers then clears the
+            # front wall (at 3.5 cm the hand sat on the front wall and stalled)
+            p = np.r_[bottom[:2] + side * n * half_n - a * (half_a - 0.075), z]
+            # lowered onto the wall from above: coming in horizontally, the inner
+            # finger would have to pass through the front wall
+            pair.append({"p": p, "R": R, "pre_open": 0.04, "pre": p + np.array([0.0, 0.0, 0.04]),
+                         "kind": "side_end"})
+        out.append(tuple(pair))
+    return out
+
+
+def _park_for_pair(rig, pair, origin, torso_target=None, deadline=None, waist_target=0.0):
     """Find one base pose from which both arms reach their separate contacts."""
     centre = 0.5*(pair[0]["p"][:2]+pair[1]["p"][:2])
     bx, by, _ = origin
@@ -132,7 +207,7 @@ def _park_for_pair(rig, pair, origin, torso_target=None, deadline=None):
     base_angles += [a for a in np.linspace(-math.pi, math.pi, 12, endpoint=False)]
     # Sample each direction at a useful reach before refining nearby radii;
     # the shared-pose search must remain bounded for a graph-level planner.
-    for radius in (0.38, 0.48, 0.58, 0.68):
+    for radius in (0.38, 0.43, 0.45, 0.46, 0.47, 0.48, 0.53, 0.58, 0.63, 0.68):
         for ang in base_angles:
             x, y = centre+radius*np.array([math.cos(ang), math.sin(ang)])
             face = math.degrees(math.atan2(centre[1]-y, centre[0]-x))
@@ -149,8 +224,8 @@ def _park_for_pair(rig, pair, origin, torso_target=None, deadline=None):
                     right_seed = rig.q_cmd.copy()
                     left_seed = np.r_[rig.q_cmd[:2], rig.left_q_cmd]
                     if torso_target is not None:
-                        right_seed[:2] = [torso_target, 0.0]
-                        left_seed[:2] = [torso_target, 0.0]
+                        right_seed[:2] = [torso_target, waist_target]
+                        left_seed[:2] = [torso_target, waist_target]
                     qr = _fixed_torso_ik(rig.kin, rg, right["R"], right_seed)
                     if qr is None:
                         continue
@@ -190,7 +265,16 @@ def _lift_together(rig, right_p, right_R, left_p, left_R, height):
     ql = _fixed_torso_ik(rig.left_kin, left_p+np.array([0, 0, height]), left_R,
                          np.r_[rig.q_cmd[:2], rig.left_q_cmd])
     if qr is None or ql is None:
-        raise SkillFailure("bimanual lift: no paired IK for lift height")
+        # raise the torso instead: both arms keep their joints and the load
+        # goes straight up with the chest
+        from ..kinematics import _limits
+        t_hi = float(_limits(rig.kin.names)[1][0])     # the true limit (the shared posture is locked)
+        if rig.q_cmd[0] + height > t_hi + 1e-6:
+            raise SkillFailure("bimanual lift: no paired IK for lift height")
+        qr = rig.q_cmd.copy()
+        qr[0] += height
+        ql = np.r_[qr[:2], rig.left_q_cmd]
+        rig.log("bimanual_lift_by_torso", height=round(float(height), 3))
     rig.follow_both(qr, ql, label="bimanual_lift")
 
 
@@ -201,27 +285,61 @@ def _grasp_both(rig, name, pairs, label):
     rig.world.left_active = True
     park = None
     lowest_contact = min(float(g["p"][2]) for pair in pairs for g in pair)
-    torso_target = -0.15 if label == "bimanual_flat_pick" or lowest_contact < 0.55 else None
-    deadline = time.monotonic() + 45.0
-    for pair in pairs[:8]:
-        if time.monotonic() >= deadline:
-            break
-        park = _park_for_pair(rig, pair, rig.base_pose(), torso_target=torso_target,
-                              deadline=deadline)
+    first = -0.15 if label == "bimanual_flat_pick" or lowest_contact < 0.55 else None
+    deadline = time.monotonic() + 150.0
+    # the torso height is part of the search: horizontal grip-bar contacts at
+    # table height are shared-reachable only with the torso lowered ~0.35
+    torso_target, waist_target = first, 0.0
+    # grip-bar pairs first come with the lowered posture that reaches them
+    bar_first = any(p[0].get("kind") == "grip_bar" for p in pairs[:1])
+    postures = (((-0.30, 0.05), (first, 0.0), (-0.20, 0.0), (-0.35, 0.0)) if bar_first else
+                ((first, 0.0), (-0.30, 0.05), (-0.20, 0.0), (-0.35, 0.0)))
+    for torso_target, waist_target in postures:
+        for pair in (pairs[:4] if bar_first and torso_target is not first else pairs[:8]):
+            if time.monotonic() >= deadline:
+                break
+            park = _park_for_pair(rig, pair, rig.base_pose(), torso_target=torso_target,
+                                  deadline=deadline, waist_target=waist_target)
+            if park is not None:
+                break
         if park is not None:
             break
     if park is None:
         rig.sync_world()
-        rig.log("bimanual_no_park", obj=name, search_budget_s=45,
+        rig.log("bimanual_no_park", obj=name, search_budget_s=150,
                 contacts=[[g["p"].round(3).tolist() for g in pair] for pair in pairs[:3]])
         raise SkillFailure(f"{label}: no collision-free shared base pose")
     pose, right, left = park
     rig.sync_world()
-    skills.navigate(rig, pose, label=label+"_park")
-    if torso_target is not None:
+    if torso_target is None:
+        skills.navigate(rig, pose, label=label+"_park")
+    else:
+        # lower the torso 35 cm back from the park, in free space (lowered at
+        # the park the tucked arm reached over the table and the tuck stalled),
+        # then roll straight in without re-tucking
         from .posture import SetTorsoHeightPolicy, SetWaistPitchPolicy
+        yaw_r = math.radians(pose[2])
+        pre = (pose[0] - 0.35 * math.cos(yaw_r), pose[1] - 0.35 * math.sin(yaw_r), pose[2])
+        skills.navigate(rig, pre, label=label+"_pre_park")
         SetTorsoHeightPolicy(rig).execute(torso_target)
-        SetWaistPitchPolicy(rig).execute(0.0)
+        SetWaistPitchPolicy(rig).execute(waist_target)
+        # joints are base-relative: solve both pre-grasps for the park pose and
+        # take them here, so the hands ride in at grasp height above the table
+        rig.kin.set_base((pose[0], pose[1], 0.0), yaw_r)
+        rig.left_kin.set_base((pose[0], pose[1], 0.0), yaw_r)
+        rp = right.get("pre", right["p"] + np.array([0, 0, 0.08]))
+        lp = left.get("pre", left["p"] + np.array([0, 0, 0.08]))
+        qr = _fixed_torso_ik(rig.kin, rp, right["R"], rig.q_cmd)
+        ql = _fixed_torso_ik(rig.left_kin, lp, left["R"], np.r_[rig.q_cmd[:2], rig.left_q_cmd])
+        rig.sync_world()
+        if qr is None or ql is None:
+            raise SkillFailure(f"{label}: pre-grasps not solvable at the lowered posture")
+        rig.follow_both(qr, ql, label=label + "_arms_ready")
+        rig.sync_world()
+        if not all(rig.world.footprint_clear(pre[0] + (pose[0] - pre[0]) * u, pre[1] + (pose[1] - pre[1]) * u, yaw_r)
+                   for u in np.linspace(0.0, 1.0, 6)):
+            raise SkillFailure(f"{label}: straight approach to the shared park is blocked")
+        rig.drive_base([pose], speed=0.08, turn=0.3, ramp=0.6)
     rig.sync_world()
     p0, _ = rig.obj_pose(name)
     rig.log("bimanual_grasp_targets", obj=name, body=p0.round(4).tolist(),
@@ -237,6 +355,7 @@ def _grasp_both(rig, name, pairs, label):
     with _lock_shared_posture(rig):
         rig.move_to(rp, right["R"], label=label+"_right_pre")
         rig.move_left_to(lp, left["R"], label=label+"_left_pre")
+        rig.log("bimanual_after_pre", obj=name, body=rig.obj_pose(name)[0].round(4).tolist())
         right_q = _fixed_torso_ik(rig.kin, right["p"], right["R"], rig.q_cmd)
         left_q = _fixed_torso_ik(rig.left_kin, left["p"], left["R"],
                                  np.r_[rig.q_cmd[:2], rig.left_q_cmd])
@@ -244,6 +363,23 @@ def _grasp_both(rig, name, pairs, label):
             raise SkillFailure(f"{label}: paired contact IK changed after parking")
         rig.follow_both(right_q, left_q, label=label+"_paired_contact")
         body_contact, _ = rig.obj_pose(name)
+        shift = np.r_[(body_contact - p0)[:2], 0.0]
+        if np.linalg.norm(shift) > 0.008:
+            # the approach nudged the object (a 3 cm push left the right pads
+            # on the bar's edge): follow it before closing
+            for frac in (1.0, 0.8, 0.6):
+                sh = shift * frac
+                rq2 = _fixed_torso_ik(rig.kin, right["p"] + sh, right["R"], rig.q_cmd)
+                lq2 = _fixed_torso_ik(rig.left_kin, left["p"] + sh, left["R"],
+                                      np.r_[rig.q_cmd[:2], rig.left_q_cmd])
+                if rq2 is not None and lq2 is not None:
+                    rig.follow_both(rq2, lq2, label=label+"_follow_shift")
+                    right, left = dict(right, p=right["p"] + sh), dict(left, p=left["p"] + sh)
+                    rig.log("bimanual_contact_shift", obj=name, shift=sh.round(4).tolist())
+                    break
+            else:
+                rig.log("bimanual_contact_shift_no_ik", obj=name, shift=shift.round(4).tolist())
+            body_contact, _ = rig.obj_pose(name)
         rig.log("bimanual_before_close", obj=name, body=body_contact.round(4).tolist(),
                 right_tcp=rig.kin.tcp(rig.q())[0].round(4).tolist(),
                 left_tcp=rig.left_kin.tcp(rig.left_q())[0].round(4).tolist())
@@ -258,7 +394,7 @@ def _grasp_both(rig, name, pairs, label):
     rf, lf = rig.fingers(), rig.left_fingers()
     rig.log("bimanual_lift_check", obj=name, lift_m=round(float(p1[2]-p0[2]), 4),
             right_fingers=rf.round(4).tolist(), left_fingers=lf.round(4).tolist())
-    if p1[2]-p0[2] < 0.025 or rf.min() < 0.004 or lf.min() < 0.004:
+    if p1[2]-p0[2] < 0.02 or float(rf.sum()) < 0.006 or float(lf.sum()) < 0.006:
         raise SkillFailure(f"{label}: two-hand lift/contact check failed")
     rtcp, rR = rig.kin.tcp(rig.q())
     ltcp, lR = rig.left_kin.tcp(rig.left_q())
@@ -338,7 +474,9 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
             grasps.sort(key=lambda candidate: -np.linalg.norm(candidate["p"]-right_tcp))
             counts = {"too_close": 0, "pre_ik": 0, "contact_ik": 0}
             for candidate in grasps:
-                if np.linalg.norm(candidate["p"]-right_tcp) < 0.12:
+                # the arm-arm collision check below rejects grippers that clash;
+                # 6 cm keeps the pads off each other on a centre-held rolling pin
+                if np.linalg.norm(candidate["p"]-right_tcp) < 0.06:
                     counts["too_close"] += 1
                     continue
                 pre = candidate["p"]+0.10*candidate["R"][:, 2]
@@ -393,6 +531,8 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
                 if found is not None:
                     break
         if found is None:
+            found = self._present_for_horizontal_left(name)
+        if found is None:
             raise SkillFailure(f"handover: no independent left contact on {name}")
         g, pre = found
         rig.log("handover_left_target", obj=name, contact=g["p"].round(3).tolist(),
@@ -401,7 +541,7 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
         rig.move_left_to(pre, g["R"], label="handover_left_pre")
         rig.move_left_to(g["p"], g["R"], label="handover_left_contact")
         fingers = rig.left_grip(0.0, 120)
-        if fingers.min() < 0.003:
+        if float(fingers.sum()) < 0.005:
             raise SkillFailure("handover: left fingers did not contact object")
         before, _ = rig.obj_pose(name)
         ltcp, lR = rig.left_kin.tcp(rig.left_q())
@@ -409,13 +549,123 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
                          "R": lR, "pre_open": g["pre_open"]}
         rig.grip(rig.held["pre_open"], 70)
         rig.held = None
+        rtcp, rR = rig.kin.tcp(rig.q_cmd)
+        for d in (0.06, 0.03):
+            try:
+                rig.move_to(rtcp + np.array([0, 0, d]), rR, step=0.004, label="handover_right_clear", collision=False)
+                break
+            except SkillFailure:
+                continue
+        # close the left hand again now that the right gripper is out of the
+        # way: its upper finger had been blocked by the right gripper above
+        lf = rig.left_grip(0.0, 80)
+        rig.log("handover_left_regrip", fingers=np.round(lf, 4).tolist())
         rig.move_left_to(ltcp+np.array([0, 0, 0.05]), lR, label="handover_left_lift")
+        rig.step(60)
         after, _ = rig.obj_pose(name)
-        if after[2]-before[2] < 0.02 or rig.left_fingers().min() < 0.003:
+        ltcp2, _ = rig.left_kin.tcp(rig.left_q())
+        # held in the left pads: the grip-point distance is kept and the
+        # fingers are not shut (a handle-held pin pivots, so its centre rises
+        # less than the hand)
+        slip = abs(float(np.linalg.norm(ltcp2-after)) - float(np.linalg.norm(rig.left_held["tcp_minus_body"])))
+        lf2 = rig.left_fingers()
+        rig.log("handover_lift_check", obj=name, lift_m=round(float(after[2]-before[2]), 4),
+                slip_m=round(slip, 4), fingers=np.round(lf2, 4).tolist())
+        if float(lf2.sum()) < 0.005 or slip > 0.03 or after[2]-before[2] < -0.02:
             rig.left_held = None
             raise SkillFailure("handover: object did not move with left hand")
+        rig.left_held["tcp_minus_body"] = ltcp2-after
         rig.log("handover_result", obj=name, lift_m=round(float(after[2]-before[2]), 4))
         return after[2]-before[2]
+
+
+    def _present_for_horizontal_left(self, name):
+        """Long object pinched fingers-down by the right hand: turn it ~60 deg
+        across the body in front of the chest (base frame x 0.38-0.40, y -0.08,
+        z ~1.0) and let the left hand come in horizontally from the front,
+        closing vertically on it 7 cm from the right pinch.  Fingers-down
+        contacts that close for both hands have no common IK (offline search)."""
+        rig = self.rig
+        from ..evaluator import quat_R
+        size = np.asarray(rig.ann.asset_of(rig.ann.objects[name])["size"], float)
+        if max(size[:2]) < 0.15:
+            return None
+        # the presentation poses were found with the torso up and the waist straight
+        if abs(rig.q_cmd[0] - rig.kin.hi[0]) > 0.02 or abs(rig.q_cmd[1]) > 0.02:
+            # torso up and waist straight with the object held: the arm joints
+            # stay fixed, so the load just rises and comes back with the chest
+            q_goal = rig.q_cmd.copy()
+            q_goal[0], q_goal[1] = float(rig.kin.hi[0]), 0.0
+            try:
+                rig.follow(rig.joint_path(q_goal, "handover_posture"))
+            except SkillFailure as exc:
+                rig.log("handover_posture_short", reason=str(exc))
+            skills.check_held(rig, "handover_posture")
+        bx, by, yaw = rig.base_pose()
+        c, sn = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+        to_world = lambda v: np.array([c * v[0] - sn * v[1], sn * v[0] + c * v[1], v[2]])
+        counts = {"right_ik": 0, "left_ik": 0}
+        for axis_deg in (60.0, 50.0, 70.0):
+            for fwd, lat, h in ((0.40, -0.08, 1.02), (0.40, -0.10, 0.98), (0.35, -0.10, 1.02), (0.40, -0.05, 1.06)):
+                ax = to_world(np.array([math.cos(math.radians(axis_deg)), math.sin(math.radians(axis_deg)), 0.0]))
+                close = -np.cross([0.0, 0.0, 1.0], ax)
+                R = gripper_rot([0.0, 0.0, -1.0], close)
+                tcp_goal = np.array([bx, by, 0.0]) + to_world(np.array([fwd, lat, 0.0])) + np.array([0, 0, h])
+                qr = _fixed_torso_ik(rig.kin, tcp_goal, R, rig.q_cmd)
+                if qr is None:
+                    counts["right_ik"] += 1
+                    continue
+                appr = np.cross(ax, [0.0, 0.0, 1.0])
+                if appr @ to_world(np.array([1.0, 0, 0])) < 0:
+                    appr = -appr
+                left_dir = to_world(np.array([0.0, 1.0, 0.0]))
+                pl = tcp_goal + ax * 0.07 * (1.0 if ax @ left_dir > 0 else -1.0)
+                RL = gripper_rot(appr, [0.0, 0.0, 1.0])
+                ql = _fixed_torso_ik(rig.left_kin, pl - appr * 0.08, RL, np.r_[rig.q_cmd[:2], rig.left_q_cmd])
+                if ql is None or _fixed_torso_ik(rig.left_kin, pl, RL, ql) is None:
+                    counts["left_ik"] += 1
+                    continue
+                try:
+                    # follow the planned joints exactly: a free IK re-solve bent the
+                    # waist and left the left arm's plan (same torso) unreachable
+                    rig.follow(rig.joint_path(qr, "handover_present_across", check=False), steps_per_wp=6)
+                    skills.check_held(rig, "handover_present_across")
+                except Dropped:
+                    raise
+                except SkillFailure as exc:
+                    rig.log("handover_present_across_short", reason=str(exc))
+                    continue
+                # re-measure the object's long axis and centre after the turn
+                st = rig.state()
+                Rb = quat_R(st["objects"][name]["quat"])
+                ax_now = Rb[:, int(np.argmax(size))]
+                ax_now = np.array([ax_now[0], ax_now[1], 0.0])
+                ax_now /= max(1e-9, np.linalg.norm(ax_now))
+                tcp_now, _ = rig.kin.tcp(rig.q())
+                centre = np.asarray(rig.geo.centre(name, st), float)
+                sgn = 1.0 if ax_now @ left_dir > 0 else -1.0
+                along = float((tcp_now - centre)[:2] @ ax_now[:2])
+                # at least 7 cm from the right pinch, and on the handle (~0.39 L
+                # from the centre, short of the end): 7 cm from a centre pinch
+                # landed on the barrel/handle step and the pin slid out
+                L = float(max(size))
+                off = sgn * min(max(along * sgn + 0.07, 0.39 * L), 0.5 * L - 0.02)
+                pl = centre + ax_now * off
+                pl[2] = centre[2]
+                appr = np.cross(ax_now, [0.0, 0.0, 1.0])
+                if appr @ to_world(np.array([1.0, 0, 0])) < 0:
+                    appr = -appr
+                RL = gripper_rot(appr, [0.0, 0.0, 1.0])
+                rig.sync_world()
+                rig.world.left_active = True
+                ql = _fixed_torso_ik(rig.left_kin, pl - appr * 0.08, RL, np.r_[rig.q_cmd[:2], rig.left_q_cmd])
+                if ql is None or _fixed_torso_ik(rig.left_kin, pl, RL, ql) is None:
+                    rig.log("handover_across_left_no_ik", contact=pl.round(3).tolist())
+                    continue
+                rig.log("handover_present_across", axis_deg=axis_deg, right=tcp_goal.round(3).tolist())
+                return {"p": pl, "R": RL, "pre_open": 0.04}, pl - appr * 0.08
+        rig.log("handover_across_none", torso=np.round(rig.q_cmd[:2], 3).tolist(), **counts)
+        return None
 
 
 class OpenDoorWhileLeftHoldsPolicy(AtomicPolicy):

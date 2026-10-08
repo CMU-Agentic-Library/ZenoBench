@@ -1,46 +1,22 @@
-# contract_027 — Place on a support while the base moves
+# contract_027 — Drop an object into a container
 
-Release one right-held object onto a support during a base move.
+Hold the object 5 cm above a container's opening, centred, and let go; the object falls in.
 
-Paired SkillNode: `skill_019`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_019` (`drop-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
-- `base_path`: pose2d
+- [all paths] `holding(hand=right, object=$object)` — GT: gripper_state, finger_joints, object_pose, arm_fk
+- [all paths] `base_near(place=$container)` — GT: base_pose, scene_annotation
+- [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
 
-## Preconditions
+## Verifier
 
-- `held_by_right_hand` — contract_precheck
-- `target_annotated` — policy_attempt
-- `target_accessible` — policy_attempt
-
-## Planner action predicate
-
-`deliver_object(object, support, base_path)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `on` — contract_runner
-- `right_hand_empty` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `inside(object=$object, container=$container)` — GT: object_pose, container_profile
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
 ## Policy paths
 
-### fixed
+- `above_opening` when always: `policy_073($object, $container)`
 
-Match before execution: `[]`.
-
-1. `policy_053` with ['object', 'support', 'base_path']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_003` / `moving`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

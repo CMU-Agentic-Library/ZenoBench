@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).empty_navigate.execute(...)`
 - Class: `EmptyHandNavigatePolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_009
+- Skill Contract paths: contract_009:navigate/empty
 - Legacy family Contracts: contract_001
 
 ## Recorded evidence

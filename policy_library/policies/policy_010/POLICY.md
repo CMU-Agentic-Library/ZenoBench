@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).pick_top.execute(...)`
 - Class: `TopPinchPickPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_012, contract_035
+- Skill Contract paths: contract_025:pick/floor_top, contract_025:pick/top_pinch, contract_044:upright/pick_orient_place, contract_054:uncover/knob_lift_aside, contract_072:square/pick_rotate_place
 - Legacy family Contracts: contract_002
 
 ## Recorded evidence

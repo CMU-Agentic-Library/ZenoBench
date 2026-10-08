@@ -44,7 +44,9 @@
     "class": "MicrowavePlacePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_026:place/microwave"
+  ],
   "legacy_family_contracts": [
     "contract_003"
   ],

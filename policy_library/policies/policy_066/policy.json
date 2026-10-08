@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_066",
+  "legacy_id": "face_target",
+  "name": "Face Target",
+  "description": "Rotate the base in place toward a target.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "navigation",
+    "effect_summary": "facing(target)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "target",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "tolerance_deg",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 3.0
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "facing(target)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_066",
+    "legacy_attribute": "face_target",
+    "class": "FaceTargetPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_011:face/rotate_loaded",
+    "contract_019:look/turn_then_head"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

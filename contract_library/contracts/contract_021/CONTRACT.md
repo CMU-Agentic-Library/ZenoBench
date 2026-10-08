@@ -1,41 +1,19 @@
-# contract_021 — Set waist pitch
+# contract_021 — Search for an object
 
-Move the waist to one requested pitch angle in radians.
+Find an object whose location is unknown: visit the supports of a room in order of distance and aim the head at each surface until the object is seen.
 
-Paired SkillNode: `skill_013`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_013` (`search-object`).
 
-## Inputs
+## Precheck
 
-- `pitch_rad`: number
+- none
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `target_within_joint_limits` — policy_attempt
-- `collision_free_motion` — policy_attempt
-
-## Planner action predicate
-
-`pitch_waist(pitch_rad)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `posture_at_target` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `observed(target=$object)` — GT: robot_memory
 
 ## Policy paths
 
-### fixed
+- `room_sweep` when always: `policy_070($object, $region)`
 
-Match before execution: `[]`.
-
-1. `policy_007` with ['pitch_rad']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_008` / `waist`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

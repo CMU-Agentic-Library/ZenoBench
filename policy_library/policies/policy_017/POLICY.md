@@ -23,7 +23,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).place_edge.execute(...)`
 - Class: `EdgePlacePolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_013, contract_038
+- Skill Contract paths: contract_026:place/edge_held_flat
 - Legacy family Contracts: contract_003
 
 ## Recorded evidence

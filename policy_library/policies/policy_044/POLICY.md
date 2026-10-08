@@ -25,7 +25,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).top_drag.execute(...)`
 - Class: `TopDragPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_054
+- Skill Contract paths: contract_037:push/drag_from_top
 - Legacy family Contracts: contract_006
 
 ## Recorded evidence

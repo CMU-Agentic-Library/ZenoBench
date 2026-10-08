@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).pick_cup_handle.execute(...)`
 - Class: `PickCupHandlePolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_012, contract_025
+- Skill Contract paths: contract_025:pick/handle_requested, contract_025:pick/handle
 - Legacy family Contracts: contract_002
 
 ## Caveat

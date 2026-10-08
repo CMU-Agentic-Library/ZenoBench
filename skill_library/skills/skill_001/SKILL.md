@@ -1,62 +1,100 @@
 ---
-name: navigate-empty-handed
-description: Move the empty-handed robot base to one target pose.
+name: navigate-place
+description: Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.
 ---
 
-# Navigate empty-handed (skill_001)
+# Navigate to a place (`skill_001`)
+
+`navigate(destination: place_ref)`
+
+Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.
 
 ## When to use
 
-Move the empty-handed robot base to one target pose.
+The robot must be in another room or next to another piece of furniture.
+
+## Not to be confused with
+
+- `approach`: approach fine-parks so the arm reaches one target; navigate only gets near.
+- `retreat`: retreat moves straight back from a place without a destination.
 
 ## Inputs
 
-- `pose` (`pose2d`): pose
+- `destination` (`place_ref`): Where to go: a room, furniture, support, articulated part or object.
 
-## Preconditions
+## Outputs
 
-- `target_navigable` — `policy_attempt`
-- `carried_object_matches_state` — `not_enforced`
+- `base_pose` (`pose2d`): Measured base pose [x, y, yaw_deg] at arrival.
 
-## Planner action predicate
+## Applicability
 
-`navigate_base(pose)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['base_at']`.
+Always applicable.
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `base_at` — measured by `contract_runner`
+- none
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_001` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_009", "compose", ...)`.
+- `base_near(place=$destination)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `base_near(place=$destination)` (all paths)
 
-Match before execution: `[]`.
+## May invalidate
 
-1. `policy_001(pose)`
+`base_near(*)`, `reachable(*)`, `facing(*)`, `in_view(*)`, `base_clear_of(*)`, `pointing_at(*)`, `presenting(*)`
 
+## Policy paths (first match on the bound nouns)
 
-Verifier: `contract_001 / empty`.
+### `two_hand_carry` — when robot.both_hold_same
 
-## Related Skills
+1. `policy_097($destination) as plan`
+2. `policy_058(@robot.right_object, #plan.pose)`
+- An object held by both grippers moves at the slow bimanual carry speed.
 
-- `skill_049` (`preparation`) when floor target is beyond the current arm reach — Navigate to a collision-free stance near the grounded floor object before preparing a pregrasp.
+### `carry` — when robot.right_held
+
+1. `policy_097($destination) as plan`
+2. `policy_002(#plan.pose, name=@robot.right_object, min_bottom_z=#plan.carry_bottom_z)`
+- Back off, lift the load to carry height, plan with extra clearance, drive slowly.
+
+### `empty` — when always (default path)
+
+1. `policy_097($destination) as plan`
+2. `policy_001(#plan.pose)`
+
+## Relations
+
+- Previous step: `retreat` (`skill_004`) (then) — the robot must leave after backing out
+- Previous step: `stand` (`skill_006`) (then) — the robot drives after low work
+- Previous step: `straighten` (`skill_008`) (then) — the robot drives after a bent reach
+- Previous step: `tuck` (`skill_009`) (then) — the robot drives next
+- Previous step: `reset` (`skill_010`) (then) — after a failed manipulation, before driving on
+- Previous step: `search` (`skill_013`) (then) — the found object must be fetched
+- Previous step: `pick` (`skill_017`) (then) — the object must be carried elsewhere
+- Previous step: `lift` (`skill_023`) (then) — the object is carried over furniture
+- Previous step: `close` (`skill_041`) (then) — the robot leaves
+- Next step: `approach` (`skill_002`) (enables) — a manipulation target is on the destination
+- Next step: `look` (`skill_011`) (then) — the destination must be observed first
+- Fallback on failure: `retreat` (`skill_004`) (recover) — navigation fails because the base or load is wedged against furniture
+- Fallback on failure: `tuck` (`skill_009`) (recover) — navigation fails because the empty arm cannot fold
+- Fallback on failure: `lift` (`skill_023`) (recover) — a carried object hangs too low for the doorway clearance
+- Is a fallback for: `approach` (`skill_002`) (repair) — no base pose near the current one reaches the target
+- Is a fallback for: `look` (`skill_011`) (repair) — the line of sight is blocked
+- Is a fallback for: `identify` (`skill_057`) (recover) — the object is not visible from here
+- Alternative: `face` (`skill_003`) — turning in place is blocked by furniture
+- Alternative: `sidestep` (`skill_055`) — a larger move is needed
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
-- Conditional fallback `skill_011` when base path blocked and right hand remains empty: tuck the arm before proposing a new navigation attempt
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
+- no free stand-off pose
+- no base path
+- carried object slipped (Dropped)
 
-one empty-handed base move
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_009`.

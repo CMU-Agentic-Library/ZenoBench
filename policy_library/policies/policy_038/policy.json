@@ -61,7 +61,9 @@
     "class": "RightTcpMovePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_023:point/front"
+  ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_002",

@@ -1,45 +1,22 @@
-# contract_054 — Drag object from above
+# contract_054 — Uncover a container
 
-Drag an object using top contact along its annotated support and measure progress.
+Lift the lid off a container by its knob and set it down beside the container: on the same support when it has room, else on the nearest counter-height support; the lid noun is found from GT (the lid resting on the rim).
 
-Paired SkillNode: `skill_046`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_046` (`uncover-container`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `support`: support_ref
-- `direction_xy`: unit_vec2
-- `distance_m`: positive_number
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$container)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `object_on_support` — policy_attempt
-
-## Planner action predicate
-
-`drag_supported_object(object, support, direction_xy, distance_m)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `displacement_along` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `uncovered(container=$container)` — GT: object_pose, container_profile, asset_tags
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [path knob_lift_aside] `on(object=@container.lid, support=@container.aside_support)` — GT: object_pose, asset_annotation, support_annotation
 
 ## Policy paths
 
-### fixed
+- `knob_lift_aside` when container.lid: `policy_010(@container.lid)` -> `policy_015(@container.lid, @container.aside_support)`
 
-Match before execution: `[]`.
-
-1. `policy_044` with ['object', 'support', 'direction_xy', 'distance_m']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_006` / `auto`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

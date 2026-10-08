@@ -21,6 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).close.execute(...)`
 - Class: `ClosePolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_020:inspect/closed_cabinet, contract_049:close/dispatch
 - Legacy family Contracts: contract_005
 
 ## Recorded evidence

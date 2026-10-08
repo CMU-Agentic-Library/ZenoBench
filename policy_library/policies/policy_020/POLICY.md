@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).microwave_cavity_withdraw.execute(...)`
 - Class: `MicrowaveCavityWithdrawPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_013, contract_022
+- Skill Contract paths: contract_026:place/microwave_staged
 - Referenced as support by legacy families: contract_003
 
 ## Recorded evidence

@@ -25,6 +25,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).right_tcp_move.execute(...)`
 - Class: `RightTcpMovePolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_023:point/front
 - Referenced as support by legacy families: contract_002, contract_003, contract_004, contract_005, contract_006, contract_007, contract_008
 
 ## Recorded evidence

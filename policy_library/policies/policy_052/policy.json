@@ -49,8 +49,8 @@
     "class": "PickWhileMovingPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_026"
+  "skill_contract_paths": [
+    "contract_025:pick/on_the_move"
   ],
   "legacy_family_contracts": [
     "contract_002"

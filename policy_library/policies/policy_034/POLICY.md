@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).carry_height_adjust.execute(...)`
 - Class: `CarryHeightAdjustPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_049
+- Skill Contract paths: contract_031:lift/raise
 - Referenced as support by legacy families: contract_001
 
 ## Recorded evidence

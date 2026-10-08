@@ -1,67 +1,73 @@
 ---
-name: pick-an-object-from-a-cavity
-description: Attempt one right-hand cavity retrieval and verify grasp and lift.
+name: point-target
+description: Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.
 ---
 
-# Pick an object from a cavity (skill_015)
+# Point at a target (`skill_015`)
+
+`point(target: entity_ref)`
+
+Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.
 
 ## When to use
 
-Attempt one right-hand cavity retrieval and verify grasp and lift.
+A person must be shown an object or place without touching it.
+
+## Not to be confused with
+
+- `touch`: point does not make contact.
 
 ## Inputs
 
-- `object` (`object_ref`): object
-- `cavity` (`appliance_ref`): The annotated microwave cavity appliance.
+- `target` (`entity_ref`): What to indicate.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `contract_precheck`
-- `object_annotated` — `policy_attempt`
-- `object_reachable` — `policy_attempt`
+Requires hand_empty(hand=right).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`retrieve_cavity_object(object, cavity)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['held_by_right_hand', 'object_lifted']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `held_by_right_hand` — measured by `contract_runner`
-- `object_lifted` — measured by `contract_runner`
+- `pointing_at(target=$target)` — The right finger axis points at the target within 8 deg. GT: arm_fk, scene_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_015` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_023", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `pointing_at(target=$target)` (all paths)
+- `hand_empty(hand=right)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `cavity`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'cavity_aabb'}`
+## May invalidate
 
-### Policy path: fixed
+`arm_stowed(right)`, `reachable(*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_048(object, cavity)`
+### `front` — when target.bearing_abs_deg <= 60
 
+1. `policy_041()`
+2. `policy_101($target) as aim`
+3. `policy_038(#aim.position, #aim.rotation, position_tolerance=0.04, rotation_tolerance=0.2)`
 
-Verifier: `contract_002 / cavity`.
+### `turn_and_point` — when always (default path)
 
-## Related Skills
+1. `policy_071($target)`
 
-- `skill_037` (`follows`) when retrieved food must be served upright — Place the still-held item and verify support and tilt.
-- May follow `skill_023` (`enables`) when food must be retrieved from a closed microwave.
+## Relations
+
+- Previous step: `face` (`skill_003`) (then) — the target must be indicated
+- Previous step: `wave` (`skill_060`) (enables) — the robot then indicates something
+- Next step: `tuck` (`skill_009`) (enables) — the gesture is finished
+- Alternative: `look` (`skill_011`) — a gaze is enough to indicate the target
+- Alternative: `touch` (`skill_065`) — contact is not allowed
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one cavity-route pick
-
-Availability: `experimental_callable`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_023`.

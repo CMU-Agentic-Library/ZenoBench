@@ -21,6 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).bimanual_box_lift.execute(...)`
 - Class: `BimanualBoxLiftPolicy`
 - Availability: `callable`
+- Skill Contract paths: contract_025:pick/two_hand_box
 - Referenced as support by legacy families: contract_002
 
 ## Caveat

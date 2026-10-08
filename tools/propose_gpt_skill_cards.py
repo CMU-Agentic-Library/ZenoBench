@@ -17,8 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from skill_library.gpt_experiment import request_json
 
-DEFAULT_IDS = ("skill_004", "skill_006", "skill_010", "skill_015",
-               "skill_020", "skill_040")
+DEFAULT_IDS = ('skill_017', 'skill_018', 'skill_040', 'skill_043', 'skill_029', 'skill_039')  # pick, place, open, heat, push, pour
 CARD_SCHEMA = {
     "type": "object", "additionalProperties": False, "required": ["skills"],
     "properties": {"skills": {"type": "array", "items": {
@@ -44,7 +43,7 @@ def main() -> int:
                         default=ROOT / "runs/gpt_skill_experiment/gpt_authored_cards.json")
     args = parser.parse_args()
     contracts = {row["skill_id"]: row for row in json.loads(
-        (ROOT / "zeno_skills/node_contracts.json").read_text())["contracts"]}
+        (ROOT / "contract_library/skill_contracts.json").read_text())["contracts"]}
     ids = args.skill_ids
     if len(ids) != len(set(ids)) or any(sid not in contracts for sid in ids):
         parser.error("--skill-ids must be distinct active Skill IDs")
@@ -52,8 +51,8 @@ def main() -> int:
     for sid in ids:
         row = contracts[sid]
         rows.append({key: row[key] for key in (
-            "contract_id", "skill_id", "scope", "inputs", "requires", "achieves",
-            "availability", "fallback_hints", "action_predicate")})
+            "contract_id", "skill_id", "verb", "noun", "scope", "inputs", "outputs", "requires", "ensures",
+            "relations", "action_predicate")})
     args.out.parent.mkdir(parents=True, exist_ok=True)
     if not os.getenv("OPENAI_API_KEY"):
         status = {"status": "not_run_missing_api_key", "requested_skills": ids}

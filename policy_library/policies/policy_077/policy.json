@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_077",
+  "legacy_id": "left_steady",
+  "name": "Left Steady",
+  "description": "Pinch a resting container with the left gripper.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "bimanual",
+    "effect_summary": "steadied(name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "steadied(name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_077",
+    "legacy_attribute": "left_steady",
+    "class": "LeftSteadyPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_035:brace/left_rim_pinch"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

@@ -39,8 +39,8 @@
     "class": "LowerTorsoPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_039"
+  "skill_contract_paths": [
+    "contract_013:crouch/lowest"
   ],
   "legacy_family_contracts": [
     "contract_008"

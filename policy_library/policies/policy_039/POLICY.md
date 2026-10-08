@@ -22,6 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).right_joint_move.execute(...)`
 - Class: `RightJointMovePolicy`
 - Availability: `verified`
+- Skill Contract paths: contract_018:reset/joint_home
 - Referenced as support by legacy families: contract_002, contract_003, contract_004, contract_005, contract_006, contract_007, contract_008
 
 ## Recorded evidence

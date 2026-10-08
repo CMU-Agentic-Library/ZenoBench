@@ -45,7 +45,9 @@
     "class": "ClickPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_050:press/microwave_door_key"
+  ],
   "legacy_family_contracts": [
     "contract_007"
   ],

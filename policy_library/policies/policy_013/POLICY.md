@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).pick_edge.execute(...)`
 - Class: `EdgePickPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_012, contract_024
+- Skill Contract paths: contract_025:pick/flat_overhang_ready, contract_025:pick/flat_edge, contract_036:flip/edge_roll
 - Legacy family Contracts: contract_002
 
 ## Recorded evidence

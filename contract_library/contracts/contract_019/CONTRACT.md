@@ -1,40 +1,21 @@
-# contract_019 — Tuck the right arm
+# contract_019 — Look at a target
 
-Move the right arm into the measured travel posture.
+Aim the head camera at a target (turning the base if it is outside the head yaw range) and record every annotated object in view as observed.
 
-Paired SkillNode: `skill_011`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_011` (`look-target`).
 
-## Inputs
+## Precheck
 
+- none
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — policy_attempt
-- `target_within_joint_limits` — policy_attempt
-- `collision_free_motion` — policy_attempt
-
-## Planner action predicate
-
-`tuck_right_arm()` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `posture_at_target` — contract_runner
-
-## Grounded noun slots
-
+- [all paths] `in_view(target=$target)` — GT: base_pose, head_joints, head_fk, collision_model
+- [all paths] `observed(target=$target)` — GT: robot_memory
 
 ## Policy paths
 
-### fixed
+- `head_only` when target.bearing_abs_deg <= 55: `policy_068($target)`
+- `turn_then_head` when always: `policy_066($target)` -> `policy_068($target)`
 
-Match before execution: `[]`.
-
-1. `policy_003` with []
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_008` / `tuck`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -1,132 +1,95 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_014",
-  "skill_id": "skill_006",
-  "name": "Place an object in a container",
-  "description": "Release a right-held object into an annotated container and verify the final geometry.",
-  "scope": {
-    "unit": "one planner-visible place-in-container attempt",
-    "includes": [
-      "move the right-held object to one annotated container",
-      "release and verify inside(object, container)"
-    ],
-    "excludes": [
-      "placing on a bare support surface",
-      "choosing another container when this one is missing",
-      "checking the entire task goal"
-    ]
-  },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "The held object to place."
-    },
-    "container": {
-      "type": "container_ref",
-      "required": true,
-      "description": "The target container."
-    }
-  },
-  "requires": [
-    {
-      "predicate": "held_by_right_hand",
-      "arg": "object",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "container_annotated",
-      "arg": "container",
-      "enforcement": "contract_noun_binding"
-    },
-    {
-      "predicate": "container_accessible",
-      "arg": "container",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "inside",
-      "args": [
-        "object",
-        "container"
-      ],
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "right_hand_empty",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "inside",
-    "right_hand_empty"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_003",
-    "route": "container",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_016",
-        "args": [
-          {
-            "arg": "object"
-          },
-          {
-            "arg": "container"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object",
-    "container"
-  ],
-  "argument_transforms": {
-    "container": "in:"
-  },
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true,
-      "requires_right_held": true
-    },
-    "container": {
-      "argument": "container",
-      "kind": "container",
-      "source": "rig.ann",
-      "required": true,
-      "required_annotation": "asset.container"
-    }
-  },
-  "action_predicate": {
-    "name": "insert_object_in_container",
-    "verb": "insert",
-    "noun": "object_in_container",
-    "arguments": [
-      "object",
-      "container"
-    ],
-    "verified_by": [
-      "inside",
-      "right_hand_empty"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_014",
+ "skill_id": "skill_006",
+ "verb": "stand",
+ "noun": "torso",
+ "name": "Stand up to full height",
+ "description": "Raise the torso lift to its top travel height.",
+ "group": "base_and_body",
+ "inputs": {},
+ "outputs": {},
+ "requires": [],
+ "ensures": [
+  {
+   "pred": "torso_raised",
+   "args": {}
   }
+ ],
+ "invalidates": [
+  "torso_lowered()",
+  "reachable(*)",
+  "in_view(*)"
+ ],
+ "precheck": [],
+ "verifier": [
+  {
+   "predicate": "torso_raised()",
+   "name": "torso_raised",
+   "args": {},
+   "negated": false,
+   "meaning": "Torso lift within 3 cm of its highest position (travel height).",
+   "kind": "fluent",
+   "gt_sources": [
+    "torso_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {},
+ "action_predicate": {
+  "name": "stand_torso",
+  "verb": "stand",
+  "noun": "torso",
+  "arguments": []
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "highest",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_006",
+      "args": [],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "navigate",
+   "when": "the robot drives after low work",
+   "bind": {},
+   "reason": "travel height",
+   "to_skill_id": "skill_001",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "alternative",
+   "to": "reset",
+   "when": "the arm and waist must also be restored",
+   "bind": {},
+   "reason": "",
+   "to_skill_id": "skill_010"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

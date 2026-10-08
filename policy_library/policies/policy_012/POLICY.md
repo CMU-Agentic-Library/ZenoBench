@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).pick_rect_rim.execute(...)`
 - Class: `RectRimPickPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_012, contract_037
+- Skill Contract paths: contract_025:pick/rect_rim
 - Legacy family Contracts: contract_002
 
 ## Caveat

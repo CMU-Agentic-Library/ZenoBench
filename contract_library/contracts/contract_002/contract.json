@@ -31,7 +31,7 @@
       "check": "policy_attempt"
     },
     {
-      "predicate": "object_reachable",
+      "predicate": "selected_grasp_route_feasible",
       "args": [
         "object"
       ],

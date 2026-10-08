@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_083",
+  "legacy_id": "center_on_support",
+  "name": "Center On Support",
+  "description": "Push an object back from the support edges.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "contact",
+    "effect_summary": "away_from_edge(name, margin)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "margin_m",
+      "kind": "positional_or_keyword",
+      "required": false,
+      "default": 0.08
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "away_from_edge(name, margin)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_083",
+    "legacy_attribute": "center_on_support",
+    "class": "CenterOnSupportPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_041:center/push_inward"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

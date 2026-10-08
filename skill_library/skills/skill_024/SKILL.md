@@ -1,65 +1,65 @@
 ---
-name: close-powered-microwave-door
-description: Close the annotated powered microwave door and measure its joint.
+name: lower-object
+description: Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).
 ---
 
-# Close powered microwave door (skill_024)
+# Lower a held object (`skill_024`)
+
+`lower(object: object_ref, height_m: positive_number)`
+
+Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).
 
 ## When to use
 
-Close the annotated powered microwave door and measure its joint.
+A held object must be brought down to a height without releasing it.
+
+## Not to be confused with
+
+- `place`: lower keeps holding the object.
 
 ## Inputs
 
-- `appliance` (`appliance_ref`): The grounded microwave appliance.
+- `object` (`object_ref`): The held object.
+- `height_m` (`positive_number`): Maximum world height of the object's bottom.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `policy_attempt`
-- `target_annotated` — `policy_attempt`
+Requires holding(hand=right, object=$object).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`shut_microwave_door(appliance)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['joint_closed']`.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `joint_closed` — measured by `contract_runner`
+- `held_below(object=$object, height_m=$height_m)` — Right-held object's bottom at or below the given world height (2 cm tolerance). GT: object_pose, gripper_state.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_024` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_032", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `held_below(object=$object, height_m=$height_m)` (all paths)
+- `holding(hand=right, object=$object)` (all paths)
 
-- `appliance`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'door_button'}`
+## May invalidate
 
-### Policy path: fixed
+`held_above($object,*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_025(appliance)`
+### `descend` — when always (default path)
 
+1. `policy_093($object, $height_m)`
 
-Verifier: `contract_005 / powered`.
+## Relations
 
-## Related Skills
-
-- `skill_010` (`enables`) when configured food is inside the microwave — Start requires a closed microwave door.
-- May follow `skill_014` (`follows`) when microwave food is loaded and heating is next.
-- May follow `skill_023` (`follows`) when microwave inspection is complete without retrieval.
-- May follow `skill_007` (`alternative`) when a powered microwave door must close.
+- Next step: `place` (`skill_018`) (enables) — the object goes onto a low shelf or into the fridge
+- Alternative: `lift` (`skill_023`) — opposite direction
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One close powered microwave door attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_032`.

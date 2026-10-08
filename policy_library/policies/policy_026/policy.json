@@ -65,8 +65,8 @@
     "class": "PushPolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_016"
+  "skill_contract_paths": [
+    "contract_037:push/thin_auto"
   ],
   "legacy_family_contracts": [
     "contract_006"

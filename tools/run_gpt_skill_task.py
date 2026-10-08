@@ -26,7 +26,6 @@ sys.path.insert(0, str(ROOT))
 from skill_library.gpt_experiment import (compile_proposal, identity_bindings,
                                           planning_payload, request_plan)
 from skill_library.graph import GraphValidationError
-from skill_library.planner_handoff import replan_request
 
 
 def _load_proposal(path: Path) -> dict:
@@ -92,8 +91,8 @@ def main() -> int:
     if args.proposal_file:
         graph = _load_proposal(args.proposal_file)
         calls = compile_proposal(graph, annotation, control_bindings)
-        if len(calls) > 32:
-            raise GraphValidationError("proposal exceeds 32 SkillNode calls")
+        if len(calls) > 40:
+            raise GraphValidationError("proposal exceeds 40 SkillNode calls")
         if args.validate_only:
             report.update(status="validated_only", compiled_calls=calls)
             _write(out, report)
@@ -112,7 +111,7 @@ def main() -> int:
     t0 = time.time()
     try:
         from zeno_skills.evaluator import TaskEvaluator
-        from skill_library.runtime import run_grounded_nodes
+        from skill_library.runtime import run_subgraph
         rig = make_rig(app, task["scene_usd"], task["annotation"], video=False,
                        handle_objects=_handle_objects(annotation))
         rig.configure_thermal(task)
@@ -144,8 +143,8 @@ def main() -> int:
                     round_report["model_response"] = meta
                 round_report["graph"] = proposal
                 calls = compile_proposal(proposal, annotation, control_bindings)
-                if len(calls) > 32:
-                    raise GraphValidationError("proposal exceeds 32 SkillNode calls")
+                if len(calls) > 40:
+                    raise GraphValidationError("proposal exceeds 40 SkillNode calls")
                 round_report["compiled_calls"] = calls
             except (ValueError, RuntimeError, KeyError) as exc:
                 round_report["status"] = "invalid_plan_or_model_error"
@@ -153,7 +152,7 @@ def main() -> int:
                 previous = {"validation_error": round_report["error"],
                             "last_observation": state, "evaluation": before}
                 continue
-            execution = run_grounded_nodes(rig, calls)
+            execution = run_subgraph(rig, proposal, control_bindings or identity_bindings(proposal))
             round_report["execution"] = execution
             after = evaluator.evaluate(rig.state())
             round_report["evaluation_after"] = after
@@ -161,11 +160,10 @@ def main() -> int:
             if after["success"]:
                 break
             previous = {"evaluation": after, "graph": proposal,
-                        "last_observation": execution["last_observation"]}
+                        "results": [{k: r[k] for k in ("node_id", "action", "status", "error_code", "error")}
+                                    for r in execution["results"]]}
             if execution["status"] == "failed":
-                previous["replan_request"] = replan_request(
-                    task["instruction"], proposal, execution,
-                    control_bindings or identity_bindings(proposal))
+                previous["replan_request"] = execution["replan_request"]
         report["final"] = evaluator.evaluate(rig.state())
         report["success"] = report["final"]["success"]
         report["status"] = "task_success" if report["success"] else "task_incomplete"

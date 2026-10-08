@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_065",
+  "legacy_id": "approach_target",
+  "name": "Approach Target",
+  "description": "Park where the right TCP reaches the target (IK-verified).",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "navigation",
+    "effect_summary": "reachable(target)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "target",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "max_tries",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 160
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "reachable(target)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_065",
+    "legacy_attribute": "approach_target",
+    "class": "ApproachTargetPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_010:approach/park",
+    "contract_025:pick/floor_top"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

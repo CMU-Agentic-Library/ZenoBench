@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_082",
+  "legacy_id": "tip_over",
+  "name": "Tip Over",
+  "description": "Push a standing object near its top so it lies down.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "contact",
+    "effect_summary": "lying(name)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "name",
+      "kind": "positional_or_keyword",
+      "required": true
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "lying(name)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_082",
+    "legacy_attribute": "tip_over",
+    "class": "TipOverPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_043:tip/push_high"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

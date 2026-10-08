@@ -1,45 +1,21 @@
-# contract_018 — Start microwave heating
+# contract_018 — Reset the posture
 
-Press the start button and verify that heating became active.
+Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.
 
-Paired SkillNode: `skill_010`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_010` (`reset-posture`).
 
-## Inputs
+## Precheck
 
-- `appliance`: appliance_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `button_reachable` — policy_attempt
-- `start_conditions` — policy_attempt
-
-## Planner action predicate
-
-`start_microwave_heating(appliance)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `button_pressed_this_call` — contract_runner
-- `heating_active` — contract_runner
-
-## Grounded noun slots
-
-- `appliance`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'start_button'}`
+- [all paths] `arm_stowed(hand=right)` — GT: arm_joints
+- [all paths] `torso_raised()` — GT: torso_joint
+- [all paths] `waist_straight()` — GT: waist_joint
 
 ## Policy paths
 
-### fixed
+- `joint_home` when always: `policy_040()` -> `policy_003()` -> `policy_095() as home` -> `policy_039(#home.target)`
 
-Match before execution: `[]`.
-
-1. `policy_027` with ['appliance']
-2. `policy_028` with ['appliance']
-3. `policy_029` with ['appliance']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_007` / `start`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

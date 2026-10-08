@@ -1,70 +1,73 @@
 ---
-name: place-an-object-near-a-support-hint
-description: Place a held object near a supplied xy hint and verify the final offset.
+name: stir-container
+description: Dip a held spoon's far end into a container and move it in a circle below the rim; succeeds after one full turn inside.
 ---
 
-# Place an object near a support hint (skill_038)
+# Stir a container (`skill_038`)
+
+`stir(container: container_ref, tool: tool_ref)`
+
+Dip a held spoon's far end into a container and move it in a circle below the rim; succeeds after one full turn inside.
 
 ## When to use
 
-Place a held object near a supplied xy hint and verify the final offset.
+The contents of a container must be stirred with a held utensil.
+
+## Not to be confused with
+
+- `dip`: dip goes in and out without circling.
 
 ## Inputs
 
-- `object` (`object_ref`): The uniquely grounded scene object.
-- `support` (`support_ref`): The grounded target support.
-- `hint_xy` (`xy`): Desired [x_m,y_m] point on the support.
-- `max_offset_m` (`positive_number`): Maximum final xy distance from hint in metres.
+- `container` (`container_ref`): The pot or bowl to stir.
+- `tool` (`tool_ref`): The held utensil (spoon).
 
-## Preconditions
+## Outputs
 
-- `held_by_right_hand` — `contract_precheck`
-- `target_annotated` — `policy_attempt`
+- `turns` (`number`): Measured turns of the tip inside the container.
 
-## Planner action predicate
+## Applicability
 
-`position_object_near_hint(object, support, hint_xy, max_offset_m)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['on', 'right_hand_empty', 'within_hint_radius']`.
+Requires holding(hand=right, object=$tool); base_near(place=$container); uncovered(container=$container).
 
-## Expected state change
+## Preconditions (checked on live GT state before moving)
 
-- `on` — measured by `contract_runner`
-- `right_hand_empty` — measured by `contract_runner`
-- `within_hint_radius` — measured by `contract_runner`
+- `holding(hand=right, object=$tool)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
 
-## Invocation and policy plan
+## Postconditions (verified on live GT state)
 
-Use `skill_id: skill_038` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_046", "compose", ...)`.
+- `stirred(container=$container)` — A held utensil tip completed one full circle inside the container below its rim. GT: robot_memory (tool-tip samples).
+- `holding(hand=right, object=$tool)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
 
-Grounded noun slots (Contract validates the scene instance before execution):
+## Verifier
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_right_held': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-### Policy path: fixed
+- `stirred(container=$container)` (all paths)
+- `holding(hand=right, object=$tool)` (all paths)
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_015(object, support, hint=hint_xy)`
+### `circle_below_rim` — when 'utensil' in tool.tags
 
+1. `policy_085($tool, $container)`
 
-Verifier: `contract_003 / surface` plus `within_hint`.
+## Relations
 
-## Related Skills
-
-- `skill_039` (`alternative`) when the task also requires upright after release — Use the combined contract with both final checks.
-- May follow `skill_004` (`enables`) when the task requires a target area on a support.
-- May follow `skill_037` (`alternative`) when the task needs near placement but upright is already satisfied or unnecessary.
+- Previous step: `brace` (`skill_027`) (then) — the braced container is stirred
+- Previous step: `pour` (`skill_039`) (enables) — the poured food is stirred
+- Previous step: `uncover` (`skill_046`) (enables) — the opened pot is stirred
+- Previous step: `dip` (`skill_069`) (enables) — the utensil then stirs
+- Next step: `cover` (`skill_045`) (enables) — the pot is covered again
+- Next step: `heat` (`skill_043`) (then) — the stirred food is heated
+- Fallback on failure: `brace` (`skill_027`) (recover) — the container slides while stirring
+- Alternative: `dip` (`skill_069`) — the contents must be mixed
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One place an object near a support hint attempt on the grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_046`.

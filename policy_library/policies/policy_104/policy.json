@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_104",
+  "legacy_id": "wave_hand",
+  "name": "Wave Hand",
+  "description": "Raise the empty right hand and swing it.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "gesture",
+    "effect_summary": "waved()",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "swings",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 3
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "waved()",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_104",
+    "legacy_attribute": "wave_hand",
+    "class": "WaveHandPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_068:wave/raised_swing"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

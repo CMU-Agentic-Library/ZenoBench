@@ -1,45 +1,21 @@
-# contract_023 — Pick an object from a cavity
+# contract_023 — Point at a target
 
-Attempt one right-hand cavity retrieval and verify grasp and lift.
+Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.
 
-Paired SkillNode: `skill_015`. Status: `experimental_callable`.
+Paired SkillNode: `skill_015` (`point-target`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
-- `cavity`: appliance_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `object_annotated` — policy_attempt
-- `object_reachable` — policy_attempt
-
-## Planner action predicate
-
-`retrieve_cavity_object(object, cavity)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `held_by_right_hand` — contract_runner
-- `object_lifted` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `cavity`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'cavity_aabb'}`
+- [all paths] `pointing_at(target=$target)` — GT: arm_fk, scene_annotation
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
 ## Policy paths
 
-### fixed
+- `front` when target.bearing_abs_deg <= 60: `policy_041()` -> `policy_101($target) as aim` -> `policy_038(#aim.position, #aim.rotation, position_tolerance=0.04, rotation_tolerance=0.2)`
+- `turn_and_point` when always: `policy_071($target)`
 
-Match before execution: `[]`.
-
-1. `policy_048` with ['object', 'cavity']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_002` / `cavity`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

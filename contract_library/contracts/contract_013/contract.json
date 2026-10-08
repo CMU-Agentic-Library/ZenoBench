@@ -1,196 +1,170 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_013",
-  "skill_id": "skill_005",
-  "name": "Place an object on a support",
-  "description": "Release one right-held object onto one annotated support.",
-  "scope": {
-    "unit": "one surface placement",
-    "includes": [
-      "Release one right-held object onto one annotated support."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "object"
-    },
-    "support": {
-      "type": "support_ref",
-      "required": true,
-      "description": "support"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "held_by_right_hand",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "target_annotated",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "target_accessible",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "on",
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "right_hand_empty",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "on",
-    "right_hand_empty"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_003",
-    "route": "surface",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "choice",
-    "selection": "first_matching_before_execution",
-    "on_no_match": "raise_without_moving",
-    "paths": [
-      {
-        "path_id": "microwave_support",
-        "when": [
-          {
-            "noun": "support",
-            "field": "furniture",
-            "equals": "kitchen_microwave"
-          }
-        ],
-        "steps": [
-          {
-            "policy_id": "policy_018",
-            "args": [
-              {
-                "arg": "object"
-              },
-              {
-                "arg": "support"
-              }
-            ]
-          },
-          {
-            "policy_id": "policy_019",
-            "args": [
-              {
-                "arg": "object"
-              }
-            ]
-          },
-          {
-            "policy_id": "policy_020",
-            "args": [
-              {
-                "arg": "object"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "path_id": "edge_held",
-        "when": [
-          {
-            "noun": "object",
-            "field": "held_kind",
-            "equals": "edge"
-          }
-        ],
-        "steps": [
-          {
-            "policy_id": "policy_017",
-            "args": [
-              {
-                "arg": "object"
-              },
-              {
-                "arg": "support"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "path_id": "ordinary_surface",
-        "when": [
-          {
-            "noun": "support",
-            "field": "kind",
-            "equals": "support"
-          }
-        ],
-        "steps": [
-          {
-            "policy_id": "policy_015",
-            "args": [
-              {
-                "arg": "object"
-              },
-              {
-                "arg": "support"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object",
-    "support"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true,
-      "requires_right_held": true
-    },
-    "support": {
-      "argument": "support",
-      "kind": "support",
-      "source": "rig.ann",
-      "required": true
-    }
-  },
-  "action_predicate": {
-    "name": "deposit_object_on_support",
-    "verb": "deposit",
-    "noun": "object_on_support",
-    "arguments": [
-      "object",
-      "support"
-    ],
-    "verified_by": [
-      "on",
-      "right_hand_empty"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_013",
+ "skill_id": "skill_005",
+ "verb": "crouch",
+ "noun": "torso",
+ "name": "Crouch the torso",
+ "description": "Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.",
+ "group": "base_and_body",
+ "inputs": {
+  "height_m": {
+   "type": "number",
+   "required": false,
+   "description": "Optional torso joint target in [-0.54, 0]; omit for the lowest."
   }
+ },
+ "outputs": {},
+ "requires": [],
+ "ensures": [
+  {
+   "pred": "torso_raised",
+   "args": {},
+   "negated": true
+  }
+ ],
+ "invalidates": [
+  "torso_raised()",
+  "torso_lowered()",
+  "torso_at(*)",
+  "reachable(*)",
+  "in_view(*)"
+ ],
+ "precheck": [],
+ "verifier": [
+  {
+   "predicate": "not torso_raised()",
+   "name": "torso_raised",
+   "args": {},
+   "negated": true,
+   "meaning": "Torso lift within 3 cm of its highest position (travel height).",
+   "kind": "fluent",
+   "gt_sources": [
+    "torso_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "torso_at(height_m=$height_m)",
+   "name": "torso_at",
+   "args": {
+    "height_m": "$height_m"
+   },
+   "negated": false,
+   "meaning": "Torso lift joint within 2 cm of the requested position (0 = top, -0.54 = bottom).",
+   "kind": "fluent",
+   "gt_sources": [
+    "torso_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "path to_height"
+  },
+  {
+   "predicate": "torso_lowered()",
+   "name": "torso_lowered",
+   "args": {},
+   "negated": false,
+   "meaning": "Torso lift within 3 cm of its lowest position (floor reach).",
+   "kind": "fluent",
+   "gt_sources": [
+    "torso_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "path lowest"
+  }
+ ],
+ "noun_binding": {},
+ "action_predicate": {
+  "name": "crouch_torso",
+  "verb": "crouch",
+  "noun": "torso",
+  "arguments": [
+   "height_m"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "to_height",
+    "when": [
+     {
+      "noun": "args",
+      "field": "height_m",
+      "op": "truthy",
+      "value": true
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_004",
+      "args": [
+       "$height_m"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [
+     {
+      "pred": "torso_at",
+      "args": {
+       "height_m": "$height_m"
+      }
+     }
+    ],
+    "note": ""
+   },
+   {
+    "path_id": "lowest",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_005",
+      "args": [],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [
+     {
+      "pred": "torso_lowered",
+      "args": {}
+     }
+    ],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "pick",
+   "when": "the object is on the floor or a low shelf",
+   "bind": {},
+   "reason": "floor reach",
+   "to_skill_id": "skill_017",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "sequence",
+   "to": "stand",
+   "when": "low work is done",
+   "bind": {},
+   "reason": "restore travel height",
+   "to_skill_id": "skill_006",
+   "sequence_type": "then"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

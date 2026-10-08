@@ -1,66 +1,63 @@
 ---
-name: push-an-object-along-a-support
-description: Move one object by directed contact and measure progress.
+name: straighten-waist
+description: Return the waist pitch to upright.
 ---
 
-# Push an object along a support (skill_008)
+# Straighten the waist (`skill_008`)
+
+`straighten()`
+
+Return the waist pitch to upright.
 
 ## When to use
 
-Move one object by directed contact and measure progress.
+After a bend, before driving or carrying.
+
+## Not to be confused with
+
+- `stand`: stand raises the torso; straighten undoes a waist bend.
 
 ## Inputs
 
-- `object` (`object_ref`): object
-- `support` (`support_ref`): support
-- `direction_xy` (`unit_vec2`): direction xy
-- `distance_m` (`positive_number`): distance m
+- none
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `contract_precheck`
-- `object_on_support` — `policy_attempt`
+Always applicable.
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`shove_object_along_support(object, support, direction_xy, distance_m)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['displacement_along']`.
+- none
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `displacement_along` — measured by `contract_runner`
+- `waist_straight()` — Waist pitch within 0.05 rad of upright. GT: waist_joint.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_008` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_016", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `waist_straight()` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
-- `support`: `support`; constraints `{'source': 'rig.ann', 'required': True}`
+## May invalidate
 
-### Policy path: fixed
+`waist_bent(*)`, `reachable(*)`, `in_view(*)`
 
-Match before execution: `[]`.
+## Policy paths (first match on the bound nouns)
 
-1. `policy_026(object, support, direction_xy, distance_m)`
+### `upright` — when always (default path)
 
+1. `policy_009()`
 
-Verifier: `contract_006 / auto`.
+## Relations
 
-## Related Skills
-
-- No fixed relation; select the next node from the task goal and observation.
+- Previous step: `bend` (`skill_007`) (then) — the reach is done
+- Next step: `navigate` (`skill_001`) (then) — the robot drives after a bent reach
+- Alternative: `reset` (`skill_010`) — the arm and torso must also be restored
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-one directed contact move
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_016`.

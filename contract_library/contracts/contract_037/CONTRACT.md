@@ -1,42 +1,22 @@
-# contract_037 — Pick by rectangular rim
+# contract_037 — Push an object
 
-Grasp a rectangular tray or box by its annotated rim.
+Slide an object along its support in a direction with closed fingers: from behind when there is room, or by pressing on its top and dragging when it stands against a wall or closed edge.
 
-Paired SkillNode: `skill_029`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_029` (`push-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`clasp_rectangular_rim(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `held_by_right_hand` — contract_runner
-- `object_lifted` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'rim_pinch_rect'}`
+- [all paths] `object_moved(object=$object, direction_xy=$direction_xy, distance_m=$distance_m)` — GT: object_pose (before/after)
 
 ## Policy paths
 
-### fixed
+- `drag_from_top` when object.near_closed_edge: `policy_041()` -> `policy_044($object, @object.support, $direction_xy, $distance_m)`
+- `thin_auto` when object.flat: `policy_026($object, @object.support, $direction_xy, $distance_m)`
+- `from_behind` when always: `policy_041()` -> `policy_043($object, @object.support, $direction_xy, $distance_m)`
 
-Match before execution: `[]`.
-
-1. `policy_012` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_002` / `rect_rim`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

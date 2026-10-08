@@ -1,130 +1,168 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_018",
-  "skill_id": "skill_010",
-  "name": "Start microwave heating",
-  "description": "Press the start button and verify that heating became active.",
-  "scope": {
-    "unit": "one start-button press",
-    "includes": [
-      "Press the start button and verify that heating became active."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "appliance": {
-      "type": "appliance_ref",
-      "required": true,
-      "description": "appliance"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "right_hand_empty",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "button_reachable",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "start_conditions",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "button_pressed_this_call",
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "heating_active",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "button_pressed_this_call",
-    "heating_active"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_007",
-    "route": "start",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_027",
-        "args": [
-          {
-            "arg": "appliance"
-          }
-        ],
-        "kwargs": {
-          "button": "start"
-        }
-      },
-      {
-        "policy_id": "policy_028",
-        "args": [
-          {
-            "arg": "appliance"
-          }
-        ],
-        "kwargs": {
-          "button": "start"
-        }
-      },
-      {
-        "policy_id": "policy_029",
-        "args": [
-          {
-            "arg": "appliance"
-          }
-        ],
-        "kwargs": {
-          "button": "start"
-        }
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "appliance"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "appliance": {
-      "argument": "appliance",
-      "kind": "articulated",
-      "source": "rig.ann",
-      "required": true,
-      "category_equals": "microwave",
-      "required_annotation": "start_button"
-    }
-  },
-  "action_predicate": {
-    "name": "start_microwave_heating",
-    "verb": "start",
-    "noun": "microwave_heating",
-    "arguments": [
-      "appliance"
-    ],
-    "verified_by": [
-      "button_pressed_this_call",
-      "heating_active"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_018",
+ "skill_id": "skill_010",
+ "verb": "reset",
+ "noun": "posture",
+ "name": "Reset the posture",
+ "description": "Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked joint-space move. Used to recover from an unknown arm state.",
+ "group": "base_and_body",
+ "inputs": {},
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
   }
+ ],
+ "ensures": [
+  {
+   "pred": "arm_stowed",
+   "args": {
+    "hand": "right"
+   }
+  },
+  {
+   "pred": "torso_raised",
+   "args": {}
+  },
+  {
+   "pred": "waist_straight",
+   "args": {}
+  }
+ ],
+ "invalidates": [
+  "torso_lowered()",
+  "waist_bent(*)",
+  "reachable(*)",
+  "pointing_at(*)",
+  "in_view(*)"
+ ],
+ "precheck": [
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "arm_stowed(hand=right)",
+   "name": "arm_stowed",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The arm is folded at its travel posture.",
+   "kind": "fluent",
+   "gt_sources": [
+    "arm_joints"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "torso_raised()",
+   "name": "torso_raised",
+   "args": {},
+   "negated": false,
+   "meaning": "Torso lift within 3 cm of its highest position (travel height).",
+   "kind": "fluent",
+   "gt_sources": [
+    "torso_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "waist_straight()",
+   "name": "waist_straight",
+   "args": {},
+   "negated": false,
+   "meaning": "Waist pitch within 0.05 rad of upright.",
+   "kind": "fluent",
+   "gt_sources": [
+    "waist_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {},
+ "action_predicate": {
+  "name": "reset_posture",
+  "verb": "reset",
+  "noun": "posture",
+  "arguments": []
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "joint_home",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_040",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_003",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_095",
+      "args": [],
+      "kwargs": {},
+      "as": "home"
+     },
+     {
+      "policy": "policy_039",
+      "args": [
+       "#home.target"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "navigate",
+   "when": "after a failed manipulation, before driving on",
+   "bind": {},
+   "reason": "a known posture makes the base path plannable",
+   "to_skill_id": "skill_001",
+   "sequence_type": "then"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<robot name="wooden_block">
+   <link name="wooden_block">
+      <visual>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/wooden_block.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+      </visual>
+      <collision>
+         <origin xyz="0 0 0" rpy="1.5708 0.0 0.0"/>
+         <geometry>
+            <mesh filename="mesh/wooden_block_collision.obj" scale="1.0 1.0 1.0"/>
+         </geometry>
+         <gazebo>
+            <mu1>0.70</mu1>
+            <mu2>0.50</mu2>
+         </gazebo>
+      </collision>
+      <inertial>
+         <mass value="0.8500"/>
+         <origin xyz="0 0 0"/>
+         <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      </inertial>
+      <extra_info>
+         <scale>0.115000</scale>
+         <version>v2.1.0</version>
+         <category>wooden_block</category>
+         <description>light brown wooden cuboid with rounded edges and visible vertical grain.</description>
+         <min_height>0.08</min_height>
+         <max_height>0.15</max_height>
+         <real_height>0.115</real_height>
+         <min_mass>0.2</min_mass>
+         <max_mass>1.5</max_mass>
+         <generate_time>20261006221315</generate_time>
+         <gs_model>mesh/wooden_block_gs.ply</gs_model>
+      </extra_info>
+   </link>
+   <custom_data>
+      <quality>
+         <MeshGeoChecker>YES</MeshGeoChecker>
+         <ImageSegChecker>YES</ImageSegChecker>
+         <ImageAestheticChecker>4.460216999053955</ImageAestheticChecker>
+         <overall>NO</overall>
+      </quality>
+   </custom_data>
+</robot>

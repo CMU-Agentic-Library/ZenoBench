@@ -1,65 +1,60 @@
 ---
-name: ready-floor-reach
-description: Lower and lean toward a floor object, then verify a fresh reachable pregrasp.
+name: sort-objects
+description: Put each listed object into the container mapped to its category tag (e.g. fruit -> basket, toy -> toy box).
 ---
 
-# Ready floor reach (skill_049)
+# Sort objects by category (`skill_049`)
+
+`sort(objects: object_list, rule: category_map)`
+
+Put each listed object into the container mapped to its category tag (e.g. fruit -> basket, toy -> toy box).
 
 ## When to use
 
-Lower and lean toward a floor object, then verify a fresh reachable pregrasp.
+Objects must go to destinations by category.
+
+## Not to be confused with
+
+- `collect`: sort chooses a destination per category.
 
 ## Inputs
 
-- `object` (`object_ref`): The uniquely grounded scene object.
+- `objects` (`object_list`): Objects to sort.
+- `rule` (`category_map`): Tag -> destination mapping (a container or a support), e.g. {"fruit": "fruit_basket"}.
 
-## Preconditions
+## Applicability
 
-- `right_hand_empty` — `policy_attempt`
-- `object_on_floor` — `policy_attempt`
-- `pregrasp_reachable` — `policy_attempt`
+Requires hand_empty(hand=right).
 
-## Planner action predicate
+## Preconditions (checked on live GT state before moving)
 
-`ready_floor_object(object)` — bind the listed argument slots to the current scene.
-This action predicate is reported only after its measured state facts pass.
-Verified facts: `['floor_reach_ready']`.
+- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 
-## Expected state change
+## Postconditions (verified on live GT state)
 
-- `floor_reach_ready` — measured by `contract_runner`
+- `sorted_by_category(objects=$objects, rule=$rule)` — Each listed object is inside the container (or on the support) mapped to one of its tags. GT: object_pose, asset_tags, container_profile.
 
-## Invocation and policy plan
+## Verifier
 
-Use `skill_id: skill_049` with typed `args` in a `skill_subgraph`. The Graph Manager grounds refs, then calls `ContractRunner.run("contract_057", "compose", ...)`.
+after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
 
-Grounded noun slots (Contract validates the scene instance before execution):
+- `sorted_by_category(objects=$objects, rule=$rule)` (all paths)
 
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True}`
+## Policy paths (first match on the bound nouns)
 
-### Policy path: fixed
+### `fetch_by_tag` — when always (default path)
 
-Match before execution: `[]`.
+1. `for each item in $objects: [fetch](object=$item, receptacle=@item.sort_target)`
 
-1. `policy_042(object)`
+## Relations
 
-
-Verifier: `floor_reach`.
-
-## Related Skills
-
-- `skill_020` (`preparation`) when a floor item has a verified pregrasp and corner pick is appropriate — Prepared arm pose can precede the floor-corner grasp.
-- May follow `skill_001` (`preparation`) when floor target is beyond the current arm reach.
+- Previous step: `identify` (`skill_057`) (then) — the category decides the destination
+- Next step: `close` (`skill_041`) (then) — a sorted container sits in a cabinet
+- Alternative: `collect` (`skill_048`) — all objects go into one container
 
 ## Failure
 
-Stop and observe the live scene again. The upper layer decides whether to retry, choose a related Skill, or revise the subgraph. Relations never execute automatically.
-- Conditional fallback `skill_001` when floor pregrasp is unreachable from the current base pose and the right hand is empty: Move to a safe pose near the floor target, then retry floor pregrasp.
+Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
 
-## Scope and evidence
 
-One ready floor reach attempt on grounded scene state.
-
-Availability: `representative_runs_only`. A callable or previously verified policy does not guarantee success in a new scene.
-- Outside scope: choosing the whole-task goal
-- Outside scope: guaranteeing success for untested scene states
+Paired Contract: `contract_057`.

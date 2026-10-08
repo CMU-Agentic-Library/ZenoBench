@@ -1,95 +1,175 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_034",
-  "skill_id": "skill_026",
-  "name": "Close a manual handle",
-  "description": "Close one handle-operated door or drawer.",
-  "scope": {
-    "unit": "One close a manual handle attempt on the grounded scene state.",
-    "includes": [
-      "Close one handle-operated door or drawer."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_034",
+ "skill_id": "skill_026",
+ "verb": "regrasp",
+ "noun": "object",
+ "name": "Regrasp a held object",
+ "description": "Set the held object down on a support and grasp it again with a fresh, centred grasp (recovery when the object has pivoted in the pinch).",
+ "group": "grasp_and_hand",
+ "inputs": {
+  "object": {
+   "type": "object_ref",
+   "required": true,
+   "description": "The held object."
   },
-  "inputs": {
-    "articulated": {
-      "type": "articulated_ref",
-      "required": true,
-      "description": "The uniquely grounded door or drawer."
-    }
-  },
-  "requires": [
-    {
-      "predicate": "right_hand_empty",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "target_annotated",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "joint_closed",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "joint_closed"
-  ],
-  "verifier": {
-    "check": "ContractRunner measured post-state",
-    "on_failure": "record partial state and stop",
-    "legacy_family_contract": "contract_005",
-    "route": "handle"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_023",
-        "args": [
-          {
-            "arg": "articulated"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "articulated"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "articulated": {
-      "argument": "articulated",
-      "kind": "articulated",
-      "source": "rig.ann",
-      "required": true,
-      "required_annotation": "handle",
-      "forbid_annotation": "door_button"
-    }
-  },
-  "action_predicate": {
-    "name": "push_manual_handle",
-    "verb": "push",
-    "noun": "manual_handle",
-    "arguments": [
-      "articulated"
-    ],
-    "verified_by": [
-      "joint_closed"
-    ]
+  "support": {
+   "type": "support_ref",
+   "required": true,
+   "description": "Where to set it down briefly."
   }
+ },
+ "outputs": {
+  "grasp": {
+   "type": "hand",
+   "description": "Grasp kind after the regrasp."
+  }
+ },
+ "requires": [
+  {
+   "pred": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   }
+  },
+  {
+   "pred": "base_near",
+   "args": {
+    "place": "$support"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   }
+  }
+ ],
+ "invalidates": [],
+ "precheck": [
+  {
+   "predicate": "holding(hand=right, object=$object)",
+   "name": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "base_near(place=$support)",
+   "name": "base_near",
+   "args": {
+    "place": "$support"
+   },
+   "negated": false,
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
+   "kind": "fluent",
+   "gt_sources": [
+    "base_pose",
+    "scene_annotation"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "holding(hand=right, object=$object)",
+   "name": "holding",
+   "args": {
+    "hand": "right",
+    "object": "$object"
+   },
+   "negated": false,
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state",
+    "finger_joints",
+    "object_pose",
+    "arm_fk"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "object": {
+   "type": "object_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  },
+  "support": {
+   "type": "support_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "regrasp_object",
+  "verb": "regrasp",
+  "noun": "object",
+  "arguments": [
+   "object",
+   "support"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "set_down_and_pick",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_076",
+      "args": [
+       "$object",
+       "$support"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "place",
+   "when": "the corrected grasp is used to place precisely",
+   "bind": {
+    "object": "$object"
+   },
+   "reason": "",
+   "to_skill_id": "skill_018",
+   "sequence_type": "enables"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

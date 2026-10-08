@@ -1,47 +1,20 @@
-# contract_015 — Close an articulated door or drawer
+# contract_015 — Bend the waist
 
-Close one annotated articulated target and verify its joint position.
+Pitch the waist forward to extend the reach over a deep surface.
 
-Paired SkillNode: `skill_007`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_007` (`bend-waist`).
 
-## Inputs
+## Precheck
 
-- `articulated`: articulated_ref
+- none
 
-## Preconditions
+## Verifier
 
-- `articulated_annotated` — contract_precheck
-- `closure_path_clear` — policy_attempt
-
-## Planner action predicate
-
-`close_articulated_joint(articulated)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `joint_closed` — contract_runner
-
-## Grounded noun slots
-
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True}`
+- [all paths] `waist_bent(min_pitch_rad=0.2)` — GT: waist_joint
 
 ## Policy paths
 
-### powered_microwave
+- `to_pitch` when args.pitch_rad: `policy_007($pitch_rad)`
+- `full` when always: `policy_008()`
 
-Match before execution: `[{'noun': 'articulated', 'field': 'powered_microwave', 'equals': True}]`.
-
-1. `policy_025` with ['articulated']
-
-### manual_handle
-
-Match before execution: `[{'noun': 'articulated', 'field': 'has_handle', 'equals': True}]`.
-
-1. `policy_023` with ['articulated']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_005` / `auto`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

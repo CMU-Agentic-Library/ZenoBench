@@ -1,42 +1,21 @@
-# contract_036 — Pick by round rim
+# contract_036 — Flip a flat object over
 
-Grasp a bowl or cup by its annotated round rim.
+Turn a flat object upside down where it lies: slide it to an edge, pinch the overhang, lift, roll the hand 180 deg, lay it back and release.
 
-Paired SkillNode: `skill_028`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_028` (`flip-object`).
 
-## Inputs
+## Precheck
 
-- `object`: object_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
+- [all paths] `base_near(place=$object)` — GT: base_pose, scene_annotation
 
-## Preconditions
+## Verifier
 
-- `right_hand_empty` — contract_precheck
-- `target_annotated` — policy_attempt
-
-## Planner action predicate
-
-`grasp_round_rim(object)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `held_by_right_hand` — contract_runner
-- `object_lifted` — contract_runner
-
-## Grounded noun slots
-
-- `object`: `scene_object`; constraints `{'source': 'rig.ann', 'required': True, 'requires_grasp_type': 'rim_pinch'}`
+- [all paths] `flipped(object=$object)` — GT: object_pose (before/after)
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
 ## Policy paths
 
-### fixed
+- `edge_roll` when object.flat: `policy_045($object)` -> `policy_013($object)` -> `policy_078($object)`
 
-Match before execution: `[]`.
-
-1. `policy_011` with ['object']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: `contract_002` / `round_rim`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

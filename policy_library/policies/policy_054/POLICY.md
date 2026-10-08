@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).upright_object.execute(...)`
 - Class: `UprightObjectPolicy`
 - Availability: `verified`
-- Direct Contract routes: contract_044, contract_045, contract_047
+- Skill Contract paths: contract_044:upright/pick_orient_place
 - Referenced as support by legacy families: contract_003
 
 ## Caveat

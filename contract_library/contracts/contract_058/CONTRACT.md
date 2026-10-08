@@ -1,41 +1,19 @@
-# contract_058 — Clear microwave door sweep
+# contract_058 — Clear a support
 
-Move the robot to the microwave hinge clearance pose and verify a fresh clearance event.
+Remove every object from a support surface to a destination receptacle.
 
-Paired SkillNode: `skill_050`. Status: `representative_runs_only`.
+Paired SkillNode: `skill_050` (`clear-support`).
 
-## Inputs
+## Precheck
 
-- `articulated`: articulated_ref
+- [all paths] `hand_empty(hand=right)` — GT: gripper_state
 
-## Preconditions
+## Verifier
 
-- `microwave_annotated` — contract_precheck
-- `clearance_path_open` — policy_attempt
-
-## Planner action predicate
-
-`clear_microwave_door_sweep(articulated)` — reported only after the measured state facts pass.
-
-## Measured postconditions
-
-- `microwave_sweep_clear` — contract_runner
-
-## Grounded noun slots
-
-- `articulated`: `articulated`; constraints `{'source': 'rig.ann', 'required': True, 'category_equals': 'microwave', 'required_annotation': 'door_button'}`
+- [all paths] `support_clear(support=$support)` — GT: object_pose, support_annotation
 
 ## Policy paths
 
-### fixed
+- `fetch_each_on_support` when always: `for each item in @support.objects: [fetch](object=$item, receptacle=$receptacle)`
 
-Match before execution: `[]`.
-
-1. `policy_030` with ['articulated']
-
-
-## Failure
-
-Stop, return completed policy steps and measured state; upper layer replans.
-
-Verifier: custom `microwave_clear`.
+Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

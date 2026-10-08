@@ -27,6 +27,11 @@ GROUPS = {
     "mobile_manipulation": "移动中操作",
     "manipulation": "物体姿态修正",
     "bimanual": "双臂协作",
+    "perception": "头部相机感知",
+    "gesture": "手势",
+    "tool_use": "工具使用",
+    "timing": "等待",
+    "planner": "规划（不运动，只计算目标）",
 }
 
 
@@ -50,10 +55,10 @@ def render(catalog):
         "`bimanual_flat_pick` 曾在 Isaac Sim 中短时抬起书本，但左手在后续携带中滑脱，稳定抓持仍在调试。",
         "",
         "机器可读源文件：[catalog.json](../zeno_skills/policies/catalog.json)。",
-        "稳定公开 ID 为 `policy_001`–`policy_064`；原描述性名称保留为兼容别名。",
+        f"稳定公开 ID 为 `policy_001`–`policy_{len(rows):03d}`；原描述性名称保留为兼容别名。",
         "每项的独立 JSON 与说明见 [policy_library](../policy_library/catalog.json)。",
-        "`input` 和 `effect` 是能力摘要，后续 contract 的 `requires/achieves/verifier`",
-        "需要逐项细化，不能直接把本目录当作可执行 contract。",
+        "`input` 和 `effect` 是能力摘要；每个 policy 被哪些 Skill Contract 路径调用、在路径前后检查哪些 GT 谓词，",
+        "见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md) 与 [Contract Library](../contract_library/README.md)。",
         "",
     ]
     grouped = defaultdict(list)

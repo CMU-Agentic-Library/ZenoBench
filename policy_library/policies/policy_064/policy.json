@@ -49,8 +49,8 @@
     "class": "WaitForTemperaturePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_048"
+  "skill_contract_paths": [
+    "contract_051:heat/microwave"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [],

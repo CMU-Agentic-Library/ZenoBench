@@ -1,54 +1,37 @@
-# GPT → SkillNode JSON → ZenoBench 实验
+# GPT / VLM → SkillNode JSON → ZenoBench 实验
 
 ## 研究问题
 
-1. 50 个 SkillNode 能否**表达** ZenoBench 目前 10 个任务的目标？静态审计为 10/10 任务、42/42 目标子句提供了候选路径，但这只是接口表达覆盖。
-2. GPT 只读全部 50 个 `name`、`description` 和必需的参数类型，能否输出合法的 `skill_subgraph` JSON？
-3. 合法子图经现有 Contract 和底层 policy 在 Isaac Sim 执行后，最终 `TaskEvaluator` 能否判定任务成功？失败发生在规划、grounding、Contract，还是底层控制？
-4. 给 GPT 增加条件化 Skill 关系提示，或让 GPT 基于现有 Contract 重写部分 Skill 的 name/description，是否改变结果？
+1. 只读动词 SkillNode 卡片（[vlm_skill_catalog.json](../../skill_library/vlm_skill_catalog.json)）时，GPT 能否输出合法的 schema 2 `skill_subgraph`？
+2. 合法子图经各 Skill Contract（GT 前置条件 → 按名词选择 policy 路径 → GT 后置条件）在 Isaac Sim 执行后，`TaskEvaluator` 能否判定任务成功？失败发生在规划、grounding、前置条件、policy 还是后置条件？
+3. 卡片加入前后条件（默认开启）、加入上一步/下一步/fallback/alternative 关系，或由 GPT 改写卡片名称和描述，是否改变结果？
 
-## 固定实验协议
+## 协议
 
-- 任务：`tasks/*/task.json` 中的全部 8 个已构建任务，每个任务一个全新 Isaac Sim 进程，不修改任务目标或资产。
-- 基线输入：任务 instruction、原始 goal、场景内的对象/相关支撑面/关节 ID、当前任务评估、50 个公开 Skill 的 `skill_id`、`name`、`description`、参数名和类型。**不传 Contract policy 计划、详细 SKILL.md 或已有任务蓝图**。这样测的是直接读 Skill 简介后规划。场景以符号标注提供；本实验没有图像输入，因此是 GPT 文本规划基线，不是视觉 VLM 基线。
-- 模型输出：一个 `{"graph": {"schema_version":1,"kind":"skill_subgraph","subgoal_id":"...","nodes":[...]}}`。`args` 的 `ref` 必须是场景词表里的**精确实例 ID**；数值放在 `value`。不使用隐式名词解析。Graph Manager 在动作前验证 DAG、Skill ID、类型和标注绑定。
-- 执行：每个节点调用一对一的现有 Contract；Contract 自己选 policy 路径并测量后置条件。失败立即停止当前子图，给 GPT 最新状态；最多 3 轮。最终结果只由 `TaskEvaluator` 判断。
-- 指标：JSON/子图有效率、Contract 失败数、10 个任务的最终成功数和进度、失败节点/错误码、GPT token 用量及 wall/sim 时间。`runs/.../result.json` 保留每轮模型输入、图、编译后的 Contract 调用及执行观测。`summary.json` 区分模型规划失败和物理执行失败。
+- 任务：`tasks/*/task.json` 中已构建的任务，每个任务一个全新 Isaac Sim 进程，不修改目标或资产。
+- 输入：instruction、原始 goal、场景对象/支撑面/关节 ID、当前评估、每个 SkillNode 的卡片：`verb`、`noun`、`signature`、`description`、`use_when`、输入输出类型、前置/后置条件文本、各路径的名词条件；`--with-relations` 时再加关系。不传 policy 实现。场景以符号标注提供，本实验没有图像输入，是文本规划基线。
+- 输出：`{"graph": {"schema_version": 2, "kind": "skill_subgraph", ...}}`。节点的 `skill` 是动词或 skill_id；参数为 `{"ref": 精确场景 ID}`、`{"value": 字面值}` 或 `{"from": "节点.输出"}`。[graph.py](../../skill_library/graph.py) 在动作前验证 DAG、类型、输出引用和场景绑定。
+- 执行：[runtime.py](../../skill_library/runtime.py) 的 `run_subgraph` 逐个调用 Contract。失败立即停止并返回 `replan_request`（测得的谓词、可修复失败谓词的 fallback 候选、最新观测），交给下一轮；最多 3 轮。最终结果只由 `TaskEvaluator` 判断。
+- 指标：子图有效率、各失败码数量（`PRECONDITION_FAILED`、`POLICY_FAILED`、`POSTCONDITION_FAILED` …）、最终成功数和进度、token 用量、wall/sim 时间。
 
 ## 运行
 
-先在运行环境中设置 `OPENAI_API_KEY`（不要把密钥提交到仓库或发在聊天里）。`OPENAI_MODEL` 可选；默认 `gpt-5`。`ISAACLAB_PYTHON` 指向可启动 Isaac Sim 的 Python。下例是这台机器当前找到的 launcher：
+先设置 `OPENAI_API_KEY`（不要提交到仓库）。`OPENAI_MODEL` 可选，默认 `gpt-5`。
 
 ```bash
-cd zeno-house
-export ISAACLAB_PYTHON=/home/all/miniforge3/envs/isaaclab/bin/python
-python tools/benchmark_gpt_skill_tasks.py --out runs/gpt_skill_experiment/names_only
-python tools/benchmark_gpt_skill_tasks.py --with-relations --out runs/gpt_skill_experiment/with_relations
-python tools/benchmark_gpt_skill_tasks.py --with-predicates --out runs/gpt_skill_experiment/with_predicates
+export ISAACLAB_PYTHON=/path/to/isaaclab/python
+python tools/benchmark_gpt_skill_tasks.py --out runs/gpt_skill_experiment/cards
+python tools/benchmark_gpt_skill_tasks.py --with-relations --out runs/gpt_skill_experiment/cards_relations
 ```
 
-基于现有 Contract 让 GPT 重写 6 个 Skill 的 **name/description**，保留其 ID、Contract 配对、输入、policy 和 verifier，再用这些卡片跑同一协议：
+不调用 GPT、直接执行规划器产生的子图（物理对照）：
 
 ```bash
-python tools/propose_gpt_skill_cards.py --out runs/gpt_skill_experiment/gpt_authored_cards.json
-python tools/benchmark_gpt_skill_tasks.py \
-  --card-overrides runs/gpt_skill_experiment/gpt_authored_cards.json \
-  --out runs/gpt_skill_experiment/gpt_authored_names
+python -m skill_library.planner --task collect_fruits          # writes skill_library/plans/collect_fruits.skill_subgraph.json
+$ISAACLAB_PYTHON tools/run_gpt_skill_task.py --task collect_fruits \
+  --proposal-file skill_library/plans/collect_fruits.skill_subgraph.json --out runs/gpt_skill_experiment/collect_control
 ```
 
-若要先验证 JSON 到 Contract 的物理执行链路，不调用 GPT：
+## 状态
 
-```bash
-$ISAACLAB_PYTHON tools/run_gpt_skill_task.py --task heat_breakfast_preloaded \
-  --proposal-file skill_library/examples/heat_preloaded.skill_subgraph.json \
-  --bindings-file skill_library/examples/heat_preloaded.bindings.json \
-  --out runs/gpt_skill_experiment/preloaded_control
-```
-
-## 已得到的结果
-
-- `heat_breakfast_preloaded` **物理对照通过**：两个节点 `skill_010 → skill_040` 的 Contract 都成功，进度从 0.667 到 1.0，最终任务成功。记录在 `runs/gpt_skill_experiment/preloaded_control/result.json`。
-- `collect_fruits` **物理对照通过**：四节点 `skill_004 → skill_006 → skill_004 → skill_006` 的 Contract 都成功，进度从 0.6 到 1.0，最终任务成功；模拟时间 193.2 秒。记录在 `runs/gpt_skill_experiment/collect_fruits_control/result.json`。
-- 这次会话的实验进程没有 `OPENAI_API_KEY`。`propose_gpt_skill_cards.py` 没有生成 GPT 卡片；`benchmark_gpt_skill_tasks.py` 没有启动 GPT 任务 rollout，状态写入 `runs/gpt_skill_experiment/batch_attempt/summary.json`。**不能把物理对照记成 GPT 成功率。**
-
-当前 Skill 库的逐节点物理证据见 [STATUS.md](../../skill_library/verification/STATUS.md)。其中 46/50 有代表性物理通过，4 个尚未通过或被准备动作阻塞。完整任务可能触发此前未测的名词、路线和更长时间的抓持，因此 42/42 目标表达覆盖不能推论 10/10 任务成功。
+本仓库此前用 50 个 v1 SkillNode 做过两次物理对照（`heat_breakfast_preloaded`、`collect_fruits`），那套接口已被动词库取代，结果不适用于当前卡片。当前库尚未运行 GPT rollout（需要 API key），**不能报告 GPT 成功率**。逐动词物理证据见 [STATUS.md](../../skill_library/verification/STATUS.md)，任务分解见 [planner](../../skill_library/planner.py) 输出。

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_069",
+  "legacy_id": "explore_room",
+  "name": "Explore Room",
+  "description": "Visit viewpoints in a room and sweep the head.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "perception",
+    "effect_summary": "room_explored(room)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "room",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "max_views",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 6
+    },
+    {
+      "name": "min_spacing",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 1.6
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "room_explored(room)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_069",
+    "legacy_attribute": "explore_room",
+    "class": "ExploreRoomPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_022:explore/viewpoints"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

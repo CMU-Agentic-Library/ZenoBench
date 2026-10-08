@@ -43,8 +43,8 @@
     "class": "BimanualCarryPolicy"
   },
   "availability": "callable",
-  "direct_contracts": [
-    "contract_029"
+  "skill_contract_paths": [
+    "contract_009:navigate/two_hand_carry"
   ],
   "legacy_family_contracts": [
     "contract_001"

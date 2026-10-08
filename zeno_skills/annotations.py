@@ -49,6 +49,8 @@ class SceneAnnotations:
         self.supports = d["supports"]
         self.articulated = d["articulated"]
         self.objects = {o["name"]: o for o in d["objects"]}
+        # static appliances without joints (stove: burner disc + power button)
+        self.appliances = d.get("appliances", [])
         assets = json.loads((ROOT / "annotations/assets.json").read_text())
         self.assets = assets
 
@@ -109,9 +111,11 @@ class SceneAnnotations:
     def asset_of(self, obj):
         return self.assets[obj["asset"]]
 
-    def grasp_poses(self, obj, body_pos, body_quat_wxyz=None, kinds=None):
+    def grasp_poses(self, obj, body_pos, body_quat_wxyz=None, kinds=None, extra_rotations=False):
         """World TCP grasp candidates for an object at its current pose.
-        Returns list of dict(p, R, pre_open, kind, lift_dir)."""
+        Returns list of dict(p, R, pre_open, kind, lift_dir).  With
+        ``extra_rotations`` a square block also gets its 90-degree pinches
+        (a pick fallback; the annotated pinches define grasp clearance)."""
         a = self.asset_of(obj)
         yaw = 0.0
         if body_quat_wxyz is not None:
@@ -140,14 +144,59 @@ class SceneAnnotations:
                         appr = np.array([0, 0, -math.cos(tilt)]) - d * math.sin(tilt)
                         out.append({"kind": "rim_pinch_rect", "p": p, "R": gripper_rot(appr, d),
                                     "pre_open": g["pre_open"], "tilt": tilt})
+            elif g["type"] == "top_pinch" and body_quat_wxyz is not None and _tilted(body_quat_wxyz):
+                # lying on its side (a tipped bottle): pinch across it from above
+                # at the centre's height, along its current long axis
+                Rb = _quat_R(body_quat_wxyz)
+                size = np.asarray(a["size"], float)
+                centre = np.asarray(body_pos, float) + Rb @ (np.asarray(a["origin_to_bottom_center"], float)
+                                                             + np.array([0.0, 0.0, 0.5 * size[2]]))
+                long_ax = Rb[:, int(np.argmax(size))].copy()
+                long_ax[2] = 0.0
+                if np.linalg.norm(long_ax) < 1e-6:
+                    long_ax = np.array([1.0, 0.0, 0.0])
+                long_ax /= np.linalg.norm(long_ax)
+                across = np.cross([0.0, 0.0, 1.0], long_ax)
+                # the centre first, then 4 cm either way (a lying bottle between
+                # neighbours may only be reachable off-centre)
+                offs = list(g.get("along_offsets", [0.0]))
+                offs += [o for o in (-0.04, 0.04) if all(abs(o - x) > 0.015 for x in offs)]
+                for rank, d in enumerate(offs):
+                    p = centre + long_ax * d
+                    for sgn in (1.0, -1.0):
+                        out.append({"kind": "top_pinch", "p": p, "R": gripper_rot([0, 0, -1.0], sgn * across),
+                                    "pre_open": min(0.04, 0.5 * float(min(size[:2])) + 0.02),
+                                    "along": float(d), "along_rank": rank, "lying": True})
+                continue
             elif g["type"] == "top_pinch":
                 off = rz(yaw) @ np.r_[g.get("offset_xy", [0.0, 0.0]), 0.0]
-                p = bottom + off + np.array([0, 0, g["height"]])
-                for flip in (0.0, math.pi):
-                    c = g["close_yaw"] + yaw + flip
-                    out.append({"kind": "top_pinch", "p": p,
-                                "R": gripper_rot([0, 0, -1.0], [math.cos(c), math.sin(c), 0.0]),
-                                "pre_open": g["pre_open"]})
+                # pads close across close_yaw; the object's long axis is perpendicular to it
+                along = rz(yaw) @ np.array([-math.sin(g["close_yaw"]), math.cos(g["close_yaw"]), 0.0])
+                sx_, sy_ = float(a["size"][0]), float(a["size"][1])
+                square = extra_rotations and abs(sx_ - sy_) < 0.01 and max(sx_, sy_) < 0.075
+                for rank, d in enumerate(g.get("along_offsets", [0.0])):
+                    p = bottom + off + along * d + np.array([0, 0, g["height"]])
+                    out += [dict(c, along=float(d), along_rank=rank)
+                            for c in self._top_pinch_rotations(g, yaw, p, square=square)]
+                continue
+        return out
+
+    @staticmethod
+    def _top_pinch_rotations(g, yaw, p, square=False):
+        # a round contact (knob, fruit, tomato) may be pinched across any
+        # diameter; a square block across either pair of faces
+        flips = (0.0, math.pi / 4, math.pi / 2, 3 * math.pi / 4, math.pi, -math.pi / 4, -math.pi / 2,
+                 -3 * math.pi / 4) if g.get("round") else \
+            (0.0, math.pi, math.pi / 2, -math.pi / 2) if square else (0.0, math.pi)
+        out = []
+        for flip in flips:
+            c = g["close_yaw"] + yaw + flip
+            # at least 2 cm of free opening per side: with ~1 cm a fingertip
+            # landed on top of a 1.3 cm spoon handle (reach + yaw error)
+            pre_open = max(float(g["pre_open"]), min(0.04, 0.5 * float(g.get("width", 0.0)) + 0.02))
+            out.append({"kind": "top_pinch", "p": p,
+                        "R": gripper_rot([0, 0, -1.0], [math.cos(c), math.sin(c), 0.0]),
+                        "pre_open": pre_open})
         return out
 
     # ------------------------------------------------------------ supports
@@ -163,3 +212,15 @@ class SceneAnnotations:
         the support surface."""
         s = self.support(support_name)
         return np.array([xy[0], xy[1], s["z"]])
+
+
+def _quat_R(q):
+    w, x, y, z = q
+    return np.array([[1 - 2 * (y * y + z * z), 2 * (x * y - w * z), 2 * (x * z + w * y)],
+                     [2 * (x * y + w * z), 1 - 2 * (x * x + z * z), 2 * (y * z - w * x)],
+                     [2 * (x * z - w * y), 2 * (y * z + w * x), 1 - 2 * (x * x + y * y)]])
+
+
+def _tilted(q, deg=45.0):
+    """Body up-axis more than ``deg`` from vertical."""
+    return float(_quat_R(q)[2, 2]) < math.cos(math.radians(deg))

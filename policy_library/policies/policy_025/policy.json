@@ -38,9 +38,8 @@
     "class": "PoweredDoorClosePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [
-    "contract_015",
-    "contract_032"
+  "skill_contract_paths": [
+    "contract_049:close/powered"
   ],
   "legacy_family_contracts": [
     "contract_005"

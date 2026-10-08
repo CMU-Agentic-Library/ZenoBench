@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "kind": "low_level_policy",
+  "policy_id": "policy_109",
+  "legacy_id": "sweep_together",
+  "name": "Sweep Together",
+  "description": "Push objects toward their centroid.",
+  "scope": {
+    "unit": "one low-level controller invocation",
+    "group": "contact",
+    "effect_summary": "clustered(names)",
+    "effect_is_contract_guarantee": false
+  },
+  "inputs": [
+    {
+      "name": "names",
+      "kind": "positional_or_keyword",
+      "required": true
+    },
+    {
+      "name": "radius_m",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 0.12
+    },
+    {
+      "name": "rounds",
+      "kind": "keyword_only",
+      "required": false,
+      "default": 2
+    }
+  ],
+  "requires": [
+    {
+      "predicate": "policy_specific_preconditions",
+      "check": "policy_internal",
+      "detail": "See the execute implementation; this catalog has not normalized every route-specific precondition."
+    }
+  ],
+  "achieves": [
+    {
+      "predicate_summary": "clustered(names)",
+      "verification": "policy_internal_or_route_specific"
+    }
+  ],
+  "binding": {
+    "api": "PolicySuite",
+    "attribute": "policy_109",
+    "legacy_attribute": "sweep_together",
+    "class": "SweepTogetherPolicy"
+  },
+  "availability": "callable",
+  "skill_contract_paths": [
+    "contract_075:sweep/push_to_centroid"
+  ],
+  "legacy_family_contracts": [],
+  "supporting_family_contracts": [],
+  "evidence": "pending Isaac Sim check (skill library v2)"
+}

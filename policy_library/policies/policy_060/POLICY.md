@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).open_door_while_left_holds.execute(...)`
 - Class: `OpenDoorWhileLeftHoldsPolicy`
 - Availability: `callable`
-- Direct Contract routes: contract_030
+- Skill Contract paths: contract_048:open/left_holds_load
 - Legacy family Contracts: contract_004
 
 ## Caveat

@@ -1,129 +1,95 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_016",
-  "skill_id": "skill_008",
-  "name": "Push an object along a support",
-  "description": "Move one object by directed contact and measure progress.",
-  "scope": {
-    "unit": "one directed contact move",
-    "includes": [
-      "Move one object by directed contact and measure progress."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "object"
-    },
-    "support": {
-      "type": "support_ref",
-      "required": true,
-      "description": "support"
-    },
-    "direction_xy": {
-      "type": "unit_vec2",
-      "required": true,
-      "description": "direction xy"
-    },
-    "distance_m": {
-      "type": "positive_number",
-      "required": true,
-      "description": "distance m"
-    }
-  },
-  "requires": [
-    {
-      "predicate": "right_hand_empty",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "object_on_support",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "displacement_along",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "displacement_along"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_006",
-    "route": "auto",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_026",
-        "args": [
-          {
-            "arg": "object"
-          },
-          {
-            "arg": "support"
-          },
-          {
-            "arg": "direction_xy"
-          },
-          {
-            "arg": "distance_m"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object",
-    "support",
-    "direction_xy",
-    "distance_m"
-  ],
-  "argument_transforms": {},
-  "availability": "representative_runs_only",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true
-    },
-    "support": {
-      "argument": "support",
-      "kind": "support",
-      "source": "rig.ann",
-      "required": true
-    }
-  },
-  "action_predicate": {
-    "name": "shove_object_along_support",
-    "verb": "shove",
-    "noun": "object_along_support",
-    "arguments": [
-      "object",
-      "support",
-      "direction_xy",
-      "distance_m"
-    ],
-    "verified_by": [
-      "displacement_along"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_016",
+ "skill_id": "skill_008",
+ "verb": "straighten",
+ "noun": "waist",
+ "name": "Straighten the waist",
+ "description": "Return the waist pitch to upright.",
+ "group": "base_and_body",
+ "inputs": {},
+ "outputs": {},
+ "requires": [],
+ "ensures": [
+  {
+   "pred": "waist_straight",
+   "args": {}
   }
+ ],
+ "invalidates": [
+  "waist_bent(*)",
+  "reachable(*)",
+  "in_view(*)"
+ ],
+ "precheck": [],
+ "verifier": [
+  {
+   "predicate": "waist_straight()",
+   "name": "waist_straight",
+   "args": {},
+   "negated": false,
+   "meaning": "Waist pitch within 0.05 rad of upright.",
+   "kind": "fluent",
+   "gt_sources": [
+    "waist_joint"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {},
+ "action_predicate": {
+  "name": "straighten_waist",
+  "verb": "straighten",
+  "noun": "waist",
+  "arguments": []
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "upright",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_009",
+      "args": [],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "navigate",
+   "when": "the robot drives after a bent reach",
+   "bind": {},
+   "reason": "travel posture",
+   "to_skill_id": "skill_001",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "alternative",
+   "to": "reset",
+   "when": "the arm and torso must also be restored",
+   "bind": {},
+   "reason": "",
+   "to_skill_id": "skill_010"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }

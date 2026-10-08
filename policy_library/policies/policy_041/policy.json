@@ -45,7 +45,12 @@
     "class": "RightGripperClosePolicy"
   },
   "availability": "verified",
-  "direct_contracts": [],
+  "skill_contract_paths": [
+    "contract_023:point/front",
+    "contract_037:push/drag_from_top",
+    "contract_037:push/from_behind",
+    "contract_038:pull/top_drag"
+  ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_002",

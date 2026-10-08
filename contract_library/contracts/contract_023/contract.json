@@ -1,121 +1,202 @@
 {
-  "schema_version": 1,
-  "kind": "skill_contract",
-  "contract_id": "contract_023",
-  "skill_id": "skill_015",
-  "name": "Pick an object from a cavity",
-  "description": "Attempt one right-hand cavity retrieval and verify grasp and lift.",
-  "scope": {
-    "unit": "one cavity-route pick",
-    "includes": [
-      "Attempt one right-hand cavity retrieval and verify grasp and lift."
-    ],
-    "excludes": [
-      "choosing the whole-task goal",
-      "guaranteeing success for untested scene states"
-    ]
-  },
-  "inputs": {
-    "object": {
-      "type": "object_ref",
-      "required": true,
-      "description": "object"
-    },
-    "cavity": {
-      "type": "appliance_ref",
-      "required": true,
-      "description": "The annotated microwave cavity appliance."
-    }
-  },
-  "requires": [
-    {
-      "predicate": "right_hand_empty",
-      "enforcement": "contract_precheck"
-    },
-    {
-      "predicate": "object_annotated",
-      "enforcement": "policy_attempt"
-    },
-    {
-      "predicate": "object_reachable",
-      "enforcement": "policy_attempt"
-    }
-  ],
-  "achieves": [
-    {
-      "predicate": "held_by_right_hand",
-      "verification": "contract_runner"
-    },
-    {
-      "predicate": "object_lifted",
-      "verification": "contract_runner"
-    }
-  ],
-  "expected_state_change": [
-    "held_by_right_hand",
-    "object_lifted"
-  ],
-  "verifier": {
-    "legacy_family_contract": "contract_002",
-    "route": "cavity",
-    "check": "ContractRunner._before + _verify",
-    "on_failure": "record partial state and stop"
-  },
-  "policy_plan": {
-    "kind": "sequence",
-    "steps": [
-      {
-        "policy_id": "policy_048",
-        "args": [
-          {
-            "arg": "object"
-          },
-          {
-            "arg": "cavity"
-          }
-        ]
-      }
-    ]
-  },
-  "legacy_call_args": [
-    "object",
-    "cavity"
-  ],
-  "argument_transforms": {},
-  "availability": "experimental_callable",
-  "failure": {
-    "action": "stop_and_reobserve",
-    "fallback": "upper_layer_replans_from_measured_state",
-    "automatic_fallback": false
-  },
-  "fallback_hints": [],
-  "noun_bindings": {
-    "object": {
-      "argument": "object",
-      "kind": "scene_object",
-      "source": "rig.ann",
-      "required": true
-    },
-    "cavity": {
-      "argument": "cavity",
-      "kind": "articulated",
-      "source": "rig.ann",
-      "required": true,
-      "category_equals": "microwave",
-      "required_annotation": "cavity_aabb"
-    }
-  },
-  "action_predicate": {
-    "name": "retrieve_cavity_object",
-    "verb": "retrieve",
-    "noun": "cavity_object",
-    "arguments": [
-      "object",
-      "cavity"
-    ],
-    "verified_by": [
-      "held_by_right_hand",
-      "object_lifted"
-    ]
+ "schema_version": 2,
+ "kind": "skill_contract",
+ "contract_id": "contract_023",
+ "skill_id": "skill_015",
+ "verb": "point",
+ "noun": "target",
+ "name": "Point at a target",
+ "description": "Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.",
+ "group": "perception_and_gesture",
+ "inputs": {
+  "target": {
+   "type": "entity_ref",
+   "required": true,
+   "description": "What to indicate."
   }
+ },
+ "outputs": {},
+ "requires": [
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  }
+ ],
+ "ensures": [
+  {
+   "pred": "pointing_at",
+   "args": {
+    "target": "$target"
+   }
+  },
+  {
+   "pred": "hand_empty",
+   "args": {
+    "hand": "right"
+   }
+  }
+ ],
+ "invalidates": [
+  "arm_stowed(right)",
+  "reachable(*)"
+ ],
+ "precheck": [
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "before execution on live GT state; the Contract does not move if false",
+   "scope": "all paths"
+  }
+ ],
+ "verifier": [
+  {
+   "predicate": "pointing_at(target=$target)",
+   "name": "pointing_at",
+   "args": {
+    "target": "$target"
+   },
+   "negated": false,
+   "meaning": "The right finger axis points at the target within 8 deg.",
+   "kind": "fluent",
+   "gt_sources": [
+    "arm_fk",
+    "scene_annotation"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  },
+  {
+   "predicate": "hand_empty(hand=right)",
+   "name": "hand_empty",
+   "args": {
+    "hand": "right"
+   },
+   "negated": false,
+   "meaning": "The given gripper holds nothing.",
+   "kind": "fluent",
+   "gt_sources": [
+    "gripper_state"
+   ],
+   "checked": "after the policy chain on live GT state; the action is reported only if true",
+   "scope": "all paths"
+  }
+ ],
+ "noun_binding": {
+  "target": {
+   "type": "entity_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  }
+ },
+ "action_predicate": {
+  "name": "point_target",
+  "verb": "point",
+  "noun": "target",
+  "arguments": [
+   "target"
+  ]
+ },
+ "policy_plan": {
+  "selection": "first path whose noun conditions all hold, decided before any motion",
+  "on_no_match": "NO_PATH: the Contract refuses without moving",
+  "paths": [
+   {
+    "path_id": "front",
+    "when": [
+     {
+      "noun": "target",
+      "field": "bearing_abs_deg",
+      "op": "lte",
+      "value": 60
+     }
+    ],
+    "steps": [
+     {
+      "policy": "policy_041",
+      "args": [],
+      "kwargs": {}
+     },
+     {
+      "policy": "policy_101",
+      "args": [
+       "$target"
+      ],
+      "kwargs": {},
+      "as": "aim"
+     },
+     {
+      "policy": "policy_038",
+      "args": [
+       "#aim.position",
+       "#aim.rotation"
+      ],
+      "kwargs": {
+       "position_tolerance": 0.04,
+       "rotation_tolerance": 0.2
+      }
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   },
+   {
+    "path_id": "turn_and_point",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_071",
+      "args": [
+       "$target"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": ""
+   }
+  ]
+ },
+ "relations": [
+  {
+   "kind": "sequence",
+   "to": "tuck",
+   "when": "the gesture is finished",
+   "bind": {
+    "hand": "right"
+   },
+   "reason": "",
+   "to_skill_id": "skill_009",
+   "sequence_type": "enables"
+  },
+  {
+   "kind": "alternative",
+   "to": "look",
+   "when": "a gaze is enough to indicate the target",
+   "bind": {
+    "target": "$target"
+   },
+   "reason": "",
+   "to_skill_id": "skill_011"
+  }
+ ],
+ "failure": {
+  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+  "stop_and_report": true
+ },
+ "scope": {
+  "includes": [],
+  "excludes": []
+ }
 }
