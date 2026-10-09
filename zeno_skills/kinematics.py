@@ -25,6 +25,9 @@ URDF = ROOT / "robot_sources/zeno_malo_description-master/zeno_malo_edu.isaac.ur
 FRAME = "right_gripper_link"
 FINGERS = ("right_gripper_left_finger_axis", "right_gripper_right_finger_axis")
 FINGER_OPEN = 0.04          # m per finger (8 cm max gap)
+# compact right-arm fold (hand 0.29 m to the side, 0.33 m ahead), not used
+COMPACT_TUCK = [0.0, 0.0, 1.05, 0.46, 0.42, 2.04, -0.06, -0.26, 0.42]
+
 # default left-arm travel posture; Rig can command all seven left joints
 LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_joint_4": 2.3}
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
@@ -136,12 +139,11 @@ class ArmKin:
         posture = ([0.0, 0.0, 0.3, 1.2, 0.0, 1.3, 0.0, 0.0, 0.0] if side == "right" else
                    [0.0, 0.0, 0.2, 0.35, 0.0, 2.3, 0.0, 0.0, 0.0])
         self.posture = np.clip(np.array(posture), self.lo, self.hi)
-        # Travel (tucked) posture.  The right arm folds in close to the chest:
-        # the elbow-out posture held the hand 0.49 m to the side, and turning
-        # the base beside a counter swept objects off it.  Hand 0.29 m to the
-        # side, 0.33 m ahead, every joint above 1.05 m.
-        travel = ([0.0, 0.0, 1.05, 0.46, 0.42, 2.04, -0.06, -0.26, 0.42] if side == "right" else posture)
-        self.rest = np.clip(np.array(travel), self.lo, self.hi)
+        # Travel (tucked) posture = the same elbow-out posture.  (A compact fold
+        # close to the chest was tried: it put every pick on another IK branch
+        # and the fridge/cabinet/left-arm motions regressed; COMPACT_TUCK keeps
+        # it for reference.)
+        self.rest = self.posture.copy()
         self.base_p, self.base_R = np.zeros(3), np.eye(3)
 
     def set_base(self, xyz, yaw):

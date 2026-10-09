@@ -54,8 +54,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 1. `policy_010($object)`
 2. `policy_054($object, max_tilt_deg=15.0)`
-3. `policy_015($object, @object.support)`
+3. `policy_015($object, @object.support, hint=@object.xy)`
 - extra postcondition `on(object=$object, support=@object.support)`
+- Set down where it lay: a free edge spot near the robot had no IK for the sideways grip the turn leaves on the upright object.
 
 ## Relations
 

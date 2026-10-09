@@ -311,6 +311,20 @@ class Rig:
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
 
+    def _right_out_of_left_way(self):
+        """The compact right tuck sits in front of the chest, where the left
+        arm reaches across (a brace missed the mug by 7 cm): an empty right
+        arm at its tuck swings out to the elbow-out posture first."""
+        if self.held is not None or float(np.max(np.abs(self.q_cmd[2:] - self.kin.rest[2:]))) > 0.10:
+            return
+        goal = np.r_[self.q_cmd[:2], self.kin.posture[2:]]
+        try:
+            self.sync_world()
+            self.follow(self.joint_path(goal, "right_arm_aside"))
+            self.log("right_arm_aside")
+        except SkillFailure as exc:
+            self.log("right_arm_aside_blocked", reason=str(exc))
+
     def joint_path_via(self, vias):
         """Dense joint waypoints from q_cmd through ``vias`` (already checked)."""
         out, qa = [], self.q_cmd.copy()
@@ -337,7 +351,11 @@ class Rig:
             # no collision-free path can start here, leave the contact directly
             self.log("joint_from_contact", target=label)
             return dense(q0, q_goal)
-        for via in (self.kin.rest, np.r_[self.kin.rest[:2], q_goal[2:]], np.r_[q_goal[:2], self.kin.rest[2:]]):
+        post = getattr(self.kin, "posture", self.kin.rest)
+        # the elbow-out posture first: a detour through the compact tuck is a
+        # long swing that jammed a held can against the fridge
+        for via in (np.r_[q0[:2], post[2:]], np.r_[q_goal[:2], post[2:]],
+                    self.kin.rest, np.r_[self.kin.rest[:2], q_goal[2:]], np.r_[q_goal[:2], self.kin.rest[2:]]):
             if self.kin.free(via) and _segment_free(self.kin, q0, via) and _segment_free(self.kin, via, q_goal):
                 self.log("joint_detour", target=label)
                 return dense(q0, via) + dense(via, q_goal)
@@ -553,6 +571,13 @@ class Rig:
             # pinch: drive gently (a full-speed drive shook a rolling pin out)
             speed, turn, ramp = min(speed, 0.18), min(turn, 0.35), max(ramp, 1.8)
         x0, y0, yaw0 = self.base_pose()
+        # the arm posture this drive carries (actual joints, TCP and lowest joint)
+        qa = self.q()
+        _, _, J = self.kin.fk_all(qa)
+        tcp_a, _ = self.kin.tcp(qa)
+        self.log("drive_arm", q=np.round(qa, 3).tolist(), tcp=np.round(tcp_a, 3).tolist(),
+                 min_joint_z=round(float(min(j[0][2] for j in J[2:])), 3),
+                 q_err=round(float(np.max(np.abs(qa - self.q_cmd))), 3))
         pts = [(x0, y0, yaw0)]
         for x, y, yaw in path:
             yaw = pts[-1][2] + (yaw - pts[-1][2] + 180.0) % 360.0 - 180.0     # unwrap

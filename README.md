@@ -42,6 +42,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 上层 VLM 读取 [vlm_skill_catalog.json](skill_library/vlm_skill_catalog.json)（或单个 `skill_library/skills/skill_XXX/skill.json`），输出 schema 2 技能子图；[graph.py](skill_library/graph.py) 校验并 grounding，[runtime.py](skill_library/runtime.py) 逐节点调用 Contract。每次调用都在执行前评估 GT 前置条件，按名词选择 policy 路径，执行后评估 GT 后置条件，失败时返回测得的谓词与 fallback 候选。设计、关系类型和生成方式见 [SkillNode Library](skill_library/README.md)，Contract 与 policy 见 [Contract Library](contract_library/README.md) 和 [Policy Library](policy_library/README.md)。
 
 <!-- verification:start -->
+**物理验证**（Isaac Sim，GT 前后条件全部测量通过才计）：65/70 个动词、97/120 条 policy 路径已通过，29/35 个验证场景端到端通过。逐动词证据与失败原因见 [verification/STATUS.md](skill_library/verification/STATUS.md)。
 <!-- verification:end -->
 
 <!-- plans:start -->
@@ -97,6 +98,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 - [GT policy inventory](docs/GT_POLICY.md)
 - [Policy capability catalog (with implementation status)](docs/POLICY_CATALOG.md)
 - [Physical verification report](docs/POLICY_VERIFICATION.md)
+- [Known limitations (round 30)](docs/KNOWN_LIMITATIONS.md)
 - [Contract proposal (8 reusable templates)](docs/CONTRACT_PROPOSAL.md)
 - [GT annotations](#gt-annotations-ik--grasp--rl)
 - [Atomic skills](#atomic-skills)

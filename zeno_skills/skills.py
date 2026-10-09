@@ -278,6 +278,25 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None):
     """Tuck (or carry the held object), plan an A* path, drive (slower and
     with gentler turns while carrying)."""
     if rig.held is None:
+        # just opened a door beside the base: reverse straight out first, so
+        # the turn onto the route does not brush the open door back (a fridge
+        # door was pushed from 60 to 45 deg open while turning away)
+        x0, y0, _ = rig.base_pose()
+        rig.sync_world()
+        near_door = np.inf
+        pts_ = np.array([[x0, y0, 0.6], [x0, y0, 1.0]])
+        for a_ in rig.ann.articulated:
+            q_, qc_, qo_ = rig.joint(a_["name"]), a_["closed_q"], a_["open_q"]
+            if a_["type"] != "revolute" or abs(q_ - qc_) < 0.2 * abs(qo_ - qc_):
+                continue
+            T_ = rig.ann.part_pose(a_, q_)
+            loc_ = (pts_ - T_[:3, 3]) @ T_[:3, :3]
+            for lo_, hi_ in a_.get("part_boxes") or [a_["part_box"]]:
+                d_ = np.linalg.norm(np.maximum(np.maximum(np.asarray(lo_) - loc_, loc_ - np.asarray(hi_)), 0.0), axis=1)
+                near_door = min(near_door, float(d_.min()))
+        if near_door < 0.75:
+            moved = _back_off(rig, dist=0.30)
+            rig.log("navigate_back_from_door", door_dist=round(near_door, 3), moved_m=round(moved, 3))
         if not rig.tuck():
             # The hand is still over furniture (e.g. just released into a bin on
             # a shelf): reverse the base out first, then fold in free space.
@@ -1594,8 +1613,12 @@ def place(rig, name, support, xy=None):
     rig.focus_z = s["z"]
     # arrive with the load above the target surface: carried lower, it reached
     # the stove's front edge below the hob and scraped on the way up
+    # (and above the loose objects already on it: a bowl carried 3 cm over the
+    # island top dragged a rolling pin along its edge)
+    from .policies.plan_helpers import _carry_bottom_z
+    clear_z = None if container or s.get("furniture") == "kitchen_microwave" else _carry_bottom_z(rig, support)
     _goto_park(rig, park, min_bottom_z=s["z"] + 0.15 if s.get("furniture") == "kitchen_microwave"
-               else (s["z"] + 0.03 if not container else None))
+               else (max(s["z"] + 0.03, clear_z or 0.0) if not container else None))
     rig.kin.coll_kw = {"ignore_fingers": True}
     if s.get("category") == "TableDining" and rig.held["kind"] == "pinch":
         # The compact carry pose can put a bowl below the tabletop. Back the
@@ -1729,6 +1752,25 @@ def place(rig, name, support, xy=None):
         cz = float(geo.bottom(container, cst)[2])
         guard = rig.world.temp_obstacles([[cfp[0], cfp[1], cz, cfp[2], cfp[3],
                                            cz + float(ca["container"]["rim_height"])]])
+    if shelf_front is not None and hints[0] is not None and \
+            not rig.kin.cart_path(rig.q_cmd, np.asarray(legs[0][0], float), R, step=0.02)[1]:
+        # no straight line into the shelf from the carry pose: a joint-space
+        # detour here, beside the open fridge, jammed the arm against it.  Back
+        # out, shape the arm into the planned posture in free space, drive in.
+        px, py, pyaw = rig.base_pose()
+        if _back_off(rig, dist=0.40) > 0.1:
+            try:
+                rig.sync_world()
+                rig.follow(rig.joint_path(np.asarray(hints[0]), "place_preshape"), steps_per_wp=8)
+                check_held(rig, "place_preshape")
+                rig.drive_base([(px, py, pyaw)], speed=0.08, turn=0.3, ramp=0.8)
+                check_held(rig, "place_preshape_in")
+                rig.log("place_preshape", obj=name)
+            except Dropped:
+                raise
+            except SkillFailure as exc:
+                rig.log("place_preshape_short", reason=str(exc))
+                _goto_park(rig, park)
     try:
         with guard:
             # into a container the hand travels down past furniture (a floor bin
@@ -1891,6 +1933,7 @@ def free_spots(rig, name, support, hint=None, k=8):
         # an explicit request is honoured exactly when that point itself is free
         hx, hy = float(hint[0]), float(hint[1])
         re = 0.5 * max(size[0], size[1]) + 0.002          # the object's own half-size, not any-yaw
+        re += 0.04 if s.get("category") == "counter" else 0.0   # (off the counter's open edge)
         if x0 + re <= hx <= x1 - re and y0 + re <= hy <= y1 - re and not _overlaps_objects(
                 rig, [hx - re, hy - re, hx + re, hy + re, s["z"] + 0.005, s["z"] + size[2]], {name}, st, margin=0.005):
             out.append((-1.0, hx, hy))
@@ -1898,9 +1941,16 @@ def free_spots(rig, name, support, hint=None, k=8):
     # pickable afterwards), then accept the tight 2 cm margin
     # an explicit hint (swap onto the other's spot, a requested position) is
     # honoured closely: tight margin first; otherwise keep finger clearance first
-    for margin in ((0.02, 0.045) if hint is not None and not str(support).startswith("breakfast_fridge") else (0.045, 0.02)):
-        for x in np.arange(x0 + r, x1 - r + 1e-6, 0.03):
-            for y in np.arange(y0 + r, y1 - r + 1e-6, 0.03):
+    # (7 cm first: lowered 4.5 cm from a rolling pin, a rim-held bowl and the
+    # hand around it pushed the pin and the bowl came to rest tilted on it)
+    first = (0.10,) if asset.get("container") else ()   # the hand wraps a rim-held bowl
+    for margin in ((0.02, 0.045) if hint is not None and not str(support).startswith("breakfast_fridge")
+                   else first + (0.07, 0.045, 0.02)):
+        # 4 cm in from the open edges of a counter: a block left 3 cm from the
+        # island edge was knocked off by the robot body driving along it
+        ins = 0.04 if s.get("category") == "counter" else 0.0
+        for x in np.arange(x0 + r + ins, x1 - r - ins + 1e-6, 0.03):
+            for y in np.arange(y0 + r + ins, y1 - r - ins + 1e-6, 0.03):
                 box = [x - r, y - r, x + r, y + r, s["z"] + 0.005, s["z"] + size[2]]
                 if _overlaps_objects(rig, box, {name}, st, margin=margin):
                     continue

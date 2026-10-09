@@ -1,5 +1,402 @@
 [
  {
+  "task": "collect_fruits",
+  "solved": true,
+  "expansions": 75,
+  "length": 8,
+  "verbs": [
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/container",
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/container"
+  ]
+ },
+ {
+  "task": "tidy_toys",
+  "solved": true,
+  "expansions": 208,
+  "length": 12,
+  "verbs": [
+   "navigate/empty",
+   "pick/floor_top",
+   "navigate/carry",
+   "place/container",
+   "navigate/empty",
+   "pick/floor_top",
+   "navigate/carry",
+   "place/container",
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/container"
+  ]
+ },
+ {
+  "task": "shelve_books",
+  "solved": true,
+  "expansions": 69,
+  "length": 8,
+  "verbs": [
+   "navigate/empty",
+   "pick/flat_edge",
+   "navigate/carry",
+   "place/edge_held_flat",
+   "navigate/empty",
+   "pick/flat_edge",
+   "navigate/carry",
+   "place/edge_held_flat"
+  ]
+ },
+ {
+  "task": "desk_prep",
+  "solved": true,
+  "expansions": 194,
+  "length": 12,
+  "verbs": [
+   "navigate/empty",
+   "pick/flat_edge",
+   "navigate/carry",
+   "place/edge_held_flat",
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/surface",
+   "navigate/empty",
+   "pick/round_rim",
+   "navigate/carry",
+   "place/surface"
+  ]
+ },
+ {
+  "task": "breakfast_setup",
+  "solved": true,
+  "expansions": 1,
+  "length": 1,
+  "verbs": [
+   "arrange/place_near_common_spot"
+  ]
+ },
+ {
+  "task": "heat_breakfast",
+  "solved": true,
+  "expansions": 354,
+  "length": 19,
+  "verbs": [
+   "navigate/empty",
+   "open/refrigerator",
+   "navigate/empty",
+   "open/powered_microwave",
+   "navigate/empty",
+   "pick/inside_cabinet_or_fridge",
+   "navigate/carry",
+   "place/microwave_staged",
+   "close/powered",
+   "navigate/empty",
+   "heat/microwave",
+   "stop/microwave_door",
+   "pick/microwave_cavity",
+   "navigate/carry",
+   "place/surface",
+   "navigate/empty",
+   "close/handle_push",
+   "navigate/empty",
+   "close/powered"
+  ]
+ },
+ {
+  "task": "heat_breakfast_preloaded",
+  "solved": true,
+  "expansions": 2,
+  "length": 2,
+  "verbs": [
+   "navigate/empty",
+   "heat/microwave"
+  ]
+ },
+ {
+  "task": "heat_breakfast_combo",
+  "solved": true,
+  "expansions": 135,
+  "length": 10,
+  "verbs": [
+   "navigate/empty",
+   "heat/microwave",
+   "navigate/empty",
+   "open/refrigerator",
+   "navigate/empty",
+   "pick/inside_cabinet_or_fridge",
+   "navigate/carry",
+   "place/surface",
+   "navigate/empty",
+   "close/handle_push"
+  ]
+ },
+ {
+  "task": "recycle_and_store",
+  "solved": true,
+  "expansions": 203,
+  "length": 12,
+  "verbs": [
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/container",
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/container",
+   "navigate/empty",
+   "pick/floor_top",
+   "navigate/carry",
+   "place/container"
+  ]
+ },
+ {
+  "task": "organize_utility_items",
+  "solved": true,
+  "expansions": 284,
+  "length": 12,
+  "verbs": [
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/container",
+   "navigate/empty",
+   "pick/flat_edge",
+   "navigate/carry",
+   "place/edge_held_flat",
+   "navigate/empty",
+   "pick/flat_edge",
+   "navigate/carry",
+   "place/edge_held_flat"
+  ]
+ },
+ {
+  "task": "cook_tomato_soup",
+  "solved": true,
+  "expansions": 7059,
+  "length": 14,
+  "verbs": [
+   "navigate/empty",
+   "uncover/knob_lift_aside",
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "stir/circle_below_rim",
+   "navigate/carry",
+   "place/surface",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/container",
+   "heat/stove_pot",
+   "pick/top_pinch",
+   "cover/rim_plane"
+  ]
+ },
+ {
+  "task": "heat_without_microwave",
+  "solved": true,
+  "expansions": 208,
+  "length": 5,
+  "verbs": [
+   "navigate/empty",
+   "pick/round_rim",
+   "navigate/carry",
+   "place/stove_burner",
+   "heat/stove_pot"
+  ]
+ },
+ {
+  "task": "heat_can_in_microwave",
+  "solved": true,
+  "expansions": 459,
+  "length": 9,
+  "verbs": [
+   "navigate/empty",
+   "open/powered_microwave",
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/microwave_staged",
+   "close/powered",
+   "navigate/empty",
+   "heat/microwave"
+  ]
+ },
+ {
+  "task": "chill_drink",
+  "solved": true,
+  "expansions": 233,
+  "length": 8,
+  "verbs": [
+   "navigate/empty",
+   "open/refrigerator",
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/cabinet_or_fridge_shelf",
+   "close/handle_push",
+   "chill/fridge_wait"
+  ]
+ },
+ {
+  "task": "throw_away_can",
+  "solved": true,
+  "expansions": 13,
+  "length": 4,
+  "verbs": [
+   "navigate/empty",
+   "pick/top_pinch",
+   "navigate/carry",
+   "place/container"
+  ]
+ },
+ {
+  "task": "stack_blocks",
+  "solved": true,
+  "expansions": 6,
+  "length": 3,
+  "verbs": [
+   "navigate/empty",
+   "pick/top_pinch",
+   "stack/top_face"
+  ]
+ },
+ {
+  "task": "wipe_island",
+  "solved": true,
+  "expansions": 4,
+  "length": 4,
+  "verbs": [
+   "navigate/empty",
+   "pick/top_pinch",
+   "wipe/sponge_strip",
+   "place/surface"
+  ]
+ },
+ {
+  "task": "lay_down_bottle",
+  "solved": true,
+  "expansions": 2,
+  "length": 2,
+  "verbs": [
+   "navigate/empty",
+   "tip/push_high"
+  ]
+ },
+ {
+  "task": "roll_pin",
+  "solved": true,
+  "expansions": 2,
+  "length": 2,
+  "verbs": [
+   "navigate/empty",
+   "roll/push_above_axis"
+  ]
+ },
+ {
+  "task": "flip_book",
+  "solved": true,
+  "expansions": 2,
+  "length": 2,
+  "verbs": [
+   "navigate/empty",
+   "flip/edge_roll"
+  ]
+ },
+ {
+  "task": "hide_block",
+  "solved": true,
+  "expansions": 6,
+  "length": 3,
+  "verbs": [
+   "navigate/empty",
+   "uncover/knob_lift_aside",
+   "hide/container_with_lid"
+  ]
+ },
+ {
+  "task": "greet_and_point",
+  "solved": true,
+  "expansions": 3,
+  "length": 3,
+  "verbs": [
+   "wave/raised_swing",
+   "nod/pitch_cycles",
+   "point/front"
+  ]
+ },
+ {
+  "task": "find_lid",
+  "solved": true,
+  "expansions": 1,
+  "length": 1,
+  "verbs": [
+   "look/head_only"
+  ]
+ },
+ {
+  "task": "explore_living_room",
+  "solved": true,
+  "expansions": 1,
+  "length": 1,
+  "verbs": [
+   "explore/viewpoints"
+  ]
+ },
+ {
+  "task": "count_tomatoes",
+  "solved": true,
+  "expansions": 1,
+  "length": 1,
+  "verbs": [
+   "count/head_sweep"
+  ]
+ },
+ {
+  "task": "inspect_cabinet",
+  "solved": true,
+  "expansions": 1,
+  "length": 1,
+  "verbs": [
+   "look/turn_then_head"
+  ]
+ },
+ {
+  "task": "knock_then_open",
+  "solved": true,
+  "expansions": 3,
+  "length": 3,
+  "verbs": [
+   "navigate/empty",
+   "knock/panel_taps",
+   "open/hinged_door"
+  ]
+ },
+ {
+  "task": "square_block",
+  "solved": true,
+  "expansions": 2,
+  "length": 2,
+  "verbs": [
+   "navigate/empty",
+   "square/pick_rotate_place"
+  ]
+ },
+ {
+  "task": "swap_blocks",
+  "solved": true,
+  "expansions": 1,
+  "length": 1,
+  "verbs": [
+   "swap/via_buffer"
+  ]
+ },
+ {
   "task": "sort_items",
   "solved": true,
   "expansions": 14,
@@ -7,6 +404,59 @@
   "verbs": [
    "fetch/to_container",
    "fetch/to_container"
+  ]
+ },
+ {
+  "task": "empty_mug",
+  "solved": true,
+  "expansions": 11,
+  "length": 3,
+  "verbs": [
+   "fetch/to_surface",
+   "fetch/to_surface",
+   "fetch/to_surface"
+  ]
+ },
+ {
+  "task": "clear_tv_stand",
+  "solved": true,
+  "expansions": 2,
+  "length": 2,
+  "verbs": [
+   "fetch/to_surface",
+   "fetch/to_surface"
+  ]
+ },
+ {
+  "task": "sweep_blocks",
+  "solved": true,
+  "expansions": 1,
+  "length": 1,
+  "verbs": [
+   "sweep/push_to_centroid"
+  ]
+ },
+ {
+  "task": "present_block",
+  "solved": true,
+  "expansions": 3,
+  "length": 3,
+  "verbs": [
+   "navigate/empty",
+   "pick/top_pinch",
+   "present/front_of_head"
+  ]
+ },
+ {
+  "task": "serve_in_left_hand",
+  "solved": true,
+  "expansions": 6,
+  "length": 4,
+  "verbs": [
+   "navigate/empty",
+   "brace/left_rim_pinch",
+   "navigate/empty",
+   "open/left_holds_load"
   ]
  }
 ]

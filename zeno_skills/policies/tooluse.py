@@ -363,8 +363,11 @@ class PourIntoPolicy(AtomicPolicy):
         # axis its centre of mass stays on that axis, so the pads hold only the
         # carry torque, and the contents leave by a lip 90 deg from the fingers
         side_in = np.array([-u_in[1], u_in[0]])
+        # (rim pinch: only "away" pours.  Turned about its closing axis the cup
+        # swings in the pads like a pendulum -- a sideways pour tilted a bowl
+        # 70 deg off the planned direction and kept the tomatoes in)
         variants = [(u_in, o_in + u_in * cup_r, 1), (-u_in, o_in - u_in * cup_r, -1)] if handle else \
-            [(u_in, u_in * 2 * cup_r, 0), (side_in, o_in + side_in * cup_r, 1), (-side_in, o_in - side_in * cup_r, -1)]
+            [(u_in, u_in * 2 * cup_r, 0)]
         # the cup's heading about the vertical does not matter for a pour:
         # turning the wrist (and the pour direction with it) opens other parks.
         # The tilted pose is part of the search: parking for the upright pose
@@ -410,7 +413,9 @@ class PourIntoPolicy(AtomicPolicy):
             raise SkillFailure(f"pour: no base pose holds {source} over {target} (rejected: {_park_diag()})")
         # keep the cup above the target rim through the re-park (the default
         # carry lowered it to 0.6 m and the long sweep back up threw it out)
-        skills._goto_park(rig, park, min_bottom_z=rim_z + 0.03)
+        # (12 cm over the rim: from 3 cm the bowl caught a soda can on the
+        # counter end while the base turned; it is lowered at the pour pose)
+        skills._goto_park(rig, park, min_bottom_z=rim_z + 0.12)
         rig.caption = f"POUR {source} into {target}"
         t0, R0 = rig.kin.tcp(rig.q_cmd)
         lift = float(planned_goal[2] - t0[2])

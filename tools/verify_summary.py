@@ -79,7 +79,7 @@ def main():
         v = s["verb"]
         if v in passed:
             sc, c = passed[v][0]
-            post = "; ".join(f"`{p['atom']}` {p['detail']}" for p in c["postconditions"][:2])
+            post = "; ".join(f"`{p['atom']}` {p['detail']}" for p in (c.get("postconditions") or [])[:2])
             ev = f"{sc}: {post}"[:300]
             st = "verified"
         else:

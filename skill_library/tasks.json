@@ -318,12 +318,12 @@
    "id": "cook_tomato_soup",
    "annotation": "tasks/kitchen_skills/annotation.json",
    "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Uncover the pot, stir, pour the tomatoes from the prep bowl in, heat on the stove, and cover it again.",
+   "description": "Uncover the pot, stir, pour the tomatoes in, heat on the stove, and cover it again.",
    "entities": [
-    "prep_bowl",
+    "mug",
     "handled_cooking_pot",
     "pot_lid",
-    "cherry_tomato_4",
+    "cherry_tomato_1",
     "breakfast_spoon",
     "kitchen_island/top",
     "kitchen_stove/top",
@@ -336,7 +336,7 @@
     ],
     [
      "temperature_at_least",
-     "cherry_tomato_4",
+     "cherry_tomato_1",
      60.0
     ],
     [

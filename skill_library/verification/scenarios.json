@@ -21,13 +21,13 @@
     {
      "skill": "navigate",
      "args": {
-      "destination": "prep_bowl"
+      "destination": "mug"
      }
     },
     {
      "skill": "pick",
      "args": {
-      "object": "prep_bowl"
+      "object": "mug"
      }
     },
     {
@@ -39,14 +39,14 @@
     {
      "skill": "hover",
      "args": {
-      "object": "prep_bowl",
+      "object": "mug",
       "target": "handled_cooking_pot"
      }
     },
     {
      "skill": "pour",
      "args": {
-      "source": "prep_bowl",
+      "source": "mug",
       "target": "handled_cooking_pot"
      }
     },
@@ -59,7 +59,7 @@
     {
      "skill": "place",
      "args": {
-      "object": "prep_bowl",
+      "object": "mug",
       "receptacle": "kitchen_island/top"
      }
     },
@@ -72,7 +72,7 @@
     {
      "skill": "heat",
      "args": {
-      "food": "cherry_tomato_4",
+      "food": "cherry_tomato_1",
       "appliance": "kitchen_stove",
       "temp_c": 60
      }
@@ -1158,7 +1158,7 @@
     {
      "skill": "empty",
      "args": {
-      "container": "prep_bowl",
+      "container": "mug",
       "receptacle": "handled_cooking_pot"
      }
     },

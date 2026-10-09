@@ -47,6 +47,11 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
+### `pick_each_inside` — when always (default path)
+
+1. `for each item in @container.contents: policy_092($container) -> policy_061($item) -> [navigate](destination=$receptacle) -> [place](object=$item, receptacle=$receptacle)`
+- Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)
+
 ### `pour_out` — when 'rim_pinch' in container.grasp_types and receptacle.kind == 'object'
 
 1. `[navigate](destination=$container)`
@@ -55,10 +60,6 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 4. `[pour](source=$container, target=$receptacle)`
 5. `[place](object=$container, receptacle=@container.support)`
 - A cup or mug of loose items is emptied by pouring, then put back.
-
-### `pick_each_inside` — when always (default path)
-
-1. `for each item in @container.contents: policy_092($container) -> policy_061($item) -> [navigate](destination=$receptacle) -> [place](object=$item, receptacle=$receptacle)`
 
 ## Relations
 

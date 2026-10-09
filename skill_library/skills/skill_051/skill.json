@@ -121,6 +121,22 @@
  "invalidates": [],
  "policy_paths": [
   {
+   "path_id": "pick_each_inside",
+   "when": [
+    "always (default path)"
+   ],
+   "extra_preconditions": [],
+   "extra_postconditions": [],
+   "chain": [
+    "for each item in @container.contents: policy_092($container) -> policy_061($item) -> [navigate](destination=$receptacle) -> [place](object=$item, receptacle=$receptacle)"
+   ],
+   "policies": [
+    "policy_061",
+    "policy_092"
+   ],
+   "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)"
+  },
+  {
    "path_id": "pour_out",
    "when": [
     "'rim_pinch' in container.grasp_types",
@@ -137,22 +153,6 @@
    ],
    "policies": [],
    "note": "A cup or mug of loose items is emptied by pouring, then put back."
-  },
-  {
-   "path_id": "pick_each_inside",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "for each item in @container.contents: policy_092($container) -> policy_061($item) -> [navigate](destination=$receptacle) -> [place](object=$item, receptacle=$receptacle)"
-   ],
-   "policies": [
-    "policy_061",
-    "policy_092"
-   ],
-   "note": ""
   }
  ],
  "relations": {

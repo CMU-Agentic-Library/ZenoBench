@@ -197,14 +197,14 @@
    "chain": [
     "policy_010($object)",
     "policy_054($object, max_tilt_deg=15.0)",
-    "policy_015($object, @object.support)"
+    "policy_015($object, @object.support, hint=@object.xy)"
    ],
    "policies": [
     "policy_010",
     "policy_015",
     "policy_054"
    ],
-   "note": ""
+   "note": "Set down where it lay: a free edge spot near the robot had no IK for the sideways grip the turn leaves on the upright object."
   }
  ],
  "relations": {

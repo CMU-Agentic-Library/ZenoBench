@@ -15,7 +15,7 @@ Paired SkillNode: `skill_051` (`empty-container`).
 
 ## Policy paths
 
-- `pour_out` when 'rim_pinch' in container.grasp_types and receptacle.kind == 'object': `[navigate](destination=$container)` -> `[pick](object=$container)` -> `[navigate](destination=$receptacle)` -> `[pour](source=$container, target=$receptacle)` -> `[place](object=$container, receptacle=@container.support)`
 - `pick_each_inside` when always: `for each item in @container.contents: policy_092($container) -> policy_061($item) -> [navigate](destination=$receptacle) -> [place](object=$item, receptacle=$receptacle)`
+- `pour_out` when 'rim_pinch' in container.grasp_types and receptacle.kind == 'object': `[navigate](destination=$container)` -> `[pick](object=$container)` -> `[navigate](destination=$receptacle)` -> `[pour](source=$container, target=$receptacle)` -> `[place](object=$container, receptacle=@container.support)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

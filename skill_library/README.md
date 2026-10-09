@@ -136,7 +136,7 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_048` | **collect** objects | `collect(objects, container)` | fetch_each | `all_inside` |
 | `skill_049` | **sort** objects | `sort(objects, rule)` | fetch_by_tag | `sorted_by_category` |
 | `skill_050` | **clear** support | `clear(support, receptacle)` | fetch_each_on_support | `support_clear` |
-| `skill_051` | **empty** container | `empty(container, receptacle)` | pour_out, pick_each_inside | `container_empty` |
+| `skill_051` | **empty** container | `empty(container, receptacle)` | pick_each_inside, pour_out | `container_empty` |
 | `skill_052` | **arrange** objects | `arrange(objects, support, max_dist_m)` | place_near_common_spot | `grouped` |
 | `skill_053` | **restore** object | `restore(object)` | dispatch_pick_place | `at_initial_place`, `hand_empty` |
 | `skill_054` | **swap** objects | `swap(a, b)` | via_buffer | `positions_swapped`, `hand_empty` |

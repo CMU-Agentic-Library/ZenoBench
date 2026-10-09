@@ -23,6 +23,14 @@ class UprightObjectPolicy(AtomicPolicy):
         skills.check_held(rig, "upright_start")
         body, quat = rig.obj_pose(name)
         body_R = quat_R(quat)
+        st0 = rig.state()
+        self._lying_support = rig.geo.support_under(name, st0)
+        if self._lying_support is None and rig.ann.objects[name].get("support"):
+            try:
+                self._lying_support = rig.ann.support(rig.ann.objects[name]["support"])
+            except KeyError:
+                self._lying_support = None
+        self._lying_xy = np.asarray(rig.geo.bottom(name, st0)[:2], float)
         tilt = math.degrees(math.acos(np.clip(body_R[2, 2], -1.0, 1.0)))
         if tilt <= max_tilt_deg:
             rig.log("upright_result", obj=name, tilt_deg=round(tilt, 3))
@@ -182,7 +190,65 @@ class UprightObjectPolicy(AtomicPolicy):
         rig.log("upright_result", obj=name, before_deg=round(tilt, 3), tilt_deg=round(actual, 3))
         if actual > max_tilt_deg:
             raise SkillFailure(f"upright {name}: remaining tilt {actual:.1f} degrees")
+        self._set_down_upright(name)
         return actual
+
+    def _set_down_upright(self, name):
+        """Stand it back on its support straight from the turn.  The sideways
+        grip the turn leaves had no base pose for a separate place step (every
+        edge spot near the robot was out of reach), so put it down here: over
+        where it lay (or a little toward the robot), lower to contact, release."""
+        rig = self.rig
+        sup, xy0 = getattr(self, "_lying_support", None), getattr(self, "_lying_xy", None)
+        if sup is None or xy0 is None:
+            return
+        st = rig.state()
+        tcp, R = rig.kin.tcp(rig.q_cmd)
+        body, _ = rig.obj_pose(name)
+        hang = float(tcp[2] - skills._lowest_z(rig, name, st))
+        x, y, _ = rig.base_pose()
+        toward = np.array([x, y]) - np.asarray(xy0)
+        toward /= max(1e-9, np.linalg.norm(toward))
+        x0, y0, x1, y1 = sup["aabb_xy"]
+        off = (tcp - body)[:2]
+        for d in (0.0, 0.05, 0.10, 0.15, 0.20):
+            bxy = np.asarray(xy0) + toward * d
+            if not (x0 + 0.04 <= bxy[0] <= x1 - 0.04 and y0 + 0.04 <= bxy[1] <= y1 - 0.04):
+                continue
+            target = np.r_[bxy + off, sup["z"] + hang + 0.03]
+            q_t, ok = rig.kin.ik_global(target, R, seeds=[rig.q_cmd])
+            if not ok:
+                continue
+            try:
+                rig.sync_world()
+                rig.follow(rig.joint_path(np.asarray(q_t), "upright_over_support"), steps_per_wp=12)
+                skills.check_held(rig, "upright_over_support")
+            except skills.Dropped:
+                raise
+            except SkillFailure as exc:
+                rig.log("upright_set_down_short", d=d, reason=str(exc))
+                continue
+            try:
+                rig.move_to(target - np.array([0, 0, 0.026]), R, step=0.002, steps_per_wp=6,
+                            label="upright_lower", collision=False)
+            except SkillFailure as exc:
+                # no IK for the last 2.6 cm: an upright bottle released from
+                # there stands (rather than dropping it into the fallback)
+                rig.log("upright_lower_short", reason=str(exc))
+            rig.step(30)
+            rig.grip(0.04, 60, gradual=True)
+            rig.held = None
+            t2, R2 = rig.kin.tcp(rig.q_cmd)
+            for up in (0.08, 0.05):
+                try:
+                    rig.move_to(t2 + R2[:, 2] * 0.06 + np.array([0, 0, up]), R2, step=0.005,
+                                label="upright_release_clear", collision=False)
+                    break
+                except SkillFailure:
+                    continue
+            rig.log("upright_set_down", obj=name, xy=np.round(bxy, 3).tolist())
+            return
+        raise SkillFailure(f"upright {name}: no reachable spot to stand it back on {sup['name']}")
 
     def _hang_upright(self, name, max_tilt_deg):
         """A lying object turned upright in a mid pinch spins about the

@@ -162,7 +162,18 @@ class GraspArticulatedHandlePolicy(AtomicPolicy):
         thickness = float(art["handle"].get("thickness", 0.025))
         pre_open = float(art["handle"].get("pre_open", 0.04))
         rig.grip(pre_open, 30)
-        for target, label, hint in zip(targets, ("handle_pre_high", "handle_pre", "handle_contact"), park[3]):
+        for k_, (target, label, hint) in enumerate(zip(targets, ("handle_pre_high", "handle_pre", "handle_contact"),
+                                                         park[3])):
+            if k_ == 0 and hint is not None:
+                # onto the planned joint branch first: a straight line from the
+                # compact tuck reached the pre-pose on another branch, from
+                # which the short move to the handle had no joint path
+                try:
+                    rig.sync_world()
+                    rig.follow(rig.joint_path(np.asarray(hint), label))
+                    continue
+                except SkillFailure as exc:
+                    rig.log("handle_pre_branch_short", reason=str(exc))
             rig.move_to(*target, label=label, q_hint=hint)
         fingers = rig.grip(0.0, 120)
         if fingers.min() <= min(0.004, 0.3*thickness):

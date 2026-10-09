@@ -219,36 +219,6 @@
         1.05
       ],
       "spawn_yaw_deg": 0
-    },
-    "prep_bowl": {
-      "asset": "breakfast_bowl",
-      "supports": [
-        "kitchen_island/top"
-      ],
-      "spawn_xy": [
-        7.2,
-        1.87
-      ],
-      "spawn_yaw_deg": 0,
-      "reach_check": false
-    },
-    "cherry_tomato_4": {
-      "asset": "cherry_tomato",
-      "supports": [],
-      "inside": "prep_bowl",
-      "ring_m": 0.025
-    },
-    "cherry_tomato_5": {
-      "asset": "cherry_tomato",
-      "supports": [],
-      "inside": "prep_bowl",
-      "ring_m": 0.025
-    },
-    "cherry_tomato_6": {
-      "asset": "cherry_tomato",
-      "supports": [],
-      "inside": "prep_bowl",
-      "ring_m": 0.025
     }
   },
   "thermal": {
@@ -285,24 +255,6 @@
       "heating_rate_c_per_s": 4.0,
       "stove_rate_c_per_s": 2.0,
       "cooling_rate_c_per_s": 1.0
-    },
-    "cherry_tomato_4": {
-      "initial_c": 20.0,
-      "stove_rate_c_per_s": 3.0,
-      "cooling_rate_c_per_s": 1.5,
-      "heating_rate_c_per_s": 4.0
-    },
-    "cherry_tomato_5": {
-      "initial_c": 20.0,
-      "stove_rate_c_per_s": 3.0,
-      "cooling_rate_c_per_s": 1.5,
-      "heating_rate_c_per_s": 4.0
-    },
-    "cherry_tomato_6": {
-      "initial_c": 20.0,
-      "stove_rate_c_per_s": 3.0,
-      "cooling_rate_c_per_s": 1.5,
-      "heating_rate_c_per_s": 4.0
     }
   },
   "roles": {

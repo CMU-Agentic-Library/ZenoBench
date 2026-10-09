@@ -1,0 +1,988 @@
+{
+ "scenarios": [
+  {
+   "id": "b_books",
+   "success": true,
+   "steps": "7/7",
+   "failure": ""
+  },
+  {
+   "id": "c_approach_moving",
+   "success": true,
+   "steps": "2/2",
+   "failure": ""
+  },
+  {
+   "id": "c_tray_moving",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  },
+  {
+   "id": "g_expose_then_pick_book",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  },
+  {
+   "id": "g_heat_on_stove_instead_of_microwave",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  },
+  {
+   "id": "g_search_then_fetch",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  },
+  {
+   "id": "k_arrange_sort",
+   "success": false,
+   "steps": "1/2",
+   "failure": "step 1 sort_objects(objects=['soda_can', 'wooden_block_b'], rule={'recyclable': 'trash_can', 'block': 'kitchen_stove/top'}): SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=kitchen_stove/top): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.000 m)"
+  },
+  {
+   "id": "k_blocks",
+   "success": true,
+   "steps": "6/6",
+   "failure": ""
+  },
+  {
+   "id": "k_body",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  },
+  {
+   "id": "k_book",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  },
+  {
+   "id": "k_bottle",
+   "success": true,
+   "steps": "3/3",
+   "failure": ""
+  },
+  {
+   "id": "k_brace",
+   "success": true,
+   "steps": "4/4",
+   "failure": ""
+  },
+  {
+   "id": "k_cabinet",
+   "success": true,
+   "steps": "8/8",
+   "failure": ""
+  },
+  {
+   "id": "k_empty_hide",
+   "success": false,
+   "steps": "2/3",
+   "failure": "step 2 empty_container(container=mug, receptacle=handled_cooking_pot): pick cherry_tomato_1: not held (lift 0.000 m)"
+  },
+  {
+   "id": "k_fetch_collect",
+   "success": true,
+   "steps": "2/2",
+   "failure": ""
+  },
+  {
+   "id": "k_floor",
+   "success": true,
+   "steps": "4/4",
+   "failure": ""
+  },
+  {
+   "id": "k_fridge_chill",
+   "success": false,
+   "steps": "5/6",
+   "failure": "step 5 place_object(object=soda_can, receptacle=breakfast_fridge/inside_shelf): place soda_can: xy err 0.119 m, on support True (breakfast_fridge/inside_shelf)"
+  },
+  {
+   "id": "k_handle_mug",
+   "success": true,
+   "steps": "2/2",
+   "failure": ""
+  },
+  {
+   "id": "k_hands",
+   "success": true,
+   "steps": "8/8",
+   "failure": ""
+  },
+  {
+   "id": "k_microwave",
+   "success": false,
+   "steps": "12/13",
+   "failure": "step 12 place_object(object=oatmeal, receptacle=kitchen_island/top): place oatmeal: xy err 0.016 m, on support False (bottom at (6.66, 1.85, 0.970))"
+  },
+  {
+   "id": "k_mug_on_burner",
+   "success": true,
+   "steps": "8/8",
+   "failure": ""
+  },
+  {
+   "id": "k_perceive",
+   "success": true,
+   "steps": "12/12",
+   "failure": ""
+  },
+  {
+   "id": "k_pin",
+   "success": true,
+   "steps": "4/4",
+   "failure": ""
+  },
+  {
+   "id": "k_posture",
+   "success": true,
+   "steps": "9/9",
+   "failure": ""
+  },
+  {
+   "id": "k_present",
+   "success": true,
+   "steps": "6/6",
+   "failure": ""
+  },
+  {
+   "id": "k_restore_swap",
+   "success": true,
+   "steps": "3/3",
+   "failure": ""
+  },
+  {
+   "id": "k_separate",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  },
+  {
+   "id": "k_soup_stove",
+   "success": false,
+   "steps": "6/7",
+   "failure": "step 6 pour_contents(source=mug, target=handled_cooking_pot): pour: 0/3 items reached handled_cooking_pot"
+  },
+  {
+   "id": "k_stir_cover",
+   "success": true,
+   "steps": "13/13",
+   "failure": ""
+  },
+  {
+   "id": "k_sweep",
+   "success": true,
+   "steps": "3/3",
+   "failure": ""
+  },
+  {
+   "id": "k_trash",
+   "success": true,
+   "steps": "10/10",
+   "failure": ""
+  },
+  {
+   "id": "k_wipe",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  },
+  {
+   "id": "o_clear",
+   "success": true,
+   "steps": "1/1",
+   "failure": ""
+  },
+  {
+   "id": "r_bimanual_box",
+   "success": false,
+   "steps": "1/2",
+   "failure": "step 1 pick_object(object=wide_storage_bin, hands=both): bimanual_box_lift: two-hand lift/contact check failed"
+  },
+  {
+   "id": "t_floor_moving",
+   "success": true,
+   "steps": "5/5",
+   "failure": ""
+  }
+ ],
+ "verbs": {
+  "navigate": {
+   "status": "verified",
+   "paths_passed": [
+    "carry",
+    "empty",
+    "two_hand_carry"
+   ],
+   "paths": [
+    "two_hand_carry",
+    "carry",
+    "empty"
+   ],
+   "evidence": "b_books: `base_near(place=book_red)` distance 0.67 m"
+  },
+  "approach": {
+   "status": "verified",
+   "paths_passed": [
+    "park",
+    "reach_on_the_move"
+   ],
+   "paths": [
+    "reach_on_the_move",
+    "park"
+   ],
+   "evidence": "c_approach_moving: `reachable(target=TableDiningFactory_1437886_spawn_asset_2104395/surface_2)` [2.863, 5.681, 0.952]"
+  },
+  "face": {
+   "status": "verified",
+   "paths_passed": [
+    "rotate_loaded"
+   ],
+   "paths": [
+    "rotate_empty",
+    "rotate_loaded"
+   ],
+   "evidence": "k_perceive: `facing(target=breakfast_fridge)` bearing error 0.0 deg"
+  },
+  "retreat": {
+   "status": "verified",
+   "paths_passed": [
+    "bimanual_or_left_load",
+    "empty",
+    "loaded"
+   ],
+   "paths": [
+    "microwave_door_sweep",
+    "bimanual_or_left_load",
+    "loaded",
+    "empty"
+   ],
+   "evidence": "k_body: `base_clear_of(place=kitchen_island, distance_m=0.6)` distance 0.62 m"
+  },
+  "crouch": {
+   "status": "verified",
+   "paths_passed": [
+    "lowest",
+    "to_height"
+   ],
+   "paths": [
+    "to_height",
+    "lowest"
+   ],
+   "evidence": "k_posture: `not torso_raised()` torso -0.540 m; `torso_lowered()` torso -0.540 m"
+  },
+  "stand": {
+   "status": "verified",
+   "paths_passed": [
+    "highest"
+   ],
+   "paths": [
+    "highest"
+   ],
+   "evidence": "k_posture: `torso_raised()` torso -0.000 m"
+  },
+  "bend": {
+   "status": "verified",
+   "paths_passed": [
+    "full",
+    "to_pitch"
+   ],
+   "paths": [
+    "to_pitch",
+    "full"
+   ],
+   "evidence": "k_posture: `waist_bent(min_pitch_rad=0.2)` waist 0.698 rad"
+  },
+  "straighten": {
+   "status": "verified",
+   "paths_passed": [
+    "upright"
+   ],
+   "paths": [
+    "upright"
+   ],
+   "evidence": "k_posture: `waist_straight()` waist 0.000 rad"
+  },
+  "tuck": {
+   "status": "verified",
+   "paths_passed": [
+    "left",
+    "right"
+   ],
+   "paths": [
+    "left",
+    "right"
+   ],
+   "evidence": "k_brace: `arm_stowed(hand=left)` max joint error 0.000 rad"
+  },
+  "reset": {
+   "status": "verified",
+   "paths_passed": [
+    "joint_home"
+   ],
+   "paths": [
+    "joint_home"
+   ],
+   "evidence": "k_posture: `arm_stowed(hand=right)` max joint error 0.000 rad; `torso_raised()` torso -0.000 m"
+  },
+  "look": {
+   "status": "verified",
+   "paths_passed": [
+    "turn_then_head"
+   ],
+   "paths": [
+    "head_only",
+    "turn_then_head"
+   ],
+   "evidence": "k_perceive: `in_view(target=juice_bottle)` h -0, v -8 deg, 0.6 m; `observed(target=juice_bottle)` last seen at tick 846"
+  },
+  "inspect": {
+   "status": "verified",
+   "paths_passed": [
+    "closed_cabinet",
+    "open_view"
+   ],
+   "paths": [
+    "closed_cabinet",
+    "open_view"
+   ],
+   "evidence": "k_cabinet: `observed(target=KitchenCabinetFactory_7025538_spawn_asset_6631478)` last seen at tick 9481"
+  },
+  "search": {
+   "status": "verified",
+   "paths_passed": [
+    "room_sweep"
+   ],
+   "paths": [
+    "room_sweep"
+   ],
+   "evidence": "g_search_then_fetch: `observed(target=soda_can)` last seen at tick 1717"
+  },
+  "explore": {
+   "status": "verified",
+   "paths_passed": [
+    "viewpoints"
+   ],
+   "paths": [
+    "viewpoints"
+   ],
+   "evidence": "k_perceive: `room_explored(room=living_room_0_0)` coverage 0.88"
+  },
+  "point": {
+   "status": "verified",
+   "paths_passed": [
+    "front"
+   ],
+   "paths": [
+    "front",
+    "turn_and_point"
+   ],
+   "evidence": "k_perceive: `pointing_at(target=trash_can)` angle 2.2 deg; `hand_empty(hand=right)` right holds None"
+  },
+  "present": {
+   "status": "verified",
+   "paths_passed": [
+    "front_of_head"
+   ],
+   "paths": [
+    "front_of_head"
+   ],
+   "evidence": "k_present: `presenting(object=wooden_block_b)` forward 0.45 m, height 0.95 m, visible True; `holding(hand=right, object=wooden_block_b)` slip 0.000 m, fingers [0.0256, 0.0241]"
+  },
+  "pick": {
+   "status": "verified",
+   "paths_passed": [
+    "flat_edge",
+    "flat_overhang_ready",
+    "floor_top",
+    "handle_requested",
+    "microwave_cavity",
+    "on_the_move",
+    "rect_rim",
+    "round_rim",
+    "top_pinch",
+    "two_hand_flat"
+   ],
+   "paths": [
+    "microwave_cavity",
+    "inside_cabinet_or_fridge",
+    "handle_requested",
+    "on_the_move",
+    "two_hand_box",
+    "two_hand_flat",
+    "floor_top",
+    "flat_overhang_ready",
+    "flat_edge",
+    "rect_rim",
+    "round_rim",
+    "handle",
+    "top_pinch",
+    "annotation_dispatch"
+   ],
+   "evidence": "b_books: `holding(hand=right, object=book_red)` slip 0.001 m, fingers [0.0327, 0.0369]"
+  },
+  "place": {
+   "status": "verified",
+   "paths_passed": [
+    "container",
+    "edge_held_flat",
+    "microwave_staged",
+    "on_the_move",
+    "stove_burner",
+    "surface"
+   ],
+   "paths": [
+    "microwave_staged",
+    "microwave",
+    "cabinet_or_fridge_shelf",
+    "container",
+    "on_the_move",
+    "edge_held_flat",
+    "stove_burner",
+    "surface"
+   ],
+   "evidence": "b_books: `hand_empty(hand=right)` right holds None; `on(object=book_red, support=SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3)` SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+  },
+  "drop": {
+   "status": "verified",
+   "paths_passed": [
+    "above_opening"
+   ],
+   "paths": [
+    "above_opening"
+   ],
+   "evidence": "g_search_then_fetch: `inside(object=soda_can, container=trash_can)` r 0.049 / 0.136; `hand_empty(hand=right)` right holds None"
+  },
+  "stack": {
+   "status": "verified",
+   "paths_passed": [
+    "top_face"
+   ],
+   "paths": [
+    "top_face"
+   ],
+   "evidence": "k_blocks: `on_top_of(object=wooden_block_b, base=wooden_block_a)` dz 0.000 m, over footprint True; `hand_empty(hand=right)` right holds None"
+  },
+  "release": {
+   "status": "verified",
+   "paths_passed": [
+    "open_in_place"
+   ],
+   "paths": [
+    "open_in_place"
+   ],
+   "evidence": "k_brace: `hand_empty(hand=left)` left holds None"
+  },
+  "handover": {
+   "status": "verified",
+   "paths_passed": [
+    "right_to_left"
+   ],
+   "paths": [
+    "right_to_left"
+   ],
+   "evidence": "k_hands: `holding(hand=left, object=rolling_pin)` slip 0.000 m, fingers [0.013, 0.0201]; `hand_empty(hand=right)` right holds None"
+  },
+  "lift": {
+   "status": "verified",
+   "paths_passed": [
+    "raise"
+   ],
+   "paths": [
+    "raise"
+   ],
+   "evidence": "k_trash: `held_above(object=soda_can, height_m=0.95)` bottom z 0.944 m; `holding(hand=right, object=soda_can)` slip 0.000 m, fingers [0.0338, 0.0329]"
+  },
+  "lower": {
+   "status": "verified",
+   "paths_passed": [
+    "descend"
+   ],
+   "paths": [
+    "descend"
+   ],
+   "evidence": "k_trash: `held_below(object=soda_can, height_m=0.92)` bottom z 0.920 m; `holding(hand=right, object=soda_can)` slip 0.000 m, fingers [0.0338, 0.0329]"
+  },
+  "rotate": {
+   "status": "verified",
+   "paths_passed": [
+    "wrist_yaw"
+   ],
+   "paths": [
+    "wrist_yaw"
+   ],
+   "evidence": "k_blocks: `yaw_rotated(object=wooden_block_b, degrees=30)` yaw change 28.2 deg; `holding(hand=right, object=wooden_block_b)` slip 0.000 m, fingers [0.0256, 0.0241]"
+  },
+  "regrasp": {
+   "status": "verified",
+   "paths_passed": [
+    "set_down_and_pick"
+   ],
+   "paths": [
+    "set_down_and_pick"
+   ],
+   "evidence": "k_hands: `holding(hand=right, object=rolling_pin)` slip 0.000 m, fingers [0.0234, 0.0221]"
+  },
+  "brace": {
+   "status": "verified",
+   "paths_passed": [
+    "left_rim_pinch"
+   ],
+   "paths": [
+    "left_rim_pinch"
+   ],
+   "evidence": "k_brace: `steadied(object=mug)` support kitchen_island/top; `holding(hand=left, object=mug)` slip 0.000 m, fingers [0.0161, 0.0192]"
+  },
+  "flip": {
+   "status": "verified",
+   "paths_passed": [
+    "edge_roll"
+   ],
+   "paths": [
+    "edge_roll"
+   ],
+   "evidence": "k_book: `flipped(object=paperback_book)` z dot -1.00; `hand_empty(hand=right)` right holds None"
+  },
+  "push": {
+   "status": "verified",
+   "paths_passed": [
+    "from_behind"
+   ],
+   "paths": [
+    "drag_from_top",
+    "thin_auto",
+    "from_behind"
+   ],
+   "evidence": "k_sweep: `object_moved(object=wooden_block_a, direction_xy=[1.0, 0.0], distance_m=0.1)` moved 0.099 m"
+  },
+  "pull": {
+   "status": "verified",
+   "paths_passed": [
+    "top_drag"
+   ],
+   "paths": [
+    "top_drag"
+   ],
+   "evidence": "k_pin: `moved_toward_base(object=rolling_pin, distance_m=0.08)` closer by 0.079 m; `reachable(target=rolling_pin)` [6.701, 1.617, 1.051]"
+  },
+  "expose": {
+   "status": "verified",
+   "paths_passed": [
+    "slide_to_edge"
+   ],
+   "paths": [
+    "slide_to_edge"
+   ],
+   "evidence": "g_expose_then_pick_book: `edge_overhang(object=paperback_book)` overhang 0.060 m"
+  },
+  "separate": {
+   "status": "verified",
+   "paths_passed": [
+    "push_apart"
+   ],
+   "paths": [
+    "push_apart"
+   ],
+   "evidence": "k_separate: `grasp_clearance(object=wooden_block_a)` pinch at [7.221, 1.575] has both finger slots free"
+  },
+  "center": {
+   "status": "verified",
+   "paths_passed": [
+    "push_inward"
+   ],
+   "paths": [
+    "push_inward"
+   ],
+   "evidence": "k_pin: `away_from_edge(object=rolling_pin, margin_m=0.06)` edge margin 0.074 m"
+  },
+  "roll": {
+   "status": "verified",
+   "paths_passed": [
+    "push_above_axis"
+   ],
+   "paths": [
+    "push_above_axis"
+   ],
+   "evidence": "k_pin: `object_rolled(object=rolling_pin)` rotation 174.5 deg, lying True"
+  },
+  "tip": {
+   "status": "verified",
+   "paths_passed": [
+    "push_high"
+   ],
+   "paths": [
+    "push_high"
+   ],
+   "evidence": "k_bottle: `lying(object=juice_bottle)` long-axis z 0.05, vertical extent 0.091 m"
+  },
+  "upright": {
+   "status": "verified",
+   "paths_passed": [
+    "pick_orient_place"
+   ],
+   "paths": [
+    "pick_orient_place"
+   ],
+   "evidence": "k_bottle: `upright(object=juice_bottle)` tilt 2.7 deg; `hand_empty(hand=right)` right holds None"
+  },
+  "wipe": {
+   "status": "verified",
+   "paths_passed": [
+    "sponge_strip"
+   ],
+   "paths": [
+    "sponge_strip"
+   ],
+   "evidence": "k_wipe: `wiped(support=kitchen_island/top)` coverage 1.00; `holding(hand=right, object=kitchen_sponge)` slip 0.000 m, fingers [0.0182, 0.0172]"
+  },
+  "stir": {
+   "status": "verified",
+   "paths_passed": [
+    "circle_below_rim"
+   ],
+   "paths": [
+    "circle_below_rim"
+   ],
+   "evidence": "k_stir_cover: `stirred(container=handled_cooking_pot)` turns 1.21; `holding(hand=right, object=breakfast_spoon)` slip 0.000 m, fingers [0.0203, 0.0199]"
+  },
+  "pour": {
+   "status": "failed",
+   "paths_passed": [],
+   "paths": [
+    "tilt_over_rim"
+   ],
+   "evidence": "k_soup_stove: pour: 0/3 items reached handled_cooking_pot"
+  },
+  "open": {
+   "status": "verified",
+   "paths_passed": [
+    "drawer",
+    "hinged_door",
+    "left_holds_load",
+    "powered_microwave",
+    "refrigerator"
+   ],
+   "paths": [
+    "powered_microwave",
+    "left_holds_load",
+    "refrigerator",
+    "drawer",
+    "hinged_door"
+   ],
+   "evidence": "k_cabinet: `is_open(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)` q -1.390 (99% open)"
+  },
+  "close": {
+   "status": "verified",
+   "paths_passed": [
+    "handle_push",
+    "powered"
+   ],
+   "paths": [
+    "powered_loaded",
+    "powered",
+    "handle_push",
+    "dispatch"
+   ],
+   "evidence": "k_cabinet: `is_closed(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)` q -0.011"
+  },
+  "press": {
+   "status": "verified",
+   "paths_passed": [
+    "generic_key",
+    "microwave_start_staged"
+   ],
+   "paths": [
+    "microwave_start_staged",
+    "microwave_door_key",
+    "generic_key"
+   ],
+   "evidence": "k_microwave: `button_pressed(button=kitchen_microwave/start_button)` 1 measured press events; `hand_empty(hand=right)` right holds None"
+  },
+  "heat": {
+   "status": "verified",
+   "paths_passed": [
+    "microwave",
+    "stove_pot"
+   ],
+   "paths": [
+    "microwave",
+    "stove_pot"
+   ],
+   "evidence": "g_heat_on_stove_instead_of_microwave: `temperature_at_least(object=cherry_tomato_2, temp_c=45)` 60.5 C; `not heating(appliance=kitchen_stove)` on False"
+  },
+  "chill": {
+   "status": "not run",
+   "paths_passed": [],
+   "paths": [
+    "fridge_wait"
+   ],
+   "evidence": "not run"
+  },
+  "cover": {
+   "status": "verified",
+   "paths_passed": [
+    "rim_plane"
+   ],
+   "paths": [
+    "rim_plane"
+   ],
+   "evidence": "k_stir_cover: `covered(container=handled_cooking_pot, lid=pot_lid)` xy 0.003 m, dz -0.001 m, tilt 0.7; `hand_empty(hand=right)` right holds None"
+  },
+  "uncover": {
+   "status": "verified",
+   "paths_passed": [
+    "knob_lift_aside"
+   ],
+   "paths": [
+    "knob_lift_aside"
+   ],
+   "evidence": "k_empty_hide: `uncovered(container=handled_cooking_pot)` open; `hand_empty(hand=right)` right holds None"
+  },
+  "fetch": {
+   "status": "verified",
+   "paths_passed": [
+    "to_container",
+    "to_surface"
+   ],
+   "paths": [
+    "to_container",
+    "to_surface"
+   ],
+   "evidence": "k_arrange_sort: "
+  },
+  "collect": {
+   "status": "verified",
+   "paths_passed": [
+    "fetch_each"
+   ],
+   "paths": [
+    "fetch_each"
+   ],
+   "evidence": "k_fetch_collect: `all_inside(objects=['wooden_block_a', 'wooden_block_b'], container=trash_can)` outside: []"
+  },
+  "sort": {
+   "status": "failed",
+   "paths_passed": [],
+   "paths": [
+    "fetch_by_tag"
+   ],
+   "evidence": "k_arrange_sort: SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=kitchen_stove/top): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.000 m)"
+  },
+  "clear": {
+   "status": "verified",
+   "paths_passed": [
+    "fetch_each_on_support"
+   ],
+   "paths": [
+    "fetch_each_on_support"
+   ],
+   "evidence": "o_clear: `support_clear(support=TVStandFactory_6305370_spawn_asset_6627927/surface_1)` objects []"
+  },
+  "empty": {
+   "status": "failed",
+   "paths_passed": [],
+   "paths": [
+    "pick_each_inside",
+    "pour_out"
+   ],
+   "evidence": "k_empty_hide: pick cherry_tomato_1: not held (lift 0.000 m)"
+  },
+  "arrange": {
+   "status": "verified",
+   "paths_passed": [
+    "place_near_common_spot"
+   ],
+   "paths": [
+    "place_near_common_spot"
+   ],
+   "evidence": "k_arrange_sort: `grouped(objects=['wooden_block_a', 'wooden_block_b', 'soda_can'], support=kitchen_island/top, max_dist_m=0.3)` largest pair distance 0.107 m"
+  },
+  "restore": {
+   "status": "verified",
+   "paths_passed": [
+    "dispatch_pick_place"
+   ],
+   "paths": [
+    "dispatch_pick_place"
+   ],
+   "evidence": "k_restore_swap: `at_initial_place(object=wooden_block_a)` kitchen_island/top; `hand_empty(hand=right)` right holds None"
+  },
+  "swap": {
+   "status": "verified",
+   "paths_passed": [
+    "via_buffer"
+   ],
+   "paths": [
+    "via_buffer"
+   ],
+   "evidence": "k_restore_swap: `positions_swapped(a=wooden_block_a, b=soda_can)` errors 0.004 / 0.018 m; `hand_empty(hand=right)` right holds None"
+  },
+  "sidestep": {
+   "status": "verified",
+   "paths_passed": [
+    "empty_tucked"
+   ],
+   "paths": [
+    "empty_tucked",
+    "loaded"
+   ],
+   "evidence": "k_body: `sidestepped(distance_m=0.2)` lateral 0.200 m"
+  },
+  "wait": {
+   "status": "verified",
+   "paths_passed": [
+    "idle"
+   ],
+   "paths": [
+    "idle"
+   ],
+   "evidence": "k_mug_on_burner: `waited(seconds=3)` 3.25 s elapsed"
+  },
+  "identify": {
+   "status": "verified",
+   "paths_passed": [
+    "look_and_label"
+   ],
+   "paths": [
+    "look_and_label"
+   ],
+   "evidence": "k_perceive: `identified(object=soda_can)` {'asset': 'soda_can', 'tags': ['can', 'recyclable']}; `in_view(target=soda_can)` h -0, v 0 deg, 0.9 m"
+  },
+  "measure": {
+   "status": "verified",
+   "paths_passed": [
+    "look_and_size"
+   ],
+   "paths": [
+    "look_and_size"
+   ],
+   "evidence": "k_perceive: `measured(object=juice_bottle)` {'size_m': [0.0582, 0.0602, 0.1808]}; `in_view(target=juice_bottle)` h 0, v -8 deg, 0.6 m"
+  },
+  "count": {
+   "status": "verified",
+   "paths_passed": [
+    "head_sweep"
+   ],
+   "paths": [
+    "head_sweep"
+   ],
+   "evidence": "k_perceive: `counted(category=cherry_tomato)` {'count': 3, 'objects': ['cherry_tomato_1', 'cherry_tomato_2', 'cherry_tomato_3']}"
+  },
+  "wave": {
+   "status": "verified",
+   "paths_passed": [
+    "raised_swing"
+   ],
+   "paths": [
+    "raised_swing"
+   ],
+   "evidence": "k_body: `waved()` 3 swings; `hand_empty(hand=right)` right holds None"
+  },
+  "nod": {
+   "status": "verified",
+   "paths_passed": [
+    "pitch_cycles"
+   ],
+   "paths": [
+    "pitch_cycles"
+   ],
+   "evidence": "k_body: `nodded()` 2 cycles"
+  },
+  "shake": {
+   "status": "verified",
+   "paths_passed": [
+    "lateral"
+   ],
+   "paths": [
+    "lateral"
+   ],
+   "evidence": "k_present: `shaken(object=wooden_block_b)` 3 measured cycles; `holding(hand=right, object=wooden_block_b)` slip 0.000 m, fingers [0.0255, 0.0242]"
+  },
+  "hover": {
+   "status": "verified",
+   "paths_passed": [
+    "above_target"
+   ],
+   "paths": [
+    "above_target"
+   ],
+   "evidence": "k_soup_stove: `hovering_over(object=mug, target=handled_cooking_pot)` xy 0.002 m, above by 0.061 m; `holding(hand=right, object=mug)` slip 0.001 m, fingers [0.0193, 0.0151]"
+  },
+  "square": {
+   "status": "verified",
+   "paths_passed": [
+    "pick_rotate_place"
+   ],
+   "paths": [
+    "pick_rotate_place"
+   ],
+   "evidence": "k_blocks: `squared(object=wooden_block_a)` yaw off axis 1.4 deg; `hand_empty(hand=right)` right holds None"
+  },
+  "touch": {
+   "status": "verified",
+   "paths_passed": [
+    "fingertip_top"
+   ],
+   "paths": [
+    "fingertip_top"
+   ],
+   "evidence": "k_blocks: `touched(object=wooden_block_b)` 1 contacts, moved 0.000 m; `hand_empty(hand=right)` right holds None"
+  },
+  "knock": {
+   "status": "verified",
+   "paths_passed": [
+    "panel_taps"
+   ],
+   "paths": [
+    "panel_taps"
+   ],
+   "evidence": "k_cabinet: `knocked(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)` 2 contacts, joint moved 0.000; `is_closed(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)` q -0.000"
+  },
+  "sweep": {
+   "status": "verified",
+   "paths_passed": [
+    "push_to_centroid"
+   ],
+   "paths": [
+    "push_to_centroid"
+   ],
+   "evidence": "k_sweep: `clustered(objects=['wooden_block_a', 'wooden_block_b'], radius_m=0.05)` max 0.027 m from centroid"
+  },
+  "stop": {
+   "status": "verified",
+   "paths_passed": [
+    "microwave_door",
+    "stove_key_off"
+   ],
+   "paths": [
+    "stove_key_off",
+    "microwave_door"
+   ],
+   "evidence": "k_microwave: `not heating(appliance=kitchen_microwave)` on False; `is_open(articulated=kitchen_microwave)` q -1.400 (100% open)"
+  },
+  "dip": {
+   "status": "verified",
+   "paths_passed": [
+    "tip_below_rim"
+   ],
+   "paths": [
+    "tip_below_rim"
+   ],
+   "evidence": "k_stir_cover: `dipped(container=handled_cooking_pot)` dipped True; `holding(hand=right, object=breakfast_spoon)` slip 0.000 m, fingers [0.0204, 0.0197]"
+  },
+  "hide": {
+   "status": "not run",
+   "paths_passed": [],
+   "paths": [
+    "container_with_lid",
+    "closed_cabinet"
+   ],
+   "evidence": "not run"
+  }
+ }
+}

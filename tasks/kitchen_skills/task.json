@@ -41,24 +41,6 @@
    "heating_rate_c_per_s": 4.0,
    "stove_rate_c_per_s": 2.0,
    "cooling_rate_c_per_s": 1.0
-  },
-  "cherry_tomato_4": {
-   "initial_c": 20.0,
-   "stove_rate_c_per_s": 3.0,
-   "cooling_rate_c_per_s": 1.5,
-   "heating_rate_c_per_s": 4.0
-  },
-  "cherry_tomato_5": {
-   "initial_c": 20.0,
-   "stove_rate_c_per_s": 3.0,
-   "cooling_rate_c_per_s": 1.5,
-   "heating_rate_c_per_s": 4.0
-  },
-  "cherry_tomato_6": {
-   "initial_c": 20.0,
-   "stove_rate_c_per_s": 3.0,
-   "cooling_rate_c_per_s": 1.5,
-   "heating_rate_c_per_s": 4.0
   }
  },
  "demonstrate_microwave_door": false,
@@ -252,49 +234,6 @@
     1.05,
     0.037000000000000005
    ]
-  },
-  "prep_bowl": {
-   "asset": "breakfast_bowl",
-   "support": "kitchen_island/top",
-   "yaw": 0.0,
-   "position": [
-    7.2001,
-    1.8699000000000001,
-    0.9171
-   ]
-  },
-  "cherry_tomato_4": {
-   "asset": "cherry_tomato",
-   "support": null,
-   "yaw": 0.0,
-   "inside": "prep_bowl",
-   "position": [
-    7.2250000000000005,
-    1.87,
-    0.9
-   ]
-  },
-  "cherry_tomato_5": {
-   "asset": "cherry_tomato",
-   "support": null,
-   "yaw": 0.0,
-   "inside": "prep_bowl",
-   "position": [
-    7.1875,
-    1.8916506350946112,
-    0.9
-   ]
-  },
-  "cherry_tomato_6": {
-   "asset": "cherry_tomato",
-   "support": null,
-   "yaw": 0.0,
-   "inside": "prep_bowl",
-   "position": [
-    7.1875,
-    1.8483493649053893,
-    0.9
-   ]
   }
  },
  "dropped_optional_objects": [],
@@ -353,13 +292,7 @@
   ],
   "floor_block": [
    "floor:living_room_0_0"
-  ],
-  "prep_bowl": [
-   "kitchen_island/top"
-  ],
-  "cherry_tomato_4": [],
-  "cherry_tomato_5": [],
-  "cherry_tomato_6": []
+  ]
  },
  "alternatives": [
   "no microwave: heat the tomatoes in the pot on the stove",

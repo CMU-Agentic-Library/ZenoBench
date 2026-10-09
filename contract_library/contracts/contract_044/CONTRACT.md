@@ -18,6 +18,6 @@ Paired SkillNode: `skill_036` (`upright-object`).
 
 ## Policy paths
 
-- `pick_orient_place` when 'top_pinch' in object.grasp_types: `policy_010($object)` -> `policy_054($object, max_tilt_deg=15.0)` -> `policy_015($object, @object.support)`
+- `pick_orient_place` when 'top_pinch' in object.grasp_types: `policy_010($object)` -> `policy_054($object, max_tilt_deg=15.0)` -> `policy_015($object, @object.support, hint=@object.xy)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

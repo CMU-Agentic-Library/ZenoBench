@@ -88,7 +88,16 @@ class SurfacePlacePolicy(AtomicPolicy):
     def execute(self, name, support, *, hint=None, tries=4):
         if support.startswith("in:"):
             raise ValueError("surface place needs a support name, not a container")
-        return skills.place_on(self.rig, name, support, hint=hint, tries=tries)
+        rig = self.rig
+        if rig.held is None:
+            # already set down by the previous policy (upright stands the
+            # object back itself): verify instead of placing again
+            on, why = rig.geo.on(name, support, rig.state())
+            if on:
+                rig.log("place_already_on", obj=name, support=support)
+                return True
+            raise SkillFailure(f"place {name}: not held and not on {support} ({why})")
+        return skills.place_on(rig, name, support, hint=hint, tries=tries)
 
 
 class ContainerPlacePolicy(AtomicPolicy):

@@ -207,7 +207,10 @@ class LeftArmFoldPolicy(AtomicPolicy):
         n = max(2, int(np.max(np.abs(goal - start)) / 0.01))
         rig.left_follow([start + (goal - start) * u for u in np.linspace(0, 1, n)[1:]])
         err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
-        rig.log("left_fold", error_rad=round(err, 4))
         if err > 0.08:
+            rig.step(120)                 # let the slow wrist joints settle
+            err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
+        rig.log("left_fold", error_rad=round(err, 4))
+        if err > 0.15:
             raise SkillFailure(f"fold left arm: joint error {err:.3f} rad")
         return err

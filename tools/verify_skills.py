@@ -79,6 +79,7 @@ def run_one(sc, video=False, out_root=OUT):
             t0 = time.time()
             before = {k: list(v["pos"]) for k, v in rig.state()["objects"].items()}
             held_before, left_before = rig.held, getattr(rig, "left_held", None)
+            joints_before = {a["name"]: float(rig.joint(a["name"])) for a in rig.ann.articulated}
             res = runner.run(st["skill"], st.get("args", {}))
             row = {"index": i, "skill": st["skill"], "action": res.action, "success": res.success,
                    "path": res.selected_path, "error_code": res.error_code, "error": res.error,
@@ -104,6 +105,10 @@ def run_one(sc, video=False, out_root=OUT):
                                 and k not in held_now
                                 and np.linalg.norm(np.asarray(after[k]["pos"]) - np.asarray(p0)) > 0.03
                                 and not rides(k)}
+            for a in rig.ann.articulated:      # doors/drawers moved by a step that does not name them
+                dq_ = float(rig.joint(a["name"])) - joints_before[a["name"]]
+                if abs(dq_) > 0.05 and f'"{a["name"]}' not in named:
+                    row["disturbed"][a["name"] + ":joint"] = round(dq_, 3)
             if row["disturbed"]:
                 print("DISTURBED", i, json.dumps(row["disturbed"]), flush=True)
             report["steps"].append(row)

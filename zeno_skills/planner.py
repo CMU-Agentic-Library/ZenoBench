@@ -62,7 +62,9 @@ def joint_reachable(kin, qa, qb):
     the tucked posture (the options Rig.joint_path executes)."""
     if _segment_free(kin, qa, qb):
         return True
-    for via in (kin.rest, np.r_[kin.rest[:2], qb[2:]], np.r_[qb[:2], kin.rest[2:]]):
+    post = getattr(kin, "posture", kin.rest)
+    for via in (np.r_[qa[:2], post[2:]], np.r_[qb[:2], post[2:]],
+                kin.rest, np.r_[kin.rest[:2], qb[2:]], np.r_[qb[:2], kin.rest[2:]]):
         if kin.free(via) and _segment_free(kin, qa, via) and _segment_free(kin, via, qb):
             return True
     return False
@@ -190,10 +192,11 @@ class Grid:
         self.shape = np.ceil((hi - lo) / res).astype(int)
         self.cache = {}
 
-    def not_inside(self, ij, r=0.20):
+    def not_inside(self, ij, r=0.26):
         """Lenient check for the tight cells next to a parked start/goal: the
-        base centre stays 0.2 m from every box (a skipped check let a short
-        re-park cut straight through the island corner and knock objects off)."""
+        base centre stays 0.26 m from every box, i.e. the base column
+        clears it (a skipped check let a short re-park cut through the island
+        corner; at 0.2 m the column still swept blocks off the island edge)."""
         x, y = self.lo + (np.asarray(ij) + 0.5) * self.res
         b = self.boxes
         dx = np.maximum(np.maximum(b[:, 0] - x, x - b[:, 3]), 0)
@@ -230,9 +233,13 @@ def plan_path(world, start, goal, res=0.05, margin=0.02):
     relax = int(0.4 / res)
 
     def ok(ij):
-        near_end = max(abs(ij[0] - s[0]), abs(ij[1] - s[1])) <= relax or \
-            max(abs(ij[0] - t[0]), abs(ij[1] - t[1])) <= relax
-        return (near_end and g.not_inside(ij)) or g.free(ij)
+        near_start = max(abs(ij[0] - s[0]), abs(ij[1] - s[1])) <= relax
+        near_goal = max(abs(ij[0] - t[0]), abs(ij[1] - t[1])) <= relax
+        if ij == s or ij == t:
+            return True
+        # leaving a tight park is lenient (0.15 m: at 0.26 a robot parked beside
+        # a counter could not move off it); arriving keeps the column clear
+        return (near_goal and g.not_inside(ij)) or (near_start and g.not_inside(ij, r=0.15)) or g.free(ij)
 
     openq = [(0.0, s)]
     came, cost = {s: None}, {s: 0.0}

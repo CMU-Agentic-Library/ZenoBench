@@ -108,12 +108,12 @@
    "z": 0.5886
   },
   "/World/Tasks/handled_cooking_pot/Asset/handled_cooking_pot": {
-   "drift_m": 0.0002,
+   "drift_m": 0.0001,
    "z0": 0.7805,
    "z": 0.7805
   },
   "/World/Tasks/pot_lid/Asset/pot_lid": {
-   "drift_m": 0.0002,
+   "drift_m": 0.0001,
    "z0": 0.8891,
    "z": 0.8891
   },
@@ -133,9 +133,9 @@
    "z": 0.8842
   },
   "/World/Tasks/cherry_tomato_3/Asset/cherry_tomato": {
-   "drift_m": 0.0,
+   "drift_m": 0.0013,
    "z0": 0.8843,
-   "z": 0.8843
+   "z": 0.8842
   },
   "/World/Tasks/breakfast_spoon/Asset/breakfast_spoon": {
    "drift_m": 0.0004,
@@ -178,7 +178,7 @@
    "z": 0.9201
   },
   "/World/Tasks/trash_can/Asset/trash_can": {
-   "drift_m": 0.0,
+   "drift_m": 0.0004,
    "z0": 0.151,
    "z": 0.151
   },
@@ -196,26 +196,6 @@
    "drift_m": 0.0,
    "z0": 0.0377,
    "z": 0.0377
-  },
-  "/World/Tasks/prep_bowl/Asset/breakfast_bowl": {
-   "drift_m": 0.0,
-   "z0": 0.9051,
-   "z": 0.9051
-  },
-  "/World/Tasks/cherry_tomato_4/Asset/cherry_tomato": {
-   "drift_m": 0.0,
-   "z0": 0.8842,
-   "z": 0.8842
-  },
-  "/World/Tasks/cherry_tomato_5/Asset/cherry_tomato": {
-   "drift_m": 0.0,
-   "z0": 0.8842,
-   "z": 0.8842
-  },
-  "/World/Tasks/cherry_tomato_6/Asset/cherry_tomato": {
-   "drift_m": 0.0,
-   "z0": 0.8842,
-   "z": 0.8842
   }
  },
  "articulations": {

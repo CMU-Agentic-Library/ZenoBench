@@ -125,6 +125,48 @@
   "on_no_match": "NO_PATH: the Contract refuses without moving",
   "paths": [
    {
+    "path_id": "pick_each_inside",
+    "when": [],
+    "steps": [
+     {
+      "foreach": "@container.contents",
+      "as": "item",
+      "steps": [
+       {
+        "policy": "policy_092",
+        "args": [
+         "$container"
+        ],
+        "kwargs": {}
+       },
+       {
+        "policy": "policy_061",
+        "args": [
+         "$item"
+        ],
+        "kwargs": {}
+       },
+       {
+        "call": "navigate",
+        "args": {
+         "destination": "$receptacle"
+        }
+       },
+       {
+        "call": "place",
+        "args": {
+         "object": "$item",
+         "receptacle": "$receptacle"
+        }
+       }
+      ]
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)"
+   },
+   {
     "path_id": "pour_out",
     "when": [
      {
@@ -177,48 +219,6 @@
     "requires": [],
     "ensures": [],
     "note": "A cup or mug of loose items is emptied by pouring, then put back."
-   },
-   {
-    "path_id": "pick_each_inside",
-    "when": [],
-    "steps": [
-     {
-      "foreach": "@container.contents",
-      "as": "item",
-      "steps": [
-       {
-        "policy": "policy_092",
-        "args": [
-         "$container"
-        ],
-        "kwargs": {}
-       },
-       {
-        "policy": "policy_061",
-        "args": [
-         "$item"
-        ],
-        "kwargs": {}
-       },
-       {
-        "call": "navigate",
-        "args": {
-         "destination": "$receptacle"
-        }
-       },
-       {
-        "call": "place",
-        "args": {
-         "object": "$item",
-         "receptacle": "$receptacle"
-        }
-       }
-      ]
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": ""
    }
   ]
  },
