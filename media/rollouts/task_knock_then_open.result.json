@@ -1,0 +1,744 @@
+{
+ "id": "task_knock_then_open",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "navigate",
+   "action": "navigate_place(destination=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "distance 0.98 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     4.763926982879639,
+     0.6986682415008545,
+     -164.9999986861745
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 1,
+   "skill": "knock",
+   "action": "knock_articulated(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "success": true,
+   "path": "panel_taps",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "distance 0.98 m"
+    },
+    {
+     "atom": "is_closed(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "q -0.000"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "knocked(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "2 contacts, joint moved 0.000"
+    },
+    {
+     "atom": "is_closed(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "q -0.000"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 2,
+   "skill": "open",
+   "action": "open_articulated(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "success": true,
+   "path": "hinged_door",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "base_near(place=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "distance 0.50 m"
+    },
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "is_open(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "q -1.390 (99% open)"
+    }
+   ],
+   "outputs": {
+    "joint": -1.3902692794799805
+   },
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791509800.1533744,
+ "goal": [],
+ "crash": "KeyError: 'before'",
+ "traceback": "Traceback (most recent call last):\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/tools/verify_skills.py\", line 130, in run_one\n    ok, detail = pred.evaluate(rig, ctx, **kw)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/zeno_skills/predicates.py\", line 1082, in _knocked\n    ev = [e for e in rig.events[ctx[\"before\"][\"events\"]:] if e.get(\"label\") == \"knock_contact\"\n                                ~~~^^^^^^^^^^\nKeyError: 'before'\n",
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "path",
+   "waypoints": [
+    [
+     5.58,
+     0.67,
+     -170.32
+    ],
+    [
+     4.76,
+     0.7,
+     -165.0
+    ]
+   ]
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    7.967,
+    0.513,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 1571,
+   "t": 13.092,
+   "label": "base",
+   "pose": [
+    4.764,
+    0.699,
+    -165.0
+   ]
+  },
+  {
+   "tick": 1601,
+   "t": 13.342,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 1601,
+   "t": 13.342,
+   "label": "contract_start",
+   "contract": "contract_074",
+   "action": "knock_articulated(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "depth": 0
+  },
+  {
+   "tick": 1601,
+   "t": 13.342,
+   "label": "policy_start",
+   "policy": "policy_106"
+  },
+  {
+   "tick": 1630,
+   "t": 13.583,
+   "label": "path",
+   "waypoints": [
+    [
+     3.62,
+     1.02,
+     -105.0
+    ]
+   ]
+  },
+  {
+   "tick": 1630,
+   "t": 13.583,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.008,
+    0.302,
+    1.201,
+    -0.003,
+    1.3,
+    0.0,
+    -0.002,
+    0.0
+   ],
+   "tcp": [
+    4.186,
+    1.047,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.008
+  },
+  {
+   "tick": 2153,
+   "t": 17.942,
+   "label": "base",
+   "pose": [
+    3.621,
+    1.025,
+    -105.0
+   ]
+  },
+  {
+   "tick": 2183,
+   "t": 18.192,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0201,
+    0.0201
+   ]
+  },
+  {
+   "tick": 2957,
+   "t": 24.642,
+   "label": "reach",
+   "target": "knock_pre",
+   "tcp_err_m": 0.0015,
+   "q_err": 0.0025
+  },
+  {
+   "tick": 3050,
+   "t": 25.417,
+   "label": "reach",
+   "target": "knock_tap",
+   "tcp_err_m": 0.0046,
+   "q_err": 0.0099
+  },
+  {
+   "tick": 3050,
+   "t": 25.417,
+   "label": "knock_contact",
+   "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478",
+   "gap_m": 0.007
+  },
+  {
+   "tick": 3089,
+   "t": 25.742,
+   "label": "reach",
+   "target": "knock_back",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.008
+  },
+  {
+   "tick": 3145,
+   "t": 26.208,
+   "label": "reach",
+   "target": "knock_tap",
+   "tcp_err_m": 0.0044,
+   "q_err": 0.0089
+  },
+  {
+   "tick": 3145,
+   "t": 26.208,
+   "label": "knock_contact",
+   "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478",
+   "gap_m": 0.0068
+  },
+  {
+   "tick": 3184,
+   "t": 26.533,
+   "label": "reach",
+   "target": "knock_back",
+   "tcp_err_m": 0.0053,
+   "q_err": 0.008
+  },
+  {
+   "tick": 3212,
+   "t": 26.767,
+   "label": "reach",
+   "target": "knock_retract",
+   "tcp_err_m": 0.006,
+   "q_err": 0.0078
+  },
+  {
+   "tick": 3272,
+   "t": 27.267,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.0391,
+    0.0391
+   ]
+  },
+  {
+   "tick": 3272,
+   "t": 27.267,
+   "label": "knock_result",
+   "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478",
+   "hits": 2,
+   "joint_moved": 0.0
+  },
+  {
+   "tick": 3302,
+   "t": 27.517,
+   "label": "contract_end",
+   "contract": "contract_074",
+   "action": "knock_articulated(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "success": true,
+   "path": "panel_taps",
+   "error": null
+  },
+  {
+   "tick": 3302,
+   "t": 27.517,
+   "label": "contract_start",
+   "contract": "contract_048",
+   "action": "open_articulated(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "depth": 0
+  },
+  {
+   "tick": 3302,
+   "t": 27.517,
+   "label": "policy_start",
+   "policy": "policy_003"
+  },
+  {
+   "tick": 4067,
+   "t": 33.892,
+   "label": "policy_start",
+   "policy": "policy_046"
+  },
+  {
+   "tick": 4070,
+   "t": 33.917,
+   "label": "path",
+   "waypoints": [
+    [
+     3.13,
+     1.04,
+     -75.0
+    ]
+   ]
+  },
+  {
+   "tick": 4070,
+   "t": 33.917,
+   "label": "drive_arm",
+   "q": [
+    -0.004,
+    0.0,
+    0.299,
+    1.197,
+    -0.001,
+    1.301,
+    -0.005,
+    0.001,
+    -0.0
+   ],
+   "tcp": [
+    3.031,
+    0.699,
+    1.107
+   ],
+   "min_joint_z": 1.051,
+   "q_err": 0.005
+  },
+  {
+   "tick": 4345,
+   "t": 36.208,
+   "label": "base",
+   "pose": [
+    3.125,
+    1.043,
+    -75.0
+   ]
+  },
+  {
+   "tick": 4375,
+   "t": 36.458,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 5167,
+   "t": 43.058,
+   "label": "reach",
+   "target": "handle_pre",
+   "tcp_err_m": 0.0039,
+   "q_err": 0.0034
+  },
+  {
+   "tick": 5218,
+   "t": 43.483,
+   "label": "reach",
+   "target": "handle_contact",
+   "tcp_err_m": 0.0054,
+   "q_err": 0.0076
+  },
+  {
+   "tick": 5338,
+   "t": 44.483,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0123,
+    0.0127
+   ]
+  },
+  {
+   "tick": 5338,
+   "t": 44.483,
+   "label": "handle_grasped",
+   "name": "KitchenCabinetFactory_7025538_spawn_asset_6631478",
+   "fingers": [
+    0.012320250272750854,
+    0.012729952111840248
+   ]
+  },
+  {
+   "tick": 5338,
+   "t": 44.483,
+   "label": "policy_start",
+   "policy": "policy_049"
+  },
+  {
+   "tick": 5338,
+   "t": 44.483,
+   "label": "open_park",
+   "park": [
+    3.125,
+    1.043,
+    -75.0
+   ],
+   "hook_side": "near",
+   "tilt_deg": 0,
+   "grasp": "side"
+  },
+  {
+   "tick": 5338,
+   "t": 44.483,
+   "label": "open_at_park",
+   "q_before": -0.003075497690588236,
+   "q_now": -0.003075497690588236
+  },
+  {
+   "tick": 5428,
+   "t": 45.233,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 5576,
+   "t": 46.467,
+   "label": "reach",
+   "target": "open_pre_high",
+   "tcp_err_m": 0.0046,
+   "q_err": 0.0037
+  },
+  {
+   "tick": 5710,
+   "t": 47.583,
+   "label": "reach",
+   "target": "open_pre",
+   "tcp_err_m": 0.0036,
+   "q_err": 0.0034
+  },
+  {
+   "tick": 5836,
+   "t": 48.633,
+   "label": "reach",
+   "target": "open_handle",
+   "tcp_err_m": 0.0062,
+   "q_err": 0.0098
+  },
+  {
+   "tick": 5956,
+   "t": 49.633,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0124,
+    0.0127
+   ]
+  },
+  {
+   "tick": 5957,
+   "t": 49.642,
+   "label": "ride",
+   "q": -0.0058,
+   "cmd": -0.0079,
+   "fingers": [
+    0.0122,
+    0.013
+   ]
+  },
+  {
+   "tick": 6017,
+   "t": 50.142,
+   "label": "ride",
+   "q": -0.1216,
+   "cmd": -0.1329,
+   "fingers": [
+    0.0092,
+    0.0162
+   ]
+  },
+  {
+   "tick": 6077,
+   "t": 50.642,
+   "label": "ride",
+   "q": -0.2463,
+   "cmd": -0.2579,
+   "fingers": [
+    0.009,
+    0.0164
+   ]
+  },
+  {
+   "tick": 6137,
+   "t": 51.142,
+   "label": "ride",
+   "q": -0.3713,
+   "cmd": -0.3829,
+   "fingers": [
+    0.009,
+    0.0164
+   ]
+  },
+  {
+   "tick": 6197,
+   "t": 51.642,
+   "label": "ride",
+   "q": -0.4964,
+   "cmd": -0.5079,
+   "fingers": [
+    0.009,
+    0.0164
+   ]
+  },
+  {
+   "tick": 6257,
+   "t": 52.142,
+   "label": "ride",
+   "q": -0.6217,
+   "cmd": -0.6329,
+   "fingers": [
+    0.0091,
+    0.0163
+   ]
+  },
+  {
+   "tick": 6317,
+   "t": 52.642,
+   "label": "ride",
+   "q": -0.7468,
+   "cmd": -0.7579,
+   "fingers": [
+    0.0091,
+    0.0163
+   ]
+  },
+  {
+   "tick": 6377,
+   "t": 53.142,
+   "label": "ride",
+   "q": -0.872,
+   "cmd": -0.8829,
+   "fingers": [
+    0.0091,
+    0.0163
+   ]
+  },
+  {
+   "tick": 6437,
+   "t": 53.642,
+   "label": "ride",
+   "q": -0.9969,
+   "cmd": -1.0079,
+   "fingers": [
+    0.009,
+    0.0163
+   ]
+  },
+  {
+   "tick": 6497,
+   "t": 54.142,
+   "label": "ride",
+   "q": -1.122,
+   "cmd": -1.1329,
+   "fingers": [
+    0.0091,
+    0.0163
+   ]
+  },
+  {
+   "tick": 6557,
+   "t": 54.642,
+   "label": "ride",
+   "q": -1.2469,
+   "cmd": -1.2579,
+   "fingers": [
+    0.009,
+    0.0163
+   ]
+  },
+  {
+   "tick": 6617,
+   "t": 55.142,
+   "label": "ride",
+   "q": -1.372,
+   "cmd": -1.3829,
+   "fingers": [
+    0.0091,
+    0.0163
+   ]
+  },
+  {
+   "tick": 6620,
+   "t": 55.167,
+   "label": "ride_done",
+   "q": -1.3802835941314697
+  },
+  {
+   "tick": 6720,
+   "t": 56.0,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 6818,
+   "t": 56.817,
+   "label": "reach",
+   "target": "open_back",
+   "tcp_err_m": 0.0038,
+   "q_err": 0.008
+  },
+  {
+   "tick": 7034,
+   "t": 58.617,
+   "label": "reach",
+   "target": "open_up",
+   "tcp_err_m": 0.0026,
+   "q_err": 0.0029
+  },
+  {
+   "tick": 7094,
+   "t": 59.117,
+   "label": "open_result",
+   "name": "KitchenCabinetFactory_7025538_spawn_asset_6631478",
+   "before": -0.003075497690588236,
+   "after": -1.3902692794799805,
+   "goal": -1.4
+  },
+  {
+   "tick": 7094,
+   "t": 59.117,
+   "label": "policy_start",
+   "policy": "policy_047"
+  },
+  {
+   "tick": 7184,
+   "t": 59.867,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 7184,
+   "t": 59.867,
+   "label": "handle_released",
+   "name": "KitchenCabinetFactory_7025538_spawn_asset_6631478",
+   "fingers": [
+    0.03999992087483406,
+    0.039999984204769135
+   ]
+  },
+  {
+   "tick": 7214,
+   "t": 60.117,
+   "label": "contract_end",
+   "contract": "contract_048",
+   "action": "open_articulated(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "success": true,
+   "path": "hinged_door",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_knock_then_open/run.mp4",
+ "wall_s": 212.4
+}

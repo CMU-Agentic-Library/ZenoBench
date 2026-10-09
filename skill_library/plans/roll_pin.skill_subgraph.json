@@ -8,7 +8,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "kitchen_island/top"
+     "value": "rolling_pin"
     }
    },
    "depends_on": []

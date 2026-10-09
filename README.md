@@ -45,6 +45,50 @@ temperature uses a separate task-level model. Success is measured from simulator
 **物理验证**（Isaac Sim，GT 前后条件全部测量通过才计）：65/70 个动词、97/120 条 policy 路径已通过，29/35 个验证场景端到端通过。逐动词证据与失败原因见 [verification/STATUS.md](skill_library/verification/STATUS.md)。
 <!-- verification:end -->
 
+<!-- rollouts:start -->
+**Whole-task rollouts**: 16/35 planner-generated skill subgraphs ran end to end in Isaac Sim with their task goal holding on GT state (`tools/verify_skills.py --scenarios skill_library/verification/task_rollouts.json --video`). Failures are listed with the step that failed.
+
+<img src="media/rollouts/task_tidy_toys.gif" width="240" title="tidy_toys"> <img src="media/rollouts/task_heat_breakfast_preloaded.gif" width="240" title="heat_breakfast_preloaded"> <img src="media/rollouts/task_heat_without_microwave.gif" width="240" title="heat_without_microwave"> <img src="media/rollouts/task_throw_away_can.gif" width="240" title="throw_away_can"> <img src="media/rollouts/task_lay_down_bottle.gif" width="240" title="lay_down_bottle"> <img src="media/rollouts/task_roll_pin.gif" width="240" title="roll_pin"> <img src="media/rollouts/task_hide_block.gif" width="240" title="hide_block"> <img src="media/rollouts/task_greet_and_point.gif" width="240" title="greet_and_point"> <img src="media/rollouts/task_find_lid.gif" width="240" title="find_lid"> <img src="media/rollouts/task_explore_living_room.gif" width="240" title="explore_living_room"> <img src="media/rollouts/task_count_tomatoes.gif" width="240" title="count_tomatoes"> <img src="media/rollouts/task_inspect_cabinet.gif" width="240" title="inspect_cabinet"> <img src="media/rollouts/task_knock_then_open.gif" width="240" title="knock_then_open"> <img src="media/rollouts/task_square_block.gif" width="240" title="square_block"> <img src="media/rollouts/task_sweep_blocks.gif" width="240" title="sweep_blocks"> <img src="media/rollouts/task_present_block.gif" width="240" title="present_block">
+
+| task | steps done | result | goal / failure |
+|---|---|---|---|
+| `collect_fruits` | 6/7 | fail | navigate_place(destination=apple): carry: orange slipped out of the hand while carrying it |
+| `tidy_toys` | 12/12 | pass | goal inside(toy_car, storage_basket), inside(toy_block, storage_basket), inside(rubber_duck, storage_basket) |
+| `shelve_books` | 6/7 | fail | navigate_place(destination=SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2): carry_navigate: no base path to [1.792378303490153, |
+| `desk_prep` | 2/3 | fail | navigate_place(destination=SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0): carry_in: notebook slipped out of the hand while carryi |
+| `breakfast_setup` | 0/1 | fail | arrange_objects(objects=['plate', 'cup', 'spoon'], support=TableDiningFactory_1437886_spawn_asset_2104395/surface_2, max_dist_m=0.5): SUBSKI |
+| `heat_breakfast` | 1/2 | fail | open_articulated(articulated=breakfast_fridge): open breakfast_fridge: joint -0.000 -> 0.000, goal -0.458 |
+| `heat_breakfast_preloaded` | 2/2 | pass | goal temperature_at_least(oatmeal, 60.0) |
+| `heat_breakfast_combo` | 3/4 | fail | open_articulated(articulated=breakfast_fridge): open breakfast_fridge: joint -0.000 -> 0.000, goal -0.458 |
+| `recycle_and_store` | 7/8 | fail | place_object(object=snack_carton, receptacle=wide_storage_bin): place snack_carton: target (1.14, -0.43) on in:wide_storage_bin unreachable  |
+| `organize_utility_items` | 1/2 | fail | pick_object(object=juice_bottle): pick juice_bottle: not held (lift -0.064 m) |
+| `cook_tomato_soup` | 7/8 | fail | place_object(object=breakfast_spoon, receptacle=mug): place breakfast_spoon: container shifted 0.104 m before release |
+| `heat_without_microwave` | 5/5 | pass | goal temperature_at_least(cherry_tomato_2, 45.0) |
+| `heat_can_in_microwave` | 5/6 | fail | place_object(object=soda_can, receptacle=kitchen_microwave/inside_floor): joint move to microwave_front: every joint-space path collides |
+| `chill_drink` | 5/6 | fail | place_object(object=soda_can, receptacle=breakfast_fridge/inside_shelf): place soda_can: xy err 0.108 m, on support True (breakfast_fridge/i |
+| `throw_away_can` | 4/4 | pass | goal inside(soda_can, trash_can) |
+| `stack_blocks` | 3/4 | fail | stack_object(object=wooden_block_b, base=wooden_block_a): place wooden_block_b: xy err 0.060 m, on support False (bottom at (7.25, 1.57, 0.8 |
+| `wipe_island` | 3/4 | fail | wipe_surface(surface=kitchen_island/top, tool=kitchen_sponge): wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidat |
+| `lay_down_bottle` | 2/2 | pass | goal lying(juice_bottle) |
+| `roll_pin` | 2/2 | pass |  |
+| `flip_book` | 1/2 | fail | flip_object(object=paperback_book): flip paperback_book: the arc stopped at 0 deg |
+| `hide_block` | 3/3 | pass | goal hidden(wooden_block_b) |
+| `greet_and_point` | 3/3 | pass | goal waved(), nodded(), pointing_at(trash_can) |
+| `find_lid` | 1/1 | pass | goal observed(pot_lid) |
+| `explore_living_room` | 1/1 | pass | goal room_explored(living_room_0_0) |
+| `count_tomatoes` | 1/1 | pass | goal counted(cherry_tomato) |
+| `inspect_cabinet` | 1/1 | pass | goal observed(KitchenCabinetFactory_7025538_spawn_asset_6631478), is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478) |
+| `knock_then_open` | 3/3 | pass |  |
+| `square_block` | 2/2 | pass | goal squared(wooden_block_a) |
+| `swap_blocks` | 0/1 | fail | swap_objects(a=wooden_block_a, b=soda_can): SUBSKILL_FAILED: pick_object(object=wooden_block_a): pick wooden_block_a: not held (lift 0.000 m |
+| `sort_items` | 1/2 | fail | fetch_object(object=wooden_block_b, receptacle=mug): SUBSKILL_FAILED: place_object(object=wooden_block_b, receptacle=mug): joint move to pla |
+| `empty_mug` | 0/1 | fail | fetch_object(object=cherry_tomato_1, receptacle=kitchen_island/top): SUBSKILL_FAILED: pick_object(object=cherry_tomato_1): pick cherry_tomat |
+| `clear_tv_stand` | 0/1 | fail | fetch_object(object=juice_bottle, receptacle=SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3): SUBSKILL_FAILED: pick_object(obje |
+| `sweep_blocks` | 1/1 | pass | goal clustered(['wooden_block_a', 'wooden_block_b'], 0.12) |
+| `present_block` | 3/3 | pass | goal presenting(wooden_block_a) |
+| `serve_in_left_hand` | 1/2 | fail | brace_object(object=wooden_block_a): steady wooden_block_a: no base pose lets the left arm reach a contact (rejected: {'candidates': 3432, ' |
+<!-- rollouts:end -->
+
 <!-- plans:start -->
 **任务分解**：[tasks.json](skill_library/tasks.json) 中 35/35 个任务由符号规划器（同一套 GT 谓词与导出的前后条件）分解为 SkillNode 链，子图在 [plans/](skill_library/plans/)。
 
@@ -55,18 +99,18 @@ temperature uses a separate task-level model. Success is measured from simulator
 | `shelve_books` | 8 | navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat |
 | `desk_prep` | 12 | navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/top_pinch → navigate/carry → place/surface → navigate/empty → pick/round_rim → navigate/carry → place/surface |
 | `breakfast_setup` | 1 | arrange/place_near_common_spot |
-| `heat_breakfast` | 19 | navigate/empty → open/refrigerator → navigate/empty → open/powered_microwave → navigate/empty → pick/inside_cabinet_or_fridge → navigate/carry → place/microwave_staged → close/powered → navigate/empty → heat/microwave → stop/microwave_door → pick/microwave_cavity → navigate/carry → place/surface → navigate/empty → close/handle_push → navigate/empty → close/powered |
+| `heat_breakfast` | 20 | navigate/empty → open/refrigerator → navigate/empty → open/powered_microwave → navigate/empty → pick/inside_cabinet_or_fridge → navigate/carry → place/microwave_staged → close/powered → navigate/empty → heat/microwave → open/powered_microwave → navigate/empty → pick/microwave_cavity → navigate/carry → place/surface → navigate/empty → close/handle_push → navigate/empty → close/powered |
 | `heat_breakfast_preloaded` | 2 | navigate/empty → heat/microwave |
 | `heat_breakfast_combo` | 10 | navigate/empty → heat/microwave → navigate/empty → open/refrigerator → navigate/empty → pick/inside_cabinet_or_fridge → navigate/carry → place/surface → navigate/empty → close/handle_push |
 | `recycle_and_store` | 12 | navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/floor_top → navigate/carry → place/container |
 | `organize_utility_items` | 12 | navigate/empty → pick/top_pinch → navigate/carry → place/container → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat → navigate/empty → pick/flat_edge → navigate/carry → place/edge_held_flat |
-| `cook_tomato_soup` | 14 | navigate/empty → uncover/knob_lift_aside → navigate/empty → pick/top_pinch → navigate/carry → stir/circle_below_rim → navigate/carry → place/surface → pick/top_pinch → navigate/carry → place/container → heat/stove_pot → pick/top_pinch → cover/rim_plane |
+| `cook_tomato_soup` | 16 | navigate/empty → uncover/knob_lift_aside → navigate/empty → pick/top_pinch → navigate/carry → stir/circle_below_rim → navigate/carry → place/container → pick/round_rim → navigate/carry → place/stove_burner → heat/stove_pot → navigate/empty → pick/top_pinch → navigate/carry → cover/rim_plane |
 | `heat_without_microwave` | 5 | navigate/empty → pick/round_rim → navigate/carry → place/stove_burner → heat/stove_pot |
 | `heat_can_in_microwave` | 9 | navigate/empty → open/powered_microwave → navigate/empty → pick/top_pinch → navigate/carry → place/microwave_staged → close/powered → navigate/empty → heat/microwave |
 | `chill_drink` | 8 | navigate/empty → open/refrigerator → navigate/empty → pick/top_pinch → navigate/carry → place/cabinet_or_fridge_shelf → close/handle_push → chill/fridge_wait |
 | `throw_away_can` | 4 | navigate/empty → pick/top_pinch → navigate/carry → place/container |
-| `stack_blocks` | 3 | navigate/empty → pick/top_pinch → stack/top_face |
-| `wipe_island` | 4 | navigate/empty → pick/top_pinch → wipe/sponge_strip → place/surface |
+| `stack_blocks` | 4 | navigate/empty → pick/top_pinch → navigate/carry → stack/top_face |
+| `wipe_island` | 5 | navigate/empty → pick/top_pinch → navigate/carry → wipe/sponge_strip → place/surface |
 | `lay_down_bottle` | 2 | navigate/empty → tip/push_high |
 | `roll_pin` | 2 | navigate/empty → roll/push_above_axis |
 | `flip_book` | 2 | navigate/empty → flip/edge_roll |

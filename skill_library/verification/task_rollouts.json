@@ -171,7 +171,8 @@
     "close/powered",
     "navigate/empty",
     "heat/microwave",
-    "stop/microwave_door",
+    "open/powered_microwave",
+    "navigate/empty",
     "pick/microwave_cavity",
     "navigate/carry",
     "place/surface",
@@ -339,12 +340,14 @@
     "navigate/carry",
     "stir/circle_below_rim",
     "navigate/carry",
-    "place/surface",
+    "place/container",
+    "pick/round_rim",
+    "navigate/carry",
+    "place/stove_burner",
+    "heat/stove_pot",
+    "navigate/empty",
     "pick/top_pinch",
     "navigate/carry",
-    "place/container",
-    "heat/stove_pot",
-    "pick/top_pinch",
     "cover/rim_plane"
    ],
    "goal": [
@@ -462,6 +465,7 @@
    "chain": [
     "navigate/empty",
     "pick/top_pinch",
+    "navigate/carry",
     "stack/top_face"
    ],
    "goal": [
@@ -480,6 +484,7 @@
    "chain": [
     "navigate/empty",
     "pick/top_pinch",
+    "navigate/carry",
     "wipe/sponge_strip",
     "place/surface"
    ],

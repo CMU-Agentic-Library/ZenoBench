@@ -1,0 +1,82 @@
+{
+ "id": "task_count_tomatoes",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "count",
+   "action": "count_category(category=cherry_tomato)",
+   "success": true,
+   "path": "head_sweep",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "counted(category=cherry_tomato)",
+     "holds": true,
+     "detail": "{'count': 3, 'objects': ['cherry_tomato_1', 'cherry_tomato_2', 'cherry_tomato_3']}"
+    }
+   ],
+   "outputs": {
+    "count": 3,
+    "objects": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3"
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791509735.676086,
+ "goal": [
+  {
+   "atom": "counted(cherry_tomato)",
+   "holds": true,
+   "detail": "{'count': 3, 'objects': ['cherry_tomato_1', 'cherry_tomato_2', 'cherry_tomato_3']}"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_067",
+   "action": "count_category(category=cherry_tomato)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_112"
+  },
+  {
+   "tick": 270,
+   "t": 2.25,
+   "label": "count_result",
+   "category": "cherry_tomato",
+   "count": 3,
+   "objects": [
+    "cherry_tomato_1",
+    "cherry_tomato_2",
+    "cherry_tomato_3"
+   ]
+  },
+  {
+   "tick": 300,
+   "t": 2.5,
+   "label": "contract_end",
+   "contract": "contract_067",
+   "action": "count_category(category=cherry_tomato)",
+   "success": true,
+   "path": "head_sweep",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_count_tomatoes/run.mp4",
+ "wall_s": 10.7
+}

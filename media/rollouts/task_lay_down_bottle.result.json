@@ -1,0 +1,285 @@
+{
+ "id": "task_lay_down_bottle",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "navigate",
+   "action": "navigate_place(destination=juice_bottle)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=juice_bottle)",
+     "holds": true,
+     "detail": "distance 0.54 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     7.499749183654785,
+     1.100847840309143,
+     74.9999986470956
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 1,
+   "skill": "tip",
+   "action": "tip_object(object=juice_bottle)",
+   "success": true,
+   "path": "push_high",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=juice_bottle)",
+     "holds": true,
+     "detail": "distance 0.54 m"
+    },
+    {
+     "atom": "upright(object=juice_bottle)",
+     "holds": true,
+     "detail": "tilt 0.7 deg"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "lying(object=juice_bottle)",
+     "holds": true,
+     "detail": "long-axis z 0.02, vertical extent 0.072 m"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791509100.3215473,
+ "goal": [
+  {
+   "atom": "lying(juice_bottle)",
+   "holds": true,
+   "detail": "long-axis z 0.02, vertical extent 0.072 m"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=juice_bottle)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "path",
+   "waypoints": [
+    [
+     7.5,
+     1.1,
+     75.0
+    ]
+   ]
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    7.967,
+    0.513,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 820,
+   "t": 6.833,
+   "label": "base",
+   "pose": [
+    7.5,
+    1.101,
+    75.0
+   ]
+  },
+  {
+   "tick": 850,
+   "t": 7.083,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=juice_bottle)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 850,
+   "t": 7.083,
+   "label": "contract_start",
+   "contract": "contract_043",
+   "action": "tip_object(object=juice_bottle)",
+   "depth": 0
+  },
+  {
+   "tick": 850,
+   "t": 7.083,
+   "label": "policy_start",
+   "policy": "policy_082"
+  },
+  {
+   "tick": 853,
+   "t": 7.108,
+   "label": "path",
+   "waypoints": [
+    [
+     7.65,
+     1.16,
+     105.0
+    ]
+   ]
+  },
+  {
+   "tick": 853,
+   "t": 7.108,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.0,
+    0.3,
+    1.2,
+    0.0,
+    1.3,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "tcp": [
+    8.09,
+    1.426,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 990,
+   "t": 8.25,
+   "label": "base",
+   "pose": [
+    7.65,
+    1.155,
+    105.0
+   ]
+  },
+  {
+   "tick": 1020,
+   "t": 8.5,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0201,
+    0.0201
+   ]
+  },
+  {
+   "tick": 1558,
+   "t": 12.983,
+   "label": "reach",
+   "target": "tip_above",
+   "tcp_err_m": 0.0074,
+   "q_err": 0.0079
+  },
+  {
+   "tick": 1676,
+   "t": 13.967,
+   "label": "reach",
+   "target": "tip_down",
+   "tcp_err_m": 0.0086,
+   "q_err": 0.0095
+  },
+  {
+   "tick": 1894,
+   "t": 15.783,
+   "label": "reach",
+   "target": "tip_sweep",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.0094
+  },
+  {
+   "tick": 1944,
+   "t": 16.2,
+   "label": "reach",
+   "target": "tip_up",
+   "tcp_err_m": 0.0079,
+   "q_err": 0.0072
+  },
+  {
+   "tick": 2004,
+   "t": 16.7,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.0391,
+    0.0391
+   ]
+  },
+  {
+   "tick": 2094,
+   "t": 17.45,
+   "label": "tip_result",
+   "obj": "juice_bottle",
+   "tilt_deg": 91.1,
+   "on_support": true
+  },
+  {
+   "tick": 2124,
+   "t": 17.7,
+   "label": "contract_end",
+   "contract": "contract_043",
+   "action": "tip_object(object=juice_bottle)",
+   "success": true,
+   "path": "push_high",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_lay_down_bottle/run.mp4",
+ "wall_s": 224.6
+}

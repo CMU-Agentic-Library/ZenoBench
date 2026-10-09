@@ -8,7 +8,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "kitchen_island/top"
+     "value": "paperback_book"
     }
    },
    "depends_on": []

@@ -1,0 +1,281 @@
+{
+ "id": "task_roll_pin",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "navigate",
+   "action": "navigate_place(destination=rolling_pin)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=rolling_pin)",
+     "holds": true,
+     "detail": "distance 0.79 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     7.323168754577637,
+     1.0068966150283813,
+     134.99999887617463
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 1,
+   "skill": "roll",
+   "action": "roll_object(object=rolling_pin, distance_m=0.1)",
+   "success": true,
+   "path": "push_above_axis",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=rolling_pin)",
+     "holds": true,
+     "detail": "distance 0.79 m"
+    },
+    {
+     "atom": "lying(object=rolling_pin)",
+     "holds": true,
+     "detail": "long-axis z 0.03, vertical extent 0.061 m"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "object_rolled(object=rolling_pin)",
+     "holds": true,
+     "detail": "rotation 149.3 deg, lying True"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791509305.069472,
+ "goal": [],
+ "crash": "KeyError: 'before'",
+ "traceback": "Traceback (most recent call last):\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/tools/verify_skills.py\", line 130, in run_one\n    ok, detail = pred.evaluate(rig, ctx, **kw)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/all/zihan_workspace/physical_harnessing/zeno-house/zeno_skills/predicates.py\", line 948, in _object_rolled\n    q0 = ctx[\"before\"][\"objects\"][object][\"quat\"]\n         ~~~^^^^^^^^^^\nKeyError: 'before'\n",
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=rolling_pin)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "path",
+   "waypoints": [
+    [
+     7.32,
+     1.01,
+     135.0
+    ]
+   ]
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    7.967,
+    0.513,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 977,
+   "t": 8.142,
+   "label": "base",
+   "pose": [
+    7.323,
+    1.007,
+    135.0
+   ]
+  },
+  {
+   "tick": 1007,
+   "t": 8.392,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=rolling_pin)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 1007,
+   "t": 8.392,
+   "label": "contract_start",
+   "contract": "contract_042",
+   "action": "roll_object(object=rolling_pin, distance_m=0.1)",
+   "depth": 0
+  },
+  {
+   "tick": 1007,
+   "t": 8.392,
+   "label": "policy_start",
+   "policy": "policy_081"
+  },
+  {
+   "tick": 1010,
+   "t": 8.417,
+   "label": "path",
+   "waypoints": [
+    [
+     6.56,
+     1.19,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 1010,
+   "t": 8.417,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.0,
+    0.3,
+    1.2,
+    0.0,
+    1.3,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "tcp": [
+    7.337,
+    1.68,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 1396,
+   "t": 11.633,
+   "label": "base",
+   "pose": [
+    6.558,
+    1.194,
+    90.0
+   ]
+  },
+  {
+   "tick": 1426,
+   "t": 11.883,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0201,
+    0.0201
+   ]
+  },
+  {
+   "tick": 1611,
+   "t": 13.425,
+   "label": "reach",
+   "target": "roll_above",
+   "tcp_err_m": 0.0036,
+   "q_err": 0.0072
+  },
+  {
+   "tick": 1989,
+   "t": 16.575,
+   "label": "reach",
+   "target": "roll_down",
+   "tcp_err_m": 0.0092,
+   "q_err": 0.0177
+  },
+  {
+   "tick": 2285,
+   "t": 19.042,
+   "label": "reach",
+   "target": "roll_sweep",
+   "tcp_err_m": 0.0036,
+   "q_err": 0.0086
+  },
+  {
+   "tick": 2312,
+   "t": 19.267,
+   "label": "reach",
+   "target": "roll_up",
+   "tcp_err_m": 0.0054,
+   "q_err": 0.0099
+  },
+  {
+   "tick": 2372,
+   "t": 19.767,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.0391,
+    0.0392
+   ]
+  },
+  {
+   "tick": 2462,
+   "t": 20.517,
+   "label": "roll_result",
+   "obj": "rolling_pin",
+   "moved_m": 0.038,
+   "rotation_deg": 149.3
+  },
+  {
+   "tick": 2492,
+   "t": 20.767,
+   "label": "contract_end",
+   "contract": "contract_042",
+   "action": "roll_object(object=rolling_pin, distance_m=0.1)",
+   "success": true,
+   "path": "push_above_axis",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_roll_pin/run.mp4",
+ "wall_s": 102.3
+}

@@ -237,9 +237,10 @@ def plan_path(world, start, goal, res=0.05, margin=0.02):
         near_goal = max(abs(ij[0] - t[0]), abs(ij[1] - t[1])) <= relax
         if ij == s or ij == t:
             return True
-        # leaving a tight park is lenient (0.15 m: at 0.26 a robot parked beside
-        # a counter could not move off it); arriving keeps the column clear
-        return (near_goal and g.not_inside(ij)) or (near_start and g.not_inside(ij, r=0.15)) or g.free(ij)
+        # near a tight park (start or goal) the base centre keeps 0.15 m from
+        # every box: no cutting through furniture, while a park 0.26 m from a
+        # counter or in a narrow aisle stays reachable (0.26 m blocked both)
+        return ((near_goal or near_start) and g.not_inside(ij, r=0.15)) or g.free(ij)
 
     openq = [(0.0, s)]
     came, cost = {s: None}, {s: 0.0}

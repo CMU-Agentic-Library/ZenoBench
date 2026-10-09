@@ -1,0 +1,2581 @@
+{
+ "id": "task_tidy_toys",
+ "task": "tasks/tidy_toys",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "navigate",
+   "action": "navigate_place(destination=toy_car)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=toy_car)",
+     "holds": true,
+     "detail": "distance 1.00 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     4.357493877410889,
+     0.6414101123809814,
+     90.00001448901888
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 1,
+   "skill": "pick",
+   "action": "pick_object(object=toy_car)",
+   "success": true,
+   "path": "floor_top",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=toy_car)",
+     "holds": true,
+     "detail": "distance 1.00 m"
+    },
+    {
+     "atom": "on_floor(object=toy_car)",
+     "holds": true,
+     "detail": "bottom z 0.011 m"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "holding(hand=right, object=toy_car)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0261, 0.0261]"
+    }
+   ],
+   "outputs": {
+    "grasp": "pinch",
+    "lift_m": 0.06411144137382507
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 2,
+   "skill": "navigate",
+   "action": "navigate_place(destination=storage_basket)",
+   "success": true,
+   "path": "carry",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=storage_basket)",
+     "holds": true,
+     "detail": "distance 0.99 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     1.80624520778656,
+     -1.0192095041275024,
+     225.00001320303338
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 3,
+   "skill": "place",
+   "action": "place_object(object=toy_car, receptacle=storage_basket)",
+   "success": true,
+   "path": "container",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "holding(hand=right, object=toy_car)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0271, 0.0251]"
+    },
+    {
+     "atom": "base_near(place=storage_basket)",
+     "holds": true,
+     "detail": "distance 0.99 m"
+    },
+    {
+     "atom": "uncovered(container=storage_basket)",
+     "holds": true,
+     "detail": "open"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "inside(object=toy_car, container=storage_basket)",
+     "holds": true,
+     "detail": "local (0.048, 0.054) / (0.177, 0.160)"
+    }
+   ],
+   "outputs": {
+    "position": [
+     0.9273809978192383,
+     -1.866544325284749
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 4,
+   "skill": "navigate",
+   "action": "navigate_place(destination=toy_block)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=toy_block)",
+     "holds": true,
+     "detail": "distance 0.99 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     3.969193696975708,
+     -1.8224610090255737,
+     345.0000054579299
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 5,
+   "skill": "pick",
+   "action": "pick_object(object=toy_block)",
+   "success": true,
+   "path": "floor_top",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=toy_block)",
+     "holds": true,
+     "detail": "distance 0.99 m"
+    },
+    {
+     "atom": "on_floor(object=toy_block)",
+     "holds": true,
+     "detail": "bottom z 0.010 m"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "holding(hand=right, object=toy_block)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.021, 0.021]"
+    }
+   ],
+   "outputs": {
+    "grasp": "pinch",
+    "lift_m": 0.06426749005913734
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 6,
+   "skill": "navigate",
+   "action": "navigate_place(destination=storage_basket)",
+   "success": true,
+   "path": "carry",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=storage_basket)",
+     "holds": true,
+     "detail": "distance 1.00 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     2.1112172603607178,
+     -1.9311779737472534,
+     -179.99999993329894
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 7,
+   "skill": "place",
+   "action": "place_object(object=toy_block, receptacle=storage_basket)",
+   "success": true,
+   "path": "container",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "holding(hand=right, object=toy_block)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0214, 0.0206]"
+    },
+    {
+     "atom": "base_near(place=storage_basket)",
+     "holds": true,
+     "detail": "distance 1.00 m"
+    },
+    {
+     "atom": "uncovered(container=storage_basket)",
+     "holds": true,
+     "detail": "open"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "inside(object=toy_block, container=storage_basket)",
+     "holds": true,
+     "detail": "local (0.091, -0.024) / (0.177, 0.160)"
+    }
+   ],
+   "outputs": {
+    "position": [
+     0.9884143536267119,
+     -1.9310362656501832
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 8,
+   "skill": "navigate",
+   "action": "navigate_place(destination=rubber_duck)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=rubber_duck)",
+     "holds": true,
+     "detail": "distance 0.99 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     5.774001121520996,
+     0.6408563256263733,
+     344.99974536656964
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 9,
+   "skill": "pick",
+   "action": "pick_object(object=rubber_duck)",
+   "success": true,
+   "path": "top_pinch",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=rubber_duck)",
+     "holds": true,
+     "detail": "distance 0.99 m"
+    },
+    {
+     "atom": "grasp_clearance(object=rubber_duck)",
+     "holds": true,
+     "detail": "pinch at [6.777, 0.389] has both finger slots free"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "holding(hand=right, object=rubber_duck)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0292, 0.0277]"
+    }
+   ],
+   "outputs": {
+    "grasp": "pinch",
+    "lift_m": 0.06386899948120117
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 10,
+   "skill": "navigate",
+   "action": "navigate_place(destination=storage_basket)",
+   "success": true,
+   "path": "carry",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=storage_basket)",
+     "holds": true,
+     "detail": "distance 0.96 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     1.977212905883789,
+     -1.3059003353118896,
+     210.00000024011172
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 11,
+   "skill": "place",
+   "action": "place_object(object=rubber_duck, receptacle=storage_basket)",
+   "success": true,
+   "path": "container",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "holding(hand=right, object=rubber_duck)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0292, 0.0277]"
+    },
+    {
+     "atom": "base_near(place=storage_basket)",
+     "holds": true,
+     "detail": "distance 0.96 m"
+    },
+    {
+     "atom": "uncovered(container=storage_basket)",
+     "holds": true,
+     "detail": "open"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "inside(object=rubber_duck, container=storage_basket)",
+     "holds": true,
+     "detail": "local (0.158, 0.065) / (0.177, 0.160)"
+    }
+   ],
+   "outputs": {
+    "position": [
+     1.0203351445759528,
+     -1.8642786377158374
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791505854.3961694,
+ "goal": [
+  {
+   "atom": "inside(toy_car, storage_basket)",
+   "holds": true,
+   "detail": "local (0.048, 0.054) / (0.177, 0.160)"
+  },
+  {
+   "atom": "inside(toy_block, storage_basket)",
+   "holds": true,
+   "detail": "local (0.090, -0.026) / (0.177, 0.160)"
+  },
+  {
+   "atom": "inside(rubber_duck, storage_basket)",
+   "holds": true,
+   "detail": "local (0.158, 0.065) / (0.177, 0.160)"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=toy_car)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "path",
+   "waypoints": [
+    [
+     2.68,
+     -0.33,
+     130.91
+    ],
+    [
+     2.68,
+     0.37,
+     90.0
+    ],
+    [
+     2.93,
+     0.67,
+     50.19
+    ],
+    [
+     3.18,
+     0.92,
+     45.0
+    ],
+    [
+     3.88,
+     0.87,
+     -4.09
+    ],
+    [
+     4.36,
+     0.64,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    4.767,
+    -2.687,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 2455,
+   "t": 20.458,
+   "label": "base",
+   "pose": [
+    4.357,
+    0.641,
+    90.0
+   ]
+  },
+  {
+   "tick": 2485,
+   "t": 20.708,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=toy_car)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 2485,
+   "t": 20.708,
+   "label": "contract_start",
+   "contract": "contract_025",
+   "action": "pick_object(object=toy_car)",
+   "depth": 0
+  },
+  {
+   "tick": 2485,
+   "t": 20.708,
+   "label": "policy_start",
+   "policy": "policy_065"
+  },
+  {
+   "tick": 2488,
+   "t": 20.733,
+   "label": "path",
+   "waypoints": [
+    [
+     4.36,
+     1.23,
+     105.0
+    ]
+   ]
+  },
+  {
+   "tick": 2488,
+   "t": 20.733,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    0.0,
+    -0.0
+   ],
+   "tcp": [
+    4.843,
+    1.108,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 2804,
+   "t": 23.367,
+   "label": "base",
+   "pose": [
+    4.358,
+    1.225,
+    105.0
+   ]
+  },
+  {
+   "tick": 2804,
+   "t": 23.367,
+   "label": "approach_result",
+   "target": "toy_car",
+   "park": [
+    4.358,
+    1.225,
+    105.0
+   ],
+   "reachable": true
+  },
+  {
+   "tick": 2804,
+   "t": 23.367,
+   "label": "policy_start",
+   "policy": "policy_042"
+  },
+  {
+   "tick": 3740,
+   "t": 31.167,
+   "label": "posture_joint",
+   "joint": "torso_lift_joint",
+   "target": -0.54,
+   "actual": -0.537
+  },
+  {
+   "tick": 3831,
+   "t": 31.925,
+   "label": "posture_joint",
+   "joint": "waist_pitch_joint",
+   "target": 0.3,
+   "actual": 0.292
+  },
+  {
+   "tick": 4234,
+   "t": 35.283,
+   "label": "reach",
+   "target": "prepare_floor_reach",
+   "tcp_err_m": 0.0068,
+   "q_err": 0.0091
+  },
+  {
+   "tick": 4234,
+   "t": 35.283,
+   "label": "floor_reach_ready",
+   "obj": "toy_car",
+   "error_m": 0.0068
+  },
+  {
+   "tick": 4234,
+   "t": 35.283,
+   "label": "policy_start",
+   "policy": "policy_010"
+  },
+  {
+   "tick": 4234,
+   "t": 35.283,
+   "label": "pick_park",
+   "obj": "toy_car",
+   "kind": "top_pinch",
+   "park": [
+    4.358,
+    1.225,
+    120.0
+   ],
+   "floor": true
+  },
+  {
+   "tick": 5221,
+   "t": 43.508,
+   "label": "path",
+   "waypoints": [
+    [
+     4.36,
+     1.23,
+     120.0
+    ]
+   ]
+  },
+  {
+   "tick": 5221,
+   "t": 43.508,
+   "label": "drive_arm",
+   "q": [
+    -0.005,
+    0.002,
+    0.299,
+    1.197,
+    0.001,
+    1.301,
+    -0.005,
+    0.0,
+    0.003
+   ],
+   "tcp": [
+    4.705,
+    1.802,
+    1.104
+   ],
+   "min_joint_z": 1.05,
+   "q_err": 0.005
+  },
+  {
+   "tick": 5299,
+   "t": 44.158,
+   "label": "base",
+   "pose": [
+    4.358,
+    1.225,
+    120.0
+   ]
+  },
+  {
+   "tick": 5299,
+   "t": 44.158,
+   "label": "pick_target",
+   "obj": "toy_car",
+   "pos": [
+    4.357,
+    1.675,
+    0.033
+   ],
+   "quat": [
+    0.75,
+    0.009,
+    -0.012,
+    -0.662
+   ],
+   "p": [
+    4.358,
+    1.675,
+    0.033
+   ],
+   "kind": "top_pinch",
+   "azimuth": null,
+   "tilt": null
+  },
+  {
+   "tick": 5339,
+   "t": 44.492,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 6194,
+   "t": 51.617,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0033,
+   "q_err": 0.0004
+  },
+  {
+   "tick": 6401,
+   "t": 53.342,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.003,
+   "q_err": 0.0008
+  },
+  {
+   "tick": 6506,
+   "t": 54.217,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0045,
+   "q_err": 0.0018
+  },
+  {
+   "tick": 6626,
+   "t": 55.217,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.026,
+    0.0261
+   ]
+  },
+  {
+   "tick": 6928,
+   "t": 57.733,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0035,
+   "q_err": 0.0028
+  },
+  {
+   "tick": 6968,
+   "t": 58.067,
+   "label": "pick_result",
+   "obj": "toy_car",
+   "kind": "top_pinch",
+   "lift_m": 0.0641,
+   "fingers": [
+    0.0261,
+    0.0261
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 6998,
+   "t": 58.317,
+   "label": "contract_end",
+   "contract": "contract_025",
+   "action": "pick_object(object=toy_car)",
+   "success": true,
+   "path": "floor_top",
+   "error": null
+  },
+  {
+   "tick": 6998,
+   "t": 58.317,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=storage_basket)",
+   "depth": 0
+  },
+  {
+   "tick": 6998,
+   "t": 58.317,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 6998,
+   "t": 58.317,
+   "label": "policy_start",
+   "policy": "policy_002"
+  },
+  {
+   "tick": 9345,
+   "t": 77.875,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.0079
+  },
+  {
+   "tick": 9641,
+   "t": 80.342,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0063,
+   "q_err": 0.0098
+  },
+  {
+   "tick": 9641,
+   "t": 80.342,
+   "label": "carry_height",
+   "bottom_z": 0.843,
+   "requested": 0.411
+  },
+  {
+   "tick": 9641,
+   "t": 80.342,
+   "label": "carry_clearance",
+   "margin": 0.1
+  },
+  {
+   "tick": 9641,
+   "t": 80.342,
+   "label": "path",
+   "waypoints": [
+    [
+     3.18,
+     1.02,
+     -170.23
+    ],
+    [
+     2.78,
+     0.67,
+     -138.81
+    ],
+    [
+     2.53,
+     0.32,
+     -125.54
+    ],
+    [
+     2.53,
+     -0.28,
+     -90.0
+    ],
+    [
+     2.38,
+     -0.48,
+     -126.87
+    ],
+    [
+     1.81,
+     -1.02,
+     -135.0
+    ]
+   ]
+  },
+  {
+   "tick": 9641,
+   "t": 80.342,
+   "label": "drive_arm",
+   "q": [
+    -0.125,
+    -0.087,
+    -1.01,
+    2.657,
+    -0.895,
+    2.323,
+    -1.55,
+    -0.652,
+    -0.923
+   ],
+   "tcp": [
+    4.269,
+    1.58,
+    0.865
+   ],
+   "min_joint_z": 0.994,
+   "q_err": 0.01
+  },
+  {
+   "tick": 11613,
+   "t": 96.775,
+   "label": "base",
+   "pose": [
+    1.806,
+    -1.019,
+    225.0
+   ]
+  },
+  {
+   "tick": 11643,
+   "t": 97.025,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=storage_basket)",
+   "success": true,
+   "path": "carry",
+   "error": null
+  },
+  {
+   "tick": 11643,
+   "t": 97.025,
+   "label": "contract_start",
+   "contract": "contract_026",
+   "action": "place_object(object=toy_car, receptacle=storage_basket)",
+   "depth": 0
+  },
+  {
+   "tick": 11643,
+   "t": 97.025,
+   "label": "policy_start",
+   "policy": "policy_016"
+  },
+  {
+   "tick": 11643,
+   "t": 97.025,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 11643,
+   "t": 97.025,
+   "label": "place_park",
+   "obj": "toy_car",
+   "park": [
+    0.961,
+    -1.414,
+    -90.0
+   ]
+  },
+  {
+   "tick": 11748,
+   "t": 97.9,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0079,
+   "q_err": 0.0081
+  },
+  {
+   "tick": 11752,
+   "t": 97.933,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0058,
+   "q_err": 0.0065
+  },
+  {
+   "tick": 11752,
+   "t": 97.933,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 11752,
+   "t": 97.933,
+   "label": "path",
+   "waypoints": [
+    [
+     0.96,
+     -1.41,
+     -90.0
+    ]
+   ]
+  },
+  {
+   "tick": 11752,
+   "t": 97.933,
+   "label": "drive_arm",
+   "q": [
+    -0.069,
+    -0.087,
+    -1.014,
+    2.659,
+    -0.893,
+    2.315,
+    -1.547,
+    -0.641,
+    -0.918
+   ],
+   "tcp": [
+    1.486,
+    -1.198,
+    0.921
+   ],
+   "min_joint_z": 1.051,
+   "q_err": 0.006
+  },
+  {
+   "tick": 12315,
+   "t": 102.625,
+   "label": "base",
+   "pose": [
+    0.961,
+    -1.414,
+    270.0
+   ]
+  },
+  {
+   "tick": 12315,
+   "t": 102.625,
+   "label": "place_remeasure",
+   "obj": "toy_car",
+   "shift_m": 0.019,
+   "hang_m": 0.044,
+   "pos": [
+    0.8616,
+    -1.7667,
+    0.9184
+   ],
+   "container_pos": [
+    0.8943,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 14275,
+   "t": 118.958,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0159,
+   "q_err": 0.0049
+  },
+  {
+   "tick": 14275,
+   "t": 118.958,
+   "label": "place_after_above",
+   "obj": "toy_car",
+   "pos": [
+    0.9603,
+    -1.8652,
+    0.503
+   ],
+   "fingers": [
+    0.0268,
+    0.0254
+   ],
+   "container_pos": [
+    0.8943,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 14275,
+   "t": 118.958,
+   "label": "place_container_shift",
+   "obj": "toy_car",
+   "container": "storage_basket",
+   "shift_m": 0.0,
+   "pos": [
+    0.8943,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 14275,
+   "t": 118.958,
+   "label": "place_before_release",
+   "obj": "toy_car",
+   "pos": [
+    0.9603,
+    -1.8652,
+    0.503
+   ],
+   "target": [
+    0.9614,
+    -1.8641,
+    0.4588
+   ]
+  },
+  {
+   "tick": 14345,
+   "t": 119.542,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 14345,
+   "t": 119.542,
+   "label": "place_after_open",
+   "obj": "toy_car",
+   "pos": [
+    0.9269,
+    -1.8666,
+    0.0335
+   ],
+   "container_pos": [
+    0.8943,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 14574,
+   "t": 121.45,
+   "label": "reach",
+   "target": "place_retreat_up",
+   "tcp_err_m": 0.0032,
+   "q_err": 0.0006
+  },
+  {
+   "tick": 15972,
+   "t": 133.1,
+   "label": "reach",
+   "target": "container_exit",
+   "tcp_err_m": 0.0056,
+   "q_err": 0.0055
+  },
+  {
+   "tick": 16062,
+   "t": 133.85,
+   "label": "place_result",
+   "obj": "toy_car",
+   "container": "storage_basket",
+   "inside": true,
+   "detail": "local (0.048, 0.054) / (0.177, 0.160)"
+  },
+  {
+   "tick": 16092,
+   "t": 134.1,
+   "label": "contract_end",
+   "contract": "contract_026",
+   "action": "place_object(object=toy_car, receptacle=storage_basket)",
+   "success": true,
+   "path": "container",
+   "error": null
+  },
+  {
+   "tick": 16092,
+   "t": 134.1,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=toy_block)",
+   "depth": 0
+  },
+  {
+   "tick": 16092,
+   "t": 134.1,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 16092,
+   "t": 134.1,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 16555,
+   "t": 137.958,
+   "label": "path",
+   "waypoints": [
+    [
+     3.97,
+     -1.82,
+     -15.0
+    ]
+   ]
+  },
+  {
+   "tick": 16555,
+   "t": 137.958,
+   "label": "drive_arm",
+   "q": [
+    -0.001,
+    -0.0,
+    0.292,
+    1.207,
+    -0.004,
+    1.305,
+    -0.008,
+    -0.003,
+    -0.005
+   ],
+   "tcp": [
+    0.475,
+    -1.88,
+    1.112
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.008
+  },
+  {
+   "tick": 17711,
+   "t": 147.592,
+   "label": "base",
+   "pose": [
+    3.969,
+    -1.822,
+    345.0
+   ]
+  },
+  {
+   "tick": 17741,
+   "t": 147.842,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=toy_block)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 17741,
+   "t": 147.842,
+   "label": "contract_start",
+   "contract": "contract_025",
+   "action": "pick_object(object=toy_block)",
+   "depth": 0
+  },
+  {
+   "tick": 17741,
+   "t": 147.842,
+   "label": "policy_start",
+   "policy": "policy_065"
+  },
+  {
+   "tick": 17770,
+   "t": 148.083,
+   "label": "path",
+   "waypoints": [
+    [
+     4.53,
+     -1.97,
+     15.0
+    ]
+   ]
+  },
+  {
+   "tick": 17770,
+   "t": 148.083,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.009,
+    0.302,
+    1.201,
+    -0.003,
+    1.3,
+    0.0,
+    -0.002,
+    0.0
+   ],
+   "tcp": [
+    4.296,
+    -2.413,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.009
+  },
+  {
+   "tick": 18085,
+   "t": 150.708,
+   "label": "base",
+   "pose": [
+    4.532,
+    -1.973,
+    -345.0
+   ]
+  },
+  {
+   "tick": 18085,
+   "t": 150.708,
+   "label": "approach_result",
+   "target": "toy_block",
+   "park": [
+    4.532,
+    -1.973,
+    15.0
+   ],
+   "reachable": true
+  },
+  {
+   "tick": 18085,
+   "t": 150.708,
+   "label": "policy_start",
+   "policy": "policy_042"
+  },
+  {
+   "tick": 19021,
+   "t": 158.508,
+   "label": "posture_joint",
+   "joint": "torso_lift_joint",
+   "target": -0.54,
+   "actual": -0.537
+  },
+  {
+   "tick": 19112,
+   "t": 159.267,
+   "label": "posture_joint",
+   "joint": "waist_pitch_joint",
+   "target": 0.3,
+   "actual": 0.292
+  },
+  {
+   "tick": 19455,
+   "t": 162.125,
+   "label": "reach",
+   "target": "prepare_floor_reach",
+   "tcp_err_m": 0.0057,
+   "q_err": 0.0098
+  },
+  {
+   "tick": 19455,
+   "t": 162.125,
+   "label": "floor_reach_ready",
+   "obj": "toy_block",
+   "error_m": 0.0057
+  },
+  {
+   "tick": 19455,
+   "t": 162.125,
+   "label": "policy_start",
+   "policy": "policy_010"
+  },
+  {
+   "tick": 19455,
+   "t": 162.125,
+   "label": "pick_park",
+   "obj": "toy_block",
+   "kind": "top_pinch",
+   "park": [
+    4.532,
+    -1.973,
+    -345.0
+   ],
+   "floor": true
+  },
+  {
+   "tick": 19455,
+   "t": 162.125,
+   "label": "pick_target",
+   "obj": "toy_block",
+   "pos": [
+    4.966,
+    -2.09,
+    0.035
+   ],
+   "quat": [
+    0.271,
+    0.0,
+    0.0,
+    0.963
+   ],
+   "p": [
+    4.966,
+    -2.09,
+    0.035
+   ],
+   "kind": "top_pinch",
+   "azimuth": null,
+   "tilt": null
+  },
+  {
+   "tick": 19495,
+   "t": 162.458,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 19792,
+   "t": 164.933,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0039,
+   "q_err": 0.0009
+  },
+  {
+   "tick": 19979,
+   "t": 166.492,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.003,
+   "q_err": 0.0009
+  },
+  {
+   "tick": 20083,
+   "t": 167.358,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0046,
+   "q_err": 0.0017
+  },
+  {
+   "tick": 20203,
+   "t": 168.358,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.021,
+    0.0209
+   ]
+  },
+  {
+   "tick": 20507,
+   "t": 170.892,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0032,
+   "q_err": 0.0027
+  },
+  {
+   "tick": 20547,
+   "t": 171.225,
+   "label": "pick_result",
+   "obj": "toy_block",
+   "kind": "top_pinch",
+   "lift_m": 0.0643,
+   "fingers": [
+    0.021,
+    0.021
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 20577,
+   "t": 171.475,
+   "label": "contract_end",
+   "contract": "contract_025",
+   "action": "pick_object(object=toy_block)",
+   "success": true,
+   "path": "floor_top",
+   "error": null
+  },
+  {
+   "tick": 20577,
+   "t": 171.475,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=storage_basket)",
+   "depth": 0
+  },
+  {
+   "tick": 20577,
+   "t": 171.475,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 20577,
+   "t": 171.475,
+   "label": "policy_start",
+   "policy": "policy_002"
+  },
+  {
+   "tick": 22906,
+   "t": 190.883,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0049,
+   "q_err": 0.0077
+  },
+  {
+   "tick": 23326,
+   "t": 194.383,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.003,
+   "q_err": 0.0052
+  },
+  {
+   "tick": 23326,
+   "t": 194.383,
+   "label": "carry_height",
+   "bottom_z": 0.845,
+   "requested": 0.411
+  },
+  {
+   "tick": 23326,
+   "t": 194.383,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 23326,
+   "t": 194.383,
+   "label": "path",
+   "waypoints": [
+    [
+     2.11,
+     -1.93,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 23326,
+   "t": 194.383,
+   "label": "drive_arm",
+   "q": [
+    -0.226,
+    -0.087,
+    -1.09,
+    2.487,
+    -1.506,
+    2.177,
+    -1.543,
+    -0.76,
+    -1.491
+   ],
+   "tcp": [
+    4.898,
+    -1.979,
+    0.869
+   ],
+   "min_joint_z": 0.893,
+   "q_err": 0.005
+  },
+  {
+   "tick": 24603,
+   "t": 205.025,
+   "label": "base",
+   "pose": [
+    2.111,
+    -1.931,
+    -180.0
+   ]
+  },
+  {
+   "tick": 24633,
+   "t": 205.275,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=storage_basket)",
+   "success": true,
+   "path": "carry",
+   "error": null
+  },
+  {
+   "tick": 24633,
+   "t": 205.275,
+   "label": "contract_start",
+   "contract": "contract_026",
+   "action": "place_object(object=toy_block, receptacle=storage_basket)",
+   "depth": 0
+  },
+  {
+   "tick": 24633,
+   "t": 205.275,
+   "label": "policy_start",
+   "policy": "policy_016"
+  },
+  {
+   "tick": 24633,
+   "t": 205.275,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 24633,
+   "t": 205.275,
+   "label": "place_park",
+   "obj": "toy_block",
+   "park": [
+    1.439,
+    -1.931,
+    180.0
+   ]
+  },
+  {
+   "tick": 24751,
+   "t": 206.258,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0082,
+   "q_err": 0.005
+  },
+  {
+   "tick": 24755,
+   "t": 206.292,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0063,
+   "q_err": 0.0064
+  },
+  {
+   "tick": 24755,
+   "t": 206.292,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 24755,
+   "t": 206.292,
+   "label": "path",
+   "waypoints": [
+    [
+     1.44,
+     -1.93,
+     180.0
+    ]
+   ]
+  },
+  {
+   "tick": 24755,
+   "t": 206.292,
+   "label": "drive_arm",
+   "q": [
+    -0.163,
+    -0.087,
+    -1.108,
+    2.487,
+    -1.472,
+    2.19,
+    -1.542,
+    -0.76,
+    -1.452
+   ],
+   "tcp": [
+    1.757,
+    -1.831,
+    0.92
+   ],
+   "min_joint_z": 0.956,
+   "q_err": 0.006
+  },
+  {
+   "tick": 25193,
+   "t": 209.942,
+   "label": "base",
+   "pose": [
+    1.439,
+    -1.931,
+    -180.0
+   ]
+  },
+  {
+   "tick": 25193,
+   "t": 209.942,
+   "label": "place_remeasure",
+   "obj": "toy_block",
+   "shift_m": 0.012,
+   "hang_m": 0.039,
+   "pos": [
+    1.0843,
+    -1.8311,
+    0.9186
+   ],
+   "container_pos": [
+    0.8943,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 27273,
+   "t": 227.275,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0097,
+   "q_err": 0.004
+  },
+  {
+   "tick": 27273,
+   "t": 227.275,
+   "label": "place_after_above",
+   "obj": "toy_block",
+   "pos": [
+    0.9866,
+    -1.9294,
+    0.5049
+   ],
+   "fingers": [
+    0.0216,
+    0.0204
+   ],
+   "container_pos": [
+    0.8943,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 27273,
+   "t": 227.275,
+   "label": "place_container_shift",
+   "obj": "toy_block",
+   "container": "storage_basket",
+   "shift_m": 0.0,
+   "pos": [
+    0.8943,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 27273,
+   "t": 227.275,
+   "label": "place_before_release",
+   "obj": "toy_block",
+   "pos": [
+    0.9866,
+    -1.9294,
+    0.5049
+   ],
+   "target": [
+    0.9892,
+    -1.9312,
+    0.4541
+   ]
+  },
+  {
+   "tick": 27343,
+   "t": 227.858,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 27343,
+   "t": 227.858,
+   "label": "place_after_open",
+   "obj": "toy_block",
+   "pos": [
+    0.9884,
+    -1.931,
+    0.0381
+   ],
+   "container_pos": [
+    0.8943,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 27556,
+   "t": 229.633,
+   "label": "reach",
+   "target": "place_retreat_up",
+   "tcp_err_m": 0.0031,
+   "q_err": 0.0004
+  },
+  {
+   "tick": 29020,
+   "t": 241.833,
+   "label": "reach",
+   "target": "container_exit",
+   "tcp_err_m": 0.0056,
+   "q_err": 0.0057
+  },
+  {
+   "tick": 29110,
+   "t": 242.583,
+   "label": "place_result",
+   "obj": "toy_block",
+   "container": "storage_basket",
+   "inside": true,
+   "detail": "local (0.091, -0.024) / (0.177, 0.160)"
+  },
+  {
+   "tick": 29140,
+   "t": 242.833,
+   "label": "contract_end",
+   "contract": "contract_026",
+   "action": "place_object(object=toy_block, receptacle=storage_basket)",
+   "success": true,
+   "path": "container",
+   "error": null
+  },
+  {
+   "tick": 29140,
+   "t": 242.833,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=rubber_duck)",
+   "depth": 0
+  },
+  {
+   "tick": 29140,
+   "t": 242.833,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 29140,
+   "t": 242.833,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 29603,
+   "t": 246.692,
+   "label": "path",
+   "waypoints": [
+    [
+     2.68,
+     0.07,
+     58.26
+    ],
+    [
+     2.68,
+     0.37,
+     90.0
+    ],
+    [
+     2.93,
+     0.67,
+     50.19
+    ],
+    [
+     3.18,
+     0.92,
+     45.0
+    ],
+    [
+     5.58,
+     0.72,
+     -4.76
+    ],
+    [
+     5.77,
+     0.64,
+     -15.0
+    ]
+   ]
+  },
+  {
+   "tick": 29603,
+   "t": 246.692,
+   "label": "drive_arm",
+   "q": [
+    -0.003,
+    -0.0,
+    0.292,
+    1.206,
+    -0.006,
+    1.305,
+    -0.008,
+    -0.003,
+    -0.007
+   ],
+   "tcp": [
+    0.974,
+    -1.444,
+    1.11
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 31782,
+   "t": 264.85,
+   "label": "base",
+   "pose": [
+    5.774,
+    0.641,
+    345.0
+   ]
+  },
+  {
+   "tick": 31812,
+   "t": 265.1,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=rubber_duck)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 31812,
+   "t": 265.1,
+   "label": "contract_start",
+   "contract": "contract_025",
+   "action": "pick_object(object=rubber_duck)",
+   "depth": 0
+  },
+  {
+   "tick": 31812,
+   "t": 265.1,
+   "label": "policy_start",
+   "policy": "policy_010"
+  },
+  {
+   "tick": 31812,
+   "t": 265.1,
+   "label": "pick_park",
+   "obj": "rubber_duck",
+   "kind": "top_pinch",
+   "park": [
+    6.777,
+    0.839,
+    -75.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 31812,
+   "t": 265.1,
+   "label": "tuck_blocked",
+   "rest_clearance": -0.05,
+   "current_clearance": -0.05,
+   "left_active": false
+  },
+  {
+   "tick": 31812,
+   "t": 265.1,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.193,
+    0.279,
+    0.764,
+    0.625,
+    1.306,
+    -0.08,
+    0.011,
+    -0.003
+   ],
+   "tcp": [
+    6.15,
+    0.276,
+    0.762
+   ],
+   "min_joint_z": 0.855,
+   "q_err": 0.625
+  },
+  {
+   "tick": 32137,
+   "t": 267.808,
+   "label": "base",
+   "pose": [
+    5.436,
+    0.731,
+    345.0
+   ]
+  },
+  {
+   "tick": 32137,
+   "t": 267.808,
+   "label": "tuck_after_back_off",
+   "moved_m": 0.35
+  },
+  {
+   "tick": 32137,
+   "t": 267.808,
+   "label": "tuck_blocked",
+   "rest_clearance": -0.04,
+   "current_clearance": -0.04,
+   "left_active": false
+  },
+  {
+   "tick": 32137,
+   "t": 267.808,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.0,
+    0.307,
+    1.197,
+    0.033,
+    1.582,
+    0.033,
+    0.052,
+    0.155
+   ],
+   "tcp": [
+    5.801,
+    0.255,
+    1.141
+   ],
+   "min_joint_z": 1.061,
+   "q_err": 0.282
+  },
+  {
+   "tick": 32392,
+   "t": 269.933,
+   "label": "base",
+   "pose": [
+    5.436,
+    0.731,
+    -345.0
+   ]
+  },
+  {
+   "tick": 32392,
+   "t": 269.933,
+   "label": "tuck_clearance_move",
+   "to": [
+    5.436,
+    0.731,
+    375.0
+   ]
+  },
+  {
+   "tick": 32395,
+   "t": 269.958,
+   "label": "path",
+   "waypoints": [
+    [
+     6.78,
+     0.84,
+     -75.0
+    ]
+   ]
+  },
+  {
+   "tick": 32395,
+   "t": 269.958,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.0,
+    0.3,
+    1.2,
+    0.0,
+    1.3,
+    -0.0,
+    0.0,
+    0.0
+   ],
+   "tcp": [
+    6.013,
+    0.383,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 32972,
+   "t": 274.767,
+   "label": "base",
+   "pose": [
+    6.777,
+    0.839,
+    285.0
+   ]
+  },
+  {
+   "tick": 32972,
+   "t": 274.767,
+   "label": "pick_target",
+   "obj": "rubber_duck",
+   "pos": [
+    6.794,
+    0.368,
+    0.512
+   ],
+   "quat": [
+    0.433,
+    0.002,
+    -0.015,
+    0.901
+   ],
+   "p": [
+    6.777,
+    0.389,
+    0.512
+   ],
+   "kind": "top_pinch",
+   "azimuth": null,
+   "tilt": null
+  },
+  {
+   "tick": 33012,
+   "t": 275.1,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.0265
+   ]
+  },
+  {
+   "tick": 33712,
+   "t": 280.933,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0042,
+   "q_err": 0.0005
+  },
+  {
+   "tick": 33913,
+   "t": 282.608,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0046,
+   "q_err": 0.0008
+  },
+  {
+   "tick": 34020,
+   "t": 283.5,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0056,
+   "q_err": 0.0018
+  },
+  {
+   "tick": 34140,
+   "t": 284.5,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0288,
+    0.028
+   ]
+  },
+  {
+   "tick": 34499,
+   "t": 287.492,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0028,
+   "q_err": 0.004
+  },
+  {
+   "tick": 34539,
+   "t": 287.825,
+   "label": "pick_result",
+   "obj": "rubber_duck",
+   "kind": "top_pinch",
+   "lift_m": 0.0639,
+   "fingers": [
+    0.0292,
+    0.0277
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 34569,
+   "t": 288.075,
+   "label": "contract_end",
+   "contract": "contract_025",
+   "action": "pick_object(object=rubber_duck)",
+   "success": true,
+   "path": "top_pinch",
+   "error": null
+  },
+  {
+   "tick": 34569,
+   "t": 288.075,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=storage_basket)",
+   "depth": 0
+  },
+  {
+   "tick": 34569,
+   "t": 288.075,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 34569,
+   "t": 288.075,
+   "label": "policy_start",
+   "policy": "policy_002"
+  },
+  {
+   "tick": 34569,
+   "t": 288.075,
+   "label": "drive_arm",
+   "q": [
+    -0.407,
+    0.2,
+    -0.536,
+    3.005,
+    -0.445,
+    1.721,
+    0.386,
+    0.172,
+    0.82
+   ],
+   "tcp": [
+    6.777,
+    0.39,
+    0.58
+   ],
+   "min_joint_z": 0.709,
+   "q_err": 0.004
+  },
+  {
+   "tick": 34895,
+   "t": 290.792,
+   "label": "base",
+   "pose": [
+    6.686,
+    1.177,
+    285.0
+   ]
+  },
+  {
+   "tick": 35014,
+   "t": 291.783,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0047,
+   "q_err": 0.0041
+  },
+  {
+   "tick": 35091,
+   "t": 292.425,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0068,
+   "q_err": 0.0066
+  },
+  {
+   "tick": 35091,
+   "t": 292.425,
+   "label": "carry_height",
+   "bottom_z": 0.598,
+   "requested": 0.411
+  },
+  {
+   "tick": 35091,
+   "t": 292.425,
+   "label": "carry_clearance",
+   "margin": 0.1
+  },
+  {
+   "tick": 35091,
+   "t": 292.425,
+   "label": "path",
+   "waypoints": [
+    [
+     3.18,
+     1.02,
+     -177.47
+    ],
+    [
+     2.93,
+     0.82,
+     -141.34
+    ],
+    [
+     2.63,
+     0.47,
+     -130.6
+    ],
+    [
+     2.58,
+     0.32,
+     -108.43
+    ],
+    [
+     2.53,
+     -0.28,
+     -94.76
+    ],
+    [
+     1.98,
+     -1.31,
+     -150.0
+    ]
+   ]
+  },
+  {
+   "tick": 35091,
+   "t": 292.425,
+   "label": "drive_arm",
+   "q": [
+    -0.38,
+    0.145,
+    -0.307,
+    2.944,
+    -0.537,
+    2.086,
+    0.246,
+    0.29,
+    0.759
+   ],
+   "tcp": [
+    6.678,
+    0.808,
+    0.643
+   ],
+   "min_joint_z": 0.737,
+   "q_err": 0.007
+  },
+  {
+   "tick": 38209,
+   "t": 318.408,
+   "label": "base",
+   "pose": [
+    1.977,
+    -1.306,
+    210.0
+   ]
+  },
+  {
+   "tick": 38239,
+   "t": 318.658,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=storage_basket)",
+   "success": true,
+   "path": "carry",
+   "error": null
+  },
+  {
+   "tick": 38239,
+   "t": 318.658,
+   "label": "contract_start",
+   "contract": "contract_026",
+   "action": "place_object(object=rubber_duck, receptacle=storage_basket)",
+   "depth": 0
+  },
+  {
+   "tick": 38239,
+   "t": 318.658,
+   "label": "policy_start",
+   "policy": "policy_016"
+  },
+  {
+   "tick": 38239,
+   "t": 318.658,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 38239,
+   "t": 318.658,
+   "label": "place_park",
+   "obj": "rubber_duck",
+   "park": [
+    0.96,
+    -1.411,
+    -90.0
+   ]
+  },
+  {
+   "tick": 38343,
+   "t": 319.525,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.0047
+  },
+  {
+   "tick": 38347,
+   "t": 319.558,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0061,
+   "q_err": 0.0054
+  },
+  {
+   "tick": 38347,
+   "t": 319.558,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 38347,
+   "t": 319.558,
+   "label": "path",
+   "waypoints": [
+    [
+     0.96,
+     -1.41,
+     -90.0
+    ]
+   ]
+  },
+  {
+   "tick": 38347,
+   "t": 319.558,
+   "label": "drive_arm",
+   "q": [
+    -0.331,
+    0.182,
+    -0.225,
+    2.899,
+    -0.564,
+    2.151,
+    0.236,
+    0.325,
+    0.755
+   ],
+   "tcp": [
+    1.62,
+    -1.391,
+    0.697
+   ],
+   "min_joint_z": 0.786,
+   "q_err": 0.005
+  },
+  {
+   "tick": 38953,
+   "t": 324.608,
+   "label": "base",
+   "pose": [
+    0.96,
+    -1.411,
+    270.0
+   ]
+  },
+  {
+   "tick": 38953,
+   "t": 324.608,
+   "label": "place_remeasure",
+   "obj": "rubber_duck",
+   "shift_m": 0.001,
+   "hang_m": 0.043,
+   "pos": [
+    0.8666,
+    -1.7878,
+    0.6972
+   ],
+   "container_pos": [
+    0.8942,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 39518,
+   "t": 329.317,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0042
+  },
+  {
+   "tick": 39518,
+   "t": 329.317,
+   "label": "place_after_above",
+   "obj": "rubber_duck",
+   "pos": [
+    0.9744,
+    -1.8861,
+    0.5211
+   ],
+   "fingers": [
+    0.0292,
+    0.0276
+   ],
+   "container_pos": [
+    0.8942,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 39518,
+   "t": 329.317,
+   "label": "place_container_shift",
+   "obj": "rubber_duck",
+   "container": "storage_basket",
+   "shift_m": 0.0,
+   "pos": [
+    0.8942,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 39518,
+   "t": 329.317,
+   "label": "place_before_release",
+   "obj": "rubber_duck",
+   "pos": [
+    0.9744,
+    -1.8861,
+    0.5211
+   ],
+   "target": [
+    0.9764,
+    -1.8837,
+    0.4583
+   ]
+  },
+  {
+   "tick": 39588,
+   "t": 329.9,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 39588,
+   "t": 329.9,
+   "label": "place_after_open",
+   "obj": "rubber_duck",
+   "pos": [
+    0.9906,
+    -1.8376,
+    0.0876
+   ],
+   "container_pos": [
+    0.8942,
+    -1.9313,
+    0.1914
+   ]
+  },
+  {
+   "tick": 39771,
+   "t": 331.425,
+   "label": "reach",
+   "target": "place_retreat_up",
+   "tcp_err_m": 0.0031,
+   "q_err": 0.0009
+  },
+  {
+   "tick": 39993,
+   "t": 333.275,
+   "label": "reach",
+   "target": "container_exit",
+   "tcp_err_m": 0.0045,
+   "q_err": 0.0056
+  },
+  {
+   "tick": 40083,
+   "t": 334.025,
+   "label": "place_result",
+   "obj": "rubber_duck",
+   "container": "storage_basket",
+   "inside": true,
+   "detail": "local (0.158, 0.065) / (0.177, 0.160)"
+  },
+  {
+   "tick": 40113,
+   "t": 334.275,
+   "label": "contract_end",
+   "contract": "contract_026",
+   "action": "place_object(object=rubber_duck, receptacle=storage_basket)",
+   "success": true,
+   "path": "container",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_tidy_toys/run.mp4",
+ "wall_s": 833.3
+}

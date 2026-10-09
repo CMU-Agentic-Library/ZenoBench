@@ -108,7 +108,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+     "value": "rubber_duck"
     }
    },
    "depends_on": [

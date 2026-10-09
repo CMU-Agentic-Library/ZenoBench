@@ -8,7 +8,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "value": "book_red"
     }
    },
    "depends_on": []
@@ -57,7 +57,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "value": "book_green"
     }
    },
    "depends_on": [

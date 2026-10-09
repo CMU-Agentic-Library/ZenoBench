@@ -146,7 +146,9 @@ class Domain:
     def object_group(self, s, name, seen=()):
         for a in s:
             if a[0] == "on" and a[1] == name and a[2]:
-                return self.group.get(a[2]) or self._group(a[2])
+                # its own place: on a large desk or table, parking for the
+                # support left a book 1.34 m away (base_near is checked on GT)
+                return "obj:" + name
             if a[0] == "inside" and a[1] == name and a[2] not in seen:
                 return self.object_group(s, a[2], seen + (name,))
             if a[0] == "holding" and a[2] == name and ("steadied", name) not in s:

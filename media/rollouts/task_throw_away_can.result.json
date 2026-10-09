@@ -1,0 +1,844 @@
+{
+ "id": "task_throw_away_can",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "navigate",
+   "action": "navigate_place(destination=soda_can)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=soda_can)",
+     "holds": true,
+     "detail": "distance 0.85 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     7.545649528503418,
+     1.0108938217163086,
+     44.99999796868946
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 1,
+   "skill": "pick",
+   "action": "pick_object(object=soda_can)",
+   "success": true,
+   "path": "top_pinch",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=soda_can)",
+     "holds": true,
+     "detail": "distance 0.85 m"
+    },
+    {
+     "atom": "grasp_clearance(object=soda_can)",
+     "holds": true,
+     "detail": "pinch at [8.18, 1.645] has both finger slots free"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "holding(hand=right, object=soda_can)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0343, 0.0332]"
+    }
+   ],
+   "outputs": {
+    "grasp": "pinch",
+    "lift_m": 0.02752399444580078
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 2,
+   "skill": "navigate",
+   "action": "navigate_place(destination=trash_can)",
+   "success": true,
+   "path": "carry",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=trash_can)",
+     "holds": true,
+     "detail": "distance 1.00 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     8.213915824890137,
+     0.9827938079833984,
+     45.000001123825356
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 3,
+   "skill": "place",
+   "action": "place_object(object=soda_can, receptacle=trash_can)",
+   "success": true,
+   "path": "container",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "holding(hand=right, object=soda_can)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0342, 0.0333]"
+    },
+    {
+     "atom": "base_near(place=trash_can)",
+     "holds": true,
+     "detail": "distance 1.00 m"
+    },
+    {
+     "atom": "uncovered(container=trash_can)",
+     "holds": true,
+     "detail": "open"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "inside(object=soda_can, container=trash_can)",
+     "holds": true,
+     "detail": "r 0.039 / 0.136"
+    }
+   ],
+   "outputs": {
+    "position": [
+     9.037457127340456,
+     1.813563262686333
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791508575.0195088,
+ "goal": [
+  {
+   "atom": "inside(soda_can, trash_can)",
+   "holds": true,
+   "detail": "r 0.039 / 0.136"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=soda_can)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "path",
+   "waypoints": [
+    [
+     7.55,
+     1.01,
+     45.0
+    ]
+   ]
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    7.967,
+    0.513,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 704,
+   "t": 5.867,
+   "label": "base",
+   "pose": [
+    7.546,
+    1.011,
+    45.0
+   ]
+  },
+  {
+   "tick": 734,
+   "t": 6.117,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=soda_can)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 734,
+   "t": 6.117,
+   "label": "contract_start",
+   "contract": "contract_025",
+   "action": "pick_object(object=soda_can)",
+   "depth": 0
+  },
+  {
+   "tick": 734,
+   "t": 6.117,
+   "label": "policy_start",
+   "policy": "policy_010"
+  },
+  {
+   "tick": 734,
+   "t": 6.117,
+   "label": "pick_neighbour_obstacles",
+   "obj": "soda_can",
+   "n": 2
+  },
+  {
+   "tick": 734,
+   "t": 6.117,
+   "label": "pick_park",
+   "obj": "soda_can",
+   "kind": "top_pinch",
+   "park": [
+    8.037,
+    1.114,
+    135.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 737,
+   "t": 6.142,
+   "label": "path",
+   "waypoints": [
+    [
+     8.04,
+     1.11,
+     135.0
+    ]
+   ]
+  },
+  {
+   "tick": 737,
+   "t": 6.142,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    8.219,
+    0.997,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 1088,
+   "t": 9.067,
+   "label": "base",
+   "pose": [
+    8.037,
+    1.114,
+    135.0
+   ]
+  },
+  {
+   "tick": 1088,
+   "t": 9.067,
+   "label": "pick_target",
+   "obj": "soda_can",
+   "pos": [
+    8.18,
+    1.645,
+    0.92
+   ],
+   "quat": [
+    1.0,
+    0.001,
+    -0.003,
+    -0.0
+   ],
+   "p": [
+    8.18,
+    1.645,
+    0.92
+   ],
+   "kind": "top_pinch",
+   "azimuth": null,
+   "tilt": null
+  },
+  {
+   "tick": 1128,
+   "t": 9.4,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 1683,
+   "t": 14.025,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.003,
+   "q_err": 0.0003
+  },
+  {
+   "tick": 1747,
+   "t": 14.558,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0046,
+   "q_err": 0.0029
+  },
+  {
+   "tick": 2129,
+   "t": 17.742,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0223,
+   "q_err": 0.0685,
+   "q": [
+    -0.067,
+    0.108,
+    1.846,
+    0.398,
+    -1.472,
+    1.432,
+    -1.479,
+    0.779,
+    1.571
+   ],
+   "q_cmd": [
+    -0.068,
+    0.111,
+    1.823,
+    0.405,
+    -1.541,
+    1.433,
+    -1.449,
+    0.755,
+    1.541
+   ]
+  },
+  {
+   "tick": 2448,
+   "t": 20.4,
+   "label": "reach",
+   "target": "pick_grasp_fix",
+   "tcp_err_m": 0.0223,
+   "q_err": 0.0685,
+   "q": [
+    -0.067,
+    0.108,
+    1.846,
+    0.398,
+    -1.472,
+    1.432,
+    -1.479,
+    0.779,
+    1.571
+   ],
+   "q_cmd": [
+    -0.068,
+    0.111,
+    1.823,
+    0.405,
+    -1.541,
+    1.433,
+    -1.449,
+    0.755,
+    1.541
+   ]
+  },
+  {
+   "tick": 2568,
+   "t": 21.4,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.04,
+    0.0304
+   ]
+  },
+  {
+   "tick": 2791,
+   "t": 23.258,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0027,
+   "q_err": 0.0078
+  },
+  {
+   "tick": 2831,
+   "t": 23.592,
+   "label": "pick_result",
+   "obj": "soda_can",
+   "kind": "top_pinch",
+   "lift_m": 0.0275,
+   "fingers": [
+    0.0343,
+    0.0332
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 2861,
+   "t": 23.842,
+   "label": "contract_end",
+   "contract": "contract_025",
+   "action": "pick_object(object=soda_can)",
+   "success": true,
+   "path": "top_pinch",
+   "error": null
+  },
+  {
+   "tick": 2861,
+   "t": 23.842,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=trash_can)",
+   "depth": 0
+  },
+  {
+   "tick": 2861,
+   "t": 23.842,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 2861,
+   "t": 23.842,
+   "label": "policy_start",
+   "policy": "policy_002"
+  },
+  {
+   "tick": 2861,
+   "t": 23.842,
+   "label": "drive_arm",
+   "q": [
+    -0.023,
+    0.111,
+    1.826,
+    0.405,
+    -1.541,
+    1.433,
+    -1.447,
+    0.763,
+    1.541
+   ],
+   "tcp": [
+    8.182,
+    1.644,
+    0.966
+   ],
+   "min_joint_z": 1.067,
+   "q_err": 0.008
+  },
+  {
+   "tick": 3061,
+   "t": 25.508,
+   "label": "base",
+   "pose": [
+    8.179,
+    0.972,
+    135.0
+   ]
+  },
+  {
+   "tick": 3116,
+   "t": 25.967,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0064,
+   "q_err": 0.0086
+  },
+  {
+   "tick": 3116,
+   "t": 25.967,
+   "label": "joint_detour",
+   "target": "carry_in"
+  },
+  {
+   "tick": 4370,
+   "t": 36.417,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0048,
+   "q_err": 0.0076
+  },
+  {
+   "tick": 4370,
+   "t": 36.417,
+   "label": "carry_height",
+   "bottom_z": 0.526,
+   "requested": 0.331
+  },
+  {
+   "tick": 4370,
+   "t": 36.417,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 4370,
+   "t": 36.417,
+   "label": "path",
+   "waypoints": [
+    [
+     8.21,
+     0.98,
+     45.0
+    ]
+   ]
+  },
+  {
+   "tick": 4370,
+   "t": 36.417,
+   "label": "drive_arm",
+   "q": [
+    -0.031,
+    0.427,
+    0.385,
+    0.085,
+    0.548,
+    1.262,
+    -0.047,
+    0.009,
+    -1.184
+   ],
+   "tcp": [
+    8.005,
+    1.292,
+    0.603
+   ],
+   "min_joint_z": 0.762,
+   "q_err": 0.008
+  },
+  {
+   "tick": 4862,
+   "t": 40.517,
+   "label": "base",
+   "pose": [
+    8.214,
+    0.983,
+    45.0
+   ]
+  },
+  {
+   "tick": 4892,
+   "t": 40.767,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=trash_can)",
+   "success": true,
+   "path": "carry",
+   "error": null
+  },
+  {
+   "tick": 4892,
+   "t": 40.767,
+   "label": "contract_start",
+   "contract": "contract_026",
+   "action": "place_object(object=soda_can, receptacle=trash_can)",
+   "depth": 0
+  },
+  {
+   "tick": 4892,
+   "t": 40.767,
+   "label": "policy_start",
+   "policy": "policy_016"
+  },
+  {
+   "tick": 4892,
+   "t": 40.767,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 4892,
+   "t": 40.767,
+   "label": "place_park",
+   "obj": "soda_can",
+   "park": [
+    9.268,
+    1.354,
+    135.0
+   ]
+  },
+  {
+   "tick": 4999,
+   "t": 41.658,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0076,
+   "q_err": 0.008
+  },
+  {
+   "tick": 5003,
+   "t": 41.692,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0042,
+   "q_err": 0.007
+  },
+  {
+   "tick": 5003,
+   "t": 41.692,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 5003,
+   "t": 41.692,
+   "label": "path",
+   "waypoints": [
+    [
+     8.83,
+     1.02,
+     3.65
+    ],
+    [
+     9.27,
+     1.35,
+     135.0
+    ]
+   ]
+  },
+  {
+   "tick": 5003,
+   "t": 41.692,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    0.221,
+    0.38,
+    0.03,
+    0.526,
+    1.036,
+    -0.086,
+    0.065,
+    -1.168
+   ],
+   "tcp": [
+    8.533,
+    1.155,
+    0.653
+   ],
+   "min_joint_z": 0.812,
+   "q_err": 0.007
+  },
+  {
+   "tick": 5964,
+   "t": 49.7,
+   "label": "base",
+   "pose": [
+    9.268,
+    1.354,
+    135.0
+   ]
+  },
+  {
+   "tick": 5964,
+   "t": 49.7,
+   "label": "place_remeasure",
+   "obj": "soda_can",
+   "shift_m": 0.001,
+   "hang_m": 0.063,
+   "pos": [
+    9.0943,
+    1.6716,
+    0.636
+   ],
+   "container_pos": [
+    9.0512,
+    1.8201,
+    0.151
+   ]
+  },
+  {
+   "tick": 6517,
+   "t": 54.308,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0044,
+   "q_err": 0.0063
+  },
+  {
+   "tick": 6517,
+   "t": 54.308,
+   "label": "place_after_above",
+   "obj": "soda_can",
+   "pos": [
+    9.021,
+    1.7849,
+    0.4584
+   ],
+   "fingers": [
+    0.0341,
+    0.0334
+   ],
+   "container_pos": [
+    9.0512,
+    1.8201,
+    0.151
+   ]
+  },
+  {
+   "tick": 6517,
+   "t": 54.308,
+   "label": "place_container_shift",
+   "obj": "soda_can",
+   "container": "trash_can",
+   "shift_m": 0.0,
+   "pos": [
+    9.0512,
+    1.8201,
+    0.151
+   ]
+  },
+  {
+   "tick": 6517,
+   "t": 54.308,
+   "label": "place_before_release",
+   "obj": "soda_can",
+   "pos": [
+    9.021,
+    1.7849,
+    0.4584
+   ],
+   "target": [
+    9.0169,
+    1.7858,
+    0.3982
+   ]
+  },
+  {
+   "tick": 6587,
+   "t": 54.892,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 6587,
+   "t": 54.892,
+   "label": "place_after_open",
+   "obj": "soda_can",
+   "pos": [
+    9.0525,
+    1.8008,
+    0.0755
+   ],
+   "container_pos": [
+    9.0512,
+    1.8201,
+    0.151
+   ]
+  },
+  {
+   "tick": 6744,
+   "t": 56.2,
+   "label": "reach",
+   "target": "place_retreat_up",
+   "tcp_err_m": 0.0041,
+   "q_err": 0.0012
+  },
+  {
+   "tick": 7011,
+   "t": 58.425,
+   "label": "reach",
+   "target": "container_exit",
+   "tcp_err_m": 0.0064,
+   "q_err": 0.0083
+  },
+  {
+   "tick": 7101,
+   "t": 59.175,
+   "label": "place_result",
+   "obj": "soda_can",
+   "container": "trash_can",
+   "inside": true,
+   "detail": "r 0.039 / 0.136"
+  },
+  {
+   "tick": 7131,
+   "t": 59.425,
+   "label": "contract_end",
+   "contract": "contract_026",
+   "action": "place_object(object=soda_can, receptacle=trash_can)",
+   "success": true,
+   "path": "container",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_throw_away_can/run.mp4",
+ "wall_s": 433.3
+}

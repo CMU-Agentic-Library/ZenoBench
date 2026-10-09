@@ -1,0 +1,291 @@
+{
+ "id": "task_greet_and_point",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "wave",
+   "action": "wave_hand()",
+   "success": true,
+   "path": "raised_swing",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "waved()",
+     "holds": true,
+     "detail": "3 swings"
+    },
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 1,
+   "skill": "nod",
+   "action": "nod_head()",
+   "success": true,
+   "path": "pitch_cycles",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "nodded()",
+     "holds": true,
+     "detail": "2 cycles"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 2,
+   "skill": "point",
+   "action": "point_target(target=trash_can)",
+   "success": true,
+   "path": "front",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "pointing_at(target=trash_can)",
+     "holds": true,
+     "detail": "angle 0.2 deg"
+    },
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791509420.5360804,
+ "goal": [
+  {
+   "atom": "waved()",
+   "holds": true,
+   "detail": "3 swings"
+  },
+  {
+   "atom": "nodded()",
+   "holds": true,
+   "detail": "2 cycles"
+  },
+  {
+   "atom": "pointing_at(trash_can)",
+   "holds": true,
+   "detail": "angle 0.2 deg"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_068",
+   "action": "wave_hand()",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_104"
+  },
+  {
+   "tick": 140,
+   "t": 1.167,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 764,
+   "t": 6.367,
+   "label": "reach",
+   "target": "wave_raise",
+   "tcp_err_m": 0.004,
+   "q_err": 0.0003
+  },
+  {
+   "tick": 869,
+   "t": 7.242,
+   "label": "reach",
+   "target": "wave_swing",
+   "tcp_err_m": 0.0042,
+   "q_err": 0.0082
+  },
+  {
+   "tick": 943,
+   "t": 7.858,
+   "label": "reach",
+   "target": "wave_swing",
+   "tcp_err_m": 0.0039,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 1035,
+   "t": 8.625,
+   "label": "reach",
+   "target": "wave_swing",
+   "tcp_err_m": 0.0039,
+   "q_err": 0.0071
+  },
+  {
+   "tick": 1109,
+   "t": 9.242,
+   "label": "reach",
+   "target": "wave_swing",
+   "tcp_err_m": 0.0039,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 1201,
+   "t": 10.008,
+   "label": "reach",
+   "target": "wave_swing",
+   "tcp_err_m": 0.0039,
+   "q_err": 0.0071
+  },
+  {
+   "tick": 1275,
+   "t": 10.625,
+   "label": "reach",
+   "target": "wave_swing",
+   "tcp_err_m": 0.0039,
+   "q_err": 0.0075
+  },
+  {
+   "tick": 1275,
+   "t": 10.625,
+   "label": "wave_result",
+   "swings": 3
+  },
+  {
+   "tick": 1531,
+   "t": 12.758,
+   "label": "contract_end",
+   "contract": "contract_068",
+   "action": "wave_hand()",
+   "success": true,
+   "path": "raised_swing",
+   "error": null
+  },
+  {
+   "tick": 1531,
+   "t": 12.758,
+   "label": "contract_start",
+   "contract": "contract_069",
+   "action": "nod_head()",
+   "depth": 0
+  },
+  {
+   "tick": 1531,
+   "t": 12.758,
+   "label": "policy_start",
+   "policy": "policy_105"
+  },
+  {
+   "tick": 1711,
+   "t": 14.258,
+   "label": "nod_result",
+   "cycles": 2
+  },
+  {
+   "tick": 1741,
+   "t": 14.508,
+   "label": "contract_end",
+   "contract": "contract_069",
+   "action": "nod_head()",
+   "success": true,
+   "path": "pitch_cycles",
+   "error": null
+  },
+  {
+   "tick": 1741,
+   "t": 14.508,
+   "label": "contract_start",
+   "contract": "contract_023",
+   "action": "point_target(target=trash_can)",
+   "depth": 0
+  },
+  {
+   "tick": 1741,
+   "t": 14.508,
+   "label": "policy_start",
+   "policy": "policy_041"
+  },
+  {
+   "tick": 1841,
+   "t": 15.342,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "tick": 1841,
+   "t": 15.342,
+   "label": "policy_start",
+   "policy": "policy_101"
+  },
+  {
+   "tick": 1841,
+   "t": 15.342,
+   "label": "policy_start",
+   "policy": "policy_038"
+  },
+  {
+   "tick": 2516,
+   "t": 20.967,
+   "label": "reach",
+   "target": "right_tcp_move",
+   "tcp_err_m": 0.0057,
+   "q_err": 0.0079
+  },
+  {
+   "tick": 2546,
+   "t": 21.217,
+   "label": "contract_end",
+   "contract": "contract_023",
+   "action": "point_target(target=trash_can)",
+   "success": true,
+   "path": "front",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_greet_and_point/run.mp4",
+ "wall_s": 54.7
+}

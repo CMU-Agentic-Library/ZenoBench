@@ -46,6 +46,8 @@ def run_one(sc, video=False, out_root=OUT):
                        res=(540, 960), handle_objects=tuple(sc.get("handle_objects", ())))
         rig.configure_thermal(task)
         rig.step(30)
+        from zeno_skills.skill_runtime import before_snapshot
+        start_snapshot = before_snapshot(rig)      # task goals compare against the start state
         if sc.get("start"):
             # move the anchor in small steps: one large jump makes PhysX explode
             x0, y0, yaw0 = rig.base_pose()
@@ -122,7 +124,7 @@ def run_one(sc, video=False, out_root=OUT):
             # whole-task rollouts: the task goal itself, measured on GT state
             from zeno_skills.predicates import REGISTRY
             rig.step(60)
-            ctx = {}
+            ctx = {"before": start_snapshot}
             report["goal"] = []
             for atom in sc["goal"]:
                 pred, args = REGISTRY[atom[0]], atom[1:]

@@ -54,7 +54,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "breakfast_fridge"
+     "value": "oatmeal"
     }
    },
    "depends_on": [
@@ -144,9 +144,9 @@
   },
   {
    "id": "n12",
-   "skill": "stop",
+   "skill": "open",
    "args": {
-    "appliance": {
+    "articulated": {
      "value": "kitchen_microwave"
     }
    },
@@ -156,9 +156,9 @@
   },
   {
    "id": "n13",
-   "skill": "pick",
+   "skill": "navigate",
    "args": {
-    "object": {
+    "destination": {
      "value": "oatmeal"
     }
    },
@@ -168,10 +168,10 @@
   },
   {
    "id": "n14",
-   "skill": "navigate",
+   "skill": "pick",
    "args": {
-    "destination": {
-     "value": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+    "object": {
+     "value": "oatmeal"
     }
    },
    "depends_on": [
@@ -180,6 +180,18 @@
   },
   {
    "id": "n15",
+   "skill": "navigate",
+   "args": {
+    "destination": {
+     "value": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+    }
+   },
+   "depends_on": [
+    "n14"
+   ]
+  },
+  {
+   "id": "n16",
    "skill": "place",
    "args": {
     "object": {
@@ -190,26 +202,14 @@
     }
    },
    "depends_on": [
-    "n14"
-   ]
-  },
-  {
-   "id": "n16",
-   "skill": "navigate",
-   "args": {
-    "destination": {
-     "value": "breakfast_fridge"
-    }
-   },
-   "depends_on": [
     "n15"
    ]
   },
   {
    "id": "n17",
-   "skill": "close",
+   "skill": "navigate",
    "args": {
-    "articulated": {
+    "destination": {
      "value": "breakfast_fridge"
     }
    },
@@ -219,10 +219,10 @@
   },
   {
    "id": "n18",
-   "skill": "navigate",
+   "skill": "close",
    "args": {
-    "destination": {
-     "value": "kitchen_microwave"
+    "articulated": {
+     "value": "breakfast_fridge"
     }
    },
    "depends_on": [
@@ -231,6 +231,18 @@
   },
   {
    "id": "n19",
+   "skill": "navigate",
+   "args": {
+    "destination": {
+     "value": "kitchen_microwave"
+    }
+   },
+   "depends_on": [
+    "n18"
+   ]
+  },
+  {
+   "id": "n20",
    "skill": "close",
    "args": {
     "articulated": {
@@ -238,7 +250,7 @@
     }
    },
    "depends_on": [
-    "n18"
+    "n19"
    ]
   }
  ]

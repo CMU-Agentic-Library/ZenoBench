@@ -60,7 +60,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "breakfast_fridge"
+     "value": "milk"
     }
    },
    "depends_on": [

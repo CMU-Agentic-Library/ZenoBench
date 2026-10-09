@@ -1,0 +1,141 @@
+{
+ "id": "task_inspect_cabinet",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "look",
+   "action": "look_target(target=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "success": true,
+   "path": "turn_then_head",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "in_view(target=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "h 0, v -0 deg, 4.1 m"
+    },
+    {
+     "atom": "observed(target=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+     "holds": true,
+     "detail": "last seen at tick 1091"
+    }
+   ],
+   "outputs": {
+    "seen": [
+     "spoon_kitchen_cabinet",
+     "plate_inside_kitchen_cabinet",
+     "bowl_inside_kitchen_cabinet",
+     "floor_block"
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791509760.3030436,
+ "goal": [
+  {
+   "atom": "observed(KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "holds": true,
+   "detail": "last seen at tick 1091"
+  },
+  {
+   "atom": "is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "holds": true,
+   "detail": "q -0.000"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_019",
+   "action": "look_target(target=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_066"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    7.967,
+    0.513,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 1081,
+   "t": 9.008,
+   "label": "base",
+   "pose": [
+    7.5,
+    1.0,
+    -174.642
+   ]
+  },
+  {
+   "tick": 1081,
+   "t": 9.008,
+   "label": "face_result",
+   "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478",
+   "yaw_deg": -174.6,
+   "error_deg": 0.0
+  },
+  {
+   "tick": 1081,
+   "t": 9.008,
+   "label": "policy_start",
+   "policy": "policy_068"
+  },
+  {
+   "tick": 1091,
+   "t": 9.092,
+   "label": "look_result",
+   "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478",
+   "visible": true,
+   "detail": "h 0, v -1 deg, 4.1 m",
+   "seen": [
+    "spoon_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet",
+    "bowl_inside_kitchen_cabinet",
+    "floor_block"
+   ]
+  },
+  {
+   "tick": 1121,
+   "t": 9.342,
+   "label": "contract_end",
+   "contract": "contract_019",
+   "action": "look_target(target=KitchenCabinetFactory_7025538_spawn_asset_6631478)",
+   "success": true,
+   "path": "turn_then_head",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_inspect_cabinet/run.mp4",
+ "wall_s": 27.9
+}

@@ -2,7 +2,7 @@
  {
   "task": "collect_fruits",
   "solved": true,
-  "expansions": 75,
+  "expansions": 88,
   "length": 8,
   "verbs": [
    "navigate/empty",
@@ -18,7 +18,7 @@
  {
   "task": "tidy_toys",
   "solved": true,
-  "expansions": 208,
+  "expansions": 247,
   "length": 12,
   "verbs": [
    "navigate/empty",
@@ -38,7 +38,7 @@
  {
   "task": "shelve_books",
   "solved": true,
-  "expansions": 69,
+  "expansions": 58,
   "length": 8,
   "verbs": [
    "navigate/empty",
@@ -54,7 +54,7 @@
  {
   "task": "desk_prep",
   "solved": true,
-  "expansions": 194,
+  "expansions": 128,
   "length": 12,
   "verbs": [
    "navigate/empty",
@@ -83,8 +83,8 @@
  {
   "task": "heat_breakfast",
   "solved": true,
-  "expansions": 354,
-  "length": 19,
+  "expansions": 256,
+  "length": 20,
   "verbs": [
    "navigate/empty",
    "open/refrigerator",
@@ -97,7 +97,8 @@
    "close/powered",
    "navigate/empty",
    "heat/microwave",
-   "stop/microwave_door",
+   "open/powered_microwave",
+   "navigate/empty",
    "pick/microwave_cavity",
    "navigate/carry",
    "place/surface",
@@ -120,7 +121,7 @@
  {
   "task": "heat_breakfast_combo",
   "solved": true,
-  "expansions": 135,
+  "expansions": 145,
   "length": 10,
   "verbs": [
    "navigate/empty",
@@ -138,7 +139,7 @@
  {
   "task": "recycle_and_store",
   "solved": true,
-  "expansions": 203,
+  "expansions": 271,
   "length": 12,
   "verbs": [
    "navigate/empty",
@@ -158,7 +159,7 @@
  {
   "task": "organize_utility_items",
   "solved": true,
-  "expansions": 284,
+  "expansions": 242,
   "length": 12,
   "verbs": [
    "navigate/empty",
@@ -178,8 +179,8 @@
  {
   "task": "cook_tomato_soup",
   "solved": true,
-  "expansions": 7059,
-  "length": 14,
+  "expansions": 4887,
+  "length": 16,
   "verbs": [
    "navigate/empty",
    "uncover/knob_lift_aside",
@@ -188,19 +189,21 @@
    "navigate/carry",
    "stir/circle_below_rim",
    "navigate/carry",
-   "place/surface",
+   "place/container",
+   "pick/round_rim",
+   "navigate/carry",
+   "place/stove_burner",
+   "heat/stove_pot",
+   "navigate/empty",
    "pick/top_pinch",
    "navigate/carry",
-   "place/container",
-   "heat/stove_pot",
-   "pick/top_pinch",
    "cover/rim_plane"
   ]
  },
  {
   "task": "heat_without_microwave",
   "solved": true,
-  "expansions": 208,
+  "expansions": 149,
   "length": 5,
   "verbs": [
    "navigate/empty",
@@ -213,7 +216,7 @@
  {
   "task": "heat_can_in_microwave",
   "solved": true,
-  "expansions": 459,
+  "expansions": 374,
   "length": 9,
   "verbs": [
    "navigate/empty",
@@ -230,7 +233,7 @@
  {
   "task": "chill_drink",
   "solved": true,
-  "expansions": 233,
+  "expansions": 244,
   "length": 8,
   "verbs": [
    "navigate/empty",
@@ -246,7 +249,7 @@
  {
   "task": "throw_away_can",
   "solved": true,
-  "expansions": 13,
+  "expansions": 15,
   "length": 4,
   "verbs": [
    "navigate/empty",
@@ -258,22 +261,24 @@
  {
   "task": "stack_blocks",
   "solved": true,
-  "expansions": 6,
-  "length": 3,
+  "expansions": 24,
+  "length": 4,
   "verbs": [
    "navigate/empty",
    "pick/top_pinch",
+   "navigate/carry",
    "stack/top_face"
   ]
  },
  {
   "task": "wipe_island",
   "solved": true,
-  "expansions": 4,
-  "length": 4,
+  "expansions": 7,
+  "length": 5,
   "verbs": [
    "navigate/empty",
    "pick/top_pinch",
+   "navigate/carry",
    "wipe/sponge_strip",
    "place/surface"
   ]
@@ -291,7 +296,7 @@
  {
   "task": "roll_pin",
   "solved": true,
-  "expansions": 2,
+  "expansions": 3,
   "length": 2,
   "verbs": [
    "navigate/empty",
@@ -301,7 +306,7 @@
  {
   "task": "flip_book",
   "solved": true,
-  "expansions": 2,
+  "expansions": 3,
   "length": 2,
   "verbs": [
    "navigate/empty",
@@ -311,7 +316,7 @@
  {
   "task": "hide_block",
   "solved": true,
-  "expansions": 6,
+  "expansions": 8,
   "length": 3,
   "verbs": [
    "navigate/empty",
@@ -380,7 +385,7 @@
  {
   "task": "square_block",
   "solved": true,
-  "expansions": 2,
+  "expansions": 3,
   "length": 2,
   "verbs": [
    "navigate/empty",
@@ -409,7 +414,7 @@
  {
   "task": "empty_mug",
   "solved": true,
-  "expansions": 11,
+  "expansions": 14,
   "length": 3,
   "verbs": [
    "fetch/to_surface",
@@ -439,7 +444,7 @@
  {
   "task": "present_block",
   "solved": true,
-  "expansions": 3,
+  "expansions": 4,
   "length": 3,
   "verbs": [
    "navigate/empty",
@@ -450,7 +455,7 @@
  {
   "task": "serve_in_left_hand",
   "solved": true,
-  "expansions": 6,
+  "expansions": 7,
   "length": 4,
   "verbs": [
    "navigate/empty",

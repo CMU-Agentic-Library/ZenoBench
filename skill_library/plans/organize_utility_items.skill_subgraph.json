@@ -8,7 +8,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+     "value": "juice_bottle"
     }
    },
    "depends_on": []
@@ -30,7 +30,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "value": "shallow_sorting_tray"
     }
    },
    "depends_on": [
@@ -57,7 +57,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+     "value": "tissue_box"
     }
    },
    "depends_on": [

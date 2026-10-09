@@ -1,0 +1,640 @@
+{
+ "id": "task_square_block",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "navigate",
+   "action": "navigate_place(destination=wooden_block_a)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=wooden_block_a)",
+     "holds": true,
+     "detail": "distance 0.69 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     7.5844011306762695,
+     0.9938135147094727,
+     119.9999931942987
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 1,
+   "skill": "square",
+   "action": "square_object(object=wooden_block_a)",
+   "success": true,
+   "path": "pick_rotate_place",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=wooden_block_a)",
+     "holds": true,
+     "detail": "distance 0.69 m"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "squared(object=wooden_block_a)",
+     "holds": true,
+     "detail": "yaw off axis 1.1 deg"
+    },
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791510024.8232071,
+ "goal": [
+  {
+   "atom": "squared(wooden_block_a)",
+   "holds": true,
+   "detail": "yaw off axis 1.1 deg"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=wooden_block_a)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "path",
+   "waypoints": [
+    [
+     7.58,
+     0.99,
+     120.0
+    ]
+   ]
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    7.967,
+    0.513,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 938,
+   "t": 7.817,
+   "label": "base",
+   "pose": [
+    7.584,
+    0.994,
+    120.0
+   ]
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=wooden_block_a)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "contract_start",
+   "contract": "contract_072",
+   "action": "square_object(object=wooden_block_a)",
+   "depth": 0
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "policy_start",
+   "policy": "policy_108"
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "policy_start",
+   "policy": "policy_010"
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "pick_neighbour_obstacles",
+   "obj": "wooden_block_a",
+   "n": 1
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "pick_park",
+   "obj": "wooden_block_a",
+   "kind": "top_pinch",
+   "park": [
+    7.104,
+    1.19,
+    90.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 971,
+   "t": 8.092,
+   "label": "path",
+   "waypoints": [
+    [
+     7.1,
+     1.19,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 971,
+   "t": 8.092,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    7.772,
+    1.641,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 1258,
+   "t": 10.483,
+   "label": "base",
+   "pose": [
+    7.104,
+    1.19,
+    90.0
+   ]
+  },
+  {
+   "tick": 1258,
+   "t": 10.483,
+   "label": "pick_target",
+   "obj": "wooden_block_a",
+   "pos": [
+    7.22,
+    1.625,
+    0.885
+   ],
+   "quat": [
+    1.0,
+    -0.001,
+    -0.001,
+    -0.0
+   ],
+   "p": [
+    7.22,
+    1.625,
+    0.885
+   ],
+   "kind": "top_pinch",
+   "azimuth": null,
+   "tilt": null
+  },
+  {
+   "tick": 1298,
+   "t": 10.817,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 1907,
+   "t": 15.892,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0003
+  },
+  {
+   "tick": 2113,
+   "t": 17.608,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.0008
+  },
+  {
+   "tick": 2223,
+   "t": 18.525,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0069,
+   "q_err": 0.0027
+  },
+  {
+   "tick": 2343,
+   "t": 19.525,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0254,
+    0.0243
+   ]
+  },
+  {
+   "tick": 2704,
+   "t": 22.533,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0027,
+   "q_err": 0.0029
+  },
+  {
+   "tick": 2744,
+   "t": 22.867,
+   "label": "pick_result",
+   "obj": "wooden_block_a",
+   "kind": "top_pinch",
+   "lift_m": 0.0627,
+   "fingers": [
+    0.0256,
+    0.0241
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 2744,
+   "t": 22.867,
+   "label": "policy_start",
+   "policy": "policy_075"
+  },
+  {
+   "tick": 2820,
+   "t": 23.5,
+   "label": "reach",
+   "target": "rotate_clear",
+   "tcp_err_m": 0.0055,
+   "q_err": 0.0087
+  },
+  {
+   "tick": 2826,
+   "t": 23.55,
+   "label": "reach",
+   "target": "rotate_held",
+   "tcp_err_m": 0.0031,
+   "q_err": 0.003
+  },
+  {
+   "tick": 2826,
+   "t": 23.55,
+   "label": "rotate_result",
+   "obj": "wooden_block_a",
+   "requested": 0.0003401943147380848,
+   "yaw_change": -0.1
+  },
+  {
+   "tick": 2826,
+   "t": 23.55,
+   "label": "policy_start",
+   "policy": "policy_015"
+  },
+  {
+   "tick": 2826,
+   "t": 23.55,
+   "label": "place_yaw",
+   "deg": 0
+  },
+  {
+   "tick": 2826,
+   "t": 23.55,
+   "label": "place_park",
+   "obj": "wooden_block_a",
+   "park": [
+    7.091,
+    1.142,
+    90.0
+   ]
+  },
+  {
+   "tick": 2826,
+   "t": 23.55,
+   "label": "drive_arm",
+   "q": [
+    -0.069,
+    0.176,
+    -0.08,
+    2.911,
+    -0.644,
+    2.05,
+    0.844,
+    -0.633,
+    0.886
+   ],
+   "tcp": [
+    7.196,
+    1.529,
+    1.011
+   ],
+   "min_joint_z": 1.047,
+   "q_err": 0.003
+  },
+  {
+   "tick": 3152,
+   "t": 26.267,
+   "label": "base",
+   "pose": [
+    7.103,
+    0.84,
+    90.0
+   ]
+  },
+  {
+   "tick": 3254,
+   "t": 27.117,
+   "label": "reach",
+   "target": "carry_up",
+   "tcp_err_m": 0.0051,
+   "q_err": 0.0047
+  },
+  {
+   "tick": 3264,
+   "t": 27.2,
+   "label": "reach",
+   "target": "carry_in",
+   "tcp_err_m": 0.0048,
+   "q_err": 0.0095
+  },
+  {
+   "tick": 3264,
+   "t": 27.2,
+   "label": "carry_height",
+   "bottom_z": 1.04,
+   "requested": 1.01
+  },
+  {
+   "tick": 3264,
+   "t": 27.2,
+   "label": "carry_clearance",
+   "margin": 0.15
+  },
+  {
+   "tick": 3264,
+   "t": 27.2,
+   "label": "path",
+   "waypoints": [
+    [
+     7.09,
+     1.14,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 3264,
+   "t": 27.2,
+   "label": "drive_arm",
+   "q": [
+    -0.012,
+    0.246,
+    0.018,
+    2.838,
+    -0.673,
+    2.094,
+    0.822,
+    -0.608,
+    0.945
+   ],
+   "tcp": [
+    7.202,
+    1.186,
+    1.07
+   ],
+   "min_joint_z": 1.101,
+   "q_err": 0.01
+  },
+  {
+   "tick": 3501,
+   "t": 29.175,
+   "label": "base",
+   "pose": [
+    7.091,
+    1.142,
+    90.0
+   ]
+  },
+  {
+   "tick": 3501,
+   "t": 29.175,
+   "label": "place_above_clearance",
+   "obj": "wooden_block_a",
+   "raised_m": 0.016
+  },
+  {
+   "tick": 3501,
+   "t": 29.175,
+   "label": "place_remeasure",
+   "obj": "wooden_block_a",
+   "shift_m": 0.002,
+   "hang_m": 0.025,
+   "pos": [
+    7.1911,
+    1.4915,
+    1.0678
+   ],
+   "container_pos": null
+  },
+  {
+   "tick": 4457,
+   "t": 37.142,
+   "label": "reach",
+   "target": "place_over_neighbours",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.0036
+  },
+  {
+   "tick": 4524,
+   "t": 37.7,
+   "label": "reach",
+   "target": "place_above",
+   "tcp_err_m": 0.0036,
+   "q_err": 0.0037
+  },
+  {
+   "tick": 4524,
+   "t": 37.7,
+   "label": "place_after_above",
+   "obj": "wooden_block_a",
+   "pos": [
+    7.221,
+    1.6234,
+    0.9525
+   ],
+   "fingers": [
+    0.0256,
+    0.0241
+   ],
+   "container_pos": null
+  },
+  {
+   "tick": 5132,
+   "t": 42.767,
+   "label": "reach",
+   "target": "place_lower",
+   "tcp_err_m": 0.0089,
+   "q_err": 0.0135
+  },
+  {
+   "tick": 5162,
+   "t": 43.017,
+   "label": "place_after_lower",
+   "obj": "wooden_block_a",
+   "pos": [
+    7.221,
+    1.622,
+    0.9078
+   ],
+   "fingers": [
+    0.0255,
+    0.0241
+   ]
+  },
+  {
+   "tick": 5551,
+   "t": 46.258,
+   "label": "reach",
+   "target": "place_lower_to_contact",
+   "tcp_err_m": 0.0107,
+   "q_err": 0.0213
+  },
+  {
+   "tick": 5551,
+   "t": 46.258,
+   "label": "place_before_release",
+   "obj": "wooden_block_a",
+   "pos": [
+    7.2219,
+    1.6198,
+    0.8953
+   ],
+   "target": [
+    7.22,
+    1.625,
+    0.8895
+   ]
+  },
+  {
+   "tick": 5621,
+   "t": 46.842,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 5621,
+   "t": 46.842,
+   "label": "place_after_open",
+   "obj": "wooden_block_a",
+   "pos": [
+    7.222,
+    1.6187,
+    0.8851
+   ],
+   "container_pos": null
+  },
+  {
+   "tick": 5816,
+   "t": 48.467,
+   "label": "reach",
+   "target": "place_retreat_up",
+   "tcp_err_m": 0.0017,
+   "q_err": 0.0007
+  },
+  {
+   "tick": 5906,
+   "t": 49.217,
+   "label": "place_result",
+   "obj": "wooden_block_a",
+   "support": "kitchen_island/top",
+   "xy_err_m": 0.0067,
+   "on_support": true
+  },
+  {
+   "tick": 5936,
+   "t": 49.467,
+   "label": "contract_end",
+   "contract": "contract_072",
+   "action": "square_object(object=wooden_block_a)",
+   "success": true,
+   "path": "pick_rotate_place",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_square_block/run.mp4",
+ "wall_s": 134.0
+}

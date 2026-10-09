@@ -1,0 +1,79 @@
+{
+ "id": "task_sweep_blocks",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "sweep",
+   "action": "sweep_objects(objects=['wooden_block_a', 'wooden_block_b'], radius_m=0.12)",
+   "success": true,
+   "path": "push_to_centroid",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "clustered(objects=['wooden_block_a', 'wooden_block_b'], radius_m=0.12)",
+     "holds": true,
+     "detail": "max 0.075 m from centroid"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791510860.556334,
+ "goal": [
+  {
+   "atom": "clustered(['wooden_block_a', 'wooden_block_b'], 0.12)",
+   "holds": true,
+   "detail": "max 0.075 m from centroid"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_075",
+   "action": "sweep_objects(objects=['wooden_block_a', 'wooden_block_b'], radius_m=0.12)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_109"
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "sweep_result",
+   "objects": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "max_from_centroid": 0.075
+  },
+  {
+   "tick": 150,
+   "t": 1.25,
+   "label": "contract_end",
+   "contract": "contract_075",
+   "action": "sweep_objects(objects=['wooden_block_a', 'wooden_block_b'], radius_m=0.12)",
+   "success": true,
+   "path": "push_to_centroid",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_sweep_blocks/run.mp4",
+ "wall_s": 7.9
+}

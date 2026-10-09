@@ -1,0 +1,488 @@
+{
+ "id": "task_explore_living_room",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "explore",
+   "action": "explore_room(room=living_room_0_0)",
+   "success": true,
+   "path": "viewpoints",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "room_explored(room=living_room_0_0)",
+     "holds": true,
+     "detail": "coverage 0.88"
+    }
+   ],
+   "outputs": {
+    "seen": [
+     "bowl_inside_kitchen_cabinet",
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "floor_block",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "oatmeal",
+     "paperback_book",
+     "plate_inside_kitchen_cabinet",
+     "pot_lid",
+     "rolling_pin",
+     "soda_can",
+     "spoon_kitchen_cabinet",
+     "wooden_block_a",
+     "wooden_block_b"
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791509504.5713143,
+ "goal": [
+  {
+   "atom": "room_explored(living_room_0_0)",
+   "holds": true,
+   "detail": "coverage 0.88"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_022",
+   "action": "explore_room(room=living_room_0_0)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_069"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "path",
+   "waypoints": [
+    [
+     5.58,
+     0.67,
+     -170.32
+    ],
+    [
+     4.2,
+     0.95,
+     -179.16
+    ]
+   ]
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    7.967,
+    0.513,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 1773,
+   "t": 14.775,
+   "label": "base",
+   "pose": [
+    4.204,
+    0.952,
+    -179.164
+   ]
+  },
+  {
+   "tick": 1883,
+   "t": 15.692,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    -0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    3.73,
+    1.431,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 2470,
+   "t": 20.583,
+   "label": "base",
+   "pose": [
+    4.204,
+    0.952,
+    -359.164
+   ]
+  },
+  {
+   "tick": 2593,
+   "t": 21.608,
+   "label": "path",
+   "waypoints": [
+    [
+     1.45,
+     0.95,
+     -179.54
+    ]
+   ]
+  },
+  {
+   "tick": 2593,
+   "t": 21.608,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    4.678,
+    0.473,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 3651,
+   "t": 30.425,
+   "label": "base",
+   "pose": [
+    1.454,
+    0.952,
+    -179.544
+   ]
+  },
+  {
+   "tick": 3771,
+   "t": 31.425,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    0.983,
+    1.434,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 4358,
+   "t": 36.317,
+   "label": "base",
+   "pose": [
+    1.454,
+    0.952,
+    -359.544
+   ]
+  },
+  {
+   "tick": 4481,
+   "t": 37.342,
+   "label": "path",
+   "waypoints": [
+    [
+     0.33,
+     2.9,
+     165.16
+    ]
+   ]
+  },
+  {
+   "tick": 4481,
+   "t": 37.342,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    1.924,
+    0.47,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 5368,
+   "t": 44.733,
+   "label": "base",
+   "pose": [
+    0.329,
+    2.9,
+    -194.843
+   ]
+  },
+  {
+   "tick": 5488,
+   "t": 45.733,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    0.002,
+    3.49,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 6075,
+   "t": 50.625,
+   "label": "base",
+   "pose": [
+    0.329,
+    2.9,
+    345.157
+   ]
+  },
+  {
+   "tick": 6198,
+   "t": 51.65,
+   "label": "path",
+   "waypoints": [
+    [
+     2.83,
+     3.33,
+     153.46
+    ]
+   ]
+  },
+  {
+   "tick": 6198,
+   "t": 51.65,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    0.656,
+    2.311,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 7183,
+   "t": 59.858,
+   "label": "base",
+   "pose": [
+    2.829,
+    3.333,
+    -206.544
+   ]
+  },
+  {
+   "tick": 7303,
+   "t": 60.858,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    2.628,
+    3.977,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 7890,
+   "t": 65.75,
+   "label": "base",
+   "pose": [
+    2.829,
+    3.333,
+    333.456
+   ]
+  },
+  {
+   "tick": 8013,
+   "t": 66.775,
+   "label": "path",
+   "waypoints": [
+    [
+     -1.3,
+     0.95,
+     -179.69
+    ]
+   ]
+  },
+  {
+   "tick": 8013,
+   "t": 66.775,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    3.029,
+    2.69,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 9762,
+   "t": 81.35,
+   "label": "base",
+   "pose": [
+    -1.296,
+    0.952,
+    180.313
+   ]
+  },
+  {
+   "tick": 9882,
+   "t": 82.35,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    -1.766,
+    1.435,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 10469,
+   "t": 87.242,
+   "label": "base",
+   "pose": [
+    -1.296,
+    0.952,
+    0.313
+   ]
+  },
+  {
+   "tick": 10619,
+   "t": 88.492,
+   "label": "explore_result",
+   "room": "living_room_0_0",
+   "coverage": 0.879,
+   "views": 5,
+   "targets": 33
+  },
+  {
+   "tick": 10649,
+   "t": 88.742,
+   "label": "contract_end",
+   "contract": "contract_022",
+   "action": "explore_room(room=living_room_0_0)",
+   "success": true,
+   "path": "viewpoints",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_explore_living_room/run.mp4",
+ "wall_s": 217.0
+}

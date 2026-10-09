@@ -8,7 +8,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "kitchen_island/top"
+     "value": "wooden_block_b"
     }
    },
    "depends_on": []
@@ -27,6 +27,18 @@
   },
   {
    "id": "n3",
+   "skill": "navigate",
+   "args": {
+    "destination": {
+     "value": "wooden_block_a"
+    }
+   },
+   "depends_on": [
+    "n2"
+   ]
+  },
+  {
+   "id": "n4",
    "skill": "stack",
    "args": {
     "object": {
@@ -37,7 +49,7 @@
     }
    },
    "depends_on": [
-    "n2"
+    "n3"
    ]
   }
  ]

@@ -1,0 +1,412 @@
+{
+ "id": "task_present_block",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "navigate",
+   "action": "navigate_place(destination=wooden_block_a)",
+   "success": true,
+   "path": "empty",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "base_near(place=wooden_block_a)",
+     "holds": true,
+     "detail": "distance 0.69 m"
+    }
+   ],
+   "outputs": {
+    "base_pose": [
+     7.5844011306762695,
+     0.9938135147094727,
+     119.9999931942987
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 1,
+   "skill": "pick",
+   "action": "pick_object(object=wooden_block_a)",
+   "success": true,
+   "path": "top_pinch",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "hand_empty(hand=right)",
+     "holds": true,
+     "detail": "right holds None"
+    },
+    {
+     "atom": "base_near(place=wooden_block_a)",
+     "holds": true,
+     "detail": "distance 0.69 m"
+    },
+    {
+     "atom": "grasp_clearance(object=wooden_block_a)",
+     "holds": true,
+     "detail": "pinch at [7.22, 1.625] has both finger slots free"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "holding(hand=right, object=wooden_block_a)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0256, 0.0241]"
+    }
+   ],
+   "outputs": {
+    "grasp": "pinch",
+    "lift_m": 0.06273400783538818
+   },
+   "children": [],
+   "policy_steps": []
+  },
+  {
+   "index": 2,
+   "skill": "present",
+   "action": "present_object(object=wooden_block_a)",
+   "success": true,
+   "path": "front_of_head",
+   "error_code": null,
+   "error": null,
+   "preconditions": [
+    {
+     "atom": "holding(hand=right, object=wooden_block_a)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0256, 0.0241]"
+    }
+   ],
+   "postconditions": [
+    {
+     "atom": "presenting(object=wooden_block_a)",
+     "holds": true,
+     "detail": "forward 0.45 m, height 0.95 m, visible True"
+    },
+    {
+     "atom": "holding(hand=right, object=wooden_block_a)",
+     "holds": true,
+     "detail": "slip 0.000 m, fingers [0.0255, 0.0241]"
+    }
+   ],
+   "outputs": {},
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791510881.2162218,
+ "goal": [
+  {
+   "atom": "presenting(wooden_block_a)",
+   "holds": true,
+   "detail": "forward 0.45 m, height 0.95 m, visible True"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=wooden_block_a)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_097"
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_001"
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "path",
+   "waypoints": [
+    [
+     7.58,
+     0.99,
+     120.0
+    ]
+   ]
+  },
+  {
+   "tick": 508,
+   "t": 4.233,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.193,
+    -0.001,
+    1.292,
+    0.0,
+    -0.001,
+    0.001
+   ],
+   "tcp": [
+    7.967,
+    0.513,
+    1.109
+   ],
+   "min_joint_z": 1.054,
+   "q_err": 0.008
+  },
+  {
+   "tick": 938,
+   "t": 7.817,
+   "label": "base",
+   "pose": [
+    7.584,
+    0.994,
+    120.0
+   ]
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "contract_end",
+   "contract": "contract_009",
+   "action": "navigate_place(destination=wooden_block_a)",
+   "success": true,
+   "path": "empty",
+   "error": null
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "contract_start",
+   "contract": "contract_025",
+   "action": "pick_object(object=wooden_block_a)",
+   "depth": 0
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "policy_start",
+   "policy": "policy_010"
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "pick_neighbour_obstacles",
+   "obj": "wooden_block_a",
+   "n": 1
+  },
+  {
+   "tick": 968,
+   "t": 8.067,
+   "label": "pick_park",
+   "obj": "wooden_block_a",
+   "kind": "top_pinch",
+   "park": [
+    7.104,
+    1.19,
+    90.0
+   ],
+   "floor": false
+  },
+  {
+   "tick": 971,
+   "t": 8.092,
+   "label": "path",
+   "waypoints": [
+    [
+     7.1,
+     1.19,
+     90.0
+    ]
+   ]
+  },
+  {
+   "tick": 971,
+   "t": 8.092,
+   "label": "drive_arm",
+   "q": [
+    -0.0,
+    -0.0,
+    0.3,
+    1.2,
+    -0.0,
+    1.3,
+    0.0,
+    -0.0,
+    0.0
+   ],
+   "tcp": [
+    7.772,
+    1.641,
+    1.111
+   ],
+   "min_joint_z": 1.056,
+   "q_err": 0.0
+  },
+  {
+   "tick": 1258,
+   "t": 10.483,
+   "label": "base",
+   "pose": [
+    7.104,
+    1.19,
+    90.0
+   ]
+  },
+  {
+   "tick": 1258,
+   "t": 10.483,
+   "label": "pick_target",
+   "obj": "wooden_block_a",
+   "pos": [
+    7.22,
+    1.625,
+    0.885
+   ],
+   "quat": [
+    1.0,
+    -0.001,
+    -0.001,
+    -0.0
+   ],
+   "p": [
+    7.22,
+    1.625,
+    0.885
+   ],
+   "kind": "top_pinch",
+   "azimuth": null,
+   "tilt": null
+  },
+  {
+   "tick": 1298,
+   "t": 10.817,
+   "label": "grip",
+   "cmd": 0.04,
+   "fingers": [
+    0.04,
+    0.04
+   ]
+  },
+  {
+   "tick": 1907,
+   "t": 15.892,
+   "label": "reach",
+   "target": "pick_pre_far",
+   "tcp_err_m": 0.0037,
+   "q_err": 0.0003
+  },
+  {
+   "tick": 2113,
+   "t": 17.608,
+   "label": "reach",
+   "target": "pick_pre",
+   "tcp_err_m": 0.0043,
+   "q_err": 0.0008
+  },
+  {
+   "tick": 2223,
+   "t": 18.525,
+   "label": "reach",
+   "target": "pick_grasp",
+   "tcp_err_m": 0.0069,
+   "q_err": 0.0027
+  },
+  {
+   "tick": 2343,
+   "t": 19.525,
+   "label": "grip",
+   "cmd": 0.0,
+   "fingers": [
+    0.0254,
+    0.0243
+   ]
+  },
+  {
+   "tick": 2704,
+   "t": 22.533,
+   "label": "reach",
+   "target": "pick_lift",
+   "tcp_err_m": 0.0027,
+   "q_err": 0.0029
+  },
+  {
+   "tick": 2744,
+   "t": 22.867,
+   "label": "pick_result",
+   "obj": "wooden_block_a",
+   "kind": "top_pinch",
+   "lift_m": 0.0627,
+   "fingers": [
+    0.0256,
+    0.0241
+   ],
+   "held": 1.0
+  },
+  {
+   "tick": 2774,
+   "t": 23.117,
+   "label": "contract_end",
+   "contract": "contract_025",
+   "action": "pick_object(object=wooden_block_a)",
+   "success": true,
+   "path": "top_pinch",
+   "error": null
+  },
+  {
+   "tick": 2774,
+   "t": 23.117,
+   "label": "contract_start",
+   "contract": "contract_024",
+   "action": "present_object(object=wooden_block_a)",
+   "depth": 0
+  },
+  {
+   "tick": 2774,
+   "t": 23.117,
+   "label": "policy_start",
+   "policy": "policy_072"
+  },
+  {
+   "tick": 2814,
+   "t": 23.45,
+   "label": "reach",
+   "target": "present",
+   "tcp_err_m": 0.0038,
+   "q_err": 0.0074
+  },
+  {
+   "tick": 2834,
+   "t": 23.617,
+   "label": "present_result",
+   "obj": "wooden_block_a",
+   "centre": [
+    7.206,
+    1.639,
+    0.948
+   ]
+  },
+  {
+   "tick": 2864,
+   "t": 23.867,
+   "label": "contract_end",
+   "contract": "contract_024",
+   "action": "present_object(object=wooden_block_a)",
+   "success": true,
+   "path": "front_of_head",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_present_block/run.mp4",
+ "wall_s": 84.6
+}

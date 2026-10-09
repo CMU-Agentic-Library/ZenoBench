@@ -30,7 +30,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "value": "fruit_basket"
     }
    },
    "depends_on": [
@@ -81,7 +81,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "value": "apple"
     }
    },
    "depends_on": [

@@ -8,7 +8,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "kitchen_island/top"
+     "value": "soda_can"
     }
    },
    "depends_on": []

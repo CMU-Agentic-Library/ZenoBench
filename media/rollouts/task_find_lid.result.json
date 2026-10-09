@@ -1,0 +1,101 @@
+{
+ "id": "task_find_lid",
+ "task": "tasks/kitchen_skills",
+ "steps": [
+  {
+   "index": 0,
+   "skill": "look",
+   "action": "look_target(target=pot_lid)",
+   "success": true,
+   "path": "head_only",
+   "error_code": null,
+   "error": null,
+   "preconditions": [],
+   "postconditions": [
+    {
+     "atom": "in_view(target=pot_lid)",
+     "holds": true,
+     "detail": "h 0, v -0 deg, 1.1 m"
+    },
+    {
+     "atom": "observed(target=pot_lid)",
+     "holds": true,
+     "detail": "last seen at tick 150"
+    }
+   ],
+   "outputs": {
+    "seen": [
+     "handled_cooking_pot",
+     "pot_lid",
+     "mug",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "kitchen_sponge",
+     "juice_bottle",
+     "paperback_book",
+     "soda_can"
+    ]
+   },
+   "children": [],
+   "policy_steps": []
+  }
+ ],
+ "success": true,
+ "started": 1791509485.2060785,
+ "goal": [
+  {
+   "atom": "observed(pot_lid)",
+   "holds": true,
+   "detail": "last seen at tick 150"
+  }
+ ],
+ "events": [
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "contract_start",
+   "contract": "contract_019",
+   "action": "look_target(target=pot_lid)",
+   "depth": 0
+  },
+  {
+   "tick": 120,
+   "t": 1.0,
+   "label": "policy_start",
+   "policy": "policy_068"
+  },
+  {
+   "tick": 150,
+   "t": 1.25,
+   "label": "look_result",
+   "target": "pot_lid",
+   "visible": true,
+   "detail": "h 0, v -0 deg, 1.1 m",
+   "seen": [
+    "handled_cooking_pot",
+    "pot_lid",
+    "mug",
+    "cherry_tomato_1",
+    "cherry_tomato_2",
+    "cherry_tomato_3",
+    "kitchen_sponge",
+    "juice_bottle",
+    "paperback_book",
+    "soda_can"
+   ]
+  },
+  {
+   "tick": 180,
+   "t": 1.5,
+   "label": "contract_end",
+   "contract": "contract_019",
+   "action": "look_target(target=pot_lid)",
+   "success": true,
+   "path": "head_only",
+   "error": null
+  }
+ ],
+ "video": "runs/skillv2/rollouts/task_find_lid/run.mp4",
+ "wall_s": 8.3
+}
