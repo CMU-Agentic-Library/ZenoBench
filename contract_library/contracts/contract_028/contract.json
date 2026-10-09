@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_028",
- "skill_id": "skill_020",
  "verb": "stack",
  "noun": "object",
  "name": "Stack an object on another",
@@ -190,38 +189,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "a taller stack is built",
-   "bind": {},
-   "reason": "the hand is free for the next block",
-   "to_skill_id": "skill_017",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "fallback",
-   "to": "pick",
-   "when": "the base's top is occupied: remove the top object first",
-   "bind": {},
-   "reason": "taking the top object off frees the base's top face",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_017"
-  },
-  {
-   "kind": "alternative",
-   "to": "place",
-   "when": "a support surface is acceptable instead",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_018"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

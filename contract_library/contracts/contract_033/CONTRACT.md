@@ -2,7 +2,7 @@
 
 Turn the held object about the vertical axis by the requested angle (e.g. align a book's spine).
 
-Paired SkillNode: `skill_025` (`rotate-object`).
+Verb: `rotate`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_025` (`rotate-object`).
 ## Policy paths
 
 - `wrist_yaw` when always: `policy_075($object, $degrees)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

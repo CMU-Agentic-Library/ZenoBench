@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_012",
- "skill_id": "skill_004",
  "verb": "retreat",
  "noun": "obstacle",
  "name": "Retreat from an obstacle",
@@ -179,30 +178,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "navigate",
-   "when": "the robot must leave after backing out",
-   "bind": {},
-   "reason": "free start cell",
-   "to_skill_id": "skill_001",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "open",
-   "when": "a door's swing needs room in front of the robot",
-   "bind": {
-    "articulated": "$obstacle"
-   },
-   "reason": "",
-   "to_skill_id": "skill_040",
-   "sequence_type": "then"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

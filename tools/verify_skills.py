@@ -59,23 +59,7 @@ def run_one(sc, video=False, out_root=OUT):
         for name, temp in sc.get("set_temperature", {}).items():
             rig.thermal.temperatures_c[name] = float(temp)
         runner = SkillContractRunner(rig)
-        if sc.get("subgraph"):
-            # a VLM-format plan: validate, ground and execute through run_subgraph
-            from skill_library.runtime import run_subgraph
-            graph = json.loads((ROOT / sc["subgraph"]).read_text())
-            bindings = json.loads((ROOT / sc["bindings"]).read_text()) if sc.get("bindings") else {}
-            res = run_subgraph(rig, graph, bindings, runner=runner)
-            for i, r in enumerate(res["results"]):
-                report["steps"].append({"index": i, "skill": r["verb"], "action": r["action"],
-                                        "success": r["status"] == "success", "path": r["selected_path"],
-                                        "error_code": r["error_code"], "error": r["error"],
-                                        "preconditions": r["preconditions"], "postconditions": r["postconditions"],
-                                        "outputs": r["outputs"], "children": [], "policy_steps": []})
-                print("STEP", i, r["action"], "OK" if r["status"] == "success" else f"FAIL {r['error']}", flush=True)
-            if res["status"] == "failed":
-                report["replan_request"] = res["replan_request"]
-            sc = dict(sc, steps=[{}] * len(graph["nodes"]))
-        for i, st in enumerate([] if sc.get("subgraph") else sc["steps"]):
+        for i, st in enumerate(sc["steps"]):
             t0 = time.time()
             before = {k: list(v["pos"]) for k, v in rig.state()["objects"].items()}
             held_before, left_before = rig.held, getattr(rig, "left_held", None)
@@ -87,7 +71,7 @@ def run_one(sc, video=False, out_root=OUT):
                    "outputs": res.outputs, "policy_steps": res.policy_steps,
                    "children": [{"action": c["action"], "success": c["success"], "path": c["selected_path"],
                                  "error": c["error"]} for c in res.children],
-                   "recovery": res.recovery, "wall_s": round(time.time() - t0, 1), "sim_tick": rig.tick}
+                   "wall_s": round(time.time() - t0, 1), "sim_tick": rig.tick}
             # objects disturbed by the step (moved > 3 cm although not named
             # in its arguments): side effects BC/RL data should not contain
             named = json.dumps(st.get("args", {}))
@@ -116,22 +100,8 @@ def run_one(sc, video=False, out_root=OUT):
                   "path", res.selected_path, flush=True)
             if not res.success and not st.get("may_fail"):
                 break
-        report["success"] = all(r["success"] or (sc["steps"][r["index"]] or {}).get("may_fail")
+        report["success"] = all(r["success"] or sc["steps"][r["index"]].get("may_fail")
                                 for r in report["steps"]) and len(report["steps"]) == len(sc["steps"])
-        if sc.get("goal"):
-            # whole-task rollouts: the task goal itself, measured on GT state
-            from zeno_skills.predicates import REGISTRY
-            rig.step(60)
-            ctx = {}
-            report["goal"] = []
-            for atom in sc["goal"]:
-                pred, args = REGISTRY[atom[0]], atom[1:]
-                kw = dict(zip(pred.arg_names, args))
-                ok, detail = pred.evaluate(rig, ctx, **kw)
-                report["goal"].append({"atom": f"{atom[0]}({', '.join(map(str, args))})", "holds": bool(ok),
-                                       "detail": str(detail)})
-                print("GOAL", atom[0], args, "OK" if ok else f"FALSE {detail}", flush=True)
-            report["success"] = report["success"] and all(g["holds"] for g in report["goal"])
     except Exception as exc:
         report["crash"] = f"{type(exc).__name__}: {exc}"
         report["traceback"] = traceback.format_exc()

@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_019",
- "skill_id": "skill_011",
  "verb": "look",
  "noun": "target",
  "name": "Look at a target",
@@ -141,42 +140,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "approach",
-   "when": "the observed target will be manipulated",
-   "bind": {
-    "target": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_002",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "navigate",
-   "when": "the line of sight is blocked",
-   "bind": {
-    "destination": "$target"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "to_skill_id": "skill_001"
-  },
-  {
-   "kind": "alternative",
-   "to": "inspect",
-   "when": "the target is a receptacle whose contents matter",
-   "bind": {
-    "receptacle": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_012"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

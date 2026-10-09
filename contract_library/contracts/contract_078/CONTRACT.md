@@ -2,7 +2,7 @@
 
 Make an object invisible from outside: put it into a container and cover that container with its lid, or put it on a shelf inside a cabinet and close the cabinet.
 
-Paired SkillNode: `skill_070` (`hide-object`).
+Verb: `hide`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_070` (`hide-object`).
 
 - `container_with_lid` when receptacle.kind == 'object' and args.lid: `[fetch](object=$object, receptacle=$receptacle)` -> `[navigate](destination=$lid)` -> `[pick](object=$lid)` -> `[navigate](destination=$receptacle)` -> `[cover](container=$receptacle, lid=$lid)`
 - `closed_cabinet` when receptacle.kind == 'support' and receptacle.category == 'cabinet_inside': `[navigate](destination=@receptacle.appliance)` -> `[open](articulated=@receptacle.appliance)` -> `[fetch](object=$object, receptacle=$receptacle)` -> `[close](articulated=@receptacle.appliance)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

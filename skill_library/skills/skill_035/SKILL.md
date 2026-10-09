@@ -3,7 +3,7 @@ name: tip-object
 description: Push a standing tall object near its top so it falls onto its side on the same support (lays down a carton or bottle that is too tall to top-pinch).
 ---
 
-# Tip an object over (`skill_035`)
+# Tip an object over (`tip`)
 
 `tip(object: object_ref)`
 
@@ -21,45 +21,47 @@ An upright object must be laid on its side.
 
 - `object` (`object_ref`): A standing tall object.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "tip", "args": {"object": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right); base_near(place=$object); upright(object=$object).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
-- `upright(object=$object)` — Object z axis within 20 deg of vertical. GT: object_pose.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
+- `upright(object=$object)` — Object z axis within 20 deg of vertical.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `lying(object=$object)` — Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length. GT: object_pose, asset_annotation.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `lying(object=$object)` (all paths)
+- `lying(object=$object)` — Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length.
 
 ## May invalidate
 
 `upright($object)`, `at_initial_place($object)`
 
-## Policy paths (first match on the bound nouns)
-
-### `push_high` — when object.tall
-
-1. `policy_082($object)`
-
-## Relations
-
-- Next step: `roll` (`skill_034`) (enables) — the lying cylinder is rolled
-- Next step: `pick` (`skill_017`) (then) — the lying object is pinched across its side
-- Alternative: `upright` (`skill_036`) — opposite effect
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_043`.

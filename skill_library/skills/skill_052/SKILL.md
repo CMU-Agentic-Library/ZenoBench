@@ -3,7 +3,7 @@ name: arrange-objects
 description: Place the listed objects on one support so that they are pairwise within a distance (a place setting).
 ---
 
-# Arrange objects together (`skill_052`)
+# Arrange objects together (`arrange`)
 
 `arrange(objects: object_list, support: support_ref, max_dist_m: positive_number)`
 
@@ -23,38 +23,43 @@ Several objects must be grouped together on one support (a setting).
 - `support` (`support_ref`): The surface.
 - `max_dist_m` (`positive_number`, default 0.5): Pairwise distance limit.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "arrange", "args": {"objects": "<object_list>", "support": "<support>", "max_dist_m": "<positive_number>"}}
+```
+
+Argument formats:
+
+- `object_list`: a non-empty list of object refs
+- `positive_number`: a number > 0
+- `support_ref`: an annotated horizontal support surface
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `grouped(objects=$objects, support=$support, max_dist_m=$max_dist_m)` — Every listed object is on the support and pairwise within the distance. GT: object_pose, support_annotation.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `grouped(objects=$objects, support=$support, max_dist_m=$max_dist_m)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `place_near_common_spot` — when always (default path)
-
-1. `for each item in $objects: [navigate](destination=$item) -> [pick](object=$item) -> [navigate](destination=$support) -> [place](object=$item, receptacle=$support, hint_xy=@support.roomiest_xy)`
-
-## Relations
-
-- Previous step: `clear` (`skill_050`) (then) — a new layout is set on the cleared surface
-- Fallback on failure: `clear` (`skill_050`) (recover) — the support is too crowded
+- `grouped(objects=$objects, support=$support, max_dist_m=$max_dist_m)` — Every listed object is on the support and pairwise within the distance.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_060`.

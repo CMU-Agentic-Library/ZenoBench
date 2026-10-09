@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_040",
- "skill_id": "skill_032",
  "verb": "separate",
  "noun": "object",
  "name": "Separate an object from its neighbour",
@@ -28,13 +27,6 @@
    "args": {
     "place": "$object"
    }
-  },
-  {
-   "pred": "grasp_clearance",
-   "args": {
-    "object": "$object"
-   },
-   "negated": true
   }
  ],
  "ensures": [
@@ -76,22 +68,6 @@
    "gt_sources": [
     "base_pose",
     "scene_annotation"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false",
-   "scope": "all paths"
-  },
-  {
-   "predicate": "not grasp_clearance(object=$object)",
-   "name": "grasp_clearance",
-   "args": {
-    "object": "$object"
-   },
-   "negated": true,
-   "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "asset_annotation"
    ],
    "checked": "before execution on live GT state; the Contract does not move if false",
    "scope": "all paths"
@@ -151,21 +127,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "grasp the freed object",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_017",
-   "sequence_type": "enables"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

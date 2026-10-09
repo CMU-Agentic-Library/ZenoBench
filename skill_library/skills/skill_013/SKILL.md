@@ -3,7 +3,7 @@ name: search-object
 description: Find an object whose location is unknown: visit the supports of a room in order of distance and aim the head at each surface until the object is seen.
 ---
 
-# Search for an object (`skill_013`)
+# Search for an object (`search`)
 
 `search(object: object_ref, region: room_ref?)`
 
@@ -27,45 +27,46 @@ The location of an object is unknown in the current room.
 - `found_on` (`support_ref`): Support under the object when it was seen.
 - `visited` (`object_list`): Furniture visited in order.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "search", "args": {"object": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+- `room_ref`: an annotated room
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Always applicable.
+No precondition.
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
 - none
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `observed(target=$object)` — The robot saw the target in its head camera during this episode (set by look, search, inspect, explore). GT: robot_memory.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `observed(target=$object)` (all paths)
+- `observed(target=$object)` — The robot saw the target in its head camera during this episode (set by look, search, inspect, explore).
 
 ## May invalidate
 
 `base_near(*)`, `reachable(*)`, `facing(*)`, `in_view(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `room_sweep` — when always (default path)
-
-1. `policy_070($object, $region)`
-
-## Relations
-
-- Previous step: `explore` (`skill_014`) (then) — a specific object must then be located
-- Next step: `navigate` (`skill_001`) (then) — the found object must be fetched
-- Fallback on failure: `explore` (`skill_014`) (recover) — the object is not on any visited support
-- Fallback on failure: `inspect` (`skill_012`) (substitute) — the object may be inside a closed cabinet
-- Is a fallback for: `fetch` (`skill_047`) (recover) — the object is not where expected
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_021`.

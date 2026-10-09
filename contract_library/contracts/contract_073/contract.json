@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_073",
- "skill_id": "skill_065",
  "verb": "touch",
  "noun": "object",
  "name": "Touch an object",
@@ -147,31 +146,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the touched object is then grasped",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_017",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "point",
-   "when": "contact is not allowed",
-   "bind": {
-    "target": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_015"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

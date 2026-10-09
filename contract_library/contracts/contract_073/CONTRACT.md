@@ -2,7 +2,7 @@
 
 Bring the closed fingertips onto an object's top and back off without moving it (probe / indicate by contact).
 
-Paired SkillNode: `skill_065` (`touch-object`).
+Verb: `touch`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_065` (`touch-object`).
 ## Policy paths
 
 - `fingertip_top` when always: `policy_107($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

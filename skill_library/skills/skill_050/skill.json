@@ -8,15 +8,6 @@
  "title": "Clear a support",
  "group": "multi_object",
  "signature": "clear(support: support_ref, receptacle: receptacle_ref)",
- "action_predicate": {
-  "name": "clear_support",
-  "verb": "clear",
-  "noun": "support",
-  "arguments": [
-   "support",
-   "receptacle"
-  ]
- },
  "description": "Remove every object from a support surface to a destination receptacle.",
  "use_when": "Every object must be removed from one support.",
  "not_to_be_confused_with": {
@@ -51,151 +42,43 @@
  "preconditions": [
   {
    "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
-   "args": {
-    "hand": "right"
-   },
-   "negated": false,
-   "meaning": "The given gripper holds nothing.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The given gripper holds nothing."
   }
  ],
  "postconditions": [
   {
    "predicate": "support_clear(support=$support)",
-   "name": "support_clear",
-   "args": {
-    "support": "$support"
-   },
-   "negated": false,
-   "meaning": "No annotated object rests on the support.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "support_annotation"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "No annotated object rests on the support."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "support_clear(support=$support)",
-    "name": "support_clear",
-    "args": {
-     "support": "$support"
-    },
-    "negated": false,
-    "meaning": "No annotated object rests on the support.",
-    "kind": "fluent",
-    "gt_sources": [
-     "object_pose",
-     "support_annotation"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [],
- "policy_paths": [
-  {
-   "path_id": "fetch_each_on_support",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "for each item in @support.objects: [fetch](object=$item, receptacle=$receptacle)"
-   ],
-   "policies": [],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_037",
-    "verb": "wipe",
-    "when": "the cleared surface is wiped",
-    "bind": {
-     "surface": "$support"
-    },
-    "type": "then"
-   },
-   {
-    "skill_id": "skill_052",
-    "verb": "arrange",
-    "when": "a new layout is set on the cleared surface",
-    "bind": {
-     "support": "$support"
-    },
-    "type": "then"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [
-   {
-    "skill_id": "skill_037",
-    "verb": "wipe",
-    "when": "objects cover the surface",
-    "type": "recover"
-   },
-   {
-    "skill_id": "skill_052",
-    "verb": "arrange",
-    "when": "the support is too crowded",
-    "type": "recover"
-   }
-  ],
-  "alternative": [
-   {
-    "skill_id": "skill_051",
-    "verb": "empty",
-    "when": "the items lie on a surface instead",
-    "bind": {}
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_058",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_050",
+ "call": {
+  "request": {
+   "contract": "clear",
    "args": {
-    "support": {
-     "ref": "<support>"
-    },
-    "receptacle": {
-     "ref": "<receptacle>"
-    }
-   },
-   "depends_on": []
+    "support": "<support>",
+    "receptacle": "<receptacle>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"clear\", {'support': ..., 'receptacle': ...})"
+  "arg_formats": {
+   "receptacle_ref": "a support surface or an open container",
+   "support_ref": "an annotated horizontal support surface"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

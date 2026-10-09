@@ -3,7 +3,7 @@ name: wait-duration
 description: Do nothing for the given simulated time (an appliance cycle running, an object settling).
 ---
 
-# Wait for a duration (`skill_056`)
+# Wait for a duration (`wait`)
 
 `wait(seconds: positive_number)`
 
@@ -21,38 +21,41 @@ Something must happen over time (cooling, settling) and the robot should not act
 
 - `seconds` (`positive_number`, default 5.0): How long to wait.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "wait", "args": {"seconds": "<positive_number>"}}
+```
+
+Argument formats:
+
+- `positive_number`: a number > 0
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Always applicable.
+No precondition.
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
 - none
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `waited(seconds=$seconds)` — At least the given simulated time passed during the Contract. GT: sim_clock.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `waited(seconds=$seconds)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `idle` — when always (default path)
-
-1. `policy_103($seconds)`
-
-## Relations
-
-- Next step: `open` (`skill_040`) (then) — a cycle finished and the door is opened
-- Is a fallback for: `heat` (`skill_043`) (recover) — the food is still below the target when the time budget ends
+- `waited(seconds=$seconds)` — At least the given simulated time passed during the Contract.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_064`.

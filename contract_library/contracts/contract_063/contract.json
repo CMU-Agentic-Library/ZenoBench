@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_063",
- "skill_id": "skill_055",
  "verb": "sidestep",
  "noun": "base",
  "name": "Sidestep the base",
@@ -116,27 +115,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "approach",
-   "when": "the target is now in front of the arm",
-   "bind": {},
-   "reason": "small lateral offset fixed",
-   "to_skill_id": "skill_002",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "navigate",
-   "when": "a larger move is needed",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_001"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

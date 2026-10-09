@@ -1,25 +1,25 @@
 # Zeno House: atomic GT policy inventory
 
-> Current interface: the planner-facing layer is the verb-based [SkillNode library](../skill_library/README.md). Each SkillNode's Contract binds its noun slots to GT attributes, checks GT preconditions, selects a policy path by noun and state, chains the policies of that path, and verifies GT postconditions (`zeno_skills/skill_runtime.py`). The public policies, including the ones added for the verb library, are listed in [POLICY_CATALOG.md](POLICY_CATALOG.md); the text below documents the original atomic policies and the scripted task coordinator.
+> Current interface: an external planner calls Contracts by verb (`{"contract": "<verb>", "args": {...}}`), as documented in the [SkillNode library](../skill_library/README.md). Each Contract binds its noun slots to GT attributes, checks GT preconditions, selects a policy path by noun and state, chains the policies of that path, and verifies GT postconditions (`zeno_skills/skill_runtime.py`). The planner never chooses a policy or path; a failed Contract stops and reports the measured predicates, with no fallback or retry. The public policies, including the ones added for the verb library, are listed in [POLICY_CATALOG.md](POLICY_CATALOG.md); the text below documents the atomic policies and, marked as legacy, the scripted task coordinator that is slated for removal.
 
-This document describes the code in this repository as of 2026-10-01. **GT policy means one reusable, target-parameterized action with a checked outcome at the skill-graph boundary**: `pick`, `place`, `open`, `close`, `navigate`, and supporting actions such as `push` and microwave control. Its internal controller may contain multiple motion stages. A call such as `pick(apple)` takes a target and the current privileged simulator/annotation state, selects a feasible strategy, executes it, and checks the actual result. `pick(apple)` and `pick(book_red)` use different branches and grasp geometry; they are not the same action trace.
+This document describes the code in this repository as of 2026-10-01. **GT policy means one reusable, target-parameterized action with a checked outcome**: `pick`, `place`, `open`, `close`, `navigate`, and supporting actions such as `push` and microwave control. Its internal controller may contain multiple motion stages. A call such as `pick(apple)` takes a target and the current privileged simulator/annotation state, selects a feasible strategy, executes it, and checks the actual result. `pick(apple)` and `pick(book_red)` use different branches and grasp geometry; they are not the same action trace.
 
-`TaskPolicy` is the **task-level coordinator** that chooses and sequences atomic policies to satisfy goal predicates. Despite its Python name, it is the coordinator in the terminology used here. Task specs are benchmark instances, not separate atomic policies or trained models. These policies are annotation-driven scripted controllers with privileged state, not learned vision policies or optimal oracles.
+Tasks are defined in `skill_library/tasks.json` (35 tasks with GT predicate goals). This repository does not choose or sequence actions; the external planner does. The legacy `TaskPolicy` coordinator (slated for removal) chose and sequenced atomic policies for the ten `task.json` tasks. These policies are annotation-driven scripted controllers with privileged state, not learned vision policies or optimal oracles.
 
-In the current layer convention, **layer 3 is Contract and layer 4 is atomic Policy**. An upper-layer task or skill node chooses a contract and route; the contract states the required and expected state of the target-parameterized policy invocation. For example, `pick(book_red)` needs a reachable book and should leave that book held. The repository has eight `ContractSpec` entries and a `ContractRunner` that binds a requested route, invokes its policy and checks shared measured postconditions. It does not yet plan a skill sub-graph or select routes automatically. Function preconditions, `SkillFailure`/`Dropped`, post-action measurements, and goal re-evaluation provide the execution checks. A policy family can serve many target-specific contracts.
+In the current layer convention, **layer 3 is Contract and layer 4 is atomic Policy**. The planner calls a Contract by verb with noun arguments; the Contract checks GT preconditions, selects the policy path from the bound nouns, runs it and measures GT postconditions. For example, `pick(book_red)` needs a reachable book and should leave that book held. Skills and Contracts are not forced one-to-one, and Contracts carry no relations to each other. A policy can serve many Contracts. The eight legacy `ContractSpec` entries with caller-chosen routes (`ContractRunner`) are slated for removal.
 
 ## Where each layer lives
 
 | Layer | Implementation | Responsibility |
 |---|---|---|
-| Task/goal data | `task_specs/*.json`, `tools/build_tasks.py` | Spawned objects, alternatives, placements, goal predicates, seeded USD scene and `task.json`. |
+| Task/goal data | `skill_library/tasks.json`; scenes from `task_specs/*.json`, `tools/build_tasks.py` | `tasks.json` is the task source of truth (descriptions and GT predicate goals). Specs give spawned objects, placements, the seeded USD scene and the legacy `task.json`. |
 | GT annotations | `annotations/assets.json`, `annotations/<scene>.json`, `zeno_skills/annotations.py` | Per-asset grasp types, size, mass and container shape; world object/support/obstacle geometry; joint, handle, moving-part, cavity and button geometry. |
-| Task coordinator | `zeno_skills/task_policy.py:TaskPolicy` | Selects an unmet goal, object, alternative and destination; calls atomic policies and reacts to failures. |
+| Task coordinator (legacy) | `zeno_skills/task_policy.py:TaskPolicy` | Slated for removal. Selected an unmet goal, object and destination for the ten `task.json` tasks. |
 | Atomic GT policies | `zeno_skills/policies/` class API backed by `zeno_skills/skills.py` | Bound `navigate`, `open`, `close`, `pick`, `place`, `push`, and microwave-start policies; target-specific geometry and control live in `skills.py`. |
 | Motion and control | `zeno_skills/planner.py`, `kinematics.py`, `collision.py`, `rig.py` | A* base paths, base-park search, IK, collision checks, joint trajectories and PhysX feedback. |
-| Goal evaluation | `zeno_skills/evaluator.py:TaskEvaluator` | Scores the final simulator state independently of the coordinator decision log. |
+| Goal evaluation (legacy) | `zeno_skills/evaluator.py:TaskEvaluator` | Slated for removal; `tasks.json` goals are GT predicates from `zeno_skills/predicates.py`. |
 
-`tools/run_task.py` runs the coordinator through `PolicySuite` and records a result and video. `tools/run_skills.py` runs a **manually supplied** atomic-policy sequence through `PolicySuite`, including the finer-grained routes documented in the README. The manual `open`/`close` commands also dispatch to the powered microwave door; `click <appliance> start` presses its annotated start button when the heating preconditions hold.
+The legacy `tools/run_task.py` runs the coordinator through `PolicySuite` and records a result and video. `tools/run_skills.py` runs a **manually supplied** atomic-policy sequence through `PolicySuite`, including the finer-grained routes documented in the README. The manual `open`/`close` commands also dispatch to the powered microwave door; `click <appliance> start` presses its annotated start button when the heating preconditions hold.
 
 ## Atomic policy interfaces and outcome checks
 
@@ -33,7 +33,7 @@ In the current layer convention, **layer 3 is Contract and layer 4 is atomic Pol
 | `MicrowaveStartPolicy.execute(name)` | Thermal state configured; door closed; task food in annotated cavity | Press annotated start button, check fingertip proximity, activate task-level heating. |
 | `OpenPolicy.execute("kitchen_microwave")` / `ClosePolicy.execute("kitchen_microwave")` | Annotated blue button and powered hinge available | Open: press button, move clear and open the physical hinge. Close: move clear and close it. Each checks the measured joint target. `MicrowaveDoorCycle` composes the two for a demonstration. |
 
-All these calls can fail. The coordinator decides whether to retry, choose another object/support, or re-evaluate the task; a failed atomic call does not itself create a new high-level goal plan.
+All these calls can fail. A failed call stops and reports; nothing retries or replans automatically.
 
 ### Finer-grained executable routes
 
@@ -54,9 +54,8 @@ contact route with a measured result. `base_rotate_in_place` and
 Gripper closure reports finger positions,
 not a grasp; the pick policy verifies contact and lift. `push_from_behind` and
 `top_drag` fix the contact mode, while the general `push` may choose between them.
-The general `pick` path still selects candidates and fallback from
-the annotation, so existing task results do not depend on explicitly choosing
-a route.
+The general `pick` policy selects among annotated grasp candidates
+internally; the caller never chooses a route.
 
 `pick_and_carry` is a **sequential composition** of pick and carry navigation.
 The established book route still pushes with the right arm and edge pinches.
@@ -67,8 +66,7 @@ pickup has not passed. The
 new synchronized base/arm controller passed a moving reach and a moving
 `toy_block` pickup; moving placement released an apple onto the dining table before the base stopped. See the
 [capability catalog](POLICY_CATALOG.md) for each route's status and caveat.
-Eight `ContractSpec` objects connect direct routes to a measured `ContractRunner`.
-The [verification record](POLICY_VERIFICATION.md) separates 54 scene-verified routes from six callable routes that still lack a successful object-level test. A skill sub-graph planner is not implemented.
+The [verification record](POLICY_VERIFICATION.md) separates 54 scene-verified routes from six callable routes that still lack a successful object-level test.
 
 ## `pick`: object-specific policies
 
@@ -92,7 +90,7 @@ The annotation generator in `zeno_skills/annotations.py:grasp_poses` rotates gra
 
 For a surface-supported flat object, `pick_flat` checks which edge is open and has room outside it, how far the object's rotated footprint extends toward that edge, and whether the centre of mass stays inside the support. `push` moves it only as far as needed for a usable overhang. `_edge_pinch` keeps the lower pad outside the support edge, closes on the exposed thickness, lifts, and pulls out. On the floor there is no support edge: `_corner_pinch` contacts a side face and top face diagonally, avoiding a lower finger digging into the floor. Objects on a support with no usable free edge cannot take the floor route.
 
-For ordinary pinch candidates, `_pick_pinch` searches feasible parks. An object on a recessed refrigerator shelf gets a seeded search from the open side; this is a scene-specific search preference, not a different grasp type. Floor objects set the arm's focus height low. Failed reach, collision, grip or lift checks raise `SkillFailure` for the coordinator.
+For ordinary pinch candidates, `_pick_pinch` searches feasible parks. An object on a recessed refrigerator shelf gets a seeded search from the open side; this is a scene-specific search preference, not a different grasp type. Floor objects set the arm's focus height low. Failed reach, collision, grip or lift checks raise `SkillFailure`.
 
 ## `place`: held object and destination both matter
 
@@ -111,7 +109,7 @@ A narrow cabinet or microwave cavity changes the free-spot clearance and park se
 
 At the handle, the arm uses a side-hook grasp, checks finger separation, and the base follows the **measured** joint state with a small lead. After release and settling, the measured final value must be near the requested target. Revolute joints use a 0.10 rad tolerance. A closing drawer uses 0.04 m; an opening drawer allows some slide-back after release and is accepted within 40% of its travel. If the part moved while navigating to its park, the skill replans from its new joint value.
 
-The complete-shell microwave has a separate control route. Button interaction is now independently callable as `microwave_button_approach` → `microwave_button_press` → `microwave_button_retract`; a press requires the measured alignment state, and retraction requires a measured press. Powered door motion is independently callable as `microwave_door_clear` → `microwave_hinge_drive`, with measured base clearance, an empty-arm tuck or held-object check, and a joint-angle result. The existing `open_microwave_door` composes the door-button stages and opens its powered PhysX hinge; `close_microwave_door` composes clearance and hinge close. `cycle_microwave_door` composes these two actions. This is **not** a successful generic handle pull; `open_articulated` does not currently operate that appliance reliably. `press_microwave_start` composes the green start-button stages and requires a closed door and food inside the cavity before enabling the task-level thermal model. This split adds policy executors under the previously proposed `click`, `open`, `close`, and `place` contract concepts; no new contract object is introduced.
+The complete-shell microwave has a separate control route. Button interaction is now independently callable as `microwave_button_approach` → `microwave_button_press` → `microwave_button_retract`; a press requires the measured alignment state, and retraction requires a measured press. Powered door motion is independently callable as `microwave_door_clear` → `microwave_hinge_drive`, with measured base clearance, an empty-arm tuck or held-object check, and a joint-angle result. The existing `open_microwave_door` composes the door-button stages and opens its powered PhysX hinge; `close_microwave_door` composes clearance and hinge close. `cycle_microwave_door` composes these two actions. This is **not** a successful generic handle pull; `open_articulated` does not currently operate that appliance reliably. `press_microwave_start` composes the green start-button stages and requires a closed door and food inside the cavity before enabling the task-level thermal model.
 
 ## `navigate` and `push`: context-dependent atomic policies
 
@@ -119,9 +117,9 @@ The complete-shell microwave has a separate control route. Button interaction is
 
 `push` uses the target object's measured bottom pose, size/yaw and support height. It tries pushing from behind with closed downward-pointing fingertips; if that path cannot be reached, it tries pressing on top and dragging. It moves in segments of at most 25 cm, re-parks between segments, and checks measured object displacement. This is a separate atomic policy and also a step inside the flat-object pick branch and edge placement branch.
 
-## Task-level coordination and evidence
+## Legacy task-level coordination and evidence
 
-`TaskPolicy.run` reads the evaluator's unmet conditions for up to three rounds by default. It prioritizes moving a bound container, then `heated`, `inside`, `on`, `near`, and `closed`; chooses among role slots (`all:toy`), ordered alternatives (`cup|mug`) and bindings (`$container`); retries failed grasps and spots; and can select another object or container. It re-evaluates goal predicates after actions. `upright` and `not_dropped` are evaluated, but there is no dedicated upright-recovery or floor-cleanup goal handler. This decision loop belongs **above** the atomic GT policy layer.
+This section documents the scripted coordinator, which is slated for removal. `TaskPolicy.run` reads the evaluator's unmet conditions for up to three rounds by default. It prioritizes moving a bound container, then `heated`, `inside`, `on`, `near`, and `closed`; chooses among role slots (`all:toy`), ordered alternatives (`cup|mug`) and bindings (`$container`); retries failed grasps and spots; and can select another object or container. It re-evaluates goal predicates after actions. `upright` and `not_dropped` are evaluated, but there is no dedicated upright-recovery or floor-cleanup goal handler. In the current design this decision loop belongs to the external planner.
 
 The table below records individual seed-0 rollouts, **not** multi-seed success rates. Archived results are in `media/tasks/`; local smoke results under `runs/` are ignored by Git.
 
@@ -138,7 +136,7 @@ The table below records individual seed-0 rollouts, **not** multi-seed success r
 
 Zeno Malo's base uses a kinematic anchor; its arm and finger joints use drive targets. Object contact and articulated response occur in PhysX; the powered microwave hinge uses its joint drive. Temperature is a separate task-level model (`zeno_skills/thermal.py`), increasing only while the microwave is active, closed, and food is in the annotated cavity. This GT baseline uses no camera image, detector or language model. `heat_breakfast_combo` starts with oatmeal **already inside** the microwave; the separate full `heat_breakfast` rollout above demonstrates refrigerator-to-microwave loading and retrieval.
 
-Run a task from the `zeno-house` repository root:
+Run a legacy scripted task from the repository root:
 
 ```bash
 OMNI_KIT_ACCEPT_EULA=YES $ISAACLAB_PYTHON tools/run_task.py --task heat_breakfast_combo

@@ -2,7 +2,7 @@
 
 Press a held sponge on a support and sweep a 30 cm strip twice; succeeds when the sponge stayed in contact over at least half of the strip.
 
-Paired SkillNode: `skill_037` (`wipe-surface`).
+Verb: `wipe`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_037` (`wipe-surface`).
 ## Policy paths
 
 - `sponge_strip` when 'wiping_tool' in tool.tags: `policy_084($tool, $surface)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_020",
- "skill_id": "skill_012",
  "verb": "inspect",
  "noun": "receptacle",
  "name": "Inspect a receptacle",
@@ -184,40 +183,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "an object found inside must be taken out",
-   "bind": {},
-   "reason": "contents output names the object",
-   "to_skill_id": "skill_017",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "empty",
-   "when": "every object inside must be removed",
-   "bind": {
-    "container": "$receptacle"
-   },
-   "reason": "",
-   "to_skill_id": "skill_051",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "look",
-   "when": "only the receptacle itself must be seen",
-   "bind": {
-    "target": "$receptacle"
-   },
-   "reason": "",
-   "to_skill_id": "skill_011"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

@@ -3,7 +3,7 @@ name: clear-support
 description: Remove every object from a support surface to a destination receptacle.
 ---
 
-# Clear a support (`skill_050`)
+# Clear a support (`clear`)
 
 `clear(support: support_ref, receptacle: receptacle_ref)`
 
@@ -26,41 +26,42 @@ Every object must be removed from one support.
 
 - `moved` (`object_list`): Objects that were removed.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "clear", "args": {"support": "<support>", "receptacle": "<receptacle>"}}
+```
+
+Argument formats:
+
+- `receptacle_ref`: a support surface or an open container
+- `support_ref`: an annotated horizontal support surface
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `support_clear(support=$support)` — No annotated object rests on the support. GT: object_pose, support_annotation.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `support_clear(support=$support)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `fetch_each_on_support` — when always (default path)
-
-1. `for each item in @support.objects: [fetch](object=$item, receptacle=$receptacle)`
-
-## Relations
-
-- Next step: `wipe` (`skill_037`) (then) — the cleared surface is wiped
-- Next step: `arrange` (`skill_052`) (then) — a new layout is set on the cleared surface
-- Is a fallback for: `wipe` (`skill_037`) (recover) — objects cover the surface
-- Is a fallback for: `arrange` (`skill_052`) (recover) — the support is too crowded
-- Alternative: `empty` (`skill_051`) — the items lie on a surface instead
+- `support_clear(support=$support)` — No annotated object rests on the support.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_058`.

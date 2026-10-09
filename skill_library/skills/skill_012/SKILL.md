@@ -3,7 +3,7 @@ name: inspect-receptacle
 description: Look into a container, a cabinet, an appliance cavity or onto a support and report the objects inside or on it. A closed cabinet is opened for the look and closed again.
 ---
 
-# Inspect a receptacle (`skill_012`)
+# Inspect a receptacle (`inspect`)
 
 `inspect(receptacle: entity_ref)`
 
@@ -26,50 +26,45 @@ The contents of a container or cabinet must be seen (opens it if needed).
 
 - `contents` (`object_list`): Objects found inside/on the receptacle and visible.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "inspect", "args": {"receptacle": "<entity>"}}
+```
+
+Argument formats:
+
+- `entity_ref`: any annotated object, support, articulated part or button
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Requires base_near(place=$receptacle). Depending on the bound nouns, the chosen path also needs: closed_cabinet (receptacle.kind == 'articulated' and not receptacle.is_open): hand_empty(hand=right).
+Requires base_near(place=$receptacle). Some bound nouns add preconditions (see Conditions that depend on the bound nouns).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `base_near(place=$receptacle)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `base_near(place=$receptacle)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `observed(target=$receptacle)` — The robot saw the target in its head camera during this episode (set by look, search, inspect, explore). GT: robot_memory.
+- `observed(target=$receptacle)` — The robot saw the target in its head camera during this episode (set by look, search, inspect, explore).
 
-## Verifier
+## Conditions that depend on the bound nouns
 
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `observed(target=$receptacle)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `closed_cabinet` — when receptacle.kind == 'articulated' and not receptacle.is_open
-
-1. `policy_003()`
-2. `policy_062($receptacle)`
-3. `policy_088($receptacle)`
-4. `policy_003()`
-5. `policy_063($receptacle)`
-- extra precondition `hand_empty(hand=right)`
-- Open with the annotation-selected route, look, close again.
-
-### `open_view` — when always (default path)
-
-1. `policy_088($receptacle)`
-
-## Relations
-
-- Next step: `pick` (`skill_017`) (then) — an object found inside must be taken out
-- Next step: `empty` (`skill_051`) (then) — every object inside must be removed
-- Is a fallback for: `search` (`skill_013`) (substitute) — the object may be inside a closed cabinet
-- Alternative: `look` (`skill_011`) — only the receptacle itself must be seen
+- when receptacle.kind == 'articulated' and not receptacle.is_open: needs `hand_empty(hand=right)`
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_020`.

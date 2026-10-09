@@ -2,11 +2,10 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_025",
- "skill_id": "skill_017",
  "verb": "pick",
  "noun": "object",
  "name": "Pick an object",
- "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, floor corner pinch, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.",
+ "description": "Grasp one object with the right gripper and lift it. The grasp is chosen automatically from the object and where it is: from inside a microwave, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {
@@ -196,39 +195,6 @@
    ],
    "checked": "before execution on live GT state; the Contract does not move if false",
    "scope": "path two_hand_flat"
-  },
-  {
-   "predicate": "on_floor(object=$object)",
-   "name": "on_floor",
-   "args": {
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "Object bottom below 5 cm.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "asset_annotation"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false",
-   "scope": "path floor_top"
-  },
-  {
-   "predicate": "edge_overhang(object=$object)",
-   "name": "edge_overhang",
-   "args": {
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "asset_annotation",
-    "support_annotation"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false",
-   "scope": "path flat_overhang_ready"
   },
   {
    "predicate": "grasp_clearance(object=$object)",
@@ -613,14 +579,7 @@
       "kwargs": {}
      }
     ],
-    "requires": [
-     {
-      "pred": "on_floor",
-      "args": {
-       "object": "$object"
-      }
-     }
-    ],
+    "requires": [],
     "ensures": [],
     "note": "Approach, lower the torso and lean over the item, then pinch it from above. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
    },
@@ -649,14 +608,7 @@
       "kwargs": {}
      }
     ],
-    "requires": [
-     {
-      "pred": "edge_overhang",
-      "args": {
-       "object": "$object"
-      }
-     }
-    ],
+    "requires": [],
     "ensures": [],
     "note": "The overhang already exists (e.g. after expose): pinch it directly."
    },
@@ -827,136 +779,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "navigate",
-   "when": "the object must be carried elsewhere",
-   "bind": {},
-   "reason": "carry path is chosen from holding",
-   "to_skill_id": "skill_001",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "place",
-   "when": "the object goes onto a surface or into a container",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_018",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "lift",
-   "when": "the object must clear a high rim while carried",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_023",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "fallback",
-   "to": "expose",
-   "when": "a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "edge_overhang",
-   "to_skill_id": "skill_031"
-  },
-  {
-   "kind": "fallback",
-   "to": "separate",
-   "when": "fingers have no room beside the object (grasp_clearance false)",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "grasp_clearance",
-   "to_skill_id": "skill_032"
-  },
-  {
-   "kind": "fallback",
-   "to": "pull",
-   "when": "the object sits too deep to reach",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "dragging it toward the base brings it into the arm's envelope",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_030"
-  },
-  {
-   "kind": "fallback",
-   "to": "approach",
-   "when": "no grasp is reachable from base poses near the current one",
-   "bind": {
-    "target": "$object"
-   },
-   "reason": "a base pose with verified IK at the object",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_002"
-  },
-  {
-   "kind": "fallback",
-   "to": "upright",
-   "when": "a tall object fell over and its top pinch is gone",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "standing it up restores the annotated top pinch",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_036"
-  },
-  {
-   "kind": "fallback",
-   "to": "crouch",
-   "when": "the object is on the floor or a low shelf",
-   "bind": {},
-   "reason": "the lowered torso brings the gripper to floor height",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_005"
-  },
-  {
-   "kind": "fallback",
-   "to": "uncover",
-   "when": "the object to take is a lid-covered container's content",
-   "bind": {},
-   "reason": "the lid blocks every approach into the container",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_046"
-  },
-  {
-   "kind": "fallback",
-   "to": "open",
-   "when": "the object is inside a closed cabinet or appliance",
-   "bind": {},
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "is_open",
-   "to_skill_id": "skill_040"
-  },
-  {
-   "kind": "alternative",
-   "to": "regrasp",
-   "when": "the object is already in the hand but badly held",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_026"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

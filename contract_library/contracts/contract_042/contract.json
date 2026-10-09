@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_042",
- "skill_id": "skill_034",
  "verb": "roll",
  "noun": "object",
  "name": "Roll a cylinder",
@@ -158,31 +157,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the rolled object is then grasped",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_017",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "push",
-   "when": "sliding is acceptable",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_029"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

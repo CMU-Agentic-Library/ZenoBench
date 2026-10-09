@@ -8,14 +8,6 @@
  "title": "Face a target",
  "group": "base_and_body",
  "signature": "face(target: entity_ref)",
- "action_predicate": {
-  "name": "face_target",
-  "verb": "face",
-  "noun": "target",
-  "arguments": [
-   "target"
-  ]
- },
  "description": "Rotate the base in place until it faces the target (heading error <= 20 deg).",
  "use_when": "The target is beside or behind the robot and only the heading must change.",
  "not_to_be_confused_with": {
@@ -39,134 +31,23 @@
  },
  "applicability": {
   "always": true,
-  "summary": "Always applicable."
+  "summary": "No precondition."
  },
  "preconditions": [],
  "postconditions": [
   {
    "predicate": "facing(target=$target)",
-   "name": "facing",
-   "args": {
-    "target": "$target"
-   },
-   "negated": false,
-   "meaning": "Base heading within 20 deg of the target bearing.",
-   "kind": "fluent",
-   "gt_sources": [
-    "base_pose",
-    "scene_annotation"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "Base heading within 20 deg of the target bearing."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "facing(target=$target)",
-    "name": "facing",
-    "args": {
-     "target": "$target"
-    },
-    "negated": false,
-    "meaning": "Base heading within 20 deg of the target bearing.",
-    "kind": "fluent",
-    "gt_sources": [
-     "base_pose",
-     "scene_annotation"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [
   "reachable(*)",
   "in_view(*)",
   "pointing_at(*)"
  ],
- "policy_paths": [
-  {
-   "path_id": "rotate_empty",
-   "when": [
-    "not robot.right_held",
-    "not robot.left_held",
-    "robot.right_arm_stowed"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_099($target) as heading",
-    "policy_036(#heading.delta_yaw_deg)"
-   ],
-   "policies": [
-    "policy_036",
-    "policy_099"
-   ],
-   "note": "Tucked and empty: the measured in-place rotation primitive."
-  },
-  {
-   "path_id": "rotate_loaded",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_066($target)"
-   ],
-   "policies": [
-    "policy_066"
-   ],
-   "note": "With a load or unfolded arm: slower turn with grasp checks."
-  }
- ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_011",
-    "verb": "look",
-    "when": "the target must be observed",
-    "bind": {
-     "target": "$target"
-    },
-    "type": "then"
-   },
-   {
-    "skill_id": "skill_015",
-    "verb": "point",
-    "when": "the target must be indicated",
-    "bind": {
-     "target": "$target"
-    },
-    "type": "then"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_001",
-    "verb": "navigate",
-    "when": "turning in place is blocked by furniture",
-    "bind": {
-     "destination": "$target"
-    }
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": [
    "turning in place would hit furniture"
   ]
@@ -175,18 +56,22 @@
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_011",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_003",
+ "call": {
+  "request": {
+   "contract": "face",
    "args": {
-    "target": {
-     "ref": "<entity>"
-    }
-   },
-   "depends_on": []
+    "target": "<entity>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"face\", {'target': ...})"
+  "arg_formats": {
+   "entity_ref": "any annotated object, support, articulated part or button"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

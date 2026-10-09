@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_009",
- "skill_id": "skill_001",
  "verb": "navigate",
  "noun": "place",
  "name": "Navigate to a place",
@@ -168,61 +167,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "approach",
-   "when": "a manipulation target is on the destination",
-   "bind": {
-    "target": "$destination"
-   },
-   "reason": "navigate leaves the base near; approach makes the target IK-reachable.",
-   "to_skill_id": "skill_002",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "look",
-   "when": "the destination must be observed first",
-   "bind": {
-    "target": "$destination"
-   },
-   "reason": "",
-   "to_skill_id": "skill_011",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "retreat",
-   "when": "navigation fails because the base or load is wedged against furniture",
-   "bind": {},
-   "reason": "Backing out frees the planner's start cell, then navigate again.",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_004"
-  },
-  {
-   "kind": "fallback",
-   "to": "tuck",
-   "when": "navigation fails because the empty arm cannot fold",
-   "bind": {
-    "hand": "right"
-   },
-   "reason": "A separately planned fold clears the arm before the base path.",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_009"
-  },
-  {
-   "kind": "fallback",
-   "to": "lift",
-   "when": "a carried object hangs too low for the doorway clearance",
-   "bind": {},
-   "reason": "Raising the load restores the carry clearance.",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_023"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

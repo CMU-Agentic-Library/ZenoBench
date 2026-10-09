@@ -2,7 +2,7 @@
 
 Switch an appliance's heat off: press the stove power key off, or open the microwave door, which ends its cycle.
 
-Paired SkillNode: `skill_068` (`stop-appliance`).
+Verb: `stop`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_068` (`stop-appliance`).
 
 - `stove_key_off` when appliance.category == 'stove': `policy_094(@appliance.power_button, state=False)`
 - `microwave_door` when appliance.category == 'microwave': `policy_024($appliance)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

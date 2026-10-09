@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_034",
- "skill_id": "skill_026",
  "verb": "regrasp",
  "noun": "object",
  "name": "Regrasp a held object",
@@ -151,21 +150,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "place",
-   "when": "the corrected grasp is used to place precisely",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_018",
-   "sequence_type": "enables"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

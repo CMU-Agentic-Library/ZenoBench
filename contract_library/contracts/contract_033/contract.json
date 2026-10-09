@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_033",
- "skill_id": "skill_025",
  "verb": "rotate",
  "noun": "object",
  "name": "Rotate a held object",
@@ -143,31 +142,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "place",
-   "when": "the object is set down in the new orientation",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_018",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "regrasp",
-   "when": "the grasp, not the yaw, must change",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_026"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

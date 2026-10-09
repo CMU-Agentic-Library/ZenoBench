@@ -2,7 +2,7 @@
 
 Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).
 
-Paired SkillNode: `skill_042` (`press-button`).
+Verb: `press`.
 
 ## Precheck
 
@@ -21,5 +21,7 @@ Paired SkillNode: `skill_042` (`press-button`).
 - `microwave_start_staged` when button.button == 'start_button': `policy_027(@button.appliance, button=start)` -> `policy_028(@button.appliance, button=start)` -> `policy_029(@button.appliance, button=start)`
 - `microwave_door_key` when button.button == 'door_button': `policy_033(@button.appliance, button=door)`
 - `generic_key` when always: `policy_094($button)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

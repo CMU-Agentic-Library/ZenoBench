@@ -8,12 +8,6 @@
  "title": "Straighten the waist",
  "group": "base_and_body",
  "signature": "straighten()",
- "action_predicate": {
-  "name": "straighten_waist",
-  "verb": "straighten",
-  "noun": "waist",
-  "arguments": []
- },
  "description": "Return the waist pitch to upright.",
  "use_when": "After a bend, before driving or carrying.",
  "not_to_be_confused_with": {
@@ -24,118 +18,41 @@
  "outputs": {},
  "applicability": {
   "always": true,
-  "summary": "Always applicable."
+  "summary": "No precondition."
  },
  "preconditions": [],
  "postconditions": [
   {
    "predicate": "waist_straight()",
-   "name": "waist_straight",
-   "args": {},
-   "negated": false,
-   "meaning": "Waist pitch within 0.05 rad of upright.",
-   "kind": "fluent",
-   "gt_sources": [
-    "waist_joint"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "Waist pitch within 0.05 rad of upright."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "waist_straight()",
-    "name": "waist_straight",
-    "args": {},
-    "negated": false,
-    "meaning": "Waist pitch within 0.05 rad of upright.",
-    "kind": "fluent",
-    "gt_sources": [
-     "waist_joint"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [
   "waist_bent(*)",
   "reachable(*)",
   "in_view(*)"
  ],
- "policy_paths": [
-  {
-   "path_id": "upright",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_009()"
-   ],
-   "policies": [
-    "policy_009"
-   ],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [
-   {
-    "skill_id": "skill_007",
-    "verb": "bend",
-    "when": "the reach is done",
-    "type": "then"
-   }
-  ],
-  "next": [
-   {
-    "skill_id": "skill_001",
-    "verb": "navigate",
-    "when": "the robot drives after a bent reach",
-    "bind": {},
-    "reason": "travel posture",
-    "type": "then"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_010",
-    "verb": "reset",
-    "when": "the arm and torso must also be restored",
-    "bind": {}
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_016",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_008",
-   "args": {},
-   "depends_on": []
+ "call": {
+  "request": {
+   "contract": "straighten",
+   "args": {}
   },
-  "python": "SkillContractRunner(rig).run(\"straighten\", {})"
+  "arg_formats": {},
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

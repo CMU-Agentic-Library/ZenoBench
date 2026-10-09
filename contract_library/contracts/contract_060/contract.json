@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_060",
- "skill_id": "skill_052",
  "verb": "arrange",
  "noun": "objects",
  "name": "Arrange objects together",
@@ -146,21 +145,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "fallback",
-   "to": "clear",
-   "when": "the support is too crowded",
-   "bind": {
-    "support": "$support"
-   },
-   "reason": "frees room for the place setting",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_050"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

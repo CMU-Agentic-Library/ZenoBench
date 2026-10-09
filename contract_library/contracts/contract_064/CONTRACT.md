@@ -2,7 +2,7 @@
 
 Do nothing for the given simulated time (an appliance cycle running, an object settling).
 
-Paired SkillNode: `skill_056` (`wait-duration`).
+Verb: `wait`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_056` (`wait-duration`).
 ## Policy paths
 
 - `idle` when always: `policy_103($seconds)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

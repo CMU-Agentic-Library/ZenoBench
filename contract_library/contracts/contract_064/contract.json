@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_064",
- "skill_id": "skill_056",
  "verb": "wait",
  "noun": "duration",
  "name": "Wait for a duration",
@@ -76,19 +75,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "open",
-   "when": "a cycle finished and the door is opened",
-   "bind": {},
-   "reason": "time passed",
-   "to_skill_id": "skill_040",
-   "sequence_type": "then"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

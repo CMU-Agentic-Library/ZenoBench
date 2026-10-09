@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_062",
- "skill_id": "skill_054",
  "verb": "swap",
  "noun": "objects",
  "name": "Swap two objects",
@@ -201,29 +200,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "alternative",
-   "to": "fetch",
-   "when": "only one object needs to move",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_047"
-  },
-  {
-   "kind": "sequence",
-   "to": "tuck",
-   "when": "the robot drives on",
-   "bind": {
-    "hand": "right"
-   },
-   "reason": "",
-   "to_skill_id": "skill_009",
-   "sequence_type": "enables"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

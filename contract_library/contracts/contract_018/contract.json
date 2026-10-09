@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_018",
- "skill_id": "skill_010",
  "verb": "reset",
  "noun": "posture",
  "name": "Reset the posture",
@@ -146,19 +145,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "navigate",
-   "when": "after a failed manipulation, before driving on",
-   "bind": {},
-   "reason": "a known posture makes the base path plannable",
-   "to_skill_id": "skill_001",
-   "sequence_type": "then"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

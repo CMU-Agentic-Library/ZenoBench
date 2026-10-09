@@ -2,7 +2,7 @@
 
 Turn a flat object upside down where it lies: slide it to an edge, pinch the overhang, lift, roll the hand 180 deg, lay it back and release.
 
-Paired SkillNode: `skill_028` (`flip-object`).
+Verb: `flip`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_028` (`flip-object`).
 ## Policy paths
 
 - `edge_roll` when object.flat: `policy_045($object)` -> `policy_013($object)` -> `policy_078($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

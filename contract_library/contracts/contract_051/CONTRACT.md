@@ -2,7 +2,7 @@
 
 Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).
 
-Paired SkillNode: `skill_043` (`heat-food`).
+Verb: `heat`.
 
 ## Precheck
 
@@ -21,5 +21,7 @@ Paired SkillNode: `skill_043` (`heat-food`).
 
 - `microwave` when appliance.category == 'microwave': `policy_032($appliance)` -> `policy_064($food, $temp_c)`
 - `stove_pot` when appliance.category == 'stove': `policy_094(@appliance.power_button, state=True)` -> `policy_090($food, $temp_c, $appliance)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_071",
- "skill_id": "skill_063",
  "verb": "hover",
  "noun": "object",
  "name": "Hover a held object over a target",
@@ -171,43 +170,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "drop",
-   "when": "the object is released into the container under it",
-   "bind": {
-    "object": "$object",
-    "container": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_019",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "release",
-   "when": "the object is let go right there",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_021",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "lift",
-   "when": "only a height matters",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_023"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

@@ -2,7 +2,7 @@
 
 Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).
 
-Paired SkillNode: `skill_024` (`lower-object`).
+Verb: `lower`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_024` (`lower-object`).
 ## Policy paths
 
 - `descend` when always: `policy_093($object, $height_m)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

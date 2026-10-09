@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_031",
- "skill_id": "skill_023",
  "verb": "lift",
  "noun": "object",
  "name": "Lift a held object",
@@ -146,30 +145,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "navigate",
-   "when": "the object is carried over furniture",
-   "bind": {},
-   "reason": "carry clearance",
-   "to_skill_id": "skill_001",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "drop",
-   "when": "the object is released over a tall container",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_019",
-   "sequence_type": "enables"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

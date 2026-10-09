@@ -8,15 +8,6 @@
  "title": "Rotate a held object",
  "group": "grasp_and_hand",
  "signature": "rotate(object: object_ref, degrees: number)",
- "action_predicate": {
-  "name": "rotate_object",
-  "verb": "rotate",
-  "noun": "object",
-  "arguments": [
-   "object",
-   "degrees"
-  ]
- },
  "description": "Turn the held object about the vertical axis by the requested angle (e.g. align a book's spine).",
  "use_when": "A held object must turn about the vertical axis (align a handle or label).",
  "not_to_be_confused_with": {
@@ -46,186 +37,47 @@
  "preconditions": [
   {
    "predicate": "holding(hand=right, object=$object)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   }
  ],
  "postconditions": [
   {
    "predicate": "yaw_rotated(object=$object, degrees=$degrees)",
-   "name": "yaw_rotated",
-   "args": {
-    "object": "$object",
-    "degrees": "$degrees"
-   },
-   "negated": false,
-   "meaning": "Object yaw changed by the requested angle within 10 deg.",
-   "kind": "relative",
-   "gt_sources": [
-    "object_pose (before/after)"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "Object yaw changed by the requested angle within 10 deg."
   },
   {
    "predicate": "holding(hand=right, object=$object)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "yaw_rotated(object=$object, degrees=$degrees)",
-    "name": "yaw_rotated",
-    "args": {
-     "object": "$object",
-     "degrees": "$degrees"
-    },
-    "negated": false,
-    "meaning": "Object yaw changed by the requested angle within 10 deg.",
-    "kind": "relative",
-    "gt_sources": [
-     "object_pose (before/after)"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   },
-   {
-    "predicate": "holding(hand=right, object=$object)",
-    "name": "holding",
-    "args": {
-     "hand": "right",
-     "object": "$object"
-    },
-    "negated": false,
-    "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-    "kind": "fluent",
-    "gt_sources": [
-     "gripper_state",
-     "finger_joints",
-     "object_pose",
-     "arm_fk"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [],
- "policy_paths": [
-  {
-   "path_id": "wrist_yaw",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_075($object, $degrees)"
-   ],
-   "policies": [
-    "policy_075"
-   ],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_018",
-    "verb": "place",
-    "when": "the object is set down in the new orientation",
-    "bind": {
-     "object": "$object"
-    },
-    "type": "enables"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_026",
-    "verb": "regrasp",
-    "when": "the grasp, not the yaw, must change",
-    "bind": {
-     "object": "$object"
-    }
-   },
-   {
-    "skill_id": "skill_062",
-    "verb": "shake",
-    "when": "the orientation, not the contents, matters",
-    "bind": {}
-   },
-   {
-    "skill_id": "skill_064",
-    "verb": "square",
-    "when": "the object is already in the hand",
-    "bind": {}
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_033",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_025",
+ "call": {
+  "request": {
+   "contract": "rotate",
    "args": {
-    "object": {
-     "ref": "<object>"
-    },
-    "degrees": {
-     "value": "<number>"
-    }
-   },
-   "depends_on": []
+    "object": "<object>",
+    "degrees": "<number>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"rotate\", {'object': ..., 'degrees': ...})"
+  "arg_formats": {
+   "number": "a finite number",
+   "object_ref": "a movable annotated scene object"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

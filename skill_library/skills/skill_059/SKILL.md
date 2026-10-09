@@ -3,7 +3,7 @@ name: count-category
 description: Sweep the head from the current place and count the visible objects whose asset or tag matches.
 ---
 
-# Count objects of a category (`skill_059`)
+# Count objects of a category (`count`)
 
 `count(category: tag)`
 
@@ -26,38 +26,41 @@ The number of objects of one category in view must be known.
 - `count` (`number`): Number of visible matches.
 - `objects` (`object_list`): The matches.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "count", "args": {"category": "<tag>"}}
+```
+
+Argument formats:
+
+- `tag`: an asset tag or asset name, e.g. "fruit", "toy", "cherry_tomato"
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Always applicable.
+No precondition.
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
 - none
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `counted(category=$category)` — The robot recorded how many objects of the category it sees from its current place. GT: robot_memory, head_fk.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `counted(category=$category)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `head_sweep` — when always (default path)
-
-1. `policy_112($category)`
-
-## Relations
-
-- Next step: `collect` (`skill_048`) (then) — the counted objects are gathered
-- Fallback on failure: `explore` (`skill_014`) (recover) — objects of the category may be out of view
+- `counted(category=$category)` — The robot recorded how many objects of the category it sees from its current place.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_067`.

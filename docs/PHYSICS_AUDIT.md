@@ -1,7 +1,7 @@
 # Physics and asset audit (2026-10)
 
 The audit covered the global PhysX settings, all 40 asset annotations, the robot USD, the new kitchen
-fixtures, and every failure seen while verifying the SkillNode library in Isaac Sim. The table lists what was
+fixtures, and every failure seen while verifying the verb Contract library in Isaac Sim. The table lists what was
 found and what changed. Rebuilt scenes pass `tools/check_scene.py` (3 s: free bodies drift < 1 cm,
 articulated parts stay closed, robot holds its pose).
 
@@ -52,6 +52,6 @@ articulated parts stay closed, robot holds its pose).
 | Item | Why it stays |
 |---|---|
 | `breakfast_cup` weighs 30 g for a 15 cm cup (real: ~200 g) | Its mass is baked into `sim/zeno_house.usd` and the existing task scenes; changing the spec alone would make annotation and scene disagree. Light cups are easy to knock while pinching. |
-| Containers held by a rim pinch (bowls, trays, mugs by the handle) can pivot during long carries | A one-hand pinch on a thin wall carries little torque; the SkillNode library prefers rim pinches over handles and keeps carries short. |
+| Containers held by a rim pinch (bowls, trays, mugs by the handle) can pivot during long carries | A one-hand pinch on a thin wall carries little torque; Contract path selection prefers rim pinches over handles and keeps carries short. |
 | Top-down reach falls off quickly above ~1.0 m | Arm geometry: shoulder joints at 0.88–1.12 m. Scenes keep top-down contacts below ~0.95 m. |
 | A 17 cm carton cannot be dropped into the storage bin on the bookcase top | Its bottom must clear the 0.85 m rim, which puts the hand near 1.0 m over the middle of a deep shelf; shorter items (soda can) fit. |

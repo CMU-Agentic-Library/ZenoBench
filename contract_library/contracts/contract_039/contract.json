@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_039",
- "skill_id": "skill_031",
  "verb": "expose",
  "noun": "object",
  "name": "Expose a grasp edge",
@@ -137,43 +136,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "pinch the overhang",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_017",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "flip",
-   "when": "turn the object over",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_028",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "approach",
-   "when": "no base pose reaches behind the object",
-   "bind": {
-    "target": "$object"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "to_skill_id": "skill_002"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

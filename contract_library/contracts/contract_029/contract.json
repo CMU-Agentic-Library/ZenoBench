@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_029",
- "skill_id": "skill_021",
  "verb": "release",
  "noun": "object",
  "name": "Release an object",
@@ -123,31 +122,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "tuck",
-   "when": "the arm is folded after letting go",
-   "bind": {
-    "hand": "$hand"
-   },
-   "reason": "",
-   "to_skill_id": "skill_009",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "drop",
-   "when": "the object should fall into a container",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_019"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

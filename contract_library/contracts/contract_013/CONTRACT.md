@@ -2,7 +2,7 @@
 
 Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.
 
-Paired SkillNode: `skill_005` (`crouch-torso`).
+Verb: `crouch`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_005` (`crouch-torso`).
 
 - `to_height` when args.height_m: `policy_004($height_m)`
 - `lowest` when always: `policy_005()`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -2,7 +2,7 @@
 
 Align an object's edges with its support's edges (yaw within 5 deg): pick it, turn it by the measured yaw error and set it back down at the same spot.
 
-Paired SkillNode: `skill_064` (`square-object`).
+Verb: `square`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_064` (`square-object`).
 ## Policy paths
 
 - `pick_rotate_place` when 'top_pinch' in object.grasp_types: `policy_108($object) as sq` -> `policy_010($object)` -> `policy_075($object, #sq.degrees)` -> `policy_015($object, @object.support, hint=#sq.xy)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

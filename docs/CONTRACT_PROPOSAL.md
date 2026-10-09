@@ -1,6 +1,6 @@
 # Zeno House contract 接口与扩展提案
 
-> 此文是历史记录：描述 `contract_001`–`contract_008` 兼容 family 的路线与旧关系图。当前上层接口是 [动词 SkillNode 库](../skill_library/README.md)，每个 SkillNode 一一对应一个 Contract（`contract_009` 起），其按名词选择的 policy 路径、GT 前后条件与 verifier 见 [Contract Library](../contract_library/README.md)。
+> **旧文档，待删除。** 本文描述 `contract_001`–`contract_008` 兼容 family、由调用方指定路线的 `ContractRunner`，以及当时设想的技能子图和失败后选路线，这些都不是当前设计。当前设计：上层规划器以 `{"contract": "<动词>", "args": {...}}` 调用动词 Contract（`contract_009`–`contract_078`），路径由 Contract 按绑定的名词自动选择，Contract 之间没有关系，失败即停止且不 fallback；Skill 与 Contract 不强制一一对应。见 [Contract Library](../contract_library/README.md)。
 
 八个 [ContractSpec](../zeno_skills/contracts.py) 定义语义接口与底层 policy 路由。
 公开 ID 为 contract_001–contract_008；本文出现的 navigate.v1、pick.v1 等是

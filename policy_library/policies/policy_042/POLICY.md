@@ -27,4 +27,4 @@ Policy-specific checks remain inside the controller and are not all normalized i
 
 ## Recorded evidence
 
-Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01 Active Contract floor-pregrasp pass on foam_cube from nearby base: runs/check_50_floor_ready_near, 2026-10-06.
+Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01 legacy family Contract floor-pregrasp pass on foam_cube from nearby base: runs/check_50_floor_ready_near, 2026-10-06.

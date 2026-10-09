@@ -2,7 +2,7 @@
 
 Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without releasing it, e.g. to show or to align before a drop.
 
-Paired SkillNode: `skill_063` (`hover-object`).
+Verb: `hover`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_063` (`hover-object`).
 ## Policy paths
 
 - `above_target` when always: `policy_115($object, $target)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

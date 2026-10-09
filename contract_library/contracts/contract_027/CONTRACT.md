@@ -2,7 +2,7 @@
 
 Hold the object 5 cm above a container's opening, centred, and let go; the object falls in.
 
-Paired SkillNode: `skill_019` (`drop-object`).
+Verb: `drop`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_019` (`drop-object`).
 ## Policy paths
 
 - `above_opening` when always: `policy_073($object, $container)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

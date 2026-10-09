@@ -1,13 +1,13 @@
 ---
 name: fetch-object
-description: Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.
+description: Bring one object to a support or container: the robot goes to the object, picks it up, carries it to the receptacle and puts it there.
 ---
 
-# Fetch an object to a receptacle (`skill_047`)
+# Fetch an object to a receptacle (`fetch`)
 
 `fetch(object: object_ref, receptacle: receptacle_ref)`
 
-Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.
+Bring one object to a support or container: the robot goes to the object, picks it up, carries it to the receptacle and puts it there.
 
 ## When to use
 
@@ -24,61 +24,51 @@ One object must be brought to a destination (navigate, pick, carry, place in one
 - `object` (`object_ref`): What to bring.
 - `receptacle` (`receptacle_ref`): Destination support or open container.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "fetch", "args": {"object": "<object>", "receptacle": "<receptacle>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+- `receptacle_ref`: a support surface or an open container
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Requires hand_empty(hand=right). Depending on the bound nouns, the chosen path also needs: to_container (receptacle.kind == 'object'): uncovered(container=$receptacle).
+Requires hand_empty(hand=right). Some bound nouns add preconditions (see Conditions that depend on the bound nouns).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Verifier
+## Conditions that depend on the bound nouns
 
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `hand_empty(hand=right)` (all paths)
-- `inside(object=$object, container=$receptacle)` (path to_container)
-- `on(object=$object, support=$receptacle)` (path to_surface)
+- when receptacle.kind == 'object': needs `uncovered(container=$receptacle)`; ensures `inside(object=$object, container=$receptacle)`
+- when receptacle.kind == 'support': ensures `on(object=$object, support=$receptacle)`
 
 ## May invalidate
 
 `on($object,*)`, `inside($object,*)`, `at_initial_place($object)`, `base_near(*)`, `reachable(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `to_container` — when receptacle.kind == 'object'
-
-1. `[navigate](destination=$object)`
-2. `[pick](object=$object)`
-3. `[navigate](destination=$receptacle)`
-4. `[place](object=$object, receptacle=$receptacle)`
-- extra precondition `uncovered(container=$receptacle)`
-- extra postcondition `inside(object=$object, container=$receptacle)`
-
-### `to_surface` — when receptacle.kind == 'support'
-
-1. `[navigate](destination=$object)`
-2. `[pick](object=$object)`
-3. `[navigate](destination=$receptacle)`
-4. `[place](object=$object, receptacle=$receptacle)`
-- extra postcondition `on(object=$object, support=$receptacle)`
-
-## Relations
-
-- Previous step: `fetch` (`skill_047`) (enables) — more objects go to the same place
-- Next step: `fetch` (`skill_047`) (enables) — more objects go to the same place
-- Fallback on failure: `search` (`skill_013`) (recover) — the object is not where expected
-- Alternative: `restore` (`skill_053`) — the object should return to its starting support
-- Alternative: `swap` (`skill_054`) — only one object needs to move
-- Alternative: `hide` (`skill_070`) — the object only needs to move
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_055`.

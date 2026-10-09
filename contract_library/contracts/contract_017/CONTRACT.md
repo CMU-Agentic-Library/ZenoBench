@@ -2,7 +2,7 @@
 
 Fold an empty arm to its travel posture along a collision-checked path.
 
-Paired SkillNode: `skill_009` (`tuck-arm`).
+Verb: `tuck`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_009` (`tuck-arm`).
 
 - `left` when args.hand == 'left': `policy_091()`
 - `right` when always: `policy_003()`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

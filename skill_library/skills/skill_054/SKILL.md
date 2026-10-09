@@ -3,7 +3,7 @@ name: swap-objects
 description: Exchange the positions of two objects on their supports via a free buffer spot.
 ---
 
-# Swap two objects (`skill_054`)
+# Swap two objects (`swap`)
 
 `swap(a: object_ref, b: object_ref)`
 
@@ -22,50 +22,42 @@ Two objects must exchange places.
 - `a` (`object_ref`): First object.
 - `b` (`object_ref`): Second object.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "swap", "args": {"a": "<object>", "b": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `positions_swapped(a=$a, b=$b)` — Each object now rests within 6 cm of the other's starting position on its starting support. GT: object_pose (before/after).
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `positions_swapped(a=$a, b=$b)` (all paths)
-- `hand_empty(hand=right)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `via_buffer` — when always (default path)
-
-1. `[navigate](destination=$a)`
-2. `[pick](object=$a)`
-3. `[place](object=$a, receptacle=@a.support, hint_xy=@a.buffer_xy)`
-4. `[navigate](destination=$b)`
-5. `[pick](object=$b)`
-6. `[navigate](destination=@a.support)`
-7. `[place](object=$b, receptacle=@a.support, hint_xy=@a.xy)`
-8. `[navigate](destination=$a)`
-9. `[pick](object=$a)`
-10. `[navigate](destination=@b.support)`
-11. `[place](object=$a, receptacle=@b.support, hint_xy=@b.xy)`
-
-## Relations
-
-- Next step: `tuck` (`skill_009`) (enables) — the robot drives on
-- Alternative: `fetch` (`skill_047`) — only one object needs to move
+- `positions_swapped(a=$a, b=$b)` — Each object now rests within 6 cm of the other's starting position on its starting support.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_062`.

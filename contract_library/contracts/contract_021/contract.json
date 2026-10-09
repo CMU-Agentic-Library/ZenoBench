@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_021",
- "skill_id": "skill_013",
  "verb": "search",
  "noun": "object",
  "name": "Search for an object",
@@ -105,39 +104,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "navigate",
-   "when": "the found object must be fetched",
-   "bind": {
-    "destination": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_001",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "explore",
-   "when": "the object is not on any visited support",
-   "bind": {},
-   "reason": "room coverage marks every visible object observed, including the target",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_014"
-  },
-  {
-   "kind": "fallback",
-   "to": "inspect",
-   "when": "the object may be inside a closed cabinet",
-   "bind": {},
-   "reason": "",
-   "fallback_type": "substitute",
-   "to_skill_id": "skill_012"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

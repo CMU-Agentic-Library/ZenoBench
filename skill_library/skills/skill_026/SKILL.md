@@ -3,7 +3,7 @@ name: regrasp-object
 description: Set the held object down on a support and grasp it again with a fresh, centred grasp (recovery when the object has pivoted in the pinch).
 ---
 
-# Regrasp a held object (`skill_026`)
+# Regrasp a held object (`regrasp`)
 
 `regrasp(object: object_ref, support: support_ref)`
 
@@ -27,41 +27,43 @@ The current grasp is unsuitable (wrong end, slipping) and the object can be set 
 
 - `grasp` (`hand`): Grasp kind after the regrasp.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "regrasp", "args": {"object": "<object>", "support": "<support>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+- `support_ref`: an annotated horizontal support surface
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires holding(hand=right, object=$object); base_near(place=$support).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-- `base_near(place=$support)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
+- `base_near(place=$support)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `holding(hand=right, object=$object)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `set_down_and_pick` — when always (default path)
-
-1. `policy_076($object, $support)`
-
-## Relations
-
-- Next step: `place` (`skill_018`) (enables) — the corrected grasp is used to place precisely
-- Is a fallback for: `place` (`skill_018`) (recover) — the object turned in the hand and no longer clears the target
-- Alternative: `pick` (`skill_017`) — the object is already in the hand but badly held
-- Alternative: `rotate` (`skill_025`) — the grasp, not the yaw, must change
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_034`.

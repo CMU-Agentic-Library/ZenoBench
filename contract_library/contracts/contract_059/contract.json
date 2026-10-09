@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_059",
- "skill_id": "skill_051",
  "verb": "empty",
  "noun": "container",
  "name": "Empty a container",
@@ -17,7 +16,7 @@
   "receptacle": {
    "type": "receptacle_ref",
    "required": true,
-   "description": "Where the contents go (a container for the pouring path)."
+   "description": "Where the contents go (a container if they are poured)."
   }
  },
  "outputs": {
@@ -164,7 +163,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)"
+    "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as a second path.)"
    },
    {
     "path_id": "pour_out",
@@ -222,30 +221,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "alternative",
-   "to": "clear",
-   "when": "the items lie on a surface instead",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_050"
-  },
-  {
-   "kind": "fallback",
-   "to": "uncover",
-   "when": "the container has its lid on",
-   "bind": {
-    "container": "$container"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "uncovered",
-   "to_skill_id": "skill_046"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

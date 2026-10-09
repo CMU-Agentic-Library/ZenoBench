@@ -2,7 +2,7 @@
 
 Return the waist pitch to upright.
 
-Paired SkillNode: `skill_008` (`straighten-waist`).
+Verb: `straighten`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_008` (`straighten-waist`).
 ## Policy paths
 
 - `upright` when always: `policy_009()`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

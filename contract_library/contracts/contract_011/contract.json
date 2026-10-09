@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_011",
- "skill_id": "skill_003",
  "verb": "face",
  "noun": "target",
  "name": "Face a target",
@@ -133,42 +132,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "look",
-   "when": "the target must be observed",
-   "bind": {
-    "target": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_011",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "point",
-   "when": "the target must be indicated",
-   "bind": {
-    "target": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_015",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "navigate",
-   "when": "turning in place is blocked by furniture",
-   "bind": {
-    "destination": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_001"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

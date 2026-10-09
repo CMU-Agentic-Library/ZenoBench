@@ -2,7 +2,7 @@
 
 Set the held object centred on the top face of another object (block on block, plate on plate).
 
-Paired SkillNode: `skill_020` (`stack-object`).
+Verb: `stack`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_020` (`stack-object`).
 ## Policy paths
 
 - `top_face` when always: `policy_074($object, $base)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_017",
- "skill_id": "skill_009",
  "verb": "tuck",
  "noun": "arm",
  "name": "Tuck an arm",
@@ -125,28 +124,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "navigate",
-   "when": "the robot drives next",
-   "bind": {},
-   "reason": "a folded arm is the travel posture",
-   "to_skill_id": "skill_001",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "retreat",
-   "when": "the fold collides with furniture",
-   "bind": {},
-   "reason": "More room around the base gives the fold a collision-free path.",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_004"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

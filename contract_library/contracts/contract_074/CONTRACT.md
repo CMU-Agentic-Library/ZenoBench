@@ -2,7 +2,7 @@
 
 Tap a closed door or drawer panel twice with the closed fingertips beside its handle; the panel must stay closed.
 
-Paired SkillNode: `skill_066` (`knock-articulated`).
+Verb: `knock`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_066` (`knock-articulated`).
 ## Policy paths
 
 - `panel_taps` when articulated.has_handle: `policy_106($articulated)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

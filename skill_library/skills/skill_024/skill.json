@@ -8,15 +8,6 @@
  "title": "Lower a held object",
  "group": "grasp_and_hand",
  "signature": "lower(object: object_ref, height_m: positive_number)",
- "action_predicate": {
-  "name": "lower_object",
-  "verb": "lower",
-  "noun": "object",
-  "arguments": [
-   "object",
-   "height_m"
-  ]
- },
  "description": "Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).",
  "use_when": "A held object must be brought down to a height without releasing it.",
  "not_to_be_confused_with": {
@@ -46,178 +37,49 @@
  "preconditions": [
   {
    "predicate": "holding(hand=right, object=$object)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   }
  ],
  "postconditions": [
   {
    "predicate": "held_below(object=$object, height_m=$height_m)",
-   "name": "held_below",
-   "args": {
-    "object": "$object",
-    "height_m": "$height_m"
-   },
-   "negated": false,
-   "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance).",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "gripper_state"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance)."
   },
   {
    "predicate": "holding(hand=right, object=$object)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "held_below(object=$object, height_m=$height_m)",
-    "name": "held_below",
-    "args": {
-     "object": "$object",
-     "height_m": "$height_m"
-    },
-    "negated": false,
-    "meaning": "Right-held object's bottom at or below the given world height (2 cm tolerance).",
-    "kind": "fluent",
-    "gt_sources": [
-     "object_pose",
-     "gripper_state"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   },
-   {
-    "predicate": "holding(hand=right, object=$object)",
-    "name": "holding",
-    "args": {
-     "hand": "right",
-     "object": "$object"
-    },
-    "negated": false,
-    "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-    "kind": "fluent",
-    "gt_sources": [
-     "gripper_state",
-     "finger_joints",
-     "object_pose",
-     "arm_fk"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [
   "held_above($object,*)"
  ],
- "policy_paths": [
-  {
-   "path_id": "descend",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_093($object, $height_m)"
-   ],
-   "policies": [
-    "policy_093"
-   ],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_018",
-    "verb": "place",
-    "when": "the object goes onto a low shelf or into the fridge",
-    "bind": {
-     "object": "$object"
-    },
-    "type": "enables"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_023",
-    "verb": "lift",
-    "when": "opposite direction",
-    "bind": {
-     "object": "$object"
-    }
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_032",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_024",
+ "call": {
+  "request": {
+   "contract": "lower",
    "args": {
-    "object": {
-     "ref": "<object>"
-    },
-    "height_m": {
-     "value": "<positive_number>"
-    }
-   },
-   "depends_on": []
+    "object": "<object>",
+    "height_m": "<positive_number>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"lower\", {'object': ..., 'height_m': ...})"
+  "arg_formats": {
+   "object_ref": "a movable annotated scene object",
+   "positive_number": "a number > 0"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

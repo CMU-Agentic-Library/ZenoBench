@@ -31,4 +31,4 @@ Uses task-level temperature model and bounded live simulation steps; requires ph
 
 ## Recorded evidence
 
-Isaac Sim heat_breakfast_preloaded: contract_048 waited from 4 C to 63.6 C after physical start-button press, runs/node_contract_heat_wait/result.json, 2026-10-05
+Isaac Sim heat_breakfast_preloaded: the heat Contract (numbered contract_048 at the time) waited from 4 C to 63.6 C after physical start-button press, runs/node_contract_heat_wait/result.json, 2026-10-05

@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_023",
- "skill_id": "skill_015",
  "verb": "point",
  "noun": "target",
  "name": "Point at a target",
@@ -168,31 +167,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "tuck",
-   "when": "the gesture is finished",
-   "bind": {
-    "hand": "right"
-   },
-   "reason": "",
-   "to_skill_id": "skill_009",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "look",
-   "when": "a gaze is enough to indicate the target",
-   "bind": {
-    "target": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_011"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

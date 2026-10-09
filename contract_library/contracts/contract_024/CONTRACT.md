@@ -2,7 +2,7 @@
 
 Hold the carried object in front of the body at 0.9-1.4 m height, inside the head camera view.
 
-Paired SkillNode: `skill_016` (`present-object`).
+Verb: `present`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_016` (`present-object`).
 ## Policy paths
 
 - `front_of_head` when always: `policy_072($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

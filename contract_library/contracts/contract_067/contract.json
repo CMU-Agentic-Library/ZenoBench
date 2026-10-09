@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_067",
- "skill_id": "skill_059",
  "verb": "count",
  "noun": "category",
  "name": "Count objects of a category",
@@ -85,28 +84,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "collect",
-   "when": "the counted objects are gathered",
-   "bind": {},
-   "reason": "objects output",
-   "to_skill_id": "skill_048",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "explore",
-   "when": "objects of the category may be out of view",
-   "bind": {},
-   "reason": "room coverage",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_014"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

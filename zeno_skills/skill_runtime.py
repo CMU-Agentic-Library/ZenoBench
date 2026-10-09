@@ -14,8 +14,8 @@ A Contract call:
 5. evaluates every postcondition (skill-level and path-level) on GT state; the
    action is reported only if all of them hold (``POSTCONDITION_FAILED``
    otherwise);
-6. returns measured outputs, the selected path, all predicate measurements and,
-   on failure, the recovery candidates from the relation graph.
+6. returns measured outputs, the selected path and all predicate measurements.
+   A failed call stops; nothing is retried.
 """
 
 from __future__ import annotations
@@ -48,8 +48,7 @@ def load_contracts(path=CATALOG):
         raise ValueError("expected a schema_version 2 skill_contract_catalog")
     by_id = {c["contract_id"]: c for c in data["contracts"]}
     by_verb = {c["verb"]: c for c in data["contracts"]}
-    by_skill = {c["skill_id"]: c for c in data["contracts"]}
-    return by_id, by_verb, by_skill
+    return by_id, by_verb
 
 
 # ----------------------------------------------------------------- noun attributes
@@ -388,7 +387,6 @@ def condition_holds(cond, nouns):
 @dataclass
 class SkillResult:
     contract_id: str
-    skill_id: str
     action: str
     success: bool
     selected_path: str | None
@@ -400,7 +398,6 @@ class SkillResult:
     children: list = field(default_factory=list)
     error: str | None = None
     error_code: str | None = None
-    recovery: list = field(default_factory=list)
 
     def asdict(self):
         return dict(self.__dict__)
@@ -409,11 +406,11 @@ class SkillResult:
 class SkillContractRunner:
     def __init__(self, rig, catalog=CATALOG):
         self.rig = rig
-        self.by_id, self.by_verb, self.by_skill = load_contracts(catalog)
+        self.by_id, self.by_verb = load_contracts(catalog)
         self.trace: list[dict] = []
 
     def contract(self, key):
-        return self.by_id.get(key) or self.by_verb.get(key) or self.by_skill.get(key) or \
+        return self.by_id.get(key) or self.by_verb.get(key) or \
             (_ for _ in ()).throw(KeyError(key))
 
     # -------------------------------------------------------------
@@ -435,7 +432,7 @@ class SkillContractRunner:
             raise ContractError("INPUT_UNKNOWN", f"{c['verb']}: unknown inputs {sorted(unknown)}")
         action = f"{c['action_predicate']['name']}(" + ", ".join(
             f"{k}={values[k]}" for k in c["action_predicate"]["arguments"] if values.get(k) is not None) + ")"
-        res = SkillResult(c["contract_id"], c["skill_id"], action, False, None, [], [], [], {}, {})
+        res = SkillResult(c["contract_id"], action, False, None, [], [], [], {}, {})
         rig.caption = action
         rig.log("contract_start", contract=c["contract_id"], action=action, depth=depth)
         ctx = {"before": before_snapshot(rig)}
@@ -466,15 +463,11 @@ class SkillContractRunner:
             res.success = True
         except ContractError as exc:
             res.error, res.error_code = str(exc), exc.code
-            res.recovery = self._recovery(c, res)
         except SkillFailure as exc:
             res.error, res.error_code = str(exc), "POLICY_FAILED"
-            res.recovery = self._recovery(c, res)
         rig.log("contract_end", contract=c["contract_id"], action=action, success=res.success,
                 path=res.selected_path, error=res.error)
         self.trace.append(res.asdict())
-        if not res.success and depth == 0:
-            pass
         return res
 
     def run_or_raise(self, key, args, depth=0):
@@ -521,20 +514,6 @@ class SkillContractRunner:
                 res.children.append(child.asdict())
                 res.policy_steps.append({"call": step["call"], "args": sub_args, "success": child.success,
                                          "path": child.selected_path})
-                repair = self._nested_repair(child, sub_args)
-                if repair is not None:
-                    # a declared repair fallback for the exact failed precondition
-                    # (e.g. pick -> separate for grasp_clearance): run it, retry once
-                    verb, rargs = repair
-                    fixed = self.run(verb, rargs, depth + 1)
-                    res.children.append(fixed.asdict())
-                    res.policy_steps.append({"call": verb, "args": rargs, "success": fixed.success,
-                                             "path": fixed.selected_path, "repair_for": step["call"]})
-                    if fixed.success:
-                        child = self.run(step["call"], sub_args, depth + 1)
-                        res.children.append(child.asdict())
-                        res.policy_steps.append({"call": step["call"], "args": sub_args, "success": child.success,
-                                                 "path": child.selected_path, "retry": True})
                 if not child.success:
                     raise ContractError("SUBSKILL_FAILED", f"{child.action}: {child.error}")
                 if step.get("as"):
@@ -596,40 +575,3 @@ class SkillContractRunner:
                 v = None
             res[name] = v
         return res
-
-    def _nested_repair(self, child, sub_args):
-        """(verb, args) of a repair fallback matching a failed precondition of a
-        nested call whose bind can be filled from that call's arguments."""
-        if child.success or child.error_code != "PRECONDITION_FAILED":
-            return None
-        for r in child.recovery:
-            if r.get("type") != "repair" or not r.get("matches_failed_predicate"):
-                continue
-            args, ok = {}, True
-            for k, v in r.get("bind", {}).items():
-                if isinstance(v, str) and v.startswith("$"):
-                    if v[1:] not in sub_args:
-                        ok = False
-                        break
-                    args[k] = sub_args[v[1:]]
-                else:
-                    args[k] = v
-            if ok:
-                return r["verb"], args
-        return None
-
-    def _recovery(self, c, res):
-        """Relation-graph fallbacks whose repaired predicate matches a failed atom."""
-        failed_preds = {a["atom"].replace("not ", "").split("(")[0] for a in res.preconditions + res.postconditions
-                        if not a["holds"]}
-        out = []
-        for rel in c.get("relations", []):
-            if rel["kind"] != "fallback":
-                continue
-            rep = rel.get("repairs")
-            if rep is None or rep in failed_preds or res.error_code in ("POLICY_FAILED", "SUBSKILL_FAILED"):
-                out.append({"skill": rel["to_skill_id"], "verb": rel["to"], "type": rel.get("fallback_type"),
-                            "when": rel["when"], "bind": rel.get("bind", {}),
-                            "matches_failed_predicate": rep in failed_preds if rep else False})
-        out.sort(key=lambda r: not r["matches_failed_predicate"])
-        return out

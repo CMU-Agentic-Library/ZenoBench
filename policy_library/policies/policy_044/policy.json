@@ -66,5 +66,5 @@
     "contract_006"
   ],
   "supporting_family_contracts": [],
-  "evidence": "Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01 Active Contract top-drag pass on book_green: 0.024 m measured progress for 0.040 m request, runs/check_50_top_drag_green_fixed, 2026-10-06; book_red case still failed to move."
+  "evidence": "Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01 legacy family Contract top-drag pass on book_green: 0.024 m measured progress for 0.040 m request, runs/check_50_top_drag_green_fixed, 2026-10-06; book_red case still failed to move."
 }

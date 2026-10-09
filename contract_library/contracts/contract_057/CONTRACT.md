@@ -2,7 +2,7 @@
 
 Put each listed object into the container mapped to its category tag (e.g. fruit -> basket, toy -> toy box).
 
-Paired SkillNode: `skill_049` (`sort-objects`).
+Verb: `sort`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_049` (`sort-objects`).
 ## Policy paths
 
 - `fetch_by_tag` when always: `for each item in $objects: [fetch](object=$item, receptacle=@item.sort_target)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

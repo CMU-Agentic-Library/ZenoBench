@@ -8,15 +8,6 @@
  "title": "Empty a container",
  "group": "multi_object",
  "signature": "empty(container: container_ref, receptacle: receptacle_ref)",
- "action_predicate": {
-  "name": "empty_container",
-  "verb": "empty",
-  "noun": "container",
-  "arguments": [
-   "container",
-   "receptacle"
-  ]
- },
  "description": "Take every object out of a container and put it on/into a destination receptacle.",
  "use_when": "A container must be emptied into another container or onto a surface.",
  "not_to_be_confused_with": {
@@ -31,7 +22,7 @@
   "receptacle": {
    "type": "receptacle_ref",
    "required": true,
-   "description": "Where the contents go (a container for the pouring path)."
+   "description": "Where the contents go (a container if they are poured)."
   }
  },
  "required_inputs": [
@@ -51,174 +42,47 @@
  "preconditions": [
   {
    "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
-   "args": {
-    "hand": "right"
-   },
-   "negated": false,
-   "meaning": "The given gripper holds nothing.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The given gripper holds nothing."
   },
   {
    "predicate": "uncovered(container=$container)",
-   "name": "uncovered",
-   "args": {
-    "container": "$container"
-   },
-   "negated": false,
-   "meaning": "No lid rests on the container rim.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "container_profile",
-    "asset_tags"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "No lid rests on the container rim."
   }
  ],
  "postconditions": [
   {
    "predicate": "container_empty(container=$container)",
-   "name": "container_empty",
-   "args": {
-    "container": "$container"
-   },
-   "negated": false,
-   "meaning": "No annotated object is inside the container.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "container_profile"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "No annotated object is inside the container."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "container_empty(container=$container)",
-    "name": "container_empty",
-    "args": {
-     "container": "$container"
-    },
-    "negated": false,
-    "meaning": "No annotated object is inside the container.",
-    "kind": "fluent",
-    "gt_sources": [
-     "object_pose",
-     "container_profile"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [],
- "policy_paths": [
-  {
-   "path_id": "pick_each_inside",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "for each item in @container.contents: policy_092($container) -> policy_061($item) -> [navigate](destination=$receptacle) -> [place](object=$item, receptacle=$receptacle)"
-   ],
-   "policies": [
-    "policy_061",
-    "policy_092"
-   ],
-   "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)"
-  },
-  {
-   "path_id": "pour_out",
-   "when": [
-    "'rim_pinch' in container.grasp_types",
-    "receptacle.kind == 'object'"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "[navigate](destination=$container)",
-    "[pick](object=$container)",
-    "[navigate](destination=$receptacle)",
-    "[pour](source=$container, target=$receptacle)",
-    "[place](object=$container, receptacle=@container.support)"
-   ],
-   "policies": [],
-   "note": "A cup or mug of loose items is emptied by pouring, then put back."
-  }
- ],
- "relations": {
-  "previous": [
-   {
-    "skill_id": "skill_012",
-    "verb": "inspect",
-    "when": "every object inside must be removed",
-    "type": "then"
-   }
-  ],
-  "next": [],
-  "fallback": [
-   {
-    "skill_id": "skill_046",
-    "verb": "uncover",
-    "when": "the container has its lid on",
-    "bind": {
-     "container": "$container"
-    },
-    "type": "repair",
-    "repairs": "uncovered"
-   }
-  ],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_050",
-    "verb": "clear",
-    "when": "the items lie on a surface instead",
-    "bind": {}
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_059",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_051",
+ "call": {
+  "request": {
+   "contract": "empty",
    "args": {
-    "container": {
-     "ref": "<container>"
-    },
-    "receptacle": {
-     "ref": "<receptacle>"
-    }
-   },
-   "depends_on": []
+    "container": "<container>",
+    "receptacle": "<receptacle>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"empty\", {'container': ..., 'receptacle': ...})"
+  "arg_formats": {
+   "container_ref": "an object annotated as an open container",
+   "receptacle_ref": "a support surface or an open container"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

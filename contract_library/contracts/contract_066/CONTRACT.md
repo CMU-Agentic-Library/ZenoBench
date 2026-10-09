@@ -2,7 +2,7 @@
 
 Look at an object and report its current axis-aligned size.
 
-Paired SkillNode: `skill_058` (`measure-object`).
+Verb: `measure`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_058` (`measure-object`).
 ## Policy paths
 
 - `look_and_size` when always: `policy_111($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

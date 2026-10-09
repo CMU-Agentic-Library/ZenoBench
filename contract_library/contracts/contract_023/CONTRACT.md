@@ -2,7 +2,7 @@
 
 Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.
 
-Paired SkillNode: `skill_015` (`point-target`).
+Verb: `point`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_015` (`point-target`).
 
 - `front` when target.bearing_abs_deg <= 60: `policy_041()` -> `policy_101($target) as aim` -> `policy_038(#aim.position, #aim.rotation, position_tolerance=0.04, rotation_tolerance=0.2)`
 - `turn_and_point` when always: `policy_071($target)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -1,5 +1,7 @@
 # Kitchen pot demo
 
+> Legacy demo, slated for removal: it is not one of the tasks in `skill_library/tasks.json`.
+
 This scene adds a textured EmbodiedGen V2 `handled_cooking_pot` to the existing house's kitchen counter. It is separate from the ten canonical ZenoBench tasks. The generated pot has an open body and two **side handles**. Its source visual/collision OBJ, texture, URDF, converted USD, and grasp annotation are in the existing asset directories. The annotation offers a side-handle pinch and a round-rim route; geometry alone does not verify a lift.
 
 - [Scene spec](../../scene_specs/kitchen_pot.json), [USD scene](scene.usd), [scene annotation](annotation.json)
@@ -8,7 +10,7 @@ This scene adds a textured EmbodiedGen V2 `handled_cooking_pot` to the existing 
 
 The scene uses `kitchen_counter_surface`, the actual kitchen fixture support at 1.009 m. The older `kitchen_counter` repair support is lower and caused the wider V2 pot to spawn inside the fixture. This seed-0 scene now passes a three-second PhysX stability check (0 m pot and robot drift).
 
-The earlier procedural pot had an overhead bail; its failed `contract_025` run is preserved as historical evidence in [physical findings](../../skill_library/verification/FINDINGS.md). On the V2 pot, the side-handle policy reaches the pregrasp/contact sequence but the fingers do not retain the pot through a measured lift (`runs/kitchen_pot_v2_tucked_handle_pick/result.json`). A collision-aware IK regression test covers the open space above the counter. A bounded `policy_011` rim attempt checked two candidates and found no reachable grasp (`runs/kitchen_pot_v2_rim_policy/result.json`). A physical lift remains unverified.
+The earlier procedural pot had an overhead bail; a contract run on it failed (the findings file is no longer in the repository). On the V2 pot, the side-handle policy reaches the pregrasp/contact sequence but the fingers do not retain the pot through a measured lift (`runs/kitchen_pot_v2_tucked_handle_pick/result.json`). A collision-aware IK regression test covers the open space above the counter. A bounded `policy_011` rim attempt checked two candidates and found no reachable grasp (`runs/kitchen_pot_v2_rim_policy/result.json`). A physical lift remains unverified.
 
 To rebuild from the committed V2 mesh sources (`ISAACLAB_PYTHON` points to Isaac Lab):
 

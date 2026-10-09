@@ -3,7 +3,7 @@ name: release-object
 description: Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.
 ---
 
-# Release an object (`skill_021`)
+# Release an object (`release`)
 
 `release(object: object_ref, hand: hand)`
 
@@ -21,46 +21,48 @@ The hand must open in place (the object is already supported).
 ## Inputs
 
 - `object` (`object_ref`): The object in the hand.
-- `hand` (`hand`, default 'right'): Which gripper opens.
+- `hand` (`hand`, one of 'right', 'left', default 'right'): Which gripper opens.
+
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "release", "args": {"object": "<object>", "hand": "<hand>"}}
+```
+
+Argument formats:
+
+- `hand`: "right" or "left"
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
 
 ## Applicability
 
 Requires holding(hand=$hand, object=$object).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `holding(hand=$hand, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=$hand, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `hand_empty(hand=$hand)` — The given gripper holds nothing. GT: gripper_state.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `hand_empty(hand=$hand)` (all paths)
+- `hand_empty(hand=$hand)` — The given gripper holds nothing.
 
 ## May invalidate
 
 `holding($hand,$object)`, `steadied($object)`
 
-## Policy paths (first match on the bound nouns)
-
-### `open_in_place` — when always (default path)
-
-1. `policy_096($object, $hand)`
-
-## Relations
-
-- Previous step: `brace` (`skill_027`) (enables) — bracing is finished
-- Previous step: `hover` (`skill_063`) (enables) — the object is let go right there
-- Next step: `tuck` (`skill_009`) (enables) — the arm is folded after letting go
-- Alternative: `drop` (`skill_019`) — the object should fall into a container
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_029`.

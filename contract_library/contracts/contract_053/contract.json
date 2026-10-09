@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_053",
- "skill_id": "skill_045",
  "verb": "cover",
  "noun": "container",
  "name": "Cover a container with a lid",
@@ -198,27 +197,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "heat",
-   "when": "the covered pot is heated",
-   "bind": {},
-   "reason": "stove path",
-   "to_skill_id": "skill_043",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "uncover",
-   "when": "opposite effect",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_046"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

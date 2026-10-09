@@ -3,7 +3,7 @@ name: wipe-surface
 description: Press a held sponge on a support and sweep a 30 cm strip twice; succeeds when the sponge stayed in contact over at least half of the strip.
 ---
 
-# Wipe a surface (`skill_037`)
+# Wipe a surface (`wipe`)
 
 `wipe(surface: support_ref, tool: tool_ref)`
 
@@ -26,42 +26,44 @@ A surface must be wiped with a held sponge or cloth.
 
 - `coverage` (`number`): Fraction of the strip wiped in contact.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "wipe", "args": {"surface": "<support>", "tool": "<tool>"}}
+```
+
+Argument formats:
+
+- `support_ref`: an annotated horizontal support surface
+- `tool_ref`: an object tagged as a hand tool (sponge, spoon)
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires holding(hand=right, object=$tool); base_near(place=$surface).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `holding(hand=right, object=$tool)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-- `base_near(place=$surface)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `holding(hand=right, object=$tool)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
+- `base_near(place=$surface)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `wiped(support=$surface)` — A held wiping tool stayed in contact with at least 50 % of the requested strip of the support. GT: robot_memory (tool-bottom contact samples).
-- `holding(hand=right, object=$tool)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `wiped(support=$surface)` (all paths)
-- `holding(hand=right, object=$tool)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `sponge_strip` — when 'wiping_tool' in tool.tags
-
-1. `policy_084($tool, $surface)`
-
-## Relations
-
-- Previous step: `clear` (`skill_050`) (then) — the cleared surface is wiped
-- Next step: `place` (`skill_018`) (enables) — the sponge is put back
-- Fallback on failure: `clear` (`skill_050`) (recover) — objects cover the surface
+- `wiped(support=$surface)` — A held wiping tool stayed in contact with at least 50 % of the requested strip of the support.
+- `holding(hand=right, object=$tool)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_045`.

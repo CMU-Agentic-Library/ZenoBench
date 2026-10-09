@@ -2,7 +2,7 @@
 
 Park the base where the right arm has a collision-free IK solution at the target's reach pose: 10 cm above an object or support, the handle pre-grasp of a door or drawer, 8 cm in front of a button.
 
-Paired SkillNode: `skill_002` (`approach-target`).
+Verb: `approach`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_002` (`approach-target`).
 
 - `reach_on_the_move` when args.pass_by: `policy_098($target) as reach` -> `policy_051(#reach.position, #reach.rotation, $pass_by)`
 - `park` when always: `policy_065($target)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

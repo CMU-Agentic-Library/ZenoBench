@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_046",
- "skill_id": "skill_038",
  "verb": "stir",
  "noun": "container",
  "name": "Stir a container",
@@ -202,41 +201,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "cover",
-   "when": "the pot is covered again",
-   "bind": {
-    "container": "$container"
-   },
-   "reason": "",
-   "to_skill_id": "skill_045",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "heat",
-   "when": "the stirred food is heated",
-   "bind": {},
-   "reason": "stove path",
-   "to_skill_id": "skill_043",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "brace",
-   "when": "the container slides while stirring",
-   "bind": {
-    "object": "$container"
-   },
-   "reason": "the left hand holds the pot still",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_027"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

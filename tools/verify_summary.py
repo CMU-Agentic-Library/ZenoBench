@@ -32,8 +32,8 @@ def main():
     ap.add_argument("--root", default=str(ROOT / "runs/skillv2/verify"))
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
-    from skill_library.graph import load_skills
-    skills = sorted(load_skills().values(), key=lambda s: s["skill_id"])
+    catalog = json.loads((ROOT / "contract_library/skill_contracts.json").read_text())
+    skills = sorted(catalog["contracts"], key=lambda c: c["contract_id"])
     verbs = {s["verb"]: s for s in skills}
     rows = collect(args.root)
     calls = []
@@ -60,7 +60,7 @@ def main():
     for sid, ok, n, msg in lines:
         print(f"{'PASS' if ok else 'FAIL'} {sid:<18} {n:<6} {msg[:200]}")
     print(f"\nverbs passed: {len(passed)}/{len(verbs)}; missing: {sorted(set(verbs) - set(passed))}")
-    n_paths = sum(len(s["policy_paths"]) for s in skills)
+    n_paths = sum(len(s["policy_plan"]["paths"]) for s in skills)
     n_passed_paths = sum(len(v) for v in paths.values())
     print(f"policy paths passed: {n_passed_paths}/{n_paths}")
     if not args.write:
@@ -74,7 +74,7 @@ def main():
          "call passed every GT precondition and postcondition; nested calls inside multi-object Contracts count.", "",
          f"**{len(passed)}/{len(verbs)} verbs verified**, {n_passed_paths}/{n_paths} noun-selected policy paths "
          f"exercised; {sum(1 for _, ok, _, _ in lines if ok)}/{len(lines)} scenarios passed end to end.", "",
-         "| SkillNode | Verb | Status | Paths passed | Evidence (scenario: measured postconditions) |", "|---|---|---|---|---|"]
+         "| Contract | Verb | Status | Paths passed | Evidence (scenario: measured postconditions) |", "|---|---|---|---|---|"]
     for s in skills:
         v = s["verb"]
         if v in passed:
@@ -86,9 +86,9 @@ def main():
             sc, c = (failed.get(v) or [(None, None)])[0]
             ev = f"{sc}: {c['error']}"[:300] if c else "not run"
             st = "failed" if c else "not run"
-        all_paths = [p["path_id"] for p in s["policy_paths"]]
+        all_paths = [p["path_id"] for p in s["policy_plan"]["paths"]]
         done = sorted(paths.get(v, set()))
-        L.append(f"| `{s['skill_id']}` | {v} | {st} | {', '.join(done) or '-'} / {len(all_paths)} | "
+        L.append(f"| `{s['contract_id']}` | {v} | {st} | {', '.join(done) or '-'} / {len(all_paths)} | "
                  f"{ev.replace('|', '/')} |")
         status["verbs"][v] = {"status": st, "paths_passed": done, "paths": all_paths, "evidence": ev}
     L += ["", "## Scenarios", "", "| Scenario | Result | Steps | Failure |", "|---|---|---|---|"]

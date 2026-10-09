@@ -4,421 +4,351 @@
  "contracts": [
   {
    "contract_id": "contract_009",
-   "skill_id": "skill_001",
    "verb": "navigate",
    "definition": "contracts/contract_009/contract.json"
   },
   {
    "contract_id": "contract_010",
-   "skill_id": "skill_002",
    "verb": "approach",
    "definition": "contracts/contract_010/contract.json"
   },
   {
    "contract_id": "contract_011",
-   "skill_id": "skill_003",
    "verb": "face",
    "definition": "contracts/contract_011/contract.json"
   },
   {
    "contract_id": "contract_012",
-   "skill_id": "skill_004",
    "verb": "retreat",
    "definition": "contracts/contract_012/contract.json"
   },
   {
    "contract_id": "contract_013",
-   "skill_id": "skill_005",
    "verb": "crouch",
    "definition": "contracts/contract_013/contract.json"
   },
   {
    "contract_id": "contract_014",
-   "skill_id": "skill_006",
    "verb": "stand",
    "definition": "contracts/contract_014/contract.json"
   },
   {
    "contract_id": "contract_015",
-   "skill_id": "skill_007",
    "verb": "bend",
    "definition": "contracts/contract_015/contract.json"
   },
   {
    "contract_id": "contract_016",
-   "skill_id": "skill_008",
    "verb": "straighten",
    "definition": "contracts/contract_016/contract.json"
   },
   {
    "contract_id": "contract_017",
-   "skill_id": "skill_009",
    "verb": "tuck",
    "definition": "contracts/contract_017/contract.json"
   },
   {
    "contract_id": "contract_018",
-   "skill_id": "skill_010",
    "verb": "reset",
    "definition": "contracts/contract_018/contract.json"
   },
   {
    "contract_id": "contract_019",
-   "skill_id": "skill_011",
    "verb": "look",
    "definition": "contracts/contract_019/contract.json"
   },
   {
    "contract_id": "contract_020",
-   "skill_id": "skill_012",
    "verb": "inspect",
    "definition": "contracts/contract_020/contract.json"
   },
   {
    "contract_id": "contract_021",
-   "skill_id": "skill_013",
    "verb": "search",
    "definition": "contracts/contract_021/contract.json"
   },
   {
    "contract_id": "contract_022",
-   "skill_id": "skill_014",
    "verb": "explore",
    "definition": "contracts/contract_022/contract.json"
   },
   {
    "contract_id": "contract_023",
-   "skill_id": "skill_015",
    "verb": "point",
    "definition": "contracts/contract_023/contract.json"
   },
   {
    "contract_id": "contract_024",
-   "skill_id": "skill_016",
    "verb": "present",
    "definition": "contracts/contract_024/contract.json"
   },
   {
    "contract_id": "contract_025",
-   "skill_id": "skill_017",
    "verb": "pick",
    "definition": "contracts/contract_025/contract.json"
   },
   {
    "contract_id": "contract_026",
-   "skill_id": "skill_018",
    "verb": "place",
    "definition": "contracts/contract_026/contract.json"
   },
   {
    "contract_id": "contract_027",
-   "skill_id": "skill_019",
    "verb": "drop",
    "definition": "contracts/contract_027/contract.json"
   },
   {
    "contract_id": "contract_028",
-   "skill_id": "skill_020",
    "verb": "stack",
    "definition": "contracts/contract_028/contract.json"
   },
   {
    "contract_id": "contract_029",
-   "skill_id": "skill_021",
    "verb": "release",
    "definition": "contracts/contract_029/contract.json"
   },
   {
    "contract_id": "contract_030",
-   "skill_id": "skill_022",
    "verb": "handover",
    "definition": "contracts/contract_030/contract.json"
   },
   {
    "contract_id": "contract_031",
-   "skill_id": "skill_023",
    "verb": "lift",
    "definition": "contracts/contract_031/contract.json"
   },
   {
    "contract_id": "contract_032",
-   "skill_id": "skill_024",
    "verb": "lower",
    "definition": "contracts/contract_032/contract.json"
   },
   {
    "contract_id": "contract_033",
-   "skill_id": "skill_025",
    "verb": "rotate",
    "definition": "contracts/contract_033/contract.json"
   },
   {
    "contract_id": "contract_034",
-   "skill_id": "skill_026",
    "verb": "regrasp",
    "definition": "contracts/contract_034/contract.json"
   },
   {
    "contract_id": "contract_035",
-   "skill_id": "skill_027",
    "verb": "brace",
    "definition": "contracts/contract_035/contract.json"
   },
   {
    "contract_id": "contract_036",
-   "skill_id": "skill_028",
    "verb": "flip",
    "definition": "contracts/contract_036/contract.json"
   },
   {
    "contract_id": "contract_037",
-   "skill_id": "skill_029",
    "verb": "push",
    "definition": "contracts/contract_037/contract.json"
   },
   {
    "contract_id": "contract_038",
-   "skill_id": "skill_030",
    "verb": "pull",
    "definition": "contracts/contract_038/contract.json"
   },
   {
    "contract_id": "contract_039",
-   "skill_id": "skill_031",
    "verb": "expose",
    "definition": "contracts/contract_039/contract.json"
   },
   {
    "contract_id": "contract_040",
-   "skill_id": "skill_032",
    "verb": "separate",
    "definition": "contracts/contract_040/contract.json"
   },
   {
    "contract_id": "contract_041",
-   "skill_id": "skill_033",
    "verb": "center",
    "definition": "contracts/contract_041/contract.json"
   },
   {
    "contract_id": "contract_042",
-   "skill_id": "skill_034",
    "verb": "roll",
    "definition": "contracts/contract_042/contract.json"
   },
   {
    "contract_id": "contract_043",
-   "skill_id": "skill_035",
    "verb": "tip",
    "definition": "contracts/contract_043/contract.json"
   },
   {
    "contract_id": "contract_044",
-   "skill_id": "skill_036",
    "verb": "upright",
    "definition": "contracts/contract_044/contract.json"
   },
   {
    "contract_id": "contract_045",
-   "skill_id": "skill_037",
    "verb": "wipe",
    "definition": "contracts/contract_045/contract.json"
   },
   {
    "contract_id": "contract_046",
-   "skill_id": "skill_038",
    "verb": "stir",
    "definition": "contracts/contract_046/contract.json"
   },
   {
    "contract_id": "contract_047",
-   "skill_id": "skill_039",
    "verb": "pour",
    "definition": "contracts/contract_047/contract.json"
   },
   {
    "contract_id": "contract_048",
-   "skill_id": "skill_040",
    "verb": "open",
    "definition": "contracts/contract_048/contract.json"
   },
   {
    "contract_id": "contract_049",
-   "skill_id": "skill_041",
    "verb": "close",
    "definition": "contracts/contract_049/contract.json"
   },
   {
    "contract_id": "contract_050",
-   "skill_id": "skill_042",
    "verb": "press",
    "definition": "contracts/contract_050/contract.json"
   },
   {
    "contract_id": "contract_051",
-   "skill_id": "skill_043",
    "verb": "heat",
    "definition": "contracts/contract_051/contract.json"
   },
   {
    "contract_id": "contract_052",
-   "skill_id": "skill_044",
    "verb": "chill",
    "definition": "contracts/contract_052/contract.json"
   },
   {
    "contract_id": "contract_053",
-   "skill_id": "skill_045",
    "verb": "cover",
    "definition": "contracts/contract_053/contract.json"
   },
   {
    "contract_id": "contract_054",
-   "skill_id": "skill_046",
    "verb": "uncover",
    "definition": "contracts/contract_054/contract.json"
   },
   {
    "contract_id": "contract_055",
-   "skill_id": "skill_047",
    "verb": "fetch",
    "definition": "contracts/contract_055/contract.json"
   },
   {
    "contract_id": "contract_056",
-   "skill_id": "skill_048",
    "verb": "collect",
    "definition": "contracts/contract_056/contract.json"
   },
   {
    "contract_id": "contract_057",
-   "skill_id": "skill_049",
    "verb": "sort",
    "definition": "contracts/contract_057/contract.json"
   },
   {
    "contract_id": "contract_058",
-   "skill_id": "skill_050",
    "verb": "clear",
    "definition": "contracts/contract_058/contract.json"
   },
   {
    "contract_id": "contract_059",
-   "skill_id": "skill_051",
    "verb": "empty",
    "definition": "contracts/contract_059/contract.json"
   },
   {
    "contract_id": "contract_060",
-   "skill_id": "skill_052",
    "verb": "arrange",
    "definition": "contracts/contract_060/contract.json"
   },
   {
    "contract_id": "contract_061",
-   "skill_id": "skill_053",
    "verb": "restore",
    "definition": "contracts/contract_061/contract.json"
   },
   {
    "contract_id": "contract_062",
-   "skill_id": "skill_054",
    "verb": "swap",
    "definition": "contracts/contract_062/contract.json"
   },
   {
    "contract_id": "contract_063",
-   "skill_id": "skill_055",
    "verb": "sidestep",
    "definition": "contracts/contract_063/contract.json"
   },
   {
    "contract_id": "contract_064",
-   "skill_id": "skill_056",
    "verb": "wait",
    "definition": "contracts/contract_064/contract.json"
   },
   {
    "contract_id": "contract_065",
-   "skill_id": "skill_057",
    "verb": "identify",
    "definition": "contracts/contract_065/contract.json"
   },
   {
    "contract_id": "contract_066",
-   "skill_id": "skill_058",
    "verb": "measure",
    "definition": "contracts/contract_066/contract.json"
   },
   {
    "contract_id": "contract_067",
-   "skill_id": "skill_059",
    "verb": "count",
    "definition": "contracts/contract_067/contract.json"
   },
   {
    "contract_id": "contract_068",
-   "skill_id": "skill_060",
    "verb": "wave",
    "definition": "contracts/contract_068/contract.json"
   },
   {
    "contract_id": "contract_069",
-   "skill_id": "skill_061",
    "verb": "nod",
    "definition": "contracts/contract_069/contract.json"
   },
   {
    "contract_id": "contract_070",
-   "skill_id": "skill_062",
    "verb": "shake",
    "definition": "contracts/contract_070/contract.json"
   },
   {
    "contract_id": "contract_071",
-   "skill_id": "skill_063",
    "verb": "hover",
    "definition": "contracts/contract_071/contract.json"
   },
   {
    "contract_id": "contract_072",
-   "skill_id": "skill_064",
    "verb": "square",
    "definition": "contracts/contract_072/contract.json"
   },
   {
    "contract_id": "contract_073",
-   "skill_id": "skill_065",
    "verb": "touch",
    "definition": "contracts/contract_073/contract.json"
   },
   {
    "contract_id": "contract_074",
-   "skill_id": "skill_066",
    "verb": "knock",
    "definition": "contracts/contract_074/contract.json"
   },
   {
    "contract_id": "contract_075",
-   "skill_id": "skill_067",
    "verb": "sweep",
    "definition": "contracts/contract_075/contract.json"
   },
   {
    "contract_id": "contract_076",
-   "skill_id": "skill_068",
    "verb": "stop",
    "definition": "contracts/contract_076/contract.json"
   },
   {
    "contract_id": "contract_077",
-   "skill_id": "skill_069",
    "verb": "dip",
    "definition": "contracts/contract_077/contract.json"
   },
   {
    "contract_id": "contract_078",
-   "skill_id": "skill_070",
    "verb": "hide",
    "definition": "contracts/contract_078/contract.json"
   }

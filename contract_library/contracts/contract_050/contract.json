@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_050",
- "skill_id": "skill_042",
  "verb": "press",
  "noun": "button",
  "name": "Press a button",
@@ -262,38 +261,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "heat",
-   "when": "the start key began a cycle",
-   "bind": {},
-   "reason": "heat then only waits",
-   "to_skill_id": "skill_043",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "tuck",
-   "when": "the hand is free again",
-   "bind": {
-    "hand": "right"
-   },
-   "reason": "",
-   "to_skill_id": "skill_009",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "open",
-   "when": "the door key is pressed only to open the microwave door",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_040"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

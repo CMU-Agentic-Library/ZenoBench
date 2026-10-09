@@ -6,7 +6,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_009",
-   "skill_id": "skill_001",
    "verb": "navigate",
    "noun": "place",
    "name": "Navigate to a place",
@@ -172,61 +171,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "approach",
-     "when": "a manipulation target is on the destination",
-     "bind": {
-      "target": "$destination"
-     },
-     "reason": "navigate leaves the base near; approach makes the target IK-reachable.",
-     "to_skill_id": "skill_002",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "look",
-     "when": "the destination must be observed first",
-     "bind": {
-      "target": "$destination"
-     },
-     "reason": "",
-     "to_skill_id": "skill_011",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "retreat",
-     "when": "navigation fails because the base or load is wedged against furniture",
-     "bind": {},
-     "reason": "Backing out frees the planner's start cell, then navigate again.",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_004"
-    },
-    {
-     "kind": "fallback",
-     "to": "tuck",
-     "when": "navigation fails because the empty arm cannot fold",
-     "bind": {
-      "hand": "right"
-     },
-     "reason": "A separately planned fold clears the arm before the base path.",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_009"
-    },
-    {
-     "kind": "fallback",
-     "to": "lift",
-     "when": "a carried object hangs too low for the doorway clearance",
-     "bind": {},
-     "reason": "Raising the load restores the carry clearance.",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_023"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -245,7 +190,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_010",
-   "skill_id": "skill_002",
    "verb": "approach",
    "noun": "target",
    "name": "Approach a manipulation target",
@@ -400,75 +344,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the target is an object to grasp",
-     "bind": {
-      "object": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "open",
-     "when": "the target is a door or drawer",
-     "bind": {
-      "articulated": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_040",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "press",
-     "when": "the target is a button",
-     "bind": {
-      "button": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_042",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "navigate",
-     "when": "no base pose near the current one reaches the target",
-     "bind": {
-      "destination": "$target"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "base_near",
-     "to_skill_id": "skill_001"
-    },
-    {
-     "kind": "fallback",
-     "to": "bend",
-     "when": "the target is just beyond the arm envelope",
-     "bind": {},
-     "reason": "Waist pitch adds forward reach from the same base pose.",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_007"
-    },
-    {
-     "kind": "fallback",
-     "to": "pull",
-     "when": "the object sits too deep on its support",
-     "bind": {
-      "object": "$target"
-     },
-     "reason": "Dragging the object to the front makes it reachable.",
-     "fallback_type": "substitute",
-     "to_skill_id": "skill_030"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -485,7 +361,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_011",
-   "skill_id": "skill_003",
    "verb": "face",
    "noun": "target",
    "name": "Face a target",
@@ -616,42 +491,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "look",
-     "when": "the target must be observed",
-     "bind": {
-      "target": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_011",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "point",
-     "when": "the target must be indicated",
-     "bind": {
-      "target": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_015",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "navigate",
-     "when": "turning in place is blocked by furniture",
-     "bind": {
-      "destination": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_001"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -663,7 +503,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_012",
-   "skill_id": "skill_004",
    "verb": "retreat",
    "noun": "obstacle",
    "name": "Retreat from an obstacle",
@@ -840,30 +679,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "the robot must leave after backing out",
-     "bind": {},
-     "reason": "free start cell",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "open",
-     "when": "a door's swing needs room in front of the robot",
-     "bind": {
-      "articulated": "$obstacle"
-     },
-     "reason": "",
-     "to_skill_id": "skill_040",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -875,7 +691,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_013",
-   "skill_id": "skill_005",
    "verb": "crouch",
    "noun": "torso",
    "name": "Crouch the torso",
@@ -1012,28 +827,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the object is on the floor or a low shelf",
-     "bind": {},
-     "reason": "floor reach",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "stand",
-     "when": "low work is done",
-     "bind": {},
-     "reason": "restore travel height",
-     "to_skill_id": "skill_006",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -1045,7 +839,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_014",
-   "skill_id": "skill_006",
    "verb": "stand",
    "noun": "torso",
    "name": "Stand up to full height",
@@ -1108,27 +901,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "the robot drives after low work",
-     "bind": {},
-     "reason": "travel height",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "reset",
-     "when": "the arm and waist must also be restored",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_010"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -1140,7 +913,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_015",
-   "skill_id": "skill_007",
    "verb": "bend",
    "noun": "waist",
    "name": "Bend the waist",
@@ -1238,28 +1010,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "straighten",
-     "when": "the reach is done",
-     "bind": {},
-     "reason": "restore upright posture",
-     "to_skill_id": "skill_008",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "approach",
-     "when": "the target was just out of reach",
-     "bind": {},
-     "reason": "extra reach",
-     "to_skill_id": "skill_002",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -1271,7 +1022,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_016",
-   "skill_id": "skill_008",
    "verb": "straighten",
    "noun": "waist",
    "name": "Straighten the waist",
@@ -1334,27 +1084,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "the robot drives after a bent reach",
-     "bind": {},
-     "reason": "travel posture",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "reset",
-     "when": "the arm and torso must also be restored",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_010"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -1366,7 +1096,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_017",
-   "skill_id": "skill_009",
    "verb": "tuck",
    "noun": "arm",
    "name": "Tuck an arm",
@@ -1489,28 +1218,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "the robot drives next",
-     "bind": {},
-     "reason": "a folded arm is the travel posture",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "retreat",
-     "when": "the fold collides with furniture",
-     "bind": {},
-     "reason": "More room around the base gives the fold a collision-free path.",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_004"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -1522,7 +1230,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_018",
-   "skill_id": "skill_010",
    "verb": "reset",
    "noun": "posture",
    "name": "Reset the posture",
@@ -1666,19 +1373,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "after a failed manipulation, before driving on",
-     "bind": {},
-     "reason": "a known posture makes the base path plannable",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -1690,7 +1385,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_019",
-   "skill_id": "skill_011",
    "verb": "look",
    "noun": "target",
    "name": "Look at a target",
@@ -1829,42 +1523,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "approach",
-     "when": "the observed target will be manipulated",
-     "bind": {
-      "target": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_002",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "navigate",
-     "when": "the line of sight is blocked",
-     "bind": {
-      "destination": "$target"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "to_skill_id": "skill_001"
-    },
-    {
-     "kind": "alternative",
-     "to": "inspect",
-     "when": "the target is a receptacle whose contents matter",
-     "bind": {
-      "receptacle": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_012"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -1876,7 +1535,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_020",
-   "skill_id": "skill_012",
    "verb": "inspect",
    "noun": "receptacle",
    "name": "Inspect a receptacle",
@@ -2058,40 +1716,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "an object found inside must be taken out",
-     "bind": {},
-     "reason": "contents output names the object",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "empty",
-     "when": "every object inside must be removed",
-     "bind": {
-      "container": "$receptacle"
-     },
-     "reason": "",
-     "to_skill_id": "skill_051",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "look",
-     "when": "only the receptacle itself must be seen",
-     "bind": {
-      "target": "$receptacle"
-     },
-     "reason": "",
-     "to_skill_id": "skill_011"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -2103,7 +1728,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_021",
-   "skill_id": "skill_013",
    "verb": "search",
    "noun": "object",
    "name": "Search for an object",
@@ -2206,39 +1830,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "the found object must be fetched",
-     "bind": {
-      "destination": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "explore",
-     "when": "the object is not on any visited support",
-     "bind": {},
-     "reason": "room coverage marks every visible object observed, including the target",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_014"
-    },
-    {
-     "kind": "fallback",
-     "to": "inspect",
-     "when": "the object may be inside a closed cabinet",
-     "bind": {},
-     "reason": "",
-     "fallback_type": "substitute",
-     "to_skill_id": "skill_012"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -2250,7 +1842,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_022",
-   "skill_id": "skill_014",
    "verb": "explore",
    "noun": "room",
    "name": "Explore a room",
@@ -2339,19 +1930,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "search",
-     "when": "a specific object must then be located",
-     "bind": {},
-     "reason": "narrow to one target",
-     "to_skill_id": "skill_013",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -2363,7 +1942,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_023",
-   "skill_id": "skill_015",
    "verb": "point",
    "noun": "target",
    "name": "Point at a target",
@@ -2529,31 +2107,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "tuck",
-     "when": "the gesture is finished",
-     "bind": {
-      "hand": "right"
-     },
-     "reason": "",
-     "to_skill_id": "skill_009",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "look",
-     "when": "a gaze is enough to indicate the target",
-     "bind": {
-      "target": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_011"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -2565,7 +2119,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_024",
-   "skill_id": "skill_016",
    "verb": "present",
    "noun": "object",
    "name": "Present a held object",
@@ -2701,42 +2254,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "place",
-     "when": "the object is put away after showing it",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "handover",
-     "when": "the object is passed to the left hand",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_022",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "lift",
-     "when": "only the height of the load matters",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_023"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -2748,11 +2266,10 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_025",
-   "skill_id": "skill_017",
    "verb": "pick",
    "noun": "object",
    "name": "Pick an object",
-   "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, floor corner pinch, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.",
+   "description": "Grasp one object with the right gripper and lift it. The grasp is chosen automatically from the object and where it is: from inside a microwave, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -2942,39 +2459,6 @@
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
      "scope": "path two_hand_flat"
-    },
-    {
-     "predicate": "on_floor(object=$object)",
-     "name": "on_floor",
-     "args": {
-      "object": "$object"
-     },
-     "negated": false,
-     "meaning": "Object bottom below 5 cm.",
-     "kind": "fluent",
-     "gt_sources": [
-      "object_pose",
-      "asset_annotation"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "path floor_top"
-    },
-    {
-     "predicate": "edge_overhang(object=$object)",
-     "name": "edge_overhang",
-     "args": {
-      "object": "$object"
-     },
-     "negated": false,
-     "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge.",
-     "kind": "fluent",
-     "gt_sources": [
-      "object_pose",
-      "asset_annotation",
-      "support_annotation"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "path flat_overhang_ready"
     },
     {
      "predicate": "grasp_clearance(object=$object)",
@@ -3359,14 +2843,7 @@
         "kwargs": {}
        }
       ],
-      "requires": [
-       {
-        "pred": "on_floor",
-        "args": {
-         "object": "$object"
-        }
-       }
-      ],
+      "requires": [],
       "ensures": [],
       "note": "Approach, lower the torso and lean over the item, then pinch it from above. Flat objects lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get a pad under or across them."
      },
@@ -3395,14 +2872,7 @@
         "kwargs": {}
        }
       ],
-      "requires": [
-       {
-        "pred": "edge_overhang",
-        "args": {
-         "object": "$object"
-        }
-       }
-      ],
+      "requires": [],
       "ensures": [],
       "note": "The overhang already exists (e.g. after expose): pinch it directly."
      },
@@ -3573,136 +3043,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "the object must be carried elsewhere",
-     "bind": {},
-     "reason": "carry path is chosen from holding",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "place",
-     "when": "the object goes onto a surface or into a container",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "lift",
-     "when": "the object must clear a high rim while carried",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_023",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "fallback",
-     "to": "expose",
-     "when": "a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "edge_overhang",
-     "to_skill_id": "skill_031"
-    },
-    {
-     "kind": "fallback",
-     "to": "separate",
-     "when": "fingers have no room beside the object (grasp_clearance false)",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "grasp_clearance",
-     "to_skill_id": "skill_032"
-    },
-    {
-     "kind": "fallback",
-     "to": "pull",
-     "when": "the object sits too deep to reach",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "dragging it toward the base brings it into the arm's envelope",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_030"
-    },
-    {
-     "kind": "fallback",
-     "to": "approach",
-     "when": "no grasp is reachable from base poses near the current one",
-     "bind": {
-      "target": "$object"
-     },
-     "reason": "a base pose with verified IK at the object",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_002"
-    },
-    {
-     "kind": "fallback",
-     "to": "upright",
-     "when": "a tall object fell over and its top pinch is gone",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "standing it up restores the annotated top pinch",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_036"
-    },
-    {
-     "kind": "fallback",
-     "to": "crouch",
-     "when": "the object is on the floor or a low shelf",
-     "bind": {},
-     "reason": "the lowered torso brings the gripper to floor height",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_005"
-    },
-    {
-     "kind": "fallback",
-     "to": "uncover",
-     "when": "the object to take is a lid-covered container's content",
-     "bind": {},
-     "reason": "the lid blocks every approach into the container",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_046"
-    },
-    {
-     "kind": "fallback",
-     "to": "open",
-     "when": "the object is inside a closed cabinet or appliance",
-     "bind": {},
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "is_open",
-     "to_skill_id": "skill_040"
-    },
-    {
-     "kind": "alternative",
-     "to": "regrasp",
-     "when": "the object is already in the hand but badly held",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_026"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -3721,11 +3062,10 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_026",
-   "skill_id": "skill_018",
    "verb": "place",
    "noun": "object",
    "name": "Place a held object",
-   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past.",
+   "description": "Put the right-held object down on a support surface or into an open container and release it. How it is put down is chosen automatically from the receptacle and grasp: into a microwave (insert, release, withdraw), into a container, an edge-held flat object slid back over an edge, onto an ordinary surface (optionally near a hint point), or while driving past.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -4501,118 +3841,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "close",
-     "when": "the object went into a cabinet or appliance whose door must be shut",
-     "bind": {},
-     "reason": "appliance cycles and task goals require closed doors",
-     "to_skill_id": "skill_041",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "heat",
-     "when": "the food went into the microwave or onto the stove",
-     "bind": {
-      "food": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_043",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "tuck",
-     "when": "the hand is empty and the robot drives next",
-     "bind": {
-      "hand": "right"
-     },
-     "reason": "",
-     "to_skill_id": "skill_009",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "fallback",
-     "to": "drop",
-     "when": "a deep container leaves no room to lower the hand inside",
-     "bind": {
-      "object": "$object",
-      "container": "$receptacle"
-     },
-     "reason": "",
-     "fallback_type": "substitute",
-     "to_skill_id": "skill_019"
-    },
-    {
-     "kind": "fallback",
-     "to": "approach",
-     "when": "the receptacle is out of reach",
-     "bind": {
-      "target": "$receptacle"
-     },
-     "reason": "a base pose with verified IK above the receptacle",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_002"
-    },
-    {
-     "kind": "fallback",
-     "to": "open",
-     "when": "the receptacle is behind a closed door",
-     "bind": {},
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "is_open",
-     "to_skill_id": "skill_040"
-    },
-    {
-     "kind": "fallback",
-     "to": "uncover",
-     "when": "the container has its lid on",
-     "bind": {
-      "container": "$receptacle"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "uncovered",
-     "to_skill_id": "skill_046"
-    },
-    {
-     "kind": "fallback",
-     "to": "regrasp",
-     "when": "the object turned in the hand and no longer clears the target",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "a fresh centred grasp restores the hold offset",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_026"
-    },
-    {
-     "kind": "alternative",
-     "to": "stack",
-     "when": "the object should rest on another object",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_020"
-    },
-    {
-     "kind": "alternative",
-     "to": "drop",
-     "when": "the target is a deep bin and a gentle release is not required",
-     "bind": {
-      "object": "$object",
-      "container": "$receptacle"
-     },
-     "reason": "",
-     "to_skill_id": "skill_019"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -4624,7 +3853,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_027",
-   "skill_id": "skill_019",
    "verb": "drop",
    "noun": "object",
    "name": "Drop an object into a container",
@@ -4812,30 +4040,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "more items go into the same container",
-     "bind": {},
-     "reason": "the hand is free again",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "place",
-     "when": "a gentle release inside is needed",
-     "bind": {
-      "object": "$object",
-      "receptacle": "$container"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -4847,7 +4052,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_028",
-   "skill_id": "skill_020",
    "verb": "stack",
    "noun": "object",
    "name": "Stack an object on another",
@@ -5035,38 +4239,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "a taller stack is built",
-     "bind": {},
-     "reason": "the hand is free for the next block",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "fallback",
-     "to": "pick",
-     "when": "the base's top is occupied: remove the top object first",
-     "bind": {},
-     "reason": "taking the top object off frees the base's top face",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_017"
-    },
-    {
-     "kind": "alternative",
-     "to": "place",
-     "when": "a support surface is acceptable instead",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -5078,7 +4251,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_029",
-   "skill_id": "skill_021",
    "verb": "release",
    "noun": "object",
    "name": "Release an object",
@@ -5199,31 +4371,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "tuck",
-     "when": "the arm is folded after letting go",
-     "bind": {
-      "hand": "$hand"
-     },
-     "reason": "",
-     "to_skill_id": "skill_009",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "drop",
-     "when": "the object should fall into a container",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_019"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -5235,7 +4383,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_030",
-   "skill_id": "skill_022",
    "verb": "handover",
    "noun": "object",
    "name": "Hand an object over to the left hand",
@@ -5390,36 +4537,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "open",
-     "when": "the right hand must open a door while the left carries the load",
-     "bind": {},
-     "reason": "open's left_holds_load path",
-     "to_skill_id": "skill_040",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "a second object is picked with the free right hand",
-     "bind": {},
-     "reason": "right hand free",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "brace",
-     "when": "the left hand should hold an object that stays on its support",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_027"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -5431,7 +4549,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_031",
-   "skill_id": "skill_023",
    "verb": "lift",
    "noun": "object",
    "name": "Lift a held object",
@@ -5575,30 +4692,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "the object is carried over furniture",
-     "bind": {},
-     "reason": "carry clearance",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "drop",
-     "when": "the object is released over a tall container",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_019",
-     "sequence_type": "enables"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -5610,7 +4704,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_032",
-   "skill_id": "skill_024",
    "verb": "lower",
    "noun": "object",
    "name": "Lower a held object",
@@ -5754,31 +4847,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "place",
-     "when": "the object goes onto a low shelf or into the fridge",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "lift",
-     "when": "opposite direction",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_023"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -5790,7 +4859,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_033",
-   "skill_id": "skill_025",
    "verb": "rotate",
    "noun": "object",
    "name": "Rotate a held object",
@@ -5931,31 +4999,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "place",
-     "when": "the object is set down in the new orientation",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "regrasp",
-     "when": "the grasp, not the yaw, must change",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_026"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -5967,7 +5011,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_034",
-   "skill_id": "skill_026",
    "verb": "regrasp",
    "noun": "object",
    "name": "Regrasp a held object",
@@ -6116,21 +5159,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "place",
-     "when": "the corrected grasp is used to place precisely",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018",
-     "sequence_type": "enables"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -6142,7 +5171,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_035",
-   "skill_id": "skill_027",
    "verb": "brace",
    "noun": "object",
    "name": "Brace an object with the left hand",
@@ -6306,33 +5334,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "stir",
-     "when": "the braced container is stirred",
-     "bind": {
-      "container": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_038",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "release",
-     "when": "bracing is finished",
-     "bind": {
-      "object": "$object",
-      "hand": "left"
-     },
-     "reason": "",
-     "to_skill_id": "skill_021",
-     "sequence_type": "enables"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -6344,7 +5346,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_036",
-   "skill_id": "skill_028",
    "verb": "flip",
    "noun": "object",
    "name": "Flip a flat object over",
@@ -6509,32 +5510,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "center",
-     "when": "the object is left overhanging the edge",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_033",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "fallback",
-     "to": "center",
-     "when": "the flipped object landed too close to the edge",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "pushes it back from the edge",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_033"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -6546,7 +5522,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_037",
-   "skill_id": "skill_029",
    "verb": "push",
    "noun": "object",
    "name": "Push an object",
@@ -6760,29 +5735,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the object was pushed into a graspable spot",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "pull",
-     "when": "the object should come toward the robot",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_030"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -6794,7 +5747,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_038",
-   "skill_id": "skill_030",
    "verb": "pull",
    "noun": "object",
    "name": "Pull an object closer",
@@ -6961,21 +5913,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the object is now close enough to grasp",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -6987,7 +5925,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_039",
-   "skill_id": "skill_031",
    "verb": "expose",
    "noun": "object",
    "name": "Expose a grasp edge",
@@ -7122,43 +6059,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "pinch the overhang",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "flip",
-     "when": "turn the object over",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_028",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "approach",
-     "when": "no base pose reaches behind the object",
-     "bind": {
-      "target": "$object"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "to_skill_id": "skill_002"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -7170,7 +6071,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_040",
-   "skill_id": "skill_032",
    "verb": "separate",
    "noun": "object",
    "name": "Separate an object from its neighbour",
@@ -7196,13 +6096,6 @@
      "args": {
       "place": "$object"
      }
-    },
-    {
-     "pred": "grasp_clearance",
-     "args": {
-      "object": "$object"
-     },
-     "negated": true
     }
    ],
    "ensures": [
@@ -7244,22 +6137,6 @@
      "gt_sources": [
       "base_pose",
       "scene_annotation"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "all paths"
-    },
-    {
-     "predicate": "not grasp_clearance(object=$object)",
-     "name": "grasp_clearance",
-     "args": {
-      "object": "$object"
-     },
-     "negated": true,
-     "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
-     "kind": "fluent",
-     "gt_sources": [
-      "object_pose",
-      "asset_annotation"
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
      "scope": "all paths"
@@ -7319,21 +6196,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "grasp the freed object",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -7345,7 +6208,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_041",
-   "skill_id": "skill_033",
    "verb": "center",
    "noun": "object",
    "name": "Center an object on its support",
@@ -7481,31 +6343,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "alternative",
-     "to": "push",
-     "when": "a specific direction is wanted",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_029"
-    },
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the secured object is grasped later",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -7517,7 +6355,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_042",
-   "skill_id": "skill_034",
    "verb": "roll",
    "noun": "object",
    "name": "Roll a cylinder",
@@ -7673,31 +6510,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the rolled object is then grasped",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "push",
-     "when": "sliding is acceptable",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_029"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -7709,7 +6522,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_043",
-   "skill_id": "skill_035",
    "verb": "tip",
    "noun": "object",
    "name": "Tip an object over",
@@ -7864,40 +6676,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "roll",
-     "when": "the lying cylinder is rolled",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_034",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the lying object is pinched across its side",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "upright",
-     "when": "opposite effect",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_036"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -7909,7 +6688,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_044",
-   "skill_id": "skill_036",
    "verb": "upright",
    "noun": "object",
    "name": "Stand an object upright",
@@ -8129,29 +6907,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the standing object is then grasped by its top",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "tip",
-     "when": "opposite effect",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_035"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -8163,7 +6919,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_045",
-   "skill_id": "skill_037",
    "verb": "wipe",
    "noun": "surface",
    "name": "Wipe a surface",
@@ -8340,32 +7095,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "place",
-     "when": "the sponge is put back",
-     "bind": {
-      "object": "$tool"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "fallback",
-     "to": "clear",
-     "when": "objects cover the surface",
-     "bind": {
-      "support": "$surface"
-     },
-     "reason": "no free strip exists until the surface is cleared",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_050"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -8377,7 +7107,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_046",
-   "skill_id": "skill_038",
    "verb": "stir",
    "noun": "container",
    "name": "Stir a container",
@@ -8577,41 +7306,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "cover",
-     "when": "the pot is covered again",
-     "bind": {
-      "container": "$container"
-     },
-     "reason": "",
-     "to_skill_id": "skill_045",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "heat",
-     "when": "the stirred food is heated",
-     "bind": {},
-     "reason": "stove path",
-     "to_skill_id": "skill_043",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "brace",
-     "when": "the container slides while stirring",
-     "bind": {
-      "object": "$container"
-     },
-     "reason": "the left hand holds the pot still",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_027"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -8623,7 +7318,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_047",
-   "skill_id": "skill_039",
    "verb": "pour",
    "noun": "contents",
    "name": "Pour contents into a container",
@@ -8849,44 +7543,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "place",
-     "when": "the empty cup is put down",
-     "bind": {
-      "object": "$source"
-     },
-     "reason": "",
-     "to_skill_id": "skill_018",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "stir",
-     "when": "the poured food is stirred",
-     "bind": {
-      "container": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_038",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "fallback",
-     "to": "uncover",
-     "when": "the target has its lid on",
-     "bind": {
-      "container": "$target"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "uncovered",
-     "to_skill_id": "skill_046"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -8898,11 +7555,10 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_048",
-   "skill_id": "skill_040",
    "verb": "open",
    "noun": "articulated",
    "name": "Open a door or drawer",
-   "description": "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.",
+   "description": "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The method is chosen automatically from the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.",
    "group": "articulated_and_appliance",
    "inputs": {
     "articulated": {
@@ -9272,71 +7928,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "an object inside must be taken out",
-     "bind": {},
-     "reason": "is_open is a cavity-pick precondition",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "place",
-     "when": "an object must go inside",
-     "bind": {},
-     "reason": "is_open is a cavity-place precondition",
-     "to_skill_id": "skill_018",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "close",
-     "when": "the door must be shut afterwards",
-     "bind": {
-      "articulated": "$articulated"
-     },
-     "reason": "",
-     "to_skill_id": "skill_041",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "retreat",
-     "when": "the door swing hits the base",
-     "bind": {
-      "obstacle": "$articulated"
-     },
-     "reason": "room for the door's sweep",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_004"
-    },
-    {
-     "kind": "fallback",
-     "to": "handover",
-     "when": "the right hand still holds a load",
-     "bind": {},
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "hand_empty",
-     "to_skill_id": "skill_022"
-    },
-    {
-     "kind": "fallback",
-     "to": "approach",
-     "when": "the handle is out of reach",
-     "bind": {
-      "target": "$articulated"
-     },
-     "reason": "a base pose with verified IK at the handle",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_002"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -9348,7 +7940,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_049",
-   "skill_id": "skill_041",
    "verb": "close",
    "noun": "articulated",
    "name": "Close a door or drawer",
@@ -9594,52 +8185,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "heat",
-     "when": "a microwave or fridge must be closed before its cycle",
-     "bind": {
-      "appliance": "$articulated"
-     },
-     "reason": "",
-     "to_skill_id": "skill_043",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "chill",
-     "when": "the fridge must be closed while cooling",
-     "bind": {
-      "appliance": "$articulated"
-     },
-     "reason": "",
-     "to_skill_id": "skill_044",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "navigate",
-     "when": "the robot leaves",
-     "bind": {},
-     "reason": "task done here",
-     "to_skill_id": "skill_001",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "retreat",
-     "when": "the door swing hits the base",
-     "bind": {
-      "obstacle": "$articulated"
-     },
-     "reason": "room for the door's sweep",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_004"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -9651,7 +8197,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_050",
-   "skill_id": "skill_042",
    "verb": "press",
    "noun": "button",
    "name": "Press a button",
@@ -9911,38 +8456,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "heat",
-     "when": "the start key began a cycle",
-     "bind": {},
-     "reason": "heat then only waits",
-     "to_skill_id": "skill_043",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "tuck",
-     "when": "the hand is free again",
-     "bind": {
-      "hand": "right"
-     },
-     "reason": "",
-     "to_skill_id": "skill_009",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "open",
-     "when": "the door key is pressed only to open the microwave door",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_040"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -9954,7 +8468,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_051",
-   "skill_id": "skill_043",
    "verb": "heat",
    "noun": "food",
    "name": "Heat food",
@@ -10245,85 +8758,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "open",
-     "when": "the heated food is taken out of the microwave",
-     "bind": {
-      "articulated": "$appliance"
-     },
-     "reason": "",
-     "to_skill_id": "skill_040",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the heated food is served",
-     "bind": {
-      "object": "$food"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "heat",
-     "when": "no microwave is available: heat in a pot on the stove",
-     "bind": {
-      "food": "$food",
-      "appliance": "kitchen_stove"
-     },
-     "reason": "Same verb, other noun: the stove path pours/places the food into the pot first.",
-     "to_skill_id": "skill_043"
-    },
-    {
-     "kind": "fallback",
-     "to": "close",
-     "when": "the microwave door is open",
-     "bind": {
-      "articulated": "$appliance"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "is_closed",
-     "to_skill_id": "skill_041"
-    },
-    {
-     "kind": "fallback",
-     "to": "place",
-     "when": "the food is not in the appliance",
-     "bind": {
-      "object": "$food"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "in_appliance",
-     "to_skill_id": "skill_018"
-    },
-    {
-     "kind": "fallback",
-     "to": "wait",
-     "when": "the food is still below the target when the time budget ends",
-     "bind": {},
-     "reason": "keep the heat on longer, then re-check the temperature",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_056"
-    },
-    {
-     "kind": "fallback",
-     "to": "pour",
-     "when": "the food is in a cup, not in the pot on the burner",
-     "bind": {},
-     "reason": "pouring the cup into the pot on the burner puts the food in the heated vessel",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_039"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -10335,7 +8770,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_052",
-   "skill_id": "skill_044",
    "verb": "chill",
    "noun": "food",
    "name": "Chill food",
@@ -10495,33 +8929,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "open",
-     "when": "the chilled food is taken out",
-     "bind": {
-      "articulated": "$appliance"
-     },
-     "reason": "",
-     "to_skill_id": "skill_040",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "close",
-     "when": "the fridge door is open",
-     "bind": {
-      "articulated": "$appliance"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "is_closed",
-     "to_skill_id": "skill_041"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -10533,7 +8941,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_053",
-   "skill_id": "skill_045",
    "verb": "cover",
    "noun": "container",
    "name": "Cover a container with a lid",
@@ -10729,27 +9136,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "heat",
-     "when": "the covered pot is heated",
-     "bind": {},
-     "reason": "stove path",
-     "to_skill_id": "skill_043",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "uncover",
-     "when": "opposite effect",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_046"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -10761,7 +9148,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_054",
-   "skill_id": "skill_046",
    "verb": "uncover",
    "noun": "container",
    "name": "Uncover a container",
@@ -10955,49 +9341,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pour",
-     "when": "food is poured into the opened pot",
-     "bind": {
-      "target": "$container"
-     },
-     "reason": "",
-     "to_skill_id": "skill_039",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "stir",
-     "when": "the opened pot is stirred",
-     "bind": {
-      "container": "$container"
-     },
-     "reason": "",
-     "to_skill_id": "skill_038",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "something inside is taken out",
-     "bind": {},
-     "reason": "the opening is free",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "cover",
-     "when": "opposite effect",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_045"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -11009,11 +9353,10 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_055",
-   "skill_id": "skill_047",
    "verb": "fetch",
    "noun": "object",
    "name": "Fetch an object to a receptacle",
-   "description": "Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.",
+   "description": "Bring one object to a support or container: the robot goes to the object, picks it up, carries it to the receptacle and puts it there.",
    "group": "multi_object",
    "inputs": {
     "object": {
@@ -11267,40 +9610,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "fetch",
-     "when": "more objects go to the same place",
-     "bind": {},
-     "reason": "the hand is free again",
-     "to_skill_id": "skill_047",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "restore",
-     "when": "the object should return to its starting support",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_053"
-    },
-    {
-     "kind": "fallback",
-     "to": "search",
-     "when": "the object is not where expected",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "locates the object and reports its support",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_013"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -11312,7 +9622,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_056",
-   "skill_id": "skill_048",
    "verb": "collect",
    "noun": "objects",
    "name": "Collect objects into a container",
@@ -11451,27 +9760,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "close",
-     "when": "the container sits in a cabinet that must be closed",
-     "bind": {},
-     "reason": "closed: all goal",
-     "to_skill_id": "skill_041",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "sort",
-     "when": "the objects belong in different containers",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_049"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -11483,7 +9772,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_057",
-   "skill_id": "skill_049",
    "verb": "sort",
    "noun": "objects",
    "name": "Sort objects by category",
@@ -11595,27 +9883,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "alternative",
-     "to": "collect",
-     "when": "all objects go into one container",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_048"
-    },
-    {
-     "kind": "sequence",
-     "to": "close",
-     "when": "a sorted container sits in a cabinet",
-     "bind": {},
-     "reason": "closed: all goal",
-     "to_skill_id": "skill_041",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -11627,7 +9895,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_058",
-   "skill_id": "skill_050",
    "verb": "clear",
    "noun": "support",
    "name": "Clear a support",
@@ -11750,32 +10017,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "wipe",
-     "when": "the cleared surface is wiped",
-     "bind": {
-      "surface": "$support"
-     },
-     "reason": "",
-     "to_skill_id": "skill_037",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "sequence",
-     "to": "arrange",
-     "when": "a new layout is set on the cleared surface",
-     "bind": {
-      "support": "$support"
-     },
-     "reason": "",
-     "to_skill_id": "skill_052",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -11787,7 +10029,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_059",
-   "skill_id": "skill_051",
    "verb": "empty",
    "noun": "container",
    "name": "Empty a container",
@@ -11802,7 +10043,7 @@
     "receptacle": {
      "type": "receptacle_ref",
      "required": true,
-     "description": "Where the contents go (a container for the pouring path)."
+     "description": "Where the contents go (a container if they are poured)."
     }
    },
    "outputs": {
@@ -11949,7 +10190,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)"
+      "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as a second path.)"
      },
      {
       "path_id": "pour_out",
@@ -12007,30 +10248,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "alternative",
-     "to": "clear",
-     "when": "the items lie on a surface instead",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_050"
-    },
-    {
-     "kind": "fallback",
-     "to": "uncover",
-     "when": "the container has its lid on",
-     "bind": {
-      "container": "$container"
-     },
-     "reason": "",
-     "fallback_type": "repair",
-     "repairs": "uncovered",
-     "to_skill_id": "skill_046"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -12042,7 +10260,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_060",
-   "skill_id": "skill_052",
    "verb": "arrange",
    "noun": "objects",
    "name": "Arrange objects together",
@@ -12186,21 +10403,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "fallback",
-     "to": "clear",
-     "when": "the support is too crowded",
-     "bind": {
-      "support": "$support"
-     },
-     "reason": "frees room for the place setting",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_050"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -12212,7 +10415,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_061",
-   "skill_id": "skill_053",
    "verb": "restore",
    "noun": "object",
    "name": "Restore an object to its place",
@@ -12232,13 +10434,6 @@
      "args": {
       "hand": "right"
      }
-    },
-    {
-     "pred": "at_initial_place",
-     "args": {
-      "object": "$object"
-     },
-     "negated": true
     }
    ],
    "ensures": [
@@ -12268,22 +10463,6 @@
      "kind": "fluent",
      "gt_sources": [
       "gripper_state"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false",
-     "scope": "all paths"
-    },
-    {
-     "predicate": "not at_initial_place(object=$object)",
-     "name": "at_initial_place",
-     "args": {
-      "object": "$object"
-     },
-     "negated": true,
-     "meaning": "Object is back on the support it occupied when the episode started.",
-     "kind": "fluent",
-     "gt_sources": [
-      "object_pose",
-      "initial_scene_annotation"
      ],
      "checked": "before execution on live GT state; the Contract does not move if false",
      "scope": "all paths"
@@ -12387,31 +10566,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "alternative",
-     "to": "fetch",
-     "when": "a different destination is wanted",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_047"
-    },
-    {
-     "kind": "sequence",
-     "to": "tuck",
-     "when": "the robot drives on",
-     "bind": {
-      "hand": "right"
-     },
-     "reason": "",
-     "to_skill_id": "skill_009",
-     "sequence_type": "enables"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -12423,7 +10578,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_062",
-   "skill_id": "skill_054",
    "verb": "swap",
    "noun": "objects",
    "name": "Swap two objects",
@@ -12622,29 +10776,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "alternative",
-     "to": "fetch",
-     "when": "only one object needs to move",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_047"
-    },
-    {
-     "kind": "sequence",
-     "to": "tuck",
-     "when": "the robot drives on",
-     "bind": {
-      "hand": "right"
-     },
-     "reason": "",
-     "to_skill_id": "skill_009",
-     "sequence_type": "enables"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -12656,7 +10788,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_063",
-   "skill_id": "skill_055",
    "verb": "sidestep",
    "noun": "base",
    "name": "Sidestep the base",
@@ -12770,27 +10901,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "approach",
-     "when": "the target is now in front of the arm",
-     "bind": {},
-     "reason": "small lateral offset fixed",
-     "to_skill_id": "skill_002",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "navigate",
-     "when": "a larger move is needed",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_001"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -12802,7 +10913,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_064",
-   "skill_id": "skill_056",
    "verb": "wait",
    "noun": "duration",
    "name": "Wait for a duration",
@@ -12876,19 +10986,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "open",
-     "when": "a cycle finished and the door is opened",
-     "bind": {},
-     "reason": "time passed",
-     "to_skill_id": "skill_040",
-     "sequence_type": "then"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -12900,7 +10998,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_065",
-   "skill_id": "skill_057",
    "verb": "identify",
    "noun": "object",
    "name": "Identify an object",
@@ -13012,40 +11109,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "sort",
-     "when": "the category decides the destination",
-     "bind": {},
-     "reason": "category output",
-     "to_skill_id": "skill_049",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "measure",
-     "when": "the size, not the category, is needed",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_058"
-    },
-    {
-     "kind": "fallback",
-     "to": "navigate",
-     "when": "the object is not visible from here",
-     "bind": {
-      "destination": "$object"
-     },
-     "reason": "a closer view",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_001"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -13057,7 +11121,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_066",
-   "skill_id": "skill_058",
    "verb": "measure",
    "noun": "object",
    "name": "Measure an object",
@@ -13166,29 +11229,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the size decides the grasp",
-     "bind": {},
-     "reason": "width vs gripper opening",
-     "to_skill_id": "skill_017",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "identify",
-     "when": "the category is needed",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_057"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -13200,7 +11241,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_067",
-   "skill_id": "skill_059",
    "verb": "count",
    "noun": "category",
    "name": "Count objects of a category",
@@ -13283,28 +11323,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "collect",
-     "when": "the counted objects are gathered",
-     "bind": {},
-     "reason": "objects output",
-     "to_skill_id": "skill_048",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "fallback",
-     "to": "explore",
-     "when": "objects of the category may be out of view",
-     "bind": {},
-     "reason": "room coverage",
-     "fallback_type": "recover",
-     "to_skill_id": "skill_014"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -13316,7 +11335,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_068",
-   "skill_id": "skill_060",
    "verb": "wave",
    "noun": "hand",
    "name": "Wave the hand",
@@ -13419,27 +11437,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "point",
-     "when": "the robot then indicates something",
-     "bind": {},
-     "reason": "gesture sequence",
-     "to_skill_id": "skill_015",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "nod",
-     "when": "an acknowledgement without the arm",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_061"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -13451,7 +11449,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_069",
-   "skill_id": "skill_061",
    "verb": "nod",
    "noun": "head",
    "name": "Nod the head",
@@ -13512,27 +11509,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "look",
-     "when": "the robot looks back at a target",
-     "bind": {},
-     "reason": "restores gaze",
-     "to_skill_id": "skill_011",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "wave",
-     "when": "a bigger gesture is needed",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_060"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -13544,7 +11521,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_070",
-   "skill_id": "skill_062",
    "verb": "shake",
    "noun": "object",
    "name": "Shake a held object",
@@ -13676,31 +11652,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pour",
-     "when": "loose contents are poured out",
-     "bind": {
-      "source": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_039",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "rotate",
-     "when": "the orientation, not the contents, matters",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_025"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -13712,7 +11664,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_071",
-   "skill_id": "skill_063",
    "verb": "hover",
    "noun": "object",
    "name": "Hover a held object over a target",
@@ -13881,43 +11832,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "drop",
-     "when": "the object is released into the container under it",
-     "bind": {
-      "object": "$object",
-      "container": "$target"
-     },
-     "reason": "",
-     "to_skill_id": "skill_019",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "sequence",
-     "to": "release",
-     "when": "the object is let go right there",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_021",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "lift",
-     "when": "only a height matters",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_023"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -13929,7 +11844,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_072",
-   "skill_id": "skill_064",
    "verb": "square",
    "noun": "object",
    "name": "Square an object",
@@ -14107,29 +12021,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "stack",
-     "when": "squared blocks stack cleanly",
-     "bind": {},
-     "reason": "aligned faces",
-     "to_skill_id": "skill_020",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "rotate",
-     "when": "the object is already in the hand",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_025"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -14141,7 +12033,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_073",
-   "skill_id": "skill_065",
    "verb": "touch",
    "noun": "object",
    "name": "Touch an object",
@@ -14286,31 +12177,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the touched object is then grasped",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "point",
-     "when": "contact is not allowed",
-     "bind": {
-      "target": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_015"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -14322,7 +12189,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_074",
-   "skill_id": "skill_066",
    "verb": "knock",
    "noun": "articulated",
    "name": "Knock on a door",
@@ -14497,29 +12363,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "open",
-     "when": "the door is opened after knocking",
-     "bind": {
-      "articulated": "$articulated"
-     },
-     "reason": "",
-     "to_skill_id": "skill_040",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "touch",
-     "when": "an object, not a door, is to be tapped",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_065"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -14531,7 +12375,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_075",
-   "skill_id": "skill_067",
    "verb": "sweep",
    "noun": "objects",
    "name": "Sweep objects together",
@@ -14639,27 +12482,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "collect",
-     "when": "the cluster is then put into a container",
-     "bind": {},
-     "reason": "short reaches",
-     "to_skill_id": "skill_048",
-     "sequence_type": "then"
-    },
-    {
-     "kind": "alternative",
-     "to": "push",
-     "when": "only one object has to move",
-     "bind": {},
-     "reason": "single push",
-     "to_skill_id": "skill_029"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -14671,7 +12494,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_076",
-   "skill_id": "skill_068",
    "verb": "stop",
    "noun": "appliance",
    "name": "Stop an appliance",
@@ -14850,27 +12672,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "pick",
-     "when": "the food is taken off the heat",
-     "bind": {},
-     "reason": "heat is off",
-     "to_skill_id": "skill_017",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "heat",
-     "when": "heat stops automatically at a target temperature",
-     "bind": {},
-     "reason": "",
-     "to_skill_id": "skill_043"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -14882,7 +12684,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_077",
-   "skill_id": "skill_069",
    "verb": "dip",
    "noun": "utensil",
    "name": "Dip a utensil",
@@ -15077,33 +12878,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "sequence",
-     "to": "stir",
-     "when": "the utensil then stirs",
-     "bind": {
-      "tool": "$tool",
-      "container": "$container"
-     },
-     "reason": "",
-     "to_skill_id": "skill_038",
-     "sequence_type": "enables"
-    },
-    {
-     "kind": "alternative",
-     "to": "stir",
-     "when": "the contents must be mixed",
-     "bind": {
-      "tool": "$tool",
-      "container": "$container"
-     },
-     "reason": "",
-     "to_skill_id": "skill_038"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {
@@ -15115,7 +12890,6 @@
    "schema_version": 2,
    "kind": "skill_contract",
    "contract_id": "contract_078",
-   "skill_id": "skill_070",
    "verb": "hide",
    "noun": "object",
    "name": "Hide an object",
@@ -15369,31 +13143,7 @@
      }
     ]
    },
-   "relations": [
-    {
-     "kind": "alternative",
-     "to": "fetch",
-     "when": "the object only needs to move",
-     "bind": {
-      "object": "$object"
-     },
-     "reason": "",
-     "to_skill_id": "skill_047"
-    },
-    {
-     "kind": "sequence",
-     "to": "tuck",
-     "when": "the robot leaves",
-     "bind": {
-      "hand": "right"
-     },
-     "reason": "",
-     "to_skill_id": "skill_009",
-     "sequence_type": "enables"
-    }
-   ],
    "failure": {
-    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
     "stop_and_report": true
    },
    "scope": {

@@ -2,7 +2,7 @@
 
 Dip a held spoon's far end into a container and move it in a circle below the rim; succeeds after one full turn inside.
 
-Paired SkillNode: `skill_038` (`stir-container`).
+Verb: `stir`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_038` (`stir-container`).
 ## Policy paths
 
 - `circle_below_rim` when 'utensil' in tool.tags: `policy_085($tool, $container)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -2,7 +2,7 @@
 
 Push several objects on one support toward their centroid until they form a cluster (radius 12 cm), without grasping them.
 
-Paired SkillNode: `skill_067` (`sweep-objects`).
+Verb: `sweep`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_067` (`sweep-objects`).
 ## Policy paths
 
 - `push_to_centroid` when always: `policy_109($objects, radius_m=$radius_m)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

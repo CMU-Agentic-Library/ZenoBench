@@ -1,8 +1,8 @@
 # contract_055 — Fetch an object to a receptacle
 
-Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.
+Bring one object to a support or container: the robot goes to the object, picks it up, carries it to the receptacle and puts it there.
 
-Paired SkillNode: `skill_047` (`fetch-object`).
+Verb: `fetch`.
 
 ## Precheck
 
@@ -19,5 +19,7 @@ Paired SkillNode: `skill_047` (`fetch-object`).
 
 - `to_container` when receptacle.kind == 'object': `[navigate](destination=$object)` -> `[pick](object=$object)` -> `[navigate](destination=$receptacle)` -> `[place](object=$object, receptacle=$receptacle)`
 - `to_surface` when receptacle.kind == 'support': `[navigate](destination=$object)` -> `[pick](object=$object)` -> `[navigate](destination=$receptacle)` -> `[place](object=$object, receptacle=$receptacle)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

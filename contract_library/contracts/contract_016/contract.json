@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_016",
- "skill_id": "skill_008",
  "verb": "straighten",
  "noun": "waist",
  "name": "Straighten the waist",
@@ -65,27 +64,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "navigate",
-   "when": "the robot drives after a bent reach",
-   "bind": {},
-   "reason": "travel posture",
-   "to_skill_id": "skill_001",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "reset",
-   "when": "the arm and torso must also be restored",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_010"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

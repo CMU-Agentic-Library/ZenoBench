@@ -3,7 +3,7 @@ name: crouch-torso
 description: Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.
 ---
 
-# Crouch the torso (`skill_005`)
+# Crouch the torso (`crouch`)
 
 `crouch(height_m: number?)`
 
@@ -21,51 +21,50 @@ The next target is low (floor, low shelf) or the head must look under something.
 
 - `height_m` (`number`, optional): Optional torso joint target in [-0.54, 0]; omit for the lowest.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "crouch", "args": {}}
+```
+
+Argument formats:
+
+- `number`: a finite number
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Always applicable.
+No precondition.
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
 - none
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `not torso_raised()` — Torso lift within 3 cm of its highest position (travel height). GT: torso_joint.
+- `not torso_raised()` — Torso lift within 3 cm of its highest position (travel height).
 
-## Verifier
+## Conditions that depend on the bound nouns
 
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `not torso_raised()` (all paths)
-- `torso_at(height_m=$height_m)` (path to_height)
-- `torso_lowered()` (path lowest)
+- when args.height_m: ensures `torso_at(height_m=$height_m)`
+- when always: ensures `torso_lowered()`
 
 ## May invalidate
 
 `torso_raised()`, `torso_lowered()`, `torso_at(*)`, `reachable(*)`, `in_view(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `to_height` — when args.height_m
-
-1. `policy_004($height_m)`
-- extra postcondition `torso_at(height_m=$height_m)`
-
-### `lowest` — when always (default path)
-
-1. `policy_005()`
-- extra postcondition `torso_lowered()`
-
-## Relations
-
-- Next step: `pick` (`skill_017`) (then) — the object is on the floor or a low shelf
-- Next step: `stand` (`skill_006`) (then) — low work is done
-- Is a fallback for: `pick` (`skill_017`) (recover) — the object is on the floor or a low shelf
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_013`.

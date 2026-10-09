@@ -2,7 +2,7 @@
 
 Lower a held spoon's far end into a container below its rim, hold it there and lift it out.
 
-Paired SkillNode: `skill_069` (`dip-utensil`).
+Verb: `dip`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_069` (`dip-utensil`).
 ## Policy paths
 
 - `tip_below_rim` when 'utensil' in tool.tags: `policy_113($tool, $container)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

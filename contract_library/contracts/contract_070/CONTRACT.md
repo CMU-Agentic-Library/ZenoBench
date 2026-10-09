@@ -2,7 +2,7 @@
 
 Oscillate the held object sideways three times (settle or loosen contents) while keeping the grasp.
 
-Paired SkillNode: `skill_062` (`shake-object`).
+Verb: `shake`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_062` (`shake-object`).
 ## Policy paths
 
 - `lateral` when always: `policy_102($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

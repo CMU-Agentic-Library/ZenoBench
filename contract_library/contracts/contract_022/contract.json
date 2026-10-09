@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_022",
- "skill_id": "skill_014",
  "verb": "explore",
  "noun": "room",
  "name": "Explore a room",
@@ -91,19 +90,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "search",
-   "when": "a specific object must then be located",
-   "bind": {},
-   "reason": "narrow to one target",
-   "to_skill_id": "skill_013",
-   "sequence_type": "then"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

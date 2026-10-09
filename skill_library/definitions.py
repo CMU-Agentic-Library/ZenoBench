@@ -10,15 +10,7 @@ annotation and live state.
 Preconditions (``requires``) and postconditions (``ensures``) are predicates
 from zeno_skills/predicates.py with explicit arguments, evaluated on GT
 simulator state by the ContractRunner before and after the policy chain.
-``invalidates`` lists the facts the action may destroy (used by the planner).
-
-Relations:
-  sequence     A -> B: B is a natural next step after A (loose; the checker
-               verifies that some ensures of A matches a requires of B).
-  fallback     when A fails, try B: ``repair`` B establishes the failed
-               precondition of A then A is retried; ``substitute`` B achieves A's
-               primary effect another way.
-  alternative  A and B reach the same primary effect by different means.
+``invalidates`` lists the facts the action may destroy.
 
 Run ``python tools/build_skill_library.py`` to write the JSON/Markdown exports.
 """
@@ -77,28 +69,16 @@ def Path(path_id, when, steps, requires=(), ensures=(), note=""):
             "requires": list(requires), "ensures": list(ensures), "note": note}
 
 
-def R(kind, to, when, bind=None, reason="", fallback_type=None, repairs=None):
-    """kind: sequence | fallback | alternative.  fallback_type: repair (re-establishes a
-    precondition named in ``repairs``), recover (undoes the state that made the policy
-    fail; needs a reason) or substitute (reaches the same effect another way)."""
-    rel = {"kind": kind, "to": to, "when": when, "bind": bind or {}, "reason": reason}
-    if fallback_type:
-        rel["fallback_type"] = fallback_type
-    if repairs:
-        rel["repairs"] = repairs
-    return rel
-
-
 SKILLS: list[dict] = []
 
 
 def skill(verb, noun, title, description, *, inputs, requires, ensures, paths, outputs=None,
-          invalidates=(), relations=(), use_when="", distinct_from=(), group="", includes=(), excludes=(),
+          invalidates=(), use_when="", distinct_from=(), group="", includes=(), excludes=(),
           failure_modes=()):
     SKILLS.append({"verb": verb, "noun": noun, "title": title, "description": description,
                    "group": group, "inputs": inputs, "outputs": outputs or {}, "requires": list(requires),
                    "ensures": list(ensures), "invalidates": list(invalidates), "paths": list(paths),
-                   "relations": list(relations), "use_when": use_when, "distinct_from": dict(distinct_from),
+                   "use_when": use_when, "distinct_from": dict(distinct_from),
                    "scope": {"includes": list(includes), "excludes": list(excludes)},
                    "failure_modes": list(failure_modes)})
 
@@ -131,17 +111,6 @@ skill("navigate", "place", "Navigate to a place",
           Path("empty", [],
                [St("policy_097", "$destination", out="plan"), St("policy_001", "#plan.pose")]),
       ],
-      relations=[
-          R("sequence", "approach", "a manipulation target is on the destination", bind={"target": "$destination"},
-            reason="navigate leaves the base near; approach makes the target IK-reachable."),
-          R("sequence", "look", "the destination must be observed first", bind={"target": "$destination"}),
-          R("fallback", "retreat", "navigation fails because the base or load is wedged against furniture",
-            fallback_type="recover", reason="Backing out frees the planner's start cell, then navigate again."),
-          R("fallback", "tuck", "navigation fails because the empty arm cannot fold", bind={"hand": "right"},
-            fallback_type="recover", reason="A separately planned fold clears the arm before the base path."),
-          R("fallback", "lift", "a carried object hangs too low for the doorway clearance",
-            fallback_type="recover", reason="Raising the load restores the carry clearance."),
-      ],
       use_when="The robot must be in another room or next to another piece of furniture.",
       distinct_from={"approach": "approach fine-parks so the arm reaches one target; navigate only gets near.",
                      "retreat": "retreat moves straight back from a place without a destination."},
@@ -167,17 +136,6 @@ skill("approach", "target", "Approach a manipulation target",
                note="Extend the arm toward the reach pose while the base follows the given waypoint."),
           Path("park", [], [St("policy_065", "$target")]),
       ],
-      relations=[
-          R("sequence", "pick", "the target is an object to grasp", bind={"object": "$target"}),
-          R("sequence", "open", "the target is a door or drawer", bind={"articulated": "$target"}),
-          R("sequence", "press", "the target is a button", bind={"button": "$target"}),
-          R("fallback", "navigate", "no base pose near the current one reaches the target",
-            bind={"destination": "$target"}, fallback_type="repair", repairs="base_near"),
-          R("fallback", "bend", "the target is just beyond the arm envelope", fallback_type="recover",
-            reason="Waist pitch adds forward reach from the same base pose."),
-          R("fallback", "pull", "the object sits too deep on its support", bind={"object": "$target"},
-            fallback_type="substitute", reason="Dragging the object to the front makes it reachable."),
-      ],
       use_when="Right before a contact action on one specific target.",
       distinct_from={"navigate": "navigate goes to a region; approach verifies arm IK for one target."},
       includes=["base pose search with IK + collision checks", "verification from the reached pose"],
@@ -199,10 +157,6 @@ skill("face", "target", "Face a target",
           Path("rotate_loaded", [], [St("policy_066", "$target")],
                note="With a load or unfolded arm: slower turn with grasp checks."),
       ],
-      relations=[R("sequence", "look", "the target must be observed", bind={"target": "$target"}),
-                 R("sequence", "point", "the target must be indicated", bind={"target": "$target"}),
-                 R("alternative", "navigate", "turning in place is blocked by furniture",
-                   bind={"destination": "$target"})],
       use_when="The target is beside or behind the robot and only the heading must change.",
       distinct_from={"look": "look moves the head only; face moves the whole base."},
       failure_modes=["turning in place would hit furniture"])
@@ -227,9 +181,6 @@ skill("retreat", "obstacle", "Retreat from an obstacle",
           Path("empty", [], [St("policy_100", "$obstacle", "$distance_m", out="plan"),
                              St("policy_037", "#plan.forward_m")]),
       ],
-      relations=[R("sequence", "navigate", "the robot must leave after backing out", reason="free start cell"),
-                 R("sequence", "open", "a door's swing needs room in front of the robot",
-                   bind={"articulated": "$obstacle"})],
       use_when="The base is too close to open a door, turn, or start a path.",
       distinct_from={"navigate": "retreat has no destination; it only increases clearance."},
       failure_modes=["the path behind the base is blocked"])
@@ -245,8 +196,6 @@ skill("crouch", "torso", "Crouch the torso",
       paths=[Path("to_height", [W("args", "height_m", "truthy")], [St("policy_004", "$height_m")],
                   ensures=[P("torso_at", height_m="$height_m")]),
              Path("lowest", [], [St("policy_005")], ensures=[P("torso_lowered")])],
-      relations=[R("sequence", "pick", "the object is on the floor or a low shelf", reason="floor reach"),
-                 R("sequence", "stand", "low work is done", reason="restore travel height")],
       distinct_from={"bend": "bend pitches the waist forward; crouch lowers the torso vertically."})
 
 skill("stand", "torso", "Stand up to full height",
@@ -254,8 +203,6 @@ skill("stand", "torso", "Stand up to full height",
       group=G, inputs={}, requires=[], ensures=[P("torso_raised")],
       invalidates=["torso_lowered()", "reachable(*)", "in_view(*)"],
       paths=[Path("highest", [], [St("policy_006")])],
-      relations=[R("sequence", "navigate", "the robot drives after low work", reason="travel height"),
-                 R("alternative", "reset", "the arm and waist must also be restored")],
       distinct_from={"lift": "lift raises a held object, stand raises the body."})
 
 skill("bend", "waist", "Bend the waist",
@@ -267,16 +214,12 @@ skill("bend", "waist", "Bend the waist",
       ensures=[P("waist_bent", min_pitch_rad=0.2)],
       invalidates=["waist_straight()", "reachable(*)", "in_view(*)"],
       paths=[Path("to_pitch", [W("args", "pitch_rad", "truthy")], [St("policy_007", "$pitch_rad")]),
-             Path("full", [], [St("policy_008")])],
-      relations=[R("sequence", "straighten", "the reach is done", reason="restore upright posture"),
-                 R("sequence", "approach", "the target was just out of reach", reason="extra reach")])
+             Path("full", [], [St("policy_008")])])
 
 skill("straighten", "waist", "Straighten the waist",
       "Return the waist pitch to upright.", group=G, inputs={}, requires=[],
       ensures=[P("waist_straight")], invalidates=["waist_bent(*)", "reachable(*)", "in_view(*)"],
-      paths=[Path("upright", [], [St("policy_009")])],
-      relations=[R("sequence", "navigate", "the robot drives after a bent reach", reason="travel posture"),
-                 R("alternative", "reset", "the arm and torso must also be restored")])
+      paths=[Path("upright", [], [St("policy_009")])])
 
 skill("tuck", "arm", "Tuck an arm",
       "Fold an empty arm to its travel posture along a collision-checked path.",
@@ -286,10 +229,7 @@ skill("tuck", "arm", "Tuck an arm",
       ensures=[P("arm_stowed", hand="$hand")],
       invalidates=["reachable(*)", "pointing_at(*)"],
       paths=[Path("left", [W("args", "hand", "equals", "left")], [St("policy_091")]),
-             Path("right", [], [St("policy_003")])],
-      relations=[R("sequence", "navigate", "the robot drives next", reason="a folded arm is the travel posture"),
-                 R("fallback", "retreat", "the fold collides with furniture", fallback_type="recover",
-                   reason="More room around the base gives the fold a collision-free path.")])
+             Path("right", [], [St("policy_003")])])
 
 skill("reset", "posture", "Reset the posture",
       "Return to the home posture: fingers open, arm folded, torso up, waist straight, by a collision-checked "
@@ -300,8 +240,6 @@ skill("reset", "posture", "Reset the posture",
       invalidates=["torso_lowered()", "waist_bent(*)", "reachable(*)", "pointing_at(*)", "in_view(*)"],
       paths=[Path("joint_home", [], [St("policy_040"), St("policy_003"), St("policy_095", out="home"),
                                      St("policy_039", "#home.target")])],
-      relations=[R("sequence", "navigate", "after a failed manipulation, before driving on",
-                   reason="a known posture makes the base path plannable")],
       distinct_from={"tuck": "tuck only folds one arm; reset also restores torso and waist."})
 
 # ================================================================= perception & gesture
@@ -318,11 +256,6 @@ skill("look", "target", "Look at a target",
       invalidates=["in_view(*)"],
       paths=[Path("head_only", [W("target", "bearing_abs_deg", "lte", 55)], [St("policy_068", "$target")]),
              Path("turn_then_head", [], [St("policy_066", "$target"), St("policy_068", "$target")])],
-      relations=[R("sequence", "approach", "the observed target will be manipulated", bind={"target": "$target"}),
-                 R("fallback", "navigate", "the line of sight is blocked", bind={"destination": "$target"},
-                   fallback_type="repair"),
-                 R("alternative", "inspect", "the target is a receptacle whose contents matter",
-                   bind={"receptacle": "$target"})],
       distinct_from={"inspect": "inspect reports a receptacle's contents; look only aims the camera.",
                      "search": "search visits several places to find an unseen object."})
 
@@ -341,10 +274,6 @@ skill("inspect", "receptacle", "Inspect a receptacle",
                   requires=[P("hand_empty", hand="right")],
                   note="Open with the annotation-selected route, look, close again."),
              Path("open_view", [], [St("policy_088", "$receptacle")])],
-      relations=[R("sequence", "pick", "an object found inside must be taken out",
-                   reason="contents output names the object"),
-                 R("sequence", "empty", "every object inside must be removed", bind={"container": "$receptacle"}),
-                 R("alternative", "look", "only the receptacle itself must be seen", bind={"target": "$receptacle"})],
       distinct_from={"look": "look reports nothing about contents.",
                      "search": "inspect examines one given receptacle; search chooses where to look."})
 
@@ -360,10 +289,6 @@ skill("search", "object", "Search for an object",
       ensures=[P("observed", target="$object")],
       invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
       paths=[Path("room_sweep", [], [St("policy_070", "$object", "$region")])],
-      relations=[R("sequence", "navigate", "the found object must be fetched", bind={"destination": "$object"}),
-                 R("fallback", "explore", "the object is not on any visited support", fallback_type="recover",
-                   reason="room coverage marks every visible object observed, including the target"),
-                 R("fallback", "inspect", "the object may be inside a closed cabinet", fallback_type="substitute")],
       distinct_from={"explore": "explore covers a room without a target."})
 
 skill("explore", "room", "Explore a room",
@@ -375,8 +300,7 @@ skill("explore", "room", "Explore a room",
       requires=[],
       ensures=[P("room_explored", room="$room")],
       invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
-      paths=[Path("viewpoints", [], [St("policy_069", "$room")])],
-      relations=[R("sequence", "search", "a specific object must then be located", reason="narrow to one target")])
+      paths=[Path("viewpoints", [], [St("policy_069", "$room")])])
 
 skill("point", "target", "Point at a target",
       "Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.",
@@ -388,9 +312,7 @@ skill("point", "target", "Point at a target",
       paths=[Path("front", [W("target", "bearing_abs_deg", "lte", 60)],
                   [St("policy_041"), St("policy_101", "$target", out="aim"),
                    St("policy_038", "#aim.position", "#aim.rotation", position_tolerance=0.04, rotation_tolerance=0.2)]),
-             Path("turn_and_point", [], [St("policy_071", "$target")])],
-      relations=[R("sequence", "tuck", "the gesture is finished", bind={"hand": "right"}),
-                 R("alternative", "look", "a gaze is enough to indicate the target", bind={"target": "$target"})])
+             Path("turn_and_point", [], [St("policy_071", "$target")])])
 
 skill("present", "object", "Present a held object",
       "Hold the carried object in front of the body at 0.9-1.4 m height, inside the head camera view.",
@@ -399,18 +321,15 @@ skill("present", "object", "Present a held object",
       requires=[P("holding", hand="right", object="$object")],
       ensures=[P("presenting", object="$object"), P("holding", hand="right", object="$object")],
       invalidates=["reachable(*)"],
-      paths=[Path("front_of_head", [], [St("policy_072", "$object")])],
-      relations=[R("sequence", "place", "the object is put away after showing it", bind={"object": "$object"}),
-                 R("sequence", "handover", "the object is passed to the left hand", bind={"object": "$object"}),
-                 R("alternative", "lift", "only the height of the load matters", bind={"object": "$object"})])
+      paths=[Path("front_of_head", [], [St("policy_072", "$object")])])
 
 # ================================================================= grasp & hand
 G = "grasp_and_hand"
 
 skill("pick", "object", "Pick an object",
-      "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT "
-      "annotation and state: microwave cavity grasp, floor corner pinch, slide-to-edge + edge pinch for flat items, "
-      "handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.",
+      "Grasp one object with the right gripper and lift it. The grasp is chosen automatically from the object and "
+      "where it is: from inside a microwave, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or "
+      "round rim pinch, top pinch, or a two-handed lift for wide items.",
       group=G,
       inputs={"object": I("object_ref", "The object to grasp."),
               "hands": I("hand", "\"both\" requests a two-handed lift for wide items.", required=False,
@@ -453,12 +372,11 @@ skill("pick", "object", "Pick an object",
                ensures=[P("holding", hand="left", object="$object")]),
           Path("floor_top", [W("object", "on_floor", "truthy"), W("object", "grasp_types", "contains", "top_pinch")],
                [St("policy_065", "$object"), St("policy_042", "$object"), St("policy_010", "$object")],
-               requires=[P("on_floor", object="$object")],
                note="Approach, lower the torso and lean over the item, then pinch it from above. Flat objects "
                     "lying on the floor (books, notebooks) have no pick path: the parallel gripper cannot get "
                     "a pad under or across them."),
           Path("flat_overhang_ready", [W("object", "flat", "truthy"), W("object", "edge_ready", "truthy")],
-               [St("policy_013", "$object")], requires=[P("edge_overhang", object="$object")],
+               [St("policy_013", "$object")],
                note="The overhang already exists (e.g. after expose): pinch it directly."),
           Path("flat_edge", [W("object", "flat", "truthy")],
                [St("policy_045", "$object"), St("policy_013", "$object")],
@@ -475,28 +393,6 @@ skill("pick", "object", "Pick an object",
           Path("annotation_dispatch", [W("object", "grasp_types", "truthy")], [St("policy_061", "$object")],
                note="Any other annotated pinch: the general dispatcher selects it."),
       ],
-      relations=[
-          R("sequence", "navigate", "the object must be carried elsewhere", reason="carry path is chosen from holding"),
-          R("sequence", "place", "the object goes onto a surface or into a container", bind={"object": "$object"}),
-          R("sequence", "lift", "the object must clear a high rim while carried", bind={"object": "$object"}),
-          R("fallback", "expose", "a flat object cannot be pinched from the top: push it to the edge by hand, "
-            "then pick the overhang", bind={"object": "$object"}, fallback_type="repair", repairs="edge_overhang"),
-          R("fallback", "separate", "fingers have no room beside the object (grasp_clearance false)",
-            bind={"object": "$object"}, fallback_type="repair", repairs="grasp_clearance"),
-          R("fallback", "pull", "the object sits too deep to reach", bind={"object": "$object"},
-            fallback_type="recover", reason="dragging it toward the base brings it into the arm's envelope"),
-          R("fallback", "approach", "no grasp is reachable from base poses near the current one",
-            bind={"target": "$object"}, fallback_type="recover", reason="a base pose with verified IK at the object"),
-          R("fallback", "upright", "a tall object fell over and its top pinch is gone", bind={"object": "$object"},
-            fallback_type="recover", reason="standing it up restores the annotated top pinch"),
-          R("fallback", "crouch", "the object is on the floor or a low shelf", fallback_type="recover",
-            reason="the lowered torso brings the gripper to floor height"),
-          R("fallback", "uncover", "the object to take is a lid-covered container's content", fallback_type="recover",
-            reason="the lid blocks every approach into the container"),
-          R("fallback", "open", "the object is inside a closed cabinet or appliance", fallback_type="repair",
-            repairs="is_open"),
-          R("alternative", "regrasp", "the object is already in the hand but badly held", bind={"object": "$object"}),
-      ],
       use_when="The robot must hold an object for any later hand action.",
       distinct_from={"regrasp": "regrasp improves a grasp on an object that is already held.",
                      "uncover": "uncover lifts a lid off its container and keeps it.",
@@ -509,9 +405,9 @@ skill("pick", "object", "Pick an object",
 
 skill("place", "object", "Place a held object",
       "Put the right-held object down on a support surface or into an open container and release it. "
-      "The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, "
-      "edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while "
-      "driving past.",
+      "How it is put down is chosen automatically from the receptacle and grasp: into a microwave (insert, release, "
+      "withdraw), into a container, an edge-held flat object slid back over an edge, onto an ordinary surface "
+      "(optionally near a hint point), or while driving past.",
       group=G,
       inputs={"object": I("object_ref", "The held object."),
               "receptacle": I("receptacle_ref", "A support surface or an open container."),
@@ -559,25 +455,6 @@ skill("place", "object", "Place a held object",
                [St("policy_015", "$object", "$receptacle", hint="$hint_xy")],
                ensures=[P("on", object="$object", support="$receptacle")]),
       ],
-      relations=[
-          R("sequence", "close", "the object went into a cabinet or appliance whose door must be shut",
-            reason="appliance cycles and task goals require closed doors"),
-          R("sequence", "heat", "the food went into the microwave or onto the stove", bind={"food": "$object"}),
-          R("sequence", "tuck", "the hand is empty and the robot drives next", bind={"hand": "right"}),
-          R("fallback", "drop", "a deep container leaves no room to lower the hand inside",
-            bind={"object": "$object", "container": "$receptacle"}, fallback_type="substitute"),
-          R("fallback", "approach", "the receptacle is out of reach", bind={"target": "$receptacle"},
-            fallback_type="recover", reason="a base pose with verified IK above the receptacle"),
-          R("fallback", "open", "the receptacle is behind a closed door", fallback_type="repair",
-            repairs="is_open"),
-          R("fallback", "uncover", "the container has its lid on", bind={"container": "$receptacle"},
-            fallback_type="repair", repairs="uncovered"),
-          R("fallback", "regrasp", "the object turned in the hand and no longer clears the target",
-            bind={"object": "$object"}, fallback_type="recover", reason="a fresh centred grasp restores the hold offset"),
-          R("alternative", "stack", "the object should rest on another object", bind={"object": "$object"}),
-          R("alternative", "drop", "the target is a deep bin and a gentle release is not required",
-            bind={"object": "$object", "container": "$receptacle"}),
-      ],
       distinct_from={"drop": "drop releases above a container opening without lowering.",
                      "stack": "stack targets another object's top face.",
                      "release": "release opens the fingers where the object already rests."},
@@ -592,9 +469,6 @@ skill("drop", "object", "Drop an object into a container",
       ensures=[P("inside", object="$object", container="$container"), P("hand_empty", hand="right")],
       invalidates=["holding(right,$object)"],
       paths=[Path("above_opening", [], [St("policy_073", "$object", "$container")])],
-      relations=[R("sequence", "pick", "more items go into the same container", reason="the hand is free again"),
-                 R("alternative", "place", "a gentle release inside is needed",
-                   bind={"object": "$object", "receptacle": "$container"})],
       distinct_from={"place": "place lowers the object onto the container floor before opening."})
 
 skill("stack", "object", "Stack an object on another",
@@ -605,11 +479,7 @@ skill("stack", "object", "Stack an object on another",
                 P("top_clear", object="$base")],
       ensures=[P("on_top_of", object="$object", base="$base"), P("hand_empty", hand="right")],
       invalidates=["holding(right,$object)", "top_clear($base)"],
-      paths=[Path("top_face", [], [St("policy_074", "$object", "$base")])],
-      relations=[R("sequence", "pick", "a taller stack is built", reason="the hand is free for the next block"),
-                 R("fallback", "pick", "the base's top is occupied: remove the top object first",
-                   fallback_type="recover", reason="taking the top object off frees the base's top face"),
-                 R("alternative", "place", "a support surface is acceptable instead", bind={"object": "$object"})])
+      paths=[Path("top_face", [], [St("policy_074", "$object", "$base")])])
 
 skill("release", "object", "Release an object",
       "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set "
@@ -621,8 +491,6 @@ skill("release", "object", "Release an object",
       ensures=[P("hand_empty", hand="$hand")],
       invalidates=["holding($hand,$object)", "steadied($object)"],
       paths=[Path("open_in_place", [], [St("policy_096", "$object", "$hand")])],
-      relations=[R("sequence", "tuck", "the arm is folded after letting go", bind={"hand": "$hand"}),
-                 R("alternative", "drop", "the object should fall into a container", bind={"object": "$object"})],
       distinct_from={"drop": "drop moves above a container first; release does not move the object."})
 
 skill("handover", "object", "Hand an object over to the left hand",
@@ -632,11 +500,7 @@ skill("handover", "object", "Hand an object over to the left hand",
       requires=[P("holding", hand="right", object="$object"), P("hand_empty", hand="left")],
       ensures=[P("holding", hand="left", object="$object"), P("hand_empty", hand="right")],
       invalidates=["holding(right,$object)"],
-      paths=[Path("right_to_left", [], [St("policy_059", "$object")])],
-      relations=[R("sequence", "open", "the right hand must open a door while the left carries the load",
-                   reason="open's left_holds_load path"),
-                 R("sequence", "pick", "a second object is picked with the free right hand", reason="right hand free"),
-                 R("alternative", "brace", "the left hand should hold an object that stays on its support")])
+      paths=[Path("right_to_left", [], [St("policy_059", "$object")])])
 
 skill("lift", "object", "Lift a held object",
       "Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a "
@@ -648,8 +512,6 @@ skill("lift", "object", "Lift a held object",
       ensures=[P("held_above", object="$object", height_m="$height_m"), P("holding", hand="right", object="$object")],
       invalidates=["held_below($object,*)"],
       paths=[Path("raise", [], [St("policy_034", "$height_m")])],
-      relations=[R("sequence", "navigate", "the object is carried over furniture", reason="carry clearance"),
-                 R("sequence", "drop", "the object is released over a tall container", bind={"object": "$object"})],
       distinct_from={"stand": "stand moves the torso, not the held object.", "lower": "opposite direction."})
 
 skill("lower", "object", "Lower a held object",
@@ -660,9 +522,7 @@ skill("lower", "object", "Lower a held object",
       requires=[P("holding", hand="right", object="$object")],
       ensures=[P("held_below", object="$object", height_m="$height_m"), P("holding", hand="right", object="$object")],
       invalidates=["held_above($object,*)"],
-      paths=[Path("descend", [], [St("policy_093", "$object", "$height_m")])],
-      relations=[R("sequence", "place", "the object goes onto a low shelf or into the fridge", bind={"object": "$object"}),
-                 R("alternative", "lift", "opposite direction", bind={"object": "$object"})])
+      paths=[Path("descend", [], [St("policy_093", "$object", "$height_m")])])
 
 skill("rotate", "object", "Rotate a held object",
       "Turn the held object about the vertical axis by the requested angle (e.g. align a book's spine).",
@@ -672,8 +532,6 @@ skill("rotate", "object", "Rotate a held object",
       requires=[P("holding", hand="right", object="$object")],
       ensures=[P("yaw_rotated", object="$object", degrees="$degrees"), P("holding", hand="right", object="$object")],
       paths=[Path("wrist_yaw", [], [St("policy_075", "$object", "$degrees")])],
-      relations=[R("sequence", "place", "the object is set down in the new orientation", bind={"object": "$object"}),
-                 R("alternative", "regrasp", "the grasp, not the yaw, must change", bind={"object": "$object"})],
       distinct_from={"flip": "flip turns an object upside down; rotate keeps it level."})
 
 skill("regrasp", "object", "Regrasp a held object",
@@ -686,7 +544,6 @@ skill("regrasp", "object", "Regrasp a held object",
       requires=[P("holding", hand="right", object="$object"), P("base_near", place="$support")],
       ensures=[P("holding", hand="right", object="$object")],
       paths=[Path("set_down_and_pick", [], [St("policy_076", "$object", "$support")])],
-      relations=[R("sequence", "place", "the corrected grasp is used to place precisely", bind={"object": "$object"})],
       distinct_from={"pick": "pick starts from an empty hand."})
 
 skill("brace", "object", "Brace an object with the left hand",
@@ -699,9 +556,7 @@ skill("brace", "object", "Brace an object with the left hand",
       invalidates=["arm_stowed(left)", "hand_empty(left)"],
       paths=[Path("left_rim_pinch", [W("object", "location", "in", ["support", "floor", "container"])],
                   [St("policy_077", "$object")],
-                  note="Only an object standing in the open (not behind an appliance or cabinet door).")],
-      relations=[R("sequence", "stir", "the braced container is stirred", bind={"container": "$object"}),
-                 R("sequence", "release", "bracing is finished", bind={"object": "$object", "hand": "left"})])
+                  note="Only an object standing in the open (not behind an appliance or cabinet door).")])
 
 skill("flip", "object", "Flip a flat object over",
       "Turn a flat object upside down where it lies: slide it to an edge, pinch the overhang, lift, roll the hand "
@@ -711,10 +566,7 @@ skill("flip", "object", "Flip a flat object over",
       requires=[P("hand_empty", hand="right"), P("base_near", place="$object")],
       ensures=[P("flipped", object="$object"), P("hand_empty", hand="right")],
       paths=[Path("edge_roll", [W("object", "flat", "truthy")],
-                  [St("policy_045", "$object"), St("policy_013", "$object"), St("policy_078", "$object")])],
-      relations=[R("sequence", "center", "the object is left overhanging the edge", bind={"object": "$object"}),
-                 R("fallback", "center", "the flipped object landed too close to the edge", bind={"object": "$object"},
-                   fallback_type="recover", reason="pushes it back from the edge")])
+                  [St("policy_045", "$object"), St("policy_013", "$object"), St("policy_078", "$object")])])
 
 # ================================================================= non-prehensile contact
 G = "contact"
@@ -738,8 +590,6 @@ skill("push", "object", "Push an object",
                   note="The dispatcher chooses push or drag for thin items."),
              Path("from_behind", [], [St("policy_041"),
                                       St("policy_043", "$object", "@object.support", "$direction_xy", "$distance_m")])],
-      relations=[R("sequence", "pick", "the object was pushed into a graspable spot", bind={"object": "$object"}),
-                 R("alternative", "pull", "the object should come toward the robot")],
       distinct_from={"pull": "pull drags toward the base to make an object reachable.",
                      "expose": "expose pushes until a graspable overhang exists.",
                      "separate": "separate pushes away from the nearest neighbour.",
@@ -757,8 +607,7 @@ skill("pull", "object", "Pull an object closer",
       requires=[P("hand_empty", hand="right"), P("base_near", place="$object")],
       ensures=[P("moved_toward_base", object="$object", distance_m="$distance_m"), P("reachable", target="$object")],
       invalidates=["grasp_clearance($object)", "at_initial_place($object)"],
-      paths=[Path("top_drag", [], [St("policy_041"), St("policy_079", "$object", "$distance_m")])],
-      relations=[R("sequence", "pick", "the object is now close enough to grasp", bind={"object": "$object"})])
+      paths=[Path("top_drag", [], [St("policy_041"), St("policy_079", "$object", "$distance_m")])])
 
 skill("expose", "object", "Expose a grasp edge",
       "Push a flat object (book, plate, notebook) until it overhangs a free support edge by >= 5.5 cm while its "
@@ -768,23 +617,17 @@ skill("expose", "object", "Expose a grasp edge",
       requires=[P("hand_empty", hand="right"), P("base_near", place="$object")],
       ensures=[P("edge_overhang", object="$object")],
       invalidates=["at_initial_place($object)", "away_from_edge($object,*)"],
-      paths=[Path("slide_to_edge", [W("object", "flat", "truthy")], [St("policy_045", "$object")])],
-      relations=[R("sequence", "pick", "pinch the overhang", bind={"object": "$object"}),
-                 R("sequence", "flip", "turn the object over", bind={"object": "$object"}),
-                 R("fallback", "approach", "no base pose reaches behind the object", bind={"target": "$object"},
-                   fallback_type="repair")])
+      paths=[Path("slide_to_edge", [W("object", "flat", "truthy")], [St("policy_045", "$object")])])
 
 skill("separate", "object", "Separate an object from its neighbour",
       "Push an object straight away from its closest neighbour until there is room for a finger "
       "(>= 3.5 cm gap) without leaving the support.",
       group=G,
       inputs={"object": I("object_ref", "The crowded object.")},
-      requires=[P("hand_empty", hand="right"), P("base_near", place="$object"),
-                P("grasp_clearance", negated=True, object="$object")],
+      requires=[P("hand_empty", hand="right"), P("base_near", place="$object")],
       ensures=[P("grasp_clearance", object="$object")],
       invalidates=["at_initial_place($object)"],
-      paths=[Path("push_apart", [], [St("policy_080", "$object")])],
-      relations=[R("sequence", "pick", "grasp the freed object", bind={"object": "$object"})])
+      paths=[Path("push_apart", [], [St("policy_080", "$object")])])
 
 skill("center", "object", "Center an object on its support",
       "Push an object back from the support edges until every edge margin is at least the requested value "
@@ -795,9 +638,7 @@ skill("center", "object", "Center an object on its support",
       requires=[P("hand_empty", hand="right"), P("base_near", place="$object")],
       ensures=[P("away_from_edge", object="$object", margin_m="$margin_m")],
       invalidates=["edge_overhang($object)"],
-      paths=[Path("push_inward", [], [St("policy_083", "$object", "$margin_m")])],
-      relations=[R("alternative", "push", "a specific direction is wanted", bind={"object": "$object"}),
-                 R("sequence", "pick", "the secured object is grasped later", bind={"object": "$object"})])
+      paths=[Path("push_inward", [], [St("policy_083", "$object", "$margin_m")])])
 
 skill("roll", "object", "Roll a cylinder",
       "Roll a lying constant-radius cylinder (rolling pin, can on its side) along its support by pressing on its "
@@ -809,9 +650,7 @@ skill("roll", "object", "Roll a cylinder",
       requires=[P("hand_empty", hand="right"), P("base_near", place="$object"), P("lying", object="$object")],
       ensures=[P("object_rolled", object="$object")],
       invalidates=["at_initial_place($object)", "grasp_clearance($object)"],
-      paths=[Path("push_above_axis", [], [St("policy_081", "$object", "$distance_m")])],
-      relations=[R("sequence", "pick", "the rolled object is then grasped", bind={"object": "$object"}),
-                 R("alternative", "push", "sliding is acceptable", bind={"object": "$object"})])
+      paths=[Path("push_above_axis", [], [St("policy_081", "$object", "$distance_m")])])
 
 skill("tip", "object", "Tip an object over",
       "Push a standing tall object near its top so it falls onto its side on the same support "
@@ -822,9 +661,6 @@ skill("tip", "object", "Tip an object over",
       ensures=[P("lying", object="$object")],
       invalidates=["upright($object)", "at_initial_place($object)"],
       paths=[Path("push_high", [W("object", "tall", "truthy")], [St("policy_082", "$object")])],
-      relations=[R("sequence", "roll", "the lying cylinder is rolled", bind={"object": "$object"}),
-                 R("sequence", "pick", "the lying object is pinched across its side", bind={"object": "$object"}),
-                 R("alternative", "upright", "opposite effect")],
       distinct_from={"upright": "upright makes a lying object stand."})
 
 skill("upright", "object", "Stand an object upright",
@@ -840,9 +676,7 @@ skill("upright", "object", "Stand an object upright",
                    St("policy_015", "$object", "@object.support", hint="@object.xy")],
                   ensures=[P("on", object="$object", support="@object.support")],
                   note="Set down where it lay: a free edge spot near the robot had no IK for the sideways grip "
-                       "the turn leaves on the upright object.")],
-      relations=[R("sequence", "pick", "the standing object is then grasped by its top", bind={"object": "$object"}),
-                 R("alternative", "tip", "opposite effect")])
+                       "the turn leaves on the upright object.")])
 
 skill("wipe", "surface", "Wipe a surface",
       "Press a held sponge on a support and sweep a 30 cm strip twice; succeeds when the sponge stayed in contact "
@@ -853,10 +687,7 @@ skill("wipe", "surface", "Wipe a surface",
       outputs={"coverage": O("number", "Fraction of the strip wiped in contact.")},
       requires=[P("holding", hand="right", object="$tool"), P("base_near", place="$surface")],
       ensures=[P("wiped", support="$surface"), P("holding", hand="right", object="$tool")],
-      paths=[Path("sponge_strip", [W("tool", "tags", "contains", "wiping_tool")], [St("policy_084", "$tool", "$surface")])],
-      relations=[R("sequence", "place", "the sponge is put back", bind={"object": "$tool"}),
-                 R("fallback", "clear", "objects cover the surface", bind={"support": "$surface"},
-                   fallback_type="recover", reason="no free strip exists until the surface is cleared")])
+      paths=[Path("sponge_strip", [W("tool", "tags", "contains", "wiping_tool")], [St("policy_084", "$tool", "$surface")])])
 
 skill("stir", "container", "Stir a container",
       "Dip a held spoon's far end into a container and move it in a circle below the rim; succeeds after one full "
@@ -868,11 +699,7 @@ skill("stir", "container", "Stir a container",
       requires=[P("holding", hand="right", object="$tool"), P("base_near", place="$container"),
                 P("uncovered", container="$container")],
       ensures=[P("stirred", container="$container"), P("holding", hand="right", object="$tool")],
-      paths=[Path("circle_below_rim", [W("tool", "tags", "contains", "utensil")], [St("policy_085", "$tool", "$container")])],
-      relations=[R("sequence", "cover", "the pot is covered again", bind={"container": "$container"}),
-                 R("sequence", "heat", "the stirred food is heated", reason="stove path"),
-                 R("fallback", "brace", "the container slides while stirring", bind={"object": "$container"},
-                   fallback_type="recover", reason="the left hand holds the pot still")])
+      paths=[Path("circle_below_rim", [W("tool", "tags", "contains", "utensil")], [St("policy_085", "$tool", "$container")])])
 
 skill("pour", "contents", "Pour contents into a container",
       "Hold the cup's far lip over a container, turn the cup about that lip up to 90 deg and return it upright; "
@@ -885,20 +712,15 @@ skill("pour", "contents", "Pour contents into a container",
       requires=[P("holding", hand="right", object="$source"), P("base_near", place="$target"),
                 P("uncovered", container="$target"), P("container_empty", negated=True, container="$source")],
       ensures=[P("poured_into", source="$source", target="$target"), P("holding", hand="right", object="$source")],
-      paths=[Path("tilt_over_rim", [W("source", "is_container", "truthy")], [St("policy_086", "$source", "$target")])],
-      relations=[R("sequence", "place", "the empty cup is put down", bind={"object": "$source"}),
-                 R("sequence", "stir", "the poured food is stirred", bind={"container": "$target"}),
-                 R("fallback", "uncover", "the target has its lid on", bind={"container": "$target"},
-                   fallback_type="repair", repairs="uncovered"),
-                 ])
+      paths=[Path("tilt_over_rim", [W("source", "is_container", "truthy")], [St("policy_086", "$source", "$target")])])
 
 # ================================================================= articulated & appliances
 G = "articulated_and_appliance"
 
 skill("open", "articulated", "Open a door or drawer",
-      "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the "
-      "part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door "
-      "side-hook ride, or a door opened by the right hand while the left hand holds a load.",
+      "Open a door, drawer, refrigerator door or microwave door to its annotated open value. The method is chosen "
+      "automatically from the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, "
+      "hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.",
       group=G,
       inputs={"articulated": I("articulated_ref", "The door, drawer or appliance door.")},
       outputs={"joint": O("number", "Measured joint value.")},
@@ -924,15 +746,6 @@ skill("open", "articulated", "Open a door or drawer",
                 St("policy_047", "$articulated")],
                requires=[P("hand_empty", hand="right")]),
       ],
-      relations=[R("sequence", "pick", "an object inside must be taken out", reason="is_open is a cavity-pick precondition"),
-                 R("sequence", "place", "an object must go inside", reason="is_open is a cavity-place precondition"),
-                 R("sequence", "close", "the door must be shut afterwards", bind={"articulated": "$articulated"}),
-                 R("fallback", "retreat", "the door swing hits the base", bind={"obstacle": "$articulated"},
-                   fallback_type="recover", reason="room for the door's sweep"),
-                 R("fallback", "handover", "the right hand still holds a load", fallback_type="repair",
-                   repairs="hand_empty"),
-                 R("fallback", "approach", "the handle is out of reach", bind={"target": "$articulated"},
-                   fallback_type="recover", reason="a base pose with verified IK at the handle")],
       distinct_from={"press": "press only pushes a button; open guarantees the door is open."})
 
 skill("close", "articulated", "Close a door or drawer",
@@ -951,13 +764,7 @@ skill("close", "articulated", "Close a door or drawer",
           Path("handle_push", [W("articulated", "has_handle", "truthy")], [St("policy_003"), St("policy_023", "$articulated")],
                requires=[P("hand_empty", hand="right")]),
           Path("dispatch", [], [St("policy_063", "$articulated")], requires=[P("hand_empty", hand="right")]),
-      ],
-      relations=[R("sequence", "heat", "a microwave or fridge must be closed before its cycle",
-                   bind={"appliance": "$articulated"}),
-                 R("sequence", "chill", "the fridge must be closed while cooling", bind={"appliance": "$articulated"}),
-                 R("sequence", "navigate", "the robot leaves", reason="task done here"),
-                 R("fallback", "retreat", "the door swing hits the base", bind={"obstacle": "$articulated"},
-                   fallback_type="recover", reason="room for the door's sweep")])
+      ])
 
 skill("press", "button", "Press a button",
       "Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the "
@@ -976,9 +783,6 @@ skill("press", "button", "Press a button",
              Path("microwave_door_key", [W("button", "button", "equals", "door_button")],
                   [St("policy_033", "@button.appliance", button="door")]),
              Path("generic_key", [], [St("policy_094", "$button")])],
-      relations=[R("sequence", "heat", "the start key began a cycle", reason="heat then only waits"),
-                 R("sequence", "tuck", "the hand is free again", bind={"hand": "right"}),
-                 R("alternative", "open", "the door key is pressed only to open the microwave door")],
       distinct_from={"heat": "heat guarantees a temperature; press guarantees only the key press.",
                      "open": "open guarantees the door is open."})
 
@@ -1004,20 +808,6 @@ skill("heat", "food", "Heat food",
                requires=[P("in_cookware_on_burner", food="$food", appliance="$appliance")],
                note="Food must be inside a pot (or pan) whose bottom rests on the burner."),
       ],
-      relations=[R("sequence", "open", "the heated food is taken out of the microwave",
-                   bind={"articulated": "$appliance"}),
-                 R("sequence", "pick", "the heated food is served", bind={"object": "$food"}),
-                 R("alternative", "heat", "no microwave is available: heat in a pot on the stove",
-                   bind={"food": "$food", "appliance": "kitchen_stove"},
-                   reason="Same verb, other noun: the stove path pours/places the food into the pot first."),
-                 R("fallback", "close", "the microwave door is open", bind={"articulated": "$appliance"},
-                   fallback_type="repair", repairs="is_closed"),
-                 R("fallback", "place", "the food is not in the appliance", bind={"object": "$food"},
-                   fallback_type="repair", repairs="in_appliance"),
-                 R("fallback", "wait", "the food is still below the target when the time budget ends",
-                   fallback_type="recover", reason="keep the heat on longer, then re-check the temperature"),
-                 R("fallback", "pour", "the food is in a cup, not in the pot on the burner", fallback_type="recover",
-                   reason="pouring the cup into the pot on the burner puts the food in the heated vessel")],
       distinct_from={"chill": "opposite direction, in the refrigerator.", "press": "press does not wait."})
 
 skill("chill", "food", "Chill food",
@@ -1030,10 +820,7 @@ skill("chill", "food", "Chill food",
       requires=[P("in_appliance", object="$food", appliance="$appliance"), P("is_closed", articulated="$appliance")],
       ensures=[P("temperature_at_most", object="$food", temp_c="$temp_c")],
       paths=[Path("fridge_wait", [W("appliance", "category", "equals", "refrigerator")],
-                  [St("policy_089", "$food", "$temp_c", "$appliance")])],
-      relations=[R("sequence", "open", "the chilled food is taken out", bind={"articulated": "$appliance"}),
-                 R("fallback", "close", "the fridge door is open", bind={"articulated": "$appliance"},
-                   fallback_type="repair", repairs="is_closed")])
+                  [St("policy_089", "$food", "$temp_c", "$appliance")])])
 
 skill("cover", "container", "Cover a container with a lid",
       "Lay the held lid centred on the container rim (within 3 cm, tilt <= 12 deg) and release it.",
@@ -1044,9 +831,7 @@ skill("cover", "container", "Cover a container with a lid",
                 P("uncovered", container="$container")],
       ensures=[P("covered", container="$container", lid="$lid"), P("hand_empty", hand="right")],
       invalidates=["uncovered($container)", "holding(right,$lid)"],
-      paths=[Path("rim_plane", [W("lid", "is_lid", "truthy")], [St("policy_087", "$lid", "$container")])],
-      relations=[R("sequence", "heat", "the covered pot is heated", reason="stove path"),
-                 R("alternative", "uncover", "opposite effect")])
+      paths=[Path("rim_plane", [W("lid", "is_lid", "truthy")], [St("policy_087", "$lid", "$container")])])
 
 skill("uncover", "container", "Uncover a container",
       "Lift the lid off a container by its knob and set it down beside the container: on the same support when it "
@@ -1059,18 +844,14 @@ skill("uncover", "container", "Uncover a container",
       invalidates=["covered($container,*)"],
       paths=[Path("knob_lift_aside", [W("container", "lid", "truthy")],
                   [St("policy_010", "@container.lid"), St("policy_015", "@container.lid", "@container.aside_support")],
-                  ensures=[P("on", object="@container.lid", support="@container.aside_support")])],
-      relations=[R("sequence", "pour", "food is poured into the opened pot", bind={"target": "$container"}),
-                 R("sequence", "stir", "the opened pot is stirred", bind={"container": "$container"}),
-                 R("sequence", "pick", "something inside is taken out", reason="the opening is free"),
-                 R("alternative", "cover", "opposite effect")])
+                  ensures=[P("on", object="@container.lid", support="@container.aside_support")])])
 
-# ================================================================= multi-step goals (contract chains of Skill Contracts)
+# ================================================================= multi-step goals (Contracts that call other Contracts internally)
 G = "multi_object"
 
 skill("fetch", "object", "Fetch an object to a receptacle",
-      "Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to "
-      "the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.",
+      "Bring one object to a support or container: the robot goes to the object, picks it up, carries it to the "
+      "receptacle and puts it there.",
       group=G,
       inputs={"object": I("object_ref", "What to bring."),
               "receptacle": I("receptacle_ref", "Destination support or open container.")},
@@ -1086,10 +867,6 @@ skill("fetch", "object", "Fetch an object to a receptacle",
                   [Call("navigate", destination="$object"), Call("pick", object="$object"),
                    Call("navigate", destination="$receptacle"), Call("place", object="$object", receptacle="$receptacle")],
                   ensures=[P("on", object="$object", support="$receptacle")])],
-      relations=[R("sequence", "fetch", "more objects go to the same place", reason="the hand is free again"),
-                 R("alternative", "restore", "the object should return to its starting support", bind={"object": "$object"}),
-                 R("fallback", "search", "the object is not where expected", bind={"object": "$object"},
-                   fallback_type="recover", reason="locates the object and reports its support")],
       distinct_from={"restore": "restore's destination is the object's starting support.",
                      "collect": "collect moves a list into one container."})
 
@@ -1099,9 +876,7 @@ skill("collect", "objects", "Collect objects into a container",
       inputs={"objects": I("object_list", "Objects to gather."), "container": I("container_ref", "The container.")},
       requires=[P("hand_empty", hand="right"), P("uncovered", container="$container")],
       ensures=[P("all_inside", objects="$objects", container="$container")],
-      paths=[Path("fetch_each", [], [ForEach("$objects", "item", Call("fetch", object="$item", receptacle="$container"))])],
-      relations=[R("sequence", "close", "the container sits in a cabinet that must be closed", reason="closed: all goal"),
-                 R("alternative", "sort", "the objects belong in different containers")])
+      paths=[Path("fetch_each", [], [ForEach("$objects", "item", Call("fetch", object="$item", receptacle="$container"))])])
 
 skill("sort", "objects", "Sort objects by category",
       "Put each listed object into the container mapped to its category tag (e.g. fruit -> basket, toy -> toy box).",
@@ -1111,9 +886,7 @@ skill("sort", "objects", "Sort objects by category",
       requires=[P("hand_empty", hand="right")],
       ensures=[P("sorted_by_category", objects="$objects", rule="$rule")],
       paths=[Path("fetch_by_tag", [], [ForEach("$objects", "item",
-                                               Call("fetch", object="$item", receptacle="@item.sort_target"))])],
-      relations=[R("alternative", "collect", "all objects go into one container"),
-                 R("sequence", "close", "a sorted container sits in a cabinet", reason="closed: all goal")])
+                                               Call("fetch", object="$item", receptacle="@item.sort_target"))])])
 
 skill("clear", "support", "Clear a support",
       "Remove every object from a support surface to a destination receptacle.",
@@ -1124,15 +897,13 @@ skill("clear", "support", "Clear a support",
       requires=[P("hand_empty", hand="right")],
       ensures=[P("support_clear", support="$support")],
       paths=[Path("fetch_each_on_support", [], [ForEach("@support.objects", "item",
-                                                       Call("fetch", object="$item", receptacle="$receptacle"))])],
-      relations=[R("sequence", "wipe", "the cleared surface is wiped", bind={"surface": "$support"}),
-                 R("sequence", "arrange", "a new layout is set on the cleared surface", bind={"support": "$support"})])
+                                                       Call("fetch", object="$item", receptacle="$receptacle"))])])
 
 skill("empty", "container", "Empty a container",
       "Take every object out of a container and put it on/into a destination receptacle.",
       group=G,
       inputs={"container": I("container_ref", "The container to empty."),
-              "receptacle": I("receptacle_ref", "Where the contents go (a container for the pouring path).")},
+              "receptacle": I("receptacle_ref", "Where the contents go (a container if they are poured).")},
       outputs={"moved": O("object_list", "Objects that were taken out.")},
       requires=[P("hand_empty", hand="right"), P("uncovered", container="$container")],
       ensures=[P("container_empty", container="$container")],
@@ -1141,15 +912,12 @@ skill("empty", "container", "Empty a container",
                                                    Call("navigate", destination="$receptacle"),
                                                    Call("place", object="$item", receptacle="$receptacle"))],
                   note="Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which "
-                       "the arm cannot reach over the stove; the pour path is kept as an alternative.)"),
+                       "the arm cannot reach over the stove; the pour path is kept as a second path.)"),
              Path("pour_out", [W("container", "grasp_types", "contains", "rim_pinch"), W("receptacle", "kind", "equals", "object")],
                   [Call("navigate", destination="$container"), Call("pick", object="$container"),
                    Call("navigate", destination="$receptacle"), Call("pour", source="$container", target="$receptacle"),
                    Call("place", object="$container", receptacle="@container.support")],
-                  note="A cup or mug of loose items is emptied by pouring, then put back.")],
-      relations=[R("alternative", "clear", "the items lie on a surface instead"),
-                 R("fallback", "uncover", "the container has its lid on", bind={"container": "$container"},
-                   fallback_type="repair", repairs="uncovered")])
+                  note="A cup or mug of loose items is emptied by pouring, then put back.")])
 
 skill("arrange", "objects", "Arrange objects together",
       "Place the listed objects on one support so that they are pairwise within a distance (a place setting).",
@@ -1161,22 +929,18 @@ skill("arrange", "objects", "Arrange objects together",
       paths=[Path("place_near_common_spot", [], [
           ForEach("$objects", "item", Call("navigate", destination="$item"), Call("pick", object="$item"),
                   Call("navigate", destination="$support"),
-                  Call("place", object="$item", receptacle="$support", hint_xy="@support.roomiest_xy"))])],
-      relations=[R("fallback", "clear", "the support is too crowded", bind={"support": "$support"},
-                   fallback_type="recover", reason="frees room for the place setting")])
+                  Call("place", object="$item", receptacle="$support", hint_xy="@support.roomiest_xy"))])])
 
 skill("restore", "object", "Restore an object to its place",
       "Return an object to the support it occupied at the start of the episode.",
       group=G,
       inputs={"object": I("object_ref", "The displaced object.")},
-      requires=[P("hand_empty", hand="right"), P("at_initial_place", negated=True, object="$object")],
+      requires=[P("hand_empty", hand="right")],
       ensures=[P("at_initial_place", object="$object"), P("hand_empty", hand="right")],
       paths=[Path("dispatch_pick_place", [W("object", "initial_support", "truthy")],
                   [St("policy_092", "$object"), St("policy_061", "$object"),
                    St("policy_092", "@object.initial_support"),
-                   St("policy_015", "$object", "@object.initial_support")])],
-      relations=[R("alternative", "fetch", "a different destination is wanted", bind={"object": "$object"}),
-                 R("sequence", "tuck", "the robot drives on", bind={"hand": "right"})])
+                   St("policy_015", "$object", "@object.initial_support")])])
 
 skill("swap", "objects", "Swap two objects",
       "Exchange the positions of two objects on their supports via a free buffer spot.",
@@ -1190,9 +954,7 @@ skill("swap", "objects", "Swap two objects",
           Call("navigate", destination="$b"), Call("pick", object="$b"), Call("navigate", destination="@a.support"),
           Call("place", object="$b", receptacle="@a.support", hint_xy="@a.xy"),
           Call("navigate", destination="$a"), Call("pick", object="$a"), Call("navigate", destination="@b.support"),
-          Call("place", object="$a", receptacle="@b.support", hint_xy="@b.xy")])],
-      relations=[R("alternative", "fetch", "only one object needs to move"),
-                 R("sequence", "tuck", "the robot drives on", bind={"hand": "right"})])
+          Call("place", object="$a", receptacle="@b.support", hint_xy="@b.xy")])])
 
 # ================================================================= added verbs (to 70)
 G = "base_and_body"
@@ -1208,8 +970,6 @@ skill("sidestep", "base", "Sidestep the base",
       paths=[Path("empty_tucked", [EMPTY_R, W("robot", "left_held", "falsy"), W("robot", "right_arm_stowed", "truthy")],
                   [St("policy_037", 0.0, "$distance_m")]),
              Path("loaded", [], [St("policy_114", "$distance_m")])],
-      relations=[R("sequence", "approach", "the target is now in front of the arm", reason="small lateral offset fixed"),
-                 R("alternative", "navigate", "a larger move is needed")],
       distinct_from={"retreat": "retreat moves straight back; sidestep moves sideways.",
                      "face": "face turns in place; sidestep keeps the heading."})
 
@@ -1220,7 +980,6 @@ skill("wait", "duration", "Wait for a duration",
       requires=[],
       ensures=[P("waited", seconds="$seconds")],
       paths=[Path("idle", [], [St("policy_103", "$seconds")])],
-      relations=[R("sequence", "open", "a cycle finished and the door is opened", reason="time passed")],
       distinct_from={"heat": "heat waits for a measured temperature; wait for a fixed time."})
 
 G = "perception_and_gesture"
@@ -1233,10 +992,6 @@ skill("identify", "object", "Identify an object",
       requires=[],
       ensures=[P("identified", object="$object"), P("in_view", target="$object")],
       paths=[Path("look_and_label", [], [St("policy_110", "$object")])],
-      relations=[R("sequence", "sort", "the category decides the destination", reason="category output"),
-                 R("alternative", "measure", "the size, not the category, is needed", bind={"object": "$object"}),
-                 R("fallback", "navigate", "the object is not visible from here", bind={"destination": "$object"},
-                   fallback_type="recover", reason="a closer view")],
       distinct_from={"look": "look only aims the camera.", "measure": "measure reports dimensions."})
 
 skill("measure", "object", "Measure an object",
@@ -1246,9 +1001,7 @@ skill("measure", "object", "Measure an object",
       outputs={"size_m": O("xy", "World-frame size [dx, dy, dz] in metres.")},
       requires=[],
       ensures=[P("measured", object="$object"), P("in_view", target="$object")],
-      paths=[Path("look_and_size", [], [St("policy_111", "$object")])],
-      relations=[R("sequence", "pick", "the size decides the grasp", reason="width vs gripper opening"),
-                 R("alternative", "identify", "the category is needed", bind={"object": "$object"})])
+      paths=[Path("look_and_size", [], [St("policy_111", "$object")])])
 
 skill("count", "category", "Count objects of a category",
       "Sweep the head from the current place and count the visible objects whose asset or tag matches.",
@@ -1257,27 +1010,20 @@ skill("count", "category", "Count objects of a category",
       outputs={"count": O("number", "Number of visible matches."), "objects": O("object_list", "The matches.")},
       requires=[],
       ensures=[P("counted", category="$category")],
-      paths=[Path("head_sweep", [], [St("policy_112", "$category")])],
-      relations=[R("sequence", "collect", "the counted objects are gathered", reason="objects output"),
-                 R("fallback", "explore", "objects of the category may be out of view", fallback_type="recover",
-                   reason="room coverage")])
+      paths=[Path("head_sweep", [], [St("policy_112", "$category")])])
 
 skill("wave", "hand", "Wave the hand",
       "Raise the empty right hand at head height and swing it (greeting / attention gesture).",
       group=G, inputs={},
       requires=[P("hand_empty", hand="right")],
       ensures=[P("waved"), P("hand_empty", hand="right")],
-      paths=[Path("raised_swing", [], [St("policy_104")])],
-      relations=[R("sequence", "point", "the robot then indicates something", reason="gesture sequence"),
-                 R("alternative", "nod", "an acknowledgement without the arm")])
+      paths=[Path("raised_swing", [], [St("policy_104")])])
 
 skill("nod", "head", "Nod the head",
       "Pitch the head down and up twice (acknowledgement gesture).",
       group=G, inputs={}, requires=[], ensures=[P("nodded")],
       invalidates=["in_view(*)"],
-      paths=[Path("pitch_cycles", [], [St("policy_105")])],
-      relations=[R("sequence", "look", "the robot looks back at a target", reason="restores gaze"),
-                 R("alternative", "wave", "a bigger gesture is needed")])
+      paths=[Path("pitch_cycles", [], [St("policy_105")])])
 
 G = "grasp_and_hand"
 
@@ -1287,9 +1033,7 @@ skill("shake", "object", "Shake a held object",
       inputs={"object": I("object_ref", "The right-held object.")},
       requires=[P("holding", hand="right", object="$object")],
       ensures=[P("shaken", object="$object"), P("holding", hand="right", object="$object")],
-      paths=[Path("lateral", [], [St("policy_102", "$object")])],
-      relations=[R("sequence", "pour", "loose contents are poured out", bind={"source": "$object"}),
-                 R("alternative", "rotate", "the orientation, not the contents, matters", bind={"object": "$object"})])
+      paths=[Path("lateral", [], [St("policy_102", "$object")])])
 
 skill("hover", "object", "Hover a held object over a target",
       "Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without "
@@ -1299,10 +1043,6 @@ skill("hover", "object", "Hover a held object over a target",
       requires=[P("holding", hand="right", object="$object"), P("base_near", place="$target")],
       ensures=[P("hovering_over", object="$object", target="$target"), P("holding", hand="right", object="$object")],
       paths=[Path("above_target", [], [St("policy_115", "$object", "$target")])],
-      relations=[R("sequence", "drop", "the object is released into the container under it",
-                   bind={"object": "$object", "container": "$target"}),
-                 R("sequence", "release", "the object is let go right there", bind={"object": "$object"}),
-                 R("alternative", "lift", "only a height matters", bind={"object": "$object"})],
       distinct_from={"drop": "hover keeps the grasp.", "lift": "lift has no target point."})
 
 skill("square", "object", "Square an object",
@@ -1316,8 +1056,6 @@ skill("square", "object", "Square an object",
                   [St("policy_108", "$object", out="sq"), St("policy_010", "$object"),
                    St("policy_075", "$object", "#sq.degrees"),
                    St("policy_015", "$object", "@object.support", hint="#sq.xy")])],
-      relations=[R("sequence", "stack", "squared blocks stack cleanly", reason="aligned faces"),
-                 R("alternative", "rotate", "the object is already in the hand", bind={"object": "$object"})],
       distinct_from={"rotate": "rotate turns a held object by a requested angle; square finds the angle itself."})
 
 G = "contact"
@@ -1330,8 +1068,6 @@ skill("touch", "object", "Touch an object",
       requires=[P("hand_empty", hand="right"), P("base_near", place="$object")],
       ensures=[P("touched", object="$object"), P("hand_empty", hand="right")],
       paths=[Path("fingertip_top", [], [St("policy_107", "$object")])],
-      relations=[R("sequence", "pick", "the touched object is then grasped", bind={"object": "$object"}),
-                 R("alternative", "point", "contact is not allowed", bind={"target": "$object"})],
       distinct_from={"push": "push moves the object; touch must not.", "press": "press actuates a button."})
 
 skill("knock", "articulated", "Knock on a door",
@@ -1342,8 +1078,6 @@ skill("knock", "articulated", "Knock on a door",
       requires=[P("hand_empty", hand="right"), P("base_near", place="$articulated"), P("is_closed", articulated="$articulated")],
       ensures=[P("knocked", articulated="$articulated"), P("is_closed", articulated="$articulated")],
       paths=[Path("panel_taps", [W("articulated", "has_handle", "truthy")], [St("policy_106", "$articulated")])],
-      relations=[R("sequence", "open", "the door is opened after knocking", bind={"articulated": "$articulated"}),
-                 R("alternative", "touch", "an object, not a door, is to be tapped")],
       distinct_from={"open": "knock must leave the door closed."})
 
 skill("sweep", "objects", "Sweep objects together",
@@ -1355,8 +1089,6 @@ skill("sweep", "objects", "Sweep objects together",
       requires=[P("hand_empty", hand="right")],
       ensures=[P("clustered", objects="$objects", radius_m="$radius_m")],
       paths=[Path("push_to_centroid", [], [St("policy_109", "$objects", radius_m="$radius_m")])],
-      relations=[R("sequence", "collect", "the cluster is then put into a container", reason="short reaches"),
-                 R("alternative", "push", "only one object has to move", reason="single push")],
       distinct_from={"arrange": "arrange picks and places; sweep only pushes.",
                      "collect": "collect puts objects into a container."})
 
@@ -1374,8 +1106,6 @@ skill("stop", "appliance", "Stop an appliance",
              Path("microwave_door", [W("appliance", "category", "equals", "microwave")],
                   [St("policy_024", "$appliance")],
                   ensures=[P("is_open", articulated="$appliance")])],
-      relations=[R("sequence", "pick", "the food is taken off the heat", reason="heat is off"),
-                 R("alternative", "heat", "heat stops automatically at a target temperature")],
       distinct_from={"press": "press does not guarantee the heat is off.", "close": "close does not stop a stove."})
 
 G = "contact"
@@ -1388,8 +1118,6 @@ skill("dip", "utensil", "Dip a utensil",
                 P("uncovered", container="$container")],
       ensures=[P("dipped", container="$container"), P("holding", hand="right", object="$tool")],
       paths=[Path("tip_below_rim", [W("tool", "tags", "contains", "utensil")], [St("policy_113", "$tool", "$container")])],
-      relations=[R("sequence", "stir", "the utensil then stirs", bind={"tool": "$tool", "container": "$container"}),
-                 R("alternative", "stir", "the contents must be mixed", bind={"tool": "$tool", "container": "$container"})],
       distinct_from={"stir": "stir circles inside the container; dip goes in and out once."})
 
 G = "multi_object"
@@ -1412,12 +1140,10 @@ skill("hide", "object", "Hide an object",
                                      W("receptacle", "category", "equals", "cabinet_inside")],
                   [Call("navigate", destination="@receptacle.appliance"), Call("open", articulated="@receptacle.appliance"),
                    Call("fetch", object="$object", receptacle="$receptacle"),
-                   Call("close", articulated="@receptacle.appliance")])],
-      relations=[R("alternative", "fetch", "the object only needs to move", bind={"object": "$object"}),
-                 R("sequence", "tuck", "the robot leaves", bind={"hand": "right"})])
+                   Call("close", articulated="@receptacle.appliance")])])
 
 
-# ================================================================ planner hints
+# ================================================================ upper-layer hints
 # When-to-use text for the upper layer (fills nodes that did not set one) and
 # the verbs each node is most easily confused with.
 USE_WHEN = {

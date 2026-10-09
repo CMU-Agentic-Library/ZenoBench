@@ -2,7 +2,7 @@
 
 Exchange the positions of two objects on their supports via a free buffer spot.
 
-Paired SkillNode: `skill_054` (`swap-objects`).
+Verb: `swap`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_054` (`swap-objects`).
 ## Policy paths
 
 - `via_buffer` when always: `[navigate](destination=$a)` -> `[pick](object=$a)` -> `[place](object=$a, receptacle=@a.support, hint_xy=@a.buffer_xy)` -> `[navigate](destination=$b)` -> `[pick](object=$b)` -> `[navigate](destination=@a.support)` -> `[place](object=$b, receptacle=@a.support, hint_xy=@a.xy)` -> `[navigate](destination=$a)` -> `[pick](object=$a)` -> `[navigate](destination=@b.support)` -> `[place](object=$a, receptacle=@b.support, hint_xy=@b.xy)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

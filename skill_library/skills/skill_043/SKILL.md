@@ -3,7 +3,7 @@ name: heat-food
 description: Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).
 ---
 
-# Heat food (`skill_043`)
+# Heat food (`heat`)
 
 `heat(food: object_ref, appliance: appliance_ref, temp_c: number)`
 
@@ -28,62 +28,50 @@ Food must reach a target temperature with the microwave or the stove.
 
 - `temp_c` (`number`): Measured final temperature.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "heat", "args": {"food": "<object>", "appliance": "<appliance>", "temp_c": "<number>"}}
+```
+
+Argument formats:
+
+- `appliance_ref`: an articulated appliance with a thermal role (microwave, refrigerator)
+- `number`: a finite number
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$appliance). Depending on the bound nouns, the chosen path also needs: microwave (appliance.category == 'microwave'): in_appliance(object=$food, appliance=$appliance), is_closed(articulated=$appliance); stove_pot (appliance.category == 'stove'): in_cookware_on_burner(food=$food, appliance=$appliance).
+Requires hand_empty(hand=right); base_near(place=$appliance). Some bound nouns add preconditions (see Conditions that depend on the bound nouns).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `base_near(place=$appliance)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
+- `base_near(place=$appliance)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `temperature_at_least(object=$food, temp_c=$temp_c)` — Task-level food temperature at or above the threshold. GT: thermal_state.
-- `not heating(appliance=$appliance)` — The appliance's heat source is on (microwave cycle or stove burner). GT: thermal_state.
+- `temperature_at_least(object=$food, temp_c=$temp_c)` — Task-level food temperature at or above the threshold.
+- `not heating(appliance=$appliance)` — The appliance's heat source is on (microwave cycle or stove burner).
 
-## Verifier
+## Conditions that depend on the bound nouns
 
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `temperature_at_least(object=$food, temp_c=$temp_c)` (all paths)
-- `not heating(appliance=$appliance)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `microwave` — when appliance.category == 'microwave'
-
-1. `policy_032($appliance)`
-2. `policy_064($food, $temp_c)`
-- extra precondition `in_appliance(object=$food, appliance=$appliance)`
-- extra precondition `is_closed(articulated=$appliance)`
-
-### `stove_pot` — when appliance.category == 'stove'
-
-1. `policy_094(@appliance.power_button, state=True)`
-2. `policy_090($food, $temp_c, $appliance)`
-- extra precondition `in_cookware_on_burner(food=$food, appliance=$appliance)`
-- Food must be inside a pot (or pan) whose bottom rests on the burner.
-
-## Relations
-
-- Previous step: `place` (`skill_018`) (enables) — the food went into the microwave or onto the stove
-- Previous step: `stir` (`skill_038`) (then) — the stirred food is heated
-- Previous step: `close` (`skill_041`) (enables) — a microwave or fridge must be closed before its cycle
-- Previous step: `press` (`skill_042`) (enables) — the start key began a cycle
-- Previous step: `cover` (`skill_045`) (enables) — the covered pot is heated
-- Next step: `open` (`skill_040`) (then) — the heated food is taken out of the microwave
-- Next step: `pick` (`skill_017`) (then) — the heated food is served
-- Fallback on failure: `close` (`skill_041`) (repair, repairs is_closed) — the microwave door is open
-- Fallback on failure: `place` (`skill_018`) (repair, repairs in_appliance) — the food is not in the appliance
-- Fallback on failure: `wait` (`skill_056`) (recover) — the food is still below the target when the time budget ends
-- Fallback on failure: `pour` (`skill_039`) (recover) — the food is in a cup, not in the pot on the burner
-- Alternative: `heat` (`skill_043`) — no microwave is available: heat in a pot on the stove
-- Alternative: `stop` (`skill_068`) — heat stops automatically at a target temperature
+- when appliance.category == 'microwave': needs `in_appliance(object=$food, appliance=$appliance)`; needs `is_closed(articulated=$appliance)`
+- when appliance.category == 'stove': needs `in_cookware_on_burner(food=$food, appliance=$appliance)`
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_051`.

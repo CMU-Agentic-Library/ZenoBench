@@ -1403,24 +1403,6 @@
    ]
   },
   {
-   "id": "g_expose_then_pick_book",
-   "task": "tasks/kitchen_skills",
-   "subgraph": "skill_library/examples/expose_then_pick_book.skill_subgraph.json",
-   "bindings": "skill_library/examples/expose_then_pick_book.bindings.json"
-  },
-  {
-   "id": "g_heat_on_stove_instead_of_microwave",
-   "task": "tasks/kitchen_skills",
-   "subgraph": "skill_library/examples/heat_on_stove_instead_of_microwave.skill_subgraph.json",
-   "bindings": "skill_library/examples/heat_on_stove_instead_of_microwave.bindings.json"
-  },
-  {
-   "id": "g_search_then_fetch",
-   "task": "tasks/kitchen_skills",
-   "subgraph": "skill_library/examples/search_then_fetch.skill_subgraph.json",
-   "bindings": "skill_library/examples/search_then_fetch.bindings.json"
-  },
-  {
    "id": "c_approach_moving",
    "task": "tasks/collect_fruits",
    "steps": [

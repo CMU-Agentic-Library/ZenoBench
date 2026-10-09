@@ -1,8 +1,8 @@
 # contract_048 — Open a door or drawer
 
-Open a door, drawer, refrigerator door or microwave door to its annotated open value. The path follows the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.
+Open a door, drawer, refrigerator door or microwave door to its annotated open value. The method is chosen automatically from the part: powered microwave (door button + hinge), refrigerator handle, drawer handle pull, hinged door side-hook ride, or a door opened by the right hand while the left hand holds a load.
 
-Paired SkillNode: `skill_040` (`open-articulated`).
+Verb: `open`.
 
 ## Precheck
 
@@ -24,5 +24,7 @@ Paired SkillNode: `skill_040` (`open-articulated`).
 - `refrigerator` when articulated.category == 'refrigerator': `policy_003()` -> `policy_022($articulated, goal=@articulated.wide_open_q)`
 - `drawer` when articulated.type == 'prismatic': `policy_003()` -> `policy_046($articulated)` -> `policy_050($articulated)` -> `policy_047($articulated)`
 - `hinged_door` when articulated.type == 'revolute': `policy_003()` -> `policy_046($articulated)` -> `policy_049($articulated)` -> `policy_047($articulated)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

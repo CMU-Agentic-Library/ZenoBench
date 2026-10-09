@@ -2,7 +2,7 @@
 
 Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).
 
-Paired SkillNode: `skill_023` (`lift-object`).
+Verb: `lift`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_023` (`lift-object`).
 ## Policy paths
 
 - `raise` when always: `policy_034($height_m)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

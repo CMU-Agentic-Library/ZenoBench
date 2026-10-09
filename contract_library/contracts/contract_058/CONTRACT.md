@@ -2,7 +2,7 @@
 
 Remove every object from a support surface to a destination receptacle.
 
-Paired SkillNode: `skill_050` (`clear-support`).
+Verb: `clear`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_050` (`clear-support`).
 ## Policy paths
 
 - `fetch_each_on_support` when always: `for each item in @support.objects: [fetch](object=$item, receptacle=$receptacle)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

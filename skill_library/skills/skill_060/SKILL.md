@@ -3,7 +3,7 @@ name: wave-hand
 description: Raise the empty right hand at head height and swing it (greeting / attention gesture).
 ---
 
-# Wave the hand (`skill_060`)
+# Wave the hand (`wave`)
 
 `wave()`
 
@@ -21,40 +21,38 @@ Greeting or getting attention.
 
 - none
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "wave", "args": {}}
+```
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `waved()` — The right hand performed a measured wave (>= 2 lateral swings at head height). GT: robot_memory (TCP swing samples).
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `waved()` (all paths)
-- `hand_empty(hand=right)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `raised_swing` — when always (default path)
-
-1. `policy_104()`
-
-## Relations
-
-- Next step: `point` (`skill_015`) (enables) — the robot then indicates something
-- Alternative: `nod` (`skill_061`) — an acknowledgement without the arm
+- `waved()` — The right hand performed a measured wave (>= 2 lateral swings at head height).
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_068`.

@@ -2,7 +2,7 @@
 
 Aim the head camera at a target (turning the base if it is outside the head yaw range) and record every annotated object in view as observed.
 
-Paired SkillNode: `skill_011` (`look-target`).
+Verb: `look`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_011` (`look-target`).
 
 - `head_only` when target.bearing_abs_deg <= 55: `policy_068($target)`
 - `turn_then_head` when always: `policy_066($target)` -> `policy_068($target)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

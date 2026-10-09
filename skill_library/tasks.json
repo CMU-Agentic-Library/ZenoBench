@@ -1,7 +1,7 @@
 {
  "schema_version": 2,
  "kind": "task_catalog",
- "note": "Goals are GT predicate atoms; skill_library/planner.py proves each task decomposes into SkillNodes.",
+ "note": "Goals are GT predicate atoms; the ground-truth SkillNode chain of each task is in skill_library/plans/.",
  "tasks": [
   {
    "id": "collect_fruits",

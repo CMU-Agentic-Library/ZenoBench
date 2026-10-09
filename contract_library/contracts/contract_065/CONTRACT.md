@@ -2,7 +2,7 @@
 
 Look at an object and report its category and tags (asset annotation) once it is in the head camera view.
 
-Paired SkillNode: `skill_057` (`identify-object`).
+Verb: `identify`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_057` (`identify-object`).
 ## Policy paths
 
 - `look_and_label` when always: `policy_110($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

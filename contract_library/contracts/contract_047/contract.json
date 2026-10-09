@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_047",
- "skill_id": "skill_039",
  "verb": "pour",
  "noun": "contents",
  "name": "Pour contents into a container",
@@ -228,44 +227,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "place",
-   "when": "the empty cup is put down",
-   "bind": {
-    "object": "$source"
-   },
-   "reason": "",
-   "to_skill_id": "skill_018",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "stir",
-   "when": "the poured food is stirred",
-   "bind": {
-    "container": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_038",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "fallback",
-   "to": "uncover",
-   "when": "the target has its lid on",
-   "bind": {
-    "container": "$target"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "uncovered",
-   "to_skill_id": "skill_046"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_045",
- "skill_id": "skill_037",
  "verb": "wipe",
  "noun": "surface",
  "name": "Wipe a surface",
@@ -179,32 +178,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "place",
-   "when": "the sponge is put back",
-   "bind": {
-    "object": "$tool"
-   },
-   "reason": "",
-   "to_skill_id": "skill_018",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "fallback",
-   "to": "clear",
-   "when": "objects cover the surface",
-   "bind": {
-    "support": "$surface"
-   },
-   "reason": "no free strip exists until the surface is cleared",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_050"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

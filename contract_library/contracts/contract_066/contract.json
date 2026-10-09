@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_066",
- "skill_id": "skill_058",
  "verb": "measure",
  "noun": "object",
  "name": "Measure an object",
@@ -111,29 +110,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the size decides the grasp",
-   "bind": {},
-   "reason": "width vs gripper opening",
-   "to_skill_id": "skill_017",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "identify",
-   "when": "the category is needed",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_057"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

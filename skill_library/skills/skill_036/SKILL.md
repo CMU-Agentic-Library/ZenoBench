@@ -3,7 +3,7 @@ name: upright-object
 description: Make a lying object stand: pinch it, rotate its local up axis to vertical in the hand, and set it down upright on the same support.
 ---
 
-# Stand an object upright (`skill_036`)
+# Stand an object upright (`upright`)
 
 `upright(object: object_ref)`
 
@@ -21,52 +21,52 @@ A lying object must stand on its base again.
 
 - `object` (`object_ref`): A lying object.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "upright", "args": {"object": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right); base_near(place=$object); lying(object=$object).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
-- `lying(object=$object)` — Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length. GT: object_pose, asset_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
+- `lying(object=$object)` — Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `upright(object=$object)` — Object z axis within 20 deg of vertical. GT: object_pose.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `upright(object=$object)` — Object z axis within 20 deg of vertical.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Verifier
+## Conditions that depend on the bound nouns
 
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `upright(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
-- `on(object=$object, support=@object.support)` (path pick_orient_place)
+- when 'top_pinch' in object.grasp_types: ensures `on(object=$object, support=@object.support)`
 
 ## May invalidate
 
 `lying($object)`
 
-## Policy paths (first match on the bound nouns)
-
-### `pick_orient_place` — when 'top_pinch' in object.grasp_types
-
-1. `policy_010($object)`
-2. `policy_054($object, max_tilt_deg=15.0)`
-3. `policy_015($object, @object.support, hint=@object.xy)`
-- extra postcondition `on(object=$object, support=@object.support)`
-- Set down where it lay: a free edge spot near the robot had no IK for the sideways grip the turn leaves on the upright object.
-
-## Relations
-
-- Next step: `pick` (`skill_017`) (enables) — the standing object is then grasped by its top
-- Is a fallback for: `pick` (`skill_017`) (recover) — a tall object fell over and its top pinch is gone
-- Alternative: `tip` (`skill_035`) — opposite effect
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_044`.

@@ -2,11 +2,10 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_026",
- "skill_id": "skill_018",
  "verb": "place",
  "noun": "object",
  "name": "Place a held object",
- "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past.",
+ "description": "Put the right-held object down on a support surface or into an open container and release it. How it is put down is chosen automatically from the receptacle and grasp: into a microwave (insert, release, withdraw), into a container, an edge-held flat object slid back over an edge, onto an ordinary surface (optionally near a hint point), or while driving past.",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {
@@ -782,118 +781,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "close",
-   "when": "the object went into a cabinet or appliance whose door must be shut",
-   "bind": {},
-   "reason": "appliance cycles and task goals require closed doors",
-   "to_skill_id": "skill_041",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "heat",
-   "when": "the food went into the microwave or onto the stove",
-   "bind": {
-    "food": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_043",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "tuck",
-   "when": "the hand is empty and the robot drives next",
-   "bind": {
-    "hand": "right"
-   },
-   "reason": "",
-   "to_skill_id": "skill_009",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "fallback",
-   "to": "drop",
-   "when": "a deep container leaves no room to lower the hand inside",
-   "bind": {
-    "object": "$object",
-    "container": "$receptacle"
-   },
-   "reason": "",
-   "fallback_type": "substitute",
-   "to_skill_id": "skill_019"
-  },
-  {
-   "kind": "fallback",
-   "to": "approach",
-   "when": "the receptacle is out of reach",
-   "bind": {
-    "target": "$receptacle"
-   },
-   "reason": "a base pose with verified IK above the receptacle",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_002"
-  },
-  {
-   "kind": "fallback",
-   "to": "open",
-   "when": "the receptacle is behind a closed door",
-   "bind": {},
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "is_open",
-   "to_skill_id": "skill_040"
-  },
-  {
-   "kind": "fallback",
-   "to": "uncover",
-   "when": "the container has its lid on",
-   "bind": {
-    "container": "$receptacle"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "uncovered",
-   "to_skill_id": "skill_046"
-  },
-  {
-   "kind": "fallback",
-   "to": "regrasp",
-   "when": "the object turned in the hand and no longer clears the target",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "a fresh centred grasp restores the hold offset",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_026"
-  },
-  {
-   "kind": "alternative",
-   "to": "stack",
-   "when": "the object should rest on another object",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_020"
-  },
-  {
-   "kind": "alternative",
-   "to": "drop",
-   "when": "the target is a deep bin and a gentle release is not required",
-   "bind": {
-    "object": "$object",
-    "container": "$receptacle"
-   },
-   "reason": "",
-   "to_skill_id": "skill_019"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

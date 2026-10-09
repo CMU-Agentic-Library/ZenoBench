@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_069",
- "skill_id": "skill_061",
  "verb": "nod",
  "noun": "head",
  "name": "Nod the head",
@@ -63,27 +62,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "look",
-   "when": "the robot looks back at a target",
-   "bind": {},
-   "reason": "restores gaze",
-   "to_skill_id": "skill_011",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "wave",
-   "when": "a bigger gesture is needed",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_060"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

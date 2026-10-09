@@ -2,7 +2,7 @@
 
 Pinch a resting container with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.
 
-Paired SkillNode: `skill_027` (`brace-object`).
+Verb: `brace`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_027` (`brace-object`).
 ## Policy paths
 
 - `left_rim_pinch` when object.location in ['support', 'floor', 'container']: `policy_077($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

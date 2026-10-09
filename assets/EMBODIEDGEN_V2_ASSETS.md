@@ -36,7 +36,7 @@ OMNI_KIT_ACCEPT_EULA=YES "$ISAACLAB_PYTHON" tools/build_tasks.py --spec scene_sp
 
 To generate an individual source again, use `python tools/generate_assets.py --name ... --prompt ... --size ... --mass ...`, or pass the batch manifest without `--skip-generate`. EmbodiedGen V2 outputs should be visually inspected before replacing a committed asset, since the same prompt can produce different geometry. The source scale is corrected in `tools/prepare_assets.py`; its `target_size` setting preserves the intended X/Y/Z footprint for upright assets. The book and tissue box use explicit X/Y/Z sizes. The rolling pin is rotated to a flat resting pose and scaled to a 22 cm longest side.
 
-All three seed-0 scenes passed three-second stability checks after `tools/settle_scene.py`, `tools/check_scene.py`, and `tools/annotate_scene.py`. Contract results from the **previous procedural meshes** are retained as historical evidence in [`FINDINGS.md`](../skill_library/verification/FINDINGS.md); they do not establish that these V2 meshes have passed the same grasps. Task completion requires a fresh rollout on the rebuilt scenes.
+All three seed-0 scenes passed three-second stability checks after `tools/settle_scene.py`, `tools/check_scene.py`, and `tools/annotate_scene.py`. Contract results from the **previous procedural meshes** are not retained in the repository; they did not establish that these V2 meshes have passed the same grasps. Task completion requires a fresh rollout on the rebuilt scenes.
 
 ## Props for the verb SkillNode library
 

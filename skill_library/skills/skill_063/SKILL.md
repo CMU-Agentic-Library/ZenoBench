@@ -3,7 +3,7 @@ name: hover-object
 description: Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without releasing it, e.g. to show or to align before a drop.
 ---
 
-# Hover a held object over a target (`skill_063`)
+# Hover a held object over a target (`hover`)
 
 `hover(object: object_ref, target: entity_ref)`
 
@@ -23,42 +23,44 @@ A held object must be positioned over a target before dropping or pouring.
 - `object` (`object_ref`): The right-held object.
 - `target` (`entity_ref`): What to hover over.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "hover", "args": {"object": "<object>", "target": "<entity>"}}
+```
+
+Argument formats:
+
+- `entity_ref`: any annotated object, support, articulated part or button
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires holding(hand=right, object=$object); base_near(place=$target).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-- `base_near(place=$target)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
+- `base_near(place=$target)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `hovering_over(object=$object, target=$target)` — The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm. GT: object_pose, gripper_state, asset_annotation.
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `hovering_over(object=$object, target=$target)` (all paths)
-- `holding(hand=right, object=$object)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `above_target` — when always (default path)
-
-1. `policy_115($object, $target)`
-
-## Relations
-
-- Next step: `drop` (`skill_019`) (enables) — the object is released into the container under it
-- Next step: `release` (`skill_021`) (enables) — the object is let go right there
-- Alternative: `lift` (`skill_023`) — only a height matters
+- `hovering_over(object=$object, target=$target)` — The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_071`.

@@ -3,7 +3,7 @@ name: hide-object
 description: Make an object invisible from outside: put it into a container and cover that container with its lid, or put it on a shelf inside a cabinet and close the cabinet.
 ---
 
-# Hide an object (`skill_070`)
+# Hide an object (`hide`)
 
 `hide(object: object_ref, receptacle: receptacle_ref, lid: lid_ref?)`
 
@@ -23,52 +23,48 @@ An object must end up out of sight inside a closed container.
 - `receptacle` (`receptacle_ref`): A lidded container or a cabinet interior shelf.
 - `lid` (`lid_ref`, optional): The lid to use for a container.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "hide", "args": {"object": "<object>", "receptacle": "<receptacle>"}}
+```
+
+Argument formats:
+
+- `lid_ref`: an object tagged as a lid
+- `object_ref`: a movable annotated scene object
+- `receptacle_ref`: a support surface or an open container
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Requires hand_empty(hand=right). Depending on the bound nouns, the chosen path also needs: container_with_lid (receptacle.kind == 'object' and args.lid): uncovered(container=$receptacle).
+Requires hand_empty(hand=right). Some bound nouns add preconditions (see Conditions that depend on the bound nouns).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `hidden(object=$object)` — Object is inside a lid-covered container or on a shelf inside a closed cabinet. GT: object_pose, container_profile, articulation_joint, support_annotation.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hidden(object=$object)` — Object is inside a lid-covered container or on a shelf inside a closed cabinet.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Verifier
+## Conditions that depend on the bound nouns
 
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `hidden(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `container_with_lid` — when receptacle.kind == 'object' and args.lid
-
-1. `[fetch](object=$object, receptacle=$receptacle)`
-2. `[navigate](destination=$lid)`
-3. `[pick](object=$lid)`
-4. `[navigate](destination=$receptacle)`
-5. `[cover](container=$receptacle, lid=$lid)`
-- extra precondition `uncovered(container=$receptacle)`
-
-### `closed_cabinet` — when receptacle.kind == 'support' and receptacle.category == 'cabinet_inside'
-
-1. `[navigate](destination=@receptacle.appliance)`
-2. `[open](articulated=@receptacle.appliance)`
-3. `[fetch](object=$object, receptacle=$receptacle)`
-4. `[close](articulated=@receptacle.appliance)`
-
-## Relations
-
-- Next step: `tuck` (`skill_009`) (enables) — the robot leaves
-- Alternative: `fetch` (`skill_047`) — the object only needs to move
+- when receptacle.kind == 'object' and args.lid: needs `uncovered(container=$receptacle)`
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_078`.

@@ -3,7 +3,7 @@ name: chill-food
 description: Keep food in the closed refrigerator until it is at or below a target temperature.
 ---
 
-# Chill food (`skill_044`)
+# Chill food (`chill`)
 
 `chill(food: object_ref, appliance: appliance_ref, temp_c: number)`
 
@@ -27,40 +27,44 @@ Food or a drink must cool in the refrigerator.
 
 - `temp_c` (`number`): Measured final temperature.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "chill", "args": {"food": "<object>", "appliance": "<appliance>", "temp_c": "<number>"}}
+```
+
+Argument formats:
+
+- `appliance_ref`: an articulated appliance with a thermal role (microwave, refrigerator)
+- `number`: a finite number
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires in_appliance(object=$food, appliance=$appliance); is_closed(articulated=$appliance).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `in_appliance(object=$food, appliance=$appliance)` — Object centre inside the appliance cavity box (microwave) or body box (refrigerator). GT: object_pose, appliance_annotation.
-- `is_closed(articulated=$appliance)` — Joint within 0.10 rad (doors) or 4 cm (drawers) of closed. GT: articulation_joint, articulation_annotation.
+- `in_appliance(object=$food, appliance=$appliance)` — Object centre inside the appliance cavity box (microwave) or body box (refrigerator).
+- `is_closed(articulated=$appliance)` — Joint within 0.10 rad (doors) or 4 cm (drawers) of closed.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `temperature_at_most(object=$food, temp_c=$temp_c)` — Task-level food temperature at or below the threshold. GT: thermal_state.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `temperature_at_most(object=$food, temp_c=$temp_c)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `fridge_wait` — when appliance.category == 'refrigerator'
-
-1. `policy_089($food, $temp_c, $appliance)`
-
-## Relations
-
-- Previous step: `close` (`skill_041`) (enables) — the fridge must be closed while cooling
-- Next step: `open` (`skill_040`) (then) — the chilled food is taken out
-- Fallback on failure: `close` (`skill_041`) (repair, repairs is_closed) — the fridge door is open
+- `temperature_at_most(object=$food, temp_c=$temp_c)` — Task-level food temperature at or below the threshold.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_052`.

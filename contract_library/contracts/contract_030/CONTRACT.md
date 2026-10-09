@@ -2,7 +2,7 @@
 
 Transfer a right-held object into the left gripper and open the right gripper.
 
-Paired SkillNode: `skill_022` (`handover-object`).
+Verb: `handover`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_022` (`handover-object`).
 ## Policy paths
 
 - `right_to_left` when always: `policy_059($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -27,4 +27,4 @@ Policy-specific checks remain inside the controller and are not all normalized i
 
 ## Recorded evidence
 
-Existing annotation-dispatching policy used by previously verified contract route.
+Annotation-dispatching policy; exercised by verified route-specific policies.

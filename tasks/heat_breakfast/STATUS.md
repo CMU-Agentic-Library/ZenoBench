@@ -1,5 +1,7 @@
 # Breakfast transfer task status
 
+> Historical record of the legacy scripted pipeline (`task_policy.py`, `tools/run_task.py`), which is slated for removal. The current task definition is `heat_breakfast` in `skill_library/tasks.json`.
+
 The seed-0 full refrigerator → microwave → dining-table rollout passed in Isaac
 Sim on 2026-09-30, using the complete-shell microwave and its physical powered
 door. The [recorded video](../../media/tasks/heat_breakfast.mp4) shows the
@@ -19,7 +21,7 @@ approaches the release point. The class API is in
 [`zeno_skills/policies/`](../../zeno_skills/policies/) and usage is in the
 [README](../../README.md#atomic-gt-policy-class-api).
 
-Reproduce from the `zeno-house` repository root with Isaac Lab:
+Reproduce from the `ZenoBench` repository root with Isaac Lab:
 
 ```bash
 OMNI_KIT_ACCEPT_EULA=YES $ISAACLAB_PYTHON tools/run_task.py \

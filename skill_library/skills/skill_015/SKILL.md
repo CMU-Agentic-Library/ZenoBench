@@ -3,7 +3,7 @@ name: point-target
 description: Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.
 ---
 
-# Point at a target (`skill_015`)
+# Point at a target (`point`)
 
 `point(target: entity_ref)`
 
@@ -21,53 +21,46 @@ A person must be shown an object or place without touching it.
 
 - `target` (`entity_ref`): What to indicate.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "point", "args": {"target": "<entity>"}}
+```
+
+Argument formats:
+
+- `entity_ref`: any annotated object, support, articulated part or button
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `pointing_at(target=$target)` — The right finger axis points at the target within 8 deg. GT: arm_fk, scene_annotation.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `pointing_at(target=$target)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `pointing_at(target=$target)` — The right finger axis points at the target within 8 deg.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
 ## May invalidate
 
 `arm_stowed(right)`, `reachable(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `front` — when target.bearing_abs_deg <= 60
-
-1. `policy_041()`
-2. `policy_101($target) as aim`
-3. `policy_038(#aim.position, #aim.rotation, position_tolerance=0.04, rotation_tolerance=0.2)`
-
-### `turn_and_point` — when always (default path)
-
-1. `policy_071($target)`
-
-## Relations
-
-- Previous step: `face` (`skill_003`) (then) — the target must be indicated
-- Previous step: `wave` (`skill_060`) (enables) — the robot then indicates something
-- Next step: `tuck` (`skill_009`) (enables) — the gesture is finished
-- Alternative: `look` (`skill_011`) — a gaze is enough to indicate the target
-- Alternative: `touch` (`skill_065`) — contact is not allowed
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_023`.

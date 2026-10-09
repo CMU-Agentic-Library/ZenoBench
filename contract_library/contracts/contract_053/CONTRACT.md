@@ -2,7 +2,7 @@
 
 Lay the held lid centred on the container rim (within 3 cm, tilt <= 12 deg) and release it.
 
-Paired SkillNode: `skill_045` (`cover-container`).
+Verb: `cover`.
 
 ## Precheck
 
@@ -18,5 +18,7 @@ Paired SkillNode: `skill_045` (`cover-container`).
 ## Policy paths
 
 - `rim_plane` when lid.is_lid: `policy_087($lid, $container)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

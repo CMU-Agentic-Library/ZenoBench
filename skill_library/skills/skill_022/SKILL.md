@@ -3,7 +3,7 @@ name: handover-object
 description: Transfer a right-held object into the left gripper and open the right gripper.
 ---
 
-# Hand an object over to the left hand (`skill_022`)
+# Hand an object over to the left hand (`handover`)
 
 `handover(object: object_ref)`
 
@@ -21,48 +21,47 @@ The right hand must be freed while the object stays held (by the left hand).
 
 - `object` (`object_ref`): The right-held object.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "handover", "args": {"object": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires holding(hand=right, object=$object); hand_empty(hand=left).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-- `hand_empty(hand=left)` — The given gripper holds nothing. GT: gripper_state.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
+- `hand_empty(hand=left)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `holding(hand=left, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `holding(hand=left, object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
+- `holding(hand=left, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
 ## May invalidate
 
 `holding(right,$object)`
 
-## Policy paths (first match on the bound nouns)
-
-### `right_to_left` — when always (default path)
-
-1. `policy_059($object)`
-
-## Relations
-
-- Previous step: `present` (`skill_016`) (enables) — the object is passed to the left hand
-- Next step: `open` (`skill_040`) (enables) — the right hand must open a door while the left carries the load
-- Next step: `pick` (`skill_017`) (enables) — a second object is picked with the free right hand
-- Is a fallback for: `open` (`skill_040`) (repair) — the right hand still holds a load
-- Alternative: `brace` (`skill_027`) — the left hand should hold an object that stays on its support
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_030`.

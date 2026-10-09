@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_051",
- "skill_id": "skill_043",
  "verb": "heat",
  "noun": "food",
  "name": "Heat food",
@@ -293,85 +292,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "open",
-   "when": "the heated food is taken out of the microwave",
-   "bind": {
-    "articulated": "$appliance"
-   },
-   "reason": "",
-   "to_skill_id": "skill_040",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the heated food is served",
-   "bind": {
-    "object": "$food"
-   },
-   "reason": "",
-   "to_skill_id": "skill_017",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "heat",
-   "when": "no microwave is available: heat in a pot on the stove",
-   "bind": {
-    "food": "$food",
-    "appliance": "kitchen_stove"
-   },
-   "reason": "Same verb, other noun: the stove path pours/places the food into the pot first.",
-   "to_skill_id": "skill_043"
-  },
-  {
-   "kind": "fallback",
-   "to": "close",
-   "when": "the microwave door is open",
-   "bind": {
-    "articulated": "$appliance"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "is_closed",
-   "to_skill_id": "skill_041"
-  },
-  {
-   "kind": "fallback",
-   "to": "place",
-   "when": "the food is not in the appliance",
-   "bind": {
-    "object": "$food"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "in_appliance",
-   "to_skill_id": "skill_018"
-  },
-  {
-   "kind": "fallback",
-   "to": "wait",
-   "when": "the food is still below the target when the time budget ends",
-   "bind": {},
-   "reason": "keep the heat on longer, then re-check the temperature",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_056"
-  },
-  {
-   "kind": "fallback",
-   "to": "pour",
-   "when": "the food is in a cup, not in the pot on the burner",
-   "bind": {},
-   "reason": "pouring the cup into the pot on the burner puts the food in the heated vessel",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_039"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

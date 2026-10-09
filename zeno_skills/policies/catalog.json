@@ -584,7 +584,7 @@
    "effect": "floor_target_reachable",
    "status": "verified",
    "executor": "prepare_floor_reach",
-   "verification": "Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01 Active Contract floor-pregrasp pass on foam_cube from nearby base: runs/check_50_floor_ready_near, 2026-10-06.",
+   "verification": "Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01 legacy family Contract floor-pregrasp pass on foam_cube from nearby base: runs/check_50_floor_ready_near, 2026-10-06.",
    "schema_version": 1,
    "kind": "low_level_policy",
    "policy_id": "policy_042",
@@ -598,7 +598,7 @@
    "effect": "object_displaced",
    "status": "verified",
    "executor": "push_from_behind",
-   "verification": "Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01 Active Contract rear-push pass on book_red: runs/check_50_rear_push, 2026-10-06.",
+   "verification": "Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01 legacy family Contract rear-push pass on book_red: runs/check_50_rear_push, 2026-10-06.",
    "schema_version": 1,
    "kind": "low_level_policy",
    "policy_id": "policy_043",
@@ -612,7 +612,7 @@
    "effect": "object_displaced",
    "status": "verified",
    "executor": "top_drag",
-   "verification": "Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01 Active Contract top-drag pass on book_green: 0.024 m measured progress for 0.040 m request, runs/check_50_top_drag_green_fixed, 2026-10-06; book_red case still failed to move.",
+   "verification": "Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01 legacy family Contract top-drag pass on book_green: 0.024 m measured progress for 0.040 m request, runs/check_50_top_drag_green_fixed, 2026-10-06; book_red case still failed to move.",
    "schema_version": 1,
    "kind": "low_level_policy",
    "policy_id": "policy_044",
@@ -683,7 +683,7 @@
    "effect": "joint_at(open_q)",
    "status": "verified",
    "executor": "open_revolute_door",
-   "verification": "Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01 Active Contract hinged-door pass: runs/check_50_manual, 2026-10-06.",
+   "verification": "Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01 legacy family Contract hinged-door pass: runs/check_50_manual, 2026-10-06.",
    "schema_version": 1,
    "kind": "low_level_policy",
    "policy_id": "policy_049",
@@ -698,7 +698,7 @@
    "status": "verified",
    "executor": "open_prismatic_drawer",
    "caveat": "tidy_toys \u7684\u7b2c\u4e00\u53ea\u62bd\u5c49\u4ecd\u672a\u62c9\u52a8\uff1b\u53e6\u4e00\u53ea\u53a8\u623f\u62bd\u5c49\u5df2\u901a\u8fc7\u72ec\u7acb\u7269\u7406\u9a8c\u8bc1",
-   "verification": "Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01 Active Contract drawer pass: runs/check_50_manual, 2026-10-06.",
+   "verification": "Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01 legacy family Contract drawer pass: runs/check_50_manual, 2026-10-06.",
    "schema_version": 1,
    "kind": "low_level_policy",
    "policy_id": "policy_050",
@@ -858,7 +858,7 @@
    "kind": "low_level_policy",
    "policy_id": "policy_061",
    "legacy_id": "pick",
-   "verification": "Existing annotation-dispatching policy used by previously verified contract route."
+   "verification": "Annotation-dispatching policy; exercised by verified route-specific policies."
   },
   {
    "id": "open",
@@ -872,7 +872,7 @@
    "kind": "low_level_policy",
    "policy_id": "policy_062",
    "legacy_id": "open",
-   "verification": "Existing annotation-dispatching policy used by previously verified contract route."
+   "verification": "Annotation-dispatching policy; exercised by verified route-specific policies."
   },
   {
    "id": "close",
@@ -886,7 +886,7 @@
    "kind": "low_level_policy",
    "policy_id": "policy_063",
    "legacy_id": "close",
-   "verification": "Existing annotation-dispatching policy used by previously verified contract route."
+   "verification": "Annotation-dispatching policy; exercised by verified route-specific policies."
   },
   {
    "id": "wait_for_temperature",
@@ -901,7 +901,7 @@
    "policy_id": "policy_064",
    "legacy_id": "wait_for_temperature",
    "caveat": "Uses task-level temperature model and bounded live simulation steps; requires physical start first.",
-   "verification": "Isaac Sim heat_breakfast_preloaded: contract_048 waited from 4 C to 63.6 C after physical start-button press, runs/node_contract_heat_wait/result.json, 2026-10-05"
+   "verification": "Isaac Sim heat_breakfast_preloaded: the heat Contract (numbered contract_048 at the time) waited from 4 C to 63.6 C after physical start-button press, runs/node_contract_heat_wait/result.json, 2026-10-05"
   },
   {
    "id": "approach_target",

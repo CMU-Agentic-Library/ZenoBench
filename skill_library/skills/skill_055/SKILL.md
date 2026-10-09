@@ -3,7 +3,7 @@ name: sidestep-base
 description: Move the base sideways by a signed distance (left positive) without turning, also while carrying a load; aligns the arm with a target that is a little to the side.
 ---
 
-# Sidestep the base (`skill_055`)
+# Sidestep the base (`sidestep`)
 
 `sidestep(distance_m: number)`
 
@@ -22,46 +22,45 @@ The robot must shift sideways a few centimetres without turning (align with a ta
 
 - `distance_m` (`number`): Lateral displacement in metres (left > 0).
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "sidestep", "args": {"distance_m": "<number>"}}
+```
+
+Argument formats:
+
+- `number`: a finite number
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Always applicable.
+No precondition.
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
 - none
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `sidestepped(distance_m=$distance_m)` — Base moved sideways by the signed distance (left > 0) within 3 cm, heading unchanged within 3 deg. GT: base_pose (before/after).
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `sidestepped(distance_m=$distance_m)` (all paths)
+- `sidestepped(distance_m=$distance_m)` — Base moved sideways by the signed distance (left > 0) within 3 cm, heading unchanged within 3 deg.
 
 ## May invalidate
 
 `base_near(*)`, `reachable(*)`, `facing(*)`, `in_view(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `empty_tucked` — when not robot.right_held and not robot.left_held and robot.right_arm_stowed
-
-1. `policy_037(0.0, $distance_m)`
-
-### `loaded` — when always (default path)
-
-1. `policy_114($distance_m)`
-
-## Relations
-
-- Next step: `approach` (`skill_002`) (then) — the target is now in front of the arm
-- Alternative: `navigate` (`skill_001`) — a larger move is needed
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_063`.

@@ -41,6 +41,9 @@ def render(catalog):
     text = [
         "# Zeno House policy 能力目录",
         "",
+        "由 `tools/render_policy_catalog.py` 从 `zeno_skills/policies/catalog.json` 生成，请勿手工编辑。"
+        "policy 是 Contract 的内部实现，上层规划器只按动词调用 Contract，不直接调用或选择 policy。",
+        "",
         f"本目录列出 **{len(rows)} 个目标能力**。状态记录的是当前代码与物理验证程度，",
         "独立代码入口不等于在目标场景物理通过。`pick/open/close` 已纳入本目录；其余通用分发入口 `place/navigate`",
         "以及顺序组合 `pick_and_carry`、`microwave_door_cycle` 不计入本目录。",

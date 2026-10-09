@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_076",
- "skill_id": "skill_068",
  "verb": "stop",
  "noun": "appliance",
  "name": "Stop an appliance",
@@ -181,27 +180,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the food is taken off the heat",
-   "bind": {},
-   "reason": "heat is off",
-   "to_skill_id": "skill_017",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "heat",
-   "when": "heat stops automatically at a target temperature",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_043"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

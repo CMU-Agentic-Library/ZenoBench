@@ -8,14 +8,6 @@
  "title": "Identify an object",
  "group": "perception_and_gesture",
  "signature": "identify(object: object_ref)",
- "action_predicate": {
-  "name": "identify_object",
-  "verb": "identify",
-  "noun": "object",
-  "arguments": [
-   "object"
-  ]
- },
  "description": "Look at an object and report its category and tags (asset annotation) once it is in the head camera view.",
  "use_when": "The category or identity of a visible object must be confirmed.",
  "not_to_be_confused_with": {
@@ -44,165 +36,45 @@
  },
  "applicability": {
   "always": true,
-  "summary": "Always applicable."
+  "summary": "No precondition."
  },
  "preconditions": [],
  "postconditions": [
   {
    "predicate": "identified(object=$object)",
-   "name": "identified",
-   "args": {
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The robot recorded the object's category while it was in the head camera view.",
-   "kind": "memory",
-   "gt_sources": [
-    "robot_memory",
-    "asset_annotation"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The robot recorded the object's category while it was in the head camera view."
   },
   {
    "predicate": "in_view(target=$object)",
-   "name": "in_view",
-   "args": {
-    "target": "$object"
-   },
-   "negated": false,
-   "meaning": "Target point inside the head camera frustum, within 5 m, line of sight not blocked by furniture boxes.",
-   "kind": "fluent",
-   "gt_sources": [
-    "base_pose",
-    "head_joints",
-    "head_fk",
-    "collision_model"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "Target point inside the head camera frustum, within 5 m, line of sight not blocked by furniture boxes."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "identified(object=$object)",
-    "name": "identified",
-    "args": {
-     "object": "$object"
-    },
-    "negated": false,
-    "meaning": "The robot recorded the object's category while it was in the head camera view.",
-    "kind": "memory",
-    "gt_sources": [
-     "robot_memory",
-     "asset_annotation"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   },
-   {
-    "predicate": "in_view(target=$object)",
-    "name": "in_view",
-    "args": {
-     "target": "$object"
-    },
-    "negated": false,
-    "meaning": "Target point inside the head camera frustum, within 5 m, line of sight not blocked by furniture boxes.",
-    "kind": "fluent",
-    "gt_sources": [
-     "base_pose",
-     "head_joints",
-     "head_fk",
-     "collision_model"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [],
- "policy_paths": [
-  {
-   "path_id": "look_and_label",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_110($object)"
-   ],
-   "policies": [
-    "policy_110"
-   ],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_049",
-    "verb": "sort",
-    "when": "the category decides the destination",
-    "bind": {},
-    "reason": "category output",
-    "type": "then"
-   }
-  ],
-  "fallback": [
-   {
-    "skill_id": "skill_001",
-    "verb": "navigate",
-    "when": "the object is not visible from here",
-    "bind": {
-     "destination": "$object"
-    },
-    "reason": "a closer view",
-    "type": "recover"
-   }
-  ],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_058",
-    "verb": "measure",
-    "when": "the size, not the category, is needed",
-    "bind": {
-     "object": "$object"
-    }
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_065",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_057",
+ "call": {
+  "request": {
+   "contract": "identify",
    "args": {
-    "object": {
-     "ref": "<object>"
-    }
-   },
-   "depends_on": []
+    "object": "<object>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"identify\", {'object': ...})"
+  "arg_formats": {
+   "object_ref": "a movable annotated scene object"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

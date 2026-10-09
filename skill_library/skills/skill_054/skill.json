@@ -8,15 +8,6 @@
  "title": "Swap two objects",
  "group": "multi_object",
  "signature": "swap(a: object_ref, b: object_ref)",
- "action_predicate": {
-  "name": "swap_objects",
-  "verb": "swap",
-  "noun": "objects",
-  "arguments": [
-   "a",
-   "b"
-  ]
- },
  "description": "Exchange the positions of two objects on their supports via a free buffer spot.",
  "use_when": "Two objects must exchange places.",
  "not_to_be_confused_with": {
@@ -46,168 +37,46 @@
  "preconditions": [
   {
    "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
-   "args": {
-    "hand": "right"
-   },
-   "negated": false,
-   "meaning": "The given gripper holds nothing.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The given gripper holds nothing."
   }
  ],
  "postconditions": [
   {
    "predicate": "positions_swapped(a=$a, b=$b)",
-   "name": "positions_swapped",
-   "args": {
-    "a": "$a",
-    "b": "$b"
-   },
-   "negated": false,
-   "meaning": "Each object now rests within 6 cm of the other's starting position on its starting support.",
-   "kind": "relative",
-   "gt_sources": [
-    "object_pose (before/after)"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "Each object now rests within 6 cm of the other's starting position on its starting support."
   },
   {
    "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
-   "args": {
-    "hand": "right"
-   },
-   "negated": false,
-   "meaning": "The given gripper holds nothing.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The given gripper holds nothing."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "positions_swapped(a=$a, b=$b)",
-    "name": "positions_swapped",
-    "args": {
-     "a": "$a",
-     "b": "$b"
-    },
-    "negated": false,
-    "meaning": "Each object now rests within 6 cm of the other's starting position on its starting support.",
-    "kind": "relative",
-    "gt_sources": [
-     "object_pose (before/after)"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   },
-   {
-    "predicate": "hand_empty(hand=right)",
-    "name": "hand_empty",
-    "args": {
-     "hand": "right"
-    },
-    "negated": false,
-    "meaning": "The given gripper holds nothing.",
-    "kind": "fluent",
-    "gt_sources": [
-     "gripper_state"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [],
- "policy_paths": [
-  {
-   "path_id": "via_buffer",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "[navigate](destination=$a)",
-    "[pick](object=$a)",
-    "[place](object=$a, receptacle=@a.support, hint_xy=@a.buffer_xy)",
-    "[navigate](destination=$b)",
-    "[pick](object=$b)",
-    "[navigate](destination=@a.support)",
-    "[place](object=$b, receptacle=@a.support, hint_xy=@a.xy)",
-    "[navigate](destination=$a)",
-    "[pick](object=$a)",
-    "[navigate](destination=@b.support)",
-    "[place](object=$a, receptacle=@b.support, hint_xy=@b.xy)"
-   ],
-   "policies": [],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_009",
-    "verb": "tuck",
-    "when": "the robot drives on",
-    "bind": {
-     "hand": "right"
-    },
-    "type": "enables"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_047",
-    "verb": "fetch",
-    "when": "only one object needs to move",
-    "bind": {}
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_062",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_054",
+ "call": {
+  "request": {
+   "contract": "swap",
    "args": {
-    "a": {
-     "ref": "<object>"
-    },
-    "b": {
-     "ref": "<object>"
-    }
-   },
-   "depends_on": []
+    "a": "<object>",
+    "b": "<object>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"swap\", {'a': ..., 'b': ...})"
+  "arg_formats": {
+   "object_ref": "a movable annotated scene object"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

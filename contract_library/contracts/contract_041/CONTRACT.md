@@ -2,7 +2,7 @@
 
 Push an object back from the support edges until every edge margin is at least the requested value (secures an item left overhanging).
 
-Paired SkillNode: `skill_033` (`center-object`).
+Verb: `center`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_033` (`center-object`).
 ## Policy paths
 
 - `push_inward` when always: `policy_083($object, $margin_m)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

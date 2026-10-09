@@ -8,14 +8,6 @@
  "title": "Shake a held object",
  "group": "grasp_and_hand",
  "signature": "shake(object: object_ref)",
- "action_predicate": {
-  "name": "shake_object",
-  "verb": "shake",
-  "noun": "object",
-  "arguments": [
-   "object"
-  ]
- },
  "description": "Oscillate the held object sideways three times (settle or loosen contents) while keeping the grasp.",
  "use_when": "The grasp must be tested or contents shaken while holding.",
  "not_to_be_confused_with": {
@@ -39,169 +31,45 @@
  "preconditions": [
   {
    "predicate": "holding(hand=right, object=$object)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   }
  ],
  "postconditions": [
   {
    "predicate": "shaken(object=$object)",
-   "name": "shaken",
-   "args": {
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The held object was oscillated at least three times with >= 2 cm amplitude without slipping.",
-   "kind": "memory",
-   "gt_sources": [
-    "robot_memory (TCP oscillation + hold checks)"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The held object was oscillated at least three times with >= 2 cm amplitude without slipping."
   },
   {
    "predicate": "holding(hand=right, object=$object)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "shaken(object=$object)",
-    "name": "shaken",
-    "args": {
-     "object": "$object"
-    },
-    "negated": false,
-    "meaning": "The held object was oscillated at least three times with >= 2 cm amplitude without slipping.",
-    "kind": "memory",
-    "gt_sources": [
-     "robot_memory (TCP oscillation + hold checks)"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   },
-   {
-    "predicate": "holding(hand=right, object=$object)",
-    "name": "holding",
-    "args": {
-     "hand": "right",
-     "object": "$object"
-    },
-    "negated": false,
-    "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-    "kind": "fluent",
-    "gt_sources": [
-     "gripper_state",
-     "finger_joints",
-     "object_pose",
-     "arm_fk"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [],
- "policy_paths": [
-  {
-   "path_id": "lateral",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_102($object)"
-   ],
-   "policies": [
-    "policy_102"
-   ],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_039",
-    "verb": "pour",
-    "when": "loose contents are poured out",
-    "bind": {
-     "source": "$object"
-    },
-    "type": "enables"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_025",
-    "verb": "rotate",
-    "when": "the orientation, not the contents, matters",
-    "bind": {
-     "object": "$object"
-    }
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_070",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_062",
+ "call": {
+  "request": {
+   "contract": "shake",
    "args": {
-    "object": {
-     "ref": "<object>"
-    }
-   },
-   "depends_on": []
+    "object": "<object>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"shake\", {'object': ...})"
+  "arg_formats": {
+   "object_ref": "a movable annotated scene object"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

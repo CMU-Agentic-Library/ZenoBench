@@ -2,7 +2,7 @@
 
 Set the held object down on a support and grasp it again with a fresh, centred grasp (recovery when the object has pivoted in the pinch).
 
-Paired SkillNode: `skill_026` (`regrasp-object`).
+Verb: `regrasp`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_026` (`regrasp-object`).
 ## Policy paths
 
 - `set_down_and_pick` when always: `policy_076($object, $support)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

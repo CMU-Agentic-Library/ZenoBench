@@ -2,7 +2,7 @@
 
 Look into a container, a cabinet, an appliance cavity or onto a support and report the objects inside or on it. A closed cabinet is opened for the look and closed again.
 
-Paired SkillNode: `skill_012` (`inspect-receptacle`).
+Verb: `inspect`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_012` (`inspect-receptacle`).
 
 - `closed_cabinet` when receptacle.kind == 'articulated' and not receptacle.is_open: `policy_003()` -> `policy_062($receptacle)` -> `policy_088($receptacle)` -> `policy_003()` -> `policy_063($receptacle)`
 - `open_view` when always: `policy_088($receptacle)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

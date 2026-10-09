@@ -2,7 +2,7 @@
 
 Close a door, drawer or appliance door to within 0.10 rad / 4 cm of closed. A powered microwave door closes from its hinge-clearance pose, also while the robot carries a load.
 
-Paired SkillNode: `skill_041` (`close-articulated`).
+Verb: `close`.
 
 ## Precheck
 
@@ -20,5 +20,7 @@ Paired SkillNode: `skill_041` (`close-articulated`).
 - `powered` when articulated.powered: `policy_025($articulated)`
 - `handle_push` when articulated.has_handle: `policy_003()` -> `policy_023($articulated)`
 - `dispatch` when always: `policy_063($articulated)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

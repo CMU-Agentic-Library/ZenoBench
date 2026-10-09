@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_065",
- "skill_id": "skill_057",
  "verb": "identify",
  "noun": "object",
  "name": "Identify an object",
@@ -114,40 +113,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "sort",
-   "when": "the category decides the destination",
-   "bind": {},
-   "reason": "category output",
-   "to_skill_id": "skill_049",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "measure",
-   "when": "the size, not the category, is needed",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_058"
-  },
-  {
-   "kind": "fallback",
-   "to": "navigate",
-   "when": "the object is not visible from here",
-   "bind": {
-    "destination": "$object"
-   },
-   "reason": "a closer view",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_001"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

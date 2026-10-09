@@ -3,7 +3,7 @@ name: stand-torso
 description: Raise the torso lift to its top travel height.
 ---
 
-# Stand up to full height (`skill_006`)
+# Stand up to full height (`stand`)
 
 `stand()`
 
@@ -22,43 +22,41 @@ After a crouch, before driving or reaching high.
 
 - none
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "stand", "args": {}}
+```
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Always applicable.
+No precondition.
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
 - none
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `torso_raised()` — Torso lift within 3 cm of its highest position (travel height). GT: torso_joint.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `torso_raised()` (all paths)
+- `torso_raised()` — Torso lift within 3 cm of its highest position (travel height).
 
 ## May invalidate
 
 `torso_lowered()`, `reachable(*)`, `in_view(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `highest` — when always (default path)
-
-1. `policy_006()`
-
-## Relations
-
-- Previous step: `crouch` (`skill_005`) (then) — low work is done
-- Next step: `navigate` (`skill_001`) (then) — the robot drives after low work
-- Alternative: `reset` (`skill_010`) — the arm and waist must also be restored
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_014`.

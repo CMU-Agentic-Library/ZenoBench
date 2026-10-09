@@ -2,7 +2,7 @@
 
 Pitch the head down and up twice (acknowledgement gesture).
 
-Paired SkillNode: `skill_061` (`nod-head`).
+Verb: `nod`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_061` (`nod-head`).
 ## Policy paths
 
 - `pitch_cycles` when always: `policy_105()`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

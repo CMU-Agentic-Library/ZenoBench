@@ -46,5 +46,5 @@
     "contract_005"
   ],
   "supporting_family_contracts": [],
-  "evidence": "Existing annotation-dispatching policy used by previously verified contract route."
+  "evidence": "Annotation-dispatching policy; exercised by verified route-specific policies."
 }

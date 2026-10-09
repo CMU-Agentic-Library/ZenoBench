@@ -3,7 +3,7 @@ name: present-object
 description: Hold the carried object in front of the body at 0.9-1.4 m height, inside the head camera view.
 ---
 
-# Present a held object (`skill_016`)
+# Present a held object (`present`)
 
 `present(object: object_ref)`
 
@@ -21,45 +21,46 @@ A held object must be shown to the head camera or a person.
 
 - `object` (`object_ref`): The right-held object to show.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "present", "args": {"object": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires holding(hand=right, object=$object).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `presenting(object=$object)` — The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view. GT: object_pose, base_pose, head_fk.
-- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp. GT: gripper_state, finger_joints, object_pose, arm_fk.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `presenting(object=$object)` (all paths)
-- `holding(hand=right, object=$object)` (all paths)
+- `presenting(object=$object)` — The right-held object is in front of the body at 0.9-1.4 m height and in the head camera view.
+- `holding(hand=right, object=$object)` — The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.
 
 ## May invalidate
 
 `reachable(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `front_of_head` — when always (default path)
-
-1. `policy_072($object)`
-
-## Relations
-
-- Next step: `place` (`skill_018`) (enables) — the object is put away after showing it
-- Next step: `handover` (`skill_022`) (enables) — the object is passed to the left hand
-- Alternative: `lift` (`skill_023`) — only the height of the load matters
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_024`.

@@ -2,11 +2,10 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_055",
- "skill_id": "skill_047",
  "verb": "fetch",
  "noun": "object",
  "name": "Fetch an object to a receptacle",
- "description": "Bring one object to a support or container: navigate to it, pick it (noun-selected grasp path), navigate to the receptacle and place it (noun-selected placement path). Each step is a verified Skill Contract.",
+ "description": "Bring one object to a support or container: the robot goes to the object, picks it up, carries it to the receptacle and puts it there.",
  "group": "multi_object",
  "inputs": {
   "object": {
@@ -260,40 +259,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "fetch",
-   "when": "more objects go to the same place",
-   "bind": {},
-   "reason": "the hand is free again",
-   "to_skill_id": "skill_047",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "restore",
-   "when": "the object should return to its starting support",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_053"
-  },
-  {
-   "kind": "fallback",
-   "to": "search",
-   "when": "the object is not where expected",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "locates the object and reports its support",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_013"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

@@ -2,7 +2,7 @@
 
 Hold the cup's far lip over a container, turn the cup about that lip up to 90 deg and return it upright; succeeds when at least half of the loose items that were in the cup are inside the target. A rim-held cup tilts away from the pinch; a handle-held cup rolls sideways about the forearm.
 
-Paired SkillNode: `skill_039` (`pour-contents`).
+Verb: `pour`.
 
 ## Precheck
 
@@ -19,5 +19,7 @@ Paired SkillNode: `skill_039` (`pour-contents`).
 ## Policy paths
 
 - `tilt_over_rim` when source.is_container: `policy_086($source, $target)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

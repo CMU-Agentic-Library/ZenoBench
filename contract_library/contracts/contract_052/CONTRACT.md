@@ -2,7 +2,7 @@
 
 Keep food in the closed refrigerator until it is at or below a target temperature.
 
-Paired SkillNode: `skill_044` (`chill-food`).
+Verb: `chill`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_044` (`chill-food`).
 ## Policy paths
 
 - `fridge_wait` when appliance.category == 'refrigerator': `policy_089($food, $temp_c, $appliance)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -3,7 +3,7 @@ name: separate-object
 description: Push an object straight away from its closest neighbour until there is room for a finger (>= 3.5 cm gap) without leaving the support.
 ---
 
-# Separate an object from its neighbour (`skill_032`)
+# Separate an object from its neighbour (`separate`)
 
 `separate(object: object_ref)`
 
@@ -21,44 +21,46 @@ Two objects are too close for the fingers to fit beside one of them.
 
 - `object` (`object_ref`): The crowded object.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "separate", "args": {"object": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object); not grasp_clearance(object=$object).
+Requires hand_empty(hand=right); base_near(place=$object).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
-- `not grasp_clearance(object=$object)` — Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. GT: object_pose, asset_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `grasp_clearance(object=$object)` — Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. GT: object_pose, asset_annotation.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `grasp_clearance(object=$object)` (all paths)
+- `grasp_clearance(object=$object)` — Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.
 
 ## May invalidate
 
 `at_initial_place($object)`
 
-## Policy paths (first match on the bound nouns)
-
-### `push_apart` — when always (default path)
-
-1. `policy_080($object)`
-
-## Relations
-
-- Next step: `pick` (`skill_017`) (enables) — grasp the freed object
-- Is a fallback for: `pick` (`skill_017`) (repair) — fingers have no room beside the object (grasp_clearance false)
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_040`.

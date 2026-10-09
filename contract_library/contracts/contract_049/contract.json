@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_049",
- "skill_id": "skill_041",
  "verb": "close",
  "noun": "articulated",
  "name": "Close a door or drawer",
@@ -248,52 +247,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "heat",
-   "when": "a microwave or fridge must be closed before its cycle",
-   "bind": {
-    "appliance": "$articulated"
-   },
-   "reason": "",
-   "to_skill_id": "skill_043",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "chill",
-   "when": "the fridge must be closed while cooling",
-   "bind": {
-    "appliance": "$articulated"
-   },
-   "reason": "",
-   "to_skill_id": "skill_044",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "navigate",
-   "when": "the robot leaves",
-   "bind": {},
-   "reason": "task done here",
-   "to_skill_id": "skill_001",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "retreat",
-   "when": "the door swing hits the base",
-   "bind": {
-    "obstacle": "$articulated"
-   },
-   "reason": "room for the door's sweep",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_004"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

@@ -1,5 +1,7 @@
 # ZenoBench group meeting — speaking notes
 
+> Historical notes for a past talk; slated for removal. They describe a Skill-Graph execution loop with recovery and older counts, which no longer match the design (verb Contracts called by an external planner, no relations or fallback, 35 tasks in `skill_library/tasks.json`).
+
 These notes match the 12-slide [presentation](ZenoBench_group_meeting.pptx). The last two slides contain full-slide reconstructions of the two supplied upper-level architecture figures.
 
 1. **Title.** ZenoBench turns generated 3D content into household tasks a mobile robot can execute and we can score.

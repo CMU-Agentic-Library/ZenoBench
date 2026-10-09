@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_027",
- "skill_id": "skill_019",
  "verb": "drop",
  "noun": "object",
  "name": "Drop an object into a container",
@@ -190,30 +189,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "more items go into the same container",
-   "bind": {},
-   "reason": "the hand is free again",
-   "to_skill_id": "skill_017",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "place",
-   "when": "a gentle release inside is needed",
-   "bind": {
-    "object": "$object",
-    "receptacle": "$container"
-   },
-   "reason": "",
-   "to_skill_id": "skill_018"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

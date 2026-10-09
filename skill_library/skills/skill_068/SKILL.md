@@ -3,7 +3,7 @@ name: stop-appliance
 description: Switch an appliance's heat off: press the stove power key off, or open the microwave door, which ends its cycle.
 ---
 
-# Stop an appliance (`skill_068`)
+# Stop an appliance (`stop`)
 
 `stop(appliance: appliance_ref)`
 
@@ -22,45 +22,46 @@ An appliance that is heating must be switched off.
 
 - `appliance` (`appliance_ref`): kitchen_stove or kitchen_microwave.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "stop", "args": {"appliance": "<appliance>"}}
+```
+
+Argument formats:
+
+- `appliance_ref`: an articulated appliance with a thermal role (microwave, refrigerator)
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right); base_near(place=$appliance).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `base_near(place=$appliance)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
+- `base_near(place=$appliance)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `not heating(appliance=$appliance)` — The appliance's heat source is on (microwave cycle or stove burner). GT: thermal_state.
+- `not heating(appliance=$appliance)` — The appliance's heat source is on (microwave cycle or stove burner).
 
-## Verifier
+## Conditions that depend on the bound nouns
 
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `not heating(appliance=$appliance)` (all paths)
-- `is_open(articulated=$appliance)` (path microwave_door)
-
-## Policy paths (first match on the bound nouns)
-
-### `stove_key_off` — when appliance.category == 'stove'
-
-1. `policy_094(@appliance.power_button, state=False)`
-
-### `microwave_door` — when appliance.category == 'microwave'
-
-1. `policy_024($appliance)`
-- extra postcondition `is_open(articulated=$appliance)`
-
-## Relations
-
-- Next step: `pick` (`skill_017`) (enables) — the food is taken off the heat
-- Alternative: `heat` (`skill_043`) — heat stops automatically at a target temperature
+- when appliance.category == 'microwave': ensures `is_open(articulated=$appliance)`
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_076`.

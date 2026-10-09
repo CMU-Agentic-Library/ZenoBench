@@ -3,7 +3,7 @@ name: face-target
 description: Rotate the base in place until it faces the target (heading error <= 20 deg).
 ---
 
-# Face a target (`skill_003`)
+# Face a target (`face`)
 
 `face(target: entity_ref)`
 
@@ -25,51 +25,46 @@ The target is beside or behind the robot and only the heading must change.
 
 - `base_yaw_deg` (`number`): Measured heading after the turn.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "face", "args": {"target": "<entity>"}}
+```
+
+Argument formats:
+
+- `entity_ref`: any annotated object, support, articulated part or button
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Always applicable.
+No precondition.
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
 - none
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `facing(target=$target)` — Base heading within 20 deg of the target bearing. GT: base_pose, scene_annotation.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `facing(target=$target)` (all paths)
+- `facing(target=$target)` — Base heading within 20 deg of the target bearing.
 
 ## May invalidate
 
 `reachable(*)`, `in_view(*)`, `pointing_at(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `rotate_empty` — when not robot.right_held and not robot.left_held and robot.right_arm_stowed
-
-1. `policy_099($target) as heading`
-2. `policy_036(#heading.delta_yaw_deg)`
-- Tucked and empty: the measured in-place rotation primitive.
-
-### `rotate_loaded` — when always (default path)
-
-1. `policy_066($target)`
-- With a load or unfolded arm: slower turn with grasp checks.
-
-## Relations
-
-- Next step: `look` (`skill_011`) (then) — the target must be observed
-- Next step: `point` (`skill_015`) (then) — the target must be indicated
-- Alternative: `navigate` (`skill_001`) — turning in place is blocked by furniture
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
 - turning in place would hit furniture
-
-Paired Contract: `contract_011`.

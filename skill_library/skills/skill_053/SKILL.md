@@ -3,7 +3,7 @@ name: restore-object
 description: Return an object to the support it occupied at the start of the episode.
 ---
 
-# Restore an object to its place (`skill_053`)
+# Restore an object to its place (`restore`)
 
 `restore(object: object_ref)`
 
@@ -21,44 +21,42 @@ An object must return to where it was at the start.
 
 - `object` (`object_ref`): The displaced object.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "restore", "args": {"object": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Requires hand_empty(hand=right); not at_initial_place(object=$object).
+Requires hand_empty(hand=right).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `not at_initial_place(object=$object)` — Object is back on the support it occupied when the episode started. GT: object_pose, initial_scene_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `at_initial_place(object=$object)` — Object is back on the support it occupied when the episode started. GT: object_pose, initial_scene_annotation.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `at_initial_place(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `dispatch_pick_place` — when object.initial_support
-
-1. `policy_092($object)`
-2. `policy_061($object)`
-3. `policy_092(@object.initial_support)`
-4. `policy_015($object, @object.initial_support)`
-
-## Relations
-
-- Next step: `tuck` (`skill_009`) (enables) — the robot drives on
-- Alternative: `fetch` (`skill_047`) — a different destination is wanted
+- `at_initial_place(object=$object)` — Object is back on the support it occupied when the episode started.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_061`.

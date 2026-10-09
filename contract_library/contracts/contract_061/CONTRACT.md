@@ -2,12 +2,11 @@
 
 Return an object to the support it occupied at the start of the episode.
 
-Paired SkillNode: `skill_053` (`restore-object`).
+Verb: `restore`.
 
 ## Precheck
 
 - [all paths] `hand_empty(hand=right)` — GT: gripper_state
-- [all paths] `not at_initial_place(object=$object)` — GT: object_pose, initial_scene_annotation
 
 ## Verifier
 
@@ -17,5 +16,7 @@ Paired SkillNode: `skill_053` (`restore-object`).
 ## Policy paths
 
 - `dispatch_pick_place` when object.initial_support: `policy_092($object)` -> `policy_061($object)` -> `policy_092(@object.initial_support)` -> `policy_015($object, @object.initial_support)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

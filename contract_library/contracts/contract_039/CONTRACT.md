@@ -2,7 +2,7 @@
 
 Push a flat object (book, plate, notebook) until it overhangs a free support edge by >= 5.5 cm while its centre of mass stays on the support, so the overhang can be pinched.
 
-Paired SkillNode: `skill_031` (`expose-object`).
+Verb: `expose`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_031` (`expose-object`).
 ## Policy paths
 
 - `slide_to_edge` when object.flat: `policy_045($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

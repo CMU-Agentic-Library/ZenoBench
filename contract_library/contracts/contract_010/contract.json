@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_010",
- "skill_id": "skill_002",
  "verb": "approach",
  "noun": "target",
  "name": "Approach a manipulation target",
@@ -157,75 +156,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the target is an object to grasp",
-   "bind": {
-    "object": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_017",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "open",
-   "when": "the target is a door or drawer",
-   "bind": {
-    "articulated": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_040",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "press",
-   "when": "the target is a button",
-   "bind": {
-    "button": "$target"
-   },
-   "reason": "",
-   "to_skill_id": "skill_042",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "fallback",
-   "to": "navigate",
-   "when": "no base pose near the current one reaches the target",
-   "bind": {
-    "destination": "$target"
-   },
-   "reason": "",
-   "fallback_type": "repair",
-   "repairs": "base_near",
-   "to_skill_id": "skill_001"
-  },
-  {
-   "kind": "fallback",
-   "to": "bend",
-   "when": "the target is just beyond the arm envelope",
-   "bind": {},
-   "reason": "Waist pitch adds forward reach from the same base pose.",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_007"
-  },
-  {
-   "kind": "fallback",
-   "to": "pull",
-   "when": "the object sits too deep on its support",
-   "bind": {
-    "object": "$target"
-   },
-   "reason": "Dragging the object to the front makes it reachable.",
-   "fallback_type": "substitute",
-   "to_skill_id": "skill_030"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

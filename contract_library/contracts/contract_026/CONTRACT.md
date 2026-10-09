@@ -1,8 +1,8 @@
 # contract_026 — Place a held object
 
-Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past.
+Put the right-held object down on a support surface or into an open container and release it. How it is put down is chosen automatically from the receptacle and grasp: into a microwave (insert, release, withdraw), into a container, an edge-held flat object slid back over an edge, onto an ordinary surface (optionally near a hint point), or while driving past.
 
-Paired SkillNode: `skill_018` (`place-object`).
+Verb: `place`.
 
 ## Precheck
 
@@ -38,5 +38,7 @@ Paired SkillNode: `skill_018` (`place-object`).
 - `edge_held_flat` when receptacle.kind == 'support' and robot.right_kind == 'edge': `policy_017($object, $receptacle, hint=$hint_xy)`
 - `stove_burner` when receptacle.kind == 'support' and receptacle.category == 'cooktop': `policy_015($object, $receptacle, hint=@receptacle.burner_xy)`
 - `surface` when receptacle.kind == 'support': `policy_015($object, $receptacle, hint=$hint_xy)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

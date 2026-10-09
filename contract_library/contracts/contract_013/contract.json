@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_013",
- "skill_id": "skill_005",
  "verb": "crouch",
  "noun": "torso",
  "name": "Crouch the torso",
@@ -139,28 +138,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the object is on the floor or a low shelf",
-   "bind": {},
-   "reason": "floor reach",
-   "to_skill_id": "skill_017",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "stand",
-   "when": "low work is done",
-   "bind": {},
-   "reason": "restore travel height",
-   "to_skill_id": "skill_006",
-   "sequence_type": "then"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

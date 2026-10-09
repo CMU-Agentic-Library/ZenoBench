@@ -3,7 +3,7 @@ name: uncover-container
 description: Lift the lid off a container by its knob and set it down beside the container: on the same support when it has room, else on the nearest counter-height support; the lid noun is found from GT (the lid resting on the rim).
 ---
 
-# Uncover a container (`skill_046`)
+# Uncover a container (`uncover`)
 
 `uncover(container: container_ref)`
 
@@ -25,54 +25,51 @@ A lid must be removed before reaching into or pouring into a container.
 
 - `lid` (`lid_ref`): The lid that was removed.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "uncover", "args": {"container": "<container>"}}
+```
+
+Argument formats:
+
+- `container_ref`: an object annotated as an open container
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right); base_near(place=$container).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
+- `base_near(place=$container)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `uncovered(container=$container)` — No lid rests on the container rim. GT: object_pose, container_profile, asset_tags.
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `uncovered(container=$container)` — No lid rests on the container rim.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Verifier
+## Conditions that depend on the bound nouns
 
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `uncovered(container=$container)` (all paths)
-- `hand_empty(hand=right)` (all paths)
-- `on(object=@container.lid, support=@container.aside_support)` (path knob_lift_aside)
+- when container.lid: ensures `on(object=@container.lid, support=@container.aside_support)`
 
 ## May invalidate
 
 `covered($container,*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `knob_lift_aside` — when container.lid
-
-1. `policy_010(@container.lid)`
-2. `policy_015(@container.lid, @container.aside_support)`
-- extra postcondition `on(object=@container.lid, support=@container.aside_support)`
-
-## Relations
-
-- Next step: `pour` (`skill_039`) (enables) — food is poured into the opened pot
-- Next step: `stir` (`skill_038`) (enables) — the opened pot is stirred
-- Next step: `pick` (`skill_017`) (enables) — something inside is taken out
-- Is a fallback for: `pick` (`skill_017`) (recover) — the object to take is a lid-covered container's content
-- Is a fallback for: `place` (`skill_018`) (repair) — the container has its lid on
-- Is a fallback for: `pour` (`skill_039`) (repair) — the target has its lid on
-- Is a fallback for: `empty` (`skill_051`) (repair) — the container has its lid on
-- Alternative: `cover` (`skill_045`) — opposite effect
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_054`.

@@ -8,16 +8,6 @@
  "title": "Hide an object",
  "group": "multi_object",
  "signature": "hide(object: object_ref, receptacle: receptacle_ref, lid: lid_ref?)",
- "action_predicate": {
-  "name": "hide_object",
-  "verb": "hide",
-  "noun": "object",
-  "arguments": [
-   "object",
-   "receptacle",
-   "lid"
-  ]
- },
  "description": "Make an object invisible from outside: put it into a container and cover that container with its lid, or put it on a shelf inside a cabinet and close the cabinet.",
  "use_when": "An object must end up out of sight inside a closed container.",
  "not_to_be_confused_with": {
@@ -47,208 +37,67 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right). Depending on the bound nouns, the chosen path also needs: container_with_lid (receptacle.kind == 'object' and args.lid): uncovered(container=$receptacle)."
+  "summary": "Requires hand_empty(hand=right). Some bound nouns add preconditions (see Conditions that depend on the bound nouns)."
  },
  "preconditions": [
   {
    "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
-   "args": {
-    "hand": "right"
-   },
-   "negated": false,
-   "meaning": "The given gripper holds nothing.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The given gripper holds nothing."
   }
  ],
  "postconditions": [
   {
    "predicate": "hidden(object=$object)",
-   "name": "hidden",
-   "args": {
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "Object is inside a lid-covered container or on a shelf inside a closed cabinet.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "container_profile",
-    "articulation_joint",
-    "support_annotation"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "Object is inside a lid-covered container or on a shelf inside a closed cabinet."
   },
   {
    "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
-   "args": {
-    "hand": "right"
-   },
-   "negated": false,
-   "meaning": "The given gripper holds nothing.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The given gripper holds nothing."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "hidden(object=$object)",
-    "name": "hidden",
-    "args": {
-     "object": "$object"
-    },
-    "negated": false,
-    "meaning": "Object is inside a lid-covered container or on a shelf inside a closed cabinet.",
-    "kind": "fluent",
-    "gt_sources": [
-     "object_pose",
-     "container_profile",
-     "articulation_joint",
-     "support_annotation"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   },
-   {
-    "predicate": "hand_empty(hand=right)",
-    "name": "hand_empty",
-    "args": {
-     "hand": "right"
-    },
-    "negated": false,
-    "meaning": "The given gripper holds nothing.",
-    "kind": "fluent",
-    "gt_sources": [
-     "gripper_state"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
- "invalidates": [],
- "policy_paths": [
+ "conditional": [
   {
-   "path_id": "container_with_lid",
    "when": [
     "receptacle.kind == 'object'",
     "args.lid"
    ],
-   "extra_preconditions": [
+   "preconditions": [
     {
      "predicate": "uncovered(container=$receptacle)",
-     "name": "uncovered",
-     "args": {
-      "container": "$receptacle"
-     },
-     "negated": false,
-     "meaning": "No lid rests on the container rim.",
-     "kind": "fluent",
-     "gt_sources": [
-      "object_pose",
-      "container_profile",
-      "asset_tags"
-     ],
-     "checked": "before execution on live GT state; the Contract does not move if false"
+     "meaning": "No lid rests on the container rim."
     }
    ],
-   "extra_postconditions": [],
-   "chain": [
-    "[fetch](object=$object, receptacle=$receptacle)",
-    "[navigate](destination=$lid)",
-    "[pick](object=$lid)",
-    "[navigate](destination=$receptacle)",
-    "[cover](container=$receptacle, lid=$lid)"
-   ],
-   "policies": [],
-   "note": ""
-  },
-  {
-   "path_id": "closed_cabinet",
-   "when": [
-    "receptacle.kind == 'support'",
-    "receptacle.category == 'cabinet_inside'"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "[navigate](destination=@receptacle.appliance)",
-    "[open](articulated=@receptacle.appliance)",
-    "[fetch](object=$object, receptacle=$receptacle)",
-    "[close](articulated=@receptacle.appliance)"
-   ],
-   "policies": [],
-   "note": ""
+   "postconditions": []
   }
  ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_009",
-    "verb": "tuck",
-    "when": "the robot leaves",
-    "bind": {
-     "hand": "right"
-    },
-    "type": "enables"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_047",
-    "verb": "fetch",
-    "when": "the object only needs to move",
-    "bind": {
-     "object": "$object"
-    }
-   }
-  ]
- },
+ "invalidates": [],
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_078",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_070",
+ "call": {
+  "request": {
+   "contract": "hide",
    "args": {
-    "object": {
-     "ref": "<object>"
-    },
-    "receptacle": {
-     "ref": "<receptacle>"
-    }
-   },
-   "depends_on": []
+    "object": "<object>",
+    "receptacle": "<receptacle>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"hide\", {'object': ..., 'receptacle': ...})"
+  "arg_formats": {
+   "lid_ref": "an object tagged as a lid",
+   "object_ref": "a movable annotated scene object",
+   "receptacle_ref": "a support surface or an open container"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

@@ -2,7 +2,7 @@
 
 Put every listed object into one container (fetch each in turn).
 
-Paired SkillNode: `skill_048` (`collect-objects`).
+Verb: `collect`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_048` (`collect-objects`).
 ## Policy paths
 
 - `fetch_each` when always: `for each item in $objects: [fetch](object=$item, receptacle=$container)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

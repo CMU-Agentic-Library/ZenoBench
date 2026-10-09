@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_056",
- "skill_id": "skill_048",
  "verb": "collect",
  "noun": "objects",
  "name": "Collect objects into a container",
@@ -141,27 +140,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "close",
-   "when": "the container sits in a cabinet that must be closed",
-   "bind": {},
-   "reason": "closed: all goal",
-   "to_skill_id": "skill_041",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "sort",
-   "when": "the objects belong in different containers",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_049"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

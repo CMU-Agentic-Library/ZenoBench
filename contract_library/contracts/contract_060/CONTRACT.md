@@ -2,7 +2,7 @@
 
 Place the listed objects on one support so that they are pairwise within a distance (a place setting).
 
-Paired SkillNode: `skill_052` (`arrange-objects`).
+Verb: `arrange`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_052` (`arrange-objects`).
 ## Policy paths
 
 - `place_near_common_spot` when always: `for each item in $objects: [navigate](destination=$item) -> [pick](object=$item) -> [navigate](destination=$support) -> [place](object=$item, receptacle=$support, hint_xy=@support.roomiest_xy)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

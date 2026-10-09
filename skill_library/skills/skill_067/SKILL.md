@@ -3,7 +3,7 @@ name: sweep-objects
 description: Push several objects on one support toward their centroid until they form a cluster (radius 12 cm), without grasping them.
 ---
 
-# Sweep objects together (`skill_067`)
+# Sweep objects together (`sweep`)
 
 `sweep(objects: object_list, radius_m: positive_number)`
 
@@ -23,38 +23,42 @@ Several small objects on one support must be gathered into a cluster.
 - `objects` (`object_list`): Objects on one support.
 - `radius_m` (`positive_number`, default 0.12): Cluster radius.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "sweep", "args": {"objects": "<object_list>", "radius_m": "<positive_number>"}}
+```
+
+Argument formats:
+
+- `object_list`: a non-empty list of object refs
+- `positive_number`: a number > 0
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `clustered(objects=$objects, radius_m=$radius_m)` — Every listed object's footprint centre lies within the radius of the group centroid, on one support. GT: object_pose, support_annotation.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `clustered(objects=$objects, radius_m=$radius_m)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `push_to_centroid` — when always (default path)
-
-1. `policy_109($objects, radius_m=$radius_m)`
-
-## Relations
-
-- Next step: `collect` (`skill_048`) (then) — the cluster is then put into a container
-- Alternative: `push` (`skill_029`) — only one object has to move
+- `clustered(objects=$objects, radius_m=$radius_m)` — Every listed object's footprint centre lies within the radius of the group centroid, on one support.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_075`.

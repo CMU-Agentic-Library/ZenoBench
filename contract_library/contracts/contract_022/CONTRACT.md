@@ -2,7 +2,7 @@
 
 Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen.
 
-Paired SkillNode: `skill_014` (`explore-room`).
+Verb: `explore`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_014` (`explore-room`).
 ## Policy paths
 
 - `viewpoints` when always: `policy_069($room)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

@@ -8,15 +8,6 @@
  "title": "Cover a container with a lid",
  "group": "articulated_and_appliance",
  "signature": "cover(container: container_ref, lid: lid_ref)",
- "action_predicate": {
-  "name": "cover_container",
-  "verb": "cover",
-  "noun": "container",
-  "arguments": [
-   "container",
-   "lid"
-  ]
- },
  "description": "Lay the held lid centred on the container rim (within 3 cm, tilt <= 12 deg) and release it.",
  "use_when": "A container must be closed with its lid.",
  "not_to_be_confused_with": {
@@ -47,206 +38,58 @@
  "preconditions": [
   {
    "predicate": "holding(hand=right, object=$lid)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$lid"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   },
   {
    "predicate": "base_near(place=$container)",
-   "name": "base_near",
-   "args": {
-    "place": "$container"
-   },
-   "negated": false,
-   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
-   "kind": "fluent",
-   "gt_sources": [
-    "base_pose",
-    "scene_annotation"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room)."
   },
   {
    "predicate": "uncovered(container=$container)",
-   "name": "uncovered",
-   "args": {
-    "container": "$container"
-   },
-   "negated": false,
-   "meaning": "No lid rests on the container rim.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "container_profile",
-    "asset_tags"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "No lid rests on the container rim."
   }
  ],
  "postconditions": [
   {
    "predicate": "covered(container=$container, lid=$lid)",
-   "name": "covered",
-   "args": {
-    "container": "$container",
-    "lid": "$lid"
-   },
-   "negated": false,
-   "meaning": "The lid rests centred on the container rim (3 cm xy, 3 cm height, 12 deg tilt).",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "container_profile"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The lid rests centred on the container rim (3 cm xy, 3 cm height, 12 deg tilt)."
   },
   {
    "predicate": "hand_empty(hand=right)",
-   "name": "hand_empty",
-   "args": {
-    "hand": "right"
-   },
-   "negated": false,
-   "meaning": "The given gripper holds nothing.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The given gripper holds nothing."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "covered(container=$container, lid=$lid)",
-    "name": "covered",
-    "args": {
-     "container": "$container",
-     "lid": "$lid"
-    },
-    "negated": false,
-    "meaning": "The lid rests centred on the container rim (3 cm xy, 3 cm height, 12 deg tilt).",
-    "kind": "fluent",
-    "gt_sources": [
-     "object_pose",
-     "container_profile"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   },
-   {
-    "predicate": "hand_empty(hand=right)",
-    "name": "hand_empty",
-    "args": {
-     "hand": "right"
-    },
-    "negated": false,
-    "meaning": "The given gripper holds nothing.",
-    "kind": "fluent",
-    "gt_sources": [
-     "gripper_state"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [
   "uncovered($container)",
   "holding(right,$lid)"
  ],
- "policy_paths": [
-  {
-   "path_id": "rim_plane",
-   "when": [
-    "lid.is_lid"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_087($lid, $container)"
-   ],
-   "policies": [
-    "policy_087"
-   ],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [
-   {
-    "skill_id": "skill_038",
-    "verb": "stir",
-    "when": "the pot is covered again",
-    "type": "enables"
-   }
-  ],
-  "next": [
-   {
-    "skill_id": "skill_043",
-    "verb": "heat",
-    "when": "the covered pot is heated",
-    "bind": {},
-    "reason": "stove path",
-    "type": "enables"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_046",
-    "verb": "uncover",
-    "when": "opposite effect",
-    "bind": {}
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_053",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_045",
+ "call": {
+  "request": {
+   "contract": "cover",
    "args": {
-    "container": {
-     "ref": "<container>"
-    },
-    "lid": {
-     "ref": "<lid>"
-    }
-   },
-   "depends_on": []
+    "container": "<container>",
+    "lid": "<lid>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"cover\", {'container': ..., 'lid': ...})"
+  "arg_formats": {
+   "container_ref": "an object annotated as an open container",
+   "lid_ref": "an object tagged as a lid"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

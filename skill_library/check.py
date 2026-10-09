@@ -10,14 +10,7 @@ the compiled skill records produced by tools/build_skill_library.py:
 * every path condition names a known noun field; every policy step binds to the
   policy's real ``execute`` signature; every nested Skill call supplies the
   callee's required inputs;
-* relations are consistent with the pre/postconditions:
-    sequence A->B     some postcondition of A matches a precondition of B
-                      (same predicate, arguments consistent with ``bind``),
-    fallback repair   B ensures the predicate it ``repairs`` and A requires it,
-    fallback subst.   B shares a postcondition predicate with A,
-    alternative       A and B share a postcondition predicate;
-* every public low-level policy is used by at least one path, every skill has
-  a previous or next step and at least one fallback/alternative link.
+* every public low-level policy is used by at least one path.
 """
 
 from __future__ import annotations
@@ -276,78 +269,6 @@ def check_steps(steps, skill, by_verb, where, errors, used, loop_vars=None, name
             names.add(step["as"])
 
 
-def _atoms(skill, kind):
-    out = list(skill[kind])
-    for p in skill["policy_plan"]["paths"]:
-        out += p.get(kind, [])
-    return out
-
-
-def _arg_consistent(a_atom, b_atom, bind):
-    """B's atom argument "$y" with bind {y: "$x"} must equal A's "$x"."""
-    for k, vb in b_atom["args"].items():
-        va = a_atom["args"].get(k)
-        if isinstance(vb, str) and vb.startswith("$") and vb[1:] in bind:
-            if va != bind[vb[1:]]:
-                return False
-        elif not (isinstance(vb, str) and vb[:1] in "$@") and not (isinstance(va, str) and va[:1] in "$@"):
-            if va != vb:
-                return False
-    return True
-
-
-def sequence_type(a, rel, b):
-    """``enables`` when a postcondition of A matches a precondition of B under
-    the relation's argument binding, else ``then`` (loose order)."""
-    a_ens, b_req = _atoms(a, "ensures"), _atoms(b, "requires")
-    ok = any(x["pred"] == y["pred"] and bool(x.get("negated")) == bool(y.get("negated"))
-             and _arg_consistent(x, y, rel["bind"]) for x in a_ens for y in b_req)
-    return "enables" if ok else "then"
-
-
-def check_relation(a, rel, b, errors):
-    w = f"{a['verb']}->{rel['kind']}->{b['verb']}"
-    for k, v in rel["bind"].items():
-        if k not in b["inputs"]:
-            errors.append(f"{w}: bind key {k} is not an input of {b['verb']}")
-        if isinstance(v, str) and v.startswith("$") and v[1:] not in a["inputs"]:
-            errors.append(f"{w}: bind value {v} is not an input of {a['verb']}")
-    a_ens, b_req = _atoms(a, "ensures"), _atoms(b, "requires")
-    a_names = {x["pred"] for x in a_ens if not x.get("negated")}
-    b_ens_names = {x["pred"] for x in _atoms(b, "ensures") if not x.get("negated")}
-    a_req_names = {x["pred"] for x in _atoms(a, "requires") if not x.get("negated")}
-    kind = rel["kind"]
-    if kind == "sequence":
-        rel["sequence_type"] = sequence_type(a, rel, b)
-        if rel["sequence_type"] == "then" and not (rel["bind"] or rel.get("reason")):
-            errors.append(f"{w}: loose next step needs a shared noun (bind) or a reason; no postcondition of "
-                          f"{a['verb']} matches a precondition of {b['verb']}")
-    elif kind == "fallback":
-        ftype = rel.get("fallback_type")
-        if ftype == "repair":
-            rep = rel.get("repairs")
-            if rep:
-                if rep not in b_ens_names:
-                    errors.append(f"{w}: repair fallback does not ensure {rep}")
-                if rep not in a_req_names:
-                    errors.append(f"{w}: {a['verb']} does not require {rep}")
-            elif not (b_ens_names & a_req_names) and not b["group"] == "base_and_body":
-                errors.append(f"{w}: repair fallback ensures none of {a['verb']}'s preconditions")
-        elif ftype == "recover":
-            if not rel.get("reason"):
-                errors.append(f"{w}: recover fallback needs a reason")
-        elif ftype == "substitute":
-            if not (b_ens_names & a_names) and not b["group"] in ("perception_and_gesture",):
-                errors.append(f"{w}: substitute fallback shares no postcondition with {a['verb']}")
-        else:
-            errors.append(f"{w}: fallback needs fallback_type repair|recover|substitute")
-    elif kind == "alternative":
-        if not (b_ens_names & a_names) and a["group"] != b["group"]:
-            errors.append(f"{w}: alternative shares no postcondition and no capability group")
-    else:
-        errors.append(f"{w}: unknown relation kind")
-
-
 def check_library(skills: list[dict]) -> list[str]:
     errors: list[str] = []
     by_verb = {}
@@ -401,25 +322,6 @@ def check_library(skills: list[dict]) -> list[str]:
             for a in p.get("ensures", []):
                 check_atom(a, narrowed, f"{pw}.ensures", errors)
             check_steps(p["steps"], dict(s, inputs=narrowed), by_verb, pw, errors, used)
-        for rel in s["relations"]:
-            b = by_verb.get(rel["to"])
-            if b is None:
-                errors.append(f"{w}: relation to unknown verb {rel['to']}")
-                continue
-            check_relation(s, rel, b, errors)
-    # graph shape
-    incoming = {v: [] for v in by_verb}
-    for s in skills:
-        for rel in s["relations"]:
-            if rel["to"] in incoming:
-                incoming[rel["to"]].append((s["verb"], rel["kind"]))
-    for s in skills:
-        kinds_out = {r["kind"] for r in s["relations"]}
-        kinds_in = {k for _, k in incoming[s["verb"]]}
-        if "sequence" not in kinds_out | kinds_in:
-            errors.append(f"{s['verb']}: no previous/next step relation")
-        if not ({"fallback", "alternative"} & (kinds_out | kinds_in)):
-            errors.append(f"{s['verb']}: no fallback or alternative relation")
     # coverage
     _, pids = _policy_suite()
     unused = sorted(pids - used.get("policies", set()) - set(RETIRED_POLICIES))
@@ -428,8 +330,4 @@ def check_library(skills: list[dict]) -> list[str]:
         errors.append(f"retired policies still used by a Skill path: {stale}")
     if unused:
         errors.append(f"policies used by no Skill path: {unused}")
-    preds = {a["pred"] for s in skills for a in _atoms(s, "requires") + _atoms(s, "ensures")}
-    unused_preds = sorted(set(REGISTRY) - preds)
-    if unused_preds:
-        errors.append(f"predicates used by no Skill: {unused_preds}")
     return errors

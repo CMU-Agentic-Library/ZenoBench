@@ -3,7 +3,7 @@ name: bend-waist
 description: Pitch the waist forward to extend the reach over a deep surface.
 ---
 
-# Bend the waist (`skill_007`)
+# Bend the waist (`bend`)
 
 `bend(pitch_rad: positive_number?)`
 
@@ -21,47 +21,45 @@ A target is just beyond arm reach over a counter and leaning forward helps.
 
 - `pitch_rad` (`positive_number`, optional): Forward pitch in rad (max 0.69); omit for the maximum.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "bend", "args": {}}
+```
+
+Argument formats:
+
+- `positive_number`: a number > 0
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
-Always applicable.
+No precondition.
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
 - none
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `waist_bent(min_pitch_rad=0.2)` — Waist pitched forward by at least the given angle. GT: waist_joint.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `waist_bent(min_pitch_rad=0.2)` (all paths)
+- `waist_bent(min_pitch_rad=0.2)` — Waist pitched forward by at least the given angle.
 
 ## May invalidate
 
 `waist_straight()`, `reachable(*)`, `in_view(*)`
 
-## Policy paths (first match on the bound nouns)
-
-### `to_pitch` — when args.pitch_rad
-
-1. `policy_007($pitch_rad)`
-
-### `full` — when always (default path)
-
-1. `policy_008()`
-
-## Relations
-
-- Next step: `straighten` (`skill_008`) (then) — the reach is done
-- Next step: `approach` (`skill_002`) (then) — the target was just out of reach
-- Is a fallback for: `approach` (`skill_002`) (recover) — the target is just beyond the arm envelope
-
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_015`.

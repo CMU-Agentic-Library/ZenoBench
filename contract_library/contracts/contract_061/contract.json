@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_061",
- "skill_id": "skill_053",
  "verb": "restore",
  "noun": "object",
  "name": "Restore an object to its place",
@@ -22,13 +21,6 @@
    "args": {
     "hand": "right"
    }
-  },
-  {
-   "pred": "at_initial_place",
-   "args": {
-    "object": "$object"
-   },
-   "negated": true
   }
  ],
  "ensures": [
@@ -58,22 +50,6 @@
    "kind": "fluent",
    "gt_sources": [
     "gripper_state"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false",
-   "scope": "all paths"
-  },
-  {
-   "predicate": "not at_initial_place(object=$object)",
-   "name": "at_initial_place",
-   "args": {
-    "object": "$object"
-   },
-   "negated": true,
-   "meaning": "Object is back on the support it occupied when the episode started.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "initial_scene_annotation"
    ],
    "checked": "before execution on live GT state; the Contract does not move if false",
    "scope": "all paths"
@@ -177,31 +153,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "alternative",
-   "to": "fetch",
-   "when": "a different destination is wanted",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_047"
-  },
-  {
-   "kind": "sequence",
-   "to": "tuck",
-   "when": "the robot drives on",
-   "bind": {
-    "hand": "right"
-   },
-   "reason": "",
-   "to_skill_id": "skill_009",
-   "sequence_type": "enables"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

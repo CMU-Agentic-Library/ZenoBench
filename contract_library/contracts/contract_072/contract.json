@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_072",
- "skill_id": "skill_064",
  "verb": "square",
  "noun": "object",
  "name": "Square an object",
@@ -180,29 +179,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "stack",
-   "when": "squared blocks stack cleanly",
-   "bind": {},
-   "reason": "aligned faces",
-   "to_skill_id": "skill_020",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "rotate",
-   "when": "the object is already in the hand",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_025"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

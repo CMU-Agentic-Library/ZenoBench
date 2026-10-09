@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_043",
- "skill_id": "skill_035",
  "verb": "tip",
  "noun": "object",
  "name": "Tip an object over",
@@ -157,40 +156,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "roll",
-   "when": "the lying cylinder is rolled",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_034",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the lying object is pinched across its side",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_017",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "alternative",
-   "to": "upright",
-   "when": "opposite effect",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_036"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

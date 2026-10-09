@@ -8,15 +8,6 @@
  "title": "Hover a held object over a target",
  "group": "grasp_and_hand",
  "signature": "hover(object: object_ref, target: entity_ref)",
- "action_predicate": {
-  "name": "hover_object",
-  "verb": "hover",
-  "noun": "object",
-  "arguments": [
-   "object",
-   "target"
-  ]
- },
  "description": "Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without releasing it, e.g. to show or to align before a drop.",
  "use_when": "A held object must be positioned over a target before dropping or pouring.",
  "not_to_be_confused_with": {
@@ -47,203 +38,51 @@
  "preconditions": [
   {
    "predicate": "holding(hand=right, object=$object)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   },
   {
    "predicate": "base_near(place=$target)",
-   "name": "base_near",
-   "args": {
-    "place": "$target"
-   },
-   "negated": false,
-   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room).",
-   "kind": "fluent",
-   "gt_sources": [
-    "base_pose",
-    "scene_annotation"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
+   "meaning": "Base centre within 1.3 m of the place's footprint (inside the room for a room)."
   }
  ],
  "postconditions": [
   {
    "predicate": "hovering_over(object=$object, target=$target)",
-   "name": "hovering_over",
-   "args": {
-    "object": "$object",
-    "target": "$target"
-   },
-   "negated": false,
-   "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "gripper_state",
-    "asset_annotation"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm."
   },
   {
    "predicate": "holding(hand=right, object=$object)",
-   "name": "holding",
-   "args": {
-    "hand": "right",
-    "object": "$object"
-   },
-   "negated": false,
-   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-   "kind": "fluent",
-   "gt_sources": [
-    "gripper_state",
-    "finger_joints",
-    "object_pose",
-    "arm_fk"
-   ],
-   "checked": "after the policy chain on live GT state; the action is reported only if true"
+   "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp."
   }
  ],
- "verifier": {
-  "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
-  "checks": [
-   {
-    "predicate": "hovering_over(object=$object, target=$target)",
-    "name": "hovering_over",
-    "args": {
-     "object": "$object",
-     "target": "$target"
-    },
-    "negated": false,
-    "meaning": "The right-held object's bottom is 3-15 cm above the target's top, centred within 4 cm.",
-    "kind": "fluent",
-    "gt_sources": [
-     "object_pose",
-     "gripper_state",
-     "asset_annotation"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   },
-   {
-    "predicate": "holding(hand=right, object=$object)",
-    "name": "holding",
-    "args": {
-     "hand": "right",
-     "object": "$object"
-    },
-    "negated": false,
-    "meaning": "The object is in the given gripper: fingers not shut, TCP-to-body distance unchanged since the grasp.",
-    "kind": "fluent",
-    "gt_sources": [
-     "gripper_state",
-     "finger_joints",
-     "object_pose",
-     "arm_fk"
-    ],
-    "checked": "after the policy chain on live GT state; the action is reported only if true",
-    "scope": "all paths"
-   }
-  ]
- },
+ "conditional": [],
  "invalidates": [],
- "policy_paths": [
-  {
-   "path_id": "above_target",
-   "when": [
-    "always (default path)"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_115($object, $target)"
-   ],
-   "policies": [
-    "policy_115"
-   ],
-   "note": ""
-  }
- ],
- "relations": {
-  "previous": [],
-  "next": [
-   {
-    "skill_id": "skill_019",
-    "verb": "drop",
-    "when": "the object is released into the container under it",
-    "bind": {
-     "object": "$object",
-     "container": "$target"
-    },
-    "type": "enables"
-   },
-   {
-    "skill_id": "skill_021",
-    "verb": "release",
-    "when": "the object is let go right there",
-    "bind": {
-     "object": "$object"
-    },
-    "type": "enables"
-   }
-  ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
-   {
-    "skill_id": "skill_023",
-    "verb": "lift",
-    "when": "only a height matters",
-    "bind": {
-     "object": "$object"
-    }
-   }
-  ]
- },
  "failure": {
-  "codes": [
-   "INPUT_MISSING",
-   "NOUN_INVALID",
-   "PRECONDITION_FAILED",
-   "NO_PATH",
-   "POLICY_FAILED",
-   "SUBSKILL_FAILED",
-   "POSTCONDITION_FAILED"
-  ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop and report the measured pre/postconditions; nothing is retried.",
   "typical": []
  },
  "scope": {
   "includes": [],
   "excludes": []
  },
- "contract_id": "contract_071",
- "invocation": {
-  "skill_subgraph_node": {
-   "id": "n1",
-   "skill_id": "skill_063",
+ "call": {
+  "request": {
+   "contract": "hover",
    "args": {
-    "object": {
-     "ref": "<object>"
-    },
-    "target": {
-     "ref": "<entity>"
-    }
-   },
-   "depends_on": []
+    "object": "<object>",
+    "target": "<entity>"
+   }
   },
-  "python": "SkillContractRunner(rig).run(\"hover\", {'object': ..., 'target': ...})"
+  "arg_formats": {
+   "entity_ref": "any annotated object, support, articulated part or button",
+   "object_ref": "a movable annotated scene object"
+  },
+  "returns": {
+   "success": "true when every precondition held, the action ran and every postcondition holds",
+   "error_code": "on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED",
+   "preconditions": "each precondition as evaluated before moving, with holds = true/false",
+   "postconditions": "each postcondition as evaluated after the action, with holds = true/false",
+   "outputs": "the measured values listed under Outputs"
+  }
  }
 }

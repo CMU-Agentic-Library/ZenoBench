@@ -5,9 +5,9 @@ description: Annotation-driven manipulation skills for the Zeno Malo mobile mani
 
 # Zeno Malo skills
 
-这里的 skills 指底层注释驱动的控制代码。供上层 Skill Graph 选择的
-Agent Skill 风格能力定义在 [skill_library](../skill_library/README.md)；
-两层边界见 [SCOPE.md](../skill_library/SCOPE.md)。
+这里的 skills 指底层注释驱动的控制代码，是 Contract 的内部实现，
+不是规划器接口。上层规划器按动词调用的 Skill/Contract 定义在
+[skill_library](../skill_library/README.md)。
 
 The core grasp and geometry data come from annotations. Current appliance
 skills also use scene-specific parking and camera defaults:
@@ -20,7 +20,7 @@ skills also use scene-specific parking and camera defaults:
 ## Run
 
 ```bash
-cd zeno-house   # repository root
+cd ZenoBench   # repository root
 OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
   --scene sim/zeno_house.usd --ann annotations/zeno_house.json --out runs/my_run \
   --plan "open KitchenCabinetFactory_7025538_spawn_asset_6631478" \
@@ -30,20 +30,19 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
 
 ## OOP policies and contracts
 
-公开接口现在使用 skill_XXX、contract_XXX 和 policy_XXX。
-旧的 Contract 名称与 PolicySuite 属性仍可用。逐项定义见
+规划器按动词调用 Contract；skill_XXX、contract_XXX 和 policy_XXX 是内部记录编号，
+PolicySuite 的旧属性名仍可用。逐项定义见
 [Skill Library](../skill_library/README.md)、
 [Contract Library](../contract_library/README.md) 和
 [Policy Library](../policy_library/README.md)。
 
-`PolicySuite(rig)` exposes the [64 policy entries](../docs/POLICY_CATALOG.md).
-Choose a concrete route such as `pick_round_rim`, `pick_cup_handle`, or
-`open_powered` and call its `execute(...)` method. The eight compatibility family
-[contracts](../docs/CONTRACT_PROPOSAL.md) bind route names to these same policy
-classes. `ContractRunner(rig).run("pick.v1", "round_rim", "cup")` executes one
-route and verifies the measured postcondition; it records failures for an
-upper-layer replanner. The JSON CLI is `tools/run_contracts.py` and the example
-sequence is `tests/fixtures/contract_microwave_cycle.json`.
+`PolicySuite(rig)` exposes the [115 policy entries](../docs/POLICY_CATALOG.md)
+(`policy_001`–`policy_115`). For low-level debugging a policy can be called
+directly, e.g. `PolicySuite(rig).pick_round_rim.execute("cup")`; the upper
+planner never does this. It calls Contracts by verb, and each Contract chooses
+its policies from the bound nouns. The eight legacy family
+[contracts](../docs/CONTRACT_PROPOSAL.md) (`tools/run_contracts.py`, caller-chosen
+routes) are slated for removal.
 
 For an existing scene, construct `make_rig(..., handle_objects=("mug",))` before
 calling `pick_cup_handle.execute("mug")`; the CLI detects this automatically.
@@ -51,7 +50,7 @@ A separate collision bar then represents the mug handle. `pick_from_cavity`
 uses the measured release pose when the same rig has just placed the object
 in the microwave. Its preloaded-object route has not passed physical
 verification. See the [verification record](../docs/POLICY_VERIFICATION.md)
-before selecting a route for a new task.
+for which policies have passed physical checks.
 
 ## How each skill works
 

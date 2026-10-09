@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_030",
- "skill_id": "skill_022",
  "verb": "handover",
  "noun": "object",
  "name": "Hand an object over to the left hand",
@@ -157,36 +156,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "open",
-   "when": "the right hand must open a door while the left carries the load",
-   "bind": {},
-   "reason": "open's left_holds_load path",
-   "to_skill_id": "skill_040",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "a second object is picked with the free right hand",
-   "bind": {},
-   "reason": "right hand free",
-   "to_skill_id": "skill_017",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "alternative",
-   "to": "brace",
-   "when": "the left hand should hold an object that stays on its support",
-   "bind": {},
-   "reason": "",
-   "to_skill_id": "skill_027"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

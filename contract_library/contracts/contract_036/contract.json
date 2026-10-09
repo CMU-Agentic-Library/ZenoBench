@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_036",
- "skill_id": "skill_028",
  "verb": "flip",
  "noun": "object",
  "name": "Flip a flat object over",
@@ -167,32 +166,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "center",
-   "when": "the object is left overhanging the edge",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_033",
-   "sequence_type": "enables"
-  },
-  {
-   "kind": "fallback",
-   "to": "center",
-   "when": "the flipped object landed too close to the edge",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "pushes it back from the edge",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_033"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

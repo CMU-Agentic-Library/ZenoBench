@@ -1,5 +1,7 @@
 # Zeno House policy 能力目录
 
+由 `tools/render_policy_catalog.py` 从 `zeno_skills/policies/catalog.json` 生成，请勿手工编辑。policy 是 Contract 的内部实现，上层规划器只按动词调用 Contract，不直接调用或选择 policy。
+
 本目录列出 **115 个目标能力**。状态记录的是当前代码与物理验证程度，
 独立代码入口不等于在目标场景物理通过。`pick/open/close` 已纳入本目录；其余通用分发入口 `place/navigate`
 以及顺序组合 `pick_and_carry`、`microwave_door_cycle` 不计入本目录。
@@ -263,24 +265,24 @@
 - `right_joint_move`：Isaac Sim tidy_toys: right_arm_joint_5 moved to 0.0318 rad for 0.04 rad command (0.03 rad tolerance), runs/verify_callable_arm_v4, 2026-10-01
 - `right_gripper_open`：Isaac Sim: right_gripper_open 0.04 / right_gripper_close 0.0, 2026-10-01; runs/atomic_gripper_smoke/result.json
 - `right_gripper_close`：Isaac Sim: right_gripper_open 0.04 / right_gripper_close 0.0, 2026-10-01; runs/atomic_gripper_smoke/result.json
-- `prepare_floor_reach`：Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01 Active Contract floor-pregrasp pass on foam_cube from nearby base: runs/check_50_floor_ready_near, 2026-10-06.
-- `push_from_behind`：Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01 Active Contract rear-push pass on book_red: runs/check_50_rear_push, 2026-10-06.
-- `top_drag`：Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01 Active Contract top-drag pass on book_green: 0.024 m measured progress for 0.040 m request, runs/check_50_top_drag_green_fixed, 2026-10-06; book_red case still failed to move.
+- `prepare_floor_reach`：Isaac Sim tidy_toys: lowered torso to -0.537 m, pitched waist 0.292 rad, reached collision-checked pregrasp above toy_block with 0.0043 m TCP error, 2026-10-01 legacy family Contract floor-pregrasp pass on foam_cube from nearby base: runs/check_50_floor_ready_near, 2026-10-06.
+- `push_from_behind`：Isaac Sim shelve_books: book_red displaced 0.0568 m along requested 0.060 m push, runs/verify_callable_push_drag, 2026-10-01 legacy family Contract rear-push pass on book_red: runs/check_50_rear_push, 2026-10-06.
+- `top_drag`：Isaac Sim shelve_books: book_green moved 0.057 m by a 0.040 m top-contact drag, runs/verify_callable_top_drag_v4, 2026-10-01 legacy family Contract top-drag pass on book_green: 0.024 m measured progress for 0.040 m request, runs/check_50_top_drag_green_fixed, 2026-10-06; book_red case still failed to move.
 - `slide_to_edge`：Isaac Sim: slide_to_edge book_red, 0.0885 m overhang, 2026-10-01
 - `grasp_articulated_handle`：Isaac Sim: grasp_articulated_handle breakfast_fridge, both fingers contacted, 2026-10-01
 - `release_articulated_handle`：Isaac Sim: release_articulated_handle breakfast_fridge, both fingers opened, 2026-10-01
 - `pick_from_cavity`：Isaac Sim dedicated microwave cup fixture: open, rim pick, cavity place, same-rig cavity retrieval; four contract postconditions passed, cup lift 0.0742 m and body 0.047 m outside mouth; runs/final_contract_microwave, 2026-10-02
-- `open_revolute_door`：Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01 Active Contract hinged-door pass: runs/check_50_manual, 2026-10-06.
-- `open_prismatic_drawer`：Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01 Active Contract drawer pass: runs/check_50_manual, 2026-10-06.
+- `open_revolute_door`：Isaac Sim: open_revolute_door breakfast_fridge, joint reached -0.527 rad for -0.611 rad goal, 2026-10-01 legacy family Contract hinged-door pass: runs/check_50_manual, 2026-10-06.
+- `open_prismatic_drawer`：Isaac Sim base scene: kitchen drawer joint moved 0 to -0.130 rad/m toward -0.169 target with physical handle contact, runs/verify_callable_drawer, 2026-10-01 legacy family Contract drawer pass: runs/check_50_manual, 2026-10-06.
 - `reach_while_moving`：Isaac Sim: 0.10 m base travel with concurrent right-arm reach, 0.003 m TCP error, 2026-10-01
 - `pick_while_moving`：Isaac Sim tidy_toys: toy_block grasped while base traveled 0.072 m; closure tick 1138, lift tick 1255, base motion ended tick 1403; object lifted 0.065 m, 2026-10-01
 - `place_while_moving`：Isaac Sim collect_fruits: apple released onto dining table at tick 3257 while base moved 0.078 m; base ended tick 3472, support bottom error 0.0377 m, runs/verify_callable_place_while_moving_apple_v2, 2026-10-01
 - `upright_object`：Isaac Sim tidy_toys: toy_block physically tipped to 29.129 deg in right grasp, UprightObjectPolicy reduced tilt to 0.951 deg, runs/verify_callable_upright, 2026-10-01
 - `pick_cup_handle`：Isaac Sim breakfast_setup original scene: mug handle pinch lifted 0.0226 m with fingers 0.0121/0.0102 m open; runs/final_mug_handle, 2026-10-02
-- `pick`：Existing annotation-dispatching policy used by previously verified contract route.
-- `open`：Existing annotation-dispatching policy used by previously verified contract route.
-- `close`：Existing annotation-dispatching policy used by previously verified contract route.
-- `wait_for_temperature`：Isaac Sim heat_breakfast_preloaded: contract_048 waited from 4 C to 63.6 C after physical start-button press, runs/node_contract_heat_wait/result.json, 2026-10-05
+- `pick`：Annotation-dispatching policy; exercised by verified route-specific policies.
+- `open`：Annotation-dispatching policy; exercised by verified route-specific policies.
+- `close`：Annotation-dispatching policy; exercised by verified route-specific policies.
+- `wait_for_temperature`：Isaac Sim heat_breakfast_preloaded: the heat Contract (numbered contract_048 at the time) waited from 4 C to 63.6 C after physical start-button press, runs/node_contract_heat_wait/result.json, 2026-10-05
 - `approach_target`：pending Isaac Sim check (skill library v2)
 - `face_target`：pending Isaac Sim check (skill library v2)
 - `retreat_from`：pending Isaac Sim check (skill library v2)

@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_058",
- "skill_id": "skill_050",
  "verb": "clear",
  "noun": "support",
  "name": "Clear a support",
@@ -125,32 +124,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "sequence",
-   "to": "wipe",
-   "when": "the cleared surface is wiped",
-   "bind": {
-    "surface": "$support"
-   },
-   "reason": "",
-   "to_skill_id": "skill_037",
-   "sequence_type": "then"
-  },
-  {
-   "kind": "sequence",
-   "to": "arrange",
-   "when": "a new layout is set on the cleared surface",
-   "bind": {
-    "support": "$support"
-   },
-   "reason": "",
-   "to_skill_id": "skill_052",
-   "sequence_type": "then"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

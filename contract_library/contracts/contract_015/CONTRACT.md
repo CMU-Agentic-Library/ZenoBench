@@ -2,7 +2,7 @@
 
 Pitch the waist forward to extend the reach over a deep surface.
 
-Paired SkillNode: `skill_007` (`bend-waist`).
+Verb: `bend`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_007` (`bend-waist`).
 
 - `to_pitch` when args.pitch_rad: `policy_007($pitch_rad)`
 - `full` when always: `policy_008()`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

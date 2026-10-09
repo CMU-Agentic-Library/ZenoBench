@@ -2,7 +2,7 @@
 
 Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.
 
-Paired SkillNode: `skill_021` (`release-object`).
+Verb: `release`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_021` (`release-object`).
 ## Policy paths
 
 - `open_in_place` when always: `policy_096($object, $hand)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

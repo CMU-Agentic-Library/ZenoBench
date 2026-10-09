@@ -2,7 +2,7 @@
 
 Raise the torso lift to its top travel height.
 
-Paired SkillNode: `skill_006` (`stand-torso`).
+Verb: `stand`.
 
 ## Precheck
 
@@ -15,5 +15,7 @@ Paired SkillNode: `skill_006` (`stand-torso`).
 ## Policy paths
 
 - `highest` when always: `policy_006()`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

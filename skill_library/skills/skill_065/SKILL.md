@@ -3,7 +3,7 @@ name: touch-object
 description: Bring the closed fingertips onto an object's top and back off without moving it (probe / indicate by contact).
 ---
 
-# Touch an object (`skill_065`)
+# Touch an object (`touch`)
 
 `touch(object: object_ref)`
 
@@ -22,42 +22,43 @@ An object must be touched lightly (tap, confirm contact) without moving it.
 
 - `object` (`object_ref`): The object to touch.
 
+## Call
+
+Send one JSON object:
+
+```json
+{"contract": "touch", "args": {"object": "<object>"}}
+```
+
+Argument formats:
+
+- `object_ref`: a movable annotated scene object
+
+Scene names are the object names listed in the observation.
+
+The reply contains:
+
+- `success`: true when every precondition held, the action ran and every postcondition holds
+- `error_code`: on failure: INPUT_MISSING, INPUT_UNKNOWN, PRECONDITION_FAILED, NO_PATH, POLICY_FAILED, SUBSKILL_FAILED or POSTCONDITION_FAILED
+- `preconditions`: each precondition as evaluated before moving, with holds = true/false
+- `postconditions`: each postcondition as evaluated after the action, with holds = true/false
+- `outputs`: the measured values listed under Outputs
+
 ## Applicability
 
 Requires hand_empty(hand=right); base_near(place=$object).
 
-## Preconditions (checked on live GT state before moving)
+## Preconditions (checked before moving)
 
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
+- `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room).
 
-## Postconditions (verified on live GT state)
+## Postconditions (checked after the action)
 
-- `touched(object=$object)` — A measured fingertip contact with the object's top during the Contract; it moved < 1.5 cm. GT: event_log (fingertip contact), object_pose (before/after).
-- `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-
-## Verifier
-
-after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path:
-
-- `touched(object=$object)` (all paths)
-- `hand_empty(hand=right)` (all paths)
-
-## Policy paths (first match on the bound nouns)
-
-### `fingertip_top` — when always (default path)
-
-1. `policy_107($object)`
-
-## Relations
-
-- Next step: `pick` (`skill_017`) (enables) — the touched object is then grasped
-- Alternative: `point` (`skill_015`) — contact is not allowed
-- Alternative: `knock` (`skill_066`) — an object, not a door, is to be tapped
+- `touched(object=$object)` — A measured fingertip contact with the object's top during the Contract; it moved < 1.5 cm.
+- `hand_empty(hand=right)` — The given gripper holds nothing.
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the measured preconditions and postconditions. Nothing is retried.
 
-
-Paired Contract: `contract_073`.

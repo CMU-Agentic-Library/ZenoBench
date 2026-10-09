@@ -2,7 +2,7 @@
 
 Raise the empty right hand at head height and swing it (greeting / attention gesture).
 
-Paired SkillNode: `skill_060` (`wave-hand`).
+Verb: `wave`.
 
 ## Precheck
 
@@ -16,5 +16,7 @@ Paired SkillNode: `skill_060` (`wave-hand`).
 ## Policy paths
 
 - `raised_swing` when always: `policy_104()`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

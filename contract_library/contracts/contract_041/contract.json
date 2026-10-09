@@ -2,7 +2,6 @@
  "schema_version": 2,
  "kind": "skill_contract",
  "contract_id": "contract_041",
- "skill_id": "skill_033",
  "verb": "center",
  "noun": "object",
  "name": "Center an object on its support",
@@ -138,31 +137,7 @@
    }
   ]
  },
- "relations": [
-  {
-   "kind": "alternative",
-   "to": "push",
-   "when": "a specific direction is wanted",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_029"
-  },
-  {
-   "kind": "sequence",
-   "to": "pick",
-   "when": "the secured object is grasped later",
-   "bind": {
-    "object": "$object"
-   },
-   "reason": "",
-   "to_skill_id": "skill_017",
-   "sequence_type": "then"
-  }
- ],
  "failure": {
-  "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
   "stop_and_report": true
  },
  "scope": {

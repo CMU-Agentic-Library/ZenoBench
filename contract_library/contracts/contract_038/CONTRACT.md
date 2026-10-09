@@ -2,7 +2,7 @@
 
 Drag an object toward the robot with the pads pressed on its top until it is within reach (e.g. from the back of a deep counter); if the pads slide over a round or slippery top, the fingers hook the far side and push it toward the robot.
 
-Paired SkillNode: `skill_030` (`pull-object`).
+Verb: `pull`.
 
 ## Precheck
 
@@ -17,5 +17,7 @@ Paired SkillNode: `skill_030` (`pull-object`).
 ## Policy paths
 
 - `top_drag` when always: `policy_041()` -> `policy_079($object, $distance_m)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

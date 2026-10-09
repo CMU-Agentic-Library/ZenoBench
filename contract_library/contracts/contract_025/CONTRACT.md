@@ -1,8 +1,8 @@
 # contract_025 — Pick an object
 
-Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, floor corner pinch, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.
+Grasp one object with the right gripper and lift it. The grasp is chosen automatically from the object and where it is: from inside a microwave, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.
 
-Paired SkillNode: `skill_017` (`pick-object`).
+Verb: `pick`.
 
 ## Precheck
 
@@ -13,8 +13,6 @@ Paired SkillNode: `skill_017` (`pick-object`).
 - [path on_the_move] `grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
 - [path two_hand_box] `hand_empty(hand=left)` — GT: gripper_state
 - [path two_hand_flat] `hand_empty(hand=left)` — GT: gripper_state
-- [path floor_top] `on_floor(object=$object)` — GT: object_pose, asset_annotation
-- [path flat_overhang_ready] `edge_overhang(object=$object)` — GT: object_pose, asset_annotation, support_annotation
 - [path round_rim] `grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
 - [path top_pinch] `grasp_clearance(object=$object)` — GT: object_pose, asset_annotation
 
@@ -40,5 +38,7 @@ Paired SkillNode: `skill_017` (`pick-object`).
 - `handle` when 'handle_pinch' in object.grasp_types and object.handle_collider: `policy_055($object)`
 - `top_pinch` when 'top_pinch' in object.grasp_types: `policy_010($object)`
 - `annotation_dispatch` when object.grasp_types: `policy_061($object)`
+
+The runtime chooses the first path whose conditions hold; callers cannot select a path.
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.
