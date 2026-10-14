@@ -23,6 +23,24 @@ An object must end up out of sight inside a closed container.
 - `receptacle` (`receptacle_ref`): A lidded container or a cabinet interior shelf.
 - `lid` (`lid_ref`, optional): The lid to use for a container.
 
+## Composite skill
+
+Runs these Skill Contracts inside one call: `fetch`, `navigate`, `pick`, `cover`, `open`, `close`, `place`.
+
+- One call runs the whole chain of the selected path below; each nested step is a full Skill Contract (preconditions, policy, postconditions on GT state). It counts as a single Contract call.
+- The chain includes its own navigation: there is no need to navigate or approach first.
+- The first nested step that fails stops the call with SUBSKILL_FAILED; the error names the failed nested action. Steps that already succeeded are not undone, so objects may have moved or still be held.
+- Exception: when a nested step fails a precondition that one of its declared repair fallbacks establishes (listed below), that repair runs once and the nested step is retried once.
+
+Repairs a nested step may run once before its retry:
+
+- `pick` failing `edge_overhang` → `expose` — a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang
+- `pick` failing `grasp_clearance` → `separate` — fingers have no room beside the object (grasp_clearance false)
+- `pick` failing `is_open` → `open` — the object is inside a closed cabinet or appliance
+- `open` failing `hand_empty` → `handover` — the right hand still holds a load
+- `place` failing `is_open` → `open` — the receptacle is behind a closed door
+- `place` failing `uncovered` → `uncover` — the container has its lid on
+
 ## Applicability
 
 Requires hand_empty(hand=right). Depending on the bound nouns, the chosen path also needs: container_with_lid (receptacle.kind == 'object' and args.lid): uncovered(container=$receptacle).

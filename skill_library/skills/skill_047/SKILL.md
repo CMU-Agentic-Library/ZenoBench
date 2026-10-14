@@ -24,6 +24,23 @@ One object must be brought to a destination (navigate, pick, carry, place in one
 - `object` (`object_ref`): What to bring.
 - `receptacle` (`receptacle_ref`): Destination support or open container.
 
+## Composite skill
+
+Runs these Skill Contracts inside one call: `navigate`, `pick`, `place`.
+
+- One call runs the whole chain of the selected path below; each nested step is a full Skill Contract (preconditions, policy, postconditions on GT state). It counts as a single Contract call.
+- The chain includes its own navigation: there is no need to navigate or approach first.
+- The first nested step that fails stops the call with SUBSKILL_FAILED; the error names the failed nested action. Steps that already succeeded are not undone, so objects may have moved or still be held.
+- Exception: when a nested step fails a precondition that one of its declared repair fallbacks establishes (listed below), that repair runs once and the nested step is retried once.
+
+Repairs a nested step may run once before its retry:
+
+- `pick` failing `edge_overhang` → `expose` — a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang
+- `pick` failing `grasp_clearance` → `separate` — fingers have no room beside the object (grasp_clearance false)
+- `pick` failing `is_open` → `open` — the object is inside a closed cabinet or appliance
+- `place` failing `is_open` → `open` — the receptacle is behind a closed door
+- `place` failing `uncovered` → `uncover` — the container has its lid on
+
 ## Applicability
 
 Requires hand_empty(hand=right). Depending on the bound nouns, the chosen path also needs: to_container (receptacle.kind == 'object'): uncovered(container=$receptacle).
