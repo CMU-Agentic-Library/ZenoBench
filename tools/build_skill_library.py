@@ -161,10 +161,8 @@ def skill_json(rec, by_verb, names, incoming):
         "relations": rels,
         "failure": {"codes": ["INPUT_MISSING", "NOUN_INVALID", "PRECONDITION_FAILED", "NO_PATH", "POLICY_FAILED",
                               "SUBSKILL_FAILED", "POSTCONDITION_FAILED"],
-                    "on_failure": "stop; return every measured predicate, the completed policy steps and the "
-                                  "fallback skills whose repaired predicate failed; the planner chooses what to do. "
-                                  "Inside a multi-object node a nested call that fails a precondition with a matching "
-                                  "repair fallback runs that repair once and retries.",
+                    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing "
+                                  "is retried or repaired, the planner chooses what to do.",
                     "typical": rec["failure_modes"]},
         "scope": rec["scope"],
         "contract_id": rec["contract_id"],
@@ -182,20 +180,15 @@ def _calls(steps):
             yield st["call"]
 
 
-def composite_info(rec, by_verb):
-    """Nested Contracts a composite skill runs, and the repairs they may trigger (None if primitive)."""
+def nested_skills(rec, by_verb):
+    """Every Contract a composite skill runs inside one call (empty for a primitive skill)."""
     nested, todo = [], [c for p in rec["policy_plan"]["paths"] for c in _calls(p["steps"])]
     while todo:
         v = todo.pop(0)
         if v not in nested:
             nested.append(v)
             todo += [c for p in by_verb[v]["paths"] for c in _calls(p["steps"])]
-    if not nested:
-        return None
-    repairs = [{"for": v, "verb": rel["to"], "repairs": rel["repairs"], "when": rel["when"]}
-               for v in nested for rel in by_verb[v]["relations"]
-               if rel["kind"] == "fallback" and rel.get("fallback_type") == "repair" and rel.get("repairs")]
-    return {"nested_skills": nested, "nested_repairs": repairs}
+    return nested
 
 
 COMPOSITE_NOTES = [
@@ -203,9 +196,8 @@ COMPOSITE_NOTES = [
     "(preconditions, policy, postconditions on GT state). It counts as a single Contract call.",
     "The chain includes its own navigation: there is no need to navigate or approach first.",
     "The first nested step that fails stops the call with SUBSKILL_FAILED; the error names the failed "
-    "nested action. Steps that already succeeded are not undone, so objects may have moved or still be held.",
-    "Exception: when a nested step fails a precondition that one of its declared repair fallbacks "
-    "establishes (listed below), that repair runs once and the nested step is retried once.",
+    "nested action. Nothing is repaired or retried, and steps that already succeeded are not undone, so "
+    "objects may have moved or still be held.",
 ]
 
 
@@ -248,7 +240,7 @@ def contract_json(rec):
     }
 
 
-def skill_md(js, comp=None):
+def skill_md(js, nested=()):
     L = ["---", f"name: {js['name']}", f"description: {js['description']}", "---", "",
          f"# {js['title']} (`{js['skill_id']}`)", "", f"`{js['signature']}`", "", js["description"], ""]
     if js["use_when"]:
@@ -260,14 +252,10 @@ def skill_md(js, comp=None):
                               for k, m in js["inputs"].items()] + ([""] if js["inputs"] else ["- none", ""])
     if js["outputs"]:
         L += ["## Outputs", ""] + [f"- `{k}` (`{m['type']}`): {m['description']}" for k, m in js["outputs"].items()] + [""]
-    if comp:
+    if nested:
         L += ["## Composite skill", "", "Runs these Skill Contracts inside one call: "
-              + ", ".join(f"`{v}`" for v in comp["nested_skills"]) + ".", ""]
+              + ", ".join(f"`{v}`" for v in nested) + ".", ""]
         L += [f"- {s}" for s in COMPOSITE_NOTES] + [""]
-        if comp["nested_repairs"]:
-            L += ["Repairs a nested step may run once before its retry:", ""]
-            L += [f"- `{r['for']}` failing `{r['repairs']}` → `{r['verb']}` — {r['when']}" for r in comp["nested_repairs"]]
-            L += [""]
     L += ["## Applicability", "", js["applicability"]["summary"], ""]
     L += ["## Preconditions (checked on live GT state before moving)", ""]
     L += [f"- `{p['predicate']}` — {p['meaning']} GT: {', '.join(p['gt_sources'])}." for p in js["preconditions"]] or ["- none"]
@@ -295,8 +283,8 @@ def skill_md(js, comp=None):
         for r in js["relations"][key]:
             extra = f" ({r['type']}{', repairs ' + r['repairs'] if r.get('repairs') else ''})" if r.get("type") else ""
             L.append(f"- {title}: `{r['verb']}` (`{r['skill_id']}`){extra} — {r['when']}")
-    L += ["", "## Failure", "", "Stop and report the measured predicates, completed policy steps and matching "
-          "fallback skills. Nothing is retried automatically.", ""]
+    L += ["", "## Failure", "", "Stop and report the error code and the measured pre- and postconditions. "
+          "Nothing is retried or repaired automatically.", ""]
     L += [f"- {f}" for f in js["failure"]["typical"]]
     L += ["", f"Paired Contract: `{js['contract_id']}`.", ""]
     return "\n".join(L)
@@ -361,7 +349,7 @@ def build():
         skills_js.append(js)
         base = Path("skill_library/skills") / r["skill_id"]
         files[base / "skill.json"] = _json(js)
-        files[base / "SKILL.md"] = skill_md(js, composite_info(r, by_verb))
+        files[base / "SKILL.md"] = skill_md(js, nested_skills(r, by_verb))
         cj = contract_json(r)
         cbase = Path("contract_library/contracts") / r["contract_id"]
         files[cbase / "contract.json"] = _json(cj)

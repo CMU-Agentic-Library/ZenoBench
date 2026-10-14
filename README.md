@@ -452,6 +452,8 @@ app.close()
 
 The camera follows Malo's head. `get_first_person_image()` renders the latest state without advancing physics; `first_person_res=(height, width)` changes the resolution. The camera can be enabled with or without third-person video.
 
+`make_rig(..., wrist_cameras=True)` also mounts RGB cameras on `left_gripper_camera_link` and `right_gripper_camera_link`, looking past the fingertips at the same resolution. `rig.get_camera_images()` renders all robot cameras once and returns `{"head", "left_wrist", "right_wrist"}` images.
+
 ## Skills
 
 `zeno_skills/skills.py` uses annotated geometry and simulator feedback. Appliance actions
@@ -550,6 +552,7 @@ sim/zeno_house.usd      final house scene (+ sim/checks); zeno_house_appliances.
 task_specs/             task definitions (+ places.json aliases, examples/)
 tasks/<task>/           built task: layer, task.json, annotation.json, check renders
 skill_library/          verb SkillNodes (definitions.py -> skills/, catalogs), relations, planner, tasks, verification
+env_service/            HTTP environment service for an external planner (initial_task / do_contract / check_task)
 contract_library/       one Skill Contract per SkillNode (generated) + legacy family Contracts
 policy_library/         public low-level policy records and coverage (generated)
 annotations/            assets.json, zeno_house.json, house_static.json
