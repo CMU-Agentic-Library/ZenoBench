@@ -42,11 +42,13 @@ def launch(video=True, first_person=False):
 
 
 def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=None, prepare=None,
-             handle_objects=(), first_person=False, first_person_res=(480, 640)):
+             handle_objects=(), first_person=False, first_person_res=(480, 640), wrist_cameras=False):
     """Build a rig; optionally attach an RGB camera to Malo's stereo camera mount.
 
     ``prepare(stage)`` can make USD edits before the simulation starts.
-    Camera resolutions are (height, width).
+    Camera resolutions are (height, width).  ``wrist_cameras`` adds RGB cameras on
+    both gripper camera mounts (``left_wrist`` / ``right_wrist``, same resolution
+    as the first-person camera; needs ``launch(first_person=True)``).
     """
     import omni.usd
     import torch
@@ -94,6 +96,19 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
             offset=CameraCfg.OffsetCfg(pos=(0.04, 0.0, 0.0), convention="world"),
             spawn=sim_utils.PinholeCameraCfg(focal_length=10.0, clipping_range=(0.05, 40.0)),
         ))
+    wrist = {}
+    if wrist_cameras:
+        from isaaclab.sensors import Camera, CameraCfg
+        height, width = first_person_res
+        for side in ("left", "right"):
+            wrist[f"{side}_wrist"] = Camera(CameraCfg(
+                prim_path=f"/World/ZenoMalo/Asset/{side}_gripper_camera_link/WristCamera",
+                update_period=0, height=height, width=width, data_types=["rgb"],
+                # the mount's +Z axis looks past the fingertips (URDF rpy pi, -pi/6, pi)
+                offset=CameraCfg.OffsetCfg(pos=(0.0, 0.0, 0.015), rot=(0.70711, 0.0, -0.70711, 0.0),
+                                           convention="world"),
+                spawn=sim_utils.PinholeCameraCfg(focal_length=10.0, clipping_range=(0.02, 40.0)),
+            ))
     robot = SingleArticulation("/World/ZenoMalo/Asset", name="zeno")
     sim.reset()
     robot.initialize()
@@ -102,7 +117,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
     kin.scene = world
     rig = Rig(sim, stage, robot, kin, world, ann, cams=cams, stride=stride,
               log=log or (lambda s: print(s, flush=True)),
-              first_person_camera=first_person_camera)
+              first_person_camera=first_person_camera, wrist_cameras=wrist)
     if cams:
         orig_step = rig.step
         cam_state = {}

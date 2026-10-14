@@ -24,13 +24,14 @@ class Dropped(SkillFailure):
 
 class Rig:
     def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=4, log=print,
-                 first_person_camera=None):
+                 first_person_camera=None, wrist_cameras=None):
         import torch
         from isaacsim.core.prims import SingleArticulation, SingleRigidPrim
         self.torch = torch
         self.sim, self.stage, self.robot, self.kin, self.world, self.ann = sim, stage, robot, kin, world, ann
         self.cams = cams or {}
         self.first_person_camera = first_person_camera
+        self.wrist_cameras = wrist_cameras or {}
         self.arm = torch.tensor([robot.dof_names.index(n) for n in kin.names], dtype=torch.int32)
         self.fing = torch.tensor([robot.dof_names.index(n) for n in FINGERS], dtype=torch.int32)
         self.left_kin = ArmKin(side="left")
@@ -185,10 +186,29 @@ class Rig:
         """
         if self.first_person_camera is None:
             raise RuntimeError("First-person camera is disabled; pass first_person=True to launch() and make_rig().")
+        return self._render(self.first_person_camera)
+
+    def agent_cameras(self):
+        """Cameras mounted on the robot, by name: ``head`` and, if enabled, ``left_wrist`` / ``right_wrist``."""
+        cams = {"head": self.first_person_camera} if self.first_person_camera is not None else {}
+        return {**cams, **self.wrist_cameras}
+
+    def get_camera_images(self):
+        """One uint8 H×W×3 RGB image per robot-mounted camera, rendered once without advancing physics."""
+        cams = self.agent_cameras()
+        if not cams:
+            return {}
         self.sim.render()
-        self.first_person_camera.update(0.0, force_recompute=True)
-        rgb = self.first_person_camera.data.output["rgb"][0, ..., :3]
-        return rgb.cpu().numpy().copy()
+        return {name: self._read(cam) for name, cam in cams.items()}
+
+    def _render(self, cam):
+        self.sim.render()
+        return self._read(cam)
+
+    @staticmethod
+    def _read(cam):
+        cam.update(0.0, force_recompute=True)
+        return cam.data.output["rgb"][0, ..., :3].cpu().numpy().copy()
 
     # ------------------------------------------------------------ stepping
     def step(self, n=1):

@@ -63,7 +63,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the error code and the measured pre- and postconditions. Nothing is retried or repaired automatically.
 
 
 Paired Contract: `contract_028`.

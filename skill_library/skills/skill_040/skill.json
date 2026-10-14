@@ -404,7 +404,7 @@
    "SUBSKILL_FAILED",
    "POSTCONDITION_FAILED"
   ],
-  "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+  "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
   "typical": []
  },
  "scope": {

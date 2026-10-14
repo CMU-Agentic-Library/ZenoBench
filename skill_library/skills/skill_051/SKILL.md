@@ -32,17 +32,7 @@ Runs these Skill Contracts inside one call: `navigate`, `place`, `pick`, `pour`.
 
 - One call runs the whole chain of the selected path below; each nested step is a full Skill Contract (preconditions, policy, postconditions on GT state). It counts as a single Contract call.
 - The chain includes its own navigation: there is no need to navigate or approach first.
-- The first nested step that fails stops the call with SUBSKILL_FAILED; the error names the failed nested action. Steps that already succeeded are not undone, so objects may have moved or still be held.
-- Exception: when a nested step fails a precondition that one of its declared repair fallbacks establishes (listed below), that repair runs once and the nested step is retried once.
-
-Repairs a nested step may run once before its retry:
-
-- `place` failing `is_open` → `open` — the receptacle is behind a closed door
-- `place` failing `uncovered` → `uncover` — the container has its lid on
-- `pick` failing `edge_overhang` → `expose` — a flat object cannot be pinched from the top: push it to the edge by hand, then pick the overhang
-- `pick` failing `grasp_clearance` → `separate` — fingers have no room beside the object (grasp_clearance false)
-- `pick` failing `is_open` → `open` — the object is inside a closed cabinet or appliance
-- `pour` failing `uncovered` → `uncover` — the target has its lid on
+- The first nested step that fails stops the call with SUBSKILL_FAILED; the error names the failed nested action. Nothing is repaired or retried, and steps that already succeeded are not undone, so objects may have moved or still be held.
 
 ## Applicability
 
@@ -87,7 +77,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the error code and the measured pre- and postconditions. Nothing is retried or repaired automatically.
 
 
 Paired Contract: `contract_059`.
