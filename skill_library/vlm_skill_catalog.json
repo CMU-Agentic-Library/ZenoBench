@@ -1365,7 +1365,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": [
      "no free stand-off pose",
      "no base path",
@@ -1672,7 +1672,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": [
      "no base pose reaches the target",
      "IK fails after parking"
@@ -1870,7 +1870,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": [
      "turning in place would hit furniture"
     ]
@@ -2116,7 +2116,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": [
      "the path behind the base is blocked"
     ]
@@ -2348,7 +2348,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -2490,7 +2490,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -2659,7 +2659,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -2800,7 +2800,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -3034,7 +3034,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -3255,7 +3255,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -3497,7 +3497,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -3723,7 +3723,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -3915,7 +3915,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -4081,7 +4081,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -4319,7 +4319,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -4541,7 +4541,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -5432,7 +5432,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": [
      "no reachable grasp from any base pose",
      "object not held after lift (slipped)",
@@ -6356,7 +6356,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": [
      "target unreachable",
      "container shifted before release",
@@ -6632,7 +6632,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -6893,7 +6893,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -7095,7 +7095,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -7340,7 +7340,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -7595,7 +7595,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -7818,7 +7818,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -8049,7 +8049,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -8269,7 +8269,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -8510,7 +8510,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -8733,7 +8733,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -8998,7 +8998,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -9250,7 +9250,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -9458,7 +9458,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -9656,7 +9656,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -9865,7 +9865,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -10082,7 +10082,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -10292,7 +10292,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -10564,7 +10564,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -10807,7 +10807,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -11102,7 +11102,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -11405,7 +11405,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -11836,7 +11836,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -12152,7 +12152,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -12459,7 +12459,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -12846,7 +12846,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -13067,7 +13067,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -13322,7 +13322,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -13624,7 +13624,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -13938,7 +13938,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -14142,7 +14142,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -14326,7 +14326,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -14527,7 +14527,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -14751,7 +14751,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -14938,7 +14938,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -15161,7 +15161,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -15371,7 +15371,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -15545,7 +15545,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -15694,7 +15694,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -15902,7 +15902,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -16096,7 +16096,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -16257,7 +16257,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -16435,7 +16435,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -16567,7 +16567,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -16770,7 +16770,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -17016,7 +17016,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -17236,7 +17236,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -17455,7 +17455,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -17682,7 +17682,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -17859,7 +17859,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -18088,7 +18088,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -18335,7 +18335,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {
@@ -18589,7 +18589,7 @@
      "SUBSKILL_FAILED",
      "POSTCONDITION_FAILED"
     ],
-    "on_failure": "stop; return every measured predicate, the completed policy steps and the fallback skills whose repaired predicate failed; the planner chooses what to do. Inside a multi-object node a nested call that fails a precondition with a matching repair fallback runs that repair once and retries.",
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
     "typical": []
    },
    "scope": {

@@ -22,6 +22,14 @@ Objects must go to destinations by category.
 - `objects` (`object_list`): Objects to sort.
 - `rule` (`category_map`): Tag -> destination mapping (a container or a support), e.g. {"fruit": "fruit_basket"}.
 
+## Composite skill
+
+Runs these Skill Contracts inside one call: `fetch`, `navigate`, `pick`, `place`.
+
+- One call runs the whole chain of the selected path below; each nested step is a full Skill Contract (preconditions, policy, postconditions on GT state). It counts as a single Contract call.
+- The chain includes its own navigation: there is no need to navigate or approach first.
+- The first nested step that fails stops the call with SUBSKILL_FAILED; the error names the failed nested action. Nothing is repaired or retried, and steps that already succeeded are not undone, so objects may have moved or still be held.
+
 ## Applicability
 
 Requires hand_empty(hand=right).
@@ -54,7 +62,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Failure
 
-Stop and report the measured predicates, completed policy steps and matching fallback skills. Nothing is retried automatically.
+Stop and report the error code and the measured pre- and postconditions. Nothing is retried or repaired automatically.
 
 
 Paired Contract: `contract_057`.

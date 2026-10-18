@@ -407,19 +407,23 @@ class SkillResult:
 
 
 class SkillContractRunner:
-    """``auto_repair``: nested calls of multi-object Contracts run a declared
-    repair fallback and retry once (the original behaviour).  ``advisory``:
-    predicate names that are only recorded when they appear in a path's
-    ``requires`` (feasibility estimates such as grasp_clearance); the action
-    is attempted and the physics decides.  ``skip_steps``: {(verb, path_id):
-    {policy ids}} left out of a path (e.g. the automatic slide-to-edge inside
-    pick), so the caller must request that action explicitly."""
+    """``auto_repair`` / ``nested_repair`` (same switch; either False disables it):
+    nested calls of multi-object Contracts run a declared repair fallback and
+    retry once (the original behaviour).  ``advisory``: predicate names that
+    are only recorded when they appear in a path's ``requires`` (feasibility
+    estimates such as grasp_clearance); the action is attempted and the
+    physics decides.  ``skip_steps``: {(verb, path_id): {policy ids}} left out
+    of a path (e.g. the automatic slide-to-edge inside pick), so the caller
+    must request that action explicitly."""
 
-    def __init__(self, rig, catalog=CATALOG, *, auto_repair=True, advisory=(), skip_steps=None):
+    def __init__(self, rig, catalog=CATALOG, nested_repair=True, *, auto_repair=True, advisory=(),
+                 skip_steps=None):
         self.rig = rig
+        # False: a failed nested call inside a composite skill stops it at once, with no repair or retry
+        self.nested_repair = nested_repair
         self.by_id, self.by_verb, self.by_skill = load_contracts(catalog)
         self.trace: list[dict] = []
-        self.auto_repair = auto_repair
+        self.auto_repair = auto_repair and nested_repair
         self.advisory = set(advisory)
         self.skip_steps = dict(skip_steps or {})
 
@@ -541,7 +545,7 @@ class SkillContractRunner:
                 res.children.append(child.asdict())
                 res.policy_steps.append({"call": step["call"], "args": sub_args, "success": child.success,
                                          "path": child.selected_path})
-                repair = self._nested_repair(child, sub_args)
+                repair = self._nested_repair(child, sub_args) if self.nested_repair else None
                 if repair is not None:
                     # a declared repair fallback for the exact failed precondition
                     # (e.g. pick -> separate for grasp_clearance): run it, retry once
