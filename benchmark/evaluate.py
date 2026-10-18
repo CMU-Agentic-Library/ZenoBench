@@ -4,22 +4,25 @@
     python benchmark/evaluate.py --runs DIR --group planner,tier        # other groupings: task, route, kind, variant
 
 report.py answers "did each declared route run and which SkillNodes did it
-cover"; this script scores how a planner behaved.  Metrics (README,
-*Evaluation*):
+cover"; this script scores how a planner behaved.  Definitions: README,
+*Evaluation*.  Short form:
 
-  SR       task success (GT goal holds, nothing dropped, no route violation)
-  GC       goal-condition score: fraction of goal atoms that hold (best ``any`` group)
-  pass^k   per task: share of tasks whose every seed in the group passed
-  SPL-c    call efficiency, mean of S * L_ref / max(L, L_ref); L_ref = oracle calls for the variant
-  sim_s    simulated seconds (120 ticks per s) per episode
-  ground   gate refusals per episode: unseen (exists, not observed yet), ghost (not in
-           this episode), not_in_view; invalid = BAD_CALL / unknown arguments
-  phys     physical failures (PRECONDITION_FAILED / POLICY_FAILED) per episode
-  recov    of episodes with >= 1 physical failure, the share that still succeeded
-  repeat   share of physical failures followed by the same call with the same arguments
-  drops    episodes with a task object on the floor
-  side     non-goal watched objects moved > 5 cm (informational: some routes move them on purpose)
-  budget   closed-loop episodes that hit max_calls
+  SR        task success over completed episodes (incomplete = crash / timeout, counted apart)
+  skill_SR  share of calls that succeeded (scripted calls marked expect: fail left out)
+  GC        goal-condition score: fraction of goal atoms that hold (best ``any`` group)
+  pass^k    share of tasks whose every seed in the group passed
+  SPL-c     S * L_ref / max(L, L_ref); L_ref = calls of the variant's oracle route, used only
+            when a passing run of that route on that variant is in the evaluated runs
+  failures per episode by class:
+    gate    observation refusals: unseen (exists, not observed), ghost (not in this
+            episode), not_in_view
+    pre     state / geometry preconditions (PRECONDITION_FAILED, NO_PATH)
+    exec    execution failures (POLICY_FAILED, SUBSKILL_FAILED, POSTCONDITION_FAILED)
+    invalid interface errors (BAD_CALL, INPUT_*, NOUN_INVALID, BINDING)
+  recov_*   of the episodes with >= 1 failure of that class, the share that succeeded (n shown)
+  repeat    share of pre + exec failures followed by the same call with the same arguments
+  drops / side / budget   floor drops, non-goal objects moved > 5 cm, closed-loop budget hits
+N/A: no sample for that ratio.
 """
 
 from __future__ import annotations
@@ -33,7 +36,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TICK_HZ = 120.0
 GROUNDING = {"NOT_OBSERVED", "NOT_IN_VIEW", "NOT_FOUND"}
-PHYSICAL = {"PRECONDITION_FAILED", "POLICY_FAILED"}
+PRECONDITION = {"PRECONDITION_FAILED", "NO_PATH"}
+EXECUTION = {"POLICY_FAILED", "SUBSKILL_FAILED", "POSTCONDITION_FAILED"}
 SIDE_EFFECT_M = 0.05
 
 
@@ -74,7 +78,7 @@ def goal_objects(task):
     return names
 
 
-def episode_metrics(r, task):
+def episode_metrics(r, task, verified_refs):
     calls = r.get("calls", [])
     fbs = [c["feedback"] for c in calls]
     m = {"incomplete": bool(r.get("incomplete") or r.get("crash"))}
@@ -83,14 +87,17 @@ def episode_metrics(r, task):
         m["success"] = False            # the declared chain did not run to its end
     m["gc"] = goal_score(r.get("goal", {})) if r.get("goal") else 0.0
     m["calls"] = len(calls)
+    graded = [fb for c, fb in zip(calls, fbs) if c.get("expect") != "fail"]
+    m["skill_ok"], m["skill_n"] = sum(bool(fb.get("success")) for fb in graded), len(graded)
     L = ref_len(task, r.get("variant"))
-    m["l_ref"] = L
-    m["spl"] = (float(m["success"]) * L / max(m["calls"], L)) if L and m["calls"] else None
+    ok_ref = L is not None and (r["task_id"], r.get("variant")) in verified_refs
+    m["l_ref"] = L if ok_ref else None
+    m["spl"] = (float(m["success"]) * L / max(m["calls"], L)) if ok_ref and m["calls"] and not m["incomplete"] else None
     ticks = r.get("sim_ticks") or max((c.get("tick") or 0 for c in calls), default=0)
     m["sim_s"] = ticks / TICK_HZ
     m["wall_s"] = r.get("wall_s")
     g = defaultdict(int)
-    phys = repeats = 0
+    repeats = 0
     for i, fb in enumerate(fbs):
         code = fb.get("error_code")
         if fb.get("success") or code is None:
@@ -100,29 +107,32 @@ def episode_metrics(r, task):
             name = name[0] if name else None
             if code == "NOT_IN_VIEW":
                 g["not_in_view"] += 1
-            elif name is not None and r["_objects"] and name not in r["_objects"] and name in r["_scene"].get("remove", []) + list(task.get("watch", [])):
+            elif name is not None and r["_objects"] and name not in r["_objects"]:
                 g["ghost"] += 1          # an object this episode does not contain
             else:
                 g["unseen"] += 1
-        elif code in PHYSICAL:
-            phys += 1
-            if i + 1 < len(calls) and calls[i + 1]["skill"] == calls[i]["skill"] and calls[i + 1]["args"] == calls[i]["args"]:
-                repeats += 1
-        else:
-            g["invalid"] += 1
-    m.update(unseen=g["unseen"], ghost=g["ghost"], not_in_view=g["not_in_view"], invalid=g["invalid"],
-             phys=phys, repeats=repeats, dropped=bool(r.get("dropped")))
+            continue
+        g["pre" if code in PRECONDITION else "exec" if code in EXECUTION else "invalid"] += 1
+        if code in PRECONDITION | EXECUTION and i + 1 < len(calls) and \
+                calls[i + 1]["skill"] == calls[i]["skill"] and calls[i + 1]["args"] == calls[i]["args"]:
+            repeats += 1
+    m.update({k: g[k] for k in ("unseen", "ghost", "not_in_view", "pre", "exec", "invalid")})
+    m["gate"] = g["unseen"] + g["ghost"] + g["not_in_view"]
+    m["repeats"] = repeats
+    m["dropped"] = bool(r.get("dropped"))
     # side effects: non-goal watched objects displaced from where the episode started
     final = r.get("final_state") or (calls[-1].get("state") if calls and calls[-1].get("state") else {})
+    m["final_state_source"] = "final_state" if r.get("final_state") else "last_call_state"
     keep = goal_objects(task)
     side = []
     for n, p0 in (r.get("initial_positions") or {}).items():
         p1 = (final.get(n) or {}).get("pos")
         if n in keep or p1 is None:
             continue
-        if sum((a - b) ** 2 for a, b in zip(p0, p1)) ** 0.5 > SIDE_EFFECT_M:
+        if sum((a_ - b_) ** 2 for a_, b_ in zip(p0, p1)) ** 0.5 > SIDE_EFFECT_M:
             side.append(n)
     m["side"] = side
+    m["stop_reason"] = r.get("stop_reason")
     m["budget"] = r.get("stop_reason") == "budget"
     return m
 
@@ -145,35 +155,37 @@ def label(r, key, tasks):
 
 
 def aggregate(eps):
-    n = len(eps)
+    done = [(r, m) for r, m in eps if not m["incomplete"]]
     mean = lambda xs: (sum(xs) / len(xs)) if xs else None
     by_task = defaultdict(list)
-    for r, m in eps:
+    for r, m in done:
         by_task[r["task_id"]].append(m["success"])
-    failed = [m for _, m in eps if m["phys"]]
-    phys = sum(m["phys"] for _, m in eps)
-    return {
-        "n": n, "incomplete": sum(m["incomplete"] for _, m in eps),
-        "SR": mean([m["success"] for _, m in eps]),
-        "GC": mean([m["gc"] for _, m in eps]),
-        "pass^k": mean([all(v) for v in by_task.values()]), "tasks": len(by_task),
-        "SPL-c": mean([m["spl"] for _, m in eps if m["spl"] is not None]),
-        "calls": mean([m["calls"] for _, m in eps]),
-        "sim_s": mean([m["sim_s"] for _, m in eps]),
-        "unseen": mean([m["unseen"] for _, m in eps]), "ghost": mean([m["ghost"] for _, m in eps]),
-        "not_in_view": mean([m["not_in_view"] for _, m in eps]), "invalid": mean([m["invalid"] for _, m in eps]),
-        "phys": mean([m["phys"] for _, m in eps]),
-        "recov": mean([m["success"] for m in failed]), "recov_n": len(failed),
-        "repeat": (sum(m["repeats"] for _, m in eps) / phys) if phys else None,
-        "drops": sum(m["dropped"] for _, m in eps),
-        "side": mean([len(m["side"]) for _, m in eps]),
-        "budget": sum(m["budget"] for _, m in eps),
-    }
+    out = {"n": len(eps), "incomplete": len(eps) - len(done),
+           "SR": mean([m["success"] for _, m in done]),
+           "skill_SR": (sum(m["skill_ok"] for _, m in done) / max(1, sum(m["skill_n"] for _, m in done)))
+           if any(m["skill_n"] for _, m in done) else None,
+           "GC": mean([m["gc"] for _, m in done]),
+           "pass^k": mean([all(v) for v in by_task.values()]), "tasks": len(by_task),
+           "SPL-c": mean([m["spl"] for _, m in done if m["spl"] is not None]),
+           "spl_n": sum(m["spl"] is not None for _, m in done),
+           "calls": mean([m["calls"] for _, m in done]), "sim_s": mean([m["sim_s"] for _, m in done])}
+    for k in ("gate", "unseen", "ghost", "not_in_view", "pre", "exec", "invalid"):
+        out[k] = mean([m[k] for _, m in done])
+    for k in ("gate", "pre", "exec"):
+        hit = [m for _, m in done if m[k]]
+        out[f"recov_{k}"], out[f"recov_{k}_n"] = mean([m["success"] for m in hit]), len(hit)
+    fails = sum(m["pre"] + m["exec"] for _, m in done)
+    out["repeat"] = (sum(m["repeats"] for _, m in done) / fails) if fails else None
+    out["repeat_n"] = fails
+    out["drops"] = sum(m["dropped"] for _, m in done)
+    out["side"] = mean([len(m["side"]) for _, m in done])
+    out["budget"] = sum(m["budget"] for _, m in done)
+    return out
 
 
 def fmt(v, pct=False):
     if v is None:
-        return "-"
+        return "N/A"
     if isinstance(v, bool):
         return str(int(v))
     if isinstance(v, int):
@@ -181,19 +193,31 @@ def fmt(v, pct=False):
     return f"{100 * v:.0f}%" if pct else f"{v:.2f}"
 
 
-COLS = [("n", 0), ("SR", 1), ("GC", 1), ("pass^k", 1), ("SPL-c", 0), ("calls", 0), ("sim_s", 0), ("unseen", 0),
-        ("ghost", 0), ("not_in_view", 0), ("invalid", 0), ("phys", 0), ("recov", 1), ("repeat", 1), ("drops", 0),
-        ("side", 0), ("budget", 0)]
+# (column, percent?, denominator key shown in brackets)
+COLS = [("n", 0, None), ("incomplete", 0, None), ("SR", 1, None), ("skill_SR", 1, None), ("GC", 1, None),
+        ("pass^k", 1, None), ("SPL-c", 0, "spl_n"), ("calls", 0, None), ("sim_s", 0, None),
+        ("unseen", 0, None), ("ghost", 0, None), ("not_in_view", 0, None), ("pre", 0, None), ("exec", 0, None),
+        ("invalid", 0, None), ("recov_gate", 1, "recov_gate_n"), ("recov_pre", 1, "recov_pre_n"),
+        ("recov_exec", 1, "recov_exec_n"), ("repeat", 1, "repeat_n"), ("drops", 0, None), ("side", 0, None),
+        ("budget", 0, None)]
 
 
 def table(groups, keys):
-    head = "| " + " | ".join(keys) + " | " + " | ".join(c for c, _ in COLS) + " |"
-    lines = [head, "|" + "---|" * (len(keys) + len(COLS))]
+    lines = ["| " + " | ".join(keys) + " | " + " | ".join(c for c, _, _ in COLS) + " |",
+             "|" + "---|" * (len(keys) + len(COLS))]
     for g, agg in sorted(groups.items()):
-        cells = [fmt(agg[c], pct) for c, pct in COLS]
-        cells[COLS.index(("recov", 1))] += f" ({agg['recov_n']})" if agg["recov_n"] else ""
+        cells = [fmt(agg[c], pct) + (f" ({agg[d]})" if d else "") for c, pct, d in COLS]
         lines.append("| " + " | ".join(g) + " | " + " | ".join(cells) + " |")
     return lines
+
+
+PLANNER_NOTE = ("`fixed`, `retry` and `recovery` share the observation gate, the low-level settings "
+                "(`auto_recovery` off, upright edge-pinch waist) and the skill set; `fixed` runs the nominal plan "
+                "once, `retry` repeats a failed call up to twice, `recovery` is bounded by the task's `max_calls` "
+                "(default 60). `oracle` is a capability upper bound, not a planner: it uses the GT runner (full "
+                "state, no observation gate, nested repair on) and the hand-written route for the variant, without "
+                "its expected-failure and unwind steps. `scripted` replays declared routes, which fail on purpose "
+                "(feasibility evidence). Neither is a baseline for VLM recovery gain.")
 
 
 def main():
@@ -207,8 +231,16 @@ def main():
     a = ap.parse_args()
     tasks = {t["task_id"]: t for t in json.loads(Path(a.tasks).read_text())["tasks"]}
     keys = a.group.split(",")
+    runs = list(load(a.runs))
+    # an oracle route counts as an efficiency reference for a variant only if a run of it passed there
+    verified = set()
+    for r in runs:
+        t = tasks.get(r["task_id"], {})
+        if r.get("task_success") and not r.get("incomplete") and r.get("route") == (t.get("oracle") or {}).get(r.get("variant")) \
+                and r.get("planner") in ("scripted", "oracle") and r.get("stopped_at") is None:
+            verified.add((r["task_id"], r.get("variant")))
     eps = []
-    for r in load(a.runs):
+    for r in runs:
         t = tasks.get(r["task_id"])
         if t is None or (not a.probes and not r["task_id"].startswith("T")):
             continue
@@ -216,7 +248,7 @@ def main():
             rt = t.get("routes", {}).get(r.get("route"))
             if rt is None or rt.get("kind") == "diagnostic" or r.get("variant") not in rt.get("variants", []):
                 continue                 # superseded or diagnostic route
-        eps.append((r, episode_metrics(r, t)))
+        eps.append((r, episode_metrics(r, t, verified)))
     groups = defaultdict(list)
     for r, m in eps:
         groups[tuple(label(r, k, tasks) for k in keys)].append((r, m))
@@ -228,18 +260,18 @@ def main():
     rel = rel.relative_to(ROOT) if rel.is_relative_to(ROOT) else rel
     md = ["# Planner evaluation", "",
           f"Generated by `python benchmark/evaluate.py --runs {rel} --group {a.group}`; {len(eps)} episodes. "
-          "Column definitions: README, *Evaluation*.  `scripted` rows replay declared routes (their expected "
-          "failures are by design); `fixed` / `retry` / `oracle` / `recovery` are planners.", "",
+          "Column definitions: README, *Evaluation*; N/A = no sample; (n) = denominator.", "", PLANNER_NOTE, "",
           "## By planner", ""] + table({g: aggregate(v) for g, v in by_planner.items()}, ["planner"]) + [
           "", f"## By {', '.join(keys)}", ""] + table(aggs, keys) + ["", "## Episodes", "",
-          "| Task | Seed | Variant | Tier | Planner | Route | S | GC | Calls / L_ref | Refusals u/g/v/i | Phys (repeat) | Side effects |",
-          "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+          "| Task | Seed | Variant | Tier | Planner | Route | S | GC | Skill ok | Calls / L_ref | Gate u/g/v | Pre / exec / invalid (repeat) | Stop | Side effects |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r, m in sorted(eps, key=lambda x: (x[0]["task_id"], x[0].get("planner"), str(x[0].get("route")), x[0]["seed"])):
         md.append(f"| {r['task_id']} | {r['seed']} | {r['variant']} | {r['_scene'].get('difficulty', '?')} | "
-                  f"{r.get('planner')} | {r.get('route')} | {int(m['success'])} | {m['gc']:.2f} | "
-                  f"{m['calls']} / {m['l_ref'] if m['l_ref'] is not None else '-'} | "
-                  f"{m['unseen']}/{m['ghost']}/{m['not_in_view']}/{m['invalid']} | {m['phys']} ({m['repeats']}) | "
-                  f"{', '.join(m['side'])} |")
+                  f"{r.get('planner')} | {r.get('route')} | {'incomplete' if m['incomplete'] else int(m['success'])} | "
+                  f"{m['gc']:.2f} | {m['skill_ok']}/{m['skill_n']} | "
+                  f"{m['calls']} / {m['l_ref'] if m['l_ref'] is not None else 'N/A'} | "
+                  f"{m['unseen']}/{m['ghost']}/{m['not_in_view']} | {m['pre']} / {m['exec']} / {m['invalid']} ({m['repeats']}) | "
+                  f"{m['stop_reason'] or '-'} | {', '.join(m['side'])} |")
     Path(a.md).write_text("\n".join(md) + "\n")
     Path(a.json).write_text(json.dumps({
         "groups": [{"group": dict(zip(keys, g)), **agg} for g, agg in sorted(aggs.items())],

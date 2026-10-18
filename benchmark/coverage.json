@@ -296,7 +296,7 @@
    ],
    "evidence": [
     "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal",
-    "benchmark/runs/final/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
+    "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
    ]
   },
   {
@@ -635,7 +635,7 @@
    ],
    "evidence": [
     "benchmark/runs/final/P05_flip_book/s0_default_nominal",
-    "benchmark/runs/final/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
+    "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
    ]
   },
   {
@@ -1749,8 +1749,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 309.1,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose",
+   "wall_s": 336.4,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose",
    "crash": ""
   },
   {
@@ -1774,8 +1774,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 215.3,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s0_no_overhang_fallback_expose",
+   "wall_s": 215.4,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_no_overhang_fallback_expose",
    "crash": ""
   },
   {
@@ -1794,8 +1794,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 198.2,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s0_overhang_ready_nominal",
+   "wall_s": 189.6,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_overhang_ready_nominal",
    "crash": ""
   },
   {
@@ -1823,8 +1823,8 @@
    "dropped": [
     "paperback_book"
    ],
-   "wall_s": 379.0,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s1_far_no_overhang_hard_search_expose",
+   "wall_s": 408.1,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_far_no_overhang_hard_search_expose",
    "crash": ""
   },
   {
@@ -1848,8 +1848,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 220.1,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s1_no_overhang_fallback_expose",
+   "wall_s": 236.9,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_no_overhang_fallback_expose",
    "crash": ""
   },
   {
@@ -1868,8 +1868,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 184.0,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s1_overhang_ready_nominal",
+   "wall_s": 190.1,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_overhang_ready_nominal",
    "crash": ""
   },
   {
@@ -1890,8 +1890,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 42.9,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s2_no_overhang_fixed",
+   "wall_s": 38.7,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s2_no_overhang_fixed",
    "crash": ""
   },
   {
@@ -1937,8 +1937,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 260.9,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s3_no_overhang_oracle-fallback_expose",
+   "wall_s": 199.5,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s3_no_overhang_oracle-fallback_expose",
    "crash": ""
   },
   {

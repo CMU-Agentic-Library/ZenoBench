@@ -1207,12 +1207,13 @@ def _lowest_z(rig, name, st):
 
 
 def _edge_pinch(rig, name, s, n, attempt=False):
-    """Edge pinch; at table height the waist stays nearly upright, as in
-    _pick_pinch: a solution with the torso fully lowered and the waist bowed
-    0.39 rad drove the chest into the island edge (the waist stalled at 0.22,
-    the TCP 11 cm short, 4/4 direct picks of the paperback at the island's
-    front edge).  Without such a park the full waist range is used."""
-    if not hasattr(rig.kin, "names") or s["z"] <= 0.5:
+    """Edge pinch.  With ``rig.edge_pinch_upright_waist`` (off by default; the
+    planning benchmark sets it) the waist stays nearly upright at table height,
+    as in _pick_pinch: a solution with the torso fully lowered and the waist
+    bowed 0.39 rad drove the chest into the island edge (the waist stalled at
+    0.22, the TCP 11 cm short, 4/4 direct picks of the paperback at the
+    island's front edge).  Without such a park the full waist range is used."""
+    if not getattr(rig, "edge_pinch_upright_waist", False) or not hasattr(rig.kin, "names") or s["z"] <= 0.5:
         return _edge_pinch_impl(rig, name, s, n, attempt)
     widx = rig.kin.names.index("waist_pitch_joint")
     hi = float(rig.kin.hi[widx])

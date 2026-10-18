@@ -100,14 +100,15 @@ def floor_drops(rig, task, start_snapshot):
 
 
 def run_episode(task, seed, route=None, planner="scripted", variant=None, out_root=OUT, video=False,
-                images=True, policy=None, difficulty=None):
+                images=True, policy=None, difficulty=None, max_calls=None):
     from benchmark.scene import build_annotation, episode_config, make_prepare
     cfg = episode_config(task, seed, variant, difficulty)
     if planner == "oracle" and route is None:
         route = task["oracle"][cfg["variant"]]
     if planner in ("fixed", "retry") and route is None:
         route = task["nominal"]
-    label = route if planner == "scripted" else f"{planner}" + (f"-{route}" if planner == "oracle" else "")
+    label = route if planner == "scripted" else f"{planner}" + (f"-{route}" if planner == "oracle" else "") + \
+        (f"-{policy.rsplit(':', 1)[-1]}" if planner == "recovery" and policy else "")
     out = Path(out_root) / task["task_id"] / f"s{seed}_{cfg['variant']}_{label}"
     out.mkdir(parents=True, exist_ok=True)
     ann_path = build_annotation(cfg, out / "annotation.json")
@@ -129,6 +130,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
         rig = make_rig(app, f"{cfg['base']}/scene.usd", str(ann_path), video=video, res=(540, 960),
                        handle_objects=tuple(task.get("handle_objects", ())), prepare=make_prepare(cfg),
                        first_person=images)
+        # benchmark low-level setting, the same for every planner and the oracle
+        rig.edge_pinch_upright_waist = True
         # thermal state only for the foods that exist in this episode (removed objects have no body)
         base_task = dict(base_task, thermal={k: v for k, v in (base_task.get("thermal") or {}).items()
                                              if k not in cfg["remove"]})
@@ -164,7 +167,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
             from benchmark.planners import load_policy
             pol = load_policy(policy)
             steps_iter = None
-            report["calls"] = session.run_planner(pol, task, max_calls=task.get("max_calls", 60), sink=calls_f)
+            report["calls"] = session.run_planner(pol, task, max_calls=max_calls or task.get("max_calls", 60),
+                                                  sink=calls_f)
             report["stop_reason"] = session.stop_reason
         else:
             _, steps = resolve_steps(task, cfg, route)
@@ -278,6 +282,7 @@ def main():
     ap.add_argument("--route")
     ap.add_argument("--planner", default="scripted", choices=["scripted", "fixed", "retry", "oracle", "recovery"])
     ap.add_argument("--policy", help="module:Class of a recovery planner")
+    ap.add_argument("--max-calls", type=int, help="call budget of a recovery planner (default: task max_calls or 60)")
     ap.add_argument("--video", action="store_true")
     ap.add_argument("--no-images", action="store_true")
     ap.add_argument("--out", default=str(OUT))
@@ -288,7 +293,7 @@ def main():
         return run_batch(a)
     tasks = load_tasks(a.tasks)
     run_episode(tasks[a.task], a.seed, a.route, a.planner, a.variant, a.out, a.video, not a.no_images, a.policy,
-                a.difficulty)
+                a.difficulty, a.max_calls)
 
 
 def run_batch(a):
@@ -303,9 +308,9 @@ def run_batch(a):
             j = queue.pop(0)
             cmd = [py, __file__, "--tasks", a.tasks, "--task", j["task"], "--seed", str(j.get("seed", 0)),
                    "--planner", j.get("planner", "scripted"), "--out", a.out]
-            for k in ("route", "variant", "policy", "difficulty"):
+            for k in ("route", "variant", "policy", "difficulty", "max_calls"):
                 if j.get(k):
-                    cmd += [f"--{k}", j[k]]
+                    cmd += [f"--{k.replace('_', '-')}", str(j[k])]
             if j.get("video"):
                 cmd.append("--video")
             name = (f"{j['task']}_s{j.get('seed', 0)}_{j.get('variant') or j.get('difficulty') or 'any'}_"
