@@ -1,0 +1,116 @@
+[
+ {
+  "task": "T09_tomato_soup",
+  "seed": 0,
+  "route": "hard_uncover_search_spoon",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 1,
+  "route": "hard_uncover_search_spoon",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "P01_body_and_gesture",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P02_perception",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P03_rolling_pin",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P04_bottle",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P05_flip_book",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P06_two_hands",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P07_present_and_brace",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P08_block_alignment",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P09_sweep_blocks",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P11_stove_cycle",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P12_cabinet",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P13_microwave_buttons",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P14_restore_swap",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P15_arrange_and_sort",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P16_pot_contents",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P17_pour_and_dip",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P18_floor_pick",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ }
+]

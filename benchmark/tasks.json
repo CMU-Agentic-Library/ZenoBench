@@ -1,0 +1,5698 @@
+{
+ "schema_version": 1,
+ "kind": "zenobench_benchmark_tasks",
+ "note": "Source of benchmark/tasks.json (python benchmark/define_tasks.py).",
+ "tasks": [
+  {
+   "task_id": "T01_book_to_dining_table",
+   "exp_id": "ZB-T01",
+   "source": [
+    "skill_library/tasks.json:flip_book (book)",
+    "verification:g_expose_then_pick_book",
+    "k_book",
+    "b_books"
+   ],
+   "instruction": "Someone left their paperback on the kitchen island. Bring it to the dining table so they can read over breakfast.",
+   "instruction_zh": "\u6709\u4eba\u628a\u5e73\u88c5\u4e66\u843d\u5728\u53a8\u623f\u5c9b\u53f0\u4e0a\u4e86\uff0c\u628a\u5b83\u62ff\u5230\u9910\u684c\u4e0a\uff0c\u65b9\u4fbf\u5403\u65e9\u996d\u65f6\u770b\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "mug",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "soda_can",
+     "juice_bottle"
+    ],
+    "distractors": [
+     "rolling_pin",
+     "wooden_block_a",
+     "wooden_block_b",
+     "oatmeal",
+     "kitchen_sponge"
+    ]
+   },
+   "variants": {
+    "overhang_ready": {
+     "note": "the book already overhangs the island's front edge by about 6 cm",
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.548
+       ],
+       "yaw_deg": 90
+      }
+     }
+    },
+    "no_overhang": {
+     "note": "the book overhangs the front edge by 1.5 cm only: the edge pinch fails until it is exposed",
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.59
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "conditions": [
+      "no_overhang"
+     ]
+    },
+    "far_no_overhang": {
+     "note": "the robot starts in the dining room; the book on the island does not overhang enough",
+     "conditions": [
+      "start_elsewhere",
+      "no_overhang"
+     ],
+     "start": [
+      4.24,
+      5.12,
+      120.0
+     ],
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.59
+       ],
+       "yaw_deg": 90
+      }
+     }
+    }
+   },
+   "watch": [
+    "paperback_book"
+   ],
+   "goal": {
+    "all": [
+     [
+      "on",
+      "paperback_book",
+      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "diagnostics": [
+    "bookcase top SimpleBookcaseFactory_6105320/surface_3 as destination: place_flat's final push stalled and the book fell in front of the bookcase in 2/2 runs (benchmark/runs/dbg) -> the destination was moved to the dining table"
+   ],
+   "nominal": "nominal",
+   "oracle": {
+    "overhang_ready": "nominal",
+    "no_overhang": "fallback_expose",
+    "far_no_overhang": "hard_search_expose"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "overhang_ready"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ]
+    },
+    "fallback_expose": {
+     "kind": "fallback",
+     "variants": [
+      "no_overhang"
+     ],
+     "recovery": "Pick -> failure -> Expose -> Pick",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "paperback_book"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ]
+    },
+    "hard_search_expose": {
+     "kind": "fallback",
+     "variants": [
+      "far_no_overhang"
+     ],
+     "recovery": "search the book -> Pick fails -> Expose -> Pick",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "paperback_book",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "paperback_book"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T02_stack_blocks",
+   "exp_id": "ZB-T02",
+   "source": [
+    "skill_library/tasks.json:stack_blocks",
+    "k_blocks",
+    "k_separate",
+    "k_sweep"
+   ],
+   "instruction": "Tidy the toy blocks left on the kitchen island: stack one wooden block on top of the other.",
+   "instruction_zh": "\u6536\u62fe\u5b69\u5b50\u843d\u5728\u5c9b\u53f0\u4e0a\u7684\u79ef\u6728\uff1a\u628a\u4e00\u5757\u6728\u79ef\u6728\u53e0\u5230\u53e6\u4e00\u5757\u4e0a\u9762\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "mug",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3"
+    ],
+    "move": {
+     "wooden_block_a": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.3,
+       1.64
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "distractors": [
+     "paperback_book",
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "soda_can",
+     "juice_bottle"
+    ]
+   },
+   "variants": {
+    "clear": {
+     "note": "the blocks stand 30 cm apart, every finger slot is free",
+     "move": {}
+    },
+    "crowded": {
+     "note": "block B is boxed in: the oatmeal bowl right behind it and the end of the rolling pin right beside it (5 mm gaps), so both pinch axes of B have a finger slot taken",
+     "move": {
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.719
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.862,
+        1.59
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "conditions": [
+      "crowded"
+     ]
+    },
+    "far_crowded": {
+     "note": "the robot starts at the wall cabinet facing away; block B is boxed in",
+     "conditions": [
+      "start_elsewhere",
+      "crowded"
+     ],
+     "start": [
+      4.764,
+      0.699,
+      195.0
+     ],
+     "move": {
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.719
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.862,
+        1.59
+       ],
+       "yaw_deg": 0
+      }
+     }
+    }
+   },
+   "watch": [
+    "wooden_block_a",
+    "wooden_block_b",
+    "rolling_pin",
+    "oatmeal"
+   ],
+   "diagnostics": [
+    "crowding B with block A (A then the stacking base next to the pin): the stack onto A failed 1/2 per recovery route (fingers blocked 3 cm above A, or B slid off) -> the bowl crowds B and A stays in the open spot where stacking passed 2/2"
+   ],
+   "goal": {
+    "any": [
+     [
+      [
+       "on_top_of",
+       "wooden_block_b",
+       "wooden_block_a"
+      ]
+     ],
+     [
+      [
+       "on_top_of",
+       "wooden_block_a",
+       "wooden_block_b"
+      ]
+     ]
+    ],
+    "all": [
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "clear": "nominal",
+    "crowded": "fallback_separate",
+    "far_crowded": "hard_search_separate"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "clear"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      }
+     ]
+    },
+    "fallback_separate": {
+     "kind": "fallback",
+     "variants": [
+      "crowded"
+     ],
+     "recovery": "Pick -> failure -> Separate -> Pick",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "separate",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      }
+     ]
+    },
+    "fallback_push": {
+     "kind": "fallback",
+     "variants": [
+      "crowded"
+     ],
+     "recovery": "Pick -> failure -> Push -> Pick",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "push",
+       "args": {
+        "object": "wooden_block_b",
+        "direction_xy": [
+         1.0,
+         0.0
+        ],
+        "distance_m": 0.1
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      }
+     ]
+    },
+    "hard_search_separate": {
+     "kind": "fallback",
+     "variants": [
+      "far_crowded"
+     ],
+     "recovery": "search the blocks -> Pick fails -> Separate -> Pick",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_a",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "separate",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T03_utensils_one_container",
+   "exp_id": "ZB-T03",
+   "source": [
+    "skill_library/tasks.json:collect_fruits / tidy_toys (collect into one container)",
+    "k_fetch_collect",
+    "k_hands (rolling pin)",
+    "k_stir_cover (spoon)"
+   ],
+   "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+   "instruction_zh": "\u70d8\u7119\u7ed3\u675f\u4e86\uff0c\u628a\u64c0\u9762\u6756\u548c\u52fa\u5b50\u4e00\u8d77\u6536\u8fdb\u540c\u4e00\u4e2a\u5bb9\u5668\u91cc\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "oatmeal",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "wide_storage_bin": {
+      "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+      "xy": [
+       7.3,
+       0.4
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "distractors": [
+     "juice_bottle",
+     "paperback_book",
+     "soda_can",
+     "kitchen_sponge"
+    ]
+   },
+   "variants": {
+    "small_and_large": {
+     "note": "two open containers: a mug (8 cm opening) on the island and the wide storage bin (34 x 30 cm) on the TV stand",
+     "move": {},
+     "conditions": [
+      "small_container_present"
+     ]
+    },
+    "large_only": {
+     "note": "no mug: the storage bin on the TV stand is the only open container",
+     "remove": [
+      "mug"
+     ]
+    },
+    "far_small_and_large": {
+     "note": "the robot starts at the wall cabinet facing away; a mug on the island, the storage bin on the TV stand",
+     "conditions": [
+      "start_elsewhere",
+      "small_container_present"
+     ],
+     "start": [
+      4.764,
+      0.699,
+      195.0
+     ]
+    }
+   },
+   "watch": [
+    "rolling_pin",
+    "breakfast_spoon",
+    "mug",
+    "wide_storage_bin"
+   ],
+   "goal": {
+    "any": [
+     [
+      [
+       "inside",
+       "rolling_pin",
+       "wide_storage_bin"
+      ],
+      [
+       "inside",
+       "breakfast_spoon",
+       "wide_storage_bin"
+      ]
+     ],
+     [
+      [
+       "inside",
+       "rolling_pin",
+       "mug"
+      ],
+      [
+       "inside",
+       "breakfast_spoon",
+       "mug"
+      ]
+     ]
+    ],
+    "all": [
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "small_and_large": "nominal",
+    "large_only": "nominal",
+    "far_small_and_large": "hard_search_alt_container"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "small_and_large",
+      "large_only"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "breakfast_spoon",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "wide_storage_bin"
+       }
+      }
+     ]
+    },
+    "alternative_large_container": {
+     "kind": "alternative",
+     "variants": [
+      "small_and_large"
+     ],
+     "recovery": "Place into the mug -> failure (does not fit) -> choose the storage bin",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "breakfast_spoon",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "mug"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "rolling_pin",
+        "height_m": 1.04
+       },
+       "role": "unwind"
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_island",
+        "distance_m": 0.3
+       },
+       "role": "unwind"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "wide_storage_bin"
+       },
+       "role": "alternative"
+      }
+     ]
+    },
+    "hard_search_alt_container": {
+     "kind": "alternative",
+     "variants": [
+      "far_small_and_large"
+     ],
+     "recovery": "search the utensils -> the mug does not fit -> the storage bin",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "breakfast_spoon",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "breakfast_spoon",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "mug"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "rolling_pin",
+        "height_m": 1.04
+       },
+       "role": "unwind"
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_island",
+        "distance_m": 0.3
+       },
+       "role": "unwind"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "wide_storage_bin"
+       },
+       "role": "alternative"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T04_cup_or_mug_to_cabinet",
+   "exp_id": "ZB-T04",
+   "source": [
+    "skill_library/tasks.json:breakfast_setup",
+    "k_handle_mug / k_brace (mug rim pick)"
+   ],
+   "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
+   "instruction_zh": "\u6709\u5ba2\u4eba\u8981\u6765\uff0c\u5728\u9760\u5899\u77ee\u67dc\u4e0a\u7684\u996e\u54c1\u89d2\u6446\u4e00\u4e2a\u676f\u5b50\uff1b\u6ca1\u6709\u676f\u5b50\u7684\u8bdd\u9a6c\u514b\u676f\u4e5f\u884c\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "cup_kitchen_cabinet",
+     "cup_side_table",
+     "plate_inside_kitchen_cabinet",
+     "bowl_inside_kitchen_cabinet",
+     "spoon_kitchen_cabinet"
+    ],
+    "distractors": [
+     "juice_bottle",
+     "paperback_book",
+     "wooden_block_a",
+     "rolling_pin",
+     "kitchen_sponge"
+    ]
+   },
+   "variants": {
+    "cup_available": {
+     "note": "a cup stands on the island next to the mug",
+     "move": {
+      "cup_counter_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.64
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "juice_bottle"
+     ]
+    },
+    "no_cup": {
+     "note": "there is no cup in the house: the mug is the legal substitute",
+     "remove": [
+      "cup_counter_b"
+     ],
+     "conditions": [
+      "no_cup"
+     ]
+    },
+    "no_cup_mug_away": {
+     "note": "no cup in the house and the mug stands on the TV stand, out of the first view",
+     "conditions": [
+      "no_cup",
+      "not_in_view"
+     ],
+     "remove": [
+      "cup_counter_b"
+     ],
+     "move": {
+      "mug": {
+       "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+       "xy": [
+        7.75,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     }
+    }
+   },
+   "watch": [
+    "cup_counter_b",
+    "mug"
+   ],
+   "diagnostics": [
+    "destination dining table: the cup passed (1/1); the mug slipped out of the rim pinch (1/2) and the handle pinch (1/1) during the carry, and its place failed at the table edge (2/2)",
+    "destination TV stand (0.47 m): the mug passed (1/1), the cup tipped over on release (2/2)",
+    "-> destination: the low wall cabinet top; cup and mug both passed (1/1 each)"
+   ],
+   "goal": {
+    "any": [
+     [
+      [
+       "on",
+       "cup_counter_b",
+       "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+      ],
+      [
+       "upright",
+       "cup_counter_b"
+      ]
+     ],
+     [
+      [
+       "on",
+       "mug",
+       "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+      ],
+      [
+       "upright",
+       "mug"
+      ]
+     ]
+    ],
+    "all": [
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "cup_available": "nominal",
+    "no_cup": "alternative_mug",
+    "no_cup_mug_away": "hard_count_search_mug"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "cup_available"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup_counter_b",
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      }
+     ]
+    },
+    "alternative_mug": {
+     "kind": "alternative",
+     "variants": [
+      "no_cup"
+     ],
+     "recovery": "no cup is observed (count cup = 0, search fails) -> substitute the mug",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "count",
+       "args": {
+        "category": "cup"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "cup"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      }
+     ]
+    },
+    "hard_count_search_mug": {
+     "kind": "alternative",
+     "variants": [
+      "no_cup_mug_away"
+     ],
+     "recovery": "no cup (count 0, search fails) -> search the mug -> mug",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "count",
+       "args": {
+        "category": "cup"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "cup"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "mug",
+        "region": "living_room_0_0"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T05_pen_or_pencil_to_desk",
+   "exp_id": "ZB-T05",
+   "source": [
+    "skill_library/tasks.json:desk_prep",
+    "tasks/desk_prep"
+   ],
+   "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
+   "instruction_zh": "\u5b69\u5b50\u5199\u4f5c\u4e1a\u8981\u7528\u7b14\uff0c\u628a\u4e00\u652f\u94a2\u7b14\u62ff\u5230\u4e66\u684c\u4e0a\uff1b\u6ca1\u6709\u94a2\u7b14\u5c31\u62ff\u94c5\u7b14\u3002",
+   "scene": {
+    "base": "tasks/desk_prep",
+    "remove": [
+     "notebook",
+     "desk_mug"
+    ],
+    "move": {
+     "pen": {
+      "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+      "xy": [
+       1.15,
+       -0.4
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "distractors": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ]
+   },
+   "variants": {
+    "pen_available": {
+     "note": "a pen and a pencil lie on the low bookcase (diagnostic only: the pen cannot be carried, see routes.nominal)",
+     "move": {},
+     "difficulty": "diagnostic"
+    },
+    "no_pen": {
+     "note": "only the pencil lies on the low bookcase",
+     "remove": [
+      "pen"
+     ],
+     "conditions": [
+      "no_pen"
+     ]
+    },
+    "no_pen_pencil_away": {
+     "note": "no pen; the pencil lies on the dining table in another room",
+     "conditions": [
+      "no_pen",
+      "not_in_view"
+     ],
+     "remove": [
+      "pen"
+     ],
+     "move": {
+      "pencil": {
+       "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     }
+    }
+   },
+   "watch": [
+    "pen",
+    "pencil"
+   ],
+   "goal": {
+    "any": [
+     [
+      [
+       "on",
+       "pen",
+       "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+      ]
+     ],
+     [
+      [
+       "on",
+       "pencil",
+       "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+      ]
+     ]
+    ],
+    "all": [
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "no_pen": "alternative_pencil",
+    "no_pen_pencil_away": "hard_search_pencil"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "diagnostic",
+     "variants": [
+      "pen_available"
+     ],
+     "status": "not passed: the 1 cm pen slipped out of the top pinch during every carry to the desk (from the dining table 2/2, from the bookcase 2/2); the pencil passes",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pen"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pen",
+        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      }
+     ]
+    },
+    "alternative_pencil": {
+     "kind": "alternative",
+     "variants": [
+      "no_pen"
+     ],
+     "recovery": "no pen is observed (navigate to it refused) -> the pencil",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pencil"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pencil"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pencil",
+        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      }
+     ]
+    },
+    "hard_search_pencil": {
+     "kind": "alternative",
+     "variants": [
+      "no_pen_pencil_away"
+     ],
+     "recovery": "no pen at the bookcase -> search the pencil -> pencil",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pencil",
+        "region": "dining_room_0_1"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pencil"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pencil"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pencil",
+        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T06_block_destination_occupied",
+   "exp_id": "ZB-T06",
+   "source": [
+    "skill_library/tasks.json:clear_tv_stand",
+    "o_clear",
+    "k_cabinet (navigate to the cabinet)"
+   ],
+   "instruction": "Put a toy block on display, either on the low wall cabinet or on the TV stand.",
+   "instruction_zh": "\u628a\u79ef\u6728\u6446\u5230\u9760\u5899\u77ee\u67dc\u4e0a\u6216\u7535\u89c6\u67dc\u4e0a\u505a\u5c55\u793a\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "plate_inside_kitchen_cabinet",
+     "bowl_inside_kitchen_cabinet",
+     "spoon_kitchen_cabinet"
+    ],
+    "move": {
+     "wooden_block_a": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.2,
+       1.62
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "distractors": [
+     "paperback_book",
+     "rolling_pin",
+     "kitchen_sponge"
+    ]
+   },
+   "variants": {
+    "free": {
+     "note": "the cabinet top is empty",
+     "move": {}
+    },
+    "occupied": {
+     "note": "the pot lid and the oatmeal bowl take up the cabinet top: the 15 cm gap between them is too narrow for a block",
+     "move": {
+      "pot_lid": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.335,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.7,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "destination_occupied"
+     ]
+    },
+    "occupied_block_away": {
+     "note": "the cabinet top is full and the block was left on the dining table",
+     "conditions": [
+      "destination_occupied",
+      "not_in_view"
+     ],
+     "move": {
+      "pot_lid": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.335,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.7,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_a": {
+       "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     }
+    }
+   },
+   "diagnostics": [
+    "occupants oatmeal bowl + mug + soda can + juice bottle: Clear failed at the mug's rim pinch in the crowd (1/1); three bowls 3 cm apart: Clear failed at the first bowl's rim pinch (1/1) -> two well separated occupants (lid by its knob, bowl by its rim)"
+   ],
+   "watch": [
+    "wooden_block_a",
+    "wooden_block_b",
+    "oatmeal",
+    "pot_lid"
+   ],
+   "goal": {
+    "any": [
+     [
+      [
+       "on",
+       "wooden_block_a",
+       "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+      ]
+     ],
+     [
+      [
+       "on",
+       "wooden_block_a",
+       "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+      ]
+     ],
+     [
+      [
+       "on",
+       "wooden_block_b",
+       "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+      ]
+     ],
+     [
+      [
+       "on",
+       "wooden_block_b",
+       "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+      ]
+     ]
+    ],
+    "all": [
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "free": "nominal",
+    "occupied": "alternative_tv_stand",
+    "occupied_block_away": "hard_search_alt_support"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "free"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      }
+     ]
+    },
+    "alternative_tv_stand": {
+     "kind": "alternative",
+     "variants": [
+      "occupied"
+     ],
+     "recovery": "Place on the cabinet top -> failure (no free spot) -> TV stand",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       },
+       "role": "alternative"
+      }
+     ]
+    },
+    "fallback_clear": {
+     "kind": "diagnostic",
+     "variants": [
+      "occupied"
+     ],
+     "status": "not passed: clear could not pick the occupants off the cabinet top (mug in a crowd 1/1, bowl next to bowls 1/1, oatmeal bowl after the lid was moved 1/1: rim pinch 'not held')",
+     "recovery": "Place on the cabinet top -> failure -> set the block down, Clear the top, fetch the block again",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_3699907_spawn_asset_505866/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "KitchenCabinetFactory_3699907_spawn_asset_505866/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "clear",
+       "args": {
+        "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+        "receptacle": "KitchenCabinetFactory_3699907_spawn_asset_505866/top"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "KitchenCabinetFactory_3699907_spawn_asset_505866/top"
+       }
+      },
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       },
+       "role": "retry_after_recovery"
+      }
+     ]
+    },
+    "hard_search_alt_support": {
+     "kind": "alternative",
+     "variants": [
+      "occupied_block_away"
+     ],
+     "recovery": "search the block -> place on the cabinet fails (full) -> TV stand",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_a",
+        "region": "dining_room_0_1"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       },
+       "role": "alternative"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T07_heat_oatmeal",
+   "exp_id": "ZB-T07",
+   "source": [
+    "skill_library/tasks.json:heat_breakfast_preloaded / heat_without_microwave",
+    "k_microwave",
+    "k_mug_on_burner",
+    "g_heat_on_stove_instead_of_microwave"
+   ],
+   "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
+   "instruction_zh": "\u628a\u5269\u4e0b\u7684\u71d5\u9ea6\u7ca5\u70ed\u4e00\u4e0b\u5f53\u65e9\u996d\uff08\u81f3\u5c11 40 \u5ea6\uff09\u3002\u505a\u5b8c\u540e\u7076\u53f0\u8981\u5173\u706b\uff0c\u5fae\u6ce2\u7089\u95e8\u8981\u5173\u597d\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3"
+    ],
+    "distractors": [
+     "juice_bottle",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b",
+     "kitchen_sponge"
+    ]
+   },
+   "variants": {
+    "microwave_works": {
+     "note": "the microwave heats",
+     "move": {}
+    },
+    "microwave_broken": {
+     "note": "the microwave runs its cycle but does not heat: the heat call fails on the measured temperature",
+     "thermal_override": {
+      "oatmeal": {
+       "heating_rate_c_per_s": 0.0
+      }
+     },
+     "conditions": [
+      "microwave_broken"
+     ]
+    },
+    "broken_oatmeal_away": {
+     "note": "the microwave does not heat and the oatmeal was left on the wall cabinet (carried from the dining table it slipped out of the rim pinch, 2/2)",
+     "conditions": [
+      "microwave_broken",
+      "not_in_view"
+     ],
+     "thermal_override": {
+      "oatmeal": {
+       "heating_rate_c_per_s": 0.0
+      }
+     },
+     "move": {
+      "oatmeal": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.7,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     }
+    }
+   },
+   "diagnostics": [
+    "variant 'microwave_occupied' (a bowl of leftovers in the cavity) was dropped: the oatmeal was still inserted in front of it (the cavity holds two bowls front to back), so the condition did not block the microwave route (benchmark/runs/dbg2/T07_heat_oatmeal)"
+   ],
+   "watch": [
+    "oatmeal"
+   ],
+   "goal": {
+    "all": [
+     [
+      "temperature_at_least",
+      "oatmeal",
+      40
+     ],
+     [
+      "not heating",
+      "kitchen_stove"
+     ],
+     [
+      "is_closed",
+      "kitchen_microwave"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "microwave_works": "nominal",
+    "microwave_broken": "oracle_stove",
+    "broken_oatmeal_away": "hard_search_stove"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "microwave_works"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 40
+       }
+      }
+     ]
+    },
+    "alternative_stove": {
+     "kind": "alternative",
+     "variants": [
+      "microwave_broken"
+     ],
+     "recovery": "Heat in the microwave -> failure (temperature does not rise) -> Stop the microwave, take the oatmeal out, heat it on the stove",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 40
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_microwave"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_stove/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_stove",
+        "temp_c": 40
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      }
+     ]
+    },
+    "oracle_stove": {
+     "kind": "alternative",
+     "variants": [
+      "microwave_broken"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_stove",
+        "temp_c": 40
+       }
+      }
+     ]
+    },
+    "hard_search_stove": {
+     "kind": "alternative",
+     "variants": [
+      "broken_oatmeal_away"
+     ],
+     "recovery": "search the oatmeal -> heat in the microwave fails -> stop, take it out, stove",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "oatmeal",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 40
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_microwave"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_stove/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_stove",
+        "temp_c": 40
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T08_wipe_island",
+   "exp_id": "ZB-T08",
+   "source": [
+    "skill_library/tasks.json:wipe_island",
+    "k_wipe"
+   ],
+   "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
+   "instruction_zh": "\u505a\u5b8c\u996d\u7528\u6d77\u7ef5\u64e6\u4e00\u4e0b\u53a8\u623f\u5c9b\u53f0\uff0c\u64e6\u5b8c\u628a\u6d77\u7ef5\u653e\u56de\u5c9b\u53f0\u4e0a\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3"
+    ],
+    "distractors": [
+     "juice_bottle",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b",
+     "soda_can"
+    ]
+   },
+   "variants": {
+    "sponge_on_island": {
+     "note": "the sponge lies on the island",
+     "move": {}
+    },
+    "sponge_on_tv_stand": {
+     "note": "the sponge lies on the TV stand behind the island",
+     "move": {
+      "kitchen_sponge": {
+       "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+       "xy": [
+        7.6,
+        0.38
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "tool_away_from_surface"
+     ]
+    },
+    "far_sponge_tv": {
+     "note": "the robot starts in the dining room; the sponge is on the TV stand",
+     "conditions": [
+      "start_elsewhere",
+      "tool_away_from_surface"
+     ],
+     "start": [
+      4.24,
+      5.12,
+      120.0
+     ],
+     "move": {
+      "kitchen_sponge": {
+       "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+       "xy": [
+        7.6,
+        0.38
+       ],
+       "yaw_deg": 0.0
+      }
+     }
+    }
+   },
+   "diagnostics": [
+    "former T08 'chill the soda can in the fridge' moved to diagnostics: the open fridge door drifted below 60 % open before the place (1/2), the can tipped on the shelf (xy err 0.11 m, 1/2; the same failure as k_fridge_chill in verification round 30), and with the can in the dining room the door was pushed shut on the way (2/2)"
+   ],
+   "watch": [
+    "kitchen_sponge"
+   ],
+   "goal": {
+    "all": [
+     [
+      "wiped",
+      "kitchen_island/top"
+     ],
+     [
+      "on",
+      "kitchen_sponge",
+      "kitchen_island/top"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "sponge_on_island": "nominal",
+    "sponge_on_tv_stand": "nominal_from_tv_stand",
+    "far_sponge_tv": "hard_search_approach"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "sponge_on_island"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ]
+    },
+    "nominal_from_tv_stand": {
+     "kind": "nominal",
+     "variants": [
+      "sponge_on_tv_stand"
+     ],
+     "note": "approach the island before wiping; the fallback 'wipe fails -> approach -> wipe' is not used: after the failed wipe the approach parked but its IK check failed (2/2), and navigating to the stove instead did not help (1/1)",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ]
+    },
+    "oracle_approach": {
+     "kind": "fallback",
+     "variants": [
+      "sponge_on_tv_stand"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ]
+    },
+    "hard_search_approach": {
+     "kind": "fallback",
+     "variants": [
+      "far_sponge_tv"
+     ],
+     "recovery": "search the sponge -> approach the island -> wipe",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "kitchen_sponge",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T09_tomato_soup",
+   "exp_id": "ZB-T09",
+   "source": [
+    "skill_library/tasks.json:cook_tomato_soup",
+    "k_stir_cover",
+    "g_heat_on_stove_instead_of_microwave"
+   ],
+   "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+   "instruction_zh": "\u5348\u996d\u505a\u4e2a\u756a\u8304\u6c64\uff1a\u628a\u5c0f\u756a\u8304\u653e\u8fdb\u7076\u4e0a\u7684\u9505\u91cc\uff0c\u6405\u4e00\u6405\uff0c\u76d6\u4e0a\u9505\u76d6\uff0c\u52a0\u70ed\u5230 60 \u5ea6\uff0c\u7136\u540e\u5173\u706b\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "mug",
+     "juice_bottle",
+     "soda_can",
+     "cherry_tomato_3",
+     "paperback_book",
+     "kitchen_sponge"
+    ],
+    "move": {
+     "cherry_tomato_1": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.63,
+       1.62
+      ],
+      "yaw_deg": 0.0
+     },
+     "cherry_tomato_2": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.8,
+       1.62
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "distractors": [
+     "wooden_block_a",
+     "wooden_block_b",
+     "oatmeal",
+     "rolling_pin"
+    ]
+   },
+   "variants": {
+    "lid_on": {
+     "note": "the lid is on the pot",
+     "move": {},
+     "conditions": [
+      "lid_on"
+     ]
+    },
+    "lid_off": {
+     "note": "the lid lies on the stove beside the pot (where uncover sets it aside)",
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      }
+     }
+    },
+    "lid_on_spoon_away": {
+     "note": "the lid is on the pot and the spoon was left on the low wall cabinet",
+     "conditions": [
+      "lid_on",
+      "not_in_view"
+     ],
+     "remove": [
+      "spoon_kitchen_cabinet"
+     ],
+     "move": {
+      "breakfast_spoon": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.5,
+        0.36
+       ],
+       "yaw_deg": -49.3
+      }
+     }
+    }
+   },
+   "watch": [
+    "cherry_tomato_1",
+    "cherry_tomato_2",
+    "handled_cooking_pot",
+    "pot_lid",
+    "breakfast_spoon"
+   ],
+   "diagnostics": [
+    "lid_off with the lid on the stove's right burner: the lid slipped out of the hand during cover (place_rise), 1/1; on the island next to the pot it was pushed during the stir/spoon place and its pick missed (2/2); at the island's left end it slipped out of the hand on the way to the pot (2/2) -> the spot uncover itself uses (cover passed 2/2 from there)"
+   ],
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "cherry_tomato_1",
+      "handled_cooking_pot"
+     ],
+     [
+      "inside",
+      "cherry_tomato_2",
+      "handled_cooking_pot"
+     ],
+     [
+      "temperature_at_least",
+      "cherry_tomato_1",
+      60
+     ],
+     [
+      "temperature_at_least",
+      "cherry_tomato_2",
+      60
+     ],
+     [
+      "stirred",
+      "handled_cooking_pot"
+     ],
+     [
+      "covered",
+      "handled_cooking_pot",
+      "pot_lid"
+     ],
+     [
+      "not heating",
+      "kitchen_stove"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "lid_on": "fallback_uncover",
+    "lid_off": "nominal",
+    "lid_on_spoon_away": "hard_uncover_search_spoon"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "lid_off"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ]
+    },
+    "fallback_uncover": {
+     "kind": "fallback",
+     "variants": [
+      "lid_on"
+     ],
+     "recovery": "Collect into the pot -> refused (lid on) -> Uncover -> Collect",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ]
+    },
+    "hard_uncover_search_spoon": {
+     "kind": "fallback",
+     "variants": [
+      "lid_on_spoon_away"
+     ],
+     "recovery": "collect refused (lid) -> uncover -> collect; spoon not on the island -> search",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "breakfast_spoon",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "T10_trash_the_can",
+   "exp_id": "ZB-T10",
+   "source": [
+    "skill_library/tasks.json:throw_away_can",
+    "k_trash",
+    "g_search_then_fetch"
+   ],
+   "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
+   "instruction_zh": "\u6709\u4eba\u968f\u624b\u653e\u4e86\u4e2a\u7a7a\u6613\u62c9\u7f50\uff0c\u628a\u5b83\u6254\u8fdb\u5783\u573e\u6876\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3"
+    ],
+    "move": {
+     "trash_can": {
+      "support": null,
+      "z": 0.0,
+      "xy": [
+       9.05,
+       1.12
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "distractors": [
+     "juice_bottle",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b",
+     "kitchen_sponge",
+     "rolling_pin"
+    ]
+   },
+   "variants": {
+    "can_on_island": {
+     "note": "the can stands on the island",
+     "move": {}
+    },
+    "can_in_dining_room": {
+     "note": "the can stands on the dining table in the next room, out of sight",
+     "move": {
+      "soda_can": {
+       "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "not_in_view"
+     ]
+    },
+    "far_can_far": {
+     "note": "the robot starts in the dining room, the can is on the TV stand",
+     "conditions": [
+      "start_elsewhere",
+      "not_in_view"
+     ],
+     "start": [
+      4.24,
+      5.12,
+      120.0
+     ],
+     "move": {
+      "soda_can": {
+       "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+       "xy": [
+        7.2,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     }
+    }
+   },
+   "watch": [
+    "soda_can"
+   ],
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "soda_can",
+      "trash_can"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "can_on_island": "nominal",
+    "can_in_dining_room": "search_first",
+    "far_can_far": "hard_explore_search"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "can_on_island"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "explore",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      }
+     ]
+    },
+    "search_first": {
+     "kind": "fallback",
+     "variants": [
+      "can_in_dining_room"
+     ],
+     "recovery": "Pick refused (can not observed) -> Search -> found on the dining table",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "explore",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "soda_can",
+        "region": "dining_room_0_1"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      }
+     ]
+    },
+    "hard_explore_search": {
+     "kind": "fallback",
+     "variants": [
+      "far_can_far"
+     ],
+     "recovery": "pick refused (can not observed) -> search -> explore for the trash can",
+     "steps": [
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "soda_can",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "explore",
+       "args": {
+        "room": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P01_body_and_gesture",
+   "exp_id": "ZB-P01",
+   "kind": "probe",
+   "source": [
+    "k_body",
+    "k_posture",
+    "skill_library/tasks.json:greet_and_point"
+   ],
+   "instruction": "Greet the person by the fridge, then return to the home posture.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [],
+   "goal": {
+    "all": [
+     [
+      "waved"
+     ],
+     [
+      "nodded"
+     ],
+     [
+      "arm_stowed",
+      "right"
+     ],
+     [
+      "torso_raised"
+     ],
+     [
+      "waist_straight"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "wave",
+       "args": {}
+      },
+      {
+       "skill": "nod",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "sidestep",
+       "args": {
+        "distance_m": 0.2
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_island",
+        "distance_m": 0.6
+       }
+      },
+      {
+       "skill": "face",
+       "args": {
+        "target": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "point",
+       "args": {
+        "target": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "crouch",
+       "args": {}
+      },
+      {
+       "skill": "stand",
+       "args": {}
+      },
+      {
+       "skill": "crouch",
+       "args": {
+        "height_m": -0.3
+       }
+      },
+      {
+       "skill": "stand",
+       "args": {}
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "bend",
+       "args": {
+        "pitch_rad": 0.3
+       }
+      },
+      {
+       "skill": "reset",
+       "args": {}
+      },
+      {
+       "skill": "wait",
+       "args": {
+        "seconds": 2
+       }
+      },
+      {
+       "skill": "tuck",
+       "args": {
+        "hand": "right"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P02_perception",
+   "exp_id": "ZB-P02",
+   "kind": "probe",
+   "source": [
+    "k_perceive",
+    "skill_library/tasks.json:explore_living_room / count_tomatoes"
+   ],
+   "instruction": "Find out what is on the island and explore the living room.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [],
+   "goal": {
+    "all": [
+     [
+      "identified",
+      "soda_can"
+     ],
+     [
+      "measured",
+      "juice_bottle"
+     ],
+     [
+      "counted",
+      "cherry_tomato"
+     ],
+     [
+      "room_explored",
+      "living_room_0_0"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "identify",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "juice_bottle"
+       }
+      },
+      {
+       "skill": "count",
+       "args": {
+        "category": "cherry_tomato"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       }
+      },
+      {
+       "skill": "inspect",
+       "args": {
+        "receptacle": "mug"
+       }
+      },
+      {
+       "skill": "explore",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P03_rolling_pin",
+   "exp_id": "ZB-P03",
+   "kind": "probe",
+   "source": [
+    "k_pin",
+    "skill_library/tasks.json:roll_pin"
+   ],
+   "instruction": "Roll the rolling pin, pull it toward you and centre it on the island.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "rolling_pin"
+   ],
+   "goal": {
+    "all": [
+     [
+      "away_from_edge",
+      "rolling_pin",
+      0.06
+     ],
+     [
+      "on",
+      "rolling_pin",
+      "kitchen_island/top"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "roll",
+       "args": {
+        "object": "rolling_pin",
+        "distance_m": 0.1
+       }
+      },
+      {
+       "skill": "pull",
+       "args": {
+        "object": "rolling_pin",
+        "distance_m": 0.08
+       }
+      },
+      {
+       "skill": "center",
+       "args": {
+        "object": "rolling_pin",
+        "margin_m": 0.06
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P04_bottle",
+   "exp_id": "ZB-P04",
+   "kind": "probe",
+   "source": [
+    "k_bottle",
+    "skill_library/tasks.json:lay_down_bottle"
+   ],
+   "instruction": "Lay the juice bottle down, then stand it up again.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "juice_bottle"
+   ],
+   "goal": {
+    "all": [
+     [
+      "upright",
+      "juice_bottle"
+     ],
+     [
+      "on",
+      "juice_bottle",
+      "kitchen_island/top"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "juice_bottle"
+       }
+      },
+      {
+       "skill": "tip",
+       "args": {
+        "object": "juice_bottle"
+       }
+      },
+      {
+       "skill": "upright",
+       "args": {
+        "object": "juice_bottle"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P05_flip_book",
+   "exp_id": "ZB-P05",
+   "kind": "probe",
+   "source": [
+    "k_book",
+    "skill_library/tasks.json:flip_book"
+   ],
+   "instruction": "Turn the paperback book over on the island.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "juice_bottle"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "paperback_book"
+   ],
+   "goal": {
+    "all": [
+     [
+      "flipped",
+      "paperback_book"
+     ],
+     [
+      "on",
+      "paperback_book",
+      "kitchen_island/top"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "flip",
+       "args": {
+        "object": "paperback_book"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P06_two_hands",
+   "exp_id": "ZB-P06",
+   "kind": "probe",
+   "source": [
+    "k_hands",
+    "skill_library/tasks.json:serve_in_left_hand"
+   ],
+   "instruction": "Hand the rolling pin to the left hand and open and close the low cabinet while holding it.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "rolling_pin"
+   ],
+   "goal": {
+    "all": [
+     [
+      "holding",
+      "left",
+      "rolling_pin"
+     ],
+     [
+      "is_closed",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "regrasp",
+       "args": {
+        "object": "rolling_pin",
+        "support": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "handover",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_island",
+        "distance_m": 0.6
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P07_present_and_brace",
+   "exp_id": "ZB-P07",
+   "kind": "probe",
+   "source": [
+    "k_present",
+    "k_brace",
+    "skill_library/tasks.json:present_block"
+   ],
+   "instruction": "Show a wooden block to the camera, then steady the mug with the left hand.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "wooden_block_b",
+    "mug"
+   ],
+   "goal": {
+    "all": [
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ],
+     [
+      "hand_empty",
+      "left"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ],
+     [
+      "upright",
+      "mug"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "present",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "shake",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       }
+      },
+      {
+       "skill": "brace",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "release",
+       "args": {
+        "object": "mug",
+        "hand": "left"
+       }
+      },
+      {
+       "skill": "tuck",
+       "args": {
+        "hand": "left"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P08_block_alignment",
+   "exp_id": "ZB-P08",
+   "kind": "probe",
+   "source": [
+    "k_blocks",
+    "skill_library/tasks.json:square_block"
+   ],
+   "instruction": "Square one block with the island, then stack the other on it rotated and touch it.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "goal": {
+    "all": [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "squared",
+      "wooden_block_a"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "square",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "touch",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P09_sweep_blocks",
+   "exp_id": "ZB-P09",
+   "kind": "probe",
+   "source": [
+    "k_sweep",
+    "skill_library/tasks.json:sweep_blocks"
+   ],
+   "instruction": "Sweep the two wooden blocks together, then push one aside.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "goal": {
+    "all": [
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "sweep",
+       "args": {
+        "objects": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "radius_m": 0.05
+       }
+      },
+      {
+       "skill": "push",
+       "args": {
+        "object": "wooden_block_a",
+        "direction_xy": [
+         1.0,
+         0.0
+        ],
+        "distance_m": 0.1
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P11_stove_cycle",
+   "exp_id": "ZB-P11",
+   "kind": "probe",
+   "source": [
+    "k_mug_on_burner",
+    "skill_library/tasks.json:heat_without_microwave"
+   ],
+   "instruction": "Put the mug on the stove, switch the burner on for a few seconds and off again.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "mug"
+   ],
+   "goal": {
+    "all": [
+     [
+      "on_burner",
+      "mug",
+      "kitchen_stove"
+     ],
+     [
+      "not heating",
+      "kitchen_stove"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "press",
+       "args": {
+        "button": "kitchen_stove/power_button"
+       }
+      },
+      {
+       "skill": "wait",
+       "args": {
+        "seconds": 3
+       }
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_stove"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P12_cabinet",
+   "exp_id": "ZB-P12",
+   "kind": "probe",
+   "source": [
+    "k_cabinet",
+    "skill_library/tasks.json:knock_then_open"
+   ],
+   "instruction": "Knock on the low cabinet, look inside, open it and close it again.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [],
+   "goal": {
+    "all": [
+     [
+      "knocked",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ],
+     [
+      "is_closed",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "knock",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "inspect",
+       "args": {
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P13_microwave_buttons",
+   "exp_id": "ZB-P13",
+   "kind": "probe",
+   "source": [
+    "k_microwave"
+   ],
+   "instruction": "Heat the oatmeal in the microwave with its start key, then stop the microwave.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "oatmeal"
+   ],
+   "goal": {
+    "all": [
+     [
+      "in_appliance",
+      "oatmeal",
+      "kitchen_microwave"
+     ],
+     [
+      "not heating",
+      "kitchen_microwave"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "press",
+       "args": {
+        "button": "kitchen_microwave/start_button"
+       }
+      },
+      {
+       "skill": "wait",
+       "args": {
+        "seconds": 3
+       }
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_microwave"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P14_restore_swap",
+   "exp_id": "ZB-P14",
+   "kind": "probe",
+   "source": [
+    "k_restore_swap",
+    "skill_library/tasks.json:swap_blocks"
+   ],
+   "instruction": "Move a block to the stove, put it back where it was, then swap it with the soda can.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "wooden_block_a",
+    "soda_can"
+   ],
+   "goal": {
+    "all": [
+     [
+      "positions_swapped",
+      "wooden_block_a",
+      "soda_can"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "restore",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "swap",
+       "args": {
+        "a": "wooden_block_a",
+        "b": "soda_can"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P15_arrange_and_sort",
+   "exp_id": "ZB-P15",
+   "kind": "probe",
+   "source": [
+    "k_arrange_sort",
+    "skill_library/tasks.json:sort_items"
+   ],
+   "instruction": "Group two blocks and the can on the island, then sort the can into the trash and a block onto the stove.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {
+     "trash_can": {
+      "support": null,
+      "z": 0.0,
+      "xy": [
+       9.05,
+       1.12
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "wooden_block_a",
+    "wooden_block_b",
+    "soda_can"
+   ],
+   "goal": {
+    "all": [
+     [
+      "sorted_by_category",
+      [
+       "soda_can",
+       "wooden_block_b"
+      ],
+      {
+       "recyclable": "trash_can",
+       "block": "kitchen_stove/top"
+      }
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "arrange",
+       "args": {
+        "objects": [
+         "wooden_block_a",
+         "wooden_block_b",
+         "soda_can"
+        ],
+        "support": "kitchen_island/top",
+        "max_dist_m": 0.3
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "trash_can",
+        "region": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "sort",
+       "args": {
+        "objects": [
+         "soda_can",
+         "wooden_block_b"
+        ],
+        "rule": {
+         "recyclable": "trash_can",
+         "block": "kitchen_stove/top"
+        }
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P16_empty_mug",
+   "exp_id": "ZB-P16",
+   "kind": "probe",
+   "source": [
+    "k_empty_hide",
+    "skill_library/tasks.json:empty_mug"
+   ],
+   "instruction": "Empty the mug of tomatoes into the pot.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "mug"
+   ],
+   "goal": {
+    "all": [
+     [
+      "container_empty",
+      "mug"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "empty",
+       "args": {
+        "container": "mug",
+        "receptacle": "handled_cooking_pot"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P17_pour",
+   "exp_id": "ZB-P17",
+   "kind": "probe",
+   "source": [
+    "k_soup_stove"
+   ],
+   "instruction": "Pour the tomatoes from the mug into the pot.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "mug"
+   ],
+   "goal": {
+    "all": [
+     [
+      "container_empty",
+      "mug"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "mug",
+        "target": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "pour",
+       "args": {
+        "source": "mug",
+        "target": "handled_cooking_pot"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P19_spoon_dip",
+   "exp_id": "ZB-P19",
+   "kind": "probe",
+   "source": [
+    "k_stir_cover",
+    "k_soup_stove"
+   ],
+   "instruction": "Taste the soup: lift the spoon, lower it again, then dip it into the open pot.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "breakfast_spoon"
+   ],
+   "goal": {
+    "all": [
+     [
+      "dipped",
+      "handled_cooking_pot"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "breakfast_spoon",
+        "height_m": 1.0
+       }
+      },
+      {
+       "skill": "lower",
+       "args": {
+        "object": "breakfast_spoon",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "dip",
+       "args": {
+        "tool": "breakfast_spoon",
+        "container": "handled_cooking_pot"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P20_hide_block",
+   "exp_id": "ZB-P20",
+   "kind": "probe",
+   "source": [
+    "k_empty_hide",
+    "skill_library/tasks.json:hide_block"
+   ],
+   "instruction": "Hide a wooden block in the pot under its lid.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "wooden_block_b",
+    "pot_lid"
+   ],
+   "goal": {
+    "all": [
+     [
+      "hidden",
+      "wooden_block_b"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P21_clear_cabinet",
+   "exp_id": "ZB-P21",
+   "kind": "probe",
+   "source": [
+    "skill_library/tasks.json:clear_counter"
+   ],
+   "instruction": "Clear the top of the low wall cabinet onto the kitchen island.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "spoon_kitchen_cabinet"
+   ],
+   "goal": {
+    "all": [
+     [
+      "support_clear",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "clear",
+       "args": {
+        "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P22_chill_oatmeal",
+   "exp_id": "ZB-P22",
+   "kind": "probe",
+   "source": [
+    "k_fridge",
+    "skill_library/tasks.json:chill_drink"
+   ],
+   "instruction": "The leftover oatmeal went into the fridge still warm: check it and chill it to 8 C; leave the fridge closed.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {
+     "oatmeal": {
+      "support": "breakfast_fridge/inside_shelf",
+      "xy": [
+       5.9,
+       3.15
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "distractors": []
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {},
+     "thermal_override": {
+      "oatmeal": {
+       "initial_c": 22.0
+      }
+     }
+    }
+   },
+   "watch": [
+    "oatmeal"
+   ],
+   "goal": {
+    "all": [
+     [
+      "temperature_at_most",
+      "oatmeal",
+      8
+     ],
+     [
+      "is_closed",
+      "breakfast_fridge"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "chill",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "breakfast_fridge",
+        "temp_c": 8
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "P18_floor_pick",
+   "exp_id": "ZB-P18",
+   "kind": "probe",
+   "source": [
+    "k_floor"
+   ],
+   "instruction": "Pick the wooden block up from the floor and put it on the island.",
+   "auto_look": true,
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [],
+    "move": {},
+    "distractors": [],
+    "start": [
+     7.9,
+     1.05,
+     180.0
+    ]
+   },
+   "variants": {
+    "default": {
+     "note": "single fixed layout",
+     "move": {}
+    }
+   },
+   "watch": [
+    "floor_block"
+   ],
+   "goal": {
+    "all": [
+     [
+      "on",
+      "floor_block",
+      "kitchen_island/top"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "default": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "floor_block"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "floor_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "floor_block"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "floor_block",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ]
+    }
+   }
+  }
+ ]
+}

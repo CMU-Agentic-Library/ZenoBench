@@ -587,7 +587,8 @@ def _move_with_retry_impl(rig, name, goal, verb):
         last = getattr(rig, "_last_art_park", None)
         progress = abs(rig.joint(name) - q0) / max(1e-6, abs(goal - q0))
         if rig.held is not None or last is None or last[0] != name or progress > 0.3 \
-                or not ("joint" in str(exc) or "handle not grasped" in str(exc)):
+                or not ("joint" in str(exc) or "handle not grasped" in str(exc)) \
+                or not getattr(rig, "auto_recovery", True):
             raise
         if not hasattr(rig, "_failed_art_parks"):
             rig._failed_art_parks = {}
@@ -741,7 +742,8 @@ def pick(rig, name, max_candidates=12):
         try:
             return _pick_pinch(rig, name, max_candidates)
         except SkillFailure as e:
-            if "edge_pinch_after_push" not in kinds or rig.held is not None:
+            if "edge_pinch_after_push" not in kinds or rig.held is not None \
+                    or not getattr(rig, "auto_recovery", True):
                 raise
             rig.log("pick_fallback", obj=name, reason=str(e), to="push_then_edge_pinch")
     return pick_flat(rig, name)
@@ -949,6 +951,15 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinc
             fingers=f.round(4).tolist(), held=held)
     rig.focus_z = None
     if not held:
+        # leave the failed grasp with an open hand clear of the neighbours:
+        # fingers closed beside a crowding bowl stopped at 5 mm, so the next
+        # push could not make its fist (3/4)
+        rig.grip(0.04, 60)
+        t_, R_ = rig.kin.tcp(rig.q_cmd)
+        try:
+            rig.move_to(t_ + np.array([0, 0, 0.08]), R_, step=0.005, label="pick_fail_clear", collision=False)
+        except SkillFailure:
+            pass
         raise SkillFailure(f"pick {name}: not held (lift {after[2] - pos[2]:.3f} m)")
     tcp, R = rig.kin.tcp(rig.q_cmd)
     rig.held = {"name": name, "kind": "pinch", "tcp_minus_body": tcp - after, "R": R, "pre_open": g["pre_open"]}
@@ -1066,6 +1077,14 @@ def pick_flat(rig, name):
         over = float(n @ b[:2]) + h - _edge_coord(s, n)
         edges.append((max(0.0, o - over), n, o))
     edges.sort(key=lambda e: e[0])
+    if not getattr(rig, "auto_recovery", True):
+        # no automatic slide-to-edge (that is the explicit expose skill): pinch
+        # the edge that overhangs most, as the object lies now
+        rig.log("flat_edges", obj=name, support=s["name"], edges=[[round(e[0], 3), e[1].tolist()] for e in edges],
+                auto_push=False)
+        if not edges:
+            raise SkillFailure(f"pick {name}: no free edge of {s['name']} it can overhang")
+        return _edge_pinch(rig, name, s, edges[0][1], attempt=True)
     rig.log("flat_edges", obj=name, support=s["name"], edges=[[round(e[0], 3), e[1].tolist()] for e in edges])
     if not edges:
         raise SkillFailure(f"pick {name}: no free edge of {s['name']} it can overhang")
@@ -1187,7 +1206,33 @@ def _lowest_z(rig, name, st):
     return float((np.asarray(o["pos"]) + corners @ R.T)[:, 2].min())
 
 
-def _edge_pinch(rig, name, s, n):
+def _edge_pinch(rig, name, s, n, attempt=False):
+    """Edge pinch; at table height the waist stays nearly upright, as in
+    _pick_pinch: a solution with the torso fully lowered and the waist bowed
+    0.39 rad drove the chest into the island edge (the waist stalled at 0.22,
+    the TCP 11 cm short, 4/4 direct picks of the paperback at the island's
+    front edge).  Without such a park the full waist range is used."""
+    if not hasattr(rig.kin, "names") or s["z"] <= 0.5:
+        return _edge_pinch_impl(rig, name, s, n, attempt)
+    widx = rig.kin.names.index("waist_pitch_joint")
+    hi = float(rig.kin.hi[widx])
+    rig.kin.hi[widx] = min(hi, 0.2)
+    try:
+        return _edge_pinch_impl(rig, name, s, n, attempt)
+    except SkillFailure as exc:
+        if "no base pose reaches" not in str(exc):
+            raise
+        rig.log("edge_pinch_waist_relaxed", obj=name)
+    finally:
+        rig.kin.hi[widx] = hi
+    return _edge_pinch_impl(rig, name, s, n, attempt)
+
+
+def _edge_pinch_impl(rig, name, s, n, attempt=False):
+    """``attempt``: pinch even when the measured overhang is short of
+    EDGE_MIN_OVERHANG (the lower pad then meets the support edge: a physical
+    failure the caller recovers from with expose), as long as the object
+    reaches past the edge at all."""
     geo = rig.geo
     st = rig.state()
     size = rig.ann.asset_of(rig.ann.objects[name])["size"]
@@ -1195,7 +1240,7 @@ def _edge_pinch(rig, name, s, n):
     yaw = _yaw(st["objects"][name]["quat"])
     h = _half_along(size, yaw, n)
     over = float(n @ b[:2]) + h - _edge_coord(s, n)
-    if over < EDGE_MIN_OVERHANG - 0.01:
+    if over < EDGE_MIN_OVERHANG - 0.01 and not (attempt and over > 0.005):
         raise SkillFailure(f"edge pinch {name}: overhang only {over:.3f} m")
     n3 = np.r_[n, 0.0]
     depth = max(0.02, min(EDGE_GRIP_DEPTH, over - EDGE_PAD_CLEAR))

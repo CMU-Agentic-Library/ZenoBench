@@ -1,0 +1,90 @@
+{
+ "checks": [
+  {
+   "check": "pick: hidden == nonexistent feedback",
+   "passed": true,
+   "detail": "NOT_OBSERVED: 'bowl_inside_kitchen_cabinet' is not a known place or an observed object | NOT_OBSERVED: 'golden_teapot' is not a known place or an observed object"
+  },
+  {
+   "check": "pick: refusal moved nothing",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "navigate: hidden == nonexistent feedback",
+   "passed": true,
+   "detail": "NOT_OBSERVED: 'bowl_inside_kitchen_cabinet' is not a known place or an observed object | NOT_OBSERVED: 'golden_teapot' is not a known place or an observed object"
+  },
+  {
+   "check": "navigate: refusal moved nothing",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "fetch: hidden == nonexistent feedback",
+   "passed": true,
+   "detail": "NOT_OBSERVED: 'bowl_inside_kitchen_cabinet' is not a known place or an observed object | NOT_OBSERVED: 'golden_teapot' is not a known place or an observed object"
+  },
+  {
+   "check": "fetch: refusal moved nothing",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "collect: hidden == nonexistent feedback",
+   "passed": true,
+   "detail": "NOT_OBSERVED: 'bowl_inside_kitchen_cabinet' is not a known place or an observed object | NOT_OBSERVED: 'golden_teapot' is not a known place or an observed object"
+  },
+  {
+   "check": "collect: refusal moved nothing",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "push: hidden == nonexistent feedback",
+   "passed": true,
+   "detail": "NOT_OBSERVED: 'bowl_inside_kitchen_cabinet' is not a known place or an observed object | NOT_OBSERVED: 'golden_teapot' is not a known place or an observed object"
+  },
+  {
+   "check": "push: refusal moved nothing",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "search: hidden == nonexistent feedback",
+   "passed": true,
+   "detail": "search bowl_inside_kitchen_cabinet: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593'] | search golden_teapot: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']"
+  },
+  {
+   "check": "closed cabinet occludes its contents",
+   "passed": true,
+   "detail": "inside closed KitchenCabinetFactory_7025538_spawn_asset_6631478"
+  },
+  {
+   "check": "open, inspect, close observes the hidden bowl",
+   "passed": true,
+   "detail": "{\"contents\": [\"plate_inside_kitchen_cabinet\", \"bowl_inside_kitchen_cabinet\", \"spoon_kitchen_cabinet\"]}"
+  },
+  {
+   "check": "known but behind the closed door: pick refused NOT_IN_VIEW",
+   "passed": true,
+   "detail": "NOT_IN_VIEW: 'bowl_inside_kitchen_cabinet' is not in the current view (last seen at tick 24417); look at it first"
+  },
+  {
+   "check": "look at the island observes objects",
+   "passed": true,
+   "detail": "['breakfast_spoon', 'cherry_tomato_1', 'cherry_tomato_2', 'cherry_tomato_3', 'juice_bottle', 'kitchen_sponge', 'mug', 'oatmeal', 'paperback_book', 'rolling_pin', 'soda_can', 'wooden_block_a', 'wooden_block_b']"
+  },
+  {
+   "check": "pick does not track an object outside the view",
+   "passed": true,
+   "detail": "NOT_IN_VIEW: 'wooden_block_a' is not in the current view (last seen at tick 28998); look at it first"
+  },
+  {
+   "check": "explore coverage targets = static supports only",
+   "passed": true,
+   "detail": "targets 13, static 13, result True None"
+  }
+ ],
+ "passed": true
+}

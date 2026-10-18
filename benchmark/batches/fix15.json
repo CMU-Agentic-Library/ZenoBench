@@ -1,0 +1,26 @@
+[
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "hard_search_separate",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "hard_search_separate",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "far_small_and_large"
+ }
+]

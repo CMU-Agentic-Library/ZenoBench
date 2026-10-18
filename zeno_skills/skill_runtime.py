@@ -407,10 +407,21 @@ class SkillResult:
 
 
 class SkillContractRunner:
-    def __init__(self, rig, catalog=CATALOG):
+    """``auto_repair``: nested calls of multi-object Contracts run a declared
+    repair fallback and retry once (the original behaviour).  ``advisory``:
+    predicate names that are only recorded when they appear in a path's
+    ``requires`` (feasibility estimates such as grasp_clearance); the action
+    is attempted and the physics decides.  ``skip_steps``: {(verb, path_id):
+    {policy ids}} left out of a path (e.g. the automatic slide-to-edge inside
+    pick), so the caller must request that action explicitly."""
+
+    def __init__(self, rig, catalog=CATALOG, *, auto_repair=True, advisory=(), skip_steps=None):
         self.rig = rig
         self.by_id, self.by_verb, self.by_skill = load_contracts(catalog)
         self.trace: list[dict] = []
+        self.auto_repair = auto_repair
+        self.advisory = set(advisory)
+        self.skip_steps = dict(skip_steps or {})
 
     def contract(self, key):
         return self.by_id.get(key) or self.by_verb.get(key) or self.by_skill.get(key) or \
@@ -451,11 +462,16 @@ class SkillContractRunner:
             if path is None:
                 raise ContractError("NO_PATH", "no policy path matches the bound nouns and robot state")
             res.selected_path = path["path_id"]
-            failed = self._check(path.get("requires", []), values, nouns, ctx, res.preconditions)
+            failed = self._check(path.get("requires", []), values, nouns, ctx, res.preconditions,
+                                 advisory=self.advisory)
             if failed:
                 raise ContractError("PRECONDITION_FAILED", f"path {path['path_id']}: " + "; ".join(failed))
             outputs = {}
-            self._run_steps(path["steps"], values, nouns, outputs, res, depth)
+            skip = self.skip_steps.get((c["verb"], path["path_id"]), ())
+            steps = [s_ for s_ in path["steps"] if s_.get("policy") not in skip]
+            if len(steps) < len(path["steps"]):
+                rig.log("path_steps_skipped", verb=c["verb"], path=path["path_id"], skipped=sorted(skip))
+            self._run_steps(steps, values, nouns, outputs, res, depth)
             rig.step(30)
             ctx.pop("_state_cache", None)
             failed = self._check(list(c["ensures"]) + list(path.get("ensures", [])), values, nouns, ctx,
@@ -484,7 +500,7 @@ class SkillContractRunner:
         return r
 
     # -------------------------------------------------------------
-    def _check(self, atoms, values, nouns, ctx, sink):
+    def _check(self, atoms, values, nouns, ctx, sink, advisory=()):
         failed = []
         for atom in atoms:
             args = {k: resolve_value(v, values, nouns, {}) for k, v in atom["args"].items()}
@@ -496,7 +512,11 @@ class SkillContractRunner:
             ok = bool(ok) != bool(atom.get("negated"))
             text = ("not " if atom.get("negated") else "") + atom["pred"] + "(" + ", ".join(
                 f"{k}={v}" for k, v in args.items()) + ")"
-            sink.append({"atom": text, "holds": ok, "detail": detail})
+            row = {"atom": text, "holds": ok, "detail": detail}
+            if atom["pred"] in advisory:
+                row["advisory"] = True       # recorded, not enforced
+                ok = True
+            sink.append(row)
             if not ok:
                 failed.append(f"{text} is false ({detail})")
         return failed
@@ -600,7 +620,7 @@ class SkillContractRunner:
     def _nested_repair(self, child, sub_args):
         """(verb, args) of a repair fallback matching a failed precondition of a
         nested call whose bind can be filled from that call's arguments."""
-        if child.success or child.error_code != "PRECONDITION_FAILED":
+        if not self.auto_repair or child.success or child.error_code != "PRECONDITION_FAILED":
             return None
         for r in child.recovery:
             if r.get("type") != "repair" or not r.get("matches_failed_predicate"):

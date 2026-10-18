@@ -1,0 +1,26 @@
+[
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "fallback_separate",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "hard_search_push",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "fallback_separate",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "hard_search_push",
+  "variant": "far_crowded"
+ }
+]

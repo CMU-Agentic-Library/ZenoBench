@@ -1,0 +1,14 @@
+[
+ {
+  "task": "P06_two_hands",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P12_cabinet",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ }
+]

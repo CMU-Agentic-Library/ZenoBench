@@ -1,0 +1,128 @@
+[
+ {
+  "task": "P01_body_and_gesture",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P02_perception",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P03_rolling_pin",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P04_bottle",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P05_flip_book",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P06_two_hands",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P07_present_and_brace",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P08_block_alignment",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P09_sweep_blocks",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P11_stove_cycle",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P12_cabinet",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P13_microwave_buttons",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P14_restore_swap",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P15_arrange_and_sort",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P16_empty_mug",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P17_pour",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P19_spoon_dip",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P20_hide_block",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P21_clear_cabinet",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P22_chill_oatmeal",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P18_floor_pick",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ }
+]
