@@ -173,6 +173,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --task T07_heat_oatmeal --planner reco
 python benchmark/make_batches.py
 python benchmark/run_episode.py --batch benchmark/batches/accept.json --jobs 2 --out benchmark/runs/accept
 python benchmark/report.py --runs benchmark/runs/accept
+python benchmark/evaluate.py --runs benchmark/runs/final     # planner metrics (see Evaluation)
 ```
 
 Every episode directory keeps `config.json` (task, variant, seed, overlay,
@@ -188,12 +189,67 @@ or timed out is *incomplete*, never a physical failure.
 
 Step roles in a route: `failure` (the call expected to fail), `recovery` / `alternative` / `retry_after_recovery`, and `unwind` (only undoes the failed call's side effect, e.g. lift the rolling pin out of the mug and back away).  The GT oracle skips `expect: fail` and `unwind` steps.
 
+## Evaluation
+
+There are two reports, both computed offline from the `result.json` files of a run directory:
+
+- `report.py`: did every declared route run, and which SkillNodes did it cover? It writes `RESULTS.md` and `coverage.json`.
+- `evaluate.py`: how well did a planner behave? It writes `EVALUATION.md` and `metrics.json`.
+
+```bash
+python benchmark/evaluate.py --runs benchmark/runs/final                     # by planner, then planner x tier
+python benchmark/evaluate.py --runs DIR --group planner,task                 # per task
+python benchmark/evaluate.py --runs DIR --group planner,kind --probes        # by route kind, probes included
+```
+
+| Metric | Definition | What it measures |
+|---|---|---|
+| **SR** | Task Success, as defined above | Did the task get done |
+| **GC** | Goal-condition score: the fraction of GT goal atoms that hold at the end (for `any` groups, the best group) | Partial progress; separates "almost" from "nothing" |
+| **pass^k** | Share of tasks where every seed in the group passed | Consistency over randomized episodes |
+| **SPL-c** | Mean of S · L_ref / max(L, L_ref). L is the number of calls made; L_ref is the oracle's call count for the variant, with expected failures and unwinds left out | Efficiency: wasted calls and detours lower it |
+| **calls**, **sim_s** | Calls and simulated seconds per episode (120 ticks per second) | Cost |
+| **unseen** | Calls that named an object that exists but has not been observed yet (NOT_OBSERVED) | Acting before looking |
+| **ghost** | Calls that named an object that is not in this episode (for example, one the overlay removed) | Hallucinated objects. The refusal is the same as for *unseen*, so the planner cannot tell the two apart; only the evaluator can |
+| **not_in_view** | Calls on a remembered object that is out of view | Missing `look` |
+| **invalid** | BAD_CALL: an unknown skill, slot or argument | Interface errors |
+| **phys** | PRECONDITION_FAILED / POLICY_FAILED calls per episode | Physical failures met |
+| **recov** | Of the episodes with at least one physical failure, the share that still succeeded (episode count in brackets) | Fallback / alternative ability |
+| **repeat** | Share of physical failures followed immediately by the same call with the same arguments | Blind retrying |
+| **drops** | Episodes with a watched object on the floor (this also fails SR) | Safety |
+| **side** | Non-goal watched objects moved more than 5 cm, per episode | Side effects. Informational only, because some fallbacks move objects on purpose (separate, push aside) |
+| **budget** | Closed-loop episodes that reached `max_calls` (`stop_reason: budget`) | Looping or getting stuck |
+
+To report a planner, run the same task × tier × seed grid for it and for `fixed` / `retry` / `oracle`:
+
+```bash
+# every task x tier (easy / medium / hard) x seeds 10, 11 -> 58 episodes per planner
+python benchmark/make_batches.py --policy mypkg.planner:MyPlanner      # without --policy: only fixed / retry / oracle
+python benchmark/run_episode.py --batch benchmark/batches/eval.json --jobs 2 --out benchmark/runs/eval
+python benchmark/evaluate.py --runs benchmark/runs/eval --group planner,tier
+```
+
+Then compare the planners on SR / GC by tier, recov, SPL-c, and ghost + unseen. The `scripted` rows replay declared
+routes: their failures happen by design, so they are a feasibility ceiling and should not be ranked as a planner.
+
+Frozen final round (`benchmark/runs/final`, tasks T01–T10):
+
+| Planner | n | SR | GC | pass^k | SPL-c | ghost / ep | phys / ep | recov | repeat |
+|---|---|---|---|---|---|---|---|---|---|
+| fixed | 10 | 20% | 54% | 20% | 0.19 | 0.20 | 0.60 | 0% (6) | 0% |
+| retry | 10 | 20% | 54% | 20% | 0.19 | 0.60 | 1.70 | 0% (6) | 71% |
+| oracle (GT) | 10 | 90% | 90% | 90% | 0.90 | 0 | 0.10 | 0% (1) | 0% |
+| scripted routes | 62 | 95% | 96% | 80% | 0.87 | 0.06 | 0.53 | 90% (30) | 0% |
+
+`stop_reason`, `final_state` and `sim_ticks` are recorded in `result.json` from now on. Older runs fall back to the
+state after the last call and to the last call's tick.
+
 ## Changes to existing code
 
 Behind flags (defaults unchanged) except three local skill fixes that change the default behaviour: the
 upright waist of the edge pinch at table height and the open-hand clear after a failed top pinch
 (`skills.py`), and the closed-loop `lift` (`policies/navigation.py`).  Regression of the skill library's own
-scenarios with these defaults (`tools/verify_skills.py --all`): in progress, results to follow.
+scenarios with these defaults (`tools/verify_skills.py --all`): see *Regression* below.
 
 | File | Change |
 |---|---|
@@ -202,3 +258,33 @@ scenarios with these defaults (`tools/verify_skills.py --all`): in progress, res
 | `zeno_skills/skills.py` | `rig.auto_recovery` (default True): pick -> push fallback, slide-to-edge inside `pick_flat`, door retry from another park; `_edge_pinch(attempt=)`; edge pinch keeps the waist upright at table height (as `_pick_pinch` does), fixing a chest-into-counter stall seen 4/4 times; a failed top pinch ends with the hand open and 8 cm higher (fingers closed beside a crowding bowl stopped at 5 mm and the next push could not make its fist, 3/4) |
 | `zeno_skills/policies/navigation.py` | `lift` (carry_height_adjust) repeats the vertical move on the measured object bottom, up to 3 times while the object keeps rising: a rolling pin caught in a mug after a failed place lagged the hand by 4-5 cm and one move fell short (4/4); the verifier (bottom >= target - 2 cm) is unchanged |
 | `zeno_skills/policies/perceive.py` | `rig.static_explore`: explore coverage over static supports only; `rig.observer` hook in `record_view` |
+
+## Regression
+
+Skill-library scenarios (`python tools/verify_skills.py --all --jobs 2`, 35 scenarios) with the default-on changes,
+compared with `skill_library/verification/status.json` (verification round 30):
+
+- **26/35 pass**; the baseline had 29/35.
+- Six failures are the same as in the baseline: `k_arrange_sort`, `k_empty_hide`, `k_fridge_chill`, `k_microwave`,
+  `k_soup_stove`, `r_bimanual_box`.
+- Three failures are new:
+
+| Scenario | Failure | Reruns | Likely cause |
+|---|---|---|---|
+| `k_separate` | The place of block B picked the 0° yaw (in the baseline that slot was blocked by block A, so it used −90°). Block B therefore lands with A's finger slots free, and the `separate` precondition `not grasp_clearance` is false | 3/3 fail | Not traced. The baseline log predates the base-path change in 15d948e, and an attempt to rerun on clean 15d948e did not start (scene-prim error in the worktree) |
+| `g_expose_then_pick_book` | The first, failed edge pinch parks elsewhere (waist ≤ 0.2 rad at table height). The later bookcase place then does not register the flat approach as blocked, opens the hand, and the book falls | 2/2 fail | The edge-pinch waist fix (default-on) |
+| `k_restore_swap` | The soda can slipped from the hand while being carried to the island buffer | 1/1 fail (rerun cut short) | Probably a slip, not a code change |
+
+Other checks: `benchmark/tests/sim_permissions.py` passes 17/17, and `pytest benchmark/tests tests/test_env_service.py`
+passes.
+
+## Known limitations
+
+- Probes that fail: `brace`, `upright`, `pour`, `empty`, `swap`, and `open` with a load in the left hand (P06). The
+  coverage is 65/70; `release` is never called.
+- `inspect` on a closed cabinet parks without opening it. The routes open, inspect, then close.
+- T02 `stack` after `separate` is flaky (hand blocked at the support, about 1 of 2 runs). T01 hard: the book can
+  slip during `flat_back_out`.
+- The regressions above (`g_expose_then_pick_book`, `k_separate`) still need fixing. A possible fix is to apply the
+  edge-pinch waist limit only after a direct pick fails.
+

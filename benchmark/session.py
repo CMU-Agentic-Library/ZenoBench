@@ -62,11 +62,13 @@ class LimitedSession:
     def run_planner(self, planner, task, max_calls=60, sink=None) -> list:
         """Closed loop: the planner sees observations and feedback only."""
         rows = []
+        self.stop_reason = "budget"           # max_calls reached without the planner ending the episode
         planner.reset(task_instruction=task["instruction"], skills=task.get("skill_menu"))
         for i in range(max_calls):
             obs = self.observe(image_tag=f"step{i}")
             act = planner.next_call(obs)
             if act is None:
+                self.stop_reason = "planner_done"
                 break
             fb = self.call(act["skill"], act.get("args", {}))
             row = {"index": i, "skill": act["skill"], "args": act.get("args", {}), "feedback": fb,

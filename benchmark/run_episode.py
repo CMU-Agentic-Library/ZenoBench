@@ -165,6 +165,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
             pol = load_policy(policy)
             steps_iter = None
             report["calls"] = session.run_planner(pol, task, max_calls=task.get("max_calls", 60), sink=calls_f)
+            report["stop_reason"] = session.stop_reason
         else:
             _, steps = resolve_steps(task, cfg, route)
             for i, st in enumerate(steps):
@@ -217,6 +218,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
         drops = floor_drops(rig, task, start)
         report["goal"] = goal
         report["dropped"] = drops
+        report["final_state"] = state_summary(rig, task)      # side effects for benchmark/evaluate.py
+        report["sim_ticks"] = int(rig.tick)                   # 120 ticks per simulated second
         report["task_success"] = bool(ok and not drops and not report.get("route_violation"))
         report["skill_calls"] = len(report["calls"])
         report["skill_failures"] = [c["feedback"]["action"] for c in report["calls"] if not c["feedback"]["success"]]
