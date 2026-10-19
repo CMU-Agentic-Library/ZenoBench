@@ -1,7 +1,8 @@
 """Static check of every task variant's overlay: moved objects must sit on
 their support and must not intersect another object (no simulator).
 
-    python benchmark/check_layouts.py
+    python benchmark/check_layouts.py                                   # v2 task file, seed 0
+    python benchmark/check_layouts.py --tasks benchmark/v3/tasks.json  # every variant x evaluation seed (vary applied)
 """
 
 from __future__ import annotations
@@ -42,11 +43,28 @@ def boxes(cfg):
 
 def main():
     from benchmark.scene import episode_config
-    tasks = json.loads((ROOT / "benchmark/tasks.json").read_text())["tasks"]
+    path = Path(sys.argv[sys.argv.index("--tasks") + 1]) if "--tasks" in sys.argv else ROOT / "benchmark/tasks.json"
+    doc = json.loads(path.read_text())
+    tasks = doc["tasks"]
+    seeds = doc.get("eval_seeds") or [0]
     bad = 0
+    seen = set()
     for t in tasks:
         for v in t["variants"]:
-            cfg = episode_config(t, 0, v)
+          for seed in (seeds if t.get("kind") != "probe" else [0]):
+            cfg = episode_config(t, seed, v)
+            if cfg["config_hash"] in seen:
+                continue
+            seen.add(cfg["config_hash"])
+            ann = json.loads((ROOT / cfg["base"] / "annotation.json").read_text())
+            sup = {x["name"]: x for x in ann["supports"]}
+            for n, m in cfg["move"].items():
+                s_ = sup.get(m.get("support"))
+                if s_ is not None:
+                    x0, y0, x1, y1 = s_["aabb_xy"]
+                    if not (x0 <= m["xy"][0] <= x1 and y0 <= m["xy"][1] <= y1):
+                        bad += 1
+                        print(f"{t['task_id']}/{v}/s{seed}: {n} centre {m['xy']} is off {m['support']}")
             cfg["remove"] = [r for r in cfg["remove"] if r not in cfg["distractors_removed"]]   # worst case: all present
             B = boxes(cfg)
             for n in cfg["move"]:
@@ -60,7 +78,7 @@ def main():
                              min(a[5], b[5]) - max(a[2], b[2])]
                     if all(x > 0.002 for x in inter):
                         bad += 1
-                        print(f"{t['task_id']}/{v}: {n} intersects {o} by {np.round(inter, 3).tolist()}")
+                        print(f"{t['task_id']}/{v}/s{seed}: {n} intersects {o} by {np.round(inter, 3).tolist()}")
     print("layout conflicts:", bad)
 
 

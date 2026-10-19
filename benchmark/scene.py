@@ -8,14 +8,19 @@ The house layout and furniture never change.  An episode may only
   (``move``: bottom-centre xy on a support, yaw), e.g. a book at the island
   edge or two bowls in the microwave.
 
-Seeds choose a condition variant (does the fallback / alternative condition
-hold?) and a random subset of removable distractors.  ``episode_config``
+A condition is a variant (variant_id); the seed never chooses the condition in
+the evaluation matrix (benchmark/matrix.py enumerates every variant).  The seed
+draws a random subset of removable distractors and, where a variant declares
+safe ranges (``vary``), a small shift of objects and of the robot start.  The
+--difficulty entry point (seed picks a variant of one tier) is kept for single
+episodes.  ``episode_config``
 returns everything needed to rebuild the episode exactly.
 """
 
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import math
 import random
@@ -55,15 +60,76 @@ def episode_config(task: dict, seed: int, variant: str | None = None, difficulty
     pool = [d for d in scene.get("distractors", []) if d not in remove and d not in move]
     k = rng.randint(0, len(pool)) if pool else 0
     dropped = sorted(rng.sample(pool, k)) if pool else []
-    return {"task_id": task["task_id"], "seed": seed, "variant": variant, "variant_note": v.get("note", ""),
-            "difficulty": difficulty_of(v), "conditions": list(v.get("conditions", [])),
-            "base": scene["base"], "remove": sorted(set(remove) | set(dropped)), "distractors_removed": dropped,
-            "move": move, "start": v.get("start", scene.get("start")),
-            # appliance heat/cool sources of this episode (None: the scene default); a variant can
-            # make an appliance unavailable, e.g. a microwave that runs but does not heat
-            "thermal_sources": v.get("thermal_sources", scene.get("thermal_sources")),
-            # per-food thermal parameters of this episode, e.g. a microwave that runs but does not heat
-            "thermal_override": v.get("thermal_override", {})}
+    cfg = {"task_id": task["task_id"], "seed": seed, "variant": variant, "variant_note": v.get("note", ""),
+           "difficulty": difficulty_of(v), "conditions": list(v.get("conditions", [])),
+           "base": scene["base"], "remove": sorted(set(remove) | set(dropped)), "distractors_removed": dropped,
+           "move": move, "start": v.get("start", scene.get("start")),
+           # appliance heat/cool sources of this episode (None: the scene default); a variant can
+           # make an appliance unavailable, e.g. a microwave that runs but does not heat
+           "thermal_sources": v.get("thermal_sources", scene.get("thermal_sources")),
+           # per-food thermal parameters of this episode, e.g. a microwave that runs but does not heat
+           "thermal_override": v.get("thermal_override", {})}
+    vary = v["vary"] if "vary" in v else scene.get("vary")
+    if vary:
+        apply_vary(cfg, vary, random.Random(f"{task['task_id']}:{variant}:{seed}:vary"))
+    cfg["config_hash"] = config_hash(cfg)
+    return cfg
+
+
+PHYSICAL_KEYS = ("base", "remove", "move", "start", "thermal_sources", "thermal_override")
+
+
+def config_hash(cfg: dict) -> str:
+    """Hash of everything that changes the simulated episode (not the task, variant or seed labels): two
+    episodes with one hash are physical repeats of one configuration."""
+    def r(x):
+        if isinstance(x, float):
+            return round(x, 4)
+        if isinstance(x, dict):
+            return {k: r(v) for k, v in x.items()}
+        if isinstance(x, (list, tuple)):
+            return [r(v) for v in x]
+        return x
+    blob = json.dumps({k: r(cfg.get(k)) for k in PHYSICAL_KEYS}, sort_keys=True)
+    return hashlib.sha1(blob.encode()).hexdigest()[:12]
+
+
+def _grid(rng, half, step):
+    """A value on the grid -half, ..., +half (step apart); 0 when half is 0."""
+    if not half:
+        return 0.0
+    n = int(round(half / step))
+    return rng.randint(-n, n) * step
+
+
+def apply_vary(cfg: dict, vary: dict, rng) -> None:
+    """Seeded local variation inside ranges a variant declares as safe (benchmark v3):
+
+    * ``groups``: [{"names": [...], "dx", "dy", "dyaw", "step", "step_deg"}] shift / turn every named object
+      of ``move`` together (yaw about its own centre), so the gaps between them that make a condition hold
+      (a boxed-in block, an overhang) stay exactly as declared;
+    * ``start``: {"dx", "dy", "dyaw", "step", "step_deg"} around the episode's start pose (the base scene's
+      ``robot_start`` when the variant has none).
+
+    Values are on a grid, so seeds can repeat a configuration; ``config_hash`` tells repeats apart."""
+    applied = {}
+    for g in vary.get("groups", []):
+        dx, dy = _grid(rng, g.get("dx", 0), g.get("step", 0.01)), _grid(rng, g.get("dy", 0), g.get("step", 0.01))
+        dyaw = _grid(rng, g.get("dyaw", 0), g.get("step_deg", 5))
+        for n in g["names"]:
+            m = dict(cfg["move"][n])
+            m["xy"] = [round(m["xy"][0] + dx, 4), round(m["xy"][1] + dy, 4)]
+            m["yaw_deg"] = round(m.get("yaw_deg", 0.0) + dyaw, 2)
+            cfg["move"][n] = m
+        applied["+".join(g["names"])] = [round(dx, 4), round(dy, 4), dyaw]
+    if vary.get("start"):
+        sv = vary["start"]
+        s0 = cfg["start"] or json.loads((ROOT / cfg["base"] / "task.json").read_text())["robot_start"]
+        dx, dy = _grid(rng, sv.get("dx", 0), sv.get("step", 0.05)), _grid(rng, sv.get("dy", 0), sv.get("step", 0.05))
+        dyaw = _grid(rng, sv.get("dyaw", 0), sv.get("step_deg", 5))
+        cfg["start"] = [round(s0[0] + dx, 4), round(s0[1] + dy, 4), round(s0[2] + dyaw, 2)]
+        applied["start"] = [round(dx, 4), round(dy, 4), dyaw]
+    cfg["vary_applied"] = applied
 
 
 def build_annotation(cfg: dict, out_path: Path) -> Path:
