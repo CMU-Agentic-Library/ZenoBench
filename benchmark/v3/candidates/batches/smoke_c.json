@@ -1,0 +1,188 @@
+[
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "route": "alternative_pencil",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "route": "hard_search_pencil",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "route": "hard_search_pencil_near",
+  "variant": "no_pen_pencil_near"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "route": "hard_alt_separate",
+  "variant": "no_pen_pencil_crowded"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "alternative_tv_stand",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "hard_search_alt_support",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "fallback_clear_easy",
+  "variant": "occupied_clearable"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "hard_search_clear",
+  "variant": "clearable_block_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "fallback_uncover",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "hard_uncover_search_spoon",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "explore_search_spoon",
+  "variant": "spoon_out_of_view"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "alternative_spoon",
+  "variant": "spoon_unreachable"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "hard_uncover_alt_spoon",
+  "variant": "lid_on_spoon_unreachable"
+ },
+ {
+  "task": "T11_flip_paperback",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "book_free"
+ },
+ {
+  "task": "T11_flip_paperback",
+  "seed": 10,
+  "route": "explore_search_book",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T11_flip_paperback",
+  "seed": 10,
+  "route": "fallback_push_flip",
+  "variant": "edge_path_blocked"
+ },
+ {
+  "task": "T11_flip_paperback",
+  "seed": 10,
+  "route": "hard_search_push_flip",
+  "variant": "far_edge_path_blocked"
+ },
+ {
+  "task": "T12_rolling_pin_prep",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T12_rolling_pin_prep",
+  "seed": 10,
+  "route": "explore_search_pin",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T12_rolling_pin_prep",
+  "seed": 10,
+  "route": "fallback_push_bowl",
+  "variant": "roll_blocked"
+ },
+ {
+  "task": "T12_rolling_pin_prep",
+  "seed": 10,
+  "route": "hard_search_push_bowl",
+  "variant": "far_roll_blocked"
+ },
+ {
+  "task": "T13_hide_block_in_pot",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T13_hide_block_in_pot",
+  "seed": 10,
+  "route": "fallback_uncover",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T13_hide_block_in_pot",
+  "seed": 10,
+  "route": "fallback_separate",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T13_hide_block_in_pot",
+  "seed": 10,
+  "route": "hard_uncover_separate",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T13_hide_block_in_pot",
+  "seed": 10,
+  "route": "hard_search_uncover",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T15_cabinet_inspection",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "at_island"
+ },
+ {
+  "task": "T15_cabinet_inspection",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "start_dining"
+ },
+ {
+  "task": "T15_cabinet_inspection",
+  "seed": 10,
+  "route": "fallback_open_inspect",
+  "variant": "at_island"
+ }
+]

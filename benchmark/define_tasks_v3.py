@@ -83,6 +83,8 @@ def group(names, dx=0.0, dy=0.0, dyaw=0.0, step=0.01, step_deg=5):
 EXT = {}
 # seed variation of the v2 variants (per task: {variant: vary})
 V2_VARY = {}
+# debugged new tasks (T11 ...), full task dicts in the v2 format plus v3 fields
+NEW_TASKS = []
 
 # v2 route kinds that were search-only (no physical repair): reclassified as explore
 EXPLORE_ROUTES = {("T08_wipe_island", "nominal_from_tv_stand"), ("T08_wipe_island", "oracle_approach"),
@@ -90,9 +92,9 @@ EXPLORE_ROUTES = {("T08_wipe_island", "nominal_from_tv_stand"), ("T08_wipe_islan
                   ("T10_trash_the_can", "hard_explore_search")}
 
 
-def build(ext_all=None):
+def build(ext_all=None, new_tasks=None):
     ext_all = EXT if ext_all is None else ext_all
-    tasks = copy.deepcopy(v2.TASKS)
+    tasks = copy.deepcopy(v2.TASKS) + copy.deepcopy(NEW_TASKS if new_tasks is None else new_tasks)
     for t in tasks:
         tid = t["task_id"]
         ext = ext_all.get(tid, {})
@@ -102,8 +104,9 @@ def build(ext_all=None):
             assert name not in t["variants"], (tid, name)
             t["variants"][name] = copy.deepcopy(var)
             t["variants"][name]["since"] = VERSION
+        since = t.setdefault("since", "v2")
         for name, var in t["variants"].items():
-            var.setdefault("since", "v2")
+            var.setdefault("since", since)
             vy = {**V2_VARY.get(tid, {}), **ext.get("vary", {})}
             if name in vy:
                 var["vary"] = vy[name]
@@ -113,7 +116,7 @@ def build(ext_all=None):
             t["routes"][name] = copy.deepcopy(r)
             t["routes"][name]["since"] = VERSION
         for name, r in t["routes"].items():
-            r.setdefault("since", "v2")
+            r.setdefault("since", since)
             if (tid, name) in EXPLORE_ROUTES:
                 r["kind"] = "explore"
         t["oracle"].update(ext.get("oracle", {}))
@@ -127,7 +130,7 @@ def main():
         import v3_candidates
         cand = v3_candidates.EXT
         CONDITIONS.update(v3_candidates.CONDITIONS)       # (imported as a separate module when run as a script)
-        tasks = build({**EXT, **cand})
+        tasks = build({**EXT, **cand}, NEW_TASKS + v3_candidates.NEW_TASKS)
         out = Path(sys.argv[sys.argv.index("--candidates") + 1])
     else:
         tasks = build()

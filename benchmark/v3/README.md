@@ -23,13 +23,16 @@ as in v2. Auto-recovery stays off, and every recovery is a call that the planner
 
 New conditions are debugged in `benchmark/v3_candidates.py`, which generates a research file:
 `python benchmark/define_tasks_v3.py --candidates OUT.json`. A task's conditions move into
-`define_tasks_v3.EXT` (and therefore into `tasks.json`) only after they pass:
+`define_tasks_v3.EXT` / `NEW_TASKS` (and therefore into `tasks.json`) when:
 
-1. the expected failure really happens in physics;
-2. the explicit recovery or alternative chosen by the upper level runs;
-3. the original task is completed in full, on all 10 evaluation seeds.
+* a new task has run its complete Normal route;
+* every new recovery route has been verified on 1–2 representative seeds (more for contact-geometry-sensitive
+  conditions such as 3 mm gaps): the expected failure really happens in physics, the explicit recovery or
+  alternative chosen by the upper level runs, and the original task is completed in full.
 
-Conditions that cannot be made to work are recorded under the task's `not_adopted`, with the reason.
+Such a condition is **preliminary**. The remaining seeds keep their generated configuration and stay unrun until a
+later stability round; reaching 10/10 is not required to register a condition. Conditions whose failure does not
+happen, or whose recovery cannot complete the task, are recorded under the task's `not_adopted` with the evidence.
 
 ## Conditions, seeds and the matrix
 

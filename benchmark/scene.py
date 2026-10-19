@@ -95,17 +95,17 @@ def config_hash(cfg: dict) -> str:
 
 
 def _grid(rng, half, step):
-    """A value on the grid -half, ..., +half (step apart); 0 when half is 0."""
+    """A value on the grid -half, ..., +half (step apart), or lo, ..., hi for half = [lo, hi]; 0 when half is 0."""
     if not half:
         return 0.0
-    n = int(round(half / step))
-    return rng.randint(-n, n) * step
+    lo, hi = (-half, half) if not isinstance(half, (list, tuple)) else half
+    return rng.randint(int(round(lo / step)), int(round(hi / step))) * step
 
 
 def apply_vary(cfg: dict, vary: dict, rng) -> None:
     """Seeded local variation inside ranges a variant declares as safe (benchmark v3):
 
-    * ``groups``: [{"names": [...], "dx", "dy", "dyaw", "step", "step_deg"}] shift / turn every named object
+    * ``groups``: [{"names": [...], "dx", "dy", "dyaw", "step", "step_deg"}] (a half range, or [lo, hi]) shift / turn every named object
       of ``move`` together (yaw about its own centre), so the gaps between them that make a condition hold
       (a boxed-in block, an overhang) stay exactly as declared;
     * ``start``: {"dx", "dy", "dyaw", "step", "step_deg"} around the episode's start pose (the base scene's

@@ -137,9 +137,12 @@ def _check_groups(doc):
                     d0 = math.dist(base[a]["xy"], base[b]["xy"])
                     d1 = math.dist(mv[a]["xy"], mv[b]["xy"])
                     assert abs(d0 - d1) < 1e-6 or g.get("dyaw"), (t["task_id"], v, a, b)
+                rng = lambda h: (-h, h) if not isinstance(h, (list, tuple)) else h
                 for n in g["names"]:
-                    assert abs(mv[n]["xy"][0] - t["variants"][v].get("move", {}).get(n, t["scene"].get("move", {}).get(n))["xy"][0]) <= g["dx"] + 1e-9
-                    assert abs(mv[n]["xy"][1] - t["variants"][v].get("move", {}).get(n, t["scene"].get("move", {}).get(n))["xy"][1]) <= g["dy"] + 1e-9
+                    m0 = t["variants"][v].get("move", {}).get(n, t["scene"].get("move", {}).get(n))
+                    for i, k in ((0, "dx"), (1, "dy")):
+                        lo, hi = rng(g.get(k) or 0)
+                        assert lo - 1e-9 <= mv[n]["xy"][i] - m0["xy"][i] <= hi + 1e-9, (t["task_id"], v, n)
 
 
 def test_vary_groups_keep_relative_geometry():
