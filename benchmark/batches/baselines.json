@@ -1,0 +1,182 @@
+[
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "far_small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "far_small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "far_small_and_large"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 2,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ }
+]

@@ -1,0 +1,110 @@
+[
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "fallback_separate",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "fallback_separate",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "fallback_push",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "fallback_push",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "hard_search_push",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "hard_search_push",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "nominal",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "nominal",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "alternative_large_container",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "alternative_large_container",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "hard_search_alt_container",
+  "variant": "far_small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "hard_search_alt_container",
+  "variant": "far_small_and_large"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 0,
+  "route": "hard_search_stove",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 1,
+  "route": "hard_search_stove",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 0,
+  "route": "hard_search_expose",
+  "variant": "far_no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 1,
+  "route": "hard_search_expose",
+  "variant": "far_no_overhang"
+ }
+]

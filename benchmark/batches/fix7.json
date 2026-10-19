@@ -1,0 +1,44 @@
+[
+ {
+  "task": "T09_tomato_soup",
+  "seed": 0,
+  "route": "hard_uncover_search_spoon",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 1,
+  "route": "hard_uncover_search_spoon",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "P05_flip_book",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P15_arrange_and_sort",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P16_pot_contents",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P17_pour_and_dip",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P18_floor_pick",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ }
+]

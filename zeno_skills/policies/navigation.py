@@ -51,8 +51,16 @@ class CarryHeightAdjustPolicy(AtomicPolicy):
             raise ValueError("carry height target must be finite and nonnegative")
         name = held["name"]
         bottom = float(self.rig.geo.bottom(name, self.rig.state())[2])
-        if bottom < target - tolerance:
+        # closed loop on the measured bottom: a load whose end is caught (a rolling pin
+        # tilted into a mug) lags the hand by 4-5 cm, so one move fell short (4/4)
+        for _ in range(3):
+            if bottom >= target - tolerance:
+                break
             skills.held_vertical_move(self.rig, target - bottom, "carry_height_adjust")
+            skills.check_held(self.rig, "carry_height_adjust")
+            prev, bottom = bottom, float(self.rig.geo.bottom(name, self.rig.state())[2])
+            if bottom - prev < 0.005:
+                break
         skills.check_held(self.rig, "carry_height_adjust")
         actual = float(self.rig.geo.bottom(name, self.rig.state())[2])
         if actual < target - tolerance:

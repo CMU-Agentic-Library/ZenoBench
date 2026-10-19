@@ -48,8 +48,10 @@ def record_view(rig):
     for a in rig.ann.articulated:
         if project_to_head_camera(rig, entity_point(rig, a["name"], st), exclude=a["name"])[0]:
             mem["observed"][a["name"]] = rig.tick
-    if getattr(rig, "first_person_camera", None) is not None:
+    if getattr(rig, "first_person_camera", None) is not None and not getattr(rig, "observer", None):
         mem.setdefault("frames", []).append({"tick": rig.tick, "image": rig.get_first_person_image()})
+    if getattr(rig, "observer", None) is not None:
+        rig.observer.on_view(seen)      # the observation-limited benchmark keeps its own cache
     return seen
 
 
@@ -95,10 +97,13 @@ class ExploreRoomPolicy(AtomicPolicy):
             if room_of(rig.ann.rooms, c) == room and (x1 - x0) * (y1 - y0) > 0.05 and 0.3 <= s_["z"] <= 1.6 \
                     and s_.get("clearance", 1.0) >= 0.3:
                 targets["support:" + s_["name"]] = np.array([c[0], c[1], s_["z"]])
-        for n in rig.ann.objects:
-            c = rig.geo.centre(n, st)
-            if room_of(rig.ann.rooms, c[:2]) == room:
-                targets[n] = c
+        if not getattr(rig, "static_explore", False):
+            # (the observation-limited benchmark covers the static layout only:
+            # the hidden object list must not shape the route or the coverage)
+            for n in rig.ann.objects:
+                c = rig.geo.centre(n, st)
+                if room_of(rig.ann.rooms, c[:2]) == room:
+                    targets[n] = c
         if not targets:
             raise SkillFailure(f"explore {room}: nothing annotated in the room")
         poses = standoff_poses(rig, room)

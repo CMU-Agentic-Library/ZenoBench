@@ -1,0 +1,50 @@
+[
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "hard_search_alt_container",
+  "variant": "far_small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "hard_search_alt_container",
+  "variant": "far_small_and_large"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 0,
+  "route": "hard_search_alt_support",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 1,
+  "route": "hard_search_alt_support",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 0,
+  "route": "hard_search_approach",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 1,
+  "route": "hard_search_approach",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 0,
+  "route": "hard_uncover_search_spoon",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 1,
+  "route": "hard_uncover_search_spoon",
+  "variant": "lid_on_spoon_away"
+ }
+]

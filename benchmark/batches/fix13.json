@@ -1,0 +1,26 @@
+[
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "alternative_large_container",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "hard_search_alt_container",
+  "variant": "far_small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "alternative_large_container",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "hard_search_alt_container",
+  "variant": "far_small_and_large"
+ }
+]

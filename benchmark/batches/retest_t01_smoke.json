@@ -1,0 +1,65 @@
+[
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 0,
+  "route": "fallback_expose",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 0,
+  "route": "hard_search_expose",
+  "variant": "far_no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 1,
+  "route": "nominal",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 1,
+  "route": "fallback_expose",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 1,
+  "route": "hard_search_expose",
+  "variant": "far_no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 2,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 3,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 4,
+  "planner": "recovery",
+  "variant": "overhang_ready",
+  "policy": "benchmark.tests.smoke_planners:BudgetPlanner",
+  "max_calls": 3
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 4,
+  "planner": "recovery",
+  "variant": "overhang_ready",
+  "policy": "benchmark.tests.smoke_planners:CrashPlanner"
+ }
+]

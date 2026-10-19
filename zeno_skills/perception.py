@@ -126,7 +126,97 @@ def project_to_head_camera(rig, point, exclude=None):
         return False, f"outside frustum (h {h:.0f}, v {v:.0f} deg, {dist:.1f} m)"
     if _segment_blocked(getattr(rig, "world", None), cam, np.asarray(point, float)):
         return False, f"line of sight blocked (h {h:.0f}, v {v:.0f} deg)"
+    if getattr(rig, "occlusion", False) and exclude is not None:
+        why = dynamic_occluder(rig, exclude, cam, np.asarray(point, float))
+        if why:
+            return False, f"occluded: {why}"
     return True, f"h {h:.0f}, v {v:.0f} deg, {dist:.1f} m"
+
+
+def _open_fraction(rig, a):
+    span = abs(a["open_q"] - a["closed_q"])
+    return abs(rig.joint(a["name"]) - a["closed_q"]) / max(span, 1e-9)
+
+
+def dynamic_occluder(rig, name, cam, point, st=None):
+    """Why a visible-in-frustum object is still hidden (None if it is not):
+    inside a closed cabinet / appliance, under a lid, below the rim of an
+    opaque container seen from the side, or behind another object.  Only
+    used when ``rig.occlusion`` is set (the observation-limited benchmark)."""
+    ann = rig.ann
+    if name not in ann.objects:
+        return None
+    st = st or rig.state()
+    c = np.asarray(rig.geo.centre(name, st), float)
+    held = {(rig.held or {}).get("name"), (getattr(rig, "left_held", None) or {}).get("name")} - {None}
+    if name in held:
+        return None
+    # closed doors: cavity / body boxes and shelves behind a door
+    sup = rig.geo.support_under(name, st)
+    for a in ann.articulated:
+        box = a.get("cavity_aabb") or (a.get("body_aabb") if a.get("category") == "refrigerator" else None)
+        inside = box is not None and all(box[i] < c[i] < box[i + 3] for i in range(3))
+        inside = inside or (sup is not None and sup.get("furniture") == a["name"]
+                            and sup.get("category") == "cabinet_inside")
+        if inside and _open_fraction(rig, a) < 0.3:
+            return f"inside closed {a['name']}"
+    from .predicates import lid_on, lids
+    for other, o in ann.objects.items():
+        if other == name or other in held:
+            continue
+        asset = ann.asset_of(o)
+        if asset.get("container") and rig.geo.inside(name, other, st)[0]:
+            if any(lid_on(rig, other, l, st)[0] for l in lids(rig) if l != other):
+                return f"under the lid of {other}"
+            rim = float(rig.geo.bottom(other, st)[2]) + float(asset["container"].get("rim_height", asset["size"][2]))
+            if cam[2] < rim + 0.02:
+                return f"below the rim of {other}"
+    # other objects on the ray (their axis-aligned boxes): hidden only when
+    # every sample point of the target (centre, top, four sides) is blocked
+    boxes = []
+    for other, o in ann.objects.items():
+        if other == name or other in held:
+            continue
+        asset = ann.asset_of(o)
+        if asset.get("container") and rig.geo.inside(name, other, st)[0]:
+            continue                      # seen over the rim (checked above)
+        fp = rig.geo.footprint(other, st)
+        z0 = float(rig.geo.bottom(other, st)[2])
+        lo = np.array([fp[0], fp[1], z0])
+        hi = np.array([fp[2], fp[3], z0 + float(asset["size"][2])])
+        if np.all(c > lo - 0.01) and np.all(c < hi + 0.01):
+            continue                      # the target rests on / in this box
+        boxes.append((other, lo, hi))
+    if not boxes:
+        return None
+    fp = rig.geo.footprint(name, st)
+    b = rig.geo.bottom(name, st)
+    top = float(b[2]) + float(ann.asset_of(ann.objects[name])["size"][2])
+    mx, my = 0.35 * (fp[2] - fp[0]), 0.35 * (fp[3] - fp[1])
+    pts = [c, np.array([c[0], c[1], top - 0.005])] + \
+          [np.array([c[0] + sx * mx, c[1] + sy * my, c[2]]) for sx, sy in ((1, 0), (-1, 0), (0, 1), (0, -1))]
+    blocker = None
+    for p in pts:
+        d = p - cam
+        hit = None
+        for other, lo, hi in boxes:
+            # slab test on the segment, ignoring the last 4 cm before the target
+            t0, t1 = 0.0, 1.0 - 0.04 / max(float(np.linalg.norm(d)), 1e-6)
+            for i in range(3):
+                if abs(d[i]) < 1e-9:
+                    if cam[i] < lo[i] or cam[i] > hi[i]:
+                        t0, t1 = 1.0, 0.0
+                        break
+                    continue
+                ta, tb = (lo[i] - cam[i]) / d[i], (hi[i] - cam[i]) / d[i]
+                t0, t1 = max(t0, min(ta, tb)), min(t1, max(ta, tb))
+            if t0 < t1:
+                hit = other
+                break
+        if hit is None:
+            return None
+        blocker = blocker or hit
+    return f"behind {blocker}"
 
 
 def pixel_of(rig, point, width=640, height=480):

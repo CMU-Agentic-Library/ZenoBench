@@ -1,0 +1,44 @@
+[
+ {
+  "task": "P01_body_and_gesture",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P19_spoon_dip",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P20_hide_block",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P21_clear_cabinet",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P22_chill_oatmeal",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P16_empty_mug",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ },
+ {
+  "task": "P17_pour",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "default"
+ }
+]

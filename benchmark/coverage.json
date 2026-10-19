@@ -1,0 +1,3897 @@
+{
+ "skills": [
+  {
+   "skill_id": "skill_001",
+   "verb": "navigate",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture",
+    "P02_perception",
+    "P03_rolling_pin",
+    "P04_bottle",
+    "P05_flip_book",
+    "P06_two_hands",
+    "P07_present_and_brace",
+    "P08_block_alignment",
+    "P09_sweep_blocks",
+    "P11_stove_cycle",
+    "P12_cabinet",
+    "P13_microwave_buttons",
+    "P14_restore_swap",
+    "P15_arrange_and_sort",
+    "P16_empty_mug",
+    "P17_pour",
+    "P18_floor_pick",
+    "P19_spoon_dip",
+    "P20_hide_block",
+    "P21_clear_cabinet",
+    "P22_chill_oatmeal",
+    "T01_book_to_dining_table",
+    "T02_stack_blocks",
+    "T03_utensils_one_container",
+    "T04_cup_or_mug_to_cabinet",
+    "T05_pen_or_pencil_to_desk",
+    "T06_block_destination_occupied",
+    "T07_heat_oatmeal",
+    "T08_wipe_island",
+    "T09_tomato_soup",
+    "T10_trash_the_can"
+   ],
+   "calls": 314,
+   "successful_calls": 302,
+   "paths": [
+    "carry",
+    "empty"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/final/P02_perception/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_002",
+   "verb": "approach",
+   "status": "covered",
+   "tasks": [
+    "P06_two_hands",
+    "P11_stove_cycle",
+    "T01_book_to_dining_table",
+    "T02_stack_blocks",
+    "T03_utensils_one_container",
+    "T08_wipe_island"
+   ],
+   "calls": 34,
+   "successful_calls": 34,
+   "paths": [
+    "park"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P06_two_hands/s0_default_nominal",
+    "benchmark/runs/final/P11_stove_cycle/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_003",
+   "verb": "face",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "rotate_empty"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_004",
+   "verb": "retreat",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture",
+    "P06_two_hands",
+    "T03_utensils_one_container"
+   ],
+   "calls": 6,
+   "successful_calls": 6,
+   "paths": [
+    "bimanual_or_left_load",
+    "empty",
+    "loaded"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/final/P06_two_hands/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_005",
+   "verb": "crouch",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 2,
+   "successful_calls": 2,
+   "paths": [
+    "lowest",
+    "to_height"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_006",
+   "verb": "stand",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 2,
+   "successful_calls": 2,
+   "paths": [
+    "highest"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_007",
+   "verb": "bend",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 2,
+   "successful_calls": 2,
+   "paths": [
+    "full",
+    "to_pitch"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_008",
+   "verb": "straighten",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "upright"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_009",
+   "verb": "tuck",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "right"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_010",
+   "verb": "reset",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "joint_home"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_011",
+   "verb": "look",
+   "status": "covered",
+   "tasks": [
+    "P02_perception",
+    "P03_rolling_pin",
+    "P04_bottle",
+    "P05_flip_book",
+    "P06_two_hands",
+    "P07_present_and_brace",
+    "P08_block_alignment",
+    "P09_sweep_blocks",
+    "P11_stove_cycle",
+    "P13_microwave_buttons",
+    "P14_restore_swap",
+    "P15_arrange_and_sort",
+    "P16_empty_mug",
+    "P17_pour",
+    "P18_floor_pick",
+    "P19_spoon_dip",
+    "P20_hide_block",
+    "P21_clear_cabinet",
+    "P22_chill_oatmeal",
+    "T01_book_to_dining_table",
+    "T02_stack_blocks",
+    "T03_utensils_one_container",
+    "T04_cup_or_mug_to_cabinet",
+    "T05_pen_or_pencil_to_desk",
+    "T06_block_destination_occupied",
+    "T07_heat_oatmeal",
+    "T08_wipe_island",
+    "T09_tomato_soup",
+    "T10_trash_the_can"
+   ],
+   "calls": 109,
+   "successful_calls": 109,
+   "paths": [
+    "head_only",
+    "turn_then_head"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P02_perception/s0_default_nominal",
+    "benchmark/runs/final/P03_rolling_pin/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_012",
+   "verb": "inspect",
+   "status": "covered",
+   "tasks": [
+    "P02_perception",
+    "P12_cabinet"
+   ],
+   "calls": 2,
+   "successful_calls": 2,
+   "paths": [
+    "open_view"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P02_perception/s0_default_nominal",
+    "benchmark/runs/final/P12_cabinet/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_013",
+   "verb": "search",
+   "status": "covered",
+   "tasks": [
+    "P15_arrange_and_sort",
+    "T01_book_to_dining_table",
+    "T02_stack_blocks",
+    "T03_utensils_one_container",
+    "T04_cup_or_mug_to_cabinet",
+    "T05_pen_or_pencil_to_desk",
+    "T06_block_destination_occupied",
+    "T07_heat_oatmeal",
+    "T08_wipe_island",
+    "T09_tomato_soup",
+    "T10_trash_the_can"
+   ],
+   "calls": 27,
+   "successful_calls": 23,
+   "paths": [
+    "room_sweep"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal",
+    "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
+   ]
+  },
+  {
+   "skill_id": "skill_014",
+   "verb": "explore",
+   "status": "covered",
+   "tasks": [
+    "P02_perception",
+    "T10_trash_the_can"
+   ],
+   "calls": 9,
+   "successful_calls": 9,
+   "paths": [
+    "viewpoints"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P02_perception/s0_default_nominal",
+    "benchmark/runs/final/T10_trash_the_can/s0_can_in_dining_room_search_first"
+   ]
+  },
+  {
+   "skill_id": "skill_015",
+   "verb": "point",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "front"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_016",
+   "verb": "present",
+   "status": "covered",
+   "tasks": [
+    "P07_present_and_brace"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "front_of_head"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P07_present_and_brace/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_017",
+   "verb": "pick",
+   "status": "covered",
+   "tasks": [
+    "P05_flip_book",
+    "P06_two_hands",
+    "P07_present_and_brace",
+    "P08_block_alignment",
+    "P11_stove_cycle",
+    "P13_microwave_buttons",
+    "P14_restore_swap",
+    "P15_arrange_and_sort",
+    "P17_pour",
+    "P18_floor_pick",
+    "P19_spoon_dip",
+    "P20_hide_block",
+    "P21_clear_cabinet",
+    "T01_book_to_dining_table",
+    "T02_stack_blocks",
+    "T03_utensils_one_container",
+    "T04_cup_or_mug_to_cabinet",
+    "T05_pen_or_pencil_to_desk",
+    "T06_block_destination_occupied",
+    "T07_heat_oatmeal",
+    "T08_wipe_island",
+    "T09_tomato_soup",
+    "T10_trash_the_can"
+   ],
+   "calls": 146,
+   "successful_calls": 126,
+   "paths": [
+    "flat_overhang_ready",
+    "floor_top",
+    "microwave_cavity",
+    "round_rim",
+    "top_pinch"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P05_flip_book/s0_default_nominal",
+    "benchmark/runs/final/P06_two_hands/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_018",
+   "verb": "place",
+   "status": "covered",
+   "tasks": [
+    "P05_flip_book",
+    "P07_present_and_brace",
+    "P11_stove_cycle",
+    "P13_microwave_buttons",
+    "P14_restore_swap",
+    "P15_arrange_and_sort",
+    "P18_floor_pick",
+    "P20_hide_block",
+    "P21_clear_cabinet",
+    "T01_book_to_dining_table",
+    "T03_utensils_one_container",
+    "T04_cup_or_mug_to_cabinet",
+    "T05_pen_or_pencil_to_desk",
+    "T06_block_destination_occupied",
+    "T07_heat_oatmeal",
+    "T08_wipe_island",
+    "T09_tomato_soup"
+   ],
+   "calls": 96,
+   "successful_calls": 83,
+   "paths": [
+    "container",
+    "edge_held_flat",
+    "microwave_staged",
+    "stove_burner",
+    "surface"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P05_flip_book/s0_default_nominal",
+    "benchmark/runs/final/P07_present_and_brace/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_019",
+   "verb": "drop",
+   "status": "covered",
+   "tasks": [
+    "T03_utensils_one_container",
+    "T10_trash_the_can"
+   ],
+   "calls": 18,
+   "successful_calls": 18,
+   "paths": [
+    "above_opening"
+   ],
+   "evidence": [
+    "benchmark/runs/final/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container",
+    "benchmark/runs/final/T03_utensils_one_container/s0_large_only_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_020",
+   "verb": "stack",
+   "status": "covered",
+   "tasks": [
+    "P08_block_alignment",
+    "T02_stack_blocks"
+   ],
+   "calls": 12,
+   "successful_calls": 7,
+   "paths": [
+    "top_face"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P08_block_alignment/s0_default_nominal",
+    "benchmark/runs/final/T02_stack_blocks/s0_clear_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_021",
+   "verb": "release",
+   "status": "not covered",
+   "tasks": [],
+   "calls": 0,
+   "successful_calls": 0,
+   "paths": [],
+   "evidence": []
+  },
+  {
+   "skill_id": "skill_022",
+   "verb": "handover",
+   "status": "covered",
+   "tasks": [
+    "P06_two_hands"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "right_to_left"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P06_two_hands/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_023",
+   "verb": "lift",
+   "status": "covered",
+   "tasks": [
+    "P19_spoon_dip",
+    "T03_utensils_one_container",
+    "T10_trash_the_can"
+   ],
+   "calls": 9,
+   "successful_calls": 9,
+   "paths": [
+    "raise"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P19_spoon_dip/s0_default_nominal",
+    "benchmark/runs/final/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container"
+   ]
+  },
+  {
+   "skill_id": "skill_024",
+   "verb": "lower",
+   "status": "covered",
+   "tasks": [
+    "P19_spoon_dip"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "descend"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P19_spoon_dip/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_025",
+   "verb": "rotate",
+   "status": "covered",
+   "tasks": [
+    "P08_block_alignment",
+    "T02_stack_blocks"
+   ],
+   "calls": 10,
+   "successful_calls": 10,
+   "paths": [
+    "wrist_yaw"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P08_block_alignment/s0_default_nominal",
+    "benchmark/runs/final/T02_stack_blocks/s0_clear_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_026",
+   "verb": "regrasp",
+   "status": "covered",
+   "tasks": [
+    "P06_two_hands"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "set_down_and_pick"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P06_two_hands/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_027",
+   "verb": "brace",
+   "status": "called, failed",
+   "tasks": [],
+   "calls": 1,
+   "successful_calls": 0,
+   "paths": [],
+   "evidence": []
+  },
+  {
+   "skill_id": "skill_028",
+   "verb": "flip",
+   "status": "covered",
+   "tasks": [
+    "P05_flip_book"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "edge_roll"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P05_flip_book/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_029",
+   "verb": "push",
+   "status": "covered",
+   "tasks": [
+    "P09_sweep_blocks",
+    "T02_stack_blocks"
+   ],
+   "calls": 3,
+   "successful_calls": 3,
+   "paths": [
+    "from_behind"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P09_sweep_blocks/s0_default_nominal",
+    "benchmark/runs/final/T02_stack_blocks/s0_crowded_fallback_push"
+   ]
+  },
+  {
+   "skill_id": "skill_030",
+   "verb": "pull",
+   "status": "covered",
+   "tasks": [
+    "P03_rolling_pin"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "top_drag"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P03_rolling_pin/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_031",
+   "verb": "expose",
+   "status": "covered",
+   "tasks": [
+    "P05_flip_book",
+    "T01_book_to_dining_table"
+   ],
+   "calls": 5,
+   "successful_calls": 5,
+   "paths": [
+    "slide_to_edge"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P05_flip_book/s0_default_nominal",
+    "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
+   ]
+  },
+  {
+   "skill_id": "skill_032",
+   "verb": "separate",
+   "status": "covered",
+   "tasks": [
+    "T02_stack_blocks"
+   ],
+   "calls": 4,
+   "successful_calls": 4,
+   "paths": [
+    "push_apart"
+   ],
+   "evidence": [
+    "benchmark/runs/final/T02_stack_blocks/s0_crowded_fallback_separate",
+    "benchmark/runs/final/T02_stack_blocks/s0_far_crowded_hard_search_separate"
+   ]
+  },
+  {
+   "skill_id": "skill_033",
+   "verb": "center",
+   "status": "covered",
+   "tasks": [
+    "P03_rolling_pin"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "push_inward"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P03_rolling_pin/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_034",
+   "verb": "roll",
+   "status": "covered",
+   "tasks": [
+    "P03_rolling_pin"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "push_above_axis"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P03_rolling_pin/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_035",
+   "verb": "tip",
+   "status": "covered",
+   "tasks": [
+    "P04_bottle"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "push_high"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P04_bottle/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_036",
+   "verb": "upright",
+   "status": "called, failed",
+   "tasks": [],
+   "calls": 1,
+   "successful_calls": 0,
+   "paths": [],
+   "evidence": []
+  },
+  {
+   "skill_id": "skill_037",
+   "verb": "wipe",
+   "status": "covered",
+   "tasks": [
+    "T08_wipe_island"
+   ],
+   "calls": 10,
+   "successful_calls": 6,
+   "paths": [
+    "sponge_strip"
+   ],
+   "evidence": [
+    "benchmark/runs/final/T08_wipe_island/s0_far_sponge_tv_hard_search_approach",
+    "benchmark/runs/final/T08_wipe_island/s0_sponge_on_island_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_038",
+   "verb": "stir",
+   "status": "covered",
+   "tasks": [
+    "T09_tomato_soup"
+   ],
+   "calls": 6,
+   "successful_calls": 6,
+   "paths": [
+    "circle_below_rim"
+   ],
+   "evidence": [
+    "benchmark/runs/final/T09_tomato_soup/s0_lid_off_nominal",
+    "benchmark/runs/final/T09_tomato_soup/s0_lid_on_fallback_uncover"
+   ]
+  },
+  {
+   "skill_id": "skill_039",
+   "verb": "pour",
+   "status": "called, failed",
+   "tasks": [],
+   "calls": 1,
+   "successful_calls": 0,
+   "paths": [],
+   "evidence": []
+  },
+  {
+   "skill_id": "skill_040",
+   "verb": "open",
+   "status": "covered",
+   "tasks": [
+    "P12_cabinet",
+    "P13_microwave_buttons",
+    "P22_chill_oatmeal",
+    "T07_heat_oatmeal"
+   ],
+   "calls": 12,
+   "successful_calls": 11,
+   "paths": [
+    "hinged_door",
+    "powered_microwave",
+    "refrigerator"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P12_cabinet/s0_default_nominal",
+    "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_041",
+   "verb": "close",
+   "status": "covered",
+   "tasks": [
+    "P12_cabinet",
+    "P13_microwave_buttons",
+    "P22_chill_oatmeal",
+    "T07_heat_oatmeal"
+   ],
+   "calls": 15,
+   "successful_calls": 15,
+   "paths": [
+    "handle_push",
+    "powered"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P12_cabinet/s0_default_nominal",
+    "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_042",
+   "verb": "press",
+   "status": "covered",
+   "tasks": [
+    "P11_stove_cycle",
+    "P13_microwave_buttons"
+   ],
+   "calls": 2,
+   "successful_calls": 2,
+   "paths": [
+    "generic_key",
+    "microwave_start_staged"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P11_stove_cycle/s0_default_nominal",
+    "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_043",
+   "verb": "heat",
+   "status": "covered",
+   "tasks": [
+    "T07_heat_oatmeal",
+    "T09_tomato_soup"
+   ],
+   "calls": 20,
+   "successful_calls": 12,
+   "paths": [
+    "microwave",
+    "stove_pot"
+   ],
+   "evidence": [
+    "benchmark/runs/final/T07_heat_oatmeal/s0_broken_oatmeal_away_hard_search_stove",
+    "benchmark/runs/final/T07_heat_oatmeal/s0_microwave_broken_alternative_stove"
+   ]
+  },
+  {
+   "skill_id": "skill_044",
+   "verb": "chill",
+   "status": "covered",
+   "tasks": [
+    "P22_chill_oatmeal"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "fridge_wait"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P22_chill_oatmeal/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_045",
+   "verb": "cover",
+   "status": "covered",
+   "tasks": [
+    "P20_hide_block",
+    "T09_tomato_soup"
+   ],
+   "calls": 7,
+   "successful_calls": 7,
+   "paths": [
+    "rim_plane"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P20_hide_block/s0_default_nominal",
+    "benchmark/runs/final/T09_tomato_soup/s0_lid_off_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_046",
+   "verb": "uncover",
+   "status": "covered",
+   "tasks": [
+    "P16_empty_mug",
+    "P17_pour",
+    "P19_spoon_dip",
+    "T09_tomato_soup"
+   ],
+   "calls": 7,
+   "successful_calls": 7,
+   "paths": [
+    "knob_lift_aside"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P16_empty_mug/s0_default_nominal",
+    "benchmark/runs/final/P17_pour/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_047",
+   "verb": "fetch",
+   "status": "covered",
+   "tasks": [
+    "P14_restore_swap",
+    "P15_arrange_and_sort",
+    "P20_hide_block",
+    "P21_clear_cabinet",
+    "T09_tomato_soup"
+   ],
+   "calls": 17,
+   "successful_calls": 17,
+   "paths": [
+    "to_container",
+    "to_surface"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P14_restore_swap/s0_default_nominal",
+    "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_048",
+   "verb": "collect",
+   "status": "covered",
+   "tasks": [
+    "T09_tomato_soup"
+   ],
+   "calls": 14,
+   "successful_calls": 6,
+   "paths": [
+    "fetch_each"
+   ],
+   "evidence": [
+    "benchmark/runs/final/T09_tomato_soup/s0_lid_off_nominal",
+    "benchmark/runs/final/T09_tomato_soup/s0_lid_on_fallback_uncover"
+   ]
+  },
+  {
+   "skill_id": "skill_049",
+   "verb": "sort",
+   "status": "covered",
+   "tasks": [
+    "P15_arrange_and_sort"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "fetch_by_tag"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_050",
+   "verb": "clear",
+   "status": "covered",
+   "tasks": [
+    "P21_clear_cabinet"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "fetch_each_on_support"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P21_clear_cabinet/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_051",
+   "verb": "empty",
+   "status": "called, failed",
+   "tasks": [],
+   "calls": 1,
+   "successful_calls": 0,
+   "paths": [],
+   "evidence": []
+  },
+  {
+   "skill_id": "skill_052",
+   "verb": "arrange",
+   "status": "covered",
+   "tasks": [
+    "P15_arrange_and_sort"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "place_near_common_spot"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_053",
+   "verb": "restore",
+   "status": "covered",
+   "tasks": [
+    "P14_restore_swap"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "dispatch_pick_place"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P14_restore_swap/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_054",
+   "verb": "swap",
+   "status": "covered",
+   "tasks": [
+    "P14_restore_swap"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "via_buffer"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P14_restore_swap/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_055",
+   "verb": "sidestep",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "empty_tucked"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_056",
+   "verb": "wait",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture",
+    "P11_stove_cycle",
+    "P13_microwave_buttons"
+   ],
+   "calls": 3,
+   "successful_calls": 3,
+   "paths": [
+    "idle"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/final/P11_stove_cycle/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_057",
+   "verb": "identify",
+   "status": "covered",
+   "tasks": [
+    "P02_perception"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "look_and_label"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P02_perception/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_058",
+   "verb": "measure",
+   "status": "covered",
+   "tasks": [
+    "P02_perception",
+    "T03_utensils_one_container"
+   ],
+   "calls": 3,
+   "successful_calls": 3,
+   "paths": [
+    "look_and_size"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P02_perception/s0_default_nominal",
+    "benchmark/runs/final/T03_utensils_one_container/s0_small_and_large_alternative_large_container"
+   ]
+  },
+  {
+   "skill_id": "skill_059",
+   "verb": "count",
+   "status": "covered",
+   "tasks": [
+    "P02_perception",
+    "T04_cup_or_mug_to_cabinet"
+   ],
+   "calls": 5,
+   "successful_calls": 5,
+   "paths": [
+    "head_sweep"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P02_perception/s0_default_nominal",
+    "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s0_no_cup_alternative_mug"
+   ]
+  },
+  {
+   "skill_id": "skill_060",
+   "verb": "wave",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "raised_swing"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_061",
+   "verb": "nod",
+   "status": "covered",
+   "tasks": [
+    "P01_body_and_gesture"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "pitch_cycles"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_062",
+   "verb": "shake",
+   "status": "covered",
+   "tasks": [
+    "P07_present_and_brace"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "lateral"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P07_present_and_brace/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_063",
+   "verb": "hover",
+   "status": "covered",
+   "tasks": [
+    "P17_pour",
+    "T10_trash_the_can"
+   ],
+   "calls": 5,
+   "successful_calls": 5,
+   "paths": [
+    "above_target"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P17_pour/s0_default_nominal",
+    "benchmark/runs/final/T10_trash_the_can/s0_can_on_island_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_064",
+   "verb": "square",
+   "status": "covered",
+   "tasks": [
+    "P08_block_alignment"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "pick_rotate_place"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P08_block_alignment/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_065",
+   "verb": "touch",
+   "status": "covered",
+   "tasks": [
+    "P08_block_alignment"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "fingertip_top"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P08_block_alignment/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_066",
+   "verb": "knock",
+   "status": "covered",
+   "tasks": [
+    "P12_cabinet"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "panel_taps"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P12_cabinet/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_067",
+   "verb": "sweep",
+   "status": "covered",
+   "tasks": [
+    "P09_sweep_blocks"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "push_to_centroid"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P09_sweep_blocks/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_068",
+   "verb": "stop",
+   "status": "covered",
+   "tasks": [
+    "P11_stove_cycle",
+    "P13_microwave_buttons",
+    "T07_heat_oatmeal"
+   ],
+   "calls": 6,
+   "successful_calls": 6,
+   "paths": [
+    "microwave_door",
+    "stove_key_off"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P11_stove_cycle/s0_default_nominal",
+    "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_069",
+   "verb": "dip",
+   "status": "covered",
+   "tasks": [
+    "P19_spoon_dip"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "tip_below_rim"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P19_spoon_dip/s0_default_nominal"
+   ]
+  },
+  {
+   "skill_id": "skill_070",
+   "verb": "hide",
+   "status": "covered",
+   "tasks": [
+    "P20_hide_block"
+   ],
+   "calls": 1,
+   "successful_calls": 1,
+   "paths": [
+    "container_with_lid"
+   ],
+   "evidence": [
+    "benchmark/runs/final/P20_hide_block/s0_default_nominal"
+   ]
+  }
+ ],
+ "runs": [
+  {
+   "task": "P01_body_and_gesture",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 17,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "waved() OK",
+    "nodded() OK",
+    "arm_stowed(right) OK",
+    "torso_raised() OK",
+    "waist_straight() OK"
+   ],
+   "dropped": [],
+   "wall_s": 35.2,
+   "dir": "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P02_perception",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "identified(soda_can) OK",
+    "measured(juice_bottle) OK",
+    "counted(cherry_tomato) OK",
+    "room_explored(living_room_0_0) OK"
+   ],
+   "dropped": [],
+   "wall_s": 56.7,
+   "dir": "benchmark/runs/final/P02_perception/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P03_rolling_pin",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "away_from_edge(rolling_pin, 0.06) OK",
+    "on(rolling_pin, kitchen_island/top) OK"
+   ],
+   "dropped": [],
+   "wall_s": 67.9,
+   "dir": "benchmark/runs/final/P03_rolling_pin/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P04_bottle",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 4,
+   "failed_calls": [
+    "upright_object(object=juice_bottle)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "upright(juice_bottle) FALSE",
+    "on(juice_bottle, kitchen_island/top) FALSE"
+   ],
+   "dropped": [
+    "juice_bottle"
+   ],
+   "wall_s": 360.3,
+   "dir": "benchmark/runs/final/P04_bottle/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P05_flip_book",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "flipped(paperback_book) OK",
+    "on(paperback_book, kitchen_island/top) OK"
+   ],
+   "dropped": [],
+   "wall_s": 109.1,
+   "dir": "benchmark/runs/final/P05_flip_book/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P06_two_hands",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 9,
+   "failed_calls": [
+    "open_articulated(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "holding(left, rolling_pin) OK",
+    "is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478) OK"
+   ],
+   "dropped": [],
+   "wall_s": 128.6,
+   "dir": "benchmark/runs/final/P06_two_hands/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P07_present_and_brace",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 9,
+   "failed_calls": [
+    "brace_object(object=mug)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on(wooden_block_b, kitchen_island/top) OK",
+    "hand_empty(left) OK",
+    "hand_empty(right) OK",
+    "upright(mug) OK"
+   ],
+   "dropped": [
+    "mug"
+   ],
+   "wall_s": 296.8,
+   "dir": "benchmark/runs/final/P07_present_and_brace/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P08_block_alignment",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on_top_of(wooden_block_b, wooden_block_a) OK",
+    "squared(wooden_block_a) OK"
+   ],
+   "dropped": [],
+   "wall_s": 106.3,
+   "dir": "benchmark/runs/final/P08_block_alignment/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P09_sweep_blocks",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 4,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on(wooden_block_a, kitchen_island/top) FALSE",
+    "on(wooden_block_b, kitchen_island/top) OK"
+   ],
+   "dropped": [
+    "wooden_block_a"
+   ],
+   "wall_s": 112.7,
+   "dir": "benchmark/runs/final/P09_sweep_blocks/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P11_stove_cycle",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 9,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on_burner(mug, kitchen_stove) OK",
+    "not heating(kitchen_stove) OK"
+   ],
+   "dropped": [],
+   "wall_s": 139.5,
+   "dir": "benchmark/runs/final/P11_stove_cycle/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P12_cabinet",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "knocked(KitchenCabinetFactory_7025538_spawn_asset_6631478) OK",
+    "is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478) OK"
+   ],
+   "dropped": [],
+   "wall_s": 86.7,
+   "dir": "benchmark/runs/final/P12_cabinet/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P13_microwave_buttons",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 11,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "in_appliance(oatmeal, kitchen_microwave) OK",
+    "not heating(kitchen_microwave) OK"
+   ],
+   "dropped": [],
+   "wall_s": 102.7,
+   "dir": "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P14_restore_swap",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "positions_swapped(wooden_block_a, soda_can) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 971.8,
+   "dir": "benchmark/runs/final/P14_restore_swap/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P15_arrange_and_sort",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 4,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "sorted_by_category(['soda_can', 'wooden_block_b'], {'recyclable': 'trash_can', 'block': 'kitchen_stove/top'}) OK"
+   ],
+   "dropped": [],
+   "wall_s": 629.7,
+   "dir": "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P16_empty_mug",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 5,
+   "failed_calls": [
+    "empty_container(container=mug, receptacle=handled_cooking_pot)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "container_empty(mug) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 1748.6,
+   "dir": "benchmark/runs/final/P16_empty_mug/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P17_pour",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 9,
+   "failed_calls": [
+    "pour_contents(source=mug, target=handled_cooking_pot)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "container_empty(mug) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 2003.5,
+   "dir": "benchmark/runs/final/P17_pour/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P18_floor_pick",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on(floor_block, kitchen_island/top) OK"
+   ],
+   "dropped": [],
+   "wall_s": 117.1,
+   "dir": "benchmark/runs/final/P18_floor_pick/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P19_spoon_dip",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 10,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "dipped(handled_cooking_pot) OK"
+   ],
+   "dropped": [],
+   "wall_s": 633.2,
+   "dir": "benchmark/runs/final/P19_spoon_dip/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P20_hide_block",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hidden(wooden_block_b) OK"
+   ],
+   "dropped": [],
+   "wall_s": 199.9,
+   "dir": "benchmark/runs/final/P20_hide_block/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P21_clear_cabinet",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 3,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "support_clear(KitchenCabinetFactory_7025538_spawn_asset_6631478/top) OK"
+   ],
+   "dropped": [],
+   "wall_s": 319.9,
+   "dir": "benchmark/runs/final/P21_clear_cabinet/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "P22_chill_oatmeal",
+   "seed": 0,
+   "variant": "default",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "temperature_at_most(oatmeal, 8) OK",
+    "is_closed(breakfast_fridge) OK"
+   ],
+   "dropped": [],
+   "wall_s": 41.6,
+   "dir": "benchmark/runs/final/P22_chill_oatmeal/s0_default_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 0,
+   "variant": "far_no_overhang",
+   "planner": "scripted",
+   "route": "hard_search_expose",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "pick_object(object=paperback_book)"
+   ],
+   "evidence_failure": "pick_object(object=paperback_book): edge pinch paperback_book: not held (lift 0.000 m)",
+   "recovery": [
+    "search_object(object=paperback_book, region=living_room_0_0) OK",
+    "expose_object(object=paperback_book) OK",
+    "pick_object(object=paperback_book) OK"
+   ],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 336.4,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 0,
+   "variant": "no_overhang",
+   "planner": "scripted",
+   "route": "fallback_expose",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "pick_object(object=paperback_book)"
+   ],
+   "evidence_failure": "pick_object(object=paperback_book): edge pinch paperback_book: not held (lift 0.000 m)",
+   "recovery": [
+    "expose_object(object=paperback_book) OK",
+    "pick_object(object=paperback_book) OK"
+   ],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 215.4,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_no_overhang_fallback_expose",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 0,
+   "variant": "overhang_ready",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 189.6,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_overhang_ready_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 1,
+   "variant": "far_no_overhang",
+   "planner": "scripted",
+   "route": "hard_search_expose",
+   "outcome": "fail",
+   "calls": 7,
+   "failed_calls": [
+    "pick_object(object=paperback_book)",
+    "place_object(object=paperback_book, receptacle=TableDiningFactory_1437886_spawn_asset_2104395/surface_2, hint_xy=[3.72, 6.5])"
+   ],
+   "evidence_failure": "pick_object(object=paperback_book): edge pinch paperback_book: not held (lift 0.000 m)",
+   "recovery": [
+    "search_object(object=paperback_book, region=living_room_0_0) OK",
+    "expose_object(object=paperback_book) OK",
+    "pick_object(object=paperback_book) OK"
+   ],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) FALSE",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [
+    "paperback_book"
+   ],
+   "wall_s": 408.1,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_far_no_overhang_hard_search_expose",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 1,
+   "variant": "no_overhang",
+   "planner": "scripted",
+   "route": "fallback_expose",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "pick_object(object=paperback_book)"
+   ],
+   "evidence_failure": "pick_object(object=paperback_book): edge pinch paperback_book: not held (lift 0.000 m)",
+   "recovery": [
+    "expose_object(object=paperback_book) OK",
+    "pick_object(object=paperback_book) OK"
+   ],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 236.9,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_no_overhang_fallback_expose",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 1,
+   "variant": "overhang_ready",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 190.1,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_overhang_ready_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 2,
+   "variant": "no_overhang",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 4,
+   "failed_calls": [
+    "pick_object(object=paperback_book)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) FALSE",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 38.7,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s2_no_overhang_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 2,
+   "variant": "no_overhang",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 6,
+   "failed_calls": [
+    "pick_object(object=paperback_book)",
+    "pick_object(object=paperback_book)",
+    "pick_object(object=paperback_book)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) FALSE",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 58.7,
+   "dir": "benchmark/runs/final/T01_book_to_dining_table/s2_no_overhang_retry",
+   "crash": ""
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "seed": 3,
+   "variant": "no_overhang",
+   "planner": "oracle",
+   "route": "fallback_expose",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "expose_object(object=paperback_book) OK",
+    "pick_object(object=paperback_book) OK"
+   ],
+   "goal": [
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 199.5,
+   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s3_no_overhang_oracle-fallback_expose",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 0,
+   "variant": "clear",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 64.6,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s0_clear_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 0,
+   "variant": "crowded",
+   "planner": "scripted",
+   "route": "fallback_push",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)"
+   ],
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift -0.000 m)",
+   "recovery": [
+    "push_object(object=wooden_block_b, direction_xy=[1.0, 0.0], distance_m=0.1) OK",
+    "pick_object(object=wooden_block_b) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 494.5,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s0_crowded_fallback_push",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 0,
+   "variant": "crowded",
+   "planner": "scripted",
+   "route": "fallback_separate",
+   "outcome": "pass",
+   "calls": 9,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)"
+   ],
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift -0.000 m)",
+   "recovery": [
+    "separate_object(object=wooden_block_b) OK",
+    "pick_object(object=wooden_block_b) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 499.8,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s0_crowded_fallback_separate",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 0,
+   "variant": "far_crowded",
+   "planner": "scripted",
+   "route": "hard_search_separate",
+   "outcome": "fail",
+   "calls": 11,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)",
+    "stack_object(object=wooden_block_b, base=wooden_block_a)"
+   ],
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.000 m)",
+   "recovery": [
+    "search_object(object=wooden_block_a, region=living_room_0_0) OK",
+    "separate_object(object=wooden_block_b) OK",
+    "pick_object(object=wooden_block_b) OK"
+   ],
+   "goal": [
+    "hand_empty(right) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 371.9,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s0_far_crowded_hard_search_separate",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 1,
+   "variant": "clear",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 51.4,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s1_clear_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 1,
+   "variant": "crowded",
+   "planner": "scripted",
+   "route": "fallback_push",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)"
+   ],
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift -0.000 m)",
+   "recovery": [
+    "push_object(object=wooden_block_b, direction_xy=[1.0, 0.0], distance_m=0.1) OK",
+    "pick_object(object=wooden_block_b) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 532.6,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s1_crowded_fallback_push",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 1,
+   "variant": "crowded",
+   "planner": "scripted",
+   "route": "fallback_separate",
+   "outcome": "fail",
+   "calls": 9,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)",
+    "stack_object(object=wooden_block_b, base=wooden_block_a)"
+   ],
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.003 m)",
+   "recovery": [
+    "separate_object(object=wooden_block_b) OK",
+    "pick_object(object=wooden_block_b) OK"
+   ],
+   "goal": [
+    "hand_empty(right) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 504.2,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s1_crowded_fallback_separate",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 1,
+   "variant": "far_crowded",
+   "planner": "scripted",
+   "route": "hard_search_separate",
+   "outcome": "pass",
+   "calls": 11,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)"
+   ],
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.004 m)",
+   "recovery": [
+    "search_object(object=wooden_block_a, region=living_room_0_0) OK",
+    "separate_object(object=wooden_block_b) OK",
+    "pick_object(object=wooden_block_b) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 414.0,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s1_far_crowded_hard_search_separate",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 2,
+   "variant": "crowded",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 3,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 450.8,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s2_crowded_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 2,
+   "variant": "crowded",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 9,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)",
+    "stack_object(object=wooden_block_b, base=wooden_block_a)",
+    "stack_object(object=wooden_block_b, base=wooden_block_a)",
+    "stack_object(object=wooden_block_b, base=wooden_block_a)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 1149.2,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s2_crowded_retry",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 3,
+   "variant": "crowded",
+   "planner": "oracle",
+   "route": "fallback_separate",
+   "outcome": "fail",
+   "calls": 8,
+   "failed_calls": [
+    "stack_object(object=wooden_block_b, base=wooden_block_a)"
+   ],
+   "evidence_failure": "",
+   "recovery": [
+    "separate_object(object=wooden_block_b) OK",
+    "pick_object(object=wooden_block_b) OK"
+   ],
+   "goal": [
+    "hand_empty(right) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 53.6,
+   "dir": "benchmark/runs/final/T02_stack_blocks/s3_crowded_oracle-fallback_separate",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 0,
+   "variant": "far_small_and_large",
+   "planner": "scripted",
+   "route": "hard_search_alt_container",
+   "outcome": "pass",
+   "calls": 16,
+   "failed_calls": [
+    "place_object(object=rolling_pin, receptacle=mug)"
+   ],
+   "evidence_failure": "place_object(object=rolling_pin, receptacle=mug): place rolling_pin: hand blocked at support (0.050 m)",
+   "recovery": [
+    "search_object(object=breakfast_spoon, region=living_room_0_0) OK",
+    "navigate_place(destination=wide_storage_bin) OK",
+    "place_object(object=rolling_pin, receptacle=wide_storage_bin) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 318.5,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 0,
+   "variant": "large_only",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 12,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 138.2,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s0_large_only_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 0,
+   "variant": "small_and_large",
+   "planner": "scripted",
+   "route": "alternative_large_container",
+   "outcome": "pass",
+   "calls": 17,
+   "failed_calls": [
+    "place_object(object=rolling_pin, receptacle=mug)"
+   ],
+   "evidence_failure": "place_object(object=rolling_pin, receptacle=mug): place rolling_pin: hand blocked at support (0.051 m)",
+   "recovery": [
+    "navigate_place(destination=wide_storage_bin) OK",
+    "place_object(object=rolling_pin, receptacle=wide_storage_bin) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 288.7,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s0_small_and_large_alternative_large_container",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 0,
+   "variant": "small_and_large",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 12,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 157.8,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s0_small_and_large_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 1,
+   "variant": "far_small_and_large",
+   "planner": "scripted",
+   "route": "hard_search_alt_container",
+   "outcome": "pass",
+   "calls": 16,
+   "failed_calls": [
+    "place_object(object=rolling_pin, receptacle=mug)"
+   ],
+   "evidence_failure": "place_object(object=rolling_pin, receptacle=mug): place rolling_pin: hand blocked at support (0.047 m)",
+   "recovery": [
+    "search_object(object=breakfast_spoon, region=living_room_0_0) OK",
+    "navigate_place(destination=wide_storage_bin) OK",
+    "place_object(object=rolling_pin, receptacle=wide_storage_bin) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 269.7,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s1_far_small_and_large_hard_search_alt_container",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 1,
+   "variant": "large_only",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 12,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 167.9,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s1_large_only_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 1,
+   "variant": "small_and_large",
+   "planner": "scripted",
+   "route": "alternative_large_container",
+   "outcome": "pass",
+   "calls": 17,
+   "failed_calls": [
+    "place_object(object=rolling_pin, receptacle=mug)"
+   ],
+   "evidence_failure": "place_object(object=rolling_pin, receptacle=mug): place rolling_pin: hand blocked at support (0.050 m)",
+   "recovery": [
+    "navigate_place(destination=wide_storage_bin) OK",
+    "place_object(object=rolling_pin, receptacle=wide_storage_bin) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 310.6,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s1_small_and_large_alternative_large_container",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 1,
+   "variant": "small_and_large",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 12,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 170.0,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s1_small_and_large_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 2,
+   "variant": "far_small_and_large",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 12,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 176.1,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s2_far_small_and_large_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 2,
+   "variant": "far_small_and_large",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 12,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 166.8,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s2_far_small_and_large_retry",
+   "crash": ""
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "seed": 3,
+   "variant": "far_small_and_large",
+   "planner": "oracle",
+   "route": "hard_search_alt_container",
+   "outcome": "pass",
+   "calls": 13,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "search_object(object=breakfast_spoon, region=living_room_0_0) OK",
+    "navigate_place(destination=wide_storage_bin) OK",
+    "place_object(object=rolling_pin, receptacle=wide_storage_bin) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 193.4,
+   "dir": "benchmark/runs/final/T03_utensils_one_container/s3_far_small_and_large_oracle-hard_search_alt_container",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 0,
+   "variant": "cup_available",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 183.1,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s0_cup_available_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 0,
+   "variant": "no_cup",
+   "planner": "scripted",
+   "route": "alternative_mug",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "search_object(object=cup)"
+   ],
+   "evidence_failure": "search_object(object=cup): search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']",
+   "recovery": [
+    "navigate_place(destination=mug) OK",
+    "pick_object(object=mug) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 257.5,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s0_no_cup_alternative_mug",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 0,
+   "variant": "no_cup_mug_away",
+   "planner": "scripted",
+   "route": "hard_count_search_mug",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "search_object(object=cup)"
+   ],
+   "evidence_failure": "search_object(object=cup): search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']",
+   "recovery": [
+    "search_object(object=mug, region=living_room_0_0) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 114.2,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s0_no_cup_mug_away_hard_count_search_mug",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 1,
+   "variant": "cup_available",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 150.0,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s1_cup_available_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 1,
+   "variant": "no_cup",
+   "planner": "scripted",
+   "route": "alternative_mug",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "search_object(object=cup)"
+   ],
+   "evidence_failure": "search_object(object=cup): search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']",
+   "recovery": [
+    "navigate_place(destination=mug) OK",
+    "pick_object(object=mug) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 282.8,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s1_no_cup_alternative_mug",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 1,
+   "variant": "no_cup_mug_away",
+   "planner": "scripted",
+   "route": "hard_count_search_mug",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "search_object(object=cup)"
+   ],
+   "evidence_failure": "search_object(object=cup): search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']",
+   "recovery": [
+    "search_object(object=mug, region=living_room_0_0) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 110.5,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s1_no_cup_mug_away_hard_count_search_mug",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 2,
+   "variant": "no_cup",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 2,
+   "failed_calls": [
+    "navigate_place(destination=cup_counter_b)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 13.2,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s2_no_cup_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 2,
+   "variant": "no_cup",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 4,
+   "failed_calls": [
+    "navigate_place(destination=cup_counter_b)",
+    "navigate_place(destination=cup_counter_b)",
+    "navigate_place(destination=cup_counter_b)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 13.6,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s2_no_cup_retry",
+   "crash": ""
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "seed": 3,
+   "variant": "no_cup",
+   "planner": "oracle",
+   "route": "alternative_mug",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "navigate_place(destination=mug) OK",
+    "pick_object(object=mug) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 176.1,
+   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s3_no_cup_oracle-alternative_mug",
+   "crash": ""
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "seed": 0,
+   "variant": "no_pen",
+   "planner": "scripted",
+   "route": "alternative_pencil",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "navigate_place(destination=pen)"
+   ],
+   "evidence_failure": "navigate_place(destination=pen): NOT_OBSERVED: 'pen' is not a known place or an observed object",
+   "recovery": [
+    "navigate_place(destination=pencil) OK",
+    "pick_object(object=pencil) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 104.8,
+   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s0_no_pen_alternative_pencil",
+   "crash": ""
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "seed": 0,
+   "variant": "no_pen_pencil_away",
+   "planner": "scripted",
+   "route": "hard_search_pencil",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "navigate_place(destination=pen)"
+   ],
+   "evidence_failure": "navigate_place(destination=pen): NOT_OBSERVED: 'pen' is not a known place or an observed object",
+   "recovery": [
+    "search_object(object=pencil, region=dining_room_0_1) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 130.5,
+   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s0_no_pen_pencil_away_hard_search_pencil",
+   "crash": ""
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "seed": 1,
+   "variant": "no_pen",
+   "planner": "scripted",
+   "route": "alternative_pencil",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "navigate_place(destination=pen)"
+   ],
+   "evidence_failure": "navigate_place(destination=pen): NOT_OBSERVED: 'pen' is not a known place or an observed object",
+   "recovery": [
+    "navigate_place(destination=pencil) OK",
+    "pick_object(object=pencil) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 104.8,
+   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s1_no_pen_alternative_pencil",
+   "crash": ""
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "seed": 1,
+   "variant": "no_pen_pencil_away",
+   "planner": "scripted",
+   "route": "hard_search_pencil",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "navigate_place(destination=pen)"
+   ],
+   "evidence_failure": "navigate_place(destination=pen): NOT_OBSERVED: 'pen' is not a known place or an observed object",
+   "recovery": [
+    "search_object(object=pencil, region=dining_room_0_1) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 139.1,
+   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s1_no_pen_pencil_away_hard_search_pencil",
+   "crash": ""
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "seed": 2,
+   "variant": "no_pen",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 3,
+   "failed_calls": [
+    "navigate_place(destination=pen)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 15.6,
+   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s2_no_pen_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "seed": 2,
+   "variant": "no_pen",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 5,
+   "failed_calls": [
+    "navigate_place(destination=pen)",
+    "navigate_place(destination=pen)",
+    "navigate_place(destination=pen)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 16.0,
+   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s2_no_pen_retry",
+   "crash": ""
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "seed": 3,
+   "variant": "no_pen",
+   "planner": "oracle",
+   "route": "alternative_pencil",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "navigate_place(destination=pencil) OK",
+    "pick_object(object=pencil) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 105.1,
+   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s3_no_pen_oracle-alternative_pencil",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 0,
+   "variant": "free",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 78.0,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s0_free_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 0,
+   "variant": "occupied",
+   "planner": "scripted",
+   "route": "alternative_tv_stand",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+   ],
+   "evidence_failure": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top): place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+   "recovery": [
+    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 67.1,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s0_occupied_alternative_tv_stand",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 0,
+   "variant": "occupied_block_away",
+   "planner": "scripted",
+   "route": "hard_search_alt_support",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+   ],
+   "evidence_failure": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top): place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+   "recovery": [
+    "search_object(object=wooden_block_a, region=dining_room_0_1) OK",
+    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 95.0,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s0_occupied_block_away_hard_search_alt_support",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 1,
+   "variant": "free",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 5,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 75.5,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s1_free_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 1,
+   "variant": "occupied",
+   "planner": "scripted",
+   "route": "alternative_tv_stand",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+   ],
+   "evidence_failure": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top): place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+   "recovery": [
+    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 65.3,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s1_occupied_alternative_tv_stand",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 1,
+   "variant": "occupied_block_away",
+   "planner": "scripted",
+   "route": "hard_search_alt_support",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+   ],
+   "evidence_failure": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top): place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+   "recovery": [
+    "search_object(object=wooden_block_a, region=dining_room_0_1) OK",
+    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 99.1,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s1_occupied_block_away_hard_search_alt_support",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 2,
+   "variant": "occupied",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 5,
+   "failed_calls": [
+    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 37.8,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s2_occupied_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 2,
+   "variant": "occupied",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 7,
+   "failed_calls": [
+    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 36.4,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s2_occupied_retry",
+   "crash": ""
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "seed": 3,
+   "variant": "occupied",
+   "planner": "oracle",
+   "route": "alternative_tv_stand",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 64.2,
+   "dir": "benchmark/runs/final/T06_block_destination_occupied/s3_occupied_oracle-alternative_tv_stand",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 0,
+   "variant": "broken_oatmeal_away",
+   "planner": "scripted",
+   "route": "hard_search_stove",
+   "outcome": "pass",
+   "calls": 16,
+   "failed_calls": [
+    "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40)"
+   ],
+   "evidence_failure": "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40): wait for temperature: 4.0 C below 40.0 C",
+   "recovery": [
+    "search_object(object=oatmeal, region=living_room_0_0) OK",
+    "stop_appliance(appliance=kitchen_microwave) OK",
+    "pick_object(object=oatmeal) OK",
+    "navigate_place(destination=kitchen_stove/top) OK",
+    "place_object(object=oatmeal, receptacle=kitchen_stove/top) OK",
+    "heat_food(food=oatmeal, appliance=kitchen_stove, temp_c=40) OK"
+   ],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) OK",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 223.3,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s0_broken_oatmeal_away_hard_search_stove",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 0,
+   "variant": "microwave_broken",
+   "planner": "scripted",
+   "route": "alternative_stove",
+   "outcome": "pass",
+   "calls": 16,
+   "failed_calls": [
+    "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40)"
+   ],
+   "evidence_failure": "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40): wait for temperature: 4.0 C below 40.0 C",
+   "recovery": [
+    "stop_appliance(appliance=kitchen_microwave) OK",
+    "pick_object(object=oatmeal) OK",
+    "navigate_place(destination=kitchen_stove/top) OK",
+    "place_object(object=oatmeal, receptacle=kitchen_stove/top) OK",
+    "heat_food(food=oatmeal, appliance=kitchen_stove, temp_c=40) OK"
+   ],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) OK",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 211.5,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s0_microwave_broken_alternative_stove",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 0,
+   "variant": "microwave_works",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 9,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) OK",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 84.0,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s0_microwave_works_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 1,
+   "variant": "broken_oatmeal_away",
+   "planner": "scripted",
+   "route": "hard_search_stove",
+   "outcome": "pass",
+   "calls": 16,
+   "failed_calls": [
+    "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40)"
+   ],
+   "evidence_failure": "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40): wait for temperature: 4.0 C below 40.0 C",
+   "recovery": [
+    "search_object(object=oatmeal, region=living_room_0_0) OK",
+    "stop_appliance(appliance=kitchen_microwave) OK",
+    "pick_object(object=oatmeal) OK",
+    "navigate_place(destination=kitchen_stove/top) OK",
+    "place_object(object=oatmeal, receptacle=kitchen_stove/top) OK",
+    "heat_food(food=oatmeal, appliance=kitchen_stove, temp_c=40) OK"
+   ],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) OK",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 220.9,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s1_broken_oatmeal_away_hard_search_stove",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 1,
+   "variant": "microwave_broken",
+   "planner": "scripted",
+   "route": "alternative_stove",
+   "outcome": "pass",
+   "calls": 16,
+   "failed_calls": [
+    "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40)"
+   ],
+   "evidence_failure": "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40): wait for temperature: 4.0 C below 40.0 C",
+   "recovery": [
+    "stop_appliance(appliance=kitchen_microwave) OK",
+    "pick_object(object=oatmeal) OK",
+    "navigate_place(destination=kitchen_stove/top) OK",
+    "place_object(object=oatmeal, receptacle=kitchen_stove/top) OK",
+    "heat_food(food=oatmeal, appliance=kitchen_stove, temp_c=40) OK"
+   ],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) OK",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 221.6,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s1_microwave_broken_alternative_stove",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 1,
+   "variant": "microwave_works",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 9,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) OK",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 91.4,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s1_microwave_works_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 2,
+   "variant": "microwave_broken",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 9,
+   "failed_calls": [
+    "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) FALSE",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 104.9,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s2_microwave_broken_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 2,
+   "variant": "microwave_broken",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 11,
+   "failed_calls": [
+    "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40)",
+    "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40)",
+    "heat_food(food=oatmeal, appliance=kitchen_microwave, temp_c=40)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) FALSE",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 157.6,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s2_microwave_broken_retry",
+   "crash": ""
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "seed": 3,
+   "variant": "microwave_broken",
+   "planner": "oracle",
+   "route": "oracle_stove",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "temperature_at_least(oatmeal, 40) OK",
+    "not heating(kitchen_stove) OK",
+    "is_closed(kitchen_microwave) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 96.2,
+   "dir": "benchmark/runs/final/T07_heat_oatmeal/s3_microwave_broken_oracle-oracle_stove",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 0,
+   "variant": "far_sponge_tv",
+   "planner": "scripted",
+   "route": "hard_search_approach",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "search_object(object=kitchen_sponge, region=living_room_0_0) OK"
+   ],
+   "goal": [
+    "wiped(kitchen_island/top) OK",
+    "on(kitchen_sponge, kitchen_island/top) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 205.1,
+   "dir": "benchmark/runs/final/T08_wipe_island/s0_far_sponge_tv_hard_search_approach",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 0,
+   "variant": "sponge_on_island",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "wiped(kitchen_island/top) OK",
+    "on(kitchen_sponge, kitchen_island/top) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 93.8,
+   "dir": "benchmark/runs/final/T08_wipe_island/s0_sponge_on_island_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 0,
+   "variant": "sponge_on_tv_stand",
+   "planner": "scripted",
+   "route": "nominal_from_tv_stand",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "wiped(kitchen_island/top) OK",
+    "on(kitchen_sponge, kitchen_island/top) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 94.9,
+   "dir": "benchmark/runs/final/T08_wipe_island/s0_sponge_on_tv_stand_nominal_from_tv_stand",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 1,
+   "variant": "far_sponge_tv",
+   "planner": "scripted",
+   "route": "hard_search_approach",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "search_object(object=kitchen_sponge, region=living_room_0_0) OK"
+   ],
+   "goal": [
+    "wiped(kitchen_island/top) OK",
+    "on(kitchen_sponge, kitchen_island/top) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 207.5,
+   "dir": "benchmark/runs/final/T08_wipe_island/s1_far_sponge_tv_hard_search_approach",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 1,
+   "variant": "sponge_on_island",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "wiped(kitchen_island/top) OK",
+    "on(kitchen_sponge, kitchen_island/top) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 103.5,
+   "dir": "benchmark/runs/final/T08_wipe_island/s1_sponge_on_island_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 1,
+   "variant": "sponge_on_tv_stand",
+   "planner": "scripted",
+   "route": "nominal_from_tv_stand",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "wiped(kitchen_island/top) OK",
+    "on(kitchen_sponge, kitchen_island/top) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 111.6,
+   "dir": "benchmark/runs/final/T08_wipe_island/s1_sponge_on_tv_stand_nominal_from_tv_stand",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 2,
+   "variant": "sponge_on_tv_stand",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 5,
+   "failed_calls": [
+    "wipe_surface(surface=kitchen_island/top, tool=kitchen_sponge)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "wiped(kitchen_island/top) FALSE",
+    "on(kitchen_sponge, kitchen_island/top) FALSE",
+    "hand_empty(right) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 88.7,
+   "dir": "benchmark/runs/final/T08_wipe_island/s2_sponge_on_tv_stand_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 2,
+   "variant": "sponge_on_tv_stand",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 7,
+   "failed_calls": [
+    "wipe_surface(surface=kitchen_island/top, tool=kitchen_sponge)",
+    "wipe_surface(surface=kitchen_island/top, tool=kitchen_sponge)",
+    "wipe_surface(surface=kitchen_island/top, tool=kitchen_sponge)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "wiped(kitchen_island/top) FALSE",
+    "on(kitchen_sponge, kitchen_island/top) FALSE",
+    "hand_empty(right) FALSE"
+   ],
+   "dropped": [],
+   "wall_s": 88.8,
+   "dir": "benchmark/runs/final/T08_wipe_island/s2_sponge_on_tv_stand_retry",
+   "crash": ""
+  },
+  {
+   "task": "T08_wipe_island",
+   "seed": 3,
+   "variant": "sponge_on_tv_stand",
+   "planner": "oracle",
+   "route": "nominal_from_tv_stand",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "wiped(kitchen_island/top) OK",
+    "on(kitchen_sponge, kitchen_island/top) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 144.8,
+   "dir": "benchmark/runs/final/T08_wipe_island/s3_sponge_on_tv_stand_oracle-nominal_from_tv_stand",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 0,
+   "variant": "lid_off",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 14,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) OK",
+    "inside(cherry_tomato_2, handled_cooking_pot) OK",
+    "temperature_at_least(cherry_tomato_1, 60) OK",
+    "temperature_at_least(cherry_tomato_2, 60) OK",
+    "stirred(handled_cooking_pot) OK",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 242.0,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s0_lid_off_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 0,
+   "variant": "lid_on",
+   "planner": "scripted",
+   "route": "fallback_uncover",
+   "outcome": "pass",
+   "calls": 17,
+   "failed_calls": [
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot)"
+   ],
+   "evidence_failure": "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot): PRECONDITION_FAILED: uncovered(container=handled_cooking_pot) is false (<unobserved> on rim)",
+   "recovery": [
+    "uncover_container(container=handled_cooking_pot) OK",
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot) OK"
+   ],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) OK",
+    "inside(cherry_tomato_2, handled_cooking_pot) OK",
+    "temperature_at_least(cherry_tomato_1, 60) OK",
+    "temperature_at_least(cherry_tomato_2, 60) OK",
+    "stirred(handled_cooking_pot) OK",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 738.5,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s0_lid_on_fallback_uncover",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 0,
+   "variant": "lid_on_spoon_away",
+   "planner": "scripted",
+   "route": "hard_uncover_search_spoon",
+   "outcome": "pass",
+   "calls": 18,
+   "failed_calls": [
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot)"
+   ],
+   "evidence_failure": "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot): PRECONDITION_FAILED: uncovered(container=handled_cooking_pot) is false (<unobserved> on rim)",
+   "recovery": [
+    "uncover_container(container=handled_cooking_pot) OK",
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot) OK",
+    "search_object(object=breakfast_spoon, region=living_room_0_0) OK"
+   ],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) OK",
+    "inside(cherry_tomato_2, handled_cooking_pot) OK",
+    "temperature_at_least(cherry_tomato_1, 60) OK",
+    "temperature_at_least(cherry_tomato_2, 60) OK",
+    "stirred(handled_cooking_pot) OK",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 750.7,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s0_lid_on_spoon_away_hard_uncover_search_spoon",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 1,
+   "variant": "lid_off",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 14,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) OK",
+    "inside(cherry_tomato_2, handled_cooking_pot) OK",
+    "temperature_at_least(cherry_tomato_1, 60) OK",
+    "temperature_at_least(cherry_tomato_2, 60) OK",
+    "stirred(handled_cooking_pot) OK",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 246.6,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s1_lid_off_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 1,
+   "variant": "lid_on",
+   "planner": "scripted",
+   "route": "fallback_uncover",
+   "outcome": "pass",
+   "calls": 17,
+   "failed_calls": [
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot)"
+   ],
+   "evidence_failure": "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot): PRECONDITION_FAILED: uncovered(container=handled_cooking_pot) is false (<unobserved> on rim)",
+   "recovery": [
+    "uncover_container(container=handled_cooking_pot) OK",
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot) OK"
+   ],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) OK",
+    "inside(cherry_tomato_2, handled_cooking_pot) OK",
+    "temperature_at_least(cherry_tomato_1, 60) OK",
+    "temperature_at_least(cherry_tomato_2, 60) OK",
+    "stirred(handled_cooking_pot) OK",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 795.1,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s1_lid_on_fallback_uncover",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 1,
+   "variant": "lid_on_spoon_away",
+   "planner": "scripted",
+   "route": "hard_uncover_search_spoon",
+   "outcome": "pass",
+   "calls": 18,
+   "failed_calls": [
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot)"
+   ],
+   "evidence_failure": "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot): PRECONDITION_FAILED: uncovered(container=handled_cooking_pot) is false (<unobserved> on rim)",
+   "recovery": [
+    "uncover_container(container=handled_cooking_pot) OK",
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot) OK",
+    "search_object(object=breakfast_spoon, region=living_room_0_0) OK"
+   ],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) OK",
+    "inside(cherry_tomato_2, handled_cooking_pot) OK",
+    "temperature_at_least(cherry_tomato_1, 60) OK",
+    "temperature_at_least(cherry_tomato_2, 60) OK",
+    "stirred(handled_cooking_pot) OK",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 846.4,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s1_lid_on_spoon_away_hard_uncover_search_spoon",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 2,
+   "variant": "lid_on",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 2,
+   "failed_calls": [
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) FALSE",
+    "inside(cherry_tomato_2, handled_cooking_pot) FALSE",
+    "temperature_at_least(cherry_tomato_1, 60) FALSE",
+    "temperature_at_least(cherry_tomato_2, 60) FALSE",
+    "stirred(handled_cooking_pot) FALSE",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 13.8,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s2_lid_on_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 2,
+   "variant": "lid_on",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "fail",
+   "calls": 4,
+   "failed_calls": [
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot)",
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot)",
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot)"
+   ],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) FALSE",
+    "inside(cherry_tomato_2, handled_cooking_pot) FALSE",
+    "temperature_at_least(cherry_tomato_1, 60) FALSE",
+    "temperature_at_least(cherry_tomato_2, 60) FALSE",
+    "stirred(handled_cooking_pot) FALSE",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 14.0,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s2_lid_on_retry",
+   "crash": ""
+  },
+  {
+   "task": "T09_tomato_soup",
+   "seed": 3,
+   "variant": "lid_on",
+   "planner": "oracle",
+   "route": "fallback_uncover",
+   "outcome": "pass",
+   "calls": 16,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "uncover_container(container=handled_cooking_pot) OK",
+    "collect_objects(objects=['cherry_tomato_1', 'cherry_tomato_2'], container=handled_cooking_pot) OK"
+   ],
+   "goal": [
+    "inside(cherry_tomato_1, handled_cooking_pot) OK",
+    "inside(cherry_tomato_2, handled_cooking_pot) OK",
+    "temperature_at_least(cherry_tomato_1, 60) OK",
+    "temperature_at_least(cherry_tomato_2, 60) OK",
+    "stirred(handled_cooking_pot) OK",
+    "covered(handled_cooking_pot, pot_lid) OK",
+    "not heating(kitchen_stove) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 713.4,
+   "dir": "benchmark/runs/final/T09_tomato_soup/s3_lid_on_oracle-fallback_uncover",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 0,
+   "variant": "can_in_dining_room",
+   "planner": "scripted",
+   "route": "search_first",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "pick_object(object=soda_can)"
+   ],
+   "evidence_failure": "pick_object(object=soda_can): NOT_IN_VIEW: 'soda_can' is not in the current view (last seen at tick 7767); look at it first",
+   "recovery": [
+    "search_object(object=soda_can, region=dining_room_0_1) OK"
+   ],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 136.6,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s0_can_in_dining_room_search_first",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 0,
+   "variant": "can_on_island",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 298.8,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s0_can_on_island_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 0,
+   "variant": "far_can_far",
+   "planner": "scripted",
+   "route": "hard_explore_search",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "pick_object(object=soda_can)"
+   ],
+   "evidence_failure": "pick_object(object=soda_can): NOT_OBSERVED: 'soda_can' is not a known place or an observed object",
+   "recovery": [
+    "search_object(object=soda_can, region=living_room_0_0) OK",
+    "explore_room(room=living_room_0_0) OK"
+   ],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 189.4,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s0_far_can_far_hard_explore_search",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 1,
+   "variant": "can_in_dining_room",
+   "planner": "scripted",
+   "route": "search_first",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [
+    "pick_object(object=soda_can)"
+   ],
+   "evidence_failure": "pick_object(object=soda_can): NOT_IN_VIEW: 'soda_can' is not in the current view (last seen at tick 7767); look at it first",
+   "recovery": [
+    "search_object(object=soda_can, region=dining_room_0_1) OK"
+   ],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 130.5,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s1_can_in_dining_room_search_first",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 1,
+   "variant": "can_on_island",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 267.9,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s1_can_on_island_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 1,
+   "variant": "far_can_far",
+   "planner": "scripted",
+   "route": "hard_explore_search",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [
+    "pick_object(object=soda_can)"
+   ],
+   "evidence_failure": "pick_object(object=soda_can): NOT_OBSERVED: 'soda_can' is not a known place or an observed object",
+   "recovery": [
+    "search_object(object=soda_can, region=living_room_0_0) OK",
+    "explore_room(room=living_room_0_0) OK"
+   ],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 207.4,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s1_far_can_far_hard_explore_search",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 2,
+   "variant": "can_in_dining_room",
+   "planner": "fixed",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 119.1,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s2_can_in_dining_room_fixed",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 2,
+   "variant": "can_in_dining_room",
+   "planner": "retry",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 8,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 126.8,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s2_can_in_dining_room_retry",
+   "crash": ""
+  },
+  {
+   "task": "T10_trash_the_can",
+   "seed": 3,
+   "variant": "can_in_dining_room",
+   "planner": "oracle",
+   "route": "search_first",
+   "outcome": "pass",
+   "calls": 7,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [
+    "search_object(object=soda_can, region=dining_room_0_1) OK"
+   ],
+   "goal": [
+    "inside(soda_can, trash_can) OK",
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 133.5,
+   "dir": "benchmark/runs/final/T10_trash_the_can/s3_can_in_dining_room_oracle-search_first",
+   "crash": ""
+  }
+ ]
+}

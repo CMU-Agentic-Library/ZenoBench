@@ -1,0 +1,1046 @@
+[
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "easy"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "hard"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "oracle",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "fixed",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "retry",
+  "difficulty": "medium"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "oracle",
+  "difficulty": "medium"
+ }
+]

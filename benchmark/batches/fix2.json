@@ -1,0 +1,134 @@
+[
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "fallback_separate",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "fallback_separate",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "fallback_push",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "fallback_push",
+  "variant": "crowded"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "nominal",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 0,
+  "route": "alternative_large_container",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 1,
+  "route": "alternative_large_container",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 0,
+  "route": "nominal",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 1,
+  "route": "nominal",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 0,
+  "route": "hard_search_expose",
+  "variant": "far_no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 1,
+  "route": "hard_search_expose",
+  "variant": "far_no_overhang"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 0,
+  "route": "hard_search_push",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 1,
+  "route": "hard_search_push",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 0,
+  "route": "hard_count_search_mug",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 1,
+  "route": "hard_count_search_mug",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 0,
+  "route": "hard_search_pencil",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 1,
+  "route": "hard_search_pencil",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 0,
+  "route": "hard_search_stove",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 1,
+  "route": "hard_search_stove",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 0,
+  "route": "hard_explore_search",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 1,
+  "route": "hard_explore_search",
+  "variant": "far_can_far"
+ }
+]
