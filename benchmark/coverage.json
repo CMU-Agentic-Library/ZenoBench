@@ -37,15 +37,15 @@
     "T09_tomato_soup",
     "T10_trash_the_can"
    ],
-   "calls": 314,
-   "successful_calls": 302,
+   "calls": 308,
+   "successful_calls": 296,
    "paths": [
     "carry",
     "empty"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
-    "benchmark/runs/final/P02_perception/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/v2/P02_perception/s0_default_nominal"
    ]
   },
   {
@@ -66,8 +66,8 @@
     "park"
    ],
    "evidence": [
-    "benchmark/runs/final/P06_two_hands/s0_default_nominal",
-    "benchmark/runs/final/P11_stove_cycle/s0_default_nominal"
+    "benchmark/runs/v2/P06_two_hands/s0_default_nominal",
+    "benchmark/runs/v2/P11_stove_cycle/s0_default_nominal"
    ]
   },
   {
@@ -83,7 +83,7 @@
     "rotate_empty"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -103,8 +103,8 @@
     "loaded"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
-    "benchmark/runs/final/P06_two_hands/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/v2/P06_two_hands/s0_default_nominal"
    ]
   },
   {
@@ -121,8 +121,8 @@
     "to_height"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -138,8 +138,8 @@
     "highest"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -156,8 +156,8 @@
     "to_pitch"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -173,7 +173,7 @@
     "upright"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -189,7 +189,7 @@
     "right"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -205,7 +205,7 @@
     "joint_home"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -243,15 +243,15 @@
     "T09_tomato_soup",
     "T10_trash_the_can"
    ],
-   "calls": 109,
-   "successful_calls": 109,
+   "calls": 107,
+   "successful_calls": 107,
    "paths": [
     "head_only",
     "turn_then_head"
    ],
    "evidence": [
-    "benchmark/runs/final/P02_perception/s0_default_nominal",
-    "benchmark/runs/final/P03_rolling_pin/s0_default_nominal"
+    "benchmark/runs/v2/P02_perception/s0_default_nominal",
+    "benchmark/runs/v2/P03_rolling_pin/s0_default_nominal"
    ]
   },
   {
@@ -268,8 +268,8 @@
     "open_view"
    ],
    "evidence": [
-    "benchmark/runs/final/P02_perception/s0_default_nominal",
-    "benchmark/runs/final/P12_cabinet/s0_default_nominal"
+    "benchmark/runs/v2/P02_perception/s0_default_nominal",
+    "benchmark/runs/v2/P12_cabinet/s0_default_nominal"
    ]
   },
   {
@@ -295,8 +295,8 @@
     "room_sweep"
    ],
    "evidence": [
-    "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal",
-    "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
+    "benchmark/runs/v2/P15_arrange_and_sort/s0_default_nominal",
+    "benchmark/runs/v2/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
    ]
   },
   {
@@ -313,8 +313,8 @@
     "viewpoints"
    ],
    "evidence": [
-    "benchmark/runs/final/P02_perception/s0_default_nominal",
-    "benchmark/runs/final/T10_trash_the_can/s0_can_in_dining_room_search_first"
+    "benchmark/runs/v2/P02_perception/s0_default_nominal",
+    "benchmark/runs/v2/T10_trash_the_can/s0_can_in_dining_room_search_first"
    ]
   },
   {
@@ -330,7 +330,7 @@
     "front"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -346,7 +346,7 @@
     "front_of_head"
    ],
    "evidence": [
-    "benchmark/runs/final/P07_present_and_brace/s0_default_nominal"
+    "benchmark/runs/v2/P07_present_and_brace/s0_default_nominal"
    ]
   },
   {
@@ -378,8 +378,8 @@
     "T09_tomato_soup",
     "T10_trash_the_can"
    ],
-   "calls": 146,
-   "successful_calls": 126,
+   "calls": 141,
+   "successful_calls": 123,
    "paths": [
     "flat_overhang_ready",
     "floor_top",
@@ -388,8 +388,8 @@
     "top_pinch"
    ],
    "evidence": [
-    "benchmark/runs/final/P05_flip_book/s0_default_nominal",
-    "benchmark/runs/final/P06_two_hands/s0_default_nominal"
+    "benchmark/runs/v2/P05_flip_book/s0_default_nominal",
+    "benchmark/runs/v2/P06_two_hands/s0_default_nominal"
    ]
   },
   {
@@ -415,8 +415,8 @@
     "T08_wipe_island",
     "T09_tomato_soup"
    ],
-   "calls": 96,
-   "successful_calls": 83,
+   "calls": 95,
+   "successful_calls": 82,
    "paths": [
     "container",
     "edge_held_flat",
@@ -425,8 +425,8 @@
     "surface"
    ],
    "evidence": [
-    "benchmark/runs/final/P05_flip_book/s0_default_nominal",
-    "benchmark/runs/final/P07_present_and_brace/s0_default_nominal"
+    "benchmark/runs/v2/P05_flip_book/s0_default_nominal",
+    "benchmark/runs/v2/P07_present_and_brace/s0_default_nominal"
    ]
   },
   {
@@ -443,8 +443,8 @@
     "above_opening"
    ],
    "evidence": [
-    "benchmark/runs/final/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container",
-    "benchmark/runs/final/T03_utensils_one_container/s0_large_only_nominal"
+    "benchmark/runs/v2/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container",
+    "benchmark/runs/v2/T03_utensils_one_container/s0_large_only_nominal"
    ]
   },
   {
@@ -455,14 +455,14 @@
     "P08_block_alignment",
     "T02_stack_blocks"
    ],
-   "calls": 12,
-   "successful_calls": 7,
+   "calls": 8,
+   "successful_calls": 8,
    "paths": [
     "top_face"
    ],
    "evidence": [
-    "benchmark/runs/final/P08_block_alignment/s0_default_nominal",
-    "benchmark/runs/final/T02_stack_blocks/s0_clear_nominal"
+    "benchmark/runs/v2/P08_block_alignment/s0_default_nominal",
+    "benchmark/runs/v2/T02_stack_blocks/s0_clear_nominal"
    ]
   },
   {
@@ -488,7 +488,7 @@
     "right_to_left"
    ],
    "evidence": [
-    "benchmark/runs/final/P06_two_hands/s0_default_nominal"
+    "benchmark/runs/v2/P06_two_hands/s0_default_nominal"
    ]
   },
   {
@@ -506,8 +506,8 @@
     "raise"
    ],
    "evidence": [
-    "benchmark/runs/final/P19_spoon_dip/s0_default_nominal",
-    "benchmark/runs/final/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container"
+    "benchmark/runs/v2/P19_spoon_dip/s0_default_nominal",
+    "benchmark/runs/v2/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container"
    ]
   },
   {
@@ -523,7 +523,7 @@
     "descend"
    ],
    "evidence": [
-    "benchmark/runs/final/P19_spoon_dip/s0_default_nominal"
+    "benchmark/runs/v2/P19_spoon_dip/s0_default_nominal"
    ]
   },
   {
@@ -534,14 +534,14 @@
     "P08_block_alignment",
     "T02_stack_blocks"
    ],
-   "calls": 10,
-   "successful_calls": 10,
+   "calls": 8,
+   "successful_calls": 8,
    "paths": [
     "wrist_yaw"
    ],
    "evidence": [
-    "benchmark/runs/final/P08_block_alignment/s0_default_nominal",
-    "benchmark/runs/final/T02_stack_blocks/s0_clear_nominal"
+    "benchmark/runs/v2/P08_block_alignment/s0_default_nominal",
+    "benchmark/runs/v2/T02_stack_blocks/s0_clear_nominal"
    ]
   },
   {
@@ -557,7 +557,7 @@
     "set_down_and_pick"
    ],
    "evidence": [
-    "benchmark/runs/final/P06_two_hands/s0_default_nominal"
+    "benchmark/runs/v2/P06_two_hands/s0_default_nominal"
    ]
   },
   {
@@ -583,7 +583,7 @@
     "edge_roll"
    ],
    "evidence": [
-    "benchmark/runs/final/P05_flip_book/s0_default_nominal"
+    "benchmark/runs/v2/P05_flip_book/s0_default_nominal"
    ]
   },
   {
@@ -591,17 +591,15 @@
    "verb": "push",
    "status": "covered",
    "tasks": [
-    "P09_sweep_blocks",
-    "T02_stack_blocks"
+    "P09_sweep_blocks"
    ],
-   "calls": 3,
-   "successful_calls": 3,
+   "calls": 1,
+   "successful_calls": 1,
    "paths": [
     "from_behind"
    ],
    "evidence": [
-    "benchmark/runs/final/P09_sweep_blocks/s0_default_nominal",
-    "benchmark/runs/final/T02_stack_blocks/s0_crowded_fallback_push"
+    "benchmark/runs/v2/P09_sweep_blocks/s0_default_nominal"
    ]
   },
   {
@@ -617,7 +615,7 @@
     "top_drag"
    ],
    "evidence": [
-    "benchmark/runs/final/P03_rolling_pin/s0_default_nominal"
+    "benchmark/runs/v2/P03_rolling_pin/s0_default_nominal"
    ]
   },
   {
@@ -634,8 +632,8 @@
     "slide_to_edge"
    ],
    "evidence": [
-    "benchmark/runs/final/P05_flip_book/s0_default_nominal",
-    "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
+    "benchmark/runs/v2/P05_flip_book/s0_default_nominal",
+    "benchmark/runs/v2/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose"
    ]
   },
   {
@@ -651,8 +649,8 @@
     "push_apart"
    ],
    "evidence": [
-    "benchmark/runs/final/T02_stack_blocks/s0_crowded_fallback_separate",
-    "benchmark/runs/final/T02_stack_blocks/s0_far_crowded_hard_search_separate"
+    "benchmark/runs/v2/T02_stack_blocks/s0_crowded_fallback_separate",
+    "benchmark/runs/v2/T02_stack_blocks/s0_far_crowded_hard_search_separate"
    ]
   },
   {
@@ -668,7 +666,7 @@
     "push_inward"
    ],
    "evidence": [
-    "benchmark/runs/final/P03_rolling_pin/s0_default_nominal"
+    "benchmark/runs/v2/P03_rolling_pin/s0_default_nominal"
    ]
   },
   {
@@ -684,7 +682,7 @@
     "push_above_axis"
    ],
    "evidence": [
-    "benchmark/runs/final/P03_rolling_pin/s0_default_nominal"
+    "benchmark/runs/v2/P03_rolling_pin/s0_default_nominal"
    ]
   },
   {
@@ -700,7 +698,7 @@
     "push_high"
    ],
    "evidence": [
-    "benchmark/runs/final/P04_bottle/s0_default_nominal"
+    "benchmark/runs/v2/P04_bottle/s0_default_nominal"
    ]
   },
   {
@@ -726,8 +724,8 @@
     "sponge_strip"
    ],
    "evidence": [
-    "benchmark/runs/final/T08_wipe_island/s0_far_sponge_tv_hard_search_approach",
-    "benchmark/runs/final/T08_wipe_island/s0_sponge_on_island_nominal"
+    "benchmark/runs/v2/T08_wipe_island/s0_far_sponge_tv_hard_search_approach",
+    "benchmark/runs/v2/T08_wipe_island/s0_sponge_on_island_nominal"
    ]
   },
   {
@@ -743,8 +741,8 @@
     "circle_below_rim"
    ],
    "evidence": [
-    "benchmark/runs/final/T09_tomato_soup/s0_lid_off_nominal",
-    "benchmark/runs/final/T09_tomato_soup/s0_lid_on_fallback_uncover"
+    "benchmark/runs/v2/T09_tomato_soup/s0_lid_off_nominal",
+    "benchmark/runs/v2/T09_tomato_soup/s0_lid_on_fallback_uncover"
    ]
   },
   {
@@ -775,8 +773,8 @@
     "refrigerator"
    ],
    "evidence": [
-    "benchmark/runs/final/P12_cabinet/s0_default_nominal",
-    "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal"
+    "benchmark/runs/v2/P12_cabinet/s0_default_nominal",
+    "benchmark/runs/v2/P13_microwave_buttons/s0_default_nominal"
    ]
   },
   {
@@ -796,8 +794,8 @@
     "powered"
    ],
    "evidence": [
-    "benchmark/runs/final/P12_cabinet/s0_default_nominal",
-    "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal"
+    "benchmark/runs/v2/P12_cabinet/s0_default_nominal",
+    "benchmark/runs/v2/P13_microwave_buttons/s0_default_nominal"
    ]
   },
   {
@@ -815,8 +813,8 @@
     "microwave_start_staged"
    ],
    "evidence": [
-    "benchmark/runs/final/P11_stove_cycle/s0_default_nominal",
-    "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal"
+    "benchmark/runs/v2/P11_stove_cycle/s0_default_nominal",
+    "benchmark/runs/v2/P13_microwave_buttons/s0_default_nominal"
    ]
   },
   {
@@ -834,8 +832,8 @@
     "stove_pot"
    ],
    "evidence": [
-    "benchmark/runs/final/T07_heat_oatmeal/s0_broken_oatmeal_away_hard_search_stove",
-    "benchmark/runs/final/T07_heat_oatmeal/s0_microwave_broken_alternative_stove"
+    "benchmark/runs/v2/T07_heat_oatmeal/s0_broken_oatmeal_away_hard_search_stove",
+    "benchmark/runs/v2/T07_heat_oatmeal/s0_microwave_broken_alternative_stove"
    ]
   },
   {
@@ -851,7 +849,7 @@
     "fridge_wait"
    ],
    "evidence": [
-    "benchmark/runs/final/P22_chill_oatmeal/s0_default_nominal"
+    "benchmark/runs/v2/P22_chill_oatmeal/s0_default_nominal"
    ]
   },
   {
@@ -868,8 +866,8 @@
     "rim_plane"
    ],
    "evidence": [
-    "benchmark/runs/final/P20_hide_block/s0_default_nominal",
-    "benchmark/runs/final/T09_tomato_soup/s0_lid_off_nominal"
+    "benchmark/runs/v2/P20_hide_block/s0_default_nominal",
+    "benchmark/runs/v2/T09_tomato_soup/s0_lid_off_nominal"
    ]
   },
   {
@@ -888,8 +886,8 @@
     "knob_lift_aside"
    ],
    "evidence": [
-    "benchmark/runs/final/P16_empty_mug/s0_default_nominal",
-    "benchmark/runs/final/P17_pour/s0_default_nominal"
+    "benchmark/runs/v2/P16_empty_mug/s0_default_nominal",
+    "benchmark/runs/v2/P17_pour/s0_default_nominal"
    ]
   },
   {
@@ -910,8 +908,8 @@
     "to_surface"
    ],
    "evidence": [
-    "benchmark/runs/final/P14_restore_swap/s0_default_nominal",
-    "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal"
+    "benchmark/runs/v2/P14_restore_swap/s0_default_nominal",
+    "benchmark/runs/v2/P15_arrange_and_sort/s0_default_nominal"
    ]
   },
   {
@@ -927,8 +925,8 @@
     "fetch_each"
    ],
    "evidence": [
-    "benchmark/runs/final/T09_tomato_soup/s0_lid_off_nominal",
-    "benchmark/runs/final/T09_tomato_soup/s0_lid_on_fallback_uncover"
+    "benchmark/runs/v2/T09_tomato_soup/s0_lid_off_nominal",
+    "benchmark/runs/v2/T09_tomato_soup/s0_lid_on_fallback_uncover"
    ]
   },
   {
@@ -944,7 +942,7 @@
     "fetch_by_tag"
    ],
    "evidence": [
-    "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal"
+    "benchmark/runs/v2/P15_arrange_and_sort/s0_default_nominal"
    ]
   },
   {
@@ -960,7 +958,7 @@
     "fetch_each_on_support"
    ],
    "evidence": [
-    "benchmark/runs/final/P21_clear_cabinet/s0_default_nominal"
+    "benchmark/runs/v2/P21_clear_cabinet/s0_default_nominal"
    ]
   },
   {
@@ -986,7 +984,7 @@
     "place_near_common_spot"
    ],
    "evidence": [
-    "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal"
+    "benchmark/runs/v2/P15_arrange_and_sort/s0_default_nominal"
    ]
   },
   {
@@ -1002,24 +1000,18 @@
     "dispatch_pick_place"
    ],
    "evidence": [
-    "benchmark/runs/final/P14_restore_swap/s0_default_nominal"
+    "benchmark/runs/v2/P14_restore_swap/s0_default_nominal"
    ]
   },
   {
    "skill_id": "skill_054",
    "verb": "swap",
-   "status": "covered",
-   "tasks": [
-    "P14_restore_swap"
-   ],
+   "status": "called, failed",
+   "tasks": [],
    "calls": 1,
-   "successful_calls": 1,
-   "paths": [
-    "via_buffer"
-   ],
-   "evidence": [
-    "benchmark/runs/final/P14_restore_swap/s0_default_nominal"
-   ]
+   "successful_calls": 0,
+   "paths": [],
+   "evidence": []
   },
   {
    "skill_id": "skill_055",
@@ -1034,7 +1026,7 @@
     "empty_tucked"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -1052,8 +1044,8 @@
     "idle"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
-    "benchmark/runs/final/P11_stove_cycle/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal",
+    "benchmark/runs/v2/P11_stove_cycle/s0_default_nominal"
    ]
   },
   {
@@ -1069,7 +1061,7 @@
     "look_and_label"
    ],
    "evidence": [
-    "benchmark/runs/final/P02_perception/s0_default_nominal"
+    "benchmark/runs/v2/P02_perception/s0_default_nominal"
    ]
   },
   {
@@ -1086,8 +1078,8 @@
     "look_and_size"
    ],
    "evidence": [
-    "benchmark/runs/final/P02_perception/s0_default_nominal",
-    "benchmark/runs/final/T03_utensils_one_container/s0_small_and_large_alternative_large_container"
+    "benchmark/runs/v2/P02_perception/s0_default_nominal",
+    "benchmark/runs/v2/T03_utensils_one_container/s0_small_and_large_alternative_large_container"
    ]
   },
   {
@@ -1104,8 +1096,8 @@
     "head_sweep"
    ],
    "evidence": [
-    "benchmark/runs/final/P02_perception/s0_default_nominal",
-    "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s0_no_cup_alternative_mug"
+    "benchmark/runs/v2/P02_perception/s0_default_nominal",
+    "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s0_no_cup_alternative_mug"
    ]
   },
   {
@@ -1121,7 +1113,7 @@
     "raised_swing"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -1137,7 +1129,7 @@
     "pitch_cycles"
    ],
    "evidence": [
-    "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal"
+    "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal"
    ]
   },
   {
@@ -1153,7 +1145,7 @@
     "lateral"
    ],
    "evidence": [
-    "benchmark/runs/final/P07_present_and_brace/s0_default_nominal"
+    "benchmark/runs/v2/P07_present_and_brace/s0_default_nominal"
    ]
   },
   {
@@ -1170,8 +1162,8 @@
     "above_target"
    ],
    "evidence": [
-    "benchmark/runs/final/P17_pour/s0_default_nominal",
-    "benchmark/runs/final/T10_trash_the_can/s0_can_on_island_nominal"
+    "benchmark/runs/v2/P17_pour/s0_default_nominal",
+    "benchmark/runs/v2/T10_trash_the_can/s0_can_on_island_nominal"
    ]
   },
   {
@@ -1187,7 +1179,7 @@
     "pick_rotate_place"
    ],
    "evidence": [
-    "benchmark/runs/final/P08_block_alignment/s0_default_nominal"
+    "benchmark/runs/v2/P08_block_alignment/s0_default_nominal"
    ]
   },
   {
@@ -1203,7 +1195,7 @@
     "fingertip_top"
    ],
    "evidence": [
-    "benchmark/runs/final/P08_block_alignment/s0_default_nominal"
+    "benchmark/runs/v2/P08_block_alignment/s0_default_nominal"
    ]
   },
   {
@@ -1219,7 +1211,7 @@
     "panel_taps"
    ],
    "evidence": [
-    "benchmark/runs/final/P12_cabinet/s0_default_nominal"
+    "benchmark/runs/v2/P12_cabinet/s0_default_nominal"
    ]
   },
   {
@@ -1235,7 +1227,7 @@
     "push_to_centroid"
    ],
    "evidence": [
-    "benchmark/runs/final/P09_sweep_blocks/s0_default_nominal"
+    "benchmark/runs/v2/P09_sweep_blocks/s0_default_nominal"
    ]
   },
   {
@@ -1254,8 +1246,8 @@
     "stove_key_off"
    ],
    "evidence": [
-    "benchmark/runs/final/P11_stove_cycle/s0_default_nominal",
-    "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal"
+    "benchmark/runs/v2/P11_stove_cycle/s0_default_nominal",
+    "benchmark/runs/v2/P13_microwave_buttons/s0_default_nominal"
    ]
   },
   {
@@ -1271,7 +1263,7 @@
     "tip_below_rim"
    ],
    "evidence": [
-    "benchmark/runs/final/P19_spoon_dip/s0_default_nominal"
+    "benchmark/runs/v2/P19_spoon_dip/s0_default_nominal"
    ]
   },
   {
@@ -1287,7 +1279,7 @@
     "container_with_lid"
    ],
    "evidence": [
-    "benchmark/runs/final/P20_hide_block/s0_default_nominal"
+    "benchmark/runs/v2/P20_hide_block/s0_default_nominal"
    ]
   }
  ],
@@ -1311,8 +1303,8 @@
     "waist_straight() OK"
    ],
    "dropped": [],
-   "wall_s": 35.2,
-   "dir": "benchmark/runs/final/P01_body_and_gesture/s0_default_nominal",
+   "wall_s": 35.0,
+   "dir": "benchmark/runs/v2/P01_body_and_gesture/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1333,8 +1325,8 @@
     "room_explored(living_room_0_0) OK"
    ],
    "dropped": [],
-   "wall_s": 56.7,
-   "dir": "benchmark/runs/final/P02_perception/s0_default_nominal",
+   "wall_s": 56.4,
+   "dir": "benchmark/runs/v2/P02_perception/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1353,8 +1345,8 @@
     "on(rolling_pin, kitchen_island/top) OK"
    ],
    "dropped": [],
-   "wall_s": 67.9,
-   "dir": "benchmark/runs/final/P03_rolling_pin/s0_default_nominal",
+   "wall_s": 71.6,
+   "dir": "benchmark/runs/v2/P03_rolling_pin/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1377,8 +1369,8 @@
    "dropped": [
     "juice_bottle"
    ],
-   "wall_s": 360.3,
-   "dir": "benchmark/runs/final/P04_bottle/s0_default_nominal",
+   "wall_s": 349.5,
+   "dir": "benchmark/runs/v2/P04_bottle/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1397,8 +1389,8 @@
     "on(paperback_book, kitchen_island/top) OK"
    ],
    "dropped": [],
-   "wall_s": 109.1,
-   "dir": "benchmark/runs/final/P05_flip_book/s0_default_nominal",
+   "wall_s": 111.1,
+   "dir": "benchmark/runs/v2/P05_flip_book/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1419,8 +1411,8 @@
     "is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478) OK"
    ],
    "dropped": [],
-   "wall_s": 128.6,
-   "dir": "benchmark/runs/final/P06_two_hands/s0_default_nominal",
+   "wall_s": 125.6,
+   "dir": "benchmark/runs/v2/P06_two_hands/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1445,8 +1437,8 @@
    "dropped": [
     "mug"
    ],
-   "wall_s": 296.8,
-   "dir": "benchmark/runs/final/P07_present_and_brace/s0_default_nominal",
+   "wall_s": 97.5,
+   "dir": "benchmark/runs/v2/P07_present_and_brace/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1465,8 +1457,8 @@
     "squared(wooden_block_a) OK"
    ],
    "dropped": [],
-   "wall_s": 106.3,
-   "dir": "benchmark/runs/final/P08_block_alignment/s0_default_nominal",
+   "wall_s": 94.0,
+   "dir": "benchmark/runs/v2/P08_block_alignment/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1487,8 +1479,8 @@
    "dropped": [
     "wooden_block_a"
    ],
-   "wall_s": 112.7,
-   "dir": "benchmark/runs/final/P09_sweep_blocks/s0_default_nominal",
+   "wall_s": 77.7,
+   "dir": "benchmark/runs/v2/P09_sweep_blocks/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1507,8 +1499,8 @@
     "not heating(kitchen_stove) OK"
    ],
    "dropped": [],
-   "wall_s": 139.5,
-   "dir": "benchmark/runs/final/P11_stove_cycle/s0_default_nominal",
+   "wall_s": 132.9,
+   "dir": "benchmark/runs/v2/P11_stove_cycle/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1527,8 +1519,8 @@
     "is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478) OK"
    ],
    "dropped": [],
-   "wall_s": 86.7,
-   "dir": "benchmark/runs/final/P12_cabinet/s0_default_nominal",
+   "wall_s": 85.6,
+   "dir": "benchmark/runs/v2/P12_cabinet/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1547,8 +1539,8 @@
     "not heating(kitchen_microwave) OK"
    ],
    "dropped": [],
-   "wall_s": 102.7,
-   "dir": "benchmark/runs/final/P13_microwave_buttons/s0_default_nominal",
+   "wall_s": 100.0,
+   "dir": "benchmark/runs/v2/P13_microwave_buttons/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1559,15 +1551,17 @@
    "route": "nominal",
    "outcome": "fail",
    "calls": 5,
-   "failed_calls": [],
+   "failed_calls": [
+    "swap_objects(a=wooden_block_a, b=soda_can)"
+   ],
    "evidence_failure": "",
    "recovery": [],
    "goal": [
     "positions_swapped(wooden_block_a, soda_can) FALSE"
    ],
    "dropped": [],
-   "wall_s": 971.8,
-   "dir": "benchmark/runs/final/P14_restore_swap/s0_default_nominal",
+   "wall_s": 828.2,
+   "dir": "benchmark/runs/v2/P14_restore_swap/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1585,8 +1579,8 @@
     "sorted_by_category(['soda_can', 'wooden_block_b'], {'recyclable': 'trash_can', 'block': 'kitchen_stove/top'}) OK"
    ],
    "dropped": [],
-   "wall_s": 629.7,
-   "dir": "benchmark/runs/final/P15_arrange_and_sort/s0_default_nominal",
+   "wall_s": 730.7,
+   "dir": "benchmark/runs/v2/P15_arrange_and_sort/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1606,8 +1600,8 @@
     "container_empty(mug) FALSE"
    ],
    "dropped": [],
-   "wall_s": 1748.6,
-   "dir": "benchmark/runs/final/P16_empty_mug/s0_default_nominal",
+   "wall_s": 1418.2,
+   "dir": "benchmark/runs/v2/P16_empty_mug/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1627,8 +1621,8 @@
     "container_empty(mug) FALSE"
    ],
    "dropped": [],
-   "wall_s": 2003.5,
-   "dir": "benchmark/runs/final/P17_pour/s0_default_nominal",
+   "wall_s": 2187.9,
+   "dir": "benchmark/runs/v2/P17_pour/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1646,8 +1640,8 @@
     "on(floor_block, kitchen_island/top) OK"
    ],
    "dropped": [],
-   "wall_s": 117.1,
-   "dir": "benchmark/runs/final/P18_floor_pick/s0_default_nominal",
+   "wall_s": 122.7,
+   "dir": "benchmark/runs/v2/P18_floor_pick/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1665,8 +1659,8 @@
     "dipped(handled_cooking_pot) OK"
    ],
    "dropped": [],
-   "wall_s": 633.2,
-   "dir": "benchmark/runs/final/P19_spoon_dip/s0_default_nominal",
+   "wall_s": 572.9,
+   "dir": "benchmark/runs/v2/P19_spoon_dip/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1684,8 +1678,8 @@
     "hidden(wooden_block_b) OK"
    ],
    "dropped": [],
-   "wall_s": 199.9,
-   "dir": "benchmark/runs/final/P20_hide_block/s0_default_nominal",
+   "wall_s": 223.1,
+   "dir": "benchmark/runs/v2/P20_hide_block/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1703,8 +1697,8 @@
     "support_clear(KitchenCabinetFactory_7025538_spawn_asset_6631478/top) OK"
    ],
    "dropped": [],
-   "wall_s": 319.9,
-   "dir": "benchmark/runs/final/P21_clear_cabinet/s0_default_nominal",
+   "wall_s": 269.3,
+   "dir": "benchmark/runs/v2/P21_clear_cabinet/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1723,8 +1717,8 @@
     "is_closed(breakfast_fridge) OK"
    ],
    "dropped": [],
-   "wall_s": 41.6,
-   "dir": "benchmark/runs/final/P22_chill_oatmeal/s0_default_nominal",
+   "wall_s": 47.4,
+   "dir": "benchmark/runs/v2/P22_chill_oatmeal/s0_default_nominal",
    "crash": ""
   },
   {
@@ -1738,7 +1732,7 @@
    "failed_calls": [
     "pick_object(object=paperback_book)"
    ],
-   "evidence_failure": "pick_object(object=paperback_book): edge pinch paperback_book: not held (lift 0.000 m)",
+   "evidence_failure": "pick_object(object=paperback_book): edge pinch paperback_book: not held (lift -0.000 m)",
    "recovery": [
     "search_object(object=paperback_book, region=living_room_0_0) OK",
     "expose_object(object=paperback_book) OK",
@@ -1749,8 +1743,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 336.4,
-   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose",
+   "wall_s": 222.3,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s0_far_no_overhang_hard_search_expose",
    "crash": ""
   },
   {
@@ -1774,8 +1768,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 215.4,
-   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_no_overhang_fallback_expose",
+   "wall_s": 218.2,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s0_no_overhang_fallback_expose",
    "crash": ""
   },
   {
@@ -1794,8 +1788,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 189.6,
-   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s0_overhang_ready_nominal",
+   "wall_s": 181.5,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s0_overhang_ready_nominal",
    "crash": ""
   },
   {
@@ -1804,11 +1798,10 @@
    "variant": "far_no_overhang",
    "planner": "scripted",
    "route": "hard_search_expose",
-   "outcome": "fail",
+   "outcome": "pass",
    "calls": 7,
    "failed_calls": [
-    "pick_object(object=paperback_book)",
-    "place_object(object=paperback_book, receptacle=TableDiningFactory_1437886_spawn_asset_2104395/surface_2, hint_xy=[3.72, 6.5])"
+    "pick_object(object=paperback_book)"
    ],
    "evidence_failure": "pick_object(object=paperback_book): edge pinch paperback_book: not held (lift 0.000 m)",
    "recovery": [
@@ -1817,14 +1810,12 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) FALSE",
+    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
     "hand_empty(right) OK"
    ],
-   "dropped": [
-    "paperback_book"
-   ],
-   "wall_s": 408.1,
-   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_far_no_overhang_hard_search_expose",
+   "dropped": [],
+   "wall_s": 228.5,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s1_far_no_overhang_hard_search_expose",
    "crash": ""
   },
   {
@@ -1848,8 +1839,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 236.9,
-   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_no_overhang_fallback_expose",
+   "wall_s": 216.0,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s1_no_overhang_fallback_expose",
    "crash": ""
   },
   {
@@ -1868,8 +1859,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 190.1,
-   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s1_overhang_ready_nominal",
+   "wall_s": 193.2,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s1_overhang_ready_nominal",
    "crash": ""
   },
   {
@@ -1890,8 +1881,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 38.7,
-   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s2_no_overhang_fixed",
+   "wall_s": 37.2,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s2_no_overhang_fixed",
    "crash": ""
   },
   {
@@ -1914,8 +1905,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 58.7,
-   "dir": "benchmark/runs/final/T01_book_to_dining_table/s2_no_overhang_retry",
+   "wall_s": 49.6,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s2_no_overhang_retry",
    "crash": ""
   },
   {
@@ -1937,8 +1928,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 199.5,
-   "dir": "benchmark/runs/retest/T01_book_to_dining_table/s3_no_overhang_oracle-fallback_expose",
+   "wall_s": 238.0,
+   "dir": "benchmark/runs/v2/T01_book_to_dining_table/s3_no_overhang_oracle-fallback_expose",
    "crash": ""
   },
   {
@@ -1956,32 +1947,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 64.6,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s0_clear_nominal",
-   "crash": ""
-  },
-  {
-   "task": "T02_stack_blocks",
-   "seed": 0,
-   "variant": "crowded",
-   "planner": "scripted",
-   "route": "fallback_push",
-   "outcome": "pass",
-   "calls": 8,
-   "failed_calls": [
-    "pick_object(object=wooden_block_b)"
-   ],
-   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift -0.000 m)",
-   "recovery": [
-    "push_object(object=wooden_block_b, direction_xy=[1.0, 0.0], distance_m=0.1) OK",
-    "pick_object(object=wooden_block_b) OK"
-   ],
-   "goal": [
-    "hand_empty(right) OK"
-   ],
-   "dropped": [],
-   "wall_s": 494.5,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s0_crowded_fallback_push",
+   "wall_s": 46.7,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s0_clear_nominal",
    "crash": ""
   },
   {
@@ -1995,7 +1962,7 @@
    "failed_calls": [
     "pick_object(object=wooden_block_b)"
    ],
-   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift -0.000 m)",
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.002 m)",
    "recovery": [
     "separate_object(object=wooden_block_b) OK",
     "pick_object(object=wooden_block_b) OK"
@@ -2004,8 +1971,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 499.8,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s0_crowded_fallback_separate",
+   "wall_s": 451.4,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s0_crowded_fallback_separate",
    "crash": ""
   },
   {
@@ -2014,92 +1981,66 @@
    "variant": "far_crowded",
    "planner": "scripted",
    "route": "hard_search_separate",
-   "outcome": "fail",
+   "outcome": "pass",
    "calls": 11,
    "failed_calls": [
-    "pick_object(object=wooden_block_b)",
-    "stack_object(object=wooden_block_b, base=wooden_block_a)"
+    "pick_object(object=wooden_block_b)"
+   ],
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.002 m)",
+   "recovery": [
+    "search_object(object=wooden_block_a, region=living_room_0_0) OK",
+    "separate_object(object=wooden_block_b) OK",
+    "pick_object(object=wooden_block_b) OK"
+   ],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 542.1,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s0_far_crowded_hard_search_separate",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 1,
+   "variant": "clear",
+   "planner": "scripted",
+   "route": "nominal",
+   "outcome": "pass",
+   "calls": 6,
+   "failed_calls": [],
+   "evidence_failure": "",
+   "recovery": [],
+   "goal": [
+    "hand_empty(right) OK"
+   ],
+   "dropped": [],
+   "wall_s": 49.2,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s1_clear_nominal",
+   "crash": ""
+  },
+  {
+   "task": "T02_stack_blocks",
+   "seed": 1,
+   "variant": "crowded",
+   "planner": "scripted",
+   "route": "fallback_separate",
+   "outcome": "pass",
+   "calls": 9,
+   "failed_calls": [
+    "pick_object(object=wooden_block_b)"
    ],
    "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.000 m)",
    "recovery": [
-    "search_object(object=wooden_block_a, region=living_room_0_0) OK",
     "separate_object(object=wooden_block_b) OK",
-    "pick_object(object=wooden_block_b) OK"
-   ],
-   "goal": [
-    "hand_empty(right) FALSE"
-   ],
-   "dropped": [],
-   "wall_s": 371.9,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s0_far_crowded_hard_search_separate",
-   "crash": ""
-  },
-  {
-   "task": "T02_stack_blocks",
-   "seed": 1,
-   "variant": "clear",
-   "planner": "scripted",
-   "route": "nominal",
-   "outcome": "pass",
-   "calls": 6,
-   "failed_calls": [],
-   "evidence_failure": "",
-   "recovery": [],
-   "goal": [
-    "hand_empty(right) OK"
-   ],
-   "dropped": [],
-   "wall_s": 51.4,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s1_clear_nominal",
-   "crash": ""
-  },
-  {
-   "task": "T02_stack_blocks",
-   "seed": 1,
-   "variant": "crowded",
-   "planner": "scripted",
-   "route": "fallback_push",
-   "outcome": "pass",
-   "calls": 8,
-   "failed_calls": [
-    "pick_object(object=wooden_block_b)"
-   ],
-   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift -0.000 m)",
-   "recovery": [
-    "push_object(object=wooden_block_b, direction_xy=[1.0, 0.0], distance_m=0.1) OK",
     "pick_object(object=wooden_block_b) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 532.6,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s1_crowded_fallback_push",
-   "crash": ""
-  },
-  {
-   "task": "T02_stack_blocks",
-   "seed": 1,
-   "variant": "crowded",
-   "planner": "scripted",
-   "route": "fallback_separate",
-   "outcome": "fail",
-   "calls": 9,
-   "failed_calls": [
-    "pick_object(object=wooden_block_b)",
-    "stack_object(object=wooden_block_b, base=wooden_block_a)"
-   ],
-   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.003 m)",
-   "recovery": [
-    "separate_object(object=wooden_block_b) OK",
-    "pick_object(object=wooden_block_b) OK"
-   ],
-   "goal": [
-    "hand_empty(right) FALSE"
-   ],
-   "dropped": [],
-   "wall_s": 504.2,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s1_crowded_fallback_separate",
+   "wall_s": 401.3,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s1_crowded_fallback_separate",
    "crash": ""
   },
   {
@@ -2113,7 +2054,7 @@
    "failed_calls": [
     "pick_object(object=wooden_block_b)"
    ],
-   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift 0.004 m)",
+   "evidence_failure": "pick_object(object=wooden_block_b): pick wooden_block_b: not held (lift -0.000 m)",
    "recovery": [
     "search_object(object=wooden_block_a, region=living_room_0_0) OK",
     "separate_object(object=wooden_block_b) OK",
@@ -2123,8 +2064,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 414.0,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s1_far_crowded_hard_search_separate",
+   "wall_s": 460.3,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s1_far_crowded_hard_search_separate",
    "crash": ""
   },
   {
@@ -2144,8 +2085,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 450.8,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s2_crowded_fixed",
+   "wall_s": 306.9,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s2_crowded_fixed",
    "crash": ""
   },
   {
@@ -2154,13 +2095,10 @@
    "variant": "crowded",
    "planner": "retry",
    "route": "nominal",
-   "outcome": "fail",
-   "calls": 9,
+   "outcome": "pass",
+   "calls": 7,
    "failed_calls": [
-    "pick_object(object=wooden_block_b)",
-    "stack_object(object=wooden_block_b, base=wooden_block_a)",
-    "stack_object(object=wooden_block_b, base=wooden_block_a)",
-    "stack_object(object=wooden_block_b, base=wooden_block_a)"
+    "pick_object(object=wooden_block_b)"
    ],
    "evidence_failure": "",
    "recovery": [],
@@ -2168,8 +2106,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 1149.2,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s2_crowded_retry",
+   "wall_s": 1044.0,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s2_crowded_retry",
    "crash": ""
   },
   {
@@ -2179,21 +2117,23 @@
    "planner": "oracle",
    "route": "fallback_separate",
    "outcome": "fail",
-   "calls": 8,
+   "calls": 4,
    "failed_calls": [
-    "stack_object(object=wooden_block_b, base=wooden_block_a)"
+    "pick_object(object=wooden_block_b)"
    ],
    "evidence_failure": "",
    "recovery": [
     "separate_object(object=wooden_block_b) OK",
-    "pick_object(object=wooden_block_b) OK"
+    "pick_object(object=wooden_block_b) FAIL"
    ],
    "goal": [
-    "hand_empty(right) FALSE"
+    "hand_empty(right) OK"
    ],
-   "dropped": [],
-   "wall_s": 53.6,
-   "dir": "benchmark/runs/final/T02_stack_blocks/s3_crowded_oracle-fallback_separate",
+   "dropped": [
+    "wooden_block_b"
+   ],
+   "wall_s": 38.6,
+   "dir": "benchmark/runs/v2/T02_stack_blocks/s3_crowded_oracle-fallback_separate",
    "crash": ""
   },
   {
@@ -2217,8 +2157,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 318.5,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container",
+   "wall_s": 274.8,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s0_far_small_and_large_hard_search_alt_container",
    "crash": ""
   },
   {
@@ -2236,8 +2176,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 138.2,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s0_large_only_nominal",
+   "wall_s": 161.2,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s0_large_only_nominal",
    "crash": ""
   },
   {
@@ -2260,8 +2200,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 288.7,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s0_small_and_large_alternative_large_container",
+   "wall_s": 311.7,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s0_small_and_large_alternative_large_container",
    "crash": ""
   },
   {
@@ -2279,8 +2219,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 157.8,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s0_small_and_large_nominal",
+   "wall_s": 141.3,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s0_small_and_large_nominal",
    "crash": ""
   },
   {
@@ -2294,7 +2234,7 @@
    "failed_calls": [
     "place_object(object=rolling_pin, receptacle=mug)"
    ],
-   "evidence_failure": "place_object(object=rolling_pin, receptacle=mug): place rolling_pin: hand blocked at support (0.047 m)",
+   "evidence_failure": "place_object(object=rolling_pin, receptacle=mug): place rolling_pin: hand blocked at support (0.053 m)",
    "recovery": [
     "search_object(object=breakfast_spoon, region=living_room_0_0) OK",
     "navigate_place(destination=wide_storage_bin) OK",
@@ -2304,8 +2244,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 269.7,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s1_far_small_and_large_hard_search_alt_container",
+   "wall_s": 337.5,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s1_far_small_and_large_hard_search_alt_container",
    "crash": ""
   },
   {
@@ -2323,8 +2263,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 167.9,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s1_large_only_nominal",
+   "wall_s": 143.1,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s1_large_only_nominal",
    "crash": ""
   },
   {
@@ -2347,8 +2287,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 310.6,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s1_small_and_large_alternative_large_container",
+   "wall_s": 273.0,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s1_small_and_large_alternative_large_container",
    "crash": ""
   },
   {
@@ -2366,8 +2306,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 170.0,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s1_small_and_large_nominal",
+   "wall_s": 154.6,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s1_small_and_large_nominal",
    "crash": ""
   },
   {
@@ -2385,8 +2325,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 176.1,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s2_far_small_and_large_fixed",
+   "wall_s": 176.8,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s2_far_small_and_large_fixed",
    "crash": ""
   },
   {
@@ -2404,8 +2344,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 166.8,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s2_far_small_and_large_retry",
+   "wall_s": 151.9,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s2_far_small_and_large_retry",
    "crash": ""
   },
   {
@@ -2427,8 +2367,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 193.4,
-   "dir": "benchmark/runs/final/T03_utensils_one_container/s3_far_small_and_large_oracle-hard_search_alt_container",
+   "wall_s": 188.9,
+   "dir": "benchmark/runs/v2/T03_utensils_one_container/s3_far_small_and_large_oracle-hard_search_alt_container",
    "crash": ""
   },
   {
@@ -2446,8 +2386,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 183.1,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s0_cup_available_nominal",
+   "wall_s": 147.6,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s0_cup_available_nominal",
    "crash": ""
   },
   {
@@ -2470,8 +2410,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 257.5,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s0_no_cup_alternative_mug",
+   "wall_s": 234.0,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s0_no_cup_alternative_mug",
    "crash": ""
   },
   {
@@ -2493,8 +2433,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 114.2,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s0_no_cup_mug_away_hard_count_search_mug",
+   "wall_s": 113.6,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s0_no_cup_mug_away_hard_count_search_mug",
    "crash": ""
   },
   {
@@ -2512,8 +2452,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 150.0,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s1_cup_available_nominal",
+   "wall_s": 140.1,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s1_cup_available_nominal",
    "crash": ""
   },
   {
@@ -2536,8 +2476,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 282.8,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s1_no_cup_alternative_mug",
+   "wall_s": 257.0,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s1_no_cup_alternative_mug",
    "crash": ""
   },
   {
@@ -2559,8 +2499,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 110.5,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s1_no_cup_mug_away_hard_count_search_mug",
+   "wall_s": 109.4,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s1_no_cup_mug_away_hard_count_search_mug",
    "crash": ""
   },
   {
@@ -2580,8 +2520,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 13.2,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s2_no_cup_fixed",
+   "wall_s": 14.0,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s2_no_cup_fixed",
    "crash": ""
   },
   {
@@ -2603,8 +2543,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 13.6,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s2_no_cup_retry",
+   "wall_s": 13.8,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s2_no_cup_retry",
    "crash": ""
   },
   {
@@ -2625,8 +2565,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 176.1,
-   "dir": "benchmark/runs/final/T04_cup_or_mug_to_cabinet/s3_no_cup_oracle-alternative_mug",
+   "wall_s": 182.7,
+   "dir": "benchmark/runs/v2/T04_cup_or_mug_to_cabinet/s3_no_cup_oracle-alternative_mug",
    "crash": ""
   },
   {
@@ -2649,8 +2589,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 104.8,
-   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s0_no_pen_alternative_pencil",
+   "wall_s": 110.4,
+   "dir": "benchmark/runs/v2/T05_pen_or_pencil_to_desk/s0_no_pen_alternative_pencil",
    "crash": ""
   },
   {
@@ -2672,8 +2612,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 130.5,
-   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s0_no_pen_pencil_away_hard_search_pencil",
+   "wall_s": 134.1,
+   "dir": "benchmark/runs/v2/T05_pen_or_pencil_to_desk/s0_no_pen_pencil_away_hard_search_pencil",
    "crash": ""
   },
   {
@@ -2696,8 +2636,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 104.8,
-   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s1_no_pen_alternative_pencil",
+   "wall_s": 103.6,
+   "dir": "benchmark/runs/v2/T05_pen_or_pencil_to_desk/s1_no_pen_alternative_pencil",
    "crash": ""
   },
   {
@@ -2719,8 +2659,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 139.1,
-   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s1_no_pen_pencil_away_hard_search_pencil",
+   "wall_s": 142.4,
+   "dir": "benchmark/runs/v2/T05_pen_or_pencil_to_desk/s1_no_pen_pencil_away_hard_search_pencil",
    "crash": ""
   },
   {
@@ -2740,8 +2680,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 15.6,
-   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s2_no_pen_fixed",
+   "wall_s": 16.3,
+   "dir": "benchmark/runs/v2/T05_pen_or_pencil_to_desk/s2_no_pen_fixed",
    "crash": ""
   },
   {
@@ -2763,8 +2703,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 16.0,
-   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s2_no_pen_retry",
+   "wall_s": 15.5,
+   "dir": "benchmark/runs/v2/T05_pen_or_pencil_to_desk/s2_no_pen_retry",
    "crash": ""
   },
   {
@@ -2785,8 +2725,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 105.1,
-   "dir": "benchmark/runs/final/T05_pen_or_pencil_to_desk/s3_no_pen_oracle-alternative_pencil",
+   "wall_s": 119.5,
+   "dir": "benchmark/runs/v2/T05_pen_or_pencil_to_desk/s3_no_pen_oracle-alternative_pencil",
    "crash": ""
   },
   {
@@ -2804,8 +2744,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 78.0,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s0_free_nominal",
+   "wall_s": 71.4,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s0_free_nominal",
    "crash": ""
   },
   {
@@ -2828,8 +2768,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 67.1,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s0_occupied_alternative_tv_stand",
+   "wall_s": 68.5,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s0_occupied_alternative_tv_stand",
    "crash": ""
   },
   {
@@ -2853,8 +2793,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 95.0,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s0_occupied_block_away_hard_search_alt_support",
+   "wall_s": 93.0,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s0_occupied_block_away_hard_search_alt_support",
    "crash": ""
   },
   {
@@ -2872,8 +2812,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 75.5,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s1_free_nominal",
+   "wall_s": 78.6,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s1_free_nominal",
    "crash": ""
   },
   {
@@ -2896,8 +2836,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 65.3,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s1_occupied_alternative_tv_stand",
+   "wall_s": 62.9,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s1_occupied_alternative_tv_stand",
    "crash": ""
   },
   {
@@ -2921,8 +2861,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 99.1,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s1_occupied_block_away_hard_search_alt_support",
+   "wall_s": 98.5,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s1_occupied_block_away_hard_search_alt_support",
    "crash": ""
   },
   {
@@ -2942,8 +2882,8 @@
     "hand_empty(right) FALSE"
    ],
    "dropped": [],
-   "wall_s": 37.8,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s2_occupied_fixed",
+   "wall_s": 37.6,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s2_occupied_fixed",
    "crash": ""
   },
   {
@@ -2965,8 +2905,8 @@
     "hand_empty(right) FALSE"
    ],
    "dropped": [],
-   "wall_s": 36.4,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s2_occupied_retry",
+   "wall_s": 38.5,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s2_occupied_retry",
    "crash": ""
   },
   {
@@ -2987,8 +2927,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 64.2,
-   "dir": "benchmark/runs/final/T06_block_destination_occupied/s3_occupied_oracle-alternative_tv_stand",
+   "wall_s": 62.9,
+   "dir": "benchmark/runs/v2/T06_block_destination_occupied/s3_occupied_oracle-alternative_tv_stand",
    "crash": ""
   },
   {
@@ -3018,8 +2958,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 223.3,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s0_broken_oatmeal_away_hard_search_stove",
+   "wall_s": 221.0,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s0_broken_oatmeal_away_hard_search_stove",
    "crash": ""
   },
   {
@@ -3048,8 +2988,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 211.5,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s0_microwave_broken_alternative_stove",
+   "wall_s": 205.6,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s0_microwave_broken_alternative_stove",
    "crash": ""
   },
   {
@@ -3070,8 +3010,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 84.0,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s0_microwave_works_nominal",
+   "wall_s": 84.5,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s0_microwave_works_nominal",
    "crash": ""
   },
   {
@@ -3101,8 +3041,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 220.9,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s1_broken_oatmeal_away_hard_search_stove",
+   "wall_s": 230.8,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s1_broken_oatmeal_away_hard_search_stove",
    "crash": ""
   },
   {
@@ -3131,8 +3071,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 221.6,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s1_microwave_broken_alternative_stove",
+   "wall_s": 221.0,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s1_microwave_broken_alternative_stove",
    "crash": ""
   },
   {
@@ -3153,8 +3093,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 91.4,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s1_microwave_works_nominal",
+   "wall_s": 84.5,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s1_microwave_works_nominal",
    "crash": ""
   },
   {
@@ -3177,8 +3117,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 104.9,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s2_microwave_broken_fixed",
+   "wall_s": 101.3,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s2_microwave_broken_fixed",
    "crash": ""
   },
   {
@@ -3203,8 +3143,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 157.6,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s2_microwave_broken_retry",
+   "wall_s": 156.6,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s2_microwave_broken_retry",
    "crash": ""
   },
   {
@@ -3225,8 +3165,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 96.2,
-   "dir": "benchmark/runs/final/T07_heat_oatmeal/s3_microwave_broken_oracle-oracle_stove",
+   "wall_s": 94.3,
+   "dir": "benchmark/runs/v2/T07_heat_oatmeal/s3_microwave_broken_oracle-oracle_stove",
    "crash": ""
   },
   {
@@ -3248,8 +3188,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 205.1,
-   "dir": "benchmark/runs/final/T08_wipe_island/s0_far_sponge_tv_hard_search_approach",
+   "wall_s": 206.0,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s0_far_sponge_tv_hard_search_approach",
    "crash": ""
   },
   {
@@ -3269,8 +3209,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 93.8,
-   "dir": "benchmark/runs/final/T08_wipe_island/s0_sponge_on_island_nominal",
+   "wall_s": 94.6,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s0_sponge_on_island_nominal",
    "crash": ""
   },
   {
@@ -3290,8 +3230,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 94.9,
-   "dir": "benchmark/runs/final/T08_wipe_island/s0_sponge_on_tv_stand_nominal_from_tv_stand",
+   "wall_s": 101.2,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s0_sponge_on_tv_stand_nominal_from_tv_stand",
    "crash": ""
   },
   {
@@ -3313,8 +3253,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 207.5,
-   "dir": "benchmark/runs/final/T08_wipe_island/s1_far_sponge_tv_hard_search_approach",
+   "wall_s": 212.5,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s1_far_sponge_tv_hard_search_approach",
    "crash": ""
   },
   {
@@ -3334,8 +3274,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 103.5,
-   "dir": "benchmark/runs/final/T08_wipe_island/s1_sponge_on_island_nominal",
+   "wall_s": 98.7,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s1_sponge_on_island_nominal",
    "crash": ""
   },
   {
@@ -3355,8 +3295,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 111.6,
-   "dir": "benchmark/runs/final/T08_wipe_island/s1_sponge_on_tv_stand_nominal_from_tv_stand",
+   "wall_s": 118.5,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s1_sponge_on_tv_stand_nominal_from_tv_stand",
    "crash": ""
   },
   {
@@ -3378,8 +3318,8 @@
     "hand_empty(right) FALSE"
    ],
    "dropped": [],
-   "wall_s": 88.7,
-   "dir": "benchmark/runs/final/T08_wipe_island/s2_sponge_on_tv_stand_fixed",
+   "wall_s": 118.1,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s2_sponge_on_tv_stand_fixed",
    "crash": ""
   },
   {
@@ -3403,8 +3343,8 @@
     "hand_empty(right) FALSE"
    ],
    "dropped": [],
-   "wall_s": 88.8,
-   "dir": "benchmark/runs/final/T08_wipe_island/s2_sponge_on_tv_stand_retry",
+   "wall_s": 123.0,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s2_sponge_on_tv_stand_retry",
    "crash": ""
   },
   {
@@ -3424,8 +3364,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 144.8,
-   "dir": "benchmark/runs/final/T08_wipe_island/s3_sponge_on_tv_stand_oracle-nominal_from_tv_stand",
+   "wall_s": 123.0,
+   "dir": "benchmark/runs/v2/T08_wipe_island/s3_sponge_on_tv_stand_oracle-nominal_from_tv_stand",
    "crash": ""
   },
   {
@@ -3450,8 +3390,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 242.0,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s0_lid_off_nominal",
+   "wall_s": 232.5,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s0_lid_off_nominal",
    "crash": ""
   },
   {
@@ -3481,8 +3421,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 738.5,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s0_lid_on_fallback_uncover",
+   "wall_s": 723.5,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s0_lid_on_fallback_uncover",
    "crash": ""
   },
   {
@@ -3513,8 +3453,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 750.7,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s0_lid_on_spoon_away_hard_uncover_search_spoon",
+   "wall_s": 834.0,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s0_lid_on_spoon_away_hard_uncover_search_spoon",
    "crash": ""
   },
   {
@@ -3539,8 +3479,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 246.6,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s1_lid_off_nominal",
+   "wall_s": 260.3,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s1_lid_off_nominal",
    "crash": ""
   },
   {
@@ -3570,8 +3510,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 795.1,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s1_lid_on_fallback_uncover",
+   "wall_s": 871.9,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s1_lid_on_fallback_uncover",
    "crash": ""
   },
   {
@@ -3602,8 +3542,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 846.4,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s1_lid_on_spoon_away_hard_uncover_search_spoon",
+   "wall_s": 722.2,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s1_lid_on_spoon_away_hard_uncover_search_spoon",
    "crash": ""
   },
   {
@@ -3630,8 +3570,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 13.8,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s2_lid_on_fixed",
+   "wall_s": 13.9,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s2_lid_on_fixed",
    "crash": ""
   },
   {
@@ -3660,8 +3600,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 14.0,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s2_lid_on_retry",
+   "wall_s": 14.3,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s2_lid_on_retry",
    "crash": ""
   },
   {
@@ -3689,8 +3629,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 713.4,
-   "dir": "benchmark/runs/final/T09_tomato_soup/s3_lid_on_oracle-fallback_uncover",
+   "wall_s": 742.9,
+   "dir": "benchmark/runs/v2/T09_tomato_soup/s3_lid_on_oracle-fallback_uncover",
    "crash": ""
   },
   {
@@ -3713,8 +3653,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 136.6,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s0_can_in_dining_room_search_first",
+   "wall_s": 139.5,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s0_can_in_dining_room_search_first",
    "crash": ""
   },
   {
@@ -3733,8 +3673,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 298.8,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s0_can_on_island_nominal",
+   "wall_s": 279.9,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s0_can_on_island_nominal",
    "crash": ""
   },
   {
@@ -3758,8 +3698,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 189.4,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s0_far_can_far_hard_explore_search",
+   "wall_s": 188.0,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s0_far_can_far_hard_explore_search",
    "crash": ""
   },
   {
@@ -3782,8 +3722,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 130.5,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s1_can_in_dining_room_search_first",
+   "wall_s": 123.1,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s1_can_in_dining_room_search_first",
    "crash": ""
   },
   {
@@ -3802,8 +3742,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 267.9,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s1_can_on_island_nominal",
+   "wall_s": 261.2,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s1_can_on_island_nominal",
    "crash": ""
   },
   {
@@ -3827,8 +3767,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 207.4,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s1_far_can_far_hard_explore_search",
+   "wall_s": 199.7,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s1_far_can_far_hard_explore_search",
    "crash": ""
   },
   {
@@ -3847,8 +3787,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 119.1,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s2_can_in_dining_room_fixed",
+   "wall_s": 130.2,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s2_can_in_dining_room_fixed",
    "crash": ""
   },
   {
@@ -3867,8 +3807,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 126.8,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s2_can_in_dining_room_retry",
+   "wall_s": 124.2,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s2_can_in_dining_room_retry",
    "crash": ""
   },
   {
@@ -3889,8 +3829,8 @@
     "hand_empty(right) OK"
    ],
    "dropped": [],
-   "wall_s": 133.5,
-   "dir": "benchmark/runs/final/T10_trash_the_can/s3_can_in_dining_room_oracle-search_first",
+   "wall_s": 144.8,
+   "dir": "benchmark/runs/v2/T10_trash_the_can/s3_can_in_dining_room_oracle-search_first",
    "crash": ""
   }
  ]
