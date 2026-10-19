@@ -9099,7 +9099,7 @@
    ]
   },
   {
-   "task_id": "T11_flip_paperback",
+   "task_id": "T11_book_face_up",
    "exp_id": "ZB-T11",
    "since": "v3",
    "source": [
@@ -9107,8 +9107,8 @@
     "k_book",
     "probe P05_flip_book"
    ],
-   "instruction": "The paperback on the kitchen island is lying face down. Turn it over and leave it on the island.",
-   "instruction_zh": "\u5c9b\u53f0\u4e0a\u7684\u5e73\u88c5\u4e66\u6263\u7740\u653e\u4e86\uff0c\u628a\u5b83\u7ffb\u8fc7\u6765\uff0c\u7559\u5728\u5c9b\u53f0\u4e0a\u3002",
+   "instruction": "Someone left their paperback face down on the kitchen island and the spine is getting bent. Turn it face up and leave it on the island for them.",
+   "instruction_zh": "\u6709\u4eba\u628a\u5e73\u88c5\u4e66\u6263\u5728\u53a8\u623f\u5c9b\u53f0\u4e0a\u4e86\uff0c\u4e66\u810a\u90fd\u5feb\u538b\u5f2f\u4e86\u3002\u5e2e\u5fd9\u628a\u5b83\u7ffb\u8fc7\u6765\u6b63\u9762\u671d\u4e0a\uff0c\u8fd8\u653e\u5728\u5c9b\u53f0\u4e0a\u3002",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -9557,7 +9557,7 @@
    ]
   },
   {
-   "task_id": "T12_rolling_pin_prep",
+   "task_id": "T12_try_rolling_pin",
    "exp_id": "ZB-T12",
    "since": "v3",
    "source": [
@@ -9565,8 +9565,8 @@
     "k_pin",
     "probe P03_rolling_pin"
    ],
-   "instruction": "Give the rolling pin a roll on the kitchen island, then leave it well away from the island's edges.",
-   "instruction_zh": "\u7528\u64c0\u9762\u6756\u5728\u5c9b\u53f0\u4e0a\u6eda\u4e00\u4e0b\uff0c\u7528\u5b8c\u628a\u5b83\u653e\u5230\u79bb\u5c9b\u53f0\u8fb9\u7f18\u8fdc\u4e00\u70b9\u7684\u5b89\u5168\u4f4d\u7f6e\u3002",
+   "instruction": "We are about to make dumplings. Give the rolling pin a quick roll on the island to check it runs smoothly, then leave it in the middle of the island where it cannot roll off.",
+   "instruction_zh": "\u51c6\u5907\u5305\u997a\u5b50\u4e86\uff0c\u5148\u628a\u64c0\u9762\u6756\u5728\u5c9b\u53f0\u4e0a\u6eda\u4e00\u4e0b\uff0c\u770b\u770b\u987a\u4e0d\u987a\u624b\uff0c\u7528\u5b8c\u653e\u5230\u5c9b\u53f0\u4e2d\u95f4\uff0c\u522b\u8ba9\u5b83\u6eda\u4e0b\u53bb\u3002",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -10082,7 +10082,7 @@
    ]
   },
   {
-   "task_id": "T13_hide_block_in_pot",
+   "task_id": "T13_hide_and_seek_block",
    "exp_id": "ZB-T13",
    "since": "v3",
    "source": [
@@ -10090,8 +10090,8 @@
     "k_empty_hide",
     "probe P20_hide_block"
    ],
-   "instruction": "Hide the wooden toy block in the pot on the stove and put the lid on.",
-   "instruction_zh": "\u628a\u6728\u79ef\u6728\u85cf\u8fdb\u7076\u53f0\u4e0a\u7684\u9505\u91cc\uff0c\u5e76\u76d6\u597d\u9505\u76d6\u3002",
+   "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
+   "instruction_zh": "\u966a\u5b69\u5b50\u73a9\u85cf\u4e1c\u897f\u7684\u6e38\u620f\uff1a\u628a\u6728\u79ef\u6728\u85cf\u8fdb\u7076\u53f0\u4e0a\u7684\u7a7a\u9505\u91cc\uff0c\u518d\u76d6\u597d\u9505\u76d6\uff0c\u522b\u8ba9\u5b69\u5b50\u4e00\u773c\u770b\u5230\u3002",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -10728,7 +10728,7 @@
    ]
   },
   {
-   "task_id": "T15_cabinet_inspection",
+   "task_id": "T15_check_cabinet_dishes",
    "exp_id": "ZB-T15",
    "since": "v3",
    "source": [
@@ -10736,8 +10736,8 @@
     "k_cabinet",
     "probe P12_cabinet"
    ],
-   "instruction": "Knock on the low wall cabinet, check what is inside, and close it properly when you are done.",
-   "instruction_zh": "\u6572\u4e00\u4e0b\u9760\u5899\u77ee\u67dc\uff0c\u68c0\u67e5\u91cc\u9762\u6709\u4ec0\u4e48\uff0c\u7ed3\u675f\u540e\u628a\u67dc\u95e8\u5173\u597d\u3002",
+   "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinet for dinner. Have a look inside and close the cabinet door properly afterwards.",
+   "instruction_zh": "\u5976\u5976\u60f3\u77e5\u9053\u9760\u5899\u77ee\u67dc\u91cc\u8fd8\u6709\u6ca1\u6709\u5e72\u51c0\u7684\u76d8\u5b50\u548c\u7897\uff0c\u665a\u996d\u8981\u7528\u3002\u53bb\u770b\u4e00\u773c\u91cc\u9762\uff0c\u770b\u5b8c\u628a\u67dc\u95e8\u5173\u597d\u3002",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [
@@ -10788,10 +10788,6 @@
    "goal": {
     "all": [
      [
-      "knocked",
-      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
-     ],
-     [
       "observed",
       "plate_inside_kitchen_cabinet"
      ],
@@ -10829,12 +10825,6 @@
        }
       },
       {
-       "skill": "knock",
-       "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
-       }
-      },
-      {
        "skill": "open",
        "args": {
         "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
@@ -10860,18 +10850,12 @@
      "variants": [
       "at_island"
      ],
-     "recovery": "Inspect the closed cabinet fails (its own open from the knock pose) -> Open -> Inspect -> Close",
+     "recovery": "Inspect the closed cabinet fails (its own open from the navigate pose) -> Open -> Inspect -> Close",
      "steps": [
       {
        "skill": "navigate",
        "args": {
         "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
-       }
-      },
-      {
-       "skill": "knock",
-       "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
        }
       },
       {
@@ -10940,7 +10924,7 @@
    ]
   },
   {
-   "task_id": "T14_clear_tv_stand",
+   "task_id": "T14_tidy_tv_stand",
    "exp_id": "ZB-T14",
    "since": "v3",
    "source": [
@@ -10948,8 +10932,8 @@
     "o_clear",
     "k_blocks"
    ],
-   "instruction": "A toy block was left on the TV stand. Put it away on top of the low bookcase in the hall; if there is no room there, on the bookcase shelf in the bedroom.",
-   "instruction_zh": "\u7535\u89c6\u67dc\u4e0a\u843d\u4e86\u4e00\u5757\u79ef\u6728\uff0c\u628a\u5b83\u6536\u5230\u5ba2\u5385\u77ee\u4e66\u67b6\u7684\u9876\u4e0a\uff1b\u90a3\u91cc\u653e\u4e0d\u4e0b\u7684\u8bdd\uff0c\u5c31\u653e\u5230\u5367\u5ba4\u4e66\u67b6\u4e0a\u3002",
+   "instruction": "Guests are coming and the kid left a toy block on the TV stand. Put it away on top of the low bookcase in the hall; if there is no room there, on the bookcase shelf in the bedroom.",
+   "instruction_zh": "\u5bb6\u91cc\u8981\u6765\u5ba2\u4eba\u4e86\uff0c\u5b69\u5b50\u628a\u79ef\u6728\u843d\u5728\u7535\u89c6\u67dc\u4e0a\u3002\u628a\u5b83\u6536\u5230\u5ba2\u5385\u77ee\u4e66\u67b6\u9876\u4e0a\uff1b\u90a3\u91cc\u653e\u4e0d\u4e0b\u7684\u8bdd\uff0c\u5c31\u653e\u5230\u5367\u5ba4\u4e66\u67b6\u4e0a\u3002",
    "scene": {
     "base": "tasks/kitchen_skills",
     "remove": [

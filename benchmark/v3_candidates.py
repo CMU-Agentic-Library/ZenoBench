@@ -617,10 +617,11 @@ T01_REMOVE = ["mug", "cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3", "s
 
 # ----------------------------------------------------------------- T11
 NEW_TASKS.append({
-    "task_id": "T11_flip_paperback", "exp_id": "ZB-T11", "since": "v3",
+    "task_id": "T11_book_face_up", "exp_id": "ZB-T11", "since": "v3",
     "source": ["skill_library/tasks.json:flip_book", "k_book", "probe P05_flip_book"],
-    "instruction": "The paperback on the kitchen island is lying face down. Turn it over and leave it on the island.",
-    "instruction_zh": "岛台上的平装书扣着放了，把它翻过来，留在岛台上。",
+    "instruction": "Someone left their paperback face down on the kitchen island and the spine is getting bent. Turn it "
+                   "face up and leave it on the island for them.",
+    "instruction_zh": "有人把平装书扣在厨房岛台上了，书脊都快压弯了。帮忙把它翻过来正面朝上，还放在岛台上。",
     "scene": {"base": "tasks/kitchen_skills", "remove": list(T01_REMOVE),
               "distractors": ["wooden_block_a", "wooden_block_b", "kitchen_sponge"]},
     "variants": {
@@ -676,10 +677,11 @@ ROLL_BLOCK = {"rolling_pin": at(ISLAND, 6.75, 1.60, 0), "oatmeal": at(ISLAND, 6.
 _roll_tail = [S("roll", object="rolling_pin", distance_m=0.1), S("pull", object="rolling_pin", distance_m=0.08),
               S("center", object="rolling_pin", margin_m=0.06)]
 NEW_TASKS.append({
-    "task_id": "T12_rolling_pin_prep", "exp_id": "ZB-T12", "since": "v3",
+    "task_id": "T12_try_rolling_pin", "exp_id": "ZB-T12", "since": "v3",
     "source": ["skill_library/tasks.json:roll_pin", "k_pin", "probe P03_rolling_pin"],
-    "instruction": "Give the rolling pin a roll on the kitchen island, then leave it well away from the island's edges.",
-    "instruction_zh": "用擀面杖在岛台上滚一下，用完把它放到离岛台边缘远一点的安全位置。",
+    "instruction": "We are about to make dumplings. Give the rolling pin a quick roll on the island to check it runs "
+                   "smoothly, then leave it in the middle of the island where it cannot roll off.",
+    "instruction_zh": "准备包饺子了，先把擀面杖在岛台上滚一下，看看顺不顺手，用完放到岛台中间，别让它滚下去。",
     "scene": {"base": "tasks/kitchen_skills", "remove": ["mug", "cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3",
                                                         "juice_bottle", "soda_can"],
               "distractors": ["wooden_block_a", "wooden_block_b", "paperback_book"]},
@@ -738,10 +740,11 @@ _hide = S("hide", object="wooden_block_b", receptacle=POT, lid="pot_lid")
 _hide_pre = [S("navigate", destination=POT), S("look", target=STOVE_TOP), S("navigate", destination=ISLAND),
              S("look", target=ISLAND)]
 NEW_TASKS.append({
-    "task_id": "T13_hide_block_in_pot", "exp_id": "ZB-T13", "since": "v3",
+    "task_id": "T13_hide_and_seek_block", "exp_id": "ZB-T13", "since": "v3",
     "source": ["skill_library/tasks.json:hide_block", "k_empty_hide", "probe P20_hide_block"],
-    "instruction": "Hide the wooden toy block in the pot on the stove and put the lid on.",
-    "instruction_zh": "把木积木藏进灶台上的锅里，并盖好锅盖。",
+    "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the "
+                   "stove and put the lid on so they cannot see it.",
+    "instruction_zh": "陪孩子玩藏东西的游戏：把木积木藏进灶台上的空锅里，再盖好锅盖，别让孩子一眼看到。",
     "scene": {"base": "tasks/kitchen_skills", "remove": ["mug", "cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3",
                                                         "wooden_block_a", "juice_bottle", "soda_can"],
               "distractors": ["paperback_book", "kitchen_sponge", "breakfast_spoon"]},
@@ -810,10 +813,11 @@ NEW_TASKS.append({
 # ----------------------------------------------------------------- T15
 CONTENTS = ["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"]
 NEW_TASKS.append({
-    "task_id": "T15_cabinet_inspection", "exp_id": "ZB-T15", "since": "v3",
+    "task_id": "T15_check_cabinet_dishes", "exp_id": "ZB-T15", "since": "v3",
     "source": ["skill_library/tasks.json:inspect_cabinet / knock_then_open", "k_cabinet", "probe P12_cabinet"],
-    "instruction": "Knock on the low wall cabinet, check what is inside, and close it properly when you are done.",
-    "instruction_zh": "敲一下靠墙矮柜，检查里面有什么，结束后把柜门关好。",
+    "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinet for "
+                   "dinner. Have a look inside and close the cabinet door properly afterwards.",
+    "instruction_zh": "奶奶想知道靠墙矮柜里还有没有干净的盘子和碗，晚饭要用。去看一眼里面，看完把柜门关好。",
     "scene": {"base": "tasks/kitchen_skills", "remove": ["cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3"],
               "distractors": ["paperback_book", "wooden_block_a", "kitchen_sponge"]},
     "variants": {
@@ -821,24 +825,26 @@ NEW_TASKS.append({
         "start_dining": {"note": "the robot starts in the dining room", "conditions": ["start_elsewhere"],
                          "start": DINING_START, "move": {}}},
     "watch": CONTENTS,
-    "goal": {"all": [["knocked", CAB], ["observed", CONTENTS[0]], ["observed", CONTENTS[1]], ["is_closed", CAB],
+    "goal": {"all": [["observed", CONTENTS[0]], ["observed", CONTENTS[1]], ["is_closed", CAB],
                      ["hand_empty", "right"]]},
     "nominal": "nominal",
     "oracle": {"at_island": "nominal", "start_dining": "nominal"},
     "routes": {
         "nominal": {"kind": "nominal", "variants": ["at_island", "start_dining"], "steps": [
-            S("navigate", destination=CAB), S("knock", articulated=CAB), S("open", articulated=CAB),
-            S("inspect", receptacle=CAB), S("close", articulated=CAB)]},
+            S("navigate", destination=CAB), S("open", articulated=CAB), S("inspect", receptacle=CAB),
+            S("close", articulated=CAB)]},
         "fallback_open_inspect": {"kind": "fallback", "variants": ["at_island"],
-                                  "recovery": "Inspect the closed cabinet fails (its own open from the knock pose) -> "
+                                  "recovery": "Inspect the closed cabinet fails (its own open from the navigate pose) -> "
                                               "Open -> Inspect -> Close",
-                                  "steps": [S("navigate", destination=CAB), S("knock", articulated=CAB),
+                                  "steps": [S("navigate", destination=CAB),
                                             S("inspect", "fail", "failure", receptacle=CAB),
                                             S("open", role="recovery", articulated=CAB),
                                             S("inspect", role="retry_after_recovery", receptacle=CAB),
                                             S("close", articulated=CAB)]}},
     "vary": {"at_island": vary(), "start_dining": vary(start=TURN_VARY)},
-    "not_adopted": [{"condition": "cabinet initially open (knock refused -> close first)",
+    "not_adopted": [{"condition": "knock before opening (source task knock_then_open)",
+                     "reason": "knocking on one's own cabinet is not a household need; knock stays covered by probe P12"},
+                    {"condition": "cabinet initially open (close first)",
                      "reason": "the scene overlay moves and removes objects only; it cannot set a joint state"}],
 })
 
@@ -853,11 +859,12 @@ _t14_carry = [S("navigate", destination="wooden_block_a"), S("pick", object="woo
 _t14_alt = [S("navigate", destination=BOOKCASE_NEAR_DESK, role="alternative"),
             S("place", role="alternative", object="wooden_block_a", receptacle=BOOKCASE_NEAR_DESK)]
 NEW_TASKS.append({
-    "task_id": "T14_clear_tv_stand", "exp_id": "ZB-T14", "since": "v3",
+    "task_id": "T14_tidy_tv_stand", "exp_id": "ZB-T14", "since": "v3",
     "source": ["skill_library/tasks.json:clear_tv_stand", "o_clear", "k_blocks"],
-    "instruction": "A toy block was left on the TV stand. Put it away on top of the low bookcase in the hall; if there is "
+    "instruction": "Guests are coming and the kid left a toy block on the TV stand. Put it away on top of the low "
+                   "bookcase in the hall; if there is "
                    "no room there, on the bookcase shelf in the bedroom.",
-    "instruction_zh": "电视柜上落了一块积木，把它收到客厅矮书架的顶上；那里放不下的话，就放到卧室书架上。",
+    "instruction_zh": "家里要来客人了，孩子把积木落在电视柜上。把它收到客厅矮书架顶上；那里放不下的话，就放到卧室书架上。",
     "scene": {"base": "tasks/kitchen_skills",
               "remove": ["cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3", "mug"],
               "move": {"wooden_block_a": BLOCK_TV},
