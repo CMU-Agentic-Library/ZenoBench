@@ -1,4 +1,4 @@
-"""Build an editable 12-slide ZenoBench group-meeting deck.
+"""Build the editable ZenoBench group-meeting deck (skill library, task suite, planning benchmark).
 
 Run from the repository root with python-pptx installed.
 """
@@ -39,6 +39,7 @@ WHITE = RGBColor(255, 255, 255)
 GREEN = RGBColor(38, 147, 101)
 RED = RGBColor(196, 78, 75)
 LINE = RGBColor(219, 228, 236)
+FOOTERS = []      # (page-number textbox, slide number); filled in once the slide count is known
 
 
 def box(slide, x, y, w, h, fill=WHITE, line=None, radius=False):
@@ -101,8 +102,8 @@ def slide(title, kicker=None, subtitle=None, dark=False):
     box(s, .55, 7.08, 12.23, .012, LINE if not dark else RGBColor(81, 102, 124))
     text(s, "ZenoBench  ·  CMU Agentic Library", .56, 7.13, 8, .18, 8.5,
          MID if not dark else RGBColor(180, 196, 215))
-    text(s, f"{len(PPT.slides):02d} / 12", 12.14, 7.12, .62, .2, 8.5,
-         MID if not dark else RGBColor(180, 196, 215), align=PP_ALIGN.RIGHT)
+    FOOTERS.append((text(s, "", 12.14, 7.12, .62, .2, 8.5,
+                         MID if not dark else RGBColor(180, 196, 215), align=PP_ALIGN.RIGHT), len(PPT.slides)))
     return s
 
 
@@ -151,7 +152,7 @@ pic(s, "media/scenes/house_topdown.jpg", 6.20, .32, 6.72, 6.85, crop=True)
 box(s, 6.08, .32, .09, 6.85, TEAL)
 text(s, "ZenoBench", .65, 1.16, 5.12, .75, 36, WHITE, True)
 text(s, "From generated worlds to household tasks", .65, 2.12, 5.17, 1.33, 25, WHITE, True)
-text(s, "What we have · What it can do · What comes next", .66, 4.01, 5.20, .71, 16, RGBColor(194, 216, 234))
+text(s, "What we have · What it can do · A benchmark for the planner", .66, 4.01, 5.20, .71, 16, RGBColor(194, 216, 234))
 box(s, .65, 5.59, 4.98, .67, RGBColor(27, 57, 79), radius=True)
 text(s, "Group meeting  |  October 2026", .88, 5.77, 4.48, .32, 14, WHITE, True)
 text(s, "github.com/CMU-Agentic-Library/ZenoBench", .67, 6.83, 5.64, .25, 10.8, RGBColor(188, 211, 228))
@@ -180,7 +181,7 @@ s = slide("ZenoBench at a glance", "What I built", "One reusable home, generated
 things=[
     ("Assets", "EmbodiedGen V2 task objects prepared for physical interaction", "media/assets_gallery.jpg", TEAL),
     ("Rooms", "10-room Infinigen house with furniture and articulated storage", "media/scenes/house_topdown.jpg", BLUE),
-    ("Tasks", "8 task definitions, each with a scene, goal and evaluation", heat_table, AMBER),
+    ("Tasks", "8 whole-task definitions, plus a 10-task benchmark for an upper-level planner", heat_table, AMBER),
 ]
 for i,(head,body,im,color) in enumerate(things):
     x=.61+i*4.19
@@ -208,24 +209,32 @@ for i,(head,body,im,color) in enumerate(capabilities):
     text(s,body,x+2.80,y+.81,2.91,.95,12.7,MID)
 note(s, "Keep this high-level. These are things the system can demonstrate; do not explain trajectory controllers here. Recorded videos show whole scripted-policy runs and state-based evaluation.")
 
-# Current atomic policies — deliberately above controller implementation detail.
-s = slide("Atomic policies: what is callable today", "Current capabilities", "Concrete actions that can be combined under a task or a semantic contract.")
-policies=[
-    ("Navigate + move", "empty_navigate · carry_navigate\npick_while_moving · place_while_moving", TEAL),
-    ("Posture + reach", "lower_torso · lean_forward\nright_tcp_move · gripper open/close", BLUE),
-    ("Pick + place", "pick_top · pick_round_rim · pick_edge\nplace_surface · place_container", AMBER),
-    ("Interact + operate", "open_handle · close_handle · click\nmicrowave_start · place_microwave", GREEN),
+# Skill library — the planner-visible layer: SkillNode -> Contract -> policy paths.
+s = slide("Skill library: 70 verb SkillNodes over low-level policies", "Current capabilities",
+          "Each SkillNode is one verb + one noun. Its Contract checks GT preconditions, picks a policy path, then checks GT postconditions.")
+layers=[
+    ("70 SkillNodes", "What the planner calls\nnavigate · pick · place · expose · push\nopen · heat · uncover · search · wipe ...", TEAL),
+    ("70 Contracts", "requires / ensures from 71 GT predicates\nfailure codes + fallback candidates", BLUE),
+    ("120 policy paths", "chosen by the noun (book, mug, door ...)\nover 114 low-level policies", AMBER),
 ]
-for i,(h,b,c) in enumerate(policies):
-    x=.61+(i%2)*6.28; y=1.95+(i//2)*1.92
-    box(s,x,y,5.93,1.69,PALE,LINE,radius=True)
-    box(s,x,y,.09,1.69,c)
-    text(s,h,x+.22,y+.20,5.43,.36,18.3,INK,True)
-    text(s,b,x+.22,y+.72,5.36,.73,13.4,MID)
-box(s,.64,6.04,12.00,.55,RGBColor(232,244,248),radius=True)
-text(s,"60 OOP entries  ·  54 passed at least one Isaac Sim smoke test  ·  6 callable but unverified",.87,6.19,11.55,.29,14.6,NAVY,True)
-text(s,"Unverified: floor-corner pick and five dual-arm / handover routes; verified results are scene-specific.",.71,6.69,11.87,.20,10.4,MID)
-note(s, "Current repo catalog has 60 policy entries, 54 with at least one representative physical smoke run and six callable but unverified. Give examples by category, not the full list. The six unverified include floor-corner picking and five dual-arm or handover routes. An atomic policy is a graph-level action; its controller may include several joint motions.")
+for i,(h,b,c) in enumerate(layers):
+    x=.61+i*4.19
+    box(s,x,1.98,3.79,2.62,PALE,LINE,radius=True)
+    box(s,x,1.98,3.79,.11,c)
+    text(s,h,x+.22,2.30,3.35,.42,21,INK,True)
+    text(s,b,x+.22,2.90,3.37,1.50,13.2,MID)
+    if i<2: text(s,"→",x+3.83,2.98,.28,.39,24,BLUE,True)
+fams=[("Move + body","navigate · approach · face · retreat · crouch · bend"),
+      ("Perceive","look · inspect · search · explore · count · measure"),
+      ("Manipulate","pick · place · stack · lift · flip · push · expose"),
+      ("Appliance + tasks","open · close · press · heat · cover · wipe · collect")]
+for i,(h,b) in enumerate(fams):
+    x=.61+(i%2)*6.28; y=4.82+(i//2)*.62
+    text(s,h,x,y,1.85,.3,12.5,INK,True)
+    text(s,b,x+1.85,y,4.3,.3,12,MID)
+box(s,.64,6.18,12.00,.52,RGBColor(232,244,248),radius=True)
+text(s,"Library regression (35 scenarios, 2026-10-18): 27 pass  ·  8 fail (6 before, 2 also on 15d948e)  ·  0 new",.87,6.31,11.55,.29,14.6,NAVY,True)
+note(s, "The planner sees SkillNodes only. A Contract checks GT preconditions before execution, chooses a policy path by noun, and checks GT postconditions afterwards; a failure returns an error code and the measured predicates. Numbers: 70 SkillNodes / 70 Contracts / 120 policy paths over 114 policies (README). Regression on benchmark-v1: 27/35 scenarios pass. 6 failed before at the same step (sort, empty, fridge place, microwave oatmeal place, pour, two-hand box). k_separate and k_restore_swap fail identically on a clean 15d948e, so they are baseline failures, not new ones. Do not say all 70 skills are stable.")
 
 # 5. Suite categories
 s = slide("Eight tasks across four household themes", "Task suite", "The same house supports different goals rather than a single scripted demonstration.")
@@ -314,8 +323,165 @@ for i,(head,body,color) in enumerate([
     text(s,f"0{i+1}",x+.22,2.48,.57,.40,19,color,True)
     text(s,head,x+.22,3.12,3.30,.49,22,INK,True)
     text(s,body,x+.22,3.80,3.31,1.18,15,MID)
-text(s,"ZenoBench is the execution and evaluation substrate for the upper-level Skill Graph design.",.68,6.02,11.98,.53,18,NAVY,True)
-note(s, "This is the transition to the user's two architecture figures. The existing task suite tests the consequences of upper-level decisions. The upper layer will reason over a public skill library and inspect verified outcomes.")
+text(s,"The planning benchmark (next slides) turns this into a measured test of the upper layer.",.68,6.02,11.98,.53,18,NAVY,True)
+note(s, "Transition to the planning benchmark. The task suite above shows what the skills can do; the benchmark asks whether a planner picks the right skills when things go wrong.")
+
+# ---------------- Planning benchmark ----------------
+s = slide("Planning benchmark: does the planner recover from what it sees?", "Planning benchmark",
+          "10 household tasks where the obvious plan fails or is unavailable. Same skills and same limits for every planner.", dark=True)
+for i,(head,body,color) in enumerate([
+    ("Same low-level skills", "All planners call the same 70 SkillNodes; no new policy, no hidden retries (auto-recovery off)", TEAL),
+    ("Limited observation", "First-person image, objects seen so far, known places, robot state, last feedback. No GT state", BLUE),
+    ("GT verifier decides", "Isaac Sim state after the run settles: goal atoms hold, nothing on the floor", AMBER),
+]):
+    x=.61+i*4.18
+    box(s,x,2.15,3.79,3.20,RGBColor(27,52,78),RGBColor(64,88,112),radius=True)
+    box(s,x,2.15,3.79,.12,color)
+    text(s,head,x+.24,2.55,3.30,.45,20,WHITE,True)
+    text(s,body,x+.24,3.20,3.30,1.80,14.5,RGBColor(196,212,228))
+text(s,"Question: does the planner choose an effective fallback or alternative from its own observation and execution feedback?",
+     .66,5.80,12.0,.7,17,AMBER,True)
+note(s, "Built on benchmark-v1. No new skills or policies: a planner differs only in which calls it makes. The observation is LimitedSession.observe(); the planner never sees GT. Success is decided from Isaac Sim GT, 60 ticks after the last call.")
+
+# Observation boundary and gate
+s = slide("What the planner sees, and what it may call", "Observation boundary",
+          "A call naming an object the robot has not observed is refused before anything moves.")
+box(s,.61,1.98,5.95,4.45,PALE,LINE,radius=True); box(s,.61,1.98,.09,4.45,TEAL)
+text(s,"Planner input",.86,2.18,5.4,.4,19,INK,True)
+text(s,"• first-person camera image\n• objects observed so far (observation cache)\n• known places and receptacles\n• robot pose, room, what each hand holds\n• temperatures the robot has measured\n• feedback of the last call: success, error code, message",
+     .86,2.75,5.5,3.4,14.2,MID)
+box(s,6.78,1.98,5.95,4.45,PALE,LINE,radius=True); box(s,6.78,1.98,.09,4.45,AMBER)
+text(s,"Gate and feedback classes",7.03,2.18,5.4,.4,19,INK,True)
+text(s,"• Grounding: NOT_OBSERVED · NOT_IN_VIEW · NOT_FOUND\n   (an object that is not in the episode gets the same refusal)\n• Precondition: PRECONDITION_FAILED · NO_PATH\n   (nothing was executed)\n• Execution: POLICY_FAILED · SUBSKILL_FAILED · POSTCONDITION_FAILED\n   (the robot tried; the physics said no)",
+     7.03,2.75,5.55,3.4,14.2,MID)
+note(s, "The gate keeps the planner honest: it cannot act on an object it never saw, so search/explore are real decisions. Planner interface: reset(task_instruction, skills) and next_call(observation) -> {skill, args} or None. None ends the episode (planner_done); max_calls ends it with budget; an exception makes it incomplete.")
+
+# Ten tasks x three tiers
+s = slide("Ten tasks, three difficulty tiers", "Task design",
+          "The instruction never changes across tiers; only the scene does. Medium adds one condition, hard adds a second.")
+rows=[
+    ("T01","Paperback → dining table","no overhang: pick fails → expose → pick","fallback"),
+    ("T02","Stack two blocks","boxed in: pick fails → separate / push → pick","fallback"),
+    ("T03","Pin + spoon in one container","pin does not fit the mug → storage bin","alternative"),
+    ("T04","Cup (or mug) on wall cabinet","no cup: count 0, search fails → mug","alternative"),
+    ("T05","Pen (or pencil) to the desk","no pen → pencil (no easy tier)","alternative"),
+    ("T06","Block on display","cabinet top full: place fails → TV stand","alternative"),
+    ("T07","Warm oatmeal ≥ 40 °C","microwave does not heat → stove","alternative"),
+    ("T08","Wipe the island","sponge elsewhere → fetch, approach, wipe","search"),
+    ("T09","Tomato soup","lid on: collect refused → uncover → collect","fallback"),
+    ("T10","Can into the trash","can not observed: pick refused → search","fallback"),
+]
+kc={"fallback":TEAL,"alternative":AMBER,"search":BLUE}
+for i,(tid,goal,cond,kind) in enumerate(rows):
+    col=i//5; r=i%5
+    x=.61+col*6.27; y=1.98+r*.86
+    box(s,x,y,5.93,.76,PALE,LINE,radius=True)
+    box(s,x,y,.075,.76,kc[kind])
+    text(s,tid,x+.18,y+.12,.6,.28,13.5,kc[kind],True)
+    text(s,goal,x+.78,y+.10,3.6,.28,13.2,INK,True)
+    text(s,cond,x+.78,y+.42,4.95,.26,10.8,MID)
+    box(s,x+4.62,y+.11,1.15,.27,WHITE,LINE,radius=True)
+    text(s,kind,x+4.64,y+.14,1.11,.2,9,kc[kind],True,align=PP_ALIGN.CENTER)
+text(s,"Fallback: a real failure, an auxiliary skill repairs the state, the same action is retried.   Alternative: another object, skill or destination reaches the same goal.   29 task × tier combinations + 21 single-skill probes.",
+     .63,6.35,12.1,.6,11,MID)
+note(s, "Medium = the fallback or alternative condition holds. Hard = that condition plus a second one, e.g. starting in another room or facing away. T05 has no easy tier because the pen slips out of the hand 4/4; its pen route is diagnostic. Probes P01-P22 (21, no P10) cover SkillNodes that do not fit the ten tasks.")
+
+# Worked example: T01 fallback
+s = slide("Example: T01 fallback, seen from the robot", "Task demo",
+          "Medium tier: the book lies flat, with no overhang to pinch. Frames from the head camera after each call.")
+steps=[
+    (FRAMES/"bench_t01_navigate.jpg","navigate","book flat on the island",BLUE),
+    (FRAMES/"bench_t01_pick_fail.jpg","pick → POLICY_FAILED","edge pinch: not held (lift 0.000 m)",RED),
+    (FRAMES/"bench_t01_expose.jpg","expose","slide the book over the edge",AMBER),
+    (FRAMES/"bench_t01_place.jpg","pick → navigate → place","book on the dining table",GREEN),
+]
+for i,(im,h,b,c) in enumerate(steps):
+    x=.58+i*3.15
+    box(s,x,1.98,2.92,3.48,PALE,LINE,radius=True)
+    pic(s,str(Path(im).relative_to(ROOT)),x+.08,2.06,2.76,2.07)
+    box(s,x+.08,4.20,2.76,.07,c)
+    text(s,h,x+.18,4.42,2.62,.36,14,INK,True)
+    text(s,b,x+.18,4.86,2.62,.5,11.5,MID)
+    if i<3: text(s,"→",x+2.93,2.85,.25,.39,20,BLUE,True)
+box(s,.64,5.80,12.04,.6,RGBColor(231,246,238),radius=True)
+text(s,"Retest on current code: nominal 2/2 · fallback_expose 2/2 · hard 1/2 (seed 1: the book slips during place)",.88,5.95,11.6,.31,14.5,GREEN,True)
+text(s,"fixed (nominal plan once) stops after the failed pick; the book stays on the island.",.66,6.62,11.9,.25,10.8,MID)
+note(s, "Real images from benchmark/runs/retest (seed 0). The pick failure is a real physics failure, not injected: without an overhang the edge pinch cannot close on the book. The planner has to read the feedback and choose expose. The hard tier starts in the dining room, so it must search first.")
+
+# More recoveries
+s = slide("Other recoveries in the suite", "Task demo", "Each one starts with a real refusal or failure that the planner has to read.")
+ex=[
+    (FRAMES/"bench_t02_pick_fail.jpg","T02 · pick fails → push","Block boxed in by a bowl and the rolling pin; push it free, pick again, stack",TEAL),
+    (FRAMES/"bench_t09_uncover.jpg","T09 · collect refused → uncover","The pot lid is on; uncover, then collect the tomatoes, stir, cover, heat",BLUE),
+    (FRAMES/"bench_t07_stove.jpg","T07 · heat fails → stove","The microwave does not heat; stop it, take the oatmeal out, use the stove",AMBER),
+]
+for i,(im,h,b,c) in enumerate(ex):
+    x=.60+i*4.18
+    box(s,x,1.99,3.80,4.40,PALE,LINE,radius=True)
+    pic(s,str(Path(im).relative_to(ROOT)),x+.09,2.08,3.62,2.53)
+    box(s,x+.09,4.70,3.62,.08,c)
+    text(s,h,x+.23,4.95,3.35,.4,16,INK,True)
+    text(s,b,x+.23,5.47,3.34,.8,12.6,MID)
+note(s, "Head-camera frames from the declared scripted routes in benchmark/runs/final (seed 0). T02 and T09 are fallbacks (repair, then the same action); T07 is an alternative (another appliance).")
+
+# Evaluation protocol
+s = slide("How a planner is scored", "Evaluation",
+          "Task success and skill success are reported separately. Crashed runs are 'incomplete', never a success or a failure.")
+planners=[("fixed","nominal plan once",MID),("retry","repeat a failed call ≤ 2×",MID),
+          ("VLM (recovery)","closed loop, ≤ max_calls",TEAL),("oracle","GT route, upper bound",AMBER)]
+for i,(h,b,c) in enumerate(planners):
+    x=.61+i*3.14
+    box(s,x,1.98,2.88,1.05,PALE,LINE,radius=True); box(s,x,1.98,2.88,.08,c)
+    text(s,h,x+.2,2.16,2.5,.35,16,INK,True)
+    text(s,b,x+.2,2.56,2.5,.3,12,MID)
+metrics=[("SR","Task Success: every GT goal atom holds, nothing dropped"),
+         ("skill_SR / GC","Successful calls / calls; share of goal atoms reached"),
+         ("SPL-c","Success weighted by calls vs. the verified oracle route; N/A if that route never passed"),
+         ("recov_gate / pre / exec","Of episodes with that failure class, the share that still succeeded (denominator shown)"),
+         ("repeat","Share of failures followed by the identical call (blind retry)")]
+for i,(h,b) in enumerate(metrics):
+    y=3.32+i*.5
+    text(s,h,.66,y,2.75,.3,13.5,BLUE,True)
+    text(s,b,3.45,y,9.2,.3,13,MID)
+box(s,.64,5.95,12.04,.62,RGBColor(232,244,248),radius=True)
+text(s,"Eval grid: 29 task × tier combinations × 2 seeds = 58 episodes per planner (174 for the three baselines)",.88,6.11,11.6,.31,14.5,NAVY,True)
+note(s, "fixed, retry and the VLM share the gate, low-level settings and budget, so they are comparable. The oracle uses full GT state and nested repair, so it is an upper bound and reported separately; the fixed-oracle gap is not a VLM gain. Empty denominators show N/A, not 0%. The eval grid is defined in benchmark/batches/eval.json and has not been run yet.")
+
+# Current status
+s = slide("Where it stands", "Status · 2026-10-18",
+          "Route evidence shows the tasks are physically solvable with the existing skills. Planner numbers come later.")
+stats=[("59 / 62","declared route episodes pass","27 stable · 3 flaky routes",GREEN),
+       ("9 / 10","tasks solved by the oracle","fixed 2 / 10 · retry 2 / 10",BLUE),
+       ("65 / 70","SkillNodes succeeded in a real call","4 called but failed · 1 never called",AMBER),
+       ("14 / 21","single-skill probes pass","brace, pour, empty, swap ... fail",RED)]
+for i,(n,h,b,c) in enumerate(stats):
+    x=.61+i*3.14
+    box(s,x,1.98,2.88,2.55,PALE,LINE,radius=True); box(s,x,1.98,2.88,.1,c)
+    text(s,n,x+.22,2.30,2.5,.6,30,c,True)
+    text(s,h,x+.22,3.08,2.5,.6,13.5,INK,True)
+    text(s,b,x+.22,3.80,2.5,.6,11.5,MID)
+text(s,"Checked this round",.66,4.82,6,.33,15,INK,True)
+text(s,"• Edge-pinch regression fixed (opt-in flag); g_expose_then_pick_book 3/3\n• Result fields checked live: normal, recovered, failure exit, budget exit, crash → incomplete",
+     .66,5.18,6.1,1.2,12.3,MID)
+text(s,"Not done yet",6.95,4.82,5.6,.33,15,INK,True)
+text(s,"• No real VLM connected yet (interface tested with test planners)\n• 174-episode eval grid not run; baselines are 1 seed per task",
+     6.95,5.18,5.75,1.2,12.3,MID)
+note(s, "Route episodes are scripted replays of the declared routes: feasibility evidence, not planner results. Flaky: T01 hard (book slips on seed 1) and the two T02 separate routes. Baseline numbers are from one episode per task, mostly medium. 105 of 113 route episodes ran on 15d948e+dc4ae8f; only T01 was rerun on the current code.")
+
+# Next steps
+s = slide("Next steps", "Plan")
+for i,(head,body,color) in enumerate([
+    ("1 · Connect a VLM", "3–4 stable tasks (T01, T03, T08, T10), easy + medium: check that it reads the feedback and the gate", TEAL),
+    ("2 · Rerun all routes", "on the current code, so every route has fresh evidence", BLUE),
+    ("3 · Fix flaky routes", "T01 hard, T02 separate: adjust the local layout first; otherwise mark diagnostic", AMBER),
+    ("4 · Run the eval grid", "fixed / retry / oracle + VLM, 58 episodes each: the first comparable numbers", GREEN),
+]):
+    x=.61+i*3.14
+    box(s,x,1.98,2.88,2.75,PALE,LINE,radius=True); box(s,x,1.98,2.88,.12,color)
+    text(s,head,x+.22,2.36,2.5,.75,17,INK,True)
+    text(s,body,x+.22,3.05,2.5,1.5,13.5,MID)
+text(s,"Lower priority: k_separate / k_restore_swap, which already fail on 15d948e.",.66,5.15,12,.3,13,MID)
+note(s, "Order matters: connecting a real VLM is most likely to expose interface issues, so it comes before the expensive grid.")
 
 # Upper-level handoff: the two supplied architecture figures are reconstructed
 # at full resolution in presentations/figures/ and inserted as standalone slides.
@@ -330,9 +496,15 @@ for figure, note_text in [
     pic(s,figure,0,0,13.333,7.5,crop=False)
     note(s,note_text)
 
+for tb, n in FOOTERS:
+    p = tb.text_frame.paragraphs[0]
+    p.text = f"{n:02d} / {len(PPT.slides)}"
+    p.font.name = "Aptos"; p.font.size = Pt(8.5); p.font.color.rgb = MID
+    p.alignment = PP_ALIGN.RIGHT
+
 PPT.core_properties.title = "ZenoBench: Generated Worlds to Household Tasks"
-PPT.core_properties.subject = "Group meeting overview, current atomic policies, task demos and upper-level handoff"
-PPT.core_properties.keywords = "ZenoBench; EmbodiedGen V2; atomic policy; Skill Graph"
+PPT.core_properties.subject = "Group meeting overview: skill library, task demos, planning benchmark and upper-level handoff"
+PPT.core_properties.keywords = "ZenoBench; EmbodiedGen V2; SkillNode; planning benchmark; Skill Graph"
 PPT.save(DEST)
 print(DEST)
 print(f"slides={len(PPT.slides)}")

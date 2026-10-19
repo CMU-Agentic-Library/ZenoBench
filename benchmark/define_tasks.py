@@ -102,17 +102,22 @@ TASKS.append({
     "instruction": "Tidy the toy blocks left on the kitchen island: stack one wooden block on top of the other.",
     "instruction_zh": "收拾孩子落在岛台上的积木：把一块木积木叠到另一块上面。",
     "scene": {"base": "tasks/kitchen_skills", "remove": ["mug", *TOMATOES],
-              "move": {"wooden_block_a": at(ISLAND, 7.3, 1.64), "wooden_block_b": at(ISLAND, 7.0, 1.60)},
+              "move": {"wooden_block_a": at(ISLAND, 7.3, 1.58), "wooden_block_b": at(ISLAND, 7.0, 1.60)},
               "distractors": ["paperback_book", "breakfast_spoon", "kitchen_sponge", "soda_can", "juice_bottle"]},
     "variants": {
         "clear": {"note": "the blocks stand 30 cm apart, every finger slot is free", "move": {}},
         "crowded": {"note": "block B is boxed in: the oatmeal bowl right behind it and the end of the rolling pin "
-                            "right beside it (5 mm gaps), so both pinch axes of B have a finger slot taken",
-                    "move": {"oatmeal": at(ISLAND, 7.0, 1.719), "rolling_pin": at(ISLAND, 6.862, 1.59, 0)}}},
+                            "right beside it (3 mm gaps), so both pinch axes of B have a finger slot taken",
+                    "move": {"oatmeal": at(ISLAND, 7.0, 1.717), "rolling_pin": at(ISLAND, 6.864, 1.59, 0)}}},
     "watch": ["wooden_block_a", "wooden_block_b", "rolling_pin", "oatmeal"],
     "diagnostics": ["crowding B with block A (A then the stacking base next to the pin): the stack onto A failed "
                     "1/2 per recovery route (fingers blocked 3 cm above A, or B slid off) -> the bowl crowds B and A "
-                    "stays in the open spot where stacking passed 2/2"],
+                    "stays in the open spot where stacking passed 2/2",
+                    "A 12.5 cm behind the island's front edge (y 1.64): after separate the stack kept the approach park "
+                    "beside A and the waist stalled at 0.51 of 0.65 rad, chest on the island edge, hand 5 cm above A "
+                    "(2/4 separate runs) -> A 6.5 cm behind the edge (y 1.58)",
+                    "5 mm gaps around block B: the first pick held B on seed 10 (crowded, 2/2 routes), so the route's "
+                    "expected failure did not happen -> 3 mm gaps (bowl y 1.717, pin x 6.864): the pick failed 12/12"],
     "goal": {"any": [[["on_top_of", "wooden_block_b", "wooden_block_a"]], [["on_top_of", "wooden_block_a", "wooden_block_b"]]],
              "all": [["hand_empty", "right"]]},
     "nominal": "nominal",
@@ -133,7 +138,9 @@ TASKS.append({
                                         # block A (hand blocked 5 cm above it, 3/4): park square to A first
                                         S("approach", target="wooden_block_a"),
                                         S("stack", object="wooden_block_b", base="wooden_block_a")]},
-        "fallback_push": {"kind": "fallback", "variants": ["crowded"], "recovery": "Pick -> failure -> Push -> Pick",
+        # diagnostic since the 3 mm gaps: the fixed +x push puts the pad between B and the rolling pin and B did
+        # not move (1/4 seeds); separate chooses its own direction (4/4)
+        "fallback_push": {"kind": "diagnostic", "variants": ["crowded"], "recovery": "Pick -> failure -> Push -> Pick",
                           "steps": [S("look", target=ISLAND), S("navigate", destination="wooden_block_b"),
                                     S("pick", "fail", "failure", object="wooden_block_b"),
                                     S("push", role="recovery", object="wooden_block_b", direction_xy=[1.0, 0.0],
@@ -508,9 +515,12 @@ HALL = "living_room_0_0"                     # kitchen island, stove, fridge, mi
 
 HARD = {
     "T01_book_to_dining_table": (
-        {"far_no_overhang": {"note": "the robot starts in the dining room; the book on the island does not "
-                                     "overhang enough", "conditions": ["start_elsewhere", "no_overhang"],
-                             "start": DINING_START, "move": {"paperback_book": at(ISLAND, 7.62, 1.59, 90)}}},
+        # starting at the dining table's park (DINING_START), the carry back to the table took the island's
+        # far side; the book drooped 7.7 deg in the hand and fell at the table (2/4 seeds, the medium tier's
+        # carry passed 4/4): it starts at the wall cabinet instead
+        {"far_no_overhang": {"note": "the robot starts at the wall cabinet facing away; the book on the island does "
+                                     "not overhang enough", "conditions": ["start_elsewhere", "no_overhang"],
+                             "start": CAB_START, "move": {"paperback_book": at(ISLAND, 7.62, 1.59, 90)}}},
         {"hard_search_expose": {"kind": "fallback", "variants": ["far_no_overhang"],
                                 "recovery": "search the book -> Pick fails -> Expose -> Pick",
                                 "steps": [S("search", role="recovery", object="paperback_book", region=HALL),
@@ -525,7 +535,7 @@ HARD = {
         # block B out of its box before the pick (2/2): it starts at the wall cabinet instead
         {"far_crowded": {"note": "the robot starts at the wall cabinet facing away; block B is boxed in",
                          "conditions": ["start_elsewhere", "crowded"], "start": CAB_START,
-                         "move": {"oatmeal": at(ISLAND, 7.0, 1.719), "rolling_pin": at(ISLAND, 6.862, 1.59, 0)}}},
+                         "move": {"oatmeal": at(ISLAND, 7.0, 1.717), "rolling_pin": at(ISLAND, 6.864, 1.59, 0)}}},
         {"hard_search_separate": {"kind": "fallback", "variants": ["far_crowded"],
                                   "recovery": "search the blocks -> Pick fails -> Separate -> Pick",
                                   # block B hides behind the bowl and the rolling pin from every search viewpoint

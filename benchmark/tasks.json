@@ -63,15 +63,15 @@
      ]
     },
     "far_no_overhang": {
-     "note": "the robot starts in the dining room; the book on the island does not overhang enough",
+     "note": "the robot starts at the wall cabinet facing away; the book on the island does not overhang enough",
      "conditions": [
       "start_elsewhere",
       "no_overhang"
      ],
      "start": [
-      4.24,
-      5.12,
-      120.0
+      4.764,
+      0.699,
+      195.0
      ],
      "move": {
       "paperback_book": {
@@ -308,7 +308,7 @@
       "support": "kitchen_island/top",
       "xy": [
        7.3,
-       1.64
+       1.58
       ],
       "yaw_deg": 0.0
      },
@@ -335,20 +335,20 @@
      "move": {}
     },
     "crowded": {
-     "note": "block B is boxed in: the oatmeal bowl right behind it and the end of the rolling pin right beside it (5 mm gaps), so both pinch axes of B have a finger slot taken",
+     "note": "block B is boxed in: the oatmeal bowl right behind it and the end of the rolling pin right beside it (3 mm gaps), so both pinch axes of B have a finger slot taken",
      "move": {
       "oatmeal": {
        "support": "kitchen_island/top",
        "xy": [
         7.0,
-        1.719
+        1.717
        ],
        "yaw_deg": 0.0
       },
       "rolling_pin": {
        "support": "kitchen_island/top",
        "xy": [
-        6.862,
+        6.864,
         1.59
        ],
        "yaw_deg": 0
@@ -374,14 +374,14 @@
        "support": "kitchen_island/top",
        "xy": [
         7.0,
-        1.719
+        1.717
        ],
        "yaw_deg": 0.0
       },
       "rolling_pin": {
        "support": "kitchen_island/top",
        "xy": [
-        6.862,
+        6.864,
         1.59
        ],
        "yaw_deg": 0
@@ -396,7 +396,9 @@
     "oatmeal"
    ],
    "diagnostics": [
-    "crowding B with block A (A then the stacking base next to the pin): the stack onto A failed 1/2 per recovery route (fingers blocked 3 cm above A, or B slid off) -> the bowl crowds B and A stays in the open spot where stacking passed 2/2"
+    "crowding B with block A (A then the stacking base next to the pin): the stack onto A failed 1/2 per recovery route (fingers blocked 3 cm above A, or B slid off) -> the bowl crowds B and A stays in the open spot where stacking passed 2/2",
+    "A 12.5 cm behind the island's front edge (y 1.64): after separate the stack kept the approach park beside A and the waist stalled at 0.51 of 0.65 rad, chest on the island edge, hand 5 cm above A (2/4 separate runs) -> A 6.5 cm behind the edge (y 1.58)",
+    "5 mm gaps around block B: the first pick held B on seed 10 (crowded, 2/2 routes), so the route's expected failure did not happen -> 3 mm gaps (bowl y 1.717, pin x 6.864): the pick failed 12/12"
    ],
    "goal": {
     "any": [
@@ -545,7 +547,7 @@
      ]
     },
     "fallback_push": {
-     "kind": "fallback",
+     "kind": "diagnostic",
      "variants": [
       "crowded"
      ],

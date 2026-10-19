@@ -68,8 +68,8 @@ The instruction is the same in every tier. 29 task × tier combinations exist; T
 
 | Task | Instruction (short) | easy | medium (condition -> declared route) | hard (conditions -> declared route) |
 |---|---|---|---|---|
-| T01 | Bring the paperback from the kitchen island to the dining table. | book overhangs the island edge | no overhang -> **fallback** Pick fails -> Expose -> Pick | starts in the dining room + no overhang -> Search, Pick fails -> Expose -> Pick |
-| T02 | Stack one wooden block on the other. | blocks free | block B boxed in by a bowl and the rolling pin -> **fallback** Pick fails -> Separate -> Pick; **fallback** Pick fails -> Push -> Pick | starts at the wall cabinet facing away + boxed in -> Search, Pick fails -> Push -> Pick |
+| T01 | Bring the paperback from the kitchen island to the dining table. | book overhangs the island edge | no overhang -> **fallback** Pick fails -> Expose -> Pick | starts at the wall cabinet facing away + no overhang -> Search, Pick fails -> Expose -> Pick |
+| T02 | Stack one wooden block on the other. | blocks free | block B boxed in by a bowl and the rolling pin -> **fallback** Pick fails -> Separate -> Pick; **fallback** Pick fails -> Push -> Pick | starts at the wall cabinet facing away + boxed in -> Search, Pick fails -> Separate -> Pick |
 | T03 | Put the rolling pin and the spoon away together in one container. | only the storage bin | a mug as well -> **alternative** the pin does not fit the mug -> lift, retreat -> storage bin | starts facing away + mug -> Search, then the same alternative |
 | T04 | Set out a cup on the low wall cabinet; a mug if there is no cup. | cup on the island | no cup -> **alternative** Count 0, Search fails -> mug | no cup + mug on the TV stand -> Count, Search fails -> Search mug -> mug |
 | T05 | Bring a pen to the study desk; a pencil if there is no pen. | — (no easy tier: the pen slips out of the hand 4/4, its route is diagnostic) | no pen -> **alternative** navigate to the pen refused -> pencil | no pen + pencil in the dining room -> Search pencil -> pencil |
