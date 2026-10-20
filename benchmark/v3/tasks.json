@@ -4090,6 +4090,454 @@
    "not_adopted": []
   },
   {
+   "task_id": "T15_book_face_up",
+   "exp_id": "ZB-T15",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:flip_book",
+    "k_book",
+    "probe P05_flip_book"
+   ],
+   "instruction": "Someone left their paperback face down on the kitchen island and the spine is getting bent. Turn it face up and leave it on the island for them; they are still reading it.",
+   "instruction_zh": "\u6709\u4eba\u628a\u5e73\u88c5\u4e66\u6263\u5728\u53a8\u623f\u5c9b\u53f0\u4e0a\u4e86\uff0c\u4e66\u810a\u90fd\u5feb\u538b\u5f2f\u4e86\u3002\u5e2e\u5fd9\u628a\u5b83\u7ffb\u8fc7\u6765\u6b63\u9762\u671d\u4e0a\uff0c\u8fd8\u653e\u5728\u5c9b\u53f0\u4e0a\uff0c\u4ed6\u8fd8\u6ca1\u770b\u5b8c\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "mug",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "soda_can",
+     "juice_bottle"
+    ],
+    "distractors": [
+     "wooden_block_a",
+     "wooden_block_b",
+     "kitchen_sponge"
+    ]
+   },
+   "variants": {
+    "book_free": {
+     "note": "the book lies on the island with free paths to the front edge",
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.59
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    },
+    "book_out_of_view": {
+     "note": "the robot starts at the wall cabinet facing away",
+     "conditions": [
+      "start_elsewhere"
+     ],
+     "start": [
+      4.764,
+      0.699,
+      195.0
+     ],
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.59
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "since": "v3",
+     "condition_types": [
+      "search_target"
+     ],
+     "decisions": [
+      "explore"
+     ]
+    }
+   },
+   "watch": [
+    "paperback_book"
+   ],
+   "goal": {
+    "all": [
+     [
+      "flipped",
+      "paperback_book"
+     ],
+     [
+      "on",
+      "paperback_book",
+      "kitchen_island/top"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "book_free": "nominal",
+    "book_out_of_view": "explore_search_book"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "book_free"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "flip",
+       "args": {
+        "object": "paperback_book"
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "explore_search_book": {
+     "kind": "explore",
+     "variants": [
+      "book_out_of_view"
+     ],
+     "recovery": "search the book",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "paperback_book",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "flip",
+       "args": {
+        "object": "paperback_book"
+       }
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "book_free": {
+     "groups": [
+      {
+       "names": [
+        "paperback_book"
+       ],
+       "dx": [
+        -0.02,
+        0.04
+       ],
+       "dy": 0.0,
+       "dyaw": 0.0,
+       "step": 0.01,
+       "step_deg": 5
+      }
+     ],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "book_out_of_view": {
+     "groups": [
+      {
+       "names": [
+        "paperback_book"
+       ],
+       "dx": [
+        -0.02,
+        0.04
+       ],
+       "dy": 0.0,
+       "dyaw": 0.0,
+       "step": 0.01,
+       "step_deg": 5
+      }
+     ],
+     "start": {
+      "dyaw": 10,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
+   "task_id": "T16_rolling_pin_at_edge",
+   "exp_id": "ZB-T16",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:roll_pin",
+    "k_pin",
+    "probe P03_rolling_pin"
+   ],
+   "instruction": "We are about to make dumplings and the rolling pin has rolled right to the front edge of the island. Roll it back in so it cannot fall off; that also shows whether it rolls smoothly.",
+   "instruction_zh": "\u51c6\u5907\u5305\u997a\u5b50\u4e86\uff0c\u64c0\u9762\u6756\u6eda\u5230\u5c9b\u53f0\u524d\u6cbf\u5feb\u6389\u4e0b\u53bb\u4e86\u3002\u628a\u5b83\u5f80\u91cc\u6eda\u56de\u53bb\u522b\u8ba9\u5b83\u6389\u4e0b\u6765\uff0c\u987a\u4fbf\u770b\u770b\u6eda\u5f97\u987a\u4e0d\u987a\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "mug",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "soda_can"
+    ],
+    "distractors": [
+     "wooden_block_a",
+     "wooden_block_b",
+     "paperback_book",
+     "kitchen_sponge"
+    ]
+   },
+   "variants": {
+    "pin_free": {
+     "note": "the pin lies 3 mm from the island's front edge with room behind it",
+     "move": {
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.75,
+        1.541
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    },
+    "pin_out_of_view": {
+     "note": "the robot starts at the wall cabinet facing away",
+     "conditions": [
+      "start_elsewhere"
+     ],
+     "start": [
+      4.764,
+      0.699,
+      195.0
+     ],
+     "move": {
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.75,
+        1.541
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "since": "v3",
+     "condition_types": [
+      "search_target"
+     ],
+     "decisions": [
+      "explore"
+     ]
+    }
+   },
+   "watch": [
+    "rolling_pin"
+   ],
+   "goal": {
+    "all": [
+     [
+      "object_rolled",
+      "rolling_pin"
+     ],
+     [
+      "on",
+      "rolling_pin",
+      "kitchen_island/top"
+     ],
+     [
+      "away_from_edge",
+      "rolling_pin",
+      0.06
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "pin_free": "nominal",
+    "pin_out_of_view": "explore_search_pin"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "pin_free"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "roll",
+       "args": {
+        "object": "rolling_pin",
+        "distance_m": 0.12
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "explore_search_pin": {
+     "kind": "explore",
+     "variants": [
+      "pin_out_of_view"
+     ],
+     "recovery": "search the pin",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "rolling_pin",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "roll",
+       "args": {
+        "object": "rolling_pin",
+        "distance_m": 0.12
+       }
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "pin_free": {
+     "groups": [
+      {
+       "names": [
+        "rolling_pin"
+       ],
+       "dx": [
+        0.0,
+        0.05
+       ],
+       "dy": 0.0,
+       "dyaw": 0.0,
+       "step": 0.01,
+       "step_deg": 5
+      }
+     ],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "pin_out_of_view": {
+     "groups": [
+      {
+       "names": [
+        "rolling_pin"
+       ],
+       "dx": [
+        0.0,
+        0.05
+       ],
+       "dy": 0.0,
+       "dyaw": 0.0,
+       "step": 0.01,
+       "step_deg": 5
+      }
+     ],
+     "start": {
+      "dyaw": 10,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
    "task_id": "P01_body_and_gesture",
    "exp_id": "ZB-P01",
    "kind": "probe",

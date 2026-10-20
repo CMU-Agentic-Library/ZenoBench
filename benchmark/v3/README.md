@@ -101,9 +101,19 @@ in each of its types, so those groups overlap. Precondition refusals (`pre`) and
 ## Status
 
 <!-- v3status:start -->
-Stage 1 (registry, seeds, hash, matrix, counting) is complete. `tasks.json` holds the 10 v2 tasks with their 30 v2
-variants (29 graded) on seeds 10–19. At this stage those seeds vary only the distractors: 191 distinct
-configurations among the 290 graded episodes per planner. The v2 routes passed on seeds 0/1 (and 10/11 for some),
-but none has been run on v3 configurations yet, so every condition is **unverified** for v3. New conditions are
-added task by task once they are debugged.
+Stage 1 (registry, seeds, hash, matrix, counting) is complete. `tasks.json` holds 12 tasks and 34 variants (33 graded)
+on seeds 10–19: the 10 v2 tasks with their 30 v2 variants, plus T15–T16 with 4 new conditions (213 distinct
+configurations in the matrix). Route acceptance ([RESULTS.md](RESULTS.md), `python benchmark/conditions.py --runs
+benchmark/runs/v3_normal benchmark/runs/v3_round2 ... benchmark/runs/v3_round7`): 4 route episodes run,
+4 passed; 4 conditions are **preliminary** (every new condition, 1–2 seeds each), 29 are **unverified** (the v2
+variants have not been run on v3 configurations yet). Preliminary means feasible on the seeds run, not stable.
+
+| Task | Household goal | Conditions (route, seeds passed) |
+|---|---|---|
+| T15 book face up | turn the face-down paperback on the island face up, leave it there | easy (nominal, s10); start elsewhere (search, s10) |
+| T16 rolling pin at the edge | roll the pin back from the island's front edge (and see it rolls) | easy (nominal, s10); start elsewhere (search, s10) |
+
+Conditions tried and dropped, with the evidence, are listed under each task's `not_adopted` (MATRIX.md lists them),
+among them: flip with the path to the edge blocked (flip sweeps the book and the pin off the island), roll with a bowl
+behind the pin (the pin pushes the bowl aside).
 <!-- v3status:end -->

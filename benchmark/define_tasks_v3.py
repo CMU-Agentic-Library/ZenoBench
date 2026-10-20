@@ -85,6 +85,89 @@ EXT = {}
 V2_VARY = {}
 # debugged new tasks (T11 ...), full task dicts in the v2 format plus v3 fields
 NEW_TASKS = []
+# v3 tasks whose Normal route and every declared condition route ran end to end on 1-2 seeds (preliminary);
+# candidates under debugging live in v3_candidates.py.  T15-T18 are small chores built around one manipulation
+# skill.
+T01_REMOVE = ["mug", "cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3", "soda_can", "juice_bottle"]
+BOOK_FLUSH = at(ISLAND, 7.62, 1.59, 90)        # the book flush with the island's front edge (no overhang)
+
+# ----------------------------------------------------------------- T15 book face up (flip)
+NEW_TASKS.append({
+    "task_id": "T15_book_face_up", "exp_id": "ZB-T15", "since": "v3",
+    "source": ["skill_library/tasks.json:flip_book", "k_book", "probe P05_flip_book"],
+    "instruction": "Someone left their paperback face down on the kitchen island and the spine is getting bent. Turn "
+                   "it face up and leave it on the island for them; they are still reading it.",
+    "instruction_zh": "有人把平装书扣在厨房岛台上了，书脊都快压弯了。帮忙把它翻过来正面朝上，还放在岛台上，他还没看完。",
+    "scene": {"base": "tasks/kitchen_skills", "remove": list(T01_REMOVE),
+              "distractors": ["wooden_block_a", "wooden_block_b", "kitchen_sponge"]},
+    "variants": {
+        "book_free": {"note": "the book lies on the island with free paths to the front edge",
+                      "move": {"paperback_book": BOOK_FLUSH}},
+        "book_out_of_view": {"note": "the robot starts at the wall cabinet facing away", "conditions": ["start_elsewhere"],
+                             "start": CAB_START, "move": {"paperback_book": BOOK_FLUSH}}},
+    "watch": ["paperback_book"],
+    "goal": {"all": [["flipped", "paperback_book"], ["on", "paperback_book", ISLAND], ["hand_empty", "right"]]},
+    "nominal": "nominal",
+    "oracle": {"book_free": "nominal", "book_out_of_view": "explore_search_book"},
+    "routes": {
+        "nominal": {"kind": "nominal", "variants": ["book_free"], "steps": [
+            S("look", target=ISLAND), S("navigate", destination="paperback_book"), S("flip", object="paperback_book")]},
+        "explore_search_book": {"kind": "explore", "variants": ["book_out_of_view"], "recovery": "search the book",
+                                "steps": [S("search", role="recovery", object="paperback_book", region=HALL),
+                                          S("navigate", destination="paperback_book"), S("flip", object="paperback_book")]}},
+    "vary": {"book_free": vary(group(["paperback_book"], dx=[-0.02, 0.04])),
+             "book_out_of_view": vary(group(["paperback_book"], dx=[-0.02, 0.04]), start=TURN_VARY)},
+    "not_adopted": [{"condition": "edge_path_blocked: pin and bowl in the book's way to the edges -> Push the pin -> Flip",
+                     "reason": "flip does not refuse the blocked path: its slide pushed the book through the rolling "
+                               "pin and both fell off the island (s10, s11 and the far start s10, "
+                               "benchmark/runs/v3_round2); no clean failure to recover from"},
+                    {"condition": "Pick fails -> Expose -> Pick (T01's fallback)",
+                     "reason": "flip slides the book to an edge itself (contract path edge_roll: slide, edge pinch, "
+                               "arc), so a book without overhang needs no decision"},
+                    {"condition": "no room on the island to land the turned book",
+                     "reason": "flip checks the room to the support's edges only (0.33 m behind the book on the 47 cm "
+                               "island): never short"},
+                    {"condition": "turn it over, then put it back on the bedroom bookcase",
+                     "reason": "after flip the book lies at the island edge without overhang (-0.5 cm); expose left "
+                               "5.2 cm (< 5.5 cm EDGE_MIN_OVERHANG) and the edge pinch closed on nothing (s10, "
+                               "benchmark/runs/v3_normal); T01 carries the book face down instead"}],
+})
+
+# ----------------------------------------------------------------- T16 rolling pin at the edge (roll)
+PIN_DEFAULT = at(ISLAND, 6.75, 1.541, 0)        # 3 mm from the front edge (y 1.515)
+# roll moves the pin away from the robot (+y), from the front edge into the island
+_roll_tail = [S("roll", object="rolling_pin", distance_m=0.12)]
+NEW_TASKS.append({
+    "task_id": "T16_rolling_pin_at_edge", "exp_id": "ZB-T16", "since": "v3",
+    "source": ["skill_library/tasks.json:roll_pin", "k_pin", "probe P03_rolling_pin"],
+    "instruction": "We are about to make dumplings and the rolling pin has rolled right to the front edge of the "
+                   "island. Roll it back in so it cannot fall off; that also shows whether it rolls smoothly.",
+    "instruction_zh": "准备包饺子了，擀面杖滚到岛台前沿快掉下去了。把它往里滚回去别让它掉下来，顺便看看滚得顺不顺。",
+    "scene": {"base": "tasks/kitchen_skills", "remove": ["mug", "cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3",
+                                                        "juice_bottle", "soda_can"],
+              "distractors": ["wooden_block_a", "wooden_block_b", "paperback_book", "kitchen_sponge"]},
+    "variants": {
+        "pin_free": {"note": "the pin lies 3 mm from the island's front edge with room behind it", "move": {"rolling_pin": PIN_DEFAULT}},
+        "pin_out_of_view": {"note": "the robot starts at the wall cabinet facing away", "conditions": ["start_elsewhere"],
+                            "start": CAB_START, "move": {"rolling_pin": PIN_DEFAULT}}},
+    "watch": ["rolling_pin"],
+    "goal": {"all": [["object_rolled", "rolling_pin"], ["on", "rolling_pin", ISLAND],
+                     ["away_from_edge", "rolling_pin", 0.06], ["hand_empty", "right"]]},
+    "nominal": "nominal",
+    "oracle": {"pin_free": "nominal", "pin_out_of_view": "explore_search_pin"},
+    "routes": {
+        "nominal": {"kind": "nominal", "variants": ["pin_free"], "steps": [
+            S("look", target=ISLAND), S("navigate", destination="rolling_pin"), *_roll_tail]},
+        "explore_search_pin": {"kind": "explore", "variants": ["pin_out_of_view"], "recovery": "search the pin",
+                               "steps": [S("search", role="recovery", object="rolling_pin", region=HALL),
+                                         S("navigate", destination="rolling_pin"), *_roll_tail]}},
+    "vary": {"pin_free": vary(group(["rolling_pin"], dx=[0.0, 0.05])),
+             "pin_out_of_view": vary(group(["rolling_pin"], dx=[0.0, 0.05]), start=TURN_VARY)},
+    "not_adopted": [{"condition": "roll_blocked: the oatmeal bowl 4 mm behind the pin -> Push the bowl -> Roll",
+                     "reason": "roll does not fail: the pin pushed the bowl 9 cm aside and the roll completed (s10, "
+                               "s11, benchmark/runs/v3_round2); with the far start the search did not see the pin "
+                               "behind the bowl. A movable object on the island gives way the same way"}],
+})
 
 # v2 route kinds that were search-only (no physical repair): reclassified as explore
 EXPLORE_ROUTES = {("T08_wipe_island", "nominal_from_tv_stand"), ("T08_wipe_island", "oracle_approach"),

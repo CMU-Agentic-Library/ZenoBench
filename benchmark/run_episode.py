@@ -73,7 +73,8 @@ def evaluate_goal(rig, goal, start_snapshot):
     ctx = {"before": start_snapshot}
 
     def atom(a):
-        missing = [x for x in a[1:] if isinstance(x, str) and x in start_snapshot.get("_removed", ())]
+        names = [y for x in a[1:] for y in (x if isinstance(x, list) else [x])]      # list args: grouped(objects, ...)
+        missing = [x for x in names if isinstance(x, str) and x in start_snapshot.get("_removed", ())]
         if missing:
             return {"atom": f"{a[0]}({', '.join(map(str, a[1:]))})", "holds": False,
                     "detail": f"{missing[0]} is not in this episode"}

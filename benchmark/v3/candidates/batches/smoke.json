@@ -384,129 +384,27 @@
   "variant": "can_away_crowded"
  },
  {
-  "task": "T11_book_face_up",
+  "task": "T15_book_face_up",
   "seed": 10,
   "route": "nominal",
   "variant": "book_free"
  },
  {
-  "task": "T11_book_face_up",
+  "task": "T15_book_face_up",
   "seed": 10,
   "route": "explore_search_book",
   "variant": "book_out_of_view"
  },
  {
-  "task": "T11_book_face_up",
-  "seed": 10,
-  "route": "fallback_push_flip",
-  "variant": "edge_path_blocked"
- },
- {
-  "task": "T11_book_face_up",
-  "seed": 10,
-  "route": "hard_search_push_flip",
-  "variant": "far_edge_path_blocked"
- },
- {
-  "task": "T12_try_rolling_pin",
+  "task": "T16_rolling_pin_at_edge",
   "seed": 10,
   "route": "nominal",
   "variant": "pin_free"
  },
  {
-  "task": "T12_try_rolling_pin",
+  "task": "T16_rolling_pin_at_edge",
   "seed": 10,
   "route": "explore_search_pin",
   "variant": "pin_out_of_view"
- },
- {
-  "task": "T12_try_rolling_pin",
-  "seed": 10,
-  "route": "fallback_push_bowl",
-  "variant": "roll_blocked"
- },
- {
-  "task": "T12_try_rolling_pin",
-  "seed": 10,
-  "route": "hard_search_push_bowl",
-  "variant": "far_roll_blocked"
- },
- {
-  "task": "T13_hide_and_seek_block",
-  "seed": 10,
-  "route": "nominal",
-  "variant": "lid_off"
- },
- {
-  "task": "T13_hide_and_seek_block",
-  "seed": 10,
-  "route": "fallback_uncover",
-  "variant": "lid_on"
- },
- {
-  "task": "T13_hide_and_seek_block",
-  "seed": 10,
-  "route": "fallback_separate",
-  "variant": "block_crowded"
- },
- {
-  "task": "T13_hide_and_seek_block",
-  "seed": 10,
-  "route": "hard_uncover_separate",
-  "variant": "lid_on_crowded"
- },
- {
-  "task": "T13_hide_and_seek_block",
-  "seed": 10,
-  "route": "hard_search_uncover",
-  "variant": "far_lid_on"
- },
- {
-  "task": "T15_check_cabinet_dishes",
-  "seed": 10,
-  "route": "nominal",
-  "variant": "at_island"
- },
- {
-  "task": "T15_check_cabinet_dishes",
-  "seed": 10,
-  "route": "nominal",
-  "variant": "start_dining"
- },
- {
-  "task": "T15_check_cabinet_dishes",
-  "seed": 10,
-  "route": "fallback_open_inspect",
-  "variant": "at_island"
- },
- {
-  "task": "T14_tidy_tv_stand",
-  "seed": 10,
-  "route": "nominal",
-  "variant": "block_free"
- },
- {
-  "task": "T14_tidy_tv_stand",
-  "seed": 10,
-  "route": "explore_search_block",
-  "variant": "block_out_of_view"
- },
- {
-  "task": "T14_tidy_tv_stand",
-  "seed": 10,
-  "route": "alternative_bedroom",
-  "variant": "bookcase_full"
- },
- {
-  "task": "T14_tidy_tv_stand",
-  "seed": 10,
-  "route": "fallback_separate",
-  "variant": "block_crowded"
- },
- {
-  "task": "T14_tidy_tv_stand",
-  "seed": 10,
-  "route": "hard_separate_alt",
-  "variant": "crowded_bookcase_full"
  }
 ]

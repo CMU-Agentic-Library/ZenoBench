@@ -1,13 +1,13 @@
 {
  "summary": {
   "benchmark_version": "v3",
-  "tasks": 10,
-  "conditions": 30,
-  "graded_conditions": 29,
+  "tasks": 12,
+  "conditions": 34,
+  "graded_conditions": 33,
   "conditions_by_tier": {
    "hard": 10,
-   "medium": 10,
-   "easy": 9,
+   "medium": 12,
+   "easy": 11,
    "diagnostic": 1
   },
   "seeds": [
@@ -22,17 +22,17 @@
    18,
    19
   ],
-  "episodes_per_planner": 290,
+  "episodes_per_planner": 330,
   "planners": [
    "fixed",
    "retry",
    "oracle"
   ],
-  "episode_configs": 300,
-  "distinct_configs": 197,
+  "episode_configs": 340,
+  "distinct_configs": 219,
   "same_task_cross_variant_collisions": 0,
-  "route_jobs": 300,
-  "smoke_jobs": 30,
+  "route_jobs": 340,
+  "smoke_jobs": 34,
   "eval_jobs": 0,
   "eval_scope": "variants with stable route acceptance"
  },
@@ -545,7 +545,7 @@
     "58a36c996556": 3,
     "3997c1228fd0": 2
    },
-   "status": "unverified"
+   "status": "diagnostic"
   },
   {
    "task": "T06_block_destination_occupied",
@@ -1055,6 +1055,136 @@
     "ee9aa330dfc9": 2
    },
    "status": "unverified"
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 5,
+   "repeated_configs": {
+    "a51a259b956d": 4,
+    "2c1818472d60": 2,
+    "adbb36d58f17": 2
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "oracle_route": "explore_search_book",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 5,
+   "repeated_configs": {
+    "5e1ff551dc51": 4,
+    "61ece08e4bb7": 2,
+    "56578f5f6429": 2
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 7,
+   "repeated_configs": {
+    "8cf36eb8f35a": 3,
+    "32b4c3199f6a": 2
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "oracle_route": "explore_search_pin",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 7,
+   "repeated_configs": {
+    "8595d04f7171": 3,
+    "d72b4a9c57bb": 2
+   },
+   "status": "preliminary"
   }
  ],
  "episodes": [
@@ -20575,6 +20705,2454 @@
     "thermal_sources": null,
     "thermal_override": {},
     "config_hash": "15fb655df46d"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "a51a259b956d",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 10,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "a51a259b956d"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "2c1818472d60",
+   "vary_applied": {},
+   "distractors_removed": [
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 11,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "2c1818472d60"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "adbb36d58f17",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 12,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "adbb36d58f17"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "713917cbb209",
+   "vary_applied": {},
+   "distractors_removed": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 13,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "713917cbb209"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b0ad25b3600f",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 14,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b0ad25b3600f"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "2c1818472d60",
+   "vary_applied": {},
+   "distractors_removed": [
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 15,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "2c1818472d60"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "a51a259b956d",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 16,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "a51a259b956d"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "a51a259b956d",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 17,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "a51a259b956d"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "a51a259b956d",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 18,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "a51a259b956d"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "adbb36d58f17",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 19,
+    "variant": "book_free",
+    "variant_note": "the book lies on the island with free paths to the front edge",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "adbb36d58f17"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "5e1ff551dc51",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 10,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "5e1ff551dc51"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "61ece08e4bb7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 11,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "61ece08e4bb7"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "56578f5f6429",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 12,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "56578f5f6429"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "d55970a94608",
+   "vary_applied": {},
+   "distractors_removed": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 13,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d55970a94608"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "72998adc9d8d",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 14,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "72998adc9d8d"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "61ece08e4bb7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 15,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "61ece08e4bb7"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "5e1ff551dc51",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 16,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "5e1ff551dc51"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "5e1ff551dc51",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 17,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "5e1ff551dc51"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "5e1ff551dc51",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 18,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "5e1ff551dc51"
+   }
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_book",
+   "config_hash": "56578f5f6429",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T15_book_face_up",
+    "seed": 19,
+    "variant": "book_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_b"
+    ],
+    "move": {
+     "paperback_book": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.62,
+       1.59
+      ],
+      "yaw_deg": 90
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "56578f5f6429"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "df949a5e81f5",
+   "vary_applied": {},
+   "distractors_removed": [
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 10,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "df949a5e81f5"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "8cf36eb8f35a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 11,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "8cf36eb8f35a"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "d2dd7f92494c",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 12,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d2dd7f92494c"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "be6bd6513c1a",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 13,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "be6bd6513c1a"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "32b4c3199f6a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 14,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can"
+    ],
+    "distractors_removed": [
+     "paperback_book"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "32b4c3199f6a"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "32b4c3199f6a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 15,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can"
+    ],
+    "distractors_removed": [
+     "paperback_book"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "32b4c3199f6a"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "5140dba219ef",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 16,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "5140dba219ef"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "8cf36eb8f35a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 17,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "8cf36eb8f35a"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "18dcf4654a5c",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 18,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "paperback_book",
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "18dcf4654a5c"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "8cf36eb8f35a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 19,
+    "variant": "pin_free",
+    "variant_note": "the pin lies 3 mm from the island's front edge with room behind it",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "8cf36eb8f35a"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "bac18f9fdfd9",
+   "vary_applied": {},
+   "distractors_removed": [
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 10,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "bac18f9fdfd9"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "8595d04f7171",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 11,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "8595d04f7171"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "61b98ada8b43",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 12,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "61b98ada8b43"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "d0b4457d028f",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 13,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d0b4457d028f"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "d72b4a9c57bb",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 14,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can"
+    ],
+    "distractors_removed": [
+     "paperback_book"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d72b4a9c57bb"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "d72b4a9c57bb",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 15,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can"
+    ],
+    "distractors_removed": [
+     "paperback_book"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d72b4a9c57bb"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "fec606bff4ae",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 16,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "fec606bff4ae"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "8595d04f7171",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 17,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "8595d04f7171"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "3a55e6d996fa",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 18,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "paperback_book",
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "3a55e6d996fa"
+   }
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_pin",
+   "config_hash": "8595d04f7171",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "config": {
+    "task_id": "T16_rolling_pin_at_edge",
+    "seed": 19,
+    "variant": "pin_out_of_view",
+    "variant_note": "the robot starts at the wall cabinet facing away",
+    "difficulty": "medium",
+    "conditions": [
+     "start_elsewhere"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book",
+     "wooden_block_a",
+     "wooden_block_b"
+    ],
+    "move": {
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.75,
+       1.541
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "8595d04f7171"
    }
   }
  ]

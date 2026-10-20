@@ -178,5 +178,29 @@
   "seed": 10,
   "route": "hard_explore_search",
   "variant": "far_can_far"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "route": "explore_search_book",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "route": "explore_search_pin",
+  "variant": "pin_out_of_view"
  }
 ]
