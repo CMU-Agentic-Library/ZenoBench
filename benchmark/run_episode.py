@@ -21,6 +21,10 @@ Planners (same low-level skills, same observation limits except the oracle):
 
 Output: <out>/<task>/<seed>_<route-or-planner>/ result.json, calls.jsonl,
 config.json, first-person images (images/), annotation.json, run.mp4 with --video.
+Each call row also logs the GT state before / after the call and an eval
+block (deepest failed nested call), for the evaluation only.  A --batch run ends
+with benchmark/evaluate.py on its output directory: <out>/EVALUATION.md,
+<out>/metrics.json and <out>/metrics.facts.jsonl (--no-eval skips it).
 """
 
 from __future__ import annotations
@@ -128,7 +132,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
     (out / "config.json").write_text(json.dumps(config, indent=1))
     report = {"task_id": task["task_id"], "exp_id": config["exp_id"], "seed": seed, "variant": cfg["variant"],
               "config_hash": cfg["config_hash"], "benchmark_version": config["benchmark_version"],
-              "planner": planner, "route": route, "calls": [], "success": False, "started": time.time()}
+              "planner": planner, "route": route, "calls": [], "success": False, "started": time.time(),
+              "eval_log_version": 2}
     rig = None
     session = None
     from zeno_skills.runtime import launch, make_rig
@@ -163,6 +168,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                 rig.step(1)
         rig.step(120)
         from zeno_skills.skill_runtime import before_snapshot, SkillContractRunner
+        from benchmark.metrics import call_eval
         start = before_snapshot(rig)
         report["initial_positions"] = {n: [round(v, 3) for v in start["objects"][n]["pos"]]
                                        for n in task.get("watch", []) if n in start["objects"]}
@@ -179,7 +185,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
             pol = load_policy(policy)
             steps_iter = None
             report["calls"] = session.run_planner(pol, task, max_calls=max_calls or task.get("max_calls", 60),
-                                                  sink=calls_f)
+                                                  sink=calls_f, state_fn=lambda: state_summary(rig, task))
             report["stop_reason"] = session.stop_reason
         else:
             _, steps = resolve_steps(task, cfg, route)
@@ -191,6 +197,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                 tries = 3 if planner == "retry" else 1
                 for k in range(tries):
                     t0 = time.time()
+                    before = state_summary(rig, task)
                     if session is not None:
                         fb = session.call(st["skill"], st.get("args", {}))
                         if task.get("auto_look") and fb["error_code"] == "NOT_IN_VIEW":
@@ -199,20 +206,24 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                             lk = session.call("look", {"target": target})
                             row = {"index": i, "try": k, "skill": "look", "args": {"target": target}, "expect": "ok",
                                    "role": "auto_look", "note": "", "feedback": lk, "wall_s": 0.0, "tick": rig.tick,
-                                   "state": state_summary(rig, task)}
+                                   "state_before": before, "state": state_summary(rig, task),
+                                   "eval": session.last_eval}
                             report["calls"].append(row)
                             calls_f.write(json.dumps(row, default=float) + "\n")
                             print("CALL", i, k, lk["action"], "OK" if lk["success"] else f"FAIL {lk['error']}",
                                   "(auto look)", flush=True)
+                            before = row["state"]
                             fb = session.call(st["skill"], st.get("args", {}))
+                        ev = session.last_eval
                     else:
                         res = runner.run(st["skill"], st.get("args", {}))
                         fb = {"action": res.action, "success": res.success, "error_code": res.error_code,
                               "error": res.error, "path": res.selected_path}
+                        ev = call_eval(res)
                     row = {"index": i, "try": k, "skill": st["skill"], "args": st.get("args", {}), "expect": expect,
                            "role": st.get("role", ""), "note": st.get("note", ""), "feedback": fb,
                            "wall_s": round(time.time() - t0, 1), "tick": rig.tick,
-                           "state": state_summary(rig, task)}
+                           "state_before": before, "state": state_summary(rig, task), "eval": ev}
                     report["calls"].append(row)
                     calls_f.write(json.dumps(row, default=float) + "\n")
                     calls_f.flush()
@@ -299,6 +310,7 @@ def main():
     ap.add_argument("--out", default=str(OUT))
     ap.add_argument("--batch", help="JSON list of {task, seed, route?, planner?, variant?, video?}")
     ap.add_argument("--jobs", type=int, default=2)
+    ap.add_argument("--no-eval", action="store_true", help="--batch: skip benchmark/evaluate.py at the end")
     a = ap.parse_args()
     if a.batch:
         return run_batch(a)
@@ -341,6 +353,23 @@ def run_batch(a):
                 p.kill()
                 procs.remove(item)
                 print(name, "TIMEOUT (incomplete)", flush=True)
+    if not a.no_eval:
+        evaluate_batch(a)
+
+
+def evaluate_batch(a):
+    """EVALUATION_SPEC metrics of this batch's output directory (offline; never fails the batch)."""
+    out = Path(a.out)
+    cmd = [sys.executable if Path(sys.executable).exists() else "python3", str(ROOT / "benchmark/evaluate.py"),
+           "--tasks", a.tasks, "--runs", str(out), "--batch", a.batch, "--group", "planner,task",
+           "--md", str(out / "EVALUATION.md"), "--json", str(out / "metrics.json")]
+    try:
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+        print(res.stdout[-20000:], flush=True)
+        if res.returncode:
+            print("EVALUATION FAILED", res.stderr[-3000:], flush=True)
+    except Exception as exc:
+        print("EVALUATION FAILED", exc, flush=True)
 
 
 if __name__ == "__main__":

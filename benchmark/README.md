@@ -168,6 +168,38 @@ Comparability:
   the same grid.
 - `scripted` rows replay declared routes, which fail on purpose; they are feasibility evidence.
 
+### Evaluation-spec metrics (EVALUATION_SPEC.md)
+
+`evaluate.py` also writes the metrics of [EVALUATION_SPEC.md](EVALUATION_SPEC.md) (section *Evaluation-spec
+metrics* of its markdown, `spec` in its JSON, one line per episode in `<json>.facts.jsonl`). The code is
+`metrics.py`. Instruction semantics of alternatives are in `eval_semantics.py`, which only the evaluation reads.
+A `--batch` run of `run_episode.py` ends by running it on its `--out` directory and writes `EVALUATION.md`,
+`metrics.json` and `metrics.facts.jsonl` there (`--no-eval` skips this). It can also be run by hand:
+
+```bash
+python benchmark/evaluate.py --tasks benchmark/v3/tasks.json --runs benchmark/runs/eval_vlm \
+    --batch benchmark/v3/batches/eval.json --md benchmark/runs/eval_vlm/EVALUATION.md \
+    --json benchmark/runs/eval_vlm/metrics.json
+```
+
+The tables are per planner. Every ratio is shown as *value (numerator/denominator)*, and N/A means no sample.
+
+| Metric | Implementation |
+|---|---|
+| TSR | Successes / valid episodes. Planned (`--batch`/`--planned`), started, valid and system-error counts are reported. Also task-equal and condition-equal means, and *physical verifier only* next to *instruction semantics* (a legal substitute is required). |
+| Planning Correctness | Each call is `valid` (ran; or the controller failed after the preconditions held), `invalid` (interface error; a hand-state precondition that the planner's robot observation shows), or `undetermined` (gate refusals, other state preconditions, NO_PATH). Reported as valid/(valid+invalid), with the undetermined count and the coverage. |
+| FSR | The denominator is the variants with a registered substitute condition (`eval_semantics.substitute`) that also have a passing alternative route (in the runs or in `conditions.json`). Reports the FSR, the substitute *selected* (a successful call that commits to it), selected-then-failed, and proactive (chosen before any non-observation failure). |
+| ERSR | Episodes with a physical execution failure, and the share whose task then succeeded. State-precondition and observation failures get their own rows. Per event: verified local recovery (the same call later succeeded after helper calls *and* there is evidence: an object moved, the hand changed, the base moved, a temperature changed, a false check turned true, or the target became visible), `retry_only`, `mechanism_unverified`, resolved by an alternative, and not recovered. Also local-recovery-but-task-failed and TSR on fallback conditions. |
+| Robustness | TSR by challenge count (normal / single / combined), number of goal objects, reference route length, and actual room transitions (from the base pose after each call). |
+| Efficiency | Means over successful episodes and over failed episodes, each with its n: calls, extra recovery calls, invalid repeats (the same call with no state change in between), base travel (straight lines between call end poses, a lower bound), room transitions, simulated time, wall time, and planner response time (closed loop only). |
+| Success types | `direct`, `fallback` (with its observation / precondition / execution subtype), `alternative` and `combined`. `recovered_unverified` covers blind retries and recoveries without state evidence; `undetermined` covers the rest. |
+| Failure attribution | `planning_failure`, `exploration_failure`, `substitution_failure`, `recovery_failure`, `low_level_execution_failure`, `feasibility_unverified`, `system_error` and `undetermined`, with one direct cause per event. Replayed `scripted` and `oracle` routes are never charged with planner, recovery or substitution failures. |
+
+From `eval_log_version` 2 on, call rows log `state_before`, `state` and `eval`. `eval` holds the chain down to the
+deepest failed nested call, its code, message and false checks. Closed-loop rows also log `planner_s`, `tick` and
+`wall_s`. None of this reaches the planner. For older logs, the state before a call is the previous call's state,
+and the failed sub-step is parsed from the nested error text. Anything missing is N/A.
+
 **Evaluation grid** (`batches/eval.json`, not run yet): 29 task × tier combinations × seeds 10 and 11 gives 58
 episodes per planner (fixed, retry, oracle = 174; one more set per `--policy`). T05 easy is the missing 30th
 combination.
