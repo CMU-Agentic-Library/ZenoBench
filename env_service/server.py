@@ -76,8 +76,13 @@ class Worker:
     def read(self):
         line = self.resp.readline()
         if not line:
+            try:
+                code = self.proc.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                code = None
+            hint = " (killed: out of memory?)" if code == -9 else ""
             raise ServiceError(HTTPStatus.INTERNAL_SERVER_ERROR, "SIM_CRASHED",
-                               f"simulator process exited (code {self.proc.poll()}); see {self.log_path}")
+                               f"simulator process exited (code {code}){hint}; see {self.log_path}")
         msg = json.loads(line)
         if "error" in msg and msg.get("type") != "error":
             raise ServiceError(HTTPStatus.INTERNAL_SERVER_ERROR, "SIM_ERROR", msg["error"])
@@ -127,6 +132,8 @@ class ExpManager:
         self.cfg, self.tasks = cfg, tasks
         self.exps: dict[str, Exp] = {}
         self.lock = threading.Lock()
+        # one simulator starts at a time: a starting Isaac process peaks at ~11 GB of RAM
+        self.start_lock = threading.Lock()
         self.running = 0              # starting or ready simulators
         self._stop = threading.Event()
         threading.Thread(target=self._reaper, daemon=True).start()
@@ -145,9 +152,15 @@ class ExpManager:
             exp = Exp(f"{task_id}-{uuid.uuid4().hex[:8]}", self.tasks[task_id])
             self.exps[exp.exp_id] = exp
             self.running += 1
+        deadline = time.time() + self.cfg.start_timeout_s
         try:
-            exp.worker = Worker(self.cfg, exp.exp_id, task_id)
-            msg = _with_timeout(exp.worker.read, self.cfg.start_timeout_s)
+            if not self.start_lock.acquire(timeout=self.cfg.start_timeout_s):
+                raise TimeoutError(f"another simulator was still starting after {self.cfg.start_timeout_s} s")
+            try:
+                exp.worker = Worker(self.cfg, exp.exp_id, task_id)
+                msg = _with_timeout(exp.worker.read, max(1.0, deadline - time.time()))
+            finally:
+                self.start_lock.release()
             if msg.get("type") != "ready":
                 raise RuntimeError(msg.get("error", "simulator failed to start"))
         except Exception as exc:

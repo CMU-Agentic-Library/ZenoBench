@@ -23,7 +23,7 @@ $ISAACLAB_PYTHON -m env_service.server --port 8800
 - 调用次数按顶层 contract 计：一个 batch 传 5 个就计 5 次；调用前计数，执行失败也算；composite skill 内部的嵌套调用不计。超出后返回 `LIMIT_EXCEEDED`。
 - 总时长从 `initial_task` 返回时开始，是墙钟时间，包含 planner 思考的时间。超出后返回 `LIMIT_EXCEEDED`。
 - 空闲从上一次 `do_contract` 或 `initial_task` 返回时开始计时，`/observe` 不算活动。超出后释放 simulator。
-- simulator 启动最多等 13 分钟，低于 planner 端 15 分钟的客户端超时。
+- simulator 启动最多等 13 分钟，低于 planner 端 15 分钟的客户端超时。simulator 逐个启动（一个 Isaac 进程启动时内存峰值约 11 GB），所以两个 `initial_task` 同时到达时，第二个会多等一次启动的时间（约 1–2 分钟），这段等待也算在 13 分钟里。
 
 ## 接口
 

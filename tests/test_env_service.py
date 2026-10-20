@@ -154,6 +154,21 @@ def test_enum_values_are_checked():
     assert ep.contract({"contract": "jump", "args": {}})["error_code"] == "UNKNOWN_CONTRACT"
 
 
+def test_simulators_start_one_at_a_time(service):
+    box = {}
+    threads = [threading.Thread(target=lambda t=t: box.setdefault(t, (service.post("/initial_task", {"task_id": t}), time.time())))
+               for t in ("slow_start", "t1")]
+    t0 = time.time()
+    threads[0].start()
+    time.sleep(0.5)
+    threads[1].start()
+    for th in threads:
+        th.join(10)
+    assert box["slow_start"][0][0] == 200 and box["t1"][0][0] == 200
+    assert box["t1"][1] >= box["slow_start"][1] - 0.1        # t1 started only after slow_start was up
+    assert box["t1"][1] - t0 >= 3
+
+
 def test_start_failure(service):
     status, body = service.post("/initial_task", {"task_id": "bad_start"})
     assert status == 500 and body["error_code"] == "SIM_ERROR" and "scene failed to load" in body["error"]
