@@ -1,0 +1,1725 @@
+{
+ "summary": {
+  "benchmark_version": "v3",
+  "tasks": 17,
+  "conditions": 47,
+  "seeds_per_condition": 10,
+  "planned_route_episodes": 480,
+  "episodes_run": 21,
+  "episodes_passed": 21,
+  "condition_status": {
+   "unverified": 29,
+   "preliminary": 18
+  },
+  "not_counted_runs": 16
+ },
+ "conditions": [
+  {
+   "task": "T01_book_to_dining_table",
+   "variant": "far_no_overhang",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "start_elsewhere",
+    "no_overhang"
+   ],
+   "condition_types": [
+    "search_target",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "note": "the robot starts at the wall cabinet facing away; the book on the island does not overhang enough",
+   "status": "unverified",
+   "best_route": "hard_search_expose",
+   "routes": [
+    {
+     "route": "hard_search_expose",
+     "kind": "fallback",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "variant": "no_overhang",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "the book overhangs the front edge by 1.5 cm only: the edge pinch fails until it is exposed",
+   "status": "unverified",
+   "best_route": "fallback_expose",
+   "routes": [
+    {
+     "route": "fallback_expose",
+     "kind": "fallback",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "variant": "overhang_ready",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the book already overhangs the island's front edge by about 6 cm",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "clear",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the blocks stand 30 cm apart, every finger slot is free",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "crowded",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "block B is boxed in: the oatmeal bowl right behind it and the end of the rolling pin right beside it (3 mm gaps), so both pinch axes of B have a finger slot taken",
+   "status": "unverified",
+   "best_route": "fallback_separate",
+   "routes": [
+    {
+     "route": "fallback_separate",
+     "kind": "fallback",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "far_crowded",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "start_elsewhere",
+    "crowded"
+   ],
+   "condition_types": [
+    "search_target",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "note": "the robot starts at the wall cabinet facing away; block B is boxed in",
+   "status": "unverified",
+   "best_route": "hard_search_separate",
+   "routes": [
+    {
+     "route": "hard_search_separate",
+     "kind": "fallback",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "variant": "far_small_and_large",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "start_elsewhere",
+    "small_container_present"
+   ],
+   "condition_types": [
+    "search_target",
+    "container_choice"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "note": "the robot starts at the wall cabinet facing away; a mug on the island, the storage bin on the TV stand",
+   "status": "unverified",
+   "best_route": "hard_search_alt_container",
+   "routes": [
+    {
+     "route": "hard_search_alt_container",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "variant": "large_only",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "no mug: the storage bin on the TV stand is the only open container",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "variant": "small_and_large",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "small_container_present"
+   ],
+   "condition_types": [
+    "container_choice"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "two open containers: a mug (8 cm opening) on the island and the wide storage bin (34 x 30 cm) on the TV stand",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    },
+    {
+     "route": "alternative_large_container",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "cup_available",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "a cup stands on the island next to the mug",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "there is no cup in the house: the mug is the legal substitute",
+   "status": "unverified",
+   "best_route": "alternative_mug",
+   "routes": [
+    {
+     "route": "alternative_mug",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "variant": "no_cup_mug_away",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "note": "no cup in the house and the mug stands on the TV stand, out of the first view",
+   "status": "unverified",
+   "best_route": "hard_count_search_mug",
+   "routes": [
+    {
+     "route": "hard_count_search_mug",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "no_pen",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "no_pen"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "only the pencil lies on the low bookcase",
+   "status": "unverified",
+   "best_route": "alternative_pencil",
+   "routes": [
+    {
+     "route": "alternative_pencil",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "no_pen_pencil_away",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "no_pen",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "note": "no pen; the pencil lies on the dining table in another room",
+   "status": "unverified",
+   "best_route": "hard_search_pencil",
+   "routes": [
+    {
+     "route": "hard_search_pencil",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "variant": "pen_available",
+   "difficulty": "diagnostic",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "a pen and a pencil lie on the low bookcase (diagnostic only: the pen cannot be carried, see routes.nominal)",
+   "status": "diagnostic",
+   "best_route": null,
+   "routes": [],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "variant": "free",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the cabinet top is empty",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "variant": "occupied",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "destination_occupied"
+   ],
+   "condition_types": [
+    "destination_occupied"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "the pot lid and the oatmeal bowl take up the cabinet top: the 15 cm gap between them is too narrow for a block",
+   "status": "unverified",
+   "best_route": "alternative_tv_stand",
+   "routes": [
+    {
+     "route": "alternative_tv_stand",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "variant": "occupied_block_away",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "destination_occupied",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "destination_occupied",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "note": "the cabinet top is full and the block was left on the dining table",
+   "status": "unverified",
+   "best_route": "hard_search_alt_support",
+   "routes": [
+    {
+     "route": "hard_search_alt_support",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "variant": "broken_oatmeal_away",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "microwave_broken",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "appliance_failure",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "note": "the microwave does not heat and the oatmeal was left on the wall cabinet (carried from the dining table it slipped out of the rim pinch, 2/2)",
+   "status": "unverified",
+   "best_route": "hard_search_stove",
+   "routes": [
+    {
+     "route": "hard_search_stove",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "variant": "microwave_broken",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "microwave_broken"
+   ],
+   "condition_types": [
+    "appliance_failure"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "the microwave runs its cycle but does not heat: the heat call fails on the measured temperature",
+   "status": "unverified",
+   "best_route": "alternative_stove",
+   "routes": [
+    {
+     "route": "alternative_stove",
+     "kind": "alternative",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "variant": "microwave_works",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the microwave heats",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "far_sponge_tv",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "start_elsewhere",
+    "tool_away_from_surface"
+   ],
+   "condition_types": [
+    "search_target",
+    "search_tool"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the robot starts in the dining room; the sponge is on the TV stand",
+   "status": "unverified",
+   "best_route": "hard_search_approach",
+   "routes": [
+    {
+     "route": "hard_search_approach",
+     "kind": "explore",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "sponge_on_island",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the sponge lies on the island",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "sponge_on_tv_stand",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "tool_away_from_surface"
+   ],
+   "condition_types": [
+    "search_tool"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the sponge lies on the TV stand behind the island",
+   "status": "unverified",
+   "best_route": "nominal_from_tv_stand",
+   "routes": [
+    {
+     "route": "nominal_from_tv_stand",
+     "kind": "explore",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the lid lies on the stove beside the pot (where uncover sets it aside)",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "the lid is on the pot",
+   "status": "unverified",
+   "best_route": "fallback_uncover",
+   "routes": [
+    {
+     "route": "fallback_uncover",
+     "kind": "fallback",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "lid_on_spoon_away",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "lid_on",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "search_target"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "note": "the lid is on the pot and the spoon was left on the low wall cabinet",
+   "status": "unverified",
+   "best_route": "hard_uncover_search_spoon",
+   "routes": [
+    {
+     "route": "hard_uncover_search_spoon",
+     "kind": "fallback",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "can_in_dining_room",
+   "difficulty": "medium",
+   "since": "v2",
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the can stands on the dining table in the next room, out of sight",
+   "status": "unverified",
+   "best_route": "search_first",
+   "routes": [
+    {
+     "route": "search_first",
+     "kind": "explore",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "can_on_island",
+   "difficulty": "easy",
+   "since": "v2",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the can stands on the island",
+   "status": "unverified",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T10_trash_the_can",
+   "variant": "far_can_far",
+   "difficulty": "hard",
+   "since": "v2",
+   "conditions": [
+    "start_elsewhere",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target",
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the robot starts in the dining room, the can is on the TV stand",
+   "status": "unverified",
+   "best_route": "hard_explore_search",
+   "routes": [
+    {
+     "route": "hard_explore_search",
+     "kind": "explore",
+     "runs": 0,
+     "passed": 0,
+     "status": "unverified",
+     "seeds": []
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "no fruit basket on the bookcase: the serving tray on the study desk",
+   "status": "preliminary",
+   "best_route": "alternative_tray",
+   "routes": [
+    {
+     "route": "alternative_tray",
+     "kind": "alternative",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round5/T11_collect_fruits/s10_basket_missing_alternative_tray",
+       "code": "e1d2a26+8e3956b",
+       "config_hash": "67f26c3dbdc7",
+       "expected_failures": [
+        {
+         "call": "place_object(object=apple, receptacle=fruit_basket)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'fruit_basket' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the apple on the dining table, the basket on the bedroom bookcase",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T11_collect_fruits/s10_fruits_on_table_nominal",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "e97180a49917",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the duck was left on the study desk",
+   "status": "preliminary",
+   "best_route": "explore_search_duck",
+   "routes": [
+    {
+     "route": "explore_search_duck",
+     "kind": "explore",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round5/T12_tidy_toys/s10_duck_in_study_explore_search_duck",
+       "code": "e1d2a26+ba1aef6",
+       "config_hash": "d9cc79b36d14",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=rubber_duck)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'rubber_duck' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the car on the living-room floor, the duck on the TV stand",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_normal/T12_tidy_toys/s10_toys_out_nominal",
+       "code": "e1d2a26+a271d8e",
+       "config_hash": "b5fc6525c35c",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+   "status": "preliminary",
+   "best_route": "explore_search_bowl",
+   "routes": [
+    {
+     "route": "explore_search_bowl",
+     "kind": "explore",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s10_bowl_on_cabinet_explore_search_bowl",
+       "code": "e1d2a26+d6379a9",
+       "config_hash": "b3a0c1827628",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=bowl)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'bowl' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s10_dishes_on_tv_stand_nominal",
+       "code": "e1d2a26+bd8540a",
+       "config_hash": "466f76ef6926",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "no cup in the house: the mug on the bedroom bookcase",
+   "status": "preliminary",
+   "best_route": "alternative_mug",
+   "routes": [
+    {
+     "route": "alternative_mug",
+     "kind": "alternative",
+     "runs": 2,
+     "passed": 2,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s10_no_cup_alternative_mug",
+       "code": "e1d2a26+bd8540a",
+       "config_hash": "c07ad85c0d2d",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=cup)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'cup' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      },
+      {
+       "seed": 11,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s11_no_cup_alternative_mug",
+       "code": "e1d2a26+d6379a9",
+       "config_hash": "ef15af1ea717",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=cup)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'cup' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "note": "no cup, and the bowl on the low wall cabinet",
+   "status": "preliminary",
+   "best_route": "hard_search_bowl_mug",
+   "routes": [
+    {
+     "route": "hard_search_bowl_mug",
+     "kind": "alternative",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s10_no_cup_bowl_on_cabinet_hard_search_bowl_mug",
+       "code": "e1d2a26+d6379a9",
+       "config_hash": "7a8947853a5d",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=bowl)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'bowl' is not a known place or an observed object"
+        },
+        {
+         "call": "navigate_place(destination=cup)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'cup' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_free",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the book lies on the island with free paths to the front edge",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T15_book_face_up/s10_book_free_nominal",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "a51a259b956d",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T15_book_face_up",
+   "variant": "book_out_of_view",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the robot starts at the wall cabinet facing away",
+   "status": "preliminary",
+   "best_route": "explore_search_book",
+   "routes": [
+    {
+     "route": "explore_search_book",
+     "kind": "explore",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T15_book_face_up/s10_book_out_of_view_explore_search_book",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "5e1ff551dc51",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_free",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the pin lies 3 mm from the island's front edge with room behind it",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_normal/T16_rolling_pin_at_edge/s10_pin_free_nominal",
+       "code": "e1d2a26+a271d8e",
+       "config_hash": "df949a5e81f5",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "variant": "pin_out_of_view",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "start_elsewhere"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the robot starts at the wall cabinet facing away",
+   "status": "preliminary",
+   "best_route": "explore_search_pin",
+   "routes": [
+    {
+     "route": "explore_search_pin",
+     "kind": "explore",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T16_rolling_pin_at_edge/s10_pin_out_of_view_explore_search_pin",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "bac18f9fdfd9",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+   "status": "preliminary",
+   "best_route": "fallback_separate",
+   "routes": [
+    {
+     "route": "fallback_separate",
+     "kind": "fallback",
+     "runs": 2,
+     "passed": 2,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_block_crowded_fallback_separate",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "5c976b96befb",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "execution",
+         "error": "SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: "
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      },
+      {
+       "seed": 11,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s11_block_crowded_fallback_separate",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "25f12532b411",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "execution",
+         "error": "SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: "
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+   "status": "preliminary",
+   "best_route": "hard_search_uncover",
+   "routes": [
+    {
+     "route": "hard_search_uncover",
+     "kind": "fallback",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round3/T17_hide_and_seek_block/s10_far_lid_on_hard_search_uncover",
+       "code": "e1d2a26+f488354",
+       "config_hash": "1b5dd3fdb98f",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'pot_lid' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the lid lies on the stove beside the pot",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_normal/T17_hide_and_seek_block/s10_lid_off_nominal",
+       "code": "e1d2a26+a271d8e",
+       "config_hash": "3b4c50e548a2",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "the lid is on the pot: hide is refused until the pot is uncovered",
+   "status": "preliminary",
+   "best_route": "fallback_uncover",
+   "routes": [
+    {
+     "route": "fallback_uncover",
+     "kind": "fallback",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_lid_on_fallback_uncover",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "1f92fd63ec97",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'pot_lid' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "the lid is on the pot and the block is boxed in",
+   "status": "preliminary",
+   "best_route": "hard_uncover_separate",
+   "routes": [
+    {
+     "route": "hard_uncover_separate",
+     "kind": "fallback",
+     "runs": 2,
+     "passed": 2,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_lid_on_crowded_hard_uncover_separate",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "c359ae863230",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'pot_lid' is not a known place or an observed object"
+        },
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "execution",
+         "error": "SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: "
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      },
+      {
+       "seed": 11,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s11_lid_on_crowded_hard_uncover_separate",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "d33c08116d69",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'pot_lid' is not a known place or an observed object"
+        },
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "execution",
+         "error": "SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: "
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the robot starts at its default spot in front of the island",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T18_check_cabinet_dishes/s10_at_island_nominal",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "cfd95aaf2cb1",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  }
+ ],
+ "not_counted": [
+  "benchmark/runs/v3_normal/T11_collect_fruits/s11_orange_far_corner_source_layout",
+  "benchmark/runs/v3_round2/T14_homework_desk/s10_pen_on_table_nominal",
+  "benchmark/runs/v3_normal/T15_book_back_on_shelf/s10_book_free_nominal",
+  "benchmark/runs/v3_normal/T18_bowl_for_grandma/s10_bowl_in_cabinet_nominal",
+  "benchmark/runs/v3_round2/T12_tidy_toys/s10_duck_in_dining_room_explore_search_duck",
+  "benchmark/runs/v3_round2/T13_breakfast_setup/s10_bowl_in_bedroom_explore_search_bowl",
+  "benchmark/runs/v3_round2/T13_breakfast_setup/s10_no_cup_bowl_in_bedroom_hard_search_bowl_mug",
+  "benchmark/runs/v3_round2/T15_book_face_up/s10_edge_path_blocked_fallback_push_flip",
+  "benchmark/runs/v3_round2/T15_book_face_up/s10_far_edge_path_blocked_hard_search_push_flip",
+  "benchmark/runs/v3_round2/T15_book_face_up/s11_edge_path_blocked_fallback_push_flip",
+  "benchmark/runs/v3_round2/T16_rolling_pin_at_edge/s10_far_roll_blocked_hard_search_push_bowl",
+  "benchmark/runs/v3_round2/T16_rolling_pin_at_edge/s10_roll_blocked_fallback_push_bowl",
+  "benchmark/runs/v3_round2/T16_rolling_pin_at_edge/s11_roll_blocked_fallback_push_bowl",
+  "benchmark/runs/v3_round3/T12_tidy_toys/s10_duck_in_kitchen_explore_search_duck",
+  "benchmark/runs/v3_round3/T13_breakfast_setup/s10_bowl_in_study_explore_search_bowl",
+  "benchmark/runs/v3_round3/T13_breakfast_setup/s10_no_cup_bowl_in_study_hard_search_bowl_mug"
+ ]
+}

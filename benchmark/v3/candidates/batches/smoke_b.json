@@ -1,0 +1,158 @@
+[
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "alternative_mug",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "hard_count_search_mug",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "explore_search_cup",
+  "variant": "cup_out_of_view"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "fallback_separate",
+  "variant": "cup_crowded"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "hard_search_separate",
+  "variant": "cup_away_crowded"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "alternative_stove",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "hard_search_stove",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "explore_search_oatmeal",
+  "variant": "oatmeal_out_of_view"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "fallback_clear_microwave",
+  "variant": "microwave_occupied"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "alternative_stove_occupied",
+  "variant": "microwave_occupied"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "hard_search_clear_microwave",
+  "variant": "occupied_oatmeal_away"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "nominal_from_tv_stand",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "hard_search_approach",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "explore_search_sponge",
+  "variant": "sponge_on_cabinet"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "fallback_separate",
+  "variant": "sponge_blocked"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "hard_search_separate",
+  "variant": "far_sponge_blocked"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "search_first",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "hard_explore_search",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "explore_search_trash",
+  "variant": "trash_out_of_view"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "fallback_separate",
+  "variant": "can_crowded"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "hard_search_both",
+  "variant": "can_and_trash_away"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "hard_search_separate",
+  "variant": "can_away_crowded"
+ }
+]

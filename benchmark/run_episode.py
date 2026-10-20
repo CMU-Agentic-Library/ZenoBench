@@ -54,6 +54,13 @@ def code_version():
             "diff_sha1": hashlib.sha1(diff.encode()).hexdigest()}
 
 
+def tasks_ref(path):
+    """Which task file (and which content of it) an episode was built from."""
+    p = Path(path).resolve()
+    return {"path": str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p),
+            "sha1": hashlib.sha1(p.read_bytes()).hexdigest()}
+
+
 def resolve_steps(task, cfg, route_name):
     route = task["routes"][route_name]
     return route, [dict(s) for s in route["steps"]]
@@ -66,7 +73,8 @@ def evaluate_goal(rig, goal, start_snapshot):
     ctx = {"before": start_snapshot}
 
     def atom(a):
-        missing = [x for x in a[1:] if isinstance(x, str) and x in start_snapshot.get("_removed", ())]
+        names = [y for x in a[1:] for y in (x if isinstance(x, list) else [x])]      # list args: grouped(objects, ...)
+        missing = [x for x in names if isinstance(x, str) and x in start_snapshot.get("_removed", ())]
         if missing:
             return {"atom": f"{a[0]}({', '.join(map(str, a[1:]))})", "holds": False,
                     "detail": f"{missing[0]} is not in this episode"}
@@ -100,7 +108,7 @@ def floor_drops(rig, task, start_snapshot):
 
 
 def run_episode(task, seed, route=None, planner="scripted", variant=None, out_root=OUT, video=False,
-                images=True, policy=None, difficulty=None, max_calls=None):
+                images=True, policy=None, difficulty=None, max_calls=None, tasks_file=TASKS):
     from benchmark.scene import build_annotation, episode_config, make_prepare
     cfg = episode_config(task, seed, variant, difficulty)
     if planner == "oracle" and route is None:
@@ -114,9 +122,12 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
     ann_path = build_annotation(cfg, out / "annotation.json")
     config = {"task_id": task["task_id"], "exp_id": f"{task['exp_id']}-s{seed}-{label}", "seed": seed,
               "planner": planner, "route": route, "scene": cfg, "code": code_version(),
+              "tasks_file": tasks_ref(tasks_file), "benchmark_version": task.get("benchmark_version", "v2"),
+              "config_hash": cfg["config_hash"],
               "started": time.strftime("%Y-%m-%d %H:%M:%S")}
     (out / "config.json").write_text(json.dumps(config, indent=1))
     report = {"task_id": task["task_id"], "exp_id": config["exp_id"], "seed": seed, "variant": cfg["variant"],
+              "config_hash": cfg["config_hash"], "benchmark_version": config["benchmark_version"],
               "planner": planner, "route": route, "calls": [], "success": False, "started": time.time()}
     rig = None
     session = None
@@ -293,7 +304,7 @@ def main():
         return run_batch(a)
     tasks = load_tasks(a.tasks)
     run_episode(tasks[a.task], a.seed, a.route, a.planner, a.variant, a.out, a.video, not a.no_images, a.policy,
-                a.difficulty, a.max_calls)
+                a.difficulty, a.max_calls, a.tasks)
 
 
 def run_batch(a):

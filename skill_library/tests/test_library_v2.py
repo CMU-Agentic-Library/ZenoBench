@@ -1,6 +1,7 @@
 """Simulator-free checks of the verb-based SkillNode library."""
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -98,3 +99,26 @@ def test_planner_decomposes_tasks_into_skill_chains():
         assert steps, tid
     verbs = [sk["verb"] for sk, _, _ in solve_task(tasks["flip_book"])[0]]
     assert verbs[-1] == "flip"
+
+
+def _frontmatter(path):
+    text = path.read_text()
+    assert text.startswith("---\n"), path
+    return text.split("---\n", 2)[1]
+
+
+def test_skill_md_frontmatter_is_valid_yaml():
+    yaml = pytest.importorskip("yaml")
+    for path in sorted((ROOT / "skill_library" / "skills").glob("*/SKILL.md")):
+        data = yaml.safe_load(_frontmatter(path))
+        assert set(data) >= {"name", "description"}, path
+        assert re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", data["name"]), path
+        assert isinstance(data["description"], str) and data["description"].strip(), path
+
+
+def test_skill_md_description_is_quoted():
+    # dependency-free guard: an unquoted description breaks YAML as soon as it contains ": "
+    for path in sorted((ROOT / "skill_library" / "skills").glob("*/SKILL.md")):
+        rows = _frontmatter(path).splitlines()
+        line = next(row for row in rows if row.startswith("description: "))
+        json.loads(line.removeprefix("description: "))

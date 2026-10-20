@@ -241,7 +241,8 @@ def contract_json(rec):
 
 
 def skill_md(js, nested=()):
-    L = ["---", f"name: {js['name']}", f"description: {js['description']}", "---", "",
+    L = ["---", f"name: {js['name']}",
+         f"description: {json.dumps(js['description'], ensure_ascii=False)}", "---", "",
          f"# {js['title']} (`{js['skill_id']}`)", "", f"`{js['signature']}`", "", js["description"], ""]
     if js["use_when"]:
         L += ["## When to use", "", js["use_when"], ""]

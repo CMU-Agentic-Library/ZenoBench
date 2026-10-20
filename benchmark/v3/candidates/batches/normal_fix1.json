@@ -1,0 +1,5 @@
+[{"task": "T11_collect_fruits", "seed": 10, "route": "nominal", "variant": "fruits_on_table"},
+ {"task": "T18_bowl_for_grandma", "seed": 10, "route": "nominal", "variant": "bowl_in_cabinet"},
+ {"task": "T14_homework_desk", "seed": 10, "route": "nominal", "variant": "pen_on_table"},
+ {"task": "T15_book_back_on_shelf", "seed": 10, "route": "nominal", "variant": "book_free"},
+ {"task": "T11_collect_fruits", "seed": 11, "route": "source_layout", "variant": "orange_far_corner"}]

@@ -6,7 +6,7 @@ or alternative from what it sees and from the execution feedback. The Isaac Sim 
 planner never sees GT state.
 
 <!-- results:start -->
-Declared task routes: **59/62** episodes pass (30 routes: 3 flaky, 27 stable); probes 14/21; baselines fixed 2/10, retry 2/10, oracle 9/10; SkillNode coverage **65/70** (4 called but failed, 1 never called).  Per route and seed: [RESULTS.md](RESULTS.md); per skill: [coverage.json](coverage.json).
+Declared task routes: **60/60** episodes pass (29 routes: 29 stable); probes 14/21; baselines fixed 2/10, retry 3/10, oracle 9/10; SkillNode coverage **64/70** (5 called but failed, 1 never called).  Per route and seed: [RESULTS.md](RESULTS.md); per skill: [coverage.json](coverage.json).
 <!-- results:end -->
 
 ## Observation boundary
@@ -233,16 +233,20 @@ k_restore_swap 2/2 fail at the same step; the clean worktree fails k_restore_swa
 - **No real VLM run yet.** The closed loop is checked only with test planners.
 - **The eval grid (`batches/eval.json`, 174 episodes) has not been run.** The baseline numbers in
   [EVALUATION.md](EVALUATION.md) come from one or two seeds per task and are not benchmark results.
-- **Evidence code versions.** 105 of the 113 route episodes ran on `15d948e+dc4ae8f`, before this round's changes.
-  For the benchmark the low-level behaviour is meant to be the same (it sets the upright edge-pinch flag, which was the
-  default then), but only T01 was rerun on the current code. RESULTS.md shows the code version per route.
-- **Flaky routes (pass on one seed, fail on the other):** T01 hard_search_expose (the book slips during place on
-  seed 1), T02 fallback_separate and T02 hard_search_separate (the stack after `separate`). The T05 pen variant is diagnostic only (the pen
-  slips 4/4), which is why T05 has no easy tier.
-- **Probes:** 14 of 21 pass. P04 bottle, P06 two hands, P07 present and brace, P09 sweep, P14 restore swap, P16 empty
-  and P17 pour fail.
-- **SkillNodes:** 65 of 70 succeeded in a real call. Four were called and failed, and `release` was never called
-  (see [coverage.json](coverage.json)). Do not read this as "all 70 skills are stable".
+- **Evidence code version.** The full acceptance was rerun on `10b08a4` (clean tree, `benchmark/runs/v2`, 117
+  episodes). The two T01 nominal episodes ran first on `6abdb93` plus the uncommitted diff that became `10b08a4`
+  (identical code, a different recorded version). RESULTS.md shows the code version per route.
+- **Route stability.** All 29 declared routes passed on both seeds (60/60). T02 `fallback_push` is diagnostic (it
+  passes, 2/2, but is not an acceptance route); T05's pen variant (the pen slips while carried, 2/2 again) and T06
+  `fallback_clear` (the oatmeal bowl cannot be picked during clear_support, 2/2) are diagnostic failures.
+- **Baselines (one seed each, not benchmark results):** the oracle failed T02 crowded on seed 3 (the block slipped
+  out on the pick after `separate`); the scripted route passed on seeds 0 and 1.
+- **Probes:** 14 of 21 pass. P04 bottle (slips during upright), P06 two hands, P07 present and brace (the left
+  fingers close on nothing), P09 sweep (a block falls), P14 restore swap (place inside swap), P16 empty (tomato not
+  grasped) and P17 pour (0/3 items reach the pot) fail.
+- **SkillNodes:** 64 of 70 succeeded in a real call. Five were called and only failed (brace, upright, pour, empty,
+  swap; swap passed in the previous round) and `release` was never called (see [coverage.json](coverage.json)). Do
+  not read this as "all 70 skills are stable".
 - **Library baseline failures:** 8 of the 35 library scenarios fail (see *Regression*), among them k_separate and
   k_restore_swap, which also fail on a clean 15d948e.
 - `inspect` of a closed cabinet sees nothing inside until the door is opened.

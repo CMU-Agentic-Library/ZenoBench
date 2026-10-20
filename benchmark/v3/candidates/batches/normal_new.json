@@ -1,0 +1,50 @@
+[
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T14_homework_desk",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "pen_on_table"
+ },
+ {
+  "task": "T15_book_back_on_shelf",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "book_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T18_bowl_for_grandma",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bowl_in_cabinet"
+ }
+]

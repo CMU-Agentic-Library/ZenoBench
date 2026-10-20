@@ -1,7 +1,10 @@
 """Planner-level evaluation of benchmark runs (offline, from result.json).
 
     python benchmark/evaluate.py --runs benchmark/runs/final            # -> benchmark/EVALUATION.md, metrics.json
-    python benchmark/evaluate.py --runs DIR --group planner,tier        # other groupings: task, route, kind, variant
+    python benchmark/evaluate.py --runs DIR --group planner,tier        # other groupings: task, route, kind, variant,
+                                                                        # ctype (condition type), condition
+    python benchmark/evaluate.py --tasks benchmark/v3/tasks.json --runs DIR --md benchmark/v3/EVALUATION.md \
+        --json benchmark/v3/metrics.json      # v3: runs whose configuration hash differs are not counted
 
 report.py answers "did each declared route run and which SkillNodes did it
 cover"; this script scores how a planner behaved.  Definitions: README,
@@ -23,6 +26,11 @@ cover"; this script scores how a planner behaved.  Definitions: README,
   repeat    share of pre + exec failures followed by the same call with the same arguments
   drops / side / budget   floor drops, non-goal objects moved > 5 cm, closed-loop budget hits
 N/A: no sample for that ratio.
+
+Equal weights (v3): ``SR_task`` is the mean over tasks of each task's SR, ``SR_cond``
+the mean over (task, variant) conditions, so a task with more conditions does not
+dominate.  Grouping by ``ctype`` puts an episode in every one of its condition types
+(easy conditions: ``nominal``); those groups overlap.
 """
 
 from __future__ import annotations
@@ -49,6 +57,7 @@ def load(root):
         ann = json.loads((d / "annotation.json").read_text()) if (d / "annotation.json").exists() else {}
         r["_dir"] = str(d)
         r["_scene"] = cfg.get("scene", {})
+        r["_hash"] = cfg.get("config_hash") or r["_scene"].get("config_hash")
         r["_objects"] = {o["name"] for o in ann.get("objects", [])}
         yield r
 
@@ -151,6 +160,10 @@ def label(r, key, tasks):
         return t.get("routes", {}).get(r.get("route"), {}).get("kind", r.get("planner"))
     if key == "variant":
         return r.get("variant", "?")
+    if key == "condition":
+        return f"{r['task_id'][:3]}/{r.get('variant', '?')}"
+    if key == "ctype":
+        return r["_ctype"]
     raise ValueError(key)
 
 
@@ -160,8 +173,12 @@ def aggregate(eps):
     by_task = defaultdict(list)
     for r, m in done:
         by_task[r["task_id"]].append(m["success"])
+    by_cond = defaultdict(list)
+    for r, m in done:
+        by_cond[(r["task_id"], r.get("variant"))].append(m["success"])
     out = {"n": len(eps), "incomplete": len(eps) - len(done),
            "SR": mean([m["success"] for _, m in done]),
+           "SR_task": mean([mean(v) for v in by_task.values()]), "SR_cond": mean([mean(v) for v in by_cond.values()]),
            "skill_SR": (sum(m["skill_ok"] for _, m in done) / max(1, sum(m["skill_n"] for _, m in done)))
            if any(m["skill_n"] for _, m in done) else None,
            "GC": mean([m["gc"] for _, m in done]),
@@ -194,7 +211,8 @@ def fmt(v, pct=False):
 
 
 # (column, percent?, denominator key shown in brackets)
-COLS = [("n", 0, None), ("incomplete", 0, None), ("SR", 1, None), ("skill_SR", 1, None), ("GC", 1, None),
+COLS = [("n", 0, None), ("incomplete", 0, None), ("SR", 1, None), ("SR_task", 1, None), ("SR_cond", 1, None),
+        ("skill_SR", 1, None), ("GC", 1, None),
         ("pass^k", 1, None), ("SPL-c", 0, "spl_n"), ("calls", 0, None), ("sim_s", 0, None),
         ("unseen", 0, None), ("ghost", 0, None), ("not_in_view", 0, None), ("pre", 0, None), ("exec", 0, None),
         ("invalid", 0, None), ("recov_gate", 1, "recov_gate_n"), ("recov_pre", 1, "recov_pre_n"),
@@ -229,9 +247,24 @@ def main():
     ap.add_argument("--md", default=str(ROOT / "benchmark/EVALUATION.md"))
     ap.add_argument("--json", default=str(ROOT / "benchmark/metrics.json"))
     a = ap.parse_args()
-    tasks = {t["task_id"]: t for t in json.loads(Path(a.tasks).read_text())["tasks"]}
+    doc = json.loads(Path(a.tasks).read_text())
+    tasks = {t["task_id"]: t for t in doc["tasks"]}
     keys = a.group.split(",")
     runs = list(load(a.runs))
+    not_counted = []
+    if doc.get("schema_version", 1) >= 3:
+        # v3: only episodes of the configuration the current task file generates count
+        from benchmark.scene import episode_config
+        keep = []
+        for r in runs:
+            t = tasks.get(r["task_id"])
+            ok = t is not None and r.get("variant") in t["variants"] and \
+                episode_config(t, r["seed"], r["variant"])["config_hash"] == r["_hash"]
+            (keep if ok else not_counted).append(r)
+        runs = keep
+    for r in runs:
+        var = tasks.get(r["task_id"], {}).get("variants", {}).get(r.get("variant"), {})
+        r["_ctypes"] = sorted(set(var.get("condition_types") or [])) or ["nominal"]
     # an oracle route counts as an efficiency reference for a variant only if a run of it passed there
     verified = set()
     for r in runs:
@@ -251,7 +284,9 @@ def main():
         eps.append((r, episode_metrics(r, t, verified)))
     groups = defaultdict(list)
     for r, m in eps:
-        groups[tuple(label(r, k, tasks) for k in keys)].append((r, m))
+        for ct in (r["_ctypes"] if "ctype" in keys else [None]):
+            r["_ctype"] = ct
+            groups[tuple(label(r, k, tasks) for k in keys)].append((r, m))
     aggs = {g: aggregate(v) for g, v in groups.items()}
     by_planner = defaultdict(list)
     for r, m in eps:
@@ -259,7 +294,8 @@ def main():
     rel = Path(a.runs).resolve()
     rel = rel.relative_to(ROOT) if rel.is_relative_to(ROOT) else rel
     md = ["# Planner evaluation", "",
-          f"Generated by `python benchmark/evaluate.py --runs {rel} --group {a.group}`; {len(eps)} episodes. "
+          f"Generated by `python benchmark/evaluate.py --runs {rel} --group {a.group}`; {len(eps)} episodes"
+          + (f" ({len(not_counted)} runs of another configuration not counted)" if not_counted else "") + ". "
           "Column definitions: README, *Evaluation*; N/A = no sample; (n) = denominator.", "", PLANNER_NOTE, "",
           "## By planner", ""] + table({g: aggregate(v) for g, v in by_planner.items()}, ["planner"]) + [
           "", f"## By {', '.join(keys)}", ""] + table(aggs, keys) + ["", "## Episodes", "",
