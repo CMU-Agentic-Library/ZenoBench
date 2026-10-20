@@ -1,0 +1,5 @@
+[{"task": "T13_breakfast_setup", "seed": 10, "route": "explore_search_bowl", "variant": "bowl_on_island"},
+ {"task": "T12_tidy_toys", "seed": 10, "route": "explore_search_duck", "variant": "duck_in_study"},
+ {"task": "T13_breakfast_setup", "seed": 10, "route": "alternative_mug", "variant": "no_cup"},
+ {"task": "T11_collect_fruits", "seed": 10, "route": "alternative_tray", "variant": "basket_missing"},
+ {"task": "T13_breakfast_setup", "seed": 10, "route": "hard_search_bowl_mug", "variant": "no_cup_bowl_on_island"}]

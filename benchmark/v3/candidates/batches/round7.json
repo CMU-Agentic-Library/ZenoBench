@@ -1,0 +1,5 @@
+[{"task": "T13_breakfast_setup", "seed": 10, "route": "alternative_mug", "variant": "no_cup"},
+ {"task": "T13_breakfast_setup", "seed": 10, "route": "nominal", "variant": "dishes_on_tv_stand"},
+ {"task": "T13_breakfast_setup", "seed": 11, "route": "alternative_mug", "variant": "no_cup"},
+ {"task": "T13_breakfast_setup", "seed": 10, "route": "explore_search_bowl", "variant": "bowl_on_cabinet"},
+ {"task": "T13_breakfast_setup", "seed": 10, "route": "hard_search_bowl_mug", "variant": "no_cup_bowl_on_cabinet"}]

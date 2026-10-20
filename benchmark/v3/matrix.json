@@ -1,13 +1,13 @@
 {
  "summary": {
   "benchmark_version": "v3",
-  "tasks": 14,
-  "conditions": 40,
-  "graded_conditions": 39,
+  "tasks": 17,
+  "conditions": 48,
+  "graded_conditions": 47,
   "conditions_by_tier": {
-   "hard": 12,
-   "medium": 14,
-   "easy": 13,
+   "hard": 13,
+   "medium": 18,
+   "easy": 16,
    "diagnostic": 1
   },
   "seeds": [
@@ -22,17 +22,17 @@
    18,
    19
   ],
-  "episodes_per_planner": 390,
+  "episodes_per_planner": 470,
   "planners": [
    "fixed",
    "retry",
    "oracle"
   ],
-  "episode_configs": 400,
-  "distinct_configs": 247,
+  "episode_configs": 480,
+  "distinct_configs": 273,
   "same_task_cross_variant_collisions": 0,
-  "route_jobs": 400,
-  "smoke_jobs": 40,
+  "route_jobs": 480,
+  "smoke_jobs": 48,
   "eval_jobs": 0,
   "eval_scope": "variants with stable route acceptance"
  },
@@ -1055,6 +1055,273 @@
     "ee9aa330dfc9": 2
    },
    "status": "unverified"
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "oracle_route": "alternative_tray",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 4,
+   "repeated_configs": {
+    "67f26c3dbdc7": 5,
+    "7f4a019c3e7f": 2,
+    "f8c6c2a5d039": 2
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 4,
+   "repeated_configs": {
+    "e97180a49917": 5,
+    "c514f868fcf0": 2,
+    "5a047f851547": 2
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "oracle_route": "explore_search_duck",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 1,
+   "repeated_configs": {
+    "d9cc79b36d14": 10
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 1,
+   "repeated_configs": {
+    "b5fc6525c35c": 10
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "oracle_route": "explore_search_bowl",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 4,
+   "repeated_configs": {
+    "b3a0c1827628": 2,
+    "a55f298e9257": 3,
+    "82eb17b05efc": 4
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 4,
+   "repeated_configs": {
+    "466f76ef6926": 2,
+    "285030d22b0e": 3,
+    "1a90fe57c64a": 4
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "oracle_route": "alternative_mug",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 4,
+   "repeated_configs": {
+    "c07ad85c0d2d": 2,
+    "ef15af1ea717": 3,
+    "317baa3f56a6": 4
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "oracle_route": "hard_search_bowl_mug",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 4,
+   "repeated_configs": {
+    "7a8947853a5d": 2,
+    "932af5ddbb85": 3,
+    "39b40d943853": 4
+   },
+   "status": "preliminary"
   },
   {
    "task": "T15_book_face_up",
@@ -20917,6 +21184,3694 @@
     "thermal_sources": null,
     "thermal_override": {},
     "config_hash": "15fb655df46d"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "67f26c3dbdc7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 10,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "fruit_basket",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "67f26c3dbdc7"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "67f26c3dbdc7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 11,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "fruit_basket",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "67f26c3dbdc7"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "67f26c3dbdc7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 12,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "fruit_basket",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "67f26c3dbdc7"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "7f4a019c3e7f",
+   "vary_applied": {},
+   "distractors_removed": [
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 13,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "fruit_basket",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "7f4a019c3e7f"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "f8c6c2a5d039",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 14,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "fruit_basket",
+     "orange"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "f8c6c2a5d039"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "f53eba1e6bee",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 15,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "fruit_basket",
+     "orange"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "f53eba1e6bee"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "f8c6c2a5d039",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 16,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "fruit_basket",
+     "orange"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "f8c6c2a5d039"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "67f26c3dbdc7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 17,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "fruit_basket",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "67f26c3dbdc7"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "67f26c3dbdc7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 18,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "fruit_basket",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "67f26c3dbdc7"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_tray",
+   "config_hash": "7f4a019c3e7f",
+   "vary_applied": {},
+   "distractors_removed": [
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 19,
+    "variant": "basket_missing",
+    "variant_note": "no fruit basket on the bookcase: the serving tray on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "container_absent"
+    ],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "fruit_basket",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "7f4a019c3e7f"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "e97180a49917",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 10,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "e97180a49917"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "e97180a49917",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 11,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "e97180a49917"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "e97180a49917",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 12,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "e97180a49917"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c514f868fcf0",
+   "vary_applied": {},
+   "distractors_removed": [
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 13,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c514f868fcf0"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "5a047f851547",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 14,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "orange"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "5a047f851547"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "87ac09886efe",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 15,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "orange"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "87ac09886efe"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "5a047f851547",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 16,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "orange"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "5a047f851547"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "e97180a49917",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 17,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "e97180a49917"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "e97180a49917",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 18,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "clutter_cereal_b",
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "e97180a49917"
+   }
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c514f868fcf0",
+   "vary_applied": {},
+   "distractors_removed": [
+    "spoon_target_table"
+   ],
+   "config": {
+    "task_id": "T11_collect_fruits",
+    "seed": 19,
+    "variant": "fruits_on_table",
+    "variant_note": "the apple on the dining table, the basket on the bedroom bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "orange",
+     "spoon_target_table"
+    ],
+    "distractors_removed": [
+     "spoon_target_table"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c514f868fcf0"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 10,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 11,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 12,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 13,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 14,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 15,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 16,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 17,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 18,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_duck",
+   "config_hash": "d9cc79b36d14",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 19,
+    "variant": "duck_in_study",
+    "variant_note": "the duck was left on the study desk",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "rubber_duck": {
+      "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+      "xy": [
+       -0.95,
+       -6.02
+      ],
+      "yaw_deg": 128.7
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d9cc79b36d14"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 10,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 11,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 12,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 13,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 14,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 15,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 16,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 17,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 18,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "b5fc6525c35c",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T12_tidy_toys",
+    "seed": 19,
+    "variant": "toys_out",
+    "variant_note": "the car on the living-room floor, the duck on the TV stand",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b5fc6525c35c"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "b3a0c1827628",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 10,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "plate"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b3a0c1827628"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "a55f298e9257",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 11,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "a55f298e9257"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "093da0f56373",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 12,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "093da0f56373"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "82eb17b05efc",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 13,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "82eb17b05efc"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "a55f298e9257",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 14,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "a55f298e9257"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "82eb17b05efc",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 15,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "82eb17b05efc"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "b3a0c1827628",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 16,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "plate"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b3a0c1827628"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "82eb17b05efc",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 17,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "82eb17b05efc"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "a55f298e9257",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 18,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "a55f298e9257"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "explore_search_bowl",
+   "config_hash": "82eb17b05efc",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 19,
+    "variant": "bowl_on_cabinet",
+    "variant_note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+    "difficulty": "medium",
+    "conditions": [
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "82eb17b05efc"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "466f76ef6926",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 10,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "plate"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "466f76ef6926"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "285030d22b0e",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 11,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "285030d22b0e"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "7d04abafb523",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 12,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "7d04abafb523"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "1a90fe57c64a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 13,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "1a90fe57c64a"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "285030d22b0e",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 14,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "285030d22b0e"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "1a90fe57c64a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 15,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "1a90fe57c64a"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "466f76ef6926",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 16,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "plate"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "466f76ef6926"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "1a90fe57c64a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 17,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "1a90fe57c64a"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "285030d22b0e",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 18,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "285030d22b0e"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "1a90fe57c64a",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 19,
+    "variant": "dishes_on_tv_stand",
+    "variant_note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "1a90fe57c64a"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "c07ad85c0d2d",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 10,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c07ad85c0d2d"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "ef15af1ea717",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 11,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "ef15af1ea717"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "6f13b6e082fc",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 12,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "6f13b6e082fc"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "317baa3f56a6",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 13,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "317baa3f56a6"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "ef15af1ea717",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 14,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "ef15af1ea717"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "317baa3f56a6",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 15,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "317baa3f56a6"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "c07ad85c0d2d",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 16,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c07ad85c0d2d"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "317baa3f56a6",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 17,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "317baa3f56a6"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "ef15af1ea717",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 18,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "ef15af1ea717"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "since": "v3",
+   "oracle_route": "alternative_mug",
+   "config_hash": "317baa3f56a6",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 19,
+    "variant": "no_cup",
+    "variant_note": "no cup in the house: the mug on the bedroom bookcase",
+    "difficulty": "medium",
+    "conditions": [
+     "no_cup"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "317baa3f56a6"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 10,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "7a8947853a5d",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 10,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "7a8947853a5d"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 11,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "932af5ddbb85",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 11,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "932af5ddbb85"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 12,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "83d892b7ce69",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 12,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "83d892b7ce69"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 13,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "39b40d943853",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 13,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "39b40d943853"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 14,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "932af5ddbb85",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 14,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "932af5ddbb85"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 15,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "39b40d943853",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 15,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "39b40d943853"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 16,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "7a8947853a5d",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 16,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "7a8947853a5d"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 17,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "39b40d943853",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 17,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "39b40d943853"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 18,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "932af5ddbb85",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 18,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "932af5ddbb85"
+   }
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "seed": 19,
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_bowl_mug",
+   "config_hash": "39b40d943853",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T13_breakfast_setup",
+    "seed": 19,
+    "variant": "no_cup_bowl_on_cabinet",
+    "variant_note": "no cup, and the bowl on the low wall cabinet",
+    "difficulty": "hard",
+    "conditions": [
+     "no_cup",
+     "not_in_view"
+    ],
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "clutter_cereal_a",
+     "clutter_cereal_b",
+     "cup",
+     "plate"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "bowl": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "39b40d943853"
    }
   },
   {

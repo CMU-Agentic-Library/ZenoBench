@@ -101,15 +101,18 @@ in each of its types, so those groups overlap. Precondition refusals (`pre`) and
 ## Status
 
 <!-- v3status:start -->
-Stage 1 (registry, seeds, hash, matrix, counting) is complete. `tasks.json` holds 14 tasks and 40 variants (39 graded)
-on seeds 10–19: the 10 v2 tasks with their 30 v2 variants, plus T15–T18 with 10 new conditions (241 distinct
+Stage 1 (registry, seeds, hash, matrix, counting) is complete. `tasks.json` holds 17 tasks and 48 variants (47 graded)
+on seeds 10–19: the 10 v2 tasks with their 30 v2 variants, plus T11–T18 with 18 new conditions (267 distinct
 configurations in the matrix). Route acceptance ([RESULTS.md](RESULTS.md), `python benchmark/conditions.py --runs
-benchmark/runs/v3_normal benchmark/runs/v3_round2 ... benchmark/runs/v3_round7`): 12 route episodes run,
-12 passed; 10 conditions are **preliminary** (every new condition, 1–2 seeds each), 29 are **unverified** (the v2
+benchmark/runs/v3_normal benchmark/runs/v3_round2 ... benchmark/runs/v3_round7`): 21 route episodes run,
+21 passed; 18 conditions are **preliminary** (every new condition, 1–2 seeds each), 29 are **unverified** (the v2
 variants have not been run on v3 configurations yet). Preliminary means feasible on the seeds run, not stable.
 
 | Task | Household goal | Conditions (route, seeds passed) |
 |---|---|---|
+| T11 collect the fruit | lunch is over: the apple from the dining table into the fruit basket on the bedroom bookcase | easy (nominal, s10); basket missing → serving tray on the study desk (alternative, s10) |
+| T12 tidy the toys | bedtime: toy car and rubber duck into the bedroom storage basket | easy (nominal, s10); duck left on the study desk (search, s10) |
+| T13 set the breakfast table | bowl and cup from the TV stand next to the spoon on the dining table (a mug if there is no cup) | easy (nominal, s10); no cup → mug from the bookcase (alternative, s10 s11); bowl on the low wall cabinet (search, s10); both (s10) |
 | T15 book face up | turn the face-down paperback on the island face up, leave it there | easy (nominal, s10); start elsewhere (search, s10) |
 | T16 rolling pin at the edge | roll the pin back from the island's front edge (and see it rolls) | easy (nominal, s10); start elsewhere (search, s10) |
 | T17 hide and seek | hide the toy block in the pot and put the lid on | easy (s10); lid on (Uncover, s10); block boxed in (Separate, s10 s11); lid on + boxed in (s10 s11); far start + lid on (s10) |
@@ -117,6 +120,8 @@ variants have not been run on v3 configurations yet). Preliminary means feasible
 
 Conditions tried and dropped, with the evidence, are listed under each task's `not_adopted` (MATRIX.md lists them),
 among them: flip with the path to the edge blocked (flip sweeps the book and the pin off the island), roll with a bowl
-behind the pin (the pin pushes the bowl aside), taking the bowl out of the cabinet (no reachable grasp). The T17 far start first failed (s10, `v3_round2`) because the route navigated to the
-pot before it had been seen; the route now goes to the stove top and looks (s10, `v3_round3`, pass).
+behind the pin (the pin pushes the bowl aside), taking the bowl out of the cabinet (no reachable grasp), the orange
+in T11 (slips out of the grasp while carried), the bowl on the bedroom bookcase or the study desk in T13 (pick not
+held / slipped while carried). The T17 far start first failed (s10, `v3_round2`) because the route navigated to the
+pot before it had been seen; the route now goes to the stove top and looks (s10, `v3_round3`, pass). In T13 the place spots were moved twice: the bowl at x 2.93 was knocked when the arm left the table (no_cup, `v3_round5`) and a cup spot at x 3.25 was out of reach (`v3_round6`); bowl 3.05 and cup 3.20 pass (`v3_round7`). T14 (homework desk) was dropped (`v3_candidates.DROPPED_TASKS`: the notebook edge pinch did not hold).
 <!-- v3status:end -->

@@ -71,6 +71,11 @@
    "decision": "fallback",
    "meaning": "collect is refused while the lid is on: Uncover first"
   },
+  "container_absent": {
+   "type": "object_absent",
+   "decision": "alternative",
+   "meaning": "the named container is absent; the stated substitute is used"
+  },
   "book_side_blocked": {
    "type": "grasp_blocked",
    "decision": "fallback",
@@ -9091,6 +9096,1189 @@
      "condition": "another ordinary container as the trash",
      "reason": "not a legal substitute for the trash can"
     }
+   ]
+  },
+  {
+   "task_id": "T11_collect_fruits",
+   "exp_id": "ZB-T11",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:collect_fruits"
+   ],
+   "instruction": "Lunch is over and the apple is still on the dining table. Put it into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
+   "instruction_zh": "\u5348\u996d\u5403\u5b8c\u4e86\uff0c\u82f9\u679c\u8fd8\u5728\u9910\u684c\u4e0a\u3002\u628a\u5b83\u6536\u8fdb\u5367\u5ba4\u77ee\u4e66\u67b6\u4e0a\u7684\u679c\u7bee\u91cc\uff1b\u679c\u7bee\u4e0d\u5728\u7684\u8bdd\uff0c\u5c31\u653e\u8fdb\u4e66\u684c\u4e0a\u7684\u6258\u76d8\u91cc\u3002",
+   "scene": {
+    "base": "tasks/collect_fruits",
+    "remove": [
+     "orange"
+    ],
+    "distractors": [
+     "clutter_cereal_b",
+     "spoon_target_table"
+    ]
+   },
+   "variants": {
+    "fruits_on_table": {
+     "note": "the apple on the dining table, the basket on the bedroom bookcase",
+     "move": {},
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    },
+    "basket_missing": {
+     "note": "no fruit basket on the bookcase: the serving tray on the study desk",
+     "conditions": [
+      "container_absent"
+     ],
+     "remove": [
+      "fruit_basket"
+     ],
+     "move": {},
+     "since": "v3",
+     "condition_types": [
+      "object_absent"
+     ],
+     "decisions": [
+      "alternative"
+     ]
+    }
+   },
+   "watch": [
+    "apple",
+    "fruit_basket",
+    "serving_tray"
+   ],
+   "goal": {
+    "any": [
+     [
+      [
+       "inside",
+       "apple",
+       "fruit_basket"
+      ]
+     ],
+     [
+      [
+       "inside",
+       "apple",
+       "serving_tray"
+      ]
+     ]
+    ],
+    "all": [
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "fruits_on_table": "nominal",
+    "basket_missing": "alternative_tray"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "fruits_on_table"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "fruit_basket"
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "alternative_tray": {
+     "kind": "alternative",
+     "variants": [
+      "basket_missing"
+     ],
+     "recovery": "no basket on the bookcase: place into it fails -> the tray on the desk",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "fruit_basket"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "serving_tray"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "serving_tray"
+       },
+       "role": "alternative"
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "fruits_on_table": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "basket_missing": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
+   "task_id": "T12_tidy_toys",
+   "exp_id": "ZB-T12",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:tidy_toys"
+   ],
+   "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away in the storage basket in the bedroom.",
+   "instruction_zh": "\u5feb\u5230\u7761\u89c9\u65f6\u95f4\u4e86\uff0c\u628a\u5b69\u5b50\u7684\u73a9\u5177\u5c0f\u8f66\u548c\u5c0f\u9ec4\u9e2d\u6536\u8fdb\u5367\u5ba4\u7684\u50a8\u7269\u7b50\u91cc\u3002",
+   "scene": {
+    "base": "tasks/tidy_toys",
+    "remove": [
+     "toy_block"
+    ],
+    "distractors": []
+   },
+   "variants": {
+    "toys_out": {
+     "note": "the car on the living-room floor, the duck on the TV stand",
+     "move": {},
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    },
+    "duck_in_study": {
+     "note": "the duck was left on the study desk",
+     "conditions": [
+      "not_in_view"
+     ],
+     "move": {
+      "rubber_duck": {
+       "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+       "xy": [
+        -0.95,
+        -6.02
+       ],
+       "yaw_deg": 128.7
+      }
+     },
+     "since": "v3",
+     "condition_types": [
+      "search_target"
+     ],
+     "decisions": [
+      "explore"
+     ]
+    }
+   },
+   "watch": [
+    "toy_car",
+    "rubber_duck",
+    "storage_basket"
+   ],
+   "may_end_on_floor": [
+    "toy_car"
+   ],
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "toy_car",
+      "storage_basket"
+     ],
+     [
+      "inside",
+      "rubber_duck",
+      "storage_basket"
+     ],
+     [
+      "upright",
+      "storage_basket"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "toys_out": "nominal",
+    "duck_in_study": "explore_search_duck"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "toys_out"
+     ],
+     "steps": [
+      {
+       "skill": "explore",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "explore",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "explore_search_duck": {
+     "kind": "explore",
+     "variants": [
+      "duck_in_study"
+     ],
+     "recovery": "the duck is not in the living room -> search the study",
+     "steps": [
+      {
+       "skill": "explore",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "explore",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "living_room_0_1"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "toys_out": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "duck_in_study": {
+     "groups": [
+      {
+       "names": [
+        "rubber_duck"
+       ],
+       "dx": 0.05,
+       "dy": 0.0,
+       "dyaw": 0.0,
+       "step": 0.01,
+       "step_deg": 5
+      }
+     ],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
+   "task_id": "T13_breakfast_setup",
+   "exp_id": "ZB-T13",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:breakfast_setup"
+   ],
+   "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
+   "instruction_zh": "\u6446\u65e9\u9910\uff1a\u9910\u684c\u4e0a\u5df2\u7ecf\u653e\u597d\u52fa\u5b50\u4e86\uff0c\u62ff\u4e00\u4e2a\u7897\u548c\u4e00\u4e2a\u676f\u5b50\u8fc7\u6765\uff0c\u653e\u5728\u52fa\u5b50\u65c1\u8fb9\u3002\u6ca1\u6709\u676f\u5b50\u7684\u8bdd\u7528\u9a6c\u514b\u676f\u4e5f\u884c\u3002",
+   "scene": {
+    "base": "tasks/breakfast_setup",
+    "remove": [
+     "plate"
+    ],
+    "distractors": [
+     "clutter_cereal_a",
+     "clutter_cereal_b"
+    ]
+   },
+   "variants": {
+    "dishes_on_tv_stand": {
+     "note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+     "move": {},
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    },
+    "no_cup": {
+     "note": "no cup in the house: the mug on the bedroom bookcase",
+     "conditions": [
+      "no_cup"
+     ],
+     "remove": [
+      "cup"
+     ],
+     "move": {},
+     "since": "v3",
+     "condition_types": [
+      "object_absent"
+     ],
+     "decisions": [
+      "alternative"
+     ]
+    },
+    "bowl_on_cabinet": {
+     "note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+     "conditions": [
+      "not_in_view"
+     ],
+     "move": {
+      "bowl": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.68,
+        0.36
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "since": "v3",
+     "condition_types": [
+      "search_target"
+     ],
+     "decisions": [
+      "explore"
+     ]
+    },
+    "no_cup_bowl_on_cabinet": {
+     "note": "no cup, and the bowl on the low wall cabinet",
+     "conditions": [
+      "no_cup",
+      "not_in_view"
+     ],
+     "remove": [
+      "cup"
+     ],
+     "move": {
+      "bowl": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.68,
+        0.36
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "since": "v3",
+     "condition_types": [
+      "object_absent",
+      "search_target"
+     ],
+     "decisions": [
+      "alternative",
+      "explore"
+     ]
+    }
+   },
+   "watch": [
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
+   ],
+   "goal": {
+    "any": [
+     [
+      [
+       "on",
+       "cup",
+       "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+      ],
+      [
+       "upright",
+       "cup"
+      ],
+      [
+       "grouped",
+       [
+        "bowl",
+        "cup",
+        "spoon"
+       ],
+       "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       0.5
+      ]
+     ],
+     [
+      [
+       "on",
+       "mug",
+       "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+      ],
+      [
+       "upright",
+       "mug"
+      ],
+      [
+       "grouped",
+       [
+        "bowl",
+        "mug",
+        "spoon"
+       ],
+       "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       0.5
+      ]
+     ]
+    ],
+    "all": [
+     [
+      "on",
+      "bowl",
+      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     ],
+     [
+      "upright",
+      "bowl"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "dishes_on_tv_stand": "nominal",
+    "no_cup": "alternative_mug",
+    "bowl_on_cabinet": "explore_search_bowl",
+    "no_cup_bowl_on_cabinet": "hard_search_bowl_mug"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "dishes_on_tv_stand"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "alternative_mug": {
+     "kind": "alternative",
+     "variants": [
+      "no_cup"
+     ],
+     "recovery": "no cup seen; navigate to the cup fails (never observed) -> the mug",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "explore_search_bowl": {
+     "kind": "explore",
+     "variants": [
+      "bowl_on_cabinet"
+     ],
+     "recovery": "the bowl is not on the TV stand -> search the living room",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "bowl",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "hard_search_bowl_mug": {
+     "kind": "alternative",
+     "variants": [
+      "no_cup_bowl_on_cabinet"
+     ],
+     "recovery": "neither on the TV stand: search the bowl in the living room, then the mug in the bedroom",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "bowl",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       }
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "dishes_on_tv_stand": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "no_cup": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "bowl_on_cabinet": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "no_cup_bowl_on_cabinet": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
    ]
   },
   {

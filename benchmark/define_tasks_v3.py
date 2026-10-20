@@ -86,10 +86,161 @@ V2_VARY = {}
 # debugged new tasks (T11 ...), full task dicts in the v2 format plus v3 fields
 NEW_TASKS = []
 # v3 tasks whose Normal route and every declared condition route ran end to end on 1-2 seeds (preliminary);
-# candidates under debugging live in v3_candidates.py.  T15-T18 are small chores built around one manipulation
-# skill.
+# candidates under debugging live in v3_candidates.py.  T11-T13 come from the library chores (T14 dropped, see
+# v3_candidates.DROPPED_TASKS), T15-T18 are small chores built around one manipulation skill.
 T01_REMOVE = ["mug", "cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3", "soda_can", "juice_bottle"]
 BOOK_FLUSH = at(ISLAND, 7.62, 1.59, 90)        # the book flush with the island's front edge (no overhang)
+
+BASKET, TRAY, TOY_BASKET = "fruit_basket", "serving_tray", "storage_basket"
+CONDITIONS.update({
+    "container_absent": ("object_absent", "alternative", "the named container is absent; the stated substitute is used"),
+})
+
+
+def _to(obj, dest, place="place", hint=None, look=False):
+    """navigate to obj, pick, navigate to dest's support / object, (look), place or drop."""
+    out = [S("navigate", destination=obj), S("pick", object=obj), S("navigate", destination=dest)]
+    if look:
+        out.append(S("look", target=dest))
+    args = {"object": obj, "receptacle": dest} if place == "place" else {"object": obj, "container": dest}
+    if hint:
+        args["hint_xy"] = hint
+    out.append(S(place, **args))
+    return out
+
+
+# ----------------------------------------------------------------- T11 collect fruits
+_t11_nominal = [S("navigate", destination=DINING), S("look", target=DINING),
+                S("navigate", destination="apple"), S("pick", object="apple"), S("navigate", destination=BOOKCASE),
+                S("look", target=BOOKCASE), S("place", object="apple", receptacle=BASKET)]
+NEW_TASKS.append({
+    "task_id": "T11_collect_fruits", "exp_id": "ZB-T11", "since": "v3",
+    "source": ["skill_library/tasks.json:collect_fruits"],
+    "instruction": "Lunch is over and the apple is still on the dining table. Put it into the fruit basket on the "
+                   "low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
+    "instruction_zh": "午饭吃完了，苹果还在餐桌上。把它收进卧室矮书架上的果篮里；果篮不在的话，就放进书桌上的托盘里。",
+    "scene": {"base": "tasks/collect_fruits", "remove": ["orange"], "distractors": ["clutter_cereal_b", "spoon_target_table"]},
+    "variants": {
+        "fruits_on_table": {"note": "the apple on the dining table, the basket on the bedroom bookcase", "move": {}},
+        "basket_missing": {"note": "no fruit basket on the bookcase: the serving tray on the study desk",
+                           "conditions": ["container_absent"], "remove": [BASKET], "move": {}}},
+    "watch": ["apple", BASKET, TRAY],
+    "goal": {"any": [[["inside", "apple", BASKET]], [["inside", "apple", TRAY]]], "all": [["hand_empty", "right"]]},
+    "nominal": "nominal", "oracle": {"fruits_on_table": "nominal", "basket_missing": "alternative_tray"},
+    "routes": {"nominal": {"kind": "nominal", "variants": ["fruits_on_table"], "steps": _t11_nominal},
+               "alternative_tray": {"kind": "alternative", "variants": ["basket_missing"],
+                                    "recovery": "no basket on the bookcase: place into it fails -> the tray on the desk",
+                                    "steps": [*_t11_nominal[:-1],
+                                              S("place", "fail", "failure", object="apple", receptacle=BASKET),
+                                              S("navigate", role="alternative", destination=DESK),
+                                              S("look", role="alternative", target=DESK),
+                                              S("navigate", role="alternative", destination=TRAY),
+                                              S("place", role="alternative", object="apple", receptacle=TRAY)]}},
+    "vary": {"fruits_on_table": vary(), "basket_missing": vary()},
+    "not_adopted": [{"condition": "the orange as the second fruit (source task: both fruits)",
+                     "reason": "the orange slips out of the top pinch while carried, 3/3 runs (source spot s10, s11; "
+                               "moved to the apple's side of the table s10; benchmark/runs/v3_normal); the apple "
+                               "carried the same way 3/3"}],
+})
+
+# ----------------------------------------------------------------- T12 tidy toys
+NEW_TASKS.append({
+    "task_id": "T12_tidy_toys", "exp_id": "ZB-T12", "since": "v3",
+    "source": ["skill_library/tasks.json:tidy_toys"],
+    "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away in the storage basket in the bedroom.",
+    "instruction_zh": "快到睡觉时间了，把孩子的玩具小车和小黄鸭收进卧室的储物筐里。",
+    "scene": {"base": "tasks/tidy_toys", "remove": ["toy_block"], "distractors": []},
+    "variants": {"toys_out": {"note": "the car on the living-room floor, the duck on the TV stand", "move": {}},
+                 "duck_in_study": {"note": "the duck was left on the study desk", "conditions": ["not_in_view"],
+                                   "move": {"rubber_duck": at(DESK, -0.95, -6.02, 128.7)}}},   # its TV-stand yaw
+    "watch": ["toy_car", "rubber_duck", TOY_BASKET],
+    "may_end_on_floor": ["toy_car"],
+    "goal": {"all": [["inside", "toy_car", TOY_BASKET], ["inside", "rubber_duck", TOY_BASKET], ["upright", TOY_BASKET],
+                     ["hand_empty", "right"]]},
+    "nominal": "nominal", "oracle": {"toys_out": "nominal", "duck_in_study": "explore_search_duck"},
+    "routes": {
+        # the robot starts in the bedroom facing away from the basket; the toys are in the living room
+        "nominal": {"kind": "nominal", "variants": ["toys_out"], "steps": [
+            S("explore", room="bedroom_0_1"), S("explore", room=HALL),
+            *_to("toy_car", TOY_BASKET), *_to("rubber_duck", TOY_BASKET)]},
+        "explore_search_duck": {"kind": "explore", "variants": ["duck_in_study"],
+                                "recovery": "the duck is not in the living room -> search the study", "steps": [
+            S("explore", room="bedroom_0_1"), S("explore", room=HALL), *_to("toy_car", TOY_BASKET),
+            S("navigate", "fail", "failure", destination="rubber_duck"),
+            S("search", role="recovery", object="rubber_duck", region="living_room_0_1"), *_to("rubber_duck", TOY_BASKET)]}},
+    "vary": {"toys_out": vary(), "duck_in_study": vary(group(["rubber_duck"], dx=0.05))},
+    "not_adopted": [{"condition": "duck left on the dining table (not in view)",
+                     "reason": "the table is seen while exploring the living room: navigate to the duck succeeded "
+                               "without a search (s10, benchmark/runs/v3_round2)"},
+                    {"condition": "duck left on the kitchen counter (not in view)",
+                     "reason": "pick of the duck on the counter: no reachable grasp from any base pose (s10, "
+                               "benchmark/runs/v3_round3); the duck is put on the study desk"},
+                    {"condition": "toy box missing -> storage basket (source alternative)",
+                     "reason": "the toy box is an optional object the source scene never placed"}],
+})
+
+# ----------------------------------------------------------------- T13 breakfast setup
+BOWL_CAB = at(CAB_TOP, 3.68, 0.36, 0)               # the low wall cabinet top, 3 m from the TV stand (spoon x <= 3.59)
+_t13_look = [S("look", target=DINING), S("navigate", destination=TV), S("look", target=TV)]
+# 12 cm further in than the source hint (2.93): leaving the table, the robot knocked the bowl over (s10 no_cup)
+_t13_bowl = _to("bowl", DINING, hint=[3.05, 7.10])
+_t13_mug = [S("navigate", destination=BOOKCASE, role="alternative"), S("look", target=BOOKCASE, role="alternative"),
+            S("pick", object="mug", role="alternative"),      # from the bookcase park: closer, the mug leaves the view
+            S("navigate", destination=DINING), S("place", object="mug", receptacle=DINING, hint_xy=[3.20, 7.40])]
+_bowl_search = [S("navigate", "fail", "failure", destination="bowl"),
+                S("search", role="recovery", object="bowl", region=HALL)]
+NEW_TASKS.append({
+    "task_id": "T13_breakfast_setup", "exp_id": "ZB-T13", "since": "v3",
+    "source": ["skill_library/tasks.json:breakfast_setup"],
+    "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put "
+                   "them next to it. A mug is fine if there is no cup.",
+    "instruction_zh": "摆早餐：餐桌上已经放好勺子了，拿一个碗和一个杯子过来，放在勺子旁边。没有杯子的话用马克杯也行。",
+    "scene": {"base": "tasks/breakfast_setup", "remove": ["plate"], "distractors": ["clutter_cereal_a", "clutter_cereal_b"]},
+    "variants": {
+        "dishes_on_tv_stand": {"note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+                               "move": {}},
+        "no_cup": {"note": "no cup in the house: the mug on the bedroom bookcase", "conditions": ["no_cup"],
+                   "remove": ["cup"], "move": {}},
+        "bowl_on_cabinet": {"note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+                            "conditions": ["not_in_view"], "move": {"bowl": BOWL_CAB}},
+        "no_cup_bowl_on_cabinet": {"note": "no cup, and the bowl on the low wall cabinet",
+                                   "conditions": ["no_cup", "not_in_view"], "remove": ["cup"],
+                                   "move": {"bowl": BOWL_CAB}}},
+    "watch": ["bowl", "cup", "mug", "spoon"],
+    "goal": {"any": [[["on", "cup", DINING], ["upright", "cup"], ["grouped", ["bowl", "cup", "spoon"], DINING, 0.5]],
+                     [["on", "mug", DINING], ["upright", "mug"], ["grouped", ["bowl", "mug", "spoon"], DINING, 0.5]]],
+             "all": [["on", "bowl", DINING], ["upright", "bowl"], ["hand_empty", "right"]]},
+    "nominal": "nominal",
+    "oracle": {"dishes_on_tv_stand": "nominal", "no_cup": "alternative_mug", "bowl_on_cabinet": "explore_search_bowl",
+               "no_cup_bowl_on_cabinet": "hard_search_bowl_mug"},
+    "routes": {
+        "nominal": {"kind": "nominal", "variants": ["dishes_on_tv_stand"],
+                    "steps": [*_t13_look, *_t13_bowl, *_to("cup", DINING, hint=[3.20, 7.40])]},
+        "alternative_mug": {"kind": "alternative", "variants": ["no_cup"],
+                            "recovery": "no cup seen; navigate to the cup fails (never observed) -> the mug",
+                            "steps": [*_t13_look, *_t13_bowl, S("navigate", "fail", "failure", destination="cup"),
+                                      *_t13_mug]},
+        "explore_search_bowl": {"kind": "explore", "variants": ["bowl_on_cabinet"],
+                                "recovery": "the bowl is not on the TV stand -> search the living room",
+                                "steps": [*_t13_look, *_to("cup", DINING, hint=[3.20, 7.40]), *_bowl_search,
+                                          *_t13_bowl]},
+        "hard_search_bowl_mug": {"kind": "alternative", "variants": ["no_cup_bowl_on_cabinet"],
+                                 "recovery": "neither on the TV stand: search the bowl in the living room, then the mug in the bedroom",
+                                 "steps": [*_t13_look, *_bowl_search, *_t13_bowl,
+                                           S("navigate", "fail", "failure", destination="cup"), *_t13_mug]}},
+    "vary": {v: vary() for v in ("dishes_on_tv_stand", "no_cup", "bowl_on_cabinet", "no_cup_bowl_on_cabinet")},
+    "not_adopted": [{"condition": "breakfast spot taken by the cereal boxes (source alternative)",
+                     "reason": "place picks the nearest free spot itself: no planner decision"},
+                    {"condition": "bowl left on the bedroom bookcase (not in view)",
+                     "reason": "pick of the bowl from the bookcase top: not held, 2/2 (s10, benchmark/runs/v3_round2); "
+                               "the bowl is put elsewhere"},
+                    {"condition": "bowl left on the study desk (not in view)",
+                     "reason": "the bowl slipped out of the hand on the carry from the study to the dining table (s10, "
+                               "benchmark/runs/v3_round3); the bowl is put on the low wall cabinet"},
+                    {"condition": "plate instead of a missing bowl (source alternative)",
+                     "reason": "the plate is flat and starts on the dining table itself: the goal would hold untouched"}],
+})
+
 
 # ----------------------------------------------------------------- T15 book face up (flip)
 NEW_TASKS.append({

@@ -1,17 +1,17 @@
 {
  "summary": {
   "benchmark_version": "v3",
-  "tasks": 14,
-  "conditions": 39,
+  "tasks": 17,
+  "conditions": 47,
   "seeds_per_condition": 10,
-  "planned_route_episodes": 400,
-  "episodes_run": 12,
-  "episodes_passed": 12,
+  "planned_route_episodes": 480,
+  "episodes_run": 21,
+  "episodes_passed": 21,
   "condition_status": {
    "unverified": 29,
-   "preliminary": 10
+   "preliminary": 18
   },
-  "not_counted_runs": 25
+  "not_counted_runs": 16
  },
  "conditions": [
   {
@@ -872,6 +872,375 @@
    "diagnostic_routes": []
   },
   {
+   "task": "T11_collect_fruits",
+   "variant": "basket_missing",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "container_absent"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "no fruit basket on the bookcase: the serving tray on the study desk",
+   "status": "preliminary",
+   "best_route": "alternative_tray",
+   "routes": [
+    {
+     "route": "alternative_tray",
+     "kind": "alternative",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round5/T11_collect_fruits/s10_basket_missing_alternative_tray",
+       "code": "e1d2a26+8e3956b",
+       "config_hash": "67f26c3dbdc7",
+       "expected_failures": [
+        {
+         "call": "place_object(object=apple, receptacle=fruit_basket)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'fruit_basket' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "fruits_on_table",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the apple on the dining table, the basket on the bedroom bookcase",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T11_collect_fruits/s10_fruits_on_table_nominal",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "e97180a49917",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "duck_in_study",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the duck was left on the study desk",
+   "status": "preliminary",
+   "best_route": "explore_search_duck",
+   "routes": [
+    {
+     "route": "explore_search_duck",
+     "kind": "explore",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round5/T12_tidy_toys/s10_duck_in_study_explore_search_duck",
+       "code": "e1d2a26+ba1aef6",
+       "config_hash": "d9cc79b36d14",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=rubber_duck)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'rubber_duck' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_out",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the car on the living-room floor, the duck on the TV stand",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_normal/T12_tidy_toys/s10_toys_out_nominal",
+       "code": "e1d2a26+a271d8e",
+       "config_hash": "b5fc6525c35c",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "bowl_on_cabinet",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "not_in_view"
+   ],
+   "condition_types": [
+    "search_target"
+   ],
+   "decisions": [
+    "explore"
+   ],
+   "note": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+   "status": "preliminary",
+   "best_route": "explore_search_bowl",
+   "routes": [
+    {
+     "route": "explore_search_bowl",
+     "kind": "explore",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s10_bowl_on_cabinet_explore_search_bowl",
+       "code": "e1d2a26+d6379a9",
+       "config_hash": "b3a0c1827628",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=bowl)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'bowl' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "dishes_on_tv_stand",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s10_dishes_on_tv_stand_nominal",
+       "code": "e1d2a26+bd8540a",
+       "config_hash": "466f76ef6926",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "no_cup"
+   ],
+   "condition_types": [
+    "object_absent"
+   ],
+   "decisions": [
+    "alternative"
+   ],
+   "note": "no cup in the house: the mug on the bedroom bookcase",
+   "status": "preliminary",
+   "best_route": "alternative_mug",
+   "routes": [
+    {
+     "route": "alternative_mug",
+     "kind": "alternative",
+     "runs": 2,
+     "passed": 2,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s10_no_cup_alternative_mug",
+       "code": "e1d2a26+bd8540a",
+       "config_hash": "c07ad85c0d2d",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=cup)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'cup' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      },
+      {
+       "seed": 11,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s11_no_cup_alternative_mug",
+       "code": "e1d2a26+d6379a9",
+       "config_hash": "ef15af1ea717",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=cup)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'cup' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_bowl_on_cabinet",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "condition_types": [
+    "object_absent",
+    "search_target"
+   ],
+   "decisions": [
+    "alternative",
+    "explore"
+   ],
+   "note": "no cup, and the bowl on the low wall cabinet",
+   "status": "preliminary",
+   "best_route": "hard_search_bowl_mug",
+   "routes": [
+    {
+     "route": "hard_search_bowl_mug",
+     "kind": "alternative",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round7/T13_breakfast_setup/s10_no_cup_bowl_on_cabinet_hard_search_bowl_mug",
+       "code": "e1d2a26+d6379a9",
+       "config_hash": "7a8947853a5d",
+       "expected_failures": [
+        {
+         "call": "navigate_place(destination=bowl)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'bowl' is not a known place or an observed object"
+        },
+        {
+         "call": "navigate_place(destination=cup)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'cup' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
    "task": "T15_book_face_up",
    "variant": "book_free",
    "difficulty": "easy",
@@ -1336,16 +1705,12 @@
   }
  ],
  "not_counted": [
-  "benchmark/runs/v3_round2/T11_collect_fruits/s10_fruits_on_table_nominal",
   "benchmark/runs/v3_normal/T11_collect_fruits/s11_orange_far_corner_source_layout",
-  "benchmark/runs/v3_normal/T12_tidy_toys/s10_toys_out_nominal",
-  "benchmark/runs/v3_round7/T13_breakfast_setup/s10_dishes_on_tv_stand_nominal",
   "benchmark/runs/v3_round2/T14_homework_desk/s10_pen_on_table_nominal",
   "benchmark/runs/v3_normal/T15_book_back_on_shelf/s10_book_free_nominal",
   "benchmark/runs/v3_normal/T18_bowl_for_grandma/s10_bowl_in_cabinet_nominal",
   "benchmark/runs/v3_round2/T12_tidy_toys/s10_duck_in_dining_room_explore_search_duck",
   "benchmark/runs/v3_round2/T13_breakfast_setup/s10_bowl_in_bedroom_explore_search_bowl",
-  "benchmark/runs/v3_round7/T13_breakfast_setup/s10_no_cup_alternative_mug",
   "benchmark/runs/v3_round2/T13_breakfast_setup/s10_no_cup_bowl_in_bedroom_hard_search_bowl_mug",
   "benchmark/runs/v3_round2/T15_book_face_up/s10_edge_path_blocked_fallback_push_flip",
   "benchmark/runs/v3_round2/T15_book_face_up/s10_far_edge_path_blocked_hard_search_push_flip",
@@ -1355,11 +1720,6 @@
   "benchmark/runs/v3_round2/T16_rolling_pin_at_edge/s11_roll_blocked_fallback_push_bowl",
   "benchmark/runs/v3_round3/T12_tidy_toys/s10_duck_in_kitchen_explore_search_duck",
   "benchmark/runs/v3_round3/T13_breakfast_setup/s10_bowl_in_study_explore_search_bowl",
-  "benchmark/runs/v3_round3/T13_breakfast_setup/s10_no_cup_bowl_in_study_hard_search_bowl_mug",
-  "benchmark/runs/v3_round5/T11_collect_fruits/s10_basket_missing_alternative_tray",
-  "benchmark/runs/v3_round5/T12_tidy_toys/s10_duck_in_study_explore_search_duck",
-  "benchmark/runs/v3_round7/T13_breakfast_setup/s10_bowl_on_cabinet_explore_search_bowl",
-  "benchmark/runs/v3_round7/T13_breakfast_setup/s10_no_cup_bowl_on_cabinet_hard_search_bowl_mug",
-  "benchmark/runs/v3_round7/T13_breakfast_setup/s11_no_cup_alternative_mug"
+  "benchmark/runs/v3_round3/T13_breakfast_setup/s10_no_cup_bowl_in_study_hard_search_bowl_mug"
  ]
 }
