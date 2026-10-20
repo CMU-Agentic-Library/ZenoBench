@@ -101,19 +101,22 @@ in each of its types, so those groups overlap. Precondition refusals (`pre`) and
 ## Status
 
 <!-- v3status:start -->
-Stage 1 (registry, seeds, hash, matrix, counting) is complete. `tasks.json` holds 12 tasks and 34 variants (33 graded)
-on seeds 10–19: the 10 v2 tasks with their 30 v2 variants, plus T15–T16 with 4 new conditions (213 distinct
+Stage 1 (registry, seeds, hash, matrix, counting) is complete. `tasks.json` holds 14 tasks and 40 variants (39 graded)
+on seeds 10–19: the 10 v2 tasks with their 30 v2 variants, plus T15–T18 with 10 new conditions (241 distinct
 configurations in the matrix). Route acceptance ([RESULTS.md](RESULTS.md), `python benchmark/conditions.py --runs
-benchmark/runs/v3_normal benchmark/runs/v3_round2 ... benchmark/runs/v3_round7`): 4 route episodes run,
-4 passed; 4 conditions are **preliminary** (every new condition, 1–2 seeds each), 29 are **unverified** (the v2
+benchmark/runs/v3_normal benchmark/runs/v3_round2 ... benchmark/runs/v3_round7`): 12 route episodes run,
+12 passed; 10 conditions are **preliminary** (every new condition, 1–2 seeds each), 29 are **unverified** (the v2
 variants have not been run on v3 configurations yet). Preliminary means feasible on the seeds run, not stable.
 
 | Task | Household goal | Conditions (route, seeds passed) |
 |---|---|---|
 | T15 book face up | turn the face-down paperback on the island face up, leave it there | easy (nominal, s10); start elsewhere (search, s10) |
 | T16 rolling pin at the edge | roll the pin back from the island's front edge (and see it rolls) | easy (nominal, s10); start elsewhere (search, s10) |
+| T17 hide and seek | hide the toy block in the pot and put the lid on | easy (s10); lid on (Uncover, s10); block boxed in (Separate, s10 s11); lid on + boxed in (s10 s11); far start + lid on (s10) |
+| T18 check the cabinet | look into the low wall cabinet for a plate and a bowl, close the door | easy (nominal, s10) |
 
 Conditions tried and dropped, with the evidence, are listed under each task's `not_adopted` (MATRIX.md lists them),
 among them: flip with the path to the edge blocked (flip sweeps the book and the pin off the island), roll with a bowl
-behind the pin (the pin pushes the bowl aside).
+behind the pin (the pin pushes the bowl aside), taking the bowl out of the cabinet (no reachable grasp). The T17 far start first failed (s10, `v3_round2`) because the route navigated to the
+pot before it had been seen; the route now goes to the stove top and looks (s10, `v3_round3`, pass).
 <!-- v3status:end -->

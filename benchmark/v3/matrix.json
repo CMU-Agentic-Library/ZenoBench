@@ -1,13 +1,13 @@
 {
  "summary": {
   "benchmark_version": "v3",
-  "tasks": 12,
-  "conditions": 34,
-  "graded_conditions": 33,
+  "tasks": 14,
+  "conditions": 40,
+  "graded_conditions": 39,
   "conditions_by_tier": {
-   "hard": 10,
-   "medium": 12,
-   "easy": 11,
+   "hard": 12,
+   "medium": 14,
+   "easy": 13,
    "diagnostic": 1
   },
   "seeds": [
@@ -22,17 +22,17 @@
    18,
    19
   ],
-  "episodes_per_planner": 330,
+  "episodes_per_planner": 390,
   "planners": [
    "fixed",
    "retry",
    "oracle"
   ],
-  "episode_configs": 340,
-  "distinct_configs": 219,
+  "episode_configs": 400,
+  "distinct_configs": 247,
   "same_task_cross_variant_collisions": 0,
-  "route_jobs": 340,
-  "smoke_jobs": 34,
+  "route_jobs": 400,
+  "smoke_jobs": 40,
   "eval_jobs": 0,
   "eval_scope": "variants with stable route acceptance"
  },
@@ -1183,6 +1183,218 @@
    "repeated_configs": {
     "8595d04f7171": 3,
     "d72b4a9c57bb": 2
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "oracle_route": "fallback_separate",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 5,
+   "repeated_configs": {
+    "25f12532b411": 2,
+    "773fa7230a8e": 2,
+    "b2ef7ecbacee": 2,
+    "b923cba6e21b": 3
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "oracle_route": "hard_search_uncover",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 5,
+   "repeated_configs": {
+    "ddba2b741b6e": 2,
+    "e94c432bf42d": 2,
+    "6d313de51086": 2,
+    "0ac3fbb660a4": 3
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 5,
+   "repeated_configs": {
+    "ae7d2391615b": 2,
+    "8d06c7004df6": 2,
+    "9b53aaeb0e88": 2,
+    "3aa57d4ec5e9": 3
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "oracle_route": "fallback_uncover",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 5,
+   "repeated_configs": {
+    "254dad297c54": 2,
+    "26a6efeaf868": 2,
+    "2116d5eb68b4": 2,
+    "aae3c09b6365": 3
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "oracle_route": "hard_uncover_separate",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 5,
+   "repeated_configs": {
+    "d33c08116d69": 2,
+    "00d0628176a7": 2,
+    "9ffe38b00302": 2,
+    "b743646f2f54": 3
+   },
+   "status": "preliminary"
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 5,
+   "repeated_configs": {
+    "cfd95aaf2cb1": 2,
+    "256c2d090030": 4,
+    "79887d96f736": 2
    },
    "status": "preliminary"
   }
@@ -23153,6 +23365,3757 @@
     "thermal_sources": null,
     "thermal_override": {},
     "config_hash": "8595d04f7171"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "5c976b96befb",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 10,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "5c976b96befb"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "25f12532b411",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 11,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "25f12532b411"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "773fa7230a8e",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 12,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "773fa7230a8e"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "b2ef7ecbacee",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 13,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b2ef7ecbacee"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "b2ef7ecbacee",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 14,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b2ef7ecbacee"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "773fa7230a8e",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 15,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "773fa7230a8e"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "b923cba6e21b",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 16,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b923cba6e21b"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "25f12532b411",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 17,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "25f12532b411"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "b923cba6e21b",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 18,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b923cba6e21b"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_separate",
+   "config_hash": "b923cba6e21b",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 19,
+    "variant": "block_crowded",
+    "variant_note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+    "difficulty": "medium",
+    "conditions": [
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     },
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b923cba6e21b"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 10,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "1b5dd3fdb98f",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 10,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "1b5dd3fdb98f"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 11,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "ddba2b741b6e",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 11,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "ddba2b741b6e"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 12,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "e94c432bf42d",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 12,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "e94c432bf42d"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 13,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "6d313de51086",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 13,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "6d313de51086"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 14,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "6d313de51086",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 14,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "6d313de51086"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 15,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "e94c432bf42d",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 15,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "e94c432bf42d"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 16,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "0ac3fbb660a4",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 16,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0ac3fbb660a4"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 17,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "ddba2b741b6e",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 17,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "ddba2b741b6e"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 18,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "0ac3fbb660a4",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 18,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0ac3fbb660a4"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "seed": 19,
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_search_uncover",
+   "config_hash": "0ac3fbb660a4",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 19,
+    "variant": "far_lid_on",
+    "variant_note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+    "difficulty": "hard",
+    "conditions": [
+     "start_elsewhere",
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": [
+     4.764,
+     0.699,
+     195.0
+    ],
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0ac3fbb660a4"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "3b4c50e548a2",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 10,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "3b4c50e548a2"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "ae7d2391615b",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 11,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "ae7d2391615b"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "8d06c7004df6",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 12,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "8d06c7004df6"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "9b53aaeb0e88",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 13,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "9b53aaeb0e88"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "9b53aaeb0e88",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 14,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "9b53aaeb0e88"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "8d06c7004df6",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 15,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "8d06c7004df6"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "3aa57d4ec5e9",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 16,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "3aa57d4ec5e9"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "ae7d2391615b",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 17,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "ae7d2391615b"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "3aa57d4ec5e9",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 18,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "3aa57d4ec5e9"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "3aa57d4ec5e9",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 19,
+    "variant": "lid_off",
+    "variant_note": "the lid lies on the stove beside the pot",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "pot_lid": {
+      "support": "kitchen_stove/top",
+      "xy": [
+       8.715,
+       1.655
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "3aa57d4ec5e9"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "1f92fd63ec97",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 10,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "1f92fd63ec97"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "254dad297c54",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 11,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "254dad297c54"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "26a6efeaf868",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 12,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "26a6efeaf868"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "2116d5eb68b4",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 13,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "2116d5eb68b4"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "2116d5eb68b4",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 14,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "2116d5eb68b4"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "26a6efeaf868",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 15,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "26a6efeaf868"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "aae3c09b6365",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 16,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "aae3c09b6365"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "254dad297c54",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 17,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "254dad297c54"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "aae3c09b6365",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 18,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "aae3c09b6365"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "fallback_uncover",
+   "config_hash": "aae3c09b6365",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 19,
+    "variant": "lid_on",
+    "variant_note": "the lid is on the pot: hide is refused until the pot is uncovered",
+    "difficulty": "medium",
+    "conditions": [
+     "lid_on"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "aae3c09b6365"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 10,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "c359ae863230",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 10,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "paperback_book"
+    ],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c359ae863230"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 11,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "d33c08116d69",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 11,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d33c08116d69"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 12,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "00d0628176a7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 12,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "00d0628176a7"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 13,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "9ffe38b00302",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 13,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "9ffe38b00302"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 14,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "9ffe38b00302",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 14,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "9ffe38b00302"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 15,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "00d0628176a7",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 15,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge"
+    ],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "00d0628176a7"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 16,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "b743646f2f54",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 16,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b743646f2f54"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 17,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "d33c08116d69",
+   "vary_applied": {},
+   "distractors_removed": [
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 17,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "breakfast_spoon",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "kitchen_sponge",
+     "mug",
+     "paperback_book",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "breakfast_spoon",
+     "kitchen_sponge",
+     "paperback_book"
+    ],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "d33c08116d69"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 18,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "b743646f2f54",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 18,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b743646f2f54"
+   }
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "seed": 19,
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "hard_uncover_separate",
+   "config_hash": "b743646f2f54",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T17_hide_and_seek_block",
+    "seed": 19,
+    "variant": "lid_on_crowded",
+    "variant_note": "the lid is on the pot and the block is boxed in",
+    "difficulty": "hard",
+    "conditions": [
+     "lid_on",
+     "crowded"
+    ],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "juice_bottle",
+     "mug",
+     "soda_can",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "wooden_block_b": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.6
+      ],
+      "yaw_deg": 0.0
+     },
+     "oatmeal": {
+      "support": "kitchen_island/top",
+      "xy": [
+       7.0,
+       1.717
+      ],
+      "yaw_deg": 0.0
+     },
+     "rolling_pin": {
+      "support": "kitchen_island/top",
+      "xy": [
+       6.864,
+       1.59
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "b743646f2f54"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "cfd95aaf2cb1",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 10,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "cfd95aaf2cb1"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "256c2d090030",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book",
+    "wooden_block_a"
+   ],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 11,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "256c2d090030"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "256c2d090030",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book",
+    "wooden_block_a"
+   ],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 12,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "256c2d090030"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "256c2d090030",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book",
+    "wooden_block_a"
+   ],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 13,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "256c2d090030"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "79887d96f736",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 14,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "paperback_book"
+    ],
+    "distractors_removed": [
+     "paperback_book"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "79887d96f736"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "79887d96f736",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book"
+   ],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 15,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "paperback_book"
+    ],
+    "distractors_removed": [
+     "paperback_book"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "79887d96f736"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "cfd95aaf2cb1",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 16,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "cfd95aaf2cb1"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "256c2d090030",
+   "vary_applied": {},
+   "distractors_removed": [
+    "paperback_book",
+    "wooden_block_a"
+   ],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 17,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "256c2d090030"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "f492551258e3",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "wooden_block_a"
+   ],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 18,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "kitchen_sponge",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "wooden_block_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "f492551258e3"
+   }
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "cb555a42f4ec",
+   "vary_applied": {},
+   "distractors_removed": [
+    "kitchen_sponge",
+    "paperback_book",
+    "wooden_block_a"
+   ],
+   "config": {
+    "task_id": "T18_check_cabinet_dishes",
+    "seed": 19,
+    "variant": "at_island",
+    "variant_note": "the robot starts at its default spot in front of the island",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "kitchen_sponge",
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "distractors_removed": [
+     "kitchen_sponge",
+     "paperback_book",
+     "wooden_block_a"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "cb555a42f4ec"
    }
   }
  ]

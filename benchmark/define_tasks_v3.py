@@ -169,6 +169,114 @@ NEW_TASKS.append({
                                "behind the bowl. A movable object on the island gives way the same way"}],
 })
 
+# ----------------------------------------------------------------- T17 hide and seek (hide)
+LID_BESIDE = at(STOVE_TOP, 8.715, 1.655)
+B_CROWD = {"wooden_block_b": at(ISLAND, 7.0, 1.60), "oatmeal": at(ISLAND, 7.0, 1.717),
+           "rolling_pin": at(ISLAND, 6.864, 1.59, 0)}
+_hide = S("hide", object="wooden_block_b", receptacle=POT, lid="pot_lid")
+_hide_pre = [S("navigate", destination=POT), S("look", target=STOVE_TOP), S("navigate", destination=ISLAND),
+             S("look", target=ISLAND)]
+NEW_TASKS.append({
+    "task_id": "T17_hide_and_seek_block", "exp_id": "ZB-T17", "since": "v3",
+    "source": ["skill_library/tasks.json:hide_block", "k_empty_hide", "probe P20_hide_block"],
+    "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the "
+                   "stove and put the lid on so they cannot see it.",
+    "instruction_zh": "陪孩子玩藏东西的游戏：把木积木藏进灶台上的空锅里，再盖好锅盖，别让孩子一眼看到。",
+    "scene": {"base": "tasks/kitchen_skills", "remove": ["mug", "cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3",
+                                                        "wooden_block_a", "juice_bottle", "soda_can"],
+              "distractors": ["paperback_book", "kitchen_sponge", "breakfast_spoon"]},
+    "variants": {
+        "lid_off": {"note": "the lid lies on the stove beside the pot", "move": {"pot_lid": LID_BESIDE}},
+        "lid_on": {"note": "the lid is on the pot: hide is refused until the pot is uncovered", "conditions": ["lid_on"],
+                   "move": {}},
+        "block_crowded": {"note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin "
+                                 "(3 mm, T02's crowd)", "conditions": ["crowded"], "move": {"pot_lid": LID_BESIDE, **B_CROWD}},
+        "lid_on_crowded": {"note": "the lid is on the pot and the block is boxed in", "conditions": ["lid_on", "crowded"],
+                           "move": dict(B_CROWD)},
+        "far_lid_on": {"note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+                       "conditions": ["start_elsewhere", "lid_on"], "start": CAB_START, "move": {}}},
+    "watch": ["wooden_block_b", "pot_lid", POT, "oatmeal", "rolling_pin"],
+    "goal": {"all": [["hidden", "wooden_block_b"], ["covered", POT, "pot_lid"], ["hand_empty", "right"]]},
+    "nominal": "nominal",
+    "oracle": {"lid_off": "nominal", "lid_on": "fallback_uncover", "block_crowded": "fallback_separate",
+               "lid_on_crowded": "hard_uncover_separate", "far_lid_on": "hard_search_uncover"},
+    "routes": {
+        "nominal": {"kind": "nominal", "variants": ["lid_off"], "steps": [*_hide_pre, _hide]},
+        "fallback_uncover": {"kind": "fallback", "variants": ["lid_on"],
+                             "recovery": "Hide refused (lid on) -> Uncover -> Hide",
+                             "steps": [*_hide_pre, S("hide", "fail", "failure", object="wooden_block_b", receptacle=POT,
+                                                     lid="pot_lid"),
+                                       S("navigate", destination=POT), S("uncover", role="recovery", container=POT),
+                                       S("navigate", destination=ISLAND), S("look", target=ISLAND),
+                                       S("hide", role="retry_after_recovery", object="wooden_block_b", receptacle=POT,
+                                         lid="pot_lid")]},
+        "fallback_separate": {"kind": "fallback", "variants": ["block_crowded"],
+                              "recovery": "Hide fails (its pick of the block fails) -> Separate -> Hide",
+                              "steps": [*_hide_pre, S("hide", "fail", "failure", object="wooden_block_b", receptacle=POT,
+                                                      lid="pot_lid"),
+                                        S("navigate", destination="wooden_block_b"),
+                                        S("separate", role="recovery", object="wooden_block_b"),
+                                        S("hide", role="retry_after_recovery", object="wooden_block_b", receptacle=POT,
+                                          lid="pot_lid")]},
+        "hard_uncover_separate": {"kind": "fallback", "variants": ["lid_on_crowded"],
+                                  "recovery": "Hide refused (lid) -> Uncover; Hide fails (pick) -> Separate -> Hide",
+                                  "steps": [*_hide_pre, S("hide", "fail", "failure", object="wooden_block_b",
+                                                          receptacle=POT, lid="pot_lid"),
+                                            S("navigate", destination=POT), S("uncover", role="recovery", container=POT),
+                                            S("navigate", destination=ISLAND), S("look", target=ISLAND),
+                                            S("hide", "fail", "failure", object="wooden_block_b", receptacle=POT,
+                                              lid="pot_lid"),
+                                            S("navigate", destination="wooden_block_b"),
+                                            S("separate", role="recovery", object="wooden_block_b"),
+                                            S("hide", role="retry_after_recovery", object="wooden_block_b", receptacle=POT,
+                                              lid="pot_lid")]},
+        "hard_search_uncover": {"kind": "fallback", "variants": ["far_lid_on"],
+                                "recovery": "search the block and the pot -> Hide refused (lid) -> Uncover -> Hide",
+                                "steps": [S("search", role="recovery", object="wooden_block_b", region=HALL),
+                                          S("navigate", destination=STOVE_TOP), S("look", target=STOVE_TOP),
+                                          S("hide", "fail", "failure", object="wooden_block_b", receptacle=POT,
+                                            lid="pot_lid"),
+                                          S("uncover", role="recovery", container=POT),
+                                          S("navigate", destination=ISLAND), S("look", target=ISLAND),
+                                          S("hide", role="retry_after_recovery", object="wooden_block_b", receptacle=POT,
+                                            lid="pot_lid")]}},
+    "vary": {"lid_off": vary(), "lid_on": vary(), "far_lid_on": vary(start=TURN_VARY),
+             "block_crowded": vary(group(list(B_CROWD), dx=0.02)), "lid_on_crowded": vary(group(list(B_CROWD), dx=0.02))},
+    "not_adopted": [{"condition": "alternative block (A instead of a blocked B)",
+                     "reason": "with a free block A in the scene the nominal route can hide A without any failure; "
+                               "the task keeps one block so the blocked pick needs a decision"}],
+})
+
+# ----------------------------------------------------------------- T18 check the cabinet for dishes (cabinet)
+CONTENTS = ["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"]
+_t18 = [S("navigate", destination=CAB), S("open", articulated=CAB), S("inspect", receptacle=CAB),
+        S("close", articulated=CAB)]
+NEW_TASKS.append({
+    "task_id": "T18_check_cabinet_dishes", "exp_id": "ZB-T18", "since": "v3",
+    "source": ["skill_library/tasks.json:inspect_cabinet", "k_cabinet", "probe P12_cabinet"],
+    "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinet for "
+                   "dinner. Have a look inside and close the cabinet door properly afterwards.",
+    "instruction_zh": "奶奶想知道靠墙矮柜里还有没有干净的盘子和碗，晚饭要用。去看一眼里面，看完把柜门关好。",
+    "scene": {"base": "tasks/kitchen_skills", "remove": ["cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3"],
+              "distractors": ["paperback_book", "wooden_block_a", "kitchen_sponge"]},
+    "variants": {"at_island": {"note": "the robot starts at its default spot in front of the island", "move": {}}},
+    "watch": CONTENTS,
+    "goal": {"all": [["observed", CONTENTS[0]], ["observed", CONTENTS[1]], ["is_closed", CAB], ["hand_empty", "right"]]},
+    "nominal": "nominal", "oracle": {"at_island": "nominal"},
+    "routes": {"nominal": {"kind": "nominal", "variants": ["at_island"], "steps": _t18}},
+    "vary": {"at_island": vary()},
+    "not_adopted": [{"condition": "take a clean bowl out of the cabinet to the dining table",
+                     "reason": "pick of the bowl on the cabinet's inside shelf: no reachable grasp from any base pose, "
+                               "at its source spot and moved to the shelf front (s10, benchmark/runs/v3_normal)"},
+                    {"condition": "start in the dining room",
+                     "reason": "the cabinet is a known place: navigate reaches it from anywhere, no decision"},
+                    {"condition": "knock before opening (source task knock_then_open)",
+                     "reason": "knocking on one's own cabinet is not a household need; knock stays covered by probe P12"},
+                    {"condition": "cabinet initially open (close first)",
+                     "reason": "the scene overlay moves and removes objects only; it cannot set a joint state"}],
+})
+
+
 # v2 route kinds that were search-only (no physical repair): reclassified as explore
 EXPLORE_ROUTES = {("T08_wipe_island", "nominal_from_tv_stand"), ("T08_wipe_island", "oracle_approach"),
                   ("T08_wipe_island", "hard_search_approach"), ("T10_trash_the_can", "search_first"),

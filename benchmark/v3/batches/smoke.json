@@ -202,5 +202,41 @@
   "seed": 10,
   "route": "explore_search_pin",
   "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "fallback_uncover",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "fallback_separate",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "hard_uncover_separate",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "hard_search_uncover",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "at_island"
  }
 ]

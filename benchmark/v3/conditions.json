@@ -1,17 +1,17 @@
 {
  "summary": {
   "benchmark_version": "v3",
-  "tasks": 12,
-  "conditions": 33,
+  "tasks": 14,
+  "conditions": 39,
   "seeds_per_condition": 10,
-  "planned_route_episodes": 340,
-  "episodes_run": 4,
-  "episodes_passed": 4,
+  "planned_route_episodes": 400,
+  "episodes_run": 12,
+  "episodes_passed": 12,
   "condition_status": {
    "unverified": 29,
-   "preliminary": 4
+   "preliminary": 10
   },
-  "not_counted_runs": 33
+  "not_counted_runs": 25
  },
  "conditions": [
   {
@@ -1022,6 +1022,317 @@
     }
    ],
    "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "block_crowded",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "crowded"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+   "status": "preliminary",
+   "best_route": "fallback_separate",
+   "routes": [
+    {
+     "route": "fallback_separate",
+     "kind": "fallback",
+     "runs": 2,
+     "passed": 2,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_block_crowded_fallback_separate",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "5c976b96befb",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "execution",
+         "error": "SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: "
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      },
+      {
+       "seed": 11,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s11_block_crowded_fallback_separate",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "25f12532b411",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "execution",
+         "error": "SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: "
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "far_lid_on",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "start_elsewhere",
+    "lid_on"
+   ],
+   "condition_types": [
+    "search_target",
+    "state_precondition"
+   ],
+   "decisions": [
+    "explore",
+    "fallback"
+   ],
+   "note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+   "status": "preliminary",
+   "best_route": "hard_search_uncover",
+   "routes": [
+    {
+     "route": "hard_search_uncover",
+     "kind": "fallback",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round3/T17_hide_and_seek_block/s10_far_lid_on_hard_search_uncover",
+       "code": "e1d2a26+f488354",
+       "config_hash": "1b5dd3fdb98f",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'pot_lid' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_off",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the lid lies on the stove beside the pot",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_normal/T17_hide_and_seek_block/s10_lid_off_nominal",
+       "code": "e1d2a26+a271d8e",
+       "config_hash": "3b4c50e548a2",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "lid_on"
+   ],
+   "condition_types": [
+    "state_precondition"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "the lid is on the pot: hide is refused until the pot is uncovered",
+   "status": "preliminary",
+   "best_route": "fallback_uncover",
+   "routes": [
+    {
+     "route": "fallback_uncover",
+     "kind": "fallback",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_lid_on_fallback_uncover",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "1f92fd63ec97",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'pot_lid' is not a known place or an observed object"
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "variant": "lid_on_crowded",
+   "difficulty": "hard",
+   "since": "v3",
+   "conditions": [
+    "lid_on",
+    "crowded"
+   ],
+   "condition_types": [
+    "state_precondition",
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "note": "the lid is on the pot and the block is boxed in",
+   "status": "preliminary",
+   "best_route": "hard_uncover_separate",
+   "routes": [
+    {
+     "route": "hard_uncover_separate",
+     "kind": "fallback",
+     "runs": 2,
+     "passed": 2,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_lid_on_crowded_hard_uncover_separate",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "c359ae863230",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'pot_lid' is not a known place or an observed object"
+        },
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "execution",
+         "error": "SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: "
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      },
+      {
+       "seed": 11,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T17_hide_and_seek_block/s11_lid_on_crowded_hard_uncover_separate",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "d33c08116d69",
+       "expected_failures": [
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "observation",
+         "error": "NOT_OBSERVED: 'pot_lid' is not a known place or an observed object"
+        },
+        {
+         "call": "hide_object(object=wooden_block_b, receptacle=handled_cooking_pot, lid=pot_lid)",
+         "failed": true,
+         "class": "execution",
+         "error": "SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): pick wooden_block_b: "
+        }
+       ],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "variant": "at_island",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "note": "the robot starts at its default spot in front of the island",
+   "status": "preliminary",
+   "best_route": "nominal",
+   "routes": [
+    {
+     "route": "nominal",
+     "kind": "nominal",
+     "runs": 1,
+     "passed": 1,
+     "status": "preliminary",
+     "seeds": [
+      {
+       "seed": 10,
+       "outcome": "pass",
+       "dir": "benchmark/runs/v3_round2/T18_check_cabinet_dishes/s10_at_island_nominal",
+       "code": "e1d2a26+73fe699",
+       "config_hash": "cfd95aaf2cb1",
+       "expected_failures": [],
+       "first_unexpected_failure": "",
+       "dropped": []
+      }
+     ]
+    }
+   ],
+   "diagnostic_routes": []
   }
  ],
  "not_counted": [
@@ -1031,7 +1342,6 @@
   "benchmark/runs/v3_round7/T13_breakfast_setup/s10_dishes_on_tv_stand_nominal",
   "benchmark/runs/v3_round2/T14_homework_desk/s10_pen_on_table_nominal",
   "benchmark/runs/v3_normal/T15_book_back_on_shelf/s10_book_free_nominal",
-  "benchmark/runs/v3_normal/T17_hide_and_seek_block/s10_lid_off_nominal",
   "benchmark/runs/v3_normal/T18_bowl_for_grandma/s10_bowl_in_cabinet_nominal",
   "benchmark/runs/v3_round2/T12_tidy_toys/s10_duck_in_dining_room_explore_search_duck",
   "benchmark/runs/v3_round2/T13_breakfast_setup/s10_bowl_in_bedroom_explore_search_bowl",
@@ -1043,13 +1353,6 @@
   "benchmark/runs/v3_round2/T16_rolling_pin_at_edge/s10_far_roll_blocked_hard_search_push_bowl",
   "benchmark/runs/v3_round2/T16_rolling_pin_at_edge/s10_roll_blocked_fallback_push_bowl",
   "benchmark/runs/v3_round2/T16_rolling_pin_at_edge/s11_roll_blocked_fallback_push_bowl",
-  "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_block_crowded_fallback_separate",
-  "benchmark/runs/v3_round3/T17_hide_and_seek_block/s10_far_lid_on_hard_search_uncover",
-  "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_lid_on_crowded_hard_uncover_separate",
-  "benchmark/runs/v3_round2/T17_hide_and_seek_block/s10_lid_on_fallback_uncover",
-  "benchmark/runs/v3_round2/T17_hide_and_seek_block/s11_block_crowded_fallback_separate",
-  "benchmark/runs/v3_round2/T17_hide_and_seek_block/s11_lid_on_crowded_hard_uncover_separate",
-  "benchmark/runs/v3_round2/T18_check_cabinet_dishes/s10_at_island_nominal",
   "benchmark/runs/v3_round3/T12_tidy_toys/s10_duck_in_kitchen_explore_search_duck",
   "benchmark/runs/v3_round3/T13_breakfast_setup/s10_bowl_in_study_explore_search_bowl",
   "benchmark/runs/v3_round3/T13_breakfast_setup/s10_no_cup_bowl_in_study_hard_search_bowl_mug",

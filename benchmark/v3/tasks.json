@@ -4538,6 +4538,776 @@
    ]
   },
   {
+   "task_id": "T17_hide_and_seek_block",
+   "exp_id": "ZB-T17",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:hide_block",
+    "k_empty_hide",
+    "probe P20_hide_block"
+   ],
+   "instruction": "We are playing hide-and-seek with the kid's toy block: hide the wooden block in the empty pot on the stove and put the lid on so they cannot see it.",
+   "instruction_zh": "\u966a\u5b69\u5b50\u73a9\u85cf\u4e1c\u897f\u7684\u6e38\u620f\uff1a\u628a\u6728\u79ef\u6728\u85cf\u8fdb\u7076\u53f0\u4e0a\u7684\u7a7a\u9505\u91cc\uff0c\u518d\u76d6\u597d\u9505\u76d6\uff0c\u522b\u8ba9\u5b69\u5b50\u4e00\u773c\u770b\u5230\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "mug",
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3",
+     "wooden_block_a",
+     "juice_bottle",
+     "soda_can"
+    ],
+    "distractors": [
+     "paperback_book",
+     "kitchen_sponge",
+     "breakfast_spoon"
+    ]
+   },
+   "variants": {
+    "lid_off": {
+     "note": "the lid lies on the stove beside the pot",
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    },
+    "lid_on": {
+     "note": "the lid is on the pot: hide is refused until the pot is uncovered",
+     "conditions": [
+      "lid_on"
+     ],
+     "move": {},
+     "since": "v3",
+     "condition_types": [
+      "state_precondition"
+     ],
+     "decisions": [
+      "fallback"
+     ]
+    },
+    "block_crowded": {
+     "note": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+     "conditions": [
+      "crowded"
+     ],
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.6
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.717
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.864,
+        1.59
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "since": "v3",
+     "condition_types": [
+      "grasp_blocked"
+     ],
+     "decisions": [
+      "fallback"
+     ]
+    },
+    "lid_on_crowded": {
+     "note": "the lid is on the pot and the block is boxed in",
+     "conditions": [
+      "lid_on",
+      "crowded"
+     ],
+     "move": {
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.6
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.717
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.864,
+        1.59
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "since": "v3",
+     "condition_types": [
+      "state_precondition",
+      "grasp_blocked"
+     ],
+     "decisions": [
+      "fallback"
+     ]
+    },
+    "far_lid_on": {
+     "note": "the robot starts at the wall cabinet facing away; the lid is on the pot",
+     "conditions": [
+      "start_elsewhere",
+      "lid_on"
+     ],
+     "start": [
+      4.764,
+      0.699,
+      195.0
+     ],
+     "move": {},
+     "since": "v3",
+     "condition_types": [
+      "search_target",
+      "state_precondition"
+     ],
+     "decisions": [
+      "explore",
+      "fallback"
+     ]
+    }
+   },
+   "watch": [
+    "wooden_block_b",
+    "pot_lid",
+    "handled_cooking_pot",
+    "oatmeal",
+    "rolling_pin"
+   ],
+   "goal": {
+    "all": [
+     [
+      "hidden",
+      "wooden_block_b"
+     ],
+     [
+      "covered",
+      "handled_cooking_pot",
+      "pot_lid"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "lid_off": "nominal",
+    "lid_on": "fallback_uncover",
+    "block_crowded": "fallback_separate",
+    "lid_on_crowded": "hard_uncover_separate",
+    "far_lid_on": "hard_search_uncover"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "lid_off"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "fallback_uncover": {
+     "kind": "fallback",
+     "variants": [
+      "lid_on"
+     ],
+     "recovery": "Hide refused (lid on) -> Uncover -> Hide",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "retry_after_recovery"
+      }
+     ],
+     "since": "v3"
+    },
+    "fallback_separate": {
+     "kind": "fallback",
+     "variants": [
+      "block_crowded"
+     ],
+     "recovery": "Hide fails (its pick of the block fails) -> Separate -> Hide",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "separate",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "retry_after_recovery"
+      }
+     ],
+     "since": "v3"
+    },
+    "hard_uncover_separate": {
+     "kind": "fallback",
+     "variants": [
+      "lid_on_crowded"
+     ],
+     "recovery": "Hide refused (lid) -> Uncover; Hide fails (pick) -> Separate -> Hide",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "separate",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "retry_after_recovery"
+      }
+     ],
+     "since": "v3"
+    },
+    "hard_search_uncover": {
+     "kind": "fallback",
+     "variants": [
+      "far_lid_on"
+     ],
+     "recovery": "search the block and the pot -> Hide refused (lid) -> Uncover -> Hide",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_b",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "retry_after_recovery"
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "lid_off": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "lid_on": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "far_lid_on": {
+     "groups": [],
+     "start": {
+      "dyaw": 10,
+      "step_deg": 5
+     }
+    },
+    "block_crowded": {
+     "groups": [
+      {
+       "names": [
+        "wooden_block_b",
+        "oatmeal",
+        "rolling_pin"
+       ],
+       "dx": 0.02,
+       "dy": 0.0,
+       "dyaw": 0.0,
+       "step": 0.01,
+       "step_deg": 5
+      }
+     ],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    },
+    "lid_on_crowded": {
+     "groups": [
+      {
+       "names": [
+        "wooden_block_b",
+        "oatmeal",
+        "rolling_pin"
+       ],
+       "dx": 0.02,
+       "dy": 0.0,
+       "dyaw": 0.0,
+       "step": 0.01,
+       "step_deg": 5
+      }
+     ],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
+   "task_id": "T18_check_cabinet_dishes",
+   "exp_id": "ZB-T18",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:inspect_cabinet",
+    "k_cabinet",
+    "probe P12_cabinet"
+   ],
+   "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinet for dinner. Have a look inside and close the cabinet door properly afterwards.",
+   "instruction_zh": "\u5976\u5976\u60f3\u77e5\u9053\u9760\u5899\u77ee\u67dc\u91cc\u8fd8\u6709\u6ca1\u6709\u5e72\u51c0\u7684\u76d8\u5b50\u548c\u7897\uff0c\u665a\u996d\u8981\u7528\u3002\u53bb\u770b\u4e00\u773c\u91cc\u9762\uff0c\u770b\u5b8c\u628a\u67dc\u95e8\u5173\u597d\u3002",
+   "scene": {
+    "base": "tasks/kitchen_skills",
+    "remove": [
+     "cherry_tomato_1",
+     "cherry_tomato_2",
+     "cherry_tomato_3"
+    ],
+    "distractors": [
+     "paperback_book",
+     "wooden_block_a",
+     "kitchen_sponge"
+    ]
+   },
+   "variants": {
+    "at_island": {
+     "note": "the robot starts at its default spot in front of the island",
+     "move": {},
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    }
+   },
+   "watch": [
+    "plate_inside_kitchen_cabinet",
+    "bowl_inside_kitchen_cabinet"
+   ],
+   "goal": {
+    "all": [
+     [
+      "observed",
+      "plate_inside_kitchen_cabinet"
+     ],
+     [
+      "observed",
+      "bowl_inside_kitchen_cabinet"
+     ],
+     [
+      "is_closed",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "at_island": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "at_island"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "inspect",
+       "args": {
+        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "at_island": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
    "task_id": "P01_body_and_gesture",
    "exp_id": "ZB-P01",
    "kind": "probe",
