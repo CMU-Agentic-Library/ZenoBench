@@ -15,24 +15,17 @@ from env_service.server import Config, ExpManager, make_handler
 from env_service.worker import public_result
 
 FAKE = Path(__file__).parent / "fixtures" / "fake_env_worker.py"
-TASKS = {t: {"id": t, "description": f"do {t}", "goal": [], "entities": []} for t in ("t1", "t2", "t3", "crash_task")}
+TASKS = {t: {"id": t, "description": f"do {t}", "goal": [], "entities": []}
+         for t in ("t1", "t2", "t3", "crash_task", "bad_start", "slow_start")}
 
 
 class Service:
-    def __init__(self, tmp_path, fail_push=0, **cfg):
-        self.pushed, self.fail_push = [], fail_push
-        self.cfg = Config(worker_argv=[sys.executable, str(FAKE)], log_dir=tmp_path,
-                          callback_retry_s=0.05, **cfg)
-        self.manager = ExpManager(self.cfg, TASKS, push=self._push)
+    def __init__(self, tmp_path, **cfg):
+        self.cfg = Config(worker_argv=[sys.executable, str(FAKE)], log_dir=tmp_path, **cfg)
+        self.manager = ExpManager(self.cfg, TASKS)
         self.http = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(self.manager))
         threading.Thread(target=self.http.serve_forever, daemon=True).start()
         self.url = f"http://127.0.0.1:{self.http.server_address[1]}"
-
-    def _push(self, payload):
-        if self.fail_push:
-            self.fail_push -= 1
-            raise RuntimeError("planner down")
-        self.pushed.append(payload)
 
     def post(self, path, body):
         req = urllib.request.Request(self.url + path, data=json.dumps(body).encode(), method="POST",
@@ -43,11 +36,10 @@ class Service:
         except urllib.error.HTTPError as e:
             return e.code, json.loads(e.read())
 
-    def wait_pushed(self, n, timeout=10):
-        t0 = time.time()
-        while len(self.pushed) < n:
-            assert time.time() - t0 < timeout, f"only {len(self.pushed)} callbacks"
-            time.sleep(0.02)
+    def start(self, task_id="t1"):
+        status, body = self.post("/initial_task", {"task_id": task_id})
+        assert status == 200, body
+        return body["exp_id"]
 
     def close(self):
         self.http.shutdown()
@@ -63,13 +55,11 @@ def service(tmp_path):
 
 def test_full_episode(service):
     status, body = service.post("/initial_task", {"task_id": "t1"})
-    assert status == 200 and body["exp_id"].startswith("t1-")
+    assert status == 200 and set(body) == {"exp_id", "task", "observation"}
     exp = body["exp_id"]
-    service.wait_pushed(1)
-    push = service.pushed[0]
-    assert push["exp_id"] == exp and push["status"] == "ready"
-    assert push["task"] == {"task_id": "t1", "name": "t1", "description": "do t1"}
-    assert "goal" not in json.dumps(push["task"])
+    assert exp.startswith("t1-")
+    assert body["task"] == {"task_id": "t1", "name": "t1", "description": "do t1"}
+    assert body["observation"]["task_status"][0]["holds"] is False
     # a single call object is a list of one
     status, body = service.post("/do_contract", {"exp_id": exp, "calls": {"contract": "pick", "args": {"object": "apple"}}})
     assert status == 200 and [r["success"] for r in body["results"]] == [True]
@@ -77,11 +67,11 @@ def test_full_episode(service):
     status, body = service.post("/check_task", {"exp_id": exp})
     assert status == 200 and body["success"] is True
     assert service.post("/do_contract", {"exp_id": exp, "calls": [{"contract": "pick", "args": {}}]})[0] == 410
+    assert service.manager.running == 0
 
 
 def test_stops_at_first_failure(service):
-    exp = service.post("/initial_task", {"task_id": "t1"})[1]["exp_id"]
-    service.wait_pushed(1)
+    exp = service.start()
     calls = [{"contract": "navigate", "args": {"destination": "x"}}, {"contract": "pick", "args": {"object": "fail_cup"}},
              {"contract": "pick", "args": {"object": "apple"}}]
     body = service.post("/do_contract", {"exp_id": exp, "calls": calls})[1]
@@ -89,25 +79,101 @@ def test_stops_at_first_failure(service):
     assert body["results"][1]["error_code"] == "PRECONDITION_FAILED"
 
 
-def test_all_tasks_queue_behind_two_simulators(service):
-    status, body = service.post("/initial_task", {})
-    assert status == 200 and len(body["exp_ids"]) == len(TASKS)
-    service.wait_pushed(2)
-    time.sleep(0.3)
-    assert len(service.pushed) == 2            # the rest wait for a free simulator
-    assert service.manager.running == 2
-    first = service.pushed[0]["exp_id"]
-    queued = next(e for e in body["exp_ids"] if e not in {p["exp_id"] for p in service.pushed})
-    assert service.post("/do_contract", {"exp_id": queued, "calls": [{"contract": "pick"}]})[0] == 409
+def test_busy_beyond_two_simulators(service):
+    first, _ = service.start("t1"), service.start("t2")
+    status, body = service.post("/initial_task", {"task_id": "t3"})
+    assert status == 503 and body["error_code"] == "BUSY"
+    assert service.manager.running == 2 and "t3" not in {e.task["id"] for e in service.manager.exps.values()}
     service.post("/check_task", {"exp_id": first})
-    service.wait_pushed(3)
+    assert service.start("t3").startswith("t3-")
+
+
+def test_starting_simulator_counts_as_running(service):
+    service.start("t1")
+    box = {}
+    slow = threading.Thread(target=lambda: box.setdefault("r", service.post("/initial_task", {"task_id": "slow_start"})))
+    slow.start()
+    time.sleep(1)
+    status, body = service.post("/initial_task", {"task_id": "t2"})
+    assert status == 503 and body["error_code"] == "BUSY"
+    slow.join()
+    assert box["r"][0] == 200
+
+
+def test_observe(service):
+    exp = service.start()
+    status, body = service.post("/observe", {"exp_id": exp})
+    assert status == 200 and body["state"] == "ready" and body["calls_used"] == 0
+    assert body["observation"]["task_status"][0]["holds"] is False
+    box = {}
+    t = threading.Thread(target=lambda: box.setdefault("r", service.post(
+        "/do_contract", {"exp_id": exp, "calls": [{"contract": "slow", "args": {}}]})))
+    t.start()
+    time.sleep(0.5)
+    t0 = time.time()
+    status, body = service.post("/observe", {"exp_id": exp})
+    assert time.time() - t0 < 0.5                           # not blocked by the running contract
+    assert status == 200 and body == {"exp_id": exp, "state": "running", "calls_used": 1, "observation": None}
+    t.join(5)
+    assert box["r"][0] == 200
+    service.post("/check_task", {"exp_id": exp})
+    status, body = service.post("/observe", {"exp_id": exp})
+    assert status == 200 and body["state"] == "released" and body["observation"] is None
+    assert service.post("/observe", {"exp_id": "nope"})[1]["error_code"] == "UNKNOWN_EXP"
+
+
+def test_observe_is_not_activity(tmp_path):
+    s = Service(tmp_path, idle_timeout_s=0.5)
+    try:
+        exp = s.start()
+        for _ in range(12):                                  # polling does not keep the exp alive
+            s.post("/observe", {"exp_id": exp})
+            time.sleep(0.5)
+        assert s.post("/observe", {"exp_id": exp})[1]["state"] == "released"
+    finally:
+        s.close()
+
+
+def test_default_limits():
+    cfg = Config()
+    assert (cfg.max_calls, cfg.idle_timeout_s, cfg.max_duration_s) == (40, 1200, 3600)
+    assert cfg.start_timeout_s < 900                        # answers before the planner's 15 min timeout
+
+
+def test_enum_values_are_checked():
+    from env_service.worker import Episode
+    ran = []
+    ep = object.__new__(Episode)
+    ep.runner = SimpleNamespace(
+        by_verb={"pick": {"inputs": {"object": {"type": "object_ref"}, "grasp": {"type": "tag", "enum": ["handle", "rim"]}}}},
+        run=lambda verb, args: ran.append(args) or SimpleNamespace(
+            success=True, error_code=None, error=None, preconditions=[], postconditions=[], outputs={}, children=[]))
+    out = ep.contract({"contract": "pick", "args": {"object": "mug", "grasp": "spoon"}})
+    assert out["error_code"] == "INPUT_UNKNOWN" and "grasp" in out["error"] and not ran
+    assert ep.contract({"contract": "pick", "args": {"object": "mug", "grasp": "rim"}})["success"]
+    assert ep.contract({"contract": "jump", "args": {}})["error_code"] == "UNKNOWN_CONTRACT"
+
+
+def test_start_failure(service):
+    status, body = service.post("/initial_task", {"task_id": "bad_start"})
+    assert status == 500 and body["error_code"] == "SIM_ERROR" and "scene failed to load" in body["error"]
+    assert service.manager.running == 0
+
+
+def test_start_timeout(tmp_path):
+    s = Service(tmp_path, start_timeout_s=0.5)
+    try:
+        status, body = s.post("/initial_task", {"task_id": "slow_start"})
+        assert status == 500 and body["error_code"] == "SIM_ERROR"
+        assert s.manager.running == 0
+    finally:
+        s.close()
 
 
 def test_call_limit(tmp_path):
     s = Service(tmp_path, max_calls=3)
     try:
-        exp = s.post("/initial_task", {"task_id": "t1"})[1]["exp_id"]
-        s.wait_pushed(1)
+        exp = s.start()
         body = s.post("/do_contract", {"exp_id": exp, "calls": [{"contract": "wave", "args": {}}] * 5})[1]
         assert [r["success"] for r in body["results"]] == [True, True, True, False]
         assert body["results"][-1]["error_code"] == "LIMIT_EXCEEDED"
@@ -119,8 +185,7 @@ def test_call_limit(tmp_path):
 def test_idle_release(tmp_path):
     s = Service(tmp_path, idle_timeout_s=0.2)
     try:
-        exp = s.post("/initial_task", {"task_id": "t1"})[1]["exp_id"]
-        s.wait_pushed(1)
+        exp = s.start()
         time.sleep(6)                          # the reaper checks every 5 s
         status, body = s.post("/check_task", {"exp_id": exp})
         assert status == 410 and "idle" in body["error"]
@@ -129,22 +194,14 @@ def test_idle_release(tmp_path):
         s.close()
 
 
-def test_callback_retries_then_releases(tmp_path):
-    s = Service(tmp_path, fail_push=3)
-    try:
-        exp = s.post("/initial_task", {"task_id": "t1"})[1]["exp_id"]
-        t0 = time.time()
-        while s.manager.exps[exp].state != "released":
-            assert time.time() - t0 < 10
-            time.sleep(0.02)
-        assert s.manager.exps[exp].release_reason == "callback_failed" and s.manager.running == 0
-    finally:
-        s.close()
+def test_undelivered_initial_task_releases(service):
+    exp = service.manager.initial_task("t1")["exp_id"]
+    service.manager.abandon(exp)
+    assert service.manager.exps[exp].state == "released" and service.manager.running == 0
 
 
 def test_simulator_crash(service):
-    exp = service.post("/initial_task", {"task_id": "crash_task"})[1]["exp_id"]
-    service.wait_pushed(1)
+    exp = service.start("crash_task")
     status, body = service.post("/do_contract", {"exp_id": exp, "calls": [{"contract": "pick", "args": {}}]})
     assert status == 500 and body["error_code"] == "SIM_CRASHED"
     assert service.post("/check_task", {"exp_id": exp})[0] == 410
@@ -152,6 +209,9 @@ def test_simulator_crash(service):
 
 def test_bad_requests(service):
     assert service.post("/initial_task", {"task_id": "nope"})[1]["error_code"] == "UNKNOWN_TASK"
+    for body in ({}, {"task_id": ""}):
+        status, out = service.post("/initial_task", body)
+        assert status == 400 and out["error_code"] == "BAD_REQUEST"
     assert service.post("/do_contract", {"exp_id": "nope", "calls": [{}]})[1]["error_code"] == "UNKNOWN_EXP"
     assert service.post("/check_task", {})[1]["error_code"] == "BAD_REQUEST"
     assert service.post("/nowhere", {})[0] == 404

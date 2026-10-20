@@ -1,23 +1,24 @@
 """HTTP environment service (standard library only).
 
-    python -m env_service.server --callback-url http://<planner-host>:<port>/<path> [--port 8800]
+    python -m env_service.server [--port 8800]
 
 Endpoints (JSON in, JSON out):
 
-* ``POST /initial_task``  {"task_id": "collect_fruits"} -> {"exp_id": ...};
-  {} or "task_id": "" -> {"exp_ids": [...]} (one exp per task).  Returns at once;
-  each exp waits for a simulator slot, starts, and is pushed to the callback URL.
+* ``POST /initial_task``  {"task_id": "collect_fruits"} -> {"exp_id", "task", "observation"}.
+  Blocks until the simulator is up; 503 BUSY when all simulators are taken (no queue).
 * ``POST /do_contract``   {"exp_id", "calls": [{"contract", "args"}, ...]} (a single
   call object is a list of one) -> {"exp_id", "results": [...], "observation"}.
   Calls run in order and stop at the first failure.
 * ``POST /check_task``    {"exp_id"} -> {"exp_id", "success", "goal"}; then the exp is released.
+* ``POST /observe``       {"exp_id"} -> {"exp_id", "state", "calls_used", "observation"}; never
+  waits for a running ``do_contract`` (state "running", observation null) and does
+  not count as activity for the idle limit.
 
 Workers run under ``--worker-python`` (default: $ISAACLAB_PYTHON, else this Python).
 """
 from __future__ import annotations
 
 import argparse
-import collections
 import json
 import os
 import subprocess
@@ -25,7 +26,6 @@ import sys
 import threading
 import time
 import traceback
-import urllib.request
 import uuid
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -42,14 +42,12 @@ class ServiceError(Exception):
 
 class Config:
     def __init__(self, **kw):
-        self.callback_url = kw.get("callback_url")
         self.max_sims = kw.get("max_sims", 2)
-        self.idle_timeout_s = kw.get("idle_timeout_s", 600)
+        self.idle_timeout_s = kw.get("idle_timeout_s", 1200)
         self.max_calls = kw.get("max_calls", 40)
-        self.max_duration_s = kw.get("max_duration_s", 1800)
-        self.callback_retries = kw.get("callback_retries", 3)
-        self.callback_retry_s = kw.get("callback_retry_s", 5)
-        self.start_timeout_s = kw.get("start_timeout_s", 900)
+        self.max_duration_s = kw.get("max_duration_s", 3600)
+        # below the planner's 15 min client timeout, so it gets SIM_ERROR instead of a dropped connection
+        self.start_timeout_s = kw.get("start_timeout_s", 780)
         self.wrist_cameras = kw.get("wrist_cameras", True)
         python = kw.get("worker_python") or os.environ.get("ISAACLAB_PYTHON") or sys.executable
         self.worker_argv = kw.get("worker_argv") or [python, "-m", "env_service.worker"]
@@ -115,7 +113,7 @@ class Worker:
 class Exp:
     def __init__(self, exp_id, task):
         self.exp_id, self.task = exp_id, task
-        self.state = "queued"         # queued -> starting -> ready -> released
+        self.state = "starting"       # starting -> ready -> released
         self.worker: Worker | None = None
         self.lock = threading.Lock()  # one request at a time per simulator
         self.calls = 0
@@ -125,89 +123,51 @@ class Exp:
 
 
 class ExpManager:
-    def __init__(self, cfg: Config, tasks: dict, push=None):
+    def __init__(self, cfg: Config, tasks: dict):
         self.cfg, self.tasks = cfg, tasks
-        self.push = push or self._post_callback
         self.exps: dict[str, Exp] = {}
-        self.queue: collections.deque[Exp] = collections.deque()
         self.lock = threading.Lock()
-        self.running = 0
+        self.running = 0              # starting or ready simulators
         self._stop = threading.Event()
         threading.Thread(target=self._reaper, daemon=True).start()
 
     # -- interface 1 ------------------------------------------------------------------
     def initial_task(self, task_id):
-        if task_id in (None, ""):
-            ids = list(self.tasks)
-        elif task_id in self.tasks:
-            ids = [task_id]
-        else:
+        """Start a simulator and block until it is ready (503 BUSY when none is free)."""
+        if not isinstance(task_id, str) or not task_id:
+            raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", 'missing "task_id"')
+        if task_id not in self.tasks:
             raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_TASK", f"no task {task_id!r} in skill_library/tasks.json")
-        exps = []
         with self.lock:
-            for tid in ids:
-                exp = Exp(f"{tid}-{uuid.uuid4().hex[:8]}", self.tasks[tid])
-                self.exps[exp.exp_id] = exp
-                self.queue.append(exp)
-                exps.append(exp.exp_id)
-            self._schedule()
-        return {"exp_id": exps[0]} if task_id else {"exp_ids": exps}
-
-    def _schedule(self):          # holds self.lock
-        while self.queue and self.running < self.cfg.max_sims:
-            exp = self.queue.popleft()
-            if exp.state != "queued":
-                continue
-            exp.state = "starting"
+            if self.running >= self.cfg.max_sims:
+                raise ServiceError(HTTPStatus.SERVICE_UNAVAILABLE, "BUSY",
+                                   f"{self.running} simulators are running (limit {self.cfg.max_sims}); retry later")
+            exp = Exp(f"{task_id}-{uuid.uuid4().hex[:8]}", self.tasks[task_id])
+            self.exps[exp.exp_id] = exp
             self.running += 1
-            threading.Thread(target=self._start, args=(exp,), daemon=True).start()
-
-    def _start(self, exp: Exp):
         try:
-            exp.worker = Worker(self.cfg, exp.exp_id, exp.task["id"])
+            exp.worker = Worker(self.cfg, exp.exp_id, task_id)
             msg = _with_timeout(exp.worker.read, self.cfg.start_timeout_s)
             if msg.get("type") != "ready":
                 raise RuntimeError(msg.get("error", "simulator failed to start"))
         except Exception as exc:
             self._log(exp, f"start failed: {exc}")
-            self._try_push({"exp_id": exp.exp_id, "status": "failed", "task": public_task(exp.task),
-                            "error": f"simulator failed to start: {exc}"})
             self.release(exp, "start_failed")
-            return
+            raise ServiceError(HTTPStatus.INTERNAL_SERVER_ERROR, "SIM_ERROR", f"simulator failed to start: {exc}")
         with exp.lock:
             if exp.state != "starting":       # released (shutdown) meanwhile
-                return
-            # ready before the push: the planner may call back as soon as it has the exp_id
+                raise ServiceError(HTTPStatus.INTERNAL_SERVER_ERROR, "SIM_ERROR",
+                                   f"exp released while starting ({exp.release_reason})")
             exp.state = "ready"
+            # idle and duration limits count from the moment initial_task returns
             exp.ready_at = exp.last_activity = time.time()
-        payload = {"exp_id": exp.exp_id, "status": "ready", "task": public_task(exp.task),
-                   "observation": msg["observation"]}
-        if not self._try_push(payload):
-            self.release(exp, "callback_failed")
-            return
-        with exp.lock:
-            if exp.calls == 0:                # idle and duration limits count from the successful push
-                exp.ready_at = exp.last_activity = time.time()
+        return {"exp_id": exp.exp_id, "task": public_task(exp.task), "observation": msg["observation"]}
 
-    def _try_push(self, payload):
-        for attempt in range(self.cfg.callback_retries):
-            try:
-                self.push(payload)
-                return True
-            except Exception as exc:
-                self._log(None, f"callback {payload['exp_id']} attempt {attempt + 1} failed: {exc}")
-                if attempt + 1 < self.cfg.callback_retries:
-                    time.sleep(self.cfg.callback_retry_s)
-        return False
-
-    def _post_callback(self, payload):
-        if not self.cfg.callback_url:
-            raise RuntimeError("no --callback-url configured")
-        req = urllib.request.Request(self.cfg.callback_url, data=json.dumps(payload).encode(),
-                                     headers={"Content-Type": "application/json"}, method="POST")
-        with urllib.request.urlopen(req, timeout=30) as r:
-            if r.status >= 300:
-                raise RuntimeError(f"HTTP {r.status}")
+    def abandon(self, exp_id):
+        """initial_task's answer could not be delivered: the planner never learns this exp_id."""
+        exp = self.exps.get(exp_id)
+        if exp is not None and exp.calls == 0:
+            self.release(exp, "initial_task_undelivered")
 
     # -- interfaces 2 and 3 -------------------------------------------------------------
     def _ready(self, exp_id) -> Exp:
@@ -216,8 +176,8 @@ class ExpManager:
             raise ServiceError(HTTPStatus.NOT_FOUND, "UNKNOWN_EXP", f"no exp {exp_id!r}")
         if exp.state == "released":
             raise ServiceError(HTTPStatus.GONE, "EXP_RELEASED", f"exp {exp_id} was released ({exp.release_reason})")
-        if exp.state != "ready":
-            raise ServiceError(HTTPStatus.CONFLICT, "EXP_NOT_READY", f"exp {exp_id} is {exp.state}; wait for its callback")
+        if exp.state != "ready":              # still inside its initial_task call
+            raise ServiceError(HTTPStatus.NOT_FOUND, "UNKNOWN_EXP", f"no exp {exp_id!r}")
         return exp
 
     def do_contract(self, exp_id, calls):
@@ -256,6 +216,26 @@ class ExpManager:
             return f"this exp has run for more than {self.cfg.max_duration_s // 60} minutes"
         return None
 
+    def observe(self, exp_id):
+        """Exp state without waiting: a running do_contract keeps the lock, so the answer is "running"."""
+        exp = self.exps.get(exp_id)
+        if exp is None or exp.state == "starting":
+            raise ServiceError(HTTPStatus.NOT_FOUND, "UNKNOWN_EXP", f"no exp {exp_id!r}")
+        out = {"exp_id": exp_id, "state": "released", "calls_used": exp.calls, "observation": None}
+        if exp.state == "released" or not exp.lock.acquire(blocking=False):
+            return out if exp.state == "released" else dict(out, state="running")
+        try:
+            if exp.state != "ready":
+                return out
+            try:
+                obs = exp.worker.request("observe")["observation"]
+            except ServiceError:
+                self._release_locked(exp, "sim_crashed")
+                raise
+        finally:
+            exp.lock.release()
+        return dict(out, state="ready", calls_used=exp.calls, observation=obs)
+
     def check_task(self, exp_id):
         exp = self._ready(exp_id)
         with exp.lock:
@@ -283,7 +263,6 @@ class ExpManager:
         if held_slot:
             with self.lock:
                 self.running -= 1
-                self._schedule()
 
     def _reaper(self):
         while not self._stop.wait(5):
@@ -335,6 +314,7 @@ def make_handler(manager: ExpManager):
         "/initial_task": lambda body: manager.initial_task(body.get("task_id")),
         "/do_contract": lambda body: manager.do_contract(_need(body, "exp_id"), body.get("calls")),
         "/check_task": lambda body: manager.check_task(_need(body, "exp_id")),
+        "/observe": lambda body: manager.observe(_need(body, "exp_id")),
     }
 
     class Handler(BaseHTTPRequestHandler):
@@ -352,12 +332,19 @@ def make_handler(manager: ExpManager):
                     raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", f"invalid JSON: {exc}")
                 if not isinstance(body, dict):
                     raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", "body must be a JSON object")
-                self._send(HTTPStatus.OK, route(body))
+                payload = route(body)
             except ServiceError as exc:
                 self._send(exc.status, {"error_code": exc.code, "error": str(exc)})
             except Exception as exc:
                 traceback.print_exc()
                 self._send(HTTPStatus.INTERNAL_SERVER_ERROR, {"error_code": "INTERNAL_ERROR", "error": str(exc)})
+            else:
+                try:
+                    self._send(HTTPStatus.OK, payload)
+                except OSError:
+                    if "exp_id" in payload and self.path.rstrip("/") == "/initial_task":
+                        manager.abandon(payload["exp_id"])
+                    raise
 
         def _send(self, status, payload):
             data = json.dumps(payload).encode()
@@ -383,21 +370,16 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--host", default="0.0.0.0")
     ap.add_argument("--port", type=int, default=8800)
-    ap.add_argument("--callback-url", default=os.environ.get("ZENO_CALLBACK_URL"),
-                    help="planner endpoint that receives each started exp (default: $ZENO_CALLBACK_URL)")
     ap.add_argument("--max-sims", type=int, default=2)
     ap.add_argument("--no-wrist-cameras", action="store_true")
     ap.add_argument("--worker-python")
     ap.add_argument("--log-dir")
     args = ap.parse_args()
-    if not args.callback_url:
-        ap.error("--callback-url (or $ZENO_CALLBACK_URL) is required")
-    cfg = Config(callback_url=args.callback_url, max_sims=args.max_sims, wrist_cameras=not args.no_wrist_cameras,
+    cfg = Config(max_sims=args.max_sims, wrist_cameras=not args.no_wrist_cameras,
                  worker_python=args.worker_python, log_dir=args.log_dir)
     manager = ExpManager(cfg, load_tasks())
     server = ThreadingHTTPServer((args.host, args.port), make_handler(manager))
-    print(f"[env_service] listening on {args.host}:{args.port}, callback {cfg.callback_url}, "
-          f"{cfg.max_sims} simulators", flush=True)
+    print(f"[env_service] listening on {args.host}:{args.port}, {cfg.max_sims} simulators", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

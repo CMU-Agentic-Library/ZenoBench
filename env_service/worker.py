@@ -52,7 +52,8 @@ def public_result(call: dict, res) -> dict:
     pre/postconditions and declared outputs.  No path, policy steps, noun
     bindings, nested calls or fallback suggestions."""
     out = {"contract": call.get("contract"), "args": call.get("args", {}), "success": bool(res.success),
-           "error_code": res.error_code,
+           # BINDING is a skill-definition bug, not a planner mistake
+           "error_code": "INTERNAL_ERROR" if res.error_code == "BINDING" else res.error_code,
            "error": _PATH_PREFIX.sub("", res.error) if res.error else None,
            "preconditions": _measured(res.preconditions), "postconditions": _measured(res.postconditions),
            "outputs": _plain(res.outputs) if res.success else {}}
@@ -151,6 +152,10 @@ class Episode:
         verb = call["contract"]
         if verb not in self.runner.by_verb:
             return error_result(call, "UNKNOWN_CONTRACT", f"no contract named {verb!r}")
+        for slot, value in call.get("args", {}).items():      # the runtime does not check enum values itself
+            enum = self.runner.by_verb[verb]["inputs"].get(slot, {}).get("enum")
+            if enum and value is not None and value not in enum:
+                return error_result(call, "INPUT_UNKNOWN", f"{verb}: {slot}={value!r} is not one of {enum}")
         try:
             res = self.runner.run(verb, call.get("args", {}))
         except ContractError as exc:        # input checks raise before the runner's own handler

@@ -1,10 +1,13 @@
 """Stand-in for env_service.worker without a simulator: speaks the same pipe protocol.
 
-``pick`` of an object named ``fail_*`` fails; task ``crash_task`` exits after ready.
+``pick`` of an object named ``fail_*`` fails; task ``crash_task`` exits after ready;
+``bad_start`` reports a start error; ``slow_start`` takes 3 s to become ready;
+the ``slow`` contract takes 2 s.
 """
 import argparse
 import json
 import os
+import time
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--task-id")
@@ -26,6 +29,11 @@ def observation():
             "task_status": [{"atom": "holding(right, apple)", "holds": held == "apple"}]}
 
 
+if args.task_id == "bad_start":
+    send({"type": "error", "error": "scene failed to load"})
+    os._exit(1)
+if args.task_id == "slow_start":
+    time.sleep(3)
 send({"type": "ready", "observation": observation()})
 if args.task_id == "crash_task":
     os._exit(1)
@@ -33,6 +41,8 @@ for line in cmd:
     req = json.loads(line)
     if req["op"] == "contract":
         call = req["call"]
+        if call["contract"] == "slow":
+            time.sleep(2)
         obj = call.get("args", {}).get("object", "")
         ok = not obj.startswith("fail_")
         if ok and call["contract"] == "pick":

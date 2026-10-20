@@ -1,14 +1,14 @@
 """A stand-in planner for end-to-end tests of the environment service.
 
-    python -m env_service.mock_planner --service http://127.0.0.1:8800 --listen 127.0.0.1:8801 \\
+    python -m env_service.mock_planner --service http://127.0.0.1:8800 \\
         --task collect_fruits [hide_block ...] [--out DIR]
 
-It serves the callback endpoint, starts each task, replays its skill subgraph
+It starts each task, replays its skill subgraph
 (``skill_library/plans/<task>.skill_subgraph.json``) as contract calls and checks
-the task; several tasks run concurrently.  Consecutive nodes go in one ``do_contract``
+the task; several tasks run concurrently, and a task that gets 503 BUSY retries
+until a simulator is free.  Consecutive nodes go in one ``do_contract``
 request; a node that needs an earlier node's output (``{"from": "n3.key"}``)
-starts a new request once that output is back.  Start the service with
-``--callback-url http://<listen>/callback``.  Standard library only.
+starts a new request once that output is back.  Standard library only.
 """
 from __future__ import annotations
 
@@ -20,7 +20,6 @@ import threading
 import time
 import urllib.error
 import urllib.request
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from env_service.tasks import ROOT
@@ -34,41 +33,6 @@ def post(url, body, timeout=1800):
             return json.loads(r.read())
     except urllib.error.HTTPError as e:
         return {"http_status": e.code, **json.loads(e.read())}
-
-
-class Inbox:
-    """Callback payloads by exp_id (a push may arrive before initial_task has returned)."""
-
-    def __init__(self):
-        self.items, self.cond = {}, threading.Condition()
-
-    def put(self, payload):
-        with self.cond:
-            self.items[payload["exp_id"]] = payload
-            self.cond.notify_all()
-
-    def get(self, exp_id):
-        with self.cond:
-            self.cond.wait_for(lambda: exp_id in self.items)
-            return self.items.pop(exp_id)
-
-
-def callback_server(listen):
-    host, port = listen.rsplit(":", 1)
-    inbox = Inbox()
-
-    class Handler(BaseHTTPRequestHandler):
-        def do_POST(self):
-            inbox.put(json.loads(self.rfile.read(int(self.headers["Content-Length"]))))
-            self.send_response(200)
-            self.send_header("Content-Length", "0")
-            self.end_headers()
-
-        def log_message(self, *a):
-            pass
-    server = ThreadingHTTPServer((host, int(port)), Handler)
-    threading.Thread(target=server.serve_forever, daemon=True).start()
-    return inbox
 
 
 def batches(graph):
@@ -91,7 +55,7 @@ def save_images(obs, out: Path, tag):
             (out / f"{tag}_{img['camera']}.png").write_bytes(base64.b64decode(img["png_base64"]))
 
 
-def run_task(service, task, inbox, out: Path):
+def run_task(service, task, out: Path, retry_s=30):
     graph = json.loads((ROOT / f"skill_library/plans/{task}.skill_subgraph.json").read_text())
     out.mkdir(parents=True, exist_ok=True)
 
@@ -99,18 +63,21 @@ def run_task(service, task, inbox, out: Path):
         print(f"[{task}] {text}", flush=True)
 
     t0 = time.time()
-    exp_id = post(f"{service}/initial_task", {"task_id": task})["exp_id"]
-    log(f"initial_task -> {exp_id} ({time.time() - t0:.2f} s)")
-    push = inbox.get(exp_id)
-    log(f"callback {push['status']} after {time.time() - t0:.0f} s: {push['task']}")
-    if push["status"] != "ready":
-        log(push.get("error"))
+    while True:
+        start = post(f"{service}/initial_task", {"task_id": task}, timeout=900)
+        if start.get("error_code") != "BUSY":
+            break
+        time.sleep(retry_s)
+    if "exp_id" not in start:
+        log(f"initial_task error after {time.time() - t0:.0f} s: {start}")
         return False
-    obs = push["observation"]
+    exp_id = start["exp_id"]
+    log(f"initial_task -> {exp_id} after {time.time() - t0:.0f} s: {start['task']}")
+    obs = start["observation"]
     save_images(obs, out, "00_start")
     log("objects: " + json.dumps(obs["objects"]))
     log("task_status: " + json.dumps(obs["task_status"]))
-    report = {"exp_id": exp_id, "callback": {k: v for k, v in push.items() if k != "observation"}, "requests": []}
+    report = {"exp_id": exp_id, "task": start["task"], "requests": []}
     outputs, failed = {}, False
     for i, batch in enumerate(batches(graph), 1):
         calls = [{"contract": n["skill"], "args": {k: (outputs.get(v["from"].split(".")[0], {}).get(v["from"].split(".", 1)[1])
@@ -144,13 +111,11 @@ def run_task(service, task, inbox, out: Path):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--service", default="http://127.0.0.1:8800")
-    ap.add_argument("--listen", default="127.0.0.1:8801")
     ap.add_argument("--task", nargs="+", required=True)
     ap.add_argument("--out", default=str(ROOT / "runs/env_service/mock_planner"))
     args = ap.parse_args()
-    inbox = callback_server(args.listen)
     ok = {}
-    threads = [threading.Thread(target=lambda t=t: ok.__setitem__(t, run_task(args.service, t, inbox, Path(args.out) / t)))
+    threads = [threading.Thread(target=lambda t=t: ok.__setitem__(t, run_task(args.service, t, Path(args.out) / t)))
                for t in args.task]
     for th in threads:
         th.start()
