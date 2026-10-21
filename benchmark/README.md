@@ -188,8 +188,8 @@ The tables are per planner. Every ratio is shown as *value (numerator/denominato
 |---|---|
 | TSR | Successes / valid episodes. Planned (`--batch`/`--planned`), started, valid and system-error counts are reported. Also task-equal and condition-equal means, and *physical verifier only* next to *instruction semantics* (a legal substitute is required). |
 | Planning Correctness | Each call is `valid` (ran; or the controller failed after the preconditions held), `invalid` (interface error; a hand-state precondition that the planner's robot observation shows), or `undetermined` (gate refusals, other state preconditions, NO_PATH). Reported as valid/(valid+invalid), with the undetermined count and the coverage. |
-| FSR | The denominator is the variants with a registered substitute condition (`eval_semantics.substitute`) that also have a passing alternative route (in the runs or in `conditions.json`). Reports the FSR, the substitute *selected* (a successful call that commits to it), selected-then-failed, and proactive (chosen before any non-observation failure). |
-| ERSR | Episodes with a physical execution failure, and the share whose task then succeeded. State-precondition and observation failures get their own rows. Per event: verified local recovery (the same call later succeeded after helper calls *and* there is evidence: an object moved, the hand changed, the base moved, a temperature changed, a false check turned true, or the target became visible), `retry_only`, `mechanism_unverified`, resolved by an alternative, and not recovered. Also local-recovery-but-task-failed and TSR on fallback conditions. |
+| FSR | The denominator is the variants with a registered substitute condition (`eval_semantics.substitute`) that also have a passing alternative route (in the runs or in `conditions.json`). Legal results, not a particular skill sequence, identify the option used. Selection comes from state / Contract-effect evidence; final outcomes can establish selection with unknown timing. Reports selection, selected-then-failed, proactive selection and unknown timing separately. |
+| ERSR | Episodes with a physical execution failure, and the share whose task then succeeded. Also reports verified recovery **and** final task success, excluding blind retries / unverified mechanisms. State-precondition and observation failures get separate rows. Local recovery accepts the same operation or equivalent bound Contract effects after relevant repair evidence; a composite can instead satisfy the verified original task goal (reported as `task_goal`, not an inferred intermediate grasp). `retry_only`, `mechanism_unverified`, alternatives and unrecovered events stay separate. |
 | Robustness | TSR by challenge count (normal / single / combined), number of goal objects, reference route length, and actual room transitions (from the base pose after each call). |
 | Efficiency | Means over successful episodes and over failed episodes, each with its n: calls, extra recovery calls, invalid repeats (the same call with no state change in between), base travel (straight lines between call end poses, a lower bound), room transitions, simulated time, wall time, and planner response time (closed loop only). |
 | Success types | `direct`, `fallback` (with its observation / precondition / execution subtype), `alternative` and `combined`. `recovered_unverified` covers blind retries and recoveries without state evidence; `undetermined` covers the rest. |
@@ -199,6 +199,16 @@ From `eval_log_version` 2 on, call rows log `state_before`, `state` and `eval`. 
 deepest failed nested call, its code, message and false checks. Closed-loop rows also log `planner_s`, `tick` and
 `wall_s`. None of this reaches the planner. For older logs, the state before a call is the previous call's state,
 and the failed sub-step is parsed from the nested error text. Anything missing is N/A.
+
+**Outcome evaluation v1** changes scoring only (`eval_outcomes.py`, `eval_semantics.py`, `metrics.py`).
+Alternatives declare `groups` of existing final Goal predicates or intermediate `outcomes` (OR of ANDs of
+predicate lists), plus optional `entities` / `destinations` for selection evidence. Multiple legal options are
+allowed. No `pick`, `place`, `heat`, fallback helper or reference route name is required for scoring. Shared
+Contract postconditions can be recovered from successful calls in old logs; missing state remains unknown.
+Feedback preconditions are not treated as post-execution results. Geometry, final GT checks, instructions,
+policies, observation permissions and historical result files are unchanged. Feasibility routes still establish
+that a condition is executable; they do not prescribe the planner's actions. New facts and summaries carry
+`outcome_evaluation_version: 1`.
 
 **Evaluation grid** (`batches/eval.json`, not run yet): 29 task × tier combinations × seeds 10 and 11 gives 58
 episodes per planner (fixed, retry, oracle = 174; one more set per `--policy`). T05 easy is the missing 30th

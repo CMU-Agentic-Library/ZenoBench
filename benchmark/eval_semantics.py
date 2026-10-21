@@ -11,9 +11,10 @@ Per task:
   kind       prefer  - "a cup; if there is no cup, a mug": the substitute only when ``allowed_if_absent`` holds
              either  - the instruction allows every option ("on the cabinet or on the TV stand")
              fit     - "one container that fits": any option that physically satisfies the goal
-  options    name -> {"groups": [goal.any indices]}  and/or  {"calls": [[verb, arg value]]} (a method: the
-             option is used when such a call succeeded); "commit": [[verb, arg value]] = a successful call
-             that shows the planner chose this option, even if the episode then failed
+  options    name -> {"groups": [goal.any indices]} and/or {"outcomes": [[predicate, ...], ...]}.
+             Each outcome is a conjunction of predicate lists, not a skill sequence.
+             "entities" / "destinations" identify selection evidence in state or
+             Contract effects, including when a different composite skill was used.
   preferred  the option the instruction names first (prefer only)
   substitute condition (tasks.json condition_registry name) -> the options that are the legal substitute when
              the variant has that condition: these variants form the FSR denominator
@@ -32,46 +33,50 @@ SEMANTICS = {
     },
     "T03_utensils_one_container": {
         "kind": "fit",
-        "options": {"storage_bin": {"groups": [0], "commit": [["place", "wide_storage_bin"], ["drop", "wide_storage_bin"]]},
-                    "mug": {"groups": [1], "commit": [["place", "mug"], ["drop", "mug"]]}},
+        "options": {"storage_bin": {"groups": [0], "destinations": ["wide_storage_bin"]},
+                    "mug": {"groups": [1], "destinations": ["mug"]}},
         "substitute": {"small_container_present": ["storage_bin"]},
     },
     "T04_cup_or_mug_to_cabinet": {
         "kind": "prefer", "preferred": "cup",
-        "options": {"cup": {"groups": [0], "commit": [["pick", "cup_counter_b"]]},
-                    "mug": {"groups": [1], "commit": [["pick", "mug"]], "allowed_if_absent": ["cup_counter_b"]}},
+        "options": {"cup": {"groups": [0], "entities": ["cup_counter_b"]},
+                    "mug": {"groups": [1], "entities": ["mug"], "allowed_if_absent": ["cup_counter_b"]}},
         "substitute": {"no_cup": ["mug"]},
     },
     "T05_pen_or_pencil_to_desk": {
         "kind": "prefer", "preferred": "pen",
-        "options": {"pen": {"groups": [0], "commit": [["pick", "pen"]]},
-                    "pencil": {"groups": [1], "commit": [["pick", "pencil"]], "allowed_if_absent": ["pen"]}},
+        "options": {"pen": {"groups": [0], "entities": ["pen"]},
+                    "pencil": {"groups": [1], "entities": ["pencil"], "allowed_if_absent": ["pen"]}},
         "substitute": {"no_pen": ["pencil"]},
     },
     "T06_block_destination_occupied": {
         "kind": "either",
-        "options": {"cabinet": {"groups": [0, 2], "commit": [["place", CAB]]},
-                    "tv_stand": {"groups": [1, 3], "commit": [["place", TV]]}},
+        "options": {"cabinet": {"groups": [0, 2], "destinations": [CAB]},
+                    "tv_stand": {"groups": [1, 3], "destinations": [TV]}},
         "substitute": {"destination_occupied": ["tv_stand"]},
     },
     "T07_heat_oatmeal": {
         "kind": "either",
-        "options": {"microwave": {"calls": [["heat", "kitchen_microwave"]]},
-                    "stove": {"calls": [["heat", "kitchen_stove"]], "commit": [["place", "kitchen_stove/top"],
-                                                                                 ["heat", "kitchen_stove"]]}},
+        "options": {
+            "microwave": {"outcomes": [[["temperature_at_least", "oatmeal", 40],
+                                          ["on", "oatmeal", "kitchen_microwave/inside_floor"]]],
+                          "destinations": ["kitchen_microwave/inside_floor"]},
+            "stove": {"outcomes": [[["temperature_at_least", "oatmeal", 40],
+                                      ["on", "oatmeal", "kitchen_stove/top"]]],
+                      "destinations": ["kitchen_stove/top"]}},
         "substitute": {"microwave_broken": ["stove"]},
     },
     "T11_collect_fruits": {
         "kind": "prefer", "preferred": "basket",
-        "options": {"basket": {"groups": [0], "commit": [["place", "fruit_basket"], ["drop", "fruit_basket"]]},
-                    "tray": {"groups": [1], "commit": [["place", "serving_tray"], ["drop", "serving_tray"]],
+        "options": {"basket": {"groups": [0], "destinations": ["fruit_basket"]},
+                    "tray": {"groups": [1], "destinations": ["serving_tray"],
                              "allowed_if_absent": ["fruit_basket"]}},
         "substitute": {"container_absent": ["tray"]},
     },
     "T13_breakfast_setup": {
         "kind": "prefer", "preferred": "cup",
-        "options": {"cup": {"groups": [0], "commit": [["pick", "cup"]]},
-                    "mug": {"groups": [1], "commit": [["pick", "mug"]], "allowed_if_absent": ["cup"]}},
+        "options": {"cup": {"groups": [0], "entities": ["cup"]},
+                    "mug": {"groups": [1], "entities": ["mug"], "allowed_if_absent": ["cup"]}},
         "substitute": {"no_cup": ["mug"]},
     },
 }

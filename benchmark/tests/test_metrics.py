@@ -212,3 +212,171 @@ def test_registry_semantics_cover_every_alternative_condition():
                 sem = SEMANTICS.get(t["task_id"])
                 assert sem, t["task_id"]
                 assert any(c in sem["substitute"] for c in v.get("conditions") or []), (t["task_id"], name)
+
+
+def test_changed_grasp_and_unlisted_helper_can_recover():
+    calls = [call("pick", {"object": "paperback_book"}, ok=False, code="POLICY_FAILED", state=book(7.62)),
+             call("pull", {"object": "paperback_book"}, state=book(7.50)),
+             call("pick", {"object": "paperback_book", "grasp": "edge"},
+                  state=book(7.50, held="paperback_book"))]
+    f = episode_facts(result(T01, "no_overhang", calls, True), T01, CTX)
+    ev = f["events"][0]
+    assert ev["outcome"] == "local_recovery" and ev["resolution"] == "equivalent_outcome"
+    assert ev["helpers"] == ["pull"] and ev["recovered_at"] == 2
+
+
+def test_composite_finishing_goal_does_not_need_an_explicit_pick_retry():
+    calls = [call("pick", {"object": "paperback_book"}, ok=False, code="POLICY_FAILED", state=book(7.62)),
+             call("fetch", {"object": "paperback_book", "receptacle": "table"}, state=book(3.7, on="table"))]
+    goal = {"all": [{"atom": "on(paperback_book, table)", "holds": True},
+                    {"atom": "hand_empty(right)", "holds": True}], "any": []}
+    f = episode_facts(result(T01, "no_overhang", calls, True, goal), T01, CTX)
+    assert f["success_type"] == "fallback"
+    assert f["events"][0]["resolution"] == "task_goal"
+    assert f["local_recovery"] == 0 and f["goal_recovery"] == 1
+    summary = spec_summary([f])["recovery"]["execution"]
+    assert summary["local_recovery"]["num"] == 0 and summary["goal_recovery"] == 1
+    assert summary["verified_task_success_after_failure"]["num"] == 1
+    assert "intermediate skill outcome not inferred" in f["events"][0]["evidence"][0]
+
+
+def test_alternative_completed_by_fetch_without_pick_or_place_calls():
+    r = result(T04, "no_cup", [call("fetch", {"object": "mug", "receptacle": CAB})],
+               True, any_goal(False, True), _removed=["cup_counter_b"])
+    f = episode_facts(r, T04, dict(CTX, objects={"mug"}))
+    assert f["task_success"] and f["success_type"] == "alternative"
+    summary = spec_summary([f])["FSR"]
+    assert summary["rate"]["num"] == 1 and summary["selection"]["num"] == 1
+    assert summary["selection_timing_unknown"] == 1 and summary["proactive"] == 0
+
+
+def test_selection_uses_holding_effect_not_pick_name():
+    before = {"held": [None, "mug"]}
+    after = {"held": ["mug", None]}
+    r = result(T04, "no_cup", [call("handover", {"object": "mug", "to": "right"},
+                                   state_before=before, state=after)],
+               False, any_goal(False, False), _removed=["cup_counter_b"])
+    f = episode_facts(r, T04, dict(CTX, objects={"mug"}))
+    assert f["substitution"]["selected"] and not f["substitution"]["used_substitution"]
+    assert spec_summary([f])["FSR"]["selected_but_failed"] == 1
+
+
+def test_composite_does_not_bypass_preferred_object_semantics():
+    r = result(T04, "cup_available", [call("fetch", {"object": "mug", "receptacle": CAB})],
+               True, any_goal(False, True))
+    f = episode_facts(r, T04, dict(CTX, objects={"mug", "cup_counter_b"}))
+    assert not f["task_success"] and f["attribution"] == "substitution_failure"
+
+
+def test_stove_outcome_without_heat_skill_is_a_valid_method_alternative():
+    task = {"task_id": "T07_heat_oatmeal", "variants": {"broken": {"conditions": ["microwave_broken"]}},
+            "goal": {"all": [["temperature_at_least", "oatmeal", 40]]}}
+    before = {"oatmeal": {"on": "kitchen_stove/top"}, "temp_c": {"oatmeal": 4}}
+    after = {"oatmeal": {"on": "kitchen_stove/top"}, "temp_c": {"oatmeal": 45}}
+    r = result(task, "broken", [call("wait", {}, state_before=before, state=after)], True,
+               {"all": [{"atom": "temperature_at_least(oatmeal, 40)", "holds": True}]})
+    f = episode_facts(r, task, {"alt_feasible": {(task["task_id"], "broken")}})
+    assert f["substitution"]["used"] == ["stove"]
+    assert spec_summary([f])["FSR"]["rate"]["num"] == 1
+
+
+def test_heat_name_without_food_temperature_evidence_does_not_prove_alternative():
+    task = {"task_id": "T07_heat_oatmeal", "variants": {"broken": {"conditions": ["microwave_broken"]}}}
+    r = result(task, "broken", [call("heat", {"food": "mug", "appliance": "kitchen_stove", "temp_c": 40})], False)
+    f = episode_facts(r, task, {"alt_feasible": {(task["task_id"], "broken")}})
+    assert not f["substitution"]["used_substitution"]
+    assert not f["substitution"]["selected"]
+
+
+def test_unrelated_motion_is_not_repair_evidence():
+    st = dict(book(7.62), rolling_pin={"pos": [1, 1, 1]})
+    st2 = dict(book(7.62), rolling_pin={"pos": [2, 1, 1]})
+    calls = [call("pick", {"object": "paperback_book"}, ok=False, code="POLICY_FAILED", state=st),
+             call("push", {"object": "rolling_pin"}, state=st2),
+             call("pick", {"object": "paperback_book"}, state=book(7.62, held="paperback_book"))]
+    f = episode_facts(result(T01, "no_overhang", calls, True), T01, CTX)
+    assert f["events"][0]["outcome"] == "mechanism_unverified"
+
+
+def test_picking_substitute_without_resolving_goal_is_not_alternative_recovery():
+    calls = [call("pick", {"object": "cup_counter_b"}, ok=False, code="NOT_OBSERVED"),
+             call("pick", {"object": "mug"})]
+    f = episode_facts(result(T04, "no_cup", calls, False, any_goal(False, False), _removed=["cup_counter_b"]),
+                      T04, dict(CTX, objects={"mug"}))
+    assert f["substitution"]["selected"]
+    assert f["events"][0]["outcome"] == "not_recovered"
+
+
+def test_blind_retry_keeps_broad_ersr_but_not_verified_recovery_score():
+    calls = [call("pick", {"object": "paperback_book"}, ok=False, code="POLICY_FAILED", state=book(7.62)),
+             call("pick", {"object": "paperback_book"}, state=book(7.62, held="paperback_book"))]
+    f = episode_facts(result(T01, "no_overhang", calls, True), T01, CTX)
+    summary = spec_summary([f])
+    assert summary["ERSR"]["num"] == 1
+    assert summary["recovery"]["execution"]["verified_task_success_after_failure"]["num"] == 0
+
+
+def test_stale_precondition_cannot_prove_recovery_effect():
+    calls = [call("pick", {"object": "paperback_book"}, ok=False, code="POLICY_FAILED", state=book(7.62)),
+             call("place", {"object": "paperback_book", "receptacle": "other"}, state=book(7.62),
+                  checks=[("holding(hand=right, object=paperback_book)", True)])]
+    f = episode_facts(result(T01, "no_overhang", calls, False), T01, CTX)
+    assert f["events"][0]["outcome"] == "not_recovered"
+
+
+def test_goal_completion_never_overrides_failed_final_verifier():
+    calls = [call("pick", {"object": "paperback_book"}, ok=False, code="POLICY_FAILED", state=book(7.62)),
+             call("fetch", {"object": "paperback_book", "receptacle": "table"}, state=book(3.7, on="floor"))]
+    goal = {"all": [{"atom": "on(paperback_book, table)", "holds": False}]}
+    f = episode_facts(result(T01, "no_overhang", calls, False, goal), T01, CTX)
+    assert not f["task_success"] and f["events"][0]["outcome"] == "not_recovered"
+
+
+def test_multiple_legal_alternative_results_not_just_one_reference_route():
+    task = {"task_id": "custom", "goal": {"any": [[["inside", "toy", "box"]], [["inside", "toy", "tray"]]]},
+            "variants": {"missing": {"conditions": ["basket_missing"]}}}
+    semantics = {"custom": {"kind": "either", "options": {"box": {"groups": [0]}, "tray": {"groups": [1]}},
+                            "substitute": {"basket_missing": ["box", "tray"]}}}
+    for index in range(2):
+        goal = {"any": [[{"atom": "inside(toy, box)", "holds": index == 0}],
+                        [{"atom": "inside(toy, tray)", "holds": index == 1}]]}
+        r = result(task, "missing", [], True, goal)
+        f = episode_facts(r, task, {"semantics": semantics, "alt_feasible": {("custom", "missing")}})
+        assert f["success_type"] == "alternative" and spec_summary([f])["FSR"]["rate"]["num"] == 1
+
+
+def test_nested_leaf_recovery_can_use_changed_parameters():
+    calls = [call("hide", {"object": "paperback_book", "receptacle": "pot"}, ok=False,
+                  code="SUBSKILL_FAILED", state=book(7.62),
+                  error="SUBSKILL_FAILED: fetch_object(object=paperback_book, receptacle=pot): "
+                        "SUBSKILL_FAILED: pick_object(object=paperback_book): pick failed"),
+             call("pull", {"object": "paperback_book"}, state=book(7.5)),
+             call("pick", {"object": "paperback_book", "grasp": "edge"}, state=book(7.5, held="paperback_book"))]
+    f = episode_facts(result(T01, "no_overhang", calls, False), T01, CTX)
+    assert f["events"][0]["outcome"] == "local_recovery"
+    assert f["events"][0]["resolution"] == "equivalent_outcome"
+
+
+def test_destination_clearance_can_finish_without_selecting_the_alternative():
+    task = {"task_id": "T06_block_destination_occupied", "goal": {"any": [[["on", "wooden_block_a", CAB]],
+                    [["on", "wooden_block_a", "TVStandFactory_6305370_spawn_asset_6627927/surface_1"]]]},
+            "variants": {"occupied": {"conditions": ["destination_occupied"]}}}
+    goal = {"any": [[{"atom": "on(wooden_block_a, cabinet)", "holds": True}],
+                    [{"atom": "on(wooden_block_a, tv)", "holds": False}]]}
+    f = episode_facts(result(task, "occupied", [], True, goal), task,
+                      {"alt_feasible": {(task["task_id"], "occupied")}})
+    assert f["task_success"] and not f["substitution"]["used_substitution"]
+    assert spec_summary([f])["FSR"]["rate"]["num"] == 0
+
+
+def test_already_satisfied_goal_branch_is_not_a_new_recovery():
+    task = {"task_id": "custom", "goal": {"any": [[["on", "paperback_book", "table"]],
+                                                 [["on", "paperback_book", "shelf"]]]},
+            "variants": {"normal": {}}}
+    st = book(3.7, on="table")
+    calls = [call("pick", {"object": "paperback_book"}, ok=False, code="POLICY_FAILED", state=st),
+             call("look", {"target": "table"}, state=st)]
+    goal = {"any": [[{"atom": "on(paperback_book, table)", "holds": True}],
+                    [{"atom": "on(paperback_book, shelf)", "holds": False}]]}
+    f = episode_facts(result(task, "normal", calls, True, goal), task)
+    assert f["task_success"] and f["events"][0]["outcome"] == "not_recovered"

@@ -23,6 +23,7 @@ import re
 from collections import Counter, defaultdict
 
 from benchmark.eval_semantics import semantics_for
+from benchmark.eval_outcomes import all_hold, holds, option_groups, post_checks, recovery_targets
 
 TICK_HZ = 120.0
 OBSERVATION = {"NOT_OBSERVED", "NOT_IN_VIEW", "NOT_FOUND"}
@@ -221,25 +222,34 @@ def room_of(rooms, xy):
     return None
 
 
-def _option_holds(opt, r, rows):
+def _option_holds(opt, r, rows, task):
     goal = r.get("goal") or {}
     groups = goal.get("any") or []
     for i in opt.get("groups", []):
         if i < len(groups) and groups[i] and all(x["holds"] for x in groups[i]):
             return True
-    for verb, val in opt.get("calls", []):
-        if any(c["skill"] == verb and c["feedback"].get("success") and val in arg_values(c.get("args"))
-               for c in rows):
+    for row in rows:
+        if any(all_hold(g, row.get("state"), post_checks(row)) is True for g in opt.get("outcomes", [])):
             return True
     return False
 
 
-def _commit_indices(opt, rows):
-    """Successful calls that commit to this option (pick the substitute, place into it, heat on it ...)."""
+def _selection_indices(opt, rows, task):
+    """Observed engagement with an option, independent of the skill that caused it."""
     out = []
-    for i, c in enumerate(rows):
-        if c["feedback"].get("success") and any(c["skill"] == verb and val in arg_values(c.get("args"))
-                                                for verb, val in opt.get("commit", []) + opt.get("calls", [])):
+    before, _ = _states({}, rows)
+    targets = [a for g in option_groups(opt, task) for a in g
+               if a[0] in ("on", "inside", "on_top_of") and a[-1] in opt.get("destinations", [])]
+    targets += [["holding", hand, n] for n in opt.get("entities", []) for hand in ("right", "left")]
+    for i, row in enumerate(rows):
+        if not row.get("feedback", {}).get("success"):
+            continue
+        checks = post_checks(row)
+        changed = any(holds(a, row.get("state"), checks) is True and holds(a, before[i][0]) is not True
+                      for a in targets)
+        achieved = any(all_hold(g, row.get("state"), checks) is True
+                       and all_hold(g, before[i][0]) is not True for g in opt.get("outcomes", []))
+        if changed or achieved:
             out.append(i)
     return out
 
@@ -258,7 +268,7 @@ def substitution(r, task, objects, extra_semantics=None):
         return out
     removed = set(r.get("_removed") or [])
     present = (lambda n: n in objects and n not in removed) if objects else (lambda n: n not in removed)
-    out["used"] = [name for name, opt in sem["options"].items() if _option_holds(opt, r, rows)]
+    out["used"] = [name for name, opt in sem["options"].items() if _option_holds(opt, r, rows, task)]
     if sem["kind"] == "prefer":
         for name in out["used"]:
             need = sem["options"][name].get("allowed_if_absent") or []
@@ -272,8 +282,8 @@ def substitution(r, task, objects, extra_semantics=None):
     out["required"] = bool(subs)
     out["substitutes"] = subs
     if subs:
-        idx = sorted({i for o in subs for i in _commit_indices(sem["options"][o], rows)})
-        out["selected"] = bool(idx)
+        idx = sorted({i for o in subs for i in _selection_indices(sem["options"][o], rows, task)})
+        out["selected"] = bool(idx) or any(o in out["used"] for o in subs)
         out["selected_at"] = idx[0] if idx else None
         out["commit_indices"] = idx
         out["used_substitution"] = any(o in out["used"] for o in subs)
@@ -308,26 +318,50 @@ def call_records(r, task):
                      "failed_checks": failed_checks, "expected_failure": c.get("expect") == "fail",
                      "role": c.get("role", ""), "state_before": before[i][0], "state_before_source": before[i][1],
                      "state_after": after[i], "tick": c.get("tick"), "planner_s": c.get("planner_s"),
-                     "plan": label, "plan_reason": why, "now_visible": fb.get("now_visible") or []})
+                     "plan": label, "plan_reason": why, "now_visible": fb.get("now_visible") or [],
+                     "path": fb.get("path"), "_post_checks": post_checks(c)})
     return recs
 
 
-def recovery_events(recs, sub):
+def recovery_events(recs, sub, task=None, final_goal=None, task_success=False):
     """One event per failed call (EVALUATION_SPEC 2.4): local recovery, its evidence, or why not."""
     events = []
     for i, c in enumerate(recs):
         if c["success"] or c["class"] in ("invalid", "unknown"):
             continue
         k = key_of(c["skill"], c["args"])
-        j = next((j for j in range(i + 1, len(recs)) if key_of(recs[j]["skill"], recs[j]["args"]) == k
-                  and recs[j]["success"]), None)
+        targets = recovery_targets(c)
+        if c["failed_substep"]:
+            targets += recovery_targets(dict(c, failed_substep=[]))
+        # Matching the same invocation is still a valid witness, but it is not
+        # required: another Contract may achieve the same bound result.
+        j = next((j for j in range(i + 1, len(recs)) if recs[j]["success"] and (
+            key_of(recs[j]["skill"], recs[j]["args"]) == k or any(
+                all_hold(g, recs[j]["state_after"], recs[j]["_post_checks"]) is True
+                and all_hold(g, c["state_after"]) is not True for g in targets))), None)
+        goal_resolution = False
+        # A composite may finish the original goal without logging its internal
+        # grasp. Credit the verified goal, without inventing that intermediate Pick.
+        if j is None and task_success and not sub.get("used_substitution") and task and final_goal:
+            goals = task.get("goal") or {}
+            groups = [goals.get("all", []) + g for g in goals.get("any", [[]]) or [[]]]
+            relevant = arg_values(c["args"]) & set(_goal_objects(task))
+            reported, report_groups = final_goal.get("all", []), final_goal.get("any", [])
+            complete = all(x.get("holds") is True for x in reported) and (
+                not report_groups or any(g and all(x.get("holds") is True for x in g) for g in report_groups))
+            if relevant and complete and (reported or report_groups) and groups and all(
+                    all_hold(g, c["state_after"]) is False for g in groups):
+                j = len(recs) - 1 if i + 1 < len(recs) else None
+                goal_resolution = j is not None
         ev = {"index": i, "action": f"{c['skill']}({', '.join(f'{a}={v}' for a, v in c['args'].items())})",
               "class": c["class"], "error_code": c["error_code"], "leaf_code": c["leaf_code"],
               "failed_substep": c["failed_substep"], "failed_checks": c["failed_checks"],
               "expected_failure": c["expected_failure"], "recovered_at": j, "helpers": [], "evidence": [],
-              "outcome": None}
+              "outcome": None, "target_outcomes": groups if goal_resolution else targets,
+              "resolution": "task_goal" if goal_resolution else None if j is None else "same_call" if key_of(recs[j]["skill"], recs[j]["args"]) == k
+              else "equivalent_outcome"}
         if j is None:
-            if any(x > i for x in sub.get("commit_indices", [])):
+            if sub.get("used_substitution") and sub.get("legal") and any(x > i for x in sub.get("commit_indices", [])):
                 ev["outcome"] = "resolved_by_alternative"
             else:
                 ev["outcome"] = "not_recovered"
@@ -335,8 +369,14 @@ def recovery_events(recs, sub):
             continue
         helpers = [h for h in recs[i + 1:j] if h["success"] and key_of(h["skill"], h["args"]) != k]
         ev["helpers"] = [h["skill"] for h in helpers]
+        if goal_resolution:
+            ev["helpers"] += [recs[j]["skill"]] if recs[j]["success"] else []
+            ev["evidence"] = ["original task goal verified after failure; intermediate skill outcome not inferred"]
+            ev["outcome"] = "local_recovery"
+            events.append(ev)
+            continue
         if not helpers:
-            ev["outcome"] = "retry_only"
+            ev["outcome"] = "retry_only" if ev["resolution"] == "same_call" else "mechanism_unverified"
             events.append(ev)
             continue
         names = arg_values(c["args"])
@@ -349,14 +389,18 @@ def recovery_events(recs, sub):
         ev["evidence"] += [f"{a} false -> true" for a in flipped]
         d = state_diff(c["state_after"], recs[j]["state_before"])
         if d is not None:
-            if d["moved"]:
-                ev["evidence"].append("moved: " + ", ".join(d["moved"]))
+            relevant = names | {v for h in helpers if names & arg_values(h["args"]) for v in arg_values(h["args"])}
+            moved = [n for n in d["moved"] if n in relevant]
+            if moved:
+                ev["evidence"].append("moved: " + ", ".join(moved))
             if d["held"]:
                 ev["evidence"].append("hand state changed")
             if d["base_m"] is not None and d["base_m"] > BASE_MOVE_M:
                 ev["evidence"].append(f"base repositioned {d['base_m']:.2f} m")
             if d["temp"]:
-                ev["evidence"].append("temperature changed: " + ", ".join(d["temp"]))
+                changed = [n for n in d["temp"] if n in names]
+                if changed:
+                    ev["evidence"].append("temperature changed: " + ", ".join(changed))
         ev["outcome"] = "local_recovery" if ev["evidence"] else "mechanism_unverified"
         events.append(ev)
     return events
@@ -376,13 +420,14 @@ def episode_facts(r, task, ctx=None):
     stopped = r.get("planner") == "scripted" and r.get("stopped_at") is not None
     physical = bool(r.get("task_success")) and not incomplete and not stopped
     sub = substitution(r, task, ctx.get("objects") or set(), ctx.get("semantics"))
-    events = recovery_events(recs, sub)
+    events = recovery_events(recs, sub, task, r.get("goal"), physical and sub["legal"])
     success = physical and sub["legal"]
     var = (task.get("variants") or {}).get(r.get("variant"), {})
     conds = var.get("conditions") or []
     decisions = set(var.get("decisions") or [])
     tv = (r["task_id"], r.get("variant"))
     f = {"task": r["task_id"], "variant": r.get("variant"), "seed": r.get("seed"), "planner": r.get("planner"),
+         "outcome_evaluation_version": 1,
          "route": r.get("route"), "dir": r.get("_dir"), "incomplete": incomplete,
          "physical_success": physical, "task_success": success, "substitution": sub,
          "conditions": conds, "decisions": sorted(decisions), "feasible": tv in (ctx.get("feasible") or set()),
@@ -392,7 +437,8 @@ def episode_facts(r, task, ctx=None):
     cls = Counter(e["class"] for e in events)
     f["failures"] = dict(cls)
     f["had_failure"] = bool(events)
-    f["local_recovery"] = sum(e["outcome"] == "local_recovery" for e in events)
+    f["local_recovery"] = sum(e["outcome"] == "local_recovery" and e["resolution"] != "task_goal" for e in events)
+    f["goal_recovery"] = sum(e["resolution"] == "task_goal" for e in events)
     f["used_substitution"] = sub["used_substitution"]
     f["events"] = events
     # ---- success type
@@ -557,7 +603,8 @@ def spec_summary(facts, planned=None):
     for x in valid:
         by_task[x["task"]].append(x["task_success"])
         by_cond[(x["task"], x["variant"])].append(x["task_success"])
-    out = {"counts": {"planned": planned, "started": started, "valid": len(valid), "system_error": len(sys_err)}}
+    out = {"outcome_evaluation_version": 1,
+           "counts": {"planned": planned, "started": started, "valid": len(valid), "system_error": len(sys_err)}}
     out["TSR"] = {"overall": ratio(len(ok), len(valid)),
                   "physical_only": ratio(sum(x["physical_success"] for x in valid), len(valid)),
                   "task_equal": {"value": mean([mean(v) for v in by_task.values()]), "n_tasks": len(by_task)},
@@ -575,9 +622,11 @@ def spec_summary(facts, planned=None):
                   "selection": ratio(sum(bool(x["substitution"]["selected"]) for x in verified), len(verified)),
                   "selected_but_failed": sum(bool(x["substitution"]["selected"]) and not x["task_success"]
                                              for x in verified),
-                  "proactive": sum(bool(x["substitution"]["selected"]) and not any(
+                  "proactive": sum(x["substitution"]["selected_at"] is not None and not any(
                       e["index"] < x["substitution"]["selected_at"] and e["class"] != "observation"
                       for e in x["events"]) for x in verified),
+                  "selection_timing_unknown": sum(bool(x["substitution"]["selected"]) and
+                                                   x["substitution"]["selected_at"] is None for x in verified),
                   "excluded_no_verified_alternative": len(need) - len(verified)}
     rec = {}
     for cl in ("execution", "precondition", "observation"):
@@ -586,8 +635,12 @@ def spec_summary(facts, planned=None):
         oc = Counter(e["outcome"] for e in evs)
         rec[cl] = {"episodes_with_failure": ratio(len(hit), len(valid)),
                    "task_success_after_failure": ratio(sum(x["task_success"] for x in hit), len(hit)),
+                   "verified_task_success_after_failure": ratio(sum(x["task_success"] and any(
+                       e["class"] == cl and e["outcome"] == "local_recovery" for e in x["events"]) for x in hit), len(hit)),
                    "events": len(evs),
-                   "local_recovery": ratio(oc["local_recovery"], len(evs)),
+                   "local_recovery": ratio(sum(e["outcome"] == "local_recovery" and
+                                               e["resolution"] != "task_goal" for e in evs), len(evs)),
+                   "goal_recovery": sum(e["resolution"] == "task_goal" for e in evs),
                    "retry_only": oc["retry_only"], "mechanism_unverified": oc["mechanism_unverified"],
                    "resolved_by_alternative": oc["resolved_by_alternative"], "not_recovered": oc["not_recovered"],
                    "local_recovery_but_task_failed": sum(
@@ -650,6 +703,9 @@ def spec_markdown(summaries, scripted_note=True):
         md += ["`scripted` replays declared routes (expected failures on purpose) and `oracle` uses GT: their rows "
                "are feasibility / capability evidence, not planner results (EVALUATION_SPEC 1).  Ratios show "
                "(numerator/denominator); N/A = no sample.", ""]
+    md += ["Outcome evaluation v1: alternatives use declared legal results; recovery uses Contract effects or a "
+           "verified original goal. No reference skill sequence is required. Missing intermediate evidence "
+           "remains unverified; final GT task checks are unchanged.", ""]
     md += ["### Episodes and TSR", "", head, sep,
            row("planned / started / valid / system error", lambda s: "{} / {} / {} / {}".format(
                s["counts"]["planned"] if s["counts"]["planned"] is not None else "N/A", s["counts"]["started"],
@@ -672,6 +728,7 @@ def spec_markdown(summaries, scripted_note=True):
            row("substitute selected", lambda s: _r(s["FSR"]["selection"])),
            row("selected, then failed end to end", lambda s: str(s["FSR"]["selected_but_failed"])),
            row("selected before any failure (proactive)", lambda s: str(s["FSR"]["proactive"])),
+           row("substitute selected, timing unknown", lambda s: str(s["FSR"]["selection_timing_unknown"])),
            row("excluded: no verified alternative route", lambda s: str(s["FSR"]["excluded_no_verified_alternative"])),
            "", "### Execution Recovery (ERSR) and other recovery", "", head, sep]
     for cl, title in (("execution", "physical execution"), ("precondition", "state precondition"),
@@ -679,8 +736,12 @@ def spec_markdown(summaries, scripted_note=True):
         md += [row(f"{title}: episodes with failure", lambda s, c=cl: _r(s["recovery"][c]["episodes_with_failure"])),
                row(f"{title}: task success after failure" + (" = **ERSR**" if cl == "execution" else ""),
                    lambda s, c=cl: _r(s["recovery"][c]["task_success_after_failure"])),
+               row(f"{title}: verified recovery and final task success",
+                   lambda s, c=cl: _r(s["recovery"][c]["verified_task_success_after_failure"])),
                row(f"{title}: events, local recovery (verified)",
                    lambda s, c=cl: f"{s['recovery'][c]['events']}, " + _r(s["recovery"][c]["local_recovery"])),
+               row(f"{title}: original goal recovered (intermediate effect unobserved)",
+                   lambda s, c=cl: str(s["recovery"][c]["goal_recovery"])),
                row(f"{title}: retry_only / mechanism_unverified / by alternative / not recovered",
                    lambda s, c=cl: "{retry_only} / {mechanism_unverified} / {resolved_by_alternative} / "
                                    "{not_recovered}".format(**s["recovery"][c])),

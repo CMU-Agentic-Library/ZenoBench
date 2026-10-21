@@ -203,3 +203,15 @@ Pick 失败 → Separate → Pick 成功 → 搬运时滑落，未恢复
 - **System Error**：只把 crash/incomplete 当系统异常并排除出分母。模型策略代码抛出的异常也会落在这里，需人工复核 traceback。
 - **因果链**：上层错误引起的后续物理失败，只保留逐事件原因，不自动推断因果。
 - **“篮子不在”**：只按“物体不在本 Episode”判定。若以后出现“篮子在别处”的变体，需在 `eval_semantics.py` 增加位置条件。
+
+### 6.1 Outcome evaluation v1（2026-10-21）
+
+本次只修改离线评测，不修改 Skill、Policy、场景、Planner、运行时日志或物理 Verifier。
+
+- **Alternative**：预先登记合法结果，可有多个选项。`groups` 引用现有最终 Goal 分支；`outcomes` 定义中间结果的谓词合取 / 析取（例如燕麦在灶上达到规定温度）。不再要求出现指定的 Pick / Place / Heat 调用。对象获取和目标位置变化可证明选择；仅由最终结果确定选择时，时间记 unknown，不假称主动选择。
+- **Fallback**：失败后，同一调用成功仍可作为证据，但也接受其他技能或不同参数实现原失败 Contract 的相同绑定效果。Contract 定义自动提供结果谓词，不需要枚举唯一恢复技能。辅助操作仍须有相关状态修复证据；移动无关物体不算证据。
+- **复合操作**：若中间抓取没有日志，但已证实失败时所有合法原目标分支均不满足，之后原任务完整通过 GT，可记录 `resolution: task_goal`。这证明原目标恢复，不声称某个未观测的 Pick 已成功。汇总中的 `goal_recovery` 单列，不进入局部操作恢复率，但可进入有证据恢复且最终完成的统计。
+- **严格与宽口径分开**：保留旧 ERSR（物理失败后最终完成）；新增 `verified_task_success_after_failure`，只计有已验证恢复且最终完成的 Episode。盲目重试和无证据的辅助调用不进入新增指标。
+- **合法替代与恢复分开**：清走柜顶障碍后仍放柜顶，可以完成任务，但不是改放电视柜的 Alternative。仅拿起替代物、后续未达到替代结果，也不计 `resolved_by_alternative`。
+- **证据边界**：只读取既有 GT Goal、状态摘要和 Contract 后置效果；不凭毫米级新阈值重新判断几何，不把调用前检查误当执行后效果。缺少相关状态或效果时保持 unknown / mechanism_unverified。
+- 新事实记录与汇总含 `outcome_evaluation_version: 1`；旧运行日志与历史报告不覆盖。参考路线仅供可行性判断，不作为模型动作答案。
