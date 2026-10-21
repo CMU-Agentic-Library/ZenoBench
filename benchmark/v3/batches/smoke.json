@@ -286,5 +286,29 @@
   "seed": 10,
   "route": "nominal",
   "variant": "at_island"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 10,
+  "route": "fallback_expose",
+  "variant": "book_on_desk"
  }
 ]
