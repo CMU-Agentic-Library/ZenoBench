@@ -1,0 +1,25 @@
+# Observation-limited benchmark (benchmark/README.md): the planner sees what the head
+# camera saw, every call passes the permission gate, no automatic recovery.
+execution:
+  gate: true
+  nested_repair: false
+  auto_recovery: false
+  slide_to_edge: false
+  advisory: [grasp_clearance, edge_overhang]
+  mask_feedback: true
+  occlusion: true
+  static_explore: true
+  edge_pinch_upright_waist: true
+observation:
+  cameras: [head]
+  gt_objects: false
+  visible_objects: true
+  observation_cache: true
+  known_places: true
+  robot: {base_pose: true, held: true, room: true, temperatures: observed}
+  task_status: false
+  last_result: true
+evaluation:
+  drops_fail: true
+limits:
+  max_calls: task

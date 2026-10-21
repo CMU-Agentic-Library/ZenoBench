@@ -1,4 +1,6 @@
-"""The planner-facing session: observations in, skill calls out.
+"""The planner-facing session of the observation-limited benchmark (kept for
+benchmark/tests/sim_permissions.py; episodes run through episode.episode.Episode
+with profiles/benchmark.yaml).
 
     session = LimitedSession(rig, image_dir=...)
     obs = session.observe()            # first-person image, visible objects, cache, places, robot, feedback
@@ -20,6 +22,10 @@ from .observation import GatedRunner, Observer
 class LimitedSession:
     def __init__(self, rig, image_dir=None, capture_images=True):
         self.rig = rig
+        # the rig switches of profiles/benchmark.yaml that Observer used to set itself
+        rig.occlusion = True
+        rig.static_explore = True
+        rig.auto_recovery = False
         self.observer = Observer(rig, image_dir=image_dir)
         self.runner = GatedRunner(rig, self.observer, capture_images=capture_images and image_dir is not None)
         self.history: list[dict] = []

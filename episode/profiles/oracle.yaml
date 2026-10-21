@@ -1,0 +1,15 @@
+# GT oracle of the benchmark (run_episode --planner oracle): the original GT runner with
+# every automatic repair and recovery, the benchmark's low-level setting.
+execution:
+  nested_repair: true
+  auto_recovery: true
+  slide_to_edge: true
+  edge_pinch_upright_waist: true
+observation:
+  cameras: [head]
+  gt_objects: true
+  task_status: true
+evaluation:
+  drops_fail: true
+limits:
+  max_calls: task

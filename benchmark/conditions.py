@@ -33,6 +33,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from benchmark.scene import difficulty_of, episode_config  # noqa: E402
+from episode.catalog import load_catalog  # noqa: E402
+from episode.profile import run_profile_current  # noqa: E402
 
 GROUNDING = {"NOT_OBSERVED", "NOT_IN_VIEW", "NOT_FOUND"}
 PRECONDITION = {"PRECONDITION_FAILED", "NO_PATH"}
@@ -68,6 +70,7 @@ def load(roots):
             r["_dir"] = str(f.parent.relative_to(ROOT)) if f.parent.is_relative_to(ROOT) else str(f.parent)
             r["_code"] = f"{code.get('commit', '?')[:7]}+{code.get('diff_sha1', '?')[:7]}"
             r["_hash"] = cfg.get("config_hash") or (cfg.get("scene") or {}).get("config_hash")
+            r["_profile_ok"] = run_profile_current(cfg)
             by[(r["task_id"], r.get("route"), r.get("variant"), r.get("seed"))] = r
     return list(by.values())
 
@@ -80,7 +83,7 @@ def main():
     ap.add_argument("--json", default=str(ROOT / "benchmark/v3/conditions.json"))
     a = ap.parse_args()
     doc = json.loads(Path(a.tasks).read_text())
-    tasks = {t["task_id"]: t for t in doc["tasks"] if t.get("kind") != "probe"}
+    tasks = {k: t for k, t in load_catalog(a.tasks).items() if t.get("kind") != "probe"}
     seeds = doc.get("eval_seeds") or list(range(10, 20))
     expect = {}
     for tid, t in tasks.items():
@@ -93,7 +96,7 @@ def main():
         t = tasks.get(tid)
         rt = (t or {}).get("routes", {}).get(route)
         if t is None or rt is None or v not in rt.get("variants", []) or r["_hash"] is None \
-                or expect.get((tid, v, s)) != r["_hash"]:
+                or expect.get((tid, v, s)) != r["_hash"] or not r["_profile_ok"]:
             stale.append(r["_dir"])
             continue
         fail_steps = [c for c in r.get("calls", []) if c.get("expect") == "fail"]

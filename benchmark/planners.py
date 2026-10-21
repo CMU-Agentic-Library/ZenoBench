@@ -1,8 +1,8 @@
 """Planner entry points for the evaluation (no VLM planner is implemented here).
 
-All planners act through LimitedSession (observation-limited, no automatic
-recovery) except the GT oracle, which run_episode executes with the original
-GT runner.
+All planners act through episode.episode.Episode with profiles/benchmark.yaml
+(observation-limited, no automatic recovery) except the GT oracle, which
+run_episode executes with profiles/oracle.yaml (the original GT runner).
 
 * fixed     - run_episode --planner fixed: the nominal plan, stop at the first failure
 * retry     - run_episode --planner retry: the nominal plan, repeat a failed call up to 2 times
@@ -15,9 +15,10 @@ A recovery planner implements::
         def reset(self, task_instruction, skills=None): ...
         def next_call(self, observation) -> {"skill": str, "args": dict} | None
 
-``observation`` is LimitedSession.observe(): first-person image path, visible
-objects, observation cache, known static places, robot state and the last
-call's feedback.
+``observation`` is Episode.observation("path"): the head image as a PNG path
+(``images``), visible objects, observation cache, known static places, robot
+state and the last call's result (``last_result``, unobserved names masked) -
+the fields of the episode's profile, the same as an HTTP planner gets.
 """
 
 from __future__ import annotations

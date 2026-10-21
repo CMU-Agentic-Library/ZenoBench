@@ -4,17 +4,25 @@
 
 Endpoints (JSON in, JSON out):
 
-* ``POST /initial_task``  {"task_id": "collect_fruits"} -> {"exp_id", "task", "observation"}.
+* ``POST /initial_task``  {"task_id", "variant"?, "seed"?, "difficulty"?}
+  -> {"exp_id", "task", "profile", "observation"}.
   Blocks until the simulator is up; 503 BUSY when all simulators are taken (no queue).
 * ``POST /do_contract``   {"exp_id", "calls": [{"contract", "args"}, ...]} (a single
   call object is a list of one) -> {"exp_id", "results": [...], "observation"}.
   Calls run in order and stop at the first failure.
-* ``POST /check_task``    {"exp_id"} -> {"exp_id", "success", "goal"}; then the exp is released.
+* ``POST /check_task``    {"exp_id"} -> {"exp_id", "success", "goal", "dropped", "episode"}; then the
+  exp is released.
 * ``POST /observe``       {"exp_id"} -> {"exp_id", "state", "calls_used", "observation"}; never
   waits for a running ``do_contract`` (state "running", observation null) and does
   not count as activity for the idle limit.
 
+Tasks come from one or more catalogs (``--catalog PATH=PROFILE``, default: the original tasks
+with the ``gt`` profile and benchmark v3 with the ``benchmark`` profile); the profile of a
+task's catalog fixes its execution switches, observation fields and call budget
+(episode/profiles/*.yaml).  The planner cannot choose it.
+
 Workers run under ``--worker-python`` (default: $ISAACLAB_PYTHON, else this Python).
+Standard library plus PyYAML.
 """
 from __future__ import annotations
 
@@ -31,7 +39,9 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from env_service.tasks import ROOT, load_tasks, public_task
+from episode.catalog import DEFAULT_CATALOGS, ROOT, load_catalog, public_task
+from episode.episode import flat_goal
+from episode.profile import load_profile, max_calls, observation_fields
 
 
 class ServiceError(Exception):
@@ -44,11 +54,10 @@ class Config:
     def __init__(self, **kw):
         self.max_sims = kw.get("max_sims", 2)
         self.idle_timeout_s = kw.get("idle_timeout_s", 1200)
-        self.max_calls = kw.get("max_calls", 40)
+        self.max_calls = kw.get("max_calls")          # None: the task's profile decides (limits.max_calls)
         self.max_duration_s = kw.get("max_duration_s", 3600)
         # below the planner's 15 min client timeout, so it gets SIM_ERROR instead of a dropped connection
         self.start_timeout_s = kw.get("start_timeout_s", 780)
-        self.wrist_cameras = kw.get("wrist_cameras", True)
         python = kw.get("worker_python") or os.environ.get("ISAACLAB_PYTHON") or sys.executable
         self.worker_argv = kw.get("worker_argv") or [python, "-m", "env_service.worker"]
         self.log_dir = Path(kw.get("log_dir") or ROOT / "runs" / "env_service")
@@ -57,14 +66,18 @@ class Config:
 class Worker:
     """A worker process with a request/response pipe pair."""
 
-    def __init__(self, cfg: Config, exp_id: str, task_id: str):
+    def __init__(self, cfg: Config, exp: "Exp"):
         cmd_r, cmd_w = os.pipe()
         resp_r, resp_w = os.pipe()
-        log_dir = cfg.log_dir / exp_id
+        log_dir = cfg.log_dir / exp.task["task_id"] / exp.exp_id      # <runs>/<task>/<run>: benchmark/evaluate.py layout
         log_dir.mkdir(parents=True, exist_ok=True)
         self.log_path = log_dir / "worker.log"
-        argv = cfg.worker_argv + ["--task-id", task_id,
-                "--cmd-fd", str(cmd_r), "--resp-fd", str(resp_w)] + (["--wrist-cameras"] if cfg.wrist_cameras else [])
+        argv = cfg.worker_argv + ["--task-id", exp.task["task_id"], "--catalog", str(exp.entry["catalog"]),
+                                  "--profile", exp.entry["profile"]["path"], "--seed", str(exp.seed),
+                                  "--out-dir", str(log_dir), "--cmd-fd", str(cmd_r), "--resp-fd", str(resp_w)]
+        for k in ("variant", "difficulty"):
+            if getattr(exp, k) is not None:
+                argv += [f"--{k}", getattr(exp, k)]
         with open(self.log_path, "w") as log:
             self.proc = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL, stdout=log,
                                          stderr=subprocess.STDOUT, pass_fds=(cmd_r, resp_w))
@@ -116,8 +129,10 @@ class Worker:
 
 
 class Exp:
-    def __init__(self, exp_id, task):
-        self.exp_id, self.task = exp_id, task
+    def __init__(self, exp_id, entry, variant=None, seed=0, difficulty=None, max_calls=40):
+        self.exp_id, self.entry, self.task = exp_id, entry, entry["task"]
+        self.variant, self.seed, self.difficulty, self.max_calls = variant, seed, difficulty, max_calls
+        self.episode = None           # episode metadata from the worker (hashes, variant, profile)
         self.state = "starting"       # starting -> ready -> released
         self.worker: Worker | None = None
         self.lock = threading.Lock()  # one request at a time per simulator
@@ -127,8 +142,22 @@ class Exp:
         self.release_reason = None
 
 
+def load_registry(catalogs: dict) -> dict:
+    """{task_id: {"task", "catalog", "profile"}} over every catalog; a task id must be unique."""
+    out = {}
+    for path, spec in catalogs.items():
+        prof = load_profile(spec)
+        prof["path"] = str(spec)
+        for tid, task in load_catalog(path).items():
+            if tid in out:
+                raise ValueError(f"task {tid!r} is in both {out[tid]['catalog']} and {path}")
+            out[tid] = {"task": task, "catalog": path, "profile": prof}
+    return out
+
+
 class ExpManager:
     def __init__(self, cfg: Config, tasks: dict):
+        """``tasks``: load_registry(...)."""
         self.cfg, self.tasks = cfg, tasks
         self.exps: dict[str, Exp] = {}
         self.lock = threading.Lock()
@@ -139,17 +168,30 @@ class ExpManager:
         threading.Thread(target=self._reaper, daemon=True).start()
 
     # -- interface 1 ------------------------------------------------------------------
-    def initial_task(self, task_id):
-        """Start a simulator and block until it is ready (503 BUSY when none is free)."""
+    def initial_task(self, body):
+        """Start a simulator and block until it is ready (503 BUSY when none is free).
+        ``variant`` / ``difficulty`` pick the condition (default: the seed picks one), ``seed`` the
+        episode's random overlay (default 0); a task with one variant ignores both."""
+        task_id = body.get("task_id")
         if not isinstance(task_id, str) or not task_id:
             raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", 'missing "task_id"')
         if task_id not in self.tasks:
-            raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_TASK", f"no task {task_id!r} in skill_library/tasks.json")
+            raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_TASK", f"no task {task_id!r}")
+        entry = self.tasks[task_id]
+        variant, seed, difficulty = body.get("variant"), body.get("seed", 0), body.get("difficulty")
+        if variant is not None and variant not in entry["task"]["variants"]:
+            raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_VARIANT",
+                               f"task {task_id} has no variant {variant!r}")
+        if difficulty is not None and difficulty not in ("easy", "medium", "hard"):
+            raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", '"difficulty": easy, medium or hard')
+        if isinstance(seed, bool) or not isinstance(seed, int):
+            raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", '"seed" must be an integer')
+        budget = self.cfg.max_calls or max_calls(entry["profile"], entry["task"])
         with self.lock:
             if self.running >= self.cfg.max_sims:
                 raise ServiceError(HTTPStatus.SERVICE_UNAVAILABLE, "BUSY",
                                    f"{self.running} simulators are running (limit {self.cfg.max_sims}); retry later")
-            exp = Exp(f"{task_id}-{uuid.uuid4().hex[:8]}", self.tasks[task_id])
+            exp = Exp(f"{task_id}-{uuid.uuid4().hex[:8]}", entry, variant, seed, difficulty, budget)
             self.exps[exp.exp_id] = exp
             self.running += 1
         deadline = time.time() + self.cfg.start_timeout_s
@@ -157,7 +199,7 @@ class ExpManager:
             if not self.start_lock.acquire(timeout=self.cfg.start_timeout_s):
                 raise TimeoutError(f"another simulator was still starting after {self.cfg.start_timeout_s} s")
             try:
-                exp.worker = Worker(self.cfg, exp.exp_id, task_id)
+                exp.worker = Worker(self.cfg, exp)
                 msg = _with_timeout(exp.worker.read, max(1.0, deadline - time.time()))
             finally:
                 self.start_lock.release()
@@ -174,7 +216,11 @@ class ExpManager:
             exp.state = "ready"
             # idle and duration limits count from the moment initial_task returns
             exp.ready_at = exp.last_activity = time.time()
-        return {"exp_id": exp.exp_id, "task": public_task(exp.task), "observation": msg["observation"]}
+            exp.episode = msg.get("episode")
+        prof = entry["profile"]
+        return {"exp_id": exp.exp_id, "task": public_task(exp.task),
+                "profile": {"name": prof["name"], "observation": observation_fields(prof), "max_calls": exp.max_calls},
+                "observation": msg["observation"]}
 
     def abandon(self, exp_id):
         """initial_task's answer could not be delivered: the planner never learns this exp_id."""
@@ -223,8 +269,8 @@ class ExpManager:
         return {"exp_id": exp_id, "results": results, "observation": obs}
 
     def _limit(self, exp):
-        if exp.calls >= self.cfg.max_calls:
-            return f"this exp already ran {exp.calls} contract calls (limit {self.cfg.max_calls})"
+        if exp.calls >= exp.max_calls:
+            return f"this exp already ran {exp.calls} contract calls (limit {exp.max_calls})"
         if time.time() - exp.ready_at >= self.cfg.max_duration_s:
             return f"this exp has run for more than {self.cfg.max_duration_s // 60} minutes"
         return None
@@ -258,7 +304,8 @@ class ExpManager:
                 res = exp.worker.request("check")
             finally:
                 self._release_locked(exp, "checked")
-        return {"exp_id": exp_id, "success": res["success"], "goal": res["goal"]}
+        return {"exp_id": exp_id, "success": res["success"], "goal": flat_goal(res["goal"]),
+                "dropped": res.get("dropped", []), "episode": exp.episode}
 
     # -- release ----------------------------------------------------------------------
     def release(self, exp, reason):
@@ -324,7 +371,7 @@ def _with_timeout(fn, seconds):
 
 def make_handler(manager: ExpManager):
     routes = {
-        "/initial_task": lambda body: manager.initial_task(body.get("task_id")),
+        "/initial_task": manager.initial_task,
         "/do_contract": lambda body: manager.do_contract(_need(body, "exp_id"), body.get("calls")),
         "/check_task": lambda body: manager.check_task(_need(body, "exp_id")),
         "/observe": lambda body: manager.observe(_need(body, "exp_id")),
@@ -384,15 +431,18 @@ def main():
     ap.add_argument("--host", default="0.0.0.0")
     ap.add_argument("--port", type=int, default=8800)
     ap.add_argument("--max-sims", type=int, default=2)
-    ap.add_argument("--no-wrist-cameras", action="store_true")
+    ap.add_argument("--catalog", action="append", metavar="PATH=PROFILE",
+                    help="task catalog and the profile (name or YAML path) its tasks run with; repeatable "
+                         f"(default: {' '.join(f'{k}={v}' for k, v in DEFAULT_CATALOGS.items())})")
     ap.add_argument("--worker-python")
     ap.add_argument("--log-dir")
     args = ap.parse_args()
-    cfg = Config(max_sims=args.max_sims, wrist_cameras=not args.no_wrist_cameras,
-                 worker_python=args.worker_python, log_dir=args.log_dir)
-    manager = ExpManager(cfg, load_tasks())
+    catalogs = dict(c.split("=", 1) for c in args.catalog) if args.catalog else dict(DEFAULT_CATALOGS)
+    cfg = Config(max_sims=args.max_sims, worker_python=args.worker_python, log_dir=args.log_dir)
+    manager = ExpManager(cfg, load_registry(catalogs))
     server = ThreadingHTTPServer((args.host, args.port), make_handler(manager))
-    print(f"[env_service] listening on {args.host}:{args.port}, {cfg.max_sims} simulators", flush=True)
+    print(f"[env_service] listening on {args.host}:{args.port}, {cfg.max_sims} simulators, "
+          f"{len(manager.tasks)} tasks from {', '.join(f'{k} ({v})' for k, v in catalogs.items())}", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

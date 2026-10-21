@@ -11,12 +11,22 @@ from types import SimpleNamespace
 
 import pytest
 
-from env_service.server import Config, ExpManager, make_handler
+from env_service.server import Config, ExpManager, load_registry, make_handler
 from env_service.worker import public_result
+from episode.catalog import legacy_task
+from episode.profile import load_profile
 
 FAKE = Path(__file__).parent / "fixtures" / "fake_env_worker.py"
-TASKS = {t: {"id": t, "description": f"do {t}", "goal": [], "entities": []}
-         for t in ("t1", "t2", "t3", "crash_task", "bad_start", "slow_start")}
+
+
+def _entry(t, profile="gt", **extra):
+    task = legacy_task({"id": t, "description": f"do {t}", "goal": [], "entities": [], "task_json": f"tasks/{t}/task.json"})
+    task.update(extra)
+    return {"task": task, "catalog": "fake.json", "profile": dict(load_profile(profile), path=profile)}
+
+
+TASKS = {t: _entry(t) for t in ("t1", "t2", "t3", "crash_task", "bad_start", "slow_start")}
+TASKS["b1"] = _entry("b1", "benchmark", variants={"easy": {}, "hard": {}}, max_calls=7)
 
 
 class Service:
@@ -55,10 +65,12 @@ def service(tmp_path):
 
 def test_full_episode(service):
     status, body = service.post("/initial_task", {"task_id": "t1"})
-    assert status == 200 and set(body) == {"exp_id", "task", "observation"}
+    assert status == 200 and set(body) == {"exp_id", "task", "profile", "observation"}
     exp = body["exp_id"]
     assert exp.startswith("t1-")
     assert body["task"] == {"task_id": "t1", "name": "t1", "description": "do t1"}
+    assert body["profile"] == {"name": "gt", "observation": ["images", "objects", "robot", "task_status"],
+                               "max_calls": 40}
     assert body["observation"]["task_status"][0]["holds"] is False
     # a single call object is a list of one
     status, body = service.post("/do_contract", {"exp_id": exp, "calls": {"contract": "pick", "args": {"object": "apple"}}})
@@ -66,6 +78,8 @@ def test_full_episode(service):
     assert body["observation"]["task_status"][0]["holds"] is True
     status, body = service.post("/check_task", {"exp_id": exp})
     assert status == 200 and body["success"] is True
+    assert body["goal"] == [{"atom": "holding(right, apple)", "holds": True}] and body["dropped"] == []
+    assert body["episode"]["profile"] == "gt"
     assert service.post("/do_contract", {"exp_id": exp, "calls": [{"contract": "pick", "args": {}}]})[0] == 410
     assert service.manager.running == 0
 
@@ -83,7 +97,7 @@ def test_busy_beyond_two_simulators(service):
     first, _ = service.start("t1"), service.start("t2")
     status, body = service.post("/initial_task", {"task_id": "t3"})
     assert status == 503 and body["error_code"] == "BUSY"
-    assert service.manager.running == 2 and "t3" not in {e.task["id"] for e in service.manager.exps.values()}
+    assert service.manager.running == 2 and "t3" not in {e.task["task_id"] for e in service.manager.exps.values()}
     service.post("/check_task", {"exp_id": first})
     assert service.start("t3").startswith("t3-")
 
@@ -136,22 +150,51 @@ def test_observe_is_not_activity(tmp_path):
 
 def test_default_limits():
     cfg = Config()
-    assert (cfg.max_calls, cfg.idle_timeout_s, cfg.max_duration_s) == (40, 1200, 3600)
+    assert (cfg.max_calls, cfg.idle_timeout_s, cfg.max_duration_s) == (None, 1200, 3600)
     assert cfg.start_timeout_s < 900                        # answers before the planner's 15 min timeout
 
 
+def test_benchmark_task_profile_variant_and_budget(service):
+    status, body = service.post("/initial_task", {"task_id": "b1", "variant": "hard", "seed": 12})
+    assert status == 200 and body["profile"]["name"] == "benchmark" and body["profile"]["max_calls"] == 7
+    assert "objects" not in body["profile"]["observation"] and "task_status" not in body["profile"]["observation"]
+    argv = (service.cfg.log_dir / "b1" / body["exp_id"] / "argv.json").read_text()
+    assert '"--variant", "hard"' in argv and '"--seed", "12"' in argv and "benchmark" in argv
+    assert service.post("/initial_task", {"task_id": "b1", "variant": "nope"})[1]["error_code"] == "UNKNOWN_VARIANT"
+    assert service.post("/initial_task", {"task_id": "b1", "seed": "x"})[1]["error_code"] == "BAD_REQUEST"
+    assert service.post("/initial_task", {"task_id": "b1", "difficulty": "insane"})[1]["error_code"] == "BAD_REQUEST"
+
+
+def test_default_registry_loads_both_catalogs(tmp_path):
+    reg = load_registry({"skill_library/tasks.json": "gt", "benchmark/v3/tasks.json": "benchmark"})
+    assert reg["collect_fruits"]["profile"]["name"] == "gt"
+    assert reg["collect_fruits"]["task"]["variants"] == {"default": {"note": "the task's own scene, no overlay"}}
+    assert reg["T01_book_to_dining_table"]["profile"]["name"] == "benchmark"
+    with pytest.raises(ValueError):
+        copy = tmp_path / "tasks.json"
+        copy.write_text((Path(__file__).parents[1] / "skill_library/tasks.json").read_text())
+        load_registry({"skill_library/tasks.json": "gt", str(copy): "gt"})     # a task id in two catalogs
+
+
 def test_enum_values_are_checked():
-    from env_service.worker import Episode
+    from episode.episode import Episode
     ran = []
     ep = object.__new__(Episode)
-    ep.runner = SimpleNamespace(
-        by_verb={"pick": {"inputs": {"object": {"type": "object_ref"}, "grasp": {"type": "tag", "enum": ["handle", "rim"]}}}},
-        run=lambda verb, args: ran.append(args) or SimpleNamespace(
-            success=True, error_code=None, error=None, preconditions=[], postconditions=[], outputs={}, children=[]))
-    out = ep.contract({"contract": "pick", "args": {"object": "mug", "grasp": "spoon"}})
+    contracts = {"pick": {"inputs": {"object": {"type": "object_ref"}, "grasp": {"type": "tag", "enum": ["handle", "rim"]}}}}
+
+    def contract(key):
+        return contracts[key]
+    ep.runner = SimpleNamespace(contract=contract, run=lambda verb, args: ran.append(args) or SimpleNamespace(
+        success=True, error_code=None, error=None, preconditions=[], postconditions=[], outputs={}, children=[],
+        action="pick_object(object=mug)", selected_path="p"))
+    ep.profile = load_profile("gt")
+    ep.observer = None
+    out, record = ep.call({"contract": "pick", "args": {"object": "mug", "grasp": "spoon"}})
     assert out["error_code"] == "INPUT_UNKNOWN" and "grasp" in out["error"] and not ran
-    assert ep.contract({"contract": "pick", "args": {"object": "mug", "grasp": "rim"}})["success"]
-    assert ep.contract({"contract": "jump", "args": {}})["error_code"] == "UNKNOWN_CONTRACT"
+    out, record = ep.call({"contract": "pick", "args": {"object": "mug", "grasp": "rim"}})
+    assert out["success"] and record["path"] == "p" and "path" not in out
+    assert ep.call({"contract": "jump", "args": {}})[0]["error_code"] == "UNKNOWN_CONTRACT"
+    assert ep.call(["pick"])[0]["error_code"] == "BAD_CALL"
 
 
 def test_simulators_start_one_at_a_time(service):
@@ -210,7 +253,7 @@ def test_idle_release(tmp_path):
 
 
 def test_undelivered_initial_task_releases(service):
-    exp = service.manager.initial_task("t1")["exp_id"]
+    exp = service.manager.initial_task({"task_id": "t1"})["exp_id"]
     service.manager.abandon(exp)
     assert service.manager.exps[exp].state == "released" and service.manager.running == 0
 

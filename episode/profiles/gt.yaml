@@ -1,0 +1,10 @@
+# GT interface: the original env_service behaviour.  Full GT objects and goal status,
+# three cameras, policy-internal recovery on, nested repair off, 40 calls.
+execution:
+  nested_repair: false
+observation:
+  cameras: [head, left_wrist, right_wrist]
+  gt_objects: true
+  task_status: true
+limits:
+  max_calls: 40

@@ -38,10 +38,15 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from episode.catalog import load_catalog  # noqa: E402
+from episode.profile import run_profile_current  # noqa: E402
+
 TICK_HZ = 120.0
 GROUNDING = {"NOT_OBSERVED", "NOT_IN_VIEW", "NOT_FOUND"}
 PRECONDITION = {"PRECONDITION_FAILED", "NO_PATH"}
@@ -58,6 +63,7 @@ def load(root):
         r["_dir"] = str(d)
         r["_scene"] = cfg.get("scene", {})
         r["_hash"] = cfg.get("config_hash") or r["_scene"].get("config_hash")
+        r["_profile_ok"] = run_profile_current(cfg)
         r["_objects"] = {o["name"] for o in ann.get("objects", [])}
         yield r
 
@@ -164,6 +170,8 @@ def label(r, key, tasks):
         return f"{r['task_id'][:3]}/{r.get('variant', '?')}"
     if key == "ctype":
         return r["_ctype"]
+    if key == "profile":
+        return r.get("profile") or "benchmark"       # runs from before profiles: LimitedSession
     raise ValueError(key)
 
 
@@ -242,23 +250,25 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--runs", default=str(ROOT / "benchmark/runs/final"))
     ap.add_argument("--tasks", default=str(ROOT / "benchmark/tasks.json"))
-    ap.add_argument("--group", default="planner,tier", help="comma list of planner,tier,task,route,kind,variant")
+    ap.add_argument("--group", default="planner,tier", help="comma list of planner,tier,task,route,kind,variant,profile")
     ap.add_argument("--probes", action="store_true", help="include the P* probes (default: tasks T* only)")
     ap.add_argument("--md", default=str(ROOT / "benchmark/EVALUATION.md"))
     ap.add_argument("--json", default=str(ROOT / "benchmark/metrics.json"))
     a = ap.parse_args()
     doc = json.loads(Path(a.tasks).read_text())
-    tasks = {t["task_id"]: t for t in doc["tasks"]}
+    tasks = load_catalog(a.tasks)
+    legacy = any(t.get("catalog_kind") == "legacy" for t in tasks.values())
     keys = a.group.split(",")
     runs = list(load(a.runs))
     not_counted = []
-    if doc.get("schema_version", 1) >= 3:
-        # v3: only episodes of the configuration the current task file generates count
+    if doc.get("schema_version", 1) >= 3 or legacy:
+        # v3 and the original tasks: only episodes of the configuration the current task file
+        # and profile generate count
         from benchmark.scene import episode_config
         keep = []
         for r in runs:
             t = tasks.get(r["task_id"])
-            ok = t is not None and r.get("variant") in t["variants"] and \
+            ok = t is not None and r.get("variant") in t["variants"] and r["_profile_ok"] and \
                 episode_config(t, r["seed"], r["variant"])["config_hash"] == r["_hash"]
             (keep if ok else not_counted).append(r)
         runs = keep
@@ -275,7 +285,7 @@ def main():
     eps = []
     for r in runs:
         t = tasks.get(r["task_id"])
-        if t is None or (not a.probes and not r["task_id"].startswith("T")):
+        if t is None or (not a.probes and (r["task_id"].startswith("P") or t.get("kind") == "probe")):
             continue
         if r.get("planner") == "scripted":
             rt = t.get("routes", {}).get(r.get("route"))

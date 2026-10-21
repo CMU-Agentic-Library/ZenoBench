@@ -7,14 +7,17 @@ the ``slow`` contract takes 2 s.
 import argparse
 import json
 import os
+import sys
 import time
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--task-id")
+for a in ("--task-id", "--catalog", "--profile", "--variant", "--difficulty", "--seed", "--out-dir"):
+    ap.add_argument(a)
 ap.add_argument("--cmd-fd", type=int)
 ap.add_argument("--resp-fd", type=int)
-ap.add_argument("--wrist-cameras", action="store_true")
 args = ap.parse_args()
+with open(os.path.join(args.out_dir, "argv.json"), "w") as f:     # what the server asked for
+    json.dump(sys.argv[1:], f)
 cmd, resp = os.fdopen(args.cmd_fd), os.fdopen(args.resp_fd, "w")
 held = None
 
@@ -34,7 +37,8 @@ if args.task_id == "bad_start":
     os._exit(1)
 if args.task_id == "slow_start":
     time.sleep(3)
-send({"type": "ready", "observation": observation()})
+send({"type": "ready", "observation": observation(),
+      "episode": {"task_id": args.task_id, "profile": os.path.basename(args.profile).split(".")[0]}})
 if args.task_id == "crash_task":
     os._exit(1)
 for line in cmd:
@@ -53,7 +57,8 @@ for line in cmd:
     elif req["op"] == "observe":
         send({"observation": observation()})
     elif req["op"] == "check":
-        send({"success": held == "apple", "goal": [{"atom": "holding(right, apple)", "holds": held == "apple"}]})
+        send({"success": held == "apple", "goal_ok": held == "apple", "dropped": [],
+              "goal": {"all": [{"atom": "holding(right, apple)", "holds": held == "apple", "detail": ""}], "any": []}})
     elif req["op"] == "close":
         break
 os._exit(0)

@@ -111,10 +111,10 @@ class Observer:
         self.image_dir = Path(image_dir) if image_dir else None
         self.images: list[str] = []
         self.n_snap = 0
+        self.gated = True               # GatedRunner(gate=False) clears it: lists inside skills stay unfiltered
         rig.observer = self
-        rig.occlusion = True            # dynamic occlusion in every visibility test
-        rig.static_explore = True       # explore covers the static layout only
-        rig.auto_recovery = False       # no internal expose / door retry / pick->push fallback
+        # the rig switches of the benchmark (occlusion, static explore, no automatic recovery) come from
+        # the episode profile: episode.profile.apply_rig_flags
 
     # ------------------------------------------------------------- state
     def held(self):
@@ -284,7 +284,7 @@ def _filtered_bind(orig):
     def bind_nouns(rig, contract, values):
         nouns = orig(rig, contract, values)
         obs = getattr(rig, "observer", None)
-        if obs is not None:
+        if obs is not None and obs.gated:
             for d in nouns.values():
                 if isinstance(d, dict):
                     for key in ("objects", "contents"):
@@ -300,12 +300,17 @@ if not getattr(_sr.bind_nouns, "_gated", False):
 
 
 class GatedRunner(SkillContractRunner):
-    def __init__(self, rig, observer=None, *, capture_images=True, **kw):
+    """``gate=False`` keeps the observation cache up to date (the head looks where the
+    robot worked, perception outputs are recorded) but refuses nothing and uses GT poses."""
+
+    def __init__(self, rig, observer=None, *, capture_images=True, gate=True, **kw):
         kw.setdefault("auto_repair", False)
         kw.setdefault("advisory", ADVISORY)
         kw.setdefault("skip_steps", NO_AUTO_STEPS)
         super().__init__(rig, **kw)
         self.obs = observer or getattr(rig, "observer", None) or Observer(rig)
+        self.gate = gate
+        self.obs.gated = gate
         self.capture_images = capture_images
         self.calls: list[dict] = []
 
@@ -365,6 +370,10 @@ class GatedRunner(SkillContractRunner):
         c = self.contract(key)
         verb = c["verb"]
         rig = self.rig
+        if not self.gate:
+            res = super().run(key, args, depth)
+            self._after(c, args, res, depth)
+            return res
         refusal = self.check(c, args)
         if refusal:
             res = self._refused(c, args, *refusal, depth)

@@ -56,7 +56,9 @@ class StubRig:
 @pytest.fixture
 def gated(monkeypatch):
     from benchmark import observation as ob
+    from episode.profile import apply_rig_flags, load_profile
     rig = StubRig()
+    apply_rig_flags(rig, load_profile("benchmark"))
     obs = ob.Observer(rig)
     monkeypatch.setattr(ob.Observer, "visible", lambda self, name, st=None: name in self.rig.visible)
     monkeypatch.setattr(ob.Observer, "glance", lambda self, name, tag=None, image=False: self.snapshot(tag, image))
@@ -173,3 +175,12 @@ def test_no_automatic_recovery_configuration(gated):
     assert {"grasp_clearance", "edge_overhang"} <= runner.advisory
     assert "policy_045" in runner.skip_steps[("pick", "flat_edge")]
     assert rig.auto_recovery is False and rig.occlusion is True and rig.static_explore is True
+
+
+def test_ungated_runner_refuses_nothing_but_keeps_the_cache(gated, monkeypatch):
+    rig, obs, _ = gated
+    from benchmark import observation as ob
+    runner = ob.GatedRunner(rig, obs, gate=False, capture_images=False)
+    res = runner.run("pick", {"object": "bowl_inside_kitchen_cabinet"})      # never seen: no refusal
+    assert res.error_code == "TRIPWIRE" and rig.moves == 1
+    assert obs.gated is False and runner.calls[-1]["verb"] == "pick"

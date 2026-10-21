@@ -11,7 +11,9 @@ Declared task routes: **60/60** episodes pass (29 routes: 29 stable); probes 14/
 
 ## Observation boundary
 
-`benchmark/session.py: LimitedSession` is the only entry point for planners.
+Every planner acts through `episode.episode.Episode` with the profile `episode/profiles/benchmark.yaml` (the GT
+oracle: `oracle.yaml`); the same class and profiles serve the HTTP planners of `env_service`. See
+[../episode/README.md](../episode/README.md).
 
 | Input | Source |
 |---|---|
