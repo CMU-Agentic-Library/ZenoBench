@@ -1,0 +1,6 @@
+[{"task": "T14_shelve_the_book", "seed": 10, "route": "nominal", "variant": "book_at_edge"},
+ {"task": "T14_shelve_the_book", "seed": 10, "route": "fallback_expose", "variant": "book_on_desk"},
+ {"task": "T20_tidy_tv_stand", "seed": 10, "route": "nominal", "variant": "stand_cluttered"},
+ {"task": "T19_recycling", "seed": 10, "route": "nominal", "variant": "bin_on_bookcase"},
+ {"task": "T20_tidy_tv_stand", "seed": 10, "route": "alternative_bookcase", "variant": "tray_missing"},
+ {"task": "T19_recycling", "seed": 10, "route": "explore_search_bin", "variant": "bin_moved"}]

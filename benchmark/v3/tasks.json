@@ -6496,6 +6496,523 @@
    ]
   },
   {
+   "task_id": "T19_recycling",
+   "exp_id": "ZB-T19",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:recycle_and_store"
+   ],
+   "instruction": "Movie night is over. The empty soda can is still on the TV stand and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling. It is usually on the low bookcase in the bedroom.",
+   "instruction_zh": "\u7535\u5f71\u770b\u5b8c\u4e86\uff0c\u7a7a\u6613\u62c9\u7f50\u8fd8\u5728\u7535\u89c6\u67dc\u4e0a\uff0c\u5feb\u9012\u91cc\u7684\u6ce1\u6cab\u5757\u6389\u5728\u5ba2\u5385\u5730\u4e0a\u3002\u628a\u5b83\u4eec\u90fd\u653e\u8fdb\u5e73\u65f6\u5f53\u56de\u6536\u7bb1\u7528\u7684\u5bbd\u50a8\u7269\u7bb1\uff0c\u5b83\u4e00\u822c\u5728\u5367\u5ba4\u7684\u77ee\u4e66\u67b6\u4e0a\u3002",
+   "scene": {
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "snack_carton"
+    ],
+    "distractors": [
+     "clutter_cereal_b"
+    ]
+   },
+   "variants": {
+    "bin_on_bookcase": {
+     "note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+     "move": {},
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    }
+   },
+   "watch": [
+    "soda_can",
+    "foam_cube",
+    "wide_storage_bin"
+   ],
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "soda_can",
+      "wide_storage_bin"
+     ],
+     [
+      "inside",
+      "foam_cube",
+      "wide_storage_bin"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "bin_on_bookcase": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "bin_on_bookcase"
+     ],
+     "steps": [
+      {
+       "skill": "explore",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "foam_cube"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "foam_cube",
+        "container": "wide_storage_bin"
+       }
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "bin_on_bookcase": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
+   "task_id": "T20_juice_back_to_table",
+   "exp_id": "ZB-T20",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:organize_utility_items"
+   ],
+   "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
+   "instruction_zh": "\u6709\u4eba\u628a\u65e9\u9910\u684c\u4e0a\u7684\u679c\u6c41\u74f6\u62ff\u8d70\u968f\u624b\u653e\u4e0b\u4e86\u3002\u628a\u5b83\u653e\u56de\u9910\u684c\u4e0a\uff0c\u7acb\u7740\u653e\u3002",
+   "scene": {
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors": [
+     "clutter_cereal_b"
+    ]
+   },
+   "variants": {
+    "bottle_on_cabinet": {
+     "note": "the bottle on the low wall cabinet top",
+     "move": {
+      "juice_bottle": {
+       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "xy": [
+        3.68,
+        0.36
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "since": "v3",
+     "condition_types": [],
+     "decisions": [
+      "none"
+     ]
+    }
+   },
+   "watch": [
+    "juice_bottle"
+   ],
+   "goal": {
+    "all": [
+     [
+      "on",
+      "juice_bottle",
+      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     ],
+     [
+      "upright",
+      "juice_bottle"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "bottle_on_cabinet": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "bottle_on_cabinet"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "juice_bottle"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "juice_bottle"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "juice_bottle",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "hint_xy": [
+         3.0,
+         7.3
+        ]
+       }
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "bottle_on_cabinet": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
+   "task_id": "T14_shelve_the_book",
+   "exp_id": "ZB-T14",
+   "since": "v3",
+   "source": [
+    "skill_library/tasks.json:shelve_books"
+   ],
+   "instruction": "The kid finished reading and left the red book on the study desk. Put it back on the low bookcase in the bedroom.",
+   "instruction_zh": "\u5b69\u5b50\u770b\u5b8c\u4e66\uff0c\u628a\u7ea2\u8272\u7684\u4e66\u7559\u5728\u4e86\u4e66\u684c\u4e0a\u3002\u628a\u5b83\u653e\u56de\u5367\u5ba4\u7684\u77ee\u4e66\u67b6\u4e0a\u3002",
+   "scene": {
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors": []
+   },
+   "variants": {
+    "book_on_desk": {
+     "note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+     "conditions": [
+      "no_overhang"
+     ],
+     "move": {},
+     "since": "v3",
+     "condition_types": [
+      "grasp_blocked"
+     ],
+     "decisions": [
+      "fallback"
+     ]
+    }
+   },
+   "watch": [
+    "book_red"
+   ],
+   "goal": {
+    "all": [
+     [
+      "on",
+      "book_red",
+      "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     ],
+     [
+      "hand_empty",
+      "right"
+     ]
+    ]
+   },
+   "nominal": "nominal",
+   "oracle": {
+    "book_on_desk": "nominal"
+   },
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "book_on_desk"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      }
+     ],
+     "since": "v3"
+    },
+    "fallback_expose": {
+     "kind": "fallback",
+     "variants": [
+      "book_on_desk"
+     ],
+     "recovery": "Pick fails (flat book, no overhang) -> Expose -> Pick",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "book_red"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      }
+     ],
+     "since": "v3"
+    }
+   },
+   "vary": {
+    "book_on_desk": {
+     "groups": [],
+     "start": {
+      "dx": 0.1,
+      "dyaw": 10,
+      "step": 0.05,
+      "step_deg": 5
+     }
+    }
+   },
+   "not_adopted": [],
+   "benchmark_version": "v3",
+   "eval_seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ]
+  },
+  {
    "task_id": "P01_body_and_gesture",
    "exp_id": "ZB-P01",
    "kind": "probe",
