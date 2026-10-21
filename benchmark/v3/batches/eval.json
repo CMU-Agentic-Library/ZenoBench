@@ -1,1 +1,8642 @@
-[]
+[
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "no_overhang"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "overhang_ready"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "clear"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "far_crowded"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "large_only"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "small_and_large"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "cup_available"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "no_cup_mug_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "no_pen"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "no_pen_pencil_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "free"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "occupied"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "occupied_block_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "broken_oatmeal_away"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "microwave_broken"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "microwave_works"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "far_sponge_tv"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "sponge_on_island"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "sponge_on_tv_stand"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "lid_on_spoon_away"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "can_in_dining_room"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "can_on_island"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "far_can_far"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "basket_missing"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "fruits_on_table"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "duck_in_study"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "toys_out"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "dishes_on_tv_stand"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "no_cup"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "no_cup_bowl_on_cabinet"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "book_free"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "book_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "pin_free"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "pin_out_of_view"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "block_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "far_lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "lid_off"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "lid_on"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "lid_on_crowded"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "at_island"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "at_island"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "bin_on_bookcase"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "bottle_on_cabinet"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 10,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 10,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 10,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 11,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 11,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 11,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 12,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 12,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 12,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 13,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 13,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 13,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 14,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 14,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 14,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 15,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 15,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 15,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 16,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 16,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 16,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 17,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 17,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 17,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 18,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 18,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 18,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 19,
+  "planner": "fixed",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 19,
+  "planner": "retry",
+  "variant": "book_on_desk"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 19,
+  "planner": "oracle",
+  "variant": "book_on_desk"
+ }
+]

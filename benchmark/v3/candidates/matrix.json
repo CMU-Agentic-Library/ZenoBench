@@ -1,13 +1,13 @@
 {
  "summary": {
   "benchmark_version": "v3",
-  "tasks": 17,
-  "conditions": 80,
-  "graded_conditions": 78,
+  "tasks": 20,
+  "conditions": 83,
+  "graded_conditions": 81,
   "conditions_by_tier": {
-   "medium": 36,
+   "medium": 37,
    "hard": 26,
-   "easy": 16,
+   "easy": 18,
    "diagnostic": 2
   },
   "seeds": [
@@ -22,17 +22,17 @@
    18,
    19
   ],
-  "episodes_per_planner": 780,
+  "episodes_per_planner": 810,
   "planners": [
    "fixed",
    "retry",
    "oracle"
   ],
-  "episode_configs": 800,
-  "distinct_configs": 684,
+  "episode_configs": 830,
+  "distinct_configs": 689,
   "same_task_cross_variant_collisions": 0,
-  "route_jobs": 820,
-  "smoke_jobs": 82,
+  "route_jobs": 860,
+  "smoke_jobs": 86,
   "eval_jobs": 0,
   "eval_scope": "variants with stable route acceptance"
  },
@@ -2276,6 +2276,39 @@
    "status": "unverified"
   },
   {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "since": "v3",
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 1,
+   "repeated_configs": {
+    "c2975bbd7882": 10
+   },
+   "status": "unverified"
+  },
+  {
    "task": "T15_book_face_up",
    "variant": "book_free",
    "difficulty": "easy",
@@ -2614,6 +2647,66 @@
     "cfd95aaf2cb1": 2,
     "256c2d090030": 4,
     "79887d96f736": 2
+   },
+   "status": "unverified"
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 2,
+   "repeated_configs": {
+    "0feffc219365": 6,
+    "6aad82ab9403": 4
+   },
+   "status": "unverified"
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "since": "v3",
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "oracle_route": "nominal",
+   "seeds": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+   ],
+   "distinct_configs": 2,
+   "repeated_configs": {
+    "602653c8ba2f": 4,
+    "15522fc52818": 6
    },
    "status": "unverified"
   }
@@ -69029,6 +69122,1266 @@
     "thermal_sources": null,
     "thermal_override": {},
     "config_hash": "cb555a42f4ec"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "0feffc219365",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 10,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "clutter_cereal_b",
+     "snack_carton"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0feffc219365"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "0feffc219365",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 11,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "clutter_cereal_b",
+     "snack_carton"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0feffc219365"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "6aad82ab9403",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 12,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "snack_carton"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "6aad82ab9403"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "6aad82ab9403",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 13,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "snack_carton"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "6aad82ab9403"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "0feffc219365",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 14,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "clutter_cereal_b",
+     "snack_carton"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0feffc219365"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "6aad82ab9403",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 15,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "snack_carton"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "6aad82ab9403"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "6aad82ab9403",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 16,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "snack_carton"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "6aad82ab9403"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "0feffc219365",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 17,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "clutter_cereal_b",
+     "snack_carton"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0feffc219365"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "0feffc219365",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 18,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "clutter_cereal_b",
+     "snack_carton"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0feffc219365"
+   }
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "bin_on_bookcase",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "0feffc219365",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T19_recycling",
+    "seed": 19,
+    "variant": "bin_on_bookcase",
+    "variant_note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/recycle_and_store",
+    "remove": [
+     "clutter_cereal_b",
+     "snack_carton"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "0feffc219365"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 10,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "602653c8ba2f",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 10,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "602653c8ba2f"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 11,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "602653c8ba2f",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 11,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "602653c8ba2f"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 12,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "15522fc52818",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 12,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "clutter_cereal_b",
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "15522fc52818"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 13,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "15522fc52818",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 13,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "clutter_cereal_b",
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "15522fc52818"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 14,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "15522fc52818",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 14,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "clutter_cereal_b",
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "15522fc52818"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 15,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "15522fc52818",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 15,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "clutter_cereal_b",
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "15522fc52818"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 16,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "15522fc52818",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 16,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "clutter_cereal_b",
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "15522fc52818"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 17,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "602653c8ba2f",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 17,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "602653c8ba2f"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 18,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "15522fc52818",
+   "vary_applied": {},
+   "distractors_removed": [
+    "clutter_cereal_b"
+   ],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 18,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "clutter_cereal_b",
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [
+     "clutter_cereal_b"
+    ],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "15522fc52818"
+   }
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "bottle_on_cabinet",
+   "difficulty": "easy",
+   "seed": 19,
+   "conditions": [],
+   "condition_types": [],
+   "decisions": [
+    "none"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "602653c8ba2f",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T20_juice_back_to_table",
+    "seed": 19,
+    "variant": "bottle_on_cabinet",
+    "variant_note": "the bottle on the low wall cabinet top",
+    "difficulty": "easy",
+    "conditions": [],
+    "base": "tasks/organize_utility_items",
+    "remove": [
+     "paperback_book",
+     "plastic_cup",
+     "rolling_pin",
+     "tissue_box"
+    ],
+    "distractors_removed": [],
+    "move": {
+     "juice_bottle": {
+      "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+      "xy": [
+       3.68,
+       0.36
+      ],
+      "yaw_deg": 0
+     }
+    },
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "602653c8ba2f"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 10,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 10,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 11,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 11,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 12,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 12,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 13,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 13,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 14,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 14,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 15,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 15,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 16,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 16,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 17,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 17,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 18,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 18,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
+   }
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "book_on_desk",
+   "difficulty": "medium",
+   "seed": 19,
+   "conditions": [
+    "no_overhang"
+   ],
+   "condition_types": [
+    "grasp_blocked"
+   ],
+   "decisions": [
+    "fallback"
+   ],
+   "since": "v3",
+   "oracle_route": "nominal",
+   "config_hash": "c2975bbd7882",
+   "vary_applied": {},
+   "distractors_removed": [],
+   "config": {
+    "task_id": "T14_shelve_the_book",
+    "seed": 19,
+    "variant": "book_on_desk",
+    "variant_note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+    "difficulty": "medium",
+    "conditions": [
+     "no_overhang"
+    ],
+    "base": "tasks/shelve_books",
+    "remove": [
+     "book_green"
+    ],
+    "distractors_removed": [],
+    "move": {},
+    "start": null,
+    "thermal_sources": null,
+    "thermal_override": {},
+    "config_hash": "c2975bbd7882"
    }
   }
  ]
