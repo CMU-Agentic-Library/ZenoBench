@@ -1,0 +1,266 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="960" viewBox="0 0 1240 960"><title>Baseline 结果</title><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#59636e"/></marker></defs><rect width="100%" height="100%" fill="#ffffff"/>
+<text x="32" y="44" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="24" fill="#1f2328" font-weight="700" text-anchor="start">6 · Baseline 结果（benchmark/runs/final，来自 EVALUATION.md）</text>
+<text x="32" y="70" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13.5" fill="#59636e" font-weight="400" text-anchor="start">注意：每个 planner 只有 n=10（每任务 1 个 seed，9 个 medium + 1 个 hard），完整的 58 episode 网格（batches/eval.json）还没跑</text>
+<text x="32" y="108" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="start">SR 与 GC（%）</text>
+<line x1="80" y1="420.0" x2="600" y2="420.0" stroke="#eaeef2" stroke-width="1"/>
+<text x="72" y="424.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="end">0</text>
+<line x1="80" y1="345.0" x2="600" y2="345.0" stroke="#eaeef2" stroke-width="1"/>
+<text x="72" y="349.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="end">25</text>
+<line x1="80" y1="270.0" x2="600" y2="270.0" stroke="#eaeef2" stroke-width="1"/>
+<text x="72" y="274.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="end">50</text>
+<line x1="80" y1="195.0" x2="600" y2="195.0" stroke="#eaeef2" stroke-width="1"/>
+<text x="72" y="199.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="end">75</text>
+<line x1="80" y1="120.0" x2="600" y2="120.0" stroke="#eaeef2" stroke-width="1"/>
+<text x="72" y="124.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="end">100</text>
+<line x1="80" y1="420" x2="600" y2="420" stroke="#59636e" stroke-width="1"/>
+<rect x="107.0" y="360.0" width="36" height="60.0" rx="3" fill="#6e7781" fill-opacity="1.0"/>
+<text x="125.0" y="354.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#6e7781" font-weight="700" text-anchor="middle">20</text>
+<rect x="147.0" y="258.0" width="36" height="162.0" rx="3" fill="#6e7781" fill-opacity="0.45"/>
+<text x="165.0" y="252.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#6e7781" font-weight="700" text-anchor="middle">54</text>
+<text x="145.0" y="442" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#6e7781" font-weight="700" text-anchor="middle">fixed</text>
+<text x="145.0" y="460" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle">n=10</text>
+<rect x="237.0" y="360.0" width="36" height="60.0" rx="3" fill="#bc4c00" fill-opacity="1.0"/>
+<text x="255.0" y="354.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#bc4c00" font-weight="700" text-anchor="middle">20</text>
+<rect x="277.0" y="258.0" width="36" height="162.0" rx="3" fill="#bc4c00" fill-opacity="0.45"/>
+<text x="295.0" y="252.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#bc4c00" font-weight="700" text-anchor="middle">54</text>
+<text x="275.0" y="442" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#bc4c00" font-weight="700" text-anchor="middle">retry</text>
+<text x="275.0" y="460" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle">n=10</text>
+<rect x="367.0" y="150.0" width="36" height="270.0" rx="3" fill="#1a7f37" fill-opacity="1.0"/>
+<text x="385.0" y="144.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1a7f37" font-weight="700" text-anchor="middle">90</text>
+<rect x="407.0" y="150.0" width="36" height="270.0" rx="3" fill="#1a7f37" fill-opacity="0.45"/>
+<text x="425.0" y="144.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1a7f37" font-weight="700" text-anchor="middle">90</text>
+<text x="405.0" y="442" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="middle">oracle</text>
+<text x="405.0" y="460" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle">n=10</text>
+<rect x="497.0" y="135.0" width="36" height="285.0" rx="3" fill="#8250df" fill-opacity="1.0"/>
+<text x="515.0" y="129.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#8250df" font-weight="700" text-anchor="middle">95</text>
+<rect x="537.0" y="132.0" width="36" height="288.0" rx="3" fill="#8250df" fill-opacity="0.45"/>
+<text x="555.0" y="126.0" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#8250df" font-weight="700" text-anchor="middle">96</text>
+<text x="535.0" y="442" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#8250df" font-weight="700" text-anchor="middle">scripted</text>
+<text x="535.0" y="460" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle">n=62</text>
+<rect x="100" y="116" width="14" height="14" rx="2" fill="#57606a" stroke="none" stroke-width="1"/>
+<text x="120" y="128" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">SR</text>
+<rect x="160" y="116" width="14" height="14" rx="2" fill="#57606a" fill-opacity="0.45"/>
+<text x="180" y="128" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC（浅色）</text>
+<text x="535.0" y="478" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#8250df" font-weight="400" text-anchor="middle">scripted = 回放声明路线，可行性上限，不参与排名</text>
+<text x="650" y="108" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="start">汇总指标</text>
+<rect x="642" y="120" width="574" height="30" rx="5" fill="#eaeef2" stroke="#d0d7de" stroke-width="1"/>
+<text x="650" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">planner</text>
+<text x="738" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">SR</text>
+<text x="786" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">GC</text>
+<text x="834" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">pass^k</text>
+<text x="896" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">SPL-c</text>
+<text x="952" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">ghost/ep</text>
+<text x="1022" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">phys/ep</text>
+<text x="1090" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">recov</text>
+<text x="1162" y="140" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1f2328" font-weight="700" text-anchor="start">repeat</text>
+<text x="650" y="174" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#6e7781" font-weight="700" text-anchor="start">fixed</text>
+<text x="738" y="174" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">20%</text>
+<text x="786" y="174" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">54%</text>
+<text x="834" y="174" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">20%</text>
+<text x="896" y="174" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.19</text>
+<text x="952" y="174" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.20</text>
+<text x="1022" y="174" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.60</text>
+<text x="1090" y="174" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0% (6)</text>
+<text x="1162" y="174" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0%</text>
+<text x="650" y="204" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#bc4c00" font-weight="700" text-anchor="start">retry</text>
+<text x="738" y="204" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">20%</text>
+<text x="786" y="204" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">54%</text>
+<text x="834" y="204" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">20%</text>
+<text x="896" y="204" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.19</text>
+<text x="952" y="204" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.60</text>
+<text x="1022" y="204" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">1.70</text>
+<text x="1090" y="204" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0% (6)</text>
+<text x="1162" y="204" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#cf222e" font-weight="700" text-anchor="start">71%</text>
+<text x="650" y="234" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1a7f37" font-weight="700" text-anchor="start">oracle</text>
+<text x="738" y="234" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">90%</text>
+<text x="786" y="234" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">90%</text>
+<text x="834" y="234" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">90%</text>
+<text x="896" y="234" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.90</text>
+<text x="952" y="234" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.00</text>
+<text x="1022" y="234" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.10</text>
+<text x="1090" y="234" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0% (1)</text>
+<text x="1162" y="234" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0%</text>
+<text x="650" y="264" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#8250df" font-weight="700" text-anchor="start">scripted</text>
+<text x="738" y="264" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">95%</text>
+<text x="786" y="264" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">96%</text>
+<text x="834" y="264" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">80%</text>
+<text x="896" y="264" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.87</text>
+<text x="952" y="264" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.06</text>
+<text x="1022" y="264" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0.53</text>
+<text x="1090" y="264" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">90% (30)</text>
+<text x="1162" y="264" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">0%</text>
+<text x="650" y="308" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· fixed 和 retry 的 SR / GC 完全相同：都执行 nominal 计划，不换方案</text>
+<text x="650" y="328" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· retry 的差别只有：71% 的物理失败后原样重试，ghost 也更多</text>
+<text x="650" y="348" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· oracle 用 GT runner、无观测限制、自动修复开着，是宽松上限</text>
+<text x="650" y="368" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· recov = 遇到物理失败的 episode 中最终成功的比例（括号内为数量）</text>
+<text x="32" y="520" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="start">逐任务结果（每格：成功 ✓/✗ · GC · 调用数 / oracle 参考调用数 L_ref）</text>
+<rect x="32" y="534" width="1060" height="30" rx="5" fill="#eaeef2" stroke="#d0d7de" stroke-width="1"/>
+<text x="42" y="554" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700" text-anchor="start">任务</text>
+<text x="106" y="554" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700" text-anchor="start">变体</text>
+<text x="280" y="554" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="700" text-anchor="start">档</text>
+<text x="340" y="554" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#6e7781" font-weight="700" text-anchor="start">fixed</text>
+<text x="530" y="554" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#bc4c00" font-weight="700" text-anchor="start">retry</text>
+<text x="720" y="554" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1a7f37" font-weight="700" text-anchor="start">oracle</text>
+<text x="42" y="589" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T01</text>
+<text x="106" y="589" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">no_overhang</text>
+<text x="280" y="589" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="570" width="182" height="28" rx="4" fill="#94e0a4" stroke="#cf222e" stroke-width="1"/>
+<text x="344" y="589" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="366" y="589" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.50</text>
+<text x="506" y="589" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">4 / 6</text>
+<rect x="524" y="570" width="182" height="28" rx="4" fill="#94e0a4" stroke="#cf222e" stroke-width="1"/>
+<text x="534" y="589" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="556" y="589" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.50</text>
+<text x="696" y="589" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">6 / 6</text>
+<rect x="714" y="570" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="589" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="589" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="589" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">6 / 6</text>
+<text x="42" y="623" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T02</text>
+<text x="106" y="623" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">crowded</text>
+<text x="280" y="623" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="604" width="182" height="28" rx="4" fill="#94e0a4" stroke="#cf222e" stroke-width="1"/>
+<text x="344" y="623" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="366" y="623" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.50</text>
+<text x="506" y="623" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">3 / 8</text>
+<rect x="524" y="604" width="182" height="28" rx="4" fill="#94e0a4" stroke="#cf222e" stroke-width="1"/>
+<text x="534" y="623" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="556" y="623" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.50</text>
+<text x="696" y="623" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">9 / 8</text>
+<rect x="714" y="604" width="182" height="28" rx="4" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="724" y="623" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="746" y="623" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.00</text>
+<text x="886" y="623" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">8 / 8</text>
+<text x="42" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T03</text>
+<text x="106" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">far_small_and_large</text>
+<text x="280" y="657" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#cf222e" font-weight="400" text-anchor="start">hard</text>
+<rect x="334" y="638" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="344" y="657" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="366" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="506" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">12 / 13</text>
+<rect x="524" y="638" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="534" y="657" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="556" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="696" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">12 / 13</text>
+<rect x="714" y="638" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="657" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">13 / 13</text>
+<text x="42" y="691" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T04</text>
+<text x="106" y="691" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">no_cup</text>
+<text x="280" y="691" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="672" width="182" height="28" rx="4" fill="#6cd483" stroke="#cf222e" stroke-width="1"/>
+<text x="344" y="691" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="366" y="691" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.75</text>
+<text x="506" y="691" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">2 / 6</text>
+<rect x="524" y="672" width="182" height="28" rx="4" fill="#6cd483" stroke="#cf222e" stroke-width="1"/>
+<text x="534" y="691" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="556" y="691" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.75</text>
+<text x="696" y="691" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">4 / 6</text>
+<rect x="714" y="672" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="691" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="691" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="691" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">6 / 6</text>
+<text x="42" y="725" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T05</text>
+<text x="106" y="725" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">no_pen</text>
+<text x="280" y="725" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="706" width="182" height="28" rx="4" fill="#94e0a4" stroke="#cf222e" stroke-width="1"/>
+<text x="344" y="725" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="366" y="725" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.50</text>
+<text x="506" y="725" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">3 / 6</text>
+<rect x="524" y="706" width="182" height="28" rx="4" fill="#94e0a4" stroke="#cf222e" stroke-width="1"/>
+<text x="534" y="725" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="556" y="725" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.50</text>
+<text x="696" y="725" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">5 / 6</text>
+<rect x="714" y="706" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="725" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="725" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="725" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">6 / 6</text>
+<text x="42" y="759" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T06</text>
+<text x="106" y="759" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">occupied</text>
+<text x="280" y="759" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="740" width="182" height="28" rx="4" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="344" y="759" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="366" y="759" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.00</text>
+<text x="506" y="759" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">5 / 6</text>
+<rect x="524" y="740" width="182" height="28" rx="4" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="534" y="759" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="556" y="759" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.00</text>
+<text x="696" y="759" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">7 / 6</text>
+<rect x="714" y="740" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="759" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="759" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="759" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">6 / 6</text>
+<text x="42" y="793" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T07</text>
+<text x="106" y="793" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">microwave_broken</text>
+<text x="280" y="793" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="774" width="182" height="28" rx="4" fill="#6cd483" stroke="#cf222e" stroke-width="1"/>
+<text x="344" y="793" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="366" y="793" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.75</text>
+<text x="506" y="793" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">9 / 6</text>
+<rect x="524" y="774" width="182" height="28" rx="4" fill="#6cd483" stroke="#cf222e" stroke-width="1"/>
+<text x="534" y="793" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="556" y="793" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.75</text>
+<text x="696" y="793" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">11 / 6</text>
+<rect x="714" y="774" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="793" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="793" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="793" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">6 / 6</text>
+<text x="42" y="827" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T08</text>
+<text x="106" y="827" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">sponge_on_tv_stand</text>
+<text x="280" y="827" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="808" width="182" height="28" rx="4" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="344" y="827" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="366" y="827" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.00</text>
+<text x="506" y="827" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">5 / 7</text>
+<rect x="524" y="808" width="182" height="28" rx="4" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="534" y="827" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="556" y="827" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.00</text>
+<text x="696" y="827" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">7 / 7</text>
+<rect x="714" y="808" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="827" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="827" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="827" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">7 / 7</text>
+<text x="42" y="861" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T09</text>
+<text x="106" y="861" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">lid_on</text>
+<text x="280" y="861" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="842" width="182" height="28" rx="4" fill="#a7e5b4" stroke="#cf222e" stroke-width="1"/>
+<text x="344" y="861" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="366" y="861" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.38</text>
+<text x="506" y="861" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">2 / 16</text>
+<rect x="524" y="842" width="182" height="28" rx="4" fill="#a7e5b4" stroke="#cf222e" stroke-width="1"/>
+<text x="534" y="861" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">✗</text>
+<text x="556" y="861" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 0.38</text>
+<text x="696" y="861" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">4 / 16</text>
+<rect x="714" y="842" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="861" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="861" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="861" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">16 / 16</text>
+<text x="42" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T10</text>
+<text x="106" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1f2328" font-weight="400" text-anchor="start">can_in_dining_room</text>
+<text x="280" y="895" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<rect x="334" y="876" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="344" y="895" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="366" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="506" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">8 / 7</text>
+<rect x="524" y="876" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="534" y="895" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="556" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="696" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">8 / 7</text>
+<rect x="714" y="876" width="182" height="28" rx="4" fill="#45c962" stroke="#1a7f37" stroke-width="1.4"/>
+<text x="724" y="895" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1a7f37" font-weight="700" text-anchor="start">✓</text>
+<text x="746" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">GC 1.00</text>
+<text x="886" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="end">7 / 7</text>
+<text x="1110" y="580" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="700" text-anchor="start">GC</text>
+<rect x="1110" y="590" width="22" height="20" rx="3" fill="#45c962" stroke="#d0d7de" stroke-width="1"/>
+<text x="1140" y="605" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">1.00</text>
+<rect x="1110" y="616" width="22" height="20" rx="3" fill="#6cd483" stroke="#d0d7de" stroke-width="1"/>
+<text x="1140" y="631" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">0.75</text>
+<rect x="1110" y="642" width="22" height="20" rx="3" fill="#94e0a4" stroke="#d0d7de" stroke-width="1"/>
+<text x="1140" y="657" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">0.50</text>
+<rect x="1110" y="668" width="22" height="20" rx="3" fill="#a7e5b4" stroke="#d0d7de" stroke-width="1"/>
+<text x="1140" y="683" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">0.38</text>
+<rect x="1110" y="694" width="22" height="20" rx="3" fill="#ffebe9" stroke="#d0d7de" stroke-width="1"/>
+<text x="1140" y="709" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">0.00</text>
+<text x="32" y="934" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">fixed / retry 只在 T03（hard，但 nominal 恰好可行）和 T10 成功；oracle 唯一失败是 T02 crowded（separate 后 stack 失败）</text>
+</svg>

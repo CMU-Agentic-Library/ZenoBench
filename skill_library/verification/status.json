@@ -236,7 +236,7 @@
     "reach_on_the_move",
     "park"
    ],
-   "evidence": "c_approach_moving: `reachable(target=TableDiningFactory_1437886_spawn_asset_2104395/surface_2)` [2.863, 5.681, 0.952]"
+   "evidence": "c_approach_moving: `reachable(target=dining_table_2/surface_2)` [2.863, 5.681, 0.952]"
   },
   "face": {
    "status": "verified",
@@ -351,7 +351,7 @@
     "closed_cabinet",
     "open_view"
    ],
-   "evidence": "k_cabinet: `observed(target=KitchenCabinetFactory_7025538_spawn_asset_6631478)` last seen at tick 9481"
+   "evidence": "k_cabinet: `observed(target=kitchen_cabinet_6)` last seen at tick 9481"
   },
   "search": {
    "status": "verified",
@@ -446,7 +446,7 @@
     "stove_burner",
     "surface"
    ],
-   "evidence": "b_books: `hand_empty(hand=right)` right holds None; `on(object=book_red, support=SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3)` SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+   "evidence": "b_books: `hand_empty(hand=right)` right holds None; `on(object=book_red, support=bookcase_2/surface_3)` bookcase_2/surface_3"
   },
   "drop": {
    "status": "verified",
@@ -674,7 +674,7 @@
     "drawer",
     "hinged_door"
    ],
-   "evidence": "k_cabinet: `is_open(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)` q -1.390 (99% open)"
+   "evidence": "k_cabinet: `is_open(articulated=kitchen_cabinet_6)` q -1.390 (99% open)"
   },
   "close": {
    "status": "verified",
@@ -688,7 +688,7 @@
     "handle_push",
     "dispatch"
    ],
-   "evidence": "k_cabinet: `is_closed(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)` q -0.011"
+   "evidence": "k_cabinet: `is_closed(articulated=kitchen_cabinet_6)` q -0.011"
   },
   "press": {
    "status": "verified",
@@ -781,7 +781,7 @@
    "paths": [
     "fetch_each_on_support"
    ],
-   "evidence": "o_clear: `support_clear(support=TVStandFactory_6305370_spawn_asset_6627927/surface_1)` objects []"
+   "evidence": "o_clear: `support_clear(support=tv_stand_2/surface_1)` objects []"
   },
   "empty": {
    "status": "failed",
@@ -941,7 +941,7 @@
    "paths": [
     "panel_taps"
    ],
-   "evidence": "k_cabinet: `knocked(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)` 2 contacts, joint moved 0.000; `is_closed(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)` q -0.000"
+   "evidence": "k_cabinet: `knocked(articulated=kitchen_cabinet_6)` 2 contacts, joint moved 0.000; `is_closed(articulated=kitchen_cabinet_6)` q -0.000"
   },
   "sweep": {
    "status": "verified",

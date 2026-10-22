@@ -32,12 +32,13 @@ import define_tasks as v2  # noqa: E402
 from define_tasks import (BOOKCASE, CAB, CAB2_TOP, CAB_START, CAB_TOP, DESK, DINING, DINING_START, HALL,  # noqa: E402,F401
                           ISLAND, MW, MW_FLOOR, NO_MW, POT, STOVE_TOP, TV, S, _soup_tail, at, carry)
 
+ROOT = Path(__file__).resolve().parents[1]
 OUT = Path(__file__).with_name("v3") / "tasks.json"
 VERSION = "v3"
 EVAL_SEEDS = list(range(10, 20))
 DINING_ROOM = "dining_room_0_1"
 BIN = "wide_storage_bin"
-BOOKCASE_NEAR_DESK = "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"   # 2 m from the desk
+BOOKCASE_NEAR_DESK = "bookcase_3/surface_2"   # 2 m from the desk
 
 # ---------------------------------------------------------------------------- condition registry
 # tag -> (condition type, decision the condition is meant to require, one-line meaning)
@@ -551,6 +552,39 @@ EXPLORE_ROUTES = {("T08_wipe_island", "nominal_from_tv_stand"), ("T08_wipe_islan
                   ("T10_trash_the_can", "hard_explore_search")}
 
 
+def _scene_names(base: str) -> tuple[set, set]:
+    """(entity names, room names) of a base scene's annotation."""
+    a = json.loads((ROOT / base / "annotation.json").read_text())
+    names = set()
+    for k in ("supports", "articulated", "objects", "appliances", "obstacles"):
+        names |= {x["name"] for x in a.get(k, []) if isinstance(x, dict) and "name" in x}
+    return names, set(a.get("rooms", {}))
+
+
+def _strings(v):
+    if isinstance(v, str):
+        yield v
+    elif isinstance(v, (list, tuple)):
+        for x in v:
+            yield from _strings(x)
+    elif isinstance(v, dict):
+        for x in v.values():
+            yield from _strings(x)
+
+
+def entities_of(task: dict) -> list[str]:
+    """The task's relevant names for the GT ``objects`` observation (profile ``gt``; the benchmark
+    profile never shows them): the watched objects, then every scene entity the goal or any
+    declared route names (objects, supports, appliances, articulated parts), in that order.
+    Rooms, tags, hands and names the scene does not have (a search for an absent object) are left out."""
+    names, rooms = _scene_names(task["scene"]["base"])
+    out = list(task.get("watch", []))
+    for v in _strings([task["goal"]] + [r.get("steps", []) for r in task["routes"].values()]):
+        if v not in out and v not in rooms and (v in names or v.split("/")[0] in names):
+            out.append(v)
+    return out
+
+
 def build(ext_all=None, new_tasks=None):
     ext_all = EXT if ext_all is None else ext_all
     tasks = copy.deepcopy(v2.TASKS) + copy.deepcopy(NEW_TASKS if new_tasks is None else new_tasks)
@@ -580,6 +614,7 @@ def build(ext_all=None, new_tasks=None):
                 r["kind"] = "explore"
         t["oracle"].update(ext.get("oracle", {}))
         t["not_adopted"] = ext.get("not_adopted", [])
+        t["entities"] = entities_of(t)
     return tasks
 
 
@@ -598,7 +633,8 @@ def main():
                                "note": __doc__.strip().splitlines()[0], "eval_seeds": EVAL_SEEDS,
                                "condition_registry": {k: {"type": a, "decision": b, "meaning": c}
                                                       for k, (a, b, c) in CONDITIONS.items()},
-                               "tasks": tasks + copy.deepcopy(v2.PROBES)}, indent=1))
+                               "tasks": tasks + [dict(p, entities=entities_of(p)) for p in copy.deepcopy(v2.PROBES)]},
+                              indent=1))
     nv = sum(len(t["variants"]) for t in tasks)
     print(f"{len(tasks)} tasks, {nv} variants + {len(v2.PROBES)} probes -> {out}")
 

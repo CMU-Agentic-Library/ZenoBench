@@ -1,25 +1,25 @@
 {
  "_doc": "Human-readable names for support surfaces, furniture and floor areas of sim/zeno_house.usd. A task spec may use these aliases or raw names from annotations/zeno_house.json (supports[].name, or a furniture name = any of its surfaces). Floor areas are {room, xy box}. List all candidates with: python tools/list_places.py",
- "dining_table": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
- "side_dining_table": "TableDiningFactory_7009684_spawn_asset_2322328/surface_2",
- "tv_stand": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
- "bedroom_desk": "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1",
- "study_desk": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
- "kids_desk": "SimpleDeskFactory_1980333_spawn_asset_4235911/surface_0",
- "dining_cell_shelf_top": "CellShelfFactory_2688822_spawn_asset_5011983/surface_4",
- "dining_cell_shelf_middle": "CellShelfFactory_2688822_spawn_asset_5011983/surface_2",
- "dining_cell_shelf_b_top": "CellShelfFactory_867098_spawn_asset_5571502/surface_2",
+ "dining_table": "dining_table_2/surface_2",
+ "side_dining_table": "dining_table_1/surface_2",
+ "tv_stand": "tv_stand_2/surface_1",
+ "bedroom_desk": "desk_3/surface_1",
+ "study_desk": "desk_1/surface_0",
+ "kids_desk": "desk_2/surface_0",
+ "dining_cell_shelf_top": "cell_shelf_4/surface_4",
+ "dining_cell_shelf_middle": "cell_shelf_4/surface_2",
+ "dining_cell_shelf_b_top": "cell_shelf_3/surface_2",
  "kitchen_counter": "repair/kitchen_counter_top",
- "living_sideboard": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
- "dining_drawer_unit": "KitchenCabinetFactory_9483010_spawn_asset_2619144/top",
- "bed": "MattressFactory_4281756_spawn_asset_1415123/surface_0",
- "bookcase_bedside": "SimpleBookcaseFactory_2318999_spawn_asset_8416993",
- "bookcase_bedside_lower_shelf": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_0",
- "bookcase_bedside_middle_shelf": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_1",
- "bookcase_bedside_top": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2",
- "bookcase_north": "SimpleBookcaseFactory_6105320_spawn_asset_9196243",
- "bookcase_north_middle_shelf": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_2",
- "bookcase_north_top": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+ "living_sideboard": "kitchen_cabinet_6/top",
+ "dining_drawer_unit": "kitchen_cabinet_3/top",
+ "bed": "mattress_1/surface_0",
+ "bookcase_bedside": "bookcase_3",
+ "bookcase_bedside_lower_shelf": "bookcase_3/surface_0",
+ "bookcase_bedside_middle_shelf": "bookcase_3/surface_1",
+ "bookcase_bedside_top": "bookcase_3/surface_2",
+ "bookcase_north": "bookcase_2",
+ "bookcase_north_middle_shelf": "bookcase_2/surface_2",
+ "bookcase_north_top": "bookcase_2/surface_3",
  "floor:living_room": {
   "room": "living_room_0_0",
   "xy": [
@@ -47,5 +47,5 @@
    -1.1
   ]
  },
- "kitchen_counter_surface": "KitchenSpaceFactory_2359716_spawn_asset_5713391/surface_0"
+ "kitchen_counter_surface": "kitchen_counter_2/surface_0"
 }

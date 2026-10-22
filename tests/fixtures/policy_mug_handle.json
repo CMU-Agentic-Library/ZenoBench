@@ -11,7 +11,7 @@
     "mug": {
       "asset": "breakfast_mug",
       "supports": [
-        "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "kitchen_cabinet_6/top"
       ],
       "spawn_xy": [
         3.69,

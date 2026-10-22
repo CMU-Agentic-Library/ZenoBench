@@ -43,6 +43,8 @@ SCENE = ROOT / "sim/zeno_house.usd"
 STATIC = ROOT / "annotations/house_static.json"
 CAB = "/World/ArticulatedAssets/cabinets/"
 BASE = "/World/House/Asset/base/"
+# MOVES / REHOME are keyed by USD prim name; the annotations use the short names
+SHORT = json.loads((ROOT / "annotations/furniture_names.json").read_text())["names"]
 
 # name -> target footprint centre (x, y), facing (deg: 0 = -y, 90 = +x,
 # 180 = +y, 270 = -x, the cabinets' rotateZ convention), objects carried along
@@ -146,7 +148,7 @@ def main():
             report.append(f"MOVE {name}: ({c_old[0]:.2f}, {c_old[1]:.2f}) -> ({c_new[0]:.2f}, {c_new[1]:.2f}), "
                           f"yaw +{dyaw:.0f}, carried {m.get('carry', [])}")
         else:
-            f = next(f for f in static["furniture"] if f["name"] == name)
+            f = next(f for f in static["furniture"] if f["name"] == SHORT.get(name, name))
             a = np.array(f["aabb"], float)
             c_old = (a[:2] + a[3:5]) / 2
             dyaw = (m["facing"] - m["from_facing"]) % 360
@@ -176,7 +178,7 @@ def main():
                          round(float(hi2[0]), 3), round(float(hi2[1]), 3), a[5]]
             n = 0
             for s in static["supports"]:
-                if s["furniture"] == name:
+                if s["furniture"] == SHORT.get(name, name):
                     b = s["aabb_xy"]
                     lo2, hi2 = move_box(b[:2], b[2:])
                     s["aabb_xy"] = [round(float(v), 3) for v in (*lo2, *hi2)]

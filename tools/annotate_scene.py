@@ -29,6 +29,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 EXPORT = ROOT / "House_seed77/urdf/export_scene"
 STATIC = ROOT / "annotations/house_static.json"
+NAMES = ROOT / "annotations/furniture_names.json"     # Infinigen prim name -> short annotation name
 SKIP_FURNITURE = ("Window", "Rug", "KitchenCabinetFactory", "SingleCabinetFactory")  # windows=walls, rugs=flat, cabinets=articulated
 
 
@@ -40,6 +41,20 @@ def _T(o):
     M[:3, :3] = Rotation.from_euler("xyz", [float(x) for x in (o.get("rpy") or "0 0 0").split()]).as_matrix()
     M[:3, 3] = [float(x) for x in (o.get("xyz") or "0 0 0").split()]
     return M
+
+
+def short_names(v, names=None):
+    """``v`` with every Infinigen furniture name replaced by its short name (annotations/furniture_names.json).
+    USD paths (strings starting with "/") keep the prim names."""
+    names = json.loads(NAMES.read_text())["names"] if names is None else names
+    if isinstance(v, dict):
+        return {short_names(k, names): short_names(x, names) for k, x in v.items()}
+    if isinstance(v, list):
+        return [short_names(x, names) for x in v]
+    if isinstance(v, str) and not v.startswith("/"):
+        head, sep, tail = v.partition("/")
+        return names.get(head, head) + sep + tail
+    return v
 
 
 def house_static():
@@ -160,7 +175,7 @@ def main():
     scene, out = Path(sys.argv[1]), Path(sys.argv[2])
     if not STATIC.exists():
         STATIC.parent.mkdir(parents=True, exist_ok=True)
-        STATIC.write_text(json.dumps(house_static()))
+        STATIC.write_text(json.dumps(short_names(house_static())))
     static = json.loads(STATIC.read_text())
 
     from isaaclab.app import AppLauncher
@@ -434,10 +449,10 @@ def main():
              "yaw_deg": rp.GetAttribute("xformOp:rotateZ").Get(), "base_anchor": "/World/ZenoMalo/base_anchor",
              "gripper_max_opening": 0.08, "reach_m": 0.75}
     rel = os.path.relpath(scene, ROOT)
-    out.write_text(json.dumps({"scene_usd": rel, "rooms": static["rooms"], "obstacles": obstacles,
-                               "supports": supports, "articulated": articulated, "objects": objects,
-                               "appliances": appliances,
-                               "robot": robot}, indent=1))
+    out.write_text(json.dumps(short_names({"scene_usd": rel, "rooms": static["rooms"], "obstacles": obstacles,
+                                           "supports": supports, "articulated": articulated, "objects": objects,
+                                           "appliances": appliances,
+                                           "robot": robot}), indent=1))
     print("ANNOTATION", out, "articulated", len(articulated), "objects", len(objects),
           "supports", len(supports), "obstacles", len(obstacles), flush=True)
     sys.stdout.flush()

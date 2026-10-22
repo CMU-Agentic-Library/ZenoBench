@@ -1,0 +1,219 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="920" viewBox="0 0 1240 920"><title>T07 热燕麦的变体</title><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#59636e"/></marker></defs><rect width="100%" height="100%" fill="#ffffff"/>
+<text x="32" y="44" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="24" fill="#1f2328" font-weight="700" text-anchor="start">3 · 变体示例：T07_heat_oatmeal（家电 + 隐藏状态 + 换方案）</text>
+<text x="32" y="70" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13.5" fill="#59636e" font-weight="400" text-anchor="start">指令：Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.</text>
+<text x="32" y="92" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">goal：temperature_at_least(oatmeal, 40) ∧ not heating(kitchen_stove) ∧ is_closed(kitchen_microwave) ∧ hand_empty(right)</text>
+<rect x="32" y="108" width="376" height="262" rx="8" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.5"/>
+<text x="48" y="136" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="15" fill="#1a7f37" font-weight="700" text-anchor="start">microwave_works</text>
+<rect x="195.25000000000003" y="120" width="40.06" height="21" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="201.25000000000003" y="134.64" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#1a7f37" font-weight="400" text-anchor="start">easy</text>
+<text x="48" y="160" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">微波炉正常，燕麦在岛台上</text>
+<text x="48" y="179" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">无失败条件</text>
+<rect x="48" y="192" width="344" height="162" rx="6" fill="#fbfaf7" stroke="#d0d7de" stroke-width="1"/>
+<rect x="247.6327868852459" y="240.32068965517237" width="96.9967213114754" height="26.25517241379316" rx="3" fill="#f3ead9" stroke="#b08d57" stroke-width="1"/>
+<text x="296.1311475409836" y="257.44827586206895" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#b08d57" font-weight="400" text-anchor="middle">岛台</text>
+<rect x="344.6295081967213" y="240.32068965517237" width="33.8360655737705" height="28.657241379310392" rx="3" fill="#fde2d6" stroke="#bc4c00" stroke-width="1"/>
+<text x="361.54754098360655" y="258.64931034482754" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#bc4c00" font-weight="400" text-anchor="middle">灶台</text>
+<rect x="117.92786885245903" y="200.93793103448274" width="29.324590163934403" height="27.875172413793138" rx="3" fill="#dafbe1" stroke="#1a7f37" stroke-width="1"/>
+<text x="132.59016393442624" y="218.87551724137933" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#1a7f37" font-weight="400" text-anchor="middle">微波炉</text>
+<rect x="59.39147540983606" y="322.15862068965515" width="33.610491803278705" height="17.875862068965546" rx="3" fill="#eef1f4" stroke="#57606a" stroke-width="1"/>
+<text x="98.00196721311477" y="335.09655172413795" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#57606a" font-weight="400" text-anchor="start">墙边矮柜</text>
+<rect x="253.272131147541" y="323.1641379310345" width="98.06819672131147" height="17.037931034482767" rx="3" fill="#eef1f4" stroke="#57606a" stroke-width="1"/>
+<text x="302.30622950819674" y="335.68310344827586" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#57606a" font-weight="400" text-anchor="middle">电视柜</text>
+<circle cx="256.09180327868853" cy="248.97931034482758" r="7" fill="#fff" stroke="#9a6700" stroke-width="2"/>
+<circle cx="256.09180327868853" cy="248.97931034482758" r="3" fill="#9a6700"/>
+<text x="246.09180327868853" y="239.97931034482758" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#9a6700" font-weight="700" text-anchor="end">燕麦</text>
+<polygon points="310.7704918032787,295.3448275862069 295.7704918032787,288.3448275862069 295.7704918032787,302.3448275862069" fill="#0969da"/>
+<text x="291.7704918032787" y="299.3448275862069" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#0969da" font-weight="400" text-anchor="end">起点</text>
+<rect x="432" y="108" width="376" height="262" rx="8" fill="#fff8c5" stroke="#9a6700" stroke-width="1.5"/>
+<text x="448" y="136" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="15" fill="#9a6700" font-weight="700" text-anchor="start">microwave_broken</text>
+<rect x="604.4000000000001" y="120" width="54.089999999999996" height="21" rx="5" fill="#ffffff" stroke="#9a6700" stroke-width="1"/>
+<text x="610.4000000000001" y="134.64" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium</text>
+<text x="448" y="160" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">微波炉照常运转但不加热（燕麦加热速率被设为 0）</text>
+<text x="448" y="179" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">条件：microwave_broken。外观和观测里都看不出来</text>
+<rect x="448" y="192" width="344" height="162" rx="6" fill="#fbfaf7" stroke="#d0d7de" stroke-width="1"/>
+<rect x="647.6327868852459" y="240.32068965517237" width="96.99672131147543" height="26.25517241379316" rx="3" fill="#f3ead9" stroke="#b08d57" stroke-width="1"/>
+<text x="696.1311475409836" y="257.44827586206895" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#b08d57" font-weight="400" text-anchor="middle">岛台</text>
+<rect x="744.6295081967213" y="240.32068965517237" width="33.8360655737705" height="28.657241379310392" rx="3" fill="#fde2d6" stroke="#bc4c00" stroke-width="1"/>
+<text x="761.5475409836065" y="258.64931034482754" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#bc4c00" font-weight="400" text-anchor="middle">灶台</text>
+<rect x="517.927868852459" y="200.93793103448274" width="29.32459016393443" height="27.875172413793138" rx="3" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="532.5901639344263" y="218.87551724137933" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#cf222e" font-weight="400" text-anchor="middle">微波炉</text>
+<rect x="459.39147540983606" y="322.15862068965515" width="33.610491803278705" height="17.875862068965546" rx="3" fill="#eef1f4" stroke="#57606a" stroke-width="1"/>
+<text x="498.00196721311477" y="335.09655172413795" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#57606a" font-weight="400" text-anchor="start">墙边矮柜</text>
+<rect x="653.272131147541" y="323.1641379310345" width="98.06819672131144" height="17.037931034482767" rx="3" fill="#eef1f4" stroke="#57606a" stroke-width="1"/>
+<text x="702.3062295081968" y="335.68310344827586" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#57606a" font-weight="400" text-anchor="middle">电视柜</text>
+<text x="553.2524590163935" y="218.90344827586208" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#cf222e" font-weight="400" text-anchor="start">不加热（外观看不出来）</text>
+<circle cx="656.0918032786885" cy="248.97931034482758" r="7" fill="#fff" stroke="#9a6700" stroke-width="2"/>
+<circle cx="656.0918032786885" cy="248.97931034482758" r="3" fill="#9a6700"/>
+<text x="646.0918032786885" y="239.97931034482758" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#9a6700" font-weight="700" text-anchor="end">燕麦</text>
+<polygon points="710.7704918032787,295.3448275862069 695.7704918032787,288.3448275862069 695.7704918032787,302.3448275862069" fill="#0969da"/>
+<text x="691.7704918032787" y="299.3448275862069" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#0969da" font-weight="400" text-anchor="end">起点</text>
+<rect x="832" y="108" width="376" height="262" rx="8" fill="#ffebe9" stroke="#cf222e" stroke-width="1.5"/>
+<text x="848" y="136" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="15" fill="#cf222e" font-weight="700" text-anchor="start">broken_oatmeal_away</text>
+<rect x="1031.85" y="120" width="40.06" height="21" rx="5" fill="#ffffff" stroke="#cf222e" stroke-width="1"/>
+<text x="1037.85" y="134.64" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#cf222e" font-weight="400" text-anchor="start">hard</text>
+<text x="848" y="160" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">微波炉不加热，燕麦被留在墙边矮柜上</text>
+<text x="848" y="179" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">条件：microwave_broken + not_in_view</text>
+<rect x="848" y="192" width="344" height="162" rx="6" fill="#fbfaf7" stroke="#d0d7de" stroke-width="1"/>
+<rect x="1047.6327868852459" y="240.32068965517237" width="96.99672131147554" height="26.25517241379316" rx="3" fill="#f3ead9" stroke="#b08d57" stroke-width="1"/>
+<text x="1096.1311475409836" y="257.44827586206895" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#b08d57" font-weight="400" text-anchor="middle">岛台</text>
+<rect x="1144.6295081967214" y="240.32068965517237" width="33.836065573770384" height="28.657241379310392" rx="3" fill="#fde2d6" stroke="#bc4c00" stroke-width="1"/>
+<text x="1161.5475409836067" y="258.64931034482754" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#bc4c00" font-weight="400" text-anchor="middle">灶台</text>
+<rect x="917.927868852459" y="200.93793103448274" width="29.32459016393443" height="27.875172413793138" rx="3" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="932.5901639344263" y="218.87551724137933" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#cf222e" font-weight="400" text-anchor="middle">微波炉</text>
+<rect x="859.3914754098361" y="322.15862068965515" width="33.610491803278705" height="17.875862068965546" rx="3" fill="#eef1f4" stroke="#57606a" stroke-width="1"/>
+<text x="898.0019672131148" y="335.09655172413795" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#57606a" font-weight="400" text-anchor="start">墙边矮柜</text>
+<rect x="1053.272131147541" y="323.1641379310345" width="98.06819672131155" height="17.037931034482767" rx="3" fill="#eef1f4" stroke="#57606a" stroke-width="1"/>
+<text x="1102.3062295081968" y="335.68310344827586" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#57606a" font-weight="400" text-anchor="middle">电视柜</text>
+<text x="953.2524590163935" y="218.90344827586208" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#cf222e" font-weight="400" text-anchor="start">不加热（外观看不出来）</text>
+<circle cx="876.1967213114754" cy="331.09655172413795" r="7" fill="#fff" stroke="#9a6700" stroke-width="2"/>
+<circle cx="876.1967213114754" cy="331.09655172413795" r="3" fill="#9a6700"/>
+<text x="876.1967213114754" y="319.09655172413795" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10" fill="#9a6700" font-weight="700" text-anchor="middle">燕麦</text>
+<polygon points="1110.7704918032787,295.3448275862069 1095.7704918032787,288.3448275862069 1095.7704918032787,302.3448275862069" fill="#0969da"/>
+<text x="1091.7704918032787" y="299.3448275862069" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="9.5" fill="#0969da" font-weight="400" text-anchor="end">起点</text>
+<text x="32" y="400" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="16" fill="#1f2328" font-weight="700" text-anchor="start">声明的路线（tasks.json → routes），右上角为最终一轮的回放结果</text>
+<text x="32.0" y="436" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">nominal</text>
+<rect x="95.50999999999999" y="421" width="54.835" height="19" rx="5" fill="#dafbe1" stroke="#1a7f37" stroke-width="1"/>
+<text x="100.50999999999999" y="434.28" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="10.5" fill="#1a7f37" font-weight="400" text-anchor="start">nominal</text>
+<text x="312.0" y="436" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1a7f37" font-weight="700" text-anchor="end">2/2 通过</text>
+<text x="32.0" y="454" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="start">变体 microwave_works；oracle 也选它</text>
+<rect x="32.0" y="462" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="477" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 1. navigate(kitchen_microwave)</text>
+<rect x="32.0" y="485" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="500" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 2. open(kitchen_microwave)</text>
+<rect x="32.0" y="508" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="523" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 3. look(kitchen_island/top)</text>
+<rect x="32.0" y="531" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="546" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 4. navigate(oatmeal)</text>
+<rect x="32.0" y="554" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="569" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 5. pick(oatmeal)</text>
+<rect x="32.0" y="577" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="592" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 6. navigate(microwave/inside_floor)</text>
+<rect x="32.0" y="600" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="615" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 7. place(oatmeal, microwave/inside)</text>
+<rect x="32.0" y="623" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="638" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 8. close(kitchen_microwave)</text>
+<rect x="32.0" y="646" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="39.0" y="661" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 9. heat(oatmeal, microwave, 40)</text>
+<text x="330.6666666666667" y="436" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">alternative_stove</text>
+<rect x="473.47666666666674" y="421" width="80.455" height="19" rx="5" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="478.47666666666674" y="434.28" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="start">alternative</text>
+<text x="610.6666666666667" y="436" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1a7f37" font-weight="700" text-anchor="end">2/2 通过</text>
+<text x="330.6666666666667" y="454" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="start">变体 microwave_broken（scripted 回放）</text>
+<rect x="330.6666666666667" y="462" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="477" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 1. navigate(kitchen_microwave)</text>
+<rect x="330.6666666666667" y="485" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="500" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 2. open(kitchen_microwave)</text>
+<rect x="330.6666666666667" y="508" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="523" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 3. look(kitchen_island/top)</text>
+<rect x="330.6666666666667" y="531" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="546" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 4. navigate(oatmeal)</text>
+<rect x="330.6666666666667" y="554" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="569" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 5. pick(oatmeal)</text>
+<rect x="330.6666666666667" y="577" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="592" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 6. navigate(microwave/inside_floor)</text>
+<rect x="330.6666666666667" y="600" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="615" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 7. place(oatmeal, microwave/inside)</text>
+<rect x="330.6666666666667" y="623" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="638" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 8. close(kitchen_microwave)</text>
+<rect x="330.6666666666667" y="646" width="280" height="21" rx="4" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="337.6666666666667" y="661" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 9. heat(oatmeal, microwave, 40)</text>
+<text x="603.6666666666667" y="661" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#cf222e" font-weight="400" text-anchor="end">预期失败</text>
+<rect x="330.6666666666667" y="669" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="337.6666666666667" y="684" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">10. stop(kitchen_microwave)</text>
+<text x="603.6666666666667" y="684" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="330.6666666666667" y="692" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="337.6666666666667" y="707" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">11. pick(oatmeal)</text>
+<text x="603.6666666666667" y="707" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="330.6666666666667" y="715" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="337.6666666666667" y="730" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">12. navigate(kitchen_stove/top)</text>
+<text x="603.6666666666667" y="730" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="330.6666666666667" y="738" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="337.6666666666667" y="753" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">13. place(oatmeal, stove/top)</text>
+<text x="603.6666666666667" y="753" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="330.6666666666667" y="761" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="337.6666666666667" y="776" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">14. heat(oatmeal, stove, 40)</text>
+<text x="603.6666666666667" y="776" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="330.6666666666667" y="784" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="799" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">15. navigate(kitchen_microwave)</text>
+<rect x="330.6666666666667" y="807" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="337.6666666666667" y="822" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">16. close(kitchen_microwave)</text>
+<text x="629.3333333333334" y="436" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">oracle_stove</text>
+<rect x="732.4933333333333" y="421" width="80.455" height="19" rx="5" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="737.4933333333333" y="434.28" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="start">alternative</text>
+<text x="909.3333333333334" y="436" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1a7f37" font-weight="700" text-anchor="end">oracle 1/1</text>
+<text x="629.3333333333334" y="454" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="start">变体 microwave_broken（oracle 专用）</text>
+<rect x="629.3333333333334" y="462" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="636.3333333333334" y="477" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 1. look(kitchen_island/top)</text>
+<rect x="629.3333333333334" y="485" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="636.3333333333334" y="500" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 2. navigate(oatmeal)</text>
+<rect x="629.3333333333334" y="508" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="636.3333333333334" y="523" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 3. pick(oatmeal)</text>
+<rect x="629.3333333333334" y="531" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="636.3333333333334" y="546" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 4. navigate(kitchen_stove/top)</text>
+<rect x="629.3333333333334" y="554" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="636.3333333333334" y="569" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 5. place(oatmeal, stove/top)</text>
+<rect x="629.3333333333334" y="577" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="636.3333333333334" y="592" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 6. heat(oatmeal, stove, 40)</text>
+<text x="928.0" y="436" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">hard_search_stove</text>
+<rect x="1070.81" y="421" width="80.455" height="19" rx="5" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="1075.81" y="434.28" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="start">alternative</text>
+<text x="1208.0" y="436" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1a7f37" font-weight="700" text-anchor="end">2/2 通过</text>
+<text x="928.0" y="454" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="start">变体 broken_oatmeal_away；oracle 也选它</text>
+<rect x="928.0" y="462" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="477" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 1. navigate(kitchen_microwave)</text>
+<rect x="928.0" y="485" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="500" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 2. open(kitchen_microwave)</text>
+<rect x="928.0" y="508" width="280" height="21" rx="4" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="935.0" y="523" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 3. search(oatmeal, living_room)</text>
+<text x="1201.0" y="523" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#9a6700" font-weight="400" text-anchor="end">找物体</text>
+<rect x="928.0" y="531" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="546" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 4. navigate(oatmeal)</text>
+<rect x="928.0" y="554" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="569" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 5. pick(oatmeal)</text>
+<rect x="928.0" y="577" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="592" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 6. navigate(microwave/inside_floor)</text>
+<rect x="928.0" y="600" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="615" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 7. place(oatmeal, microwave/inside)</text>
+<rect x="928.0" y="623" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="638" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 8. close(kitchen_microwave)</text>
+<rect x="928.0" y="646" width="280" height="21" rx="4" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="935.0" y="661" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start"> 9. heat(oatmeal, microwave, 40)</text>
+<text x="1201.0" y="661" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#cf222e" font-weight="400" text-anchor="end">预期失败</text>
+<rect x="928.0" y="669" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="935.0" y="684" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">10. stop(kitchen_microwave)</text>
+<text x="1201.0" y="684" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="928.0" y="692" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="935.0" y="707" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">11. pick(oatmeal)</text>
+<text x="1201.0" y="707" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="928.0" y="715" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="935.0" y="730" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">12. navigate(kitchen_stove/top)</text>
+<text x="1201.0" y="730" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="928.0" y="738" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="935.0" y="753" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">13. place(oatmeal, stove/top)</text>
+<text x="1201.0" y="753" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="928.0" y="761" width="280" height="21" rx="4" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="935.0" y="776" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">14. heat(oatmeal, stove, 40)</text>
+<text x="1201.0" y="776" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="10.5" fill="#8250df" font-weight="400" text-anchor="end">换方案</text>
+<rect x="928.0" y="784" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="799" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">15. navigate(kitchen_microwave)</text>
+<rect x="928.0" y="807" width="280" height="21" rx="4" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="935.0" y="822" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1f2328" font-weight="400" text-anchor="start">16. close(kitchen_microwave)</text>
+<text x="32.0" y="699" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">medium 下 fixed / retry 也跑这条：</text>
+<text x="32.0" y="717" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">第 9 步 heat 失败（温度不升）后，</text>
+<text x="32.0" y="735" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">fixed 停止；retry 原样再 heat 2 次</text>
+<text x="32.0" y="753" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">→ 两者 GC 都是 0.75（燕麦没热）</text>
+<text x="629.3333333333334" y="630" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">oracle 知道微波炉是坏的：</text>
+<text x="629.3333333333334" y="648" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">直接跳过微波炉，用灶台加热，</text>
+<text x="629.3333333333334" y="666" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">6 步完成，这就是 SPL-c 的 L_ref</text>
+<text x="629.3333333333334" y="684" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">受限 planner 必须先试一次微波炉</text>
+<text x="629.3333333333334" y="702" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">才能发现它坏了</text>
+<text x="629.3333333333334" y="738" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">步骤角色</text>
+<rect x="629.3333333333334" y="750" width="16" height="16" rx="3" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="653.3333333333334" y="763" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">预期失败（scripted 检查它确实失败）</text>
+<rect x="629.3333333333334" y="774" width="16" height="16" rx="3" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="653.3333333333334" y="787" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">换方案：停微波炉、取出、改用灶台</text>
+<rect x="629.3333333333334" y="798" width="16" height="16" rx="3" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="653.3333333333334" y="811" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">找物体（hard：燕麦不在视野）</text>
+<text x="32" y="868" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">为什么选它：失败原因是隐藏的家电状态（不是抓取几何）；goal 带收尾约束（关火、关门）；换方案后还要回头关微波炉门。</text>
+<text x="32" y="890" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">诊断：曾有 microwave_occupied 变体（腔内放一碗剩菜），但燕麦仍能放在它前面，条件没有挡住微波炉路线，已删除（tasks.json → diagnostics）</text>
+</svg>

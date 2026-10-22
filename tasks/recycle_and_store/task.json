@@ -17,7 +17,7 @@
  "placed_objects": {
   "soda_can": {
    "asset": "soda_can",
-   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "support": "tv_stand_2/surface_1",
    "yaw": 1.9683349641197863,
    "position": [
     8.150254997377353,
@@ -27,7 +27,7 @@
   },
   "snack_carton": {
    "asset": "snack_carton",
-   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "support": "tv_stand_2/surface_1",
    "yaw": 1.4429677267223928,
    "position": [
     7.0147444971310255,
@@ -47,7 +47,7 @@
   },
   "wide_storage_bin": {
    "asset": "wide_storage_bin",
-   "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "support": "bookcase_2/surface_3",
    "yaw": 3.124062163134476,
    "position": [
     1.0888569332079252,
@@ -71,17 +71,17 @@
  },
  "candidate_supports": {
   "soda_can": [
-   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+   "tv_stand_2/surface_1"
   ],
   "snack_carton": [
-   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+   "tv_stand_2/surface_1"
   ],
   "foam_cube": [
    "floor:living_room",
-   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+   "tv_stand_2/surface_1"
   ],
   "wide_storage_bin": [
-   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+   "bookcase_2/surface_3"
   ]
  }
 }

@@ -3,8 +3,8 @@
     cd zeno-house   # repository root
     OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
         --scene sim/zeno_house.usd --ann annotations/zeno_house.json --out runs/demo \
-        --plan "open KitchenCabinetFactory_7025538_spawn_asset_6631478" \
-               "close KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        --plan "open kitchen_cabinet_6" \
+               "close kitchen_cabinet_6"
 
 Plan steps:  open <art> | close <art> | pick <obj>
              | pick_top/pick_round_rim/pick_rect_rim/pick_edge/pick_floor_corner <obj>

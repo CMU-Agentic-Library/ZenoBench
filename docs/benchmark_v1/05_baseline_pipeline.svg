@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="860" viewBox="0 0 1240 860"><title>Baseline 运行流水线</title><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#59636e"/></marker></defs><rect width="100%" height="100%" fill="#ffffff"/>
+<text x="32" y="44" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="24" fill="#1f2328" font-weight="700" text-anchor="start">5 · Baseline 怎么跑（run_episode.py 里的分支）</text>
+<text x="32" y="70" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13.5" fill="#59636e" font-weight="400" text-anchor="start">同一个 episode 准备流程；区别在：谁决定下一步、用哪个 runner、失败后怎么办。代码里没有 VLM planner</text>
+<rect x="32" y="96" width="1176" height="58" rx="8" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="48" y="122" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="14" fill="#1f2328" font-weight="700" text-anchor="start">共同准备</text>
+<text x="48" y="142" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#59636e" font-weight="400" text-anchor="start">tasks.json → episode_config(seed, variant/difficulty) → 场景叠加改动 → launch / make_rig → before_snapshot</text>
+<path d="M 620 154 L 620 176 L 144.0 176 L 144.0 196" stroke="#59636e" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+<rect x="32" y="198" width="224" height="300" rx="8" fill="#fbefff" stroke="#8250df" stroke-width="1.8"/>
+<text x="46" y="226" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="17" fill="#8250df" font-weight="700" text-anchor="start">scripted</text>
+<text x="46" y="248" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#8250df" font-weight="400" text-anchor="start">脚本回放（非 planner）</text>
+<text x="46" y="278" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">输入：--route 指定的声明路线</text>
+<text x="46" y="300" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">runner：LimitedSession（受限）</text>
+<text x="46" y="322" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">按步执行，检查 expect：</text>
+<text x="46" y="344" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  · 预期失败的步骤必须失败</text>
+<text x="46" y="366" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  · 其余步骤失败就停</text>
+<text x="46" y="388" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">用途：证明路线物理上可行</text>
+<rect x="46" y="460" width="74.0" height="22" rx="5" fill="#ffffff" stroke="#8250df" stroke-width="1"/>
+<text x="53" y="475.32" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#8250df" font-weight="400" text-anchor="start">可行性上限</text>
+<line x1="144.0" y1="498" x2="144.0" y2="528" stroke="#59636e" stroke-width="1.5" marker-end="url(#arr)"/>
+<path d="M 620 154 L 620 176 L 382.0 176 L 382.0 196" stroke="#59636e" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+<rect x="270" y="198" width="224" height="300" rx="8" fill="#eaeef2" stroke="#6e7781" stroke-width="1.8"/>
+<text x="284" y="226" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="17" fill="#6e7781" font-weight="700" text-anchor="start">fixed</text>
+<text x="284" y="248" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#6e7781" font-weight="400" text-anchor="start">固定计划</text>
+<text x="284" y="278" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">输入：任务的 nominal 路线</text>
+<text x="284" y="300" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">runner：LimitedSession（受限）</text>
+<text x="284" y="322" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">每步 1 次</text>
+<text x="284" y="344" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">第一个失败就停</text>
+<text x="284" y="366" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start"></text>
+<text x="284" y="388" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">不看反馈，不换方案</text>
+<rect x="284" y="460" width="38.0" height="22" rx="5" fill="#ffffff" stroke="#6e7781" stroke-width="1"/>
+<text x="291" y="475.32" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#6e7781" font-weight="400" text-anchor="start">下界</text>
+<line x1="382.0" y1="498" x2="382.0" y2="528" stroke="#59636e" stroke-width="1.5" marker-end="url(#arr)"/>
+<path d="M 620 154 L 620 176 L 620.0 176 L 620.0 196" stroke="#59636e" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+<rect x="508" y="198" width="224" height="300" rx="8" fill="#fff1e5" stroke="#bc4c00" stroke-width="1.8"/>
+<text x="522" y="226" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="17" fill="#bc4c00" font-weight="700" text-anchor="start">retry</text>
+<text x="522" y="248" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#bc4c00" font-weight="400" text-anchor="start">盲目重试</text>
+<text x="522" y="278" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">输入：任务的 nominal 路线</text>
+<text x="522" y="300" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">runner：LimitedSession（受限）</text>
+<text x="522" y="322" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">每步最多 3 次</text>
+<text x="522" y="344" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">原样重复失败的调用</text>
+<text x="522" y="366" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">3 次都失败才停</text>
+<text x="522" y="388" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">不看反馈，不换方案</text>
+<rect x="522" y="460" width="38.0" height="22" rx="5" fill="#ffffff" stroke="#bc4c00" stroke-width="1"/>
+<text x="529" y="475.32" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#bc4c00" font-weight="400" text-anchor="start">下界</text>
+<line x1="620.0" y1="498" x2="620.0" y2="528" stroke="#59636e" stroke-width="1.5" marker-end="url(#arr)"/>
+<path d="M 620 154 L 620 176 L 858.0 176 L 858.0 196" stroke="#59636e" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+<rect x="746" y="198" width="224" height="300" rx="8" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.8"/>
+<text x="760" y="226" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="17" fill="#1a7f37" font-weight="700" text-anchor="start">oracle</text>
+<text x="760" y="248" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">GT 上限</text>
+<text x="760" y="278" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">输入：oracle[variant] 对应路线</text>
+<text x="760" y="300" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">runner：原始 SkillContractRunner</text>
+<text x="760" y="322" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  完整 GT 状态，无观测限制</text>
+<text x="760" y="344" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  自动嵌套修复照常开启</text>
+<text x="760" y="366" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">跳过预期失败和撤销步骤</text>
+<text x="760" y="388" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">相当于知道答案</text>
+<rect x="760" y="460" width="98.0" height="22" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="767" y="475.32" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1a7f37" font-weight="400" text-anchor="start">上限（不公平）</text>
+<line x1="858.0" y1="498" x2="858.0" y2="528" stroke="#59636e" stroke-width="1.5" marker-end="url(#arr)"/>
+<path d="M 620 154 L 620 176 L 1096.0 176 L 1096.0 196" stroke="#59636e" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+<rect x="984" y="198" width="224" height="300" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="1.8" stroke-dasharray="6 4"/>
+<text x="998" y="226" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="17" fill="#0969da" font-weight="700" text-anchor="start">recovery</text>
+<text x="998" y="248" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#0969da" font-weight="400" text-anchor="start">闭环 planner</text>
+<text x="998" y="278" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">输入：--policy module:Class</text>
+<text x="998" y="300" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">runner：LimitedSession（受限）</text>
+<text x="998" y="322" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">run_planner()：</text>
+<text x="998" y="344" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  observe → next_call → call</text>
+<text x="998" y="366" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">直到 None 或 max_calls=60</text>
+<text x="998" y="388" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">VLM 接在这里</text>
+<rect x="998" y="460" width="74.72" height="22" rx="5" fill="#ffffff" stroke="#0969da" stroke-width="1"/>
+<text x="1005" y="475.32" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">⚠ 尚未实现</text>
+<line x1="1096.0" y1="498" x2="1096.0" y2="528" stroke="#59636e" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="32" y="530" width="1176" height="70" rx="8" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="48" y="556" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="14" fill="#1f2328" font-weight="700" text-anchor="start">收尾（所有 planner 相同）</text>
+<text x="48" y="580" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#59636e" font-weight="400" text-anchor="start">rig.step(60) → evaluate_goal（GT goal：all 全成立且 any 至少一组成立）→ floor_drops → 写 result.json / calls.jsonl / images/</text>
+<line x1="620" y1="600" x2="620" y2="626" stroke="#59636e" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect x="32" y="628" width="1176" height="62" rx="8" fill="#dafbe1" stroke="#1a7f37" stroke-width="1"/>
+<text x="48" y="654" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="14" fill="#1a7f37" font-weight="700" text-anchor="start">evaluate.py</text>
+<text x="48" y="676" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">按 planner × 难度档汇总；scripted 行的失败是设计出来的，只作为可行性上限，不参与排名</text>
+<text x="32" y="720" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="14" fill="#1f2328" font-weight="700" text-anchor="start">同一场景下的行为对比：T02 crowded（medium），nominal 第 3 步 pick 会失败</text>
+<text x="32" y="754" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#6e7781" font-weight="700" text-anchor="start">fixed</text>
+<rect x="110" y="738" width="40.84" height="22" rx="5" fill="#ffffff" stroke="#6e7781" stroke-width="1"/>
+<text x="117" y="752.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#6e7781" font-weight="400" text-anchor="start">look</text>
+<rect x="156.84" y="738" width="67.68" height="22" rx="5" fill="#ffffff" stroke="#6e7781" stroke-width="1"/>
+<text x="163.84" y="752.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#6e7781" font-weight="400" text-anchor="start">navigate</text>
+<rect x="230.52" y="738" width="54.26" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="237.52" y="752.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#cf222e" font-weight="400" text-anchor="start">pick ✗</text>
+<text x="300.78000000000003" y="754" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">停 → SR 0，GC 0.50</text>
+<text x="32" y="786" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#bc4c00" font-weight="700" text-anchor="start">retry</text>
+<rect x="110" y="770" width="40.84" height="22" rx="5" fill="#ffffff" stroke="#bc4c00" stroke-width="1"/>
+<text x="117" y="784.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#bc4c00" font-weight="400" text-anchor="start">look</text>
+<rect x="156.84" y="770" width="67.68" height="22" rx="5" fill="#ffffff" stroke="#bc4c00" stroke-width="1"/>
+<text x="163.84" y="784.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#bc4c00" font-weight="400" text-anchor="start">navigate</text>
+<rect x="230.52" y="770" width="54.26" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="237.52" y="784.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#cf222e" font-weight="400" text-anchor="start">pick ✗</text>
+<rect x="290.78000000000003" y="770" width="54.26" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="297.78000000000003" y="784.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#cf222e" font-weight="400" text-anchor="start">pick ✗</text>
+<rect x="351.04" y="770" width="54.26" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="358.04" y="784.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#cf222e" font-weight="400" text-anchor="start">pick ✗</text>
+<text x="421.3" y="786" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">停 → SR 0，GC 0.50</text>
+<text x="32" y="818" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1a7f37" font-weight="700" text-anchor="start">oracle</text>
+<rect x="110" y="802" width="40.84" height="22" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="117" y="816.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1a7f37" font-weight="400" text-anchor="start">look</text>
+<rect x="156.84" y="802" width="67.68" height="22" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="163.84" y="816.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1a7f37" font-weight="400" text-anchor="start">navigate</text>
+<rect x="230.52" y="802" width="67.68" height="22" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="237.52" y="816.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1a7f37" font-weight="400" text-anchor="start">separate</text>
+<rect x="304.20000000000005" y="802" width="40.84" height="22" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="311.20000000000005" y="816.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1a7f37" font-weight="400" text-anchor="start">pick</text>
+<rect x="351.0400000000001" y="802" width="54.26" height="22" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="358.0400000000001" y="816.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1a7f37" font-weight="400" text-anchor="start">rotate</text>
+<rect x="411.30000000000007" y="802" width="67.68" height="22" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="418.30000000000007" y="816.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1a7f37" font-weight="400" text-anchor="start">navigate</text>
+<rect x="484.9800000000001" y="802" width="67.68" height="22" rx="5" fill="#ffffff" stroke="#1a7f37" stroke-width="1"/>
+<text x="491.9800000000001" y="816.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#1a7f37" font-weight="400" text-anchor="start">approach</text>
+<rect x="558.6600000000001" y="802" width="60.97" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="565.6600000000001" y="816.96" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11" fill="#cf222e" font-weight="400" text-anchor="start">stack ✗</text>
+<text x="635.6300000000001" y="818" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">SR 0（这一轮 stack 失败）</text>
+</svg>

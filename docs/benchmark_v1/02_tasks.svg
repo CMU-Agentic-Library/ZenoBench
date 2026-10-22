@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="960" viewBox="0 0 1240 960"><title>Benchmark 支持的任务</title><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#59636e"/></marker></defs><rect width="100%" height="100%" fill="#ffffff"/>
+<text x="32" y="44" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="24" fill="#1f2328" font-weight="700" text-anchor="start">2 · 支持的任务</text>
+<text x="32" y="70" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13.5" fill="#59636e" font-weight="400" text-anchor="start">benchmark/tasks.json：10 个任务（T01–T10，各 3 个难度档）+ 21 个单场景 probe（P01–P22，无 P10）。指令三档相同，只有场景不同</text>
+<rect x="32" y="96" width="1176" height="34" rx="6" fill="#eaeef2" stroke="#d0d7de" stroke-width="1"/>
+<text x="42" y="118" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">任务</text>
+<text x="106" y="118" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">目标（指令简述）</text>
+<text x="376" y="118" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">easy</text>
+<text x="566" y="118" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">medium（条件 → 声明的路线）</text>
+<text x="966" y="118" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">hard（叠加条件）</text>
+<text x="42" y="155" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T01</text>
+<text x="106" y="155" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">书拿到餐桌</text>
+<text x="376" y="155" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">书已探出岛台边缘</text>
+<text x="566" y="155" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#9a6700" font-weight="400" text-anchor="start">不探出 → fallback: Pick 失败→Expose→Pick</text>
+<text x="966" y="155" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">起点在餐厅 + 不探出</text>
+<rect x="32" y="170" width="1176" height="40" rx="0" fill="#f6f8fa" stroke="none" stroke-width="1"/>
+<text x="42" y="195" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T02</text>
+<text x="106" y="195" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">叠两块积木</text>
+<text x="376" y="195" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">积木周围空旷</text>
+<text x="566" y="195" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#9a6700" font-weight="400" text-anchor="start">B 被碗和擀面杖夹住 → fallback: Separate / Push</text>
+<text x="966" y="195" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">起点背对 + 被夹住</text>
+<text x="42" y="235" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T03</text>
+<text x="106" y="235" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">擀面杖和勺子收进同一容器</text>
+<text x="376" y="235" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">只有收纳箱</text>
+<text x="566" y="235" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#8250df" font-weight="400" text-anchor="start">还有马克杯 → alternative: 放不进杯→收纳箱</text>
+<text x="966" y="235" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">背对 + 有马克杯</text>
+<rect x="32" y="250" width="1176" height="40" rx="0" fill="#f6f8fa" stroke="none" stroke-width="1"/>
+<text x="42" y="275" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T04</text>
+<text x="106" y="275" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">杯子放到矮柜（没有就马克杯）</text>
+<text x="376" y="275" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">岛台上有杯子</text>
+<text x="566" y="275" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#8250df" font-weight="400" text-anchor="start">没有杯子 → alternative: 马克杯</text>
+<text x="966" y="275" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">没杯子 + 马克杯在电视柜</text>
+<text x="42" y="315" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T05</text>
+<text x="106" y="315" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">钢笔拿到书桌（没有就铅笔）</text>
+<text x="376" y="315" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">（钢笔路线不稳，仅诊断）</text>
+<text x="566" y="315" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#8250df" font-weight="400" text-anchor="start">没有钢笔 → alternative: 铅笔</text>
+<text x="966" y="315" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">没钢笔 + 铅笔在餐厅</text>
+<rect x="32" y="330" width="1176" height="40" rx="0" fill="#f6f8fa" stroke="none" stroke-width="1"/>
+<text x="42" y="355" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T06</text>
+<text x="106" y="355" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">积木摆到矮柜或电视柜上</text>
+<text x="376" y="355" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">柜顶空</text>
+<text x="566" y="355" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#8250df" font-weight="400" text-anchor="start">柜顶满 → alternative: Place 失败→电视柜</text>
+<text x="966" y="355" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">柜顶满 + 积木在餐厅</text>
+<text x="42" y="395" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T07</text>
+<text x="106" y="395" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">燕麦热到 ≥40°C，关火关门</text>
+<text x="376" y="395" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">微波炉正常</text>
+<text x="566" y="395" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#8250df" font-weight="400" text-anchor="start">微波炉不加热 → alternative: 改用灶台</text>
+<text x="966" y="395" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">微波炉坏 + 燕麦在矮柜</text>
+<rect x="32" y="410" width="1176" height="40" rx="0" fill="#f6f8fa" stroke="none" stroke-width="1"/>
+<text x="42" y="435" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T08</text>
+<text x="106" y="435" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">用海绵擦岛台，海绵留在岛台</text>
+<text x="376" y="435" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">海绵在岛台</text>
+<text x="566" y="435" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#9a6700" font-weight="400" text-anchor="start">海绵在电视柜 → 先取海绵</text>
+<text x="966" y="435" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">起点在餐厅 + 海绵不在</text>
+<text x="42" y="475" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T09</text>
+<text x="106" y="475" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">番茄汤：入锅、搅拌、盖盖、60°C、关火</text>
+<text x="376" y="475" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">锅盖没盖</text>
+<text x="566" y="475" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#9a6700" font-weight="400" text-anchor="start">锅盖盖着 → fallback: Uncover</text>
+<text x="966" y="475" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">盖着 + 勺子在电视柜</text>
+<rect x="32" y="490" width="1176" height="40" rx="0" fill="#f6f8fa" stroke="none" stroke-width="1"/>
+<text x="42" y="515" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="700" text-anchor="start">T10</text>
+<text x="106" y="515" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">易拉罐扔进垃圾桶</text>
+<text x="376" y="515" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">易拉罐在岛台</text>
+<text x="566" y="515" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#9a6700" font-weight="400" text-anchor="start">罐在餐厅 → fallback: 先 Search</text>
+<text x="966" y="515" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#cf222e" font-weight="400" text-anchor="start">起点在餐厅 + 罐在电视柜</text>
+<line x1="32" y1="530" x2="1208" y2="530" stroke="#d0d7de" stroke-width="1.5"/>
+<text x="32" y="556" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">颜色：</text>
+<rect x="76" y="541" width="107.38" height="22" rx="5" fill="#dafbe1" stroke="#1a7f37" stroke-width="1"/>
+<text x="83" y="556.14" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#1a7f37" font-weight="400" text-anchor="start">easy：无失败条件</text>
+<rect x="193.38" y="541" width="248.255" height="22" rx="5" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="200.38" y="556.14" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">medium：fallback / alternative 一个条件</text>
+<rect x="451.635" y="541" width="199.38" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="458.635" y="556.14" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#cf222e" font-weight="400" text-anchor="start">hard：再叠加起点远或物体不在视野</text>
+<text x="32" y="586" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">fallback = 真实失败 → 辅助 skill 修复状态 → 重试同一动作；alternative = 换另一个合法的物体 / 工具 / 目的地达成同一目标</text>
+<text x="32" y="622" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="16" fill="#1f2328" font-weight="700" text-anchor="start">Probe（覆盖塞不进 10 个任务的 SkillNode，单场景、单路线）</text>
+<text x="32" y="644" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">最终一轮 14/21 通过；红框为未通过</text>
+<rect x="32.0" y="660" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44.0" y="687" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P01</text>
+<text x="86.0" y="687" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">挥手/点头/姿态</text>
+<rect x="268.5" y="660" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="280.5" y="687" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P02</text>
+<text x="322.5" y="687" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">识别/测量/计数/探索</text>
+<rect x="505.0" y="660" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="517.0" y="687" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P03</text>
+<text x="559.0" y="687" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">滚擀面杖</text>
+<rect x="741.5" y="660" width="230" height="44" rx="6" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="753.5" y="687" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">P04</text>
+<text x="795.5" y="687" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">瓶子放倒再立起</text>
+<rect x="978.0" y="660" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="990.0" y="687" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P05</text>
+<text x="1032.0" y="687" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">翻书</text>
+<rect x="32.0" y="712" width="230" height="44" rx="6" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="44.0" y="739" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">P06</text>
+<text x="86.0" y="739" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">双手：左手持物开关柜</text>
+<rect x="268.5" y="712" width="230" height="44" rx="6" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="280.5" y="739" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">P07</text>
+<text x="322.5" y="739" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">展示积木/扶马克杯</text>
+<rect x="505.0" y="712" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="517.0" y="739" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P08</text>
+<text x="559.0" y="739" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">积木对齐与叠放</text>
+<rect x="741.5" y="712" width="230" height="44" rx="6" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="753.5" y="739" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">P09</text>
+<text x="795.5" y="739" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">扫拢积木</text>
+<rect x="978.0" y="712" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="990.0" y="739" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P11</text>
+<text x="1032.0" y="739" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">灶台开关</text>
+<rect x="32.0" y="764" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44.0" y="791" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P12</text>
+<text x="86.0" y="791" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">敲门/看/开关柜</text>
+<rect x="268.5" y="764" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="280.5" y="791" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P13</text>
+<text x="322.5" y="791" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">微波炉按钮</text>
+<rect x="505.0" y="764" width="230" height="44" rx="6" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="517.0" y="791" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">P14</text>
+<text x="559.0" y="791" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">复位与交换</text>
+<rect x="741.5" y="764" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="753.5" y="791" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P15</text>
+<text x="795.5" y="791" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">归组与分类</text>
+<rect x="978.0" y="764" width="230" height="44" rx="6" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="990.0" y="791" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">P16</text>
+<text x="1032.0" y="791" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">倒空马克杯</text>
+<rect x="32.0" y="816" width="230" height="44" rx="6" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="44.0" y="843" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#cf222e" font-weight="700" text-anchor="start">P17</text>
+<text x="86.0" y="843" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">倾倒</text>
+<rect x="268.5" y="816" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="280.5" y="843" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P18</text>
+<text x="322.5" y="843" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">从地上捡积木</text>
+<rect x="505.0" y="816" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="517.0" y="843" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P19</text>
+<text x="559.0" y="843" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">勺子蘸汤</text>
+<rect x="741.5" y="816" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="753.5" y="843" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P20</text>
+<text x="795.5" y="843" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">把积木藏进锅</text>
+<rect x="978.0" y="816" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="990.0" y="843" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P21</text>
+<text x="1032.0" y="843" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">清空柜顶</text>
+<rect x="32.0" y="868" width="230" height="44" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="44.0" y="895" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#0969da" font-weight="700" text-anchor="start">P22</text>
+<text x="86.0" y="895" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">冰箱冷却燕麦</text>
+</svg>

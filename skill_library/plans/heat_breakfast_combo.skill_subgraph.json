@@ -84,7 +84,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     "value": "dining_table_2/surface_2"
     }
    },
    "depends_on": [
@@ -99,7 +99,7 @@
      "value": "milk"
     },
     "receptacle": {
-     "value": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     "value": "dining_table_2/surface_2"
     }
    },
    "depends_on": [

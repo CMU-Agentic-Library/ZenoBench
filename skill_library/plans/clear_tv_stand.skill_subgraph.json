@@ -11,7 +11,7 @@
      "value": "juice_bottle"
     },
     "receptacle": {
-     "value": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "value": "bookcase_2/surface_3"
     }
    },
    "depends_on": []
@@ -24,7 +24,7 @@
      "value": "tissue_box"
     },
     "receptacle": {
-     "value": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "value": "bookcase_2/surface_3"
     }
    },
    "depends_on": [

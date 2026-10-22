@@ -30,7 +30,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "value": "bookcase_2/surface_3"
     }
    },
    "depends_on": [
@@ -45,7 +45,7 @@
      "value": "book_red"
     },
     "receptacle": {
-     "value": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "value": "bookcase_2/surface_3"
     }
    },
    "depends_on": [
@@ -81,7 +81,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"
+     "value": "bookcase_3/surface_2"
     }
    },
    "depends_on": [
@@ -96,7 +96,7 @@
      "value": "book_green"
     },
     "receptacle": {
-     "value": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"
+     "value": "bookcase_3/surface_2"
     }
    },
    "depends_on": [

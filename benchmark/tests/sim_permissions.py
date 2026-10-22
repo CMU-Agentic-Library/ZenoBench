@@ -54,7 +54,7 @@ def main():
         s = SimpleNamespace(observer=ep.observer,
                             call=lambda verb, args: ep.call({"contract": verb, "args": args})[0])
         hidden, ghost = "bowl_inside_kitchen_cabinet", "golden_teapot"
-        CAB = "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        CAB = "kitchen_cabinet_6"
 
         def frozen():
             st = rig.state()

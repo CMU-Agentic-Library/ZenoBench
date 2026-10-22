@@ -15,7 +15,7 @@
  "placed_objects": {
   "book_red": {
    "asset": "book_red",
-   "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+   "support": "desk_1/surface_0",
    "yaw": 1.5707963267948966,
    "position": [
     -1.2409100222153973,
@@ -25,7 +25,7 @@
   },
   "book_green": {
    "asset": "book_green",
-   "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+   "support": "desk_1/surface_0",
    "yaw": 1.5707963267948966,
    "position": [
     -0.34971109474733175,
@@ -35,7 +35,7 @@
   },
   "shelf_blocker": {
    "asset": "rubber_duck",
-   "support": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_1",
+   "support": "bookcase_3/surface_1",
    "yaw": -2.930568260297326,
    "position": [
     2.18782466093615,
@@ -55,15 +55,15 @@
  },
  "candidate_supports": {
   "book_red": [
-   "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
-   "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
+   "desk_1/surface_0",
+   "desk_3/surface_1"
   ],
   "book_green": [
-   "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
-   "SimpleDeskFactory_5016639_spawn_asset_2990980/surface_1"
+   "desk_1/surface_0",
+   "desk_3/surface_1"
   ],
   "shelf_blocker": [
-   "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_1"
+   "bookcase_3/surface_1"
   ]
  }
 }

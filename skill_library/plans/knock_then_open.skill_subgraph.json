@@ -8,7 +8,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "value": "kitchen_cabinet_6"
     }
    },
    "depends_on": []
@@ -18,7 +18,7 @@
    "skill": "knock",
    "args": {
     "articulated": {
-     "value": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "value": "kitchen_cabinet_6"
     }
    },
    "depends_on": [
@@ -30,7 +30,7 @@
    "skill": "open",
    "args": {
     "articulated": {
-     "value": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "value": "kitchen_cabinet_6"
     }
    },
    "depends_on": [

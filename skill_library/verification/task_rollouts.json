@@ -87,12 +87,12 @@
     [
      "on",
      "book_red",
-     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "bookcase_2/surface_3"
     ],
     [
      "on",
      "book_green",
-     "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"
+     "bookcase_3/surface_2"
     ]
    ]
   },
@@ -119,17 +119,17 @@
     [
      "on",
      "notebook",
-     "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "desk_1/surface_0"
     ],
     [
      "on",
      "pen",
-     "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "desk_1/surface_0"
     ],
     [
      "on",
      "desk_mug",
-     "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "desk_1/surface_0"
     ]
    ]
   },
@@ -149,7 +149,7 @@
       "cup",
       "spoon"
      ],
-     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+     "dining_table_2/surface_2",
      0.5
     ]
    ]
@@ -190,7 +190,7 @@
     [
      "on",
      "oatmeal",
-     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     "dining_table_2/surface_2"
     ],
     [
      "is_closed",
@@ -245,7 +245,7 @@
     [
      "on",
      "milk",
-     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     "dining_table_2/surface_2"
     ],
     [
      "is_closed",
@@ -318,12 +318,12 @@
     [
      "on",
      "tissue_box",
-     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "bookcase_2/surface_3"
     ],
     [
      "on",
      "paperback_book",
-     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     "bookcase_2/surface_3"
     ]
    ]
   },
@@ -644,11 +644,11 @@
    "goal": [
     [
      "observed",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "kitchen_cabinet_6"
     ],
     [
      "is_closed",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "kitchen_cabinet_6"
     ]
    ]
   },
@@ -665,11 +665,11 @@
    "goal": [
     [
      "knocked",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "kitchen_cabinet_6"
     ],
     [
      "is_open",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "kitchen_cabinet_6"
     ]
    ]
   },
@@ -757,7 +757,7 @@
    "goal": [
     [
      "support_clear",
-     "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+     "tv_stand_2/surface_1"
     ]
    ]
   },
@@ -816,7 +816,7 @@
     ],
     [
      "is_open",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "kitchen_cabinet_6"
     ]
    ]
   }

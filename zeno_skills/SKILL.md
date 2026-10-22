@@ -23,8 +23,8 @@ skills also use scene-specific parking and camera defaults:
 cd zeno-house   # repository root
 OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
   --scene sim/zeno_house.usd --ann annotations/zeno_house.json --out runs/my_run \
-  --plan "open KitchenCabinetFactory_7025538_spawn_asset_6631478" \
-         "close KitchenCabinetFactory_7025538_spawn_asset_6631478"
+  --plan "open kitchen_cabinet_6" \
+         "close kitchen_cabinet_6"
 # steps: open <art> | close <art> | pick <obj> | place <obj> <support> <x> <y> | goto <x> <y> <yaw>
 ```
 

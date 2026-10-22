@@ -189,7 +189,7 @@
      [
       "on",
       "paperback_book",
-      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+      "dining_table_2/surface_2"
      ],
      [
       "hand_empty",
@@ -240,14 +240,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.72,
          6.5
@@ -301,14 +301,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.72,
          6.5
@@ -364,14 +364,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.72,
          6.5
@@ -396,7 +396,12 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "paperback_book",
+    "dining_table_2/surface_2",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "T02_stack_blocks",
@@ -770,7 +775,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "destination": "tv_stand_2/surface_1"
        }
       },
       {
@@ -851,7 +856,15 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "wooden_block_a",
+    "wooden_block_b",
+    "rolling_pin",
+    "oatmeal",
+    "kitchen_island/top",
+    "tv_stand_2/surface_1"
+   ]
   },
   {
    "task_id": "T03_utensils_one_container",
@@ -876,7 +889,7 @@
     ],
     "move": {
      "wide_storage_bin": {
-      "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+      "support": "tv_stand_2/surface_1",
       "xy": [
        7.3,
        0.4
@@ -1002,7 +1015,7 @@
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -1086,7 +1099,7 @@
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -1327,7 +1340,16 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "rolling_pin",
+    "breakfast_spoon",
+    "mug",
+    "wide_storage_bin",
+    "kitchen_island/top",
+    "tv_stand_2/surface_1",
+    "kitchen_island"
+   ]
   },
   {
    "task_id": "T04_cup_or_mug_to_cabinet",
@@ -1407,7 +1429,7 @@
      ],
      "move": {
       "mug": {
-       "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+       "support": "tv_stand_2/surface_1",
        "xy": [
         7.75,
         0.36
@@ -1441,7 +1463,7 @@
       [
        "on",
        "cup_counter_b",
-       "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       "kitchen_cabinet_6/top"
       ],
       [
        "upright",
@@ -1452,7 +1474,7 @@
       [
        "on",
        "mug",
-       "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       "kitchen_cabinet_6/top"
       ],
       [
        "upright",
@@ -1501,14 +1523,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "cup_counter_b",
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "receptacle": "kitchen_cabinet_6/top"
        }
       }
      ],
@@ -1558,14 +1580,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "mug",
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "receptacle": "kitchen_cabinet_6/top"
        }
       }
      ],
@@ -1621,14 +1643,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "mug",
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "receptacle": "kitchen_cabinet_6/top"
        }
       }
      ],
@@ -1649,7 +1671,13 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "cup_counter_b",
+    "mug",
+    "kitchen_cabinet_6/top",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "T05_pen_or_pencil_to_desk",
@@ -1668,7 +1696,7 @@
     ],
     "move": {
      "pen": {
-      "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+      "support": "bookcase_2/surface_3",
       "xy": [
        1.15,
        -0.4
@@ -1720,7 +1748,7 @@
      ],
      "move": {
       "pencil": {
-       "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       "support": "dining_table_2/surface_2",
        "xy": [
         3.7,
         6.3
@@ -1749,14 +1777,14 @@
       [
        "on",
        "pen",
-       "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       "desk_1/surface_0"
       ]
      ],
      [
       [
        "on",
        "pencil",
-       "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       "desk_1/surface_0"
       ]
      ]
     ],
@@ -1783,13 +1811,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "target": "bookcase_2/surface_3"
        }
       },
       {
@@ -1807,14 +1835,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "destination": "desk_1/surface_0"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "pen",
-        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "receptacle": "desk_1/surface_0"
        }
       }
      ],
@@ -1830,13 +1858,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "target": "bookcase_2/surface_3"
        }
       },
       {
@@ -1864,14 +1892,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "destination": "desk_1/surface_0"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "pencil",
-        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "receptacle": "desk_1/surface_0"
        }
       }
      ],
@@ -1887,13 +1915,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "target": "bookcase_2/surface_3"
        }
       },
       {
@@ -1927,14 +1955,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "destination": "desk_1/surface_0"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "pencil",
-        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "receptacle": "desk_1/surface_0"
        }
       }
      ],
@@ -1955,7 +1983,13 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "pen",
+    "pencil",
+    "desk_1/surface_0",
+    "bookcase_2/surface_3"
+   ]
   },
   {
    "task_id": "T06_block_destination_occupied",
@@ -2007,7 +2041,7 @@
      "note": "the pot lid and the oatmeal bowl take up the cabinet top: the 15 cm gap between them is too narrow for a block",
      "move": {
       "pot_lid": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.335,
         0.36
@@ -2015,7 +2049,7 @@
        "yaw_deg": 0.0
       },
       "oatmeal": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.7,
         0.36
@@ -2042,7 +2076,7 @@
      ],
      "move": {
       "pot_lid": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.335,
         0.36
@@ -2050,7 +2084,7 @@
        "yaw_deg": 0.0
       },
       "oatmeal": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.7,
         0.36
@@ -2058,7 +2092,7 @@
        "yaw_deg": 0.0
       },
       "wooden_block_a": {
-       "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       "support": "dining_table_2/surface_2",
        "xy": [
         3.7,
         6.3
@@ -2092,28 +2126,28 @@
       [
        "on",
        "wooden_block_a",
-       "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       "kitchen_cabinet_6/top"
       ]
      ],
      [
       [
        "on",
        "wooden_block_a",
-       "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       "tv_stand_2/surface_1"
       ]
      ],
      [
       [
        "on",
        "wooden_block_b",
-       "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+       "kitchen_cabinet_6/top"
       ]
      ],
      [
       [
        "on",
        "wooden_block_b",
-       "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+       "tv_stand_2/surface_1"
       ]
      ]
     ],
@@ -2158,14 +2192,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "receptacle": "kitchen_cabinet_6/top"
        }
       }
      ],
@@ -2199,14 +2233,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "receptacle": "kitchen_cabinet_6/top"
        },
        "expect": "fail",
        "role": "failure"
@@ -2214,7 +2248,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "destination": "tv_stand_2/surface_1"
        },
        "role": "alternative"
       },
@@ -2222,7 +2256,7 @@
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "receptacle": "tv_stand_2/surface_1"
        },
        "role": "alternative"
       }
@@ -2258,14 +2292,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "receptacle": "kitchen_cabinet_6/top"
        },
        "expect": "fail",
        "role": "failure"
@@ -2273,47 +2307,47 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_3699907_spawn_asset_505866/top"
+        "destination": "kitchen_cabinet_4/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "KitchenCabinetFactory_3699907_spawn_asset_505866/top"
+        "receptacle": "kitchen_cabinet_4/top"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "target": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "clear",
        "args": {
-        "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
-        "receptacle": "KitchenCabinetFactory_3699907_spawn_asset_505866/top"
+        "support": "kitchen_cabinet_6/top",
+        "receptacle": "kitchen_cabinet_4/top"
        },
        "role": "recovery"
       },
       {
        "skill": "look",
        "args": {
-        "target": "KitchenCabinetFactory_3699907_spawn_asset_505866/top"
+        "target": "kitchen_cabinet_4/top"
        }
       },
       {
        "skill": "fetch",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "receptacle": "kitchen_cabinet_6/top"
        },
        "role": "retry_after_recovery"
       }
@@ -2356,14 +2390,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "receptacle": "kitchen_cabinet_6/top"
        },
        "expect": "fail",
        "role": "failure"
@@ -2371,7 +2405,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "destination": "tv_stand_2/surface_1"
        },
        "role": "alternative"
       },
@@ -2379,7 +2413,7 @@
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "receptacle": "tv_stand_2/surface_1"
        },
        "role": "alternative"
       }
@@ -2401,7 +2435,17 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "wooden_block_a",
+    "wooden_block_b",
+    "oatmeal",
+    "pot_lid",
+    "kitchen_cabinet_6/top",
+    "tv_stand_2/surface_1",
+    "kitchen_island/top",
+    "kitchen_cabinet_4/top"
+   ]
   },
   {
    "task_id": "T07_heat_oatmeal",
@@ -2470,7 +2514,7 @@
      },
      "move": {
       "oatmeal": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.7,
         0.36
@@ -2892,7 +2936,15 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "oatmeal",
+    "kitchen_stove",
+    "kitchen_microwave",
+    "kitchen_island/top",
+    "kitchen_microwave/inside_floor",
+    "kitchen_stove/top"
+   ]
   },
   {
    "task_id": "T08_wipe_island",
@@ -2932,7 +2984,7 @@
      "note": "the sponge lies on the TV stand behind the island",
      "move": {
       "kitchen_sponge": {
-       "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+       "support": "tv_stand_2/surface_1",
        "xy": [
         7.6,
         0.38
@@ -2964,7 +3016,7 @@
      ],
      "move": {
       "kitchen_sponge": {
-       "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+       "support": "tv_stand_2/surface_1",
        "xy": [
         7.6,
         0.38
@@ -3027,7 +3079,7 @@
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -3075,7 +3127,7 @@
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -3219,7 +3271,12 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "kitchen_sponge",
+    "kitchen_island/top",
+    "tv_stand_2/surface_1"
+   ]
   },
   {
    "task_id": "T09_tomato_soup",
@@ -3310,7 +3367,7 @@
      ],
      "move": {
       "breakfast_spoon": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.5,
         0.36
@@ -3770,7 +3827,16 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "cherry_tomato_1",
+    "cherry_tomato_2",
+    "handled_cooking_pot",
+    "pot_lid",
+    "breakfast_spoon",
+    "kitchen_stove",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "T10_trash_the_can",
@@ -3823,7 +3889,7 @@
      "note": "the can stands on the dining table in the next room, out of sight",
      "move": {
       "soda_can": {
-       "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       "support": "dining_table_2/surface_2",
        "xy": [
         3.7,
         6.3
@@ -3855,7 +3921,7 @@
      ],
      "move": {
       "soda_can": {
-       "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+       "support": "tv_stand_2/surface_1",
        "xy": [
         7.2,
         0.36
@@ -4092,7 +4158,12 @@
     19
    ],
    "since": "v2",
-   "not_adopted": []
+   "not_adopted": [],
+   "entities": [
+    "soda_can",
+    "trash_can",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "T11_collect_fruits",
@@ -4185,13 +4256,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "target": "dining_table_2/surface_2"
        }
       },
       {
@@ -4209,13 +4280,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "target": "bookcase_2/surface_3"
        }
       },
       {
@@ -4238,13 +4309,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "target": "dining_table_2/surface_2"
        }
       },
       {
@@ -4262,13 +4333,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "target": "bookcase_2/surface_3"
        }
       },
       {
@@ -4283,14 +4354,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "destination": "desk_1/surface_0"
        },
        "role": "alternative"
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "target": "desk_1/surface_0"
        },
        "role": "alternative"
       },
@@ -4346,6 +4417,14 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "apple",
+    "fruit_basket",
+    "serving_tray",
+    "dining_table_2/surface_2",
+    "bookcase_2/surface_3",
+    "desk_1/surface_0"
    ]
   },
   {
@@ -4381,7 +4460,7 @@
      ],
      "move": {
       "rubber_duck": {
-       "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
+       "support": "desk_1/surface_0",
        "xy": [
         -0.95,
         -6.02
@@ -4638,6 +4717,11 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "toy_car",
+    "rubber_duck",
+    "storage_basket"
    ]
   },
   {
@@ -4693,7 +4777,7 @@
      ],
      "move": {
       "bowl": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.68,
         0.36
@@ -4720,7 +4804,7 @@
      ],
      "move": {
       "bowl": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.68,
         0.36
@@ -4751,7 +4835,7 @@
       [
        "on",
        "cup",
-       "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       "dining_table_2/surface_2"
       ],
       [
        "upright",
@@ -4764,7 +4848,7 @@
         "cup",
         "spoon"
        ],
-       "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       "dining_table_2/surface_2",
        0.5
       ]
      ],
@@ -4772,7 +4856,7 @@
       [
        "on",
        "mug",
-       "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       "dining_table_2/surface_2"
       ],
       [
        "upright",
@@ -4785,7 +4869,7 @@
         "mug",
         "spoon"
        ],
-       "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+       "dining_table_2/surface_2",
        0.5
       ]
      ]
@@ -4794,7 +4878,7 @@
      [
       "on",
       "bowl",
-      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+      "dining_table_2/surface_2"
      ],
      [
       "upright",
@@ -4823,19 +4907,19 @@
       {
        "skill": "look",
        "args": {
-        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "target": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "destination": "tv_stand_2/surface_1"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -4853,14 +4937,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "bowl",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.05,
          7.1
@@ -4882,14 +4966,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "cup",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.2,
          7.4
@@ -4909,19 +4993,19 @@
       {
        "skill": "look",
        "args": {
-        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "target": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "destination": "tv_stand_2/surface_1"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -4939,14 +5023,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "bowl",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.05,
          7.1
@@ -4964,14 +5048,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        },
        "role": "alternative"
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "target": "bookcase_2/surface_3"
        },
        "role": "alternative"
       },
@@ -4985,14 +5069,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "mug",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.2,
          7.4
@@ -5012,19 +5096,19 @@
       {
        "skill": "look",
        "args": {
-        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "target": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "destination": "tv_stand_2/surface_1"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -5042,14 +5126,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "cup",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.2,
          7.4
@@ -5087,14 +5171,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "bowl",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.05,
          7.1
@@ -5114,19 +5198,19 @@
       {
        "skill": "look",
        "args": {
-        "target": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "target": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "destination": "tv_stand_2/surface_1"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -5160,14 +5244,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "bowl",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.05,
          7.1
@@ -5185,14 +5269,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        },
        "role": "alternative"
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "target": "bookcase_2/surface_3"
        },
        "role": "alternative"
       },
@@ -5206,14 +5290,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "mug",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.2,
          7.4
@@ -5275,6 +5359,15 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "bowl",
+    "cup",
+    "mug",
+    "spoon",
+    "dining_table_2/surface_2",
+    "tv_stand_2/surface_1",
+    "bookcase_2/surface_3"
    ]
   },
   {
@@ -5495,6 +5588,10 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "paperback_book",
+    "kitchen_island/top"
    ]
   },
   {
@@ -5723,6 +5820,10 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "rolling_pin",
+    "kitchen_island/top"
    ]
   },
   {
@@ -6369,6 +6470,15 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "wooden_block_b",
+    "pot_lid",
+    "handled_cooking_pot",
+    "oatmeal",
+    "rolling_pin",
+    "kitchen_stove/top",
+    "kitchen_island/top"
    ]
   },
   {
@@ -6422,7 +6532,7 @@
      ],
      [
       "is_closed",
-      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+      "kitchen_cabinet_6"
      ],
      [
       "hand_empty",
@@ -6444,25 +6554,25 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "open",
        "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "inspect",
        "args": {
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "receptacle": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "close",
        "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "articulated": "kitchen_cabinet_6"
        }
       }
      ],
@@ -6493,6 +6603,11 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "plate_inside_kitchen_cabinet",
+    "bowl_inside_kitchen_cabinet",
+    "kitchen_cabinet_6"
    ]
   },
   {
@@ -6567,13 +6682,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "destination": "tv_stand_2/surface_1"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+        "target": "tv_stand_2/surface_1"
        }
       },
       {
@@ -6591,13 +6706,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "target": "bookcase_2/surface_3"
        }
       },
       {
@@ -6672,6 +6787,13 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "soda_can",
+    "foam_cube",
+    "wide_storage_bin",
+    "tv_stand_2/surface_1",
+    "bookcase_2/surface_3"
    ]
   },
   {
@@ -6700,7 +6822,7 @@
      "note": "the bottle on the low wall cabinet top",
      "move": {
       "juice_bottle": {
-       "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
         3.68,
         0.36
@@ -6723,7 +6845,7 @@
      [
       "on",
       "juice_bottle",
-      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+      "dining_table_2/surface_2"
      ],
      [
       "upright",
@@ -6749,13 +6871,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "target": "kitchen_cabinet_6/top"
        }
       },
       {
@@ -6773,14 +6895,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+        "destination": "dining_table_2/surface_2"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "juice_bottle",
-        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "receptacle": "dining_table_2/surface_2",
         "hint_xy": [
          3.0,
          7.3
@@ -6815,6 +6937,11 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "juice_bottle",
+    "dining_table_2/surface_2",
+    "kitchen_cabinet_6/top"
    ]
   },
   {
@@ -6857,7 +6984,7 @@
      [
       "on",
       "book_red",
-      "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+      "bookcase_2/surface_3"
      ],
      [
       "hand_empty",
@@ -6879,13 +7006,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "destination": "desk_1/surface_0"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "target": "desk_1/surface_0"
        }
       },
       {
@@ -6909,14 +7036,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "receptacle": "bookcase_2/surface_3"
        }
       }
      ],
@@ -6932,13 +7059,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "destination": "desk_1/surface_0"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+        "target": "desk_1/surface_0"
        }
       },
       {
@@ -6972,14 +7099,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "destination": "bookcase_2/surface_3"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+        "receptacle": "bookcase_2/surface_3"
        }
       }
      ],
@@ -7010,6 +7137,11 @@
     17,
     18,
     19
+   ],
+   "entities": [
+    "book_red",
+    "bookcase_2/surface_3",
+    "desk_1/surface_0"
    ]
   },
   {
@@ -7156,7 +7288,12 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "kitchen_island/top",
+    "kitchen_island",
+    "breakfast_fridge"
+   ]
   },
   {
    "task_id": "P02_perception",
@@ -7256,7 +7393,13 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "soda_can",
+    "juice_bottle",
+    "kitchen_island/top",
+    "mug"
+   ]
   },
   {
    "task_id": "P03_rolling_pin",
@@ -7343,7 +7486,11 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "rolling_pin",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P04_bottle",
@@ -7420,7 +7567,11 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "juice_bottle",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P05_flip_book",
@@ -7521,7 +7672,11 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "paperback_book",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P06_two_hands",
@@ -7557,7 +7712,7 @@
      ],
      [
       "is_closed",
-      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+      "kitchen_cabinet_6"
      ]
     ]
    },
@@ -7613,30 +7768,36 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "approach",
        "args": {
-        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "target": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "open",
        "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "close",
        "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "articulated": "kitchen_cabinet_6"
        }
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "rolling_pin",
+    "kitchen_cabinet_6",
+    "kitchen_island/top",
+    "kitchen_island"
+   ]
   },
   {
    "task_id": "P07_present_and_brace",
@@ -7767,7 +7928,12 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "wooden_block_b",
+    "mug",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P08_block_alignment",
@@ -7865,7 +8031,12 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "wooden_block_a",
+    "wooden_block_b",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P09_sweep_blocks",
@@ -7953,7 +8124,12 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "wooden_block_a",
+    "wooden_block_b",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P11_stove_cycle",
@@ -8061,7 +8237,14 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "mug",
+    "kitchen_stove",
+    "kitchen_island/top",
+    "kitchen_stove/top",
+    "kitchen_stove/power_button"
+   ]
   },
   {
    "task_id": "P12_cabinet",
@@ -8090,11 +8273,11 @@
     "all": [
      [
       "knocked",
-      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+      "kitchen_cabinet_6"
      ],
      [
       "is_closed",
-      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+      "kitchen_cabinet_6"
      ]
     ]
    },
@@ -8112,36 +8295,39 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "destination": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "knock",
        "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "open",
        "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "inspect",
        "args": {
-        "receptacle": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "receptacle": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "close",
        "args": {
-        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+        "articulated": "kitchen_cabinet_6"
        }
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "kitchen_cabinet_6"
+   ]
   },
   {
    "task_id": "P13_microwave_buttons",
@@ -8260,7 +8446,14 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "oatmeal",
+    "kitchen_microwave",
+    "kitchen_island/top",
+    "kitchen_microwave/inside_floor",
+    "kitchen_microwave/start_button"
+   ]
   },
   {
    "task_id": "P14_restore_swap",
@@ -8342,7 +8535,13 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "wooden_block_a",
+    "soda_can",
+    "kitchen_island/top",
+    "kitchen_stove/top"
+   ]
   },
   {
    "task_id": "P15_arrange_and_sort",
@@ -8447,7 +8646,15 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "wooden_block_a",
+    "wooden_block_b",
+    "soda_can",
+    "trash_can",
+    "kitchen_stove/top",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P16_empty_mug",
@@ -8526,7 +8733,12 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "mug",
+    "handled_cooking_pot",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P17_pour",
@@ -8629,7 +8841,12 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "mug",
+    "handled_cooking_pot",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P19_spoon_dip",
@@ -8740,7 +8957,12 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "breakfast_spoon",
+    "handled_cooking_pot",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P20_hide_block",
@@ -8830,7 +9052,14 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "wooden_block_b",
+    "pot_lid",
+    "handled_cooking_pot",
+    "kitchen_stove/top",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P21_clear_cabinet",
@@ -8860,7 +9089,7 @@
     "all": [
      [
       "support_clear",
-      "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+      "kitchen_cabinet_6/top"
      ]
     ]
    },
@@ -8878,25 +9107,30 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "destination": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+        "target": "kitchen_cabinet_6/top"
        }
       },
       {
        "skill": "clear",
        "args": {
-        "support": "KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+        "support": "kitchen_cabinet_6/top",
         "receptacle": "kitchen_island/top"
        }
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "spoon_kitchen_cabinet",
+    "kitchen_cabinet_6/top",
+    "kitchen_island/top"
+   ]
   },
   {
    "task_id": "P22_chill_oatmeal",
@@ -8995,7 +9229,12 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "oatmeal",
+    "breakfast_fridge",
+    "breakfast_fridge/inside_shelf"
+   ]
   },
   {
    "task_id": "P18_floor_pick",
@@ -9079,7 +9318,11 @@
       }
      ]
     }
-   }
+   },
+   "entities": [
+    "floor_block",
+    "kitchen_island/top"
+   ]
   }
  ]
 }

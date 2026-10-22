@@ -2,7 +2,7 @@
  {
   "task": "collect_fruits",
   "solved": true,
-  "expansions": 88,
+  "expansions": 87,
   "length": 8,
   "verbs": [
    "navigate/empty",
@@ -18,7 +18,7 @@
  {
   "task": "tidy_toys",
   "solved": true,
-  "expansions": 247,
+  "expansions": 244,
   "length": 12,
   "verbs": [
    "navigate/empty",
@@ -38,7 +38,7 @@
  {
   "task": "shelve_books",
   "solved": true,
-  "expansions": 58,
+  "expansions": 62,
   "length": 8,
   "verbs": [
    "navigate/empty",
@@ -83,7 +83,7 @@
  {
   "task": "heat_breakfast",
   "solved": true,
-  "expansions": 256,
+  "expansions": 257,
   "length": 20,
   "verbs": [
    "navigate/empty",
@@ -121,7 +121,7 @@
  {
   "task": "heat_breakfast_combo",
   "solved": true,
-  "expansions": 145,
+  "expansions": 146,
   "length": 10,
   "verbs": [
    "navigate/empty",
@@ -139,7 +139,7 @@
  {
   "task": "recycle_and_store",
   "solved": true,
-  "expansions": 271,
+  "expansions": 269,
   "length": 12,
   "verbs": [
    "navigate/empty",
@@ -159,7 +159,7 @@
  {
   "task": "organize_utility_items",
   "solved": true,
-  "expansions": 242,
+  "expansions": 241,
   "length": 12,
   "verbs": [
    "navigate/empty",

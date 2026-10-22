@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="900" viewBox="0 0 1240 900"><title>Benchmark 对外接口</title><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#59636e"/></marker></defs><rect width="100%" height="100%" fill="#ffffff"/>
+<text x="32" y="44" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="24" fill="#1f2328" font-weight="700" text-anchor="start">1 · Benchmark 对外接口</text>
+<text x="32" y="70" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="13.5" fill="#59636e" font-weight="400" text-anchor="start">planner 只通过 LimitedSession 与仿真交互（benchmark/session.py、observation.py、planners.py）；进程内 Python 调用，没有 HTTP</text>
+<rect x="32" y="100" width="330" height="250" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+<text x="50" y="128" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#0969da" font-weight="700" text-anchor="start">你的 Planner（VLM 接在这里）</text>
+<text x="50" y="148" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">class MyPlanner(Planner)</text>
+<rect x="50" y="162" width="294" height="72" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="62" y="184" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">reset(task_instruction,</text>
+<text x="62" y="202" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">      skills=None)</text>
+<text x="62" y="222" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">← 每个 episode 开始时调用一次</text>
+<rect x="50" y="244" width="294" height="92" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="62" y="266" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">next_call(observation)</text>
+<text x="62" y="286" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">→ {&quot;skill&quot;: str, &quot;args&quot;: dict}</text>
+<text x="62" y="306" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#1a7f37" font-weight="400" text-anchor="start">→ None  表示结束 episode</text>
+<text x="62" y="326" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">每步调用一次，最多 max_calls=60 步</text>
+<rect x="430" y="100" width="420" height="250" rx="8" fill="#f6f8fa" stroke="#1f2328" stroke-width="1.5"/>
+<text x="448" y="128" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="15" fill="#1f2328" font-weight="700" text-anchor="start">LimitedSession(rig, image_dir)</text>
+<text x="448" y="156" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="400" text-anchor="start">observe()</text>
+<text x="526.625" y="156" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">→ observation dict</text>
+<text x="448" y="176" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="400" text-anchor="start">call(skill, args)</text>
+<text x="587.625" y="176" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">→ feedback dict</text>
+<text x="448" y="196" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="400" text-anchor="start">run_planner(planner, task,</text>
+<text x="656.25" y="196" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start"></text>
+<text x="448" y="216" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12.5" fill="#0969da" font-weight="400" text-anchor="start">  max_calls=60)</text>
+<text x="572.375" y="216" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12.5" fill="#1f2328" font-weight="400" text-anchor="start">→ 闭环跑完整个 episode</text>
+<rect x="448" y="240" width="186" height="96" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="460" y="262" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">Observer</text>
+<text x="460" y="282" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· 观测缓存 cache</text>
+<text x="460" y="298" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· 当前视野 view</text>
+<text x="460" y="314" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· 静态布局 places</text>
+<text x="460" y="330" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· 打码未观测名字</text>
+<rect x="646" y="240" width="188" height="96" rx="6" fill="#ffffff" stroke="#d0d7de" stroke-width="1"/>
+<text x="658" y="262" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="13" fill="#1f2328" font-weight="700" text-anchor="start">GatedRunner</text>
+<text x="658" y="282" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· 继承 SkillContractRunner</text>
+<text x="658" y="298" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· auto_repair=False</text>
+<text x="658" y="314" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· 每次调用先过权限检查</text>
+<text x="658" y="330" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11.5" fill="#59636e" font-weight="400" text-anchor="start">· 可行性谓词仅记录</text>
+<rect x="918" y="100" width="290" height="250" rx="8" fill="#eaeef2" stroke="#57606a" stroke-width="1.5"/>
+<text x="936" y="128" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#57606a" font-weight="700" text-anchor="start">Isaac Sim rig（GT 状态）</text>
+<text x="936" y="156" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· launch() / make_rig(first_person=True)</text>
+<text x="936" y="178" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· 70 个 SkillNode / Contract</text>
+<text x="936" y="200" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· 头部相机 RGB（无手腕相机）</text>
+<text x="936" y="222" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  rig.occlusion = True</text>
+<text x="936" y="244" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  rig.static_explore = True</text>
+<text x="936" y="266" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  rig.auto_recovery = False</text>
+<line x1="362" y1="200" x2="428" y2="200" stroke="#0969da" stroke-width="1.5" marker-end="url(#arr)"/>
+<text x="395" y="192" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#0969da" font-weight="400" text-anchor="middle">action</text>
+<line x1="428" y1="280" x2="364" y2="280" stroke="#1a7f37" stroke-width="1.5" marker-end="url(#arr)"/>
+<text x="396" y="272" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#1a7f37" font-weight="400" text-anchor="middle">obs</text>
+<line x1="850" y1="200" x2="916" y2="200" stroke="#59636e" stroke-width="1.5" marker-end="url(#arr)"/>
+<line x1="916" y1="280" x2="852" y2="280" stroke="#59636e" stroke-width="1.5" marker-end="url(#arr)"/>
+<text x="883" y="192" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle">run</text>
+<text x="883" y="272" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="11" fill="#59636e" font-weight="400" text-anchor="middle">GT</text>
+<rect x="32" y="380" width="380" height="300" rx="8" fill="#dafbe1" stroke="#1a7f37" stroke-width="1"/>
+<text x="50" y="408" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#1a7f37" font-weight="700" text-anchor="start">observation（observe() 返回）</text>
+<text x="50" y="438" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">image</text>
+<text x="96.6" y="438" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">头部相机 PNG 的路径</text>
+<text x="50" y="460" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">visible_objects</text>
+<text x="169.79999999999995" y="460" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">当前视野里的物体</text>
+<text x="50" y="482" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">observation_cache</text>
+<text x="184.43999999999994" y="482" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">见过的物体：位姿/支撑/容器/tick</text>
+<text x="50" y="504" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">known_places</text>
+<text x="147.83999999999997" y="504" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">房间、家具、支撑面、门、按钮</text>
+<text x="50" y="526" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">robot.base_pose</text>
+<text x="169.79999999999995" y="526" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">[x, y, yaw]</text>
+<text x="50" y="548" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">robot.room</text>
+<text x="133.2" y="548" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">所在房间</text>
+<text x="50" y="570" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">robot.right/left_hand</text>
+<text x="213.7199999999999" y="570" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">手里拿的物体</text>
+<text x="50" y="592" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">robot.temperatures_c</text>
+<text x="206.39999999999992" y="592" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">只含已观测物体</text>
+<text x="50" y="614" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">last_feedback</text>
+<text x="155.15999999999997" y="614" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">上一步的 feedback</text>
+<text x="50" y="650" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#cf222e" font-weight="400" text-anchor="start">不给：GT 物体列表、goal 子句状态、未见物体位姿</text>
+<rect x="430" y="380" width="400" height="300" rx="8" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="448" y="408" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#9a6700" font-weight="700" text-anchor="start">feedback（call() 返回）</text>
+<text x="448" y="438" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">action, success</text>
+<text x="567.8" y="438" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start"></text>
+<text x="448" y="460" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">error_code, error</text>
+<text x="582.4399999999999" y="460" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">错误码 + 文本</text>
+<text x="448" y="482" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">checks</text>
+<text x="501.92" y="482" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">实测前/后置条件 atom/holds/detail</text>
+<text x="448" y="504" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">outputs</text>
+<text x="509.24" y="504" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">skill 的输出</text>
+<text x="448" y="526" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">path</text>
+<text x="487.28" y="526" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">选中的 policy 路径 ⚠</text>
+<text x="448" y="548" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">substeps</text>
+<text x="516.56" y="548" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">嵌套步骤 action/success/error ⚠</text>
+<text x="448" y="570" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#0969da" font-weight="400" text-anchor="start">image, now_visible</text>
+<text x="589.76" y="570" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">调用后的图像与视野</text>
+<text x="448" y="602" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">未观测的物体名统一替换成 &lt;unobserved&gt;</text>
+<text x="448" y="626" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#cf222e" font-weight="400" text-anchor="start">⚠ env_service 刻意隐藏 path 与嵌套调用，</text>
+<text x="448" y="646" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#cf222e" font-weight="400" text-anchor="start">   这里却返回了，两套接口不一致</text>
+<rect x="848" y="380" width="360" height="300" rx="8" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="866" y="408" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#cf222e" font-weight="700" text-anchor="start">权限规则（GatedRunner）</text>
+<text x="866" y="438" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· 物体参数必须已观测或在手上</text>
+<text x="866" y="460" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  未见 = 不存在：同一个拒绝，机器人不动</text>
+<text x="866" y="482" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· 接触类 skill 要求物体在当前视野</text>
+<text x="866" y="504" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  （pick/push/stir/盖子…）</text>
+<text x="866" y="526" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· 放置目标只需观测过，位姿取自缓存</text>
+<text x="866" y="548" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· navigate/approach 去缓存位姿</text>
+<text x="866" y="570" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· search 接受任意名字</text>
+<text x="866" y="592" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· explore 只按静态布局算覆盖</text>
+<text x="866" y="614" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">· 关闭：嵌套修复、pick 内推到桌边、</text>
+<text x="866" y="636" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#59636e" font-weight="400" text-anchor="start">  pick→push、开门换位重试</text>
+<text x="32" y="710" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="start">错误码</text>
+<text x="32" y="754" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#cf222e" font-weight="700" text-anchor="start">门控拒绝（不动）</text>
+<rect x="32" y="764" width="98.17999999999999" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="39" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#cf222e" font-weight="400" text-anchor="start">NOT_OBSERVED</text>
+<rect x="138.18" y="764" width="91.16499999999999" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="145.18" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#cf222e" font-weight="400" text-anchor="start">NOT_IN_VIEW</text>
+<rect x="237.345" y="764" width="77.13499999999999" height="22" rx="5" fill="#ffebe9" stroke="#cf222e" stroke-width="1"/>
+<text x="244.345" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#cf222e" font-weight="400" text-anchor="start">NOT_FOUND</text>
+<text x="346.48" y="754" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#8250df" font-weight="700" text-anchor="start">调用写错</text>
+<rect x="346.48" y="764" width="70.12" height="22" rx="5" fill="#fbefff" stroke="#8250df" stroke-width="1"/>
+<text x="353.48" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#8250df" font-weight="400" text-anchor="start">BAD_CALL</text>
+<text x="448.6" y="754" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="12" fill="#9a6700" font-weight="700" text-anchor="start">物理执行失败</text>
+<rect x="448.6" y="764" width="147.285" height="22" rx="5" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="455.6" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">PRECONDITION_FAILED</text>
+<rect x="603.885" y="764" width="105.195" height="22" rx="5" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="610.885" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">POLICY_FAILED</text>
+<rect x="717.0799999999999" y="764" width="63.105" height="22" rx="5" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="724.0799999999999" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">NO_PATH</text>
+<rect x="788.185" y="764" width="119.225" height="22" rx="5" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="795.185" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">SUBSKILL_FAILED</text>
+<rect x="915.41" y="764" width="154.29999999999998" height="22" rx="5" fill="#fff8c5" stroke="#9a6700" stroke-width="1"/>
+<text x="922.41" y="779.14" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="11.5" fill="#9a6700" font-weight="400" text-anchor="start">POSTCONDITION_FAILED</text>
+<text x="32" y="826" font-family="'Noto Sans CJK SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif" font-size="15" fill="#1f2328" font-weight="700" text-anchor="start">启动方式</text>
+<rect x="32" y="838" width="1176" height="40" rx="6" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1"/>
+<text x="48" y="864" font-family="'DejaVu Sans Mono','Menlo','Consolas',monospace" font-size="12" fill="#1f2328" font-weight="400" text-anchor="start">$ISAACLAB_PYTHON benchmark/run_episode.py --task T07_heat_oatmeal --difficulty hard --seed 5 --planner recovery --policy mypkg.planner:MyPlanner</text>
+</svg>

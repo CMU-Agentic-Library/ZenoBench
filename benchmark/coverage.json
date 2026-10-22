@@ -1402,13 +1402,13 @@
    "outcome": "fail",
    "calls": 9,
    "failed_calls": [
-    "open_articulated(articulated=KitchenCabinetFactory_7025538_spawn_asset_6631478)"
+    "open_articulated(articulated=kitchen_cabinet_6)"
    ],
    "evidence_failure": "",
    "recovery": [],
    "goal": [
     "holding(left, rolling_pin) OK",
-    "is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478) OK"
+    "is_closed(kitchen_cabinet_6) OK"
    ],
    "dropped": [],
    "wall_s": 125.6,
@@ -1515,8 +1515,8 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "knocked(KitchenCabinetFactory_7025538_spawn_asset_6631478) OK",
-    "is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478) OK"
+    "knocked(kitchen_cabinet_6) OK",
+    "is_closed(kitchen_cabinet_6) OK"
    ],
    "dropped": [],
    "wall_s": 85.6,
@@ -1694,7 +1694,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "support_clear(KitchenCabinetFactory_7025538_spawn_asset_6631478/top) OK"
+    "support_clear(kitchen_cabinet_6/top) OK"
    ],
    "dropped": [],
    "wall_s": 269.3,
@@ -1739,7 +1739,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "on(paperback_book, dining_table_2/surface_2) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1764,7 +1764,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "on(paperback_book, dining_table_2/surface_2) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1784,7 +1784,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "on(paperback_book, dining_table_2/surface_2) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1810,7 +1810,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "on(paperback_book, dining_table_2/surface_2) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1835,7 +1835,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "on(paperback_book, dining_table_2/surface_2) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1855,7 +1855,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "on(paperback_book, dining_table_2/surface_2) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1877,7 +1877,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) FALSE",
+    "on(paperback_book, dining_table_2/surface_2) FALSE",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1901,7 +1901,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) FALSE",
+    "on(paperback_book, dining_table_2/surface_2) FALSE",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1924,7 +1924,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, TableDiningFactory_1437886_spawn_asset_2104395/surface_2) OK",
+    "on(paperback_book, dining_table_2/surface_2) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -2401,7 +2401,7 @@
    "failed_calls": [
     "search_object(object=cup)"
    ],
-   "evidence_failure": "search_object(object=cup): search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']",
+   "evidence_failure": "search_object(object=cup): search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'kitchen_cabinet_6', 'kitchen_cabinet_4', 'large_shelf_2']",
    "recovery": [
     "navigate_place(destination=mug) OK",
     "pick_object(object=mug) OK"
@@ -2425,7 +2425,7 @@
    "failed_calls": [
     "search_object(object=cup)"
    ],
-   "evidence_failure": "search_object(object=cup): search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']",
+   "evidence_failure": "search_object(object=cup): search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'kitchen_cabinet_6', 'kitchen_cabinet_4', 'large_shelf_2']",
    "recovery": [
     "search_object(object=mug, region=living_room_0_0) OK"
    ],
@@ -2467,7 +2467,7 @@
    "failed_calls": [
     "search_object(object=cup)"
    ],
-   "evidence_failure": "search_object(object=cup): search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']",
+   "evidence_failure": "search_object(object=cup): search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'kitchen_cabinet_6', 'kitchen_cabinet_4', 'large_shelf_2']",
    "recovery": [
     "navigate_place(destination=mug) OK",
     "pick_object(object=mug) OK"
@@ -2491,7 +2491,7 @@
    "failed_calls": [
     "search_object(object=cup)"
    ],
-   "evidence_failure": "search_object(object=cup): search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']",
+   "evidence_failure": "search_object(object=cup): search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'kitchen_cabinet_6', 'kitchen_cabinet_4', 'large_shelf_2']",
    "recovery": [
     "search_object(object=mug, region=living_room_0_0) OK"
    ],
@@ -2757,12 +2757,12 @@
    "outcome": "pass",
    "calls": 7,
    "failed_calls": [
-    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+    "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)"
    ],
-   "evidence_failure": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top): place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+   "evidence_failure": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top): place wooden_block_a: no free spot on kitchen_cabinet_6/top",
    "recovery": [
-    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
@@ -2781,13 +2781,13 @@
    "outcome": "pass",
    "calls": 8,
    "failed_calls": [
-    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+    "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)"
    ],
-   "evidence_failure": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top): place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+   "evidence_failure": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top): place wooden_block_a: no free spot on kitchen_cabinet_6/top",
    "recovery": [
     "search_object(object=wooden_block_a, region=dining_room_0_1) OK",
-    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
@@ -2825,12 +2825,12 @@
    "outcome": "pass",
    "calls": 7,
    "failed_calls": [
-    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+    "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)"
    ],
-   "evidence_failure": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top): place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+   "evidence_failure": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top): place wooden_block_a: no free spot on kitchen_cabinet_6/top",
    "recovery": [
-    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
@@ -2849,13 +2849,13 @@
    "outcome": "pass",
    "calls": 8,
    "failed_calls": [
-    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+    "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)"
    ],
-   "evidence_failure": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top): place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top",
+   "evidence_failure": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top): place wooden_block_a: no free spot on kitchen_cabinet_6/top",
    "recovery": [
     "search_object(object=wooden_block_a, region=dining_room_0_1) OK",
-    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
@@ -2874,7 +2874,7 @@
    "outcome": "fail",
    "calls": 5,
    "failed_calls": [
-    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+    "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)"
    ],
    "evidence_failure": "",
    "recovery": [],
@@ -2895,9 +2895,9 @@
    "outcome": "fail",
    "calls": 7,
    "failed_calls": [
-    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
-    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
-    "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)"
+    "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
+    "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
+    "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)"
    ],
    "evidence_failure": "",
    "recovery": [],
@@ -2920,8 +2920,8 @@
    "failed_calls": [],
    "evidence_failure": "",
    "recovery": [
-    "navigate_place(destination=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=TVStandFactory_6305370_spawn_asset_6627927/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/surface_1) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
    ],
    "goal": [
     "hand_empty(right) OK"

@@ -90,7 +90,7 @@
          "error": "edge pinch paperback_book: not held (lift 0.000 m)"
         }
        ],
-       "first_unexpected_failure": "place_object(object=paperback_book, receptacle=TableDiningFactory_1437886_spawn_asset_2104395/surface_2, hint_xy=[3.72, 6.5]): flat_back_out: paperback_book slipped out of the hand while carrying it",
+       "first_unexpected_failure": "place_object(object=paperback_book, receptacle=dining_table_2/surface_2, hint_xy=[3.72, 6.5]): flat_back_out: paperback_book slipped out of the hand while carrying it",
        "dropped": [
         "paperback_book"
        ]
@@ -211,7 +211,7 @@
          "error": "edge pinch paperback_book: not held (lift 0.000 m)"
         }
        ],
-       "first_unexpected_failure": "place_object(object=paperback_book, receptacle=TableDiningFactory_1437886_spawn_asset_2104395/surface_2, hint_xy=[3.72, 6.5]): flat_back_out: paperback_book slipped out of the hand while carrying it",
+       "first_unexpected_failure": "place_object(object=paperback_book, receptacle=dining_table_2/surface_2, hint_xy=[3.72, 6.5]): flat_back_out: paperback_book slipped out of the hand while carrying it",
        "dropped": [
         "paperback_book"
        ]
@@ -1876,7 +1876,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -1893,7 +1893,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -1910,7 +1910,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -1927,7 +1927,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -1944,7 +1944,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -1961,7 +1961,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -1978,7 +1978,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -1995,7 +1995,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2012,7 +2012,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2029,7 +2029,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2079,7 +2079,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2096,7 +2096,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2113,7 +2113,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2130,7 +2130,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2147,7 +2147,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2164,7 +2164,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2181,7 +2181,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2198,7 +2198,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2215,7 +2215,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2232,7 +2232,7 @@
          "call": "search_object(object=cup)",
          "failed": true,
          "class": "execution",
-         "error": "search cup: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
+         "error": "search cup: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabin"
         }
        ],
        "first_unexpected_failure": "",
@@ -2821,10 +2821,10 @@
        "config_hash": "a4edfec3b3ae",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2838,10 +2838,10 @@
        "config_hash": "2471bdc7df8e",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2855,10 +2855,10 @@
        "config_hash": "62bed59cf65f",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2872,10 +2872,10 @@
        "config_hash": "a4edfec3b3ae",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2889,10 +2889,10 @@
        "config_hash": "88aefc562ca1",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2906,10 +2906,10 @@
        "config_hash": "7b609ebf329c",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2923,10 +2923,10 @@
        "config_hash": "7b609ebf329c",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2940,10 +2940,10 @@
        "config_hash": "9a7d895b6f52",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2957,10 +2957,10 @@
        "config_hash": "88aefc562ca1",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -2974,10 +2974,10 @@
        "config_hash": "7773d4c7fad8",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3024,10 +3024,10 @@
        "config_hash": "2841724bd31d",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3041,10 +3041,10 @@
        "config_hash": "a2f351571ce5",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3058,10 +3058,10 @@
        "config_hash": "460d5b9a8a4f",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3075,10 +3075,10 @@
        "config_hash": "2841724bd31d",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3092,10 +3092,10 @@
        "config_hash": "bb465f6b848f",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3109,10 +3109,10 @@
        "config_hash": "57968cdef4c6",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3126,10 +3126,10 @@
        "config_hash": "57968cdef4c6",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3143,10 +3143,10 @@
        "config_hash": "cc3d558c0526",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3160,10 +3160,10 @@
        "config_hash": "bb465f6b848f",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",
@@ -3177,10 +3177,10 @@
        "config_hash": "8e8590a5a2a5",
        "expected_failures": [
         {
-         "call": "place_object(object=wooden_block_a, receptacle=KitchenCabinetFactory_7025538_spawn_asset_6631478/top)",
+         "call": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)",
          "failed": true,
          "class": "execution",
-         "error": "place wooden_block_a: no free spot on KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
+         "error": "place wooden_block_a: no free spot on kitchen_cabinet_6/top"
         }
        ],
        "first_unexpected_failure": "",

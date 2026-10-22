@@ -8,7 +8,7 @@
    "skill": "look",
    "args": {
     "target": {
-     "value": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     "value": "kitchen_cabinet_6"
     }
    },
    "depends_on": []

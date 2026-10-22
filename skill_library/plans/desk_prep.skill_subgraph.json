@@ -30,7 +30,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "value": "desk_1/surface_0"
     }
    },
    "depends_on": [
@@ -45,7 +45,7 @@
      "value": "notebook"
     },
     "receptacle": {
-     "value": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "value": "desk_1/surface_0"
     }
    },
    "depends_on": [
@@ -81,7 +81,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "value": "desk_1/surface_0"
     }
    },
    "depends_on": [
@@ -96,7 +96,7 @@
      "value": "pen"
     },
     "receptacle": {
-     "value": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "value": "desk_1/surface_0"
     }
    },
    "depends_on": [
@@ -132,7 +132,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "value": "desk_1/surface_0"
     }
    },
    "depends_on": [
@@ -147,7 +147,7 @@
      "value": "desk_mug"
     },
     "receptacle": {
-     "value": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     "value": "desk_1/surface_0"
     }
    },
    "depends_on": [

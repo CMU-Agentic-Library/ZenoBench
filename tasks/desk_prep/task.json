@@ -15,7 +15,7 @@
  "placed_objects": {
   "notebook": {
    "asset": "notebook",
-   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "support": "dining_table_2/surface_2",
    "yaw": 1.5707963267948966,
    "position": [
     2.9495297124242215,
@@ -25,7 +25,7 @@
   },
   "pen": {
    "asset": "pen",
-   "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+   "support": "dining_table_2/surface_2",
    "yaw": -3.1243861495570098,
    "position": [
     3.607783764118874,
@@ -35,7 +35,7 @@
   },
   "pencil": {
    "asset": "pencil",
-   "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
+   "support": "bookcase_2/surface_3",
    "yaw": -1.2584473065782806,
    "position": [
     0.964535342579661,
@@ -45,7 +45,7 @@
   },
   "desk_mug": {
    "asset": "breakfast_mug",
-   "support": "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
+   "support": "tv_stand_2/surface_1",
    "yaw": 1.072064815449135,
    "position": [
     7.7275071660269194,
@@ -67,22 +67,22 @@
  },
  "candidate_supports": {
   "notebook": [
-   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+   "dining_table_2/surface_2"
   ],
   "pen": [
-   "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
-   "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+   "dining_table_2/surface_2",
+   "tv_stand_2/surface_1"
   ],
   "pencil": [
-   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+   "bookcase_2/surface_3"
   ],
   "desk_mug": [
-   "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
-   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+   "tv_stand_2/surface_1",
+   "bookcase_2/surface_3"
   ],
   "desk_cup": [
-   "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
-   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+   "tv_stand_2/surface_1",
+   "bookcase_2/surface_3"
   ]
  }
 }

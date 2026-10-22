@@ -22,8 +22,8 @@ Per task:
 
 from __future__ import annotations
 
-CAB = "KitchenCabinetFactory_7025538_spawn_asset_6631478/top"
-TV = "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+CAB = "kitchen_cabinet_6/top"
+TV = "tv_stand_2/surface_1"
 
 SEMANTICS = {
     "T02_stack_blocks": {

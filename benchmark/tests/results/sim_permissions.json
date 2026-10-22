@@ -53,12 +53,12 @@
   {
    "check": "search: hidden == nonexistent feedback",
    "passed": true,
-   "detail": "search bowl_inside_kitchen_cabinet: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593'] | search golden_teapot: not seen at ['TVStandFactory_6305370_spawn_asset_6627927', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'KitchenCabinetFactory_7025538_spawn_asset_6631478', 'KitchenCabinetFactory_3699907_spawn_asset_505866', 'LargeShelfFactory_9217729_spawn_asset_7904593']"
+   "detail": "search bowl_inside_kitchen_cabinet: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'kitchen_cabinet_6', 'kitchen_cabinet_4', 'large_shelf_2'] | search golden_teapot: not seen at ['tv_stand_2', 'kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave', 'kitchen_cabinet_6', 'kitchen_cabinet_4', 'large_shelf_2']"
   },
   {
    "check": "closed cabinet occludes its contents",
    "passed": true,
-   "detail": "inside closed KitchenCabinetFactory_7025538_spawn_asset_6631478"
+   "detail": "inside closed kitchen_cabinet_6"
   },
   {
    "check": "open, inspect, close observes the hidden bowl",

@@ -53,9 +53,9 @@ temperature uses a separate task-level model. Success is measured from simulator
 |---|---|---|---|
 | `collect_fruits` | 6/7 | fail | navigate_place(destination=apple): carry: orange slipped out of the hand while carrying it |
 | `tidy_toys` | 12/12 | pass | goal inside(toy_car, storage_basket), inside(toy_block, storage_basket), inside(rubber_duck, storage_basket) |
-| `shelve_books` | 6/7 | fail | navigate_place(destination=SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2): carry_navigate: no base path to [1.792378303490153, |
-| `desk_prep` | 2/3 | fail | navigate_place(destination=SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0): carry_in: notebook slipped out of the hand while carryi |
-| `breakfast_setup` | 0/1 | fail | arrange_objects(objects=['plate', 'cup', 'spoon'], support=TableDiningFactory_1437886_spawn_asset_2104395/surface_2, max_dist_m=0.5): SUBSKI |
+| `shelve_books` | 6/7 | fail | navigate_place(destination=bookcase_3/surface_2): carry_navigate: no base path to [1.792378303490153, |
+| `desk_prep` | 2/3 | fail | navigate_place(destination=desk_1/surface_0): carry_in: notebook slipped out of the hand while carryi |
+| `breakfast_setup` | 0/1 | fail | arrange_objects(objects=['plate', 'cup', 'spoon'], support=dining_table_2/surface_2, max_dist_m=0.5): SUBSKI |
 | `heat_breakfast` | 1/2 | fail | open_articulated(articulated=breakfast_fridge): open breakfast_fridge: joint -0.000 -> 0.000, goal -0.458 |
 | `heat_breakfast_preloaded` | 2/2 | pass | goal temperature_at_least(oatmeal, 60.0) |
 | `heat_breakfast_combo` | 3/4 | fail | open_articulated(articulated=breakfast_fridge): open breakfast_fridge: joint -0.000 -> 0.000, goal -0.458 |
@@ -76,13 +76,13 @@ temperature uses a separate task-level model. Success is measured from simulator
 | `find_lid` | 1/1 | pass | goal observed(pot_lid) |
 | `explore_living_room` | 1/1 | pass | goal room_explored(living_room_0_0) |
 | `count_tomatoes` | 1/1 | pass | goal counted(cherry_tomato) |
-| `inspect_cabinet` | 1/1 | pass | goal observed(KitchenCabinetFactory_7025538_spawn_asset_6631478), is_closed(KitchenCabinetFactory_7025538_spawn_asset_6631478) |
+| `inspect_cabinet` | 1/1 | pass | goal observed(kitchen_cabinet_6), is_closed(kitchen_cabinet_6) |
 | `knock_then_open` | 3/3 | pass |  |
 | `square_block` | 2/2 | pass | goal squared(wooden_block_a) |
 | `swap_blocks` | 0/1 | fail | swap_objects(a=wooden_block_a, b=soda_can): SUBSKILL_FAILED: pick_object(object=wooden_block_a): pick wooden_block_a: not held (lift 0.000 m |
 | `sort_items` | 1/2 | fail | fetch_object(object=wooden_block_b, receptacle=mug): SUBSKILL_FAILED: place_object(object=wooden_block_b, receptacle=mug): joint move to pla |
 | `empty_mug` | 0/1 | fail | fetch_object(object=cherry_tomato_1, receptacle=kitchen_island/top): SUBSKILL_FAILED: pick_object(object=cherry_tomato_1): pick cherry_tomat |
-| `clear_tv_stand` | 0/1 | fail | fetch_object(object=juice_bottle, receptacle=SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3): SUBSKILL_FAILED: pick_object(obje |
+| `clear_tv_stand` | 0/1 | fail | fetch_object(object=juice_bottle, receptacle=bookcase_2/surface_3): SUBSKILL_FAILED: pick_object(obje |
 | `sweep_blocks` | 1/1 | pass | goal clustered(['wooden_block_a', 'wooden_block_b'], 0.12) |
 | `present_block` | 3/3 | pass | goal presenting(wooden_block_a) |
 | `serve_in_left_hand` | 1/2 | fail | brace_object(object=wooden_block_a): steady wooden_block_a: no base pose lets the left arm reach a contact (rejected: {'candidates': 3432, ' |
@@ -289,7 +289,7 @@ Python helpers (`zeno_skills/annotations.py`):
 ```python
 ann = SceneAnnotations("tasks/collect_fruits/annotation.json")
 ann.grasp_poses(ann.objects["orange"], pos, quat)          # world TCP grasp candidates
-ann.handle_pose(ann.art("KitchenCabinetFactory_7025538_spawn_asset_6631478"), q)  # handle TCP pose at joint value q
+ann.handle_pose(ann.art("kitchen_cabinet_6"), q)  # handle TCP pose at joint value q
 ann.motion(art, q)                                         # rigid motion of the door/drawer
 ```
 
@@ -311,7 +311,7 @@ Run any sequence of skills on any scene (records `run.mp4` + `result.json`):
 $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
     --ann tasks/collect_fruits/annotation.json --out runs/demo \
     --plan "pick orange" "place orange in:fruit_basket" \
-           "open KitchenCabinetFactory_7025538_spawn_asset_6631478" "close KitchenCabinetFactory_7025538_spawn_asset_6631478"
+           "open kitchen_cabinet_6" "close kitchen_cabinet_6"
 # steps: open <art> | close <art> | pick <obj> | place <obj> in:<container>
 #        place <obj> <surface or alias> [x y] | push <obj> <dx> <dy> | goto <x> <y> <yaw>
 ```

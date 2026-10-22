@@ -96,7 +96,7 @@ class WorldModel:
             if obstacle["name"] in ignore:
                 continue
             box = np.asarray(obstacle["aabb"], float)
-            if obstacle["name"].startswith("KitchenSpaceFactory_"):
+            if obstacle["name"].startswith("kitchen_counter"):
                 # The kitchen fixture's single AABB spans its counter and
                 # upper cabinets. Its support levels expose an open band
                 # between them; keeping one solid box makes every counter

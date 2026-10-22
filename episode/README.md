@@ -16,7 +16,7 @@ Both catalogs store tasks in one shape on disk; `load_catalog` only indexes them
 | catalog | tasks |
 |---|---|
 | `skill_library/tasks.json` (35 tasks) | one variant `default` on the built scene `tasks/<scene>/` (shared by several tasks), no overlay; `entities` (planner relevance and the GT `objects` observation), `watch` (the objects among them); route `nominal` = the planner subgraph in `skill_library/plans/`, kept in sync by `python -m skill_library.planner`; planner-only inputs under `planner` |
-| `benchmark/tasks.json`, `benchmark/v3/tasks.json` | condition variants with overlays, declared routes with expected failures |
+| `benchmark/tasks.json`, `benchmark/v3/tasks.json` | condition variants with overlays, declared routes with expected failures; v3 has `entities` too (the watched objects, then every scene entity its goal and routes name; written by `benchmark/define_tasks_v3.py`), shown only by a profile with `gt_objects` on, never by `benchmark` |
 
 A task with one variant ignores the seed: no distractors to drop and no `vary`, so every seed gives the same `config_hash`.
 
