@@ -39,7 +39,7 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-from episode.catalog import DEFAULT_CATALOGS, ROOT, load_catalog, public_task
+from episode.catalog import DEFAULT_CATALOGS, ROOT, TIERS, load_catalog, public_task, selectable_variants
 from episode.episode import flat_goal
 from episode.profile import load_profile, max_calls, observation_fields
 
@@ -173,8 +173,9 @@ class ExpManager:
     # -- interface 1 ------------------------------------------------------------------
     def initial_task(self, body):
         """Start a simulator and block until it is ready (503 BUSY when none is free).
-        ``variant`` / ``difficulty`` pick the condition (default: the seed picks one), ``seed`` the
-        episode's random overlay (default 0); a task with one variant ignores both."""
+        ``variant`` / ``difficulty`` pick the condition (default: the seed picks one of the graded
+        variants, never a diagnostic one), ``seed`` the episode's random overlay (default 0); a
+        task with one variant ignores both."""
         task_id = body.get("task_id")
         if not isinstance(task_id, str) or not task_id:
             raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", 'missing "task_id"')
@@ -185,8 +186,12 @@ class ExpManager:
         if variant is not None and variant not in entry["task"]["variants"]:
             raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_VARIANT",
                                f"task {task_id} has no variant {variant!r}")
-        if difficulty is not None and difficulty not in ("easy", "medium", "hard"):
+        if difficulty is not None and difficulty not in TIERS:
             raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", '"difficulty": easy, medium or hard')
+        if variant is None and not selectable_variants(entry["task"], difficulty):
+            # checked here, before a simulator starts (the worker would fail with SIM_ERROR)
+            raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_VARIANT",
+                               f"task {task_id} has no {difficulty or 'graded'} variant")
         if isinstance(seed, bool) or not isinstance(seed, int):
             raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", '"seed" must be an integer')
         budget = self.cfg.max_calls or max_calls(entry["profile"], entry["task"])

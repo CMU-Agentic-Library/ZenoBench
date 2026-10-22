@@ -30,6 +30,23 @@ def load_catalog(path) -> dict[str, dict]:
     return {t["task_id"]: dict(t, catalog_kind=doc.get("kind")) for t in doc["tasks"]}
 
 
+TIERS = ("easy", "medium", "hard")
+
+
+def difficulty_of(v: dict) -> str:
+    """easy: no failure / alternative condition; medium: one; hard: several.  A variant may
+    declare its own (``diagnostic``: a route kept for the record, known to fail physically)."""
+    return v.get("difficulty", "easy" if not v.get("conditions") else
+                 "medium" if len(v["conditions"]) == 1 else "hard")
+
+
+def selectable_variants(task: dict, difficulty: str | None = None) -> list[str]:
+    """The variants a seed may pick when no variant is named: those of ``difficulty``, else every
+    graded one (easy / medium / hard); diagnostic variants only when named explicitly."""
+    return sorted(n for n, v in task["variants"].items()
+                  if (difficulty_of(v) == difficulty if difficulty else difficulty_of(v) in TIERS))
+
+
 def public_task(task: dict) -> dict:
     """What the planner is told about a task: its name and instruction, never the goal or the variant."""
     return {"task_id": task["task_id"], "name": task["task_id"], "description": task["instruction"]}

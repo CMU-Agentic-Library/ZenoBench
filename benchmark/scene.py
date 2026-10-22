@@ -24,11 +24,15 @@ import hashlib
 import json
 import math
 import random
+import sys
 from pathlib import Path
 
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))          # also when imported as `scene` from benchmark/ (make_batches)
+from episode.catalog import difficulty_of, selectable_variants  # noqa: E402,F401  (difficulty_of: re-exported)
 
 
 def rz(yaw):
@@ -36,19 +40,15 @@ def rz(yaw):
     return np.array([[c, -s, 0.0], [s, c, 0.0], [0.0, 0.0, 1.0]])
 
 
-def difficulty_of(v: dict) -> str:
-    """easy: no failure / alternative condition; medium: one; hard: several."""
-    return v.get("difficulty", "easy" if not v.get("conditions") else
-                 "medium" if len(v["conditions"]) == 1 else "hard")
-
 
 def episode_config(task: dict, seed: int, variant: str | None = None, difficulty: str | None = None) -> dict:
-    """Variant + overlay of one episode (deterministic in the seed).  With
-    ``difficulty`` the seed picks among that tier's variants only."""
+    """Variant + overlay of one episode (deterministic in the seed).  Without a variant the seed
+    picks among the graded variants (episode.catalog.selectable_variants: never a diagnostic
+    one), with ``difficulty`` among that tier's only."""
     rng = random.Random(f"{task['task_id']}:{seed}")
     variants = task["variants"]
     if variant is None:
-        names = sorted(n for n, v in variants.items() if difficulty is None or difficulty_of(v) == difficulty)
+        names = selectable_variants(task, difficulty)
         if not names:
             raise ValueError(f"{task['task_id']}: no {difficulty} variant")
         variant = names[seed % len(names)]

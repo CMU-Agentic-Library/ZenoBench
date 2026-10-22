@@ -25,7 +25,8 @@ def _entry(t, profile="gt", **extra):
 
 
 TASKS = {t: _entry(t) for t in ("t1", "t2", "t3", "crash_task", "bad_start", "slow_start")}
-TASKS["b1"] = _entry("b1", "benchmark", variants={"easy": {}, "hard": {}}, max_calls=7)
+TASKS["b1"] = _entry("b1", "benchmark", max_calls=7, variants={
+    "easy": {}, "hard": {"conditions": ["a", "b"]}, "diag": {"difficulty": "diagnostic"}})
 
 
 class Service:
@@ -195,6 +196,9 @@ def test_benchmark_task_profile_variant_and_budget(service):
     assert service.post("/initial_task", {"task_id": "b1", "variant": "nope"})[1]["error_code"] == "UNKNOWN_VARIANT"
     assert service.post("/initial_task", {"task_id": "b1", "seed": "x"})[1]["error_code"] == "BAD_REQUEST"
     assert service.post("/initial_task", {"task_id": "b1", "difficulty": "insane"})[1]["error_code"] == "BAD_REQUEST"
+    # a tier the task does not have: refused before a simulator starts
+    status, body = service.post("/initial_task", {"task_id": "b1", "difficulty": "medium"})
+    assert status == 400 and body["error_code"] == "UNKNOWN_VARIANT" and service.manager.running == 1
 
 
 def test_default_registry_loads_both_catalogs(tmp_path):

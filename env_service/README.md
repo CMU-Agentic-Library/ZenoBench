@@ -50,9 +50,9 @@ $ISAACLAB_PYTHON -m env_service.server --port 8800
 | 字段 | 必填 | 说明 |
 |---|---|---|
 | `task_id` | 是 | 任一 catalog 里的任务 |
-| `variant` | 否 | 指定 condition；不给时由 `seed` 在全部 variant 里选（`difficulty` 给了就只在该难度里选）。只有一个 variant 的任务（原来的任务）忽略它 |
+| `variant` | 否 | 指定 condition；不给时由 `seed` 在分了难度（easy / medium / hard）的 variant 里选，`difficulty` 给了就只在该难度里选；`diagnostic` variant 只有显式指定才会用。只有一个 variant 的任务（原来的任务）忽略它 |
 | `seed` | 否，默认 0 | 决定随机删掉哪些干扰物和 `vary` 范围内的微调；只有一个 variant 的任务不受影响 |
-| `difficulty` | 否 | `easy` / `medium` / `hard` |
+| `difficulty` | 否 | `easy` / `medium` / `hard`；任务没有这个难度的 variant 时返回 400 `UNKNOWN_VARIANT`（不少任务只有其中一两档） |
 
 **同步**：启动 simulator、加载场景，启动好后才返回：
 
@@ -168,7 +168,7 @@ contract 本身的失败放在结果的 `error_code` 里，HTTP 仍是 200：
 
 | HTTP | `error_code` | 含义 |
 |---|---|---|
-| 400 | `BAD_REQUEST` / `UNKNOWN_TASK` / `UNKNOWN_VARIANT` | 请求格式错误（含空 `task_id`、非整数 `seed`、未知 `difficulty`）/ 没有这个任务 / 任务没有这个 variant |
+| 400 | `BAD_REQUEST` / `UNKNOWN_TASK` / `UNKNOWN_VARIANT` | 请求格式错误（含空 `task_id`、非整数 `seed`、未知 `difficulty`）/ 没有这个任务 / 任务没有这个 variant，或没有所给难度的 variant |
 | 404 | `UNKNOWN_EXP` | 没有这个 exp |
 | 410 | `EXP_RELEASED` | exp 已释放（已检查、空闲超时或 simulator 崩溃） |
 | 500 | `SIM_CRASHED` / `SIM_ERROR` | simulator 进程退出、出错或启动失败，exp 随之释放 |

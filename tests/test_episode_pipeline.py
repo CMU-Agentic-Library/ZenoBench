@@ -114,3 +114,16 @@ def test_masked_result_for_the_planner_unmasked_record_for_the_log():
     assert "hidden_bowl" not in str(public) and "<unobserved>" in public["error"]
     assert "hidden_bowl" in record["error"] and record["action"] == "pick_object(object=mug)"
     assert ep.last_result == public
+
+
+def test_a_seed_never_picks_a_diagnostic_variant():
+    from episode.catalog import difficulty_of, selectable_variants
+    bench = load_catalog("benchmark/v3/tasks.json")
+    t5 = bench["T05_pen_or_pencil_to_desk"]
+    diag = {n for n, v in t5["variants"].items() if difficulty_of(v) == "diagnostic"}
+    assert diag and not diag & set(selectable_variants(t5))
+    assert {episode_config(t5, s)["variant"] for s in range(20)} == set(selectable_variants(t5))
+    assert episode_config(t5, 0, next(iter(diag)))["variant"] in diag          # still runnable when named
+    assert selectable_variants(bench["T14_shelve_the_book"], "easy") == []
+    with pytest.raises(ValueError):
+        episode_config(bench["T14_shelve_the_book"], 0, difficulty="easy")
