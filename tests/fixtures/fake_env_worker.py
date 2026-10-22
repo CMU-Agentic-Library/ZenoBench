@@ -14,6 +14,7 @@ ap.add_argument("--task-id")
 ap.add_argument("--cmd-fd", type=int)
 ap.add_argument("--resp-fd", type=int)
 ap.add_argument("--wrist-cameras", action="store_true")
+ap.add_argument("--video-path")
 args = ap.parse_args()
 cmd, resp = os.fdopen(args.cmd_fd), os.fdopen(args.resp_fd, "w")
 held = None

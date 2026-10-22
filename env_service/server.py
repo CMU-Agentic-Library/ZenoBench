@@ -49,6 +49,7 @@ class Config:
         # below the planner's 15 min client timeout, so it gets SIM_ERROR instead of a dropped connection
         self.start_timeout_s = kw.get("start_timeout_s", 780)
         self.wrist_cameras = kw.get("wrist_cameras", True)
+        self.record_video = kw.get("record_video", False)
         python = kw.get("worker_python") or os.environ.get("ISAACLAB_PYTHON") or sys.executable
         self.worker_argv = kw.get("worker_argv") or [python, "-m", "env_service.worker"]
         self.log_dir = Path(kw.get("log_dir") or ROOT / "runs" / "env_service")
@@ -65,6 +66,8 @@ class Worker:
         self.log_path = log_dir / "worker.log"
         argv = cfg.worker_argv + ["--task-id", task_id,
                 "--cmd-fd", str(cmd_r), "--resp-fd", str(resp_w)] + (["--wrist-cameras"] if cfg.wrist_cameras else [])
+        if cfg.record_video:
+            argv += ["--video-path", str(log_dir / "run.mp4")]
         with open(self.log_path, "w") as log:
             self.proc = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL, stdout=log,
                                          stderr=subprocess.STDOUT, pass_fds=(cmd_r, resp_w))
@@ -385,10 +388,12 @@ def main():
     ap.add_argument("--port", type=int, default=8800)
     ap.add_argument("--max-sims", type=int, default=2)
     ap.add_argument("--no-wrist-cameras", action="store_true")
+    ap.add_argument("--record-video", action="store_true", help="save a video in each experiment's log directory")
     ap.add_argument("--worker-python")
     ap.add_argument("--log-dir")
     args = ap.parse_args()
     cfg = Config(max_sims=args.max_sims, wrist_cameras=not args.no_wrist_cameras,
+                 record_video=args.record_video,
                  worker_python=args.worker_python, log_dir=args.log_dir)
     manager = ExpManager(cfg, load_tasks())
     server = ThreadingHTTPServer((args.host, args.port), make_handler(manager))

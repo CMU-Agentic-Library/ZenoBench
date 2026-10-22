@@ -15,10 +15,13 @@ $ISAACLAB_PYTHON -m env_service.server --port 8800
 | `--port` | 8800 | 服务端口 |
 | `--max-sims` | 2 | 同时运行（含正在启动）的 simulator 数，超出时 `initial_task` 返回 503 `BUSY` |
 | `--no-wrist-cameras` | 关 | 只给头部相机 |
+| `--record-video` | 关 | 每个任务保存 `--log-dir/<exp_id>/run.mp4`，第三人称主视角加小窗，640×360、15 fps |
 | `--worker-python` | `$ISAACLAB_PYTHON` | 运行 worker 的 Python |
 | `--log-dir` | `runs/env_service` | 每个 exp 的 `worker.log` |
 
 上限是固定的：每个 exp 最多 40 次 contract 调用、总时长 60 分钟，20 分钟没有调用就释放。
+
+录制边执行边写入文件，不在内存中积累整个任务的视频；释放时关闭编码器。视频使用仿真时间，模型思考期间仿真暂停，不会录下长时间静止等待。它属于服务端调试记录，不会作为 planner 的额外观测。
 
 - 调用次数按顶层 contract 计：一个 batch 传 5 个就计 5 次；调用前计数，执行失败也算；composite skill 内部的嵌套调用不计。超出后返回 `LIMIT_EXCEEDED`。
 - 总时长从 `initial_task` 返回时开始，是墙钟时间，包含 planner 思考的时间。超出后返回 `LIMIT_EXCEEDED`。
@@ -57,6 +60,8 @@ $ISAACLAB_PYTHON -m env_service.server --port 8800
 ```json
 {"exp_id": "...", "results": [<每个已执行 contract 的结果>], "observation": {...}}
 ```
+
+技能执行完毕不会自动释放 simulator，即使任务目标已满足；客户端仍可继续观察或调用技能，最后必须调用 `check_task` 检查结果并释放名额。原有空闲超时清理机制保留。
 
 单个结果：
 
@@ -97,7 +102,7 @@ composite skill 失败时（`SUBSKILL_FAILED`）多一个 `failed_step`，给出
 
 | 字段 | 内容 |
 |---|---|
-| `images` | `[{"camera": "head" \| "left_wrist" \| "right_wrist", "png_base64": ...}]`，480×640 PNG |
+| `images` | `[{"camera": "head" \| "left_wrist" \| "right_wrist", "png_base64": ...}]`，960×720 PNG（宽×高），水平视野约 110° |
 | `objects` | 当前任务的相关物体（tasks.json 的 `entities`）：`name`、`kind`、`position` |
 | `robot` | `base_pose` [x, y, yaw_deg]、`held_right`、`held_left` |
 | `task_status` | goal 每个子句当前的真假 `[{"atom", "holds"}]` |

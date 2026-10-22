@@ -79,6 +79,39 @@ def test_stops_at_first_failure(service):
     assert body["results"][1]["error_code"] == "PRECONDITION_FAILED"
 
 
+def test_success_waits_for_client_check_task(tmp_path):
+    s = Service(tmp_path, max_sims=1)
+    try:
+        exp = s.start()
+        worker = s.manager.exps[exp].worker
+        status, body = s.post("/do_contract", {"exp_id": exp, "calls": {"contract": "pick", "args": {"object": "apple"}}})
+        assert status == 200 and body["results"][0]["success"]
+        assert body["observation"]["task_status"][0]["holds"] is True
+        assert s.manager.running == 1 and worker.proc.poll() is None
+        assert s.post("/observe", {"exp_id": exp})[1]["state"] == "ready"
+        assert s.post("/initial_task", {"task_id": "t2"})[0] == 503
+        assert s.post("/do_contract", {"exp_id": exp, "calls": {"contract": "wave"}})[0] == 200
+        status, result = s.post("/check_task", {"exp_id": exp})
+        assert status == 200 and result["success"] is True
+        assert s.manager.running == 0 and worker.proc.poll() is not None
+        assert s.post("/check_task", {"exp_id": exp})[0] == 410
+        assert s.start("t2").startswith("t2-")
+    finally:
+        s.close()
+
+
+def test_video_path_is_per_experiment(tmp_path):
+    s = Service(tmp_path, record_video=True)
+    try:
+        for task in ("t1", "t2"):
+            exp = s.start(task)
+            argv = s.manager.exps[exp].worker.proc.args
+            assert argv[argv.index("--video-path") + 1] == str(tmp_path / exp / "run.mp4")
+        assert s.manager.running == 2
+    finally:
+        s.close()
+
+
 def test_busy_beyond_two_simulators(service):
     first, _ = service.start("t1"), service.start("t2")
     status, body = service.post("/initial_task", {"task_id": "t3"})

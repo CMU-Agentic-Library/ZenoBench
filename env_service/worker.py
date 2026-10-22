@@ -81,16 +81,24 @@ def _plain(value):
 
 
 class Episode:
-    def __init__(self, task: dict, wrist_cameras: bool):
+    def __init__(self, task: dict, wrist_cameras: bool, video_path=None):
         from zeno_skills.predicates import before_snapshot
         from zeno_skills.runtime import launch, make_rig
         from zeno_skills.skill_runtime import SkillContractRunner
         scene = json.loads((ROOT / task["task_json"]).read_text())
         self.task = task
-        self.app = launch(video=False, first_person=True)
+        self.video_recorder = None
+        self.app = launch(video=bool(video_path), first_person=True)
         # same start as the verified whole-task rollouts (tools/verify_skills.py)
-        self.rig = make_rig(self.app, scene["scene_usd"], scene["annotation"], video=False,
-                            first_person=True, wrist_cameras=wrist_cameras)
+        self.rig = make_rig(self.app, scene["scene_usd"], scene["annotation"], video=bool(video_path),
+                            res=(360, 640), stride=8,
+                            first_person=True, first_person_res=(720, 960), wrist_cameras=wrist_cameras,
+                            first_person_focal_length=7.5)
+        if video_path:
+            from env_service.recording import VideoRecorder
+            self.video_recorder = VideoRecorder(video_path, fps=120 / self.rig.stride)
+            self.rig.frames = self.video_recorder
+        self.rig.caption = task["id"]
         self.rig.configure_thermal(scene)
         self.rig.step(30)
         self.start = before_snapshot(self.rig)       # relative goal predicates compare to the start
@@ -170,6 +178,11 @@ class Episode:
         goal = self.goal_status()
         return {"success": all(g["holds"] for g in goal), "goal": goal}
 
+    def close(self):
+        if self.video_recorder is not None:
+            self.video_recorder.close()
+            print(f"[video] saved {self.video_recorder.path} ({self.video_recorder.frame_count} frames)", flush=True)
+
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
@@ -177,6 +190,7 @@ def main():
     ap.add_argument("--cmd-fd", type=int, required=True)
     ap.add_argument("--resp-fd", type=int, required=True)
     ap.add_argument("--wrist-cameras", action="store_true")
+    ap.add_argument("--video-path")
     args = ap.parse_args()
     cmd = os.fdopen(args.cmd_fd, "r")
     resp = os.fdopen(args.resp_fd, "w")
@@ -186,29 +200,32 @@ def main():
         resp.flush()
 
     try:
-        ep = Episode(load_tasks()[args.task_id], args.wrist_cameras)
+        ep = Episode(load_tasks()[args.task_id], args.wrist_cameras, args.video_path)
         send({"type": "ready", "observation": ep.observation()})
     except Exception as exc:
         traceback.print_exc()
         send({"type": "error", "error": f"{type(exc).__name__}: {exc}"})
         os._exit(1)
-    for line in cmd:
-        req = json.loads(line)
-        op = req.get("op")
-        try:
-            if op == "contract":
-                send({"result": ep.contract(req.get("call"))})
-            elif op == "observe":
-                send({"observation": ep.observation()})
-            elif op == "check":
-                send(ep.check())
-            elif op == "close":
-                break
-            else:
-                send({"error": f"unknown op {op!r}"})
-        except Exception as exc:
-            traceback.print_exc()
-            send({"error": f"{type(exc).__name__}: {exc}"})
+    try:
+        for line in cmd:
+            req = json.loads(line)
+            op = req.get("op")
+            try:
+                if op == "contract":
+                    send({"result": ep.contract(req.get("call"))})
+                elif op == "observe":
+                    send({"observation": ep.observation()})
+                elif op == "check":
+                    send(ep.check())
+                elif op == "close":
+                    break
+                else:
+                    send({"error": f"unknown op {op!r}"})
+            except Exception as exc:
+                traceback.print_exc()
+                send({"error": f"{type(exc).__name__}: {exc}"})
+    finally:
+        ep.close()
     sys.stdout.flush()
     os._exit(0)          # Isaac's own shutdown can hang; the process is disposable
 
