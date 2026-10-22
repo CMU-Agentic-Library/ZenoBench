@@ -179,8 +179,8 @@
  {
   "task": "cook_tomato_soup",
   "solved": true,
-  "expansions": 4887,
-  "length": 16,
+  "expansions": 6334,
+  "length": 15,
   "verbs": [
    "navigate/empty",
    "uncover/knob_lift_aside",
@@ -196,14 +196,13 @@
    "heat/stove_pot",
    "navigate/empty",
    "pick/top_pinch",
-   "navigate/carry",
    "cover/rim_plane"
   ]
  },
  {
   "task": "heat_without_microwave",
   "solved": true,
-  "expansions": 149,
+  "expansions": 228,
   "length": 5,
   "verbs": [
    "navigate/empty",
@@ -414,7 +413,7 @@
  {
   "task": "empty_mug",
   "solved": true,
-  "expansions": 14,
+  "expansions": 12,
   "length": 3,
   "verbs": [
    "fetch/to_surface",

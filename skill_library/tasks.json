@@ -1316,7 +1316,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cherry_tomato_2"
+        "destination": "cherry_tomato_1"
        }
       },
       {
@@ -1356,19 +1356,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "pot_lid"
+        "destination": "handled_cooking_pot"
        }
       },
       {
        "skill": "pick",
        "args": {
         "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
        }
       },
       {
@@ -1429,7 +1423,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "cherry_tomato_2"
+        "destination": "cherry_tomato_1"
        }
       },
       {

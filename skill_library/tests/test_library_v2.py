@@ -136,3 +136,13 @@ def test_catalog_nominal_routes_match_the_plans():
         route = t["routes"]["nominal"]
         assert route["steps"] == route_steps(json.loads(plan.read_text())), t["task_id"]
         assert t["oracle"] == {"default": "nominal"} and list(t["variants"]) == ["default"], t["task_id"]
+
+
+def test_planner_is_deterministic_across_hash_seeds():
+    """Same plan whatever PYTHONHASHSEED is (the state is a set; no choice may follow its order)."""
+    code = ("import json; from skill_library.planner import solve_task, to_subgraph; "
+            "t = {x['task_id']: x for x in json.load(open('skill_library/tasks.json'))['tasks']}['cook_tomato_soup']; "
+            "print(json.dumps(to_subgraph('t', solve_task(t)[0])))")
+    outs = {subprocess.run([sys.executable, "-c", code], cwd=ROOT, capture_output=True, text=True, check=True,
+                           env={**__import__("os").environ, "PYTHONHASHSEED": seed}).stdout for seed in ("0", "5")}
+    assert len(outs) == 1

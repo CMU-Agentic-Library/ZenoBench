@@ -144,15 +144,17 @@ class Domain:
 
     # ---------------------------------------------------------- derived facts
     def object_group(self, s, name, seen=()):
-        for a in s:
-            if a[0] == "on" and a[1] == name and a[2]:
-                # its own place: on a large desk or table, parking for the
-                # support left a book 1.34 m away (base_near is checked on GT)
-                return "obj:" + name
-            if a[0] == "inside" and a[1] == name and a[2] not in seen:
-                return self.object_group(s, a[2], seen + (name,))
-            if a[0] == "holding" and a[2] == name and ("steadied", name) not in s:
-                return "robot"
+        # one fixed priority, not the iteration order of the state set (that depends on the
+        # hash seed): a tomato both inside the mug and on the island follows the mug
+        if any(a[0] == "holding" and a[2] == name for a in s) and ("steadied", name) not in s:
+            return "robot"
+        container = min((a[2] for a in s if a[0] == "inside" and a[1] == name and a[2] not in seen), default=None)
+        if container is not None:
+            return self.object_group(s, container, seen + (name,))
+        if any(a[0] == "on" and a[1] == name and a[2] for a in s):
+            # its own place: on a large desk or table, parking for the
+            # support left a book 1.34 m away (base_near is checked on GT)
+            return "obj:" + name
         g = self.static.get(name, {}).get("appliance")
         return g or ("floor:" + name)
 
@@ -243,12 +245,12 @@ class Domain:
                          else a.get("location"),
                          edge_ready=("edge_overhang", v) in s, lying=("lying", v) in s,
                          lid=next((x[2] for x in s if x[0] == "covered" and x[1] == v), None),
-                         contents=[x[1] for x in s if x[0] == "inside" and x[2] == v],
+                         contents=sorted(x[1] for x in s if x[0] == "inside" and x[2] == v),
                          appliance="kitchen_microwave" if in_mw else sup_rec["furniture"] if in_art else a.get("appliance"))
                 if isinstance(binding.get("rule"), dict):
                     a["sort_target"] = next((binding["rule"][t] for t in a.get("tags", []) if t in binding["rule"]), None)
             elif a.get("kind") == "support":
-                a["objects"] = [x[1] for x in s if x[0] == "on" and x[2] == v]
+                a["objects"] = sorted(x[1] for x in s if x[0] == "on" and x[2] == v)
             elif a.get("kind") == "articulated":
                 a["is_open"] = ("is_open", v) in s
             out[slot] = a
