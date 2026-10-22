@@ -1,13 +1,34 @@
 {
- "schema_version": 2,
- "kind": "task_catalog",
- "note": "Goals are GT predicate atoms; skill_library/planner.py proves each task decomposes into SkillNodes.",
+ "schema_version": 3,
+ "kind": "zenobench_skill_tasks",
+ "note": "One task per SkillNode family on a built scene (tasks/<scene>/), in the benchmark task shape with a single variant 'default'. Goals are GT predicate atoms. routes.nominal is the subgraph of skill_library/planner.py (kept in sync with skill_library/plans/ by the planner); 'planner' holds planner-only inputs.",
  "tasks": [
   {
-   "id": "collect_fruits",
-   "annotation": "tasks/collect_fruits/annotation.json",
-   "task_json": "tasks/collect_fruits/task.json",
-   "description": "Collect both fruits into the basket on the bookcase.",
+   "task_id": "collect_fruits",
+   "exp_id": "collect_fruits",
+   "instruction": "Collect both fruits into the basket on the bookcase.",
+   "scene": {
+    "base": "tasks/collect_fruits"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "apple",
+      "fruit_basket"
+     ],
+     [
+      "inside",
+      "orange",
+      "fruit_basket"
+     ]
+    ]
+   },
    "entities": [
     "apple",
     "orange",
@@ -15,24 +36,108 @@
     "repair/dining_table_top",
     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
    ],
-   "goal": [
-    [
-     "inside",
-     "apple",
-     "fruit_basket"
-    ],
-    [
-     "inside",
-     "orange",
-     "fruit_basket"
-    ]
-   ]
+   "watch": [
+    "apple",
+    "orange",
+    "fruit_basket"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/collect_fruits.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fruit_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "fruit_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "orange"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "orange"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "orange",
+        "receptacle": "fruit_basket"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "tidy_toys",
-   "annotation": "tasks/tidy_toys/annotation.json",
-   "task_json": "tasks/tidy_toys/task.json",
-   "description": "Store the toys (two on the floor) in the storage basket.",
+   "task_id": "tidy_toys",
+   "exp_id": "tidy_toys",
+   "instruction": "Store the toys (two on the floor) in the storage basket.",
+   "scene": {
+    "base": "tasks/tidy_toys"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "toy_car",
+      "storage_basket"
+     ],
+     [
+      "inside",
+      "toy_block",
+      "storage_basket"
+     ],
+     [
+      "inside",
+      "rubber_duck",
+      "storage_basket"
+     ]
+    ]
+   },
    "entities": [
     "toy_car",
     "toy_block",
@@ -40,29 +145,129 @@
     "storage_basket",
     "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
    ],
-   "goal": [
-    [
-     "inside",
-     "toy_car",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "toy_block",
-     "storage_basket"
-    ],
-    [
-     "inside",
-     "rubber_duck",
-     "storage_basket"
-    ]
-   ]
+   "watch": [
+    "toy_car",
+    "toy_block",
+    "rubber_duck",
+    "storage_basket"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/tidy_toys.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_block"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_block",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "shelve_books",
-   "annotation": "tasks/shelve_books/annotation.json",
-   "task_json": "tasks/shelve_books/task.json",
-   "description": "Shelve both flat books on bookcase tops.",
+   "task_id": "shelve_books",
+   "exp_id": "shelve_books",
+   "instruction": "Shelve both flat books on bookcase tops.",
+   "scene": {
+    "base": "tasks/shelve_books"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "on",
+      "book_red",
+      "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     ],
+     [
+      "on",
+      "book_green",
+      "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"
+     ]
+    ]
+   },
    "entities": [
     "book_red",
     "book_green",
@@ -70,24 +275,107 @@
     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
     "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"
    ],
-   "goal": [
-    [
-     "on",
-     "book_red",
-     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
-    ],
-    [
-     "on",
-     "book_green",
-     "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"
-    ]
-   ]
+   "watch": [
+    "book_red",
+    "book_green"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/shelve_books.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_green"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_green"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_green",
+        "receptacle": "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "desk_prep",
-   "annotation": "tasks/desk_prep/annotation.json",
-   "task_json": "tasks/desk_prep/task.json",
-   "description": "Bring notebook, pen and mug to the study desk.",
+   "task_id": "desk_prep",
+   "exp_id": "desk_prep",
+   "instruction": "Bring notebook, pen and mug to the study desk.",
+   "scene": {
+    "base": "tasks/desk_prep"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "on",
+      "notebook",
+      "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     ],
+     [
+      "on",
+      "pen",
+      "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     ],
+     [
+      "on",
+      "desk_mug",
+      "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+     ]
+    ]
+   },
    "entities": [
     "notebook",
     "pen",
@@ -96,29 +384,128 @@
     "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
     "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
    ],
-   "goal": [
-    [
-     "on",
-     "notebook",
-     "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
-    ],
-    [
-     "on",
-     "pen",
-     "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
-    ],
-    [
-     "on",
-     "desk_mug",
-     "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
-    ]
-   ]
+   "watch": [
+    "notebook",
+    "pen",
+    "desk_mug"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/desk_prep.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "notebook"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "notebook"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "notebook",
+        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pen"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pen",
+        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "desk_mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "desk_mug",
+        "receptacle": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "breakfast_setup",
-   "annotation": "tasks/breakfast_setup/annotation.json",
-   "task_json": "tasks/breakfast_setup/task.json",
-   "description": "Set a breakfast place (plate, cup, spoon within 0.5 m).",
+   "task_id": "breakfast_setup",
+   "exp_id": "breakfast_setup",
+   "instruction": "Set a breakfast place (plate, cup, spoon within 0.5 m).",
+   "scene": {
+    "base": "tasks/breakfast_setup"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "grouped",
+      [
+       "plate",
+       "cup",
+       "spoon"
+      ],
+      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+      0.5
+     ]
+    ]
+   },
    "entities": [
     "plate",
     "cup",
@@ -127,34 +514,85 @@
     "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
    ],
-   "goal": [
-    [
-     "grouped",
-     [
-      "plate",
-      "cup",
-      "spoon"
-     ],
-     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
-     0.5
-    ]
+   "watch": [
+    "plate",
+    "cup",
+    "spoon"
    ],
-   "composite": true,
-   "values": {
-    "object_list": [
-     [
-      "plate",
-      "cup",
-      "spoon"
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/breakfast_setup.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "arrange",
+       "args": {
+        "objects": [
+         "plate",
+         "cup",
+         "spoon"
+        ],
+        "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
+        "max_dist_m": 0.5
+       }
+      }
      ]
-    ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "composite": true,
+    "values": {
+     "object_list": [
+      [
+       "plate",
+       "cup",
+       "spoon"
+      ]
+     ]
+    }
    }
   },
   {
-   "id": "heat_breakfast",
-   "annotation": "tasks/heat_breakfast/annotation.json",
-   "task_json": "tasks/heat_breakfast/task.json",
-   "description": "Fridge -> microwave -> dining table; doors closed.",
+   "task_id": "heat_breakfast",
+   "exp_id": "heat_breakfast",
+   "instruction": "Fridge -> microwave -> dining table; doors closed.",
+   "scene": {
+    "base": "tasks/heat_breakfast"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "temperature_at_least",
+      "oatmeal",
+      60.0
+     ],
+     [
+      "on",
+      "oatmeal",
+      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     ],
+     [
+      "is_closed",
+      "breakfast_fridge"
+     ],
+     [
+      "is_closed",
+      "kitchen_microwave"
+     ]
+    ]
+   },
    "entities": [
     "oatmeal",
     "breakfast_fridge",
@@ -164,56 +602,246 @@
     "kitchen_microwave/start_button",
     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
    ],
-   "goal": [
-    [
-     "temperature_at_least",
-     "oatmeal",
-     60.0
-    ],
-    [
-     "on",
-     "oatmeal",
-     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
-    ],
-    [
-     "is_closed",
-     "breakfast_fridge"
-    ],
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ]
-   ]
+   "watch": [
+    "oatmeal"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/heat_breakfast.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 60.0
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "heat_breakfast_preloaded",
-   "annotation": "tasks/heat_breakfast_preloaded/annotation.json",
-   "task_json": "tasks/heat_breakfast_preloaded/task.json",
-   "description": "Oatmeal already in the microwave: heat it.",
+   "task_id": "heat_breakfast_preloaded",
+   "exp_id": "heat_breakfast_preloaded",
+   "instruction": "Oatmeal already in the microwave: heat it.",
+   "scene": {
+    "base": "tasks/heat_breakfast_preloaded"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "temperature_at_least",
+      "oatmeal",
+      60.0
+     ]
+    ]
+   },
    "entities": [
     "oatmeal",
     "kitchen_microwave"
    ],
-   "goal": [
-    [
-     "temperature_at_least",
-     "oatmeal",
-     60.0
-    ]
+   "watch": [
+    "oatmeal"
    ],
-   "initial_facts_extra": [
-    [
-     "in_appliance",
-     "oatmeal",
-     "kitchen_microwave"
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/heat_breakfast_preloaded.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 60.0
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "initial_facts_extra": [
+     [
+      "in_appliance",
+      "oatmeal",
+      "kitchen_microwave"
+     ]
     ]
-   ]
+   }
   },
   {
-   "id": "heat_breakfast_combo",
-   "annotation": "tasks/heat_breakfast_combo/annotation.json",
-   "task_json": "tasks/heat_breakfast_combo/task.json",
-   "description": "Heat oatmeal, serve milk from the fridge.",
+   "task_id": "heat_breakfast_combo",
+   "exp_id": "heat_breakfast_combo",
+   "instruction": "Heat oatmeal, serve milk from the fridge.",
+   "scene": {
+    "base": "tasks/heat_breakfast_combo"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "temperature_at_least",
+      "oatmeal",
+      60.0
+     ],
+     [
+      "on",
+      "milk",
+      "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+     ],
+     [
+      "is_closed",
+      "breakfast_fridge"
+     ]
+    ]
+   },
    "entities": [
     "oatmeal",
     "milk",
@@ -222,40 +850,134 @@
     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
     "breakfast_fridge/inside_shelf"
    ],
-   "goal": [
-    [
-     "temperature_at_least",
-     "oatmeal",
-     60.0
-    ],
-    [
-     "on",
-     "milk",
-     "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
-    ],
-    [
-     "is_closed",
-     "breakfast_fridge"
-    ]
+   "watch": [
+    "oatmeal",
+    "milk"
    ],
-   "initial_facts_extra": [
-    [
-     "in_appliance",
-     "oatmeal",
-     "kitchen_microwave"
-    ],
-    [
-     "in_appliance",
-     "milk",
-     "breakfast_fridge"
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/heat_breakfast_combo.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 60.0
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "milk"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "milk"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "milk",
+        "receptacle": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "initial_facts_extra": [
+     [
+      "in_appliance",
+      "oatmeal",
+      "kitchen_microwave"
+     ],
+     [
+      "in_appliance",
+      "milk",
+      "breakfast_fridge"
+     ]
     ]
-   ]
+   }
   },
   {
-   "id": "recycle_and_store",
-   "annotation": "tasks/recycle_and_store/annotation.json",
-   "task_json": "tasks/recycle_and_store/task.json",
-   "description": "Put can, carton and cube into the wide bin.",
+   "task_id": "recycle_and_store",
+   "exp_id": "recycle_and_store",
+   "instruction": "Put can, carton and cube into the wide bin.",
+   "scene": {
+    "base": "tasks/recycle_and_store"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "soda_can",
+      "wide_storage_bin"
+     ],
+     [
+      "inside",
+      "snack_carton",
+      "wide_storage_bin"
+     ],
+     [
+      "inside",
+      "foam_cube",
+      "wide_storage_bin"
+     ]
+    ]
+   },
    "entities": [
     "soda_can",
     "snack_carton",
@@ -264,29 +986,134 @@
     "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
    ],
-   "goal": [
-    [
-     "inside",
-     "soda_can",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "snack_carton",
-     "wide_storage_bin"
-    ],
-    [
-     "inside",
-     "foam_cube",
-     "wide_storage_bin"
-    ]
-   ]
+   "watch": [
+    "soda_can",
+    "snack_carton",
+    "foam_cube",
+    "wide_storage_bin"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/recycle_and_store.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "soda_can",
+        "receptacle": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_carton"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "snack_carton"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "snack_carton",
+        "receptacle": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "foam_cube"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "snack_carton"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "foam_cube",
+        "receptacle": "wide_storage_bin"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "organize_utility_items",
-   "annotation": "tasks/organize_utility_items/annotation.json",
-   "task_json": "tasks/organize_utility_items/task.json",
-   "description": "Organize utility items onto the bookcase.",
+   "task_id": "organize_utility_items",
+   "exp_id": "organize_utility_items",
+   "instruction": "Organize utility items onto the bookcase.",
+   "scene": {
+    "base": "tasks/organize_utility_items"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "juice_bottle",
+      "shallow_sorting_tray"
+     ],
+     [
+      "on",
+      "tissue_box",
+      "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     ],
+     [
+      "on",
+      "paperback_book",
+      "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+     ]
+    ]
+   },
    "entities": [
     "juice_bottle",
     "tissue_box",
@@ -296,29 +1123,133 @@
     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
     "repair/dining_table_top"
    ],
-   "goal": [
-    [
-     "inside",
-     "juice_bottle",
-     "shallow_sorting_tray"
-    ],
-    [
-     "on",
-     "tissue_box",
-     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
-    ],
-    [
-     "on",
-     "paperback_book",
-     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
-    ]
-   ]
+   "watch": [
+    "juice_bottle",
+    "tissue_box",
+    "paperback_book",
+    "shallow_sorting_tray"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/organize_utility_items.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "juice_bottle"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "juice_bottle"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "shallow_sorting_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "juice_bottle",
+        "receptacle": "shallow_sorting_tray"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tissue_box"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "tissue_box"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "tissue_box",
+        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "cook_tomato_soup",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Uncover the pot, stir, pour the tomatoes in, heat on the stove, and cover it again.",
+   "task_id": "cook_tomato_soup",
+   "exp_id": "cook_tomato_soup",
+   "instruction": "Uncover the pot, stir, pour the tomatoes in, heat on the stove, and cover it again.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "stirred",
+      "handled_cooking_pot"
+     ],
+     [
+      "temperature_at_least",
+      "cherry_tomato_1",
+      60.0
+     ],
+     [
+      "covered",
+      "handled_cooking_pot",
+      "pot_lid"
+     ]
+    ]
+   },
    "entities": [
     "mug",
     "handled_cooking_pot",
@@ -329,28 +1260,152 @@
     "kitchen_stove/top",
     "kitchen_stove"
    ],
-   "goal": [
-    [
-     "stirred",
-     "handled_cooking_pot"
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_1",
-     60.0
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ]
-   ]
+   "watch": [
+    "mug",
+    "handled_cooking_pot",
+    "pot_lid",
+    "cherry_tomato_1",
+    "breakfast_spoon"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/cook_tomato_soup.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cherry_tomato_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60.0
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "heat_without_microwave",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "No microwave: heat the tomatoes in the mug on the stove's free burner.",
+   "task_id": "heat_without_microwave",
+   "exp_id": "heat_without_microwave",
+   "instruction": "No microwave: heat the tomatoes in the mug on the stove's free burner.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "temperature_at_least",
+      "cherry_tomato_2",
+      45.0
+     ]
+    ]
+   },
    "entities": [
     "mug",
     "cherry_tomato_2",
@@ -358,166 +1413,671 @@
     "kitchen_stove/top",
     "kitchen_stove"
    ],
-   "goal": [
-    [
-     "temperature_at_least",
-     "cherry_tomato_2",
-     45.0
-    ]
-   ]
+   "watch": [
+    "mug",
+    "cherry_tomato_2"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/heat_without_microwave.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cherry_tomato_2"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_2",
+        "appliance": "kitchen_stove",
+        "temp_c": 60.0
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "heat_can_in_microwave",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Warm the can in the microwave.",
+   "task_id": "heat_can_in_microwave",
+   "exp_id": "heat_can_in_microwave",
+   "instruction": "Warm the can in the microwave.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "temperature_at_least",
+      "soda_can",
+      40.0
+     ],
+     [
+      "is_closed",
+      "kitchen_microwave"
+     ]
+    ]
+   },
    "entities": [
     "soda_can",
     "kitchen_microwave",
     "kitchen_microwave/inside_floor",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "temperature_at_least",
-     "soda_can",
-     40.0
-    ],
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ]
-   ]
+   "watch": [
+    "soda_can"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/heat_can_in_microwave.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "soda_can",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "soda_can",
+        "appliance": "kitchen_microwave",
+        "temp_c": 60.0
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "chill_drink",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Chill the can in the fridge.",
+   "task_id": "chill_drink",
+   "exp_id": "chill_drink",
+   "instruction": "Chill the can in the fridge.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "temperature_at_most",
+      "soda_can",
+      8.0
+     ]
+    ]
+   },
    "entities": [
     "soda_can",
     "breakfast_fridge",
     "breakfast_fridge/inside_shelf",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "temperature_at_most",
-     "soda_can",
-     8.0
-    ]
-   ]
+   "watch": [
+    "soda_can"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/chill_drink.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "soda_can",
+        "receptacle": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "chill",
+       "args": {
+        "food": "soda_can",
+        "appliance": "breakfast_fridge",
+        "temp_c": 8.0
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "throw_away_can",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Throw the can into the trash.",
+   "task_id": "throw_away_can",
+   "exp_id": "throw_away_can",
+   "instruction": "Throw the can into the trash.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "inside",
+      "soda_can",
+      "trash_can"
+     ]
+    ]
+   },
    "entities": [
     "soda_can",
     "trash_can",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "inside",
-     "soda_can",
-     "trash_can"
-    ]
-   ]
+   "watch": [
+    "soda_can",
+    "trash_can"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/throw_away_can.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "soda_can",
+        "receptacle": "trash_can"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "stack_blocks",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Stack the blocks.",
+   "task_id": "stack_blocks",
+   "exp_id": "stack_blocks",
+   "instruction": "Stack the blocks.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ]
+    ]
+   },
    "entities": [
     "wooden_block_a",
     "wooden_block_b",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "on_top_of",
-     "wooden_block_b",
-     "wooden_block_a"
-    ]
-   ]
+   "watch": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/stack_blocks.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "wipe_island",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Wipe the prep island and put the sponge back.",
+   "task_id": "wipe_island",
+   "exp_id": "wipe_island",
+   "instruction": "Wipe the prep island and put the sponge back.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "wiped",
+      "kitchen_island/top"
+     ],
+     [
+      "on",
+      "kitchen_sponge",
+      "kitchen_island/top"
+     ]
+    ]
+   },
    "entities": [
     "kitchen_sponge",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "wiped",
-     "kitchen_island/top"
-    ],
-    [
-     "on",
-     "kitchen_sponge",
-     "kitchen_island/top"
-    ]
-   ]
+   "watch": [
+    "kitchen_sponge"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/wipe_island.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "lay_down_bottle",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Lay the bottle on its side.",
+   "task_id": "lay_down_bottle",
+   "exp_id": "lay_down_bottle",
+   "instruction": "Lay the bottle on its side.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "lying",
+      "juice_bottle"
+     ]
+    ]
+   },
    "entities": [
     "juice_bottle",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "lying",
-     "juice_bottle"
-    ]
-   ]
+   "watch": [
+    "juice_bottle"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/lay_down_bottle.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "juice_bottle"
+       }
+      },
+      {
+       "skill": "tip",
+       "args": {
+        "object": "juice_bottle"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "roll_pin",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Roll the rolling pin.",
+   "task_id": "roll_pin",
+   "exp_id": "roll_pin",
+   "instruction": "Roll the rolling pin.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "object_rolled",
+      "rolling_pin"
+     ]
+    ]
+   },
    "entities": [
     "rolling_pin",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "object_rolled",
-     "rolling_pin"
-    ]
-   ]
+   "watch": [
+    "rolling_pin"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/roll_pin.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "roll",
+       "args": {
+        "object": "rolling_pin",
+        "distance_m": 0.1
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "flip_book",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Turn the book over.",
+   "task_id": "flip_book",
+   "exp_id": "flip_book",
+   "instruction": "Turn the book over.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "flipped",
+      "paperback_book"
+     ]
+    ]
+   },
    "entities": [
     "paperback_book",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "flipped",
-     "paperback_book"
-    ]
-   ]
+   "watch": [
+    "paperback_book"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/flip_book.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "flip",
+       "args": {
+        "object": "paperback_book"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "hide_block",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Hide the block in the covered pot.",
+   "task_id": "hide_block",
+   "exp_id": "hide_block",
+   "instruction": "Hide the block in the covered pot.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "hidden",
+      "wooden_block_b"
+     ]
+    ]
+   },
    "entities": [
     "wooden_block_b",
     "handled_cooking_pot",
@@ -525,164 +2085,512 @@
     "kitchen_island/top",
     "kitchen_stove/top"
    ],
-   "goal": [
-    [
-     "hidden",
-     "wooden_block_b"
-    ]
+   "watch": [
+    "wooden_block_b",
+    "handled_cooking_pot",
+    "pot_lid"
    ],
-   "composite": true
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/hide_block.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "composite": true
+   }
   },
   {
-   "id": "greet_and_point",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Wave, nod and point at the trash can.",
+   "task_id": "greet_and_point",
+   "exp_id": "greet_and_point",
+   "instruction": "Wave, nod and point at the trash can.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "waved"
+     ],
+     [
+      "nodded"
+     ],
+     [
+      "pointing_at",
+      "trash_can"
+     ]
+    ]
+   },
    "entities": [
     "trash_can"
    ],
-   "goal": [
-    [
-     "waved"
-    ],
-    [
-     "nodded"
-    ],
-    [
-     "pointing_at",
-     "trash_can"
-    ]
-   ]
+   "watch": [
+    "trash_can"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/greet_and_point.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "wave",
+       "args": {}
+      },
+      {
+       "skill": "nod",
+       "args": {}
+      },
+      {
+       "skill": "point",
+       "args": {
+        "target": "trash_can"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "find_lid",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Find the pot lid.",
+   "task_id": "find_lid",
+   "exp_id": "find_lid",
+   "instruction": "Find the pot lid.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "observed",
+      "pot_lid"
+     ]
+    ]
+   },
    "entities": [
     "pot_lid",
     "living_room_0_0"
    ],
-   "goal": [
-    [
-     "observed",
-     "pot_lid"
-    ]
-   ]
-  },
-  {
-   "id": "explore_living_room",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Explore the living room.",
-   "entities": [
-    "living_room_0_0"
+   "watch": [
+    "pot_lid"
    ],
-   "goal": [
-    [
-     "room_explored",
-     "living_room_0_0"
-    ]
-   ]
-  },
-  {
-   "id": "count_tomatoes",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Count the cherry tomatoes.",
-   "entities": [
-    "cherry_tomato_1"
-   ],
-   "goal": [
-    [
-     "counted",
-     "cherry_tomato"
-    ]
-   ],
-   "values": {
-    "tag": [
-     "cherry_tomato"
-    ]
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/find_lid.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "pot_lid"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
    }
   },
   {
-   "id": "inspect_cabinet",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Look inside the sideboard and leave it closed.",
+   "task_id": "explore_living_room",
+   "exp_id": "explore_living_room",
+   "instruction": "Explore the living room.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "room_explored",
+      "living_room_0_0"
+     ]
+    ]
+   },
+   "entities": [
+    "living_room_0_0"
+   ],
+   "watch": [],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/explore_living_room.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "explore",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
+  },
+  {
+   "task_id": "count_tomatoes",
+   "exp_id": "count_tomatoes",
+   "instruction": "Count the cherry tomatoes.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "counted",
+      "cherry_tomato"
+     ]
+    ]
+   },
+   "entities": [
+    "cherry_tomato_1"
+   ],
+   "watch": [
+    "cherry_tomato_1"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/count_tomatoes.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "count",
+       "args": {
+        "category": "cherry_tomato"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "values": {
+     "tag": [
+      "cherry_tomato"
+     ]
+    }
+   }
+  },
+  {
+   "task_id": "inspect_cabinet",
+   "exp_id": "inspect_cabinet",
+   "instruction": "Look inside the sideboard and leave it closed.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "observed",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ],
+     [
+      "is_closed",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ]
+    ]
+   },
    "entities": [
     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
    ],
-   "goal": [
-    [
-     "observed",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
-    ],
-    [
-     "is_closed",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
-    ]
-   ]
+   "watch": [],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/inspect_cabinet.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "knock_then_open",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Knock on the sideboard door, then open it.",
+   "task_id": "knock_then_open",
+   "exp_id": "knock_then_open",
+   "instruction": "Knock on the sideboard door, then open it.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "knocked",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ],
+     [
+      "is_open",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ]
+    ]
+   },
    "entities": [
     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
    ],
-   "goal": [
-    [
-     "knocked",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
-    ],
-    [
-     "is_open",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
-    ]
-   ]
+   "watch": [],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/knock_then_open.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "knock",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "square_block",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Square the block on the island.",
+   "task_id": "square_block",
+   "exp_id": "square_block",
+   "instruction": "Square the block on the island.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "squared",
+      "wooden_block_a"
+     ]
+    ]
+   },
    "entities": [
     "wooden_block_a",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "squared",
-     "wooden_block_a"
-    ]
-   ]
+   "watch": [
+    "wooden_block_a"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/square_block.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "square",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "swap_blocks",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Swap the block and the can.",
+   "task_id": "swap_blocks",
+   "exp_id": "swap_blocks",
+   "instruction": "Swap the block and the can.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "positions_swapped",
+      "wooden_block_a",
+      "soda_can"
+     ]
+    ]
+   },
    "entities": [
     "wooden_block_a",
     "soda_can",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "positions_swapped",
-     "wooden_block_a",
-     "soda_can"
-    ]
+   "watch": [
+    "wooden_block_a",
+    "soda_can"
    ],
-   "composite": true
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/swap_blocks.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "swap",
+       "args": {
+        "a": "wooden_block_a",
+        "b": "soda_can"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "composite": true
+   }
   },
   {
-   "id": "sort_items",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Sort recyclables into the trash, blocks into the mug.",
+   "task_id": "sort_items",
+   "exp_id": "sort_items",
+   "instruction": "Sort recyclables into the trash, blocks into the mug.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "sorted_by_category",
+      [
+       "soda_can",
+       "wooden_block_b"
+      ],
+      {
+       "recyclable": "trash_can",
+       "block": "mug"
+      }
+     ]
+    ]
+   },
    "entities": [
     "soda_can",
     "wooden_block_b",
@@ -690,137 +2598,391 @@
     "mug",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "sorted_by_category",
-     [
-      "soda_can",
-      "wooden_block_b"
-     ],
-     {
-      "recyclable": "trash_can",
-      "block": "mug"
-     }
-    ]
+   "watch": [
+    "soda_can",
+    "wooden_block_b",
+    "trash_can",
+    "mug"
    ],
-   "composite": true,
-   "values": {
-    "category_map": [
-     {
-      "recyclable": "trash_can",
-      "block": "mug"
-     }
-    ],
-    "object_list": [
-     [
-      "soda_can",
-      "wooden_block_b"
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/sort_items.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "soda_can",
+        "receptacle": "trash_can"
+       }
+      },
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "mug"
+       }
+      }
      ]
-    ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "composite": true,
+    "values": {
+     "category_map": [
+      {
+       "recyclable": "trash_can",
+       "block": "mug"
+      }
+     ],
+     "object_list": [
+      [
+       "soda_can",
+       "wooden_block_b"
+      ]
+     ]
+    }
    }
   },
   {
-   "id": "empty_mug",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Take the tomatoes out of the mug.",
+   "task_id": "empty_mug",
+   "exp_id": "empty_mug",
+   "instruction": "Take the tomatoes out of the mug.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "container_empty",
+      "mug"
+     ]
+    ]
+   },
    "entities": [
     "mug",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "container_empty",
-     "mug"
-    ]
+   "watch": [
+    "mug"
    ],
-   "composite": true
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/empty_mug.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "cherry_tomato_1",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "cherry_tomato_2",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "cherry_tomato_3",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "composite": true
+   }
   },
   {
-   "id": "clear_tv_stand",
-   "annotation": "tasks/organize_utility_items/annotation.json",
-   "task_json": "tasks/organize_utility_items/task.json",
-   "description": "Clear the TV stand onto the bookcase.",
+   "task_id": "clear_tv_stand",
+   "exp_id": "clear_tv_stand",
+   "instruction": "Clear the TV stand onto the bookcase.",
+   "scene": {
+    "base": "tasks/organize_utility_items"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "support_clear",
+      "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
+     ]
+    ]
+   },
    "entities": [
     "juice_bottle",
     "tissue_box",
     "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
     "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
    ],
-   "goal": [
-    [
-     "support_clear",
-     "TVStandFactory_6305370_spawn_asset_6627927/surface_1"
-    ]
+   "watch": [
+    "juice_bottle",
+    "tissue_box"
    ],
-   "composite": true
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/clear_tv_stand.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "juice_bottle",
+        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      },
+      {
+       "skill": "fetch",
+       "args": {
+        "object": "tissue_box",
+        "receptacle": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "composite": true
+   }
   },
   {
-   "id": "sweep_blocks",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Sweep the blocks together.",
+   "task_id": "sweep_blocks",
+   "exp_id": "sweep_blocks",
+   "instruction": "Sweep the blocks together.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "clustered",
+      [
+       "wooden_block_a",
+       "wooden_block_b"
+      ],
+      0.12
+     ]
+    ]
+   },
    "entities": [
     "wooden_block_a",
     "wooden_block_b",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "clustered",
-     [
-      "wooden_block_a",
-      "wooden_block_b"
-     ],
-     0.12
-    ]
+   "watch": [
+    "wooden_block_a",
+    "wooden_block_b"
    ],
-   "values": {
-    "object_list": [
-     [
-      "wooden_block_a",
-      "wooden_block_b"
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/sweep_blocks.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "sweep",
+       "args": {
+        "objects": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "radius_m": 0.12
+       }
+      }
      ]
-    ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   },
+   "planner": {
+    "values": {
+     "object_list": [
+      [
+       "wooden_block_a",
+       "wooden_block_b"
+      ]
+     ]
+    }
    }
   },
   {
-   "id": "present_block",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Show the block to the camera.",
+   "task_id": "present_block",
+   "exp_id": "present_block",
+   "instruction": "Show the block to the camera.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "presenting",
+      "wooden_block_a"
+     ]
+    ]
+   },
    "entities": [
     "wooden_block_a",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "presenting",
-     "wooden_block_a"
-    ]
-   ]
+   "watch": [
+    "wooden_block_a"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/present_block.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "present",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   },
   {
-   "id": "serve_in_left_hand",
-   "annotation": "tasks/kitchen_skills/annotation.json",
-   "task_json": "tasks/kitchen_skills/task.json",
-   "description": "Carry the block in the left hand and open the sideboard with the right.",
+   "task_id": "serve_in_left_hand",
+   "exp_id": "serve_in_left_hand",
+   "instruction": "Carry the block in the left hand and open the sideboard with the right.",
+   "scene": {
+    "base": "tasks/kitchen_skills"
+   },
+   "variants": {
+    "default": {
+     "note": "the scene as built, no overlay"
+    }
+   },
+   "goal": {
+    "all": [
+     [
+      "holding",
+      "left",
+      "wooden_block_a"
+     ],
+     [
+      "is_open",
+      "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+     ]
+    ]
+   },
    "entities": [
     "wooden_block_a",
     "KitchenCabinetFactory_7025538_spawn_asset_6631478",
     "kitchen_island/top"
    ],
-   "goal": [
-    [
-     "holding",
-     "left",
-     "wooden_block_a"
-    ],
-    [
-     "is_open",
-     "KitchenCabinetFactory_7025538_spawn_asset_6631478"
-    ]
-   ]
+   "watch": [
+    "wooden_block_a"
+   ],
+   "nominal": "nominal",
+   "routes": {
+    "nominal": {
+     "kind": "nominal",
+     "variants": [
+      "default"
+     ],
+     "source": "skill_library/plans/serve_in_left_hand.skill_subgraph.json",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "brace",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "KitchenCabinetFactory_7025538_spawn_asset_6631478"
+       }
+      }
+     ]
+    }
+   },
+   "oracle": {
+    "default": "nominal"
+   }
   }
  ]
 }

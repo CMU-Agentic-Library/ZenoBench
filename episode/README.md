@@ -11,10 +11,12 @@ episode.Episode(task, cfg, profile)   scene, runner, observation(), call(), chec
 
 ## Task catalogs ([catalog.py](catalog.py))
 
-| catalog | shape after loading |
+Both catalogs store tasks in one shape on disk; `load_catalog` only indexes them by `task_id`.
+
+| catalog | tasks |
 |---|---|
-| `skill_library/tasks.json` (the original 35 tasks) | one variant `default`, empty overlay on the scene directory of its `task_json` (`tasks/<scene>/`, shared by several tasks; same scene and annotation as before); `goal` -> `{"all": [...]}`; `description` -> `instruction`; `entities` -> `entities` and `watch`; the skill subgraph `skill_library/plans/<id>.skill_subgraph.json` -> route `nominal` and `oracle: {"default": "nominal"}` |
-| `benchmark/tasks.json`, `benchmark/v3/tasks.json` | unchanged |
+| `skill_library/tasks.json` (35 tasks) | one variant `default` on the built scene `tasks/<scene>/` (shared by several tasks), no overlay; `entities` (planner relevance and the GT `objects` observation), `watch` (the objects among them); route `nominal` = the planner subgraph in `skill_library/plans/`, kept in sync by `python -m skill_library.planner`; planner-only inputs under `planner` |
+| `benchmark/tasks.json`, `benchmark/v3/tasks.json` | condition variants with overlays, declared routes with expected failures |
 
 A task with one variant ignores the seed: no distractors to drop and no `vary`, so every seed gives the same `config_hash`.
 

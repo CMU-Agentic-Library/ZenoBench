@@ -257,13 +257,12 @@ def main():
     a = ap.parse_args()
     doc = json.loads(Path(a.tasks).read_text())
     tasks = load_catalog(a.tasks)
-    legacy = any(t.get("catalog_kind") == "legacy" for t in tasks.values())
     keys = a.group.split(",")
     runs = list(load(a.runs))
     not_counted = []
-    if doc.get("schema_version", 1) >= 3 or legacy:
-        # v3 and the original tasks: only episodes of the configuration the current task file
-        # and profile generate count
+    if doc.get("schema_version", 1) >= 3:
+        # benchmark v3 and skill_library/tasks.json: only episodes of the configuration the current
+        # task file and profile generate count
         from benchmark.scene import episode_config
         keep = []
         for r in runs:

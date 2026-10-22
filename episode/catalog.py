@@ -1,16 +1,13 @@
-"""Task catalogs in one shape.
+"""Task catalogs.
 
-Two catalog formats exist:
+Every catalog is a JSON file ``{"schema_version", "kind", "tasks": [...]}`` whose tasks share one
+shape: ``task_id``, ``instruction``, ``scene`` (a base scene directory plus an optional overlay),
+``variants``, ``goal`` {"all", "any"} of GT predicate atoms, ``routes`` / ``nominal`` / ``oracle``
+and ``watch``.  Two catalogs exist:
 
-* ``skill_library/tasks.json`` (the original tasks): one prebuilt scene per task,
-  ``goal`` a list of atoms, ``entities``, ``description``;
-* ``benchmark/tasks.json`` / ``benchmark/v3/tasks.json``: a base scene plus an overlay,
-  condition ``variants``, ``goal`` {"all", "any"}, ``instruction``, ``routes``.
-
-``load_catalog`` returns every task in the benchmark shape.  An original task becomes a
-task with a single variant ``default`` and an empty overlay on its own scene directory
-(the seed then changes nothing); its skill subgraph (``skill_library/plans``) becomes the
-``nominal`` route and the oracle route of that variant.
+* ``skill_library/tasks.json``: one task per SkillNode family on a built scene, a single variant
+  ``default`` (no overlay; the seed changes nothing), the planner subgraph as route ``nominal``;
+* ``benchmark/tasks.json`` / ``benchmark/v3/tasks.json``: condition variants, declared routes.
 
 Standard library only (the HTTP server reads catalogs with any Python 3).
 """
@@ -21,10 +18,8 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-LEGACY = "skill_library/tasks.json"
-DEFAULT_VARIANT = "default"
 # catalog -> the profile its tasks run with unless the caller names another
-DEFAULT_CATALOGS = {LEGACY: "gt", "benchmark/v3/tasks.json": "benchmark"}
+DEFAULT_CATALOGS = {"skill_library/tasks.json": "gt", "benchmark/v3/tasks.json": "benchmark"}
 
 
 def load_catalog(path) -> dict[str, dict]:
@@ -32,37 +27,7 @@ def load_catalog(path) -> dict[str, dict]:
     if not path.is_absolute():
         path = ROOT / path
     doc = json.loads(path.read_text())
-    tasks = doc["tasks"]
-    if tasks and "task_id" not in tasks[0]:
-        return {t["id"]: legacy_task(t) for t in tasks}
-    return {t["task_id"]: dict(t, catalog_kind="benchmark") for t in tasks}
-
-
-def legacy_task(t: dict) -> dict:
-    """An original task in the benchmark shape."""
-    plan = ROOT / "skill_library/plans" / f"{t['id']}.skill_subgraph.json"
-    routes, oracle = {}, {}
-    if plan.exists():
-        steps = [{"skill": n["skill"], "args": {k: v["value"] for k, v in n["args"].items()}}
-                 for n in json.loads(plan.read_text())["nodes"]]
-        routes["nominal"] = {"kind": "nominal", "variants": [DEFAULT_VARIANT], "steps": steps,
-                             "source": str(plan.relative_to(ROOT))}
-        oracle[DEFAULT_VARIANT] = "nominal"
-    return {
-        "task_id": t["id"],
-        "exp_id": t["id"],
-        "catalog_kind": "legacy",
-        "source": [LEGACY],
-        "instruction": t["description"],
-        "scene": {"base": str(Path(t["task_json"]).parent)},
-        "variants": {DEFAULT_VARIANT: {"note": "the task's own scene, no overlay"}},
-        "goal": {"all": [list(a) for a in t["goal"]]},
-        "entities": list(t["entities"]),
-        "watch": list(t["entities"]),       # non-objects (supports) are skipped where watch is read
-        "nominal": "nominal" if routes else None,
-        "routes": routes,
-        "oracle": oracle,
-    }
+    return {t["task_id"]: dict(t, catalog_kind=doc.get("kind")) for t in doc["tasks"]}
 
 
 def public_task(task: dict) -> dict:

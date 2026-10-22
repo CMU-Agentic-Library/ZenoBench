@@ -523,10 +523,11 @@ def relevant_from_task(rig, task):
         elif kind == "room":
             domains.setdefault("room_ref", []).append(name)
             domains.setdefault("place_ref", []).append(name)
-    for k, v in task.get("values", {}).items():
+    for k, v in task.get("planner", {}).get("values", {}).items():
         domains[k] = v
     return {"entities": sorted(ents), "domains": domains,
-            "thermal": {k: [tuple(x) for x in v] for k, v in task.get("initial_facts", {}).items()}}
+            "thermal": {k: [tuple(x) for x in v]
+                        for k, v in task.get("planner", {}).get("initial_facts", {}).items()}}
 
 
 def _lid_rests_on(rig, container, lid, st):
@@ -535,25 +536,42 @@ def _lid_rests_on(rig, container, lid, st):
 
 
 def goal_atoms(task):
-    out = []
-    for g in task["goal"]:
-        out.append(tuple(_key(x) for x in g))
-    return out
+    """The ``all`` atoms of the goal; ``any`` groups are not planned (benchmark alternatives)."""
+    if task["goal"].get("any"):
+        raise ValueError(f"{task['task_id']}: the planner does not plan 'any' goal groups")
+    return [tuple(_key(x) for x in g) for g in task["goal"]["all"]]
 
 
 def solve_task(task, skills=None, atomic_only=True):
     from skill_library.graph import load_skills
     skills = skills or load_skills()
-    rig = OfflineRig(task["annotation"], json.loads((ROOT / task["task_json"]).read_text()) if task.get("task_json") else None)
+    base = task["scene"]["base"]           # the built scene without an overlay (variant "default")
+    rig = OfflineRig(f"{base}/annotation.json", json.loads((ROOT / base / "task.json").read_text()))
     rel = relevant_from_task(rig, task)
     dom = Domain(rig, skills, rel, atomic_only=atomic_only)
     s0 = initial_state(dom)
-    for fact in task.get("initial_facts_extra", []):
+    extra = task.get("planner", {})
+    for fact in extra.get("initial_facts_extra", []):
         s0 = s0 | {tuple(_key(x) for x in fact)}
-    for fact in task.get("initial_negated", []):
+    for fact in extra.get("initial_negated", []):
         s0 = s0 - {tuple(_key(x) for x in fact)}
-    steps, n = plan_by_subgoals(dom, s0, goal_atoms(task), max_expansions=task.get("max_expansions", 60000))
+    steps, n = plan_by_subgoals(dom, s0, goal_atoms(task), max_expansions=extra.get("max_expansions", 60000))
     return steps, n, s0
+
+
+def route_steps(graph):
+    """A skill subgraph as catalog route steps (literal arguments only)."""
+    return [{"skill": n["skill"], "args": {k: v["value"] for k, v in n["args"].items()}} for n in graph["nodes"]]
+
+
+def set_nominal_route(task, graph, plan_path):
+    """Route ``nominal`` of the catalog task = this subgraph; the oracle runs it on variant ``default``."""
+    rel = Path(plan_path).resolve()
+    rel = str(rel.relative_to(ROOT)) if rel.is_relative_to(ROOT) else str(plan_path)
+    task.setdefault("routes", {})["nominal"] = {"kind": "nominal", "variants": ["default"], "source": rel,
+                                               "steps": route_steps(graph)}
+    task.setdefault("oracle", {})["default"] = "nominal"
+    task["nominal"] = "nominal"
 
 
 def main():
@@ -571,21 +589,27 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     summary = []
     for task in catalog["tasks"]:
-        if not args.all and task["id"] != args.task:
+        if not args.all and task["task_id"] != args.task:
             continue
-        steps, n, _ = solve_task(task, skills, atomic_only=not (args.composite or task.get("composite")))
+        steps, n, _ = solve_task(task, skills,
+                                 atomic_only=not (args.composite or task.get("planner", {}).get("composite")))
         ok = steps is not None
-        row = {"task": task["id"], "solved": ok, "expansions": n, "length": len(steps) if ok else None}
+        row = {"task": task["task_id"], "solved": ok, "expansions": n, "length": len(steps) if ok else None}
         if ok and not steps:
             row["note"] = "goal already holds in the initial state"
         if ok and steps:
-            g = to_subgraph(task["id"], steps)
+            g = to_subgraph(task["task_id"], steps)
             validate_subgraph(g, skills)
-            (out / f"{task['id']}.skill_subgraph.json").write_text(json.dumps(g, indent=1) + "\n")
+            plan = out / f"{task['task_id']}.skill_subgraph.json"
+            plan.write_text(json.dumps(g, indent=1) + "\n")
+            set_nominal_route(task, g, plan)
             row["verbs"] = [sk["verb"] + ("/" + p if p else "") for sk, _, p in steps]
         summary.append(row)
         print(json.dumps(row), flush=True)
     (out / "summary.json").write_text(json.dumps(summary, indent=1) + "\n")
+    if Path(args.out).resolve() == (HERE / "plans").resolve():
+        # the catalog's nominal routes follow the plans written here
+        Path(args.task_catalog).write_text(json.dumps(catalog, indent=1, ensure_ascii=False) + "\n")
     if args.all and not args.composite:
         readme = HERE.parent / "README.md"
         text = readme.read_text()

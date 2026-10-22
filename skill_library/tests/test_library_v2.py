@@ -93,9 +93,9 @@ def test_subgraph_with_output_reference_validates_and_grounds():
 def test_planner_decomposes_tasks_into_skill_chains():
     from skill_library.planner import solve_task
     catalog = json.loads((ROOT / "skill_library/tasks.json").read_text())
-    tasks = {t["id"]: t for t in catalog["tasks"]}
+    tasks = {t["task_id"]: t for t in catalog["tasks"]}
     for tid in ("collect_fruits", "throw_away_can", "flip_book"):
-        steps, _, _ = solve_task(tasks[tid], atomic_only=not tasks[tid].get("composite"))
+        steps, _, _ = solve_task(tasks[tid], atomic_only=not tasks[tid].get("planner", {}).get("composite"))
         assert steps, tid
     verbs = [sk["verb"] for sk, _, _ in solve_task(tasks["flip_book"])[0]]
     assert verbs[-1] == "flip"
@@ -122,3 +122,17 @@ def test_skill_md_description_is_quoted():
         rows = _frontmatter(path).splitlines()
         line = next(row for row in rows if row.startswith("description: "))
         json.loads(line.removeprefix("description: "))
+
+
+def test_catalog_nominal_routes_match_the_plans():
+    """routes.nominal of skill_library/tasks.json is the planner subgraph in skill_library/plans/."""
+    from skill_library.planner import route_steps
+    catalog = json.loads((ROOT / "skill_library/tasks.json").read_text())
+    for t in catalog["tasks"]:
+        plan = ROOT / "skill_library/plans" / f"{t['task_id']}.skill_subgraph.json"
+        if not plan.exists():
+            assert not t["routes"], t["task_id"]
+            continue
+        route = t["routes"]["nominal"]
+        assert route["steps"] == route_steps(json.loads(plan.read_text())), t["task_id"]
+        assert t["oracle"] == {"default": "nominal"} and list(t["variants"]) == ["default"], t["task_id"]

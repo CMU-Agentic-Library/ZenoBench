@@ -179,7 +179,7 @@ contract 本身的失败放在结果的 `error_code` 里，HTTP 仍是 200：
 $ISAACLAB_PYTHON -m pytest tests/test_env_service.py   # 不起 simulator
 ```
 
-[mock_planner.py](mock_planner.py) 是一个替身 planner：它调用 `initial_task`（遇到 `BUSY` 每 30 秒重试），把 `skill_library/plans/<task>.skill_subgraph.json` 按顺序转成 contract 调用发给服务，最后调用 `check_task`。benchmark 任务要给 `--variant`，它会回放 catalog 里这个 variant 对应的 route，包括预期失败的那一步。在同一台机器上起服务和 mock planner：
+[mock_planner.py](mock_planner.py) 是一个替身 planner：它调用 `initial_task`（遇到 `BUSY` 每 30 秒重试），把任务所在 catalog 里这个 variant 对应的 route（原任务就是 `routes.nominal`，即规划器生成的子图）按顺序转成 contract 调用发给服务，最后调用 `check_task`。有多个 variant 的任务要给 `--variant`，route 里预期失败的那一步会单独发送。在同一台机器上起服务和 mock planner：
 
 ```bash
 $ISAACLAB_PYTHON -m env_service.server &

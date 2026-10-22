@@ -34,13 +34,17 @@ Spec 中 `objects` 使用 `annotations/assets.json` 的资产名，`supports` �
 `skill_library/tasks.json` 中的一条任务形如：
 
 ```json
-{"id": "serve_guest", "task_json": "tasks/serve_guest/task.json", "annotation": "tasks/serve_guest/annotation.json",
- "description": "Serve the guest a cup of juice on the bedside table.",
+{"task_id": "serve_guest", "exp_id": "serve_guest",
+ "instruction": "Serve the guest a cup of juice on the bedside table.",
+ "scene": {"base": "tasks/serve_guest"},
+ "variants": {"default": {"note": "the scene as built, no overlay"}},
+ "goal": {"all": [["on", "juice_cup", "<bedside table support>"]]},
  "entities": ["juice_cup", "<bedside table support>"],
- "goal": [["on", "juice_cup", "<bedside table support>"]]}
+ "watch": ["juice_cup"],
+ "nominal": null, "routes": {}, "oracle": {}}
 ```
 
-goal 是 `zeno_skills/predicates.py` 中谓词的原子列表，全部成立即成功。`python -m skill_library.planner --task serve_guest` 可以生成 `skill_library/plans/serve_guest.skill_subgraph.json`，它就是 oracle 跑的计划。需要 condition variant 的任务写进 benchmark catalog（`benchmark/define_tasks_v3.py`），格式见 [benchmark/v3/README.md](../benchmark/v3/README.md)。新谓词或新的电器机制可能还需要扩展 predicates 或底层 policy。
+格式和 benchmark 任务相同，只有一个 variant `default`。goal 是 `zeno_skills/predicates.py` 中谓词的原子列表，全部成立即成功；`entities` 是规划器考虑的物体和地点，`watch` 是其中的物体（用于掉落和副作用统计）。规划器专用的输入（`composite`、`values`、`initial_facts_extra`）放在可选的 `planner` 字段里。`python -m skill_library.planner --task serve_guest` 生成 `skill_library/plans/serve_guest.skill_subgraph.json`，并把它写进这条任务的 `routes.nominal` 和 `oracle`，oracle 跑的就是它。需要 condition variant 的任务写进 benchmark catalog（`benchmark/define_tasks_v3.py`），格式见 [benchmark/v3/README.md](../benchmark/v3/README.md)。新谓词或新的电器机制可能还需要扩展 predicates 或底层 policy。
 
 ## 2. 新增可抓取资产
 

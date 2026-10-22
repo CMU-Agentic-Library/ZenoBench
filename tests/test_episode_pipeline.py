@@ -63,13 +63,14 @@ def test_run_profile_current():
 
 
 def test_both_catalogs_in_one_shape():
-    legacy = load_catalog("skill_library/tasks.json")
+    skill = load_catalog("skill_library/tasks.json")
     bench = load_catalog("benchmark/v3/tasks.json")
     assert set(DEFAULT_CATALOGS) == {"skill_library/tasks.json", "benchmark/v3/tasks.json"}
-    for t in list(legacy.values()) + list(bench.values()):
+    for t in list(skill.values()) + list(bench.values()):
         assert {"task_id", "instruction", "scene", "variants", "goal", "routes", "oracle"} <= set(t)
         assert set(t["goal"]) <= {"all", "any"}
-    cf = legacy["collect_fruits"]
+        assert set(t["watch"]) <= set(t.get("entities") or t["watch"])
+    cf = skill["collect_fruits"]
     assert list(cf["variants"]) == ["default"] and cf["scene"] == {"base": "tasks/collect_fruits"}
     assert cf["oracle"] == {"default": "nominal"} and cf["routes"]["nominal"]["steps"][0]["skill"] == "navigate"
     assert public_task(cf) == {"task_id": "collect_fruits", "name": "collect_fruits",

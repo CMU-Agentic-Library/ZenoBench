@@ -64,7 +64,7 @@ VLM 输出 schema 2 子图（[subgraph.schema.json](subgraph.schema.json)），�
 
 ## 任务可组合性
 
-[tasks.json](tasks.json) 用 GT 谓词描述本场景可完成的任务：10 个原有 ZenoBench 任务，加上厨房场景的灶台煮汤、无微波炉时用灶台加热、冰箱冷却、丢垃圾、叠积木、擦台面、翻书、藏物、找东西、探索房间、计数、敲门、分类、清空等。[planner.py](planner.py) 用同一套 GT 谓词从标注场景构造初始状态，按导出的前置/后置/invalidates 做符号搜索，证明每个任务都能由 SkillNode 链完成，结果写到 [plans/](plans/)。这些是规划层结果；物理执行结果见下节。
+[tasks.json](tasks.json) 和 benchmark 任务同一种格式（[episode/README.md](../episode/README.md)），每个任务只有一个 variant `default`，`routes.nominal` 就是 [plans/](plans/) 里规划器生成的子图。它用 GT 谓词描述本场景可完成的任务：10 个原有 ZenoBench 任务，加上厨房场景的灶台煮汤、无微波炉时用灶台加热、冰箱冷却、丢垃圾、叠积木、擦台面、翻书、藏物、找东西、探索房间、计数、敲门、分类、清空等。[planner.py](planner.py) 用同一套 GT 谓词从标注场景构造初始状态，按导出的前置/后置/invalidates 做符号搜索，证明每个任务都能由 SkillNode 链完成，结果写到 [plans/](plans/)。这些是规划层结果；物理执行结果见下节。
 
 ## 物理验证
 

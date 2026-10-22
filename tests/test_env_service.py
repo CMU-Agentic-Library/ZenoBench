@@ -13,15 +13,14 @@ import pytest
 
 from env_service.server import Config, ExpManager, load_registry, make_handler
 from episode.episode import public_result
-from episode.catalog import legacy_task
 from episode.profile import load_profile
 
 FAKE = Path(__file__).parent / "fixtures" / "fake_env_worker.py"
 
 
 def _entry(t, profile="gt", **extra):
-    task = legacy_task({"id": t, "description": f"do {t}", "goal": [], "entities": [], "task_json": f"tasks/{t}/task.json"})
-    task.update(extra)
+    task = {"task_id": t, "instruction": f"do {t}", "scene": {"base": f"tasks/{t}"},
+            "variants": {"default": {}}, "goal": {"all": []}, "routes": {}, "oracle": {}, **extra}
     return {"task": task, "catalog": "fake.json", "profile": dict(load_profile(profile), path=profile)}
 
 
@@ -168,7 +167,7 @@ def test_benchmark_task_profile_variant_and_budget(service):
 def test_default_registry_loads_both_catalogs(tmp_path):
     reg = load_registry({"skill_library/tasks.json": "gt", "benchmark/v3/tasks.json": "benchmark"})
     assert reg["collect_fruits"]["profile"]["name"] == "gt"
-    assert reg["collect_fruits"]["task"]["variants"] == {"default": {"note": "the task's own scene, no overlay"}}
+    assert list(reg["collect_fruits"]["task"]["variants"]) == ["default"]
     assert reg["T01_book_to_dining_table"]["profile"]["name"] == "benchmark"
     with pytest.raises(ValueError):
         copy = tmp_path / "tasks.json"

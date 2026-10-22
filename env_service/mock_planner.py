@@ -3,12 +3,12 @@
     python -m env_service.mock_planner --service http://127.0.0.1:8800 \\
         --task collect_fruits [hide_block ...] [--out DIR]
 
-It starts each task, replays a known plan as contract calls and checks the task;
-several tasks run concurrently, and a task that gets 503 BUSY retries until a
-simulator is free.  The plan of an original task is its skill subgraph
-(``skill_library/plans/<task>.skill_subgraph.json``); a benchmark task needs
-``--variant`` and replays the route the catalog maps that variant to, including
-its expected failures (sent alone; the route goes on when they fail).
+It starts each task, replays the route its catalog maps the variant to (the
+oracle route: for skill_library/tasks.json the planner subgraph) as contract
+calls and checks the task; several tasks run concurrently, and a task that gets
+503 BUSY retries until a simulator is free.  A task with several variants needs
+``--variant``; the route's expected failures are sent alone and the route goes
+on when they fail.
 Consecutive nodes go in one ``do_contract`` request; a node that needs an
 earlier node's output (``{"from": "n3.key"}``) starts a new request once that
 output is back.  Standard library only.
@@ -59,14 +59,13 @@ def batches(graph):
 
 
 def load_plan(task, variant):
-    """The skill subgraph of an original task, or the route a benchmark task maps ``variant`` to."""
-    plan = ROOT / f"skill_library/plans/{task}.skill_subgraph.json"
-    if plan.exists():
-        return json.loads(plan.read_text())
+    """The route the task's catalog maps ``variant`` to, as plan nodes."""
     for path in DEFAULT_CATALOGS:
         t = load_catalog(path).get(task)
         if t is None:
             continue
+        if variant is None and len(t["variants"]) == 1:
+            variant = next(iter(t["variants"]))
         if variant is None:
             raise SystemExit(f"{task}: --variant is required (one of {sorted(t['variants'])})")
         steps = t["routes"][t["oracle"][variant]]["steps"]
