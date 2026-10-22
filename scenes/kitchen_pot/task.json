@@ -8,7 +8,6 @@
  "annotation": "scenes/kitchen_pot/annotation.json",
  "base_scene": "sim/zeno_house.usd",
  "thermal": {},
- "demonstrate_microwave_door": false,
  "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
  "robot_start": [
   -1.0794228634059948,
@@ -34,23 +33,6 @@
  "candidate_supports": {
   "handled_cooking_pot": [
    "KitchenSpaceFactory_2359716_spawn_asset_5713391/surface_0"
-  ]
- },
- "alternatives": [],
- "place_hints": {},
- "goal": {
-  "all": [
-   {
-    "on": [
-     "handled_cooking_pot"
-    ],
-    "support": "KitchenSpaceFactory_2359716_spawn_asset_5713391/surface_0"
-   },
-   {
-    "upright": [
-     "handled_cooking_pot"
-    ]
-   }
   ]
  }
 }

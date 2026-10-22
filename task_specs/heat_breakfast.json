@@ -32,35 +32,5 @@
       "ambient_c": 21.0,
       "heating_rate_c_per_s": 4.0
     }
-  },
-  "place_hints": {
-    "oatmeal": [
-      2.93,
-      6.7
-    ]
-  },
-  "goal": {
-    "all": [
-      {
-        "heated": [
-          "oatmeal"
-        ],
-        "appliance": "kitchen_microwave",
-        "min_temp_c": 60.0
-      },
-      {
-        "on": [
-          "oatmeal"
-        ],
-        "support": "dining_table",
-        "upright": true
-      },
-      {
-        "closed": "all"
-      },
-      {
-        "not_dropped": "all"
-      }
-    ]
   }
 }

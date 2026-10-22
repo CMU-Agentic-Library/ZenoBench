@@ -19,20 +19,5 @@
       ],
       "reach_check": false
     }
-  },
-  "goal": {
-    "all": [
-      {
-        "on": [
-          "handled_cooking_pot"
-        ],
-        "support": "kitchen_counter_surface"
-      },
-      {
-        "upright": [
-          "handled_cooking_pot"
-        ]
-      }
-    ]
   }
 }

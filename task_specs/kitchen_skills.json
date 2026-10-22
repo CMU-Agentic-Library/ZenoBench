@@ -263,38 +263,5 @@
       "cherry_tomato_2",
       "cherry_tomato_3"
     ]
-  },
-  "alternatives": [
-    "no microwave: heat the tomatoes in the pot on the stove",
-    "flat book cannot be top-pinched: expose its edge, then pick"
-  ],
-  "goal": {
-    "all": [
-      {
-        "heated": [
-          "all:food"
-        ],
-        "appliance": "kitchen_stove",
-        "min_temp_c": 60
-      },
-      {
-        "inside": [
-          "all:food"
-        ],
-        "container": "handled_cooking_pot"
-      },
-      {
-        "inside": [
-          "soda_can"
-        ],
-        "container": "trash_can"
-      },
-      {
-        "closed": "all"
-      },
-      {
-        "not_dropped": "all"
-      }
-    ]
   }
 }

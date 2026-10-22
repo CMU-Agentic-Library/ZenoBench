@@ -83,33 +83,5 @@
    "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
    "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
   ]
- },
- "alternatives": [
-  "fruit_basket missing -> serving_tray"
- ],
- "place_hints": {},
- "goal": {
-  "all": [
-   {
-    "inside": [
-     "all:fruit"
-    ],
-    "container": "fruit_basket|serving_tray",
-    "bind": "container"
-   },
-   {
-    "on": [
-     "$container"
-    ],
-    "support": "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
-    "upright": true
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
-  ]
  }
 }

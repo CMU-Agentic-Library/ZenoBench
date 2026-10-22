@@ -12,7 +12,7 @@ from types import SimpleNamespace
 import pytest
 
 from env_service.server import Config, ExpManager, load_registry, make_handler
-from env_service.worker import public_result
+from episode.episode import public_result
 from episode.catalog import legacy_task
 from episode.profile import load_profile
 

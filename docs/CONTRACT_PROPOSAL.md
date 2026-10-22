@@ -1,6 +1,6 @@
 # Zeno House contract 接口与扩展提案
 
-> 此文是历史记录：描述 `contract_001`–`contract_008` 兼容 family 的路线与旧关系图。当前上层接口是 [动词 SkillNode 库](../skill_library/README.md)，每个 SkillNode 一一对应一个 Contract（`contract_009` 起），其按名词选择的 policy 路径、GT 前后条件与 verifier 见 [Contract Library](../contract_library/README.md)。
+> 此文是历史记录：描述 `contract_001`–`contract_008` 兼容 family 的路线与旧关系图。当前上层接口是 [动词 SkillNode 库](../skill_library/README.md)，每个 SkillNode 一一对应一个 Contract（`contract_009` 起），其按名词选择的 policy 路径、GT 前后条件与 verifier 见 [Contract Library](../contract_library/README.md)。 文中提到的 `TaskPolicy`、`TaskEvaluator` 已于 2026-10-21 删除，任务的 goal 现在由 GT 谓词判定（[episode/README.md](../episode/README.md)）。
 
 八个 [ContractSpec](../zeno_skills/contracts.py) 定义语义接口与底层 policy 路由。
 公开 ID 为 contract_001–contract_008；本文出现的 navigate.v1、pick.v1 等是

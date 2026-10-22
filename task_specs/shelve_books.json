@@ -34,37 +34,5 @@
    "book_red",
    "book_green"
   ]
- },
- "place_hints": {
-  "book": [
-   "bookcase_north_top",
-   "bookcase_bedside_top",
-   "bookcase_north_middle_shelf",
-   "bookcase_bedside_middle_shelf"
-  ]
- },
- "alternatives": [
-  "bookcase top full -> the other bookcase's top, then a shelf level (the middle shelf is blocked by a toy duck)",
-  "book is flat and wider than the gripper -> push it over the support edge, pinch the overhang",
-  "book on the floor -> diagonal corner pinch (bottom edge + top face), lay it on a free surface"
- ],
- "goal": {
-  "all": [
-   {
-    "on": [
-     "all:book"
-    ],
-    "support": [
-     "bookcase_bedside",
-     "bookcase_north"
-    ]
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
-  ]
  }
 }

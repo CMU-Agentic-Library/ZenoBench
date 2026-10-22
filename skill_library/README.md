@@ -60,7 +60,7 @@ VLM 输出 schema 2 子图（[subgraph.schema.json](subgraph.schema.json)），�
   {"id": "n3", "skill": "uncover", "args": {"container": {"ref": "handled_cooking_pot"}}, "depends_on": ["n2"]}]}
 ```
 
-[graph.py](graph.py) 校验与 grounding，[runtime.py](runtime.py) 的 `run_subgraph(rig, graph, bindings)` 执行；失败时返回 `replan_request`。[gpt_experiment.py](gpt_experiment.py) 与 [tools/run_gpt_skill_task.py](../tools/run_gpt_skill_task.py) 用同一组卡片让 GPT 规划。
+[graph.py](graph.py) 校验与 grounding，[runtime.py](runtime.py) 的 `run_subgraph(rig, graph, bindings)` 执行；失败时返回 `replan_request`。
 
 ## 任务可组合性
 

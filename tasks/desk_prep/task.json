@@ -84,48 +84,5 @@
    "TVStandFactory_6305370_spawn_asset_6627927/surface_1",
    "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
   ]
- },
- "alternatives": [
-  "mug unreachable/slips -> cup (present in 50 % of the variants)",
-  "pen missing (30 %) -> pencil",
-  "notebook is flat and wider than the gripper -> push it over the edge, pinch the overhang"
- ],
- "place_hints": {
-  "notebook": [
-   -0.95,
-   -6.12
-  ],
-  "pen|pencil": [
-   -0.55,
-   -6.18
-  ],
-  "mug|cup": [
-   -0.25,
-   -6.12
-  ]
- },
- "goal": {
-  "all": [
-   {
-    "on": [
-     "notebook",
-     "pen|pencil"
-    ],
-    "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
-   },
-   {
-    "on": [
-     "mug|cup"
-    ],
-    "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0",
-    "upright": true
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
-  ]
  }
 }

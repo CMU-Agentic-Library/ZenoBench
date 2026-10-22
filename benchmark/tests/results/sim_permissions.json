@@ -68,7 +68,7 @@
   {
    "check": "known but behind the closed door: pick refused NOT_IN_VIEW",
    "passed": true,
-   "detail": "NOT_IN_VIEW: 'bowl_inside_kitchen_cabinet' is not in the current view (last seen at tick 24417); look at it first"
+   "detail": "NOT_IN_VIEW: 'bowl_inside_kitchen_cabinet' is not in the current view (last seen at tick 24447); look at it first"
   },
   {
    "check": "look at the island observes objects",
@@ -78,7 +78,7 @@
   {
    "check": "pick does not track an object outside the view",
    "passed": true,
-   "detail": "NOT_IN_VIEW: 'wooden_block_a' is not in the current view (last seen at tick 28998); look at it first"
+   "detail": "NOT_IN_VIEW: 'wooden_block_a' is not in the current view (last seen at tick 29028); look at it first"
   },
   {
    "check": "explore coverage targets = static supports only",

@@ -73,6 +73,14 @@ def gated(monkeypatch):
     return rig, obs, runner
 
 
+def planner_view(runner, verb, args, res=None):
+    """What a planner reads of a call under profiles/benchmark.yaml (episode.episode.Episode.call)."""
+    from episode.episode import public_result
+    res = res if res is not None else runner.run(verb, dict(args))
+    allow = {x for v in args.values() for x in (v if isinstance(v, list) else [v]) if isinstance(x, str)}
+    return runner.obs.mask(public_result({"contract": verb, "args": args}, res), allow)
+
+
 def test_hidden_and_nonexistent_objects_get_the_same_refusal(gated):
     rig, obs, runner = gated
     hidden = "bowl_inside_kitchen_cabinet"          # exists, never seen
@@ -83,9 +91,8 @@ def test_hidden_and_nonexistent_objects_get_the_same_refusal(gated):
             args["receptacle"] = "kitchen_island/top"
         if verb == "heat":
             args["appliance"] = "kitchen_stove"
-        a = runner.feedback(runner.run(verb, dict(args)), args)
-        b_args = dict(args, **{slot: "golden_teapot"})
-        b = runner.feedback(runner.run(verb, dict(b_args)), b_args)
+        a = planner_view(runner, verb, args)
+        b = planner_view(runner, verb, dict(args, **{slot: "golden_teapot"}))
         assert not a["success"] and not b["success"]
         assert a["error_code"] == b["error_code"] == "NOT_OBSERVED"
         assert a["error"].replace(hidden, "X") == b["error"].replace("golden_teapot", "X")
@@ -154,8 +161,8 @@ def test_feedback_masks_unobserved_names(gated):
     res = SkillResult("c", "s", "clear_support(support=kitchen_island/top)", False, "p",
                       [{"atom": "support_clear(support=kitchen_island/top)", "holds": False,
                         "detail": "objects ['wooden_block_a', 'juice_bottle']"}], [], [], {"moved": ["juice_bottle"]}, {},
-                      error="SUBSKILL_FAILED: pick_object(object=juice_bottle): x", error_code="SUBSKILL_FAILED")
-    fb = runner.feedback(res, {"support": "kitchen_island/top"})
+                      error="pick_object(object=juice_bottle) blocked by wooden_block_a", error_code="SUBSKILL_FAILED")
+    fb = planner_view(runner, "clear", {"support": "kitchen_island/top"}, res)
     text = json.dumps(fb)
     assert "juice_bottle" not in text and "wooden_block_a" in text and "<unobserved>" in text
     assert "recovery" not in fb and "bound_nouns" not in fb

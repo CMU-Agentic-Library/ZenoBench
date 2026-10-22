@@ -13,19 +13,5 @@
   },
   "roles": {
     "sort_into_tray": ["tissue_box", "rolling_pin"]
-  },
-  "alternatives": [
-    "flat objects wider than the gripper -> expose an edge before a horizontal pinch",
-    "failed tray insertion -> reobserve the tray and choose another free placement region"
-  ],
-  "goal": {
-    "all": [
-      {"inside": ["all:sort_into_tray"], "container": "shallow_sorting_tray"},
-      {"on": ["paperback_book"], "support": "study_desk"},
-      {"on": ["juice_bottle", "plastic_cup"], "support": "dining_table", "upright": true},
-      {"upright": ["shallow_sorting_tray"]},
-      {"closed": "all"},
-      {"not_dropped": "all"}
-    ]
   }
 }

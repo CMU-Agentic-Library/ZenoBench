@@ -69,9 +69,6 @@ def tasks_ref(path):
             "sha1": hashlib.sha1(p.read_bytes()).hexdigest()}
 
 
-from episode.episode import evaluate_goal, floor_drops, state_summary  # noqa: E402,F401  (moved there)
-
-
 def resolve_steps(task, cfg, route_name):
     route = task["routes"][route_name]
     return route, [dict(s) for s in route["steps"]]

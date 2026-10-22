@@ -3,19 +3,18 @@
 An Isaac Sim house with baked physics, **ground-truth (GT) annotations for every
 asset**, **annotation-driven manipulation skills** (IK + grasp selection + base
 planning), a **verb-based SkillNode library** for an upper-layer VLM (one verb + one noun per skill, GT-checked
-pre/postconditions, noun-selected policy paths), and **ten canonical household task specs plus a kitchen skills
-scene**. The house is an Infinigen layout. Most task objects were generated with
+pre/postconditions, noun-selected policy paths), **eleven task scenes**, and two task catalogs (35 SkillNode
+tasks and the 38-task observation-limited benchmark) that run through one episode pipeline. The house is an Infinigen layout. Most task objects were generated with
 [EmbodiedGen V2](https://github.com/HorizonRobotics/EmbodiedGen) text-to-3D, including the seventeen textured props
 documented in [the V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md).
 
 <p align="center">
-  <img src="media/tasks/collect_fruits.gif" width="49%" alt="collect_fruits: apple and orange from the dining table into the basket on the living-room bookcase"/>
-  <img src="media/tasks/shelve_books.gif" width="49%" alt="shelve_books: push each book over the desk edge, pinch it, carry it to the bookcase"/>
+  <img src="media/rollouts/task_tidy_toys.gif" width="49%" alt="tidy_toys: the toys into the toy box"/>
+  <img src="media/rollouts/task_heat_without_microwave.gif" width="49%" alt="heat_without_microwave: food heated on the stove"/>
 </p>
 <p align="center"><sub>
-Whole tasks, run by the goal-driven scripted policy and scored by the success checker (sped up).
-Left: <b>collect_fruits</b>, both fruits into the basket, across two rooms.
-Right: <b>shelve_books</b>, flat books pushed over the desk edge, pinched at the overhang, placed on a bookcase.
+Whole tasks, run as SkillNode subgraphs with their goal checked on GT state (sped up).
+Left: <b>tidy_toys</b>. Right: <b>heat_without_microwave</b>.
 Core grasp and motion planning use annotations; appliance skills also contain scene-specific park hints.
 </sub></p>
 
@@ -168,7 +167,7 @@ task only adds assets to furniture tops or to the floor.
 |---|---|---|
 | ![](media/scenes/house_topdown.jpg) House, top-down (roofless) | ![](media/scenes/living_room_cabinet.jpg) Articulated cabinet with side-hook handle, living room | ![](scenes/kitchen_pot/check/pot_close.png) Cooking pot on the kitchen counter |
 
-The task layouts are shown in the task videos below. The [kitchen pot demo](scenes/kitchen_pot/scene.usd)
+The [kitchen pot demo](scenes/kitchen_pot/scene.usd)
 is outside the ten benchmark tasks; a physical lift remains unverified.
 
 The base house, task scenes, and kitchen pot demo have recorded three-second physics
@@ -204,67 +203,39 @@ All 17 V2 props (the 12 task props and the 5 SkillNode-library props) have textu
 
 ## Tasks (ZenoBench)
 
-Each task is a spec in `task_specs/<task>.json`. `tools/build_tasks.py` samples a variant of it into
-`tasks/<task>/{scene.usd, task.json, annotation.json}`. The spec gives the instruction, the objects
-with their candidate supports, the alternatives, and the goal. A task is **scored by
-`zeno_skills/evaluator.py`** from simulator state only, and **solved by the goal-driven scripted policy
-`zeno_skills/task_policy.py`**, which turns the goal into navigation, manipulation,
-and appliance skills for the original task set. The [GT policy inventory](docs/GT_POLICY.md) separates this scripted
-baseline from its atomic skills and evaluator. `tools/run_task.py` does evaluate → policy → evaluate, then writes `result.json` and a video. Each task can also be solved as a SkillNode subgraph: `python -m skill_library.planner --task <task>` writes one to `skill_library/plans/`, and `tools/run_gpt_skill_task.py --proposal-file` executes it through the Skill Contracts.
+Two task catalogs run on the scenes in `tasks/<scene>/`. Both go through one pipeline, [episode/](episode/README.md): `benchmark/run_episode.py` runs an episode locally (scripted route, GT oracle, or an in-process planner), and [env_service](env_service/README.md) serves it to an external planner over HTTP. A task's goal is a list of GT predicate atoms (`zeno_skills/predicates.py`), judged on the final simulator state.
 
-<!-- TASK_VIDEOS -->
-| task | rollout (sped up) | result |
-|---|---|---|
-| **collect_fruits** | <img src="media/tasks/collect_fruits.gif" width="420"/><br>[video](media/tasks/collect_fruits.mp4) | **success**, progress 100%<br>186 s simulated |
-| **tidy_toys** | <img src="media/tasks/tidy_toys.gif" width="420"/><br>[video](media/tasks/tidy_toys.mp4) | **success**, progress 100%<br>238 s simulated<br><sub>alternative: storage_basket</sub> |
-| **shelve_books** | <img src="media/tasks/shelve_books.gif" width="420"/><br>[video](media/tasks/shelve_books.mp4) | **success**, progress 100%<br>438 s simulated |
-| **breakfast_setup** | <img src="media/tasks/breakfast_setup.gif" width="420"/><br>[video](media/tasks/breakfast_setup.mp4) | **partial**, progress 67%<br>340 s simulated<br><sub>alternative: mug; dropped: mug</sub> |
-| **heat_breakfast_combo** | <img src="media/tasks/heat_breakfast_combo.gif" width="420"/><br>[video](media/tasks/heat_breakfast_combo.mp4) | **success**, progress 100%<br>204 s simulated<br><sub>microwave door opened and closed; oatmeal 63.6 °C</sub> |
-| **heat_breakfast** | [video](media/tasks/heat_breakfast.mp4)<br>[result JSON](media/tasks/heat_breakfast.result.json) | **success**, progress 100%<br>306.7 s simulated<br><sub>fridge → microwave → table; oatmeal 63.6 °C</sub> |
-| **desk_prep** | <img src="media/tasks/desk_prep.gif" width="420"/><br>[video](media/tasks/desk_prep.mp4) | **success**, progress 100%<br>625 s simulated |
-<!-- /TASK_VIDEOS -->
+| catalog | tasks | variants | default profile |
+|---|---|---|---|
+| [skill_library/tasks.json](skill_library/tasks.json) | 35 tasks, one per SkillNode family; planner subgraphs in [skill_library/plans/](skill_library/plans/) | one (`default`) | `gt`: full GT observation |
+| [benchmark/v3/tasks.json](benchmark/v3/tasks.json) | 38 tasks, instruction-only, with fallback and alternative conditions ([benchmark/](benchmark/README.md)) | condition variants × seeds | `benchmark`: observation-limited, no automatic recovery |
 
-[recycle_and_store](task_specs/recycle_and_store.json) is the ninth task: put the soda can, snack carton and foam cube into the wide storage bin on the bookcase. Its [scene preview](tasks/recycle_and_store/check/overview.png) and physics check pass. Its SkillNode decomposition is in [plans/](skill_library/plans/recycle_and_store.skill_subgraph.json); the fold-blocked-at-the-bookcase failure of the earlier run is fixed (navigation backs out before folding).
+```bash
+export OMNI_KIT_ACCEPT_EULA=YES
+# an original task through the GT oracle (its plan as the route)
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task collect_fruits --planner oracle
+# a benchmark condition through its declared recovery route
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v3/tasks.json --task T01_book_to_dining_table \
+    --variant no_overhang --seed 10 --route fallback_expose
+# the HTTP service for an external planner (both catalogs)
+$ISAACLAB_PYTHON -m env_service.server --port 8800
+```
 
-[organize_utility_items](task_specs/organize_utility_items.json) is the tenth task, adding six differently shaped objects across the house. Its [scene](tasks/organize_utility_items/check/overview.png) passes physics checks, and its SkillNode decomposition is in [plans/](skill_library/plans/organize_utility_items.skill_subgraph.json).
+Each scene is a spec in `task_specs/<scene>.json`. `tools/build_tasks.py` samples a layout of it into `tasks/<scene>/{scene.usd, task.json, annotation.json}`. `task.json` describes the scene: USD, annotation, robot start, thermal state and placed objects. The tasks that run on a scene and their goals are defined in the catalogs; 24 of the 35 SkillNode tasks and 34 of the 38 benchmark tasks use `tasks/kitchen_skills`.
 
-### Breakfast heating (appliance tasks)
+### Appliance scenes
 
 `tools/build_appliance_scene.py` adds an articulated refrigerator and a relocated
 microwave with a complete four-sided shell, a powered articulated door,
 physical door and start buttons, and a low stand. The
 appliance layer is `sim/zeno_house_appliances.usd`; the original house is unchanged.
-
-- `heat_breakfast_preloaded` starts with oatmeal in the microwave. The robot
-  presses the start button, waits until the food reaches 60 °C, and leaves the
-  doors closed. This baseline passed an Isaac Sim run at 100% progress; see
-  `runs/heat_breakfast_preloaded_smoke4/result.json`.
-- `heat_breakfast_combo` starts with oatmeal already inside the microwave.
-  The robot presses the blue door button; the physical hinge opens the door
-  for inspection and closes it again. The robot then presses the green start
-  button, opens the refrigerator, picks up chilled milk, places it upright on
-  the dining table, and closes the refrigerator. The microwave stops when the
-  oatmeal reaches the target temperature. The final
-  Isaac Sim run passed at 100% progress with oatmeal at 63.6 °C; see
-  [recorded result](media/tasks/heat_breakfast_combo.result.json) and the [video](media/tasks/heat_breakfast_combo.mp4).
-
-- `heat_breakfast` transfers the chilled oatmeal from the refrigerator into
-  the complete-shell microwave, heats it, retrieves it, and serves it upright
-  on the dining table. The seed-0 Isaac Sim rollout passed all four goals at
-  **100% progress**: oatmeal reached 63.6 °C, both appliance doors were closed,
-  and nothing was dropped. See the [recorded result](media/tasks/heat_breakfast.result.json)
-  [video](media/tasks/heat_breakfast.mp4), and
-  [task status](tasks/heat_breakfast/STATUS.md). This is one validated
-  rollout; different objects, spawn positions, or seeds still need testing.
+The `heat_breakfast`, `heat_breakfast_preloaded` and `heat_breakfast_combo` scenes layer over it.
 
 <img src="media/tasks/heat_breakfast_combo_open.png" width="540" alt="Microwave door open with oatmeal inside and complete side panel"/><br>
-The microwave door at its measured open angle of −1.4 rad (frame from the recorded run).
+The microwave door at its measured open angle of −1.4 rad.
 
 ```bash
-$ISAACLAB_PYTHON tools/run_task.py --task heat_breakfast_preloaded --no-video
-$ISAACLAB_PYTHON tools/run_task.py --task heat_breakfast_combo  # records runs/heat_breakfast_combo/run.mp4
-$ISAACLAB_PYTHON tools/run_task.py --task heat_breakfast --no-video
-# Rebuild the appliance layer and tasks:
+# Rebuild the appliance layer and its scenes:
 $ISAACLAB_PYTHON tools/build_appliance_scene.py
 $ISAACLAB_PYTHON tools/settle_scene.py sim/zeno_house_appliances.usd
 $ISAACLAB_PYTHON tools/annotate_scene.py sim/zeno_house_appliances.usd annotations/zeno_house_appliances.json
@@ -273,59 +244,7 @@ bash tools/make_tasks.sh heat_breakfast_preloaded heat_breakfast_combo heat_brea
 
 Temperature is an explicit task-level state model, not a PhysX heat simulation. It
 starts at 4 °C and rises at 4 °C/s only while the microwave is active, its door is
-closed, and the oatmeal is inside its annotated cavity. The evaluator checks this
-state independently of the policy action log.
-
-### Success conditions
-
-A task succeeds when **every** condition of its goal holds in the final simulator state. `progress` is
-the fraction of satisfied items (one item per object slot), so partial solutions are scored.
-
-| Task | Instruction | Goal (all must hold) | Alternatives exercised by the seed |
-|---|---|---|---|
-| **breakfast_setup** 整理早餐餐具 | Set up the dining table for breakfast. | `plate\|bowl` on the dining table, upright · `cup\|mug` on the dining table, upright · `spoon` on the dining table · one of each within 0.5 m of each other (a place setting) · every door/drawer closed · nothing that started above 10 cm lies on the floor | plate missing (30 %) → bowl; cup missing (30 %) → mug; hint spot occupied by cereal boxes → nearest free spot; plate wider than the gripper → push over the table edge, pinch the overhang |
-| **collect_fruits** 收集水果 | Collect the fruits and place them in a container on the low bookcase in the living room. | apple and orange **inside** one container (`fruit_basket\|serving_tray`, bound as `$container`) · `$container` on the bookcase top, upright · all closed · nothing dropped | basket missing (30 %) → tray; a container that keeps rejecting objects → the other one |
-| **desk_prep** 准备工作桌 | Prepare the study desk with a notebook, a pen, and a mug. | notebook and `pen\|pencil` on the study desk · `mug\|cup` on the study desk, upright · all closed · nothing dropped | the mug, else the cup (present in 50 % of the variants); pen missing (30 %) or not graspable → pencil; notebook → push + edge pinch |
-| **tidy_toys** 收拾玩具 | Collect the toys and store them in the toy box. | toy car, block, duck **inside** one of `toy_box\|storage_basket` · that container upright · all closed · nothing dropped | toy box missing (30 %) → storage basket; toys on the floor → torso fully lowered |
-| **shelve_books** 整理书籍 | Collect the books and place them on the bookshelf. | both books on either bookcase (top or a shelf level) · all closed · nothing dropped | a full bookcase top → the other bookcase's top, then shelf levels (the middle shelf is blocked by a duck); books are flat → push over the desk edge, pinch the overhang |
-
-Geometric definitions (`zeno_skills/evaluator.py`):
-
-| condition | JSON | holds when |
-|---|---|---|
-| `on` | `{"on": [slots], "support": place \| [places], "upright": true}` | object bottom within −2…+5 cm of the surface height and its footprint centre inside the surface's xy box (a spoon resting on a plate still counts); `upright`: tilt ≤ 20° |
-| `inside` | `{"inside": [slots], "container": "a\|b", "bind": "name"}` | object centre inside the container's wall profile, between its floor and 3 cm above the rim; **one** container holds every slot; it is bound for later conditions (`"$name"`) |
-| `upright` | `{"upright": [slots], "max_tilt_deg": 20}` | tilt of the object's z axis ≤ limit |
-| `near` | `{"near": [slots], "support": place, "max_dist": 0.5}` | one instance per slot on that support, pairwise within `max_dist` |
-| `heated` | `{"heated": [slots], "appliance": name, "min_temp_c": 60}` | measured task temperature meets the threshold |
-| `closed` | `{"closed": "all" \| [names], "tol": …}` | every listed articulated joint within 0.10 rad (doors) / 4 cm (drawers) of closed |
-| `not_dropped` | `{"not_dropped": "all"}` | no object that started above 10 cm is on the floor (unless inside a container) |
-
-Slots: `"apple"` = that instance, or any instance of the role `apple`; `"plate|bowl"` = the first present
-alternative, in order; `"all:fruit"` = one slot per instance of the role; `"$container"` = the instance
-bound by an earlier condition.
-
-### Run a task
-
-```bash
-export OMNI_KIT_ACCEPT_EULA=YES
-$ISAACLAB_PYTHON tools/run_task.py --task collect_fruits                  # policy + video -> runs/collect_fruits/
-$ISAACLAB_PYTHON tools/run_task.py --task collect_fruits --evaluate-only  # only score the current state
-$ISAACLAB_PYTHON tools/build_tasks.py --task collect_fruits --seed 3      # a new random variant
-```
-
-`result.json` holds the initial and final evaluation (per condition and per slot, with the reason
-for every failure), every policy decision (`alternative`, `pick_failed`, `dropped`, `container_swapped`,
-…) and every skill event. Exit code 0 = success, 3 = failed, 4 = crash.
-
-To evaluate your own policy, build the scene, run your controller, and call
-
-```python
-from zeno_skills.evaluator import TaskEvaluator, rig_state
-ev = TaskEvaluator(json.load(open("tasks/collect_fruits/task.json")), rig.ann)
-rep = ev.evaluate(rig_state(rig))       # or any {"objects": {name: {pos, quat}}, "joints": {name: q}}
-rep["success"], rep["progress"], rep["conditions"]
-```
+closed, and the oatmeal is inside its annotated cavity (`zeno_skills/thermal.py`).
 
 ### Define your own task
 
@@ -405,7 +324,7 @@ The [SkillNode table](skill_library/SKILLS.md) lists every verb, its signature, 
 
 ## Atomic GT policy class API
 
-`zeno_skills/policies/` exposes target-parameterized `AtomicPolicy.execute(...)` classes bound to one live `Rig` through `PolicySuite(rig)`. A policy is atomic at the skill-graph boundary: its internal controller may approach, grasp, lift, and check the result. Asset-specific contact points live in `annotations/assets.json`. `TaskPolicy` still composes `PolicySuite` calls for the scripted baseline. The separate `skill_library` validates and executes caller-proposed SkillNode DAGs; [the GPT experiment runner](tools/run_gpt_skill_task.py) can propose them, but its existence is not evidence of full-task success.
+`zeno_skills/policies/` exposes target-parameterized `AtomicPolicy.execute(...)` classes bound to one live `Rig` through `PolicySuite(rig)`. A policy is atomic at the skill-graph boundary: its internal controller may approach, grasp, lift, and check the result. Asset-specific contact points live in `annotations/assets.json`. The separate `skill_library` validates and executes caller-proposed SkillNode DAGs.
 
 The [capability catalog](docs/POLICY_CATALOG.md) lists every public entry with its implementation status, and [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md) shows which SkillNode paths call it. See the [verification record](docs/POLICY_VERIFICATION.md) for the single-step checks of the original entries. General dispatchers and convenience composites are counted separately.
 
@@ -430,7 +349,7 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_contracts.py \
   --out runs/my_contract_cycle
 ```
 
-Build the scene with the commands in the [verification record](docs/POLICY_VERIFICATION.md). The sequence passed `open.v1/powered → pick.v1/round_rim → place.v1/microwave → pick.v1/cavity` on one rig. Direct Python use is `ContractRunner(rig).run("pick.v1", "round_rim", "cup")`. Failed calls raise `SkillFailure` or `Dropped`; the caller should read the changed simulator state before trying another route. Final task success is scored by `TaskEvaluator`.
+Build the scene with the commands in the [verification record](docs/POLICY_VERIFICATION.md). The sequence passed `open.v1/powered → pick.v1/round_rim → place.v1/microwave → pick.v1/cavity` on one rig. Direct Python use is `ContractRunner(rig).run("pick.v1", "round_rim", "cup")`. Failed calls raise `SkillFailure` or `Dropped`; the caller should read the changed simulator state before trying another route. Final task success is judged on the goal's GT predicates (`episode/episode.py`).
 
 For a manual policy sequence, use `tools/run_skills.py --plan "pick_round_rim cup" "place_microwave cup"` with a scene and annotation. All route names, scopes, and evidence are in the catalog; `pick_and_carry` and `microwave_door_cycle` are convenience compositions rather than additional atomic entries.
 
@@ -466,7 +385,7 @@ Object-specific grasp annotations and measured success checks still apply.
 
 | skill | how |
 |---|---|
-| `navigate` | Tuck the arm (or lift and pull in the held object), A* over free base cells, drive the holonomic base; slower while carrying, and the object is checked to still be in the hand afterwards (`Dropped` → the task policy picks it up again) |
+| `navigate` | Tuck the arm (or lift and pull in the held object), A* over free base cells, drive the holonomic base; slower while carrying, and the object is checked to still be in the hand afterwards (`Dropped` → the caller can pick it up again) |
 | `open_articulated` / `close_articulated` | Search base poses where pre-grasp → grasp is a continuous collision-free IK path *and* the robot can ride rigidly with the door or drawer to its goal; prefer the lowest wrist torque. Side-hook grasp: one finger sits between the panel and the bar. Closed loop on the measured joint value. Doors (revolute) and drawers (prismatic) |
 | `pick` (pinch) | Grasp candidates at the object's current pose (`top_pinch`, `rim_pinch`), a base pose per candidate, approach → close → lift; floor objects with the torso fully lowered |
 | `push` | Fingers closed and pointing down, pads just above the surface, slide the object along it; if nothing reaches behind the object, press on its top and drag it |
@@ -518,22 +437,20 @@ export OMNI_KIT_ACCEPT_EULA=YES ISAACLAB_PYTHON=/path/to/isaaclab/python
 $ISAACLAB_PYTHON tools/check_scene.py tasks/collect_fruits/scene.usd --out runs/check \
     --view table 4.4 6.0 1.7 3.5 7.1 0.85
 
-# a whole task: evaluate -> scripted policy -> evaluate (runs/collect_fruits/{run.mp4,result.json})
-$ISAACLAB_PYTHON tools/run_task.py --task collect_fruits
+# a whole task: the original task's plan through the GT oracle (benchmark/runs/collect_fruits/...)
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task collect_fruits --planner oracle
 
 # single skills (see "Atomic skills")
 $ISAACLAB_PYTHON tools/run_skills.py --scene tasks/collect_fruits/scene.usd \
     --ann tasks/collect_fruits/annotation.json --out runs/demo --plan "pick orange" "place orange in:fruit_basket"
 
-# plan a task as a SkillNode subgraph and validate it without starting Isaac Sim
+# plan a task as a SkillNode subgraph (symbolic planner, no Isaac Sim)
 python -m skill_library.planner --task recycle_and_store
-python tools/run_gpt_skill_task.py --task recycle_and_store --validate-only \
-    --proposal-file skill_library/plans/recycle_and_store.skill_subgraph.json --out runs/recycle_plan_validation
 
 # run SkillNode verification scenarios (GT pre/postconditions measured per call)
 $ISAACLAB_PYTHON tools/verify_skills.py --id k_trash --video
 
-python -m pytest tests/ skill_library/tests/   # simulator-free regression tests
+python -m pytest tests/ skill_library/tests/ benchmark/tests/   # simulator-free regression tests
 ```
 
 
@@ -549,8 +466,10 @@ The [creation README](docs/README.md) gives the task, scene, annotation, and Par
 
 ```text
 sim/zeno_house.usd      final house scene (+ sim/checks); zeno_house_appliances.usd, zeno_house_kitchen.usd layers
-task_specs/             task definitions (+ places.json aliases, examples/)
-tasks/<task>/           built task: layer, task.json, annotation.json, check renders
+task_specs/             scene specs (+ places.json aliases, examples/)
+tasks/<scene>/          built scene: layer, task.json (scene description), annotation.json, check renders
+episode/                one episode pipeline for every task catalog: catalogs, profiles, Episode
+benchmark/              observation-limited benchmark: task catalogs, run_episode, evaluation
 skill_library/          verb SkillNodes (definitions.py -> skills/, catalogs), relations, planner, tasks, verification
 env_service/            HTTP environment service for an external planner (initial_task / do_contract / check_task)
 contract_library/       one Skill Contract per SkillNode (generated) + legacy family Contracts
@@ -559,8 +478,8 @@ annotations/            assets.json, zeno_house.json, house_static.json
 zeno_skills/            kinematics, collision, annotations, planner, rig, skills, physics,
                         predicates (GT pre/postconditions), skill_runtime (Skill Contract runner),
                         perception (head camera), thermal, policies/ (atomic GT policy classes),
-                        tasks (spec loading), evaluator (success check), task_policy, runtime
-tests/                  evaluator and spec tests (pytest, no simulator)
+                        tasks (spec loading), evaluator (scene geometry), runtime
+tests/                  pipeline, service, spec and skill tests (pytest, no simulator)
 tools/                  pipeline scripts
 usd/                    house, robot and asset USDs (+ materials/textures)
 assets/asset3d/         EmbodiedGen V2 asset sources (URDF + textured OBJ)
@@ -571,19 +490,8 @@ media/                  README media, demo videos, rollout result.json files
 
 ## Limitations
 
-- The scripted policy is a baseline, not an oracle. Known weak spots, all visible in the task videos
-  and `result.json` decisions:
-  - **breakfast_setup** is solved only partially (67 % in the recorded run): the plate and spoon start on
-    the dining table and are regrouped fine, but the rim pinch on the light cup and on the mug missed
-    twice each, so the `cup|mug` slot and the place setting stay open. Plates (pinched at the rim
-    after a push) and bowls held by the rim can also pivot out of the 8 cm pinch during long carries;
-    the policy detects the drop and re-picks, and after two failures takes the alternative object.
-  - **Thin pens** (1 cm) are sometimes missed by the top pinch; desk_prep then takes the pencil.
-  - **Flat objects** are placed over a free edge of the target surface and then pushed fully onto
-    it. Interior shelf levels (28 cm headroom) are not reachable with a book in the hand, so books
-    go to bookcase tops.
-  - The **banana** (curved, pinched off its centre of mass) and the **teddy bear** (plush, crown pinch)
-    are annotated but were taken out of the task specs: their grasps do not survive a carry.
+- The **banana** (curved, pinched off its centre of mass) and the **teddy bear** (plush, crown pinch)
+  are annotated but were taken out of the task specs: their grasps do not survive a carry.
 - SkillNode verification measures every pre/postcondition on GT state, but a pass is one scene and one start state; [verification/STATUS.md](skill_library/verification/STATUS.md) lists which verbs and paths have passed and why the others fail. Task plans in `skill_library/plans/` are symbolic; executing a whole plan can still fail at a step that passed on its own (long carries of rim-held containers are the most fragile).
 - Kinematic holonomic base (anchor joint): no wheel dynamics. Base motion uses one smooth
   time scaling per path (≤ 0.35 m/s, ramps of 0.8 s).

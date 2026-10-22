@@ -90,32 +90,5 @@
    "floor:bedroom_west",
    "floor:living_room"
   ]
- },
- "alternatives": [
-  "toy_box missing -> storage_basket",
-  "toy on the floor -> lower the torso to its minimum"
- ],
- "place_hints": {},
- "goal": {
-  "all": [
-   {
-    "inside": [
-     "all:toy"
-    ],
-    "container": "toy_box|storage_basket",
-    "bind": "container"
-   },
-   {
-    "upright": [
-     "$container"
-    ]
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
-  ]
  }
 }

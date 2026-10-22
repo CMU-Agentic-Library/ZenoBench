@@ -42,30 +42,5 @@
     "container": [
       "wide_storage_bin"
     ]
-  },
-  "alternatives": [
-    "foam cube on floor -> navigate near the cube, prepare floor reach, then test an annotated grasp route",
-    "blocked top contact -> choose a different grasp path or reobserve"
-  ],
-  "goal": {
-    "all": [
-      {
-        "inside": [
-          "all:portable"
-        ],
-        "container": "wide_storage_bin"
-      },
-      {
-        "upright": [
-          "wide_storage_bin"
-        ]
-      },
-      {
-        "closed": "all"
-      },
-      {
-        "not_dropped": "all"
-      }
-    ]
   }
 }

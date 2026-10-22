@@ -31,7 +31,6 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from episode.catalog import load_catalog  # noqa: E402
-from episode.episode import public_result, error_result  # noqa: E402,F401  (re-exported for tests)
 from episode.profile import load_profile  # noqa: E402
 
 

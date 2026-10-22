@@ -1,4 +1,5 @@
-"""In-simulator permission tests of the observation-limited interface.
+"""In-simulator permission tests of the observation-limited interface
+(episode.episode.Episode with profiles/benchmark.yaml).
 
     $ISAACLAB_PYTHON benchmark/tests/sim_permissions.py      # -> benchmark/tests/results/sim_permissions.json
 
@@ -24,6 +25,7 @@ import os
 from pathlib import Path
 import sys
 import traceback
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
@@ -31,9 +33,10 @@ OUT = ROOT / "benchmark/tests/results"
 
 
 def main():
-    from zeno_skills.runtime import launch, make_rig
-    app = launch(False, first_person=True)
     import numpy as np
+    from benchmark.scene import episode_config
+    from episode.episode import Episode
+    from episode.profile import load_profile
     checks, log = [], []
 
     def check(name, ok, detail=""):
@@ -42,12 +45,14 @@ def main():
 
     rig = None
     try:
-        rig = make_rig(app, "tasks/kitchen_skills/scene.usd", "tasks/kitchen_skills/annotation.json", video=False,
-                       first_person=True)
-        rig.configure_thermal(json.loads((ROOT / "tasks/kitchen_skills/task.json").read_text()))
-        rig.step(120)
-        from benchmark.session import LimitedSession
-        s = LimitedSession(rig, image_dir=OUT / "sim_permissions_images")
+        # the kitchen_skills scene as it is: no task goal, no overlay
+        task = {"task_id": "sim_permissions", "scene": {"base": "tasks/kitchen_skills"},
+                "variants": {"default": {}}, "goal": {"all": []}, "watch": []}
+        ep = Episode(task, episode_config(task, 0), load_profile("benchmark"), OUT / "sim_permissions",
+                     image_dir=OUT / "sim_permissions_images")
+        rig = ep.rig
+        s = SimpleNamespace(observer=ep.observer,
+                            call=lambda verb, args: ep.call({"contract": verb, "args": args})[0])
         hidden, ghost = "bowl_inside_kitchen_cabinet", "golden_teapot"
         CAB = "KitchenCabinetFactory_7025538_spawn_asset_6631478"
 

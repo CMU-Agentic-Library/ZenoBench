@@ -65,37 +65,5 @@
   "shelf_blocker": [
    "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_1"
   ]
- },
- "alternatives": [
-  "bookcase top full -> the other bookcase's top, then a shelf level (the middle shelf is blocked by a toy duck)",
-  "book is flat and wider than the gripper -> push it over the support edge, pinch the overhang",
-  "book on the floor -> diagonal corner pinch (bottom edge + top face), lay it on a free surface"
- ],
- "place_hints": {
-  "book": [
-   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3",
-   "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_2",
-   "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_2",
-   "SimpleBookcaseFactory_2318999_spawn_asset_8416993/surface_1"
-  ]
- },
- "goal": {
-  "all": [
-   {
-    "on": [
-     "all:book"
-    ],
-    "support": [
-     "SimpleBookcaseFactory_2318999_spawn_asset_8416993",
-     "SimpleBookcaseFactory_6105320_spawn_asset_9196243"
-    ]
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
-  ]
  }
 }

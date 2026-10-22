@@ -43,7 +43,6 @@
    "cooling_rate_c_per_s": 1.0
   }
  },
- "demonstrate_microwave_door": false,
  "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
  "robot_start": [
   7.5,
@@ -292,40 +291,6 @@
   ],
   "floor_block": [
    "floor:living_room_0_0"
-  ]
- },
- "alternatives": [
-  "no microwave: heat the tomatoes in the pot on the stove",
-  "flat book cannot be top-pinched: expose its edge, then pick"
- ],
- "place_hints": {},
- "goal": {
-  "all": [
-   {
-    "heated": [
-     "all:food"
-    ],
-    "appliance": "kitchen_stove",
-    "min_temp_c": 60
-   },
-   {
-    "inside": [
-     "all:food"
-    ],
-    "container": "handled_cooking_pot"
-   },
-   {
-    "inside": [
-     "soda_can"
-    ],
-    "container": "trash_can"
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
   ]
  }
 }

@@ -4,9 +4,10 @@
 
 | 文件 | 作用 | 何时更新 |
 |---|---|---|
-| `task_specs/<name>.json` | 指令、待放置物体、候选起点、目标条件 | 新建或修改任务时 |
-| `tasks/<name>/scene.usd` | 生成后的具体布局 | 重新生成任务布局时 |
-| `tasks/<name>/task.json` | 本次布局的目标和实际物体清单，供策略与评测使用 | 与 scene 一起生成 |
+| `task_specs/<name>.json` | 场景说明、待放置物体、候选支撑面、候选起点 | 新建或修改场景时 |
+| `tasks/<name>/scene.usd` | 生成后的具体布局 | 重新生成布局时 |
+| `tasks/<name>/task.json` | 本次布局的场景描述：USD、annotation、机器人起点、温度设置、实际物体清单 | 与 scene 一起生成 |
+| `skill_library/tasks.json` 或 `benchmark/v3/tasks.json` | 跑在场景上的任务：指令和 goal（GT 谓词原子） | 新建任务时 |
 | `tasks/<name>/annotation.json` | **场景专属**的房间、支撑面、障碍、物体和关节几何 | scene 改变或物体 settle 后重新生成 |
 | `annotations/assets.json` | **资产类型共享**的尺寸、质量、抓取候选和容器几何 | 新增或重新处理资产时 |
 
@@ -14,20 +15,32 @@
 
 ## 1. 用已有资产新建任务
 
-需要 Isaac Lab Python。先查看可用资产、物体实例、支撑面及别名，再从可运行的例子修改任务 spec：
+任务分两部分：场景（spec 生成的 `tasks/<name>/`）和任务定义（catalog 中的一条，写明指令和 goal）。需要 Isaac Lab Python。先查看可用资产、物体实例、支撑面及别名，再从可运行的例子修改场景 spec：
 
 ```bash
 export OMNI_KIT_ACCEPT_EULA=YES ISAACLAB_PYTHON=/path/to/isaaclab/python
 python tools/list_places.py --room bedroom
 cp task_specs/examples/serve_guest.json task_specs/serve_guest.json
-# 编辑 task_specs/serve_guest.json 中的 objects、supports 和 goal
+# 编辑 task_specs/serve_guest.json 中的 objects 和 supports
 SEED=0 bash tools/make_tasks.sh serve_guest
-$ISAACLAB_PYTHON tools/run_task.py --task serve_guest
+# 在 skill_library/tasks.json 中加一条任务（见下文），然后用 GT oracle 跑它的计划
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task serve_guest --planner oracle
 ```
 
-`make_tasks.sh` 依次执行 `build_tasks.py`（选物体位置并生成 USD/task.json）、`settle_scene.py`（物理落稳）、`check_scene.py`（稳定性和预览图）、`annotate_scene.py`（生成场景标注）。检查终端里的 `TASK`、`CHECK`、`ANNOTATION` 输出，以及 `tasks/serve_guest/` 中生成的文件；脚本为便于批量处理会继续执行后续任务，不能只凭 shell 退出码判断成功。`run_task.py` 把执行与评测结果写入 `runs/serve_guest/`。
+`make_tasks.sh` 依次执行 `build_tasks.py`（选物体位置并生成 USD/task.json）、`settle_scene.py`（物理落稳）、`check_scene.py`（稳定性和预览图）、`annotate_scene.py`（生成场景标注）。检查终端里的 `TASK`、`CHECK`、`ANNOTATION` 输出，以及 `tasks/serve_guest/` 中生成的文件；脚本为便于批量处理会继续执行后续任务，不能只凭 shell 退出码判断成功。
 
-Spec 中 `objects` 使用 `annotations/assets.json` 的资产名，`supports` 使用 `list_places.py` 列出的支撑面或 `task_specs/places.json` 中的别名。`goal` 可组合 `on`、`inside`、`upright`、`near`、`heated`、`closed`、`not_dropped`；结构见 [示例](../task_specs/examples/serve_guest.json) 和 [评测说明](../README.md#success-conditions)。`SEED` 可生成另一种布局，但会覆盖同名 `tasks/<name>/`；生成新布局后要重新 settle、check 和 annotate。新目标谓词或新的电器机制可能还需要扩展 evaluator、任务协调器或底层 policy。
+Spec 中 `objects` 使用 `annotations/assets.json` 的资产名，`supports` 使用 `list_places.py` 列出的支撑面或 `task_specs/places.json` 中的别名。`SEED` 可生成另一种布局，但会覆盖同名 `tasks/<name>/`；生成新布局后要重新 settle、check 和 annotate。
+
+`skill_library/tasks.json` 中的一条任务形如：
+
+```json
+{"id": "serve_guest", "task_json": "tasks/serve_guest/task.json", "annotation": "tasks/serve_guest/annotation.json",
+ "description": "Serve the guest a cup of juice on the bedside table.",
+ "entities": ["juice_cup", "<bedside table support>"],
+ "goal": [["on", "juice_cup", "<bedside table support>"]]}
+```
+
+goal 是 `zeno_skills/predicates.py` 中谓词的原子列表，全部成立即成功。`python -m skill_library.planner --task serve_guest` 可以生成 `skill_library/plans/serve_guest.skill_subgraph.json`，它就是 oracle 跑的计划。需要 condition variant 的任务写进 benchmark catalog（`benchmark/define_tasks_v3.py`），格式见 [benchmark/v3/README.md](../benchmark/v3/README.md)。新谓词或新的电器机制可能还需要扩展 predicates 或底层 policy。
 
 ## 2. 新增可抓取资产
 
@@ -102,7 +115,7 @@ ann = json.loads((root / "annotation.json").read_text())
 assert task["scene_usd"] == ann["scene_usd"] == str(root / "scene.usd")
 print("scene / task / annotation match:", ann["scene_usd"])
 PY
-$ISAACLAB_PYTHON tools/run_task.py --task serve_guest
+$ISAACLAB_PYTHON benchmark/run_episode.py --tasks skill_library/tasks.json --task serve_guest --planner oracle
 ```
 
-想仅验证一个原子动作，可以调用 `tools/run_skills.py --scene ... --ann ... --plan "pick <object>"`；完整任务是否成功以 `runs/<name>/result.json` 中的评测结果为准。
+想仅验证一个原子动作，可以调用 `tools/run_skills.py --scene ... --ann ... --plan "pick <object>"`；完整任务是否成功以 `benchmark/runs/serve_guest/*/result.json` 中的 goal 判定为准。

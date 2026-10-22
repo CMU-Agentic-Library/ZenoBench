@@ -55,7 +55,7 @@ def main():
     ap.add_argument("--out", help="output directory (default tasks/<task>)")
     ap.add_argument("--no-reach-check", action="store_true", help="skip the (slow) arm reachability test")
     args = ap.parse_args()
-    from zeno_skills.tasks import load_places, load_spec, resolve_goal, resolve_place
+    from zeno_skills.tasks import load_places, load_spec, resolve_place
     spec = load_spec(args.spec or args.task)
     args.task = spec["task"]
     places = load_places()
@@ -283,22 +283,16 @@ def main():
     stage.GetRootLayer().Save()
 
     rel = os.path.relpath(out, ROOT)
-    hints = spec.get("place_hints", {})
-    hints = {k: (resolve_place(v, places) if isinstance(v, str) or (isinstance(v, list) and v and isinstance(v[0], str))
-                 else v) for k, v in hints.items()}
     task = {"task": args.task, "instruction": spec["instruction"], "instruction_zh": spec.get("instruction_zh"),
             "seed": args.seed, "spec": os.path.relpath(Path(args.spec).resolve(), ROOT) if args.spec
             else f"task_specs/{args.task}.json",
             "scene_usd": f"{rel}/scene.usd", "annotation": f"{rel}/annotation.json",
             "base_scene": base_scene, "thermal": spec.get("thermal", {}),
-            "demonstrate_microwave_door": spec.get("demonstrate_microwave_door", False),
             "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
             "robot_start": start, "placed_objects": placements, "dropped_optional_objects": dropped,
             "deactivated_base_objects": removed, "existing_objects": existing, "roles": roles,
             "candidate_supports": {k: [place_name(s) for s in v["supports"]]
-                                   for k, v in spec.get("objects", {}).items()},
-            "alternatives": spec.get("alternatives", []), "place_hints": hints,
-            "goal": resolve_goal(spec["goal"], places)}
+                                   for k, v in spec.get("objects", {}).items()}}
     (out / "task.json").write_text(json.dumps(task, indent=1))
     print("TASK", args.task, "placed", list(placements), "dropped", dropped, "removed", removed,
           "robot", [round(v, 2) for v in start], flush=True)

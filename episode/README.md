@@ -13,7 +13,7 @@ episode.Episode(task, cfg, profile)   scene, runner, observation(), call(), chec
 
 | catalog | shape after loading |
 |---|---|
-| `skill_library/tasks.json` (the original 35 tasks) | one variant `default`, empty overlay on the task's own directory `tasks/<id>/` (same scene and annotation as before); `goal` -> `{"all": [...]}`; `description` -> `instruction`; `entities` -> `entities` and `watch`; the skill subgraph `skill_library/plans/<id>.skill_subgraph.json` -> route `nominal` and `oracle: {"default": "nominal"}` |
+| `skill_library/tasks.json` (the original 35 tasks) | one variant `default`, empty overlay on the scene directory of its `task_json` (`tasks/<scene>/`, shared by several tasks; same scene and annotation as before); `goal` -> `{"all": [...]}`; `description` -> `instruction`; `entities` -> `entities` and `watch`; the skill subgraph `skill_library/plans/<id>.skill_subgraph.json` -> route `nominal` and `oracle: {"default": "nominal"}` |
 | `benchmark/tasks.json`, `benchmark/v3/tasks.json` | unchanged |
 
 A task with one variant ignores the seed: no distractors to drop and no `vary`, so every seed gives the same `config_hash`.
@@ -63,3 +63,4 @@ A profile YAML is merged over `DEFAULTS` in profile.py. Unknown keys, wrong type
 - env_service with `gt`: the start, runner, recovery and observation fields are the same as before, except for the snapshot timing above. The planner-facing result format is unchanged.
 - Benchmark planners: the planner-facing result is now the env_service format (`contract`, `args`, `success`, `error_code`, `error`, `preconditions`, `postconditions`, `outputs`, `failed_step`), masked. `calls[].feedback` in `result.json` additionally carries `action` and `path` for the evaluation scripts. A recovery planner's observation now has the env_service field names (`images`, `robot.held_right`, `last_result`, ...).
 - A goal predicate that raises now counts as false with the error as its detail. It no longer crashes the episode.
+- `LimitedSession` (benchmark/session.py) and `GatedRunner.feedback()` were removed; the planner-facing result is `Episode.call()`.

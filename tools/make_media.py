@@ -1,7 +1,7 @@
 """README media from a rollout: a compressed MP4 and a small sped-up GIF.
 
-    python tools/make_media.py runs/collect_fruits/run.mp4 media/tasks/collect_fruits
-    # -> media/tasks/collect_fruits.mp4 (H.264, 854 px) + .gif (360 px, 8x speed)
+    python tools/make_media.py runs/skillv2/rollouts/task_collect_fruits/run.mp4 media/rollouts/task_collect_fruits
+    # -> media/rollouts/task_collect_fruits.mp4 (H.264, 854 px) + .gif (360 px, 8x speed)
     #    + result.json copied next to them when the run has one
 
 Needs ffmpeg on PATH.

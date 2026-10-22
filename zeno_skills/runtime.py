@@ -1,5 +1,5 @@
-"""One Isaac Sim session with a Zeno rig: shared by tools/run_skills.py
-and tools/run_task.py.
+"""One Isaac Sim session with a Zeno rig: shared by tools/run_skills.py,
+tools/verify_skills.py and episode/episode.py.
 
     app = launch(video=True)                      # before any omni/isaac import
     rig = make_rig(app, "tasks/collect_fruits/scene.usd", "tasks/collect_fruits/annotation.json",

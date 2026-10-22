@@ -45,32 +45,5 @@
    "fruit_basket",
    "serving_tray"
   ]
- },
- "alternatives": [
-  "fruit_basket missing -> serving_tray"
- ],
- "goal": {
-  "all": [
-   {
-    "inside": [
-     "all:fruit"
-    ],
-    "container": "fruit_basket|serving_tray",
-    "bind": "container"
-   },
-   {
-    "on": [
-     "$container"
-    ],
-    "support": "bookcase_north_top",
-    "upright": true
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
-  ]
  }
 }

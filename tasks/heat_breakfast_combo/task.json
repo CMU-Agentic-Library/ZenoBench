@@ -14,7 +14,6 @@
    "heating_rate_c_per_s": 4.0
   }
  },
- "demonstrate_microwave_door": true,
  "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
  "robot_start": [
   5.5,
@@ -53,37 +52,6 @@
   ],
   "milk": [
    "breakfast_fridge/inside_shelf"
-  ]
- },
- "alternatives": [],
- "place_hints": {
-  "milk": [
-   2.93,
-   6.7
-  ]
- },
- "goal": {
-  "all": [
-   {
-    "heated": [
-     "oatmeal"
-    ],
-    "appliance": "kitchen_microwave",
-    "min_temp_c": 60.0
-   },
-   {
-    "on": [
-     "milk"
-    ],
-    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
-    "upright": true
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
   ]
  }
 }

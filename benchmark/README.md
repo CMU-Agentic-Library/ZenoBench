@@ -96,12 +96,13 @@ acceptance routes. Probes P01–P22 (21; there is no P10) are single-scene check
 ## Connecting a VLM
 
 A planner implements `reset(task_instruction, skills)` and `next_call(observation) -> {"skill", "args"} | None`
-(`benchmark/planners.py`). `observation` is `LimitedSession.observe()`, which holds:
-- the first-person image path;
-- the visible objects and the observation cache;
-- the known places;
-- the robot state (pose, room, hands, known temperatures);
-- the last call's feedback.
+(`benchmark/planners.py`). `observation` is `Episode.observation("path")` with the `benchmark` profile, the same
+fields an HTTP planner gets from env_service:
+- `images`: the head-camera image as a PNG path;
+- `visible_objects` and `observation_cache`;
+- `known_places`;
+- `robot`: pose, room, hands, known temperatures;
+- `last_result`: the last call's result, unobserved names masked.
 
 Returning `None` ends the episode (`stop_reason: planner_done`). Reaching `--max-calls` (default 60) ends it with
 `stop_reason: budget`. An exception in the planner or the harness makes the episode *incomplete*.

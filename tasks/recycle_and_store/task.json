@@ -8,7 +8,6 @@
  "annotation": "tasks/recycle_and_store/annotation.json",
  "base_scene": "sim/zeno_house.usd",
  "thermal": {},
- "demonstrate_microwave_door": false,
  "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
  "robot_start": [
   4.3,
@@ -83,32 +82,6 @@
   ],
   "wide_storage_bin": [
    "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
-  ]
- },
- "alternatives": [
-  "foam cube on floor -> navigate near the cube, prepare floor reach, then test an annotated grasp route",
-  "blocked top contact -> choose a different grasp path or reobserve"
- ],
- "place_hints": {},
- "goal": {
-  "all": [
-   {
-    "inside": [
-     "all:portable"
-    ],
-    "container": "wide_storage_bin"
-   },
-   {
-    "upright": [
-     "wide_storage_bin"
-    ]
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
   ]
  }
 }

@@ -8,7 +8,6 @@
  "annotation": "tasks/organize_utility_items/annotation.json",
  "base_scene": "sim/zeno_house.usd",
  "thermal": {},
- "demonstrate_microwave_door": false,
  "robot": "Zeno Malo EDU (right arm + 8 cm pinch gripper, holonomic base)",
  "robot_start": [
   4.3,
@@ -104,46 +103,6 @@
   ],
   "shallow_sorting_tray": [
    "SimpleBookcaseFactory_6105320_spawn_asset_9196243/surface_3"
-  ]
- },
- "alternatives": [
-  "flat objects wider than the gripper -> expose an edge before a horizontal pinch",
-  "failed tray insertion -> reobserve the tray and choose another free placement region"
- ],
- "place_hints": {},
- "goal": {
-  "all": [
-   {
-    "inside": [
-     "all:sort_into_tray"
-    ],
-    "container": "shallow_sorting_tray"
-   },
-   {
-    "on": [
-     "paperback_book"
-    ],
-    "support": "SimpleDeskFactory_7424700_spawn_asset_8101679/surface_0"
-   },
-   {
-    "on": [
-     "juice_bottle",
-     "plastic_cup"
-    ],
-    "support": "TableDiningFactory_1437886_spawn_asset_2104395/surface_2",
-    "upright": true
-   },
-   {
-    "upright": [
-     "shallow_sorting_tray"
-    ]
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
   ]
  }
 }

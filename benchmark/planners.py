@@ -34,16 +34,6 @@ class Planner:
         raise NotImplementedError
 
 
-class ReplayPlanner(Planner):
-    """Replays a fixed call list (debugging the closed loop)."""
-
-    def __init__(self, calls):
-        self.calls = list(calls)
-
-    def next_call(self, observation):
-        return self.calls.pop(0) if self.calls else None
-
-
 def load_policy(spec):
     if not spec or ":" not in spec:
         raise ValueError("--policy module:Class")

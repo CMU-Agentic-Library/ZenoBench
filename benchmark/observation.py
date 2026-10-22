@@ -41,7 +41,6 @@ acceptance entry.
 from __future__ import annotations
 
 import contextlib
-import math
 import re
 from pathlib import Path
 
@@ -466,31 +465,3 @@ class GatedRunner(SkillContractRunner):
                 error=res.error)
         self.trace.append(res.asdict())
         return res
-
-    # ------------------------------------------------------------- planner-facing feedback
-    def feedback(self, res, args=None) -> dict:
-        """What the planner may read from a result: no bound GT nouns, no
-        relation-graph recovery hints, unobserved names masked."""
-        fb = {"action": res.action, "success": bool(res.success), "error_code": res.error_code,
-              "error": res.error, "path": res.selected_path,
-              "checks": [{"atom": a["atom"], "holds": bool(a["holds"]), "detail": str(a["detail"])}
-                         for a in res.preconditions + res.postconditions],
-              "outputs": _sr_plain(res.outputs),
-              "substeps": [{"action": ch["action"], "success": ch["success"], "error": ch["error"]}
-                           for ch in res.children]}
-        allow = set()
-        for v in (args or {}).values():
-            allow |= set(v) if isinstance(v, list) else {v} if isinstance(v, str) else set()
-        return self.obs.mask(fb, allow)
-
-
-def _sr_plain(v):
-    if hasattr(v, "tolist"):
-        return v.tolist()
-    if isinstance(v, dict):
-        return {k: _sr_plain(x) for k, x in v.items()}
-    if isinstance(v, (list, tuple)):
-        return [_sr_plain(x) for x in v]
-    if isinstance(v, float) and not math.isfinite(v):
-        return None
-    return v

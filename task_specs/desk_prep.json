@@ -44,49 +44,6 @@
   }
  },
  "existing": {},
- "place_hints": {
-  "notebook": [
-   -0.95,
-   -6.12
-  ],
-  "pen|pencil": [
-   -0.55,
-   -6.18
-  ],
-  "mug|cup": [
-   -0.25,
-   -6.12
-  ]
- },
- "alternatives": [
-  "mug unreachable/slips -> cup (present in 50 % of the variants)",
-  "pen missing (30 %) -> pencil",
-  "notebook is flat and wider than the gripper -> push it over the edge, pinch the overhang"
- ],
- "goal": {
-  "all": [
-   {
-    "on": [
-     "notebook",
-     "pen|pencil"
-    ],
-    "support": "study_desk"
-   },
-   {
-    "on": [
-     "mug|cup"
-    ],
-    "support": "study_desk",
-    "upright": true
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
-  ]
- },
  "roles": {
   "mug": [
    "desk_mug"

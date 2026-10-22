@@ -54,31 +54,5 @@
    "toy_box",
    "storage_basket"
   ]
- },
- "alternatives": [
-  "toy_box missing -> storage_basket",
-  "toy on the floor -> lower the torso to its minimum"
- ],
- "goal": {
-  "all": [
-   {
-    "inside": [
-     "all:toy"
-    ],
-    "container": "toy_box|storage_basket",
-    "bind": "container"
-   },
-   {
-    "upright": [
-     "$container"
-    ]
-   },
-   {
-    "closed": "all"
-   },
-   {
-    "not_dropped": "all"
-   }
-  ]
  }
 }
