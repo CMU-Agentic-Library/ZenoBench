@@ -81,7 +81,7 @@ def save_images(obs, out: Path, tag):
             (out / f"{tag}_{img['camera']}.png").write_bytes(base64.b64decode(img["png_base64"]))
 
 
-def run_task(service, task, out: Path, retry_s=30, variant=None, seed=0):
+def run_task(service, task, out: Path, retry_s=30, variant=None, seed=0, profile=None):
     graph = load_plan(task, variant)
     out.mkdir(parents=True, exist_ok=True)
 
@@ -91,7 +91,8 @@ def run_task(service, task, out: Path, retry_s=30, variant=None, seed=0):
     t0 = time.time()
     while True:
         start = post(f"{service}/initial_task", {"task_id": task, "seed": seed,
-                                                 **({"variant": variant} if variant else {})}, timeout=900)
+                                                 **({"variant": variant} if variant else {}),
+                                                 **({"profile": profile} if profile else {})}, timeout=900)
         if start.get("error_code") != "BUSY":
             break
         time.sleep(retry_s)
@@ -145,11 +146,12 @@ def main():
     ap.add_argument("--task", nargs="+", required=True)
     ap.add_argument("--variant", help="benchmark tasks: the condition (the same for every --task)")
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--profile", help="gt or benchmark (default: the task's catalog default)")
     ap.add_argument("--out", default=str(ROOT / "runs/env_service/mock_planner"))
     args = ap.parse_args()
     ok = {}
     threads = [threading.Thread(target=lambda t=t: ok.__setitem__(
-        t, run_task(args.service, t, Path(args.out) / t, variant=args.variant, seed=args.seed))) for t in args.task]
+        t, run_task(args.service, t, Path(args.out) / t, variant=args.variant, seed=args.seed, profile=args.profile))) for t in args.task]
     for th in threads:
         th.start()
     for th in threads:

@@ -201,6 +201,22 @@ def test_benchmark_task_profile_variant_and_budget(service):
     assert status == 400 and body["error_code"] == "UNKNOWN_VARIANT" and service.manager.running == 1
 
 
+def test_request_picks_the_profile(service):
+    # a gt-catalog task under the benchmark profile: its switches, fields and the task's budget
+    status, body = service.post("/initial_task", {"task_id": "t1", "profile": "benchmark"})
+    assert status == 200 and body["profile"]["name"] == "benchmark" and body["profile"]["max_calls"] == 60
+    assert "objects" not in body["profile"]["observation"]
+    argv = json.loads((service.cfg.log_dir / "t1" / body["exp_id"] / "argv.json").read_text())
+    assert argv[argv.index("--profile") + 1] == "benchmark"
+    # and the other way round
+    status, body = service.post("/initial_task", {"task_id": "b1", "profile": "gt"})
+    assert status == 200 and body["profile"]["name"] == "gt" and body["profile"]["max_calls"] == 40
+    for name in ("oracle", "nope", "episode/profiles/oracle.yaml"):
+        status, body = service.post("/initial_task", {"task_id": "t2", "profile": name})
+        assert status == 400 and body["error_code"] == "UNKNOWN_PROFILE"
+    assert service.manager.running == 2
+
+
 def test_default_registry_loads_both_catalogs(tmp_path):
     reg = load_registry({"skill_library/tasks.json": "gt", "benchmark/v3/tasks.json": "benchmark"})
     assert reg["collect_fruits"]["profile"]["name"] == "gt"

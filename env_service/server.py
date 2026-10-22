@@ -4,7 +4,7 @@
 
 Endpoints (JSON in, JSON out):
 
-* ``POST /initial_task``  {"task_id", "variant"?, "seed"?, "difficulty"?}
+* ``POST /initial_task``  {"task_id", "profile"?, "variant"?, "seed"?, "difficulty"?}
   -> {"exp_id", "task", "profile", "observation"}.
   Blocks until the simulator is up; 503 BUSY when all simulators are taken (no queue).
 * ``POST /do_contract``   {"exp_id", "calls": [{"contract", "args"}, ...]} (a single
@@ -17,9 +17,10 @@ Endpoints (JSON in, JSON out):
   not count as activity for the idle limit.
 
 Tasks come from one or more catalogs (``--catalog PATH=PROFILE``, default: the original tasks
-with the ``gt`` profile and benchmark v3 with the ``benchmark`` profile); the profile of a
-task's catalog fixes its execution switches, observation fields and call budget
-(episode/profiles/*.yaml).  The planner cannot choose it.
+and benchmark v3).  The profile (episode/profiles/*.yaml: execution switches, observation fields,
+call budget) is the request's ``profile``, one of ``--profiles`` (default: gt, benchmark), so
+any task runs under any of them; without one the task's catalog default applies (``gt`` for the
+original tasks, ``benchmark`` for v3).
 
 Workers run under ``--worker-python`` (default: $ISAACLAB_PYTHON, else this Python).
 Standard library plus PyYAML.
@@ -42,6 +43,9 @@ from pathlib import Path
 from episode.catalog import DEFAULT_CATALOGS, ROOT, TIERS, load_catalog, public_task, selectable_variants
 from episode.episode import flat_goal
 from episode.profile import load_profile, max_calls, observation_fields
+
+
+SELECTABLE_PROFILES = ("gt", "benchmark")      # what a request may name; oracle is GT-only, not for planners
 
 
 class ServiceError(Exception):
@@ -74,7 +78,7 @@ class Worker:
         log_dir.mkdir(parents=True, exist_ok=True)
         self.log_path = log_dir / "worker.log"
         argv = cfg.worker_argv + ["--task-id", exp.task["task_id"], "--catalog", str(exp.entry["catalog"]),
-                                  "--profile", exp.entry["profile"]["path"], "--seed", str(exp.seed),
+                                  "--profile", exp.profile["path"], "--seed", str(exp.seed),
                                   "--out-dir", str(log_dir), "--cmd-fd", str(cmd_r), "--resp-fd", str(resp_w)]
         for k in ("variant", "difficulty"):
             if getattr(exp, k) is not None:
@@ -132,8 +136,9 @@ class Worker:
 
 
 class Exp:
-    def __init__(self, exp_id, entry, variant=None, seed=0, difficulty=None, max_calls=40):
+    def __init__(self, exp_id, entry, variant=None, seed=0, difficulty=None, max_calls=40, profile=None):
         self.exp_id, self.entry, self.task = exp_id, entry, entry["task"]
+        self.profile = profile or entry["profile"]
         self.variant, self.seed, self.difficulty, self.max_calls = variant, seed, difficulty, max_calls
         self.episode = None           # episode metadata from the worker (hashes, variant, profile)
         self.state = "starting"       # starting -> ready -> released
@@ -145,8 +150,19 @@ class Exp:
         self.release_reason = None
 
 
+def load_profiles(specs) -> dict:
+    """{name: profile} for the profiles a request may name (a name or a YAML path each)."""
+    out = {}
+    for spec in specs:
+        prof = load_profile(spec)
+        prof["path"] = str(spec)
+        out[prof["name"]] = prof
+    return out
+
+
 def load_registry(catalogs: dict) -> dict:
-    """{task_id: {"task", "catalog", "profile"}} over every catalog; a task id must be unique."""
+    """{task_id: {"task", "catalog", "profile"}} over every catalog (``profile``: the catalog's
+    default, used when a request names none); a task id must be unique."""
     out = {}
     for path, spec in catalogs.items():
         prof = load_profile(spec)
@@ -159,9 +175,10 @@ def load_registry(catalogs: dict) -> dict:
 
 
 class ExpManager:
-    def __init__(self, cfg: Config, tasks: dict):
-        """``tasks``: load_registry(...)."""
+    def __init__(self, cfg: Config, tasks: dict, profiles: dict | None = None):
+        """``tasks``: load_registry(...); ``profiles``: load_profiles(...), what a request may name."""
         self.cfg, self.tasks = cfg, tasks
+        self.profiles = load_profiles(SELECTABLE_PROFILES) if profiles is None else profiles
         self.exps: dict[str, Exp] = {}
         self.lock = threading.Lock()
         # one simulator starts at a time: a starting Isaac process peaks at ~11 GB of RAM
@@ -173,6 +190,7 @@ class ExpManager:
     # -- interface 1 ------------------------------------------------------------------
     def initial_task(self, body):
         """Start a simulator and block until it is ready (503 BUSY when none is free).
+        ``profile`` picks one of ``self.profiles`` (default: the task's catalog default);
         ``variant`` / ``difficulty`` pick the condition (default: the seed picks one of the graded
         variants, never a diagnostic one), ``seed`` the episode's random overlay (default 0); a
         task with one variant ignores both."""
@@ -182,6 +200,14 @@ class ExpManager:
         if task_id not in self.tasks:
             raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_TASK", f"no task {task_id!r}")
         entry = self.tasks[task_id]
+        prof = body.get("profile")
+        if prof is None:
+            prof = entry["profile"]
+        elif prof in self.profiles:
+            prof = self.profiles[prof]
+        else:
+            raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_PROFILE",
+                               f"no profile {prof!r}; one of {', '.join(sorted(self.profiles))}")
         variant, seed, difficulty = body.get("variant"), body.get("seed", 0), body.get("difficulty")
         if variant is not None and variant not in entry["task"]["variants"]:
             raise ServiceError(HTTPStatus.BAD_REQUEST, "UNKNOWN_VARIANT",
@@ -194,12 +220,12 @@ class ExpManager:
                                f"task {task_id} has no {difficulty or 'graded'} variant")
         if isinstance(seed, bool) or not isinstance(seed, int):
             raise ServiceError(HTTPStatus.BAD_REQUEST, "BAD_REQUEST", '"seed" must be an integer')
-        budget = self.cfg.max_calls or max_calls(entry["profile"], entry["task"])
+        budget = self.cfg.max_calls or max_calls(prof, entry["task"])
         with self.lock:
             if self.running >= self.cfg.max_sims:
                 raise ServiceError(HTTPStatus.SERVICE_UNAVAILABLE, "BUSY",
                                    f"{self.running} simulators are running (limit {self.cfg.max_sims}); retry later")
-            exp = Exp(f"{task_id}-{uuid.uuid4().hex[:8]}", entry, variant, seed, difficulty, budget)
+            exp = Exp(f"{task_id}-{uuid.uuid4().hex[:8]}", entry, variant, seed, difficulty, budget, prof)
             self.exps[exp.exp_id] = exp
             self.running += 1
         deadline = time.time() + self.cfg.start_timeout_s
@@ -225,7 +251,6 @@ class ExpManager:
             # idle and duration limits count from the moment initial_task returns
             exp.ready_at = exp.last_activity = time.time()
             exp.episode = msg.get("episode")
-        prof = entry["profile"]
         return {"exp_id": exp.exp_id, "task": public_task(exp.task),
                 "profile": {"name": prof["name"], "observation": observation_fields(prof), "max_calls": exp.max_calls},
                 "observation": msg["observation"]}
@@ -442,6 +467,8 @@ def main():
     ap.add_argument("--catalog", action="append", metavar="PATH=PROFILE",
                     help="task catalog and the profile (name or YAML path) its tasks run with; repeatable "
                          f"(default: {' '.join(f'{k}={v}' for k, v in DEFAULT_CATALOGS.items())})")
+    ap.add_argument("--profiles", default=",".join(SELECTABLE_PROFILES), metavar="NAME,...",
+                    help="profiles (names or YAML paths) an initial_task request may name (default: %(default)s)")
     ap.add_argument("--record-video", action="store_true",
                     help="stream a third-person debug video to each exp's directory (run.mp4)")
     ap.add_argument("--worker-python")
@@ -450,7 +477,7 @@ def main():
     catalogs = dict(c.split("=", 1) for c in args.catalog) if args.catalog else dict(DEFAULT_CATALOGS)
     cfg = Config(max_sims=args.max_sims, record_video=args.record_video, worker_python=args.worker_python,
                  log_dir=args.log_dir)
-    manager = ExpManager(cfg, load_registry(catalogs))
+    manager = ExpManager(cfg, load_registry(catalogs), load_profiles(args.profiles.split(",")))
     server = ThreadingHTTPServer((args.host, args.port), make_handler(manager))
     print(f"[env_service] listening on {args.host}:{args.port}, {cfg.max_sims} simulators, "
           f"{len(manager.tasks)} tasks from {', '.join(f'{k} ({v})' for k, v in catalogs.items())}", flush=True)

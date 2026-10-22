@@ -9,7 +9,7 @@ episode 本身由 [episode/episode.py](../episode/episode.py) 的 `Episode` 运�
 | [skill_library/tasks.json](../skill_library/tasks.json) | 原来的 35 个任务，每个只有一个 variant `default` | `gt` |
 | [benchmark/v3/tasks.json](../benchmark/v3/tasks.json) | benchmark v3 的 41 个任务，每个任务有若干 condition variant | `benchmark` |
 
-profile（[episode/profiles/](../episode/profiles/)）决定执行开关（gate、自动恢复、反馈遮罩……）、observation 字段和调用上限，详见 [episode/README.md](../episode/README.md)。profile 跟着任务所在的 catalog 走，planner 不能选。
+profile（[episode/profiles/](../episode/profiles/)）决定执行开关（gate、自动恢复、反馈遮罩……）、observation 字段和调用上限，详见 [episode/README.md](../episode/README.md)。profile 由 `initial_task` 的 `profile` 字段选（`gt` 或 `benchmark`），任何任务都能用任一个跑；不传时用上表里任务所在 catalog 的默认 profile。
 
 ## 启动
 
@@ -23,12 +23,13 @@ $ISAACLAB_PYTHON -m env_service.server --port 8800
 |---|---|---|
 | `--port` | 8800 | 服务端口 |
 | `--max-sims` | 2 | 同时运行（含正在启动）的 simulator 数，超出时 `initial_task` 返回 503 `BUSY` |
-| `--catalog PATH=PROFILE` | 上表两项 | 任务 catalog 和它的任务用的 profile（名字或 YAML 路径），可重复；任务 id 在所有 catalog 里必须唯一 |
+| `--catalog PATH=PROFILE` | 上表两项 | 任务 catalog 和它的任务默认用的 profile（名字或 YAML 路径），可重复；任务 id 在所有 catalog 里必须唯一 |
+| `--profiles NAME,...` | `gt,benchmark` | 请求里 `profile` 可以选的 profile（名字或 YAML 路径） |
 | `--record-video` | 关 | 每个 exp 保存 `<log-dir>/<task_id>/<exp_id>/run.mp4`，第三人称主视角加小窗，640×360、15 fps |
 | `--worker-python` | `$ISAACLAB_PYTHON` | 运行 worker 的 Python |
 | `--log-dir` | `runs/env_service` | 每个 exp 的目录 `<log-dir>/<task_id>/<exp_id>/` |
 
-调用上限由 profile 的 `limits.max_calls` 决定：`gt` 是 40 次，`benchmark` 用任务自己的 `max_calls`（没写就是 60）。总时长 60 分钟、20 分钟没有调用就释放，这两项对所有任务都一样。
+调用上限由所用 profile 的 `limits.max_calls` 决定：`gt` 是 40 次，`benchmark` 用任务自己的 `max_calls`（没写就是 60）。总时长 60 分钟、20 分钟没有调用就释放，这两项对所有任务都一样。
 
 录制边执行边写入文件，不在内存中积累整个任务的视频；释放时关闭编码器。视频使用仿真时间，模型思考期间仿真暂停，不会录下长时间静止等待。它属于服务端调试记录，不会作为 planner 的额外观测。
 
@@ -44,12 +45,13 @@ $ISAACLAB_PYTHON -m env_service.server --port 8800
 ### 1. `POST /initial_task`
 
 ```json
-{"task_id": "T01_book_to_dining_table", "variant": "no_overhang", "seed": 10}
+{"task_id": "T01_book_to_dining_table", "profile": "benchmark", "variant": "no_overhang", "seed": 10}
 ```
 
 | 字段 | 必填 | 说明 |
 |---|---|---|
 | `task_id` | 是 | 任一 catalog 里的任务 |
+| `profile` | 否 | `gt` 或 `benchmark`（`--profiles` 里的名字），决定执行开关、observation 字段和调用上限；不传时用任务所在 catalog 的默认 profile |
 | `variant` | 否 | 指定 condition；不给时由 `seed` 在分了难度（easy / medium / hard）的 variant 里选，`difficulty` 给了就只在该难度里选；`diagnostic` variant 只有显式指定才会用。只有一个 variant 的任务（原来的任务）忽略它 |
 | `seed` | 否，默认 0 | 决定随机删掉哪些干扰物和 `vary` 范围内的微调；只有一个 variant 的任务不受影响 |
 | `difficulty` | 否 | `easy` / `medium` / `hard`；任务没有这个难度的 variant 时返回 400 `UNKNOWN_VARIANT`（不少任务只有其中一两档） |
@@ -168,7 +170,7 @@ contract 本身的失败放在结果的 `error_code` 里，HTTP 仍是 200：
 
 | HTTP | `error_code` | 含义 |
 |---|---|---|
-| 400 | `BAD_REQUEST` / `UNKNOWN_TASK` / `UNKNOWN_VARIANT` | 请求格式错误（含空 `task_id`、非整数 `seed`、未知 `difficulty`）/ 没有这个任务 / 任务没有这个 variant，或没有所给难度的 variant |
+| 400 | `BAD_REQUEST` / `UNKNOWN_TASK` / `UNKNOWN_VARIANT` / `UNKNOWN_PROFILE` | 请求格式错误（含空 `task_id`、非整数 `seed`、未知 `difficulty`）/ 没有这个任务 / 任务没有这个 variant，或没有所给难度的 variant / `profile` 不在可选列表里 |
 | 404 | `UNKNOWN_EXP` | 没有这个 exp |
 | 410 | `EXP_RELEASED` | exp 已释放（已检查、空闲超时或 simulator 崩溃） |
 | 500 | `SIM_CRASHED` / `SIM_ERROR` | simulator 进程退出、出错或启动失败，exp 随之释放 |
