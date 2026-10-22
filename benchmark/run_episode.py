@@ -8,8 +8,12 @@ Planners (same low-level skills, same observation limits except the oracle):
 
 * ``scripted`` - a declared route of benchmark/tasks.json (nominal, fallback,
   alternative or negative).  Steps marked ``"expect": "fail"`` must really
-  fail in physics; the route then continues in the same simulator.  This
-  proves a route is physically executable; it is not a planner result.
+  fail in physics; the route then continues in the same simulator.  One that
+  succeeds instead is recorded (``route_violations``, the call row's
+  ``route_violation``) and the route goes on; the goal alone decides
+  ``task_success``, and route acceptance counts the run as ``route_violation``,
+  not as evidence for its condition.  This proves a route is physically
+  executable; it is not a planner result.
 * ``fixed``    - the task's nominal plan, stops at the first failed call.
 * ``retry``    - the nominal plan; a failed call is repeated (max 2 times).
 * ``oracle``   - independent GT oracle: the original GT runner (full state,
@@ -182,8 +186,13 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                         break
                 ok = fb["success"]
                 if expect == "fail" and ok:
-                    report["route_violation"] = f"call {i} {fb['action']} was expected to fail but succeeded"
-                    break
+                    # recorded, not fatal: the route goes on and the goal decides success; a run with a
+                    # violation is still no evidence for its condition (conditions.py / report.py)
+                    msg = f"call {i} {fb['action']} was expected to fail but succeeded"
+                    report.setdefault("route_violations", []).append(msg)
+                    report.setdefault("route_violation", msg)          # the first one, for older readers
+                    report["calls"][-1]["route_violation"] = True
+                    print("ROUTE VIOLATION", msg, flush=True)
                 if expect == "ok" and not ok:
                     report["stopped_at"] = i
                     break
@@ -192,7 +201,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
         report["dropped"] = chk["dropped"]
         report["final_state"] = chk["final_state"]           # side effects for benchmark/evaluate.py
         report["sim_ticks"] = chk["sim_ticks"]               # 120 ticks per simulated second
-        report["task_success"] = bool(chk["success"] and not report.get("route_violation"))
+        report["task_success"] = bool(chk["success"])
         report["skill_calls"] = len(report["calls"])
         report["skill_failures"] = [c["feedback"]["action"] for c in report["calls"] if not c["feedback"]["success"]]
         report["success"] = report["task_success"]

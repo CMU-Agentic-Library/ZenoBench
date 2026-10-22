@@ -11,7 +11,8 @@ same task / route / variant / seed.
 Per declared route (nominal / explore / fallback / alternative; diagnostic and
 oracle routes apart) the outcome of each seed is: pass (the chain ran to its
 end, every expected failure really failed, GT goal holds, nothing dropped),
-route_violation (an expected failure did not happen), fail, incomplete.
+route_violation (an expected failure did not happen; the run went on and its goal result is
+kept, but it is no evidence for the condition), fail, incomplete.
 
 Condition status, from its best route over the evaluation seeds:
   stable       one route passed on every evaluation seed (10 of 10)
