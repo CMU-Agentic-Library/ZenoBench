@@ -27,6 +27,14 @@ cover"; this script scores how a planner behaved.  Definitions: README,
   drops / side / budget   floor drops, non-goal objects moved > 5 cm, closed-loop budget hits
 N/A: no sample for that ratio.
 
+EVALUATION_SPEC.md metrics (benchmark/metrics.py; section "Evaluation-spec metrics" of
+the output, per-episode facts in <json>.facts.jsonl): TSR under the instruction
+semantics (benchmark/eval_semantics.py), Planning Correctness, FSR, ERSR with local
+recovery kept apart from task success, robustness groups, efficiency, success types
+and failure attribution.  Feasibility evidence for FSR / attribution: passing scripted
+routes in the evaluated runs plus ``--conditions`` (default: conditions.json next to
+the task file).  ``--planned N`` / ``--batch FILE...`` give the planned episode count.
+
 Equal weights (v3): ``SR_task`` is the mean over tasks of each task's SR, ``SR_cond``
 the mean over (task, variant) conditions, so a task with more conditions does not
 dominate.  Grouping by ``ctype`` puts an episode in every one of its condition types
@@ -65,6 +73,8 @@ def load(root):
         r["_hash"] = cfg.get("config_hash") or r["_scene"].get("config_hash")
         r["_profile_ok"] = run_profile_current(cfg)
         r["_objects"] = {o["name"] for o in ann.get("objects", [])}
+        r["_rooms"] = ann.get("rooms") or {}
+        r["_removed"] = list(r["_scene"].get("remove") or [])
         yield r
 
 
@@ -246,19 +256,73 @@ PLANNER_NOTE = ("`fixed`, `retry` and `recovery` share the observation gate, the
                 "(feasibility evidence). Neither is a baseline for VLM recovery gain.")
 
 
+def feasibility(a, runs, tasks):
+    """(task, variant) pairs with a passing scripted route, and those with a passing alternative route."""
+    feas, alt, routes = set(), set(), set()
+    for r in runs:
+        t = tasks.get(r["task_id"], {})
+        rt = t.get("routes", {}).get(r.get("route"))
+        if r.get("planner") != "scripted" or rt is None or rt.get("kind") == "diagnostic":
+            continue
+        if r.get("task_success") and r.get("stopped_at") is None and not r.get("incomplete"):
+            feas.add((r["task_id"], r.get("variant")))
+            routes.add((r["task_id"], r.get("variant"), r.get("route")))
+            if rt.get("kind") == "alternative":
+                alt.add((r["task_id"], r.get("variant")))
+    cpath = Path(a.conditions) if a.conditions else Path(a.tasks).with_name("conditions.json")
+    if cpath.exists():
+        for c in json.loads(cpath.read_text()).get("conditions", []):
+            for rt in c.get("routes", []):
+                if rt.get("passed"):
+                    feas.add((c["task"], c["variant"]))
+                    routes.add((c["task"], c["variant"], rt.get("route")))
+                    if rt.get("kind") == "alternative":
+                        alt.add((c["task"], c["variant"]))
+    return feas, alt, routes
+
+
+def spec_metrics(a, eps, runs, tasks):
+    """EVALUATION_SPEC.md: per-episode facts and the six metrics per planner."""
+    from benchmark.metrics import episode_facts, spec_markdown, spec_summary
+    feas, alt, routes = feasibility(a, runs, tasks)
+    facts = []
+    for r, m in eps:
+        t = tasks[r["task_id"]]
+        ctx = {"objects": r["_objects"], "rooms": r["_rooms"], "feasible": feas, "alt_feasible": alt,
+               "feasible_routes": routes,
+               "ref_len": ref_len(t, r.get("variant"))}
+        facts.append(episode_facts(r, t, ctx))
+    planned = a.planned
+    if planned is None and a.batch:
+        planned = sum(len(json.loads(Path(b).read_text())) for b in a.batch)
+    by = defaultdict(list)
+    for f in facts:
+        by[f["planner"] or "?"].append(f)
+    summaries = {p: spec_summary(v, planned if len(by) == 1 else None) for p, v in by.items()}
+    return {"facts": facts, "summaries": summaries, "markdown": spec_markdown(summaries)}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--runs", default=str(ROOT / "benchmark/runs/final"))
+    ap.add_argument("--runs", nargs="+", default=[str(ROOT / "benchmark/runs/final")],
+                    help="run directories (a later one supersedes the same task/seed/variant/planner/route)")
     ap.add_argument("--tasks", default=str(ROOT / "benchmark/tasks.json"))
     ap.add_argument("--group", default="planner,tier", help="comma list of planner,tier,task,route,kind,variant,profile")
     ap.add_argument("--probes", action="store_true", help="include the P* probes (default: tasks T* only)")
     ap.add_argument("--md", default=str(ROOT / "benchmark/EVALUATION.md"))
     ap.add_argument("--json", default=str(ROOT / "benchmark/metrics.json"))
+    ap.add_argument("--conditions", help="conditions.json with route acceptance (default: next to --tasks)")
+    ap.add_argument("--batch", nargs="*", default=[], help="batch files: planned episodes = their job count")
+    ap.add_argument("--planned", type=int, help="planned episodes (instead of --batch)")
     a = ap.parse_args()
     doc = json.loads(Path(a.tasks).read_text())
     tasks = load_catalog(a.tasks)
     keys = a.group.split(",")
-    runs = list(load(a.runs))
+    by_key = {}
+    for root in a.runs:
+        for r in load(root):
+            by_key[(r["task_id"], r.get("seed"), r.get("variant"), r.get("planner"), r.get("route"))] = r
+    runs = list(by_key.values())
     not_counted = []
     if doc.get("schema_version", 1) >= 3:
         # benchmark v3 and skill_library/tasks.json: only episodes of the configuration the current
@@ -291,6 +355,7 @@ def main():
             if rt is None or rt.get("kind") == "diagnostic" or r.get("variant") not in rt.get("variants", []):
                 continue                 # superseded or diagnostic route
         eps.append((r, episode_metrics(r, t, verified)))
+    spec = spec_metrics(a, eps, runs, tasks)
     groups = defaultdict(list)
     for r, m in eps:
         for ct in (r["_ctypes"] if "ctype" in keys else [None]):
@@ -300,14 +365,14 @@ def main():
     by_planner = defaultdict(list)
     for r, m in eps:
         by_planner[(label(r, "planner", tasks),)].append((r, m))
-    rel = Path(a.runs).resolve()
-    rel = rel.relative_to(ROOT) if rel.is_relative_to(ROOT) else rel
+    rel = " ".join(str(Path(x).resolve().relative_to(ROOT)) if Path(x).resolve().is_relative_to(ROOT) else x
+                   for x in a.runs)
     md = ["# Planner evaluation", "",
           f"Generated by `python benchmark/evaluate.py --runs {rel} --group {a.group}`; {len(eps)} episodes"
           + (f" ({len(not_counted)} runs of another configuration not counted)" if not_counted else "") + ". "
           "Column definitions: README, *Evaluation*; N/A = no sample; (n) = denominator.", "", PLANNER_NOTE, "",
           "## By planner", ""] + table({g: aggregate(v) for g, v in by_planner.items()}, ["planner"]) + [
-          "", f"## By {', '.join(keys)}", ""] + table(aggs, keys) + ["", "## Episodes", "",
+          "", f"## By {', '.join(keys)}", ""] + table(aggs, keys) + [""] + spec["markdown"] + ["", "## Episodes", "",
           "| Task | Seed | Variant | Tier | Planner | Route | S | GC | Skill ok | Calls / L_ref | Gate u/g/v | Pre / exec / invalid (repeat) | Stop | Side effects |",
           "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r, m in sorted(eps, key=lambda x: (x[0]["task_id"], x[0].get("planner"), str(x[0].get("route")), x[0]["seed"])):
@@ -320,11 +385,15 @@ def main():
     Path(a.md).write_text("\n".join(md) + "\n")
     Path(a.json).write_text(json.dumps({
         "groups": [{"group": dict(zip(keys, g)), **agg} for g, agg in sorted(aggs.items())],
+        "spec": spec["summaries"],
         "episodes": [{"task": r["task_id"], "seed": r["seed"], "variant": r["variant"],
                       "tier": r["_scene"].get("difficulty"), "planner": r.get("planner"), "route": r.get("route"),
                       "dir": r["_dir"], **m} for r, m in eps]}, indent=1))
     print("\n".join(table({g: aggregate(v) for g, v in by_planner.items()}, ["planner"])))
-    print(f"{len(eps)} episodes -> {a.md}, {a.json}")
+    facts_path = Path(a.json).with_suffix(".facts.jsonl")
+    facts_path.write_text("".join(json.dumps(f, default=float) + "\n" for f in spec["facts"]))
+    print("\n".join(spec["markdown"]))
+    print(f"{len(eps)} episodes -> {a.md}, {a.json}, {facts_path}")
 
 
 if __name__ == "__main__":

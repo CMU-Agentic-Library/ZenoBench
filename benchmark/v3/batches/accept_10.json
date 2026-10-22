@@ -1,0 +1,164 @@
+[
+{
+"task": "T08_wipe_island",
+"seed": 19,
+"route": "hard_search_approach",
+"variant": "far_sponge_tv"
+},
+{
+"task": "T08_wipe_island",
+"seed": 19,
+"route": "nominal",
+"variant": "sponge_on_island"
+},
+{
+"task": "T08_wipe_island",
+"seed": 19,
+"route": "nominal_from_tv_stand",
+"variant": "sponge_on_tv_stand"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 19,
+"route": "nominal",
+"variant": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 19,
+"route": "fallback_uncover",
+"variant": "lid_on"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 19,
+"route": "hard_uncover_search_spoon",
+"variant": "lid_on_spoon_away"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 19,
+"route": "search_first",
+"variant": "can_in_dining_room"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 19,
+"route": "nominal",
+"variant": "can_on_island"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 19,
+"route": "hard_explore_search",
+"variant": "far_can_far"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 19,
+"route": "alternative_tray",
+"variant": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 19,
+"route": "nominal",
+"variant": "fruits_on_table"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 19,
+"route": "explore_search_duck",
+"variant": "duck_in_study"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 19,
+"route": "nominal",
+"variant": "toys_out"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 19,
+"route": "explore_search_bowl",
+"variant": "bowl_on_cabinet"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 19,
+"route": "nominal",
+"variant": "dishes_on_tv_stand"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 19,
+"route": "alternative_mug",
+"variant": "no_cup"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 19,
+"route": "hard_search_bowl_mug",
+"variant": "no_cup_bowl_on_cabinet"
+},
+{
+"task": "T15_book_face_up",
+"seed": 19,
+"route": "nominal",
+"variant": "book_free"
+},
+{
+"task": "T15_book_face_up",
+"seed": 19,
+"route": "explore_search_book",
+"variant": "book_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 19,
+"route": "nominal",
+"variant": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 19,
+"route": "explore_search_pin",
+"variant": "pin_out_of_view"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 19,
+"route": "fallback_separate",
+"variant": "block_crowded"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 19,
+"route": "hard_search_uncover",
+"variant": "far_lid_on"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 19,
+"route": "nominal",
+"variant": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 19,
+"route": "fallback_uncover",
+"variant": "lid_on"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 19,
+"route": "hard_uncover_separate",
+"variant": "lid_on_crowded"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 19,
+"route": "nominal",
+"variant": "at_island"
+}
+]

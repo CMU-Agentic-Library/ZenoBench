@@ -86,8 +86,9 @@ V2_VARY = {}
 # debugged new tasks (T11 ...), full task dicts in the v2 format plus v3 fields
 NEW_TASKS = []
 # v3 tasks whose Normal route and every declared condition route ran end to end on 1-2 seeds (preliminary);
-# candidates under debugging live in v3_candidates.py.  T11-T13 come from the library chores (T14 dropped, see
-# v3_candidates.DROPPED_TASKS), T15-T18 are small chores built around one manipulation skill.
+# candidates under debugging live in v3_candidates.py.  T11-T14, T19 and T20 come from the library chores (the first
+# T14 draft was dropped, see v3_candidates.DROPPED_TASKS), T15-T18 are small chores built around one manipulation
+# skill.  T19 and T20 have the Normal condition only: their not-in-view variants are in not_adopted.
 T01_REMOVE = ["mug", "cherry_tomato_1", "cherry_tomato_2", "cherry_tomato_3", "soda_can", "juice_bottle"]
 BOOK_FLUSH = at(ISLAND, 7.62, 1.59, 90)        # the book flush with the island's front edge (no overhang)
 
@@ -425,6 +426,122 @@ NEW_TASKS.append({
                      "reason": "knocking on one's own cabinet is not a household need; knock stays covered by probe P12"},
                     {"condition": "cabinet initially open (close first)",
                      "reason": "the scene overlay moves and removes objects only; it cannot set a joint state"}],
+})
+
+
+BEDROOM = "bedroom_0_1"
+
+# ----------------------------------------------------------------- T19 recycling (living room -> bedroom bin)
+# the 17 cm snack carton could not go in: drop found no base pose above the bin, place had no IK for the lift over
+# the rim (s10, v3_round8, v3_round9); the source task's foam cube on the living-room floor is the second item
+_t19_first = [S("navigate", destination=TV), S("look", target=TV),
+              S("navigate", destination="soda_can"), S("pick", object="soda_can"),
+              S("navigate", destination=BOOKCASE), S("look", target=BOOKCASE)]
+_t19_can = [S("navigate", destination=BIN), S("approach", target=BIN), S("drop", object="soda_can", container=BIN)]
+_t19_cube = [S("navigate", destination="foam_cube"), S("pick", object="foam_cube"),
+             S("navigate", destination=BIN), S("drop", object="foam_cube", container=BIN)]
+# the cube on the floor 0.8 m ahead of the start is below the first view: look at it was refused (NOT_OBSERVED, s10,
+# v3_round10); explore covers the living room (supports and objects) before anything is fetched
+_t19_look_cube = [S("explore", room="living_room_0_0")]
+NEW_TASKS.append({
+    "task_id": "T19_recycling", "exp_id": "ZB-T19", "since": "v3",
+    "source": ["skill_library/tasks.json:recycle_and_store"],
+    "instruction": "Movie night is over. The empty soda can is still on the TV stand and the foam packing cube from the "
+                   "delivery lies on the living-room floor; take both to the wide storage bin we use for recycling. It "
+                   "is usually on the low bookcase in the bedroom.",
+    "instruction_zh": "电影看完了，空易拉罐还在电视柜上，快递里的泡沫块掉在客厅地上。把它们都放进平时当回收箱用的宽储物箱，它一般在卧室的矮书架上。",
+    "scene": {"base": "tasks/recycle_and_store", "remove": ["snack_carton"], "distractors": ["clutter_cereal_b"]},
+    "variants": {
+        "bin_on_bookcase": {"note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+                            "move": {}}},
+    "watch": ["soda_can", "foam_cube", BIN],
+    "goal": {"all": [["inside", "soda_can", BIN], ["inside", "foam_cube", BIN], ["hand_empty", "right"]]},
+    "nominal": "nominal", "oracle": {"bin_on_bookcase": "nominal"},
+    "routes": {"nominal": {"kind": "nominal", "variants": ["bin_on_bookcase"],
+                           "steps": [*_t19_look_cube, *_t19_first, *_t19_can, *_t19_cube]}},
+    "vary": {"bin_on_bookcase": vary()},
+    "not_adopted": [{"condition": "snack carton as the second item (source task)",
+                     "reason": "17 cm tall: drop found no base pose above the bin and place had no IK for the lift "
+                               "over the rim (s10, v3_round8, v3_round9)"},
+                    {"condition": "bin moved to the study desk (not in view, search)",
+                     "reason": "drop found no base pose above the bin, mid-desk (-0.70, -5.98; s10, v3_round8, "
+                               "v3_round9, v3_round11) and at the desk end (-0.30, -6.00; s10, v3_round12)"},
+                    {"condition": "bin moved to the dining table (not in view, search)",
+                     "reason": "already known after exploring the living room: navigate to it succeeded (s10, s11, "
+                               "v3_round13)"},
+                    {"condition": "bin moved to the bookcase by the desk",
+                     "reason": "approach found no base pose that reaches the bin there (s10, v3_round8)"}],
+})
+
+# ----------------------------------------------------------------- T20 juice back to the table (living room -> dining)
+# (3.20, 7.40) was out of IK reach for the tall bottle from the west side (s10, v3_round10): 20 cm closer to that edge
+_t20_bottle = _to("juice_bottle", DINING, hint=[3.00, 7.30])
+NEW_TASKS.append({
+    "task_id": "T20_juice_back_to_table", "exp_id": "ZB-T20", "since": "v3",
+    "source": ["skill_library/tasks.json:organize_utility_items"],
+    "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the "
+                   "dining table, standing up.",
+    "instruction_zh": "有人把早餐桌上的果汁瓶拿走随手放下了。把它放回餐桌上，立着放。",
+    "scene": {"base": "tasks/organize_utility_items",
+              "remove": ["paperback_book", "plastic_cup", "rolling_pin", "tissue_box"],
+              "distractors": ["clutter_cereal_b"]},
+    "variants": {
+        "bottle_on_cabinet": {"note": "the bottle on the low wall cabinet top", "move": {"juice_bottle": at(CAB_TOP, 3.68, 0.36, 0)}},
+},
+    "watch": ["juice_bottle"],
+    "goal": {"all": [["on", "juice_bottle", DINING], ["upright", "juice_bottle"], ["hand_empty", "right"]]},
+    "nominal": "nominal", "oracle": {"bottle_on_cabinet": "nominal"},
+    "routes": {"nominal": {"kind": "nominal", "variants": ["bottle_on_cabinet"],
+                           "steps": [S("navigate", destination=CAB_TOP), S("look", target=CAB_TOP), *_t20_bottle]}},
+    "vary": {"bottle_on_cabinet": vary()},
+    "not_adopted": [{"condition": "bottle on the TV stand (0.47 m)",
+                     "reason": "pick: not held (lift -0.010 m), the bottle tipped over 44 deg (s10, v3_round10)"},
+                    {"condition": "bottle on the lower wall cabinet as the not-in-view spot",
+                     "reason": "already in view after looking at the first cabinet: navigate to it succeeded (s10, "
+                               "v3_round11)"},
+                    {"condition": "bottle on the study desk end (-0.30, -6.00) as the not-in-view spot",
+                     "reason": "search, pick and place succeeded but the bottle tipped over (93 deg) as the arm "
+                               "retreated from the dining table (s10, v3_round12)"},
+                    {"condition": "bottle on the bedroom low bookcase (1.20, -0.40) as the not-in-view spot",
+                     "reason": "navigate failed and search found it, but it slipped out of the pinch while carried "
+                               "to the dining table (s10, s11, v3_round13); it holds only when picked from the wall "
+                               "cabinet top"},
+                    {"condition": "tissue box from the TV stand into the bedroom sorting tray (source task)",
+                     "reason": "9 cm wide, more than the gripper: the stand has no free edge to push it over (pick, s10, "
+                               "v3_round8); laid 6.5 cm over the front edge it fell to the floor (s10, v3_round9)"}],
+})
+
+# ----------------------------------------------------------------- T14 shelve the book (study desk -> bedroom bookcase)
+_t14_carry = [S("navigate", destination=BOOKCASE), S("place", object="book_red", receptacle=BOOKCASE)]
+NEW_TASKS.append({
+    "task_id": "T14_shelve_the_book", "exp_id": "ZB-T14", "since": "v3",
+    "source": ["skill_library/tasks.json:shelve_books"],
+    "instruction": "The kid finished reading and left the red book on the study desk. Put it back on the low bookcase in "
+                   "the bedroom.",
+    "instruction_zh": "孩子看完书，把红色的书留在了书桌上。把它放回卧室的矮书架上。",
+    "scene": {"base": "tasks/shelve_books", "remove": ["book_green"], "distractors": []},
+    "variants": {
+        "book_on_desk": {"note": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, "
+                                 "s10, v3_round8)", "conditions": ["no_overhang"], "move": {}}},
+    "watch": ["book_red"],
+    "goal": {"all": [["on", "book_red", BOOKCASE], ["hand_empty", "right"]]},
+    # Normal: a flat book needs Expose before the edge pinch; the planner may do it up front (no failure)
+    "nominal": "nominal", "oracle": {"book_on_desk": "nominal"},
+    "routes": {"nominal": {"kind": "nominal", "variants": ["book_on_desk"],
+                           "steps": [S("navigate", destination=DESK), S("look", target=DESK),
+                                     S("navigate", destination="book_red"), S("expose", object="book_red"),
+                                     S("pick", object="book_red"), *_t14_carry]},
+               "fallback_expose": {"kind": "fallback", "variants": ["book_on_desk"],
+                                   "recovery": "Pick fails (flat book, no overhang) -> Expose -> Pick",
+                                   "steps": [S("navigate", destination=DESK), S("look", target=DESK),
+                                             S("navigate", destination="book_red"),
+                                             S("pick", "fail", "failure", object="book_red"),
+                                             S("expose", role="recovery", object="book_red"),
+                                             S("pick", role="retry_after_recovery", object="book_red"), *_t14_carry]}},
+    "vary": {"book_on_desk": vary()},
+    "not_adopted": [{"condition": "book laid over the desk edge (no Expose needed)",
+                     "reason": "edge pinch overhang -0.031 m at y -5.79 (s10, v3_round9) and -0.032 m at y -6.266 "
+                               "(s10, v3_round10): the overhang was never reached; Expose -> Pick is the Normal route"}],
 })
 
 

@@ -40,6 +40,8 @@ DEFAULTS = {
     },
     "observation": {
         "cameras": list(CAMERAS),
+        "image_size": [480, 640],         # [height, width] of every robot camera
+        "focal_length_mm": 10.0,          # 10: 92 x 76 deg at 640 x 480; shorter = wider
         "gt_objects": True,               # the task's entities with GT positions
         "visible_objects": False,
         "observation_cache": False,
@@ -113,6 +115,12 @@ def _validate(p):
         raise ProfileError(f"observation.robot.temperatures: one of {TEMPERATURES}")
     if not isinstance(ob["cameras"], list) or not set(ob["cameras"]) <= set(CAMERAS):
         raise ProfileError(f"observation.cameras: a list of {CAMERAS}")
+    size = ob["image_size"]
+    if not (isinstance(size, list) and len(size) == 2 and all(isinstance(v, int) and v > 0 for v in size)):
+        raise ProfileError("observation.image_size: [height, width] in pixels")
+    if isinstance(ob["focal_length_mm"], bool) or not isinstance(ob["focal_length_mm"], (int, float)) \
+            or ob["focal_length_mm"] <= 0:
+        raise ProfileError("observation.focal_length_mm: a positive number")
     if not isinstance(ex["advisory"], list):
         raise ProfileError("execution.advisory: a list of predicate names")
     mc = p["limits"]["max_calls"]

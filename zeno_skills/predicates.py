@@ -96,8 +96,17 @@ REACH_OFFSET = 0.10           # reach test: TCP this far above the target point
 NEAR_M = 1.30                 # base_near: base centre to target footprint
 FACING_DEG = 20.0
 GRASP_GAP_M = 0.035           # finger thickness + clearance beside an object
-HEAD_HFOV_DEG = 92.0          # 10 mm focal length, 20.955 mm aperture
+HEAD_HFOV_DEG = 92.0          # 10 mm focal length, 20.955 mm aperture, 640 x 480
 HEAD_VFOV_DEG = 76.0
+
+
+def head_fov_deg(focal_length_mm=10.0, height=480, width=640):
+    """(horizontal, vertical) field of view of the head camera, scaled from the 10 mm 640 x 480
+    calibration above: the default camera keeps exactly 92 x 76 degrees."""
+    k = 10.0 / focal_length_mm
+    aspect = (height / width) / (480 / 640)
+    return (2 * math.degrees(math.atan(math.tan(math.radians(HEAD_HFOV_DEG / 2)) * k)),
+            2 * math.degrees(math.atan(math.tan(math.radians(HEAD_VFOV_DEG / 2)) * k * aspect)))
 VIEW_RANGE_M = 5.0
 
 

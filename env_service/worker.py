@@ -16,6 +16,8 @@ The episode itself (scene, runner, observation fields) is episode.episode.Episod
 exp's profile.  <out-dir> gets the same files as a benchmark/run_episode.py run (config.json,
 annotation.json, calls.jsonl, result.json with planner "http"), so benchmark/evaluate.py scores
 HTTP planners too; an exp released without check_task leaves an incomplete result.json.
+With ``--video-path`` the worker streams a third-person debug video there (640 x 360, 15 fps
+of simulated time); it is not an observation.
 """
 from __future__ import annotations
 
@@ -43,6 +45,7 @@ def main():
     ap.add_argument("--difficulty")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--out-dir", required=True)
+    ap.add_argument("--video-path")
     ap.add_argument("--cmd-fd", type=int, required=True)
     ap.add_argument("--resp-fd", type=int, required=True)
     args = ap.parse_args()
@@ -61,7 +64,8 @@ def main():
         from episode.episode import Episode, state_summary
         task = load_catalog(args.catalog)[args.task_id]
         cfg = episode_config(task, args.seed, args.variant, args.difficulty)
-        ep = Episode(task, cfg, load_profile(args.profile), out)
+        ep = Episode(task, cfg, load_profile(args.profile), out, video_path=args.video_path,
+                     video_res=(360, 640), video_stride=8)
         meta = ep.metadata()
         (out / "config.json").write_text(json.dumps(
             {"task_id": task["task_id"], "exp_id": out.name, "seed": args.seed, "planner": "http", "route": None,
@@ -78,47 +82,52 @@ def main():
               "config_hash": cfg["config_hash"], "benchmark_version": task.get("benchmark_version"),
               "profile": meta["profile"], "profile_hash": meta["profile_hash"], "episode_hash": meta["episode_hash"],
               "planner": "http", "route": None, "initial_positions": ep.initial_positions, "calls": [],
-              "success": False, "incomplete": True, "stop_reason": "released"}
+              "success": False, "incomplete": True, "stop_reason": "released", "eval_log_version": 2}
 
     def write_result():
         report["wall_s"] = round(time.time() - t_start, 1)
         report["skill_calls"] = len(report["calls"])
         (out / "result.json").write_text(json.dumps(report, indent=1, default=float))
 
-    for line in cmd:
-        req = json.loads(line)
-        op = req.get("op")
-        try:
-            if op == "contract":
-                t0 = time.time()
-                call = req.get("call")
-                result, record = ep.call(call)
-                ok_call = isinstance(call, dict)
-                row = {"index": len(report["calls"]), "skill": call.get("contract") if ok_call else None,
-                       "args": call.get("args", {}) if ok_call else {}, "feedback": record,
-                       "wall_s": round(time.time() - t0, 1), "tick": ep.rig.tick, "state": state_summary(ep.rig, task)}
-                report["calls"].append(row)
-                log.write(json.dumps(row, default=float) + "\n")
-                log.flush()
-                send({"result": result})
-            elif op == "observe":
-                send({"observation": ep.observation()})
-            elif op == "check":
-                res = ep.check()
-                report.update(goal=res["goal"], dropped=res["dropped"], final_state=res["final_state"],
-                              sim_ticks=res["sim_ticks"], task_success=res["success"], success=res["success"],
-                              incomplete=False, stop_reason="planner_done")
-                write_result()
-                send(res)
-            elif op == "close":
-                break
-            else:
-                send({"error": f"unknown op {op!r}"})
-        except Exception as exc:
-            traceback.print_exc()
-            send({"error": f"{type(exc).__name__}: {exc}"})
-    if report["incomplete"]:
-        write_result()
+    try:
+        for line in cmd:
+            req = json.loads(line)
+            op = req.get("op")
+            try:
+                if op == "contract":
+                    t0 = time.time()
+                    call = req.get("call")
+                    before = state_summary(ep.rig, task)
+                    result, record = ep.call(call)
+                    ok_call = isinstance(call, dict)
+                    row = {"index": len(report["calls"]), "skill": call.get("contract") if ok_call else None,
+                           "args": call.get("args", {}) if ok_call else {}, "feedback": record,
+                           "wall_s": round(time.time() - t0, 1), "tick": ep.rig.tick, "state_before": before,
+                           "state": state_summary(ep.rig, task), "eval": record.pop("eval")}
+                    report["calls"].append(row)
+                    log.write(json.dumps(row, default=float) + "\n")
+                    log.flush()
+                    send({"result": result})
+                elif op == "observe":
+                    send({"observation": ep.observation()})
+                elif op == "check":
+                    res = ep.check()
+                    report.update(goal=res["goal"], dropped=res["dropped"], final_state=res["final_state"],
+                                  sim_ticks=res["sim_ticks"], task_success=res["success"], success=res["success"],
+                                  incomplete=False, stop_reason="planner_done")
+                    write_result()
+                    send(res)
+                elif op == "close":
+                    break
+                else:
+                    send({"error": f"unknown op {op!r}"})
+            except Exception as exc:
+                traceback.print_exc()
+                send({"error": f"{type(exc).__name__}: {exc}"})
+        if report["incomplete"]:
+            write_result()
+    finally:
+        ep.close()          # the video is finalised even if the loop dies
     sys.stdout.flush()
     os._exit(0)          # Isaac's own shutdown can hang; the process is disposable
 

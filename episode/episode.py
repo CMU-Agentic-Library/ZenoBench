@@ -154,9 +154,13 @@ def state_summary(rig, task):
 # ----------------------------------------------------------------- the episode
 class Episode:
     def __init__(self, task: dict, cfg: dict, profile: dict, out_dir, *, video=False, images=True,
-                 image_dir=None):
+                 image_dir=None, video_path=None, video_res=(540, 960), video_stride=4):
         """``cfg``: benchmark.scene.episode_config(task, seed, variant).  ``out_dir`` receives the
-        episode annotation; ``image_dir`` (optional) the first-person image of every top-level call."""
+        episode annotation; ``image_dir`` (optional) the first-person image of every top-level call.
+
+        Video (a third-person debug record, never an observation): ``video=True`` keeps the frames in
+        memory for ``rig.write_video``; ``video_path`` streams them to that MP4 as they are rendered
+        (env_service.recording.VideoRecorder), closed by ``close()``."""
         import numpy as np
         from benchmark.scene import build_annotation, make_prepare
         from zeno_skills.runtime import launch, make_rig
@@ -166,11 +170,20 @@ class Episode:
         self.cameras = list(ob["cameras"]) if images else []
         out_dir = Path(out_dir)
         ann_path = build_annotation(cfg, out_dir / "annotation.json")
+        video = bool(video or video_path)
         self.app = launch(video, first_person=images)
-        self.rig = rig = make_rig(self.app, f"{cfg['base']}/scene.usd", str(ann_path), video=video, res=(540, 960),
+        self.rig = rig = make_rig(self.app, f"{cfg['base']}/scene.usd", str(ann_path), video=video,
+                                  res=tuple(video_res), stride=video_stride,
                                   handle_objects=tuple(task.get("handle_objects", ())), prepare=make_prepare(cfg),
-                                  first_person=images,
+                                  first_person=images, first_person_res=tuple(ob["image_size"]),
+                                  first_person_focal_length=float(ob["focal_length_mm"]),
                                   wrist_cameras=bool({"left_wrist", "right_wrist"} & set(self.cameras)))
+        self.video_recorder = None
+        if video_path:
+            from env_service.recording import VideoRecorder
+            self.video_recorder = VideoRecorder(video_path, fps=120 / rig.stride)
+            rig.frames = self.video_recorder          # frames go to disk as they are rendered
+        rig.caption = task["task_id"]
         apply_rig_flags(rig, profile)
         # thermal state only for the foods that exist in this episode (removed objects have no body)
         base_task = json.loads((ROOT / cfg["base"] / "task.json").read_text())
@@ -317,8 +330,11 @@ class Episode:
 
     # -- calls ----------------------------------------------------------------------
     def call(self, call) -> tuple[dict, dict]:
-        """(result for the planner, record for the log).  The record is the unmasked result
-        plus the action text and the selected policy path."""
+        """(result for the planner, record for the log).  The record is the unmasked result plus,
+        for the evaluation only: the action text, the selected policy path, every measured check,
+        the objects in view after the call and ``eval`` (benchmark.metrics.call_eval: the chain
+        down to the deepest failed nested call)."""
+        from benchmark.metrics import call_eval
         from zeno_skills.skill_runtime import ContractError
         res = None
         if not isinstance(call, dict) or not isinstance(call.get("contract"), str) \
@@ -335,8 +351,14 @@ class Episode:
                 except Exception as exc:
                     traceback.print_exc()
                     out = error_result(call, "INTERNAL_ERROR", f"{type(exc).__name__}: {exc}")
-        record = dict(out, action=res.action if res is not None else None,
-                      path=res.selected_path if res is not None else None)
+        action = res.action if res is not None else f"{out['contract']}({json.dumps(out['args'], default=str)})"
+        record = dict(out, action=action, path=res.selected_path if res is not None else None,
+                      checks=[{"atom": a["atom"], "holds": bool(a["holds"])}
+                              for a in (res.preconditions + res.postconditions if res is not None else [])],
+                      now_visible=sorted(self.observer.view) if self.observer is not None else [],
+                      eval=call_eval(res.asdict() if hasattr(res, "asdict") else vars(res)) if res is not None else
+                      {"failed_substep": [action], "leaf_code": out["error_code"], "leaf_error": out["error"],
+                       "failed_checks": []})
         public = out
         if self.profile["execution"]["mask_feedback"] and self.observer is not None:
             allow = set()
@@ -368,3 +390,9 @@ class Episode:
         fail_on_drop = self.profile["evaluation"]["drops_fail"]
         return {"success": bool(ok and not (drops and fail_on_drop)), "goal_ok": bool(ok), "goal": goal,
                 "dropped": drops, "final_state": state_summary(self.rig, self.task), "sim_ticks": int(self.rig.tick)}
+
+    def close(self):
+        """Finish the streamed video, if any (call once, also after a crash)."""
+        if self.video_recorder is not None:
+            self.video_recorder.close()
+            print(f"[video] saved {self.video_recorder.path} ({self.video_recorder.frame_count} frames)", flush=True)

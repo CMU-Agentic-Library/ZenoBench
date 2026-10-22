@@ -122,7 +122,8 @@ def project_to_head_camera(rig, point, exclude=None):
         return False, "behind the camera"
     h = math.degrees(math.atan2(d[1], d[0]))
     v = math.degrees(math.atan2(d[2], d[0]))
-    if abs(h) > HEAD_HFOV_DEG / 2 or abs(v) > HEAD_VFOV_DEG / 2 or dist > VIEW_RANGE_M:
+    hfov, vfov = getattr(rig, "head_fov_deg", (HEAD_HFOV_DEG, HEAD_VFOV_DEG))
+    if abs(h) > hfov / 2 or abs(v) > vfov / 2 or dist > VIEW_RANGE_M:
         return False, f"outside frustum (h {h:.0f}, v {v:.0f} deg, {dist:.1f} m)"
     if _segment_blocked(getattr(rig, "world", None), cam, np.asarray(point, float)):
         return False, f"line of sight blocked (h {h:.0f}, v {v:.0f} deg)"
@@ -225,5 +226,5 @@ def pixel_of(rig, point, width=640, height=480):
     d = R.T @ (np.asarray(point, float) - cam)
     if d[0] <= 0:
         return None
-    fx = width / (2 * math.tan(math.radians(HEAD_HFOV_DEG / 2)))
+    fx = width / (2 * math.tan(math.radians(getattr(rig, "head_fov_deg", (HEAD_HFOV_DEG,))[0] / 2)))
     return (width / 2 - fx * d[1] / d[0], height / 2 - fx * d[2] / d[0])

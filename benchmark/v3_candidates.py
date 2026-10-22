@@ -613,7 +613,12 @@ EXT["T01_book_to_dining_table"]["oracle"]["edge_path_blocked"] = "fallback_push_
 
 NEW_TASKS = []
 
-# T11-T13 (household chores) and T15-T18 (small chores) are in define_tasks_v3.NEW_TASKS.
+# T11-T20 are in define_tasks_v3.NEW_TASKS.
+
+from define_tasks_v3 import _to  # noqa: E402
+BEDROOM = "bedroom_0_1"
+
+# T14, T19 and T20 passed and moved to define_tasks_v3.NEW_TASKS.
 
 # ----------------------------------------------------------------- T14 homework desk: not adopted (slot open)
 # kept for the record; not in NEW_TASKS

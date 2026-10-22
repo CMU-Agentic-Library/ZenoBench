@@ -1,0 +1,56 @@
+[
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "variant": "bin_moved",
+  "route": "explore_search_bin"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "variant": "bottle_in_bedroom",
+  "route": "explore_search_bottle"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 11,
+  "variant": "bin_moved",
+  "route": "explore_search_bin"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 11,
+  "variant": "bottle_in_bedroom",
+  "route": "explore_search_bottle"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 13,
+  "variant": "small_and_large",
+  "route": "alternative_large_container"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 14,
+  "variant": "small_and_large",
+  "route": "alternative_large_container"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 15,
+  "variant": "small_and_large",
+  "route": "alternative_large_container"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "variant": "small_and_large",
+  "route": "alternative_large_container"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 13,
+  "variant": "far_small_and_large",
+  "route": "hard_search_alt_container"
+ }
+]

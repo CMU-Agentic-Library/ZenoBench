@@ -42,13 +42,16 @@ def launch(video=True, first_person=False):
 
 
 def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=None, prepare=None,
-             handle_objects=(), first_person=False, first_person_res=(480, 640), wrist_cameras=False):
+             handle_objects=(), first_person=False, first_person_res=(480, 640), wrist_cameras=False,
+             first_person_focal_length=10.0):
     """Build a rig; optionally attach an RGB camera to Malo's stereo camera mount.
 
     ``prepare(stage)`` can make USD edits before the simulation starts.
     Camera resolutions are (height, width).  ``wrist_cameras`` adds RGB cameras on
     both gripper camera mounts (``left_wrist`` / ``right_wrist``, same resolution
     as the first-person camera; needs ``launch(first_person=True)``).
+    ``first_person_focal_length`` is in mm and applies to head and wrist cameras;
+    a shorter focal length gives a wider field of view.
     """
     import omni.usd
     import torch
@@ -94,7 +97,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
             prim_path="/World/ZenoMalo/Asset/stereo_camera_link/FirstPersonCamera",
             update_period=0, height=height, width=width, data_types=["rgb"],
             offset=CameraCfg.OffsetCfg(pos=(0.04, 0.0, 0.0), convention="world"),
-            spawn=sim_utils.PinholeCameraCfg(focal_length=10.0, clipping_range=(0.05, 40.0)),
+            spawn=sim_utils.PinholeCameraCfg(focal_length=first_person_focal_length, clipping_range=(0.05, 40.0)),
         ))
     wrist = {}
     if wrist_cameras:
@@ -107,7 +110,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
                 # the mount's +Z axis looks past the fingertips (URDF rpy pi, -pi/6, pi)
                 offset=CameraCfg.OffsetCfg(pos=(0.0, 0.0, 0.015), rot=(0.70711, 0.0, -0.70711, 0.0),
                                            convention="world"),
-                spawn=sim_utils.PinholeCameraCfg(focal_length=10.0, clipping_range=(0.02, 40.0)),
+                spawn=sim_utils.PinholeCameraCfg(focal_length=first_person_focal_length, clipping_range=(0.02, 40.0)),
             ))
     robot = SingleArticulation("/World/ZenoMalo/Asset", name="zeno")
     sim.reset()
@@ -118,6 +121,9 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
     rig = Rig(sim, stage, robot, kin, world, ann, cams=cams, stride=stride,
               log=log or (lambda s: print(s, flush=True)),
               first_person_camera=first_person_camera, wrist_cameras=wrist)
+    from .predicates import head_fov_deg
+    # what perception counts as "in view" matches what the head camera images show
+    rig.head_fov_deg = head_fov_deg(first_person_focal_length, *first_person_res)
     if cams:
         orig_step = rig.step
         cam_state = {}

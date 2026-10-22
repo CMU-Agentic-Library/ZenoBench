@@ -4,7 +4,7 @@ An Isaac Sim house with baked physics, **ground-truth (GT) annotations for every
 asset**, **annotation-driven manipulation skills** (IK + grasp selection + base
 planning), a **verb-based SkillNode library** for an upper-layer VLM (one verb + one noun per skill, GT-checked
 pre/postconditions, noun-selected policy paths), **eleven task scenes**, and two task catalogs (35 SkillNode
-tasks and the 38-task observation-limited benchmark) that run through one episode pipeline. The house is an Infinigen layout. Most task objects were generated with
+tasks and the 41-task observation-limited benchmark) that run through one episode pipeline. The house is an Infinigen layout. Most task objects were generated with
 [EmbodiedGen V2](https://github.com/HorizonRobotics/EmbodiedGen) text-to-3D, including the seventeen textured props
 documented in [the V2 asset guide](assets/EMBODIEDGEN_V2_ASSETS.md).
 
@@ -208,7 +208,7 @@ Two task catalogs run on the scenes in `tasks/<scene>/`. Both go through one pip
 | catalog | tasks | variants | default profile |
 |---|---|---|---|
 | [skill_library/tasks.json](skill_library/tasks.json) | 35 tasks, one per SkillNode family; planner subgraphs in [skill_library/plans/](skill_library/plans/) | one (`default`) | `gt`: full GT observation |
-| [benchmark/v3/tasks.json](benchmark/v3/tasks.json) | 38 tasks, instruction-only, with fallback and alternative conditions ([benchmark/](benchmark/README.md)) | condition variants × seeds | `benchmark`: observation-limited, no automatic recovery |
+| [benchmark/v3/tasks.json](benchmark/v3/tasks.json) | 41 tasks, instruction-only, with fallback and alternative conditions ([benchmark/](benchmark/README.md)) | condition variants × seeds | `benchmark`: observation-limited, no automatic recovery |
 
 ```bash
 export OMNI_KIT_ACCEPT_EULA=YES
@@ -221,7 +221,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v3/tasks.json --task
 $ISAACLAB_PYTHON -m env_service.server --port 8800
 ```
 
-Each scene is a spec in `task_specs/<scene>.json`. `tools/build_tasks.py` samples a layout of it into `tasks/<scene>/{scene.usd, task.json, annotation.json}`. `task.json` describes the scene: USD, annotation, robot start, thermal state and placed objects. The tasks that run on a scene and their goals are defined in the catalogs; 24 of the 35 SkillNode tasks and 34 of the 38 benchmark tasks use `tasks/kitchen_skills`.
+Each scene is a spec in `task_specs/<scene>.json`. `tools/build_tasks.py` samples a layout of it into `tasks/<scene>/{scene.usd, task.json, annotation.json}`. `task.json` describes the scene: USD, annotation, robot start, thermal state and placed objects. The tasks that run on a scene and their goals are defined in the catalogs; 24 of the 35 SkillNode tasks and 34 of the 41 benchmark tasks use `tasks/kitchen_skills`.
 
 ### Appliance scenes
 

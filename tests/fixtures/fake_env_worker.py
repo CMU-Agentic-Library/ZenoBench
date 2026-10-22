@@ -11,7 +11,8 @@ import sys
 import time
 
 ap = argparse.ArgumentParser()
-for a in ("--task-id", "--catalog", "--profile", "--variant", "--difficulty", "--seed", "--out-dir"):
+for a in ("--task-id", "--catalog", "--profile", "--variant", "--difficulty", "--seed", "--out-dir",
+          "--video-path"):
     ap.add_argument(a)
 ap.add_argument("--cmd-fd", type=int)
 ap.add_argument("--resp-fd", type=int)

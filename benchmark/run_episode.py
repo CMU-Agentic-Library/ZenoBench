@@ -28,6 +28,10 @@ for every other planner; ``--profile`` overrides it (the run directory then ends
 Output: <out>/<task>/<seed>_<route-or-planner>/ result.json, calls.jsonl,
 config.json (scene, profile, config_hash, episode_hash), first-person images (images/),
 annotation.json, run.mp4 with --video.
+Each call row also logs the GT state before / after the call and an eval
+block (deepest failed nested call), for the evaluation only.  A --batch run ends
+with benchmark/evaluate.py on its output directory: <out>/EVALUATION.md,
+<out>/metrics.json and <out>/metrics.facts.jsonl (--no-eval skips it).
 """
 
 from __future__ import annotations
@@ -104,7 +108,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
     report = {"task_id": task["task_id"], "exp_id": config["exp_id"], "seed": seed, "variant": cfg["variant"],
               "config_hash": cfg["config_hash"], "benchmark_version": config["benchmark_version"],
               "profile": prof["name"], "profile_hash": prof["hash"],
-              "planner": planner, "route": route, "calls": [], "success": False, "started": time.time()}
+              "planner": planner, "route": route, "calls": [], "success": False, "started": time.time(),
+              "eval_log_version": 2}
     ep = None
     calls_f = open(out / "calls.jsonl", "w")
 
@@ -130,15 +135,20 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
             report["stop_reason"] = "budget"     # max_calls reached without the planner ending the episode
             pol.reset(task_instruction=task["instruction"], skills=task.get("skill_menu"))
             for i in range(max_calls or profile_max_calls(prof, task)):
-                act = pol.next_call(ep.observation("path", f"step{i}"))
+                obs = ep.observation("path", f"step{i}")
+                t0 = time.time()
+                act = pol.next_call(obs)
+                planner_s = round(time.time() - t0, 2)
                 if act is None:
                     report["stop_reason"] = "planner_done"
                     break
-                t0 = time.time()
+                before = state_summary(rig, task)
+                t1 = time.time()
                 _, record = ep.call({"contract": act["skill"], "args": act.get("args", {})})
                 log_row({"index": i, "skill": act["skill"], "args": act.get("args", {}), "feedback": record,
-                         "planner_note": act.get("note", ""), "wall_s": round(time.time() - t0, 1), "tick": rig.tick,
-                         "state": state_summary(rig, task)})
+                         "planner_note": act.get("note", ""), "planner_s": planner_s,
+                         "wall_s": round(time.time() - t1, 1), "tick": rig.tick, "state_before": before,
+                         "state": state_summary(rig, task), "eval": record.pop("eval")})
         else:
             _, steps = resolve_steps(task, cfg, route)
             for i, st in enumerate(steps):
@@ -149,6 +159,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                 tries = 3 if planner == "retry" else 1
                 for k in range(tries):
                     t0 = time.time()
+                    before = state_summary(rig, task)
                     _, fb = ep.call({"contract": st["skill"], "args": st.get("args", {})})
                     if task.get("auto_look") and fb["error_code"] == "NOT_IN_VIEW":
                         # probes only: an explicit look at the remembered object, then the call again
@@ -156,14 +167,15 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                         _, lk = ep.call({"contract": "look", "args": {"target": target}})
                         log_row({"index": i, "try": k, "skill": "look", "args": {"target": target}, "expect": "ok",
                                  "role": "auto_look", "note": "", "feedback": lk, "wall_s": 0.0, "tick": rig.tick,
-                                 "state": state_summary(rig, task)})
+                                 "state_before": before, "state": state_summary(rig, task), "eval": lk.pop("eval")})
+                        before = report["calls"][-1]["state"]
                         print("CALL", i, k, lk["action"], "OK" if lk["success"] else f"FAIL {lk['error']}",
                               "(auto look)", flush=True)
                         _, fb = ep.call({"contract": st["skill"], "args": st.get("args", {})})
                     log_row({"index": i, "try": k, "skill": st["skill"], "args": st.get("args", {}), "expect": expect,
                              "role": st.get("role", ""), "note": st.get("note", ""), "feedback": fb,
                              "wall_s": round(time.time() - t0, 1), "tick": rig.tick,
-                             "state": state_summary(rig, task)})
+                             "state_before": before, "state": state_summary(rig, task), "eval": fb.pop("eval")})
                     print("CALL", i, k, fb["action"], "OK" if fb["success"] else f"FAIL {fb['error_code']}: {fb['error']}",
                           f"(expect {expect})", flush=True)
                     if fb["success"] or planner != "retry":
@@ -230,6 +242,7 @@ def main():
     ap.add_argument("--out", default=str(OUT))
     ap.add_argument("--batch", help="JSON list of {task, seed, route?, planner?, variant?, video?}")
     ap.add_argument("--jobs", type=int, default=2)
+    ap.add_argument("--no-eval", action="store_true", help="--batch: skip benchmark/evaluate.py at the end")
     a = ap.parse_args()
     if a.batch:
         return run_batch(a)
@@ -272,6 +285,23 @@ def run_batch(a):
                 p.kill()
                 procs.remove(item)
                 print(name, "TIMEOUT (incomplete)", flush=True)
+    if not a.no_eval:
+        evaluate_batch(a)
+
+
+def evaluate_batch(a):
+    """EVALUATION_SPEC metrics of this batch's output directory (offline; never fails the batch)."""
+    out = Path(a.out)
+    cmd = [sys.executable if Path(sys.executable).exists() else "python3", str(ROOT / "benchmark/evaluate.py"),
+           "--tasks", a.tasks, "--runs", str(out), "--batch", a.batch, "--group", "planner,task",
+           "--md", str(out / "EVALUATION.md"), "--json", str(out / "metrics.json")]
+    try:
+        res = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
+        print(res.stdout[-20000:], flush=True)
+        if res.returncode:
+            print("EVALUATION FAILED", res.stderr[-3000:], flush=True)
+    except Exception as exc:
+        print("EVALUATION FAILED", exc, flush=True)
 
 
 if __name__ == "__main__":

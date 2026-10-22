@@ -1,0 +1,7 @@
+[
+ {"task": "T14_shelve_the_book", "seed": 10, "variant": "book_on_desk", "route": "nominal"},
+ {"task": "T19_recycling", "seed": 10, "variant": "bin_on_bookcase", "route": "nominal"},
+ {"task": "T20_juice_back_to_table", "seed": 10, "variant": "bottle_on_cabinet", "route": "nominal"},
+ {"task": "T19_recycling", "seed": 10, "variant": "bin_moved", "route": "explore_search_bin"},
+ {"task": "T20_juice_back_to_table", "seed": 10, "variant": "bottle_on_low_cabinet", "route": "explore_search_bottle"}
+]

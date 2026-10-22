@@ -7,6 +7,8 @@ execution:
   edge_pinch_upright_waist: true
 observation:
   cameras: [head]
+  image_size: [480, 640]
+  focal_length_mm: 10.0
   gt_objects: true
   task_status: true
 evaluation:

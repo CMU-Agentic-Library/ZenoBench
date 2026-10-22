@@ -108,7 +108,7 @@ def test_masked_result_for_the_planner_unmasked_record_for_the_log():
         success=False, error_code="PRECONDITION_FAILED", error="reachable(target=hidden_bowl) is false",
         preconditions=[{"atom": "reachable(target=hidden_bowl)", "holds": False}], postconditions=[], outputs={},
         children=[], action="pick_object(object=mug)", selected_path=None))
-    ep.observer = SimpleNamespace(mask=lambda value, allow: __import__("json").loads(
+    ep.observer = SimpleNamespace(view=set(), mask=lambda value, allow: __import__("json").loads(
         __import__("json").dumps(value).replace("hidden_bowl", "<unobserved>")))
     public, record = ep.call({"contract": "pick", "args": {"object": "mug"}})
     assert "hidden_bowl" not in str(public) and "<unobserved>" in public["error"]

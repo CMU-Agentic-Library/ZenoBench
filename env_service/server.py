@@ -58,6 +58,7 @@ class Config:
         self.max_duration_s = kw.get("max_duration_s", 3600)
         # below the planner's 15 min client timeout, so it gets SIM_ERROR instead of a dropped connection
         self.start_timeout_s = kw.get("start_timeout_s", 780)
+        self.record_video = kw.get("record_video", False)
         python = kw.get("worker_python") or os.environ.get("ISAACLAB_PYTHON") or sys.executable
         self.worker_argv = kw.get("worker_argv") or [python, "-m", "env_service.worker"]
         self.log_dir = Path(kw.get("log_dir") or ROOT / "runs" / "env_service")
@@ -78,6 +79,8 @@ class Worker:
         for k in ("variant", "difficulty"):
             if getattr(exp, k) is not None:
                 argv += [f"--{k}", getattr(exp, k)]
+        if cfg.record_video:
+            argv += ["--video-path", str(log_dir / "run.mp4")]
         with open(self.log_path, "w") as log:
             self.proc = subprocess.Popen(argv, cwd=ROOT, stdin=subprocess.DEVNULL, stdout=log,
                                          stderr=subprocess.STDOUT, pass_fds=(cmd_r, resp_w))
@@ -434,11 +437,14 @@ def main():
     ap.add_argument("--catalog", action="append", metavar="PATH=PROFILE",
                     help="task catalog and the profile (name or YAML path) its tasks run with; repeatable "
                          f"(default: {' '.join(f'{k}={v}' for k, v in DEFAULT_CATALOGS.items())})")
+    ap.add_argument("--record-video", action="store_true",
+                    help="stream a third-person debug video to each exp's directory (run.mp4)")
     ap.add_argument("--worker-python")
     ap.add_argument("--log-dir")
     args = ap.parse_args()
     catalogs = dict(c.split("=", 1) for c in args.catalog) if args.catalog else dict(DEFAULT_CATALOGS)
-    cfg = Config(max_sims=args.max_sims, worker_python=args.worker_python, log_dir=args.log_dir)
+    cfg = Config(max_sims=args.max_sims, record_video=args.record_video, worker_python=args.worker_python,
+                 log_dir=args.log_dir)
     manager = ExpManager(cfg, load_registry(catalogs))
     server = ThreadingHTTPServer((args.host, args.port), make_handler(manager))
     print(f"[env_service] listening on {args.host}:{args.port}, {cfg.max_sims} simulators, "
