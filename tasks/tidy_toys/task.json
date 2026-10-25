@@ -35,7 +35,7 @@
   },
   "rubber_duck": {
    "asset": "rubber_duck",
-   "support": "tv_stand_2/surface_1",
+   "support": "tv_stand_2/top",
    "yaw": 2.2456372993781644,
    "position": [
     6.794191551778346,
@@ -72,15 +72,15 @@
  "candidate_supports": {
   "toy_car": [
    "floor:living_room",
-   "tv_stand_2/surface_1"
+   "tv_stand_2/top"
   ],
   "toy_block": [
    "floor:bedroom",
    "floor:bedroom_west",
-   "desk_3/surface_1"
+   "desk_3/top"
   ],
   "rubber_duck": [
-   "tv_stand_2/surface_1",
+   "tv_stand_2/top",
    "floor:living_room"
   ],
   "toy_box": [

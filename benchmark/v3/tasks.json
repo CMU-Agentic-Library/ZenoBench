@@ -189,7 +189,7 @@
      [
       "on",
       "paperback_book",
-      "dining_table_2/surface_2"
+      "dining_table_2/top"
      ],
      [
       "hand_empty",
@@ -240,14 +240,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.72,
          6.5
@@ -301,14 +301,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.72,
          6.5
@@ -364,14 +364,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.72,
          6.5
@@ -399,7 +399,7 @@
    "not_adopted": [],
    "entities": [
     "paperback_book",
-    "dining_table_2/surface_2",
+    "dining_table_2/top",
     "kitchen_island/top"
    ]
   },
@@ -775,7 +775,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/surface_1"
+        "destination": "tv_stand_2/top"
        }
       },
       {
@@ -863,7 +863,7 @@
     "rolling_pin",
     "oatmeal",
     "kitchen_island/top",
-    "tv_stand_2/surface_1"
+    "tv_stand_2/top"
    ]
   },
   {
@@ -889,7 +889,7 @@
     ],
     "move": {
      "wide_storage_bin": {
-      "support": "tv_stand_2/surface_1",
+      "support": "tv_stand_2/top",
       "xy": [
        7.3,
        0.4
@@ -1015,7 +1015,7 @@
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -1099,7 +1099,7 @@
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -1347,7 +1347,7 @@
     "mug",
     "wide_storage_bin",
     "kitchen_island/top",
-    "tv_stand_2/surface_1",
+    "tv_stand_2/top",
     "kitchen_island"
    ]
   },
@@ -1429,7 +1429,7 @@
      ],
      "move": {
       "mug": {
-       "support": "tv_stand_2/surface_1",
+       "support": "tv_stand_2/top",
        "xy": [
         7.75,
         0.36
@@ -1696,7 +1696,7 @@
     ],
     "move": {
      "pen": {
-      "support": "bookcase_2/surface_3",
+      "support": "bookcase_2/top",
       "xy": [
        1.15,
        -0.4
@@ -1748,7 +1748,7 @@
      ],
      "move": {
       "pencil": {
-       "support": "dining_table_2/surface_2",
+       "support": "dining_table_2/top",
        "xy": [
         3.7,
         6.3
@@ -1777,14 +1777,14 @@
       [
        "on",
        "pen",
-       "desk_1/surface_0"
+       "desk_1/top"
       ]
      ],
      [
       [
        "on",
        "pencil",
-       "desk_1/surface_0"
+       "desk_1/top"
       ]
      ]
     ],
@@ -1811,13 +1811,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/surface_3"
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -1835,14 +1835,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "pen",
-        "receptacle": "desk_1/surface_0"
+        "receptacle": "desk_1/top"
        }
       }
      ],
@@ -1858,13 +1858,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/surface_3"
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -1892,14 +1892,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "pencil",
-        "receptacle": "desk_1/surface_0"
+        "receptacle": "desk_1/top"
        }
       }
      ],
@@ -1915,13 +1915,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/surface_3"
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -1955,14 +1955,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "pencil",
-        "receptacle": "desk_1/surface_0"
+        "receptacle": "desk_1/top"
        }
       }
      ],
@@ -1987,8 +1987,8 @@
    "entities": [
     "pen",
     "pencil",
-    "desk_1/surface_0",
-    "bookcase_2/surface_3"
+    "desk_1/top",
+    "bookcase_2/top"
    ]
   },
   {
@@ -2092,7 +2092,7 @@
        "yaw_deg": 0.0
       },
       "wooden_block_a": {
-       "support": "dining_table_2/surface_2",
+       "support": "dining_table_2/top",
        "xy": [
         3.7,
         6.3
@@ -2133,7 +2133,7 @@
       [
        "on",
        "wooden_block_a",
-       "tv_stand_2/surface_1"
+       "tv_stand_2/top"
       ]
      ],
      [
@@ -2147,7 +2147,7 @@
       [
        "on",
        "wooden_block_b",
-       "tv_stand_2/surface_1"
+       "tv_stand_2/top"
       ]
      ]
     ],
@@ -2248,7 +2248,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/surface_1"
+        "destination": "tv_stand_2/top"
        },
        "role": "alternative"
       },
@@ -2256,7 +2256,7 @@
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "tv_stand_2/surface_1"
+        "receptacle": "tv_stand_2/top"
        },
        "role": "alternative"
       }
@@ -2405,7 +2405,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/surface_1"
+        "destination": "tv_stand_2/top"
        },
        "role": "alternative"
       },
@@ -2413,7 +2413,7 @@
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "tv_stand_2/surface_1"
+        "receptacle": "tv_stand_2/top"
        },
        "role": "alternative"
       }
@@ -2442,7 +2442,7 @@
     "oatmeal",
     "pot_lid",
     "kitchen_cabinet_6/top",
-    "tv_stand_2/surface_1",
+    "tv_stand_2/top",
     "kitchen_island/top",
     "kitchen_cabinet_4/top"
    ]
@@ -2984,7 +2984,7 @@
      "note": "the sponge lies on the TV stand behind the island",
      "move": {
       "kitchen_sponge": {
-       "support": "tv_stand_2/surface_1",
+       "support": "tv_stand_2/top",
        "xy": [
         7.6,
         0.38
@@ -3016,7 +3016,7 @@
      ],
      "move": {
       "kitchen_sponge": {
-       "support": "tv_stand_2/surface_1",
+       "support": "tv_stand_2/top",
        "xy": [
         7.6,
         0.38
@@ -3079,7 +3079,7 @@
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -3127,7 +3127,7 @@
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -3275,7 +3275,7 @@
    "entities": [
     "kitchen_sponge",
     "kitchen_island/top",
-    "tv_stand_2/surface_1"
+    "tv_stand_2/top"
    ]
   },
   {
@@ -3889,7 +3889,7 @@
      "note": "the can stands on the dining table in the next room, out of sight",
      "move": {
       "soda_can": {
-       "support": "dining_table_2/surface_2",
+       "support": "dining_table_2/top",
        "xy": [
         3.7,
         6.3
@@ -3921,7 +3921,7 @@
      ],
      "move": {
       "soda_can": {
-       "support": "tv_stand_2/surface_1",
+       "support": "tv_stand_2/top",
        "xy": [
         7.2,
         0.36
@@ -3975,7 +3975,7 @@
        }
       },
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "living_room_0_0"
        }
@@ -4036,7 +4036,7 @@
        }
       },
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "living_room_0_0"
        }
@@ -4109,7 +4109,7 @@
        "role": "recovery"
       },
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "living_room_0_0"
        },
@@ -4256,13 +4256,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "dining_table_2/surface_2"
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -4280,13 +4280,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/surface_3"
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -4309,13 +4309,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "dining_table_2/surface_2"
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -4333,13 +4333,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/surface_3"
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -4354,14 +4354,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        },
        "role": "alternative"
       },
       {
        "skill": "look",
        "args": {
-        "target": "desk_1/surface_0"
+        "target": "desk_1/top"
        },
        "role": "alternative"
       },
@@ -4422,9 +4422,9 @@
     "apple",
     "fruit_basket",
     "serving_tray",
-    "dining_table_2/surface_2",
-    "bookcase_2/surface_3",
-    "desk_1/surface_0"
+    "dining_table_2/top",
+    "bookcase_2/top",
+    "desk_1/top"
    ]
   },
   {
@@ -4460,7 +4460,7 @@
      ],
      "move": {
       "rubber_duck": {
-       "support": "desk_1/surface_0",
+       "support": "desk_1/top",
        "xy": [
         -0.95,
         -6.02
@@ -4520,13 +4520,13 @@
      ],
      "steps": [
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "bedroom_0_1"
        }
       },
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "living_room_0_0"
        }
@@ -4592,13 +4592,13 @@
      "recovery": "the duck is not in the living room -> search the study",
      "steps": [
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "bedroom_0_1"
        }
       },
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "living_room_0_0"
        }
@@ -4835,7 +4835,7 @@
       [
        "on",
        "cup",
-       "dining_table_2/surface_2"
+       "dining_table_2/top"
       ],
       [
        "upright",
@@ -4848,7 +4848,7 @@
         "cup",
         "spoon"
        ],
-       "dining_table_2/surface_2",
+       "dining_table_2/top",
        0.5
       ]
      ],
@@ -4856,7 +4856,7 @@
       [
        "on",
        "mug",
-       "dining_table_2/surface_2"
+       "dining_table_2/top"
       ],
       [
        "upright",
@@ -4869,7 +4869,7 @@
         "mug",
         "spoon"
        ],
-       "dining_table_2/surface_2",
+       "dining_table_2/top",
        0.5
       ]
      ]
@@ -4878,7 +4878,7 @@
      [
       "on",
       "bowl",
-      "dining_table_2/surface_2"
+      "dining_table_2/top"
      ],
      [
       "upright",
@@ -4907,19 +4907,19 @@
       {
        "skill": "look",
        "args": {
-        "target": "dining_table_2/surface_2"
+        "target": "dining_table_2/top"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/surface_1"
+        "destination": "tv_stand_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -4937,14 +4937,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "bowl",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.05,
          7.1
@@ -4966,14 +4966,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "cup",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.2,
          7.4
@@ -4993,19 +4993,19 @@
       {
        "skill": "look",
        "args": {
-        "target": "dining_table_2/surface_2"
+        "target": "dining_table_2/top"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/surface_1"
+        "destination": "tv_stand_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -5023,14 +5023,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "bowl",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.05,
          7.1
@@ -5048,14 +5048,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        },
        "role": "alternative"
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/surface_3"
+        "target": "bookcase_2/top"
        },
        "role": "alternative"
       },
@@ -5069,14 +5069,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "mug",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.2,
          7.4
@@ -5096,19 +5096,19 @@
       {
        "skill": "look",
        "args": {
-        "target": "dining_table_2/surface_2"
+        "target": "dining_table_2/top"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/surface_1"
+        "destination": "tv_stand_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -5126,14 +5126,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "cup",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.2,
          7.4
@@ -5171,14 +5171,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "bowl",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.05,
          7.1
@@ -5198,19 +5198,19 @@
       {
        "skill": "look",
        "args": {
-        "target": "dining_table_2/surface_2"
+        "target": "dining_table_2/top"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/surface_1"
+        "destination": "tv_stand_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -5244,14 +5244,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "bowl",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.05,
          7.1
@@ -5269,14 +5269,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        },
        "role": "alternative"
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/surface_3"
+        "target": "bookcase_2/top"
        },
        "role": "alternative"
       },
@@ -5290,14 +5290,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "mug",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.2,
          7.4
@@ -5365,9 +5365,9 @@
     "cup",
     "mug",
     "spoon",
-    "dining_table_2/surface_2",
-    "tv_stand_2/surface_1",
-    "bookcase_2/surface_3"
+    "dining_table_2/top",
+    "tv_stand_2/top",
+    "bookcase_2/top"
    ]
   },
   {
@@ -6674,7 +6674,7 @@
      ],
      "steps": [
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "living_room_0_0"
        }
@@ -6682,13 +6682,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/surface_1"
+        "destination": "tv_stand_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/surface_1"
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -6706,13 +6706,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/surface_3"
+        "target": "bookcase_2/top"
        }
       },
       {
@@ -6792,8 +6792,8 @@
     "soda_can",
     "foam_cube",
     "wide_storage_bin",
-    "tv_stand_2/surface_1",
-    "bookcase_2/surface_3"
+    "tv_stand_2/top",
+    "bookcase_2/top"
    ]
   },
   {
@@ -6845,7 +6845,7 @@
      [
       "on",
       "juice_bottle",
-      "dining_table_2/surface_2"
+      "dining_table_2/top"
      ],
      [
       "upright",
@@ -6895,14 +6895,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "juice_bottle",
-        "receptacle": "dining_table_2/surface_2",
+        "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.0,
          7.3
@@ -6940,7 +6940,7 @@
    ],
    "entities": [
     "juice_bottle",
-    "dining_table_2/surface_2",
+    "dining_table_2/top",
     "kitchen_cabinet_6/top"
    ]
   },
@@ -6984,7 +6984,7 @@
      [
       "on",
       "book_red",
-      "bookcase_2/surface_3"
+      "bookcase_2/top"
      ],
      [
       "hand_empty",
@@ -7006,13 +7006,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "desk_1/surface_0"
+        "target": "desk_1/top"
        }
       },
       {
@@ -7036,14 +7036,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/surface_3"
+        "receptacle": "bookcase_2/top"
        }
       }
      ],
@@ -7059,13 +7059,13 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "desk_1/surface_0"
+        "target": "desk_1/top"
        }
       },
       {
@@ -7099,14 +7099,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/surface_3"
+        "receptacle": "bookcase_2/top"
        }
       }
      ],
@@ -7140,8 +7140,8 @@
    ],
    "entities": [
     "book_red",
-    "bookcase_2/surface_3",
-    "desk_1/surface_0"
+    "bookcase_2/top",
+    "desk_1/top"
    ]
   },
   {
@@ -7386,7 +7386,7 @@
        }
       },
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "living_room_0_0"
        }

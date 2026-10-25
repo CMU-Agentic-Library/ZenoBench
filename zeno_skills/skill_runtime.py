@@ -307,6 +307,7 @@ SLOT_VALIDATORS = {
     | {a["name"] for a in getattr(rig.ann, "appliances", [])},
     "button_ref": lambda rig, n: _is_kind(rig, n, "button"),
     "room_ref": lambda rig, n: n in rig.ann.rooms,
+    "furniture_ref": lambda rig, n: any(s.get("furniture") == n for s in rig.ann.supports),
     "place_ref": lambda rig, n: _is_kind(rig, n, None),
     "entity_ref": lambda rig, n: _is_kind(rig, n, None) and not _is_kind(rig, n, "room"),
 }

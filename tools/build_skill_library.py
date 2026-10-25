@@ -60,6 +60,13 @@ def cond_text(c):
             "falsy": f"not {c['noun']}.{c['field']}"}[c["op"]]
 
 
+def node_name(rec, sep):
+    """verb<sep>noun; a verb that already names its noun (explore_room) is not repeated."""
+    if rec["verb"].endswith("_" + rec["noun"]):
+        return rec["verb"].replace("_", sep)
+    return f"{rec['verb']}{sep}{rec['noun']}"
+
+
 def step_text(step):
     if "foreach" in step:
         return f"for each {step['as']} in {step['foreach']}: " + " -> ".join(step_text(s) for s in step["steps"])
@@ -141,10 +148,10 @@ def skill_json(rec, by_verb, names, incoming):
                     for k, m in rec["inputs"].items() if m["required"]}
     return {
         "schema_version": 2, "kind": "skill_node",
-        "skill_id": rec["skill_id"], "name": f"{rec['verb']}-{rec['noun']}", "verb": rec["verb"], "noun": rec["noun"],
+        "skill_id": rec["skill_id"], "name": node_name(rec, "-"), "verb": rec["verb"], "noun": rec["noun"],
         "title": rec["title"], "group": rec["group"],
         "signature": f"{rec['verb']}({sig})",
-        "action_predicate": {"name": f"{rec['verb']}_{rec['noun']}", "verb": rec["verb"], "noun": rec["noun"],
+        "action_predicate": {"name": node_name(rec, "_"), "verb": rec["verb"], "noun": rec["noun"],
                              "arguments": list(rec["inputs"])},
         "description": rec["description"], "use_when": rec["use_when"],
         "not_to_be_confused_with": rec["distinct_from"],
@@ -229,7 +236,7 @@ def contract_json(rec):
         "precheck": precheck, "verifier": verifier,
         "noun_binding": {slot: {"type": m["type"], "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"}
                          for slot, m in rec["inputs"].items() if m["type"].endswith("_ref")},
-        "action_predicate": {"name": f"{rec['verb']}_{rec['noun']}", "verb": rec["verb"], "noun": rec["noun"],
+        "action_predicate": {"name": node_name(rec, "_"), "verb": rec["verb"], "noun": rec["noun"],
                              "arguments": list(rec["inputs"])},
         "policy_plan": rec["policy_plan"],
         "relations": rec["relations"],
@@ -293,7 +300,7 @@ def skill_md(js, nested=()):
 
 def contract_md(cj):
     L = [f"# {cj['contract_id']} — {cj['name']}", "", cj["description"], "",
-         f"Paired SkillNode: `{cj['skill_id']}` (`{cj['verb']}-{cj['noun']}`).", "", "## Precheck", ""]
+         f"Paired SkillNode: `{cj['skill_id']}` (`{node_name(cj, '-')}`).", "", "## Precheck", ""]
     L += [f"- [{p['scope']}] `{p['predicate']}` — GT: {', '.join(p['gt_sources'])}" for p in cj["precheck"]] or ["- none"]
     L += ["", "## Verifier", ""]
     L += [f"- [{p['scope']}] `{p['predicate']}` — GT: {', '.join(p['gt_sources'])}" for p in cj["verifier"]]

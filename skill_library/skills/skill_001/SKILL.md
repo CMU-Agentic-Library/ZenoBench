@@ -78,6 +78,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `pick` (`skill_017`) (then) — the object must be carried elsewhere
 - Previous step: `lift` (`skill_023`) (then) — the object is carried over furniture
 - Previous step: `close` (`skill_041`) (then) — the robot leaves
+- Previous step: `explore_furniture` (`skill_071`) (then) — an object seen on a layer must be fetched
 - Next step: `approach` (`skill_002`) (enables) — a manipulation target is on the destination
 - Next step: `look` (`skill_011`) (then) — the destination must be observed first
 - Fallback on failure: `retreat` (`skill_004`) (recover) — navigation fails because the base or load is wedged against furniture

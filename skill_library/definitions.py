@@ -361,14 +361,18 @@ skill("search", "object", "Search for an object",
       invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
       paths=[Path("room_sweep", [], [St("policy_070", "$object", "$region")])],
       relations=[R("sequence", "navigate", "the found object must be fetched", bind={"destination": "$object"}),
-                 R("fallback", "explore", "the object is not on any visited support", fallback_type="recover",
+                 R("fallback", "explore_room", "the object is not on any visited support", fallback_type="recover",
                    reason="room coverage marks every visible object observed, including the target"),
+                 R("fallback", "explore_furniture", "the object may sit on a shelf the sweep only glanced at",
+                   fallback_type="recover",
+                   reason="every layer of the furniture is aimed at, so an object on any shelf is observed"),
                  R("fallback", "inspect", "the object may be inside a closed cabinet", fallback_type="substitute")],
-      distinct_from={"explore": "explore covers a room without a target."})
+      distinct_from={"explore_room": "explore_room covers a room without a target."})
 
-skill("explore", "room", "Explore a room",
-      "Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % "
-      "of the room's supports and objects were seen.",
+skill("explore_room", "room", "Explore a room",
+      "Cover a room from up to six viewpoints with a left/centre/right head sweep both ways; succeeds when at least "
+      "75 % of the room's furniture was seen. A piece of furniture counts once one of its support layers (top or "
+      "shelf) is in view; seeing every shelf of one piece is explore_furniture.",
       group=G,
       inputs={"room": I("room_ref", "The room to cover.")},
       outputs={"seen": O("object_list", "Objects observed during the sweep.")},
@@ -376,7 +380,9 @@ skill("explore", "room", "Explore a room",
       ensures=[P("room_explored", room="$room")],
       invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
       paths=[Path("viewpoints", [], [St("policy_069", "$room")])],
-      relations=[R("sequence", "search", "a specific object must then be located", reason="narrow to one target")])
+      relations=[R("sequence", "search", "a specific object must then be located", reason="narrow to one target"),
+                 R("sequence", "explore_furniture", "every shelf of one piece of furniture must be seen",
+                   reason="room coverage counts a piece once; its other layers may still hide objects")])
 
 skill("point", "target", "Point at a target",
       "Point the closed right fingers at a target (finger axis within 8 deg) to indicate it.",
@@ -1259,7 +1265,7 @@ skill("count", "category", "Count objects of a category",
       ensures=[P("counted", category="$category")],
       paths=[Path("head_sweep", [], [St("policy_112", "$category")])],
       relations=[R("sequence", "collect", "the counted objects are gathered", reason="objects output"),
-                 R("fallback", "explore", "objects of the category may be out of view", fallback_type="recover",
+                 R("fallback", "explore_room", "objects of the category may be out of view", fallback_type="recover",
                    reason="room coverage")])
 
 skill("wave", "hand", "Wave the hand",
@@ -1417,6 +1423,36 @@ skill("hide", "object", "Hide an object",
                  R("sequence", "tuck", "the robot leaves", bind={"hand": "right"})])
 
 
+# ================================================================= explore split by what it covers (to 71)
+G = "perception_and_gesture"
+
+skill("explore_furniture", "furniture", "Explore a piece of furniture",
+      "See every support layer of one piece of furniture (each shelf, the top, a cabinet's inside shelves): sweep "
+      "from where the robot stands when it is already near, else from up to three stand-off poses in front of it, "
+      "aiming the head at each layer not seen yet, then again with the torso lowered for the layers still hidden "
+      "(a bottom shelf behind the front edge of the shelf above). A layer is seen when the space just above its "
+      "board is in the head camera and no board of the piece is in the way. Succeeds only when every layer was "
+      "seen; a closed cabinet door hides its inside layers.",
+      group=G,
+      inputs={"furniture": I("furniture_ref", "The bookcase, shelf unit, table, desk or cabinet to cover.")},
+      outputs={"seen": O("object_list", "Objects observed during the sweep.")},
+      requires=[],
+      ensures=[P("furniture_explored", furniture="$furniture")],
+      invalidates=["base_near(*)", "reachable(*)", "facing(*)", "in_view(*)"],
+      paths=[Path("layers", [], [St("policy_116", "$furniture")])],
+      relations=[R("sequence", "navigate", "an object seen on a layer must be fetched",
+                   reason="the seen output names the objects on the layers"),
+                 R("fallback", "open", "a closed cabinet door hides the inside layers",
+                   bind={"articulated": "$furniture"}, fallback_type="recover",
+                   reason="an open door uncovers the inside shelves; explore again"),
+                 R("alternative", "look", "only one layer must be seen", bind={"target": "$furniture"})],
+      use_when="Every shelf of one bookcase, shelf unit or cabinet must be seen: what is on each layer, or "
+               "which layer is free.",
+      failure_modes=["a layer stays hidden from every stand-off pose, standing and crouched",
+                     "a closed door hides a cabinet's inside layers",
+                     "holding an object: the torso is not lowered, so low shelves may stay hidden"])
+
+
 # ================================================================ planner hints
 # When-to-use text for the upper layer (fills nodes that did not set one) and
 # the verbs each node is most easily confused with.
@@ -1436,7 +1472,8 @@ USE_WHEN = {
     "look": "A known target must be brought into the head camera view.",
     "inspect": "The contents of a container or cabinet must be seen (opens it if needed).",
     "search": "The location of an object is unknown in the current room.",
-    "explore": "A room must be surveyed before planning (unknown layout or objects).",
+    "explore_room": "A room must be surveyed before planning (unknown layout or objects); one glance per piece of "
+                    "furniture.",
     "point": "A person must be shown an object or place without touching it.",
     "present": "A held object must be shown to the head camera or a person.",
     "identify": "The category or identity of a visible object must be confirmed.",
@@ -1499,7 +1536,9 @@ DISTINCT = {
     "stand": {"straighten": "straighten undoes a waist bend; stand raises the torso."},
     "tuck": {"reset": "reset also restores torso, waist and head; tuck only folds the arm."},
     "look": {"search": "search scans for an unknown location; look turns to a known target."},
-    "search": {"explore": "explore surveys a whole room; search stops when the object is found."},
+    "search": {"explore_room": "explore_room surveys a whole room; search stops when the object is found.",
+               "explore_furniture": "explore_furniture sees every layer of one piece; search stops when the object "
+                                    "is found."},
     "inspect": {"look": "inspect also opens a closed receptacle to see inside."},
     "point": {"touch": "point does not make contact."},
     "identify": {"measure": "measure returns sizes and distances, identify returns the category."},
@@ -1534,7 +1573,11 @@ DISTINCT = {
     "wipe": {"sweep": "wipe uses a held tool on the surface itself."},
     "bend": {"crouch": "crouch lowers the torso; bend tilts the waist."},
     "straighten": {"stand": "stand raises the torso; straighten undoes a waist bend."},
-    "explore": {"search": "search looks for one object and stops when found."},
+    "explore_room": {"search": "search looks for one object and stops when found.",
+                     "explore_furniture": "explore_furniture sees every layer of one piece; explore_room counts a "
+                                          "piece once one layer is seen."},
+    "explore_furniture": {"explore_room": "explore_room glances at every piece of a room, one layer each.",
+                          "look": "look aims at one target; explore_furniture at every layer of one piece."},
     "present": {"lift": "lift only changes the height; present holds the object in front of the head."},
     "stack": {"place": "place targets a support or container; stack targets the top face of an object."},
     "handover": {"release": "release lets the object go; handover keeps it held by the left hand."},

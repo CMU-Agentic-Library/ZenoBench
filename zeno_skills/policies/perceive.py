@@ -1,7 +1,8 @@
 """Head-camera and gesture policies.
 
 policy_068 LookAtPolicy        aim head yaw/pitch at a target; record what is in view
-policy_069 ExploreRoomPolicy   visit stand-off poses in a room and sweep the head
+policy_069 ExploreRoomPolicy   visit stand-off poses in a room and sweep the head; counts furniture
+policy_116 ExploreFurniturePolicy  aim the head at every support layer (shelf, top) of one piece of furniture
 policy_070 SearchObjectPolicy  visit candidate supports/cabinets in order until the object is seen
 policy_071 PointAtPolicy       point the closed right fingers at a target
 policy_072 PresentHeldPolicy   hold the carried object in front of the head camera
@@ -21,7 +22,8 @@ import numpy as np
 from .base import AtomicPolicy
 from .. import skills
 from ..kinematics import gripper_rot
-from ..perception import HEAD_LIMITS, look_angles, project_to_head_camera
+from ..perception import (HEAD_LIMITS, _segment_blocked, head_camera_pose, look_angles, project_to_head_camera,
+                          rig_head_pose)
 from ..predicates import (entity_footprint, entity_kind, entity_point, memory, objects_inside,
                           objects_on_support)
 from ..rig import SkillFailure
@@ -79,7 +81,9 @@ class LookAtPolicy(AtomicPolicy):
 
 class ExploreRoomPolicy(AtomicPolicy):
     """Cover a room: from up to ``max_views`` stand-off poses sweep the head
-    left/centre/right; coverage = fraction of the room's supports and objects seen."""
+    left/centre/right; coverage = fraction of the room's furniture (and, outside
+    the benchmark, objects) seen.  A piece of furniture counts once, as soon as
+    one of its support layers is in view; every layer is explore_furniture's job."""
 
     def execute(self, room, *, max_views=6, min_spacing=1.6):
         rig = self.rig
@@ -89,21 +93,23 @@ class ExploreRoomPolicy(AtomicPolicy):
         if kind != "room":
             raise SkillFailure(f"explore {room}: not a room")
         st = rig.state()
+        # target -> [(point, name the point belongs to)]: a piece of furniture is seen when any of
+        # its visible horizontal surfaces (support layers between 0.3 and 1.6 m) is, an object when its centre is
         targets = {}
-        # visible horizontal surfaces (furniture tops between 0.3 and 1.6 m) and every object
         for s_ in rig.ann.supports:
             x0, y0, x1, y1 = s_["aabb_xy"]
             c = ((x0 + x1) / 2, (y0 + y1) / 2)
             if room_of(rig.ann.rooms, c) == room and (x1 - x0) * (y1 - y0) > 0.05 and 0.3 <= s_["z"] <= 1.6 \
                     and s_.get("clearance", 1.0) >= 0.3:
-                targets["support:" + s_["name"]] = np.array([c[0], c[1], s_["z"]])
+                targets.setdefault("furniture:" + s_["furniture"], []).append(
+                    (np.array([c[0], c[1], s_["z"]]), s_["name"]))
         if not getattr(rig, "static_explore", False):
             # (the observation-limited benchmark covers the static layout only:
             # the hidden object list must not shape the route or the coverage)
             for n in rig.ann.objects:
                 c = rig.geo.centre(n, st)
                 if room_of(rig.ann.rooms, c[:2]) == room:
-                    targets[n] = c
+                    targets[n] = [(c, n)]
         if not targets:
             raise SkillFailure(f"explore {room}: nothing annotated in the room")
         poses = standoff_poses(rig, room)
@@ -143,16 +149,124 @@ class ExploreRoomPolicy(AtomicPolicy):
                 for yaw in (-1.0, -0.5, 0.0, 0.5, 1.0):
                     drive_head(rig, yaw, 0.3, steps=50)       # positive pitch looks down
                     record_view(rig)
-                    for k, p in targets.items():
-                        if k not in seen and project_to_head_camera(rig, p, exclude=k.split(":", 1)[-1])[0]:
+                    for k, pts in targets.items():
+                        if k not in seen and any(project_to_head_camera(rig, p, exclude=n)[0] for p, n in pts):
                             seen.add(k)
         drive_head(rig, 0.0, 0.0)
         cov = len(seen) / len(targets)
         memory(rig)["explored"][room] = max(cov, memory(rig)["explored"].get(room, 0.0))
-        rig.log("explore_result", room=room, coverage=round(cov, 3), views=visited, targets=len(targets))
+        furniture = sorted(k.split(":", 1)[1] for k in seen if k.startswith("furniture:"))
+        rig.log("explore_result", room=room, coverage=round(cov, 3), views=visited, targets=len(targets),
+                furniture=furniture)
         if cov < 0.75:
             raise SkillFailure(f"explore {room}: coverage {cov:.2f}")
-        return {"coverage": cov, "seen": sorted(k for k in seen if not k.startswith("support:"))}
+        return {"coverage": cov, "seen": sorted(k for k in seen if not k.startswith("furniture:")),
+                "furniture": furniture}
+
+
+def _layer_point(layer):
+    """Where objects stand on a support layer: above its centre, 10 cm or half its clearance."""
+    x0, y0, x1, y1 = layer["aabb_xy"]
+    return np.array([(x0 + x1) / 2, (y0 + y1) / 2, layer["z"] + min(0.10, layer.get("clearance", 1.0) / 2)])
+
+
+def _board_blocks(cam, point, layers, thick=0.02):
+    """A board of the furniture (top or bottom face of a layer) between the camera and ``point``.
+    project_to_head_camera ignores the furniture's own boards: a shelf seen through the shelf
+    above it, or a top above the camera seen from below, would count otherwise."""
+    for layer in layers:
+        x0, y0, x1, y1 = layer["aabb_xy"]
+        for z in (layer["z"], layer["z"] - thick):
+            if (cam[2] - z) * (point[2] - z) >= 0:
+                continue
+            t = (cam[2] - z) / (cam[2] - point[2])
+            x, y = cam[0] + t * (point[0] - cam[0]), cam[1] + t * (point[1] - cam[1])
+            if x0 < x < x1 and y0 < y < y1:
+                return True
+    return False
+
+
+class ExploreFurniturePolicy(AtomicPolicy):
+    """Look at every support layer of one piece of furniture (each shelf, the top,
+    a cabinet's inside shelves): sweep from where the robot stands when it is
+    already near, else from up to ``max_views`` stand-off poses in front of it,
+    aiming the head at each layer not seen yet, and again with the torso lowered
+    (empty hand only) for the layers still hidden, e.g. a bottom shelf behind the
+    front edge of the shelf above it.  A layer is seen when the space just above
+    its board is in the head camera and no board of the furniture is in the way.
+    Succeeds only when every layer was seen; a closed cabinet door hides its
+    inside layers."""
+
+    def execute(self, furniture, *, max_views=3, min_spacing=0.4):
+        rig = self.rig
+        from .base_motion import standoff_poses
+        from .posture import LowerTorsoPolicy, SetTorsoHeightPolicy
+        from ..predicates import NEAR_M
+        layers = sorted((s_ for s_ in rig.ann.supports if s_.get("furniture") == furniture), key=lambda s_: s_["z"])
+        if not layers:
+            raise SkillFailure(f"explore {furniture}: no support layers annotated")
+        targets = {s_["name"]: _layer_point(s_) for s_ in layers}
+        seen, objects = set(), set()
+
+        def sweep_once():
+            for name, p in targets.items():
+                if name in seen:
+                    continue
+                drive_head(rig, *look_angles(rig, p))
+                objects.update(record_view(rig))
+                cam = rig_head_pose(rig)[0]
+                seen.update(n for n, q in targets.items() if n not in seen
+                            and project_to_head_camera(rig, q, exclude=n)[0] and not _board_blocks(cam, q, layers))
+
+        def sweep():
+            sweep_once()
+            if len(seen) == len(targets) or rig.held is not None:
+                return
+            idx = rig.kin.names.index("torso_lift_joint")
+            q0 = min(max(float(rig.q()[idx]), float(rig.kin.lo[idx])), float(rig.kin.hi[idx]))   # measured: may sit past a limit
+            try:
+                LowerTorsoPolicy(rig).execute()
+                sweep_once()
+            except SkillFailure as exc:
+                rig.log("explore_crouch_skip", reason=str(exc))
+            finally:
+                drive_head(rig, 0.0, 0.0)
+                SetTorsoHeightPolicy(rig).execute(q0)
+
+        box = entity_footprint(rig, furniture)
+        x, y, _ = rig.base_pose()
+        here = math.hypot(max(box[0] - x, 0.0, x - box[2]), max(box[1] - y, 0.0, y - box[3])) <= NEAR_M
+        views, tries = [], 0
+        if here:
+            sweep()
+            views.append((x, y))
+        tw = {n: float(v) for n, v in zip(rig.kin.names[:2], rig.q()[:2])}
+        for pose in standoff_poses(rig, furniture):
+            if len(seen) == len(targets) or len(views) - here >= max_views or tries >= 3 * max_views:
+                break
+            if any(math.hypot(pose[0] - vx, pose[1] - vy) < min_spacing for vx, vy in views):
+                continue
+            # a stand-off pose within reach can be behind a wall: skip it unless some layer is in sight
+            cam = head_camera_pose(pose, tw)[0]
+            if all(_segment_blocked(rig.world, cam, q) for q in targets.values()):
+                continue
+            tries += 1
+            try:
+                skills.navigate(rig, pose, label=f"explore_{furniture}")
+            except SkillFailure as exc:
+                rig.log("explore_skip", pose=[round(v, 2) for v in pose], reason=str(exc))
+                continue
+            views.append(tuple(rig.base_pose()[:2]))
+            sweep()
+        drive_head(rig, 0.0, 0.0)
+        cov = len(seen) / len(targets)
+        memory(rig)["explored"][furniture] = max(cov, memory(rig)["explored"].get(furniture, 0.0))
+        missing = [n for n in targets if n not in seen]
+        rig.log("explore_furniture_result", furniture=furniture, layers=len(targets), seen=sorted(seen),
+                missing=missing, views=len(views))
+        if missing:
+            raise SkillFailure(f"explore {furniture}: layers not seen {missing}")
+        return {"seen": sorted(objects), "layers": sorted(seen)}
 
 
 class SearchObjectPolicy(AtomicPolicy):

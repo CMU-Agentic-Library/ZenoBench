@@ -45,6 +45,7 @@ REF_TYPES = {
     "appliance_ref": "an articulated appliance with a thermal role (microwave, refrigerator)",
     "button_ref": "an annotated appliance button, written <appliance>/<button>",
     "room_ref": "an annotated room",
+    "furniture_ref": "a piece of furniture with annotated support layers (shelves, top), cabinets included",
     "place_ref": "a room, furniture, support, articulated part or object used as a destination",
     "entity_ref": "any annotated object, support, articulated part or button",
 }
@@ -72,6 +73,7 @@ COMPATIBLE = {
     "appliance_ref": {"appliance_ref", "articulated_ref", "entity_ref", "place_ref"},
     "button_ref": {"button_ref", "entity_ref"},
     "room_ref": {"room_ref", "place_ref"},
+    "furniture_ref": {"furniture_ref", "place_ref"},
     "place_ref": {"place_ref"},
     "entity_ref": {"entity_ref", "place_ref"},
     "hand": {"hand"},
@@ -454,10 +456,17 @@ def _presenting(rig, ctx, object):
 
 
 @predicate("room_explored", [("room", "room_ref")], "memory",
-           "At least 75 % of the room's head-camera viewpoints were covered.")
+           "At least 75 % of the room's furniture was seen (one of its support layers in the head camera).")
 def _room_explored(rig, ctx, room):
     cov = memory(rig)["explored"].get(room, 0.0)
     return cov >= 0.75, f"coverage {cov:.2f}"
+
+
+@predicate("furniture_explored", [("furniture", "furniture_ref")], "memory",
+           "Every support layer of the furniture (each shelf, the top) was seen in the head camera.")
+def _furniture_explored(rig, ctx, furniture):
+    cov = memory(rig)["explored"].get(furniture, 0.0)
+    return cov >= 1.0, f"layers seen {cov:.2f}"
 
 
 # --------------------------------------------------------------------- object state
@@ -1218,6 +1227,7 @@ GT_SOURCES = {
     "facing": ["base_pose", "scene_annotation"], "in_view": ["base_pose", "head_joints", "head_fk", "collision_model"],
     "observed": ["robot_memory"], "pointing_at": ["arm_fk", "scene_annotation"],
     "presenting": ["object_pose", "base_pose", "head_fk"], "room_explored": ["robot_memory", "room_annotation"],
+    "furniture_explored": ["robot_memory", "support_annotation"],
     "on": ["object_pose", "asset_annotation", "support_annotation"],
     "inside": ["object_pose", "container_profile"], "in_appliance": ["object_pose", "appliance_annotation"],
     "on_burner": ["object_pose", "appliance_annotation"],

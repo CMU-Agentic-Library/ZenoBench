@@ -1,7 +1,7 @@
 # ZenoBench 动词 SkillNode 库（schema 2）
 
 <!-- counts:start -->
-**70 个 SkillNode**（`skill_001`–`skill_070`，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_078`），共 **120 条按名词选择的 policy 路径**，覆盖 **114/115 个底层 policy**（1 个因物理上不可行而退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **71 个 GT 谓词**。关系图有 49 条 enables、49 条 then、43 条 fallback （repair 14、recover 26、substitute 3）和 45 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
+**71 个 SkillNode**（`skill_001`–`skill_071`，71 个不同动词）一一对应 **71 个 Contract**（`contract_009`–`contract_079`），共 **121 条按名词选择的 policy 路径**，覆盖 **115/116 个底层 policy**（1 个因物理上不可行而退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、51 条 then、45 条 fallback （repair 14、recover 28、substitute 3）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
 <!-- counts:end -->
 
 ## 设计
@@ -99,7 +99,7 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_011` | **look** target | `look(target)` | head_only, turn_then_head | `in_view`, `observed` |
 | `skill_012` | **inspect** receptacle | `inspect(receptacle)` | closed_cabinet, open_view | `observed` |
 | `skill_013` | **search** object | `search(object, region?)` | room_sweep | `observed` |
-| `skill_014` | **explore** room | `explore(room)` | viewpoints | `room_explored` |
+| `skill_014` | **explore_room** room | `explore_room(room)` | viewpoints | `room_explored` |
 | `skill_015` | **point** target | `point(target)` | front, turn_and_point | `pointing_at`, `hand_empty` |
 | `skill_016` | **present** object | `present(object)` | front_of_head | `presenting`, `holding` |
 | `skill_017` | **pick** object | `pick(object, hands?, grasp?, pass_by?)` | microwave_cavity, inside_cabinet_or_fridge, handle_requested, on_the_move, two_hand_box, two_hand_flat, floor_top, flat_overhang_ready, flat_edge, rect_rim, round_rim, handle, top_pinch, annotation_dispatch | `holding` + `holding` |
@@ -156,4 +156,5 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_068` | **stop** appliance | `stop(appliance)` | stove_key_off, microwave_door | `heating` + `is_open` |
 | `skill_069` | **dip** utensil | `dip(tool, container)` | tip_below_rim | `dipped`, `holding` |
 | `skill_070` | **hide** object | `hide(object, receptacle, lid?)` | container_with_lid, closed_cabinet | `hidden`, `hand_empty` |
+| `skill_071` | **explore_furniture** furniture | `explore_furniture(furniture)` | layers | `furniture_explored` |
 <!-- skills:end -->

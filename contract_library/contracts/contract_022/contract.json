@@ -3,10 +3,10 @@
  "kind": "skill_contract",
  "contract_id": "contract_022",
  "skill_id": "skill_014",
- "verb": "explore",
+ "verb": "explore_room",
  "noun": "room",
  "name": "Explore a room",
- "description": "Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen.",
+ "description": "Cover a room from up to six viewpoints with a left/centre/right head sweep both ways; succeeds when at least 75 % of the room's furniture was seen. A piece of furniture counts once one of its support layers (top or shelf) is in view; seeing every shelf of one piece is explore_furniture.",
  "group": "perception_and_gesture",
  "inputs": {
   "room": {
@@ -45,7 +45,7 @@
     "room": "$room"
    },
    "negated": false,
-   "meaning": "At least 75 % of the room's head-camera viewpoints were covered.",
+   "meaning": "At least 75 % of the room's furniture was seen (one of its support layers in the head camera).",
    "kind": "memory",
    "gt_sources": [
     "robot_memory",
@@ -63,7 +63,7 @@
  },
  "action_predicate": {
   "name": "explore_room",
-  "verb": "explore",
+  "verb": "explore_room",
   "noun": "room",
   "arguments": [
    "room"
@@ -99,6 +99,15 @@
    "bind": {},
    "reason": "narrow to one target",
    "to_skill_id": "skill_013",
+   "sequence_type": "then"
+  },
+  {
+   "kind": "sequence",
+   "to": "explore_furniture",
+   "when": "every shelf of one piece of furniture must be seen",
+   "bind": {},
+   "reason": "room coverage counts a piece once; its other layers may still hide objects",
+   "to_skill_id": "skill_071",
    "sequence_type": "then"
   }
  ],

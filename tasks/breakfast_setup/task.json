@@ -15,7 +15,7 @@
  "placed_objects": {
   "plate": {
    "asset": "breakfast_plate",
-   "support": "dining_table_2/surface_2",
+   "support": "dining_table_2/top",
    "yaw": 1.5707963267948966,
    "position": [
     2.9863009987380496,
@@ -25,7 +25,7 @@
   },
   "bowl": {
    "asset": "breakfast_bowl",
-   "support": "tv_stand_2/surface_1",
+   "support": "tv_stand_2/top",
    "yaw": -3.1243861495570098,
    "position": [
     8.03031658359448,
@@ -35,7 +35,7 @@
   },
   "cup": {
    "asset": "breakfast_cup",
-   "support": "tv_stand_2/surface_1",
+   "support": "tv_stand_2/top",
    "yaw": -1.2584473065782806,
    "position": [
     7.392796140253163,
@@ -45,7 +45,7 @@
   },
   "mug": {
    "asset": "breakfast_mug",
-   "support": "bookcase_2/surface_3",
+   "support": "bookcase_2/top",
    "yaw": 1.072064815449135,
    "position": [
     1.0551268081795024,
@@ -55,7 +55,7 @@
   },
   "spoon": {
    "asset": "breakfast_spoon",
-   "support": "dining_table_2/surface_2",
+   "support": "dining_table_2/top",
    "yaw": 0.7740076575247476,
    "position": [
     2.9797493211433883,
@@ -80,22 +80,22 @@
  },
  "candidate_supports": {
   "plate": [
-   "dining_table_2/surface_2"
+   "dining_table_2/top"
   ],
   "bowl": [
-   "tv_stand_2/surface_1",
-   "bookcase_2/surface_3"
+   "tv_stand_2/top",
+   "bookcase_2/top"
   ],
   "cup": [
-   "tv_stand_2/surface_1",
-   "bookcase_2/surface_3"
+   "tv_stand_2/top",
+   "bookcase_2/top"
   ],
   "mug": [
-   "bookcase_2/surface_3",
-   "tv_stand_2/surface_1"
+   "bookcase_2/top",
+   "tv_stand_2/top"
   ],
   "spoon": [
-   "dining_table_2/surface_2"
+   "dining_table_2/top"
   ]
  }
 }

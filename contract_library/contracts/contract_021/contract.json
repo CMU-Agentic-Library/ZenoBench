@@ -119,12 +119,21 @@
   },
   {
    "kind": "fallback",
-   "to": "explore",
+   "to": "explore_room",
    "when": "the object is not on any visited support",
    "bind": {},
    "reason": "room coverage marks every visible object observed, including the target",
    "fallback_type": "recover",
    "to_skill_id": "skill_014"
+  },
+  {
+   "kind": "fallback",
+   "to": "explore_furniture",
+   "when": "the object may sit on a shelf the sweep only glanced at",
+   "bind": {},
+   "reason": "every layer of the furniture is aimed at, so an object on any shelf is observed",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_071"
   },
   {
    "kind": "fallback",

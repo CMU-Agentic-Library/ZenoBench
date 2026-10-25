@@ -90,7 +90,7 @@
          "error": "edge pinch paperback_book: not held (lift 0.000 m)"
         }
        ],
-       "first_unexpected_failure": "place_object(object=paperback_book, receptacle=dining_table_2/surface_2, hint_xy=[3.72, 6.5]): flat_back_out: paperback_book slipped out of the hand while carrying it",
+       "first_unexpected_failure": "place_object(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5]): flat_back_out: paperback_book slipped out of the hand while carrying it",
        "dropped": [
         "paperback_book"
        ]
@@ -211,7 +211,7 @@
          "error": "edge pinch paperback_book: not held (lift 0.000 m)"
         }
        ],
-       "first_unexpected_failure": "place_object(object=paperback_book, receptacle=dining_table_2/surface_2, hint_xy=[3.72, 6.5]): flat_back_out: paperback_book slipped out of the hand while carrying it",
+       "first_unexpected_failure": "place_object(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5]): flat_back_out: paperback_book slipped out of the hand while carrying it",
        "dropped": [
         "paperback_book"
        ]

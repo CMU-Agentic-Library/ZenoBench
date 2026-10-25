@@ -38,7 +38,7 @@ VERSION = "v3"
 EVAL_SEEDS = list(range(10, 20))
 DINING_ROOM = "dining_room_0_1"
 BIN = "wide_storage_bin"
-BOOKCASE_NEAR_DESK = "bookcase_3/surface_2"   # 2 m from the desk
+BOOKCASE_NEAR_DESK = "bookcase_3/top"   # 2 m from the desk
 
 # ---------------------------------------------------------------------------- condition registry
 # tag -> (condition type, decision the condition is meant to require, one-line meaning)
@@ -163,11 +163,11 @@ NEW_TASKS.append({
     "routes": {
         # the robot starts in the bedroom facing away from the basket; the toys are in the living room
         "nominal": {"kind": "nominal", "variants": ["toys_out"], "steps": [
-            S("explore", room="bedroom_0_1"), S("explore", room=HALL),
+            S("explore_room", room="bedroom_0_1"), S("explore_room", room=HALL),
             *_to("toy_car", TOY_BASKET), *_to("rubber_duck", TOY_BASKET)]},
         "explore_search_duck": {"kind": "explore", "variants": ["duck_in_study"],
                                 "recovery": "the duck is not in the living room -> search the study", "steps": [
-            S("explore", room="bedroom_0_1"), S("explore", room=HALL), *_to("toy_car", TOY_BASKET),
+            S("explore_room", room="bedroom_0_1"), S("explore_room", room=HALL), *_to("toy_car", TOY_BASKET),
             S("navigate", "fail", "failure", destination="rubber_duck"),
             S("search", role="recovery", object="rubber_duck", region="living_room_0_1"), *_to("rubber_duck", TOY_BASKET)]}},
     "vary": {"toys_out": vary(), "duck_in_study": vary(group(["rubber_duck"], dx=0.05))},
@@ -443,7 +443,7 @@ _t19_cube = [S("navigate", destination="foam_cube"), S("pick", object="foam_cube
              S("navigate", destination=BIN), S("drop", object="foam_cube", container=BIN)]
 # the cube on the floor 0.8 m ahead of the start is below the first view: look at it was refused (NOT_OBSERVED, s10,
 # v3_round10); explore covers the living room (supports and objects) before anything is fetched
-_t19_look_cube = [S("explore", room="living_room_0_0")]
+_t19_look_cube = [S("explore_room", room="living_room_0_0")]
 NEW_TASKS.append({
     "task_id": "T19_recycling", "exp_id": "ZB-T19", "since": "v3",
     "source": ["skill_library/tasks.json:recycle_and_store"],

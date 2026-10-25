@@ -1,7 +1,7 @@
 # Low-level Policy Library
 
 <!-- counts:start -->
-当前有 **115 个公开 policy**（`policy_001`–`policy_115`），其中 7 个是只计算目标、不运动的规划 policy；全部被 70 个 Skill Contract 的路径覆盖。
+当前有 **116 个公开 policy**（`policy_001`–`policy_116`），其中 7 个是只计算目标、不运动的规划 policy；全部被 71 个 Skill Contract 的路径覆盖。
 <!-- counts:end -->
 
 每个 `policies/<id>/` 目录包含 `policy.json` 和 `POLICY.md`：控制器范围、实际 `execute()` 参数、绑定类、验证状态，以及调用该 policy 的 Skill Contract 路径。运行时用 `PolicySuite(rig).policy_010.execute(...)` 调用，旧的描述性名称（如 `PolicySuite(rig).pick_top`）保留为别名，对照见 [docs/INTERFACE_IDS.md](../docs/INTERFACE_IDS.md)。

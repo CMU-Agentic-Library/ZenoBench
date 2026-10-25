@@ -359,7 +359,7 @@ def test_nested_leaf_recovery_can_use_changed_parameters():
 
 def test_destination_clearance_can_finish_without_selecting_the_alternative():
     task = {"task_id": "T06_block_destination_occupied", "goal": {"any": [[["on", "wooden_block_a", CAB]],
-                    [["on", "wooden_block_a", "tv_stand_2/surface_1"]]]},
+                    [["on", "wooden_block_a", "tv_stand_2/top"]]]},
             "variants": {"occupied": {"conditions": ["destination_occupied"]}}}
     goal = {"any": [[{"atom": "on(wooden_block_a, cabinet)", "holds": True}],
                     [{"atom": "on(wooden_block_a, tv)", "holds": False}]]}

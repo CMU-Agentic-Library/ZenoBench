@@ -20,7 +20,8 @@
  "description": "Find an object whose location is unknown: visit the supports of a room in order of distance and aim the head at each surface until the object is seen.",
  "use_when": "The location of an object is unknown in the current room.",
  "not_to_be_confused_with": {
-  "explore": "explore covers a room without a target."
+  "explore_room": "explore_room covers a room without a target.",
+  "explore_furniture": "explore_furniture sees every layer of one piece; search stops when the object is found."
  },
  "inputs": {
   "object": {
@@ -115,7 +116,7 @@
   "previous": [
    {
     "skill_id": "skill_014",
-    "verb": "explore",
+    "verb": "explore_room",
     "when": "a specific object must then be located",
     "type": "then"
    }
@@ -134,10 +135,18 @@
   "fallback": [
    {
     "skill_id": "skill_014",
-    "verb": "explore",
+    "verb": "explore_room",
     "when": "the object is not on any visited support",
     "bind": {},
     "reason": "room coverage marks every visible object observed, including the target",
+    "type": "recover"
+   },
+   {
+    "skill_id": "skill_071",
+    "verb": "explore_furniture",
+    "when": "the object may sit on a shelf the sweep only glanced at",
+    "bind": {},
+    "reason": "every layer of the furniture is aimed at, so an object on any shelf is observed",
     "type": "recover"
    },
    {

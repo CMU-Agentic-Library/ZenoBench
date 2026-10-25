@@ -26,12 +26,12 @@ temperature uses a separate task-level model. Success is measured from simulator
 ## SkillNode / Contract / Policy
 
 <!-- library:start -->
-**70 个动词 SkillNode**，一一对应 70 个 Contract，共 120 条按名词选择的 policy 路径，覆盖 114/115 个底层 policy（退役 1 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 71 个 GT 谓词；关系图有 98 条上一步/下一步、43 条 fallback、45 条 alternative。
+**71 个动词 SkillNode**，一一对应 71 个 Contract，共 121 条按名词选择的 policy 路径，覆盖 115/116 个底层 policy（退役 1 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 72 个 GT 谓词；关系图有 100 条上一步/下一步、45 条 fallback、46 条 alternative。
 
 | 类别 | 动词 |
 |---|---|
 | 底盘与身体 | `navigate`, `approach`, `face`, `retreat`, `crouch`, `stand`, `bend`, `straighten`, `tuck`, `reset`, `sidestep`, `wait` |
-| 感知与手势 | `look`, `inspect`, `search`, `explore`, `point`, `present`, `identify`, `measure`, `count`, `wave`, `nod` |
+| 感知与手势 | `look`, `inspect`, `search`, `explore_room`, `point`, `present`, `identify`, `measure`, `count`, `wave`, `nod`, `explore_furniture` |
 | 抓取与手 | `pick`, `place`, `drop`, `stack`, `release`, `handover`, `lift`, `lower`, `rotate`, `regrasp`, `brace`, `flip`, `shake`, `hover`, `square` |
 | 非抓取接触与工具 | `push`, `pull`, `expose`, `separate`, `center`, `roll`, `tip`, `upright`, `wipe`, `stir`, `pour`, `touch`, `knock`, `sweep`, `dip` |
 | 门、抽屉与电器 | `open`, `close`, `press`, `heat`, `chill`, `cover`, `uncover`, `stop` |
@@ -41,7 +41,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 上层 VLM 读取 [vlm_skill_catalog.json](skill_library/vlm_skill_catalog.json)（或单个 `skill_library/skills/skill_XXX/skill.json`），输出 schema 2 技能子图；[graph.py](skill_library/graph.py) 校验并 grounding，[runtime.py](skill_library/runtime.py) 逐节点调用 Contract。每次调用都在执行前评估 GT 前置条件，按名词选择 policy 路径，执行后评估 GT 后置条件，失败时返回测得的谓词与 fallback 候选。设计、关系类型和生成方式见 [SkillNode Library](skill_library/README.md)，Contract 与 policy 见 [Contract Library](contract_library/README.md) 和 [Policy Library](policy_library/README.md)。
 
 <!-- verification:start -->
-**物理验证**（Isaac Sim，GT 前后条件全部测量通过才计）：65/70 个动词、97/120 条 policy 路径已通过，29/35 个验证场景端到端通过。逐动词证据与失败原因见 [verification/STATUS.md](skill_library/verification/STATUS.md)。
+**物理验证**（Isaac Sim，GT 前后条件全部测量通过才计）：66/71 个动词、98/121 条 policy 路径已通过，29/35 个验证场景端到端通过。逐动词证据与失败原因见 [verification/STATUS.md](skill_library/verification/STATUS.md)。
 <!-- verification:end -->
 
 <!-- rollouts:start -->
@@ -53,9 +53,9 @@ temperature uses a separate task-level model. Success is measured from simulator
 |---|---|---|---|
 | `collect_fruits` | 6/7 | fail | navigate_place(destination=apple): carry: orange slipped out of the hand while carrying it |
 | `tidy_toys` | 12/12 | pass | goal inside(toy_car, storage_basket), inside(toy_block, storage_basket), inside(rubber_duck, storage_basket) |
-| `shelve_books` | 6/7 | fail | navigate_place(destination=bookcase_3/surface_2): carry_navigate: no base path to [1.792378303490153, |
-| `desk_prep` | 2/3 | fail | navigate_place(destination=desk_1/surface_0): carry_in: notebook slipped out of the hand while carryi |
-| `breakfast_setup` | 0/1 | fail | arrange_objects(objects=['plate', 'cup', 'spoon'], support=dining_table_2/surface_2, max_dist_m=0.5): SUBSKI |
+| `shelve_books` | 6/7 | fail | navigate_place(destination=bookcase_3/top): carry_navigate: no base path to [1.792378303490153, |
+| `desk_prep` | 2/3 | fail | navigate_place(destination=desk_1/top): carry_in: notebook slipped out of the hand while carryi |
+| `breakfast_setup` | 0/1 | fail | arrange_objects(objects=['plate', 'cup', 'spoon'], support=dining_table_2/top, max_dist_m=0.5): SUBSKI |
 | `heat_breakfast` | 1/2 | fail | open_articulated(articulated=breakfast_fridge): open breakfast_fridge: joint -0.000 -> 0.000, goal -0.458 |
 | `heat_breakfast_preloaded` | 2/2 | pass | goal temperature_at_least(oatmeal, 60.0) |
 | `heat_breakfast_combo` | 3/4 | fail | open_articulated(articulated=breakfast_fridge): open breakfast_fridge: joint -0.000 -> 0.000, goal -0.458 |
@@ -82,7 +82,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 | `swap_blocks` | 0/1 | fail | swap_objects(a=wooden_block_a, b=soda_can): SUBSKILL_FAILED: pick_object(object=wooden_block_a): pick wooden_block_a: not held (lift 0.000 m |
 | `sort_items` | 1/2 | fail | fetch_object(object=wooden_block_b, receptacle=mug): SUBSKILL_FAILED: place_object(object=wooden_block_b, receptacle=mug): joint move to pla |
 | `empty_mug` | 0/1 | fail | fetch_object(object=cherry_tomato_1, receptacle=kitchen_island/top): SUBSKILL_FAILED: pick_object(object=cherry_tomato_1): pick cherry_tomat |
-| `clear_tv_stand` | 0/1 | fail | fetch_object(object=juice_bottle, receptacle=bookcase_2/surface_3): SUBSKILL_FAILED: pick_object(obje |
+| `clear_tv_stand` | 0/1 | fail | fetch_object(object=juice_bottle, receptacle=bookcase_2/top): SUBSKILL_FAILED: pick_object(obje |
 | `sweep_blocks` | 1/1 | pass | goal clustered(['wooden_block_a', 'wooden_block_b'], 0.12) |
 | `present_block` | 3/3 | pass | goal presenting(wooden_block_a) |
 | `serve_in_left_hand` | 1/2 | fail | brace_object(object=wooden_block_a): steady wooden_block_a: no base pose lets the left arm reach a contact (rejected: {'candidates': 3432, ' |
@@ -116,7 +116,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 | `hide_block` | 3 | navigate/empty → uncover/knob_lift_aside → hide/container_with_lid |
 | `greet_and_point` | 3 | wave/raised_swing → nod/pitch_cycles → point/front |
 | `find_lid` | 1 | look/head_only |
-| `explore_living_room` | 1 | explore/viewpoints |
+| `explore_living_room` | 1 | explore_room/viewpoints |
 | `count_tomatoes` | 1 | count/head_sweep |
 | `inspect_cabinet` | 1 | look/turn_then_head |
 | `knock_then_open` | 3 | navigate/empty → knock/panel_taps → open/hinged_door |
@@ -162,6 +162,14 @@ articulated cabinets and drawers, a microwave and the Zeno Malo robot. No cabine
 USD layer on top of it (`tasks/<task>/scene.usd`); the breakfast heating tasks layer over the
 appliance scene (`sim/zeno_house_appliances.usd`). The rooms themselves are never modified; a
 task only adds assets to furniture tops or to the floor.
+
+Objects are placed on support layers: the boards of 26 static furniture pieces (bookcases, shelves, TV stands,
+desks, tables, counters, mattresses) listed by hand in [`annotations/support_layers.json`](annotations/support_layers.json),
+named `<furniture>/shelf_<i>` from the bottom up and `<furniture>/top`. Infinigen's collision meshes put boards up to
+5 cm off the rendered ones, so `tools/fit_support_repairs.py` lays an invisible collider slab on each rendered board
+and removes the collision faces that stick into the space above it. Furniture nothing is placed on (beds, pillows,
+plant pots, ovens, dishwashers, toilets, sinks), closed cabinet interiors of the kitchen counters and boards above
+the robot's reach (1.5 m) have no support.
 
 | | | |
 |---|---|---|
@@ -280,7 +288,7 @@ privileged observations and dense rewards for RL. Appliance actions also use spe
 |---|---|
 | `rooms` | floor triangles (point-in-room queries) |
 | `obstacles` | 58 furniture AABBs, cabinet bodies, 1874 wall segments |
-| `supports` | 233 horizontal surfaces (table tops, desk tops, every shelf level): height, extent, vertical clearance |
+| `supports` | 112 horizontal surfaces in the base house: 65 board layers of the static furniture (`<furniture>/shelf_<i>`, `<furniture>/top`) and the tops, shelves and floors of the cabinets: height, extent, vertical clearance |
 | `articulated` | 16 doors/drawers: joint path, type, pivot, axis, limits, open/closed value, moving-part boxes, handle frame (centre, outward normal, along-face direction, bar size) |
 | `objects` | prim, rigid-body path, asset type, pose, AABB, room, supporting surface |
 

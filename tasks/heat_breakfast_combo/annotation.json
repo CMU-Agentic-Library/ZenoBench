@@ -65942,3040 +65942,849 @@
  ],
  "supports": [
   {
-   "name": "bed_1/surface_0",
-   "furniture": "bed_1",
-   "category": "Bed",
-   "z": 0.432,
-   "area": 0.42,
+   "name": "bookcase_1/shelf_0",
+   "furniture": "bookcase_1",
+   "category": "SimpleBookcase",
+   "z": 0.141,
    "aabb_xy": [
-    -1.104,
-    -5.309,
-    1.052,
-    -3.211
+    -9.779,
+    6.368,
+    -9.404,
+    6.967
    ],
-   "clearance": 0.157
+   "clearance": 0.34
   },
   {
-   "name": "bed_1/surface_1",
-   "furniture": "bed_1",
-   "category": "Bed",
-   "z": 0.589,
-   "area": 1.82,
+   "name": "bookcase_1/shelf_1",
+   "furniture": "bookcase_1",
+   "category": "SimpleBookcase",
+   "z": 0.495,
    "aabb_xy": [
-    -1.074,
-    -5.153,
-    1.023,
-    -3.237
+    -9.779,
+    6.368,
+    -9.404,
+    6.967
    ],
-   "clearance": 0.491
+   "clearance": 0.34
   },
   {
-   "name": "bed_1/surface_2",
-   "furniture": "bed_1",
-   "category": "Bed",
-   "z": 1.08,
-   "area": 0.035,
+   "name": "bookcase_1/top",
+   "furniture": "bookcase_1",
+   "category": "SimpleBookcase",
+   "z": 0.849,
    "aabb_xy": [
-    -1.052,
-    -5.255,
-    1.001,
-    -5.208
-   ],
-   "clearance": 1.028
-  },
-  {
-   "name": "bed_2/surface_0",
-   "furniture": "bed_2",
-   "category": "Bed",
-   "z": 0.189,
-   "area": 0.137,
-   "aabb_xy": [
-    2.331,
-    -10.672,
-    2.411,
-    -8.915
-   ],
-   "clearance": 0.114
-  },
-  {
-   "name": "bed_2/surface_1",
-   "furniture": "bed_2",
-   "category": "Bed",
-   "z": 0.303,
-   "area": 0.799,
-   "aabb_xy": [
-    2.332,
-    -10.817,
-    4.213,
-    -8.915
-   ],
-   "clearance": 0.029
-  },
-  {
-   "name": "bed_2/surface_2",
-   "furniture": "bed_2",
-   "category": "Bed",
-   "z": 0.332,
-   "area": 0.16,
-   "aabb_xy": [
-    2.323,
-    -8.915,
-    4.222,
-    -8.709
-   ],
-   "clearance": 0.461
-  },
-  {
-   "name": "bed_2/surface_3",
-   "furniture": "bed_2",
-   "category": "Bed",
-   "z": 0.793,
-   "area": 0.141,
-   "aabb_xy": [
-    2.325,
-    -8.799,
-    4.079,
-    -8.709
-   ],
-   "clearance": 0.232
-  },
-  {
-   "name": "bed_2/surface_4",
-   "furniture": "bed_2",
-   "category": "Bed",
-   "z": 1.025,
-   "area": 0.061,
-   "aabb_xy": [
-    2.934,
-    -8.797,
-    3.794,
-    -8.714
-   ],
-   "clearance": 1.15
-  },
-  {
-   "name": "blanket_1/surface_0",
-   "furniture": "blanket_1",
-   "category": "Blanket",
-   "z": 0.834,
-   "area": 0.047,
-   "aabb_xy": [
-    -1.02,
-    -4.167,
-    -0.903,
-    -3.563
-   ],
-   "clearance": 0.044
-  },
-  {
-   "name": "blanket_1/surface_1",
-   "furniture": "blanket_1",
-   "category": "Blanket",
-   "z": 0.878,
-   "area": 0.045,
-   "aabb_xy": [
-    -1.002,
-    -4.159,
-    -0.841,
-    -3.762
-   ],
-   "clearance": 0.146
-  },
-  {
-   "name": "blanket_1/surface_2",
-   "furniture": "blanket_1",
-   "category": "Blanket",
-   "z": 1.024,
-   "area": 0.936,
-   "aabb_xy": [
-    -0.964,
-    -4.296,
-    0.873,
-    -3.66
-   ],
-   "clearance": 1.01
-  },
-  {
-   "name": "blanket_2/surface_0",
-   "furniture": "blanket_2",
-   "category": "Blanket",
-   "z": 0.807,
-   "area": 0.072,
-   "aabb_xy": [
-    2.726,
-    -9.87,
-    3.895,
-    -9.583
-   ],
-   "clearance": 1.031
-  },
-  {
-   "name": "box_comforter/surface_0",
-   "furniture": "box_comforter",
-   "category": "BoxComforter",
-   "z": 0.37,
-   "area": 0.23,
-   "aabb_xy": [
-    2.035,
-    -10.649,
-    2.35,
-    -9.276
-   ],
-   "clearance": 0.092
-  },
-  {
-   "name": "box_comforter/surface_1",
-   "furniture": "box_comforter",
-   "category": "BoxComforter",
-   "z": 0.462,
-   "area": 0.229,
-   "aabb_xy": [
-    2.139,
-    -10.641,
-    2.381,
-    -9.276
-   ],
-   "clearance": 0.063
-  },
-  {
-   "name": "box_comforter/surface_2",
-   "furniture": "box_comforter",
-   "category": "BoxComforter",
-   "z": 0.525,
-   "area": 0.048,
-   "aabb_xy": [
-    2.255,
-    -9.313,
-    2.428,
-    -8.967
-   ],
-   "clearance": 0.119
-  },
-  {
-   "name": "box_comforter/surface_3",
-   "furniture": "box_comforter",
-   "category": "BoxComforter",
-   "z": 0.644,
-   "area": 1.25,
-   "aabb_xy": [
-    2.111,
-    -10.696,
-    4.025,
-    -8.688
-   ],
-   "clearance": 0.074
-  },
-  {
-   "name": "box_comforter/surface_4",
-   "furniture": "box_comforter",
-   "category": "BoxComforter",
-   "z": 0.718,
-   "area": 0.291,
-   "aabb_xy": [
-    2.525,
-    -10.069,
-    2.958,
-    -8.761
-   ],
-   "clearance": 0.063
-  },
-  {
-   "name": "box_comforter/surface_5",
-   "furniture": "box_comforter",
-   "category": "BoxComforter",
-   "z": 0.781,
-   "area": 0.532,
-   "aabb_xy": [
-    2.585,
-    -10.373,
-    3.781,
-    -9.142
-   ],
-   "clearance": 1.042
-  },
-  {
-   "name": "cell_shelf_5/surface_0",
-   "furniture": "cell_shelf_5",
-   "category": "CellShelf",
-   "z": 0.373,
-   "area": 0.054,
-   "aabb_xy": [
-    9.37,
-    -6.834,
-    9.798,
-    -5.86
-   ],
-   "clearance": 0.08
-  },
-  {
-   "name": "cell_shelf_5/surface_1",
-   "furniture": "cell_shelf_5",
-   "category": "CellShelf",
-   "z": 0.453,
-   "area": 0.076,
-   "aabb_xy": [
-    9.37,
-    -6.834,
-    9.798,
-    -5.859
-   ],
-   "clearance": 0.063
-  },
-  {
-   "name": "cell_shelf_5/surface_2",
-   "furniture": "cell_shelf_5",
-   "category": "CellShelf",
-   "z": 0.516,
-   "area": 0.368,
-   "aabb_xy": [
-    9.389,
-    -6.818,
-    9.78,
-    -5.876
+    -9.789,
+    6.368,
+    -9.404,
+    6.967
    ],
    "clearance": 1.0
   },
   {
-   "name": "cell_shelf_4/surface_0",
-   "furniture": "cell_shelf_4",
-   "category": "CellShelf",
-   "z": 0.322,
-   "area": 0.031,
-   "aabb_xy": [
-    3.393,
-    4.195,
-    3.47,
-    4.609
-   ],
-   "clearance": 0.069
-  },
-  {
-   "name": "cell_shelf_4/surface_1",
-   "furniture": "cell_shelf_4",
-   "category": "CellShelf",
-   "z": 0.391,
-   "area": 0.045,
-   "aabb_xy": [
-    3.844,
-    4.195,
-    5.216,
-    4.609
-   ],
-   "clearance": 0.091
-  },
-  {
-   "name": "cell_shelf_4/surface_2",
-   "furniture": "cell_shelf_4",
-   "category": "CellShelf",
-   "z": 0.482,
-   "area": 0.768,
-   "aabb_xy": [
-    3.393,
-    4.195,
-    5.216,
-    4.609
-   ],
-   "clearance": 0.188
-  },
-  {
-   "name": "cell_shelf_4/surface_3",
-   "furniture": "cell_shelf_4",
-   "category": "CellShelf",
-   "z": 0.67,
-   "area": 0.072,
-   "aabb_xy": [
-    3.393,
-    4.195,
-    5.216,
-    4.609
-   ],
-   "clearance": 0.263
-  },
-  {
-   "name": "cell_shelf_4/surface_4",
-   "furniture": "cell_shelf_4",
-   "category": "CellShelf",
-   "z": 0.933,
-   "area": 0.715,
-   "aabb_xy": [
-    3.405,
-    4.203,
-    5.203,
-    4.601
-   ],
-   "clearance": 1.001
-  },
-  {
-   "name": "cell_shelf_2/surface_0",
-   "furniture": "cell_shelf_2",
-   "category": "CellShelf",
-   "z": 0.214,
-   "area": 0.071,
-   "aabb_xy": [
-    1.2,
-    -11.748,
-    1.635,
-    -10.539
-   ],
-   "clearance": 0.158
-  },
-  {
-   "name": "cell_shelf_2/surface_1",
-   "furniture": "cell_shelf_2",
-   "category": "CellShelf",
-   "z": 0.372,
-   "area": 0.129,
-   "aabb_xy": [
-    1.2,
-    -11.748,
-    1.635,
-    -10.539
-   ],
-   "clearance": 0.065
-  },
-  {
-   "name": "cell_shelf_2/surface_2",
-   "furniture": "cell_shelf_2",
-   "category": "CellShelf",
-   "z": 0.437,
-   "area": 0.471,
-   "aabb_xy": [
-    1.216,
-    -11.728,
-    1.619,
-    -10.559
-   ],
-   "clearance": 1.001
-  },
-  {
-   "name": "cell_shelf_3/surface_0",
-   "furniture": "cell_shelf_3",
-   "category": "CellShelf",
-   "z": 0.509,
-   "area": 0.27,
-   "aabb_xy": [
-    1.214,
-    4.228,
-    2.036,
-    4.607
-   ],
-   "clearance": 0.188
-  },
-  {
-   "name": "cell_shelf_3/surface_1",
-   "furniture": "cell_shelf_3",
-   "category": "CellShelf",
-   "z": 0.697,
-   "area": 0.057,
-   "aabb_xy": [
-    1.145,
-    4.198,
-    2.112,
-    4.637
-   ],
-   "clearance": 0.265
-  },
-  {
-   "name": "cell_shelf_3/surface_2",
-   "furniture": "cell_shelf_3",
-   "category": "CellShelf",
-   "z": 0.962,
-   "area": 0.302,
-   "aabb_xy": [
-    1.214,
-    4.228,
-    2.043,
-    4.607
-   ],
-   "clearance": 0.444
-  },
-  {
-   "name": "cell_shelf_3/surface_3",
-   "furniture": "cell_shelf_3",
-   "category": "CellShelf",
-   "z": 1.406,
-   "area": 0.359,
-   "aabb_xy": [
-    1.157,
-    4.228,
-    2.1,
-    4.607
-   ],
-   "clearance": 1.0
-  },
-  {
-   "name": "cell_shelf_1/surface_0",
-   "furniture": "cell_shelf_1",
-   "category": "CellShelf",
-   "z": 0.217,
-   "area": 0.048,
-   "aabb_xy": [
-    0.803,
-    12.463,
-    1.665,
-    12.8
-   ],
-   "clearance": 0.16
-  },
-  {
-   "name": "cell_shelf_1/surface_1",
-   "furniture": "cell_shelf_1",
-   "category": "CellShelf",
-   "z": 0.377,
-   "area": 0.108,
-   "aabb_xy": [
-    0.777,
-    12.46,
-    2.021,
-    12.807
-   ],
-   "clearance": 0.075
-  },
-  {
-   "name": "cell_shelf_1/surface_2",
-   "furniture": "cell_shelf_1",
-   "category": "CellShelf",
-   "z": 0.452,
-   "area": 0.683,
-   "aabb_xy": [
-    -0.017,
-    12.469,
-    2.078,
-    12.794
-   ],
-   "clearance": 1.0
-  },
-  {
-   "name": "comforter/surface_0",
-   "furniture": "comforter",
-   "category": "Comforter",
-   "z": 0.997,
-   "area": 2.29,
-   "aabb_xy": [
-    -0.9,
-    -5.154,
-    0.904,
-    -3.209
-   ],
-   "clearance": 1.045
-  },
-  {
-   "name": "dishwasher_1/surface_0",
-   "furniture": "dishwasher_1",
-   "category": "Dishwasher",
-   "z": 0.192,
-   "area": 0.238,
-   "aabb_xy": [
-    -6.301,
-    11.033,
-    -5.098,
-    12.087
-   ],
-   "clearance": 0.134
-  },
-  {
-   "name": "dishwasher_1/surface_1",
-   "furniture": "dishwasher_1",
-   "category": "Dishwasher",
-   "z": 0.326,
-   "area": 0.05,
-   "aabb_xy": [
-    -6.216,
-    11.138,
-    -5.253,
-    11.981
-   ],
-   "clearance": 0.194
-  },
-  {
-   "name": "dishwasher_1/surface_2",
-   "furniture": "dishwasher_1",
-   "category": "Dishwasher",
-   "z": 0.52,
-   "area": 0.322,
-   "aabb_xy": [
-    -6.301,
-    11.033,
-    -5.098,
-    12.087
-   ],
-   "clearance": 0.077
-  },
-  {
-   "name": "dishwasher_1/surface_3",
-   "furniture": "dishwasher_1",
-   "category": "Dishwasher",
-   "z": 0.597,
-   "area": 0.032,
-   "aabb_xy": [
-    -6.104,
-    11.159,
-    -5.24,
-    11.961
-   ],
-   "clearance": 0.143
-  },
-  {
-   "name": "dishwasher_1/surface_4",
-   "furniture": "dishwasher_1",
-   "category": "Dishwasher",
-   "z": 0.74,
-   "area": 0.306,
-   "aabb_xy": [
-    -6.301,
-    11.033,
-    -5.098,
-    12.087
-   ],
-   "clearance": 0.114
-  },
-  {
-   "name": "dishwasher_1/surface_5",
-   "furniture": "dishwasher_1",
-   "category": "Dishwasher",
-   "z": 0.854,
-   "area": 0.039,
-   "aabb_xy": [
-    -5.191,
-    11.56,
-    -5.091,
-    11.961
-   ],
-   "clearance": 0.084
-  },
-  {
-   "name": "dishwasher_1/surface_6",
-   "furniture": "dishwasher_1",
-   "category": "Dishwasher",
-   "z": 0.938,
-   "area": 0.079,
-   "aabb_xy": [
-    -5.21,
-    11.153,
-    -5.04,
-    11.961
-   ],
-   "clearance": 0.095
-  },
-  {
-   "name": "dishwasher_1/surface_7",
-   "furniture": "dishwasher_1",
-   "category": "Dishwasher",
-   "z": 1.033,
-   "area": 1.131,
-   "aabb_xy": [
-    -6.279,
-    11.069,
-    -5.126,
-    12.05
-   ],
-   "clearance": 1.0
-  },
-  {
-   "name": "dishwasher_2/surface_0",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 0.229,
-   "area": 0.375,
-   "aabb_xy": [
-    1.633,
-    9.7,
-    2.545,
-    10.861
-   ],
-   "clearance": 0.114
-  },
-  {
-   "name": "dishwasher_2/surface_1",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 0.343,
-   "area": 0.423,
-   "aabb_xy": [
-    1.633,
-    9.7,
-    2.545,
-    10.861
-   ],
-   "clearance": 0.188
-  },
-  {
-   "name": "dishwasher_2/surface_2",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 0.531,
-   "area": 0.144,
-   "aabb_xy": [
-    1.633,
-    9.7,
-    1.786,
-    10.861
-   ],
-   "clearance": 0.094
-  },
-  {
-   "name": "dishwasher_2/surface_3",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 0.625,
-   "area": 0.516,
-   "aabb_xy": [
-    1.633,
-    9.7,
-    2.545,
-    10.861
-   ],
-   "clearance": 0.025
-  },
-  {
-   "name": "dishwasher_2/surface_4",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 0.65,
-   "area": 0.203,
-   "aabb_xy": [
-    2.025,
-    9.7,
-    2.545,
-    10.861
-   ],
-   "clearance": 0.185
-  },
-  {
-   "name": "dishwasher_2/surface_5",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 0.835,
-   "area": 0.382,
-   "aabb_xy": [
-    1.633,
-    9.7,
-    2.545,
-    10.861
-   ],
-   "clearance": 0.133
-  },
-  {
-   "name": "dishwasher_2/surface_6",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 0.968,
-   "area": 0.067,
-   "aabb_xy": [
-    1.633,
-    10.706,
-    2.089,
-    10.87
-   ],
-   "clearance": 0.082
-  },
-  {
-   "name": "dishwasher_2/surface_7",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 1.05,
-   "area": 0.356,
-   "aabb_xy": [
-    1.634,
-    9.7,
-    2.545,
-    10.907
-   ],
-   "clearance": 0.122
-  },
-  {
-   "name": "dishwasher_2/surface_8",
-   "furniture": "dishwasher_2",
-   "category": "Dishwasher",
-   "z": 1.172,
-   "area": 0.967,
-   "aabb_xy": [
-    1.66,
-    9.721,
-    2.519,
-    10.848
-   ],
-   "clearance": 1.0
-  },
-  {
-   "name": "kitchen_counter_2/surface_0",
-   "furniture": "kitchen_counter_2",
-   "category": "KitchenSpace",
-   "z": 1.009,
-   "area": 1.602,
-   "aabb_xy": [
-    -0.478,
-    7.021,
-    0.191,
-    9.417
-   ],
-   "clearance": 0.481
-  },
-  {
-   "name": "kitchen_counter_2/surface_1",
-   "furniture": "kitchen_counter_2",
-   "category": "KitchenSpace",
-   "z": 1.49,
-   "area": 0.434,
-   "aabb_xy": [
-    -0.155,
-    7.887,
-    0.24,
-    9.367
-   ],
-   "clearance": 0.324
-  },
-  {
-   "name": "kitchen_counter_2/surface_2",
-   "furniture": "kitchen_counter_2",
-   "category": "KitchenSpace",
-   "z": 1.814,
-   "area": 0.621,
-   "aabb_xy": [
-    -0.155,
-    6.979,
-    0.24,
-    9.458
-   ],
-   "clearance": 1.559
-  },
-  {
-   "name": "kitchen_counter_1/surface_0",
-   "furniture": "kitchen_counter_1",
-   "category": "KitchenSpace",
-   "z": 0.369,
-   "area": 0.905,
-   "aabb_xy": [
-    -2.96,
-    10.798,
-    -2.263,
-    12.099
-   ],
-   "clearance": 0.05
-  },
-  {
-   "name": "kitchen_counter_1/surface_1",
-   "furniture": "kitchen_counter_1",
-   "category": "KitchenSpace",
-   "z": 0.419,
-   "area": 0.841,
-   "aabb_xy": [
-    -2.96,
-    9.581,
-    -2.263,
-    10.798
-   ],
-   "clearance": 0.587
-  },
-  {
-   "name": "kitchen_counter_1/surface_2",
-   "furniture": "kitchen_counter_1",
-   "category": "KitchenSpace",
-   "z": 1.006,
-   "area": 1.56,
-   "aabb_xy": [
-    -2.915,
-    9.623,
-    -2.274,
-    12.057
-   ],
-   "clearance": 0.547
-  },
-  {
-   "name": "kitchen_counter_1/surface_3",
-   "furniture": "kitchen_counter_1",
-   "category": "KitchenSpace",
-   "z": 1.553,
-   "area": 0.784,
-   "aabb_xy": [
-    -2.642,
-    9.699,
-    -2.263,
-    12.099
-   ],
-   "clearance": 0.314
-  },
-  {
-   "name": "kitchen_counter_1/surface_4",
-   "furniture": "kitchen_counter_1",
-   "category": "KitchenSpace",
-   "z": 1.867,
-   "area": 0.455,
-   "aabb_xy": [
-    -2.644,
-    9.581,
-    -2.263,
-    12.099
-   ],
-   "clearance": 1.504
-  },
-  {
-   "name": "plant_pot_1/surface_0",
-   "furniture": "plant_pot_1",
-   "category": "LargePlantContainer",
-   "z": 0.241,
-   "area": 0.061,
-   "aabb_xy": [
-    -7.137,
-    6.338,
-    -6.77,
-    6.693
-   ],
-   "clearance": 1.679
-  },
-  {
-   "name": "plant_pot_7/surface_0",
-   "furniture": "plant_pot_7",
-   "category": "LargePlantContainer",
-   "z": 0.197,
-   "area": 0.05,
-   "aabb_xy": [
-    9.115,
-    -3.185,
-    9.579,
-    -2.704
-   ],
-   "clearance": 0.031
-  },
-  {
-   "name": "plant_pot_7/surface_1",
-   "furniture": "plant_pot_7",
-   "category": "LargePlantContainer",
-   "z": 0.228,
-   "area": 0.059,
-   "aabb_xy": [
-    9.122,
-    -3.173,
-    9.583,
-    -2.71
-   ],
-   "clearance": 0.195
-  },
-  {
-   "name": "plant_pot_7/surface_2",
-   "furniture": "plant_pot_7",
-   "category": "LargePlantContainer",
-   "z": 0.423,
-   "area": 0.043,
-   "aabb_xy": [
-    9.208,
-    -3.112,
-    9.618,
-    -2.71
-   ],
-   "clearance": 0.065
-  },
-  {
-   "name": "plant_pot_7/surface_3",
-   "furniture": "plant_pot_7",
-   "category": "LargePlantContainer",
-   "z": 0.488,
-   "area": 0.034,
-   "aabb_xy": [
-    9.211,
-    -3.168,
-    9.493,
-    -2.65
-   ],
-   "clearance": 0.182
-  },
-  {
-   "name": "plant_pot_7/surface_4",
-   "furniture": "plant_pot_7",
-   "category": "LargePlantContainer",
-   "z": 0.67,
-   "area": 0.032,
-   "aabb_xy": [
-    9.275,
-    -3.234,
-    9.512,
-    -2.732
-   ],
-   "clearance": 1.608
-  },
-  {
-   "name": "plant_pot_5/surface_0",
-   "furniture": "plant_pot_5",
-   "category": "LargePlantContainer",
-   "z": 0.243,
-   "area": 0.148,
-   "aabb_xy": [
-    2.357,
-    -8.054,
-    2.877,
-    -7.522
-   ],
-   "clearance": 0.046
-  },
-  {
-   "name": "plant_pot_5/surface_1",
-   "furniture": "plant_pot_5",
-   "category": "LargePlantContainer",
-   "z": 0.289,
-   "area": 0.046,
-   "aabb_xy": [
-    2.457,
-    -7.909,
-    2.726,
-    -7.683
-   ],
-   "clearance": 0.152
-  },
-  {
-   "name": "plant_pot_5/surface_2",
-   "furniture": "plant_pot_5",
-   "category": "LargePlantContainer",
-   "z": 0.441,
-   "area": 0.58,
-   "aabb_xy": [
-    2.139,
-    -8.158,
-    2.902,
-    -7.45
-   ],
-   "clearance": 0.187
-  },
-  {
-   "name": "plant_pot_5/surface_3",
-   "furniture": "plant_pot_5",
-   "category": "LargePlantContainer",
-   "z": 0.628,
-   "area": 1.459,
-   "aabb_xy": [
-    2.178,
-    -8.193,
-    3.056,
-    -7.413
-   ],
-   "clearance": 0.225
-  },
-  {
-   "name": "plant_pot_5/surface_4",
-   "furniture": "plant_pot_5",
-   "category": "LargePlantContainer",
-   "z": 0.853,
-   "area": 0.041,
-   "aabb_xy": [
-    2.311,
-    -8.119,
-    2.835,
-    -7.542
-   ],
-   "clearance": 1.266
-  },
-  {
-   "name": "plant_pot_4/surface_0",
-   "furniture": "plant_pot_4",
-   "category": "LargePlantContainer",
-   "z": 0.299,
-   "area": 0.169,
-   "aabb_xy": [
-    0.909,
-    6.653,
-    1.479,
-    7.205
-   ],
-   "clearance": 0.261
-  },
-  {
-   "name": "plant_pot_4/surface_1",
-   "furniture": "plant_pot_4",
-   "category": "LargePlantContainer",
-   "z": 0.56,
-   "area": 0.031,
-   "aabb_xy": [
-    0.741,
-    6.593,
-    1.31,
-    7.303
-   ],
-   "clearance": 1.438
-  },
-  {
-   "name": "plant_pot_3/surface_0",
-   "furniture": "plant_pot_3",
-   "category": "LargePlantContainer",
-   "z": 0.153,
-   "area": 0.093,
-   "aabb_xy": [
-    -0.936,
-    6.308,
-    -0.567,
-    6.679
-   ],
-   "clearance": 0.291
-  },
-  {
-   "name": "plant_pot_3/surface_1",
-   "furniture": "plant_pot_3",
-   "category": "LargePlantContainer",
-   "z": 0.444,
-   "area": 0.046,
-   "aabb_xy": [
-    -1.036,
-    6.321,
-    -0.573,
-    6.657
-   ],
-   "clearance": 1.224
-  },
-  {
-   "name": "large_shelf_5/surface_0",
-   "furniture": "large_shelf_5",
-   "category": "LargeShelf",
-   "z": 0.29,
-   "area": 0.055,
-   "aabb_xy": [
-    3.739,
-    -0.477,
-    4.59,
-    -0.21
-   ],
-   "clearance": 0.176
-  },
-  {
-   "name": "large_shelf_5/surface_1",
-   "furniture": "large_shelf_5",
-   "category": "LargeShelf",
-   "z": 0.466,
-   "area": 0.137,
-   "aabb_xy": [
-    3.811,
-    -0.448,
-    4.518,
-    -0.254
-   ],
-   "clearance": 0.098
-  },
-  {
-   "name": "large_shelf_5/surface_2",
-   "furniture": "large_shelf_5",
-   "category": "LargeShelf",
-   "z": 0.564,
-   "area": 0.039,
-   "aabb_xy": [
-    3.739,
-    -0.477,
-    4.518,
-    -0.21
-   ],
-   "clearance": 0.248
-  },
-  {
-   "name": "large_shelf_5/surface_3",
-   "furniture": "large_shelf_5",
-   "category": "LargeShelf",
-   "z": 0.812,
-   "area": 0.143,
-   "aabb_xy": [
-    3.797,
-    -0.448,
-    4.518,
-    -0.25
-   ],
-   "clearance": 0.342
-  },
-  {
-   "name": "large_shelf_5/surface_4",
-   "furniture": "large_shelf_5",
-   "category": "LargeShelf",
-   "z": 1.154,
-   "area": 0.134,
-   "aabb_xy": [
-    3.811,
-    -0.448,
-    4.518,
-    -0.257
-   ],
-   "clearance": 0.106
-  },
-  {
-   "name": "large_shelf_5/surface_5",
-   "furniture": "large_shelf_5",
-   "category": "LargeShelf",
-   "z": 1.26,
-   "area": 0.056,
-   "aabb_xy": [
-    3.739,
-    -0.477,
-    4.59,
-    -0.21
-   ],
-   "clearance": 0.237
-  },
-  {
-   "name": "large_shelf_5/surface_6",
-   "furniture": "large_shelf_5",
-   "category": "LargeShelf",
-   "z": 1.497,
-   "area": 0.166,
-   "aabb_xy": [
-    3.763,
-    -0.448,
-    4.567,
-    -0.241
-   ],
-   "clearance": 1.0
-  },
-  {
-   "name": "large_shelf_1/surface_0",
-   "furniture": "large_shelf_1",
-   "category": "LargeShelf",
-   "z": 0.226,
-   "area": 0.041,
-   "aabb_xy": [
-    -4.146,
-    9.209,
-    -3.801,
-    9.538
-   ],
-   "clearance": 0.226
-  },
-  {
-   "name": "large_shelf_1/surface_1",
-   "furniture": "large_shelf_1",
-   "category": "LargeShelf",
-   "z": 0.452,
-   "area": 0.072,
-   "aabb_xy": [
-    -4.074,
-    9.21,
-    -3.801,
-    9.538
-   ],
-   "clearance": 0.323
-  },
-  {
-   "name": "large_shelf_1/surface_2",
-   "furniture": "large_shelf_1",
-   "category": "LargeShelf",
-   "z": 0.775,
-   "area": 0.047,
-   "aabb_xy": [
-    -4.08,
-    9.284,
-    -3.873,
-    9.516
-   ],
-   "clearance": 0.095
-  },
-  {
-   "name": "large_shelf_1/surface_3",
-   "furniture": "large_shelf_1",
-   "category": "LargeShelf",
-   "z": 0.87,
-   "area": 0.053,
-   "aabb_xy": [
-    -4.146,
-    9.209,
-    -3.801,
-    9.537
-   ],
-   "clearance": 0.23
-  },
-  {
-   "name": "large_shelf_1/surface_4",
-   "furniture": "large_shelf_1",
-   "category": "LargeShelf",
-   "z": 1.1,
-   "area": 0.049,
-   "aabb_xy": [
-    -4.076,
-    9.274,
-    -3.876,
-    9.521
-   ],
-   "clearance": 0.317
-  },
-  {
-   "name": "large_shelf_1/surface_5",
-   "furniture": "large_shelf_1",
-   "category": "LargeShelf",
-   "z": 1.417,
-   "area": 0.048,
-   "aabb_xy": [
-    -4.076,
-    9.274,
-    -3.876,
-    9.516
-   ],
-   "clearance": 0.322
-  },
-  {
-   "name": "large_shelf_1/surface_6",
-   "furniture": "large_shelf_1",
-   "category": "LargeShelf",
-   "z": 1.739,
-   "area": 0.048,
-   "aabb_xy": [
-    -4.076,
-    9.274,
-    -3.876,
-    9.517
-   ],
-   "clearance": 1.308
-  },
-  {
-   "name": "large_shelf_6/surface_0",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 0.453,
-   "area": 0.418,
-   "aabb_xy": [
-    4.95,
-    7.589,
-    5.237,
-    9.232
-   ],
-   "clearance": 0.22
-  },
-  {
-   "name": "large_shelf_6/surface_1",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 0.673,
-   "area": 0.138,
-   "aabb_xy": [
-    5.099,
-    7.521,
-    5.29,
-    9.323
-   ],
-   "clearance": 0.033
-  },
-  {
-   "name": "large_shelf_6/surface_2",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 0.706,
-   "area": 0.048,
-   "aabb_xy": [
-    4.95,
-    7.521,
-    5.099,
-    9.323
-   ],
-   "clearance": 0.071
-  },
-  {
-   "name": "large_shelf_6/surface_3",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 0.777,
-   "area": 0.432,
-   "aabb_xy": [
-    4.95,
-    7.521,
-    5.237,
-    9.323
-   ],
-   "clearance": 0.025
-  },
-  {
-   "name": "large_shelf_6/surface_4",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 0.802,
-   "area": 0.052,
-   "aabb_xy": [
-    5.099,
-    8.549,
-    5.29,
-    8.949
-   ],
-   "clearance": 0.215
-  },
-  {
-   "name": "large_shelf_6/surface_5",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 1.017,
-   "area": 0.148,
-   "aabb_xy": [
-    5.099,
-    7.521,
-    5.29,
-    9.323
-   ],
-   "clearance": 0.078
-  },
-  {
-   "name": "large_shelf_6/surface_6",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 1.095,
-   "area": 0.42,
-   "aabb_xy": [
-    4.95,
-    7.583,
-    5.236,
-    9.259
-   ],
-   "clearance": 0.122
-  },
-  {
-   "name": "large_shelf_6/surface_7",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 1.217,
-   "area": 0.105,
-   "aabb_xy": [
-    5.099,
-    7.583,
-    5.29,
-    9.323
-   ],
-   "clearance": 0.136
-  },
-  {
-   "name": "large_shelf_6/surface_8",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 1.353,
-   "area": 0.107,
-   "aabb_xy": [
-    4.95,
-    7.521,
-    5.29,
-    9.323
-   ],
-   "clearance": 0.059
-  },
-  {
-   "name": "large_shelf_6/surface_9",
-   "furniture": "large_shelf_6",
-   "category": "LargeShelf",
-   "z": 1.412,
-   "area": 0.55,
-   "aabb_xy": [
-    4.953,
-    7.531,
-    5.285,
-    9.312
-   ],
-   "clearance": 1.001
-  },
-  {
-   "name": "large_shelf_3/surface_0",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 0.219,
-   "area": 0.055,
-   "aabb_xy": [
-    -2.149,
-    5.535,
-    -1.396,
-    5.791
-   ],
-   "clearance": 0.205
-  },
-  {
-   "name": "large_shelf_3/surface_1",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 0.424,
-   "area": 0.039,
-   "aabb_xy": [
-    -1.742,
-    5.535,
-    -1.335,
-    5.791
-   ],
-   "clearance": 0.098
-  },
-  {
-   "name": "large_shelf_3/surface_2",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 0.522,
-   "area": 0.176,
-   "aabb_xy": [
-    -2.149,
-    5.535,
-    -1.335,
-    5.791
-   ],
-   "clearance": 0.342
-  },
-  {
-   "name": "large_shelf_3/surface_3",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 0.864,
-   "area": 0.119,
-   "aabb_xy": [
-    -2.071,
-    5.559,
-    -1.415,
-    5.74
-   ],
-   "clearance": 0.112
-  },
-  {
-   "name": "large_shelf_3/surface_4",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 0.976,
-   "area": 0.051,
-   "aabb_xy": [
-    -2.149,
-    5.535,
-    -1.335,
-    5.791
-   ],
-   "clearance": 0.239
-  },
-  {
-   "name": "large_shelf_3/surface_5",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 1.215,
-   "area": 0.089,
-   "aabb_xy": [
-    -2.056,
-    5.559,
-    -1.446,
-    5.705
-   ],
-   "clearance": 0.253
-  },
-  {
-   "name": "large_shelf_3/surface_6",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 1.468,
-   "area": 0.048,
-   "aabb_xy": [
-    -2.056,
-    5.535,
-    -1.335,
-    5.791
-   ],
-   "clearance": 0.119
-  },
-  {
-   "name": "large_shelf_3/surface_7",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 1.587,
-   "area": 0.107,
-   "aabb_xy": [
-    -2.069,
-    5.559,
-    -1.415,
-    5.724
-   ],
-   "clearance": 0.085
-  },
-  {
-   "name": "large_shelf_3/surface_8",
-   "furniture": "large_shelf_3",
-   "category": "LargeShelf",
-   "z": 1.672,
-   "area": 0.03,
-   "aabb_xy": [
-    -1.742,
-    5.535,
-    -1.335,
-    5.791
-   ],
-   "clearance": 1.271
-  },
-  {
-   "name": "large_shelf_2/surface_0",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 0.245,
-   "area": 0.032,
-   "aabb_xy": [
-    -2.001,
-    -1.992,
-    -1.71,
-    -0.843
-   ],
-   "clearance": 0.163
-  },
-  {
-   "name": "large_shelf_2/surface_1",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 0.408,
-   "area": 0.172,
-   "aabb_xy": [
-    -2.001,
-    -2.076,
-    -1.71,
-    -0.359
-   ],
-   "clearance": 0.081
-  },
-  {
-   "name": "large_shelf_2/surface_2",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 0.489,
-   "area": 0.4,
-   "aabb_xy": [
-    -2.001,
-    -2.076,
-    -1.71,
-    -0.337
-   ],
-   "clearance": 0.24
-  },
-  {
-   "name": "large_shelf_2/surface_3",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 0.729,
-   "area": 0.075,
-   "aabb_xy": [
-    -2.001,
-    -1.641,
-    -1.71,
-    -0.709
-   ],
-   "clearance": 0.099
-  },
-  {
-   "name": "large_shelf_2/surface_4",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 0.828,
-   "area": 0.278,
-   "aabb_xy": [
-    -2.001,
-    -2.013,
-    -1.765,
-    -0.337
-   ],
-   "clearance": 0.022
-  },
-  {
-   "name": "large_shelf_2/surface_5",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 0.85,
-   "area": 0.074,
-   "aabb_xy": [
-    -1.816,
-    -1.641,
-    -1.71,
-    -0.709
-   ],
-   "clearance": 0.335
-  },
-  {
-   "name": "large_shelf_2/surface_6",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 1.185,
-   "area": 0.238,
-   "aabb_xy": [
-    -2.001,
-    -2.013,
-    -1.753,
-    -0.345
-   ],
-   "clearance": 0.173
-  },
-  {
-   "name": "large_shelf_2/surface_7",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 1.358,
-   "area": 0.042,
-   "aabb_xy": [
-    -1.816,
-    -2.013,
-    -1.71,
-    -0.337
-   ],
-   "clearance": 0.179
-  },
-  {
-   "name": "large_shelf_2/surface_8",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 1.537,
-   "area": 0.277,
-   "aabb_xy": [
-    -2.001,
-    -1.992,
-    -1.753,
-    -0.337
-   ],
-   "clearance": 0.261
-  },
-  {
-   "name": "large_shelf_2/surface_9",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 1.798,
-   "area": 0.141,
-   "aabb_xy": [
-    -2.001,
-    -2.076,
-    -1.71,
-    -0.337
-   ],
-   "clearance": 0.069
-  },
-  {
-   "name": "large_shelf_2/surface_10",
-   "furniture": "large_shelf_2",
-   "category": "LargeShelf",
-   "z": 1.867,
-   "area": 0.446,
-   "aabb_xy": [
-    -1.982,
-    -2.054,
-    -1.729,
-    -0.297
-   ],
-   "clearance": 1.002
-  },
-  {
-   "name": "large_shelf_4/surface_0",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.225,
-   "area": 0.112,
-   "aabb_xy": [
-    2.852,
-    -5.29,
-    4.33,
-    -5.013
-   ],
-   "clearance": 0.223
-  },
-  {
-   "name": "large_shelf_4/surface_1",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.448,
-   "area": 0.271,
-   "aabb_xy": [
-    3.232,
-    -5.29,
-    4.33,
-    -5.012
-   ],
-   "clearance": 0.016
-  },
-  {
-   "name": "large_shelf_4/surface_2",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.464,
-   "area": 0.044,
-   "aabb_xy": [
-    2.997,
-    -5.29,
-    3.702,
-    -5.02
-   ],
-   "clearance": 0.017
-  },
-  {
-   "name": "large_shelf_4/surface_3",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.481,
-   "area": 0.041,
-   "aabb_xy": [
-    2.913,
-    -5.29,
-    3.232,
-    -5.026
-   ],
-   "clearance": 0.017
-  },
-  {
-   "name": "large_shelf_4/surface_4",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.498,
-   "area": 0.056,
-   "aabb_xy": [
-    2.852,
-    -5.29,
-    4.33,
-    -5.017
-   ],
-   "clearance": 0.143
-  },
-  {
-   "name": "large_shelf_4/surface_5",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.641,
-   "area": 0.071,
-   "aabb_xy": [
-    2.852,
-    -5.29,
-    4.33,
-    -5.013
-   ],
-   "clearance": 0.045
-  },
-  {
-   "name": "large_shelf_4/surface_6",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.686,
-   "area": 0.043,
-   "aabb_xy": [
-    2.997,
-    -5.29,
-    4.197,
-    -5.245
-   ],
-   "clearance": 0.091
-  },
-  {
-   "name": "large_shelf_4/surface_7",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.777,
-   "area": 0.163,
-   "aabb_xy": [
-    2.997,
-    -5.209,
-    4.197,
-    -5.042
-   ],
-   "clearance": 0.104
-  },
-  {
-   "name": "large_shelf_4/surface_8",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 0.881,
-   "area": 0.116,
-   "aabb_xy": [
-    2.852,
-    -5.29,
-    4.33,
-    -5.013
-   ],
-   "clearance": 0.231
-  },
-  {
-   "name": "large_shelf_4/surface_9",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 1.112,
-   "area": 0.232,
-   "aabb_xy": [
-    2.961,
-    -5.242,
-    4.222,
-    -5.026
-   ],
-   "clearance": 0.322
-  },
-  {
-   "name": "large_shelf_4/surface_10",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 1.434,
-   "area": 0.214,
-   "aabb_xy": [
-    2.961,
-    -5.242,
-    4.222,
-    -5.042
-   ],
-   "clearance": 0.047
-  },
-  {
-   "name": "large_shelf_4/surface_11",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 1.481,
-   "area": 0.078,
-   "aabb_xy": [
-    2.852,
-    -5.29,
-    4.33,
-    -5.013
-   ],
-   "clearance": 0.28
-  },
-  {
-   "name": "large_shelf_4/surface_12",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 1.761,
-   "area": 0.227,
-   "aabb_xy": [
-    2.961,
-    -5.245,
-    4.222,
-    -5.031
-   ],
-   "clearance": 0.028
-  },
-  {
-   "name": "large_shelf_4/surface_13",
-   "furniture": "large_shelf_4",
-   "category": "LargeShelf",
-   "z": 1.789,
-   "area": 0.036,
-   "aabb_xy": [
-    3.5,
-    -5.29,
-    3.695,
-    -5.012
-   ],
-   "clearance": 1.285
-  },
-  {
-   "name": "mattress_1/surface_0",
-   "furniture": "mattress_1",
-   "category": "Mattress",
-   "z": 0.881,
-   "area": 3.339,
-   "aabb_xy": [
-    -0.952,
-    -5.191,
-    0.873,
-    -3.328
-   ],
-   "clearance": 1.01
-  },
-  {
-   "name": "mattress_2/surface_0",
-   "furniture": "mattress_2",
-   "category": "Mattress",
-   "z": 0.491,
-   "area": 3.067,
-   "aabb_xy": [
-    2.4,
-    -10.712,
-    4.145,
-    -8.837
-   ],
-   "clearance": 1.01
-  },
-  {
-   "name": "oven_1/surface_0",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 0.204,
-   "area": 0.072,
-   "aabb_xy": [
-    -5.299,
-    9.256,
-    -5.141,
-    9.922
-   ],
-   "clearance": 0.138
-  },
-  {
-   "name": "oven_1/surface_1",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 0.342,
-   "area": 0.478,
-   "aabb_xy": [
-    -5.976,
-    8.96,
-    -5.141,
-    9.922
-   ],
-   "clearance": 0.234
-  },
-  {
-   "name": "oven_1/surface_2",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 0.576,
-   "area": 0.047,
-   "aabb_xy": [
-    -6.087,
-    9.03,
-    -5.141,
-    9.256
-   ],
-   "clearance": 0.016
-  },
-  {
-   "name": "oven_1/surface_3",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 0.592,
-   "area": 0.232,
-   "aabb_xy": [
-    -6.087,
-    9.256,
-    -5.141,
-    9.922
-   ],
-   "clearance": 0.061
-  },
-  {
-   "name": "oven_1/surface_4",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 0.653,
-   "area": 0.313,
-   "aabb_xy": [
-    -5.974,
-    8.959,
-    -5.141,
-    9.812
-   ],
-   "clearance": 0.192
-  },
-  {
-   "name": "oven_1/surface_5",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 0.845,
-   "area": 0.211,
-   "aabb_xy": [
-    -6.087,
-    9.256,
-    -5.141,
-    9.922
-   ],
-   "clearance": 0.092
-  },
-  {
-   "name": "oven_1/surface_6",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 0.937,
-   "area": 0.078,
-   "aabb_xy": [
-    -5.972,
-    9.814,
-    -5.248,
-    9.931
-   ],
-   "clearance": 0.025
-  },
-  {
-   "name": "oven_1/surface_7",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 0.962,
-   "area": 0.158,
-   "aabb_xy": [
-    -6.087,
-    8.777,
-    -5.141,
-    9.256
-   ],
-   "clearance": 0.062
-  },
-  {
-   "name": "oven_1/surface_8",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 1.024,
-   "area": 0.046,
-   "aabb_xy": [
-    -5.816,
-    8.789,
-    -5.246,
-    8.877
-   ],
-   "clearance": 0.033
-  },
-  {
-   "name": "oven_1/surface_9",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 1.057,
-   "area": 0.276,
-   "aabb_xy": [
-    -6.087,
-    8.777,
-    -5.141,
-    9.927
-   ],
-   "clearance": 0.109
-  },
-  {
-   "name": "oven_1/surface_10",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 1.166,
-   "area": 0.773,
-   "aabb_xy": [
-    -6.06,
-    9.03,
-    -5.167,
-    9.9
-   ],
-   "clearance": 0.024
-  },
-  {
-   "name": "oven_1/surface_11",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 1.19,
-   "area": 0.189,
-   "aabb_xy": [
-    -6.087,
-    8.756,
-    -5.141,
-    8.958
-   ],
-   "clearance": 0.368
-  },
-  {
-   "name": "oven_1/surface_12",
-   "furniture": "oven_1",
-   "category": "Oven",
-   "z": 1.558,
-   "area": 0.118,
-   "aabb_xy": [
-    -6.073,
-    8.74,
-    -5.154,
-    8.869
-   ],
-   "clearance": 1.006
-  },
-  {
-   "name": "oven_2/surface_0",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.187,
-   "area": 0.26,
-   "aabb_xy": [
-    0.596,
-    9.895,
-    1.633,
-    10.882
-   ],
-   "clearance": 0.059
-  },
-  {
-   "name": "oven_2/surface_1",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.246,
-   "area": 0.418,
-   "aabb_xy": [
-    0.71,
-    9.96,
-    1.505,
-    10.743
-   ],
-   "clearance": 0.02
-  },
-  {
-   "name": "oven_2/surface_2",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.266,
-   "area": 0.05,
-   "aabb_xy": [
-    0.596,
-    10.033,
-    1.633,
-    10.28
-   ],
-   "clearance": 0.061
-  },
-  {
-   "name": "oven_2/surface_3",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.327,
-   "area": 0.2,
-   "aabb_xy": [
-    0.596,
-    10.28,
-    1.633,
-    10.882
-   ],
-   "clearance": 0.044
-  },
-  {
-   "name": "oven_2/surface_4",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.371,
-   "area": 0.133,
-   "aabb_xy": [
-    0.596,
-    9.769,
-    1.633,
-    10.033
-   ],
-   "clearance": 0.091
-  },
-  {
-   "name": "oven_2/surface_5",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.462,
-   "area": 0.466,
-   "aabb_xy": [
-    0.72,
-    9.96,
-    1.505,
-    10.741
-   ],
-   "clearance": 0.09
-  },
-  {
-   "name": "oven_2/surface_6",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.552,
-   "area": 0.047,
-   "aabb_xy": [
-    0.596,
-    10.033,
-    1.633,
-    10.28
-   ],
-   "clearance": 0.018
-  },
-  {
-   "name": "oven_2/surface_7",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.57,
-   "area": 0.204,
-   "aabb_xy": [
-    0.596,
-    10.28,
-    1.633,
-    10.882
-   ],
-   "clearance": 0.112
-  },
-  {
-   "name": "oven_2/surface_8",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.682,
-   "area": 0.625,
-   "aabb_xy": [
-    0.596,
-    9.769,
-    1.633,
-    10.764
-   ],
-   "clearance": 0.121
-  },
-  {
-   "name": "oven_2/surface_9",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.803,
-   "area": 0.203,
-   "aabb_xy": [
-    0.596,
-    10.28,
-    1.633,
-    10.882
-   ],
-   "clearance": 0.163
-  },
-  {
-   "name": "oven_2/surface_10",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.966,
-   "area": 0.186,
-   "aabb_xy": [
-    0.596,
-    9.794,
-    1.633,
-    10.949
-   ],
-   "clearance": 0.019
-  },
-  {
-   "name": "oven_2/surface_11",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 0.985,
-   "area": 0.213,
-   "aabb_xy": [
-    0.596,
-    9.769,
-    1.633,
-    10.886
-   ],
-   "clearance": 0.103
-  },
-  {
-   "name": "oven_2/surface_12",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 1.088,
-   "area": 1.09,
-   "aabb_xy": [
-    0.597,
-    9.754,
-    1.633,
-    10.864
-   ],
-   "clearance": 0.347
-  },
-  {
-   "name": "oven_2/surface_13",
-   "furniture": "oven_2",
-   "category": "Oven",
-   "z": 1.435,
-   "area": 0.142,
-   "aabb_xy": [
-    0.612,
-    9.722,
-    1.617,
-    9.864
-   ],
-   "clearance": 1.008
-  },
-  {
-   "name": "pillow_2/surface_0",
-   "furniture": "pillow_2",
-   "category": "Pillow",
-   "z": 1.112,
-   "area": 0.04,
-   "aabb_xy": [
-    -0.305,
-    -5.161,
-    -0.074,
-    -4.877
-   ],
-   "clearance": 1.01
-  },
-  {
-   "name": "pillow_1/surface_0",
-   "furniture": "pillow_1",
-   "category": "Pillow",
-   "z": 1.167,
-   "area": 0.039,
-   "aabb_xy": [
-    -0.452,
-    -4.686,
-    -0.178,
-    -4.406
-   ],
-   "clearance": 1.01
-  },
-  {
-   "name": "pillow_3/surface_0",
-   "furniture": "pillow_3",
-   "category": "Pillow",
-   "z": 1.178,
-   "area": 0.038,
-   "aabb_xy": [
-    0.106,
-    -4.586,
-    0.386,
-    -4.408
-   ],
-   "clearance": 1.01
-  },
-  {
-   "name": "pillow_6/surface_0",
-   "furniture": "pillow_6",
-   "category": "Pillow",
-   "z": 0.644,
-   "area": 0.207,
-   "aabb_xy": [
-    3.308,
-    -9.194,
-    4.099,
-    -8.833
-   ],
-   "clearance": 0.058
-  },
-  {
-   "name": "pillow_6/surface_1",
-   "furniture": "pillow_6",
-   "category": "Pillow",
-   "z": 0.702,
-   "area": 0.211,
-   "aabb_xy": [
-    3.296,
-    -9.194,
-    4.102,
-    -8.833
-   ],
-   "clearance": 0.12
-  },
-  {
-   "name": "pillow_6/surface_2",
-   "furniture": "pillow_6",
-   "category": "Pillow",
-   "z": 0.822,
-   "area": 0.088,
-   "aabb_xy": [
-    3.514,
-    -9.194,
-    3.874,
-    -8.838
-   ],
-   "clearance": 1.012
-  },
-  {
-   "name": "pillow_4/surface_0",
-   "furniture": "pillow_4",
-   "category": "Pillow",
-   "z": 1.069,
-   "area": 0.089,
-   "aabb_xy": [
-    2.618,
-    -9.224,
-    2.946,
-    -8.864
-   ],
-   "clearance": 1.012
-  },
-  {
-   "name": "pillow_5/surface_0",
-   "furniture": "pillow_5",
-   "category": "Pillow",
-   "z": 0.679,
-   "area": 0.047,
-   "aabb_xy": [
-    3.614,
-    -9.746,
-    3.791,
-    -9.466
-   ],
-   "clearance": 0.048
-  },
-  {
-   "name": "pillow_5/surface_1",
-   "furniture": "pillow_5",
-   "category": "Pillow",
-   "z": 0.727,
-   "area": 0.102,
-   "aabb_xy": [
-    3.384,
-    -9.872,
-    3.614,
-    -9.34
-   ],
-   "clearance": 0.119
-  },
-  {
-   "name": "pillow_5/surface_2",
-   "furniture": "pillow_5",
-   "category": "Pillow",
-   "z": 0.846,
-   "area": 0.088,
-   "aabb_xy": [
-    3.337,
-    -9.729,
-    3.681,
-    -9.362
-   ],
-   "clearance": 1.011
-  },
-  {
-   "name": "bookcase_3/surface_0",
-   "furniture": "bookcase_3",
-   "category": "SimpleBookcase",
-   "z": 0.159,
-   "area": 0.182,
-   "aabb_xy": [
-    1.83,
-    -5.028,
-    2.371,
-    -4.69
-   ],
-   "clearance": 0.285
-  },
-  {
-   "name": "bookcase_3/surface_1",
-   "furniture": "bookcase_3",
-   "category": "SimpleBookcase",
-   "z": 0.444,
-   "area": 0.183,
-   "aabb_xy": [
-    1.83,
-    -5.043,
-    2.365,
-    -4.696
-   ],
-   "clearance": 0.286
-  },
-  {
-   "name": "bookcase_3/surface_2",
-   "furniture": "bookcase_3",
-   "category": "SimpleBookcase",
-   "z": 0.73,
-   "area": 0.219,
-   "aabb_xy": [
-    1.806,
-    -5.064,
-    2.395,
-    -4.696
-   ],
-   "clearance": 1.0
-  },
-  {
-   "name": "bookcase_4/surface_0",
-   "furniture": "bookcase_4",
-   "category": "SimpleBookcase",
-   "z": 0.348,
-   "area": 0.038,
-   "aabb_xy": [
-    6.902,
-    -7.045,
-    7.29,
-    -6.475
-   ],
-   "clearance": 0.076
-  },
-  {
-   "name": "bookcase_4/surface_1",
-   "furniture": "bookcase_4",
-   "category": "SimpleBookcase",
-   "z": 0.424,
-   "area": 0.15,
-   "aabb_xy": [
-    6.913,
-    -6.987,
-    7.234,
-    -6.517
-   ],
-   "clearance": 0.11
-  },
-  {
-   "name": "bookcase_4/surface_2",
-   "furniture": "bookcase_4",
-   "category": "SimpleBookcase",
-   "z": 0.534,
-   "area": 0.035,
-   "aabb_xy": [
-    6.902,
-    -7.045,
-    7.29,
-    -6.475
-   ],
-   "clearance": 0.162
-  },
-  {
-   "name": "bookcase_4/surface_3",
-   "furniture": "bookcase_4",
-   "category": "SimpleBookcase",
-   "z": 0.696,
-   "area": 0.048,
-   "aabb_xy": [
-    6.902,
-    -7.046,
-    7.29,
-    -6.475
-   ],
-   "clearance": 0.024
-  },
-  {
-   "name": "bookcase_4/surface_4",
-   "furniture": "bookcase_4",
-   "category": "SimpleBookcase",
-   "z": 0.72,
-   "area": 0.212,
-   "aabb_xy": [
-    6.904,
-    -7.038,
-    7.285,
-    -6.481
-   ],
-   "clearance": 1.0
-  },
-  {
-   "name": "bookcase_2/surface_0",
+   "name": "bookcase_2/shelf_0",
    "furniture": "bookcase_2",
    "category": "SimpleBookcase",
-   "z": 0.212,
-   "area": 0.166,
-   "aabb_xy": [
-    0.75,
-    -0.614,
-    1.259,
-    -0.276
-   ],
-   "clearance": 0.151
-  },
-  {
-   "name": "bookcase_2/surface_1",
-   "furniture": "bookcase_2",
-   "category": "SimpleBookcase",
-   "z": 0.363,
-   "area": 0.038,
+   "z": 0.207,
    "aabb_xy": [
     0.705,
     -0.619,
     1.295,
-    -0.239
+    -0.255
    ],
-   "clearance": 0.097
+   "clearance": 0.238
   },
   {
-   "name": "bookcase_2/surface_2",
+   "name": "bookcase_2/shelf_1",
    "furniture": "bookcase_2",
    "category": "SimpleBookcase",
-   "z": 0.46,
-   "area": 0.175,
+   "z": 0.458,
    "aabb_xy": [
-    0.74,
-    -0.615,
-    1.263,
-    -0.268
+    0.705,
+    -0.619,
+    1.295,
+    -0.255
    ],
-   "clearance": 0.246
+   "clearance": 0.238
   },
   {
-   "name": "bookcase_2/surface_3",
+   "name": "bookcase_2/top",
    "furniture": "bookcase_2",
    "category": "SimpleBookcase",
-   "z": 0.706,
-   "area": 0.203,
+   "z": 0.709,
    "aabb_xy": [
-    0.715,
-    -0.607,
-    1.285,
-    -0.252
+    0.705,
+    -0.619,
+    1.295,
+    -0.24
    ],
    "clearance": 1.0
   },
   {
-   "name": "bookcase_1/surface_0",
-   "furniture": "bookcase_1",
+   "name": "bookcase_3/shelf_0",
+   "furniture": "bookcase_3",
    "category": "SimpleBookcase",
-   "z": 0.164,
-   "area": 0.189,
+   "z": 0.154,
    "aabb_xy": [
-    -9.763,
-    6.367,
-    -9.404,
-    6.925
+    1.793,
+    -5.062,
+    2.407,
+    -4.683
+   ],
+   "clearance": 0.274
+  },
+  {
+   "name": "bookcase_3/shelf_1",
+   "furniture": "bookcase_3",
+   "category": "SimpleBookcase",
+   "z": 0.443,
+   "aabb_xy": [
+    1.793,
+    -5.062,
+    2.407,
+    -4.683
+   ],
+   "clearance": 0.273
+  },
+  {
+   "name": "bookcase_3/top",
+   "furniture": "bookcase_3",
+   "category": "SimpleBookcase",
+   "z": 0.733,
+   "aabb_xy": [
+    1.793,
+    -5.077,
+    2.407,
+    -4.683
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "bookcase_4/shelf_0",
+   "furniture": "bookcase_4",
+   "category": "SimpleBookcase",
+   "z": 0.122,
+   "aabb_xy": [
+    6.901,
+    -7.045,
+    7.27,
+    -6.474
+   ],
+   "clearance": 0.29
+  },
+  {
+   "name": "bookcase_4/shelf_1",
+   "furniture": "bookcase_4",
+   "category": "SimpleBookcase",
+   "z": 0.421,
+   "aabb_xy": [
+    6.901,
+    -7.045,
+    7.27,
+    -6.474
+   ],
+   "clearance": 0.29
+  },
+  {
+   "name": "bookcase_4/top",
+   "furniture": "bookcase_4",
+   "category": "SimpleBookcase",
+   "z": 0.721,
+   "aabb_xy": [
+    6.901,
+    -7.045,
+    7.289,
+    -6.474
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "cell_shelf_1/shelf_0",
+   "furniture": "cell_shelf_1",
+   "category": "CellShelf",
+   "z": 0.035,
+   "aabb_xy": [
+    -0.026,
+    12.44,
+    2.088,
+    12.789
+   ],
+   "clearance": 0.399
+  },
+  {
+   "name": "cell_shelf_1/top",
+   "furniture": "cell_shelf_1",
+   "category": "CellShelf",
+   "z": 0.468,
+   "aabb_xy": [
+    -0.026,
+    12.44,
+    2.088,
+    12.789
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "cell_shelf_2/shelf_0",
+   "furniture": "cell_shelf_2",
+   "category": "CellShelf",
+   "z": 0.043,
+   "aabb_xy": [
+    1.211,
+    -11.746,
+    1.643,
+    -10.541
+   ],
+   "clearance": 0.361
+  },
+  {
+   "name": "cell_shelf_2/top",
+   "furniture": "cell_shelf_2",
+   "category": "CellShelf",
+   "z": 0.447,
+   "aabb_xy": [
+    1.211,
+    -11.746,
+    1.643,
+    -10.541
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "cell_shelf_3/shelf_0",
+   "furniture": "cell_shelf_3",
+   "category": "CellShelf",
+   "z": 0.045,
+   "aabb_xy": [
+    1.146,
+    4.211,
+    2.111,
+    4.647
+   ],
+   "clearance": 0.428
+  },
+  {
+   "name": "cell_shelf_3/shelf_1",
+   "furniture": "cell_shelf_3",
+   "category": "CellShelf",
+   "z": 0.492,
+   "aabb_xy": [
+    1.191,
+    4.211,
+    2.066,
+    4.647
+   ],
+   "clearance": 0.428
+  },
+  {
+   "name": "cell_shelf_3/shelf_2",
+   "furniture": "cell_shelf_3",
+   "category": "CellShelf",
+   "z": 0.94,
+   "aabb_xy": [
+    1.191,
+    4.211,
+    2.066,
+    4.647
+   ],
+   "clearance": 0.428
+  },
+  {
+   "name": "cell_shelf_3/top",
+   "furniture": "cell_shelf_3",
+   "category": "CellShelf",
+   "z": 1.412,
+   "aabb_xy": [
+    1.146,
+    4.211,
+    2.111,
+    4.647
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "cell_shelf_4/shelf_0",
+   "furniture": "cell_shelf_4",
+   "category": "CellShelf",
+   "z": 0.046,
+   "aabb_xy": [
+    3.396,
+    4.211,
+    5.212,
+    4.622
+   ],
+   "clearance": 0.419
+  },
+  {
+   "name": "cell_shelf_4/shelf_1",
+   "furniture": "cell_shelf_4",
+   "category": "CellShelf",
+   "z": 0.481,
+   "aabb_xy": [
+    3.442,
+    4.211,
+    5.166,
+    4.622
+   ],
+   "clearance": 0.419
+  },
+  {
+   "name": "cell_shelf_4/top",
+   "furniture": "cell_shelf_4",
+   "category": "CellShelf",
+   "z": 0.945,
+   "aabb_xy": [
+    3.396,
+    4.211,
+    5.212,
+    4.622
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "cell_shelf_5/shelf_0",
+   "furniture": "cell_shelf_5",
+   "category": "CellShelf",
+   "z": 0.048,
+   "aabb_xy": [
+    9.364,
+    -6.832,
+    9.789,
+    -5.861
+   ],
+   "clearance": 0.426
+  },
+  {
+   "name": "cell_shelf_5/top",
+   "furniture": "cell_shelf_5",
+   "category": "CellShelf",
+   "z": 0.522,
+   "aabb_xy": [
+    9.364,
+    -6.832,
+    9.789,
+    -5.861
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "desk_1/top",
+   "furniture": "desk_1",
+   "category": "SimpleDesk",
+   "z": 0.7,
+   "aabb_xy": [
+    -1.408,
+    -6.326,
+    -0.025,
+    -5.709
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "desk_2/top",
+   "furniture": "desk_2",
+   "category": "SimpleDesk",
+   "z": 0.633,
+   "aabb_xy": [
+    2.274,
+    -12.789,
+    3.894,
+    -12.247
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "desk_3/top",
+   "furniture": "desk_3",
+   "category": "SimpleDesk",
+   "z": 0.739,
+   "aabb_xy": [
+    5.834,
+    -5.789,
+    7.488,
+    -5.188
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "dining_table_1/top",
+   "furniture": "dining_table_1",
+   "category": "TableDining",
+   "z": 0.711,
+   "aabb_xy": [
+    -8.541,
+    6.869,
+    -7.488,
+    8.853
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "dining_table_2/top",
+   "furniture": "dining_table_2",
+   "category": "TableDining",
+   "z": 0.848,
+   "aabb_xy": [
+    2.788,
+    5.495,
+    3.839,
+    7.955
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "kitchen_counter_1/top",
+   "furniture": "kitchen_counter_1",
+   "category": "KitchenSpace",
+   "z": 0.997,
+   "aabb_xy": [
+    -2.96,
+    9.571,
+    -2.25,
+    12.077
+   ],
+   "clearance": 0.463
+  },
+  {
+   "name": "kitchen_counter_2/top",
+   "furniture": "kitchen_counter_2",
+   "category": "KitchenSpace",
+   "z": 1.0,
+   "aabb_xy": [
+    -0.524,
+    6.969,
+    0.25,
+    9.437
+   ],
+   "clearance": 0.387
+  },
+  {
+   "name": "large_shelf_1/shelf_0",
+   "furniture": "large_shelf_1",
+   "category": "LargeShelf",
+   "z": 0.107,
+   "aabb_xy": [
+    -4.129,
+    9.221,
+    -3.819,
+    9.539
+   ],
+   "clearance": 0.301
+  },
+  {
+   "name": "large_shelf_1/shelf_1",
+   "furniture": "large_shelf_1",
+   "category": "LargeShelf",
+   "z": 0.431,
+   "aabb_xy": [
+    -4.129,
+    9.221,
+    -3.819,
+    9.539
+   ],
+   "clearance": 0.301
+  },
+  {
+   "name": "large_shelf_1/shelf_2",
+   "furniture": "large_shelf_1",
+   "category": "LargeShelf",
+   "z": 0.755,
+   "aabb_xy": [
+    -4.129,
+    9.221,
+    -3.819,
+    9.539
+   ],
+   "clearance": 0.301
+  },
+  {
+   "name": "large_shelf_1/shelf_3",
+   "furniture": "large_shelf_1",
+   "category": "LargeShelf",
+   "z": 1.079,
+   "aabb_xy": [
+    -4.129,
+    9.221,
+    -3.819,
+    9.539
+   ],
+   "clearance": 0.301
+  },
+  {
+   "name": "large_shelf_1/shelf_4",
+   "furniture": "large_shelf_1",
+   "category": "LargeShelf",
+   "z": 1.403,
+   "aabb_xy": [
+    -4.129,
+    9.221,
+    -3.819,
+    9.539
+   ],
+   "clearance": 0.301
+  },
+  {
+   "name": "large_shelf_2/shelf_0",
+   "furniture": "large_shelf_2",
+   "category": "LargeShelf",
+   "z": 0.104,
+   "aabb_xy": [
+    -1.998,
+    -2.05,
+    -1.721,
+    -0.3
    ],
    "clearance": 0.334
   },
   {
-   "name": "bookcase_1/surface_1",
-   "furniture": "bookcase_1",
-   "category": "SimpleBookcase",
-   "z": 0.498,
-   "area": 0.18,
+   "name": "large_shelf_2/shelf_1",
+   "furniture": "large_shelf_2",
+   "category": "LargeShelf",
+   "z": 0.458,
    "aabb_xy": [
-    -9.763,
-    6.41,
-    -9.412,
-    6.937
+    -1.998,
+    -2.05,
+    -1.721,
+    -0.3
    ],
-   "clearance": 0.32
+   "clearance": 0.334
   },
   {
-   "name": "bookcase_1/surface_2",
-   "furniture": "bookcase_1",
-   "category": "SimpleBookcase",
-   "z": 0.818,
-   "area": 0.048,
+   "name": "large_shelf_2/shelf_2",
+   "furniture": "large_shelf_2",
+   "category": "LargeShelf",
+   "z": 0.812,
    "aabb_xy": [
-    -9.79,
-    6.367,
-    -9.404,
-    6.969
+    -1.998,
+    -2.05,
+    -1.721,
+    -0.3
    ],
-   "clearance": 0.029
+   "clearance": 0.334
   },
   {
-   "name": "bookcase_1/surface_3",
-   "furniture": "bookcase_1",
-   "category": "SimpleBookcase",
-   "z": 0.847,
-   "area": 0.21,
+   "name": "large_shelf_2/shelf_3",
+   "furniture": "large_shelf_2",
+   "category": "LargeShelf",
+   "z": 1.166,
    "aabb_xy": [
-    -9.781,
-    6.382,
-    -9.412,
-    6.953
+    -1.998,
+    -2.05,
+    -1.721,
+    -0.3
    ],
-   "clearance": 1.001
+   "clearance": 0.334
   },
   {
-   "name": "desk_2/surface_0",
-   "furniture": "desk_2",
-   "category": "SimpleDesk",
-   "z": 0.62,
-   "area": 0.857,
+   "name": "large_shelf_3/shelf_0",
+   "furniture": "large_shelf_3",
+   "category": "LargeShelf",
+   "z": 0.105,
    "aabb_xy": [
-    2.277,
-    -12.783,
-    3.891,
-    -12.253
+    -2.129,
+    5.533,
+    -1.354,
+    5.779
    ],
-   "clearance": 1.002
+   "clearance": 0.346
   },
   {
-   "name": "desk_3/surface_0",
-   "furniture": "desk_3",
-   "category": "SimpleDesk",
-   "z": 0.687,
-   "area": 0.061,
+   "name": "large_shelf_3/shelf_1",
+   "furniture": "large_shelf_3",
+   "category": "LargeShelf",
+   "z": 0.473,
    "aabb_xy": [
-    5.838,
-    -5.784,
-    7.484,
-    -5.194
+    -2.129,
+    5.533,
+    -1.354,
+    5.779
    ],
-   "clearance": 0.053
+   "clearance": 0.346
   },
   {
-   "name": "desk_3/surface_1",
-   "furniture": "desk_3",
-   "category": "SimpleDesk",
-   "z": 0.74,
-   "area": 0.911,
+   "name": "large_shelf_3/shelf_2",
+   "furniture": "large_shelf_3",
+   "category": "LargeShelf",
+   "z": 0.84,
    "aabb_xy": [
-    5.852,
-    -5.771,
-    7.469,
-    -5.207
+    -2.129,
+    5.533,
+    -1.354,
+    5.779
    ],
-   "clearance": 1.001
+   "clearance": 0.346
   },
   {
-   "name": "desk_1/surface_0",
-   "furniture": "desk_1",
-   "category": "SimpleDesk",
-   "z": 0.694,
-   "area": 0.78,
+   "name": "large_shelf_3/shelf_3",
+   "furniture": "large_shelf_3",
+   "category": "LargeShelf",
+   "z": 1.207,
    "aabb_xy": [
-    -1.392,
-    -6.316,
-    -0.028,
-    -5.736
+    -2.129,
+    5.533,
+    -1.354,
+    5.779
    ],
-   "clearance": 1.004
+   "clearance": 0.346
   },
   {
-   "name": "sink_1/surface_0",
-   "furniture": "sink_1",
-   "category": "StandingSink",
-   "z": 0.49,
-   "area": 0.228,
+   "name": "large_shelf_4/shelf_0",
+   "furniture": "large_shelf_4",
+   "category": "LargeShelf",
+   "z": 0.105,
    "aabb_xy": [
-    -0.366,
-    4.359,
-    0.071,
-    4.922
+    2.88,
+    -5.279,
+    4.301,
+    -5.013
    ],
-   "clearance": 0.258
+   "clearance": 0.308
   },
   {
-   "name": "sink_1/surface_1",
-   "furniture": "sink_1",
-   "category": "StandingSink",
-   "z": 0.748,
-   "area": 0.094,
+   "name": "large_shelf_4/shelf_1",
+   "furniture": "large_shelf_4",
+   "category": "LargeShelf",
+   "z": 0.434,
    "aabb_xy": [
-    -0.421,
-    4.218,
-    0.275,
-    5.066
+    2.88,
+    -5.279,
+    4.301,
+    -5.013
    ],
-   "clearance": 1.226
+   "clearance": 0.308
   },
   {
-   "name": "sink_2/surface_0",
-   "furniture": "sink_2",
-   "category": "StandingSink",
-   "z": 0.507,
-   "area": 0.7,
+   "name": "large_shelf_4/shelf_2",
+   "furniture": "large_shelf_4",
+   "category": "LargeShelf",
+   "z": 0.763,
    "aabb_xy": [
-    3.372,
-    -6.737,
-    4.283,
-    -5.85
+    2.88,
+    -5.279,
+    4.301,
+    -5.013
    ],
-   "clearance": 0.265
+   "clearance": 0.308
   },
   {
-   "name": "sink_2/surface_1",
-   "furniture": "sink_2",
-   "category": "StandingSink",
-   "z": 0.772,
-   "area": 0.198,
+   "name": "large_shelf_4/shelf_3",
+   "furniture": "large_shelf_4",
+   "category": "LargeShelf",
+   "z": 1.092,
    "aabb_xy": [
-    3.377,
-    -6.728,
-    4.271,
-    -5.855
+    2.88,
+    -5.279,
+    4.301,
+    -5.013
    ],
-   "clearance": 1.162
+   "clearance": 0.308
   },
   {
-   "name": "dining_table_2/surface_0",
-   "furniture": "dining_table_2",
-   "category": "TableDining",
-   "z": 0.51,
-   "area": 0.098,
+   "name": "large_shelf_4/shelf_4",
+   "furniture": "large_shelf_4",
+   "category": "LargeShelf",
+   "z": 1.421,
    "aabb_xy": [
-    2.869,
-    5.698,
-    3.773,
-    7.779
+    2.88,
+    -5.279,
+    4.301,
+    -5.013
    ],
-   "clearance": 0.26
+   "clearance": 0.308
   },
   {
-   "name": "dining_table_2/surface_1",
-   "furniture": "dining_table_2",
-   "category": "TableDining",
-   "z": 0.77,
-   "area": 0.15,
+   "name": "large_shelf_5/shelf_0",
+   "furniture": "large_shelf_5",
+   "category": "LargeShelf",
+   "z": 0.108,
    "aabb_xy": [
-    2.811,
-    5.638,
-    3.817,
-    7.812
+    3.76,
+    -0.476,
+    4.569,
+    -0.221
    ],
-   "clearance": 0.082
+   "clearance": 0.324
   },
   {
-   "name": "dining_table_2/surface_2",
-   "furniture": "dining_table_2",
-   "category": "TableDining",
-   "z": 0.852,
-   "area": 2.411,
+   "name": "large_shelf_5/shelf_1",
+   "furniture": "large_shelf_5",
+   "category": "LargeShelf",
+   "z": 0.456,
    "aabb_xy": [
-    2.813,
-    5.522,
-    3.815,
-    7.928
+    3.76,
+    -0.476,
+    4.569,
+    -0.221
    ],
-   "clearance": 1.001
+   "clearance": 0.324
   },
   {
-   "name": "dining_table_1/surface_0",
-   "furniture": "dining_table_1",
-   "category": "TableDining",
-   "z": 0.327,
-   "area": 0.097,
+   "name": "large_shelf_5/shelf_2",
+   "furniture": "large_shelf_5",
+   "category": "LargeShelf",
+   "z": 0.804,
    "aabb_xy": [
-    -8.452,
-    7.025,
-    -7.576,
-    8.7
+    3.76,
+    -0.476,
+    4.569,
+    -0.221
    ],
-   "clearance": 0.305
+   "clearance": 0.324
   },
   {
-   "name": "dining_table_1/surface_1",
-   "furniture": "dining_table_1",
-   "category": "TableDining",
-   "z": 0.632,
-   "area": 0.072,
+   "name": "large_shelf_5/shelf_3",
+   "furniture": "large_shelf_5",
+   "category": "LargeShelf",
+   "z": 1.153,
    "aabb_xy": [
-    -8.499,
-    6.986,
-    -7.529,
-    8.734
+    3.76,
+    -0.476,
+    4.569,
+    -0.221
    ],
-   "clearance": 0.068
+   "clearance": 0.324
   },
   {
-   "name": "dining_table_1/surface_2",
-   "furniture": "dining_table_1",
-   "category": "TableDining",
-   "z": 0.7,
-   "area": 2.076,
+   "name": "large_shelf_6/shelf_0",
+   "furniture": "large_shelf_6",
+   "category": "LargeShelf",
+   "z": 0.103,
    "aabb_xy": [
-    -8.537,
-    6.869,
-    -7.491,
-    8.853
+    4.952,
+    7.545,
+    5.279,
+    9.298
    ],
-   "clearance": 1.002
+   "clearance": 0.31
   },
   {
-   "name": "toilet_2/surface_0",
-   "furniture": "toilet_2",
-   "category": "Toilet",
-   "z": 0.444,
-   "area": 0.193,
+   "name": "large_shelf_6/shelf_1",
+   "furniture": "large_shelf_6",
+   "category": "LargeShelf",
+   "z": 0.432,
    "aabb_xy": [
-    2.755,
-    -6.562,
-    3.235,
-    -5.709
+    4.952,
+    7.545,
+    5.279,
+    9.298
    ],
-   "clearance": 0.025
+   "clearance": 0.31
   },
   {
-   "name": "toilet_2/surface_1",
-   "furniture": "toilet_2",
-   "category": "Toilet",
-   "z": 0.469,
-   "area": 0.034,
+   "name": "large_shelf_6/shelf_2",
+   "furniture": "large_shelf_6",
+   "category": "LargeShelf",
+   "z": 0.761,
    "aabb_xy": [
-    2.814,
-    -6.013,
-    3.177,
-    -5.91
+    4.952,
+    7.545,
+    5.279,
+    9.298
    ],
-   "clearance": 0.306
+   "clearance": 0.31
   },
   {
-   "name": "toilet_2/surface_2",
-   "furniture": "toilet_2",
-   "category": "Toilet",
-   "z": 0.775,
-   "area": 0.059,
+   "name": "large_shelf_6/shelf_3",
+   "furniture": "large_shelf_6",
+   "category": "LargeShelf",
+   "z": 1.09,
    "aabb_xy": [
-    2.82,
-    -5.892,
-    3.17,
-    -5.723
+    4.952,
+    7.545,
+    5.279,
+    9.298
    ],
-   "clearance": 1.001
+   "clearance": 0.31
   },
   {
-   "name": "toilet_1/surface_0",
-   "furniture": "toilet_1",
-   "category": "Toilet",
-   "z": 0.425,
-   "area": 0.165,
+   "name": "large_shelf_6/top",
+   "furniture": "large_shelf_6",
+   "category": "LargeShelf",
+   "z": 1.419,
    "aabb_xy": [
-    -0.971,
-    5.007,
-    -0.512,
-    5.79
-   ],
-   "clearance": 0.249
-  },
-  {
-   "name": "toilet_1/surface_1",
-   "furniture": "toilet_1",
-   "category": "Toilet",
-   "z": 0.674,
-   "area": 0.044,
-   "aabb_xy": [
-    -0.909,
-    5.64,
-    -0.575,
-    5.773
-   ],
-   "clearance": 1.27
-  },
-  {
-   "name": "towel_2/surface_0",
-   "furniture": "towel_2",
-   "category": "Towel",
-   "z": 0.657,
-   "area": 0.043,
-   "aabb_xy": [
-    3.708,
-    -10.361,
-    3.896,
-    -10.154
-   ],
-   "clearance": 1.053
-  },
-  {
-   "name": "tv_stand_2/surface_0",
-   "furniture": "tv_stand_2",
-   "category": "TVStand",
-   "z": 0.352,
-   "area": 0.044,
-   "aabb_xy": [
-    6.641,
-    0.198,
-    8.378,
-    0.501
-   ],
-   "clearance": 0.12
-  },
-  {
-   "name": "tv_stand_2/surface_1",
-   "furniture": "tv_stand_2",
-   "category": "TVStand",
-   "z": 0.472,
-   "area": 0.398,
-   "aabb_xy": [
-    6.669,
-    0.231,
-    8.349,
-    0.468
+    4.95,
+    7.525,
+    5.289,
+    9.318
    ],
    "clearance": 1.0
   },
   {
-   "name": "tv_stand_1/surface_0",
+   "name": "mattress_1/top",
+   "furniture": "mattress_1",
+   "category": "Mattress",
+   "z": 0.891,
+   "aabb_xy": [
+    -0.678,
+    -4.851,
+    0.627,
+    -3.594
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "mattress_2/top",
+   "furniture": "mattress_2",
+   "category": "Mattress",
+   "z": 0.514,
+   "aabb_xy": [
+    2.617,
+    -10.559,
+    3.976,
+    -9.065
+   ],
+   "clearance": 1.0
+  },
+  {
+   "name": "tv_stand_1/shelf_0",
    "furniture": "tv_stand_1",
    "category": "TVStand",
-   "z": 0.24,
-   "area": 0.05,
+   "z": 0.039,
    "aabb_xy": [
-    -7.742,
-    5.394,
-    -6.367,
-    5.801
+    -7.74,
+    5.384,
+    -6.37,
+    5.789
    ],
-   "clearance": 0.184
+   "clearance": 0.424
   },
   {
-   "name": "tv_stand_1/surface_1",
+   "name": "tv_stand_1/top",
    "furniture": "tv_stand_1",
    "category": "TVStand",
-   "z": 0.424,
-   "area": 0.098,
+   "z": 0.502,
    "aabb_xy": [
-    -7.742,
-    5.394,
-    -6.367,
-    5.801
+    -7.74,
+    5.384,
+    -6.37,
+    5.789
    ],
-   "clearance": 0.068
+   "clearance": 1.0
   },
   {
-   "name": "tv_stand_1/surface_2",
-   "furniture": "tv_stand_1",
+   "name": "tv_stand_2/shelf_0",
+   "furniture": "tv_stand_2",
    "category": "TVStand",
-   "z": 0.492,
-   "area": 0.488,
+   "z": 0.045,
    "aabb_xy": [
-    -7.719,
-    5.414,
-    -6.39,
-    5.781
+    6.644,
+    0.211,
+    8.375,
+    0.514
    ],
-   "clearance": 1.001
+   "clearance": 0.396
   },
   {
-   "name": "repair/kitchen_counter_top",
-   "furniture": "SupportRepair",
-   "category": "counter",
-   "z": 0.86,
+   "name": "tv_stand_2/top",
+   "furniture": "tv_stand_2",
+   "category": "TVStand",
+   "z": 0.484,
    "aabb_xy": [
-    -0.775,
-    7.42,
-    0.275,
-    8.9
+    6.644,
+    0.211,
+    8.375,
+    0.514
    ],
-   "clearance": 0.8
-  },
-  {
-   "name": "repair/dining_table_top",
-   "furniture": "SupportRepair",
-   "category": "counter",
-   "z": 0.856,
-   "aabb_xy": [
-    2.8,
-    5.51,
-    3.82,
-    7.93
-   ],
-   "clearance": 0.8
+   "clearance": 1.0
   },
   {
    "name": "kitchen_cabinet_4/inside_bottom",
@@ -69620,6 +67429,7 @@
    "name": "kitchen_cabinet_4",
    "prim": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_3699907_spawn_asset_505866",
    "joint": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_3699907_spawn_asset_505866/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     1.7487,
@@ -69744,16 +67554,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.1153
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "living_room_0_0",
    "category": "cabinet_door",
@@ -69770,6 +67584,7 @@
    "name": "kitchen_cabinet_2",
    "prim": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_3953568_spawn_asset_9811069",
    "joint": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_3953568_spawn_asset_9811069/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     -1.4607,
@@ -69894,16 +67709,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "kitchen_0_1",
    "category": "cabinet_door",
@@ -69920,6 +67739,7 @@
    "name": "kitchen_cabinet_5",
    "prim": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_6689129_spawn_asset_9539479",
    "joint": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_6689129_spawn_asset_9539479/joints/drawer_slide",
+   "dof": "drawer_slide",
    "type": "prismatic",
    "pivot": [
     2.6739,
@@ -70056,16 +67876,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     1.0,
+     0.0
     ],
     "bar_size": [
      0.025,
      0.13,
      0.1
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": true
    },
    "room": "kitchen_0_1",
    "category": "drawer",
@@ -70082,6 +67906,7 @@
    "name": "kitchen_cabinet_6",
    "prim": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_7025538_spawn_asset_6631478",
    "joint": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_7025538_spawn_asset_6631478/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     3.7796,
@@ -70206,16 +68031,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "living_room_0_0",
    "category": "cabinet_door",
@@ -70232,6 +68061,7 @@
    "name": "kitchen_cabinet_1",
    "prim": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_8238176_spawn_asset_1724097",
    "joint": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_8238176_spawn_asset_1724097/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     -7.0507,
@@ -70356,16 +68186,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "dining_room_0_0",
    "category": "cabinet_door",
@@ -70382,6 +68216,7 @@
    "name": "kitchen_cabinet_3",
    "prim": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_9483010_spawn_asset_2619144",
    "joint": "/World/ArticulatedAssets/cabinets/KitchenCabinetFactory_9483010_spawn_asset_2619144/joints/drawer_slide",
+   "dof": "drawer_slide",
    "type": "prismatic",
    "pivot": [
     0.9811,
@@ -70518,16 +68353,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     1.0,
+     0.0
     ],
     "bar_size": [
      0.025,
      0.13,
      0.1
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": true
    },
    "room": "dining_room_0_1",
    "category": "drawer",
@@ -70544,6 +68383,7 @@
    "name": "cabinet_1",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_1469599_spawn_asset_3066359",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_1469599_spawn_asset_3066359/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     -4.2399,
@@ -70668,16 +68508,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "kitchen_0_0",
    "category": "cabinet_door",
@@ -70694,6 +68538,7 @@
    "name": "cabinet_5",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_4324214_spawn_asset_9680651",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_4324214_spawn_asset_9680651/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     5.0677,
@@ -70818,16 +68663,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "bedroom_0_0",
    "category": "cabinet_door",
@@ -70844,6 +68693,7 @@
    "name": "cabinet_6",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_5951754_spawn_asset_7509401",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_5951754_spawn_asset_7509401/joints/drawer_slide",
+   "dof": "drawer_slide",
    "type": "prismatic",
    "pivot": [
     6.9299,
@@ -70980,16 +68830,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     1.0,
+     0.0
     ],
     "bar_size": [
      0.025,
      0.1154,
      0.1
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": -0.2115,
+    "thickness": 0.1154,
+    "pre_open": 0.0617,
+    "flip_ok": true
    },
    "room": "bedroom_0_0",
    "category": "drawer",
@@ -71006,6 +68860,7 @@
    "name": "cabinet_4",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_6646327_spawn_asset_3005554",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_6646327_spawn_asset_3005554/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     5.0996,
@@ -71130,16 +68985,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "bedroom_0_0",
    "category": "cabinet_door",
@@ -71156,6 +69015,7 @@
    "name": "cabinet_9",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_680597_spawn_asset_3676420",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_680597_spawn_asset_3676420/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     9.1479,
@@ -71280,16 +69140,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "bedroom_0_1",
    "category": "cabinet_door",
@@ -71306,6 +69170,7 @@
    "name": "cabinet_7",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7330242_spawn_asset_8918727",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7330242_spawn_asset_8918727/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     6.9583,
@@ -71430,16 +69295,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "bedroom_0_1",
    "category": "cabinet_door",
@@ -71456,6 +69325,7 @@
    "name": "cabinet_3",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7978189_spawn_asset_6928284",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_7978189_spawn_asset_6928284/joints/drawer_slide",
+   "dof": "drawer_slide",
    "type": "prismatic",
    "pivot": [
     1.0619,
@@ -71592,16 +69462,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     1.0,
+     0.0
     ],
     "bar_size": [
      0.025,
      0.13,
      0.1
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": true
    },
    "room": "dining_room_0_1",
    "category": "drawer",
@@ -71618,6 +69492,7 @@
    "name": "cabinet_2",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9980582_spawn_asset_7570664",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9980582_spawn_asset_7570664/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     -2.813,
@@ -71742,16 +69617,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "living_room_0_0",
    "category": "cabinet_door",
@@ -71768,6 +69647,7 @@
    "name": "cabinet_8",
    "prim": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9985775_spawn_asset_1002201",
    "joint": "/World/ArticulatedAssets/cabinets/SingleCabinetFactory_9985775_spawn_asset_1002201/joints/door_hinge",
+   "dof": "door_hinge",
    "type": "revolute",
    "pivot": [
     8.3271,
@@ -71892,16 +69772,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.12
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "bedroom_0_1",
    "category": "cabinet_door",
@@ -71918,6 +69802,7 @@
    "name": "kitchen_microwave",
    "prim": "/World/ArticulatedAssets/kitchen_microwave",
    "joint": "/World/ArticulatedAssets/kitchen_microwave/joints/microwave_door_hinge",
+   "dof": "microwave_door_hinge",
    "type": "revolute",
    "pivot": [
     4.258,
@@ -72042,16 +69927,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.1344
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.0535,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "living_room_0_0",
    "category": "microwave",
@@ -72102,6 +69991,7 @@
    "name": "breakfast_fridge",
    "prim": "/World/ArticulatedAssets/breakfast_fridge",
    "joint": "/World/ArticulatedAssets/breakfast_fridge/joints/fridge_door_hinge",
+   "dof": "fridge_door_hinge",
    "type": "revolute",
    "pivot": [
     5.615,
@@ -72226,16 +70116,20 @@
      0.0
     ],
     "bar_axis": [
-     0,
-     0,
-     1
+     0.0,
+     0.0,
+     1.0
     ],
     "bar_size": [
      0.025,
      0.025,
      0.2
     ],
-    "grasp": "side"
+    "grasp": "side",
+    "gap": 0.065,
+    "thickness": 0.025,
+    "pre_open": 0.04,
+    "flip_ok": false
    },
    "room": "living_room_0_0",
    "category": "refrigerator",
@@ -72258,18 +70152,18 @@
    "position": [
     -0.0209,
     8.4195,
-    0.8746
+    1.0146
    ],
    "aabb": [
     -0.1452,
     8.2954,
-    0.8559,
+    0.996,
     0.1035,
     8.5437,
-    0.8937
+    1.0338
    ],
    "room": "kitchen_0_1",
-   "support": "repair/kitchen_counter_top"
+   "support": "kitchen_counter_2/top"
   },
   {
    "name": "plate_counter_b",
@@ -72279,18 +70173,18 @@
    "position": [
     0.0486,
     8.0437,
-    1.0236
+    1.0146
    ],
    "aabb": [
     -0.1165,
     7.8786,
-    1.0049,
+    0.996,
     0.2138,
     8.2089,
-    1.0429
+    1.0338
    ],
    "room": "kitchen_0_1",
-   "support": "kitchen_counter_2/surface_0"
+   "support": "kitchen_counter_2/top"
   },
   {
    "name": "plate_dining_cabinet",
@@ -72349,7 +70243,7 @@
     5.1199,
     1.1248,
     0.9409,
-    5.3403,
+    5.3404,
     1.2148
    ],
    "room": "dining_room_0_1",
@@ -72363,18 +70257,18 @@
    "position": [
     -8.1,
     7.45,
-    0.7473
+    0.7562
    ],
    "aabb": [
     -8.2047,
     7.3463,
-    0.7022,
+    0.7111,
     -7.9953,
     7.5539,
-    0.7922
+    0.8011
    ],
    "room": "dining_room_0_0",
-   "support": "dining_table_1/surface_2"
+   "support": "dining_table_1/top"
   },
   {
    "name": "cup_kitchen_cabinet",
@@ -72405,18 +70299,18 @@
    "position": [
     -0.34,
     8.2,
-    1.0001
+    1.0751
    ],
    "aabb": [
     -0.4036,
     8.1356,
-    0.9251,
+    1.0,
     -0.2763,
     8.2644,
-    1.0751
+    1.15
    ],
    "room": "kitchen_0_1",
-   "support": "repair/kitchen_counter_top"
+   "support": "kitchen_counter_2/top"
   },
   {
    "name": "cup_side_table",
@@ -72437,7 +70331,7 @@
     0.8342
    ],
    "room": "dining_room_0_0",
-   "support": "dining_table_1/surface_2"
+   "support": "dining_table_1/top"
   },
   {
    "name": "mug_dining_cabinet",
@@ -72468,18 +70362,18 @@
    "position": [
     5.12,
     8.55,
-    1.4727
+    1.479
    ],
    "aabb": [
     5.0475,
     8.4719,
-    1.413,
+    1.4193,
     5.1926,
     8.6282,
-    1.533
+    1.5393
    ],
    "room": "dining_room_0_1",
-   "support": "large_shelf_6/surface_9"
+   "support": "large_shelf_6/top"
   },
   {
    "name": "mug_counter",
@@ -72509,19 +70403,19 @@
    "asset": "breakfast_spoon",
    "position": [
     0.0006,
-    7.9607,
-    1.0459
+    7.9608,
+    1.0369
    ],
    "aabb": [
     -0.0723,
-    7.8764,
-    1.022,
+    7.8765,
+    1.013,
     0.0735,
     8.0449,
-    1.0692
+    1.0602
    ],
    "room": "kitchen_0_1",
-   "support": "kitchen_counter_2/surface_0"
+   "support": "kitchen_counter_2/top"
   },
   {
    "name": "spoon_kitchen_cabinet",
@@ -72552,18 +70446,18 @@
    "position": [
     -8.2513,
     8.1203,
-    0.7103
+    0.7192
    ],
    "aabb": [
     -8.3347,
     8.0461,
-    0.6877,
+    0.6966,
     -8.1681,
     8.1947,
-    0.7323
+    0.7412
    ],
    "room": "dining_room_0_0",
-   "support": "dining_table_1/surface_2"
+   "support": "dining_table_1/top"
   },
   {
    "name": "spoon_target_table",
@@ -72573,18 +70467,18 @@
    "position": [
     3.6792,
     7.3791,
-    0.8641
+    0.8564
    ],
    "aabb": [
     3.5863,
     7.3282,
-    0.8415,
+    0.8338,
     3.7719,
     7.4299,
-    0.8861
+    0.8784
    ],
    "room": "dining_room_0_1",
-   "support": "repair/dining_table_top"
+   "support": "dining_table_2/top"
   },
   {
    "name": "clutter_cereal_a",
@@ -72594,18 +70488,18 @@
    "position": [
     3.1494,
     6.0993,
-    1.0068
+    0.9991
    ],
    "aabb": [
     3.0905,
     6.0312,
-    0.8567,
+    0.849,
     3.2083,
     6.1672,
-    1.1568
+    1.1491
    ],
    "room": "dining_room_0_1",
-   "support": "repair/dining_table_top"
+   "support": "dining_table_2/top"
   },
   {
    "name": "clutter_cereal_b",
@@ -72615,18 +70509,18 @@
    "position": [
     3.4792,
     7.1496,
-    1.0068
+    0.9991
    ],
    "aabb": [
     3.4108,
     7.0744,
-    0.8567,
+    0.849,
     3.5475,
     7.2247,
-    1.1568
+    1.1491
    ],
    "room": "dining_room_0_1",
-   "support": "repair/dining_table_top"
+   "support": "dining_table_2/top"
   },
   {
    "name": "plate_inside_kitchen_cabinet",
@@ -72734,6 +70628,7 @@
    "support": "breakfast_fridge/inside_shelf"
   }
  ],
+ "appliances": [],
  "robot": {
   "prim": "/World/ZenoMalo",
   "xy": [

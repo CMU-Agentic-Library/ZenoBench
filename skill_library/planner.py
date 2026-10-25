@@ -133,7 +133,7 @@ class Domain:
         kind, rec = entity_kind(self.rig.ann, name)
         if kind == "support":
             f = rec.get("furniture")
-            return name if not f or f == "SupportRepair" else f
+            return f or name
         if kind == "furniture":
             return name
         if kind == "button":

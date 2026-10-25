@@ -1,6 +1,6 @@
 # contract_022 — Explore a room
 
-Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen.
+Cover a room from up to six viewpoints with a left/centre/right head sweep both ways; succeeds when at least 75 % of the room's furniture was seen. A piece of furniture counts once one of its support layers (top or shelf) is in view; seeing every shelf of one piece is explore_furniture.
 
 Paired SkillNode: `skill_014` (`explore-room`).
 

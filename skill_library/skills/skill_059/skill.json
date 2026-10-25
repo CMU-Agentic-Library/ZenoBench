@@ -117,7 +117,7 @@
   "fallback": [
    {
     "skill_id": "skill_014",
-    "verb": "explore",
+    "verb": "explore_room",
     "when": "objects of the category may be out of view",
     "bind": {},
     "reason": "room coverage",

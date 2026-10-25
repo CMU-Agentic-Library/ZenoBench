@@ -706,9 +706,21 @@
      }
     },
     {
-     "skill": "explore",
+     "skill": "explore_room",
      "args": {
       "room": "living_room_0_0"
+     }
+    },
+    {
+     "skill": "explore_furniture",
+     "args": {
+      "furniture": "large_shelf_2"
+     }
+    },
+    {
+     "skill": "explore_furniture",
+     "args": {
+      "furniture": "tv_stand_2"
      }
     }
    ]
@@ -1292,7 +1304,7 @@
      "skill": "place",
      "args": {
       "object": "apple",
-      "receptacle": "dining_table_2/surface_2",
+      "receptacle": "dining_table_2/top",
       "pass_by": [
        2.397,
        5.681,
@@ -1333,14 +1345,14 @@
     {
      "skill": "navigate",
      "args": {
-      "destination": "bookcase_2/surface_3"
+      "destination": "bookcase_2/top"
      }
     },
     {
      "skill": "place",
      "args": {
       "object": "book_red",
-      "receptacle": "bookcase_2/surface_3"
+      "receptacle": "bookcase_2/top"
      }
     },
     {
@@ -1396,8 +1408,8 @@
     {
      "skill": "clear",
      "args": {
-      "support": "tv_stand_2/surface_1",
-      "receptacle": "bookcase_2/surface_3"
+      "support": "tv_stand_2/top",
+      "receptacle": "bookcase_2/top"
      }
     }
    ]
@@ -1433,7 +1445,7 @@
     {
      "skill": "approach",
      "args": {
-      "target": "dining_table_2/surface_2",
+      "target": "dining_table_2/top",
       "pass_by": [
        2.397,
        5.681,

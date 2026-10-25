@@ -73,7 +73,7 @@ def test_both_catalogs_in_one_shape():
     for t in bench.values():
         assert t["entities"], t["task_id"]                # the gt profile's `objects` names targets and receptacles
     assert bench["T01_book_to_dining_table"]["entities"][:2] == [
-        "paperback_book", "dining_table_2/surface_2"]
+        "paperback_book", "dining_table_2/top"]
     assert "objects" not in observation_fields(load_profile("benchmark"))      # never shown under benchmark
     cf = skill["collect_fruits"]
     assert list(cf["variants"]) == ["default"] and cf["scene"] == {"base": "tasks/collect_fruits"}

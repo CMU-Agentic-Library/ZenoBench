@@ -49,7 +49,10 @@ def main():
                   "skill": s["skill"]}, r["id"], calls)
     passed, failed, paths = {}, {}, {}
     for scenario, c in calls:
-        verb = c.get("skill") or next((v for v in verbs if c["action"].startswith(v + "_")), None)
+        # nested calls carry only the action, e.g. pick_object(...) or explore_room(...): longest verb first
+        name = c["action"].split("(", 1)[0]
+        verb = c.get("skill") or next((v for v in sorted(verbs, key=len, reverse=True)
+                                       if name == v or name.startswith(v + "_")), None)
         if verb is None:
             continue
         if c["success"]:

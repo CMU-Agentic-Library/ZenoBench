@@ -51,7 +51,7 @@
   },
   "availability": "callable",
   "skill_contract_paths": [
-    "contract_022:explore/viewpoints"
+    "contract_022:explore_room/viewpoints"
   ],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [],

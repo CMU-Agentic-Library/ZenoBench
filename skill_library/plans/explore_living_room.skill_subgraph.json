@@ -5,7 +5,7 @@
  "nodes": [
   {
    "id": "n1",
-   "skill": "explore",
+   "skill": "explore_room",
    "args": {
     "room": {
      "value": "living_room_0_0"

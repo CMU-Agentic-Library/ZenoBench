@@ -41,6 +41,7 @@ from .base_motion import FaceTargetPolicy
 from .base_motion import RetreatFromPolicy
 from .perceive import LookAtPolicy
 from .perceive import ExploreRoomPolicy
+from .perceive import ExploreFurniturePolicy
 from .perceive import SearchObjectPolicy
 from .perceive import PointAtPolicy
 from .perceive import PresentHeldPolicy
@@ -151,6 +152,7 @@ class PolicySuite:
         self.retreat_from = RetreatFromPolicy(rig)
         self.look_at = LookAtPolicy(rig)
         self.explore_room = ExploreRoomPolicy(rig)
+        self.explore_furniture = ExploreFurniturePolicy(rig)
         self.search_object = SearchObjectPolicy(rig)
         self.point_at = PointAtPolicy(rig)
         self.present_held = PresentHeldPolicy(rig)

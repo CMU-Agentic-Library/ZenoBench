@@ -1,6 +1,6 @@
 # ZenoBench planning benchmark (observation-limited)
 
-A small benchmark for an upper-level planner (a VLM) on top of the existing 70 SkillNodes. Every planner gets the same
+A small benchmark for an upper-level planner (a VLM) on top of the existing 71 SkillNodes. Every planner gets the same
 low-level skills and the same observation limits. The question is whether the planner chooses an effective fallback
 or alternative from what it sees and from the execution feedback. The Isaac Sim GT verifier decides success; the
 planner never sees GT state.
@@ -38,8 +38,9 @@ call - top level and every nested Contract inside multi-object skills:
 * support/container lists inside clear / empty contain observed objects only;
 * search takes any name; for a non-existent name it runs the same static sweep
   and returns the same failure as for a hidden object;
-* explore picks viewpoints from the static layout and computes coverage over
-  static supports only (`rig.static_explore`).
+* explore_room picks viewpoints from the static layout and computes coverage over
+  static furniture only (`rig.static_explore`); explore_furniture aims at every
+  support layer of one piece of furniture.
 
 Navigation keeps the GT map and collision checking for safe low-level planning.
 
@@ -252,7 +253,7 @@ All changes are behind flags; the skill library's defaults are unchanged except 
 | `zeno_skills/skill_runtime.py` | `SkillContractRunner(auto_repair=True, advisory=(), skip_steps=None)` |
 | `zeno_skills/skills.py` | `rig.auto_recovery` (default True): pick → push fallback, slide-to-edge inside `pick_flat`, door retry from another park; `_edge_pinch(attempt=)`. `rig.edge_pinch_upright_waist` (default False; the benchmark sets it): at table height the edge pinch keeps the waist ≤ 0.2 rad, as `_pick_pinch` does; without it the chest stalled against the island edge in 4/4 direct paperback picks. A failed top pinch ends with the hand open and 8 cm higher; fingers left closed beside a crowding bowl stopped at 5 mm, and the next push could not make its fist (3/4) |
 | `zeno_skills/policies/navigation.py` | `lift` (carry_height_adjust) repeats the vertical move on the measured object bottom, up to 3 times while the object keeps rising: a rolling pin caught in a mug after a failed place lagged the hand by 4-5 cm and one move fell short (4/4); the verifier (bottom >= target - 2 cm) is unchanged |
-| `zeno_skills/policies/perceive.py` | `rig.static_explore`: explore coverage over static supports only; `rig.observer` hook in `record_view` |
+| `zeno_skills/policies/perceive.py` | `rig.static_explore`: explore_room coverage over static furniture only; `rig.observer` hook in `record_view` |
 
 ## Regression
 
@@ -270,7 +271,7 @@ code with the edge-pinch flag), compared with `skill_library/verification/status
 `g_expose_then_pick_book` failed in an earlier regression run when the upright edge-pinch waist was on by default
 (the park moved from 8.20 to 8.34 and the book fell off the bookcase). The waist is now opt-in
 (`rig.edge_pinch_upright_waist`, set only by the benchmark); the scenario passes with the baseline trajectory and the
-book on bookcase `surface_3`. Repeats on the current code: g_expose_then_pick_book 3/3 pass; k_separate 2/2 and
+book on the bookcase `top`. Repeats on the current code: g_expose_then_pick_book 3/3 pass; k_separate 2/2 and
 k_restore_swap 2/2 fail at the same step; the clean worktree fails k_restore_swap 2/2 the same way.
 
 ## Known limitations

@@ -2,8 +2,9 @@
 
 Static part (from the Infinigen export House_seed77, cached in
 annotations/house_static.json): rooms (floor triangles), wall segments,
-furniture AABBs, horizontal support surfaces (table tops, desk tops, shelf
-levels) found from upward-facing mesh faces.
+furniture AABBs. The support surfaces of that furniture (table tops, desk tops,
+shelf levels) are the /World/SupportRepairs slabs of the scene, laid by
+tools/fit_support_repairs.py on the boards listed in annotations/support_layers.json.
 
 Scene part (from the USD): articulated furniture (joint, pivot, axis, limits,
 moving-part box, handle frame), task objects (asset type, body prim, pose,
@@ -86,7 +87,7 @@ def house_static():
         m.apply_transform(world(name) @ _T(v.find("origin")))
         return m
 
-    rooms, walls, furniture, supports = {}, [], [], []
+    rooms, walls, furniture = {}, [], []
     for name in links:
         if name.endswith("_floor"):
             m = mesh(name)
@@ -114,43 +115,7 @@ def house_static():
             continue
         furniture.append({"name": name, "category": name.split("Factory")[0],
                           "aabb": np.round(np.r_[m.bounds[0], m.bounds[1]], 3).tolist()})
-        # support surfaces: upward faces clustered by height
-        up = m.face_normals[:, 2] > 0.97
-        if not up.any():
-            continue
-        zc = m.triangles_center[up, 2]
-        areas = m.area_faces[up]
-        tris = m.triangles[up]
-        order = np.argsort(zc)
-        level, groups = None, []
-        for i in order:
-            if level is None or zc[i] - level > 0.015:
-                groups.append([])
-            groups[-1].append(i)
-            level = zc[i]
-        k = 0
-        for g in groups:
-            A = float(areas[g].sum())
-            z = float(np.median(zc[g]))
-            if A < 0.03 or z < 0.15 or z > 1.9:
-                continue
-            xy = tris[g][:, :, :2].reshape(-1, 2)
-            lo, hi = xy.min(0), xy.max(0)
-            # clearance above this surface up to the next level/ceiling
-            supports.append({"name": f"{name}/surface_{k}", "furniture": name,
-                             "category": name.split("Factory")[0], "z": round(z, 3),
-                             "area": round(A, 3), "aabb_xy": np.round(np.r_[lo, hi], 3).tolist()})
-            k += 1
-    # vertical clearance per support (distance to the next surface of the same furniture)
-    by_f = {}
-    for s in supports:
-        by_f.setdefault(s["furniture"], []).append(s)
-    for f, ss in by_f.items():
-        ss.sort(key=lambda s: s["z"])
-        top = next(o["aabb"][5] for o in furniture if o["name"] == f)
-        for a, b in zip(ss, ss[1:] + [None]):
-            a["clearance"] = round((b["z"] if b else top + 1.0) - a["z"], 3)
-    return {"rooms": rooms, "walls": walls, "furniture": furniture, "supports": supports}
+    return {"rooms": rooms, "walls": walls, "furniture": furniture}
 
 
 def room_of(rooms, xy):
@@ -169,6 +134,27 @@ def room_of(rooms, xy):
             if l1 >= -1e-6 and l2 >= -1e-6 and 1 - l1 - l2 >= -1e-6:
                 return name
     return None
+
+
+def repair_supports(repairs):
+    """The support layers of the static furniture: one per /World/SupportRepairs slab.
+
+    tools/fit_support_repairs.py lays each slab, invisible, on a rendered board listed in
+    annotations/support_layers.json and records the support it is in customData. What
+    objects touch is the slab, so its top and box are the support. ``repairs``:
+    [{"lo": xyz, "hi": xyz, "data": customData}]."""
+    out = []
+    for r in repairs:
+        d = r["data"]
+        if "zeno:support" not in d:
+            raise ValueError(f"support repair at {np.round(r['lo'], 3).tolist()} names no zeno:support "
+                             "(rerun tools/fit_support_repairs.py)")
+        name = d["zeno:support"]
+        out.append({"name": name, "furniture": name.split("/")[0], "category": d["zeno:category"],
+                    "z": round(float(r["hi"][2]), 3),
+                    "aabb_xy": [round(float(v), 3) for v in (*r["lo"][:2], *r["hi"][:2])],
+                    "clearance": round(float(d["zeno:clearance"]), 3)})
+    return out
 
 
 def main():
@@ -196,13 +182,11 @@ def main():
         obstacles.append({"name": f"wall_{i}", "kind": "wall",
                           "aabb": [min(x1, x2) - 0.02, min(y1, y2) - 0.02, 0.0,
                                    max(x1, x2) + 0.02, max(y1, y2) + 0.02, 2.4]})
-    supports = list(static["supports"])
-    for p in (stage.GetPrimAtPath("/World/SupportRepairs").GetChildren()
-              if stage.GetPrimAtPath("/World/SupportRepairs") else []):
-        lo, hi = bounds(p)
-        supports.append({"name": f"repair/{p.GetName()}", "furniture": "SupportRepair", "category": "counter",
-                         "z": round(float(hi[2]), 3), "aabb_xy": np.round(np.r_[lo[:2], hi[:2]], 3).tolist(),
-                         "clearance": 0.8})
+    repairs = stage.GetPrimAtPath("/World/SupportRepairs")
+    keys = ("zeno:support", "zeno:category", "zeno:clearance")
+    supports = repair_supports([dict(zip(("lo", "hi"), bounds(p)),
+                                     data={k: p.GetCustomDataByKey(k) for k in keys if p.GetCustomDataByKey(k) is not None})
+                                for p in (repairs.GetChildren() if repairs else [])])
 
     # static fixtures from tools/build_kitchen_scene.py: counters and a stove
     appliances = []

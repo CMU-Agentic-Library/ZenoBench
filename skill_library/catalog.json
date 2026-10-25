@@ -95,7 +95,7 @@
   },
   {
    "skill_id": "skill_014",
-   "verb": "explore",
+   "verb": "explore_room",
    "noun": "room",
    "contract_id": "contract_022",
    "definition": "skills/skill_014/skill.json"
@@ -491,6 +491,13 @@
    "noun": "object",
    "contract_id": "contract_078",
    "definition": "skills/skill_070/skill.json"
+  },
+  {
+   "skill_id": "skill_071",
+   "verb": "explore_furniture",
+   "noun": "furniture",
+   "contract_id": "contract_079",
+   "definition": "skills/skill_071/skill.json"
   }
  ]
 }

@@ -23,7 +23,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).explore_room.execute(...)`
 - Class: `ExploreRoomPolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_022:explore/viewpoints
+- Skill Contract paths: contract_022:explore_room/viewpoints
 
 ## Recorded evidence
 

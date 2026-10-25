@@ -2220,12 +2220,21 @@
     },
     {
      "kind": "fallback",
-     "to": "explore",
+     "to": "explore_room",
      "when": "the object is not on any visited support",
      "bind": {},
      "reason": "room coverage marks every visible object observed, including the target",
      "fallback_type": "recover",
      "to_skill_id": "skill_014"
+    },
+    {
+     "kind": "fallback",
+     "to": "explore_furniture",
+     "when": "the object may sit on a shelf the sweep only glanced at",
+     "bind": {},
+     "reason": "every layer of the furniture is aimed at, so an object on any shelf is observed",
+     "fallback_type": "recover",
+     "to_skill_id": "skill_071"
     },
     {
      "kind": "fallback",
@@ -2251,10 +2260,10 @@
    "kind": "skill_contract",
    "contract_id": "contract_022",
    "skill_id": "skill_014",
-   "verb": "explore",
+   "verb": "explore_room",
    "noun": "room",
    "name": "Explore a room",
-   "description": "Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen.",
+   "description": "Cover a room from up to six viewpoints with a left/centre/right head sweep both ways; succeeds when at least 75 % of the room's furniture was seen. A piece of furniture counts once one of its support layers (top or shelf) is in view; seeing every shelf of one piece is explore_furniture.",
    "group": "perception_and_gesture",
    "inputs": {
     "room": {
@@ -2293,7 +2302,7 @@
       "room": "$room"
      },
      "negated": false,
-     "meaning": "At least 75 % of the room's head-camera viewpoints were covered.",
+     "meaning": "At least 75 % of the room's furniture was seen (one of its support layers in the head camera).",
      "kind": "memory",
      "gt_sources": [
       "robot_memory",
@@ -2311,7 +2320,7 @@
    },
    "action_predicate": {
     "name": "explore_room",
-    "verb": "explore",
+    "verb": "explore_room",
     "noun": "room",
     "arguments": [
      "room"
@@ -2347,6 +2356,15 @@
      "bind": {},
      "reason": "narrow to one target",
      "to_skill_id": "skill_013",
+     "sequence_type": "then"
+    },
+    {
+     "kind": "sequence",
+     "to": "explore_furniture",
+     "when": "every shelf of one piece of furniture must be seen",
+     "bind": {},
+     "reason": "room coverage counts a piece once; its other layers may still hide objects",
+     "to_skill_id": "skill_071",
      "sequence_type": "then"
     }
    ],
@@ -13295,7 +13313,7 @@
     },
     {
      "kind": "fallback",
-     "to": "explore",
+     "to": "explore_room",
      "when": "objects of the category may be out of view",
      "bind": {},
      "reason": "room coverage",
@@ -15390,6 +15408,140 @@
      "reason": "",
      "to_skill_id": "skill_009",
      "sequence_type": "enables"
+    }
+   ],
+   "failure": {
+    "automatic_fallback": "nested calls only: a failed precondition with a matching repair fallback runs the repair once and retries; top-level calls stop",
+    "stop_and_report": true
+   },
+   "scope": {
+    "includes": [],
+    "excludes": []
+   }
+  },
+  {
+   "schema_version": 2,
+   "kind": "skill_contract",
+   "contract_id": "contract_079",
+   "skill_id": "skill_071",
+   "verb": "explore_furniture",
+   "noun": "furniture",
+   "name": "Explore a piece of furniture",
+   "description": "See every support layer of one piece of furniture (each shelf, the top, a cabinet's inside shelves): sweep from where the robot stands when it is already near, else from up to three stand-off poses in front of it, aiming the head at each layer not seen yet, then again with the torso lowered for the layers still hidden (a bottom shelf behind the front edge of the shelf above). A layer is seen when the space just above its board is in the head camera and no board of the piece is in the way. Succeeds only when every layer was seen; a closed cabinet door hides its inside layers.",
+   "group": "perception_and_gesture",
+   "inputs": {
+    "furniture": {
+     "type": "furniture_ref",
+     "required": true,
+     "description": "The bookcase, shelf unit, table, desk or cabinet to cover."
+    }
+   },
+   "outputs": {
+    "seen": {
+     "type": "object_list",
+     "description": "Objects observed during the sweep."
+    }
+   },
+   "requires": [],
+   "ensures": [
+    {
+     "pred": "furniture_explored",
+     "args": {
+      "furniture": "$furniture"
+     }
+    }
+   ],
+   "invalidates": [
+    "base_near(*)",
+    "reachable(*)",
+    "facing(*)",
+    "in_view(*)"
+   ],
+   "precheck": [],
+   "verifier": [
+    {
+     "predicate": "furniture_explored(furniture=$furniture)",
+     "name": "furniture_explored",
+     "args": {
+      "furniture": "$furniture"
+     },
+     "negated": false,
+     "meaning": "Every support layer of the furniture (each shelf, the top) was seen in the head camera.",
+     "kind": "memory",
+     "gt_sources": [
+      "robot_memory",
+      "support_annotation"
+     ],
+     "checked": "after the policy chain on live GT state; the action is reported only if true",
+     "scope": "all paths"
+    }
+   ],
+   "noun_binding": {
+    "furniture": {
+     "type": "furniture_ref",
+     "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+    }
+   },
+   "action_predicate": {
+    "name": "explore_furniture",
+    "verb": "explore_furniture",
+    "noun": "furniture",
+    "arguments": [
+     "furniture"
+    ]
+   },
+   "policy_plan": {
+    "selection": "first path whose noun conditions all hold, decided before any motion",
+    "on_no_match": "NO_PATH: the Contract refuses without moving",
+    "paths": [
+     {
+      "path_id": "layers",
+      "when": [],
+      "steps": [
+       {
+        "policy": "policy_116",
+        "args": [
+         "$furniture"
+        ],
+        "kwargs": {}
+       }
+      ],
+      "requires": [],
+      "ensures": [],
+      "note": ""
+     }
+    ]
+   },
+   "relations": [
+    {
+     "kind": "sequence",
+     "to": "navigate",
+     "when": "an object seen on a layer must be fetched",
+     "bind": {},
+     "reason": "the seen output names the objects on the layers",
+     "to_skill_id": "skill_001",
+     "sequence_type": "then"
+    },
+    {
+     "kind": "fallback",
+     "to": "open",
+     "when": "a closed cabinet door hides the inside layers",
+     "bind": {
+      "articulated": "$furniture"
+     },
+     "reason": "an open door uncovers the inside shelves; explore again",
+     "fallback_type": "recover",
+     "to_skill_id": "skill_040"
+    },
+    {
+     "kind": "alternative",
+     "to": "look",
+     "when": "only one layer must be seen",
+     "bind": {
+      "target": "$furniture"
+     },
+     "reason": "",
+     "to_skill_id": "skill_011"
     }
    ],
    "failure": {
