@@ -211,6 +211,22 @@ docker/run.sh '$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v3/ta
   - **一个可能的修法**：在支撑面范围内，把只比板面高出几厘米的竖直面也删掉。真正的分隔板和侧板会一直升到上一层板，靠这一点能和它们区分开。
 - **cell_shelf_3 的 shelf_1 和 shelf_2**：箱子停在碰撞板以上 5 mm。
 
+### 6.2.1 修了矮墙（`fit_support_repairs.py` 切低矮面）
+
+- **改法**：碰撞面只要伸到碰撞板范围上方（外圈 1 cm 也算），而且最高点离板面不到 `LOW_REACH`（8 cm，同时不超过净空的一半），就把板面以上的部分切掉。切口处补新的点，所以要额外写一份 points 覆盖；板面以下的部分保留，底座前面那块板还在，仍能挡住机器人底盘。分隔板和侧板会一直升到上一层板，整面不动。
+- **结果**：
+  - **改了哪些**：内隔板一共切了约 4300 个面；desk_3 和 kitchen_counter_1 各有几十个比板面高 2 mm 的面也被切掉。桌面、餐桌、床垫一个面都没动。
+  - **幂等**：连跑两次，140 个碰撞网格完全一样。
+  - **分隔板**：在板面以上 0.6 倍净空的高度数竖直面，数量没有变少；有些被切在上一层板面处的分隔板，切口把三角形一分为二，所以数量反而变多了。
+  - **修之前的备份**：`/data/zenobench/support_layers/zeno_house.before_low_wall_clip.usd`。
+- **落块测试重跑**（`checks/drop_test_after_clip.json`）：
+  - **内隔板**：异常箱子从 80 个降到 13 个；只算没压到画面上分隔板的测试点，从 49 个降到 7 个。
+  - **剩下的有三类**：
+    - **侧板偏了**：6 个箱子贴着侧边被平推了 2–2.5 cm，没歪也没翘。原因是碰撞网格里的侧板比画面上的往里偏了约 2 cm，这次没处理。
+    - **large_shelf_5/shelf_0 后沿**：箱子垫高了 14 mm，是卧室外墙碰撞体在 0.122 的台阶伸进了书架后沿约 2.5 cm。
+    - **mattress_2**：问题出在测试方法上。床上有一条被子 `box_comforter`，碰撞面在 0.528–0.543，测试箱子一开始就卡在被子里，被往下挤穿了碰撞板。实际放上去的东西会落在被子上面，比 `mattress_2/top` 标的高 1.5–3 cm。
+- **12 个任务场景重跑 `tools/check_scene.py`**（`checks/scenes_after_clip/`）：全部 PASS。物体没有漂移，柜门保持关着，机器人也没动，所以任务场景不用重新 settle。
+
 ### 6.3 VLM 观测（env_service，benchmark profile）
 
 - **怎么测的**：起了 env_service（`--host 127.0.0.1`），用 `/data/zenobench/support_layers/vlm_obs/vlm_client.py` 扮演 VLM，把 T14 book_on_desk 的路线一条一条地调用。每一步的响应在 `vlm_obs/T14/`：JSON 里图片换成了文件名，PNG 单独存放。结果和 run_episode 一致，place 失败。

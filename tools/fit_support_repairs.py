@@ -20,10 +20,18 @@ each listed layer:
   collision mesh places some of them centimetres off the rendered ones, so a test
   against the rendering cannot tell a divider from a stray face. The faces under a
   slab stay too: the slab covers them.
+* low faces are cut at the slab top: a collision face that reaches over the slab's
+  whole footprint (border included) but tops out within LOW_REACH of it (and below
+  half the clearance) is a collision board edge, lip or wave standing a centimetre
+  or two proud of the rendered board - an invisible kerb that tipped boxes in the
+  middle of bottom shelves and blocks a book slid over a front edge. Its part above
+  the slab top is clipped off (new points on the cut), its part below stays, so a
+  plinth front still stops the robot base. Dividers and panels rise to the next
+  board and are left whole.
 
-Slabs of layers no longer listed are removed. Each run rebuilds the collision face
-lists from the referenced meshes, so it is idempotent and furniture whose layers
-are dropped gets its faces back.  Objects resting on a moved board are shifted by
+Slabs of layers no longer listed are removed. Each run rebuilds the collision faces
+and points from the referenced meshes, so it is idempotent and furniture whose
+layers are dropped gets its faces back.  Objects resting on a moved board are shifted by
 tools/shift_supported_objects.py.
 
     $USD_PY tools/fit_support_repairs.py [--dry-run]     # edits sim/zeno_house.usd
@@ -48,6 +56,7 @@ FOOT = 0.004         # upward faces within this of the board top give the slab b
 THICK = 0.02         # slab thickness below the board top
 INSET = 0.01         # kept-free space: slab footprint inset, and
 GAP = 0.003          # its distance from the slab top and the next board
+LOW_REACH = 0.08     # faces topping out within this of a slab are cut at its top
 
 
 def triangles(stage, path):
@@ -145,18 +154,20 @@ def free_boxes(slabs):
 
 
 def clear_faces(stage, coll_path, slabs):
-    """Drop the non-vertical collision faces inside the layers' free space:
-    {mesh prim: (kept face mask, counts, indices, face starts)}."""
+    """Drop the non-vertical collision faces inside the layers' free space and cut the low
+    faces at the slab top (module doc): {mesh prim: (counts, indices, points or None when no
+    point was added, faces dropped, faces cut, faces before)}."""
     from pxr import Usd, UsdGeom
     out = {}
     for m in Usd.PrimRange(stage.GetPrimAtPath(coll_path)):
         if not m.IsA(UsdGeom.Mesh):
             continue
         mesh = UsdGeom.Mesh(m)
-        for a in (mesh.GetFaceVertexCountsAttr(), mesh.GetFaceVertexIndicesAttr()):
-            a.Clear()                                   # the referenced faces, not the last run's
+        for a in (mesh.GetFaceVertexCountsAttr(), mesh.GetFaceVertexIndicesAttr(), mesh.GetPointsAttr()):
+            a.Clear()                                   # the referenced mesh, not the last run's
         M = np.array(UsdGeom.Xformable(m).ComputeLocalToWorldTransform(0)).T
-        X = np.array(mesh.GetPointsAttr().Get(), float) @ M[:3, :3].T + M[:3, 3]
+        V = np.array(mesh.GetPointsAttr().Get(), float)
+        X = V @ M[:3, :3].T + M[:3, 3]
         C = np.array(mesh.GetFaceVertexCountsAttr().Get())
         I = np.array(mesh.GetFaceVertexIndicesAttr().Get())
         start = np.r_[0, np.cumsum(C)[:-1]]
@@ -169,10 +180,58 @@ def clear_faces(stage, coll_path, slabs):
         inside = np.zeros(len(tri), bool)
         for lo, hi in free_boxes(slabs):
             inside |= tri_box_overlap(tri, lo, hi)
-        hit = inside & (np.abs(normals_z(tri)) > 0.5)
-        keep = np.ones(len(C), bool)
-        keep[face[hit]] = False
-        out[m.GetPath()] = (keep, C, I, start)
+        drop = np.zeros(len(C), bool)
+        drop[face[inside & (np.abs(normals_z(tri)) > 0.5)]] = True
+        # low faces: over a slab's footprint, topping out within reach of its top
+        face_top = np.array([X[I[o:o + c], 2].max() for o, c in zip(start, C)])
+        cut = np.full(len(C), np.inf)
+        for lo, hi, clear in slabs.values():
+            reach = min(LOW_REACH, 0.5 * clear)
+            over = np.zeros(len(C), bool)
+            over[face[tri_box_overlap(tri, np.r_[lo[:2], hi[2] + 0.001], np.r_[hi[:2], hi[2] + reach])]] = True
+            low = over & ~drop & (face_top < hi[2] + reach)
+            cut[low] = np.minimum(cut[low], hi[2])
+        new_pts, on_edge = [], {}
+        to_local = np.linalg.inv(M[:3, :3])
+
+        def edge_point(ia, ib, zc):
+            """The cut point on edge (ia, ib), shared by the two faces along it."""
+            key = (min(ia, ib), max(ia, ib), zc)
+            if key not in on_edge:
+                pa, pb = X[ia], X[ib]
+                w = pa + (zc - pa[2]) / (pb[2] - pa[2]) * (pb - pa)
+                on_edge[key] = len(V) + len(new_pts)
+                new_pts.append((w - M[:3, 3]) @ to_local.T)
+            return on_edge[key]
+
+        def world(i):
+            return X[i] if i < len(V) else np.asarray(new_pts[i - len(V)]) @ M[:3, :3].T + M[:3, 3]
+
+        counts, idx = [], []
+        for f, (o, c) in enumerate(zip(start, C)):
+            if drop[f]:
+                continue
+            poly = I[o:o + c].tolist()
+            zc = float(cut[f])
+            if np.isfinite(zc):
+                kept = []
+                for k in range(c):
+                    ia, ib = poly[k], poly[(k + 1) % c]
+                    in_a, in_b = X[ia, 2] <= zc, X[ib, 2] <= zc
+                    if in_a:
+                        kept.append(ia)
+                    if in_a != in_b:
+                        kept.append(edge_point(ia, ib, zc))
+                poly = kept
+            for j in range(1, len(poly) - 1):           # fan: the mesh stays all triangles
+                t = [poly[0], poly[j], poly[j + 1]]
+                if np.isfinite(zc) and np.linalg.norm(np.cross(world(t[1]) - world(t[0]),
+                                                               world(t[2]) - world(t[0]))) < 1e-9:
+                    continue                            # a sliver left on the cut line
+                counts.append(3)
+                idx += t
+        out[m.GetPath()] = (counts, idx, np.vstack([V, new_pts]) if new_pts else None,
+                            int(drop.sum()), int(np.isfinite(cut).sum()), len(C))
     return out
 
 
@@ -180,7 +239,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
-    from pxr import Gf, Sdf, Usd, UsdGeom, UsdPhysics
+    from pxr import Gf, Sdf, Usd, UsdGeom, UsdPhysics, Vt
     spec = json.loads(LAYERS.read_text())["layers"]
     prim_of = {v: k for k, v in json.loads(NAMES.read_text())["names"].items()}
     category = {f["name"]: f["category"] for f in json.loads(STATIC.read_text())["furniture"]}
@@ -191,10 +250,9 @@ def main():
         prim = prim_of[furniture]
         slabs = fit_layers(triangles(stage, f"{BASE}/visuals/{prim}"), layers)
         cleared = clear_faces(stage, f"{BASE}/collisions/{prim}_collision", slabs)
-        dropped = sum(int((~k).sum()) for k, *_ in cleared.values())
-        total = sum(len(k) for k, *_ in cleared.values())
+        dropped, cut, total = (sum(v[i] for v in cleared.values()) for i in (3, 4, 5))
         print(f"{furniture}: " + "  ".join(f"{k} {v[1][2]:.3f} (c {v[2]:.2f})" for k, v in slabs.items())
-              + f"  | {dropped}/{total} collision faces dropped")
+              + f"  | {dropped}/{total} collision faces dropped, {cut} cut at a slab top")
         if args.dry_run:
             continue
         for layer, (lo, hi, clear) in slabs.items():
@@ -211,13 +269,14 @@ def main():
             p.SetCustomDataByKey("zeno:support", f"{furniture}/{layer}")
             p.SetCustomDataByKey("zeno:category", category[furniture])
             p.SetCustomDataByKey("zeno:clearance", float(clear))
-        for path, (kept, C, I, start) in cleared.items():
-            if kept.all():
+        for path, (counts, idx, points, n_drop, n_cut, _) in cleared.items():
+            if not (n_drop or n_cut):
                 continue
             mesh = UsdGeom.Mesh(stage.GetPrimAtPath(path))
-            idx = np.concatenate([I[o:o + c] for o, c, k in zip(start, C, kept) if k])
-            mesh.GetFaceVertexCountsAttr().Set(C[kept].tolist())
-            mesh.GetFaceVertexIndicesAttr().Set(idx.tolist())
+            mesh.GetFaceVertexCountsAttr().Set(counts)
+            mesh.GetFaceVertexIndicesAttr().Set(idx)
+            if points is not None:
+                mesh.GetPointsAttr().Set(Vt.Vec3fArray.FromNumpy(points.astype(np.float32)))
     if not args.dry_run:
         # furniture only: the room shells carry tools/cut_doorway.py's own face (and point)
         # overrides, and clearing their faces alone leaves the cut points under the original
@@ -230,7 +289,8 @@ def main():
                 continue
             for m in Usd.PrimRange(p):
                 if m.IsA(UsdGeom.Mesh):
-                    for a in (UsdGeom.Mesh(m).GetFaceVertexCountsAttr(), UsdGeom.Mesh(m).GetFaceVertexIndicesAttr()):
+                    for a in (UsdGeom.Mesh(m).GetFaceVertexCountsAttr(), UsdGeom.Mesh(m).GetFaceVertexIndicesAttr(),
+                              UsdGeom.Mesh(m).GetPointsAttr()):
                         a.Clear()
         for p in root.GetChildren():
             if p.GetName() not in made:
