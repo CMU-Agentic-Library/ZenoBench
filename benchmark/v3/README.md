@@ -103,6 +103,65 @@ It groups by `task`, `tier`, `ctype` (condition type) or `condition`. In `ctype`
 in each of its types, so those groups overlap. Precondition refusals (`pre`) and physical execution failures
 (`exec`) are counted apart, as in v2.
 
+## Difficulty redesign (v4 Hard)
+
+Source: *ZenoBench Task-Level Replanning* report (2026-10-24). Easy / Medium / Hard are now tiers of planning
+ability, not counts of environment conditions:
+
+| Tier | Name | Environment | Expected ability | Task graph |
+|---|---|---|---|---|
+| Easy | Nominal execution | resources as expected | execute a legal plan | unchanged |
+| Medium | Skill-level adaptation | search / substitute / local failure | Search, Alternative, Fallback | structure kept |
+| Hard | Task-level replanning | capacity, space, dependencies, resources interact | Decompose, Insert, Replace | changed by the environment |
+
+* **v4 is a label, not a catalog.** Everything lives in this `tasks.json` (same path, same 20 task ids), so Graph
+  Manager's sync and the HTTP service see the same file. The former v3 Hard variants (two local conditions) are
+  Medium now: `"difficulty": "medium"`, `"v3_difficulty": "hard"`. Their configurations are unchanged
+  (`tests/test_matrix.py::test_v3_configurations_unchanged_by_the_redesign` checks all 510 (task, variant, seed)
+  hashes against `tests/v3_config_hashes.json`), so their route evidence still counts.
+* **Hard variants** come from `benchmark/v4_hard.py` (`"since": "v4"`, explicit `"difficulty": "hard"`). A Hard
+  variant may carry its own `instruction` / `instruction_zh` (the report's Proposed Hard instruction) and `goal`
+  (`episode.catalog.resolve_task`). The instruction never states the solution: the constraint is observed or met
+  through feedback. `public_task` returns the selected variant's instruction in the same `description` field.
+* **Task-level decision, not more actions.** Choosing another functional resource or strategy from what the
+  environment offers counts, even when the skill sequence looks similar. No Hard fails on purpose: where a failure
+  appears it is the environment's real constraint (no free strip, no free spot), and the proactive plan avoids it.
+* **Verifiers accept every instruction-compliant strategy and reject the shortcuts.** Goal-only predicates in
+  `episode/goal_predicates.py` (not Contract conditions, no skill export changes): `near_start` (layout restored),
+  `clear_of` / `near_any` (beside a setting but out of its way), `front_visible` (on display, not hidden),
+  `count_on_at_least` (the table was not cleared), `fully_inside` (put away, not perched on top: real capacity).
+* **Added objects.** A variant may add assets the base scene lacks (`"add"`, e.g. the small storage bin, a
+  look-alike bin, stored blocks, a laid party table); the configuration hash covers them only when present.
+* **Each Hard has an oracle route and a negative route.** The oracle shows one complete strategy is physically
+  feasible; the negative route is the naive plan the Hard is built to reject (expected outcome: planning failure).
+  `benchmark/v4_report.py` classifies every scripted run as passed / planning_failure / physical_failure /
+  refused / condition_not_met / system_error, kept apart ([V4_HARD_VALIDATION.md](V4_HARD_VALIDATION.md)).
+
+| Task | Report category | Hard variant | Environment | Decision the planner must make |
+|---|---|---|---|---|
+| T01 | insert | `table_set` | table set along the robot's side; free slots wedged between settings, far from them, and one beside a plate | place the book beside a setting yet clear of it (not where `place` would put it) |
+| T02 | insert | `edge_base` | block A at the island's front edge, block B in the open | choose B as the base (or move A in first), not the Easy stack on A |
+| T03 | decompose | `three_containers` | mug and a small bin by the utensils, the wide bin on the TV stand | allocate both utensils jointly: the spoon fits the small bin, the 22 cm pin only the wide one |
+| T06 | insert | `display_hidden` | the cabinet's only free spot is behind cereal boxes | display on the TV stand (or make a front spot), not hidden |
+| T07 | replace | `microwave_holds_pot` | the microwave works but holds the soup pot; the stove is free | heat on the stove instead of clearing the microwave (both allowed) |
+| T08 | insert (cleanup ①) | `island_cluttered` | clutter along both strips: no free wiping strip anywhere | move one object off, wipe, put it back where it was |
+| T09 | replace | `cookware_choice` | a breakfast bowl and a mug by the tomatoes, the pot on the stove; the instruction asks for "a suitable pot" | choose the pot (stirring, lid, burner) over the nearer containers |
+| T11 | decompose | `basket_gone_bowl_there` | no basket; a bowl stands where it should be | keep to the stated substitute (the tray on the study desk), not the bowl |
+| T12 | decompose | `toys_everywhere` | car and duck in two rooms; no basket: a small bin half full of blocks and a shallow tray | allocate by capacity: the duck fits only the bin's last gap, so the car goes to the tray (no single container holds both) |
+| T13 | insert | `no_cup_spoon_boxed_in` | no cup; no room for a bowl or mug next to the spoon | mug for the cup, and move the setting (spoon) to where it fits |
+| T14 | insert (cleanup ②) | `shelf_taken` | a mug and the duck take up the bookcase top | move the mug to a legal place first, then shelve the book |
+| T19 | decompose | `lookalike_bin` | can out of view in the dining room; a look-alike toy bin on the way | search the can, route both items to the instructed recycling bin |
+| T20 | insert (cleanup ③) | `table_full` | party table covered: no spot for the upright bottle | move a few things (one bowl), not clear the table |
+
+Medium-only (the report proposes no Hard): T04, T05, T10, T15, T16, T17, T18 — their alternatives are local
+substitutions or action-level recoveries without a task-graph change.
+
+**Compatibility.** No Graph Manager file, Contract, skill export (`skill_library/`, `tools/build_skill_library.py
+--check` unchanged) or HTTP field changed. Graph Manager main (7289dd7) synced against this catalog indexes
+13 Hard / 32 Medium variants with its own `difficulty_of`; one of its tests hard-codes "12 tasks with a hard
+variant" (`tests/test_run_cli.py`, 24 requests), which becomes 26 after the next sync — a data expectation in
+Graph Manager, not an interface change.
+
 ## Status
 
 <!-- v3status:start -->

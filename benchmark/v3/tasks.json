@@ -84,7 +84,7 @@
   "cookware_choice": {
    "type": "cookware_choice",
    "decision": "replace",
-   "meaning": "several vessels by the food, only one supports every step (lid, burner): choose it and bring it to the stove first"
+   "meaning": "several vessels by the food, only one supports every step (stirring, lid, burner): choose it over the nearer ones"
   },
   "appliance_occupied": {
    "type": "appliance_choice",
@@ -4337,47 +4337,47 @@
        [
         "near_start",
         "rolling_pin",
-        0.06
+        0.12
        ],
        [
         "near_start",
         "wooden_block_a",
-        0.06
+        0.12
        ],
        [
         "near_start",
         "soda_can",
-        0.06
+        0.12
        ],
        [
         "near_start",
         "wooden_block_b",
-        0.06
+        0.12
        ],
        [
         "near_start",
         "mug",
-        0.06
+        0.12
        ],
        [
         "near_start",
         "oatmeal",
-        0.06
+        0.12
        ],
        [
         "near_start",
         "paperback_book",
-        0.06
+        0.12
        ],
        [
         "near_start",
         "breakfast_spoon",
-        0.06
+        0.12
        ],
        [
         "near_start",
         "juice_bottle",
-        0.06
+        0.12
        ],
        [
         "upright",
@@ -5146,8 +5146,8 @@
      "difficulty": "medium",
      "v3_difficulty": "hard"
     },
-    "pot_off_stove": {
-     "note": "a breakfast bowl, a mug and the empty pot stand on the island by the tomatoes; the pot's lid lies on the stove",
+    "cookware_choice": {
+     "note": "a breakfast bowl and a mug stand by the tomatoes on the island; the pot is on the stove, its lid beside it",
      "difficulty": "hard",
      "since": "v4",
      "conditions": [
@@ -5164,18 +5164,22 @@
       "bowl_kitchen_cabinet",
       "mug_counter"
      ],
-     "remove": [
-      "wooden_block_a",
-      "wooden_block_b"
-     ],
      "move": {
-      "handled_cooking_pot": {
+      "bowl_kitchen_cabinet": {
        "support": "kitchen_island/top",
        "xy": [
         7.2,
-        1.78
+        1.8
        ],
-       "yaw_deg": 180
+       "yaw_deg": 0.0
+      },
+      "mug_counter": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.8
+       ],
+       "yaw_deg": 0.0
       },
       "pot_lid": {
        "support": "kitchen_stove/top",
@@ -5184,27 +5188,8 @@
         1.655
        ],
        "yaw_deg": 0.0
-      },
-      "bowl_kitchen_cabinet": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.98,
-        1.8
-       ],
-       "yaw_deg": 0.0
-      },
-      "mug_counter": {
-       "support": "kitchen_island/top",
-       "xy": [
-        8.14,
-        1.62
-       ],
-       "yaw_deg": 0.0
       }
      },
-     "handle_objects": [
-      "handled_cooking_pot"
-     ],
      "condition_types": [
       "cookware_choice"
      ],
@@ -5278,7 +5263,7 @@
     "lid_on": "fallback_uncover",
     "lid_off": "nominal",
     "lid_on_spoon_away": "hard_uncover_search_spoon",
-    "pot_off_stove": "hard_pot_to_stove"
+    "cookware_choice": "hard_pot_not_bowl"
    },
    "routes": {
     "nominal": {
@@ -5649,12 +5634,12 @@
      ],
      "since": "v2"
     },
-    "hard_pot_to_stove": {
+    "hard_pot_not_bowl": {
      "kind": "alternative",
      "variants": [
-      "pot_off_stove"
+      "cookware_choice"
      ],
-     "recovery": "of the three vessels only the pot can be lidded and heated on the stove: carry it to a burner first, then cook in it",
+     "recovery": "of the three vessels only the pot can be stirred in, lidded and heated on the stove",
      "steps": [
       {
        "skill": "look",
@@ -5663,78 +5648,9 @@
        }
       },
       {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "handled_cooking_pot",
-        "grasp": "handle"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top",
-        "hint_xy": [
-         8.5,
-         1.68
-        ]
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_stove/top"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top",
-        "hint_xy": [
-         8.5,
-         1.68
-        ]
-       },
-       "role": "retry_after_recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
        "skill": "look",
        "args": {
-        "target": "kitchen_island/top"
+        "target": "kitchen_stove/top"
        }
       },
       {
@@ -5745,7 +5661,8 @@
          "cherry_tomato_2"
         ],
         "container": "handled_cooking_pot"
-       }
+       },
+       "role": "alternative"
       },
       {
        "skill": "navigate",
@@ -5830,7 +5747,7 @@
     "naive_nearest_vessel": {
      "kind": "negative",
      "variants": [
-      "pot_off_stove"
+      "cookware_choice"
      ],
      "note": "the nearest container, the breakfast bowl: the soup is not in the pot (and the bowl is no cookware)",
      "steps": [
@@ -5852,164 +5769,6 @@
       }
      ],
      "since": "v4"
-    },
-    "probe_place_pot_after_retry": {
-     "kind": "diagnostic",
-     "variants": [
-      "pot_off_stove"
-     ],
-     "note": "the sequence whose third attempt released the pot on the stove (s10): two refused places, approach",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "handled_cooking_pot",
-        "grasp": "handle"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top",
-        "hint_xy": [
-         8.45,
-         1.66
-        ]
-       },
-       "expect": "fail"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top"
-       },
-       "expect": "fail"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top",
-        "hint_xy": [
-         8.45,
-         1.66
-        ]
-       }
-      }
-     ],
-     "since": "v4"
-    },
-    "probe_place_pot": {
-     "kind": "diagnostic",
-     "variants": [
-      "pot_off_stove"
-     ],
-     "note": "placement attempts of the handle-held pot on the stove",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "handled_cooking_pot",
-        "grasp": "handle"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top",
-        "hint_xy": [
-         8.41,
-         1.64
-        ]
-       },
-       "expect": "fail"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top"
-       },
-       "expect": "fail"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_stove/top"
-       },
-       "expect": "fail"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top",
-        "hint_xy": [
-         8.41,
-         1.64
-        ]
-       },
-       "expect": "fail"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "handled_cooking_pot",
-        "receptacle": "kitchen_stove/top",
-        "hint_xy": [
-         8.7,
-         1.725
-        ]
-       },
-       "expect": "fail"
-      }
-     ],
-     "since": "v4"
     }
    },
    "benchmark_version": "v3",
@@ -6026,7 +5785,12 @@
     19
    ],
    "since": "v2",
-   "not_adopted": [],
+   "not_adopted": [
+    {
+     "condition": "the pot off the stove (on the island), to be carried to a burner first",
+     "reason": "carried by its handle (pick grasp=handle; the rim pinch slipped while carried, s10) the pot hangs tilted: lowered onto the left burner its rim caught the island's edge 2 cm west of the stove and it came to rest on it (targets x 8.41 / 8.45 / 8.50, 3/3, s10); with the lid on the left burner the stove had no free spot for it on the right (s10)"
+    }
+   ],
    "entities": [
     "cherry_tomato_1",
     "cherry_tomato_2",
@@ -6854,7 +6618,7 @@
      ]
     },
     "toys_everywhere": {
-     "note": "three toys in three places (car on the living-room floor, block on the TV stand, duck on the study desk); no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase",
+     "note": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase",
      "difficulty": "hard",
      "since": "v4",
      "conditions": [
@@ -6874,11 +6638,6 @@
          "fully_inside",
          "rubber_duck",
          "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "toy_cube",
-         "toy_bin_small"
         ]
        ],
        [
@@ -6890,45 +6649,6 @@
         [
          "fully_inside",
          "rubber_duck",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "toy_cube",
-         "toy_tray"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "toy_cube",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "toy_cube",
          "toy_tray"
         ]
        ],
@@ -6942,11 +6662,6 @@
          "fully_inside",
          "rubber_duck",
          "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "toy_cube",
-         "toy_bin_small"
         ]
        ],
        [
@@ -6958,45 +6673,6 @@
         [
          "fully_inside",
          "rubber_duck",
-         "toy_bin_small"
-        ],
-        [
-         "fully_inside",
-         "toy_cube",
-         "toy_tray"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "toy_cube",
-         "toy_bin_small"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "toy_car",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "rubber_duck",
-         "toy_tray"
-        ],
-        [
-         "fully_inside",
-         "toy_cube",
          "toy_tray"
         ]
        ]
@@ -7045,7 +6721,6 @@
      "watch": [
       "toy_car",
       "rubber_duck",
-      "toy_cube",
       "toy_bin_small",
       "toy_tray"
      ],
@@ -7056,15 +6731,6 @@
       "storage_basket"
      ],
      "add": {
-      "toy_cube": {
-       "asset": "toy_block",
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.3,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      },
       "toy_bin_small": {
        "asset": "small_storage_bin",
        "support": "bookcase_2/top",
@@ -7372,7 +7038,7 @@
      "variants": [
       "toys_everywhere"
      ],
-     "recovery": "look at the containers first: the duck needs the bin's last gap, the car and the block go to the tray",
+     "recovery": "look at the containers first: the duck needs the bin's last gap, so the car goes to the tray",
      "steps": [
       {
        "skill": "navigate",
@@ -7430,31 +7096,6 @@
        }
       },
       {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_cube"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "toy_cube"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "toy_tray"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "toy_cube",
-        "receptacle": "toy_tray"
-       }
-      },
-      {
        "skill": "search",
        "args": {
         "object": "rubber_duck",
@@ -7490,13 +7131,25 @@
      ],
      "since": "v4"
     },
-    "naive_all_in_the_bin": {
+    "naive_first_toy_in_the_bin": {
      "kind": "negative",
      "variants": [
       "toys_everywhere"
      ],
      "note": "the deeper container for the first toy found: the car takes the bin's gap, the duck fits nowhere",
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
       {
        "skill": "explore_room",
        "args": {
@@ -7614,7 +7267,6 @@
     "rubber_duck",
     "storage_basket",
     "bookcase_2/top",
-    "toy_cube",
     "toy_bin_small",
     "toy_tray",
     "stored_block_1",
@@ -7755,7 +7407,7 @@
           "spoon"
          ],
          "dining_table_2/top",
-         0.35
+         0.4
         ]
        ],
        [
@@ -7776,7 +7428,7 @@
           "spoon"
          ],
          "dining_table_2/top",
-         0.35
+         0.4
         ]
        ]
       ],
@@ -8400,8 +8052,8 @@
         "object": "spoon",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.2,
-         6.7
+         3.02,
+         6.75
         ]
        },
        "role": "insert"
@@ -8442,8 +8094,8 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         2.95,
-         6.55
+         3.0,
+         6.58
         ]
        }
       },
@@ -8480,8 +8132,8 @@
         "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         2.95,
-         6.86
+         3.0,
+         6.92
         ]
        }
       }
@@ -10688,6 +10340,13 @@
        "role": "insert"
       },
       {
+       "skill": "approach",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "party_bowl_1"
@@ -10705,6 +10364,12 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_cabinet_6/top"
        }
       },
@@ -10712,6 +10377,12 @@
        "skill": "look",
        "args": {
         "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "juice_bottle"
        }
       },
       {
@@ -10818,6 +10489,7 @@
     "juice_bottle",
     "dining_table_2/top",
     "kitchen_cabinet_6/top",
+    "tv_stand_2/top",
     "buffet_tray_1",
     "buffet_tray_2",
     "party_plate_3",
@@ -10938,7 +10610,8 @@
        "step": 0.05,
        "step_deg": 5
       }
-     }
+     },
+     "blocker": "the last step, place of the book on bookcase_2/top, fails on the current support slabs: the book falls to the floor (s10, also with approach + hint).  The v3 Medium route T14 book_on_desk / nominal fails the same way on this code (s10): the place_flat parking regression of docs/HANDOFF_2026-10-24_support_slabs.md section 1.2 (3), a physical / skill issue, not a planning one.  Everything before it (seeing the full top, moving the mug to its back corner, fetching the flat book with expose) runs."
     }
    },
    "watch": [
@@ -11460,7 +11133,12 @@
      }
     }
    },
-   "not_adopted": [],
+   "not_adopted": [
+    {
+     "condition": "book start yaw changed by -16 / +16 deg to work around the place_flat regression",
+     "reason": "the edge pinch then missed (yaw 74, s10) or the book slipped while carried (yaw 106, s10)"
+    }
+   ],
    "benchmark_version": "v3",
    "eval_seeds": [
     10,
