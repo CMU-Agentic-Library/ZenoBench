@@ -185,3 +185,38 @@ docker/run.sh '$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v3/ta
 - **常用检查命令**：
   - `python tools/build_skill_library.py --check`，`export_interface_libraries.py`、`render_policy_catalog.py`、`render_contract_layers.py` 同样带 `--check`。
   - `python -m pytest -q benchmark/tests skill_library/tests tests`
+
+## 6. 支撑板全量检查与 VLM 观测（2026-10-24 晚）
+
+检查脚本和结果都在 `/data/zenobench/support_layers/checks/`。
+
+### 6.1 碰撞板和渲染板面对比（离线，`slab_vs_render.py`）
+
+做法：在每块碰撞板的范围内按 2 cm 网格往下打射线到渲染网格上，看渲染板面和碰撞板顶面差多少。
+
+- **基本都对得上**：65 块里有 57 块，渲染板面处处都在碰撞板顶面 ±3 mm 以内。large_shelf、bookcase 的内隔板沿分隔板、侧板各有一列网格点下面是空的，这无所谓。
+- **desk_1/top**：渲染桌面本身倾斜约 0.5°，从一角的 -7 mm 到对角的 +6 mm。碰撞板是水平的，放在中间高度 0.700。机器人放铅笔的 -x 那一头，渲染桌面比碰撞板低 4–5 mm。
+- **mattress_1/top**：床垫中间比碰撞板高 13–15 mm，放上去的东西看起来会陷进床垫。
+- **mattress_2/top**：床垫大部分比碰撞板低 5–10 mm，放上去的东西会悬空。
+
+### 6.2 落块测试（Isaac，`drop_test.py`，结果在 `drop_test_classified.json`）
+
+- **做法**：每块碰撞板放 5 个 5×5×3 cm 的箱子，位置是中心和离四条边各 2.75 cm，从板面以上 5 mm 处落下，2 s 后看停在哪里。
+- **顶面层（top）基本都正常**：21 块里只有 mattress_2 异常。它的箱子停在碰撞板顶面以下 14 mm，正好是床垫碰撞网格的高度 0.500，碰撞板好像没起作用，原因还没查。
+- **内隔板（shelf_N）问题很多**：44 块里有 31 块至少一个箱子异常（倾斜、滑走、翻倒），其中 shelf_0 是 17 块里有 14 块。
+- **主要原因是看不见的竖直碰撞面**：44 个异常箱子在生成时就和这种面重叠了。
+  - **这些面是什么**：家具碰撞网格里的板子比渲染板高 1–2 cm。`fit_support_repairs.py` 只删 |n_z| > 0.5 的面，所以这块板的顶面被删掉了，侧边的竖直面却留着，在支撑面上围出了一圈 1–2 cm 高、看不见的矮墙。
+  - **例子**：large_shelf_1、large_shelf_3、large_shelf_5、tv_stand_1、cell_shelf_2 的 shelf_0，放在**正中间**的箱子都被撞倒或撞歪了。
+  - **前沿挡边**：bookcase_1/shelf_0 前沿还有一道 1.9 cm 高的看不见的挡边，几乎贯穿整条边。cell_shelf_4/shelf_0、cell_shelf_5/shelf_0、tv_stand_1/shelf_0、large_shelf_4/shelf_1 也有局部的。
+  - **一个可能的修法**：在支撑面范围内，把只比板面高出几厘米的竖直面也删掉。真正的分隔板和侧板会一直升到上一层板，靠这一点能和它们区分开。
+- **cell_shelf_3 的 shelf_1 和 shelf_2**：箱子停在碰撞板以上 5 mm。
+
+### 6.3 VLM 观测（env_service，benchmark profile）
+
+- **怎么测的**：起了 env_service（`--host 127.0.0.1`），用 `/data/zenobench/support_layers/vlm_obs/vlm_client.py` 扮演 VLM，把 T14 book_on_desk 的路线一条一条地调用。每一步的响应在 `vlm_obs/T14/`：JSON 里图片换成了文件名，PNG 单独存放。结果和 run_episode 一致，place 失败。
+- **VLM 拿到的东西**：
+  - **图像**：一张 640×480 的头部相机 PNG。
+  - **视野里的物体**：`visible_objects` 和 `observation_cache`，`last_seen_on` 已经是 `desk_1/top` 这种新名字。
+  - **已知地点**：`known_places` 一共 164 项，其中房间 10 个、家具 42 件、支撑面 112 个。支撑面里 65 个来自碰撞板，另外 47 个是 PartNet 柜子自带的 `inside_bottom`、`inside_shelf`、`top`。cabinet_6、cabinet_8、cabinet_9 的 top 高 1.6–1.75 m，机器人够不着，也列在里面。没有残留的 `surface_N` 名字。
+  - **其他**：`robot` 状态和 `last_result`。
+- **另外注意**：失败结果的 `error` 字符串里带着 GT 坐标（"bottom at (1.36, -0.65, 0.116)"）。
