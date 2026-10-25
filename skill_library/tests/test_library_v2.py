@@ -21,10 +21,10 @@ def test_exports_are_current_and_library_valid():
     assert out.returncode == 0, out.stdout + out.stderr
 
 
-def test_seventy_distinct_verbs_no_synonyms():
+def test_seventy_one_distinct_verbs_no_synonyms():
     skills = load_skills()
     verbs = [s["verb"] for s in skills.values()]
-    assert len(verbs) == len(set(verbs)) == 70
+    assert len(verbs) == len(set(verbs)) == 71
     for group in SYNONYM_GROUPS:
         assert len(set(verbs) & group) <= 1, group
 

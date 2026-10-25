@@ -1,21 +1,22 @@
 ---
 name: explore-room
-description: "Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen."
+description: "Cover a room from up to six viewpoints with a left/centre/right head sweep both ways; succeeds when at least 75 % of the room's furniture was seen. A piece of furniture counts once one of its support layers (top or shelf) is in view; seeing every shelf of one piece is explore_furniture."
 ---
 
 # Explore a room (`skill_014`)
 
-`explore(room: room_ref)`
+`explore_room(room: room_ref)`
 
-Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen.
+Cover a room from up to six viewpoints with a left/centre/right head sweep both ways; succeeds when at least 75 % of the room's furniture was seen. A piece of furniture counts once one of its support layers (top or shelf) is in view; seeing every shelf of one piece is explore_furniture.
 
 ## When to use
 
-A room must be surveyed before planning (unknown layout or objects).
+A room must be surveyed before planning (unknown layout or objects); one glance per piece of furniture.
 
 ## Not to be confused with
 
 - `search`: search looks for one object and stops when found.
+- `explore_furniture`: explore_furniture sees every layer of one piece; explore_room counts a piece once one layer is seen.
 
 ## Inputs
 
@@ -35,7 +36,7 @@ Always applicable.
 
 ## Postconditions (verified on live GT state)
 
-- `room_explored(room=$room)` — At least 75 % of the room's head-camera viewpoints were covered. GT: robot_memory, room_annotation.
+- `room_explored(room=$room)` — At least 75 % of the room's furniture was seen (one of its support layers in the head camera). GT: robot_memory, room_annotation.
 
 ## Verifier
 
@@ -56,6 +57,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Next step: `search` (`skill_013`) (then) — a specific object must then be located
+- Next step: `explore_furniture` (`skill_071`) (then) — every shelf of one piece of furniture must be seen
 - Is a fallback for: `search` (`skill_013`) (recover) — the object is not on any visited support
 - Is a fallback for: `count` (`skill_059`) (recover) — objects of the category may be out of view
 

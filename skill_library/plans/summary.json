@@ -2,7 +2,7 @@
  {
   "task": "collect_fruits",
   "solved": true,
-  "expansions": 87,
+  "expansions": 88,
   "length": 8,
   "verbs": [
    "navigate/empty",
@@ -349,7 +349,7 @@
   "expansions": 1,
   "length": 1,
   "verbs": [
-   "explore/viewpoints"
+   "explore_room/viewpoints"
   ]
  },
  {

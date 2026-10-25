@@ -15,7 +15,8 @@ The location of an object is unknown in the current room.
 
 ## Not to be confused with
 
-- `explore`: explore covers a room without a target.
+- `explore_room`: explore_room covers a room without a target.
+- `explore_furniture`: explore_furniture sees every layer of one piece; search stops when the object is found.
 
 ## Inputs
 
@@ -57,9 +58,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `explore` (`skill_014`) (then) — a specific object must then be located
+- Previous step: `explore_room` (`skill_014`) (then) — a specific object must then be located
 - Next step: `navigate` (`skill_001`) (then) — the found object must be fetched
-- Fallback on failure: `explore` (`skill_014`) (recover) — the object is not on any visited support
+- Fallback on failure: `explore_room` (`skill_014`) (recover) — the object is not on any visited support
+- Fallback on failure: `explore_furniture` (`skill_071`) (recover) — the object may sit on a shelf the sweep only glanced at
 - Fallback on failure: `inspect` (`skill_012`) (substitute) — the object may be inside a closed cabinet
 - Is a fallback for: `fetch` (`skill_047`) (recover) — the object is not where expected
 

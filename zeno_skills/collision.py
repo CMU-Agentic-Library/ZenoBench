@@ -98,15 +98,14 @@ class WorldModel:
             box = np.asarray(obstacle["aabb"], float)
             if obstacle["name"].startswith("kitchen_counter"):
                 # The kitchen fixture's single AABB spans its counter and
-                # upper cabinets. Its support levels expose an open band
+                # upper cabinets. The worktop's clearance is the open band
                 # between them; keeping one solid box makes every counter
                 # grasp collision-infeasible even while the robot is clear.
-                levels = sorted({float(s["z"]) for s in ann.supports
-                                 if s.get("furniture") == obstacle["name"]})
-                if len(levels) >= 2 and levels[1] - levels[0] > 0.25:
+                top = next((s for s in ann.supports if s.get("furniture") == obstacle["name"]), None)
+                if top is not None and top.get("clearance", 1.0) > 0.25 and top["z"] + top["clearance"] < box[5]:
                     lower, upper = box.copy(), box.copy()
-                    lower[5] = levels[0]
-                    upper[2] = levels[1]
+                    lower[5] = top["z"]
+                    upper[2] = top["z"] + top["clearance"]
                     self.boxes.extend((lower, upper))
                     continue
             self.boxes.append(box)

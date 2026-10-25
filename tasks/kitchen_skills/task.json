@@ -206,7 +206,7 @@
   },
   "wide_storage_bin": {
    "asset": "wide_storage_bin",
-   "support": "dining_table_2/surface_2",
+   "support": "dining_table_2/top",
    "yaw": 1.5707963267948966,
    "position": [
     2.9851,
@@ -284,7 +284,7 @@
    "floor:living_room_0_0"
   ],
   "wide_storage_bin": [
-   "dining_table_2/surface_2"
+   "dining_table_2/top"
   ],
   "oatmeal": [
    "kitchen_island/top"

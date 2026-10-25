@@ -209,6 +209,12 @@
     "verb": "point",
     "when": "a gaze is enough to indicate the target",
     "bind": {}
+   },
+   {
+    "skill_id": "skill_071",
+    "verb": "explore_furniture",
+    "when": "only one layer must be seen",
+    "bind": {}
    }
   ]
  },

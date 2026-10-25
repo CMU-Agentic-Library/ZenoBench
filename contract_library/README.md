@@ -1,7 +1,7 @@
 # Contract Library
 
 <!-- counts:start -->
-当前有 **70 个 Skill Contract**（`contract_009`–`contract_078`），与 `skill_001`–`skill_070` 一一对应，共 120 条 policy 路径。
+当前有 **71 个 Skill Contract**（`contract_009`–`contract_079`），与 `skill_001`–`skill_071` 一一对应，共 121 条 policy 路径。
 <!-- counts:end -->
 
 每个 SkillNode 恰好对应一个 Contract（`contracts/contract_XXX/contract.json` 与 `CONTRACT.md`），运行时目录为 [skill_contracts.json](skill_contracts.json)，由 [`zeno_skills/skill_runtime.py`](../zeno_skills/skill_runtime.py) 的 `SkillContractRunner` 执行。Contract 记录：

@@ -230,6 +230,20 @@
     "object_pose (before/after)"
    ]
   },
+  "furniture_explored": {
+   "args": [
+    [
+     "furniture",
+     "furniture_ref"
+    ]
+   ],
+   "kind": "memory",
+   "meaning": "Every support layer of the furniture (each shelf, the top) was seen in the head camera.",
+   "gt_sources": [
+    "robot_memory",
+    "support_annotation"
+   ]
+  },
   "grasp_clearance": {
    "args": [
     [
@@ -770,7 +784,7 @@
     ]
    ],
    "kind": "memory",
-   "meaning": "At least 75 % of the room's head-camera viewpoints were covered.",
+   "meaning": "At least 75 % of the room's furniture was seen (one of its support layers in the head camera).",
    "gt_sources": [
     "robot_memory",
     "room_annotation"
@@ -1268,6 +1282,12 @@
       "skill_id": "skill_041",
       "verb": "close",
       "when": "the robot leaves",
+      "type": "then"
+     },
+     {
+      "skill_id": "skill_071",
+      "verb": "explore_furniture",
+      "when": "an object seen on a layer must be fetched",
       "type": "then"
      }
     ],
@@ -3484,6 +3504,12 @@
       "verb": "point",
       "when": "a gaze is enough to indicate the target",
       "bind": {}
+     },
+     {
+      "skill_id": "skill_071",
+      "verb": "explore_furniture",
+      "when": "only one layer must be seen",
+      "bind": {}
      }
     ]
    },
@@ -3767,7 +3793,8 @@
    "description": "Find an object whose location is unknown: visit the supports of a room in order of distance and aim the head at each surface until the object is seen.",
    "use_when": "The location of an object is unknown in the current room.",
    "not_to_be_confused_with": {
-    "explore": "explore covers a room without a target."
+    "explore_room": "explore_room covers a room without a target.",
+    "explore_furniture": "explore_furniture sees every layer of one piece; search stops when the object is found."
    },
    "inputs": {
     "object": {
@@ -3862,7 +3889,7 @@
     "previous": [
      {
       "skill_id": "skill_014",
-      "verb": "explore",
+      "verb": "explore_room",
       "when": "a specific object must then be located",
       "type": "then"
      }
@@ -3881,10 +3908,18 @@
     "fallback": [
      {
       "skill_id": "skill_014",
-      "verb": "explore",
+      "verb": "explore_room",
       "when": "the object is not on any visited support",
       "bind": {},
       "reason": "room coverage marks every visible object observed, including the target",
+      "type": "recover"
+     },
+     {
+      "skill_id": "skill_071",
+      "verb": "explore_furniture",
+      "when": "the object may sit on a shelf the sweep only glanced at",
+      "bind": {},
+      "reason": "every layer of the furniture is aimed at, so an object on any shelf is observed",
       "type": "recover"
      },
      {
@@ -3942,23 +3977,24 @@
    "kind": "skill_node",
    "skill_id": "skill_014",
    "name": "explore-room",
-   "verb": "explore",
+   "verb": "explore_room",
    "noun": "room",
    "title": "Explore a room",
    "group": "perception_and_gesture",
-   "signature": "explore(room: room_ref)",
+   "signature": "explore_room(room: room_ref)",
    "action_predicate": {
     "name": "explore_room",
-    "verb": "explore",
+    "verb": "explore_room",
     "noun": "room",
     "arguments": [
      "room"
     ]
    },
-   "description": "Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen.",
-   "use_when": "A room must be surveyed before planning (unknown layout or objects).",
+   "description": "Cover a room from up to six viewpoints with a left/centre/right head sweep both ways; succeeds when at least 75 % of the room's furniture was seen. A piece of furniture counts once one of its support layers (top or shelf) is in view; seeing every shelf of one piece is explore_furniture.",
+   "use_when": "A room must be surveyed before planning (unknown layout or objects); one glance per piece of furniture.",
    "not_to_be_confused_with": {
-    "search": "search looks for one object and stops when found."
+    "search": "search looks for one object and stops when found.",
+    "explore_furniture": "explore_furniture sees every layer of one piece; explore_room counts a piece once one layer is seen."
    },
    "inputs": {
     "room": {
@@ -3989,7 +4025,7 @@
       "room": "$room"
      },
      "negated": false,
-     "meaning": "At least 75 % of the room's head-camera viewpoints were covered.",
+     "meaning": "At least 75 % of the room's furniture was seen (one of its support layers in the head camera).",
      "kind": "memory",
      "gt_sources": [
       "robot_memory",
@@ -4008,7 +4044,7 @@
        "room": "$room"
       },
       "negated": false,
-      "meaning": "At least 75 % of the room's head-camera viewpoints were covered.",
+      "meaning": "At least 75 % of the room's furniture was seen (one of its support layers in the head camera).",
       "kind": "memory",
       "gt_sources": [
        "robot_memory",
@@ -4051,6 +4087,14 @@
       "when": "a specific object must then be located",
       "bind": {},
       "reason": "narrow to one target",
+      "type": "then"
+     },
+     {
+      "skill_id": "skill_071",
+      "verb": "explore_furniture",
+      "when": "every shelf of one piece of furniture must be seen",
+      "bind": {},
+      "reason": "room coverage counts a piece once; its other layers may still hide objects",
       "type": "then"
      }
     ],
@@ -4100,7 +4144,7 @@
      },
      "depends_on": []
     },
-    "python": "SkillContractRunner(rig).run(\"explore\", {'room': ...})"
+    "python": "SkillContractRunner(rig).run(\"explore_room\", {'room': ...})"
    }
   },
   {
@@ -11815,6 +11859,12 @@
       "verb": "place",
       "when": "the receptacle is behind a closed door",
       "type": "repair"
+     },
+     {
+      "skill_id": "skill_071",
+      "verb": "explore_furniture",
+      "when": "a closed cabinet door hides the inside layers",
+      "type": "recover"
      }
     ],
     "alternative": [
@@ -16237,7 +16287,7 @@
     "fallback": [
      {
       "skill_id": "skill_014",
-      "verb": "explore",
+      "verb": "explore_room",
       "when": "objects of the category may be out of view",
       "bind": {},
       "reason": "room coverage",
@@ -18612,6 +18662,198 @@
      "depends_on": []
     },
     "python": "SkillContractRunner(rig).run(\"hide\", {'object': ..., 'receptacle': ...})"
+   }
+  },
+  {
+   "schema_version": 2,
+   "kind": "skill_node",
+   "skill_id": "skill_071",
+   "name": "explore-furniture",
+   "verb": "explore_furniture",
+   "noun": "furniture",
+   "title": "Explore a piece of furniture",
+   "group": "perception_and_gesture",
+   "signature": "explore_furniture(furniture: furniture_ref)",
+   "action_predicate": {
+    "name": "explore_furniture",
+    "verb": "explore_furniture",
+    "noun": "furniture",
+    "arguments": [
+     "furniture"
+    ]
+   },
+   "description": "See every support layer of one piece of furniture (each shelf, the top, a cabinet's inside shelves): sweep from where the robot stands when it is already near, else from up to three stand-off poses in front of it, aiming the head at each layer not seen yet, then again with the torso lowered for the layers still hidden (a bottom shelf behind the front edge of the shelf above). A layer is seen when the space just above its board is in the head camera and no board of the piece is in the way. Succeeds only when every layer was seen; a closed cabinet door hides its inside layers.",
+   "use_when": "Every shelf of one bookcase, shelf unit or cabinet must be seen: what is on each layer, or which layer is free.",
+   "not_to_be_confused_with": {
+    "explore_room": "explore_room glances at every piece of a room, one layer each.",
+    "look": "look aims at one target; explore_furniture at every layer of one piece."
+   },
+   "inputs": {
+    "furniture": {
+     "type": "furniture_ref",
+     "required": true,
+     "description": "The bookcase, shelf unit, table, desk or cabinet to cover."
+    }
+   },
+   "required_inputs": [
+    "furniture"
+   ],
+   "outputs": {
+    "seen": {
+     "type": "object_list",
+     "description": "Objects observed during the sweep."
+    }
+   },
+   "applicability": {
+    "always": true,
+    "summary": "Always applicable."
+   },
+   "preconditions": [],
+   "postconditions": [
+    {
+     "predicate": "furniture_explored(furniture=$furniture)",
+     "name": "furniture_explored",
+     "args": {
+      "furniture": "$furniture"
+     },
+     "negated": false,
+     "meaning": "Every support layer of the furniture (each shelf, the top) was seen in the head camera.",
+     "kind": "memory",
+     "gt_sources": [
+      "robot_memory",
+      "support_annotation"
+     ],
+     "checked": "after the policy chain on live GT state; the action is reported only if true"
+    }
+   ],
+   "verifier": {
+    "how": "after the policy chain, every listed predicate is evaluated on ground-truth simulator state (object poses, joint values, finger gaps, head-camera geometry, thermal state, event log); the node succeeds only if all hold for the selected path",
+    "checks": [
+     {
+      "predicate": "furniture_explored(furniture=$furniture)",
+      "name": "furniture_explored",
+      "args": {
+       "furniture": "$furniture"
+      },
+      "negated": false,
+      "meaning": "Every support layer of the furniture (each shelf, the top) was seen in the head camera.",
+      "kind": "memory",
+      "gt_sources": [
+       "robot_memory",
+       "support_annotation"
+      ],
+      "checked": "after the policy chain on live GT state; the action is reported only if true",
+      "scope": "all paths"
+     }
+    ]
+   },
+   "invalidates": [
+    "base_near(*)",
+    "reachable(*)",
+    "facing(*)",
+    "in_view(*)"
+   ],
+   "policy_paths": [
+    {
+     "path_id": "layers",
+     "when": [
+      "always (default path)"
+     ],
+     "extra_preconditions": [],
+     "extra_postconditions": [],
+     "chain": [
+      "policy_116($furniture)"
+     ],
+     "policies": [
+      "policy_116"
+     ],
+     "note": ""
+    }
+   ],
+   "relations": {
+    "previous": [
+     {
+      "skill_id": "skill_014",
+      "verb": "explore_room",
+      "when": "every shelf of one piece of furniture must be seen",
+      "type": "then"
+     }
+    ],
+    "next": [
+     {
+      "skill_id": "skill_001",
+      "verb": "navigate",
+      "when": "an object seen on a layer must be fetched",
+      "bind": {},
+      "reason": "the seen output names the objects on the layers",
+      "type": "then"
+     }
+    ],
+    "fallback": [
+     {
+      "skill_id": "skill_040",
+      "verb": "open",
+      "when": "a closed cabinet door hides the inside layers",
+      "bind": {
+       "articulated": "$furniture"
+      },
+      "reason": "an open door uncovers the inside shelves; explore again",
+      "type": "recover"
+     }
+    ],
+    "fallback_for": [
+     {
+      "skill_id": "skill_013",
+      "verb": "search",
+      "when": "the object may sit on a shelf the sweep only glanced at",
+      "type": "recover"
+     }
+    ],
+    "alternative": [
+     {
+      "skill_id": "skill_011",
+      "verb": "look",
+      "when": "only one layer must be seen",
+      "bind": {
+       "target": "$furniture"
+      }
+     }
+    ]
+   },
+   "failure": {
+    "codes": [
+     "INPUT_MISSING",
+     "NOUN_INVALID",
+     "PRECONDITION_FAILED",
+     "NO_PATH",
+     "POLICY_FAILED",
+     "SUBSKILL_FAILED",
+     "POSTCONDITION_FAILED"
+    ],
+    "on_failure": "stop; return the error code and every measured pre- and postcondition; nothing is retried or repaired, the planner chooses what to do.",
+    "typical": [
+     "a layer stays hidden from every stand-off pose, standing and crouched",
+     "a closed door hides a cabinet's inside layers",
+     "holding an object: the torso is not lowered, so low shelves may stay hidden"
+    ]
+   },
+   "scope": {
+    "includes": [],
+    "excludes": []
+   },
+   "contract_id": "contract_079",
+   "invocation": {
+    "skill_subgraph_node": {
+     "id": "n1",
+     "skill_id": "skill_071",
+     "args": {
+      "furniture": {
+       "ref": "<furniture>"
+      }
+     },
+     "depends_on": []
+    },
+    "python": "SkillContractRunner(rig).run(\"explore_furniture\", {'furniture': ...})"
    }
   }
  ]

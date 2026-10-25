@@ -126,7 +126,8 @@
   "count_category": "policy_112",
   "dip_utensil": "policy_113",
   "sidestep_base": "policy_114",
-  "hover_over": "policy_115"
+  "hover_over": "policy_115",
+  "explore_furniture": "policy_116"
  },
  "node_contract_ids": {
   "skill_001": "contract_009",
@@ -198,6 +199,7 @@
   "skill_067": "contract_075",
   "skill_068": "contract_076",
   "skill_069": "contract_077",
-  "skill_070": "contract_078"
+  "skill_070": "contract_078",
+  "skill_071": "contract_079"
  }
 }

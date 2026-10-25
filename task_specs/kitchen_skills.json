@@ -175,7 +175,7 @@
     "wide_storage_bin": {
       "asset": "wide_storage_bin",
       "supports": [
-        "dining_table_2/surface_2"
+        "dining_table_2/top"
       ],
       "spawn_xy": [
         2.985,

@@ -13,8 +13,8 @@ Checks on the real kitchen_skills scene (GT physics, real head camera):
    in front of the cabinet; open + inspect + close observes it; after the
    door closes it is known but not in view, so pick is refused (NOT_IN_VIEW);
 4. a pick does not track an object outside the current view;
-5. explore chooses viewpoints and computes coverage from the static layout
-   only (the number of coverage targets equals the static support count).
+5. explore_room chooses viewpoints and computes coverage from the static layout
+   only (the number of coverage targets equals the static furniture count).
 """
 
 from __future__ import annotations
@@ -133,15 +133,15 @@ def main():
         # 5 ------------------------------------------------------------------
         from zeno_skills.evaluator import room_of
         room = "living_room_0_0"
-        static = sum(1 for s_ in rig.ann.supports
-                     if room_of(rig.ann.rooms, ((s_["aabb_xy"][0] + s_["aabb_xy"][2]) / 2,
+        static = len({s_["furniture"] for s_ in rig.ann.supports
+                      if room_of(rig.ann.rooms, ((s_["aabb_xy"][0] + s_["aabb_xy"][2]) / 2,
                                                 (s_["aabb_xy"][1] + s_["aabb_xy"][3]) / 2)) == room
-                     and (s_["aabb_xy"][2] - s_["aabb_xy"][0]) * (s_["aabb_xy"][3] - s_["aabb_xy"][1]) > 0.05
-                     and 0.3 <= s_["z"] <= 1.6 and s_.get("clearance", 1.0) >= 0.3)
-        fb = s.call("explore", {"room": room})
+                      and (s_["aabb_xy"][2] - s_["aabb_xy"][0]) * (s_["aabb_xy"][3] - s_["aabb_xy"][1]) > 0.05
+                      and 0.3 <= s_["z"] <= 1.6 and s_.get("clearance", 1.0) >= 0.3})
+        fb = s.call("explore_room", {"room": room})
         ev = [e for e in rig.events if e["label"] == "explore_result"]
         n_t = ev[-1]["targets"] if ev else None
-        check("explore coverage targets = static supports only", n_t == static, f"targets {n_t}, static {static}, "
+        check("explore coverage targets = static furniture only", n_t == static, f"targets {n_t}, static {static}, "
               f"result {fb['success']} {fb['error']}")
     except Exception as exc:
         checks.append({"check": "crash", "passed": False, "detail": f"{type(exc).__name__}: {exc}",

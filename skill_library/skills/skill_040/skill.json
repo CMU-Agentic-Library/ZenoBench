@@ -383,6 +383,12 @@
     "verb": "place",
     "when": "the receptacle is behind a closed door",
     "type": "repair"
+   },
+   {
+    "skill_id": "skill_071",
+    "verb": "explore_furniture",
+    "when": "a closed cabinet door hides the inside layers",
+    "type": "recover"
    }
   ],
   "alternative": [

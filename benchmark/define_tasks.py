@@ -21,13 +21,13 @@ from pathlib import Path
 OUT = Path(__file__).with_name("tasks.json")
 
 ISLAND = "kitchen_island/top"
-BOOKCASE = "bookcase_2/surface_3"
-DINING = "dining_table_2/surface_2"
+BOOKCASE = "bookcase_2/top"
+DINING = "dining_table_2/top"
 CAB = "kitchen_cabinet_6"
 CAB_TOP = CAB + "/top"
 CAB2_TOP = "kitchen_cabinet_4/top"
-TV = "tv_stand_2/surface_1"
-DESK = "desk_1/surface_0"
+TV = "tv_stand_2/top"
+DESK = "desk_1/top"
 STOVE_TOP = "kitchen_stove/top"
 MW = "kitchen_microwave"
 MW_FLOOR = "kitchen_microwave/inside_floor"
@@ -478,13 +478,13 @@ TASKS.append({
     "oracle": {"can_on_island": "nominal", "can_in_dining_room": "search_first"},
     "routes": {
         "nominal": {"kind": "nominal", "variants": ["can_on_island"], "steps": [
-            S("look", target=ISLAND), S("explore", room="living_room_0_0"),
+            S("look", target=ISLAND), S("explore_room", room="living_room_0_0"),
             S("navigate", destination="soda_can"), S("pick", object="soda_can"),
             S("lift", object="soda_can", height_m=0.95), S("navigate", destination="trash_can"),
             S("hover", object="soda_can", target="trash_can"), S("drop", object="soda_can", container="trash_can")]},
         "search_first": {"kind": "fallback", "variants": ["can_in_dining_room"],
                          "recovery": "Pick refused (can not observed) -> Search -> found on the dining table",
-                         "steps": [S("look", target=ISLAND), S("explore", room="living_room_0_0"),
+                         "steps": [S("look", target=ISLAND), S("explore_room", room="living_room_0_0"),
                                    S("pick", "fail", "failure", object="soda_can"),
                                    S("search", role="recovery", object="soda_can", region="dining_room_0_1"),
                                    S("navigate", destination="soda_can"), S("pick", object="soda_can"),
@@ -606,7 +606,7 @@ HARD = {
                                  "recovery": "pick refused (can not observed) -> search -> explore for the trash can",
                                  "steps": [S("pick", "fail", "failure", object="soda_can"),
                                            S("search", role="recovery", object="soda_can", region=HALL),
-                                           S("explore", role="recovery", room=HALL),
+                                           S("explore_room", role="recovery", room=HALL),
                                            S("navigate", destination="soda_can"), S("pick", object="soda_can"),
                                            S("navigate", destination="trash_can"),
                                            S("drop", object="soda_can", container="trash_can")]}}),
@@ -717,7 +717,7 @@ PROBES = [
     probe("P02_perception", "Find out what is on the island and explore the living room.",
           [S("look", target=ISLAND), S("identify", object="soda_can"), S("measure", object="juice_bottle"),
            S("count", category="cherry_tomato"), S("navigate", destination="mug"), S("inspect", receptacle="mug"),
-           S("explore", room="living_room_0_0")],
+           S("explore_room", room="living_room_0_0")],
           [["identified", "soda_can"], ["measured", "juice_bottle"], ["counted", "cherry_tomato"],
            ["room_explored", "living_room_0_0"]],
           ["k_perceive", "skill_library/tasks.json:explore_living_room / count_tomatoes"]),

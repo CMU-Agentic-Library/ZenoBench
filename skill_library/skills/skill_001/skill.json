@@ -198,6 +198,12 @@
     "verb": "close",
     "when": "the robot leaves",
     "type": "then"
+   },
+   {
+    "skill_id": "skill_071",
+    "verb": "explore_furniture",
+    "when": "an object seen on a layer must be fetched",
+    "type": "then"
    }
   ],
   "next": [

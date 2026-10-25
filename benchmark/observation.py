@@ -348,7 +348,7 @@ class GatedRunner(SkillContractRunner):
                 return "NOT_IN_VIEW", f"'{name}' is not in the current view (last seen at tick " \
                                       f"{self.obs.cache[name]['tick']}); look at it first"
         for slot in ("receptacle", "support", "surface", "destination", "obstacle", "target", "region", "room",
-                     "articulated", "appliance", "button"):
+                     "furniture", "articulated", "appliance", "button"):
             v = args.get(slot)
             if isinstance(v, str) and slot in c["inputs"] and v not in self.rig.ann.objects \
                     and v not in self.obs.places:

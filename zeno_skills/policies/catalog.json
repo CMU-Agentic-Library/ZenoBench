@@ -1667,6 +1667,21 @@
    "policy_id": "policy_115",
    "legacy_id": "hover_over",
    "class": "extra.HoverOverPolicy"
+  },
+  {
+   "id": "explore_furniture",
+   "group": "perception",
+   "description": "Aim the head at every support layer (shelf, top) of one piece of furniture from stand-off poses in front of it, crouching for low shelves; a layer counts when no board of the piece hides it.",
+   "input": "furniture",
+   "effect": "furniture_explored(furniture)",
+   "status": "callable",
+   "executor": "explore_furniture",
+   "verification": "pending Isaac Sim check (skill library v2)",
+   "schema_version": 1,
+   "kind": "low_level_policy",
+   "policy_id": "policy_116",
+   "legacy_id": "explore_furniture",
+   "class": "perceive.ExploreFurniturePolicy"
   }
  ]
 }

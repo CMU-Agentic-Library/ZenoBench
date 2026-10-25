@@ -1739,7 +1739,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) OK",
+    "on(paperback_book, dining_table_2/top) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1764,7 +1764,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) OK",
+    "on(paperback_book, dining_table_2/top) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1784,7 +1784,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) OK",
+    "on(paperback_book, dining_table_2/top) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1810,7 +1810,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) OK",
+    "on(paperback_book, dining_table_2/top) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1835,7 +1835,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) OK",
+    "on(paperback_book, dining_table_2/top) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1855,7 +1855,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) OK",
+    "on(paperback_book, dining_table_2/top) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1877,7 +1877,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) FALSE",
+    "on(paperback_book, dining_table_2/top) FALSE",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1901,7 +1901,7 @@
    "evidence_failure": "",
    "recovery": [],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) FALSE",
+    "on(paperback_book, dining_table_2/top) FALSE",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -1924,7 +1924,7 @@
     "pick_object(object=paperback_book) OK"
    ],
    "goal": [
-    "on(paperback_book, dining_table_2/surface_2) OK",
+    "on(paperback_book, dining_table_2/top) OK",
     "hand_empty(right) OK"
    ],
    "dropped": [],
@@ -2761,8 +2761,8 @@
    ],
    "evidence_failure": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top): place wooden_block_a: no free spot on kitchen_cabinet_6/top",
    "recovery": [
-    "navigate_place(destination=tv_stand_2/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/top) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/top) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
@@ -2786,8 +2786,8 @@
    "evidence_failure": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top): place wooden_block_a: no free spot on kitchen_cabinet_6/top",
    "recovery": [
     "search_object(object=wooden_block_a, region=dining_room_0_1) OK",
-    "navigate_place(destination=tv_stand_2/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/top) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/top) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
@@ -2829,8 +2829,8 @@
    ],
    "evidence_failure": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top): place wooden_block_a: no free spot on kitchen_cabinet_6/top",
    "recovery": [
-    "navigate_place(destination=tv_stand_2/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/top) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/top) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
@@ -2854,8 +2854,8 @@
    "evidence_failure": "place_object(object=wooden_block_a, receptacle=kitchen_cabinet_6/top): place wooden_block_a: no free spot on kitchen_cabinet_6/top",
    "recovery": [
     "search_object(object=wooden_block_a, region=dining_room_0_1) OK",
-    "navigate_place(destination=tv_stand_2/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/top) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/top) OK"
    ],
    "goal": [
     "hand_empty(right) OK"
@@ -2920,8 +2920,8 @@
    "failed_calls": [],
    "evidence_failure": "",
    "recovery": [
-    "navigate_place(destination=tv_stand_2/surface_1) OK",
-    "place_object(object=wooden_block_a, receptacle=tv_stand_2/surface_1) OK"
+    "navigate_place(destination=tv_stand_2/top) OK",
+    "place_object(object=wooden_block_a, receptacle=tv_stand_2/top) OK"
    ],
    "goal": [
     "hand_empty(right) OK"

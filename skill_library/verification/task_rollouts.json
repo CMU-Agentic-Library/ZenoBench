@@ -87,12 +87,12 @@
     [
      "on",
      "book_red",
-     "bookcase_2/surface_3"
+     "bookcase_2/top"
     ],
     [
      "on",
      "book_green",
-     "bookcase_3/surface_2"
+     "bookcase_3/top"
     ]
    ]
   },
@@ -119,17 +119,17 @@
     [
      "on",
      "notebook",
-     "desk_1/surface_0"
+     "desk_1/top"
     ],
     [
      "on",
      "pen",
-     "desk_1/surface_0"
+     "desk_1/top"
     ],
     [
      "on",
      "desk_mug",
-     "desk_1/surface_0"
+     "desk_1/top"
     ]
    ]
   },
@@ -149,7 +149,7 @@
       "cup",
       "spoon"
      ],
-     "dining_table_2/surface_2",
+     "dining_table_2/top",
      0.5
     ]
    ]
@@ -190,7 +190,7 @@
     [
      "on",
      "oatmeal",
-     "dining_table_2/surface_2"
+     "dining_table_2/top"
     ],
     [
      "is_closed",
@@ -245,7 +245,7 @@
     [
      "on",
      "milk",
-     "dining_table_2/surface_2"
+     "dining_table_2/top"
     ],
     [
      "is_closed",
@@ -318,12 +318,12 @@
     [
      "on",
      "tissue_box",
-     "bookcase_2/surface_3"
+     "bookcase_2/top"
     ],
     [
      "on",
      "paperback_book",
-     "bookcase_2/surface_3"
+     "bookcase_2/top"
     ]
    ]
   },
@@ -757,7 +757,7 @@
    "goal": [
     [
      "support_clear",
-     "tv_stand_2/surface_1"
+     "tv_stand_2/top"
     ]
    ]
   },

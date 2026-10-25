@@ -14,15 +14,15 @@ furniture's footprint centre) and handles every kind of prim involved:
                         them stale snaps the cabinet back when PhysX starts)
   static furniture      /World/House/Asset/base/visuals/<name> and
                         .../collisions/<name>_collision (translate + orient),
-                        annotations/house_static.json (furniture box, every
-                        support surface of it)
+                        annotations/house_static.json (furniture box); its
+                        support slabs are refit by tools/fit_support_repairs.py
   objects on top        /World/TaskAssets/<obj> listed in `carry` ride along
 
     cd zeno-house   # repository root
     OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/relocate_furniture.py [--dry-run]
 
-Then: tools/settle_scene.py sim/zeno_house.usd, tools/annotate_scene.py
-sim/zeno_house.usd annotations/zeno_house.json, and rebuild the task layers
+Then: tools/fit_support_repairs.py, tools/settle_scene.py sim/zeno_house.usd,
+tools/annotate_scene.py sim/zeno_house.usd annotations/zeno_house.json, and rebuild the task layers
 (tools/make_tasks.sh).  The script is idempotent: a furniture piece that is
 already at its target is skipped.
 """
@@ -176,15 +176,8 @@ def main():
             lo2, hi2 = move_box(a[:2], a[3:5])
             f["aabb"] = [round(float(lo2[0]), 3), round(float(lo2[1]), 3), a[2],
                          round(float(hi2[0]), 3), round(float(hi2[1]), 3), a[5]]
-            n = 0
-            for s in static["supports"]:
-                if s["furniture"] == SHORT.get(name, name):
-                    b = s["aabb_xy"]
-                    lo2, hi2 = move_box(b[:2], b[2:])
-                    s["aabb_xy"] = [round(float(v), 3) for v in (*lo2, *hi2)]
-                    n += 1
             report.append(f"MOVE {name}: ({c_old[0]:.2f}, {c_old[1]:.2f}) -> ({c_new[0]:.2f}, {c_new[1]:.2f}), "
-                          f"yaw +{dyaw:.0f}, {n} support surfaces")
+                          f"yaw +{dyaw:.0f}")
     for obj, (host, dxy) in REHOME.items():
         if host not in placed:
             continue

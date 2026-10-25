@@ -6,8 +6,9 @@ together with its evidence (`benchmark/RESULTS.md`, `benchmark/EVALUATION.md`). 
 evidence.** Every v3 episode records its own configuration hash. Only a run whose hash matches the current one
 counts.
 
-The robot, the 70 SkillNodes, the contracts, the policies, the observation gate and the house layout are the same
-as in v2. Auto-recovery stays off, and every recovery is a call that the planner chooses.
+The robot, the SkillNodes, the contracts, the policies, the observation gate and the house layout are the same
+as in v2, except that `explore` is split into `explore_room` and `explore_furniture` (71 SkillNodes). Auto-recovery
+stays off, and every recovery is a call that the planner chooses.
 
 ## Files
 
@@ -39,7 +40,7 @@ happen, or whose recovery cannot complete the task, are recorded under the task'
 * **One condition = one `variant_id`.** A condition is never defined by a seed. Medium has one condition tag,
   hard has two, easy has none (checked by `tests/test_matrix.py`). The registry gives each tag a *condition type*
   and the *decision* it requires:
-  * `explore`: search, look or explore only, no physical repair;
+  * `explore`: search, look, explore_room or explore_furniture only, no physical repair;
   * `fallback`: a real failure, then an auxiliary skill, then a retry;
   * `alternative`: another legal object, destination, appliance or tool.
 * **Seeds 10–19** are used for every easy, medium and hard condition and every planner. Each planner gets the

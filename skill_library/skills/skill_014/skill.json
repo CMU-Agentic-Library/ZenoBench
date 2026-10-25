@@ -3,23 +3,24 @@
  "kind": "skill_node",
  "skill_id": "skill_014",
  "name": "explore-room",
- "verb": "explore",
+ "verb": "explore_room",
  "noun": "room",
  "title": "Explore a room",
  "group": "perception_and_gesture",
- "signature": "explore(room: room_ref)",
+ "signature": "explore_room(room: room_ref)",
  "action_predicate": {
   "name": "explore_room",
-  "verb": "explore",
+  "verb": "explore_room",
   "noun": "room",
   "arguments": [
    "room"
   ]
  },
- "description": "Cover a room from up to three viewpoints with a left/centre/right head sweep; succeeds when at least 75 % of the room's supports and objects were seen.",
- "use_when": "A room must be surveyed before planning (unknown layout or objects).",
+ "description": "Cover a room from up to six viewpoints with a left/centre/right head sweep both ways; succeeds when at least 75 % of the room's furniture was seen. A piece of furniture counts once one of its support layers (top or shelf) is in view; seeing every shelf of one piece is explore_furniture.",
+ "use_when": "A room must be surveyed before planning (unknown layout or objects); one glance per piece of furniture.",
  "not_to_be_confused_with": {
-  "search": "search looks for one object and stops when found."
+  "search": "search looks for one object and stops when found.",
+  "explore_furniture": "explore_furniture sees every layer of one piece; explore_room counts a piece once one layer is seen."
  },
  "inputs": {
   "room": {
@@ -50,7 +51,7 @@
     "room": "$room"
    },
    "negated": false,
-   "meaning": "At least 75 % of the room's head-camera viewpoints were covered.",
+   "meaning": "At least 75 % of the room's furniture was seen (one of its support layers in the head camera).",
    "kind": "memory",
    "gt_sources": [
     "robot_memory",
@@ -69,7 +70,7 @@
      "room": "$room"
     },
     "negated": false,
-    "meaning": "At least 75 % of the room's head-camera viewpoints were covered.",
+    "meaning": "At least 75 % of the room's furniture was seen (one of its support layers in the head camera).",
     "kind": "memory",
     "gt_sources": [
      "robot_memory",
@@ -112,6 +113,14 @@
     "when": "a specific object must then be located",
     "bind": {},
     "reason": "narrow to one target",
+    "type": "then"
+   },
+   {
+    "skill_id": "skill_071",
+    "verb": "explore_furniture",
+    "when": "every shelf of one piece of furniture must be seen",
+    "bind": {},
+    "reason": "room coverage counts a piece once; its other layers may still hide objects",
     "type": "then"
    }
   ],
@@ -161,6 +170,6 @@
    },
    "depends_on": []
   },
-  "python": "SkillContractRunner(rig).run(\"explore\", {'room': ...})"
+  "python": "SkillContractRunner(rig).run(\"explore_room\", {'room': ...})"
  }
 }

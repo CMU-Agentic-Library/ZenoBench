@@ -15,7 +15,7 @@
  "placed_objects": {
   "apple": {
    "asset": "apple",
-   "support": "dining_table_2/surface_2",
+   "support": "dining_table_2/top",
    "yaw": -1.4464727375963786,
    "position": [
     2.9050908858432036,
@@ -25,7 +25,7 @@
   },
   "orange": {
    "asset": "orange",
-   "support": "dining_table_2/surface_2",
+   "support": "dining_table_2/top",
    "yaw": -3.1243861495570098,
    "position": [
     3.633128231017668,
@@ -35,7 +35,7 @@
   },
   "fruit_basket": {
    "asset": "fruit_basket",
-   "support": "bookcase_2/surface_3",
+   "support": "bookcase_2/top",
    "yaw": -2.9636549119444626,
    "position": [
     0.9242135835490825,
@@ -45,7 +45,7 @@
   },
   "serving_tray": {
    "asset": "serving_tray",
-   "support": "desk_1/surface_0",
+   "support": "desk_1/top",
    "yaw": 3.124062163134476,
    "position": [
     -0.2782103885012828,
@@ -69,19 +69,19 @@
  },
  "candidate_supports": {
   "apple": [
-   "dining_table_2/surface_2",
-   "tv_stand_2/surface_1"
+   "dining_table_2/top",
+   "tv_stand_2/top"
   ],
   "orange": [
-   "dining_table_2/surface_2",
-   "tv_stand_2/surface_1"
+   "dining_table_2/top",
+   "tv_stand_2/top"
   ],
   "fruit_basket": [
-   "bookcase_2/surface_3"
+   "bookcase_2/top"
   ],
   "serving_tray": [
-   "desk_1/surface_0",
-   "bookcase_2/surface_3"
+   "desk_1/top",
+   "bookcase_2/top"
   ]
  }
 }

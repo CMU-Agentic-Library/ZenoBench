@@ -83,7 +83,7 @@
   {
    "contract_id": "contract_022",
    "skill_id": "skill_014",
-   "verb": "explore",
+   "verb": "explore_room",
    "definition": "contracts/contract_022/contract.json"
   },
   {
@@ -421,6 +421,12 @@
    "skill_id": "skill_070",
    "verb": "hide",
    "definition": "contracts/contract_078/contract.json"
+  },
+  {
+   "contract_id": "contract_079",
+   "skill_id": "skill_071",
+   "verb": "explore_furniture",
+   "definition": "contracts/contract_079/contract.json"
   }
  ],
  "legacy_family_contracts": [

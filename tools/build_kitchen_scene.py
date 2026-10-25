@@ -27,7 +27,7 @@ sys.path.insert(0, str(ROOT))
 OUT = ROOT / "sim/zeno_house_kitchen.usd"
 BASE = ROOT / "sim/zeno_house_appliances.usd"
 
-TOP_Z = 0.86          # counter height, same as the kitchen counter repair top
+TOP_Z = 0.86          # island worktop height
 STOVE_Z = 0.70        # low hob: a lid knob on a pot stays inside the arm's top-down reach (~0.9 m)
 DEPTH = 0.45
 

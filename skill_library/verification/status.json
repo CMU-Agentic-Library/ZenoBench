@@ -236,7 +236,7 @@
     "reach_on_the_move",
     "park"
    ],
-   "evidence": "c_approach_moving: `reachable(target=dining_table_2/surface_2)` [2.863, 5.681, 0.952]"
+   "evidence": "c_approach_moving: `reachable(target=dining_table_2/top)` [2.863, 5.681, 0.952]"
   },
   "face": {
    "status": "verified",
@@ -363,7 +363,7 @@
    ],
    "evidence": "g_search_then_fetch: `observed(target=soda_can)` last seen at tick 1717"
   },
-  "explore": {
+  "explore_room": {
    "status": "verified",
    "paths_passed": [
     "viewpoints"
@@ -371,7 +371,7 @@
    "paths": [
     "viewpoints"
    ],
-   "evidence": "k_perceive: `room_explored(room=living_room_0_0)` coverage 0.88"
+   "evidence": "k_perceive: `room_explored(room=living_room_0_0)` coverage 0.86 (furniture counted once, explore split 2026-10-24)"
   },
   "point": {
    "status": "verified",
@@ -446,7 +446,7 @@
     "stove_burner",
     "surface"
    ],
-   "evidence": "b_books: `hand_empty(hand=right)` right holds None; `on(object=book_red, support=bookcase_2/surface_3)` bookcase_2/surface_3"
+   "evidence": "b_books: `hand_empty(hand=right)` right holds None; `on(object=book_red, support=bookcase_2/top)` bookcase_2/top"
   },
   "drop": {
    "status": "verified",
@@ -781,7 +781,7 @@
    "paths": [
     "fetch_each_on_support"
    ],
-   "evidence": "o_clear: `support_clear(support=tv_stand_2/surface_1)` objects []"
+   "evidence": "o_clear: `support_clear(support=tv_stand_2/top)` objects []"
   },
   "empty": {
    "status": "failed",
@@ -983,6 +983,16 @@
     "closed_cabinet"
    ],
    "evidence": "not run"
+  },
+  "explore_furniture": {
+   "status": "verified",
+   "paths_passed": [
+    "layers"
+   ],
+   "paths": [
+    "layers"
+   ],
+   "evidence": "k_perceive: `furniture_explored(furniture=large_shelf_2)` 4/4 layers, `furniture_explored(furniture=tv_stand_2)` 2/2 layers"
   }
  }
 }

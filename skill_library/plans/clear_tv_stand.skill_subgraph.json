@@ -11,7 +11,7 @@
      "value": "juice_bottle"
     },
     "receptacle": {
-     "value": "bookcase_2/surface_3"
+     "value": "bookcase_2/top"
     }
    },
    "depends_on": []
@@ -24,7 +24,7 @@
      "value": "tissue_box"
     },
     "receptacle": {
-     "value": "bookcase_2/surface_3"
+     "value": "bookcase_2/top"
     }
    },
    "depends_on": [

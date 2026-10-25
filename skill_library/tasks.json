@@ -33,8 +33,8 @@
     "apple",
     "orange",
     "fruit_basket",
-    "repair/dining_table_top",
-    "bookcase_2/surface_3"
+    "dining_table_2/top",
+    "bookcase_2/top"
    ],
    "watch": [
     "apple",
@@ -143,7 +143,7 @@
     "toy_block",
     "rubber_duck",
     "storage_basket",
-    "tv_stand_2/surface_1"
+    "tv_stand_2/top"
    ],
    "watch": [
     "toy_car",
@@ -259,21 +259,21 @@
      [
       "on",
       "book_red",
-      "bookcase_2/surface_3"
+      "bookcase_2/top"
      ],
      [
       "on",
       "book_green",
-      "bookcase_3/surface_2"
+      "bookcase_3/top"
      ]
     ]
    },
    "entities": [
     "book_red",
     "book_green",
-    "desk_1/surface_0",
-    "bookcase_2/surface_3",
-    "bookcase_3/surface_2"
+    "desk_1/top",
+    "bookcase_2/top",
+    "bookcase_3/top"
    ],
    "watch": [
     "book_red",
@@ -303,14 +303,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/surface_3"
+        "receptacle": "bookcase_2/top"
        }
       },
       {
@@ -328,14 +328,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_3/surface_2"
+        "destination": "bookcase_3/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "book_green",
-        "receptacle": "bookcase_3/surface_2"
+        "receptacle": "bookcase_3/top"
        }
       }
      ]
@@ -362,17 +362,17 @@
      [
       "on",
       "notebook",
-      "desk_1/surface_0"
+      "desk_1/top"
      ],
      [
       "on",
       "pen",
-      "desk_1/surface_0"
+      "desk_1/top"
      ],
      [
       "on",
       "desk_mug",
-      "desk_1/surface_0"
+      "desk_1/top"
      ]
     ]
    },
@@ -380,9 +380,9 @@
     "notebook",
     "pen",
     "desk_mug",
-    "repair/dining_table_top",
-    "tv_stand_2/surface_1",
-    "desk_1/surface_0"
+    "dining_table_2/top",
+    "tv_stand_2/top",
+    "desk_1/top"
    ],
    "watch": [
     "notebook",
@@ -413,14 +413,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "notebook",
-        "receptacle": "desk_1/surface_0"
+        "receptacle": "desk_1/top"
        }
       },
       {
@@ -438,14 +438,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "pen",
-        "receptacle": "desk_1/surface_0"
+        "receptacle": "desk_1/top"
        }
       },
       {
@@ -463,14 +463,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "desk_1/surface_0"
+        "destination": "desk_1/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "desk_mug",
-        "receptacle": "desk_1/surface_0"
+        "receptacle": "desk_1/top"
        }
       }
      ]
@@ -501,7 +501,7 @@
        "cup",
        "spoon"
       ],
-      "dining_table_2/surface_2",
+      "dining_table_2/top",
       0.5
      ]
     ]
@@ -510,9 +510,8 @@
     "plate",
     "cup",
     "spoon",
-    "repair/dining_table_top",
-    "tv_stand_2/surface_1",
-    "dining_table_2/surface_2"
+    "tv_stand_2/top",
+    "dining_table_2/top"
    ],
    "watch": [
     "plate",
@@ -536,7 +535,7 @@
          "cup",
          "spoon"
         ],
-        "support": "dining_table_2/surface_2",
+        "support": "dining_table_2/top",
         "max_dist_m": 0.5
        }
       }
@@ -581,7 +580,7 @@
      [
       "on",
       "oatmeal",
-      "dining_table_2/surface_2"
+      "dining_table_2/top"
      ],
      [
       "is_closed",
@@ -600,7 +599,7 @@
     "breakfast_fridge/inside_shelf",
     "kitchen_microwave/inside_floor",
     "kitchen_microwave/start_button",
-    "dining_table_2/surface_2"
+    "dining_table_2/top"
    ],
    "watch": [
     "oatmeal"
@@ -704,14 +703,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "oatmeal",
-        "receptacle": "dining_table_2/surface_2"
+        "receptacle": "dining_table_2/top"
        }
       },
       {
@@ -834,7 +833,7 @@
      [
       "on",
       "milk",
-      "dining_table_2/surface_2"
+      "dining_table_2/top"
      ],
      [
       "is_closed",
@@ -847,7 +846,7 @@
     "milk",
     "kitchen_microwave",
     "breakfast_fridge",
-    "dining_table_2/surface_2",
+    "dining_table_2/top",
     "breakfast_fridge/inside_shelf"
    ],
    "watch": [
@@ -904,14 +903,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "dining_table_2/surface_2"
+        "destination": "dining_table_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "milk",
-        "receptacle": "dining_table_2/surface_2"
+        "receptacle": "dining_table_2/top"
        }
       },
       {
@@ -983,8 +982,8 @@
     "snack_carton",
     "foam_cube",
     "wide_storage_bin",
-    "tv_stand_2/surface_1",
-    "bookcase_2/surface_3"
+    "tv_stand_2/top",
+    "bookcase_2/top"
    ],
    "watch": [
     "soda_can",
@@ -1105,12 +1104,12 @@
      [
       "on",
       "tissue_box",
-      "bookcase_2/surface_3"
+      "bookcase_2/top"
      ],
      [
       "on",
       "paperback_book",
-      "bookcase_2/surface_3"
+      "bookcase_2/top"
      ]
     ]
    },
@@ -1119,9 +1118,9 @@
     "tissue_box",
     "paperback_book",
     "shallow_sorting_tray",
-    "tv_stand_2/surface_1",
-    "bookcase_2/surface_3",
-    "repair/dining_table_top"
+    "tv_stand_2/top",
+    "bookcase_2/top",
+    "dining_table_2/top"
    ],
    "watch": [
     "juice_bottle",
@@ -1178,14 +1177,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "tissue_box",
-        "receptacle": "bookcase_2/surface_3"
+        "receptacle": "bookcase_2/top"
        }
       },
       {
@@ -1203,14 +1202,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/surface_3"
+        "destination": "bookcase_2/top"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "paperback_book",
-        "receptacle": "bookcase_2/surface_3"
+        "receptacle": "bookcase_2/top"
        }
       }
      ]
@@ -2268,7 +2267,7 @@
      "source": "skill_library/plans/explore_living_room.skill_subgraph.json",
      "steps": [
       {
-       "skill": "explore",
+       "skill": "explore_room",
        "args": {
         "room": "living_room_0_0"
        }
@@ -2728,15 +2727,15 @@
     "all": [
      [
       "support_clear",
-      "tv_stand_2/surface_1"
+      "tv_stand_2/top"
      ]
     ]
    },
    "entities": [
     "juice_bottle",
     "tissue_box",
-    "tv_stand_2/surface_1",
-    "bookcase_2/surface_3"
+    "tv_stand_2/top",
+    "bookcase_2/top"
    ],
    "watch": [
     "juice_bottle",
@@ -2755,14 +2754,14 @@
        "skill": "fetch",
        "args": {
         "object": "juice_bottle",
-        "receptacle": "bookcase_2/surface_3"
+        "receptacle": "bookcase_2/top"
        }
       },
       {
        "skill": "fetch",
        "args": {
         "object": "tissue_box",
-        "receptacle": "bookcase_2/surface_3"
+        "receptacle": "bookcase_2/top"
        }
       }
      ]

@@ -1,25 +1,25 @@
 {
  "_doc": "Human-readable names for support surfaces, furniture and floor areas of sim/zeno_house.usd. A task spec may use these aliases or raw names from annotations/zeno_house.json (supports[].name, or a furniture name = any of its surfaces). Floor areas are {room, xy box}. List all candidates with: python tools/list_places.py",
- "dining_table": "dining_table_2/surface_2",
- "side_dining_table": "dining_table_1/surface_2",
- "tv_stand": "tv_stand_2/surface_1",
- "bedroom_desk": "desk_3/surface_1",
- "study_desk": "desk_1/surface_0",
- "kids_desk": "desk_2/surface_0",
- "dining_cell_shelf_top": "cell_shelf_4/surface_4",
- "dining_cell_shelf_middle": "cell_shelf_4/surface_2",
- "dining_cell_shelf_b_top": "cell_shelf_3/surface_2",
- "kitchen_counter": "repair/kitchen_counter_top",
+ "dining_table": "dining_table_2/top",
+ "side_dining_table": "dining_table_1/top",
+ "tv_stand": "tv_stand_2/top",
+ "bedroom_desk": "desk_3/top",
+ "study_desk": "desk_1/top",
+ "kids_desk": "desk_2/top",
+ "dining_cell_shelf_top": "cell_shelf_4/top",
+ "dining_cell_shelf_middle": "cell_shelf_4/shelf_1",
+ "dining_cell_shelf_b_top": "cell_shelf_3/shelf_2",
+ "kitchen_counter": "kitchen_counter_2/top",
  "living_sideboard": "kitchen_cabinet_6/top",
  "dining_drawer_unit": "kitchen_cabinet_3/top",
- "bed": "mattress_1/surface_0",
+ "bed": "mattress_1/top",
  "bookcase_bedside": "bookcase_3",
- "bookcase_bedside_lower_shelf": "bookcase_3/surface_0",
- "bookcase_bedside_middle_shelf": "bookcase_3/surface_1",
- "bookcase_bedside_top": "bookcase_3/surface_2",
+ "bookcase_bedside_lower_shelf": "bookcase_3/shelf_0",
+ "bookcase_bedside_middle_shelf": "bookcase_3/shelf_1",
+ "bookcase_bedside_top": "bookcase_3/top",
  "bookcase_north": "bookcase_2",
- "bookcase_north_middle_shelf": "bookcase_2/surface_2",
- "bookcase_north_top": "bookcase_2/surface_3",
+ "bookcase_north_middle_shelf": "bookcase_2/shelf_1",
+ "bookcase_north_top": "bookcase_2/top",
  "floor:living_room": {
   "room": "living_room_0_0",
   "xy": [
@@ -47,5 +47,5 @@
    -1.1
   ]
  },
- "kitchen_counter_surface": "kitchen_counter_2/surface_0"
+ "kitchen_counter_surface": "kitchen_counter_2/top"
 }

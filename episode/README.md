@@ -32,7 +32,7 @@ A profile YAML is merged over `DEFAULTS` in profile.py. Unknown keys, wrong type
 | `execution.slide_to_edge` | the automatic slide-to-edge step inside pick | on | on | off |
 | `execution.advisory` | feasibility predicates that are only recorded | – | – | grasp_clearance, edge_overhang |
 | `execution.mask_feedback` | never-observed names -> `<unobserved>` in results | off | off | on |
-| `execution.occlusion` / `static_explore` | dynamic occlusion in visibility; explore covers static supports only | off | off | on |
+| `execution.occlusion` / `static_explore` | dynamic occlusion in visibility; explore_room covers static furniture only | off | off | on |
 | `execution.edge_pinch_upright_waist` | low-level edge-pinch setting | off | on | on |
 | `observation.cameras` | which cameras go into `images` | 3 | head | head |
 | `observation.gt_objects` | `objects`: task entities with GT positions | on | on | off |

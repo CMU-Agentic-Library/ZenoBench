@@ -30,7 +30,7 @@ OBSERVATION = {"NOT_OBSERVED", "NOT_IN_VIEW", "NOT_FOUND"}
 PRECONDITION = {"PRECONDITION_FAILED", "NO_PATH"}
 EXECUTION = {"POLICY_FAILED", "SUBSKILL_FAILED", "POSTCONDITION_FAILED"}
 INVALID = {"BAD_CALL", "NOUN_INVALID", "BINDING"}
-PERCEPTION = {"look", "inspect", "search", "explore", "identify", "measure", "count"}   # a failure = not observed
+PERCEPTION = {"look", "inspect", "search", "explore_room", "explore_furniture", "identify", "measure", "count"}   # a failure = not observed
 ROBOT_STATE_ATOMS = {"hand_empty", "holding", "hand_holding"}   # in the planner's robot observation
 MOVE_M = 0.01             # an object moved (state change evidence)
 BASE_MOVE_M = 0.05        # the base was repositioned
@@ -160,7 +160,8 @@ def plan_label(fb, chain_code, failed_checks):
         return "valid", "arguments and preconditions held; the controller failed"
     if cls == "observation":
         return "undetermined", "refused by the observation gate (probe or missing look)"
-    if fb.get("action", "").split("_")[0] in PERCEPTION:
+    name = fb.get("action", "").split("(", 1)[0]
+    if any(name == v or name.startswith(v + "_") for v in PERCEPTION):
         return "valid", "a perception call that did not find its target"
     return "undetermined", "no error code"
 

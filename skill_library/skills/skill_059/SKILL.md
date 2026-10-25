@@ -53,7 +53,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Next step: `collect` (`skill_048`) (then) — the counted objects are gathered
-- Fallback on failure: `explore` (`skill_014`) (recover) — objects of the category may be out of view
+- Fallback on failure: `explore_room` (`skill_014`) (recover) — objects of the category may be out of view
 
 ## Failure
 

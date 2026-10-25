@@ -70,6 +70,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Fallback on failure: `navigate` (`skill_001`) (repair) — the line of sight is blocked
 - Alternative: `inspect` (`skill_012`) — the target is a receptacle whose contents matter
 - Alternative: `point` (`skill_015`) — a gaze is enough to indicate the target
+- Alternative: `explore_furniture` (`skill_071`) — only one layer must be seen
 
 ## Failure
 

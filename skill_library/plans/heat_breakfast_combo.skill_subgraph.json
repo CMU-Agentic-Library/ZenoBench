@@ -84,7 +84,7 @@
    "skill": "navigate",
    "args": {
     "destination": {
-     "value": "dining_table_2/surface_2"
+     "value": "dining_table_2/top"
     }
    },
    "depends_on": [
@@ -99,7 +99,7 @@
      "value": "milk"
     },
     "receptacle": {
-     "value": "dining_table_2/surface_2"
+     "value": "dining_table_2/top"
     }
    },
    "depends_on": [

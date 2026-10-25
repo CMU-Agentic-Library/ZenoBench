@@ -23,7 +23,7 @@ Per task:
 from __future__ import annotations
 
 CAB = "kitchen_cabinet_6/top"
-TV = "tv_stand_2/surface_1"
+TV = "tv_stand_2/top"
 
 SEMANTICS = {
     "T02_stack_blocks": {

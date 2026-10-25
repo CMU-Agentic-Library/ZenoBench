@@ -99,6 +99,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Fallback on failure: `approach` (`skill_002`) (recover) — the handle is out of reach
 - Is a fallback for: `pick` (`skill_017`) (repair) — the object is inside a closed cabinet or appliance
 - Is a fallback for: `place` (`skill_018`) (repair) — the receptacle is behind a closed door
+- Is a fallback for: `explore_furniture` (`skill_071`) (recover) — a closed cabinet door hides the inside layers
 - Alternative: `press` (`skill_042`) — the door key is pressed only to open the microwave door
 
 ## Failure

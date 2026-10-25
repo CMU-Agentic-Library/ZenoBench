@@ -17,7 +17,7 @@
  "placed_objects": {
   "juice_bottle": {
    "asset": "juice_bottle",
-   "support": "tv_stand_2/surface_1",
+   "support": "tv_stand_2/top",
    "yaw": 1.9683349641197863,
    "position": [
     8.15461663958226,
@@ -27,7 +27,7 @@
   },
   "plastic_cup": {
    "asset": "plastic_cup",
-   "support": "dining_table_1/surface_2",
+   "support": "dining_table_1/top",
    "yaw": -3.1243861495570098,
    "position": [
     -7.683533077945892,
@@ -37,7 +37,7 @@
   },
   "paperback_book": {
    "asset": "paperback_book",
-   "support": "dining_table_2/surface_2",
+   "support": "dining_table_2/top",
    "yaw": 0.0,
    "position": [
     3.020089522222659,
@@ -47,7 +47,7 @@
   },
   "tissue_box": {
    "asset": "tissue_box",
-   "support": "tv_stand_2/surface_1",
+   "support": "tv_stand_2/top",
    "yaw": 0.0,
    "position": [
     7.682077667221881,
@@ -57,7 +57,7 @@
   },
   "rolling_pin": {
    "asset": "rolling_pin",
-   "support": "dining_table_1/surface_2",
+   "support": "dining_table_1/top",
    "yaw": -0.08899906526957402,
    "position": [
     -7.709108480051822,
@@ -67,7 +67,7 @@
   },
   "shallow_sorting_tray": {
    "asset": "shallow_sorting_tray",
-   "support": "bookcase_2/surface_3",
+   "support": "bookcase_2/top",
    "yaw": 0.4494351814662769,
    "position": [
     0.9642543263242308,
@@ -87,22 +87,22 @@
  },
  "candidate_supports": {
   "juice_bottle": [
-   "tv_stand_2/surface_1"
+   "tv_stand_2/top"
   ],
   "plastic_cup": [
-   "dining_table_1/surface_2"
+   "dining_table_1/top"
   ],
   "paperback_book": [
-   "dining_table_2/surface_2"
+   "dining_table_2/top"
   ],
   "tissue_box": [
-   "tv_stand_2/surface_1"
+   "tv_stand_2/top"
   ],
   "rolling_pin": [
-   "dining_table_1/surface_2"
+   "dining_table_1/top"
   ],
   "shallow_sorting_tray": [
-   "bookcase_2/surface_3"
+   "bookcase_2/top"
   ]
  }
 }

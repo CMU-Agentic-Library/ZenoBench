@@ -47,7 +47,8 @@ SYNONYM_GROUPS = [
     {"look", "gaze", "glance", "watch", "view", "observe"},
     {"inspect", "examine", "check", "peek"},
     {"search", "find", "seek", "locate", "hunt"},
-    {"explore", "scan", "survey", "patrol", "sweep_room"},
+    {"explore_room", "explore", "scan", "survey", "patrol", "sweep_room"},
+    {"explore_furniture", "scan_shelves", "survey_furniture"},
     {"point", "indicate", "gesture"},
     {"present", "show", "display", "offer"},
     {"release", "let_go", "unhand", "ungrip"},
@@ -124,13 +125,14 @@ NOUN_FIELDS = {
                   "bearing_abs_deg"},
     "button": {"instance", "kind", "appliance", "button", "appliance_category", "bearing_abs_deg"},
     "room": {"instance", "kind", "bearing_abs_deg"},
+    "furniture": {"instance", "kind", "bearing_abs_deg"},
     "robot": {"right_held", "left_held", "right_object", "left_object", "right_kind", "both_hold_same",
               "right_arm_stowed"},
 }
 TYPE_FIELDS = {
     "object_ref": "object", "container_ref": "object", "lid_ref": "object", "tool_ref": "object",
     "support_ref": "support", "articulated_ref": "articulated", "appliance_ref": "appliance",
-    "button_ref": "button", "room_ref": "room",
+    "button_ref": "button", "room_ref": "room", "furniture_ref": "furniture",
 }
 
 
@@ -355,7 +357,8 @@ def check_library(skills: list[dict]) -> list[str]:
         if s["verb"] in by_verb:
             errors.append(f"duplicate verb {s['verb']}")
         by_verb[s["verb"]] = s
-        if not re.fullmatch(r"[a-z]+", s["verb"]) or not re.fullmatch(r"[a-z_]+", s["noun"]):
+        # a verb is one word, or verb_noun where one act splits by what it covers (explore_room / explore_furniture)
+        if not re.fullmatch(r"[a-z]+(_[a-z]+)?", s["verb"]) or not re.fullmatch(r"[a-z_]+", s["noun"]):
             errors.append(f"{s['verb']}: verb/noun must be lowercase words")
     for group in SYNONYM_GROUPS:
         hit = sorted(set(by_verb) & group)

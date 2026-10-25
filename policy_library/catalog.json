@@ -691,6 +691,12 @@
       "name": "hover_over",
       "legacy_id": "hover_over",
       "definition": "policies/policy_115/policy.json"
+    },
+    {
+      "policy_id": "policy_116",
+      "name": "explore_furniture",
+      "legacy_id": "explore_furniture",
+      "definition": "policies/policy_116/policy.json"
     }
   ]
 }

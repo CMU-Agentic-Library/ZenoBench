@@ -17,7 +17,7 @@
  "placed_objects": {
   "handled_cooking_pot": {
    "asset": "handled_cooking_pot",
-   "support": "kitchen_counter_2/surface_0",
+   "support": "kitchen_counter_2/top",
    "yaw": 1.5707963267948966,
    "position": [
     -0.2098,
@@ -32,7 +32,7 @@
  "roles": {},
  "candidate_supports": {
   "handled_cooking_pot": [
-   "kitchen_counter_2/surface_0"
+   "kitchen_counter_2/top"
   ]
  }
 }
