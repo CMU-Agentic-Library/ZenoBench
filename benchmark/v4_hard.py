@@ -34,6 +34,7 @@ from define_tasks import (BOOKCASE, CAB, CAB2_TOP, CAB_TOP, DESK, DINING, ISLAND
                           STOVE_TOP, TV, S, at)
 
 VERSION = "v4"
+DEV = False                 # benchmark/v4_hard.py dev variants (physics probes), only in candidate catalogs
 HALL = "living_room_0_0"
 BEDROOM = "bedroom_0_1"
 
@@ -41,8 +42,12 @@ BEDROOM = "bedroom_0_1"
 CONDITIONS = {
     "surface_cluttered": ("occupied_workspace", "insert",
                           "objects cover every free strip of the surface: move one aside, do the work, put it back"),
-    "cookware_off_burner": ("cookware_placement", "replace",
-                            "the pot stands off the stove: bring it to a burner before (or instead of) cooking in place"),
+    "cookware_choice": ("cookware_choice", "replace",
+                        "several vessels by the food, only one supports every step (lid, burner): choose it and bring "
+                        "it to the stove first"),
+    "appliance_occupied": ("appliance_choice", "replace",
+                           "the usual appliance is taken by something else; another one does the job without clearing "
+                           "it (clearing stays allowed)"),
     "spot_quality": ("destination_constraint", "insert",
                      "the destination has free spots that violate the instruction (crowding the place settings, "
                      "hidden, at the edge): choose the spot from what is observed"),
@@ -50,13 +55,16 @@ CONDITIONS = {
                       "the obvious base lies at the edge: stack on the other one or move it in first"),
     "joint_capacity": ("container_capacity", "decompose",
                        "several containers, only one holds every item together: allocate the items jointly"),
-    "appliance_and_burner": ("appliance_failure", "replace",
-                             "the microwave does not heat and the free burner is taken: switch appliance and clear "
-                             "the burner first"),
+    "anchor_boxed_in": ("anchor_relocation", "insert",
+                        "the object to set things next to has no room around it: move it to where the whole setting "
+                        "fits"),
     "no_cup": ("object_absent", "alternative", "the requested object does not exist; the allowed substitute is used"),
     "destination_full": ("destination_occupied", "insert",
                          "the destination has no room left: move what occupies it to a legal place, then put the "
                          "object there"),
+    "item_out_of_view": ("search_target", "decompose",
+                         "one of several items to collect is in another room, out of view: search, then route the "
+                         "collection"),
     "decoy_destination": ("destination_identity", "decompose",
                           "a container that the instruction does not allow stands where the named one should be"),
 }
@@ -107,52 +115,65 @@ HARD = {}
 # off the island opens a strip; restore puts it back on its own spot afterwards (restore needs it on another support)
 T08_FRONT = {"rolling_pin": at(ISLAND, 6.75, 1.62, 0), "wooden_block_a": at(ISLAND, 7.10, 1.62),
              "soda_can": at(ISLAND, 7.45, 1.62), "wooden_block_b": at(ISLAND, 7.80, 1.62),
-             "mug": at(ISLAND, 8.05, 1.62)}
-T08_BACK = {"oatmeal": at(ISLAND, 6.75, 1.88), "paperback_book": at(ISLAND, 7.15, 1.88, 0),
-            "juice_bottle": at(ISLAND, 7.50, 1.88), "breakfast_spoon": at(ISLAND, 7.85, 1.88, 0)}
+             "mug": at(ISLAND, 8.10, 1.62)}
+# the back row sits behind the front row's gaps, so no strip runs across the island either (wipe strips run along
+# the edge nearest the robot: standing by the island's end, that is a cross strip; one opened through the gaps of
+# both rows in the first layout, s10)
+T08_BACK = {"oatmeal": at(ISLAND, 6.97, 1.88), "paperback_book": at(ISLAND, 7.27, 1.88, 0),
+            "breakfast_spoon": at(ISLAND, 7.63, 1.88, 0), "juice_bottle": at(ISLAND, 7.94, 1.88)}
 T08_LINE = {**T08_FRONT, **T08_BACK}
 T08_GOAL = {"all": [["wiped", ISLAND], ["on", "kitchen_sponge", ISLAND], ["hand_empty", "right"],
                     *[["near_start", n, 0.06] for n in T08_LINE],
                     *[["upright", n] for n in ("soda_can", "mug", "juice_bottle", "oatmeal")]]}
-_t08_tail = [S("navigate", destination="kitchen_sponge"), S("pick", object="kitchen_sponge"),
-             S("wipe", surface=ISLAND, tool="kitchen_sponge"),
-             S("place", object="kitchen_sponge", receptacle=ISLAND)]
+_t08_sponge = [S("look", target=TV), S("navigate", destination="kitchen_sponge"), S("pick", object="kitchen_sponge")]
 _t08_aside = [S("navigate", destination="wooden_block_a", role="insert"),
               S("pick", object="wooden_block_a", role="insert"), S("navigate", destination=TV, role="insert"),
               S("place", object="wooden_block_a", receptacle=TV, role="insert")]
-_t08_wipe = [S("navigate", destination="kitchen_sponge"), S("pick", object="kitchen_sponge"),
-             S("approach", target=ISLAND, role="insert"), S("wipe", surface=ISLAND, tool="kitchen_sponge"),
-             S("place", object="kitchen_sponge", receptacle=ISLAND), S("restore", object="wooden_block_a",
-                                                                       role="restore")]
+_t08_wipe = [S("approach", target=ISLAND), S("wipe", surface=ISLAND, tool="kitchen_sponge"),
+             S("place", object="kitchen_sponge", receptacle=ISLAND),
+             S("restore", object="wooden_block_a", role="restore")]
 HARD["T08_wipe_island"] = {
     "variants": {"island_cluttered": hard(
         "after cooking the island is cluttered along both long strips (pin, two blocks, can and mug in front; bowl, "
-        "book, bottle and spoon behind); the sponge lies at its spot behind them", ["surface_cluttered"],
+        "book, spoon and bottle behind, staggered); the sponge dries on the TV stand", ["surface_cluttered"],
         instruction="Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly "
                     "and put them back as they were, then leave the sponge on the island.",
         instruction_zh="用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵留在岛台。",
         goal=T08_GOAL, watch=["kitchen_sponge", *T08_LINE],
-        move=dict(T08_LINE))},            # the sponge stays at its own spot (8.16, 1.82)
+        # the sponge dries on the TV stand (on the island it was out of view behind the mug or missed, s10)
+        move={**T08_LINE, "kitchen_sponge": at(TV, 7.6, 0.38)})},
     "routes": {
         "hard_clear_wipe_restore": {
             "kind": "fallback", "variants": ["island_cluttered"],
-            "recovery": "wipe refused (no free strip) -> put the sponge down, move one block to the TV stand -> "
-                        "wipe -> put the block back",
-            "steps": [S("look", target=ISLAND), *_t08_tail[:2],
+            "recovery": "wipe refused (no free strip) -> put the sponge back on the TV stand, move one block there "
+                        "-> wipe -> put the block back",
+            "steps": [S("look", target=ISLAND), *_t08_sponge, S("approach", target=ISLAND),
                       S("wipe", "fail", "failure", surface=ISLAND, tool="kitchen_sponge"),
-                      S("place", object="kitchen_sponge", receptacle=ISLAND, hint_xy=[8.16, 1.82]),
-                      *_t08_aside, *_t08_wipe]},
+                      S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV),
+                      *_t08_aside, S("navigate", destination="kitchen_sponge"), S("pick", object="kitchen_sponge"),
+                      *_t08_wipe]},
         "hard_proactive": {
             "kind": "alternative", "variants": ["island_cluttered"],
             "recovery": "the clutter is seen first: move one block to the TV stand, wipe, put it back",
-            "steps": [S("look", target=ISLAND), *_t08_aside, *_t08_wipe]}},
+            "steps": [S("look", target=ISLAND), *_t08_aside, *_t08_sponge, *_t08_wipe]},
+        "naive_wipe_around": {
+            "kind": "negative", "variants": ["island_cluttered"],
+            "note": "the Easy plan: wipe is refused (no free strip) and the plan gives up instead of making room",
+            "steps": [S("look", target=ISLAND), *_t08_sponge, S("approach", target=ISLAND),
+                      S("wipe", "fail", surface=ISLAND, tool="kitchen_sponge"),
+                      S("place", object="kitchen_sponge", receptacle=ISLAND)]}},
     "oracle": {"island_cluttered": "hard_proactive"},
     "vary": {"island_cluttered": vary()},
 }
 
-# ----------------------------------------------------------------- T09 tomato soup (replace / reorder: pot to the stove first)
-# the pot's handle points to the robot side (yaw 180)
-T09_POT_OFF = {"handled_cooking_pot": at(ISLAND, 7.20, 1.78, 180), "pot_lid": at(STOVE_TOP, 8.715, 1.655)}
+# ----------------------------------------------------------------- T09 tomato soup (choose the cookware, reorder)
+# three vessels stand by the tomatoes on the island: an empty breakfast bowl, a mug and the pot (off the stove, its
+# lid on the stove).  Only the pot takes the whole recipe: it holds the tomatoes for stirring, its lid fits, and it
+# goes on a burner; the bowl and the mug are the nearer containers but neither is cookware for the lid and the
+# stove.  The chosen pot has to reach a burner before the soup can be heated (reordered: pot first, then the rest).
+# The pot's handle points to the robot side (yaw 180)
+T09_POT_OFF = {"handled_cooking_pot": at(ISLAND, 7.20, 1.78, 180), "pot_lid": at(STOVE_TOP, 8.715, 1.655),
+               "bowl_kitchen_cabinet": at(ISLAND, 7.98, 1.80), "mug_counter": at(ISLAND, 8.14, 1.62)}
 _t09_soup = [S("navigate", destination="breakfast_spoon"), S("pick", object="breakfast_spoon"),
              S("navigate", destination=POT), S("stir", container=POT, tool="breakfast_spoon"),
              S("navigate", destination=ISLAND), S("place", object="breakfast_spoon", receptacle=ISLAND),
@@ -161,27 +182,48 @@ _t09_soup = [S("navigate", destination="breakfast_spoon"), S("pick", object="bre
              S("heat", food="cherry_tomato_1", appliance="kitchen_stove", temp_c=60)]
 HARD["T09_tomato_soup"] = {
     "variants": {"pot_off_stove": hard(
-        "the empty pot stands on the island next to the tomatoes, its lid lies on the stove", ["cookware_off_burner"],
+        "a breakfast bowl, a mug and the empty pot stand on the island by the tomatoes; the pot's lid lies on the "
+        "stove", ["cookware_choice"],
         instruction="Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the "
                     "pot and heat the soup to 60 C, then turn the stove off.",
         instruction_zh="请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。",
+        watch=["cherry_tomato_1", "cherry_tomato_2", POT, "pot_lid", "breakfast_spoon", "bowl_kitchen_cabinet",
+               "mug_counter"],
         remove=["wooden_block_a", "wooden_block_b"], move=dict(T09_POT_OFF),
         handle_objects=[POT])},              # the pot's handle collider (pick grasp=handle)
     "routes": {
         "hard_pot_to_stove": {
             "kind": "alternative", "variants": ["pot_off_stove"],
-            "recovery": "the pot is not on the stove: carry it to a burner first, then cook in it",
+            "recovery": "of the three vessels only the pot can be lidded and heated on the stove: carry it to a "
+                        "burner first, then cook in it",
             "steps": [S("look", target=ISLAND), S("navigate", destination=POT, role="insert"),
                       S("pick", object=POT, grasp="handle", role="insert"),
+                      # from the stove top's navigate pose the hand hanging the pot by its handle has no IK above the
+                      # burner (3/3 runs, s10) and approach finds no base pose there; each refused place re-parks the
+                      # base, after which approach and the place run (probe_place_pot_after_retry, s10).  The pot
+                      # swings ~5 cm west on release (it came to rest on the island's edge from targets at x 8.41 and
+                      # 8.45): the target is 9 cm east of the left burner's centre, still on it (13 cm)
                       S("navigate", destination=STOVE_TOP, role="insert"),
-                      # from the navigate pose the hand hanging the pot by its handle had no IK above the burner;
-                      # after approach the place ran, but at (8.41, 1.64) the pot's rim caught the island's edge
-                      # (2 cm west of the stove) and it came to rest on it (s10): 4 cm further east, still on the
-                      # burner (on_burner: 13 cm)
-                      S("approach", target=STOVE_TOP, role="insert"),
-                      S("place", object=POT, receptacle=STOVE_TOP, hint_xy=[8.45, 1.66], role="insert"),
+                      S("place", "fail", "failure", object=POT, receptacle=STOVE_TOP, hint_xy=[8.50, 1.68]),
+                      S("place", "fail", "failure", object=POT, receptacle=STOVE_TOP),
+                      S("approach", target=STOVE_TOP, role="recovery"),
+                      S("place", object=POT, receptacle=STOVE_TOP, hint_xy=[8.50, 1.68], role="retry_after_recovery"),
                       S("navigate", destination=ISLAND), S("look", target=ISLAND),
                       S("collect", objects=["cherry_tomato_1", "cherry_tomato_2"], container=POT), *_t09_soup]},
+        "naive_nearest_vessel": {
+            "kind": "negative", "variants": ["pot_off_stove"],
+            "note": "the nearest container, the breakfast bowl: the soup is not in the pot (and the bowl is no cookware)",
+            "steps": [S("look", target=ISLAND),
+                      S("collect", objects=["cherry_tomato_1", "cherry_tomato_2"], container="bowl_kitchen_cabinet")]},
+        "probe_place_pot_after_retry": {
+            "kind": "diagnostic", "variants": ["pot_off_stove"],
+            "note": "the sequence whose third attempt released the pot on the stove (s10): two refused places, approach",
+            "steps": [S("look", target=ISLAND), S("navigate", destination=POT), S("pick", object=POT, grasp="handle"),
+                      S("navigate", destination=STOVE_TOP),
+                      S("place", "fail", object=POT, receptacle=STOVE_TOP, hint_xy=[8.45, 1.66]),
+                      S("place", "fail", object=POT, receptacle=STOVE_TOP),
+                      S("approach", target=STOVE_TOP),
+                      S("place", object=POT, receptacle=STOVE_TOP, hint_xy=[8.45, 1.66])]},
         "probe_place_pot": {
             "kind": "diagnostic", "variants": ["pot_off_stove"],
             "note": "placement attempts of the handle-held pot on the stove",
@@ -197,7 +239,7 @@ HARD["T09_tomato_soup"] = {
 }
 
 
-# ----------------------------------------------------------------- T01 book to the dining table (choose the spot)
+# ----------------------------------------------------------------- T01 book to the dining table (where to read)
 # the table is set along its east edge (the side the robot parks at, 4.33 / 6.25): the free edge slots between the
 # settings fit the 18 cm book with 2-3 cm to spare except one, between the cup and the second plate (36 cm); place's
 # own choice (the slot nearest the robot) crowds a setting, the reading spot has to be chosen
@@ -206,7 +248,12 @@ T01_SET = {"bowl_side_table": at(DINING, 3.70, 5.65), "plate_counter_a": at(DINI
            "clutter_cereal_a": at(DINING, 3.70, 7.46), "mug_dining_cabinet": at(DINING, 3.70, 7.84),
            "spoon_target_table": at(DINING, 3.38, 7.04), "clutter_cereal_b": at(DINING, 3.20, 7.60)}
 T01_WARE = list(T01_SET)
+T01_PLACES = ["bowl_side_table", "plate_counter_a", "plate_counter_b"]
+# easy to read over breakfast: beside a place setting (within 15 cm of a plate or the bowl); out of the way: 5 cm clear
+# of every piece of tableware, and none of it moved.  Three kinds of free spot exist: wedged between settings (too
+# close), far from any setting (west edge, south end: not where one eats) and the one slot beside the second plate
 T01_GOAL = {"all": [["on", "paperback_book", DINING], ["clear_of", "paperback_book", T01_WARE, 0.05],
+                    ["near_any", "paperback_book", T01_PLACES, 0.15],
                     *[["near_start", n, 0.03] for n in T01_WARE],
                     *[["upright", n] for n in ("cup_side_table", "mug_dining_cabinet", "clutter_cereal_a",
                                                "clutter_cereal_b")], ["hand_empty", "right"]]}
@@ -343,41 +390,41 @@ HARD["T06_block_destination_occupied"] = {
     "vary": {"display_hidden": vary()},
 }
 
-# ----------------------------------------------------------------- T07 heat the oatmeal (replace appliance, clear burner)
-_t07_mw = [S("navigate", destination=MW), S("open", articulated=MW), S("look", target=ISLAND),
-           S("navigate", destination="oatmeal"), S("pick", object="oatmeal"), S("navigate", destination=MW_FLOOR),
-           S("place", object="oatmeal", receptacle=MW_FLOOR), S("close", articulated=MW),
-           S("heat", "fail", "failure", food="oatmeal", appliance=MW, temp_c=40),
-           S("stop", role="alternative", appliance=MW), S("pick", role="alternative", object="oatmeal")]
+# ----------------------------------------------------------------- T07 heat the oatmeal (choose the appliance)
+# the microwave works, but the soup pot with its lid was put away in it: its 26 cm leave 13 cm on either side of the
+# cavity, the 18 cm oatmeal bowl does not fit beside it.  Both burners are free.  Valid plans: heat on the stove (no
+# clearing), or take the pot out of the microwave first and use it.  Nothing fails on purpose; what the cavity holds
+# is seen once the door is open
+T07_MW = {"handled_cooking_pot": {"support": MW_FLOOR, "xy": [4.50, 2.50], "yaw_deg": 0},
+          "pot_lid": {"support": None, "z": 0.880, "xy": [4.50, 2.50], "yaw_deg": 0}}
 HARD["T07_heat_oatmeal"] = {
-    "variants": {"microwave_broken_burner_taken": hard(
-        "the microwave runs but does not heat; the pot stands on the left burner and a mug on the right one",
-        ["appliance_and_burner"],
+    "variants": {"microwave_holds_pot": hard(
+        "the soup pot with its lid stands in the microwave (no room for the bowl beside it); both burners are free",
+        ["appliance_occupied"],
         instruction="Warm up the leftover oatmeal for breakfast to at least 40 C in a way that works. When you are "
                     "done, the stove must be off and the microwave door closed.",
         instruction_zh="请用合适方式把燕麦粥加热到至少 40°C，完成后关火并关好微波炉门。",
         goal={"all": [["temperature_at_least", "oatmeal", 40], ["not heating", "kitchen_stove"], ["is_closed", MW],
-                      ["upright", "mug"], ["hand_empty", "right"]]},
-        watch=["oatmeal", "mug"], thermal_override=NO_MW, move={"mug": at(STOVE_TOP, 8.70, 1.725)})},
+                      ["not on_floor", POT], ["hand_empty", "right"]]},
+        watch=["oatmeal", POT, "pot_lid"], move=dict(T07_MW))},
     "routes": {
-        "hard_stove_clear_burner": {
-            "kind": "alternative", "variants": ["microwave_broken_burner_taken"],
-            "recovery": "microwave does not heat -> stove; the free burner holds a mug: set the oatmeal down, move "
-                        "the mug to the island, then heat on that burner",
-            "steps": [*_t07_mw, S("navigate", destination=STOVE_TOP, role="alternative"),
-                      S("place", "fail", "failure", object="oatmeal", receptacle=STOVE_TOP),
-                      S("navigate", destination=ISLAND, role="insert"),
-                      S("place", object="oatmeal", receptacle=ISLAND, role="insert"),
-                      S("navigate", destination=STOVE_TOP, role="insert"), S("look", target=STOVE_TOP, role="insert"),
-                      S("navigate", destination="mug", role="insert"), S("pick", object="mug", role="insert"),
-                      S("navigate", destination=ISLAND, role="insert"),
-                      S("place", object="mug", receptacle=ISLAND, role="insert"),
+        "hard_stove_instead": {
+            "kind": "alternative", "variants": ["microwave_holds_pot"],
+            "recovery": "the microwave is taken by the pot: heat on the free stove instead of clearing it",
+            "steps": [S("navigate", destination=MW), S("open", articulated=MW), S("look", target=MW_FLOOR),
+                      S("close", articulated=MW), S("look", target=ISLAND), S("navigate", destination="oatmeal"),
+                      S("pick", object="oatmeal"), S("navigate", destination=STOVE_TOP, role="alternative"),
+                      S("place", object="oatmeal", receptacle=STOVE_TOP, role="alternative"),
+                      S("heat", role="alternative", food="oatmeal", appliance="kitchen_stove", temp_c=40)]},
+        "naive_microwave_anyway": {
+            "kind": "negative", "variants": ["microwave_holds_pot"],
+            "note": "the Easy plan: the bowl does not fit next to the pot",
+            "steps": [S("navigate", destination=MW), S("open", articulated=MW), S("look", target=ISLAND),
                       S("navigate", destination="oatmeal"), S("pick", object="oatmeal"),
-                      S("navigate", destination=STOVE_TOP), S("place", object="oatmeal", receptacle=STOVE_TOP),
-                      S("heat", role="alternative", food="oatmeal", appliance="kitchen_stove", temp_c=40),
-                      S("navigate", destination=MW), S("close", articulated=MW)]}},
-    "oracle": {"microwave_broken_burner_taken": "hard_stove_clear_burner"},
-    "vary": {"microwave_broken_burner_taken": vary()},
+                      S("navigate", destination=MW_FLOOR),
+                      S("place", "fail", object="oatmeal", receptacle=MW_FLOOR)]}},
+    "oracle": {"microwave_holds_pot": "hard_stove_instead"},
+    "vary": {"microwave_holds_pot": vary()},
 }
 
 # ----------------------------------------------------------------- T11 collect the fruit (decoy where the basket was)
@@ -409,20 +456,24 @@ HARD["T11_collect_fruits"] = {
 }
 
 # ----------------------------------------------------------------- T19 recycling (the instructed bin, not a look-alike)
-# a second wide storage bin holding toy blocks stands on the living-room cabinet next to the bedroom door (on the way);
-# the recycling bin on the bedroom bookcase already holds a used plastic cup
+# the can is not on the TV stand today but on the dining table (out of the living-room views: search); the foam cube
+# lies on the living-room floor.  A second wide storage bin holding toy blocks stands on the living-room cabinet by the
+# bedroom door, on the way; the recycling bin on the bedroom bookcase already holds a used plastic cup.  Collecting
+# the two items from two rooms and keeping to the instructed bin is the plan
 DECOY_BIN = "toy_storage_bin"
 CAB4_TOP = "kitchen_cabinet_4/top"
 HARD["T19_recycling"] = {
     "variants": {"lookalike_bin": hard(
-        "a look-alike wide storage bin with toy blocks in it stands on the living-room cabinet by the bedroom door; "
-        "the recycling bin with a used plastic cup in it is on the bedroom bookcase", ["decoy_destination"],
+        "the can was left on the dining table (out of view); a look-alike wide storage bin with toy blocks in it "
+        "stands on the living-room cabinet by the bedroom door; the recycling bin with a used plastic cup in it is on "
+        "the bedroom bookcase", ["decoy_destination", "item_out_of_view"],
         instruction="Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, "
                     "near the low bookcase in the bedroom.",
         instruction_zh="把易拉罐和泡沫块送到卧室矮书架附近用于回收的宽储物箱中。",
         goal={"all": [["inside", "soda_can", "wide_storage_bin"], ["inside", "foam_cube", "wide_storage_bin"],
                       ["hand_empty", "right"]]},
         watch=["soda_can", "foam_cube", "wide_storage_bin", DECOY_BIN],
+        move={"soda_can": at(DINING, 3.70, 6.30)},
         add={DECOY_BIN: {"asset": "wide_storage_bin", **at(CAB4_TOP, 1.40, 0.42)},
              "toy_block_in_bin_1": {"asset": "wooden_block", "support": None, "z": 0.632, "xy": [1.33, 0.40],
                                     "yaw_deg": 0},
@@ -435,7 +486,9 @@ HARD["T19_recycling"] = {
                                 "recovery": "a wide bin with toys stands on the way: keep to the recycling bin by "
                                             "the bedroom bookcase",
                                 "steps": [S("explore_room", room="living_room_0_0"), S("navigate", destination=TV),
-                                          S("look", target=TV), S("navigate", destination="soda_can"),
+                                          S("look", target=TV),
+                                          S("search", role="recovery", object="soda_can", region="dining_room_0_1"),
+                                          S("navigate", destination="soda_can"),
                                           S("pick", object="soda_can"), S("navigate", destination=BOOKCASE),
                                           S("look", target=BOOKCASE), S("navigate", destination="wide_storage_bin"),
                                           S("approach", target="wide_storage_bin"),
@@ -445,8 +498,9 @@ HARD["T19_recycling"] = {
                                           S("drop", object="foam_cube", container="wide_storage_bin")]},
         "naive_nearest_bin": {"kind": "negative", "variants": ["lookalike_bin"],
                               "note": "the first wide bin on the way",
-                              "steps": [S("explore_room", room="living_room_0_0"), S("navigate", destination=TV),
-                                        S("look", target=TV), S("navigate", destination="soda_can"),
+                              "steps": [S("explore_room", room="living_room_0_0"),
+                                        S("search", object="soda_can", region="dining_room_0_1"),
+                                        S("navigate", destination="soda_can"),
                                         S("pick", object="soda_can"), S("navigate", destination=DECOY_BIN),
                                         S("drop", object="soda_can", container=DECOY_BIN)]}},
     "oracle": {"lookalike_bin": "hard_instructed_bin"},
@@ -454,41 +508,59 @@ HARD["T19_recycling"] = {
 }
 
 
-# ----------------------------------------------------------------- T12 tidy all the toys (decompose / allocate)
-# the report's Hard widens the instruction to every scattered toy: the car on the living-room floor, the duck left on
-# the study desk, the toy block on the bedroom floor; the storage basket is gone, the bedroom bookcase has a small
-# storage bin (22 x 17 x 9 cm) and the wide one (34 x 30 x 14 cm): the toys are spread over three rooms and over the
-# two containers by size (the 12 cm car and the duck do not go into the small bin together with the block)
-T12_TOYS = ["toy_car", "rubber_duck", "toy_block"]
-T12_BINS = {"toy_bin_small": {"asset": "small_storage_bin", **at(BOOKCASE, 0.80, -0.43, 90)},
-            "toy_bin_wide": {"asset": "wide_storage_bin", **at(BOOKCASE, 1.10, -0.43)}}
+# ----------------------------------------------------------------- T12 tidy all the toys (allocate by capacity)
+# the report's Hard widens the instruction to every scattered toy: the car on the living-room floor, the block on the
+# TV stand, the duck left on the study desk.  The storage basket is gone; the bedroom bookcase holds the two toy
+# containers that are left, and their capacity binds:
+#   * the small storage bin (9 cm deep) already holds six wooden blocks along both ends; the 11 x 16 cm gap between
+#     them takes the duck or the car, not both (6.6 + 5.3 cm > 11 cm across, 9 + 12 cm > 16 cm along);
+#   * the shallow sorting tray (5.5 cm rim) takes the car and the block but not the 6.6-8.4 cm duck: it would stick out.
+# So no single container holds all three toys; the duck must take the bin's gap and the car the tray (the block fits
+# either).  Put away = fully inside (episode.goal_predicates.fully_inside), the stored blocks included
+T12_TOYS = ["toy_car", "rubber_duck", "toy_cube"]       # (the scene removes its own toy_block: a cube is added)
+T12_BIN, T12_TRAY = "toy_bin_small", "toy_tray"
+_t12_blocks = {f"stored_block_{i}": {"asset": "wooden_block", "support": None, "z": 0.718, "xy": [x, y], "yaw_deg": 0}
+               for i, (x, y) in enumerate([(x, y) for x in (0.762, 0.918) for y in (-0.485, -0.43, -0.375)], 1)}
+T12_ADD = {"toy_cube": {"asset": "toy_block", **at(TV, 7.30, 0.36)},
+           T12_BIN: {"asset": "small_storage_bin", **at(BOOKCASE, 0.84, -0.43)},
+           T12_TRAY: {"asset": "shallow_sorting_tray", **at(BOOKCASE, 1.13, -0.43)}, **_t12_blocks}
 _combos = [[]]
 for _t in T12_TOYS:
-    _combos = [c + [["inside", _t, b]] for c in _combos for b in T12_BINS]
-T12_GOAL = {"any": _combos, "all": [*[["upright", b] for b in T12_BINS], ["hand_empty", "right"]]}
-_t12_drop = lambda toy, b: [S("navigate", destination=toy), S("pick", object=toy), S("navigate", destination=b),
-                            S("drop", object=toy, container=b)]
+    _combos = [c + [["fully_inside", _t, b]] for c in _combos for b in (T12_BIN, T12_TRAY)]
+T12_GOAL = {"any": _combos,
+            "all": [*[["fully_inside", b, T12_BIN] for b in _t12_blocks], ["upright", T12_BIN], ["hand_empty", "right"]]}
+_t12_put = lambda toy, c, how="place": [S("navigate", destination=toy), S("pick", object=toy),
+                                        S("navigate", destination=c),
+                                        S("drop", object=toy, container=c) if how == "drop"
+                                        else S("place", object=toy, receptacle=c)]
 HARD["T12_tidy_toys"] = {
     "variants": {"toys_everywhere": hard(
-        "three toys in three rooms (car on the living-room floor, duck on the study desk, block on the bedroom "
-        "floor); no storage basket, a small and a wide storage bin on the bedroom bookcase", ["joint_capacity"],
+        "three toys in three places (car on the living-room floor, block on the TV stand, duck on the study desk); no "
+        "storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase",
+        ["joint_capacity"],
         instruction="It is nearly bedtime. Put away all the toys lying around the house into suitable storage "
                     "containers in the bedroom.",
         instruction_zh="快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。",
-        goal=T12_GOAL, watch=[*T12_TOYS, *T12_BINS], may_end_on_floor=list(T12_TOYS),
-        remove=["storage_basket"], add=dict(T12_BINS),
+        goal=T12_GOAL, watch=[*T12_TOYS, T12_BIN, T12_TRAY], may_end_on_floor=["toy_car"],
+        remove=["storage_basket"], add=dict(T12_ADD),
         move={"rubber_duck": at(DESK, -0.95, -6.02, 128.7)})},
     "routes": {
-        "hard_three_rooms_two_bins": {
+        "hard_allocate_by_size": {
             "kind": "alternative", "variants": ["toys_everywhere"],
-            "recovery": "explore the rooms for every toy; the car and the block into the wide bin, the duck into "
-                        "the small one",
-            "steps": [S("explore_room", room=BEDROOM), S("navigate", destination=BOOKCASE),
-                      S("look", target=BOOKCASE), S("explore_room", room=HALL),
-                      *_t12_drop("toy_car", "toy_bin_wide"),
+            "recovery": "look at the containers first: the duck needs the bin's last gap, the car and the block go "
+                        "to the tray",
+            "steps": [S("navigate", destination=BOOKCASE), S("look", target=BOOKCASE),
+                      S("measure", object=T12_BIN), S("measure", object=T12_TRAY), S("explore_room", room=HALL),
+                      *_t12_put("toy_car", T12_TRAY), *_t12_put("toy_cube", T12_TRAY),
                       S("search", role="recovery", object="rubber_duck", region="living_room_0_1"),
-                      *_t12_drop("rubber_duck", "toy_bin_small"), *_t12_drop("toy_block", "toy_bin_wide")]}},
-    "oracle": {"toys_everywhere": "hard_three_rooms_two_bins"},
+                      *_t12_put("rubber_duck", T12_BIN, "drop")]},
+        "naive_all_in_the_bin": {
+            "kind": "negative", "variants": ["toys_everywhere"],
+            "note": "the deeper container for the first toy found: the car takes the bin's gap, the duck fits nowhere",
+            "steps": [S("explore_room", room=HALL), *_t12_put("toy_car", T12_BIN, "drop"),
+                      S("search", object="rubber_duck", region="living_room_0_1"),
+                      *_t12_put("rubber_duck", T12_TRAY)]}},
+    "oracle": {"toys_everywhere": "hard_allocate_by_size"},
     "vary": {"toys_everywhere": vary()},
 }
 
@@ -532,22 +604,44 @@ HARD["T14_shelve_the_book"] = {
                       S("pick", object="mug_shelf", role="insert"),
                       S("place", object="mug_shelf", receptacle=BOOKCASE, hint_xy=[0.79, -0.31], role="insert"),
                       S("navigate", destination="book_red"), S("pick", object="book_red"),
-                      S("navigate", destination=BOOKCASE), S("place", object="book_red", receptacle=BOOKCASE)]}},
+                      S("navigate", destination=BOOKCASE), S("place", object="book_red", receptacle=BOOKCASE)]},
+        "probe_approach_then_place": {
+            "kind": "diagnostic", "variants": ["shelf_taken"],
+            "note": "the book placement on the bookcase top after an approach / with a hint (place_flat regression)",
+            "steps": [S("navigate", destination=BOOKCASE), S("look", target=BOOKCASE),
+                      S("navigate", destination="mug_shelf"), S("pick", object="mug_shelf"),
+                      S("place", object="mug_shelf", receptacle=BOOKCASE, hint_xy=[0.79, -0.31]),
+                      S("navigate", destination=DESK), S("look", target=DESK),
+                      S("navigate", destination="book_red"), S("expose", object="book_red"),
+                      S("pick", object="book_red"), S("navigate", destination=BOOKCASE),
+                      S("approach", target=BOOKCASE),
+                      S("place", object="book_red", receptacle=BOOKCASE, hint_xy=[0.98, -0.52])]},
+        "naive_book_elsewhere": {
+            "kind": "negative", "variants": ["shelf_taken"],
+            "note": "place refused on the full top; the book is left on the shelf below instead of making room",
+            "steps": [S("navigate", destination=DESK), S("look", target=DESK),
+                      S("navigate", destination="book_red"), S("expose", object="book_red"),
+                      S("pick", object="book_red"), S("navigate", destination=BOOKCASE),
+                      S("place", "fail", object="book_red", receptacle=BOOKCASE),
+                      S("place", object="book_red", receptacle="bookcase_2/shelf_1")]}},
     "oracle": {"shelf_taken": "hard_make_room_first"},
+    # DEV: book start-yaw probes for the place_flat regression on bookcase_2/top (removed before the catalog is final)
+    "dev_variants": {f"shelf_taken_yaw{y}": {"move": {"book_red": at(DESK, -1.2412, -6.171, y)}} for y in (74, 106)},
     "vary": {"shelf_taken": vary()},
 }
 
 
-# ----------------------------------------------------------------- T13 breakfast setup (lay out bowl and mug together)
-# the spoon's neighbourhood on the set table (cereal boxes and plates around it, none of them graspable) leaves two
-# slots within 35 cm of the spoon: one south of it that takes a bowl (or a mug), one east of it that takes only a mug.
-# No cup: the mug substitutes.  The bowl has to take the south slot; a mug put there first leaves the bowl no room
-# next to the spoon (offline free-spot map, margins of place's free_spots)
-T13_SET = {"clutter_cereal_a": at(DINING, 2.85, 7.66), "clutter_cereal_b": at(DINING, 3.00, 7.72),
-           "plate_counter_a": at(DINING, 3.40, 7.30), "plate_counter_b": at(DINING, 3.20, 7.66)}
+# ----------------------------------------------------------------- T13 breakfast setup (re-anchor the setting)
+# no cup (the mug substitutes) and the spoon already on the table is hemmed in by cereal boxes and plates (none of
+# them graspable): neither the bowl nor the mug fits within 35 cm of it (offline free-spot map with place's margins).
+# The free part of the table is further south.  The setting has to move: carry the spoon to the free part and set the
+# bowl and the mug beside it there.  Squeezing a hint in next to the spoon finds no spot
+T13_SET = {"clutter_cereal_a": at(DINING, 2.86, 7.22), "clutter_cereal_b": at(DINING, 2.86, 7.70),
+           "plate_counter_a": at(DINING, 3.22, 7.24), "plate_counter_b": at(DINING, 3.22, 7.62),
+           "plate_dining_cabinet": at(DINING, 3.10, 7.88)}
 T13_GOAL = {"any": [[["on", "cup", DINING], ["upright", "cup"], ["grouped", ["bowl", "cup", "spoon"], DINING, 0.35]],
                     [["on", "mug", DINING], ["upright", "mug"], ["grouped", ["bowl", "mug", "spoon"], DINING, 0.35]]],
-            "all": [["on", "bowl", DINING], ["upright", "bowl"], ["hand_empty", "right"]]}
+            "all": [["on", "bowl", DINING], ["upright", "bowl"], ["on", "spoon", DINING], ["hand_empty", "right"]]}
 _t13h_look = [S("look", target=DINING), S("navigate", destination=TV), S("look", target=TV)]
 _t13h_mug = lambda hint: [S("navigate", destination=BOOKCASE, role="alternative"),
                           S("look", target=BOOKCASE, role="alternative"), S("pick", object="mug", role="alternative"),
@@ -555,55 +649,63 @@ _t13h_mug = lambda hint: [S("navigate", destination=BOOKCASE, role="alternative"
 _t13h_bowl = lambda hint: [S("navigate", destination="bowl"), S("pick", object="bowl"),
                            S("navigate", destination=DINING), S("place", object="bowl", receptacle=DINING, hint_xy=hint)]
 HARD["T13_breakfast_setup"] = {
-    "variants": {"no_cup_tight_setting": hard(
-        "no cup (the mug on the bedroom bookcase substitutes); the spoon on the dining table is hemmed in by cereal "
-        "boxes and plates: one slot next to it takes the bowl, the other only the mug", ["no_cup", "spot_quality"],
+    "variants": {"no_cup_spoon_boxed_in": hard(
+        "no cup (the mug on the bedroom bookcase substitutes); the spoon on the dining table is boxed in by cereal "
+        "boxes and plates, no room for a bowl or a mug next to it", ["no_cup", "anchor_boxed_in"],
         instruction="Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if "
                     "there is no cup. Lay them out sensibly.",
         instruction_zh="请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。",
         goal=T13_GOAL, watch=["bowl", "cup", "mug", "spoon", *T13_SET], remove=["cup"], move=dict(T13_SET))},
     "routes": {
-        "hard_bowl_slot_then_mug": {"kind": "alternative", "variants": ["no_cup_tight_setting"],
-                                    "recovery": "no cup -> the mug; the bowl takes the one slot it fits, the mug the "
-                                                "narrow one",
-                                    "steps": [*_t13h_look, *_t13h_bowl([2.95, 7.19]), *_t13h_mug([3.156, 7.40])]},
-        "naive_mug_in_bowl_slot": {"kind": "negative", "variants": ["no_cup_tight_setting"],
-                                   "note": "the mug first, into the larger slot: the bowl has no room next to the spoon",
-                                   "steps": [S("look", target=DINING), *_t13h_mug([2.95, 7.19]),
-                                             S("navigate", destination=TV), S("look", target=TV),
-                                             *_t13h_bowl([3.156, 7.40])]}},
-    "oracle": {"no_cup_tight_setting": "hard_bowl_slot_then_mug"},
-    "vary": {"no_cup_tight_setting": vary()},
+        "hard_move_the_setting": {"kind": "alternative", "variants": ["no_cup_spoon_boxed_in"],
+                                  "recovery": "no room by the spoon: carry the spoon to the free part of the table, "
+                                              "set the bowl and (no cup) the mug beside it",
+                                  "steps": [S("navigate", destination=DINING), S("look", target=DINING),
+                                            S("navigate", destination="spoon", role="insert"),
+                                            S("pick", object="spoon", role="insert"),
+                                            # the new setting stays on the west side, where the robot reaches
+                                            # (a mug at x 3.24 was out of reach, s10)
+                                            S("place", object="spoon", receptacle=DINING, hint_xy=[3.20, 6.70],
+                                              role="insert"),
+                                            S("navigate", destination=TV), S("look", target=TV),
+                                            *_t13h_bowl([2.95, 6.55]), *_t13h_mug([2.95, 6.86])]},
+        "naive_squeeze_by_the_spoon": {"kind": "negative", "variants": ["no_cup_spoon_boxed_in"],
+                                       "note": "the Easy plan: no spot next to the spoon, the bowl lands elsewhere",
+                                       "steps": [*_t13h_look, *_t13h_bowl([3.00, 7.46])]}},
+    "oracle": {"no_cup_spoon_boxed_in": "hard_move_the_setting"},
+    "vary": {"no_cup_spoon_boxed_in": vary()},
 }
 
 # ----------------------------------------------------------------- T20 juice back to the table (make room first)
-# after a party the dining table is covered by trays and plates (offline free-spot map: no 13 cm spot for the
-# upright bottle with place's margins); the bread bin at the west end is the one light, graspable item: moving it to
-# the wall cabinet (where the bottle waits) frees a spot.  place honours an exact hint with a 7.2 cm test, so a hint
+# after a party the dining table is covered by trays, plates and a row of bowls (offline free-spot map: no 13 cm spot
+# for the upright bottle with place's margins; trays and plates are not graspable).  Moving one bowl out of the row
+# (onto the tray beside it, or off the table) frees a spot.  (A small bread bin in the bowl's place was tried first:
+# its rim pinch did not hold, s10; carried to the wall cabinet the bowl slipped out of the hand, s10.)  place honours an exact hint with a 7.2 cm test, so a hint
 # squeezed between two plates (7.7 cm gaps) is a second instruction-compliant strategy the goal accepts
 T20_TABLE = {
-    "buffet_tray_1": {"asset": "serving_tray", **at(DINING, 3.068, 5.7693)},
-    "buffet_tray_2": {"asset": "serving_tray", **at(DINING, 3.558, 5.7693)},
-    "party_plate_3": {"asset": "breakfast_plate", **at(DINING, 2.9885, 6.1676)},
-    "party_plate_4": {"asset": "breakfast_plate", **at(DINING, 3.313, 6.1676)},
-    "party_plate_5": {"asset": "breakfast_plate", **at(DINING, 3.6375, 6.1676)},
-    "buffet_tray_6": {"asset": "serving_tray", **at(DINING, 3.068, 6.5659)},
-    "buffet_tray_7": {"asset": "serving_tray", **at(DINING, 3.558, 6.5659)},
-    "party_plate_8": {"asset": "breakfast_plate", **at(DINING, 2.9885, 6.9642)},
-    "party_plate_9": {"asset": "breakfast_plate", **at(DINING, 3.313, 6.9642)},
-    "party_plate_10": {"asset": "breakfast_plate", **at(DINING, 3.6375, 6.9642)},
-    "buffet_tray_11": {"asset": "serving_tray", **at(DINING, 3.068, 7.3625)},
-    "buffet_tray_12": {"asset": "serving_tray", **at(DINING, 3.558, 7.3625)},
-    "bread_bin": {"asset": "small_storage_bin", **at(DINING, 2.9693, 7.76, 90)},
-    "party_plate_13": {"asset": "breakfast_plate", **at(DINING, 3.2746, 7.7608)},
-    "party_plate_14": {"asset": "breakfast_plate", **at(DINING, 3.6189, 7.7608)},
+    "buffet_tray_1": {"asset": "serving_tray", **at(DINING, 3.068, 5.776)},
+    "buffet_tray_2": {"asset": "serving_tray", **at(DINING, 3.558, 5.776)},
+    "party_plate_3": {"asset": "breakfast_plate", **at(DINING, 2.9885, 6.181)},
+    "party_plate_4": {"asset": "breakfast_plate", **at(DINING, 3.313, 6.181)},
+    "party_plate_5": {"asset": "breakfast_plate", **at(DINING, 3.6375, 6.181)},
+    "buffet_tray_6": {"asset": "serving_tray", **at(DINING, 3.068, 6.586)},
+    "buffet_tray_7": {"asset": "serving_tray", **at(DINING, 3.558, 6.586)},
+    "party_plate_8": {"asset": "breakfast_plate", **at(DINING, 2.9885, 6.991)},
+    "party_plate_9": {"asset": "breakfast_plate", **at(DINING, 3.313, 6.991)},
+    "party_plate_10": {"asset": "breakfast_plate", **at(DINING, 3.6375, 6.991)},
+    "buffet_tray_11": {"asset": "serving_tray", **at(DINING, 3.068, 7.396)},
+    "buffet_tray_12": {"asset": "serving_tray", **at(DINING, 3.558, 7.396)},
+    "party_bowl_1": {"asset": "breakfast_bowl", **at(DINING, 2.945, 7.765)},
+    "party_bowl_2": {"asset": "breakfast_bowl", **at(DINING, 3.191, 7.765)},
+    "party_bowl_3": {"asset": "breakfast_bowl", **at(DINING, 3.437, 7.765)},
+    "party_bowl_4": {"asset": "breakfast_bowl", **at(DINING, 3.683, 7.765)},
 }
 T20_GOAL = {"all": [["on", "juice_bottle", DINING], ["upright", "juice_bottle"], ["hand_empty", "right"],
                     ["count_on_at_least", list(T20_TABLE), DINING, len(T20_TABLE) - 2]]}
 HARD["T20_juice_back_to_table"] = {
     "variants": {"table_full": hard(
-        "the bottle on the low wall cabinet; the dining table is covered by six trays, eight plates and a small bread "
-        "bin: no spot left for the bottle to stand", ["destination_full"],
+        "the bottle on the low wall cabinet; the dining table is covered by six trays, six plates and four bowls: no "
+        "spot left for the bottle to stand", ["destination_full"],
         instruction="Find the juice bottle and put it back on the dining table, standing up; if needed, first make "
                     "room among the things on the table.",
         instruction_zh="找到果汁瓶，确保它直立放回餐桌；必要时先为桌面其他物品腾出空间。",
@@ -613,19 +715,21 @@ HARD["T20_juice_back_to_table"] = {
     "routes": {
         "hard_make_room_first": {
             "kind": "alternative", "variants": ["table_full"],
-            "recovery": "the table has no free spot: take the bread bin to the wall cabinet, bring the bottle back in "
-                        "its place",
+            "recovery": "the table has no free spot: stack one bowl onto the tray beside it, bring the bottle back "
+                        "in its place",
             "steps": [S("navigate", destination=DINING), S("look", target=DINING),
-                      S("navigate", destination="bread_bin", role="insert"), S("pick", object="bread_bin", role="insert"),
-                      S("navigate", destination=CAB_TOP, role="insert"),
-                      S("place", object="bread_bin", receptacle=CAB_TOP, hint_xy=[3.36, 0.36], role="insert"),
-                      S("look", target=CAB_TOP), S("pick", object="juice_bottle"), S("navigate", destination=DINING),
-                      S("place", object="juice_bottle", receptacle=DINING, hint_xy=[2.97, 7.76])]},
+                      S("navigate", destination="party_bowl_1", role="insert"),
+                      S("pick", object="party_bowl_1", role="insert"),
+                      # onto the tray next to it (carried to the wall cabinet it slipped out of the hand, s10)
+                      S("place", object="party_bowl_1", receptacle="buffet_tray_11", role="insert"),
+                      S("navigate", destination=CAB_TOP), S("look", target=CAB_TOP), S("pick", object="juice_bottle"),
+                      S("navigate", destination=DINING),
+                      S("place", object="juice_bottle", receptacle=DINING, hint_xy=[2.945, 7.765])]},
         "naive_no_room": {"kind": "negative", "variants": ["table_full"], "note": "the Easy plan: place is refused",
                           "steps": [S("navigate", destination=CAB_TOP), S("look", target=CAB_TOP),
                                     S("navigate", destination="juice_bottle"), S("pick", object="juice_bottle"),
                                     S("navigate", destination=DINING),
-                                    S("place", object="juice_bottle", receptacle=DINING)]}},
+                                    S("place", "fail", object="juice_bottle", receptacle=DINING)]}},
     "oracle": {"table_full": "hard_make_room_first"},
     "vary": {"table_full": vary()},
 }
@@ -642,6 +746,11 @@ def merge(tasks: list) -> list:
             if name in ext.get("vary", {}):
                 var["vary"] = ext["vary"][name]
             t["variants"][name] = var
+        for name, dv in ext.get("dev_variants", {}).items() if DEV else ():
+            base = next(iter(ext["variants"].values()))
+            t["variants"][name] = dict(base, move={**base["move"], **dv["move"]}, difficulty="diagnostic")
+            for r in ext["routes"].values():
+                r["variants"] = r["variants"] + [name] if name not in r["variants"] else r["variants"]
         for name, r in ext["routes"].items():
             assert name not in t["routes"], (tid, name)
             t["routes"][name] = dict(r, since=VERSION)

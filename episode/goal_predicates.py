@@ -14,7 +14,11 @@ looks a goal atom up here first, then in the skill registry.
 * ``count_on_at_least(objects, support, k)``: at least k of the listed objects are on the support
   (the table was not cleared to make room, T20);
 * ``count_inside_at_most(objects, container, k)``: at most k of the listed objects are inside the
-  container (a container's capacity, T12).
+  container;
+* ``fully_inside(object, container)``: inside and not sticking out over the rim (a container's real
+  capacity, T12);
+* ``near_any(object, others, max_dist_m)``: next to at least one of the listed objects (a book by a
+  place setting, T01).
 """
 from __future__ import annotations
 
@@ -134,3 +138,28 @@ def _count_inside_at_most(rig, ctx, objects, container, k):
     st = _state(rig, ctx)
     inside = [o for o in objects if o in st["objects"] and rig.geo.inside(o, container, st)[0]]
     return len(inside) <= int(k), f"{len(inside)} inside {container}: {inside}"
+
+
+@goal_predicate("fully_inside", ["object", "container"],
+                "Inside the container and nothing of it above the rim (1 cm tolerance): put away, not perched on top.")
+def _fully_inside(rig, ctx, object, container):
+    st = _state(rig, ctx)
+    ok, why = rig.geo.inside(object, container, st)
+    if not ok:
+        return False, why
+    prof = rig.ann.asset_of(rig.ann.objects[container])["container"]
+    rim = float(rig.geo.bottom(container, st)[2]) + float(prof["rim_height"])
+    size = np.asarray(rig.ann.asset_of(rig.ann.objects[object])["size"], float)
+    from zeno_skills.predicates import _quat_R
+    top = float(rig.geo.centre(object, st)[2]) + 0.5 * float(np.abs(_quat_R(st["objects"][object]["quat"])[2, :]) @ size)
+    return top <= rim + 0.01, f"top {top - rim:+.3f} m to the rim"
+
+
+@goal_predicate("near_any", ["object", "others", "max_dist_m"],
+                "The object's footprint comes within max_dist_m of at least one listed object's footprint.")
+def _near_any(rig, ctx, object, others, max_dist_m):
+    st = _state(rig, ctx)
+    fp = rig.geo.footprint(object, st)
+    d = min((_gap(fp, rig.geo.footprint(o, st)) for o in others if o in st["objects"] and o != object),
+            default=math.inf)
+    return d <= float(max_dist_m), f"nearest at {d:.3f} m"

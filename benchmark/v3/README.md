@@ -37,12 +37,16 @@ happen, or whose recovery cannot complete the task, are recorded under the task'
 
 ## Conditions, seeds and the matrix
 
-* **One condition = one `variant_id`.** A condition is never defined by a seed. Medium has one condition tag,
-  hard has two, easy has none (checked by `tests/test_matrix.py`). The registry gives each tag a *condition type*
-  and the *decision* it requires:
+* **One condition = one `variant_id`.** A condition is never defined by a seed. Easy has no condition tag; Medium
+  has one, or two local ones (the former v3 Hard variants, labelled `"difficulty": "medium"`,
+  `"v3_difficulty": "hard"`); Hard is the v4 task-level replanning tier (`"since": "v4"`, explicit
+  `"difficulty": "hard"`, see [Difficulty redesign](#difficulty-redesign-v4-hard)), checked by
+  `tests/test_matrix.py`. The registry gives each tag a *condition type* and the *decision* it requires:
   * `explore`: search, look, explore_room or explore_furniture only, no physical repair;
   * `fallback`: a real failure, then an auxiliary skill, then a retry;
-  * `alternative`: another legal object, destination, appliance or tool.
+  * `alternative`: another legal object, destination, appliance or tool;
+  * v4 Hard: `decompose` (split / allocate by capacity, location, several goals), `insert` (a missing
+    precondition becomes a subgoal), `replace` (another appliance, vessel or strategy).
 * **Seeds 10–19** are used for every easy, medium and hard condition and every planner. Each planner gets the
   identical configuration of (task, variant, seed).
 * **What a seed changes**:
@@ -52,7 +56,7 @@ happen, or whose recovery cannot complete the task, are recorded under the task'
 
   A group moves together, so the gaps, overhangs and contacts that make a condition hold stay exactly as declared.
 * **Configuration hash**: `scene.config_hash` is computed over the base scene, the removed objects, the moved
-  objects, the start and the thermal settings. Task, variant and seed labels are excluded. Two seeds with the
+  objects, the start and the thermal settings (and the added objects, for the variants that add any). Task, variant and seed labels are excluded. Two seeds with the
   same hash are physical repeats of one scene, not two scenes; `MATRIX.md` gives the distinct configurations for
   each condition. A configuration is reproducible; the physics trajectory is not guaranteed to be bit-identical.
 * **The matrix is enumerated.** `run_episode.py --difficulty` (the seed picks a variant within one tier) stays for
