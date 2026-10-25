@@ -251,7 +251,7 @@ class ExpManager:
             # idle and duration limits count from the moment initial_task returns
             exp.ready_at = exp.last_activity = time.time()
             exp.episode = msg.get("episode")
-        return {"exp_id": exp.exp_id, "task": public_task(exp.task),
+        return {"exp_id": exp.exp_id, "task": public_task(exp.task, (exp.episode or {}).get("variant")),
                 "profile": {"name": prof["name"], "observation": observation_fields(prof), "max_calls": exp.max_calls},
                 "observation": msg["observation"]}
 

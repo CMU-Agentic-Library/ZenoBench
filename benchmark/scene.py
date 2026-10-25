@@ -69,6 +69,11 @@ def episode_config(task: dict, seed: int, variant: str | None = None, difficulty
            "thermal_sources": v.get("thermal_sources", scene.get("thermal_sources")),
            # per-food thermal parameters of this episode, e.g. a microwave that runs but does not heat
            "thermal_override": v.get("thermal_override", {})}
+    add = {**scene.get("add", {}), **v.get("add", {})}
+    if add:
+        # objects the base scene does not have (an asset of annotations/assets.json placed like ``move``);
+        # only present when used, so the configurations and hashes of every other variant stay as they were
+        cfg["add"] = copy.deepcopy(add)
     vary = v["vary"] if "vary" in v else scene.get("vary")
     if vary:
         apply_vary(cfg, vary, random.Random(f"{task['task_id']}:{variant}:{seed}:vary"))
@@ -90,7 +95,8 @@ def config_hash(cfg: dict) -> str:
         if isinstance(x, (list, tuple)):
             return [r(v) for v in x]
         return x
-    blob = json.dumps({k: r(cfg.get(k)) for k in PHYSICAL_KEYS}, sort_keys=True)
+    keys = PHYSICAL_KEYS + (("add",) if cfg.get("add") else ())
+    blob = json.dumps({k: r(cfg.get(k)) for k in keys}, sort_keys=True)
     return hashlib.sha1(blob.encode()).hexdigest()[:12]
 
 
@@ -117,10 +123,11 @@ def apply_vary(cfg: dict, vary: dict, rng) -> None:
         dx, dy = _grid(rng, g.get("dx", 0), g.get("step", 0.01)), _grid(rng, g.get("dy", 0), g.get("step", 0.01))
         dyaw = _grid(rng, g.get("dyaw", 0), g.get("step_deg", 5))
         for n in g["names"]:
-            m = dict(cfg["move"][n])
+            where = cfg["move"] if n in cfg["move"] else cfg["add"]       # a moved or an added object
+            m = dict(where[n])
             m["xy"] = [round(m["xy"][0] + dx, 4), round(m["xy"][1] + dy, 4)]
             m["yaw_deg"] = round(m.get("yaw_deg", 0.0) + dyaw, 2)
-            cfg["move"][n] = m
+            where[n] = m
         applied["+".join(g["names"])] = [round(dx, 4), round(dy, 4), dyaw]
     if vary.get("start"):
         sv = vary["start"]
@@ -156,6 +163,19 @@ def build_annotation(cfg: dict, out_path: Path) -> Path:
             o["support"] = m.get("support")
             o.pop("inside", None)
         objs.append(o)
+    for name, m in (cfg.get("add") or {}).items():
+        a = assets[m["asset"]]
+        pos, _ = overlay_pose(a, m, sup)
+        yaw = math.radians(m.get("yaw_deg", 0.0))
+        half = np.abs(rz(yaw)) @ (np.asarray(a["size"], float) / 2)
+        b = np.asarray(pos) + rz(yaw) @ np.asarray(a["origin_to_bottom_center"])
+        from zeno_skills.evaluator import room_of
+        room = room_of(ann.get("rooms", {}), (float(b[0]), float(b[1])))
+        objs.append({"name": name, "prim": f"{ADD_ROOT}/{name}", "body": f"{ADD_ROOT}/{name}/Asset/{m['asset']}",
+                     "asset": m["asset"], "position": [round(float(v), 4) for v in pos],
+                     "aabb": [float(b[0] - half[0]), float(b[1] - half[1]), float(b[2]),
+                              float(b[0] + half[0]), float(b[1] + half[1]), float(b[2] + a["size"][2])],
+                     **({"room": room} if room else {}), "support": m.get("support")})
     ann["objects"] = objs
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(ann))
@@ -185,6 +205,8 @@ def make_prepare(cfg: dict):
 
     def prepare(stage):
         from pxr import Gf, UsdGeom
+        if cfg.get("add"):
+            add_objects(stage, cfg["add"], assets, sup)
         for name in cfg["remove"]:
             prim = stage.GetPrimAtPath(by[name]["prim"])
             if prim.IsValid():
@@ -200,3 +222,36 @@ def make_prepare(cfg: dict):
             val = Gf.Quatd(q[0], Gf.Vec3d(q[1], q[2], q[3]))
             orient.Set(val if isinstance(orient.Get(), Gf.Quatd) else Gf.Quatf(val))
     return prepare
+
+
+ADD_ROOT = "/World/Tasks"           # added objects sit next to the base scene's task objects
+
+
+def add_objects(stage, add: dict, assets: dict, supports: dict):
+    """Author the added objects into the stage before the simulation starts, the way
+    tools/build_tasks.py authors a base scene's task objects (reference, inertia, colliders)."""
+    from pxr import Gf, UsdGeom
+    from zeno_skills import physics as P
+    mats = P.materials(stage)
+    for name, m in add.items():
+        spec = assets[m["asset"]]
+        pos, _ = overlay_pose(spec, m, supports)
+        root = f"{ADD_ROOT}/{name}"
+        x = UsdGeom.Xform.Define(stage, root)
+        x.AddTranslateOp(precision=UsdGeom.XformOp.PrecisionDouble).Set(Gf.Vec3d(*[float(v) for v in pos]))
+        x.AddOrientOp(precision=UsdGeom.XformOp.PrecisionDouble).Set(
+            Gf.Quatd(math.cos(math.radians(m.get("yaw_deg", 0.0)) / 2), Gf.Vec3d(0, 0, math.sin(math.radians(m.get("yaw_deg", 0.0)) / 2))))
+        a = stage.DefinePrim(f"{root}/Asset")
+        a.GetReferences().AddReference(str(ROOT / spec["usd"]))
+        P.set_box_inertia(stage, root, spec["mass"])
+        if max(spec["size"]) < 0.06:
+            from pxr import PhysxSchema
+            rb = PhysxSchema.PhysxRigidBodyAPI.Apply(P.body_prim(stage, root))
+            rb.CreateEnableCCDAttr().Set(True)
+            rb.CreateAngularDampingAttr().Set(3.0)
+        if spec.get("container"):
+            c = spec["container"]
+            P.container_collider(stage, root, c["bands"], shape=c["shape"], mats=mats,
+                                 handle=c.get("handle_collider"), extra_handles=c.get("extra_handle_colliders", []))
+        else:
+            P.solid_collider(stage, root, mats=mats)

@@ -88,6 +88,7 @@ def _plain(value):
 def evaluate_goal(rig, goal, start_snapshot):
     """{"all": [atom], "any": [[atom...], ...]}: every ``all`` atom and at
     least one ``any`` group must hold on the final GT state."""
+    from episode.goal_predicates import GOAL_PREDICATES
     from zeno_skills.predicates import REGISTRY
     ctx = {"before": start_snapshot}
 
@@ -98,7 +99,7 @@ def evaluate_goal(rig, goal, start_snapshot):
             return {"atom": atom_text(a), "holds": False, "detail": f"{missing[0]} is not in this episode"}
         neg = a[0].startswith("not ")
         name = a[0][4:] if neg else a[0]
-        pred = REGISTRY[name]
+        pred = GOAL_PREDICATES.get(name) or REGISTRY[name]       # goal-only verifiers first
         try:
             ok, detail = pred.evaluate(rig, ctx, **dict(zip(pred.arg_names, a[1:])))
         except Exception as exc:
