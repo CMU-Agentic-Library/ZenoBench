@@ -209,7 +209,7 @@ class RegraspPolicy(AtomicPolicy):
         st = rig.state()
         fp = rig.geo.footprint(name, st)
         if fp[0] > x0 + 0.02 and fp[2] < x1 - 0.02 and fp[1] > y0 + 0.02 and fp[3] < y1 - 0.02 and \
-                not skills._overlaps_objects(rig, [fp[0], fp[1], s["z"] + 0.005, fp[2], fp[3], s["z"] + 0.3],
+                not skills._overlaps_objects(rig, [fp[0], fp[1], fp[2], fp[3], s["z"] + 0.005, s["z"] + 0.3],
                                              {name}, st, margin=0.01):
             # already over a free patch of the support: set it straight down
             # (no wrist turn, no re-park: a pinched cylinder rolls out of both)

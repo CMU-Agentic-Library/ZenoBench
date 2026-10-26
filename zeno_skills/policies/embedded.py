@@ -98,8 +98,8 @@ class SlideToEdgePolicy(AtomicPolicy):
             # the swept footprint must be free of other objects
             fp = rig.geo.footprint(name, st)
             dx, dy = direction * need
-            box = [min(fp[0], fp[0] + dx), min(fp[1], fp[1] + dy), support["z"] + 0.005,
-                   max(fp[2], fp[2] + dx), max(fp[3], fp[3] + dy), support["z"] + size[2]]
+            box = [min(fp[0], fp[0] + dx), min(fp[1], fp[1] + dy), max(fp[2], fp[2] + dx),
+                   max(fp[3], fp[3] + dy), support["z"] + 0.005, support["z"] + size[2]]
             if need > 0.012 and skills._overlaps_objects(rig, box, {name}, st, margin=0.01):
                 continue
             choices.append((need, direction, target_overhang))

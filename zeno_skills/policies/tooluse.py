@@ -86,7 +86,7 @@ class WipeSurfacePolicy(AtomicPolicy):
                 continue
             lo = np.minimum(a, b) - width / 2
             hi = np.maximum(a, b) + width / 2
-            box = [lo[0], lo[1], s["z"], hi[0], hi[1], s["z"] + 0.2]
+            box = [lo[0], lo[1], hi[0], hi[1], s["z"], s["z"] + 0.2]       # _overlaps_objects order
             if skills._overlaps_objects(rig, box, {tool}, st, margin=0.02):
                 continue
             score = abs(shift)

@@ -109,12 +109,11 @@ HARD = {}
 # ----------------------------------------------------------------- T08 wipe the island (insert: clear, wipe, restore)
 # after cooking the island is cluttered along both long strips.  wipe sweeps a 30 cm strip 8 cm in from the edge
 # the robot stands at (from the sponge on the TV stand, approach parks at x 7.74 on the front: strip x 7.59-7.89,
-# y 1.595, s10 and s11), and it does not steer around what stands there: its free-strip test passes the strip box
-# as [x0, y0, z0, x1, y1, z1] to skills._overlaps_objects, which reads [x0, y0, x1, y1, z0, z1], so the sponge
-# shoves block B 9 cm aside and turns it (s10, the wipe "succeeds").  The plan has to take what stands in the strip
-# off the island first and put it back afterwards; the verifier tells a put-back object (picked up, within 12 cm:
-# restore lands +-10 cm) from a pushed one (never picked up, more than 3 cm from its start).  Moving more than
-# block B (the whole front row near the robot) is a valid, slower plan
+# y 1.595, s10 and s11), shifted at most 40 cm along the edge, and it refuses ("no free strip near the robot") when
+# every such strip is taken.  (Until the 2026-10-26 fix its free-strip test passed the box in the wrong order and
+# the sponge shoved block B 9 cm aside, s10.)  The plan has to take what stands in the strip off the island first
+# and put it back afterwards; the verifier tells a put-back object (picked up, within 12 cm) from a pushed one
+# (never picked up, more than 3 cm from its start).  Moving more than block B is a valid, slower plan
 T08_FRONT = {"rolling_pin": at(ISLAND, 6.75, 1.62, 0), "wooden_block_a": at(ISLAND, 7.10, 1.62),
              "soda_can": at(ISLAND, 7.45, 1.62), "wooden_block_b": at(ISLAND, 7.80, 1.62),
              "mug": at(ISLAND, 8.10, 1.62)}
@@ -158,16 +157,17 @@ HARD["T08_wipe_island"] = {
                       S("place", object="wooden_block_b", receptacle=ISLAND, hint_xy=[7.80, 1.62], role="restore")]},
         "naive_wipe_around": {
             "kind": "negative", "variants": ["island_cluttered"],
-            "note": "the Easy plan: wipe with the clutter in place; the sponge shoves block B aside",
+            "note": "the Easy plan: wipe with the clutter in place; wipe refuses (no free strip near the robot) and "
+                    "the plan puts the sponge away without clearing (before the wipe fix the sponge shoved block B)",
             "steps": [S("look", target=ISLAND), *_t08_sponge, S("approach", target=ISLAND),
-                      S("wipe", surface=ISLAND, tool="kitchen_sponge"),
+                      S("wipe", "fail", surface=ISLAND, tool="kitchen_sponge"),
                       S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV)]}},
     "oracle": {"island_cluttered": "hard_proactive"},
     "vary": {"island_cluttered": vary()},
     "not_adopted": [{"condition": "a reactive route: wipe refused (no free strip) -> clear -> wipe again",
-                     "reason": "wipe never refuses a cluttered strip (box-order mismatch in its free-strip test, "
-                               "zeno_skills/policies/tooluse.py; skill code left unchanged), it shoves what stands "
-                               "there (s10): the clutter has to be seen and cleared first"}],
+                     "reason": "kept proactive (the Clear -> Continue representatives are T14 and T20); since the "
+                               "wipe fix (2026-10-26) wipe does refuse the cluttered strip, so the reactive plan is "
+                               "executable and the goal accepts it as well"}],
 }
 
 # ----------------------------------------------------------------- T09 tomato soup (choose the cookware)
@@ -609,15 +609,10 @@ HARD["T14_shelve_the_book"] = {
                       S("place", "fail", object="book_red", receptacle=BOOKCASE),
                       S("place", object="book_red", receptacle="bookcase_2/shelf_1")]}},
     "oracle": {"shelf_taken": "hard_make_room_first"},
-    "blocker": "the last step, place of the book on bookcase_2/top, fails on the current support slabs: the book "
-               "falls to the floor (s10, also with approach + hint).  The v3 Medium route T14 book_on_desk / nominal "
-               "fails the same way on this code (s10): the place_flat parking regression of "
-               "docs/HANDOFF_2026-10-24_support_slabs.md section 1.2 (3), a physical / skill issue, not a planning "
-               "one.  Everything before it (seeing the full top, moving the mug to its back corner, fetching the "
-               "flat book with expose) runs.",
+    # (until the 2026-10-26 place_flat fix the book fell off the top here and in the Medium nominal alike)
     "not_adopted": [{"condition": "book start yaw changed by -16 / +16 deg to work around the place_flat regression",
                      "reason": "the edge pinch then missed (yaw 74, s10) or the book slipped while carried (yaw 106, "
-                               "s10)"}],
+                               "s10); the regression is fixed in place_flat instead"}],
     "vary": {"shelf_taken": vary()},
 }
 
