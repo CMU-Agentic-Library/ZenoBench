@@ -36,6 +36,7 @@ from define_tasks import (BOOKCASE, CAB, CAB2_TOP, CAB_TOP, DESK, DINING, ISLAND
 VERSION = "v4"
 HALL = "living_room_0_0"
 BEDROOM = "bedroom_0_1"
+BOOKCASE_NEAR_DESK = "bookcase_3/top"   # as in define_tasks_v3
 
 # tag -> (condition type, decision, meaning); decision = the task-graph change the condition requires
 CONDITIONS = {
@@ -109,12 +110,11 @@ HARD = {}
 # ----------------------------------------------------------------- T08 wipe the island (insert: clear, wipe, restore)
 # after cooking the island is cluttered along both long strips.  wipe sweeps a 30 cm strip 8 cm in from the edge
 # the robot stands at (from the sponge on the TV stand, approach parks at x 7.74 on the front: strip x 7.59-7.89,
-# y 1.595, s10 and s11), and it does not steer around what stands there: its free-strip test passes the strip box
-# as [x0, y0, z0, x1, y1, z1] to skills._overlaps_objects, which reads [x0, y0, x1, y1, z0, z1], so the sponge
-# shoves block B 9 cm aside and turns it (s10, the wipe "succeeds").  The plan has to take what stands in the strip
-# off the island first and put it back afterwards; the verifier tells a put-back object (picked up, within 12 cm:
-# restore lands +-10 cm) from a pushed one (never picked up, more than 3 cm from its start).  Moving more than
-# block B (the whole front row near the robot) is a valid, slower plan
+# y 1.595, s10 and s11), shifted at most 40 cm along the edge, and it refuses ("no free strip near the robot") when
+# every such strip is taken.  (Until the 2026-10-26 fix its free-strip test passed the box in the wrong order and
+# the sponge shoved block B 9 cm aside, s10.)  The plan has to take what stands in the strip off the island first
+# and put it back afterwards; the verifier tells a put-back object (picked up, within 12 cm) from a pushed one
+# (never picked up, more than 3 cm from its start).  Moving more than block B is a valid, slower plan
 T08_FRONT = {"rolling_pin": at(ISLAND, 6.75, 1.62, 0), "wooden_block_a": at(ISLAND, 7.10, 1.62),
              "soda_can": at(ISLAND, 7.45, 1.62), "wooden_block_b": at(ISLAND, 7.80, 1.62),
              "mug": at(ISLAND, 8.10, 1.62)}
@@ -158,16 +158,17 @@ HARD["T08_wipe_island"] = {
                       S("place", object="wooden_block_b", receptacle=ISLAND, hint_xy=[7.80, 1.62], role="restore")]},
         "naive_wipe_around": {
             "kind": "negative", "variants": ["island_cluttered"],
-            "note": "the Easy plan: wipe with the clutter in place; the sponge shoves block B aside",
+            "note": "the Easy plan: wipe with the clutter in place; wipe refuses (no free strip near the robot) and "
+                    "the plan puts the sponge away without clearing (before the wipe fix the sponge shoved block B)",
             "steps": [S("look", target=ISLAND), *_t08_sponge, S("approach", target=ISLAND),
-                      S("wipe", surface=ISLAND, tool="kitchen_sponge"),
+                      S("wipe", "fail", surface=ISLAND, tool="kitchen_sponge"),
                       S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV)]}},
     "oracle": {"island_cluttered": "hard_proactive"},
     "vary": {"island_cluttered": vary()},
     "not_adopted": [{"condition": "a reactive route: wipe refused (no free strip) -> clear -> wipe again",
-                     "reason": "wipe never refuses a cluttered strip (box-order mismatch in its free-strip test, "
-                               "zeno_skills/policies/tooluse.py; skill code left unchanged), it shoves what stands "
-                               "there (s10): the clutter has to be seen and cleared first"}],
+                     "reason": "kept proactive (the Clear -> Continue representatives are T14 and T20); since the "
+                               "wipe fix (2026-10-26) wipe does refuse the cluttered strip, so the reactive plan is "
+                               "executable and the goal accepts it as well"}],
 }
 
 # ----------------------------------------------------------------- T09 tomato soup (choose the cookware)
@@ -549,14 +550,15 @@ HARD["T12_tidy_toys"] = {
 }
 
 # ----------------------------------------------------------------- T14 shelve the book (insert: make room first)
-# the mug and the rubber duck stand along the front of the bookcase top: no edge slot is wide enough for the book
-# (0.07 / 0.18 / 0.08 m between them and the ends, the book needs 0.21 m); moving the mug to the back corner of the
-# top frees the front slot
-T14_OCC = {"mug_shelf": at(BOOKCASE, 0.86, -0.53), "shelf_blocker": at(BOOKCASE, 1.13, -0.53, 90)}
+# the mug stands at the front of the bookcase top and the rubber duck at its east end: no edge slot is wide enough
+# for the book (front: 0.07 / 0.19 m beside the mug, the book needs 0.21 m; east end: 0.14 m either side of the
+# duck; with place_flat fixed the duck at the front left the east end free); moving the mug to the back corner of
+# the top frees the front slot
+T14_OCC = {"mug_shelf": at(BOOKCASE, 0.86, -0.53), "shelf_blocker": at(BOOKCASE, 1.13, -0.43, 90)}
 HARD["T14_shelve_the_book"] = {
     "variants": {"shelf_taken": hard(
-        "the flat red book on the study desk; a mug and the rubber duck take up the front of the bedroom bookcase "
-        "top", ["destination_full"],
+        "the flat red book on the study desk; a mug and the rubber duck take up the front and the east end of the "
+        "bedroom bookcase top", ["destination_full"],
         instruction="Put the red book back on the low bookcase in the bedroom, and deal properly with whatever is "
                     "taking up the space there.",
         instruction_zh="把红书放回卧室矮书架，并妥善处理原有占位物。",
@@ -577,17 +579,21 @@ HARD["T14_shelve_the_book"] = {
                       S("place", object="book_red", receptacle=BOOKCASE)]},
         "hard_place_fails_then_make_room": {
             "kind": "fallback", "variants": ["shelf_taken"],
-            "recovery": "place refused (no free edge spot) -> set the book on the bookcase shelf below, move the "
-                        "mug back, put the book on top",
+            "recovery": "place refused (no free edge spot) -> put the book back down on the desk, move the mug "
+                        "back, fetch the book again and put it on top",
             "steps": [S("navigate", destination=DESK), S("look", target=DESK),
                       S("navigate", destination="book_red"), S("expose", object="book_red"),
                       S("pick", object="book_red"), S("navigate", destination=BOOKCASE),
                       S("place", "fail", "failure", object="book_red", receptacle=BOOKCASE),
-                      S("place", object="book_red", receptacle="bookcase_2/shelf_1", role="insert"),
-                      S("look", target=BOOKCASE), S("navigate", destination="mug_shelf", role="insert"),
+                      S("navigate", destination=DESK, role="insert"),
+                      S("place", object="book_red", receptacle=DESK, role="insert"),
+                      S("navigate", destination=BOOKCASE, role="insert"), S("look", target=BOOKCASE, role="insert"),
+                      S("navigate", destination="mug_shelf", role="insert"),
                       S("pick", object="mug_shelf", role="insert"),
                       S("place", object="mug_shelf", receptacle=BOOKCASE, hint_xy=[0.79, -0.31], role="insert"),
-                      S("navigate", destination="book_red"), S("pick", object="book_red"),
+                      S("navigate", destination=DESK), S("look", target=DESK),
+                      S("navigate", destination="book_red"), S("expose", object="book_red"),
+                      S("pick", object="book_red"),
                       S("navigate", destination=BOOKCASE), S("place", object="book_red", receptacle=BOOKCASE)]},
         "probe_approach_then_place": {
             "kind": "diagnostic", "variants": ["shelf_taken"],
@@ -602,22 +608,19 @@ HARD["T14_shelve_the_book"] = {
                       S("place", object="book_red", receptacle=BOOKCASE, hint_xy=[0.98, -0.52])]},
         "naive_book_elsewhere": {
             "kind": "negative", "variants": ["shelf_taken"],
-            "note": "place refused on the full top; the book is left on the shelf below instead of making room",
+            "note": "place refused on the full top; the book is left on the other bookcase instead of making room "
+                    "(an edge-held book set on the shelf below, under the top, is pulled out by the opening fingers)",
             "steps": [S("navigate", destination=DESK), S("look", target=DESK),
                       S("navigate", destination="book_red"), S("expose", object="book_red"),
                       S("pick", object="book_red"), S("navigate", destination=BOOKCASE),
                       S("place", "fail", object="book_red", receptacle=BOOKCASE),
-                      S("place", object="book_red", receptacle="bookcase_2/shelf_1")]}},
+                      S("navigate", destination=BOOKCASE_NEAR_DESK),
+                      S("place", object="book_red", receptacle=BOOKCASE_NEAR_DESK)]}},
     "oracle": {"shelf_taken": "hard_make_room_first"},
-    "blocker": "the last step, place of the book on bookcase_2/top, fails on the current support slabs: the book "
-               "falls to the floor (s10, also with approach + hint).  The v3 Medium route T14 book_on_desk / nominal "
-               "fails the same way on this code (s10): the place_flat parking regression of "
-               "docs/HANDOFF_2026-10-24_support_slabs.md section 1.2 (3), a physical / skill issue, not a planning "
-               "one.  Everything before it (seeing the full top, moving the mug to its back corner, fetching the "
-               "flat book with expose) runs.",
+    # (until the 2026-10-26 place_flat fix the book fell off the top here and in the Medium nominal alike)
     "not_adopted": [{"condition": "book start yaw changed by -16 / +16 deg to work around the place_flat regression",
                      "reason": "the edge pinch then missed (yaw 74, s10) or the book slipped while carried (yaw 106, "
-                               "s10)"}],
+                               "s10); the regression is fixed in place_flat instead"}],
     "vary": {"shelf_taken": vary()},
 }
 

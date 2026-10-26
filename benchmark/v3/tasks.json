@@ -4912,7 +4912,7 @@
      "variants": [
       "island_cluttered"
      ],
-     "note": "the Easy plan: wipe with the clutter in place; the sponge shoves block B aside",
+     "note": "the Easy plan: wipe with the clutter in place; wipe refuses (no free strip near the robot) and the plan puts the sponge away without clearing (before the wipe fix the sponge shoved block B)",
      "steps": [
       {
        "skill": "look",
@@ -4949,7 +4949,8 @@
        "args": {
         "surface": "kitchen_island/top",
         "tool": "kitchen_sponge"
-       }
+       },
+       "expect": "fail"
       },
       {
        "skill": "navigate",
@@ -4985,7 +4986,7 @@
    "not_adopted": [
     {
      "condition": "a reactive route: wipe refused (no free strip) -> clear -> wipe again",
-     "reason": "wipe never refuses a cluttered strip (box-order mismatch in its free-strip test, zeno_skills/policies/tooluse.py; skill code left unchanged), it shoves what stands there (s10): the clutter has to be seen and cleared first"
+     "reason": "kept proactive (the Clear -> Continue representatives are T14 and T20); since the wipe fix (2026-10-26) wipe does refuse the cluttered strip, so the reactive plan is executable and the goal accepts it as well"
     }
    ],
    "entities": [
@@ -10513,7 +10514,7 @@
      ]
     },
     "shelf_taken": {
-     "note": "the flat red book on the study desk; a mug and the rubber duck take up the front of the bedroom bookcase top",
+     "note": "the flat red book on the study desk; a mug and the rubber duck take up the front and the east end of the bedroom bookcase top",
      "difficulty": "hard",
      "since": "v4",
      "conditions": [
@@ -10564,7 +10565,7 @@
        "support": "bookcase_2/top",
        "xy": [
         1.13,
-        -0.53
+        -0.43
        ],
        "yaw_deg": 90
       }
@@ -10583,8 +10584,7 @@
        "step": 0.05,
        "step_deg": 5
       }
-     },
-     "blocker": "the last step, place of the book on bookcase_2/top, fails on the current support slabs: the book falls to the floor (s10, also with approach + hint).  The v3 Medium route T14 book_on_desk / nominal fails the same way on this code (s10): the place_flat parking regression of docs/HANDOFF_2026-10-24_support_slabs.md section 1.2 (3), a physical / skill issue, not a planning one.  Everything before it (seeing the full top, moving the mug to its back corner, fetching the flat book with expose) runs."
+     }
     }
    },
    "watch": [
@@ -10820,7 +10820,7 @@
      "variants": [
       "shelf_taken"
      ],
-     "recovery": "place refused (no free edge spot) -> set the book on the bookcase shelf below, move the mug back, put the book on top",
+     "recovery": "place refused (no free edge spot) -> put the book back down on the desk, move the mug back, fetch the book again and put it on top",
      "steps": [
       {
        "skill": "navigate",
@@ -10868,10 +10868,24 @@
        "role": "failure"
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       },
+       "role": "insert"
+      },
+      {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/shelf_1"
+        "receptacle": "desk_1/top"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
        },
        "role": "insert"
       },
@@ -10879,7 +10893,8 @@
        "skill": "look",
        "args": {
         "target": "bookcase_2/top"
-       }
+       },
+       "role": "insert"
       },
       {
        "skill": "navigate",
@@ -10910,7 +10925,25 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "book_red"
+       }
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "book_red"
        }
       },
       {
@@ -11038,7 +11071,7 @@
      "variants": [
       "shelf_taken"
      ],
-     "note": "place refused on the full top; the book is left on the shelf below instead of making room",
+     "note": "place refused on the full top; the book is left on the other bookcase instead of making room (an edge-held book set on the shelf below, under the top, is pulled out by the opening fingers)",
      "steps": [
       {
        "skill": "navigate",
@@ -11085,10 +11118,16 @@
        "expect": "fail"
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_3/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/shelf_1"
+        "receptacle": "bookcase_3/top"
        }
       }
      ],
@@ -11109,7 +11148,7 @@
    "not_adopted": [
     {
      "condition": "book start yaw changed by -16 / +16 deg to work around the place_flat regression",
-     "reason": "the edge pinch then missed (yaw 74, s10) or the book slipped while carried (yaw 106, s10)"
+     "reason": "the edge pinch then missed (yaw 74, s10) or the book slipped while carried (yaw 106, s10); the regression is fixed in place_flat instead"
     }
    ],
    "benchmark_version": "v3",
@@ -11130,7 +11169,7 @@
     "bookcase_2/top",
     "desk_1/top",
     "mug_shelf",
-    "bookcase_2/shelf_1",
+    "bookcase_3/top",
     "shelf_blocker"
    ]
   },

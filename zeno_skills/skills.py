@@ -440,7 +440,8 @@ def _move_articulated(rig, name, goal, verb):
 
     def score(x, y, yaw, qs):
         if any(math.hypot(x - fx, y - fy) < 0.20 for fx, fy, _ in failed):
-            return -1e9                    # a ride from here already left the part unmoved
+            return 1e9                     # a ride from here already left the part unmoved: last resort
+                                           # (find_park keeps the lowest score)
         rig.kin.set_base((x, y, 0.0), math.radians(yaw))
         return torque_ratio(rig.kin, qs[-1], pull)
     # doors hook from the free side; a drawer pull from either end
@@ -668,8 +669,7 @@ def _open_edges(rig, s):
     dirs = [np.array(d, float) for d in ((1, 0), (-1, 0), (0, 1), (0, -1))]
     B = rig.world.B[:-1]
     hold = B[_holder_mask(B, s)]
-    interior = len(hold) and float(hold[:, 5].max()) > s["z"] + 0.12
-    if not interior:
+    if not _interior(rig, s):
         return [n for n in dirs if _free_beyond(rig, s, n)]
     x0, y0, x1, y1 = s["aabb_xy"]
     axis = 0 if (x1 - x0) < (y1 - y0) else 1          # depth axis = the short one
@@ -685,6 +685,13 @@ def _open_edges(rig, s):
         if free > room:
             best, room = n, free
     return [best] if room >= 0.3 else []
+
+
+def _interior(rig, s):
+    """An interior shelf: its holder rises more than 12 cm above it (another level above)."""
+    B = rig.world.B[:-1]
+    hold = B[_holder_mask(B, s)]
+    return bool(len(hold) and float(hold[:, 5].max()) > s["z"] + 0.12)
 
 
 def _free_beyond_hold(rig, s, n, hold, depth):
@@ -2128,6 +2135,9 @@ def place_flat(rig, name, support, hint=None):
         raise SkillFailure(f"place {name}: no free edge spot on {support}")
     R0 = held["R"]
     a0 = -R0[:, 2]
+    # under another level the whole object comes down outside the front (3 cm clear) before it slides in: from
+    # 10 cm out the far end of a book hung under the level above and was knocked out of the pinch on the way down
+    pre = max(0.10, 2 * h - over_p + 0.03) if _interior(rig, s) else 0.10
     rig.sync_world()
     rig.kin.coll_kw = {"ignore_fingers": True}
     start, attempts = 0, 0
@@ -2139,16 +2149,24 @@ def place_flat(rig, name, support, hint=None):
             psi = math.atan2(-n[1], -n[0]) - math.atan2(a0[1], a0[0])
             R = rz(psi) @ R0
             tcp = np.r_[c + n * (h - held["depth"]), s["z"] + held["dz"] + 0.004]
-            legs = [(tcp + n3 * 0.10 + np.array([0, 0, 0.04]), R), (tcp + np.array([0, 0, 0.02]), R), (tcp, R)]
+            legs = [(tcp + n3 * pre + np.array([0, 0, 0.04]), R), (tcp + np.array([0, 0, 0.02]), R), (tcp, R)]
             retreat = tcp + n3 * 0.10
             face = math.degrees(math.atan2(-n[1], -n[0]))
 
             def square(x, y, yaw, qs, face=face):
                 # facing the edge squarely: from 15 deg off, another link caught
                 # the book during the release push and flipped it off the shelf
-                return -abs((yaw - face + 180.0) % 360.0 - 180.0)
-            park = find_park(rig.kin, rig.world, legs + [(retreat, R)], near=rig.base_pose(), max_tries=120,
-                             q_start=rig.q_cmd, travel_q=_travel_q(rig), score=square, n_best=5)
+                # (find_park keeps the lowest score: the smallest yaw error)
+                return abs((yaw - face + 180.0) % 360.0 - 180.0)
+            # the park must also reach the final push (fingertips push the book
+            # fully on); without it the squarest park could leave the book
+            # hanging over the edge: fall back to the release legs only
+            push = np.r_[(tcp + n3 * (held["depth"] - over_p - 0.01))[:2], s["z"] + size[2] / 2]
+            for tg in (legs + [(retreat, R), (push, R)], legs + [(retreat, R)]):
+                park = find_park(rig.kin, rig.world, tg, near=rig.base_pose(), max_tries=120,
+                                 q_start=rig.q_cmd, travel_q=_travel_q(rig), score=square, n_best=5)
+                if park:
+                    break
             if park:
                 break
         if park is None:
@@ -2173,6 +2191,17 @@ def place_flat(rig, name, support, hint=None):
                 legs = legs2
                 R = R_fix @ R
                 rig.log("flat_level", obj=name, droop_deg=round(droop, 1))
+        # turn the hand to the release yaw where it is first (a turn about the
+        # vertical keeps the book level), by a straight Cartesian path only: a
+        # grasp taken from another side needed a larger turn, the straight path
+        # to flat_pre failed and the joint-space swing to the park's solution
+        # (another arm branch) flipped the book out of the pinch
+        t_now, _ = rig.kin.tcp(rig.q_cmd)
+        qs_turn, ok_turn = rig.kin.cart_path(rig.q_cmd, t_now, R, step=0.01)
+        if ok_turn:
+            rig.follow(qs_turn, 4)
+            check_held(rig, "flat_turn")
+            rig.log("flat_turn", obj=name)
         rig.move_to(*legs[0], step=0.01, label="flat_pre", q_hint=park[3][0] if droop <= 6.0 else None)
         # the book may hang lower in the pinch than when it was picked (droop
         # during the carry): slide in with its lowest point 1 cm above the surface
@@ -2180,6 +2209,10 @@ def place_flat(rig, name, support, hint=None):
         t_now, _ = rig.kin.tcp(rig.q_cmd)
         sag = float(t_now[2] - _lowest_z(rig, name, st_now))
         need = s["z"] + 0.01 + sag - float(legs[1][0][2])
+        if need > 0.10:
+            # not a droop: the object turned in the pinch on the way (sliding it in from that high dropped it on the
+            # floor); stop outside the support with it still in hand
+            raise SkillFailure(f"place {name}: it turned in the grip ({sag:.2f} m below the fingers)")
         if need > 0.002:
             legs = [legs[0], (legs[1][0] + np.array([0, 0, need]), legs[1][1]), legs[2]]
             rig.log("flat_over_raised", obj=name, raised_m=round(need, 3))

@@ -1,0 +1,14 @@
+[
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "shelf_taken",
+"route": "naive_book_elsewhere"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "shelf_taken",
+"route": "hard_place_fails_then_make_room"
+}
+]
