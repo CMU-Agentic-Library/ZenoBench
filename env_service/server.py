@@ -18,7 +18,7 @@ Endpoints (JSON in, JSON out):
 
 Tasks come from one or more catalogs (``--catalog PATH=PROFILE``, default: the original tasks
 and benchmark v3).  The profile (episode/profiles/*.yaml: execution switches, observation fields,
-call budget) is the request's ``profile``, one of ``--profiles`` (default: gt, benchmark), so
+call budget) is the request's ``profile``, one of ``--profiles`` (default: gt, gt_sticky, benchmark), so
 any task runs under any of them; without one the task's catalog default applies (``gt`` for the
 original tasks, ``benchmark`` for v3).
 
@@ -45,7 +45,7 @@ from episode.episode import flat_goal
 from episode.profile import load_profile, max_calls, observation_fields
 
 
-SELECTABLE_PROFILES = ("gt", "benchmark")      # what a request may name; oracle is GT-only, not for planners
+SELECTABLE_PROFILES = ("gt", "gt_sticky", "benchmark")   # what a request may name; oracle is GT-only, not for planners
 
 
 class ServiceError(Exception):

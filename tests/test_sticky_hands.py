@@ -14,10 +14,16 @@ from zeno_skills.sticky import StickyHands, failure_reason
 
 
 # ----------------------------------------------------------------- profile
-def test_switch_is_off_in_every_shipped_profile():
+def test_switch_is_on_only_in_gt_sticky():
     assert DEFAULTS["execution"]["sticky_hands"] is False
     for name in ("gt", "benchmark", "oracle"):
         assert load_profile(name)["execution"]["sticky_hands"] is False
+    gt, sticky = load_profile("gt"), load_profile("gt_sticky")
+    assert sticky["execution"]["sticky_hands"] is True and sticky["hash"] != gt["hash"]
+    # everything else is gt
+    sticky["execution"]["sticky_hands"] = False
+    assert {k: v for k, v in sticky.items() if k not in ("name", "hash")} == \
+        {k: v for k, v in gt.items() if k not in ("name", "hash")}
 
 
 def test_switch_changes_the_profile_hash_and_is_refused_with_the_gate(tmp_path):
