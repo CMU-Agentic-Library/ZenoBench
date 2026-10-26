@@ -144,12 +144,12 @@ ability, not counts of environment conditions:
 | T03 | decompose | `three_containers` | the mug by the utensils; a small and the wide storage bin side by side on the TV stand | allocate both utensils jointly: the spoon fits the small bin, the 22 cm pin only the wide one |
 | T06 | insert | `display_hidden` | a closed row of cereal boxes and a bottle along the cabinet's open front: its free space is behind them | display on the TV stand (or make a front spot), not hidden |
 | T07 | replace | `microwave_holds_pot` | the microwave works but holds the soup pot; the stove is free | heat on the stove instead of clearing the microwave (both allowed) |
-| T08 | insert (cleanup ①) | `island_cluttered` | clutter along both strips; the wipe sweeps the strip in front of the robot and shoves what stands there | take what stands in the strip off the island, wipe, put it and the sponge back (a shoved object fails the goal) |
+| T08 | insert (cleanup ①) | `island_cluttered` | clutter along both strips: no free strip within reach of the robot, `wipe` refuses | take what stands in the strip off the island, wipe, put it and the sponge back (a shoved object fails the goal) |
 | T09 | replace | `cookware_choice` | a breakfast bowl and a mug by the tomatoes, the pot on the stove; the instruction asks for "a suitable pot" | choose the pot (stirring, lid, burner) over the nearer containers |
 | T11 | decompose | `basket_gone_bowl_there` | no basket; a bowl stands where it should be | keep to the stated substitute (the tray on the study desk), not the bowl |
 | T12 | decompose | `toys_everywhere` | car and duck in two rooms; no basket: a small bin half full of blocks and a shallow tray | allocate by capacity: the duck fits only the bin's last gap, so the car goes to the tray (no single container holds both) |
 | T13 | insert | `no_cup_spoon_boxed_in` | no cup; no room for a bowl or mug next to the spoon | mug for the cup, and move the setting (spoon) to where it fits |
-| T14 | insert (cleanup ②) | `shelf_taken` | a mug and the duck take up the bookcase top | move the mug to a legal place first, then shelve the book |
+| T14 | insert (cleanup ②) | `shelf_taken` | the mug at the front and the duck at the east end of the bookcase top: no edge slot fits the book | move the mug to a legal place first, then shelve the book |
 | T19 | decompose | `lookalike_bin` | can out of view in the dining room; a look-alike toy bin on the way | search the can, route both items to the instructed recycling bin |
 | T20 | insert (cleanup ③) | `table_full` | party table covered: no spot for the upright bottle | move a few things (one bowl), not clear the table |
 
@@ -157,28 +157,41 @@ Medium-only (the report proposes no Hard): T04, T05, T10, T15, T16, T17, T18 —
 substitutions or action-level recoveries without a task-graph change.
 
 **Validation (2026-10-26)** ([V4_HARD_VALIDATION.md](V4_HARD_VALIDATION.md), runs `benchmark/runs/v4_accept`,
-`v4_accept_r2` … `v4_accept_r8`, batches `batches/accept_v4_hard*.json`; only runs whose configuration hash matches
-the catalog count): **12 of 13 Hard oracles pass on seeds 10 and 11; all 12 runnable negative routes end as
-`planning_failure`** (every call works, the goal rejects the plan). Physics and planning are kept apart:
+`v4_accept_r2` … `v4_accept_r8`, `v4_fixes`, `v4_fixes_wipe`, `v4_fixes_t14*`, batches `batches/accept_v4_*.json`,
+`batches/fix_probe*.json`; only runs whose configuration hash matches the catalog count): **all 13 Hard oracles pass
+on seeds 10 and 11; all 13 negative routes end as `planning_failure`** (every call works, the goal rejects the
+plan). Physics and planning are kept apart:
 
-* **T14 `shelf_taken`: blocked (physical).** Every place of the book on `bookcase_2/top` ends with the book fallen
-  off (tilt 180°), in the Hard oracle (s10, s11) and identically in the Medium/Easy nominal `book_on_desk` (s10),
-  with `zeno_skills/` and `skill_library/` unchanged from main: a pre-existing `place_flat` regression on that
-  support, not a planning or catalog issue. Making room (the mug moved) works. A fix touches skill code and is
-  left for approval; the variant, routes and verifier stay in the catalog.
-* **T08**: `wipe` never refuses a cluttered strip: its free-strip test passes a `[x0, y0, z0, x1, y1, z1]` box to
-  `skills._overlaps_objects`, which reads `[x0, y0, x1, y1, z0, z1]`, so the sponge shoves what stands in the strip
-  (skill code unchanged). The Hard is therefore proactive (clear the strip first); the verifier rejects a shoved
-  object (`near_start` with `untouched_tol_m` 0.03 for objects never picked up). `restore` returns an object to its
-  start support, not its spot, so the oracle puts block B back with a hinted place.
+* **Skill fixes (2026-10-26, `zeno_skills/`, no Contract / SkillNode / export change):** `place_flat` kept the
+  worst-squared park (the score sign was inverted), its park now also reaches the final push, and the hand turns to
+  the release yaw by a level Cartesian turn before `flat_pre` (the joint swing flipped the book); an object that
+  turned in the pinch stops outside the support instead of being slid in and dropped; under another level the book
+  comes down fully outside the front. `wipe`, `slide_to_edge` and the regrasp free test passed their box to
+  `_overlaps_objects` as `[x0, y0, z0, x1, y1, z1]` instead of `[x0, y0, x1, y1, z0, z1]`, so they never saw
+  objects in the way (`wipe` shoved them); `wipe` now also tries a strip 4.5 cm in from the edge when the 8 cm line
+  is taken (the nominal island has the mug and the spoon along it). Failed articulated parks are retried last.
+* **T14 `shelf_taken`** (was blocked by the `place_flat` bug): with the skill fixed the east end of the top was a
+  free slot, so the duck moved from the front to the east end (front and east end both too narrow; the oracle's
+  front slot after the mug moved is unchanged). The negative leaves the book on the other bookcase
+  (`bookcase_3/top`). The Clear -> Continue fallback (`hard_place_fails_then_make_room`: place refused, book back on
+  the desk, mug moved, book fetched again) is a **physical failure** on s10 / s11: setting the edge-held book down
+  again is unreliable (desk: 10° tilt; s11: it slipped on the long carry back). Remaining `place_flat` limits: on
+  `bookcase_3/top` and `bookcase_2/shelf_1` (under the top) the lower finger stays under the released book and the
+  hand pulls it out (1 of 4 and 0 of 2 placed); the dining table (81 of 83), the island and `bookcase_2/top` work.
+* **T08**: the naive wipe is now refused (no free strip), so it ends without `wiped`; the verifier still rejects a
+  shoved object (`near_start` with `untouched_tol_m` 0.03 for objects never picked up). `restore` returns an object
+  to its start support, not its spot, so the oracle puts block B back with a hinted place.
 * **T06**: the negative (block behind the closed row) is rejected because reaching behind the row knocks the boxes
   and the bottle over (`upright` fails); `front_visible` then holds only because the row fell. The hidden spot is
   unusable either way; the TV stand is the working plan.
-* **Physics fixes made during validation (layouts / routes only, no skill changes):** T02 block B 14.5 cm in (the
-  pick missed it 23.5 cm in); T03 small bin on the TV stand (no drop pose above it on the island) and the goal
-  `fully_inside` ("completely inside": the pin perched across the small bin passed `inside`); T13 the setting 14 cm
-  further south and a re-park after the spoon pick (the arm knocks a cereal box over onto the old mug spot); T08 the
-  sponge goes back to the TV stand and block B west of it there.
+* **Physics fixes made during validation (layouts / routes only):** T02 block B 14.5 cm in (the pick missed it
+  23.5 cm in); T03 small bin on the TV stand (no drop pose above it on the island) and the goal `fully_inside`
+  ("completely inside": the pin perched across the small bin passed `inside`); T13 the setting 14 cm further south
+  and a re-park after the spoon pick (the arm knocks a cereal box over onto the old mug spot); T08 the sponge goes
+  back to the TV stand and block B west of it there.
+* **Regression** (seed 10, after the skill fixes): the non-Hard routes of T01, T07, T08, T14, T15 and T18 pass,
+  except T08 `oracle_approach` (never accepted before, not an oracle), refused `NOT_OBSERVED` at its first
+  `navigate` to the unseen sponge (route authoring, no skill involved).
 
 **Compatibility.** No Graph Manager file, Contract, skill export (`skill_library/`, `tools/build_skill_library.py
 --check` unchanged) or HTTP field changed. Graph Manager main (7289dd7) synced against this catalog indexes

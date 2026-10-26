@@ -1,0 +1,38 @@
+[
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "sponge_on_tv_stand",
+"route": "nominal_from_tv_stand"
+},
+{
+"task": "T08_wipe_island",
+"seed": 11,
+"variant": "sponge_on_tv_stand",
+"route": "nominal_from_tv_stand"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "far_sponge_tv",
+"route": "hard_search_approach"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "island_cluttered",
+"route": "naive_wipe_around"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "island_cluttered",
+"route": "hard_proactive"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "sponge_on_island",
+"route": "nominal"
+}
+]

@@ -36,6 +36,7 @@ from define_tasks import (BOOKCASE, CAB, CAB2_TOP, CAB_TOP, DESK, DINING, ISLAND
 VERSION = "v4"
 HALL = "living_room_0_0"
 BEDROOM = "bedroom_0_1"
+BOOKCASE_NEAR_DESK = "bookcase_3/top"   # as in define_tasks_v3
 
 # tag -> (condition type, decision, meaning); decision = the task-graph change the condition requires
 CONDITIONS = {
@@ -549,14 +550,15 @@ HARD["T12_tidy_toys"] = {
 }
 
 # ----------------------------------------------------------------- T14 shelve the book (insert: make room first)
-# the mug and the rubber duck stand along the front of the bookcase top: no edge slot is wide enough for the book
-# (0.07 / 0.18 / 0.08 m between them and the ends, the book needs 0.21 m); moving the mug to the back corner of the
-# top frees the front slot
-T14_OCC = {"mug_shelf": at(BOOKCASE, 0.86, -0.53), "shelf_blocker": at(BOOKCASE, 1.13, -0.53, 90)}
+# the mug stands at the front of the bookcase top and the rubber duck at its east end: no edge slot is wide enough
+# for the book (front: 0.07 / 0.19 m beside the mug, the book needs 0.21 m; east end: 0.14 m either side of the
+# duck; with place_flat fixed the duck at the front left the east end free); moving the mug to the back corner of
+# the top frees the front slot
+T14_OCC = {"mug_shelf": at(BOOKCASE, 0.86, -0.53), "shelf_blocker": at(BOOKCASE, 1.13, -0.43, 90)}
 HARD["T14_shelve_the_book"] = {
     "variants": {"shelf_taken": hard(
-        "the flat red book on the study desk; a mug and the rubber duck take up the front of the bedroom bookcase "
-        "top", ["destination_full"],
+        "the flat red book on the study desk; a mug and the rubber duck take up the front and the east end of the "
+        "bedroom bookcase top", ["destination_full"],
         instruction="Put the red book back on the low bookcase in the bedroom, and deal properly with whatever is "
                     "taking up the space there.",
         instruction_zh="把红书放回卧室矮书架，并妥善处理原有占位物。",
@@ -577,17 +579,21 @@ HARD["T14_shelve_the_book"] = {
                       S("place", object="book_red", receptacle=BOOKCASE)]},
         "hard_place_fails_then_make_room": {
             "kind": "fallback", "variants": ["shelf_taken"],
-            "recovery": "place refused (no free edge spot) -> set the book on the bookcase shelf below, move the "
-                        "mug back, put the book on top",
+            "recovery": "place refused (no free edge spot) -> put the book back down on the desk, move the mug "
+                        "back, fetch the book again and put it on top",
             "steps": [S("navigate", destination=DESK), S("look", target=DESK),
                       S("navigate", destination="book_red"), S("expose", object="book_red"),
                       S("pick", object="book_red"), S("navigate", destination=BOOKCASE),
                       S("place", "fail", "failure", object="book_red", receptacle=BOOKCASE),
-                      S("place", object="book_red", receptacle="bookcase_2/shelf_1", role="insert"),
-                      S("look", target=BOOKCASE), S("navigate", destination="mug_shelf", role="insert"),
+                      S("navigate", destination=DESK, role="insert"),
+                      S("place", object="book_red", receptacle=DESK, role="insert"),
+                      S("navigate", destination=BOOKCASE, role="insert"), S("look", target=BOOKCASE, role="insert"),
+                      S("navigate", destination="mug_shelf", role="insert"),
                       S("pick", object="mug_shelf", role="insert"),
                       S("place", object="mug_shelf", receptacle=BOOKCASE, hint_xy=[0.79, -0.31], role="insert"),
-                      S("navigate", destination="book_red"), S("pick", object="book_red"),
+                      S("navigate", destination=DESK), S("look", target=DESK),
+                      S("navigate", destination="book_red"), S("expose", object="book_red"),
+                      S("pick", object="book_red"),
                       S("navigate", destination=BOOKCASE), S("place", object="book_red", receptacle=BOOKCASE)]},
         "probe_approach_then_place": {
             "kind": "diagnostic", "variants": ["shelf_taken"],
@@ -602,12 +608,14 @@ HARD["T14_shelve_the_book"] = {
                       S("place", object="book_red", receptacle=BOOKCASE, hint_xy=[0.98, -0.52])]},
         "naive_book_elsewhere": {
             "kind": "negative", "variants": ["shelf_taken"],
-            "note": "place refused on the full top; the book is left on the shelf below instead of making room",
+            "note": "place refused on the full top; the book is left on the other bookcase instead of making room "
+                    "(an edge-held book set on the shelf below, under the top, is pulled out by the opening fingers)",
             "steps": [S("navigate", destination=DESK), S("look", target=DESK),
                       S("navigate", destination="book_red"), S("expose", object="book_red"),
                       S("pick", object="book_red"), S("navigate", destination=BOOKCASE),
                       S("place", "fail", object="book_red", receptacle=BOOKCASE),
-                      S("place", object="book_red", receptacle="bookcase_2/shelf_1")]}},
+                      S("navigate", destination=BOOKCASE_NEAR_DESK),
+                      S("place", object="book_red", receptacle=BOOKCASE_NEAR_DESK)]}},
     "oracle": {"shelf_taken": "hard_make_room_first"},
     # (until the 2026-10-26 place_flat fix the book fell off the top here and in the Medium nominal alike)
     "not_adopted": [{"condition": "book start yaw changed by -16 / +16 deg to work around the place_flat regression",

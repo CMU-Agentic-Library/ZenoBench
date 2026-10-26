@@ -10514,7 +10514,7 @@
      ]
     },
     "shelf_taken": {
-     "note": "the flat red book on the study desk; a mug and the rubber duck take up the front of the bedroom bookcase top",
+     "note": "the flat red book on the study desk; a mug and the rubber duck take up the front and the east end of the bedroom bookcase top",
      "difficulty": "hard",
      "since": "v4",
      "conditions": [
@@ -10565,7 +10565,7 @@
        "support": "bookcase_2/top",
        "xy": [
         1.13,
-        -0.53
+        -0.43
        ],
        "yaw_deg": 90
       }
@@ -10820,7 +10820,7 @@
      "variants": [
       "shelf_taken"
      ],
-     "recovery": "place refused (no free edge spot) -> set the book on the bookcase shelf below, move the mug back, put the book on top",
+     "recovery": "place refused (no free edge spot) -> put the book back down on the desk, move the mug back, fetch the book again and put it on top",
      "steps": [
       {
        "skill": "navigate",
@@ -10868,10 +10868,24 @@
        "role": "failure"
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       },
+       "role": "insert"
+      },
+      {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/shelf_1"
+        "receptacle": "desk_1/top"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
        },
        "role": "insert"
       },
@@ -10879,7 +10893,8 @@
        "skill": "look",
        "args": {
         "target": "bookcase_2/top"
-       }
+       },
+       "role": "insert"
       },
       {
        "skill": "navigate",
@@ -10910,7 +10925,25 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "book_red"
+       }
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "book_red"
        }
       },
       {
@@ -11038,7 +11071,7 @@
      "variants": [
       "shelf_taken"
      ],
-     "note": "place refused on the full top; the book is left on the shelf below instead of making room",
+     "note": "place refused on the full top; the book is left on the other bookcase instead of making room (an edge-held book set on the shelf below, under the top, is pulled out by the opening fingers)",
      "steps": [
       {
        "skill": "navigate",
@@ -11085,10 +11118,16 @@
        "expect": "fail"
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_3/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "book_red",
-        "receptacle": "bookcase_2/shelf_1"
+        "receptacle": "bookcase_3/top"
        }
       }
      ],
@@ -11130,7 +11169,7 @@
     "bookcase_2/top",
     "desk_1/top",
     "mug_shelf",
-    "bookcase_2/shelf_1",
+    "bookcase_3/top",
     "shelf_blocker"
    ]
   },
