@@ -1,0 +1,14 @@
+[
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "no_cup_spoon_boxed_in",
+"route": "hard_move_the_setting"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 11,
+"variant": "no_cup_spoon_boxed_in",
+"route": "hard_move_the_setting"
+}
+]

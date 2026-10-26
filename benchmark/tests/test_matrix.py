@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import inspect
 import itertools
 import json
 import math
@@ -153,7 +154,10 @@ def test_goal_atoms_are_known_predicates():
                 name = a[0][4:] if a[0].startswith("not ") else a[0]
                 assert name in GOAL_PREDICATES or name in REGISTRY, (t["task_id"], a)
                 pred = GOAL_PREDICATES.get(name) or REGISTRY[name]
-                assert len(a) - 1 == len(pred.arg_names), (t["task_id"], a)
+                optional = sum(p.default is not inspect.Parameter.empty
+                               for p in inspect.signature(pred.evaluate).parameters.values()) \
+                    if name in GOAL_PREDICATES else 0
+                assert len(pred.arg_names) - optional <= len(a) - 1 <= len(pred.arg_names), (t["task_id"], a)
 
 
 def test_every_graded_variant_has_an_oracle_route_and_an_acceptance_route():

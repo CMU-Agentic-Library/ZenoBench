@@ -125,9 +125,9 @@ ability, not counts of environment conditions:
   through feedback. `public_task` returns the selected variant's instruction in the same `description` field.
 * **Task-level decision, not more actions.** Choosing another functional resource or strategy from what the
   environment offers counts, even when the skill sequence looks similar. No Hard fails on purpose: where a failure
-  appears it is the environment's real constraint (no free strip, no free spot), and the proactive plan avoids it.
+  appears it is the environment's real constraint (no free spot, an occupied appliance), and the proactive plan avoids it.
 * **Verifiers accept every instruction-compliant strategy and reject the shortcuts.** Goal-only predicates in
-  `episode/goal_predicates.py` (not Contract conditions, no skill export changes): `near_start` (layout restored),
+  `episode/goal_predicates.py` (not Contract conditions, no skill export changes): `near_start` (layout restored; an object never picked up must stay within 3 cm: shoved is not restored),
   `clear_of` / `near_any` (beside a setting but out of its way), `front_visible` (on display, not hidden),
   `count_on_at_least` (the table was not cleared), `fully_inside` (put away, not perched on top: real capacity).
 * **Added objects.** A variant may add assets the base scene lacks (`"add"`, e.g. the small storage bin, a
@@ -141,10 +141,10 @@ ability, not counts of environment conditions:
 |---|---|---|---|---|
 | T01 | insert | `table_set` | table set along the robot's side; free slots wedged between settings, far from them, and one beside a plate | place the book beside a setting yet clear of it (not where `place` would put it) |
 | T02 | insert | `edge_base` | block A at the island's front edge, block B in the open | choose B as the base (or move A in first), not the Easy stack on A |
-| T03 | decompose | `three_containers` | mug and a small bin by the utensils, the wide bin on the TV stand | allocate both utensils jointly: the spoon fits the small bin, the 22 cm pin only the wide one |
-| T06 | insert | `display_hidden` | the cabinet's only free spot is behind cereal boxes | display on the TV stand (or make a front spot), not hidden |
+| T03 | decompose | `three_containers` | the mug by the utensils; a small and the wide storage bin side by side on the TV stand | allocate both utensils jointly: the spoon fits the small bin, the 22 cm pin only the wide one |
+| T06 | insert | `display_hidden` | a closed row of cereal boxes and a bottle along the cabinet's open front: its free space is behind them | display on the TV stand (or make a front spot), not hidden |
 | T07 | replace | `microwave_holds_pot` | the microwave works but holds the soup pot; the stove is free | heat on the stove instead of clearing the microwave (both allowed) |
-| T08 | insert (cleanup ①) | `island_cluttered` | clutter along both strips: no free wiping strip anywhere | move one object off, wipe, put it back where it was |
+| T08 | insert (cleanup ①) | `island_cluttered` | clutter along both strips; the wipe sweeps the strip in front of the robot and shoves what stands there | take what stands in the strip off the island, wipe, put it back (a shoved object fails the goal) |
 | T09 | replace | `cookware_choice` | a breakfast bowl and a mug by the tomatoes, the pot on the stove; the instruction asks for "a suitable pot" | choose the pot (stirring, lid, burner) over the nearer containers |
 | T11 | decompose | `basket_gone_bowl_there` | no basket; a bowl stands where it should be | keep to the stated substitute (the tray on the study desk), not the bowl |
 | T12 | decompose | `toys_everywhere` | car and duck in two rooms; no basket: a small bin half full of blocks and a shallow tray | allocate by capacity: the duck fits only the bin's last gap, so the car goes to the tray (no single container holds both) |

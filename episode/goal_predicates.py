@@ -5,7 +5,7 @@ are not Contract conditions: no SkillNode, no exported skill file and no planner
 names them, so the skill library and its public interface stay unchanged.  episode.evaluate_goal
 looks a goal atom up here first, then in the skill registry.
 
-* ``near_start(object, tol_m)``: back on the support it started on, within ``tol_m`` of its start
+* ``near_start(object, tol_m[, untouched_tol_m])``: back on the support it started on, within ``tol_m`` of its start
   xy (a layout restored after a temporary move, T08);
 * ``clear_of(object, others, min_gap_m)``: the object's footprint keeps ``min_gap_m`` to every
   listed object (a book that does not crowd the place settings, T01);
@@ -59,9 +59,10 @@ def _gap(a, b):
     return math.hypot(dx, dy)
 
 
-@goal_predicate("near_start", ["object", "tol_m"],
-                "Object on the support it started on, its xy within tol_m of the start.")
-def _near_start(rig, ctx, object, tol_m):
+@goal_predicate("near_start", ["object", "tol_m", "untouched_tol_m"],
+                "Object on the support it started on, its xy within tol_m of the start; one the robot never "
+                "picked up within untouched_tol_m (when given): pushed aside is not put back.")
+def _near_start(rig, ctx, object, tol_m, untouched_tol_m=None):
     from zeno_skills.predicates import memory
     st = _state(rig, ctx)
     s0 = memory(rig)["initial_support"].get(object) or rig.ann.objects[object].get("support")
@@ -70,7 +71,13 @@ def _near_start(rig, ctx, object, tol_m):
     if p0 is None:
         return False, "no start pose"
     d = math.hypot(st["objects"][object]["pos"][0] - p0[0], st["objects"][object]["pos"][1] - p0[1])
-    return bool(ok) and d <= float(tol_m), f"{why}; {d:.3f} m from its start"
+    tol, how = float(tol_m), ""
+    if untouched_tol_m is not None:
+        start = (ctx.get("before") or {}).get("events", 0)
+        picked = any(e.get("label") == "pick_result" and e.get("obj") == object and e.get("held")
+                     for e in rig.events[start:])
+        tol, how = (tol, ", picked up") if picked else (float(untouched_tol_m), ", never picked up")
+    return bool(ok) and d <= tol, f"{why}; {d:.3f} m from its start{how}"
 
 
 @goal_predicate("clear_of", ["object", "others", "min_gap_m"],

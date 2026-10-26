@@ -1,0 +1,50 @@
+[
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "island_cluttered",
+"route": "hard_proactive"
+},
+{
+"task": "T08_wipe_island",
+"seed": 11,
+"variant": "island_cluttered",
+"route": "hard_proactive"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "edge_base",
+"route": "naive_stack_on_edge_block"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "three_containers",
+"route": "hard_measure_then_wide_bin"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 11,
+"variant": "three_containers",
+"route": "hard_measure_then_wide_bin"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "three_containers",
+"route": "naive_spoon_in_small_bin"
+}
+]

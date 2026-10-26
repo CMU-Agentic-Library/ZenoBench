@@ -79,7 +79,7 @@
   "surface_cluttered": {
    "type": "occupied_workspace",
    "decision": "insert",
-   "meaning": "objects cover every free strip of the surface: move one aside, do the work, put it back"
+   "meaning": "objects stand where the work happens (the wiped strip): move them aside, do the work, put them back"
   },
   "cookware_choice": {
    "type": "cookware_choice",
@@ -968,7 +968,7 @@
        "support": "kitchen_island/top",
        "xy": [
         7.0,
-        1.75
+        1.66
        ],
        "yaw_deg": 0.0
       }
@@ -1372,6 +1372,12 @@
        }
       },
       {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_b"
+       }
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "wooden_block_b"
@@ -1512,7 +1518,7 @@
      "v3_difficulty": "hard"
     },
     "three_containers": {
-     "note": "the mug and a small storage bin (22 x 17 cm) on the island next to the utensils, the wide storage bin on the TV stand: the spoon fits the small bin, the 22 cm rolling pin only the wide one",
+     "note": "the mug on the island next to the utensils, a small storage bin (22 x 17 cm) and the wide storage bin side by side on the TV stand: the spoon fits the small bin, the 22 cm rolling pin only the wide one",
      "difficulty": "hard",
      "since": "v4",
      "conditions": [
@@ -1576,10 +1582,10 @@
      "add": {
       "small_storage_bin": {
        "asset": "small_storage_bin",
-       "support": "kitchen_island/top",
+       "support": "tv_stand_2/top",
        "xy": [
-        7.1,
-        1.8
+        7.85,
+        0.4
        ],
        "yaw_deg": 0.0
       }
@@ -2112,6 +2118,12 @@
        }
       },
       {
+       "skill": "approach",
+       "args": {
+        "target": "small_storage_bin"
+       }
+      },
+      {
        "skill": "drop",
        "args": {
         "object": "breakfast_spoon",
@@ -2134,6 +2146,12 @@
        "skill": "navigate",
        "args": {
         "destination": "small_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "small_storage_bin"
        }
       },
       {
@@ -2939,7 +2957,7 @@
      "v3_difficulty": "hard"
     },
     "display_hidden": {
-     "note": "two cereal boxes and the juice bottle stand along the wall cabinet's front; the free spot behind them is hidden from the room, the TV stand is open",
+     "note": "three cereal boxes and the juice bottle stand along the wall cabinet's front; the free space behind them is hidden from the room, the TV stand is open",
      "difficulty": "hard",
      "since": "v4",
      "conditions": [
@@ -3028,6 +3046,10 @@
         "juice_bottle"
        ],
        [
+        "upright",
+        "clutter_cereal_c"
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -3038,32 +3060,44 @@
       "wooden_block_b",
       "clutter_cereal_a",
       "clutter_cereal_b",
-      "juice_bottle"
+      "juice_bottle",
+      "clutter_cereal_c"
      ],
      "move": {
       "clutter_cereal_a": {
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.3,
+        3.2777,
         0.44
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90
       },
       "clutter_cereal_b": {
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.5,
+        3.4327,
         0.44
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 90
       },
       "juice_bottle": {
        "support": "kitchen_cabinet_6/top",
        "xy": [
-        3.7,
+        3.71,
         0.45
        ],
        "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "clutter_cereal_c": {
+       "asset": "cereal_box",
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.588,
+        0.44
+       ],
+       "yaw_deg": 90
       }
      },
      "condition_types": [
@@ -3447,7 +3481,7 @@
      "variants": [
       "display_hidden"
      ],
-     "note": "the cabinet's only free spot, behind the boxes",
+     "note": "the cabinet's free space, behind the boxes",
      "steps": [
       {
        "skill": "look",
@@ -3510,7 +3544,8 @@
     "kitchen_cabinet_4/top",
     "clutter_cereal_a",
     "clutter_cereal_b",
-    "juice_bottle"
+    "juice_bottle",
+    "clutter_cereal_c"
    ]
   },
   {
@@ -4337,47 +4372,56 @@
        [
         "near_start",
         "rolling_pin",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "near_start",
         "wooden_block_a",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "near_start",
         "soda_can",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "near_start",
         "wooden_block_b",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "near_start",
         "mug",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "near_start",
         "oatmeal",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "near_start",
         "paperback_book",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "near_start",
         "breakfast_spoon",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "near_start",
         "juice_bottle",
-        0.12
+        0.12,
+        0.03
        ],
        [
         "upright",
@@ -4731,142 +4775,12 @@
      ],
      "since": "v2"
     },
-    "hard_clear_wipe_restore": {
-     "kind": "fallback",
-     "variants": [
-      "island_cluttered"
-     ],
-     "recovery": "wipe refused (no free strip) -> put the sponge back on the TV stand, move one block there -> wipe -> put the block back",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "wipe",
-       "args": {
-        "surface": "kitchen_island/top",
-        "tool": "kitchen_sponge"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_a"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_a"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_a",
-        "receptacle": "tv_stand_2/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "wipe",
-       "args": {
-        "surface": "kitchen_island/top",
-        "tool": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "restore",
-       "args": {
-        "object": "wooden_block_a"
-       },
-       "role": "restore"
-      }
-     ],
-     "since": "v4"
-    },
     "hard_proactive": {
      "kind": "alternative",
      "variants": [
       "island_cluttered"
      ],
-     "recovery": "the clutter is seen first: move one block to the TV stand, wipe, put it back",
+     "recovery": "block B stands in the strip the robot wipes: move it to the TV stand, wipe, put it back",
      "steps": [
       {
        "skill": "look",
@@ -4877,14 +4791,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "wooden_block_a"
+        "destination": "wooden_block_b"
        },
        "role": "insert"
       },
       {
        "skill": "pick",
        "args": {
-        "object": "wooden_block_a"
+        "object": "wooden_block_b"
        },
        "role": "insert"
       },
@@ -4898,8 +4812,12 @@
       {
        "skill": "place",
        "args": {
-        "object": "wooden_block_a",
-        "receptacle": "tv_stand_2/top"
+        "object": "wooden_block_b",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.14,
+         0.44
+        ]
        },
        "role": "insert"
       },
@@ -4944,7 +4862,7 @@
       {
        "skill": "restore",
        "args": {
-        "object": "wooden_block_a"
+        "object": "wooden_block_b"
        },
        "role": "restore"
       }
@@ -4956,7 +4874,7 @@
      "variants": [
       "island_cluttered"
      ],
-     "note": "the Easy plan: wipe is refused (no free strip) and the plan gives up instead of making room",
+     "note": "the Easy plan: wipe with the clutter in place; the sponge shoves block B aside",
      "steps": [
       {
        "skill": "look",
@@ -4993,8 +4911,7 @@
        "args": {
         "surface": "kitchen_island/top",
         "tool": "kitchen_sponge"
-       },
-       "expect": "fail"
+       }
       },
       {
        "skill": "place",
@@ -5021,15 +4938,20 @@
     19
    ],
    "since": "v2",
-   "not_adopted": [],
+   "not_adopted": [
+    {
+     "condition": "a reactive route: wipe refused (no free strip) -> clear -> wipe again",
+     "reason": "wipe never refuses a cluttered strip (box-order mismatch in its free-strip test, zeno_skills/policies/tooluse.py; skill code left unchanged), it shoves what stands there (s10): the clutter has to be seen and cleared first"
+    }
+   ],
    "entities": [
     "kitchen_sponge",
     "kitchen_island/top",
     "tv_stand_2/top",
-    "wooden_block_a",
-    "rolling_pin",
-    "soda_can",
     "wooden_block_b",
+    "rolling_pin",
+    "wooden_block_a",
+    "soda_can",
     "mug",
     "oatmeal",
     "paperback_book",
@@ -8047,13 +7969,20 @@
        "role": "insert"
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       },
+       "role": "insert"
+      },
+      {
        "skill": "place",
        "args": {
         "object": "spoon",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.02,
-         6.75
+         6.61
         ]
        },
        "role": "insert"
@@ -8095,7 +8024,7 @@
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.0,
-         6.58
+         6.44
         ]
        }
       },
@@ -8133,7 +8062,7 @@
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.0,
-         6.92
+         6.78
         ]
        }
       }
