@@ -11,6 +11,8 @@ episode 本身由 [episode/episode.py](../episode/episode.py) 的 `Episode` 运�
 
 profile（[episode/profiles/](../episode/profiles/)）决定执行开关（gate、自动恢复、反馈遮罩……）、observation 字段和调用上限，详见 [episode/README.md](../episode/README.md)。profile 由 `initial_task` 的 `profile` 字段选（`gt` 或 `benchmark`），任何任务都能用任一个跑；不传时用上表里任务所在 catalog 的默认 profile。
 
+`execution.sticky_hands`（默认关，`gt` 和 `benchmark` 都没打开）是开发 planner 时用的辅助开关，保证 pick 和搬运一定成功。抓取先照常按物理方式做。物理抓取失败（找不到 park、IK 失败、没抓住）时，机器人先尽量把手伸过去，再把物体直接放进手里。手里的物体用 PhysX 固定关节焊在夹爪上，手指张开前才解除，所以搬运途中不会掉；place 和 release 仍按物理方式执行。前置条件、gate 和输入的失败照样返回失败。如果抓取时把物体所在的容器或托盘一起捏起来了，会先松手，再只把物体放进手里，避免焊接把容器一直带走。worker.log 里会有 `sticky_weld`、`sticky_snap`（附原因 `no_park` / `not_held` / `ik` / `caught_neighbour` / `other`）、`sticky_caught`、`sticky_release` 事件，planner 收到的结果里没有这些。和 gate 同时打开会被拒绝。服务要提供这个开关，就把一个打开它的 profile YAML 加进 `--profiles`；它有自己的 `profile_hash`，详见 [episode/README.md](../episode/README.md)。
+
 ## 启动
 
 ```bash

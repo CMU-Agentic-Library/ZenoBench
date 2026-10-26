@@ -37,6 +37,7 @@ DEFAULTS = {
         "occlusion": False,               # dynamic occlusion in visibility tests
         "static_explore": False,          # explore covers the static layout only
         "edge_pinch_upright_waist": False,
+        "sticky_hands": False,            # pick and carry always succeed: weld while held, snap a failed pick
     },
     "observation": {
         "cameras": list(CAMERAS),
@@ -128,6 +129,9 @@ def _validate(p):
         raise ProfileError('limits.max_calls: a positive int or "task"')
     if not isinstance(p["allow_leak"], bool):
         raise ProfileError("allow_leak: expected true/false")
+    if ex["sticky_hands"] and ex["gate"]:
+        raise ProfileError("execution.sticky_hands is a planner-development assist for the GT interface; "
+                           "a gated (benchmark) profile cannot turn it on")
     if ex["gate"] and not p["allow_leak"]:
         leaks = [k for k, on in (("observation.gt_objects", ob["gt_objects"]),
                                  ("observation.task_status", ob["task_status"]),
@@ -176,6 +180,10 @@ def apply_rig_flags(rig, prof):
     rig.occlusion = ex["occlusion"]
     rig.static_explore = ex["static_explore"]
     rig.edge_pinch_upright_waist = ex["edge_pinch_upright_waist"]
+    rig.sticky = None
+    if ex["sticky_hands"]:
+        from zeno_skills.sticky import StickyHands
+        rig.sticky = StickyHands(rig)
 
 
 def run_profile_current(cfg: dict) -> bool:

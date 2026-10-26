@@ -27,6 +27,7 @@ from .evaluator import quat_R
 from .kinematics import gripper_rot
 from .planner import find_park, joint_reachable, plan_path, torque_ratio
 from .rig import Dropped, SkillFailure
+from .sticky import note_grasp, welded
 
 TCP_BACKOFF = 0.12
 EDGE_GRIP_DEPTH = 0.045       # edge pinch: TCP up to this far inside the gripped edge
@@ -124,9 +125,10 @@ def _carry_pose(rig, min_bottom_z=None):
 
 def check_held(rig, label):
     """Is the carried object still in the hand?  Its distance to the TCP must
-    match the one measured at the grasp and the fingers must not have shut."""
+    match the one measured at the grasp and the fingers must not have shut.  A sticky-hands
+    weld holds it: never dropped."""
     h = rig.held
-    if h is None:
+    if h is None or welded(rig, "right", h["name"]):
         return
     tcp, _ = rig.kin.tcp(rig.q())
     body, _ = rig.obj_pose(h["name"])
@@ -261,7 +263,7 @@ def held_vertical_move(rig, dz, label, R_goal=None, step=0.005, allow_pull=True)
 def check_left_held(rig, label):
     """Verify a left-hand load after motion using finger gap and TCP distance."""
     h = rig.left_held
-    if h is None:
+    if h is None or welded(rig, "left", h["name"]):
         return
     tcp, _ = rig.left_kin.tcp(rig.left_q())
     body, _ = rig.obj_pose(h["name"])
@@ -932,6 +934,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinc
     rig.log("pick_target", obj=name, pos=[round(float(v), 3) for v in pos],
             quat=[round(float(v), 3) for v in quat], p=[round(float(v), 3) for v in g["p"]],
             kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
+    note_grasp(rig, name, g["p"], g["R"], "pinch", g["pre_open"])
     rig.grip(g["pre_open"], 40)
     for (tp, tR), lab, st_, spw, qh in zip(_grasp_legs(g), ("pre_far", "pre", "grasp"), (0.02, 0.005, 0.003),
                                            (3, 3, 4), park_qs):
@@ -1160,6 +1163,7 @@ def _corner_pinch(rig, name):
         raise SkillFailure(f"corner pinch {name}: no base pose reaches any side")
     rig.log("corner_pinch_park", obj=name, side=n.round(3).tolist(), park=[round(v, 3) for v in park[:3]],
             d=round(d, 3))
+    note_grasp(rig, name, legs[2][0], R, "corner", 0.04)
     rig.caption = f"PICK {name}: corner pinch from the floor (torso down)"
     rig.focus_z = 0.1
     _goto_park(rig, park)
@@ -1258,6 +1262,7 @@ def _edge_pinch_impl(rig, name, s, n, attempt=False):
     if park is None:
         raise SkillFailure(f"edge pinch {name}: no base pose reaches the overhang")
     rig.log("edge_pinch_park", obj=name, park=[round(v, 3) for v in park[:3]], overhang=round(over, 3))
+    note_grasp(rig, name, tcp, R, "edge", pre_open)
     rig.caption = f"PICK {name}: edge pinch (approach from outside the edge)"
     rig.focus_z = s["z"]
     _goto_park(rig, park)

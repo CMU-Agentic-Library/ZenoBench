@@ -393,6 +393,9 @@ class Episode:
 
     def close(self):
         """Finish the streamed video, if any (call once, also after a crash)."""
+        sticky = getattr(getattr(self, "rig", None), "sticky", None)
+        if sticky is not None:
+            sticky.close()                                # no sticky-hands weld outlives the episode
         if self.video_recorder is not None:
             self.video_recorder.close()
             print(f"[video] saved {self.video_recorder.path} ({self.video_recorder.frame_count} frames)", flush=True)
