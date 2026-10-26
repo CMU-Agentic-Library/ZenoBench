@@ -1,0 +1,14 @@
+[
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "island_cluttered",
+"route": "hard_proactive"
+},
+{
+"task": "T08_wipe_island",
+"seed": 11,
+"variant": "island_cluttered",
+"route": "hard_proactive"
+}
+]

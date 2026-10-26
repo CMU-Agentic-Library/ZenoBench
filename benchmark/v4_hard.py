@@ -121,7 +121,7 @@ T08_FRONT = {"rolling_pin": at(ISLAND, 6.75, 1.62, 0), "wooden_block_a": at(ISLA
 T08_BACK = {"oatmeal": at(ISLAND, 6.97, 1.88), "paperback_book": at(ISLAND, 7.27, 1.88, 0),
             "breakfast_spoon": at(ISLAND, 7.63, 1.88, 0), "juice_bottle": at(ISLAND, 7.94, 1.88)}
 T08_LINE = {**T08_FRONT, **T08_BACK}
-T08_GOAL = {"all": [["wiped", ISLAND], ["on", "kitchen_sponge", ISLAND], ["hand_empty", "right"],
+T08_GOAL = {"all": [["wiped", ISLAND], ["on", "kitchen_sponge", TV], ["hand_empty", "right"],
                     *[["near_start", n, 0.12, 0.03] for n in T08_LINE],
                     *[["upright", n] for n in ("soda_can", "mug", "juice_bottle", "oatmeal")]]}
 _t08_sponge = [S("look", target=TV), S("navigate", destination="kitchen_sponge"), S("pick", object="kitchen_sponge")]
@@ -135,9 +135,11 @@ HARD["T08_wipe_island"] = {
     "variants": {"island_cluttered": hard(
         "after cooking the island is cluttered along both long strips (pin, two blocks, can and mug in front; bowl, "
         "book, spoon and bottle behind, staggered); the sponge dries on the TV stand", ["surface_cluttered"],
+        # (the sponge goes back where it was found: left on the island, place put it on block B's own spot and
+        # restore moved B 54 cm away, s10, s11; hinted beside the strip it knocked the soda can over, s10, s11)
         instruction="Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly "
-                    "and put them back as they were, then leave the sponge on the island.",
-        instruction_zh="用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵留在岛台。",
+                    "and put them back as they were, and put the sponge back where you found it.",
+        instruction_zh="用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵放回原处。",
         goal=T08_GOAL, watch=["kitchen_sponge", *T08_LINE],
         # the sponge dries on the TV stand (on the island it was out of view behind the mug or missed, s10)
         move={**T08_LINE, "kitchen_sponge": at(TV, 7.6, 0.38)})},
@@ -147,14 +149,19 @@ HARD["T08_wipe_island"] = {
             "recovery": "block B stands in the strip the robot wipes: move it to the TV stand, wipe, put it back",
             "steps": [S("look", target=ISLAND), *_t08_aside, *_t08_sponge, S("approach", target=ISLAND),
                       S("wipe", surface=ISLAND, tool="kitchen_sponge"),
-                      S("place", object="kitchen_sponge", receptacle=ISLAND),
-                      S("restore", object="wooden_block_b", role="restore")]},
+                      S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV),
+                      # back on its own spot: restore returns an object to its start support at a free spot near
+                      # the robot (B came back 54 cm west of its spot, s10, s11), place honours an exact hint
+                      S("navigate", destination="wooden_block_b", role="restore"),
+                      S("pick", object="wooden_block_b", role="restore"),
+                      S("navigate", destination=ISLAND, role="restore"),
+                      S("place", object="wooden_block_b", receptacle=ISLAND, hint_xy=[7.80, 1.62], role="restore")]},
         "naive_wipe_around": {
             "kind": "negative", "variants": ["island_cluttered"],
             "note": "the Easy plan: wipe with the clutter in place; the sponge shoves block B aside",
             "steps": [S("look", target=ISLAND), *_t08_sponge, S("approach", target=ISLAND),
                       S("wipe", surface=ISLAND, tool="kitchen_sponge"),
-                      S("place", object="kitchen_sponge", receptacle=ISLAND)]}},
+                      S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV)]}},
     "oracle": {"island_cluttered": "hard_proactive"},
     "vary": {"island_cluttered": vary()},
     "not_adopted": [{"condition": "a reactive route: wipe refused (no free strip) -> clear -> wipe again",
@@ -294,9 +301,11 @@ HARD["T03_utensils_one_container"] = {
         instruction="Baking is done. Put the rolling pin and the spoon away together in one suitable container, "
                     "both of them completely inside.",
         instruction_zh="烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
-        goal={"any": [[["inside", "rolling_pin", T03_BIN], ["inside", "breakfast_spoon", T03_BIN]],
-                      [["inside", "rolling_pin", "mug"], ["inside", "breakfast_spoon", "mug"]],
-                      [["inside", "rolling_pin", SMALL_BIN], ["inside", "breakfast_spoon", SMALL_BIN]]],
+        # "completely inside": fully_inside, not inside (an xy test: the pin laid across the small bin, 3 cm above
+        # its rim, passed it, s10)
+        goal={"any": [[["fully_inside", "rolling_pin", T03_BIN], ["fully_inside", "breakfast_spoon", T03_BIN]],
+                      [["fully_inside", "rolling_pin", "mug"], ["fully_inside", "breakfast_spoon", "mug"]],
+                      [["fully_inside", "rolling_pin", SMALL_BIN], ["fully_inside", "breakfast_spoon", SMALL_BIN]]],
               "all": [["hand_empty", "right"]]},
         watch=["rolling_pin", "breakfast_spoon", "mug", T03_BIN, SMALL_BIN],
         # the small bin stands on the TV stand beside the wide one, so the two differ only in size (on the island,
@@ -318,7 +327,7 @@ HARD["T03_utensils_one_container"] = {
         "naive_spoon_in_small_bin": {
             "kind": "negative", "variants": ["three_containers"],
             "note": "greedy per item: the spoon into the nearest bin that fits it, then the pin does not fit there",
-            "steps": [S("look", target=ISLAND), S("navigate", destination="breakfast_spoon"),
+            "steps": [S("look", target=ISLAND), S("look", target=TV), S("navigate", destination="breakfast_spoon"),
                       # (dropped straight after navigate: no base pose above the bin, s10)
                       S("pick", object="breakfast_spoon"), S("navigate", destination=SMALL_BIN),
                       S("approach", target=SMALL_BIN), S("drop", object="breakfast_spoon", container=SMALL_BIN),

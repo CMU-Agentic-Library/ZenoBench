@@ -1,0 +1,694 @@
+{
+ "rows": [
+  {
+   "task": "T01_book_to_dining_table",
+   "variant": "table_set",
+   "route": "hard_reading_spot",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T01_book_to_dining_table/s10_table_set_hard_reading_spot",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "spot_quality"
+   ]
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "variant": "table_set",
+   "route": "hard_reading_spot",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T01_book_to_dining_table/s11_table_set_hard_reading_spot",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "spot_quality"
+   ]
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "variant": "table_set",
+   "route": "naive_nearest_slot",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "clear_of(paperback_book, ['bowl_side_table', 'plate_counter_a', 'cup_side_table', 'plate_counter_b', 'clutter_cereal_a', 'mug_dining_cabinet', 'spoon_target_table', 'clutter_cereal_b'], 0.05)",
+   "dir": "benchmark/runs/v4_accept/T01_book_to_dining_table/s10_table_set_naive_nearest_slot",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "spot_quality"
+   ]
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "edge_base",
+   "route": "hard_stack_on_open_block",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r3/T02_stack_blocks/s10_edge_base_hard_stack_on_open_block",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "unstable_base"
+   ]
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "edge_base",
+   "route": "hard_stack_on_open_block",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r3/T02_stack_blocks/s11_edge_base_hard_stack_on_open_block",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "unstable_base"
+   ]
+  },
+  {
+   "task": "T02_stack_blocks",
+   "variant": "edge_base",
+   "route": "naive_stack_on_edge_block",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "no alternative of the goal holds",
+   "dir": "benchmark/runs/v4_accept_r3/T02_stack_blocks/s10_edge_base_naive_stack_on_edge_block",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "unstable_base"
+   ]
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "variant": "three_containers",
+   "route": "hard_measure_then_wide_bin",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r7/T03_utensils_one_container/s10_three_containers_hard_measure_then_wide_bin",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ]
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "variant": "three_containers",
+   "route": "hard_measure_then_wide_bin",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r7/T03_utensils_one_container/s11_three_containers_hard_measure_then_wide_bin",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ]
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "variant": "three_containers",
+   "route": "naive_spoon_in_small_bin",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "no alternative of the goal holds",
+   "dir": "benchmark/runs/v4_accept_r7/T03_utensils_one_container/s10_three_containers_naive_spoon_in_small_bin",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ]
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "variant": "display_hidden",
+   "route": "hard_open_display",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r2/T06_block_destination_occupied/s10_display_hidden_hard_open_display",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "spot_quality"
+   ]
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "variant": "display_hidden",
+   "route": "hard_open_display",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r2/T06_block_destination_occupied/s11_display_hidden_hard_open_display",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "spot_quality"
+   ]
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "variant": "display_hidden",
+   "route": "naive_hidden_spot",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "upright(clutter_cereal_b); upright(juice_bottle); upright(clutter_cereal_c)",
+   "dir": "benchmark/runs/v4_accept_r2/T06_block_destination_occupied/s10_display_hidden_naive_hidden_spot",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "spot_quality"
+   ]
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "variant": "microwave_holds_pot",
+   "route": "hard_stove_instead",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T07_heat_oatmeal/s10_microwave_holds_pot_hard_stove_instead",
+   "decisions": [
+    "replace"
+   ],
+   "conditions": [
+    "appliance_occupied"
+   ]
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "variant": "microwave_holds_pot",
+   "route": "hard_stove_instead",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T07_heat_oatmeal/s11_microwave_holds_pot_hard_stove_instead",
+   "decisions": [
+    "replace"
+   ],
+   "conditions": [
+    "appliance_occupied"
+   ]
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "variant": "microwave_holds_pot",
+   "route": "naive_microwave_anyway",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "temperature_at_least(oatmeal, 40); is_closed(kitchen_microwave); hand_empty(right)",
+   "dir": "benchmark/runs/v4_accept/T07_heat_oatmeal/s10_microwave_holds_pot_naive_microwave_anyway",
+   "decisions": [
+    "replace"
+   ],
+   "conditions": [
+    "appliance_occupied"
+   ]
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "island_cluttered",
+   "route": "hard_proactive",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r8/T08_wipe_island/s10_island_cluttered_hard_proactive",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "surface_cluttered"
+   ]
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "island_cluttered",
+   "route": "hard_proactive",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r8/T08_wipe_island/s11_island_cluttered_hard_proactive",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "surface_cluttered"
+   ]
+  },
+  {
+   "task": "T08_wipe_island",
+   "variant": "island_cluttered",
+   "route": "naive_wipe_around",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "near_start(wooden_block_b, 0.12, 0.03)",
+   "dir": "benchmark/runs/v4_accept_r7/T08_wipe_island/s10_island_cluttered_naive_wipe_around",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "surface_cluttered"
+   ]
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "cookware_choice",
+   "route": "hard_pot_not_bowl",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T09_tomato_soup/s10_cookware_choice_hard_pot_not_bowl",
+   "decisions": [
+    "replace"
+   ],
+   "conditions": [
+    "cookware_choice"
+   ]
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "cookware_choice",
+   "route": "hard_pot_not_bowl",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T09_tomato_soup/s11_cookware_choice_hard_pot_not_bowl",
+   "decisions": [
+    "replace"
+   ],
+   "conditions": [
+    "cookware_choice"
+   ]
+  },
+  {
+   "task": "T09_tomato_soup",
+   "variant": "cookware_choice",
+   "route": "naive_nearest_vessel",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "inside(cherry_tomato_1, handled_cooking_pot); inside(cherry_tomato_2, handled_cooking_pot); temperature_at_least(cherry_tomato_1, 60); temperature_at_least(cherry_tomato_2, 60); stirred(handled_cookin",
+   "dir": "benchmark/runs/v4_accept/T09_tomato_soup/s10_cookware_choice_naive_nearest_vessel",
+   "decisions": [
+    "replace"
+   ],
+   "conditions": [
+    "cookware_choice"
+   ]
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_gone_bowl_there",
+   "route": "hard_tray_not_bowl",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T11_collect_fruits/s10_basket_gone_bowl_there_hard_tray_not_bowl",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "decoy_destination"
+   ]
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_gone_bowl_there",
+   "route": "hard_tray_not_bowl",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T11_collect_fruits/s11_basket_gone_bowl_there_hard_tray_not_bowl",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "decoy_destination"
+   ]
+  },
+  {
+   "task": "T11_collect_fruits",
+   "variant": "basket_gone_bowl_there",
+   "route": "naive_into_bowl",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "no alternative of the goal holds",
+   "dir": "benchmark/runs/v4_accept/T11_collect_fruits/s10_basket_gone_bowl_there_naive_into_bowl",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "decoy_destination"
+   ]
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_everywhere",
+   "route": "hard_allocate_by_size",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T12_tidy_toys/s10_toys_everywhere_hard_allocate_by_size",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ]
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_everywhere",
+   "route": "hard_allocate_by_size",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T12_tidy_toys/s11_toys_everywhere_hard_allocate_by_size",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ]
+  },
+  {
+   "task": "T12_tidy_toys",
+   "variant": "toys_everywhere",
+   "route": "naive_first_toy_in_the_bin",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "no alternative of the goal holds",
+   "dir": "benchmark/runs/v4_accept/T12_tidy_toys/s10_toys_everywhere_naive_first_toy_in_the_bin",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ]
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_spoon_boxed_in",
+   "route": "hard_move_the_setting",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r4/T13_breakfast_setup/s10_no_cup_spoon_boxed_in_hard_move_the_setting",
+   "decisions": [
+    "alternative",
+    "insert"
+   ],
+   "conditions": [
+    "no_cup",
+    "anchor_boxed_in"
+   ]
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_spoon_boxed_in",
+   "route": "hard_move_the_setting",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept_r4/T13_breakfast_setup/s11_no_cup_spoon_boxed_in_hard_move_the_setting",
+   "decisions": [
+    "alternative",
+    "insert"
+   ],
+   "conditions": [
+    "no_cup",
+    "anchor_boxed_in"
+   ]
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "variant": "no_cup_spoon_boxed_in",
+   "route": "naive_squeeze_by_the_spoon",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "no alternative of the goal holds",
+   "dir": "benchmark/runs/v4_accept/T13_breakfast_setup/s10_no_cup_spoon_boxed_in_naive_squeeze_by_the_spoon",
+   "decisions": [
+    "alternative",
+    "insert"
+   ],
+   "conditions": [
+    "no_cup",
+    "anchor_boxed_in"
+   ]
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "shelf_taken",
+   "route": "hard_make_room_first",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "physical_failure",
+   "detail": "place_object(object=book_red, receptacle=bookcase_2/top): POLICY_FAILED: place book_red on bookcase_2/top: bottom at (0.98, -0.79, 0.071), tilt 180 deg",
+   "dir": "benchmark/runs/v4_accept/T14_shelve_the_book/s10_shelf_taken_hard_make_room_first",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "destination_full"
+   ]
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "shelf_taken",
+   "route": "hard_make_room_first",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "physical_failure",
+   "detail": "place_object(object=book_red, receptacle=bookcase_2/top): POLICY_FAILED: place book_red on bookcase_2/top: bottom at (1.21, -0.78, 0.071), tilt 180 deg",
+   "dir": "benchmark/runs/v4_accept/T14_shelve_the_book/s11_shelf_taken_hard_make_room_first",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "destination_full"
+   ]
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "shelf_taken",
+   "route": "hard_place_fails_then_make_room",
+   "kind": "fallback",
+   "oracle": false,
+   "seed": null,
+   "class": "not_run",
+   "detail": "",
+   "dir": "",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "destination_full"
+   ]
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "variant": "shelf_taken",
+   "route": "naive_book_elsewhere",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "refused",
+   "detail": "place_object(object=book_red, receptacle=bookcase_2/shelf_1): PRECONDITION_FAILED: PRECONDITION_FAILED: holding(hand=right, object=book_red) is false (right holds None)",
+   "dir": "benchmark/runs/v4_accept/T14_shelve_the_book/s10_shelf_taken_naive_book_elsewhere",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "destination_full"
+   ]
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "lookalike_bin",
+   "route": "hard_instructed_bin",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T19_recycling/s10_lookalike_bin_hard_instructed_bin",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "decoy_destination",
+    "item_out_of_view"
+   ]
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "lookalike_bin",
+   "route": "hard_instructed_bin",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T19_recycling/s11_lookalike_bin_hard_instructed_bin",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "decoy_destination",
+    "item_out_of_view"
+   ]
+  },
+  {
+   "task": "T19_recycling",
+   "variant": "lookalike_bin",
+   "route": "naive_nearest_bin",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "inside(soda_can, wide_storage_bin); inside(foam_cube, wide_storage_bin)",
+   "dir": "benchmark/runs/v4_accept/T19_recycling/s10_lookalike_bin_naive_nearest_bin",
+   "decisions": [
+    "decompose"
+   ],
+   "conditions": [
+    "decoy_destination",
+    "item_out_of_view"
+   ]
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "table_full",
+   "route": "hard_make_room_first",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 10,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T20_juice_back_to_table/s10_table_full_hard_make_room_first",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "destination_full"
+   ]
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "table_full",
+   "route": "hard_make_room_first",
+   "kind": "alternative",
+   "oracle": true,
+   "seed": 11,
+   "class": "passed",
+   "detail": "",
+   "dir": "benchmark/runs/v4_accept/T20_juice_back_to_table/s11_table_full_hard_make_room_first",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "destination_full"
+   ]
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "variant": "table_full",
+   "route": "naive_no_room",
+   "kind": "negative",
+   "oracle": false,
+   "seed": 10,
+   "class": "planning_failure",
+   "detail": "on(juice_bottle, dining_table_2/top); hand_empty(right)",
+   "dir": "benchmark/runs/v4_accept/T20_juice_back_to_table/s10_table_full_naive_no_room",
+   "decisions": [
+    "insert"
+   ],
+   "conditions": [
+    "destination_full"
+   ]
+  }
+ ],
+ "stale_runs_ignored": 14
+}

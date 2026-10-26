@@ -1530,36 +1530,36 @@
       "any": [
        [
         [
-         "inside",
+         "fully_inside",
          "rolling_pin",
          "wide_storage_bin"
         ],
         [
-         "inside",
+         "fully_inside",
          "breakfast_spoon",
          "wide_storage_bin"
         ]
        ],
        [
         [
-         "inside",
+         "fully_inside",
          "rolling_pin",
          "mug"
         ],
         [
-         "inside",
+         "fully_inside",
          "breakfast_spoon",
          "mug"
         ]
        ],
        [
         [
-         "inside",
+         "fully_inside",
          "rolling_pin",
          "small_storage_bin"
         ],
         [
-         "inside",
+         "fully_inside",
          "breakfast_spoon",
          "small_storage_bin"
         ]
@@ -2097,6 +2097,12 @@
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
        }
       },
       {
@@ -4352,8 +4358,8 @@
      "conditions": [
       "surface_cluttered"
      ],
-     "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, then leave the sponge on the island.",
-     "instruction_zh": "\u7528\u6d77\u7ef5\u64e6\u51c0\u53a8\u623f\u5c9b\u53f0\uff0c\u59a5\u5584\u5904\u7406\u5e76\u6062\u590d\u53f0\u9762\u7269\u54c1\uff0c\u6700\u540e\u628a\u6d77\u7ef5\u7559\u5728\u5c9b\u53f0\u3002",
+     "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
+     "instruction_zh": "\u7528\u6d77\u7ef5\u64e6\u51c0\u53a8\u623f\u5c9b\u53f0\uff0c\u59a5\u5584\u5904\u7406\u5e76\u6062\u590d\u53f0\u9762\u7269\u54c1\uff0c\u6700\u540e\u628a\u6d77\u7ef5\u653e\u56de\u539f\u5904\u3002",
      "goal": {
       "all": [
        [
@@ -4363,7 +4369,7 @@
        [
         "on",
         "kitchen_sponge",
-        "kitchen_island/top"
+        "tv_stand_2/top"
        ],
        [
         "hand_empty",
@@ -4853,16 +4859,48 @@
        }
       },
       {
-       "skill": "place",
+       "skill": "navigate",
        "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top"
+        "destination": "tv_stand_2/top"
        }
       },
       {
-       "skill": "restore",
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "pick",
        "args": {
         "object": "wooden_block_b"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.8,
+         1.62
+        ]
        },
        "role": "restore"
       }
@@ -4914,10 +4952,16 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top"
+        "receptacle": "tv_stand_2/top"
        }
       }
      ],
