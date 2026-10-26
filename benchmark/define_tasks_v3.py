@@ -29,6 +29,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import define_tasks as v2  # noqa: E402
+import v4_hard  # noqa: E402
 from define_tasks import (BOOKCASE, CAB, CAB2_TOP, CAB_START, CAB_TOP, DESK, DINING, DINING_START, HALL,  # noqa: E402,F401
                           ISLAND, MW, MW_FLOOR, NO_MW, POT, STOVE_TOP, TV, S, _soup_tail, at, carry)
 
@@ -582,6 +583,12 @@ def entities_of(task: dict) -> list[str]:
     for v in _strings([task["goal"]] + [r.get("steps", []) for r in task["routes"].values()]):
         if v not in out and v not in rooms and (v in names or v.split("/")[0] in names):
             out.append(v)
+    # then a variant's own watched objects, goal names and added objects (v4 Hard), after the task's own
+    variants = task.get("variants", {}).values()
+    names |= {n for var in variants for n in var.get("add", {})}
+    for v in _strings([var.get("watch", []) for var in variants] + [var["goal"] for var in variants if "goal" in var]):
+        if v not in out and v not in rooms and (v in names or v.split("/")[0] in names):
+            out.append(v)
     return out
 
 
@@ -614,8 +621,21 @@ def build(ext_all=None, new_tasks=None):
                 r["kind"] = "explore"
         t["oracle"].update(ext.get("oracle", {}))
         t["not_adopted"] = ext.get("not_adopted", [])
+    relabel_v3_hard(tasks)
+    v4_hard.merge(tasks)
+    for t in tasks:
         t["entities"] = entities_of(t)
     return tasks
+
+
+def relabel_v3_hard(tasks: list) -> None:
+    """Report Step 1: the v3 Hard variants (two local conditions: search plus a fallback or an alternative)
+    become Medium.  The label is explicit and the v3 tier is kept for tracing; the configuration (and so its
+    hash and its route evidence) does not change."""
+    for t in tasks:
+        for var in t["variants"].values():
+            if "difficulty" not in var and len(var.get("conditions", [])) >= 2:
+                var["difficulty"], var["v3_difficulty"] = "medium", "hard"
 
 
 def main():
@@ -632,7 +652,7 @@ def main():
     out.write_text(json.dumps({"schema_version": 3, "benchmark_version": VERSION, "kind": "zenobench_benchmark_tasks",
                                "note": __doc__.strip().splitlines()[0], "eval_seeds": EVAL_SEEDS,
                                "condition_registry": {k: {"type": a, "decision": b, "meaning": c}
-                                                      for k, (a, b, c) in CONDITIONS.items()},
+                                                      for k, (a, b, c) in {**CONDITIONS, **v4_hard.CONDITIONS}.items()},
                                "tasks": tasks + [dict(p, entities=entities_of(p)) for p in copy.deepcopy(v2.PROBES)]},
                               indent=1))
     nv = sum(len(t["variants"]) for t in tasks)

@@ -37,12 +37,16 @@ happen, or whose recovery cannot complete the task, are recorded under the task'
 
 ## Conditions, seeds and the matrix
 
-* **One condition = one `variant_id`.** A condition is never defined by a seed. Medium has one condition tag,
-  hard has two, easy has none (checked by `tests/test_matrix.py`). The registry gives each tag a *condition type*
-  and the *decision* it requires:
+* **One condition = one `variant_id`.** A condition is never defined by a seed. Easy has no condition tag; Medium
+  has one, or two local ones (the former v3 Hard variants, labelled `"difficulty": "medium"`,
+  `"v3_difficulty": "hard"`); Hard is the v4 task-level replanning tier (`"since": "v4"`, explicit
+  `"difficulty": "hard"`, see [Difficulty redesign](#difficulty-redesign-v4-hard)), checked by
+  `tests/test_matrix.py`. The registry gives each tag a *condition type* and the *decision* it requires:
   * `explore`: search, look, explore_room or explore_furniture only, no physical repair;
   * `fallback`: a real failure, then an auxiliary skill, then a retry;
-  * `alternative`: another legal object, destination, appliance or tool.
+  * `alternative`: another legal object, destination, appliance or tool;
+  * v4 Hard: `decompose` (split / allocate by capacity, location, several goals), `insert` (a missing
+    precondition becomes a subgoal), `replace` (another appliance, vessel or strategy).
 * **Seeds 10–19** are used for every easy, medium and hard condition and every planner. Each planner gets the
   identical configuration of (task, variant, seed).
 * **What a seed changes**:
@@ -52,7 +56,7 @@ happen, or whose recovery cannot complete the task, are recorded under the task'
 
   A group moves together, so the gaps, overhangs and contacts that make a condition hold stay exactly as declared.
 * **Configuration hash**: `scene.config_hash` is computed over the base scene, the removed objects, the moved
-  objects, the start and the thermal settings. Task, variant and seed labels are excluded. Two seeds with the
+  objects, the start and the thermal settings (and the added objects, for the variants that add any). Task, variant and seed labels are excluded. Two seeds with the
   same hash are physical repeats of one scene, not two scenes; `MATRIX.md` gives the distinct configurations for
   each condition. A configuration is reproducible; the physics trajectory is not guaranteed to be bit-identical.
 * **The matrix is enumerated.** `run_episode.py --difficulty` (the seed picks a variant within one tier) stays for
@@ -98,6 +102,89 @@ Scripted routes show feasibility only. They are not evidence that an agent recov
 It groups by `task`, `tier`, `ctype` (condition type) or `condition`. In `ctype` grouping an episode is counted
 in each of its types, so those groups overlap. Precondition refusals (`pre`) and physical execution failures
 (`exec`) are counted apart, as in v2.
+
+## Difficulty redesign (v4 Hard)
+
+Source: *ZenoBench Task-Level Replanning* report (2026-10-24). Easy / Medium / Hard are now tiers of planning
+ability, not counts of environment conditions:
+
+| Tier | Name | Environment | Expected ability | Task graph |
+|---|---|---|---|---|
+| Easy | Nominal execution | resources as expected | execute a legal plan | unchanged |
+| Medium | Skill-level adaptation | search / substitute / local failure | Search, Alternative, Fallback | structure kept |
+| Hard | Task-level replanning | capacity, space, dependencies, resources interact | Decompose, Insert, Replace | changed by the environment |
+
+* **v4 is a label, not a catalog.** Everything lives in this `tasks.json` (same path, same 20 task ids), so Graph
+  Manager's sync and the HTTP service see the same file. The former v3 Hard variants (two local conditions) are
+  Medium now: `"difficulty": "medium"`, `"v3_difficulty": "hard"`. Their configurations are unchanged
+  (`tests/test_matrix.py::test_v3_configurations_unchanged_by_the_redesign` checks all 510 (task, variant, seed)
+  hashes against `tests/v3_config_hashes.json`), so their route evidence still counts.
+* **Hard variants** come from `benchmark/v4_hard.py` (`"since": "v4"`, explicit `"difficulty": "hard"`). A Hard
+  variant may carry its own `instruction` / `instruction_zh` (the report's Proposed Hard instruction) and `goal`
+  (`episode.catalog.resolve_task`). The instruction never states the solution: the constraint is observed or met
+  through feedback. `public_task` returns the selected variant's instruction in the same `description` field.
+* **Task-level decision, not more actions.** Choosing another functional resource or strategy from what the
+  environment offers counts, even when the skill sequence looks similar. No Hard fails on purpose: where a failure
+  appears it is the environment's real constraint (no free spot, an occupied appliance), and the proactive plan avoids it.
+* **Verifiers accept every instruction-compliant strategy and reject the shortcuts.** Goal-only predicates in
+  `episode/goal_predicates.py` (not Contract conditions, no skill export changes): `near_start` (layout restored; an object never picked up must stay within 3 cm: shoved is not restored),
+  `clear_of` / `near_any` (beside a setting but out of its way), `front_visible` (on display, not hidden),
+  `count_on_at_least` (the table was not cleared), `fully_inside` (put away, not perched on top: real capacity).
+* **Added objects.** A variant may add assets the base scene lacks (`"add"`, e.g. the small storage bin, a
+  look-alike bin, stored blocks, a laid party table); the configuration hash covers them only when present.
+* **Each Hard has an oracle route and a negative route.** The oracle shows one complete strategy is physically
+  feasible; the negative route is the naive plan the Hard is built to reject (expected outcome: planning failure).
+  `benchmark/v4_report.py` classifies every scripted run as passed / planning_failure / physical_failure /
+  refused / condition_not_met / system_error, kept apart ([V4_HARD_VALIDATION.md](V4_HARD_VALIDATION.md)).
+
+| Task | Report category | Hard variant | Environment | Decision the planner must make |
+|---|---|---|---|---|
+| T01 | insert | `table_set` | table set along the robot's side; free slots wedged between settings, far from them, and one beside a plate | place the book beside a setting yet clear of it (not where `place` would put it) |
+| T02 | insert | `edge_base` | block A at the island's front edge, block B in the open | choose B as the base (or move A in first), not the Easy stack on A |
+| T03 | decompose | `three_containers` | the mug by the utensils; a small and the wide storage bin side by side on the TV stand | allocate both utensils jointly: the spoon fits the small bin, the 22 cm pin only the wide one |
+| T06 | insert | `display_hidden` | a closed row of cereal boxes and a bottle along the cabinet's open front: its free space is behind them | display on the TV stand (or make a front spot), not hidden |
+| T07 | replace | `microwave_holds_pot` | the microwave works but holds the soup pot; the stove is free | heat on the stove instead of clearing the microwave (both allowed) |
+| T08 | insert (cleanup ①) | `island_cluttered` | clutter along both strips; the wipe sweeps the strip in front of the robot and shoves what stands there | take what stands in the strip off the island, wipe, put it and the sponge back (a shoved object fails the goal) |
+| T09 | replace | `cookware_choice` | a breakfast bowl and a mug by the tomatoes, the pot on the stove; the instruction asks for "a suitable pot" | choose the pot (stirring, lid, burner) over the nearer containers |
+| T11 | decompose | `basket_gone_bowl_there` | no basket; a bowl stands where it should be | keep to the stated substitute (the tray on the study desk), not the bowl |
+| T12 | decompose | `toys_everywhere` | car and duck in two rooms; no basket: a small bin half full of blocks and a shallow tray | allocate by capacity: the duck fits only the bin's last gap, so the car goes to the tray (no single container holds both) |
+| T13 | insert | `no_cup_spoon_boxed_in` | no cup; no room for a bowl or mug next to the spoon | mug for the cup, and move the setting (spoon) to where it fits |
+| T14 | insert (cleanup ②) | `shelf_taken` | a mug and the duck take up the bookcase top | move the mug to a legal place first, then shelve the book |
+| T19 | decompose | `lookalike_bin` | can out of view in the dining room; a look-alike toy bin on the way | search the can, route both items to the instructed recycling bin |
+| T20 | insert (cleanup ③) | `table_full` | party table covered: no spot for the upright bottle | move a few things (one bowl), not clear the table |
+
+Medium-only (the report proposes no Hard): T04, T05, T10, T15, T16, T17, T18 — their alternatives are local
+substitutions or action-level recoveries without a task-graph change.
+
+**Validation (2026-10-26)** ([V4_HARD_VALIDATION.md](V4_HARD_VALIDATION.md), runs `benchmark/runs/v4_accept`,
+`v4_accept_r2` … `v4_accept_r8`, batches `batches/accept_v4_hard*.json`; only runs whose configuration hash matches
+the catalog count): **12 of 13 Hard oracles pass on seeds 10 and 11; all 12 runnable negative routes end as
+`planning_failure`** (every call works, the goal rejects the plan). Physics and planning are kept apart:
+
+* **T14 `shelf_taken`: blocked (physical).** Every place of the book on `bookcase_2/top` ends with the book fallen
+  off (tilt 180°), in the Hard oracle (s10, s11) and identically in the Medium/Easy nominal `book_on_desk` (s10),
+  with `zeno_skills/` and `skill_library/` unchanged from main: a pre-existing `place_flat` regression on that
+  support, not a planning or catalog issue. Making room (the mug moved) works. A fix touches skill code and is
+  left for approval; the variant, routes and verifier stay in the catalog.
+* **T08**: `wipe` never refuses a cluttered strip: its free-strip test passes a `[x0, y0, z0, x1, y1, z1]` box to
+  `skills._overlaps_objects`, which reads `[x0, y0, x1, y1, z0, z1]`, so the sponge shoves what stands in the strip
+  (skill code unchanged). The Hard is therefore proactive (clear the strip first); the verifier rejects a shoved
+  object (`near_start` with `untouched_tol_m` 0.03 for objects never picked up). `restore` returns an object to its
+  start support, not its spot, so the oracle puts block B back with a hinted place.
+* **T06**: the negative (block behind the closed row) is rejected because reaching behind the row knocks the boxes
+  and the bottle over (`upright` fails); `front_visible` then holds only because the row fell. The hidden spot is
+  unusable either way; the TV stand is the working plan.
+* **Physics fixes made during validation (layouts / routes only, no skill changes):** T02 block B 14.5 cm in (the
+  pick missed it 23.5 cm in); T03 small bin on the TV stand (no drop pose above it on the island) and the goal
+  `fully_inside` ("completely inside": the pin perched across the small bin passed `inside`); T13 the setting 14 cm
+  further south and a re-park after the spoon pick (the arm knocks a cereal box over onto the old mug spot); T08 the
+  sponge goes back to the TV stand and block B west of it there.
+
+**Compatibility.** No Graph Manager file, Contract, skill export (`skill_library/`, `tools/build_skill_library.py
+--check` unchanged) or HTTP field changed. Graph Manager main (7289dd7) synced against this catalog indexes
+13 Hard / 32 Medium variants with its own `difficulty_of`; one of its tests hard-codes "12 tasks with a hard
+variant" (`tests/test_run_cli.py`, 24 requests), which becomes 26 after the next sync — a data expectation in
+Graph Manager, not an interface change.
 
 ## Status
 

@@ -1,0 +1,272 @@
+[
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "table_set",
+"route": "hard_reading_spot"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 11,
+"variant": "table_set",
+"route": "hard_reading_spot"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "table_set",
+"route": "naive_nearest_slot"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "edge_base",
+"route": "naive_stack_on_edge_block"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "three_containers",
+"route": "hard_measure_then_wide_bin"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 11,
+"variant": "three_containers",
+"route": "hard_measure_then_wide_bin"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "three_containers",
+"route": "naive_spoon_in_small_bin"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "display_hidden",
+"route": "hard_open_display"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 11,
+"variant": "display_hidden",
+"route": "hard_open_display"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "display_hidden",
+"route": "naive_hidden_spot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 11,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "microwave_holds_pot",
+"route": "naive_microwave_anyway"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "island_cluttered",
+"route": "hard_proactive"
+},
+{
+"task": "T08_wipe_island",
+"seed": 11,
+"variant": "island_cluttered",
+"route": "hard_proactive"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "island_cluttered",
+"route": "naive_wipe_around"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "cookware_choice",
+"route": "hard_pot_not_bowl"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 11,
+"variant": "cookware_choice",
+"route": "hard_pot_not_bowl"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "cookware_choice",
+"route": "naive_nearest_vessel"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "basket_gone_bowl_there",
+"route": "hard_tray_not_bowl"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 11,
+"variant": "basket_gone_bowl_there",
+"route": "hard_tray_not_bowl"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "basket_gone_bowl_there",
+"route": "naive_into_bowl"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "toys_everywhere",
+"route": "hard_allocate_by_size"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 11,
+"variant": "toys_everywhere",
+"route": "hard_allocate_by_size"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "toys_everywhere",
+"route": "naive_first_toy_in_the_bin"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "no_cup_spoon_boxed_in",
+"route": "hard_move_the_setting"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 11,
+"variant": "no_cup_spoon_boxed_in",
+"route": "hard_move_the_setting"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "no_cup_spoon_boxed_in",
+"route": "naive_squeeze_by_the_spoon"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "lookalike_bin",
+"route": "hard_instructed_bin"
+},
+{
+"task": "T19_recycling",
+"seed": 11,
+"variant": "lookalike_bin",
+"route": "hard_instructed_bin"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "lookalike_bin",
+"route": "naive_nearest_bin"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "table_full",
+"route": "hard_make_room_first"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 11,
+"variant": "table_full",
+"route": "hard_make_room_first"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "table_full",
+"route": "naive_no_room"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "shelf_taken",
+"route": "hard_make_room_first"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 11,
+"variant": "shelf_taken",
+"route": "hard_make_room_first"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "shelf_taken",
+"route": "naive_book_elsewhere"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "island_cluttered",
+"route": "hard_clear_wipe_restore"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "book_on_desk",
+"route": "nominal"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "overhang_ready",
+"route": "nominal"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "free",
+"route": "nominal"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "fruits_on_table",
+"route": "nominal"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "bin_on_bookcase",
+"route": "nominal"
+}
+]

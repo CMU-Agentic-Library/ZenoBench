@@ -32,7 +32,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from episode.catalog import load_catalog  # noqa: E402
+from episode.catalog import load_catalog, resolve_task  # noqa: E402
 from episode.profile import load_profile  # noqa: E402
 
 
@@ -64,6 +64,7 @@ def main():
         from episode.episode import Episode, state_summary
         task = load_catalog(args.catalog)[args.task_id]
         cfg = episode_config(task, args.seed, args.variant, args.difficulty)
+        task = resolve_task(task, cfg["variant"])          # the variant's own instruction / goal, if any
         ep = Episode(task, cfg, load_profile(args.profile), out, video_path=args.video_path,
                      video_res=(360, 640), video_stride=8)
         meta = ep.metadata()

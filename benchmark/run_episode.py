@@ -89,10 +89,12 @@ PLANNER_PROFILES = {"scripted": "benchmark", "fixed": "benchmark", "retry": "ben
 def run_episode(task, seed, route=None, planner="scripted", variant=None, out_root=OUT, video=False,
                 images=True, policy=None, difficulty=None, max_calls=None, tasks_file=TASKS, profile=None):
     from benchmark.scene import episode_config
+    from episode.catalog import resolve_task
     from episode.episode import Episode, state_summary
     from episode.profile import load_profile, max_calls as profile_max_calls
     prof = load_profile(profile or PLANNER_PROFILES[planner])
     cfg = episode_config(task, seed, variant, difficulty)
+    task = resolve_task(task, cfg["variant"])          # the variant's own instruction / goal, if any
     if planner == "oracle" and route is None:
         route = task["oracle"][cfg["variant"]]
     if planner in ("fixed", "retry") and route is None:

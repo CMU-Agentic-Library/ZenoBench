@@ -47,8 +47,23 @@ def selectable_variants(task: dict, difficulty: str | None = None) -> list[str]:
                   if (difficulty_of(v) == difficulty if difficulty else difficulty_of(v) in TIERS))
 
 
-def public_task(task: dict) -> dict:
-    """What the planner is told about a task: its name and instruction, never the goal or the variant."""
+# task fields a variant may replace (benchmark v4 Hard: an instruction that names the wider goal, and the
+# goal / watched objects that go with it); every other variant keeps the task's own
+VARIANT_OVERRIDES = ("instruction", "instruction_zh", "goal", "watch", "may_end_on_floor", "handle_objects")
+
+
+def resolve_task(task: dict, variant: str | None) -> dict:
+    """The task as one variant runs it: the task with that variant's overrides (VARIANT_OVERRIDES)."""
+    v = task.get("variants", {}).get(variant) if variant else None
+    if not v or not any(k in v for k in VARIANT_OVERRIDES):
+        return task
+    return dict(task, **{k: v[k] for k in VARIANT_OVERRIDES if k in v})
+
+
+def public_task(task: dict, variant: str | None = None) -> dict:
+    """What the planner is told about a task: its name and instruction (the variant's own when it has
+    one), never the goal or the variant."""
+    task = resolve_task(task, variant)
     return {"task_id": task["task_id"], "name": task["task_id"], "description": task["instruction"]}
 
 

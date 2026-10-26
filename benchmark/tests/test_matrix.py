@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import inspect
 import itertools
 import json
 import math
@@ -87,12 +88,76 @@ def test_hash_ignores_labels_only():
 
 
 def test_tier_matches_condition_count():
+    """v3 variants: the tier follows the condition count, except the v3 Hard ones (two local conditions), which
+    are relabelled Medium explicitly (``v3_difficulty`` keeps the old tier).  v4 Hard variants declare their tier."""
     for t, v, var in graded(V3):
         n = len(var.get("conditions", []))
-        assert difficulty_of(var) == {0: "easy", 1: "medium", 2: "hard"}[n], (t["task_id"], v)
+        if var.get("since") == "v4":
+            assert difficulty_of(var) == var["difficulty"] == "hard" and n >= 1, (t["task_id"], v)
+        elif var.get("v3_difficulty") == "hard":
+            assert n == 2 and difficulty_of(var) == var["difficulty"] == "medium", (t["task_id"], v)
+        else:
+            assert "difficulty" not in var, (t["task_id"], v)
+            assert difficulty_of(var) == {0: "easy", 1: "medium"}[n], (t["task_id"], v)
         for c in var.get("conditions", []):
             assert c in V3["condition_registry"], (t["task_id"], v, c)
         assert len(var["condition_types"]) == n
+
+
+def test_v3_configurations_unchanged_by_the_redesign():
+    """Every (task, variant, seed) that existed before the v4 Hard redesign keeps its configuration hash, so its
+    route evidence still counts (benchmark/tests/v3_config_hashes.json, frozen at 750a1dd)."""
+    frozen = json.loads((ROOT / "benchmark/tests/v3_config_hashes.json").read_text())["hashes"]
+    by = {t["task_id"]: t for t in V3["tasks"]}
+    for key, h in frozen.items():
+        tid, v, seed = key.split("|")
+        assert v in by[tid]["variants"], key
+        assert episode_config(by[tid], int(seed), v)["config_hash"] == h, key
+
+
+def test_v4_hard_variants():
+    """Report 2026-10-24: 13 Hard candidates, each a task-graph change (decompose / insert / replace), with an
+    oracle route; the 7 other tasks stay at Easy / Medium."""
+    want = {"T01", "T02", "T03", "T06", "T07", "T08", "T09", "T11", "T12", "T13", "T14", "T19", "T20"}
+    hard = {}
+    for t, v, var in graded(V3):
+        if difficulty_of(var) == "hard":
+            hard.setdefault(t["task_id"][:3], []).append((t, v, var))
+    assert set(hard) == want
+    for tid, rows in hard.items():
+        for t, v, var in rows:
+            assert var["since"] == "v4" and set(var["decisions"]) & {"decompose", "insert", "replace"}, (tid, v)
+            route = t["routes"][t["oracle"][v]]
+            assert route["kind"] not in ("diagnostic", "negative") and v in route["variants"], (tid, v)
+            if "instruction" in var:
+                assert var["instruction"] and var["instruction_zh"], (tid, v)
+
+
+def test_variant_overrides_reach_the_planner_and_the_goal():
+    from episode.catalog import public_task, resolve_task
+    for t in V3["tasks"]:
+        for v, var in t["variants"].items():
+            rt = resolve_task(t, v)
+            assert public_task(t, v)["description"] == var.get("instruction", t["instruction"])
+            assert rt["goal"] == var.get("goal", t["goal"])
+            assert rt["task_id"] == t["task_id"] and set(public_task(t, v)) == {"task_id", "name", "description"}
+        assert public_task(t) == {"task_id": t["task_id"], "name": t["task_id"], "description": t["instruction"]}
+
+
+def test_goal_atoms_are_known_predicates():
+    from episode.goal_predicates import GOAL_PREDICATES
+    from zeno_skills.predicates import REGISTRY
+    for t in V3["tasks"]:
+        goals = [t["goal"]] + [var["goal"] for var in t["variants"].values() if "goal" in var]
+        for g in goals:
+            for a in g.get("all", []) + [a for grp in g.get("any", []) for a in grp]:
+                name = a[0][4:] if a[0].startswith("not ") else a[0]
+                assert name in GOAL_PREDICATES or name in REGISTRY, (t["task_id"], a)
+                pred = GOAL_PREDICATES.get(name) or REGISTRY[name]
+                optional = sum(p.default is not inspect.Parameter.empty
+                               for p in inspect.signature(pred.evaluate).parameters.values()) \
+                    if name in GOAL_PREDICATES else 0
+                assert len(pred.arg_names) - optional <= len(a) - 1 <= len(pred.arg_names), (t["task_id"], a)
 
 
 def test_every_graded_variant_has_an_oracle_route_and_an_acceptance_route():

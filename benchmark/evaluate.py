@@ -284,10 +284,11 @@ def feasibility(a, runs, tasks):
 def spec_metrics(a, eps, runs, tasks):
     """EVALUATION_SPEC.md: per-episode facts and the six metrics per planner."""
     from benchmark.metrics import episode_facts, spec_markdown, spec_summary
+    from episode.catalog import resolve_task
     feas, alt, routes = feasibility(a, runs, tasks)
     facts = []
     for r, m in eps:
-        t = tasks[r["task_id"]]
+        t = resolve_task(tasks[r["task_id"]], r.get("variant"))       # a variant's own goal, if any
         ctx = {"objects": r["_objects"], "rooms": r["_rooms"], "feasible": feas, "alt_feasible": alt,
                "feasible_routes": routes,
                "ref_len": ref_len(t, r.get("variant"))}
