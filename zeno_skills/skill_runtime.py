@@ -482,12 +482,13 @@ class SkillContractRunner:
             except ContractError:
                 raise
             except SkillFailure as exc:
-                # sticky hands: a pick whose preconditions held ends with the object in the hand
+                # sticky hands: a pick / place whose preconditions held ends with the object in the hand / set down
                 from .sticky import snap_pick
-                if c["verb"] != "pick" or not snap_pick(rig, values.get("object"), exc):
+                if c["verb"] == "pick" and snap_pick(rig, values.get("object"), exc):
+                    res.policy_steps.append({"sticky": "snap", "error": str(exc)})
+                elif not (c["verb"] == "place" and self._sticky_place(path, values, nouns, ctx, res, exc)):
                     raise
                 snapped = True
-                res.policy_steps.append({"sticky": "snap", "error": str(exc)})
             else:
                 if c["verb"] == "pick":
                     from .sticky import after_pick
@@ -495,8 +496,14 @@ class SkillContractRunner:
             rig.step(30)
             ctx.pop("_state_cache", None)
             # a snapped two-hand pick holds in the right hand only: the skill's own ensures
-            failed = self._check(list(c["ensures"]) + ([] if snapped else list(path.get("ensures", []))), values,
-                                 nouns, ctx, res.postconditions)
+            ensures = list(c["ensures"]) + ([] if snapped and c["verb"] == "pick" else list(path.get("ensures", [])))
+            failed = self._check(ensures, values, nouns, ctx, res.postconditions)
+            if failed and c["verb"] == "place" and not snapped and \
+                    self._sticky_place(path, values, nouns, ctx, res, "; ".join(failed)):
+                rig.step(30)
+                ctx.pop("_state_cache", None)
+                res.postconditions = []
+                failed = self._check(ensures, values, nouns, ctx, res.postconditions)
             if failed:
                 raise ContractError("POSTCONDITION_FAILED", "; ".join(failed))
             res.outputs = self._outputs(c, outputs, values, nouns, ctx)
@@ -519,6 +526,18 @@ class SkillContractRunner:
         if not r.success:
             raise ContractError(r.error_code or "FAILED", r.error or "failed", r.asdict())
         return r
+
+    def _sticky_place(self, path, values, nouns, ctx, res, error):
+        """Sticky hands: set the object down on / in the receptacle (at the hint the path's
+        policy was given, e.g. a burner).  True when it rests there."""
+        from .sticky import snap_place
+        kws = [(st.get("kwargs") or {}).get(k) for st in path["steps"] for k in ("hint", "xy")]
+        hint = next((v for v in (resolve_value(w, values, nouns, {}) for w in kws if w is not None) if v is not None),
+                    values.get("hint_xy"))
+        if not snap_place(self.rig, values.get("object"), values.get("receptacle"), hint, ctx["before"], error):
+            return False
+        res.policy_steps.append({"sticky": "place", "error": str(error)})
+        return True
 
     # -------------------------------------------------------------
     def _check(self, atoms, values, nouns, ctx, sink, advisory=()):

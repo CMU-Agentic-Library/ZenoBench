@@ -19,10 +19,16 @@ grasp gets wrong.
 * caught neighbour: a pick that lifted the container or tray its object stood in or on along with
   it (pinched together) lets go and snaps the object alone, so the weld does not carry the
   container away for good (``after_pick``).
+* place: a place whose physical attempt fails (no park, slipped, tipped over, fell off) or leaves
+  the object off its receptacle still ends with it there.  The hand lets go and lifts clear, then
+  the object is set level (its most vertical axis turned upright: a face-down book stays face
+  down) at a free spot on the support (the hint first) or on the container's floor, and settles.
+  ``snap_place`` is called by the contract runner for ``place`` only after its preconditions held.
 
 Events (``rig.log``, the worker / rollout log): ``sticky_weld``, ``sticky_release``,
 ``sticky_snap`` (reason no_park / not_held / ik / caught_neighbour / other), ``sticky_keep``,
-``sticky_caught``.  Planner-facing results do not show them.
+``sticky_caught``, ``sticky_place`` / ``sticky_place_retry`` / ``sticky_place_none``.
+Planner-facing results do not show them.
 
 Checked in Isaac Sim 5.1 / Isaac Lab 2.3 (CPU physics, dt 1/120): a UsdPhysics.FixedJoint
 defined or removed while the simulation runs takes effect on the next step, the articulation
@@ -75,6 +81,29 @@ def snap_pick(rig, name, exc):
         rig.log("sticky_keep", obj=name, error=str(exc)[:200])      # held already, a later leg failed
         return True
     return s.snap(name, failure_reason(str(exc)), str(exc))
+
+
+def snap_place(rig, name, receptacle, hint, before, error):
+    """Contract-runner hook for a place whose policy failed or left ``name`` off ``receptacle``:
+    True when it ends up resting on / in it (StickyHands.place)."""
+    s = getattr(rig, "sticky", None)
+    if s is None or name not in rig.ann.objects:
+        return False
+    return s.place(name, receptacle, hint, before, str(error))
+
+
+def rest_R(quat):
+    """The orientation levelled: the body axis nearest the vertical turned onto it (upright stays
+    upright, a face-down book stays face down, yaw is kept)."""
+    R0 = quat_R(quat)
+    i = int(np.argmax(np.abs(R0[2])))
+    a = R0[:, i] * np.sign(R0[2, i])
+    ax = np.cross(a, [0.0, 0.0, 1.0])
+    sn = float(np.linalg.norm(ax))
+    if sn < 1e-9:
+        return R0
+    from scipy.spatial.transform import Rotation
+    return Rotation.from_rotvec(ax / sn * math.atan2(sn, float(a[2]))).as_matrix() @ R0
 
 
 def after_pick(rig, name, before):
@@ -341,3 +370,76 @@ class StickyHands:
                 kind=grasp["kind"], reach=reach, moved_m=round(float(np.linalg.norm(body - before)), 3),
                 fingers=np.round(f, 4).tolist())
         return True
+
+    # ------------------------------------------------------------ place
+    def _place_centres(self, name, receptacle, hint, half_h):
+        """Box centres for the object (``half_h`` from its lowest point to its centre) on / in the
+        receptacle, best first: free spots on a support (free_spots: the hint when it is free), or
+        a container's floor, then just over its rim (dropped in)."""
+        rig = self.rig
+        if receptacle in rig.ann.objects:
+            st = rig.state()
+            cb = np.asarray(rig.geo.bottom(receptacle, st), float)
+            c = np.asarray(rig.geo.centre(receptacle, st), float)
+            rim = float(rig.ann.asset_of(rig.ann.objects[receptacle])["container"]["rim_height"])
+            return [np.r_[c[:2], cb[2] + 0.015 + half_h], np.r_[c[:2], cb[2] + rim + 0.02 + half_h]]
+        from .skills import free_spots
+        z = float(rig.ann.support(receptacle)["z"]) + 0.005 + half_h
+        return [np.r_[float(x), float(y), z] for x, y in free_spots(rig, name, receptacle, hint)]
+
+    def place(self, name, receptacle, hint, before, error):
+        """Set ``name`` down on / in ``receptacle``: the targets are found first (nothing found, the
+        object stays as it is), then the hand lets go (the weld goes first) and lifts clear, the
+        object is set level at a target the hand is not over and settles; the next target when it
+        does not end up there (fell off, toppled)."""
+        from .rig import SkillFailure
+        rig = self.rig
+        obj0 = (before or {}).get("objects", {}).get(name) or {}
+        # the orientation the place started with (still in the hand), not where a failed release left it
+        R = rest_R(obj0["quat"] if obj0.get("quat") is not None else rig.obj_pose(name)[1])
+        a = rig.ann.asset_of(rig.ann.objects[name])
+        size = np.asarray(a["size"], float)
+        c_b = np.asarray(a["origin_to_bottom_center"], float) + np.array([0.0, 0.0, size[2] / 2])
+        half_h = float(np.abs(R[2]) @ size) / 2
+        try:
+            centres = self._place_centres(name, receptacle, hint, half_h)
+        except Exception as e:                           # an unannotated receptacle: nothing to snap to
+            rig.log("sticky_place_none", obj=name, receptacle=receptacle, error=str(e)[:200])
+            return False
+        if not centres:
+            rig.log("sticky_place_none", obj=name, receptacle=receptacle, error="no free spot")
+            return False
+        if rig.held is not None and rig.held.get("name") == name:
+            rig.grip(0.04, 40)
+            rig.held = None
+            tcp, Rt = rig.kin.tcp(rig.q_cmd)
+            for up in (0.10, 0.05):
+                try:
+                    rig.move_to(tcp + np.array([0, 0, up]), Rt, step=0.005, label="sticky_clear", collision=False)
+                    break
+                except SkillFailure:
+                    continue
+        # spots under the hand last (it stays where the attempt left it)
+        tcp, _ = rig.kin.tcp(rig.q())
+        reach = 0.5 * float(np.hypot(size[0], size[1])) + 0.08
+        centres.sort(key=lambda c: float(np.linalg.norm(c[:2] - tcp[:2])) < reach and tcp[2] < c[2] + half_h + 0.08)
+        t = rig.torch
+        b = rig._bodies[name]
+        q = t.tensor(_wxyz(R), dtype=t.float32)
+        container = receptacle in rig.ann.objects
+        for i, c in enumerate(centres[:4]):
+            b.set_world_pose(t.tensor(c - R @ c_b, dtype=t.float32), q)
+            b.set_linear_velocity(t.zeros(3))
+            b.set_angular_velocity(t.zeros(3))
+            rig.step(60)
+            st = rig.state()
+            ok, why = (rig.geo.inside if container else rig.geo.on)(name, receptacle, st)
+            cos = (float(np.trace(R.T @ quat_R(st["objects"][name]["quat"]))) - 1.0) / 2
+            turned = math.degrees(math.acos(max(-1.0, min(1.0, cos))))
+            if ok and turned < 20:
+                rig.log("sticky_place", obj=name, receptacle=receptacle, error=error[:200], spot=i,
+                        centre=np.round(c, 3).tolist(), turned_deg=round(turned, 1))
+                return True
+            rig.log("sticky_place_retry", obj=name, receptacle=receptacle, spot=i, detail=str(why),
+                    turned_deg=round(turned, 1))
+        return False

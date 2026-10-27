@@ -108,8 +108,18 @@ class SeparateFromNeighbourPolicy(AtomicPolicy):
                     choices.append((abs(ang), n, need))
             if not choices:
                 raise SkillFailure(f"separate {name}: no room on {s['name']} to move away from {other}")
-            _, n, need = sorted(choices, key=lambda t: t[0])[0]
-            skills.push(rig, name, s, n, need, label="SEPARATE")
+            # the most direct way first; the next one when the hand cannot get behind the object
+            # clear of the neighbours (the neighbour itself stands where a straight push starts)
+            for k, (ang, n, need) in enumerate(sorted(choices, key=lambda t: t[0])):
+                try:
+                    skills.push(rig, name, s, n, need, label="SEPARATE")
+                    break
+                except skills.ContactUnreachable as exc:
+                    rig.log("separate_direction_blocked", obj=name, deg=ang, dir=np.round(n, 3).tolist(),
+                            reason=str(exc)[:200])
+                    if k == len(choices) - 1:
+                        raise SkillFailure(f"separate {name}: no push direction away from {other} that the hand "
+                                           f"reaches clear of the neighbours")
         st = rig.state()
         gap2, other2 = neighbour_gap(rig, name, st)
         free2, why = finger_slots_free(rig, name, st)
@@ -151,18 +161,20 @@ def _contact_sweep(rig, name, start_xy, n, z_tcp, travel, label, side_ok=False):
             R = gripper_rot([n[0], n[1], 0.0], close)
             options.append([(back - np.r_[n * 0.08, 0.0], R), (back, R), (back + np.r_[n * travel, 0.0], R),
                             (back + np.r_[n * (travel - 0.06), 0.0], R)])
-    for legs in options:
-        park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=80, q_start=rig.q_cmd,
-                         travel_q=skills._travel_q(rig))
-        if park is not None:
-            break
-    if park is None:
-        raise SkillFailure(f"{label} {name}: no base pose reaches the contact sweep (rejected: {_park_diag()})")
-    skills._goto_park(rig, park)
-    rig.kin.coll_kw = {"ignore_fingers": True}
-    rig.grip(0.0, 30)
-    p0 = rig.obj_pose(name)[0]
-    rig.move_to(*legs[0], step=0.02, label=f"{label}_above", q_hint=park[3][0])
+    with skills.contact_obstacles(rig, name, label):        # the hand and fingers miss the neighbours
+        for legs in options:
+            park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=80, q_start=rig.q_cmd,
+                             travel_q=skills._travel_q(rig))
+            if park is not None:
+                break
+        if park is None:
+            raise skills.ContactUnreachable(f"{label} {name}: no base pose reaches the contact sweep clear of its "
+                                            f"neighbours (rejected: {_park_diag()})")
+        skills._goto_park(rig, park)
+        rig.kin.coll_kw = {"ignore_fingers": True}
+        rig.grip(0.0, 30)
+        p0 = rig.obj_pose(name)[0]
+        rig.move_to(*legs[0], step=0.02, label=f"{label}_above", q_hint=park[3][0])
     rig.move_to(*legs[1], step=0.005, steps_per_wp=4, label=f"{label}_down", collision=False)
     rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label=f"{label}_sweep", collision=False)
     rig.move_to(*legs[3], step=0.01, label=f"{label}_up", collision=False)

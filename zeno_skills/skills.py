@@ -18,6 +18,7 @@ pose, finger gap) and raises SkillFailure otherwise.
 from __future__ import annotations
 
 import math
+from contextlib import contextmanager
 
 import numpy as np
 from scipy.spatial.transform import Rotation
@@ -820,6 +821,51 @@ def _neighbour_boxes(rig, name, st, radius=0.30):
     return out
 
 
+class ContactUnreachable(SkillFailure):
+    """A contact motion (push, drag, sweep) found no base pose before moving anything."""
+
+
+def _contact_boxes(rig, name, st, radius=0.40):
+    """Loose objects near ``name`` a contact motion on it must keep the hand and fingers out of
+    (a push started behind a block came down into the bowl beside it and lifted the bowl).
+    Not the object itself, what is held, its contents and lid, nor what it stands on or in."""
+    from .predicates import lid_on
+    c = rig.geo.centre(name, st)
+    z0 = float(rig.geo.bottom(name, st)[2])
+    a = rig.ann.asset_of(rig.ann.objects[name])
+    held = {h["name"] for h in (rig.held, getattr(rig, "left_held", None)) if h is not None}
+    out = []
+    for o in rig.ann.objects:
+        if o == name or o in held or o not in st["objects"]:
+            continue
+        if a.get("container") and (rig.geo.inside(o, name, st)[0] or lid_on(rig, name, o, st)[0]):
+            continue
+        fp = rig.geo.footprint(o, st)
+        if math.hypot(max(fp[0] - c[0], 0, c[0] - fp[2]), max(fp[1] - c[1], 0, c[1] - fp[3])) > radius:
+            continue
+        b = float(rig.geo.bottom(o, st)[2])
+        top = b + float(rig.ann.asset_of(rig.ann.objects[o])["size"][2])
+        if top < z0 + 0.005 or rig.geo.inside(name, o, st)[0]:
+            continue                     # under it (a tray, a mat) or around it (its container)
+        out.append([fp[0] - 0.005, fp[1] - 0.005, b, fp[2] + 0.005, fp[3] + 0.005, top + 0.005])
+    return out
+
+
+@contextmanager
+def contact_obstacles(rig, name, label):
+    """The loose objects near ``name`` as arm and finger obstacles (_contact_boxes) for planning
+    a contact motion on it; nothing in minimal rig stubs."""
+    world = getattr(rig, "world", None)
+    if world is None or not hasattr(world, "temp_obstacles"):
+        yield []
+        return
+    boxes = _contact_boxes(rig, name, rig.state())
+    if boxes:
+        rig.log("contact_obstacles", obj=name, motion=label, n=len(boxes))
+    with world.temp_obstacles(boxes, fingers=True):
+        yield boxes
+
+
 def _pick_pinch_impl(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinch", "rim_pinch_rect"),
                      use_neighbours=True):
     world = getattr(rig, "world", None)
@@ -1029,24 +1075,28 @@ def push(rig, name, s, n, distance, label="PUSH", enough=None, *, mode=None):
         rig.kin.coll_kw = {"ignore_fingers": True}
         park, selected_mode, legs = None, None, None
         candidates = [(m, f(R)) for m, f in (("push", _push_legs), ("drag", _drag_legs)) for R in R_options]
-        for candidate_mode, cand_legs in candidates:
-            if mode is not None and candidate_mode != mode:
-                continue
-            park = find_park(rig.kin, rig.world, cand_legs, near=rig.base_pose(), max_tries=60, q_start=rig.q_cmd,
-                             travel_q=_travel_q(rig))
-            if park is not None:
-                selected_mode, legs = candidate_mode, cand_legs
-                break
-        if park is None:
-            raise SkillFailure(f"push {name}: no base pose reaches {mode or 'a push or a drag'}")
-        rig.log("push_park", obj=name, mode=selected_mode, dir=n.round(3).tolist(), d=round(d, 3),
-                park=[round(v, 3) for v in park[:3]])
-        rig.caption = f"{label} {name}: " + ("go behind it" if selected_mode == "push" else "press on it to drag")
-        rig.focus_z = s["z"]
-        _goto_park(rig, park)
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        rig.grip(0.0, 30)
-        rig.move_to(*legs[0], step=0.02, label="push_above", q_hint=park[3][0])
+        # the neighbours are obstacles for the hand and the fingers: find_park checks every leg's
+        # straight path, so the contact legs below (run without collision checks) miss them too
+        with contact_obstacles(rig, name, label):
+            for candidate_mode, cand_legs in candidates:
+                if mode is not None and candidate_mode != mode:
+                    continue
+                park = find_park(rig.kin, rig.world, cand_legs, near=rig.base_pose(), max_tries=60,
+                                 q_start=rig.q_cmd, travel_q=_travel_q(rig))
+                if park is not None:
+                    selected_mode, legs = candidate_mode, cand_legs
+                    break
+            if park is None:
+                raise ContactUnreachable(f"push {name}: no base pose reaches {mode or 'a push or a drag'} "
+                                         f"clear of its neighbours")
+            rig.log("push_park", obj=name, mode=selected_mode, dir=n.round(3).tolist(), d=round(d, 3),
+                    park=[round(v, 3) for v in park[:3]])
+            rig.caption = f"{label} {name}: " + ("go behind it" if selected_mode == "push" else "press on it to drag")
+            rig.focus_z = s["z"]
+            _goto_park(rig, park)
+            rig.kin.coll_kw = {"ignore_fingers": True}
+            rig.grip(0.0, 30)
+            rig.move_to(*legs[0], step=0.02, label="push_above", q_hint=park[3][0])
         rig.move_to(*legs[1], step=0.005, steps_per_wp=4, label=f"{selected_mode}_down", collision=False)
         rig.caption = f"{label} {name}: " + ("slide along the surface" if selected_mode == "push" else "drag it along")
         rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label="push_slide", collision=False)
