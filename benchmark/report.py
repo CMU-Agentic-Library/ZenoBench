@@ -57,7 +57,7 @@ def outcome(r):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--runs", nargs="+", default=[str(ROOT / "benchmark/runs/final")])
-    ap.add_argument("--tasks", default=str(ROOT / "benchmark/tasks.json"))
+    ap.add_argument("--tasks", default=str(ROOT / "benchmark/v3/tasks.json"))
     ap.add_argument("--md", default=str(ROOT / "benchmark/RESULTS.md"))
     ap.add_argument("--json", default=str(ROOT / "benchmark/coverage.json"))
     a = ap.parse_args()

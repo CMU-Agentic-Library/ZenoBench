@@ -110,7 +110,7 @@ Returning `None` ends the episode (`stop_reason: planner_done`). Reaching `--max
 
 ```bash
 export ISAACLAB_PYTHON=~/miniforge3/envs/isaaclab/bin/python
-python benchmark/define_tasks.py && python benchmark/check_layouts.py      # tasks.json, static overlay check
+python benchmark/define_tasks_v3.py && python benchmark/check_layouts.py   # v3/tasks.json, static overlay check
 python -m pytest benchmark/tests -q                                        # gate tests (stub rig)
 $ISAACLAB_PYTHON benchmark/tests/sim_permissions.py                        # gate tests in Isaac Sim
 

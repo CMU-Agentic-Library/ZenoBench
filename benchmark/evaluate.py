@@ -1,10 +1,12 @@
 """Planner-level evaluation of benchmark runs (offline, from result.json).
 
-    python benchmark/evaluate.py --runs benchmark/runs/final            # -> benchmark/EVALUATION.md, metrics.json
+    python benchmark/evaluate.py --runs DIR                             # -> benchmark/v3/EVALUATION.md, metrics.json
     python benchmark/evaluate.py --runs DIR --group planner,tier        # other groupings: task, route, kind, variant,
                                                                         # ctype (condition type), condition
-    python benchmark/evaluate.py --tasks benchmark/v3/tasks.json --runs DIR --md benchmark/v3/EVALUATION.md \
-        --json benchmark/v3/metrics.json      # v3: runs whose configuration hash differs are not counted
+    python benchmark/evaluate.py --tasks benchmark/tasks.json --runs benchmark/runs/v2   # v2 -> benchmark/EVALUATION.md
+
+The default catalog is benchmark/v3/tasks.json (v3: runs whose configuration hash differs are not
+counted); --md, --json and --conditions default to files next to --tasks.
 
 report.py answers "did each declared route run and which SkillNodes did it
 cover"; this script scores how a planner behaved.  Definitions: README,
@@ -307,15 +309,17 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--runs", nargs="+", default=[str(ROOT / "benchmark/runs/final")],
                     help="run directories (a later one supersedes the same task/seed/variant/planner/route)")
-    ap.add_argument("--tasks", default=str(ROOT / "benchmark/tasks.json"))
+    ap.add_argument("--tasks", default=str(ROOT / "benchmark/v3/tasks.json"))
     ap.add_argument("--group", default="planner,tier", help="comma list of planner,tier,task,route,kind,variant,profile")
     ap.add_argument("--probes", action="store_true", help="include the P* probes (default: tasks T* only)")
-    ap.add_argument("--md", default=str(ROOT / "benchmark/EVALUATION.md"))
-    ap.add_argument("--json", default=str(ROOT / "benchmark/metrics.json"))
+    ap.add_argument("--md", help="default: EVALUATION.md next to --tasks")
+    ap.add_argument("--json", help="default: metrics.json next to --tasks")
     ap.add_argument("--conditions", help="conditions.json with route acceptance (default: next to --tasks)")
     ap.add_argument("--batch", nargs="*", default=[], help="batch files: planned episodes = their job count")
     ap.add_argument("--planned", type=int, help="planned episodes (instead of --batch)")
     a = ap.parse_args()
+    a.md = a.md or str(Path(a.tasks).with_name("EVALUATION.md"))
+    a.json = a.json or str(Path(a.tasks).with_name("metrics.json"))
     doc = json.loads(Path(a.tasks).read_text())
     tasks = load_catalog(a.tasks)
     keys = a.group.split(",")

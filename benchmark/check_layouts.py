@@ -1,8 +1,8 @@
 """Static check of every task variant's overlay: moved objects must sit on
 their support and must not intersect another object (no simulator).
 
-    python benchmark/check_layouts.py                                   # v2 task file, seed 0
-    python benchmark/check_layouts.py --tasks benchmark/v3/tasks.json  # every variant x evaluation seed (vary applied)
+    python benchmark/check_layouts.py                                   # v3: every variant x evaluation seed (vary applied)
+    python benchmark/check_layouts.py --tasks benchmark/tasks.json     # v2 task file, seed 0
 """
 
 from __future__ import annotations
@@ -59,7 +59,7 @@ def _contained(box, cont, cname, cfg, assets, ann):
 
 def main():
     from benchmark.scene import episode_config
-    path = Path(sys.argv[sys.argv.index("--tasks") + 1]) if "--tasks" in sys.argv else ROOT / "benchmark/tasks.json"
+    path = Path(sys.argv[sys.argv.index("--tasks") + 1]) if "--tasks" in sys.argv else ROOT / "benchmark/v3/tasks.json"
     doc = json.loads(path.read_text())
     tasks = doc["tasks"]
     seeds = doc.get("eval_seeds") or [0]
