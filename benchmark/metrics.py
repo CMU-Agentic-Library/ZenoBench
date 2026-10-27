@@ -513,6 +513,9 @@ def episode_facts(r, task, ctx=None):
                    "1-2 transitions" if trans <= 2 else "3+ transitions"}
     # ---- failure attribution
     f["attribution"], f["attribution_detail"] = attribute(f, r, task, recs, events, sub, ctx)
+    # ---- quantitative protocol (benchmark/protocol.py): needs the call states, so before they are dropped
+    from benchmark.protocol import episode_protocol
+    f["protocol"] = episode_protocol(r, task, recs, events, sub, ctx, f)
     for rec in recs:
         rec.pop("_checks", None)
     f["calls"] = [{k: rec[k] for k in ("index", "skill", "args", "success", "error_code", "class", "failed_substep",
