@@ -120,6 +120,9 @@ class WorldModel:
         # Base footprint and path planning only: the hand must still reach
         # into a toy box.
         self.base_only = np.zeros((0, 6))
+        # loose objects beside a contact motion (temp_obstacles(fingers=True)): the fingers are
+        # checked against these even when ignore_fingers leaves them out of the static world
+        self.finger_B = np.zeros((0, 6))
         self.left_active = False
         self.right_kin = self.left_kin = None
         self.right_q = self.left_q = None
@@ -144,18 +147,23 @@ class WorldModel:
     from contextlib import contextmanager
 
     @contextmanager
-    def temp_obstacles(self, boxes):
+    def temp_obstacles(self, boxes, fingers=False):
         """Extra arm obstacles (loose objects next to a pick target) for the
-        duration of a motion; the static boxes are restored afterwards."""
+        duration of a motion; the static boxes are restored afterwards.
+        ``fingers``: the finger spheres must miss them too, also under
+        ignore_fingers (a contact move: closed fingers go down to 5 mm above
+        the support, beside the pushed object, never into its neighbour)."""
         boxes = np.asarray(boxes, float).reshape(-1, 6)
-        saved = self.B
+        saved, saved_f = self.B, self.finger_B
         if len(boxes):
             self.B = np.vstack([saved[:-1], boxes, saved[-1:]])       # keep the floor last
             self._near_key = None
+            if fingers:
+                self.finger_B = np.vstack([saved_f, boxes])
         try:
             yield
         finally:
-            self.B = saved
+            self.B, self.finger_B = saved, saved_f
             self._near_key = None
 
     def near_boxes(self, xy, r=1.6):
@@ -175,6 +183,10 @@ class WorldModel:
         P = pts[keep][:, None, :]
         d = np.linalg.norm(np.maximum(np.maximum(B[None, :, :3] - P, P - B[None, :, 3:]), 0.0), axis=2)
         c = float((d - rad[keep][:, None]).min()) if len(B) else np.inf
+        if ignore_fingers and len(self.finger_B) and fin.any():
+            F, P = self.finger_B, pts[fin][:, None, :]
+            d = np.linalg.norm(np.maximum(np.maximum(F[None, :, :3] - P, P - F[None, :, 3:]), 0.0), axis=2)
+            c = min(c, float((d - rad[fin][:, None]).min()))
         m = ~fin
         if m.any():
             # when the hand works a part: gripper/fingers may touch it, the
