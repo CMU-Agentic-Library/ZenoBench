@@ -218,13 +218,3 @@ def dynamic_occluder(rig, name, cam, point, st=None):
             return None
         blocker = blocker or hit
     return f"behind {blocker}"
-
-
-def pixel_of(rig, point, width=640, height=480):
-    """Pinhole pixel (u, v) of a world point in the first-person image."""
-    cam, R = rig_head_pose(rig)
-    d = R.T @ (np.asarray(point, float) - cam)
-    if d[0] <= 0:
-        return None
-    fx = width / (2 * math.tan(math.radians(getattr(rig, "head_fov_deg", (HEAD_HFOV_DEG,))[0] / 2)))
-    return (width / 2 - fx * d[1] / d[0], height / 2 - fx * d[2] / d[0])

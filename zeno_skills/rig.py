@@ -354,20 +354,6 @@ class Rig:
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
 
-    def _right_out_of_left_way(self):
-        """The compact right tuck sits in front of the chest, where the left
-        arm reaches across (a brace missed the mug by 7 cm): an empty right
-        arm at its tuck swings out to the elbow-out posture first."""
-        if self.held is not None or float(np.max(np.abs(self.q_cmd[2:] - self.kin.rest[2:]))) > 0.10:
-            return
-        goal = np.r_[self.q_cmd[:2], self.kin.posture[2:]]
-        try:
-            self.sync_world()
-            self.follow(self.joint_path(goal, "right_arm_aside"))
-            self.log("right_arm_aside")
-        except SkillFailure as exc:
-            self.log("right_arm_aside_blocked", reason=str(exc))
-
     def joint_path_via(self, vias):
         """Dense joint waypoints from q_cmd through ``vias`` (already checked)."""
         out, qa = [], self.q_cmd.copy()

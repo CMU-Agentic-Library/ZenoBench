@@ -206,13 +206,6 @@ class SceneAnnotations:
                 return s
         raise KeyError(name)
 
-    def place_poses(self, obj, support_name, xy, grasp):
-        """TCP pose that puts ``obj`` (held with ``grasp`` = dict from
-        grasp_poses, i.e. known offset tcp->bottom) with its bottom at xy on
-        the support surface."""
-        s = self.support(support_name)
-        return np.array([xy[0], xy[1], s["z"]])
-
 
 def _quat_R(q):
     w, x, y, z = q

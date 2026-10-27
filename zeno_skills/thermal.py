@@ -43,16 +43,6 @@ class ThermalModel:
     def active(self, value):
         self.on[self.appliance] = bool(value)
 
-    def advance(self, dt, objects_inside, door_closed):
-        """Original microwave-only update (kept for callers and tests)."""
-        if not door_closed:
-            self.active = False
-        if not self.active or not door_closed:
-            return
-        for name in objects_inside:
-            if name in self.config:
-                self.temperatures_c[name] += float(self.config[name]["heating_rate_c_per_s"]) * dt
-
     def step(self, rig, dt):
         ann = rig.ann
         arts = {a["name"]: a for a in ann.articulated}

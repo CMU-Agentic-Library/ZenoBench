@@ -1302,10 +1302,6 @@ def _edge_pinch_impl(rig, name, s, n, attempt=False):
 
 
 # ---------------------------------------------------------------- place
-def _yaw_of(R):
-    return math.atan2(R[1, 0], R[0, 0])
-
-
 def insert_microwave_cavity(rig, name, support):
     """Carry a rim-held object through the *front* of an open microwave.
 

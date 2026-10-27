@@ -75,10 +75,6 @@ class ContractRunner:
         self.trace.append(ContractResult(result.contract_id, result.selected_path or "", True, result.asdict()))
         return result
 
-    def run_bound(self, contract_id: str, **named_args):
-        """Backward-compatible name for :meth:`run_skill`."""
-        return self.run_skill(contract_id, named_args)
-
     @staticmethod
     def _verified_predicates(spec, route, args, kwargs):
         """Name only postconditions actually checked by this invocation."""

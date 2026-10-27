@@ -1038,26 +1038,6 @@ def before_snapshot(rig):
             "held": held_name(rig, "right"), "left_held": held_name(rig, "left")}
 
 
-def evaluate_atom(rig, atom: dict, values: dict, ctx: dict):
-    """Evaluate one contract atom ``{"pred", "args", "negated"?}`` with ``$slot``
-    references bound from ``values``."""
-    pred = REGISTRY[atom["pred"]]
-    args = {k: resolve(v, values) for k, v in atom.get("args", {}).items()}
-    ok, detail = pred.evaluate(rig, ctx, **args)
-    if atom.get("negated"):
-        ok = not ok
-    return bool(ok), detail, args
-
-
-def resolve(value, values):
-    if isinstance(value, str) and value.startswith("$"):
-        key = value[1:]
-        if key not in values:
-            raise KeyError(f"unbound slot {value}")
-        return values[key]
-    return value
-
-
 def atom_text(atom: dict) -> str:
     args = ", ".join(f"{k}={v}" for k, v in atom.get("args", {}).items())
     return ("not " if atom.get("negated") else "") + f"{atom['pred']}({args})"

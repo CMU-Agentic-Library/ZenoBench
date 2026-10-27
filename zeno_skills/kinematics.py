@@ -47,11 +47,6 @@ def gripper_rot(approach, close_dir):
     return np.column_stack((x, y, z))
 
 
-def rot_to_wxyz(R):
-    xyzw = Rotation.from_matrix(R).as_quat()
-    return np.r_[xyzw[3], xyzw[:3]]
-
-
 def yaw_quat_wxyz(yaw):
     return np.array([math.cos(yaw / 2), 0.0, 0.0, math.sin(yaw / 2)])
 
@@ -176,11 +171,6 @@ class ArmKin:
     def tcp(self, q):
         p, R = self.fk(q)
         return p - TCP_DEPTH * R[:, 2], R
-
-    def _err(self, q, p_t, R_t, w_rot):
-        p, R = self.tcp(q)
-        e_rot = Rotation.from_matrix(R_t @ R.T).as_rotvec()
-        return np.r_[p_t - p, w_rot * e_rot]
 
     def jac(self, q):
         p, R, joints = self.fk_all(q)

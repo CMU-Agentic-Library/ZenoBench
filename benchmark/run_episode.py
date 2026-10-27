@@ -6,7 +6,7 @@
 
 Planners (same low-level skills, same observation limits except the oracle):
 
-* ``scripted`` - a declared route of benchmark/tasks.json (nominal, fallback,
+* ``scripted`` - a declared route of benchmark/v3/tasks.json (nominal, fallback,
   alternative or negative).  Steps marked ``"expect": "fail"`` must really
   fail in physics; the route then continues in the same simulator.  One that
   succeeds instead is recorded (``route_violations``, the call row's
@@ -52,7 +52,7 @@ import traceback
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-TASKS = ROOT / "benchmark/tasks.json"
+TASKS = ROOT / "benchmark/v3/tasks.json"
 OUT = ROOT / "benchmark/runs"
 
 

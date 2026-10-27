@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     from isaaclab.app import AppLauncher
     app = AppLauncher({"headless": True, "no_splash": True, "fast_shutdown": True}).app
-    from pxr import Sdf, UsdUtils
+    from pxr import Sdf
     path = ROOT / "sim/zeno_house.usd"
     layer = Sdf.Layer.FindOrOpen(str(path))
     n = 0
