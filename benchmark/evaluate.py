@@ -27,6 +27,10 @@ cover"; this script scores how a planner behaved.  Definitions: README,
   drops / side / budget   floor drops, non-goal objects moved > 5 cm, closed-loop budget hits
 N/A: no sample for that ratio.
 
+Quantitative protocol (benchmark/protocol.py; section "Quantitative protocol (12 metrics)", ``protocol`` and
+``protocol_tiers`` in the JSON): TSR, SCR, CSR, OISR, OPS, PFR, PASR, RRSR, FSA, RE, SESR, RTSR, per planner
+and per planner x tier.
+
 EVALUATION_SPEC.md metrics (benchmark/metrics.py; section "Evaluation-spec metrics" of
 the output, per-episode facts in <json>.facts.jsonl): TSR under the instruction
 semantics (benchmark/eval_semantics.py), Planning Correctness, FSR, ERSR with local
@@ -300,7 +304,14 @@ def spec_metrics(a, eps, runs, tasks):
     for f in facts:
         by[f["planner"] or "?"].append(f)
     summaries = {p: spec_summary(v, planned if len(by) == 1 else None) for p, v in by.items()}
-    return {"facts": facts, "summaries": summaries, "markdown": spec_markdown(summaries)}
+    from benchmark.protocol import protocol_markdown, protocol_summary
+    by_tier = defaultdict(list)
+    for f in facts:
+        by_tier[(f["planner"] or "?", f["protocol"]["tier"] or "?")].append(f)
+    protocol = {p: protocol_summary(v) for p, v in by.items()}
+    tiers = {k: protocol_summary(v) for k, v in by_tier.items()}
+    return {"facts": facts, "summaries": summaries, "protocol": protocol, "protocol_tiers": tiers,
+            "markdown": spec_markdown(summaries) + [""] + protocol_markdown(protocol, tiers)}
 
 
 def main():
@@ -387,6 +398,8 @@ def main():
     Path(a.json).write_text(json.dumps({
         "groups": [{"group": dict(zip(keys, g)), **agg} for g, agg in sorted(aggs.items())],
         "spec": spec["summaries"],
+        "protocol": spec["protocol"],
+        "protocol_tiers": [{"planner": p, "tier": t, **v} for (p, t), v in sorted(spec["protocol_tiers"].items())],
         "episodes": [{"task": r["task_id"], "seed": r["seed"], "variant": r["variant"],
                       "tier": r["_scene"].get("difficulty"), "planner": r.get("planner"), "route": r.get("route"),
                       "dir": r["_dir"], **m} for r, m in eps]}, indent=1))

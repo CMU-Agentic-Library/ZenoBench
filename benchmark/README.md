@@ -214,6 +214,48 @@ policies, observation permissions and historical result files are unchanged. Fea
 that a condition is executable; they do not prescribe the planner's actions. New facts and summaries carry
 `outcome_evaluation_version: 1`.
 
+### Quantitative protocol (12 metrics)
+
+The paper protocol of the task-level replanning redesign (2026-10-26) is implemented in `protocol.py`. Opportunities
+for proactive adaptation are registered in `eval_adaptation.py`, which only the evaluation reads. `evaluate.py`
+writes the section *Quantitative protocol (12 metrics)* (main table, groups A–D, main metrics by tier), adds
+`protocol` (per planner) and `protocol_tiers` (per planner × tier) to its JSON, and puts each episode's inputs
+under `protocol` in `<json>.facts.jsonl`. A `--batch` run of `run_episode.py` produces all of this as well.
+Everything comes from the existing logs (`result.json`): there is no new simulator logging, and old runs can be
+rescored.
+
+The paper's main table is **TSR · SCR · OISR · PASR · RRSR · RTSR**; the other metrics are for ablations and failure
+analysis. Ratios are shown as *value (num/den) [Wilson 95 % CI]*. Only valid episodes count; system errors are
+listed separately. The event metrics (PASR, RRSR, FSA, RE) show N/A when nothing is eligible, never 0 or 100 %.
+
+| Group | Metric | Implementation |
+|---|---|---|
+| A | **TSR** Task Success Rate | Same as the spec TSR: every goal atom holds, the substitute is legal, nothing ended on the floor |
+| A | **SCR** Subgoal Completion Rate | Per episode: goal-category atoms (below) other than `hand_empty` that hold at the end / their number, equal weights; for `any` goals the group that got furthest. Mean over episodes, also over failed episodes. The subgoals are the benchmark's pre-defined goal atoms, so every method is scored on the same standard. Subgoals a VLM planner generates itself are logged separately for later analysis and never enter SCR |
+| A | **CSR** Constraint Satisfaction Rate | Satisfied / applicable atomic constraints, pooled, overall and per category. Constraints define the *legal result*, never the route: **Success = GoalSatisfied ∧ HardConstraintsSatisfied**. **Goal**: the required end state (`on`, `inside`, `fully_inside`, `on_top_of`, `temperature_at_least`, `wiped`, `stirred`, `covered`, `grouped`, `hand_empty`, and `upright` / `not on_floor` of a target object). **Spatial**: placement and space (`clear_of`, `near_any`, `away_from_edge`, `front_visible`, `count_on_at_least`). **Semantic**: instruction semantics: a legal substitute (`eval_semantics.py`), and decoy destinations (`eval_semantics.DECOYS`: T11 bowl, T12 any container other than the small bin / tray, T19 look-alike bin). When an object's last placement went to a decoy, its failed goal atom is counted as semantic instead of goal: it is the same atom, so Goal Satisfaction and TSR still fail and nothing is counted twice. **Preservation**: no forbidden side effects (`near_start`, `is_closed`, `not heating`, `upright` / `not on_floor` of non-target objects, no floor drop: all hard; no non-goal object displaced > 5 cm: soft; no watched object below 8 cm in any per-call state: soft, trajectory). Environment conditions (an occupied microwave, a bin too small for the car) decide only feasibility; they are never scored and never told to the planner. Using the stove instead of the occupied microwave is a legal success |
+| B | **OISR** Oracle-Independent Success Rate | 1 if the episode succeeded and its path matches none of the variant's oracle paths; N/A if the variant has no oracle. Also reported among successes only |
+| B | **OPS** Oracle Plan Similarity | LCS(agent path, oracle path) / max(lengths), taking the most similar oracle. Computed both on calls and on skill names only. It describes how far the route differs and never scores success |
+| B | **PFR** Planning Failure Rate | Episodes whose primary cause is `planning_failure`, `substitution_failure` or `recovery_failure` (the existing attribution) / valid episodes. Failed episodes are also split into planning / physical / exploration / feasibility / undetermined / system |
+| C | **PASR** Proactive Adaptation Success Rate | One opportunity per episode of a variant registered in `eval_adaptation.py` (the 13 v4 Hard variants), or with a registered substitute condition. The adaptation is the first successful call that moves a registered obstacle (`moved`) or puts a registered object on/in a registered destination (`objects`/`destinations`, from the logged support or a measured postcondition). Success = adapted before the first execution or precondition failure **and** the registered local goal holds at the end. Also reports reactive adaptations, adaptations never made, and proactive adaptations whose local goal failed |
+| C | **RRSR** Reactive Recovery Success Rate | Eligible: execution and precondition failure events (not observation refusals). Failures of the same call with no successful call in between merge into one event. **Recovered**: the same or an equivalent result is verified later (`local_recovery`, `retry_only`, `mechanism_unverified`, `resolved_by_alternative`), **or the task succeeds in the end by any legal path** (`task_completed`); the agent does not have to follow the reference fallback. Also reports the verified share (state evidence) and the outcomes by resolution |
+| C | **FSA** Fallback Selection Accuracy | Decision: the first call after a failure event. The same call again is a blind retry, not a fallback; no call means abandoned. Another call is **valid** if it succeeded and the failure was resolved (locally, by an alternative, or by the finished task), **invalid** if the planner's call was invalid or it ran but the episode never recovered, otherwise undetermined. FSA = valid / (valid + invalid). It measures that the first call after a failure ran and the task was finished in the end; it does **not** certify that the best or the intended alternative skill was chosen |
+| C | **RE** Recovery Efficiency | Outcome-based. Per failure event in a successful episode: C*/max(C, C*). C = calls after the failure until the task is finished. C* = calls after the same failing call in the variant's declared fallback route; that route is one feasible reference, not a required way, and a shorter legal path scores 1. Events without a reference report their mean calls; failed episodes report the calls used after an unrecovered failure; the calls until a local recovery are shown separately. RE is computed only for recovered events in successful episodes that have a reference route; **RE coverage** = those events / all recovered events in successful episodes is reported next to it |
+| D | **SESR** Skill Execution Success Rate | Verified calls / executed calls. Executed = verified + execution failures (including perception calls that found nothing). Interface errors, precondition refusals and gate refusals form the refusal rate over all calls |
+| D | **RTSR** Robust Task Success Rate | Mean over tasks of the mean over variants of the mean over seeds, with a 95 % bootstrap interval (1000 resamples of the seeds in each cell, fixed seed). Also given per task |
+
+The rules are fixed in code, so they are the same for every method:
+- **Oracle = one feasible route, not the required one:** TSR, CSR, RRSR, FSA and RE judge the result (goal, constraints, final state). No metric requires the oracle's skills or order; only OISR / OPS describe how far a path is from it.
+- **Path:** the successful calls, each as (skill, arguments without `hint*`), with immediate repeats collapsed. The
+  variant's oracle set is every nominal / fallback / alternative / explore route declared for it, with its
+  expected-failure and unwind steps dropped. Extra `look` or `navigate` calls therefore make a path non-oracle;
+  use OPS to see how close it is.
+- **Adding a Hard variant:** register its opportunity in `eval_adaptation.py`. Give state evidence (`moved` /
+  `objects` + `destinations`) and the `local` goal; never list skill names. Then check that its oracle route scores
+  PASR 1 and its negative route 0. Across the 13 current Hard variants, s10 and s11 give 26/26 oracle runs with
+  proactive success, and every negative run scores 0.
+- `scripted` and `oracle` rows are feasibility evidence, not planner results. Compare methods on the same
+  task/variant/seed list.
+
 **Evaluation grid** (`batches/eval.json`, not run yet): 29 task × tier combinations × seeds 10 and 11 gives 58
 episodes per planner (fixed, retry, oracle = 174; one more set per `--policy`). T05 easy is the missing 30th
 combination.

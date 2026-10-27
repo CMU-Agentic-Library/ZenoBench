@@ -19,8 +19,9 @@ stays off, and every recovery is a call that the planner chooses.
 | `batches/smoke.json` | `matrix.py` | the first seed (10) of every declared route × variant: one chain before ten seeds |
 | `batches/routes.json` | `matrix.py` | every declared route × variant × seeds 10–19 (route acceptance) |
 | `batches/eval.json` | `matrix.py` | task × variant × seed × planner (`fixed`, `retry`, `oracle`, + `recovery` with `--policy`) for the conditions whose route acceptance is **stable** (`--all`: every registered condition) |
+| `../eval_adaptation.py` | by hand | the proactive-adaptation opportunity of each Hard variant (PASR): state evidence and local goal, evaluation only |
 | `conditions.json`, `RESULTS.md` | `python benchmark/conditions.py --runs DIR...` | route acceptance per condition, from scripted runs with a matching hash |
-| `EVALUATION.md`, `metrics.json` | `python benchmark/evaluate.py --tasks benchmark/v3/tasks.json --runs DIR --md benchmark/v3/EVALUATION.md --json benchmark/v3/metrics.json` | planner metrics |
+| `EVALUATION.md`, `metrics.json` | `python benchmark/evaluate.py --tasks benchmark/v3/tasks.json --runs DIR --md benchmark/v3/EVALUATION.md --json benchmark/v3/metrics.json` | planner metrics: v2 columns, EVALUATION_SPEC metrics and the 12-metric quantitative protocol (TSR, SCR, CSR, OISR, OPS, PFR, PASR, RRSR, FSA, RE, SESR, RTSR; per planner and per planner × tier; definitions in [../README.md](../README.md), *Quantitative protocol*) |
 
 New conditions are debugged in `benchmark/v3_candidates.py`, which generates a research file:
 `python benchmark/define_tasks_v3.py --candidates OUT.json`. A task's conditions move into

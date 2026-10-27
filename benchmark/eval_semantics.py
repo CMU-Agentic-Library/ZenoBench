@@ -87,3 +87,24 @@ def semantics_for(task_id, extra=None):
     if extra and task_id in extra:
         return extra[task_id]
     return SEMANTICS.get(task_id)
+
+
+# Decoy destinations of the v4 Hard variants (protocol CSR): a failed goal atom of one of the objects whose
+# last placement went to a decoy counts as a *semantic* violation instead of a goal one.  It is the same
+# atom, so Goal Satisfaction and TSR fail exactly as before; only the category changes (no double count).
+#   allowed  destinations the instruction permits
+#   decoys   destinations it rules out, or "any_other": every destination not allowed
+DECOYS = {
+    ("T11_collect_fruits", "basket_gone_bowl_there"): {
+        "objects": ["apple"], "allowed": ["fruit_basket", "serving_tray"], "decoys": ["bowl_kitchen_cabinet"]},
+    ("T12_tidy_toys", "toys_everywhere"): {          # "suitable storage containers in the bedroom"
+        "objects": ["toy_car", "rubber_duck"], "allowed": ["toy_bin_small", "toy_tray"], "decoys": "any_other"},
+    ("T19_recycling", "lookalike_bin"): {
+        "objects": ["soda_can", "foam_cube"], "allowed": ["wide_storage_bin"], "decoys": ["toy_storage_bin"]},
+}
+
+
+def decoys_for(task_id, variant, extra=None):
+    if extra and (task_id, variant) in extra:
+        return extra[(task_id, variant)]
+    return DECOYS.get((task_id, variant))
