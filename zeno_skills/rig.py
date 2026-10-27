@@ -23,6 +23,8 @@ class Dropped(SkillFailure):
 
 
 class Rig:
+    sticky = None                # zeno_skills.sticky.StickyHands when the profile turns sticky hands on
+
     def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=4, log=print,
                  first_person_camera=None, wrist_cameras=None):
         import torch
@@ -91,6 +93,27 @@ class Rig:
     def _advance_thermal(self, dt):
         if self.thermal is not None:
             self.thermal.step(self, dt)
+
+    # the object in each hand (a dict from the grasp, or None); sticky hands weld it while held
+    @property
+    def held(self):
+        return self.__dict__.get("_held")
+
+    @held.setter
+    def held(self, value):
+        if self.sticky is not None:
+            self.sticky.on_hold("right", value)
+        self._held = value
+
+    @property
+    def left_held(self):
+        return self.__dict__.get("_left_held")
+
+    @left_held.setter
+    def left_held(self, value):
+        if self.sticky is not None:
+            self.sticky.on_hold("left", value)
+        self._left_held = value
 
     # ------------------------------------------------------------ state
     def q(self):
@@ -382,6 +405,8 @@ class Rig:
         raise SkillFailure(f"joint move to {label}: every joint-space path collides")
 
     def grip(self, width, steps=100, gradual=False):
+        if getattr(self, "sticky", None) is not None:
+            self.sticky.on_open("right", width)      # letting go: the weld goes before the fingers open
         if gradual and steps > 1:
             start = float(self.grip_cmd)
             ramp = max(1, steps // 2)
@@ -399,6 +424,8 @@ class Rig:
         return f
 
     def left_grip(self, width, steps=100):
+        if getattr(self, "sticky", None) is not None:
+            self.sticky.on_open("left", width)
         self.left_grip_cmd = float(width)
         self.step(steps)
         f = self.left_fingers()

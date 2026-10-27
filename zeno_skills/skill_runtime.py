@@ -476,11 +476,27 @@ class SkillContractRunner:
             steps = [s_ for s_ in path["steps"] if s_.get("policy") not in skip]
             if len(steps) < len(path["steps"]):
                 rig.log("path_steps_skipped", verb=c["verb"], path=path["path_id"], skipped=sorted(skip))
-            self._run_steps(steps, values, nouns, outputs, res, depth)
+            snapped = False
+            try:
+                self._run_steps(steps, values, nouns, outputs, res, depth)
+            except ContractError:
+                raise
+            except SkillFailure as exc:
+                # sticky hands: a pick whose preconditions held ends with the object in the hand
+                from .sticky import snap_pick
+                if c["verb"] != "pick" or not snap_pick(rig, values.get("object"), exc):
+                    raise
+                snapped = True
+                res.policy_steps.append({"sticky": "snap", "error": str(exc)})
+            else:
+                if c["verb"] == "pick":
+                    from .sticky import after_pick
+                    after_pick(rig, values.get("object"), ctx["before"])
             rig.step(30)
             ctx.pop("_state_cache", None)
-            failed = self._check(list(c["ensures"]) + list(path.get("ensures", [])), values, nouns, ctx,
-                                 res.postconditions)
+            # a snapped two-hand pick holds in the right hand only: the skill's own ensures
+            failed = self._check(list(c["ensures"]) + ([] if snapped else list(path.get("ensures", []))), values,
+                                 nouns, ctx, res.postconditions)
             if failed:
                 raise ContractError("POSTCONDITION_FAILED", "; ".join(failed))
             res.outputs = self._outputs(c, outputs, values, nouns, ctx)

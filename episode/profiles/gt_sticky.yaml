@@ -1,0 +1,15 @@
+# gt with sticky hands: pick and carry always succeed (execution.sticky_hands, zeno_skills/sticky.py).
+# For developing planners on the GT interface; physical failures of pick and carry are hidden,
+# so results are not comparable with gt.  Everything else is gt: full GT objects and goal status,
+# three 960 x 720 cameras with a 7.5 mm lens, policy-internal recovery on, nested repair off, 40 calls.
+execution:
+  nested_repair: false
+  sticky_hands: true
+observation:
+  cameras: [head, left_wrist, right_wrist]
+  image_size: [720, 960]
+  focal_length_mm: 7.5
+  gt_objects: true
+  task_status: true
+limits:
+  max_calls: 40
