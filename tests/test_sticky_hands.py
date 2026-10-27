@@ -212,3 +212,70 @@ def test_caught_neighbour_is_the_container_lifted_along_not_the_load():
     st = {"objects": {o: {} for o in now}}
     # the basket rose 4 cm with the apple; the lid on it is its load; the orange stayed; the bowl is far away
     assert sticky.caught_neighbours(rig, "apple", before, st) == [("basket", 0.04)]
+
+
+# ----------------------------------------------------------------- place
+def _quat(R):
+    return sticky._wxyz(R)
+
+
+def test_rest_orientation_levels_the_axis_nearest_vertical_and_keeps_its_sign():
+    from scipy.spatial.transform import Rotation
+    tilted = Rotation.from_euler("xz", [15, 40], degrees=True).as_matrix()       # drooped 15 deg in the hand
+    R = sticky.rest_R(_quat(tilted))
+    assert np.allclose(R[:, 2], [0, 0, 1], atol=1e-9)
+    assert abs(np.degrees(np.arctan2(R[1, 0], R[0, 0])) - 40) < 1.0             # yaw kept
+    face_down = Rotation.from_euler("xz", [170, -20], degrees=True).as_matrix()
+    assert np.allclose(sticky.rest_R(_quat(face_down))[:, 2], [0, 0, -1], atol=1e-9)   # stays face down
+    on_side = Rotation.from_euler("x", 80, degrees=True).as_matrix()
+    assert np.allclose(sticky.rest_R(_quat(on_side))[:, 1], [0, 0, 1], atol=1e-9)
+
+
+@pytest.fixture
+def place_runner(monkeypatch):
+    rig = SimpleNamespace(caption="", events=[], held=None, log=lambda label, **kw: None, step=lambda n=1: None)
+    monkeypatch.setattr(sr, "before_snapshot", lambda rig: {"objects": {}})
+    monkeypatch.setattr(sr, "bind_nouns", lambda rig, c, values: {
+        "receptacle": {"kind": "support", "category": "TableDining"}, "robot": {"right_kind": "pinch"},
+        "args": dict(values)})
+    runner = sr.SkillContractRunner(rig, nested_repair=False)
+    monkeypatch.setattr(runner, "_outputs", lambda *a: {})
+    placed = []
+    monkeypatch.setattr(sticky, "snap_place", lambda rig, name, rec, hint, before, err:
+                        placed.append((name, rec, hint, str(err))) or True)
+    return runner, placed
+
+
+def test_runner_completes_a_physically_failed_place(place_runner, monkeypatch):
+    runner, placed = place_runner
+
+    def fail(*a):
+        raise SkillFailure("place book on table/top: bottom at (1.36, -0.65, 0.116), tilt 60 deg")
+    monkeypatch.setattr(runner, "_run_steps", fail)
+    monkeypatch.setattr(runner, "_check", lambda atoms, values, nouns, ctx, sink, advisory=(): [])
+    res = runner.run("place", {"object": "book", "receptacle": "table/top", "hint_xy": [1.0, 2.0]})
+    assert res.success and res.error is None and res.selected_path == "surface"
+    assert placed == [("book", "table/top", [1.0, 2.0], "place book on table/top: bottom at (1.36, -0.65, 0.116), "
+                                                        "tilt 60 deg")]
+    assert res.policy_steps[-1]["sticky"] == "place"
+
+
+def test_runner_places_again_when_the_object_ended_off_the_receptacle(place_runner, monkeypatch):
+    runner, placed = place_runner
+    monkeypatch.setattr(runner, "_run_steps", lambda *a: None)
+    calls = []
+
+    def check(atoms, values, nouns, ctx, sink, advisory=()):
+        if not any(a["pred"] == "on" for a in atoms):
+            return []
+        calls.append(1)
+        return ["on(object=book, support=table/top) is false"] if len(calls) == 1 else []
+    monkeypatch.setattr(runner, "_check", check)
+    res = runner.run("place", {"object": "book", "receptacle": "table/top"})
+    assert res.success and len(calls) == 2
+    assert placed and placed[0][3] == "on(object=book, support=table/top) is false"
+
+
+def test_place_failure_stays_a_failure_without_sticky_hands(monkeypatch):
+    rig = SimpleNamespace(sticky=None, ann=SimpleNamespace(objects={"book": {}}))
+    assert sticky.snap_place(rig, "book", "table/top", None, {}, "x") is False
