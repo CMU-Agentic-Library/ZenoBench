@@ -6,6 +6,8 @@
 
 更新（2026-10-20）：统计层已按本文接入评测代码，实现范围与暂不能可靠自动判定的部分见第 6 节。仍未启动新的 VLM 实验。
 
+更新（2026-10-27）：任务级重规划的 12 项定量协议（TSR、SCR、CSR、OISR、OPS、PFR、PASR、RRSR、FSA、RE、SESR、RTSR）已在 `protocol.py` 实现，主动适应机会登记在 `eval_adaptation.py`；定义与预注册规则见 README *Quantitative protocol*。本文六项指标保持不变。
+
 已有的技能验证和 Scripted 物理路线验收属于可行性证据，与正式 VLM / Planner 对比实验分开报告。
 
 ## 1. 必须区分的三个层次
