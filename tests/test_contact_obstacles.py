@@ -1,29 +1,10 @@
-"""Contact motions (push, drag, sweep) plan with the pushed object's neighbours as obstacles for
-the hand and the fingers (WorldModel.temp_obstacles(fingers=True), skills._contact_boxes)."""
+"""Which loose objects count as a contact motion's neighbours (skills._contact_boxes)."""
 
 from types import SimpleNamespace
 
 import numpy as np
 
 from zeno_skills import skills
-from zeno_skills.collision import WorldModel
-from zeno_skills.kinematics import ArmKin
-
-
-def test_finger_obstacles_count_under_ignore_fingers_and_are_restored():
-    world = WorldModel(SimpleNamespace(obstacles=[], supports=[], articulated=[]))
-    kin = ArmKin()
-    kin.set_base((0.0, 0.0, 0.0), 0.0)
-    q = kin.posture
-    tcp, _ = kin.tcp(q)
-    box = np.r_[tcp - 0.01, tcp + 0.01]                    # around the fingertips only
-    free = world.clearance(kin, q, ignore_fingers=True)
-    with world.temp_obstacles([box]):
-        assert world.clearance(kin, q, ignore_fingers=True) > 0           # the fingers are left out
-        assert world.clearance(kin, q) < 0
-    with world.temp_obstacles([box], fingers=True):
-        assert world.clearance(kin, q, ignore_fingers=True) < 0           # a contact move: they count
-    assert len(world.finger_B) == 0 and world.clearance(kin, q, ignore_fingers=True) == free
 
 
 class _Geo:

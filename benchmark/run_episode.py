@@ -229,6 +229,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                 except Exception as exc:
                     report["video_error"] = str(exc)
         report["wall_s"] = round(time.time() - report["started"], 1)
+        from zeno_skills import motion
+        report["motion"] = dict(motion.STATS)          # cuRobo query counts and seconds
         (out / "result.json").write_text(json.dumps(report, indent=1, default=float))
         print("RESULT", task["task_id"], seed, label, "SUCCESS" if report.get("success") else "FAILED", flush=True)
         sys.stdout.flush()

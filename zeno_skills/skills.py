@@ -206,7 +206,7 @@ def _clear_for_tuck(rig):
                     ok = False
                     break
                 rig.kin.set_base((px, py, 0.0), math.radians(pyaw))
-                if u < 1.0 and rig.world.clearance(rig.kin, rig.q_cmd, ignore_fingers=True) < -0.06:
+                if u < 1.0 and rig.kin.penetration(rig.q_cmd) > 0.06:
                     ok = False             # do not sweep a deeply colliding arm further in
                     break
             if ok and rig.kin.free(rig.kin.rest):

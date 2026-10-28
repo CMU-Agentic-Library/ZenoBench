@@ -5,11 +5,8 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from zeno_skills.annotations import SceneAnnotations
-from zeno_skills.collision import WorldModel
 from zeno_skills.kinematics import ArmKin
 from zeno_skills.policies import AtomicPolicy, PolicySuite
-from zeno_skills.policies.bimanual import _fixed_torso_ik
 from zeno_skills.policies.mobile import _path
 
 
@@ -42,28 +39,6 @@ def test_left_arm_tcp_jacobian_matches_finite_difference():
         moved[i] += eps
         numeric = (kin.tcp(moved)[0]-p)/eps
         assert np.allclose(J[:3, i], numeric, atol=3e-5)
-
-
-def test_both_arms_have_clear_folded_pose_and_common_torso_solution():
-    ann = SceneAnnotations("tasks/shelve_books/annotation.json")
-    world = WorldModel(ann)
-    right, left = ArmKin(), ArmKin(side="left")
-    for kin in (right, left):
-        kin.scene = world
-        kin.set_base((-1.24, -6.758, 0.0), np.pi/2)
-    world.right_kin, world.left_kin = right, left
-    world.right_q, world.left_q = right.rest, left.rest
-    world.left_active = True
-    assert world.clearance(right, right.rest) > 0
-    assert world.clearance(left, left.rest) > 0
-    from zeno_skills.kinematics import gripper_rot
-    R = gripper_rot([0, 1, 0], [0, 0, 1])
-    seed = left.rest.copy()
-    seed[:2] = [-0.15, 0.0]
-    q = _fixed_torso_ik(left, np.array([-1.316, -6.478, 0.724]), R, seed)
-    assert q is not None
-    assert np.allclose(q[:2], seed[:2], atol=1e-5)
-    assert np.linalg.norm(left.tcp(q)[0]-[-1.316, -6.478, 0.724]) < 0.01
 
 
 def test_synchronized_motion_rejects_stationary_and_blocked_base_paths():

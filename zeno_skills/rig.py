@@ -38,6 +38,7 @@ class Rig:
         self.fing = torch.tensor([robot.dof_names.index(n) for n in FINGERS], dtype=torch.int32)
         self.left_kin = ArmKin(side="left")
         self.left_kin.scene = world
+        self.left_kin.motion = kin.motion
         self.left = torch.tensor([robot.dof_names.index(n) for n in self.left_kin.names[2:]], dtype=torch.int32)
         self.left_fing = torch.tensor([robot.dof_names.index(n) for n in
                                        ("left_gripper_left_finger_axis", "left_gripper_right_finger_axis")], dtype=torch.int32)
@@ -177,6 +178,8 @@ class Rig:
         self.left_kin.set_base((x, y, 0.0), math.radians(yaw))
         self.world.right_kin, self.world.right_q = self.kin, self.q_cmd.copy()
         self.world.left_kin, self.world.left_q = self.left_kin, np.r_[self.q_cmd[:2], self.left_q_cmd]
+        if self.kin.motion is not None:
+            self.kin.motion.sync(self)
 
     def _overhangs(self, name, st):
         """Object sticking out past its support's edge (pushed for an edge
@@ -365,30 +368,30 @@ class Rig:
 
     def joint_path(self, q_goal, label=None, check=True):
         """Joint-space move to q_goal, collision-checked (the straight
-        interpolation used to sweep the hand through a cabinet): direct, else
-        through the tucked posture, else fail instead of pushing through."""
+        interpolation used to sweep the hand through a cabinet): straight if
+        that is free, else a cuRobo trajectory, else fail instead of pushing
+        through."""
         q0 = self.q_cmd.copy()
 
         def dense(qa, qb):
             k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
             return [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
-        from .planner import _segment_free
-        if not check or self.kin.scene is None or _segment_free(self.kin, q0, q_goal):
+        if not check or self.kin.scene is None or self.kin.segment_free(q0, q_goal):
             return dense(q0, q_goal)
         if not self.kin.free(q0) and self.kin.free(q_goal):
             # starting in contact (hand still at a handle it just released):
             # no collision-free path can start here, leave the contact directly
             self.log("joint_from_contact", target=label)
             return dense(q0, q_goal)
-        post = getattr(self.kin, "posture", self.kin.rest)
-        # the elbow-out posture first: a detour through the compact tuck is a
-        # long swing that jammed a held can against the fridge
-        for via in (np.r_[q0[:2], post[2:]], np.r_[q_goal[:2], post[2:]],
-                    self.kin.rest, np.r_[self.kin.rest[:2], q_goal[2:]], np.r_[q_goal[:2], self.kin.rest[2:]]):
-            if self.kin.free(via) and _segment_free(self.kin, q0, via) and _segment_free(self.kin, via, q_goal):
-                self.log("joint_detour", target=label)
-                return dense(q0, via) + dense(via, q_goal)
-        raise SkillFailure(f"joint move to {label}: every joint-space path collides")
+        qs, status = self.kin.plan(q0, q_goal)
+        if qs is None:
+            raise SkillFailure(f"joint move to {label}: no collision-free trajectory ({status})")
+        self.log("joint_plan", target=label, waypoints=len(qs))
+        out, prev = [], q0
+        for q in qs:
+            out += dense(prev, q)
+            prev = q
+        return out
 
     def grip(self, width, steps=100, gradual=False):
         if getattr(self, "sticky", None) is not None:
@@ -487,11 +490,13 @@ class Rig:
                 goal, ok = self.left_kin.ik_global(p, R, seeds=[start])
                 if not ok:
                     raise SkillFailure(f"left arm: no IK for {label or p}")
-                from .planner import _segment_free
-                if collision and not _segment_free(self.left_kin, start, goal):
-                    raise SkillFailure(f"left arm: joint path collides for {label or p}")
-                n = max(2, int(np.max(np.abs(goal-start))/0.01))
-                qs = [start+(goal-start)*u for u in np.linspace(0, 1, n)[1:]]
+                if collision and not self.left_kin.segment_free(start, goal):
+                    qs, status = self.left_kin.plan(start, goal)
+                    if qs is None:
+                        raise SkillFailure(f"left arm: no collision-free trajectory for {label or p} ({status})")
+                else:
+                    n = max(2, int(np.max(np.abs(goal-start))/0.01))
+                    qs = [start+(goal-start)*u for u in np.linspace(0, 1, n)[1:]]
         finally:
             self.left_kin.scene = scene
         self.left_follow(qs)
@@ -531,47 +536,21 @@ class Rig:
                         continue
                     n = max(2, int(np.max(np.abs(target - q)) / 0.01))
                     fold = [q + (target - q) * u for u in np.linspace(0, 1, n)[1:]]
-                    if all(self.kin.free(f) for f in fold[::3]):
+                    if self.kin.segment_free(q, target):
                         self.follow(qs + fold)
                         return True
-            # the straight fold clips the furniture/door: fold one joint at a
-            # time (wrist first or shoulder first), then via random postures
-            from .planner import _segment_free
+            # the straight fold clips the furniture/door: a cuRobo trajectory,
+            # only with an open hand (closed on a handle, the arm must not
+            # fold away: the caller backs the base out and pulls instead)
             rest = self.kin.rest
-            # only with an open hand: closed on a handle, the arm must not
-            # fold away (the caller backs the base out and pulls instead)
-            if self.kin.free(rest) and float(self.grip_cmd) > 0.02:
-                arm = list(range(2, len(rest)))
-                for order in (arm[::-1], arm):
-                    q, path = self.q_cmd.copy(), []
-                    for j in order:
-                        nxt = q.copy()
-                        nxt[j] = rest[j]
-                        if not _segment_free(self.kin, q, nxt):
-                            break
-                        path.append(nxt)
-                        q = nxt
-                    else:
-                        if _segment_free(self.kin, q, rest):
-                            self.log("tuck_jointwise")
-                            self.follow(self.joint_path_via([*path, rest]))
-                            return True
-                rng = np.random.default_rng(0)
-                for _ in range(300):
-                    u = rng.uniform(0.2, 0.8)
-                    via = self.q_cmd + (rest - self.q_cmd) * u
-                    via[2:] += rng.normal(0.0, 0.5, len(rest) - 2)
-                    via = np.clip(via, self.kin.lo, self.kin.hi)
-                    via[:2] = self.q_cmd[:2]
-                    if self.kin.free(via) and _segment_free(self.kin, self.q_cmd, via) and \
-                            _segment_free(self.kin, via, rest):
-                        self.log("tuck_via_random")
-                        self.follow(self.joint_path_via([via, rest]))
-                        return True
-            self.log("tuck_blocked", rest_clearance=round(float(self.world.clearance(self.kin, self.kin.rest,
-                                                                                     **self.kin.coll_kw)), 4),
-                     current_clearance=round(float(self.world.clearance(self.kin, self.q_cmd, **self.kin.coll_kw)), 4),
-                     left_active=bool(getattr(self.world, "left_active", False)))
+            if float(self.grip_cmd) > 0.02 and self.kin.free(rest):
+                qs, status = self.kin.plan(self.q_cmd, rest)
+                if qs is not None:
+                    self.log("tuck_planned", waypoints=len(qs))
+                    self.follow(self.joint_path_via(qs))
+                    return True
+            self.log("tuck_blocked", rest_penetration=round(self.kin.penetration(self.kin.rest), 4),
+                     current_penetration=round(self.kin.penetration(self.q_cmd), 4))
             return False
         finally:
             self.kin.coll_kw = kw
