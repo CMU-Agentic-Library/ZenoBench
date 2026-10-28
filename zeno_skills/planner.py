@@ -53,21 +53,15 @@ def _chain(kin, targets, q):
 
 
 def _segment_free(kin, qa, qb):
-    n = max(4, int(np.max(np.abs(qb - qa)) / 0.05))
-    return all(kin.free(qa + (qb - qa) * u) for u in np.linspace(0, 1, n + 1)[1:])
+    return kin.segment_free(np.asarray(qa, float), np.asarray(qb, float))
 
 
 def joint_reachable(kin, qa, qb):
-    """A collision-free joint-space move qa -> qb exists: straight, or through
-    the tucked posture (the options Rig.joint_path executes)."""
+    """A collision-free joint-space move qa -> qb exists: straight, or a cuRobo
+    trajectory (the options Rig.joint_path executes)."""
     if _segment_free(kin, qa, qb):
         return True
-    post = getattr(kin, "posture", kin.rest)
-    for via in (np.r_[qa[:2], post[2:]], np.r_[qb[:2], post[2:]],
-                kin.rest, np.r_[kin.rest[:2], qb[2:]], np.r_[qb[:2], kin.rest[2:]]):
-        if kin.free(via) and _segment_free(kin, qa, via) and _segment_free(kin, via, qb):
-            return True
-    return False
+    return kin.plan(qa, qb)[0] is not None
 
 
 def torque_ratio(kin, q, force):
@@ -83,8 +77,7 @@ LAST_PARK_DIAG: dict = {}      # rejection counts of the last find_park call (fo
 
 def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
               yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
-              score=None, n_best=1, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None,
-              travel_boxes=()):
+              score=None, n_best=1, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None):
     """Return (x, y, yaw_deg, qs) or None.
 
     travel_q: arm posture while the base drives there (tucked, or the carry
@@ -139,14 +132,8 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
             break
         kin.set_base((x, y, 0.0), math.radians(yaw))
         if travel_q is not None and cost >= 0:
-            # travel_boxes (the pick target itself): the folded arm swings
-            # through them while the base turns into this pose
             kw, kin.coll_kw = kin.coll_kw, {"ignore_fingers": kin.coll_kw.get("ignore_fingers", False)}
-            if len(travel_boxes) and hasattr(world, "temp_obstacles"):
-                with world.temp_obstacles(list(travel_boxes)):
-                    clear = kin.free(travel_q)
-            else:
-                clear = kin.free(travel_q)          # strict: the parked arm touches nothing
+            clear = kin.free(travel_q)          # strict: the parked arm touches nothing
             kin.coll_kw = kw
             if not clear:
                 LAST_PARK_DIAG["travel_pose"] += 1
@@ -175,6 +162,7 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
     if found:
         found.sort(key=lambda t: t[0])
         return found[0][1]
+    print("find_park: no park", {k: v for k, v in LAST_PARK_DIAG.items() if v}, flush=True)
     return None
 
 

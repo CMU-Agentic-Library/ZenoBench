@@ -403,9 +403,21 @@ Object-specific grasp annotations and measured success checks still apply.
 | `open_microwave_door` / `close_microwave_door` | Separate powered-door actions; opening physically presses the annotated blue button, and both check the measured hinge angle |
 | `cycle_microwave_door` | Composite demonstration that calls the separate microwave open and close actions |
 
-Kinematics are exact URDF FK plus analytic-Jacobian damped least-squares IK on the fingertip TCP.
-Collision uses a sphere model of the robot against the annotation boxes and each moving part at its
-current joint value.
+Forward kinematics and the Jacobian are exact URDF math on the fingertip TCP. Every IK query, Cartesian
+line, collision check and joint-space trajectory goes to [cuRobo](https://github.com/NVlabs/curobo)
+(v0.7.8, in the Isaac Sim process; `zeno_skills/motion.py`). There is no other solver: a query cuRobo
+cannot answer fails the skill.
+
+- **World**: every enabled PhysX collider of the stage (`zeno_skills/scene_geometry.py`), not the
+  annotation boxes. Cube colliders become cuboids, convex approximations their hull (at most 64
+  vertices), and static triangle meshes are two-sided like PhysX's (a cuRobo patch,
+  `docker/patches/curobo_two_sided.py`). Loose objects and doors are kept at their simulated poses.
+- **Not obstacles**: held objects (and what they carry), and an object whose box contains the query's
+  TCP target.
+- **Robot**: spheres that Isaac Sim's own generator (lula, as in the XRDF editor) fitted to each link's
+  PhysX colliders (`tools/build_curobo_robot.py`, `robot_sources/curobo/zeno_malo.yml`). The base pose,
+  the other arm, the head and the fingers are locked joints for each query.
+- **Base**: navigation (footprint check, A* grid) still uses the annotation boxes.
 
 ## Physics fixes baked into the scene
 
@@ -434,7 +446,9 @@ The full list, including what was checked and kept, is in [the physics and asset
 
 ## Quick start
 
-Requirements: Isaac Sim 5.1 + Isaac Lab 2.3 (tested). For regenerating assets only: an
+Requirements: Isaac Sim 5.1 + Isaac Lab 2.3 (tested) and cuRobo 0.7.8 built against Isaac Sim's torch
+(`docker/Dockerfile.curobo`, image `zenobench:isaaclab2.3-curobo07`, which `docker/run.sh` uses). For
+regenerating assets only: an
 [EmbodiedGen](https://github.com/HorizonRobotics/EmbodiedGen) checkout (`EMBODIEDGEN_ROOT`).
 
 ```bash

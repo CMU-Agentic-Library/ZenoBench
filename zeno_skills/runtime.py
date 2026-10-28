@@ -115,9 +115,11 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
     robot = SingleArticulation("/World/ZenoMalo/Asset", name="zeno")
     sim.reset()
     robot.initialize()
+    from .motion import Motion
     kin = ArmKin()
     world = WorldModel(ann)
     kin.scene = world
+    kin.motion = Motion(stage, ann)          # cuRobo against the stage's PhysX colliders
     rig = Rig(sim, stage, robot, kin, world, ann, cams=cams, stride=stride,
               log=log or (lambda s: print(s, flush=True)),
               first_person_camera=first_person_camera, wrist_cameras=wrist)
