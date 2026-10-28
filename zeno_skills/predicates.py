@@ -705,7 +705,7 @@ def finger_slots_free(rig, name, st):
     o = st["objects"][name]
     try:
         cands = rig.ann.grasp_poses(obj, np.asarray(o["pos"], float), o["quat"],
-                                    kinds=("top_pinch", "rim_pinch", "rim_pinch_rect"))
+                                    kinds=("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect"))
     except Exception:
         return None, "no pinch annotation"
     if not cands:

@@ -1368,16 +1368,28 @@
   "graspable_by_zeno": true,
   "grasps": [
    {
-    "type": "top_pinch",
-    "close_yaw": 1.5707963267948966,
+    "type": "side_pinch",
     "width": 0.058,
     "offset_xy": [
      0.0,
      0.0
     ],
-    "height": 0.09,
+    "height": 0.099,
     "pre_open": 0.04,
-    "round": true
+    "azimuths_deg": [
+     0,
+     30,
+     60,
+     90,
+     120,
+     150,
+     180,
+     210,
+     240,
+     270,
+     300,
+     330
+    ]
    }
   ],
   "usd": "usd/assets/juice_bottle.usd",

@@ -885,7 +885,7 @@ def pick(rig, name, max_candidates=12):
     return pick_flat(rig, name)
 
 
-def _pick_pinch(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinch", "rim_pinch_rect")):
+def _pick_pinch(rig, name, max_candidates=12, kinds=("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect")):
     """Pinch pick; above table height the waist stays nearly upright (a
     40-degree bow at a counter drove the forearm into it and knocked the
     object before the grasp)."""
@@ -992,7 +992,7 @@ def contact_obstacles(rig, name, label):
         yield boxes
 
 
-def _pick_pinch_impl(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinch", "rim_pinch_rect"),
+def _pick_pinch_impl(rig, name, max_candidates=12, kinds=("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect"),
                      use_neighbours=True):
     world = getattr(rig, "world", None)
     if world is None or not hasattr(world, "temp_obstacles"):          # minimal rig stubs in unit tests
@@ -1005,7 +1005,7 @@ def _pick_pinch_impl(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinc
     return _pick_pinch_core(rig, name, max_candidates, kinds)
 
 
-def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "rim_pinch", "rim_pinch_rect")):
+def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pinch", "rim_pinch", "rim_pinch_rect")):
     obj = rig.ann.objects[name]
     pos, quat = rig.obj_pose(name)
     st = rig.state()

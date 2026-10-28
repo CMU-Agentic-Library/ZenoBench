@@ -67,6 +67,25 @@ def bind(prim, material):
 
 
 # ---------------------------------------------------------------- robot
+PAD_LINKS = ("right_gripper_left_finger_link", "right_gripper_right_finger_link",
+             "left_gripper_left_finger_link", "left_gripper_right_finger_link")
+PAD_TORSION_RADIUS = 0.01      # m: torsional friction patch of a rubber pad (2.8 x 5.5 cm)
+
+
+def pad_torsion(stage, radius=PAD_TORSION_RADIUS):
+    """Torsional friction on the finger pads.  Without it PhysX resists no rotation about
+    the contact normal, so a two-pad pinch holds an object like an axle: a bottle pinched
+    across its diameter swung 22-25 degrees about the pinch axis while carried.  Runtime,
+    idempotent (scenes baked before it lack it)."""
+    from pxr import PhysxSchema
+    for link in PAD_LINKS:
+        prim = stage.GetPrimAtPath(f"{ASSET}/{link}/pad_collider")
+        if prim:
+            api = PhysxSchema.PhysxCollisionAPI.Apply(prim)
+            api.CreateTorsionalPatchRadiusAttr().Set(radius)
+            api.CreateMinTorsionalPatchRadiusAttr().Set(radius)
+
+
 def patch_left_gripper(stage, finger_kp=1.0e4, finger_kd=300.0):
     """Runtime fix for scenes baked before it: the left gripper's left finger
     kept its fused wedge collider (jammed open) and both left finger joints

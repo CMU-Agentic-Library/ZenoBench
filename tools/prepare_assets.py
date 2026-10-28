@@ -58,6 +58,7 @@ SPECS = {
     "storage_basket": (0.380, 0.60, ["container", "basket", "storage"], "rect_container", None),
 }
 # rest these with the thinnest axis vertical and the longest along x
+SIDE_PINCH_MIN_H = 0.12    # round solids taller than this are pinched from the side
 LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", "breakfast_spoon", "banana"}
 
 # containers whose mesh has a carry handle above the body: fraction of the
@@ -216,6 +217,14 @@ def grasps(name, mesh, kind, body_fraction=1.0, profile=None):
             # uniform section first: a bowl or head rising under the pads stops
             # the descent and the pads wedge on its flank (spoon); ties: centre
             out[-1]["along_offsets"] = sorted(keep, key=lambda o: (round(prof[o][1], 3), round(prof[o][0], 3), abs(o)))
+        # Tall and round (a bottle): a top pinch at half height puts the palm on the cap long before
+        # the pads get there.  Grasp it from the side instead (annotations.grasp_poses: side_pinch;
+        # lying on its side it gets the top pinch across it).
+        if out[-1].get("round") and top > SIDE_PINCH_MIN_H:
+            tp = out.pop()
+            out.append({"type": "side_pinch", "width": tp["width"], "offset_xy": tp["offset_xy"],
+                        "height": float(min(max(0.55 * top, 0.04), top - 0.03)),
+                        "pre_open": tp["pre_open"], "azimuths_deg": list(range(0, 360, 30))})
     # crown pinch: when no full-height slab fits, pinch only the top CROWN
     # metres (what the 5 cm pads span when the TCP sits 2.2 cm below the top):
     # the head of a plush toy, a knob, a lid handle.  Below the crown the

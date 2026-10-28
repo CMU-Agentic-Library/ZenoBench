@@ -6,6 +6,9 @@ annotations/assets.json  (per asset type, object frame; tools/prepare_assets.py)
       rim_pinch        round container: pinch the wall at the rim (azimuth, tilt)
       rim_pinch_rect   rectangular container rim
       top_pinch        vertical approach, fingers across the narrowest width
+      side_pinch       tall round object: horizontal approach toward its axis at ``height``,
+                       fingers across the diameter, from every 30 degrees; lying on its side,
+                       the top pinch across it instead
       edge_pinch_after_push  flat & wider than the gripper
       handle_pinch           annotated object-handle contact (consumed by PickCupHandlePolicy)
 annotations/<scene>.json (per scene, world frame; tools/annotate_scene.py)
@@ -125,7 +128,14 @@ class SceneAnnotations:
         off = rz(yaw) @ np.asarray(a["origin_to_bottom_center"], float)
         bottom = np.asarray(body_pos, float) + off
         out = []
+        lying = body_quat_wxyz is not None and _tilted(body_quat_wxyz)
         for g in a["grasps"]:
+            if g["type"] == "side_pinch" and lying:
+                # a tall bottle on its side: pinched across it from above, like a lying top pinch
+                if kinds and "side_pinch" not in kinds and "top_pinch" not in kinds:
+                    continue
+                out += self._lying_pinches(g, a, body_pos, body_quat_wxyz)
+                continue
             if kinds and g["type"] not in kinds:
                 continue
             if g["type"] == "rim_pinch":
@@ -144,29 +154,15 @@ class SceneAnnotations:
                         appr = np.array([0, 0, -math.cos(tilt)]) - d * math.sin(tilt)
                         out.append({"kind": "rim_pinch_rect", "p": p, "R": gripper_rot(appr, d),
                                     "pre_open": g["pre_open"], "tilt": tilt})
-            elif g["type"] == "top_pinch" and body_quat_wxyz is not None and _tilted(body_quat_wxyz):
-                # lying on its side (a tipped bottle): pinch across it from above
-                # at the centre's height, along its current long axis
-                Rb = _quat_R(body_quat_wxyz)
-                size = np.asarray(a["size"], float)
-                centre = np.asarray(body_pos, float) + Rb @ (np.asarray(a["origin_to_bottom_center"], float)
-                                                             + np.array([0.0, 0.0, 0.5 * size[2]]))
-                long_ax = Rb[:, int(np.argmax(size))].copy()
-                long_ax[2] = 0.0
-                if np.linalg.norm(long_ax) < 1e-6:
-                    long_ax = np.array([1.0, 0.0, 0.0])
-                long_ax /= np.linalg.norm(long_ax)
-                across = np.cross([0.0, 0.0, 1.0], long_ax)
-                # the centre first, then 4 cm either way (a lying bottle between
-                # neighbours may only be reachable off-centre)
-                offs = list(g.get("along_offsets", [0.0]))
-                offs += [o for o in (-0.04, 0.04) if all(abs(o - x) > 0.015 for x in offs)]
-                for rank, d in enumerate(offs):
-                    p = centre + long_ax * d
-                    for sgn in (1.0, -1.0):
-                        out.append({"kind": "top_pinch", "p": p, "R": gripper_rot([0, 0, -1.0], sgn * across),
-                                    "pre_open": min(0.04, 0.5 * float(min(size[:2])) + 0.02),
-                                    "along": float(d), "along_rank": rank, "lying": True})
+            elif g["type"] == "top_pinch" and lying:
+                out += self._lying_pinches(g, a, body_pos, body_quat_wxyz)
+                continue
+            elif g["type"] == "side_pinch":
+                p = bottom + rz(yaw) @ np.r_[g.get("offset_xy", [0.0, 0.0]), 0.0] + np.array([0, 0, g["height"]])
+                for az in g.get("azimuths_deg", range(0, 360, 30)):
+                    d = np.array([math.cos(math.radians(az) + yaw), math.sin(math.radians(az) + yaw), 0.0])
+                    out.append({"kind": "side_pinch", "p": p, "R": gripper_rot(-d, np.cross([0.0, 0.0, 1.0], d)),
+                                "pre_open": g["pre_open"], "azimuth": az})
                 continue
             elif g["type"] == "top_pinch":
                 off = rz(yaw) @ np.r_[g.get("offset_xy", [0.0, 0.0]), 0.0]
@@ -179,6 +175,33 @@ class SceneAnnotations:
                     out += [dict(c, along=float(d), along_rank=rank)
                             for c in self._top_pinch_rotations(g, yaw, p, square=square)]
                 continue
+        return out
+
+    @staticmethod
+    def _lying_pinches(g, a, body_pos, body_quat_wxyz):
+        """Lying on its side (a tipped bottle): pinch across it from above at the centre's
+        height, along its current long axis."""
+        Rb = _quat_R(body_quat_wxyz)
+        size = np.asarray(a["size"], float)
+        centre = np.asarray(body_pos, float) + Rb @ (np.asarray(a["origin_to_bottom_center"], float)
+                                                     + np.array([0.0, 0.0, 0.5 * size[2]]))
+        long_ax = Rb[:, int(np.argmax(size))].copy()
+        long_ax[2] = 0.0
+        if np.linalg.norm(long_ax) < 1e-6:
+            long_ax = np.array([1.0, 0.0, 0.0])
+        long_ax /= np.linalg.norm(long_ax)
+        across = np.cross([0.0, 0.0, 1.0], long_ax)
+        # the centre first, then 4 cm either way (a lying bottle between
+        # neighbours may only be reachable off-centre)
+        offs = list(g.get("along_offsets", [0.0]))
+        offs += [o for o in (-0.04, 0.04) if all(abs(o - x) > 0.015 for x in offs)]
+        out = []
+        for rank, d in enumerate(offs):
+            p = centre + long_ax * d
+            for sgn in (1.0, -1.0):
+                out.append({"kind": "top_pinch", "p": p, "R": gripper_rot([0, 0, -1.0], sgn * across),
+                            "pre_open": min(0.04, 0.5 * float(min(size[:2])) + 0.02),
+                            "along": float(d), "along_rank": rank, "lying": True})
         return out
 
     @staticmethod
