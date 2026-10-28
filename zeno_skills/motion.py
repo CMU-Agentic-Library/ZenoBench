@@ -40,6 +40,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from . import scene_geometry as G
+from .kinematics import CARRY_TILT, manipulability, max_tilt, tilt
 
 ROOT = Path(__file__).resolve().parents[1]
 ROBOT_CFG = ROOT / "robot_sources/curobo/zeno_malo.yml"
@@ -55,9 +56,16 @@ HAND_LINKS = FINGER_LINKS + ("gripper_link", "gripper_camera_link")
 N_SEEDS = 4               # every IK query passes exactly this many seeds (a new shape re-captures cuRobo's CUDA graphs)
 N_RETURN = 8              # and gets this many solutions back
 LIMIT_CLEAR = 0.15        # IK prefers arm joints at least this far from their limits
+IK_MANIP_W = 0.3          # global IK: weight of (1 - manipulability / best of the batch) in the choice
+CLEAR_CAP = 0.05          # m: clearance measured up to this (find_park scores more as equal)
 PATH_BATCH = 32           # Cartesian waypoints solved per batched IK call (fixed: CUDA graph shape)
 PIN = 1e-3                # half band of a pinned joint (lo == hi)
 MAX_STEP = 0.25           # largest joint change between two waypoints of a Cartesian path
+TRAJOPT_SEEDS = 12        # trajectory-optimisation seeds per plan (fixed: CUDA graph shape)
+GRAPH_SEEDS = 4           # graph-search seeds that seed the optimiser around obstacles
+PLAN_ATTEMPTS, PLAN_TIMEOUT = 5, 8.0
+APPROACH_FRACTION = 0.5   # constrained Cartesian legs: the last half of the trajectory is the straight approach
+APPROACH_ALIGN = 0.95     # |cos| between the leg and a goal-frame axis for a straight-approach constraint
 os.environ.setdefault("CUROBO_TORCH_CUDA_GRAPH_RESET", "1")
 
 DIAG = os.environ.get("ZENO_MOTION_DIAG") == "1"     # print why a collision IK was blocked
@@ -172,7 +180,7 @@ class _Arm:
         ta = TensorDeviceType()
         self.mg = MotionGen(MotionGenConfig.load_from_robot_config(
             cfg, None, ta, world_coll_checker=checker, use_cuda_graph=True, num_ik_seeds=32,
-            num_trajopt_seeds=4, num_graph_seeds=2, interpolation_dt=0.02,
+            num_trajopt_seeds=TRAJOPT_SEEDS, num_graph_seeds=GRAPH_SEEDS, interpolation_dt=0.02,
             collision_activation_distance=ACTIVATION, position_threshold=POS_TOL, rotation_threshold=ROT_TOL,
             self_collision_check=True, self_collision_opt=True))
         self.ik_free = IKSolver(IKSolverConfig.load_from_robot_config(
@@ -195,7 +203,7 @@ class _Arm:
         self.limits = None
         self.lo, self.hi = self.kin.lo.copy(), self.kin.hi.copy()
         self.disabled_links = set()
-        self.mg.warmup(enable_graph=False, warmup_js_trajopt=True)
+        self.mg.warmup(enable_graph=True, warmup_js_trajopt=True)
         self.ik_free.solve_single(self._pose(*self.kin.tcp(self.kin.posture)))
         p, R = self.kin.tcp(self.kin.posture)
         self.path_ik([p] * 2, [R] * 2, self.kin.posture)
@@ -273,6 +281,9 @@ class _Arm:
         score = near + 10.0 * np.maximum(0.0, LIMIT_CLEAR - margin)
         if local:                    # never trade continuity for the margin
             score = np.where(near <= MAX_STEP, score, 1e3 + near)
+        else:                        # away from singular postures (tracks and pushes better)
+            m = np.array([manipulability(self.kin, q) for q in Q])
+            score = score + IK_MANIP_W * (1.0 - m / max(float(m.max()), 1e-9))
         return Q[int(np.argmin(score))], True
 
     def path_ik(self, P, Rs, q0):
@@ -314,14 +325,62 @@ class _Arm:
         return m.feasible.view(-1).cpu().numpy().astype(bool)
 
     def plan(self, q0, q1):
+        """Joint-space trajectory: graph search seeds the trajectory optimiser around obstacles."""
         from curobo.wrap.reacher.motion_gen import MotionGenPlanConfig
         q0, q1 = np.clip(q0, self.lo, self.hi), np.clip(q1, self.lo, self.hi)
         r = self.mg.plan_single_js(self._js(q0), self._js(q1),
-                                   MotionGenPlanConfig(max_attempts=3, enable_graph=False, timeout=5.0))
+                                   MotionGenPlanConfig(max_attempts=PLAN_ATTEMPTS, enable_graph=True,
+                                                       timeout=PLAN_TIMEOUT))
+        return self._traj(r)
+
+    def plan_pose(self, q0, p, R, metric=None):
+        """Trajectory to a TCP pose under an optional cuRobo PoseCostMetric (constrained planning).
+        Graph search joins after two attempts (it ignores the pose constraint, the optimiser
+        then enforces it)."""
+        from curobo.wrap.reacher.motion_gen import MotionGenPlanConfig
+        q0 = np.clip(q0, self.lo, self.hi)
+        r = self.mg.plan_single(self._js(q0), self._pose(p, R),
+                                MotionGenPlanConfig(max_attempts=PLAN_ATTEMPTS, enable_graph=False,
+                                                    enable_graph_attempt=2, timeout=PLAN_TIMEOUT,
+                                                    pose_cost_metric=metric))
+        return self._traj(r)
+
+    def _traj(self, r):
         if not bool(r.success.view(-1)[0].item()):
             return None, str(r.status)
         traj = r.get_interpolated_plan().position.view(-1, len(self.kin.names)).cpu().numpy().astype(float)
         return list(traj[1:]), None
+
+    def approach_metric(self, p0, p, R):
+        """Free motion first, then the last APPROACH_FRACTION of the trajectory a straight line into
+        (p, R) along the goal-frame axis the leg follows, orientation held: the constrained form
+        of a straight Cartesian leg.  None when the leg follows no TCP axis (a slanted leg has
+        no axis cuRobo can hold it on)."""
+        from curobo.rollout.cost.pose_cost import PoseCostMetric
+        t = self.torch
+        d = R.T @ (np.asarray(p, float) - np.asarray(p0, float))     # leg in the goal frame
+        L = float(np.linalg.norm(d))
+        axis = int(np.argmax(np.abs(d))) if L > 1e-6 else 2
+        weight = [1.0] * 6
+        if L > 1e-6 and abs(d[axis]) / L >= APPROACH_ALIGN:
+            # cuRobo pulls the trajectory to goal - R @ offset at the start of the held part
+            weight[3 + axis] = 0.0
+            offset = [0.0, 0.0, 0.0]
+            offset[axis] = float(d[axis]) * APPROACH_FRACTION
+            return PoseCostMetric(hold_partial_pose=True,
+                                  hold_vec_weight=t.tensor(weight, device="cuda", dtype=t.float32),
+                                  offset_position=t.tensor(offset, device="cuda", dtype=t.float32),
+                                  offset_tstep_fraction=APPROACH_FRACTION)
+        return None
+
+    def tilt_metric(self):
+        """Keep the TCP's tilt (rotation about the world x / y axes) at the goal's for the whole
+        trajectory; yaw and position are free.  World-frame errors (project_to_goal_frame off)."""
+        from curobo.rollout.cost.pose_cost import PoseCostMetric
+        t = self.torch
+        return PoseCostMetric(hold_partial_pose=True, project_to_goal_frame=False,
+                              hold_vec_weight=t.tensor([1.0, 1.0, 0.0, 0.0, 0.0, 0.0], device="cuda",
+                                                       dtype=t.float32))
 
     def spheres(self, q):
         """World-frame robot spheres (x, y, z, r) at q; r < 0 for switched-off links."""
@@ -562,12 +621,47 @@ class Motion:
             return self._segments_free(arm, [np.asarray(qa, float), np.asarray(qb, float)])
 
     @_timed("plan_s")
-    def plan(self, kin, q0, q1, other_q=None, coll_kw=None):
-        """cuRobo joint-space trajectory q0 -> q1 (waypoints after q0) or (None, status)."""
+    def plan(self, kin, q0, q1, other_q=None, coll_kw=None, carry=False):
+        """cuRobo joint-space trajectory q0 -> q1 (waypoints after q0) or (None, status).
+        ``carry`` (an object in the hand): the held object may not tilt more than CARRY_TILT
+        on the way; a trajectory that would is re-planned to q1's TCP pose with the tilt held
+        (it then ends at that pose, not necessarily at q1)."""
         STATS["plan"] += 1
+        q0, q1 = np.asarray(q0, float), np.asarray(q1, float)
         with self._query(kin, other_q, coll_kw) as arm:
-            qs, status = arm.plan(np.asarray(q0, float), np.asarray(q1, float))
+            qs, status = arm.plan(q0, q1)
+            R0 = kin.tcp(q0)[1]
+            p1, R1 = kin.tcp(q1)
+            if carry and tilt(R0, R1) <= CARRY_TILT and (qs is None or max_tilt(kin, R0, qs) > CARRY_TILT):
+                STATS["plan_carry"] = STATS.get("plan_carry", 0) + 1
+                qc, sc = arm.plan_pose(q0, p1, R1, arm.tilt_metric())
+                if qc is not None and max_tilt(kin, R0, qc) <= CARRY_TILT:
+                    qs, status = qc, None
+                else:
+                    qs, status = None, f"carry tilt held: {sc or 'tilts %.2f rad' % max_tilt(kin, R0, qc)}"
         STATS["plan_ok"] += int(qs is not None)
+        return qs, status
+
+    @_timed("plan_s")
+    def plan_to(self, kin, q0, p0, p, R, other_q=None, coll_kw=None, carry=False):
+        """Constrained trajectory for a Cartesian leg p0 -> (p, R) whose straight line is blocked:
+        with an object in the hand the tilt is held throughout; otherwise the trajectory may
+        leave the line to clear the obstacle but ends with a straight approach along it
+        (Arm.approach_metric).  (qs, None) or (None, status)."""
+        STATS["plan_to"] = STATS.get("plan_to", 0) + 1
+        q0 = np.asarray(q0, float)
+        with self._query(kin, other_q, coll_kw, [p0, p]) as arm:
+            R0 = kin.tcp(q0)[1]
+            if carry and tilt(R0, R) <= CARRY_TILT:
+                metric = arm.tilt_metric()
+            else:
+                metric = arm.approach_metric(p0, p, R)
+            if metric is None:
+                return None, "leg follows no TCP axis: no constrained approach"
+            qs, status = arm.plan_pose(q0, np.asarray(p, float), R, metric)
+            if qs is not None and carry and max_tilt(kin, R0, qs) > CARRY_TILT + tilt(R0, R):
+                qs, status = None, "held object tilts on the planned leg"
+        STATS["plan_to_ok"] = STATS.get("plan_to_ok", 0) + int(qs is not None)
         return qs, status
 
     def _touching(self, arm, q):
@@ -596,6 +690,31 @@ class Motion:
             return "world " + ", ".join(f"{l} {v * 1000:.0f} mm" for l, v in
                                         sorted(hits.items(), key=lambda t: -t[1])[:4])
         return "self collision or joint limits"
+
+    @_timed("check_s")
+    def clearance(self, kin, Q, targets=(), other_q=None, coll_kw=None):
+        """Per row of Q: the arm's smallest distance to the world (m, capped at CLEAR_CAP; 0 when
+        touching): spheres inflated by CLEAR_CAP, minus their deepest penetration.  Fingers and
+        the objects at the TCP ``targets`` are left out (they are meant to touch)."""
+        import torch
+        from curobo.geom.sdf.world import CollisionQueryBuffer
+        STATS["check"] += 1
+        Q = np.atleast_2d(np.asarray(Q, float))
+        kw = dict(coll_kw or {})
+        if not kw.get("hand_touches_part"):
+            kw["ignore_fingers"] = True
+        with self._query(kin, other_q, kw, [np.asarray(p, float) for p in targets]) as arm:
+            sph = arm.spheres(np.clip(Q, arm.lo, arm.hi)).view(len(Q), -1, 4).clone()
+            on = sph[..., 3] > 0
+            sph[..., 3] = torch.where(on, sph[..., 3] + CLEAR_CAP, sph[..., 3])
+            q4 = sph.view(len(Q), 1, -1, 4).contiguous()
+            buf = CollisionQueryBuffer.initialize_from_shape(q4.shape, arm.mg.tensor_args,
+                                                             self.checker.collision_types)
+            d = self.checker.get_sphere_distance(q4, buf, torch.ones(1, device="cuda"),
+                                                 torch.zeros(1, device="cuda"), sum_collisions=False)
+            d = torch.where(on, d.view(len(Q), -1), torch.zeros_like(on, dtype=d.dtype))
+            pen = d.max(dim=1).values.cpu().numpy()
+        return np.clip(CLEAR_CAP - pen, 0.0, CLEAR_CAP)
 
     def penetration(self, kin, q, other_q=None, coll_kw=None):
         """Deepest penetration (m, >= 0) of the robot's spheres into the world at q."""

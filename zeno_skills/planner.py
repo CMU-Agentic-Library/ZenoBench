@@ -16,6 +16,7 @@ import math
 import numpy as np
 
 from .collision import BASE_HALF
+from .kinematics import manipulability
 
 # The base drives facing along the path (drive_base yaws to the segment
 # direction), so laterally only the half width of the 0.49 m column matters;
@@ -75,10 +76,44 @@ def torque_ratio(kin, q, force):
 LAST_PARK_DIAG: dict = {}      # rejection counts of the last find_park call (for failure messages)
 
 
+PARK_CANDIDATES = 4        # feasible parks compared by park_quality before one is taken
+LIMIT_CLEAR = 0.15         # rad: arm joints closer than this to a limit cost (same as motion.LIMIT_CLEAR)
+PARK_DIST_W = 0.5          # weight of the candidate's own cost (distance, yaw) in the ranking
+
+
+def park_quality(kin, qs, targets):
+    """Worst over a park's joint solutions of: arm joint-limit margin (rad), manipulability,
+    clearance to the world (m, capped; fingers and the targeted objects left out)."""
+    Q = np.array([np.asarray(q, float) for q in qs])
+    margin = float(np.min(np.minimum(Q - kin.lo, kin.hi - Q)[:, 2:]))
+    manip = min(manipulability(kin, q) for q in Q)
+    clear = float(np.min(kin.clearance(Q, [p for p, _ in targets])))
+    return {"margin": margin, "manip": manip, "clear": clear}
+
+
+def rank_parks(found):
+    """found: [(cost, quality, park)].  Each term in [0, 1], lower is better: joints near a limit,
+    manipulability below the best candidate's, clearance below the cap, and (PARK_DIST_W) the
+    candidate's distance/yaw cost above the cheapest one's.  Returns the list sorted."""
+    best_m = max(max(f[1]["manip"] for f in found), 1e-9)
+    c0 = min(f[0] for f in found)
+    cap = max(max(f[1]["clear"] for f in found), 1e-9)
+
+    def total(f):
+        cost, q, _ = f
+        return (max(0.0, LIMIT_CLEAR - q["margin"]) / LIMIT_CLEAR + (1.0 - q["manip"] / best_m)
+                + (1.0 - min(q["clear"], cap) / cap) + PARK_DIST_W * (cost - c0))
+    return sorted(found, key=total), total
+
+
 def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
               yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
-              score=None, n_best=1, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None):
+              score=None, n_best=None, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None):
     """Return (x, y, yaw_deg, qs) or None.
+
+    Without ``score`` the first PARK_CANDIDATES feasible parks are ranked by park_quality
+    (rank_parks) and the best is taken; with ``score`` (a skill's own criterion, lowest wins)
+    the first ``n_best`` (default 1).  The current base pose, when it works, is kept as is.
 
     travel_q: arm posture while the base drives there (tucked, or the carry
               pose); a park where it would already hit the furniture is
@@ -114,6 +149,8 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         sh = np.array([x + shoulder[0] * c_ - shoulder[1] * s_, y + shoulder[0] * s_ + shoulder[1] * c_])
         d = np.linalg.norm(P[:, :2] - sh, axis=1)
         return bool(np.all(d < 0.78) and np.all((P[:, 2] > 0.0) & (P[:, 2] < 1.5)))
+    if n_best is None:
+        n_best = PARK_CANDIDATES if score is None else 1
     tried = 0
     found = []
     diag = {"candidates": len(cands), "out_of_reach": 0, "footprint": 0, "travel_pose": 0, "ik": 0,
@@ -154,11 +191,22 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
             # footprint-clear but enclosed (e.g. behind a counter): not drivable from here
             LAST_PARK_DIAG["no_path"] = LAST_PARK_DIAG.get("no_path", 0) + 1
             continue
-        if score is None or cost < 0:
+        if cost < 0:
             return x, y, yaw, qs
-        found.append((score(x, y, yaw, qs), (x, y, yaw, qs)))
+        if score is None:
+            found.append((cost, park_quality(kin, qs, targets), (x, y, yaw, qs)))
+        else:
+            found.append((score(x, y, yaw, qs), (x, y, yaw, qs)))
         if len(found) >= n_best:
             break
+    if found and score is None:
+        ranked, total = rank_parks(found)
+        LAST_PARK_DIAG["ranked"] = [{"park": [round(v, 3) for v in f[2][:3]], "score": round(total(f), 3),
+                                     **{k: round(v, 4) for k, v in f[1].items()}} for f in ranked]
+        print("find_park: ranked", LAST_PARK_DIAG["ranked"], flush=True)
+        x, y, yaw, qs = ranked[0][2]
+        kin.set_base((x, y, 0.0), math.radians(yaw))
+        return ranked[0][2]
     if found:
         found.sort(key=lambda t: t[0])
         return found[0][1]

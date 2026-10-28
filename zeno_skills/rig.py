@@ -10,7 +10,7 @@ import math
 
 import numpy as np
 
-from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, vel_limits, yaw_quat_wxyz
+from .kinematics import CARRY_TILT, ArmKin, FINGERS, LEFT_ARM_FOLD, max_tilt, tilt, vel_limits, yaw_quat_wxyz
 from .physics import ANCHOR, ASSET
 
 
@@ -314,8 +314,10 @@ class Rig:
 
     def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, collision=True, q_hint=None,
                 smooth=False):
-        """Straight TCP line; falls back to the planner-validated step, then to a
-        joint-space move to ``q_hint`` (a planner-validated solution)."""
+        """Straight TCP line; then the planner-validated step; then (collision-checked legs) a
+        constrained cuRobo trajectory: clear of the obstacle, ending in a straight approach,
+        the tilt held when carrying; then a joint-space move to ``q_hint`` (a
+        planner-validated solution)."""
         self.sync_world()
         scene = self.kin.scene
         if not collision:
@@ -332,6 +334,13 @@ class Rig:
                         dense += [prev + (q - prev) * u for u in np.linspace(0, 1, k + 1)[1:]]
                         prev = q
                     qs = dense
+            if not ok and collision and scene is not None:
+                qs_c, status = self.kin.plan_to(self.q_cmd, np.asarray(p, float), R, carry=self._carrying())
+                if qs_c is not None:
+                    self.log("constrained_leg", target=label, waypoints=len(qs_c), carry=self._carrying())
+                    qs, ok = self.joint_path_via(qs_c), True
+                else:
+                    self.log("constrained_leg_failed", target=label, status=status)
             if not ok and q_hint is not None:
                 # a large joint-space swing is always collision-checked, even for
                 # contact moves (a 2 rad swing put the forearm through a trash can)
@@ -357,6 +366,10 @@ class Rig:
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
 
+    def _carrying(self):
+        """An object in the right hand (its tilt is held on planned moves)."""
+        return self.held is not None and self.held.get("kind") != "bimanual"
+
     def joint_path_via(self, vias):
         """Dense joint waypoints from q_cmd through ``vias`` (already checked)."""
         out, qa = [], self.q_cmd.copy()
@@ -376,17 +389,22 @@ class Rig:
         def dense(qa, qb):
             k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
             return [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+        carry = self._carrying()
         if not check or self.kin.scene is None or self.kin.segment_free(q0, q_goal):
-            return dense(q0, q_goal)
+            if not (check and carry and self.kin.scene is not None) or \
+                    max_tilt(self.kin, self.kin.tcp(q0)[1], dense(q0, q_goal)[::10] + [q_goal]) <= CARRY_TILT or \
+                    tilt(self.kin.tcp(q0)[1], self.kin.tcp(q_goal)[1]) > CARRY_TILT:
+                return dense(q0, q_goal)
+            # free, but it tips the held object over on the way: a tilt-held trajectory instead
         if not self.kin.free(q0) and self.kin.free(q_goal):
             # starting in contact (hand still at a handle it just released):
             # no collision-free path can start here, leave the contact directly
             self.log("joint_from_contact", target=label)
             return dense(q0, q_goal)
-        qs, status = self.kin.plan(q0, q_goal)
+        qs, status = self.kin.plan(q0, q_goal, carry=carry)
         if qs is None:
             raise SkillFailure(f"joint move to {label}: no collision-free trajectory ({status})")
-        self.log("joint_plan", target=label, waypoints=len(qs))
+        self.log("joint_plan", target=label, waypoints=len(qs), carry=carry)
         out, prev = [], q0
         for q in qs:
             out += dense(prev, q)

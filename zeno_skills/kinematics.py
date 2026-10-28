@@ -35,6 +35,7 @@ LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_jo
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
 # -0.12985, pads span -0.14..-0.09 on the finger links).
 TCP_DEPTH = 0.12
+CARRY_TILT = 0.15           # rad: largest tilt of a held object from its start orientation on a planned move
 
 
 def gripper_rot(approach, close_dir):
@@ -47,6 +48,23 @@ def gripper_rot(approach, close_dir):
     y /= np.linalg.norm(y)
     x = np.cross(y, z)
     return np.column_stack((x, y, z))
+
+
+def tilt(Ra, Rb):
+    """Angle between the world z axis carried by Ra and by Rb (rotation about z is not tilt)."""
+    z = (np.asarray(Rb) @ np.asarray(Ra).T)[:, 2]
+    return float(np.arccos(np.clip(z[2], -1.0, 1.0)))
+
+
+def max_tilt(kin, R0, qs):
+    """Largest tilt from R0 of the TCP along the joint waypoints qs."""
+    return max((tilt(R0, kin.tcp(q)[1]) for q in qs), default=0.0)
+
+
+def manipulability(kin, q):
+    """Yoshikawa manipulability of the arm joints at q (sqrt det J J^T; torso and waist left out)."""
+    J = kin.jac(np.asarray(q, float))[0][:, 2:]
+    return float(np.sqrt(max(np.linalg.det(J @ J.T), 0.0)))
 
 
 def yaw_quat_wxyz(yaw):
@@ -210,9 +228,21 @@ class ArmKin:
         return self._motion().cart_path(self, np.asarray(q0, float), np.asarray(p_goal, float), R_goal, step,
                                         self.scene is not None, self._other_q(), self.coll_kw)
 
-    def plan(self, q0, q1):
-        """cuRobo joint-space trajectory q0 -> q1 (collision-free), or (None, status)."""
-        return self._motion().plan(self, q0, q1, self._other_q(), self.coll_kw)
+    def plan(self, q0, q1, carry=False):
+        """cuRobo joint-space trajectory q0 -> q1 (collision-free), or (None, status); ``carry``
+        holds the tilt of an object in the hand."""
+        return self._motion().plan(self, q0, q1, self._other_q(), self.coll_kw, carry=carry)
+
+    def plan_to(self, q0, p_goal, R_goal, carry=False):
+        """Constrained trajectory for a blocked Cartesian leg (Motion.plan_to)."""
+        return self._motion().plan_to(self, np.asarray(q0, float), self.tcp(q0)[0], np.asarray(p_goal, float),
+                                      R_goal, self._other_q(), self.coll_kw, carry=carry)
+
+    def clearance(self, Q, targets=()):
+        """Per row of Q: the arm's distance to the world (m, capped; Motion.clearance)."""
+        if self.scene is None:
+            return np.full(len(np.atleast_2d(Q)), np.inf)
+        return self._motion().clearance(self, Q, targets, self._other_q(), self.coll_kw)
 
     def penetration(self, q):
         """Deepest penetration of the arm into the world at q (m, >= 0)."""
