@@ -6,8 +6,7 @@ description: Annotation-driven manipulation skills for the Zeno Malo mobile mani
 # Zeno Malo skills
 
 这里的 skills 指底层注释驱动的控制代码。供上层 Skill Graph 选择的
-Agent Skill 风格能力定义在 [skill_library](../skill_library/README.md)；
-两层边界见 [SCOPE.md](../skill_library/SCOPE.md)。
+Agent Skill 风格能力定义在 [skill_library](../skill_library/README.md)。
 
 The core grasp and geometry data come from annotations. Current appliance
 skills also use scene-specific parking and camera defaults:
@@ -20,12 +19,14 @@ skills also use scene-specific parking and camera defaults:
 ## Run
 
 ```bash
-cd zeno-house   # repository root
+cd ZenoBench   # repository root
 OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
   --scene sim/zeno_house.usd --ann annotations/zeno_house.json --out runs/my_run \
   --plan "open kitchen_cabinet_6" \
          "close kitchen_cabinet_6"
-# steps: open <art> | close <art> | pick <obj> | place <obj> <support> <x> <y> | goto <x> <y> <yaw>
+# steps: open <art> | close <art> | pick <obj> | place <obj> in:<container>
+#        place <obj> <surface or alias> [x y] | push <obj> <dx> <dy> | goto <x> <y> <yaw>
+#        plus direct policy routes, e.g. pick_round_rim <obj> (full list in tools/run_skills.py)
 ```
 
 ## OOP policies and contracts
@@ -36,7 +37,7 @@ OMNI_KIT_ACCEPT_EULA=YES ${ISAACLAB_PYTHON:-python} tools/run_skills.py \
 [Contract Library](../contract_library/README.md) 和
 [Policy Library](../policy_library/README.md)。
 
-`PolicySuite(rig)` exposes the [64 policy entries](../docs/POLICY_CATALOG.md).
+`PolicySuite(rig)` exposes the [116 policy entries](../docs/POLICY_CATALOG.md).
 Choose a concrete route such as `pick_round_rim`, `pick_cup_handle`, or
 `open_powered` and call its `execute(...)` method. The eight compatibility family
 [contracts](../docs/CONTRACT_PROPOSAL.md) bind route names to these same policy
