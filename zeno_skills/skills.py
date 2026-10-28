@@ -43,7 +43,13 @@ CARRY_Z = 0.55                # carried objects ride at least this high (floor p
 # ---------------------------------------------------------------- navigation
 def _carry_pose(rig, min_bottom_z=None):
     """Held object: lift to CARRY_Z (floor picks) and bring it next to the
-    body so the arm does not stick out through doorways."""
+    body so the arm does not stick out through doorways.  The held object's box
+    is planned clear of the world on the way (a lifted pot lid was swept into its pot)."""
+    with rig.held_collision():
+        _carry_moves(rig, min_bottom_z)
+
+
+def _carry_moves(rig, min_bottom_z):
     rig.sync_world()
     low_load = float(rig.geo.bottom(rig.held["name"], rig.state())[2]) < 0.30
     if low_load and (rig.q_cmd[0] < rig.kin.hi[0] - 0.05 or abs(rig.q_cmd[1]) > 0.05):

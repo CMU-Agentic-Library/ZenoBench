@@ -19,6 +19,9 @@ Collision semantics:
     not, to that arm (to the other arm only while its hand is at it: a handover);
     nor is an object whose box (+3 cm) contains a query's TCP target (the
     object being grasped or pushed);
+  * inside ``Rig.held_collision`` (the carry legs) the held object is a grid of spheres
+    filling its box on the arm's ``<side>_held_object`` link: the planner keeps it clear
+    of the world (never of the robot itself).  Not while it still touches something;
   * ``ignore_fingers`` turns the finger spheres off; ``hand_touches_part`` the
     finger, gripper and wrist-camera spheres (hand on a handle);
   * obstacles farther than CULL m from the base are switched off (speed);
@@ -68,6 +71,7 @@ GRAPH_SEEDS = 4           # graph-search seeds that seed the optimiser around ob
 PLAN_ATTEMPTS, PLAN_TIMEOUT = 5, 8.0
 APPROACH_FRACTION = 0.5   # constrained Cartesian legs: the last half of the trajectory is the straight approach
 APPROACH_ALIGN = 0.95     # |cos| between the leg and a goal-frame axis for a straight-approach constraint
+HELD_SPHERES = 32         # spheres pre-allocated per arm for the held object (Rig.held_collision)
 os.environ.setdefault("CUROBO_TORCH_CUDA_GRAPH_RESET", "1")
 
 DIAG = os.environ.get("ZENO_MOTION_DIAG") == "1"     # print why a collision IK was blocked
@@ -101,6 +105,44 @@ def _report():
 def _quat_wxyz(R):
     x, y, z, w = Rotation.from_matrix(R).as_quat()
     return [float(w), float(x), float(y), float(z)]
+
+
+def held_link(side):
+    return f"{side}_held_object"
+
+
+def add_held_links(k):
+    """Robot config (the ``kinematics`` dict) + one empty sphere link per arm at its TCP for
+    the held object: HELD_SPHERES spheres switched off until attached, never in self collision."""
+    k["extra_links"] = dict(k["extra_links"])
+    links = list(k["collision_link_names"])
+    for s in ("right", "left"):
+        tcp = k["extra_links"][f"{s}_tcp"]
+        k["extra_links"][held_link(s)] = {**tcp, "link_name": held_link(s), "joint_name": f"{held_link(s)}_joint"}
+    held = [held_link(s) for s in ("right", "left")]
+    k["collision_link_names"] = links + held
+    k["extra_collision_spheres"] = {h: HELD_SPHERES for h in held}
+    k["self_collision_ignore"] = {**k.get("self_collision_ignore", {}),
+                                  **{h: [l for l in links + held if l != h] for h in held}}
+    k["self_collision_buffer"] = {**k.get("self_collision_buffer", {}), **{h: 0.0 for h in held}}
+    return k
+
+
+def box_spheres(lo, hi, n_max=HELD_SPHERES):
+    """(n, 4) equal spheres (x, y, z, r) on a grid filling the box [lo, hi]: cells as close to
+    cubes as n_max allows, each sphere inscribed in its cell (inside the box)."""
+    lo, hi = np.asarray(lo, float), np.asarray(hi, float)
+    d = np.maximum(hi - lo, 1e-3)
+    r = d.min() / 2
+    while True:
+        n = np.maximum(1, np.ceil(d / (2 * r) - 1e-9)).astype(int)
+        if n.prod() <= n_max:
+            break
+        r *= 1.1
+    cell = d / n
+    idx = np.stack(np.meshgrid(*[np.arange(k) for k in n], indexing="ij"), -1).reshape(-1, 3)
+    ctr = lo + (idx + 0.5) * cell
+    return np.c_[ctr, np.full(len(ctr), cell.min() / 2)]
 
 
 class _Locks:
@@ -411,6 +453,7 @@ class Motion:
         k = cfg["kinematics"]
         k["urdf_path"] = str(ROOT / k["urdf_path"])
         k["asset_root_path"] = str(ROOT / k["asset_root_path"])
+        add_held_links(k)
         self.arms = {s: _Arm(self, s, cfg, self.checker) for s in ("right", "left")}
         # obstacle bookkeeping: world AABB centre / half extent per collider, start body poses
         self.body0 = {}
@@ -431,6 +474,9 @@ class Motion:
             self._extent[c.name] = (ctr, float(np.linalg.norm(h)))
         self.enabled = {c.name: True for c in self.cols.items}
         self.held = {"right": set(), "left": set()}     # side -> owners that arm holds (not obstacles to it)
+        self.held_collision = set()      # sides whose held object is planned against (Rig.held_collision)
+        self.held_state = {}             # side -> held object on its sphere link (or why it is off)
+        self._held_box = {}              # object name -> (frame collider, lo, hi): its box in that collider's frame
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
         self.by_owner = {}
@@ -522,9 +568,79 @@ class Motion:
             arm = self.arms[side]
             arm.prepare(kin, other_q, {f"{side}_{l}" for l in FINGER_LINKS})
             self._apply(base, side=side)
-            touching[side] = {l for l in self._touching(arm, q) if l.startswith(side + "_")}
+            h = rig.held if side == "right" else getattr(rig, "left_held", None)
+            want = side in self.held_collision
+            prev = self.held_state.get(side)
+            state = None
+            if want or prev:
+                state = self._attach_held(arm, kin, q, h if want else None)
+            hits = self._touching(arm, q)
+            if state is not None and held_link(side) in hits:
+                # still on its support (or in a container): no collision-free start, left off
+                self._attach_held(arm, kin, q, None)
+                state += " (touching: off)"
+            if state != prev:
+                rig.log("held_collision", side=side, state=state)
+            self.held_state[side] = state
+            touching[side] = {l for l in hits if l.startswith(side + "_") and l != held_link(side)}
         self.other_touching = {"right": touching["left"], "left": touching["right"]}
         self.cull_at = None
+
+    def release_held(self, side):
+        """Rig.held_collision ends: the held link emptied now (not only at the next sync).
+        Whether it held something."""
+        self.held_collision.discard(side)
+        was = self.held_state.get(side)
+        if was:
+            self._attach_held(self.arms[side], None, None, None)
+        self.held_state[side] = None
+        return bool(was)
+
+    def _attach_held(self, arm, kin, q, h):
+        """Spheres of the held object ``h`` (box_spheres of its box, in the TCP frame at q) on
+        the arm's held link; None (or a bimanual hold): the link emptied.  Returns the name."""
+        t = arm.torch
+        link = held_link(arm.side)
+        name = None if h is None or h.get("kind") == "bimanual" else h.get("name")
+        sph = None
+        if name is not None and self.by_owner.get(f"object:{name}"):
+            frame, lo, hi = self._box_of(name)
+            T_obj = G.world_pose(frame, self.body_pose.get)
+            p, R = kin.tcp(np.asarray(q, float))
+            T_tcp = np.eye(4)
+            T_tcp[:3, :3], T_tcp[:3, 3] = R, p
+            M = np.linalg.inv(T_tcp) @ T_obj
+            b = box_spheres(lo, hi)
+            sph = np.full((HELD_SPHERES, 4), [0.0, 0.0, 0.0, -100.0])
+            sph[:len(b), :3] = b[:, :3] @ M[:3, :3].T + M[:3, 3]
+            sph[:len(b), 3] = b[:, 3]
+        else:
+            name = None
+        for kc in arm.kcs:
+            if sph is None:
+                kc.detach_object(link)
+            else:
+                kc.attach_object(sphere_tensor=t.as_tensor(sph, device=kc.link_spheres.device,
+                                                           dtype=kc.link_spheres.dtype), link_name=link)
+        return name
+
+    def _box_of(self, name):
+        """The object's box (every collider) in the frame of its first collider, cached."""
+        if name not in self._held_box:
+            cols = self.by_owner[f"object:{name}"]
+            frame = cols[0]
+            inv = np.linalg.inv(G.world_pose(frame, self.body_pose.get))
+            P = []
+            for c in cols:
+                if c.kind == "cuboid":
+                    v = 0.5 * np.asarray(c.dims, float) * np.array(np.meshgrid([-1, 1], [-1, 1], [-1, 1])).reshape(3, -1).T
+                else:
+                    v = np.asarray(c.vertices, float)
+                M = inv @ G.world_pose(c, self.body_pose.get)
+                P.append(v @ M[:3, :3].T + M[:3, 3])
+            P = np.vstack(P)
+            self._held_box[name] = (frame, P.min(0), P.max(0))
+        return self._held_box[name]
 
     @contextmanager
     def part_at(self, name, q):

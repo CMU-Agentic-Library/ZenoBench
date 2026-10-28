@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import math
+from contextlib import contextmanager
 
 import numpy as np
 
@@ -365,6 +366,22 @@ class Rig:
             extra = {"q": np.round(self.q(), 3).tolist(), "q_cmd": np.round(self.q_cmd, 3).tolist()}
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
+
+    @contextmanager
+    def held_collision(self, side="right"):
+        """Moves inside plan the held object (its box as spheres on the hand) clear of the world
+        (Motion._attach_held); only once it touches nothing.  For transport legs: a box is
+        too coarse for putting an object down into or among things."""
+        motion = self.kin.motion
+        if motion is None:
+            yield
+            return
+        motion.held_collision.add(side)
+        try:
+            yield
+        finally:
+            if motion.release_held(side):
+                self.log("held_collision", side=side, state=None)
 
     def _carrying(self):
         """An object in the right hand (its tilt is held on planned moves)."""
