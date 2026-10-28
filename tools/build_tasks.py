@@ -69,8 +69,14 @@ def main():
     base_ann = json.loads((ROOT / base_annotation).read_text())
     assets = json.loads((ROOT / "annotations/assets.json").read_text())
 
+    # Isaac first: pxr and cuRobo (the reach check) need the app
+    from isaaclab.app import AppLauncher
+    app = AppLauncher({"headless": True, "no_splash": True, "fast_shutdown": True}).app  # noqa: F841
+    from pxr import Gf, Sdf, Usd, UsdGeom
+
     # ---- reachability: Zeno must be able to pinch the object where it is put
-    # (a container: drop into it) from some collision-free base pose
+    # (a container: drop into it) from some collision-free base pose.  cuRobo
+    # against the base scene's PhysX colliders (objects placed here are not obstacles)
     from zeno_skills.annotations import SceneAnnotations
     from zeno_skills.collision import WorldModel
     from zeno_skills.kinematics import ArmKin, gripper_rot
@@ -80,6 +86,9 @@ def main():
     kin = ArmKin()
     kin.scene = world
     kin.coll_kw = {"ignore_fingers": True}
+    if not args.no_reach_check:
+        from zeno_skills.motion import Motion
+        kin.motion = Motion(Usd.Stage.Open(str(ROOT / base_scene)), ann)
 
     def reachable(x, y, z_top, a):
         if a.get("container"):                      # drop point: just above the rim
@@ -202,9 +211,6 @@ def main():
         raise RuntimeError("no free robot start")
 
     # ---- author the layer
-    from isaaclab.app import AppLauncher
-    app = AppLauncher({"headless": True, "no_splash": True, "fast_shutdown": True}).app
-    from pxr import Gf, Sdf, Usd, UsdGeom
     from zeno_skills import physics as P
     path = out / "scene.usd"
     layer = Sdf.Layer.CreateNew(str(path)) if not path.exists() else Sdf.Layer.FindOrOpen(str(path))
