@@ -108,7 +108,8 @@ def rank_parks(found):
 
 def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
               yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
-              score=None, n_best=None, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None):
+              score=None, n_best=None, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None,
+              check=None):
     """Return (x, y, yaw_deg, qs) or None.
 
     Without ``score`` the first PARK_CANDIDATES feasible parks are ranked by park_quality
@@ -122,6 +123,8 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
     targets: list of (p, R) TCP poses executed in order from this park.
     ride:    optional callable(x, y, yaw_deg, q_last) -> bool that validates a
              base ride (e.g. following an opening door).
+    check:   optional callable(x, y, yaw_deg, qs) -> bool, a further test of the
+             joint solutions at this park (the base is set to it).
     """
     c = np.mean([np.asarray(p, float)[:2] for p, _ in targets], axis=0)
     cands = []
@@ -178,6 +181,9 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         qs = _ik_sequence(kin, targets, q0=q_start if cost < 0 else None)
         if qs is None:
             LAST_PARK_DIAG["ik"] += 1
+            continue
+        if check is not None and not check(x, y, yaw, qs):
+            LAST_PARK_DIAG["check"] = LAST_PARK_DIAG.get("check", 0) + 1
             continue
         if travel_q is not None and cost >= 0 and not joint_reachable(kin, travel_q, qs[0]):
             LAST_PARK_DIAG["unfold"] += 1

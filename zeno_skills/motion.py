@@ -15,8 +15,9 @@ other arm, the head and the finger leaders -- are locked joints whose fixed
 transforms are rewritten in place before each query.
 
 Collision semantics:
-  * loose objects are obstacles; the held objects (and what they carry) are
-    not, nor is an object whose box (+3 cm) contains a query's TCP target (the
+  * loose objects are obstacles; an object a hand holds (and what it carries) is
+    not, to that arm (to the other arm only while its hand is at it: a handover);
+    nor is an object whose box (+3 cm) contains a query's TCP target (the
     object being grasped or pushed);
   * ``ignore_fingers`` turns the finger spheres off; ``hand_touches_part`` the
     finger, gripper and wrist-camera spheres (hand on a handle);
@@ -47,6 +48,7 @@ ROBOT_CFG = ROOT / "robot_sources/curobo/zeno_malo.yml"
 BASE_JOINTS = ("base_x", "base_y", "base_yaw")
 CULL = 2.5                 # obstacles beyond this (xy, from the base) are off
 RECULL = 0.4               # re-cull when the query base moved this far
+HAND_AT_HELD = 0.05       # a hand this close (TCP to box) to what the other hand holds: not an obstacle to it
 TARGET_PAD = 0.03          # an object whose box + this contains the TCP target is not an obstacle
 POS_TOL, ROT_TOL = 0.004, 0.04
 ACTIVATION = 0.005         # collision margin (m)
@@ -428,7 +430,7 @@ class Motion:
                 ctr, h = (lo + hi) / 2, (hi - lo) / 2
             self._extent[c.name] = (ctr, float(np.linalg.norm(h)))
         self.enabled = {c.name: True for c in self.cols.items}
-        self.held = set()
+        self.held = {"right": set(), "left": set()}     # side -> owners that arm holds (not obstacles to it)
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
         self.by_owner = {}
@@ -450,14 +452,15 @@ class Motion:
             self.checker.enable_obstacle(c.name, on)
         self.enabled[c.name] = on
 
-    def _apply(self, base_xy, allow=()):
-        """Enable exactly: near the base, not held, not allowed."""
+    def _apply(self, base_xy, allow=(), side="right"):
+        """Enable exactly: near the base, not held by the ``side`` arm, not allowed."""
         if self.cull_at is None or np.hypot(*(np.asarray(base_xy) - self.cull_at)) > RECULL or allow:
             self.cull_at = np.asarray(base_xy, float)
+        held = self.held[side]
         for c in self.cols.items:
             ctr = self._centre(c)
             near = np.hypot(*(ctr[:2] - self.cull_at)) - self._extent[c.name][1] < CULL
-            self._set_enabled(c, near and c.owner not in self.held and c.owner not in allow)
+            self._set_enabled(c, near and c.owner not in held and c.owner not in allow)
 
     @_timed("sync_s")
     def sync(self, rig):
@@ -491,15 +494,25 @@ class Motion:
             if c.body in moved:
                 T = G.world_pose(c, self.body_pose.get)
                 self.checker.update_obstacle_pose(c.name, Pose.from_list(G.pose7(T)))
-        held = [h["name"] for h in (rig.held, getattr(rig, "left_held", None))
-                if h is not None and h.get("name") in self.ann.objects]
-        self.held = set()
-        for h in held:
-            self.held.add(f"object:{h}")
-            box = self._owner_box(f"object:{h}")
+        # what a hand holds (and its contents) is not an obstacle to that arm; to the other arm
+        # it is, unless that hand is at it too (a handover, a two-hand hold)
+        self.held = {"right": set(), "left": set()}
+        for side, h in (("right", rig.held), ("left", getattr(rig, "left_held", None))):
+            if h is None or h.get("name") not in self.ann.objects:
+                continue
+            owners = {f"object:{h['name']}"}
+            box = self._owner_box(f"object:{h['name']}")
             for name in self.ann.objects:          # its contents ride along
-                if name != h and self._inside(self._owner_box(f"object:{name}"), box, pad=0.02):
-                    self.held.add(f"object:{name}")
+                if name != h["name"] and self._inside(self._owner_box(f"object:{name}"), box, pad=0.02):
+                    owners.add(f"object:{name}")
+            for s_ in (("right", "left") if h.get("kind") == "bimanual" else (side,)):
+                self.held[s_] |= owners
+        for side, kin, q in (("right", rig.kin, rig.q_cmd), ("left", rig.left_kin, np.r_[rig.q_cmd[:2], rig.left_q_cmd])):
+            tcp = kin.tcp(np.asarray(q, float))[0]
+            for o in self.held["left" if side == "right" else "right"] - self.held[side]:
+                lo, hi = self._owner_box(o)
+                if np.all(tcp > lo - HAND_AT_HELD) and np.all(tcp < hi + HAND_AT_HELD):
+                    self.held[side].add(o)
         self.cull_at = None
         # links of each arm touching the world now: left out of the other arm's queries
         base = np.r_[rig.kin.base_p[:2]]
@@ -508,10 +521,36 @@ class Motion:
                                       ("left", rig.left_kin, np.r_[rig.q_cmd[:2], rig.left_q_cmd], rig.q_cmd)):
             arm = self.arms[side]
             arm.prepare(kin, other_q, {f"{side}_{l}" for l in FINGER_LINKS})
-            self._apply(base)
+            self._apply(base, side=side)
             touching[side] = {l for l in self._touching(arm, q) if l.startswith(side + "_")}
         self.other_touching = {"right": touching["left"], "left": touching["right"]}
         self.cull_at = None
+
+    @contextmanager
+    def part_at(self, name, q):
+        """Colliders of articulated part ``name`` at joint value q for the queries inside (checking
+        a motion that moves the part, e.g. riding a door shut); back to the synced poses after."""
+        from curobo.types.math import Pose
+        a = self.ann.art(name)
+        cols = self.by_owner.get(f"part:{a['name']}", [])
+        q0 = self.part_q0.get(a["name"], q)
+        M = self.ann.motion(a, q) @ np.linalg.inv(self.ann.motion(a, q0))
+        saved = {c.body: self.body_pose.get(c.body) for c in cols}
+
+        def place(poses):
+            for b, T in poses.items():
+                if T is None:
+                    self.body_pose.pop(b, None)
+                else:
+                    self.body_pose[b] = T
+            for c in self.cols.items:
+                if c.body in poses:
+                    self.checker.update_obstacle_pose(c.name, Pose.from_list(G.pose7(G.world_pose(c, self.body_pose.get))))
+        place({b: M @ self.body0[b] for b in saved})
+        try:
+            yield
+        finally:
+            place(saved)
 
     def _owner_box(self, owner):
         P = []
@@ -551,7 +590,8 @@ class Motion:
         arm = self.arms[kin.side]
         arm.prepare(kin, other_q, links)
         if collision:
-            self._apply(kin.base_p[:2], allow=self._targets_allow([np.asarray(p, float) for p in targets]))
+            self._apply(kin.base_p[:2], allow=self._targets_allow([np.asarray(p, float) for p in targets]),
+                        side=kin.side)
         try:
             yield arm
         finally:
