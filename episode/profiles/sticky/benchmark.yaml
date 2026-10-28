@@ -1,0 +1,30 @@
+# benchmark with sticky carry (execution.sticky_hands: carry, zeno_skills/sticky.py): a held object is
+# welded to the gripper until the fingers open; pick and place stay physical.  An execution assist,
+# not the scored benchmark: results are not comparable with physical/benchmark.  Everything else
+# (gate, masked feedback, limited observation, no automatic recovery) is benchmark's.
+execution:
+  gate: true
+  nested_repair: false
+  auto_recovery: false
+  slide_to_edge: false
+  advisory: [grasp_clearance, edge_overhang]
+  mask_feedback: true
+  occlusion: true
+  static_explore: true
+  edge_pinch_upright_waist: true
+  sticky_hands: carry
+observation:
+  cameras: [head]
+  image_size: [480, 640]
+  focal_length_mm: 10.0
+  gt_objects: false
+  visible_objects: true
+  observation_cache: true
+  known_places: true
+  robot: {base_pose: true, held: true, room: true, temperatures: observed}
+  task_status: false
+  last_result: true
+evaluation:
+  drops_fail: true
+limits:
+  max_calls: task

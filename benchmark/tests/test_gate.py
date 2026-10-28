@@ -74,7 +74,7 @@ def gated(monkeypatch):
 
 
 def planner_view(runner, verb, args, res=None):
-    """What a planner reads of a call under profiles/benchmark.yaml (episode.episode.Episode.call)."""
+    """What a planner reads of a call under profiles/physical/benchmark.yaml (episode.episode.Episode.call)."""
     from episode.episode import public_result
     res = res if res is not None else runner.run(verb, dict(args))
     allow = {x for v in args.values() for x in (v if isinstance(v, list) else [v]) if isinstance(x, str)}

@@ -24,7 +24,7 @@ Planners (same low-level skills, same observation limits except the oracle):
   plugs in here; ``--planner recovery --policy <module:Class>``.
 
 The episode is episode.episode.Episode, the same class the env_service worker drives.  Its
-profile (episode/profiles/*.yaml) follows the planner: ``oracle`` for the oracle, ``benchmark``
+profile (episode/profiles/*/*.yaml) follows the planner: ``oracle`` for the oracle, ``benchmark``
 for every other planner; ``--profile`` overrides it (the run directory then ends in
 ``@<profile>``).  ``--tasks`` takes any catalog, also skill_library/tasks.json (one variant
 ``default`` per task, its skill subgraph as the ``nominal`` route).

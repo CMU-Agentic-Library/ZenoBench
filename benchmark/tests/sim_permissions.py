@@ -1,5 +1,5 @@
 """In-simulator permission tests of the observation-limited interface
-(episode.episode.Episode with profiles/benchmark.yaml).
+(episode.episode.Episode with profiles/physical/benchmark.yaml).
 
     $ISAACLAB_PYTHON benchmark/tests/sim_permissions.py      # -> benchmark/tests/results/sim_permissions.json
 

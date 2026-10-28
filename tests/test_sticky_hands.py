@@ -1,4 +1,4 @@
-"""Sticky hands (execution.sticky_hands): profile switch, weld bookkeeping, the pick snap hook.
+"""Sticky hands (execution.sticky_hands: carry / snap): profile levels, weld bookkeeping, the pick snap hook.
 No simulator: the USD joint writes and the PhysX link pose are stubbed."""
 
 from types import SimpleNamespace
@@ -14,44 +14,61 @@ from zeno_skills.sticky import StickyHands, failure_reason
 
 
 # ----------------------------------------------------------------- profile
-def test_switch_is_on_only_in_gt_sticky():
+LEVELS = {"physical": False, "sticky": "carry", "sticky_snap": "snap"}
+
+
+def _body(p):
+    return {k: v for k, v in p.items() if k not in ("name", "hash")}
+
+
+def test_three_levels_each_with_gt_and_benchmark():
     assert DEFAULTS["execution"]["sticky_hands"] is False
-    for name in ("gt", "benchmark", "oracle"):
-        assert load_profile(name)["execution"]["sticky_hands"] is False
-    gt, sticky = load_profile("gt"), load_profile("gt_sticky")
-    assert sticky["execution"]["sticky_hands"] is True and sticky["hash"] != gt["hash"]
-    # everything else is gt
-    sticky["execution"]["sticky_hands"] = False
-    assert {k: v for k, v in sticky.items() if k not in ("name", "hash")} == \
-        {k: v for k, v in gt.items() if k not in ("name", "hash")}
+    assert load_profile("oracle")["execution"]["sticky_hands"] is False
+    base = {"gt": load_profile("gt"), "benchmark": load_profile("benchmark")}
+    assert load_profile("physical/gt")["name"] == "gt"                    # physical/ goes by the bare name
+    for level, value in LEVELS.items():
+        for kind in ("gt", "benchmark"):
+            prof = load_profile(kind if level == "physical" else f"{level}/{kind}")
+            assert prof["name"] == (kind if level == "physical" else f"{level}/{kind}")
+            assert prof["execution"]["sticky_hands"] == value
+            # everything else is the physical profile's
+            prof["execution"]["sticky_hands"] = False
+            assert _body(prof) == _body(base[kind])
+    hashes = {load_profile(f"{lv}/{k}")["hash"] for lv in LEVELS for k in ("gt", "benchmark")}
+    assert len(hashes) == 6
 
 
-def test_switch_changes_the_profile_hash_and_is_refused_with_the_gate(tmp_path):
-    on = tmp_path / "gt_sticky.yaml"
-    on.write_text("execution:\n  nested_repair: false\n  sticky_hands: true\n")
-    off = tmp_path / "gt_plain.yaml"
-    off.write_text("execution:\n  nested_repair: false\n")
-    assert load_profile(on)["execution"]["sticky_hands"] is True
-    assert load_profile(on)["hash"] != load_profile(off)["hash"]
-    gated = tmp_path / "gated.yaml"
-    gated.write_text("execution:\n  gate: true\n  mask_feedback: true\n  sticky_hands: true\n"
-                     "observation:\n  gt_objects: false\n  task_status: false\n")
-    with pytest.raises(ProfileError, match="sticky_hands"):
-        load_profile(gated)
-    bad = tmp_path / "bad.yaml"
-    bad.write_text("execution:\n  sticky_hands: 1\n")
-    with pytest.raises(ProfileError, match="true/false"):
-        load_profile(bad)
+def test_switch_values_and_hash(tmp_path):
+    files = {}
+    for v in ("false", "carry", "snap"):
+        files[v] = tmp_path / f"{v}.yaml"
+        files[v].write_text(f"execution:\n  nested_repair: false\n  sticky_hands: {v}\n")
+    assert [load_profile(f)["execution"]["sticky_hands"] for f in files.values()] == [False, "carry", "snap"]
+    assert len({load_profile(f)["hash"] for f in files.values()}) == 3
+    for bad in ("true", "1", "weld"):
+        f = tmp_path / "bad.yaml"
+        f.write_text(f"execution:\n  sticky_hands: {bad}\n")
+        with pytest.raises(ProfileError, match="sticky_hands"):
+            load_profile(f)
 
 
-def test_rig_flag(tmp_path):
-    on = tmp_path / "on.yaml"
-    on.write_text("execution:\n  sticky_hands: true\n")
+def test_rig_flag():
     rig = SimpleNamespace()
-    apply_rig_flags(rig, load_profile(on))
-    assert isinstance(rig.sticky, StickyHands)
+    apply_rig_flags(rig, load_profile("sticky/gt"))
+    assert isinstance(rig.sticky, StickyHands) and rig.sticky.snap_on is False
+    apply_rig_flags(rig, load_profile("sticky_snap/benchmark"))
+    assert isinstance(rig.sticky, StickyHands) and rig.sticky.snap_on is True
     apply_rig_flags(rig, load_profile("gt"))
     assert rig.sticky is None
+
+
+def test_carry_level_never_snaps():
+    exc = SkillFailure("pick apple: not held (lift 0.000 m)")
+    rig = SimpleNamespace(sticky=SimpleNamespace(snap_on=False), held=None, ann=SimpleNamespace(objects={"apple": {}}))
+    assert sticky.snap_pick(rig, "apple", exc) is False
+    assert sticky.snap_place(rig, "apple", "table/top", None, {}, "x") is False
+    rig.held = {"name": "apple"}
+    assert sticky.snap_pick(rig, "apple", exc) is False                   # a later pick leg failed: stays failed
 
 
 # ----------------------------------------------------------------- weld bookkeeping
@@ -159,7 +176,7 @@ def test_snap_hook_needs_sticky_hands_and_keeps_an_object_already_held():
     rig = SimpleNamespace(sticky=None, held=None, ann=SimpleNamespace(objects={"apple": {}}))
     assert sticky.snap_pick(rig, "apple", exc) is False
     events = []
-    rig = SimpleNamespace(sticky=object(), held={"name": "apple"}, ann=SimpleNamespace(objects={"apple": {}}),
+    rig = SimpleNamespace(sticky=SimpleNamespace(snap_on=True), held={"name": "apple"}, ann=SimpleNamespace(objects={"apple": {}}),
                           log=lambda label, **kw: events.append(label))
     assert sticky.snap_pick(rig, "apple", exc) is True and events == ["sticky_keep"]
     rig.held = {"name": "pear"}

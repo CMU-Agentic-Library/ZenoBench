@@ -17,10 +17,10 @@ Endpoints (JSON in, JSON out):
   not count as activity for the idle limit.
 
 Tasks come from one or more catalogs (``--catalog PATH=PROFILE``, default: the original tasks
-and benchmark v3).  The profile (episode/profiles/*.yaml: execution switches, observation fields,
-call budget) is the request's ``profile``, one of ``--profiles`` (default: gt, gt_sticky, benchmark), so
-any task runs under any of them; without one the task's catalog default applies (``gt`` for the
-original tasks, ``benchmark`` for v3).
+and benchmark v3).  The profile (episode/profiles/*/*.yaml: execution switches, observation fields,
+call budget) is the request's ``profile``, one of ``--profiles`` (default: gt, benchmark and their
+sticky/ and sticky_snap/ versions), so any task runs under any of them; without one the task's
+catalog default applies (``gt`` for the original tasks, ``benchmark`` for v3).
 
 Workers run under ``--worker-python`` (default: $ISAACLAB_PYTHON, else this Python).
 Standard library plus PyYAML.
@@ -45,7 +45,8 @@ from episode.episode import flat_goal
 from episode.profile import load_profile, max_calls, observation_fields
 
 
-SELECTABLE_PROFILES = ("gt", "gt_sticky", "benchmark")   # what a request may name; oracle is GT-only, not for planners
+# what a request may name (episode/profiles/: physical, sticky, sticky_snap); oracle is GT-only, not for planners
+SELECTABLE_PROFILES = ("gt", "benchmark", "sticky/gt", "sticky/benchmark", "sticky_snap/gt", "sticky_snap/benchmark")
 
 
 class ServiceError(Exception):

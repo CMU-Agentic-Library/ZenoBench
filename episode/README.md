@@ -24,6 +24,16 @@ A task with one variant ignores the seed: no distractors to drop and no `vary`, 
 
 A profile YAML is merged over `DEFAULTS` in profile.py. Unknown keys, wrong types and unsafe combinations are refused when the profile is loaded.
 
+`profiles/` has one folder per sticky-hands level, each with a `gt` and a `benchmark` profile that differ from the physical ones only in `execution.sticky_hands`:
+
+| folder | `sticky_hands` | carry weld | pick / place snap | profile names |
+|---|---|---|---|---|
+| [physical/](profiles/physical/) | `false` | off | off | `gt`, `benchmark`, `oracle` (bare names) |
+| [sticky/](profiles/sticky/) | `carry` | on | off | `sticky/gt`, `sticky/benchmark` |
+| [sticky_snap/](profiles/sticky_snap/) | `snap` | on | on | `sticky_snap/gt`, `sticky_snap/benchmark` |
+
+A profile is named by its path under `profiles/` without `.yaml`; `physical/` profiles go by the bare file name, so `gt`, `benchmark` and `oracle` keep the names (and hashes) they had before the folders.
+
 | key | meaning | `gt` | `oracle` | `benchmark` |
 |---|---|---|---|---|
 | `execution.gate` | object arguments must be observed; the manipulated object must be in view or in hand; navigation drives to the cached pose | off | off | on |
@@ -34,7 +44,7 @@ A profile YAML is merged over `DEFAULTS` in profile.py. Unknown keys, wrong type
 | `execution.mask_feedback` | never-observed names -> `<unobserved>` in results | off | off | on |
 | `execution.occlusion` / `static_explore` | dynamic occlusion in visibility; explore_room covers static furniture only | off | off | on |
 | `execution.edge_pinch_upright_waist` | low-level edge-pinch setting | off | on | on |
-| `execution.sticky_hands` | pick and carry always succeed: a held object is welded to the gripper until the fingers open, and a pick that fails physically (no park, no IK, not held) snaps the object into the hand; refused together with `gate` | off | off | off |
+| `execution.sticky_hands` | `false`; `carry`: a held object is welded to the gripper until the fingers open; `snap`: `carry`, and a pick / place that fails physically after its preconditions held snaps the object into the hand / onto the receptacle | off | off | off |
 | `observation.cameras` | which cameras go into `images` | 3 | head | head |
 | `observation.gt_objects` | `objects`: task entities with GT positions | on | on | off |
 | `observation.visible_objects` / `observation_cache` / `known_places` | the benchmark's limited observation | off | off | on |
@@ -45,10 +55,10 @@ A profile YAML is merged over `DEFAULTS` in profile.py. Unknown keys, wrong type
 | `limits.max_calls` | an int, or `task` (the task's `max_calls`, default 60) | 40 | task | task |
 | `allow_leak` | accept a gated profile that still shows GT state (debugging only) | – | – | – |
 
-- `gt_sticky` is `gt` with `execution.sticky_hands` on (selectable in env_service; not in the table, every other key is `gt`'s).
+- `sticky/*` and `sticky_snap/*` are `gt` / `benchmark` with `execution.sticky_hands` set to `carry` / `snap` (all selectable in env_service; not in the table, every other key is the physical profile's).
 - `gt` reproduces the original env_service interface. `oracle` reproduces the GT runner of `run_episode --planner oracle`. `benchmark` reproduces `LimitedSession`.
 - When `gate` is on, `gt_objects`, `task_status`, `temperatures: all` and `mask_feedback: false` each leak GT state. Any of them is refused unless `allow_leak: true`.
-- `sticky_hands` is an assist for developing planners on the GT interface, never for scoring ([zeno_skills/sticky.py](../zeno_skills/sticky.py)). Grasps stay physical as long as they work. While an object is held (`rig.held` / `rig.left_held`), a PhysX fixed joint keeps it at its relative pose to the gripper link. The object stays dynamic, so collisions still act on it, and `check_held` never reports it dropped. The joint is removed before the fingers open and when the episode closes, so place and release stay physical. A `pick` whose policy fails after its preconditions held is completed instead: the robot keeps the motion it managed (or reaches toward the object), then the object is set at the planned grasp pose relative to the TCP and welded, and `rig.held` is set as a physical pick would set it. Precondition, gate and input failures stay failures. A pick that lifts the container or tray its object stood in together with it (both pinched at once) lets go and snaps the object alone, so the weld cannot carry the container away. The worker / rollout log shows each use as a `sticky_weld`, `sticky_snap` (`reason`: `no_park`, `not_held`, `ik`, `caught_neighbour`, `other`), `sticky_caught`, `sticky_keep` or `sticky_release` event. The planner-facing result does not mention them.
+- `sticky_hands` is an execution assist for developing planners, never for scoring ([zeno_skills/sticky.py](../zeno_skills/sticky.py)); it works with the gate too (the `benchmark` versions). Grasps stay physical as long as they work. `carry` and `snap`: while an object is held (`rig.held` / `rig.left_held`), a PhysX fixed joint keeps it at its relative pose to the gripper link. The object stays dynamic, so collisions still act on it, and `check_held` never reports it dropped. The joint is removed before the fingers open and when the episode closes, so release stays physical (and under `carry` place too). `snap` only: a `pick` whose policy fails after its preconditions held is completed instead: the robot keeps the motion it managed (or reaches toward the object), then the object is set at the planned grasp pose relative to the TCP and welded, and `rig.held` is set as a physical pick would set it. A `place` that fails physically or leaves the object off its receptacle sets it level on / in the receptacle. Precondition, gate and input failures stay failures. A pick that lifts the container or tray its object stood in together with it (both pinched at once) lets go and snaps the object alone, so the weld cannot carry the container away. The worker / rollout log shows each use as a `sticky_weld`, `sticky_snap` (`reason`: `no_park`, `not_held`, `ik`, `caught_neighbour`, `other`), `sticky_caught`, `sticky_keep` or `sticky_release` event. The planner-facing result does not mention them.
 - An observer (the observation cache, `benchmark.observation.Observer`) is created when anything reads it: `gate`, `mask_feedback`, `visible_objects`, `observation_cache` or `temperatures: observed`. With `gate` off it still records what the robot saw and turns the head toward the workspace after each call, but refuses nothing.
 
 ## Hashes

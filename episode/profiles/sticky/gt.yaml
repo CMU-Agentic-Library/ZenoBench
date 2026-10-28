@@ -1,0 +1,16 @@
+# gt with sticky carry (execution.sticky_hands: carry, zeno_skills/sticky.py): a held object is welded
+# to the gripper until the fingers open, so nothing slips out while carrying.  Pick and place stay
+# physical (no snap): a failed pick or place is a failure.  Results are not comparable with
+# physical/gt.  Everything else is gt: full GT objects and goal status, three 960 x 720 cameras with
+# a 7.5 mm lens, policy-internal recovery on, nested repair off, 40 calls.
+execution:
+  nested_repair: false
+  sticky_hands: carry
+observation:
+  cameras: [head, left_wrist, right_wrist]
+  image_size: [720, 960]
+  focal_length_mm: 7.5
+  gt_objects: true
+  task_status: true
+limits:
+  max_calls: 40

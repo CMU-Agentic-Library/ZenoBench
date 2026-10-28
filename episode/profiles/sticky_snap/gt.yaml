@@ -1,0 +1,17 @@
+# gt with both sticky levels on (execution.sticky_hands: snap, zeno_skills/sticky.py): a held object is
+# welded to the gripper while carried, and a pick or place that fails physically after its
+# preconditions held is completed by setting the object into the hand / onto the receptacle.
+# For developing planners on the GT interface; results are not comparable with physical/gt.
+# Everything else is gt: full GT objects and goal status, three 960 x 720 cameras with a 7.5 mm
+# lens, policy-internal recovery on, nested repair off, 40 calls.
+execution:
+  nested_repair: false
+  sticky_hands: snap
+observation:
+  cameras: [head, left_wrist, right_wrist]
+  image_size: [720, 960]
+  focal_length_mm: 7.5
+  gt_objects: true
+  task_status: true
+limits:
+  max_calls: 40

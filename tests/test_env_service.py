@@ -211,7 +211,7 @@ def test_request_picks_the_profile(service):
     # and the other way round
     status, body = service.post("/initial_task", {"task_id": "b1", "profile": "gt"})
     assert status == 200 and body["profile"]["name"] == "gt" and body["profile"]["max_calls"] == 40
-    for name in ("oracle", "nope", "episode/profiles/oracle.yaml"):
+    for name in ("oracle", "nope", "episode/profiles/physical/oracle.yaml"):
         status, body = service.post("/initial_task", {"task_id": "t2", "profile": name})
         assert status == 400 and body["error_code"] == "UNKNOWN_PROFILE"
     assert service.manager.running == 2

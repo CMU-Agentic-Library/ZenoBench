@@ -1,5 +1,8 @@
 """Sticky hands: pick and carry always succeed (profile switch ``execution.sticky_hands``).
 
+Two levels: ``carry`` is the weld alone (pick and place stay physical, a failure stays a failure);
+``snap`` adds the snap, the caught-neighbour re-snap and the place snap below.
+
 An execution assist for planner development under the GT profile, never for the benchmark:
 grasping stays physical as long as it works, and the assist only covers what the friction
 grasp gets wrong.
@@ -73,7 +76,7 @@ def welded(rig, hand, name=None):
 def snap_pick(rig, name, exc):
     """Contract-runner hook for a pick whose policy failed: True when ``name`` ends up held."""
     s = getattr(rig, "sticky", None)
-    if s is None or name not in rig.ann.objects:
+    if s is None or not s.snap_on or name not in rig.ann.objects:
         return False
     if rig.held is not None:
         if rig.held.get("name") != name:
@@ -87,7 +90,7 @@ def snap_place(rig, name, receptacle, hint, before, error):
     """Contract-runner hook for a place whose policy failed or left ``name`` off ``receptacle``:
     True when it ends up resting on / in it (StickyHands.place)."""
     s = getattr(rig, "sticky", None)
-    if s is None or name not in rig.ann.objects:
+    if s is None or not s.snap_on or name not in rig.ann.objects:
         return False
     return s.place(name, receptacle, hint, before, str(error))
 
@@ -109,7 +112,7 @@ def rest_R(quat):
 def after_pick(rig, name, before):
     """Contract-runner hook after a pick that succeeded: see StickyHands.drop_caught."""
     s = getattr(rig, "sticky", None)
-    if s is not None and rig.held is not None and rig.held.get("name") == name:
+    if s is not None and s.snap_on and rig.held is not None and rig.held.get("name") == name:
         s.drop_caught(name, before)
 
 
@@ -142,8 +145,9 @@ def failure_reason(msg):
 
 
 class StickyHands:
-    def __init__(self, rig):
+    def __init__(self, rig, snap=True):
         self.rig = rig
+        self.snap_on = snap        # level "snap": failed picks / places are completed, not only welded
         self.welds = {}            # hand -> object name
         self.plans = {}            # object -> the grasp the last physical pick went for
         self._links = {}

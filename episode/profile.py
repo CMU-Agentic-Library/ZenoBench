@@ -1,6 +1,12 @@
 """Episode profiles: which execution and observation features an episode runs with.
 
-A profile is a YAML file (``episode/profiles/<name>.yaml``) merged over ``DEFAULTS``.
+A profile is a YAML file merged over ``DEFAULTS``.  ``episode/profiles/`` has one folder per
+sticky-hands level, each with a ``gt`` and a ``benchmark`` profile:
+
+    physical/      no assist (sticky_hands: false); named by the file alone: gt, benchmark, oracle
+    sticky/        held objects welded to the gripper while carried (carry): sticky/gt, sticky/benchmark
+    sticky_snap/   carry + a failed pick / place snapped to success (snap): sticky_snap/gt, ...
+
 Every key is checked: unknown keys, wrong types and combinations that leak GT state
 to a gated planner are refused when the profile is loaded, not while an episode runs.
 
@@ -23,7 +29,9 @@ import yaml
 
 PROFILE_DIR = Path(__file__).resolve().parent / "profiles"
 CAMERAS = ("head", "left_wrist", "right_wrist")
+PHYSICAL_DIR = PROFILE_DIR / "physical"         # the default level: its profiles go by their bare name
 TEMPERATURES = ("none", "observed", "all")
+STICKY = (False, "carry", "snap")
 
 # the defaults reproduce the GT interface env_service had before profiles existed
 DEFAULTS = {
@@ -37,7 +45,7 @@ DEFAULTS = {
         "occlusion": False,               # dynamic occlusion in visibility tests
         "static_explore": False,          # explore covers the static layout only
         "edge_pinch_upright_waist": False,
-        "sticky_hands": False,            # pick and carry always succeed: weld while held, snap a failed pick
+        "sticky_hands": False,            # false | carry: weld while held | snap: carry + snap a failed pick / place
     },
     "observation": {
         "cameras": list(CAMERAS),
@@ -67,11 +75,23 @@ class ProfileError(ValueError):
 
 
 def resolve_path(spec) -> Path:
-    """A profile name (``benchmark``) or a path to a YAML file."""
+    """A profile name (``benchmark``: physical/, ``sticky/gt``) or a path to a YAML file."""
     p = Path(spec)
     if p.suffix in (".yaml", ".yml") or p.is_file():
         return p
+    if "/" not in str(spec):
+        return PHYSICAL_DIR / f"{spec}.yaml"
     return PROFILE_DIR / f"{spec}.yaml"
+
+
+def profile_name(path: Path) -> str:
+    """``gt`` for physical/gt.yaml, ``sticky/gt`` for sticky/gt.yaml, the stem for any other file."""
+    path = path.resolve()
+    if path.parent == PHYSICAL_DIR:
+        return path.stem
+    if path.parent.parent == PROFILE_DIR:
+        return f"{path.parent.name}/{path.stem}"
+    return path.stem
 
 
 def load_profile(spec) -> dict:
@@ -82,7 +102,7 @@ def load_profile(spec) -> dict:
     prof = _merge(DEFAULTS, raw, ())
     prof.pop("name", None)
     _validate(prof)
-    prof = {"name": raw.get("name") or path.stem, **prof}
+    prof = {"name": raw.get("name") or profile_name(path), **prof}
     prof["hash"] = profile_hash(prof)
     return prof
 
@@ -105,7 +125,7 @@ def _validate(p):
     ex, ob = p["execution"], p["observation"]
     for sect in ("execution", "observation", "evaluation"):
         for k, v in p[sect].items():
-            if isinstance(DEFAULTS[sect][k], bool) and not isinstance(v, bool):
+            if isinstance(DEFAULTS[sect][k], bool) and not isinstance(v, bool) and k != "sticky_hands":
                 raise ProfileError(f"{sect}.{k}: expected true/false, got {v!r}")
     for k, v in ob["robot"].items():
         if k != "temperatures" and not isinstance(v, bool):
@@ -129,9 +149,8 @@ def _validate(p):
         raise ProfileError('limits.max_calls: a positive int or "task"')
     if not isinstance(p["allow_leak"], bool):
         raise ProfileError("allow_leak: expected true/false")
-    if ex["sticky_hands"] and ex["gate"]:
-        raise ProfileError("execution.sticky_hands is a planner-development assist for the GT interface; "
-                           "a gated (benchmark) profile cannot turn it on")
+    if ex["sticky_hands"] is not False and ex["sticky_hands"] not in STICKY[1:]:
+        raise ProfileError('execution.sticky_hands: false, "carry" or "snap"')
     if ex["gate"] and not p["allow_leak"]:
         leaks = [k for k, on in (("observation.gt_objects", ob["gt_objects"]),
                                  ("observation.task_status", ob["task_status"]),
@@ -183,7 +202,7 @@ def apply_rig_flags(rig, prof):
     rig.sticky = None
     if ex["sticky_hands"]:
         from zeno_skills.sticky import StickyHands
-        rig.sticky = StickyHands(rig)
+        rig.sticky = StickyHands(rig, snap=ex["sticky_hands"] == "snap")
 
 
 def run_profile_current(cfg: dict) -> bool:

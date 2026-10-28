@@ -1,8 +1,8 @@
 """Planner entry points for the evaluation (no VLM planner is implemented here).
 
-All planners act through episode.episode.Episode with profiles/benchmark.yaml
+All planners act through episode.episode.Episode with profiles/physical/benchmark.yaml
 (observation-limited, no automatic recovery) except the GT oracle, which
-run_episode executes with profiles/oracle.yaml (the original GT runner).
+run_episode executes with profiles/physical/oracle.yaml (the original GT runner).
 
 * fixed     - run_episode --planner fixed: the nominal plan, stop at the first failure
 * retry     - run_episode --planner retry: the nominal plan, repeat a failed call up to 2 times

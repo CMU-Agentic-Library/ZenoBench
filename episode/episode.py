@@ -10,7 +10,7 @@
 The env_service worker (an HTTP planner) and benchmark/run_episode.py (scripted routes,
 the fixed / retry / recovery planners, the GT oracle) both drive this class; they differ
 only in who chooses the calls.  What the episode does is fixed by its profile
-(episode/profiles/*.yaml): the runner (GT or gated), automatic recovery, feedback masking
+(episode/profiles/*/*.yaml): the runner (GT or gated), automatic recovery, feedback masking
 and the observation fields.
 
 Simulator imports happen inside the methods; ``public_result`` and the goal helpers work
