@@ -60,6 +60,9 @@ SPECS = {
 # rest these with the thinnest axis vertical and the longest along x
 SIDE_PINCH_MIN_H = 0.12    # round solids taller than this are pinched from the side
 LAY_FLAT = {"notebook", "pen", "pencil", "book_red", "book_green", "book_blue", "breakfast_spoon", "banana"}
+# lay-flat assets whose generated mesh is too thick: resting height (m); the
+# footprint keeps the uniform scale from SPECS
+THICKNESS = {"book_red": 0.040}
 
 # containers whose mesh has a carry handle above the body: fraction of the
 # total height that is the body (walls stop there)
@@ -290,8 +293,12 @@ def write_sim_urdf(name):
         if target.shape != (3,) or np.any(target <= 0):
             raise ValueError(f"{name}: target_size must contain three positive dimensions")
         world_scale = target / mesh.extents
+    elif name in THICKNESS:
+        flat_h = np.ptp((mesh.vertices @ Rf.T)[:, 2])
+        world_scale = np.array([s, s, THICKNESS[name] / flat_h])
     else:
         world_scale = np.full(3, s)
+    nonuniform = target_size is not None or name in THICKNESS
     from scipy.spatial.transform import Rotation
     for tag in ("visual", "collision"):
         for el in link.findall(tag):
@@ -303,7 +310,12 @@ def write_sim_urdf(name):
             if target_size is not None and not (np.allclose(axes.sum(axis=0), 1, atol=1e-3)
                                                 and np.allclose(axes.sum(axis=1), 1, atol=1e-3)):
                 raise ValueError(f"{name}: target_size requires an axis-aligned URDF orientation")
-            local_scale = axes.T @ world_scale if target_size is not None else world_scale
+            if name in THICKNESS:
+                # the OBB flat rotation is a near-permutation: snap it
+                if np.abs(axes - np.round(axes)).max() > 0.02:
+                    raise ValueError(f"{name}: thickness requires an axis-aligned flat orientation")
+                axes = np.round(axes)
+            local_scale = axes.T @ world_scale if nonuniform else world_scale
             m.set("scale", " ".join(f"{v:.6f}" for v in old * local_scale))
             o.set("rpy", " ".join(f"{v:.6f}" for v in Rotation.from_matrix(Rf @ R0).as_euler("xyz")))
     T = np.eye(4)
@@ -354,9 +366,36 @@ def write_sim_urdf(name):
     return out, ann
 
 
+def patch_usd(name, urdf):
+    """Write the sim URDF's mesh scales, mass and inertia into the existing
+    usd/assets/<name>.usd layers (same prims the URDF converter authored), so a
+    rescale needs neither EmbodiedGen nor Isaac."""
+    from pxr import Gf, Sdf
+    link = ET.parse(urdf).getroot().find("link")
+    cfg = USD_OUT / "configuration"
+    for tag, layer, path in (("visual", "base", f"/visuals/{name}/{name}"),
+                             ("collision", "physics", f"/colliders/{name}/{name}_collision")):
+        scale = [float(v) for v in link.find(tag).find("geometry").find("mesh").get("scale").split()]
+        lay = Sdf.Layer.FindOrOpen(str(cfg / f"{name}_{layer}.usd"))
+        if lay.GetAttributeAtPath(f"{path}.xformOp:scale") is None:   # collider kept in the base layer
+            lay = Sdf.Layer.FindOrOpen(str(cfg / f"{name}_base.usd"))
+        lay.GetAttributeAtPath(f"{path}.xformOp:scale").default = Gf.Vec3d(*scale)
+        lay.Save()
+    inert = link.find("inertial")
+    I = inert.find("inertia")
+    lay = Sdf.Layer.FindOrOpen(str(cfg / f"{name}_physics.usd"))
+    body = f"/{name}/{name}"
+    lay.GetAttributeAtPath(f"{body}.physics:mass").default = float(inert.find("mass").get("value"))
+    lay.GetAttributeAtPath(f"{body}.physics:diagonalInertia").default = Gf.Vec3f(
+        *(float(I.get(k)) for k in ("ixx", "iyy", "izz")))
+    lay.Save()
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--convert", action="store_true", help="URDF -> USD for assets missing a USD")
+    ap.add_argument("--patch-usd", action="store_true",
+                    help="rescale the existing USDs in place from the sim URDFs (no EmbodiedGen needed)")
     ap.add_argument("--only", nargs="*")
     args = ap.parse_args()
     names = [n for n in SPECS if (args.only is None or n in args.only) and source_urdf(n).exists()]
@@ -369,6 +408,10 @@ def main():
     ANN.parent.mkdir(parents=True, exist_ok=True)
     ANN.write_text(json.dumps(anns, indent=1))
     print("MISSING (not generated yet):", missing)
+    if args.patch_usd:
+        for n in names:
+            patch_usd(n, urdfs[n])
+            print("PATCHED", USD_OUT / f"{n}.usd", flush=True)
     if not args.convert:
         return
     from isaaclab.app import AppLauncher

@@ -764,12 +764,12 @@
   "size": [
    0.24,
    0.1674,
-   0.0697
+   0.04
   ],
   "origin_to_bottom_center": [
    -0.0,
    0.0,
-   -0.0355
+   -0.0204
   ],
   "min_pinch_width": 0.1668,
   "graspable_by_zeno": true,
@@ -777,7 +777,7 @@
    {
     "type": "edge_pinch_after_push",
     "note": "flat & wider than the gripper: slide to a support edge, pinch the overhang",
-    "thickness": 0.06970664466539739
+    "thickness": 0.04
    }
   ],
   "usd": "usd/assets/book_red.usd",

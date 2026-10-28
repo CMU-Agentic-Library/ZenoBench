@@ -69904,7 +69904,7 @@
     5.1199,
     1.1248,
     0.9409,
-    5.3403,
+    5.3404,
     1.2148
    ],
    "room": "dining_room_0_1",
@@ -70252,17 +70252,17 @@
    "body": "/World/Tasks/book_red/Asset/book_red",
    "asset": "book_red",
    "position": [
-    -1.2412,
+    -1.2411,
     -6.171,
-    0.7346
+    0.7196
    ],
    "aabb": [
-    -1.3252,
-    -6.2912,
-    0.6984,
-    -1.1572,
+    -1.325,
+    -6.2911,
+    0.6989,
+    -1.1573,
     -6.051,
-    0.7696
+    0.7397
    ],
    "room": "living_room_0_1",
    "support": "desk_1/top"
@@ -70294,17 +70294,17 @@
    "body": "/World/Tasks/shelf_blocker/Asset/rubber_duck",
    "asset": "rubber_duck",
    "position": [
-    2.189,
+    2.1887,
     -4.9431,
-    0.4856
+    0.4834
    ],
    "aabb": [
     2.1369,
     -4.9854,
-    0.442,
-    2.241,
+    0.4401,
+    2.2404,
     -4.9005,
-    0.5293
+    0.5267
    ],
    "room": "bedroom_0_1",
    "support": "bookcase_3/shelf_1"
