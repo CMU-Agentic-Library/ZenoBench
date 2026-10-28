@@ -55,13 +55,14 @@ HAND_LINKS = FINGER_LINKS + ("gripper_link", "gripper_camera_link")
 N_SEEDS = 4               # every IK query passes exactly this many seeds (a new shape re-captures cuRobo's CUDA graphs)
 N_RETURN = 8              # and gets this many solutions back
 LIMIT_CLEAR = 0.15        # IK prefers arm joints at least this far from their limits
+PATH_BATCH = 32           # Cartesian waypoints solved per batched IK call (fixed: CUDA graph shape)
 PIN = 1e-3                # half band of a pinned joint (lo == hi)
 MAX_STEP = 0.25           # largest joint change between two waypoints of a Cartesian path
 os.environ.setdefault("CUROBO_TORCH_CUDA_GRAPH_RESET", "1")
 
-DIAG = os.environ.get("ZENO_MOTION_DIAG") == "1"     # classify failed collision IK (one more solve each)
+DIAG = os.environ.get("ZENO_MOTION_DIAG") == "1"     # print why a collision IK was blocked
 STATS = {"ik": 0, "ik_ok": 0, "cart": 0, "cart_ok": 0, "plan": 0, "plan_ok": 0, "check": 0,
-         "ik_s": 0.0, "cart_s": 0.0, "plan_s": 0.0, "check_s": 0.0, "sync_s": 0.0}
+         "ik_s": 0.0, "cart_s": 0.0, "plan_s": 0.0, "check_s": 0.0, "sync_s": 0.0, "init_s": 0.0}
 
 
 def _timed(key):
@@ -177,13 +178,18 @@ class _Arm:
         self.ik_free = IKSolver(IKSolverConfig.load_from_robot_config(
             cfg, None, ta, num_seeds=32, use_cuda_graph=True, self_collision_check=True, self_collision_opt=True,
             position_threshold=POS_TOL, rotation_threshold=ROT_TOL))
+        self.ik_path = IKSolver(IKSolverConfig.load_from_robot_config(
+            cfg, None, ta, num_seeds=8, use_cuda_graph=True, self_collision_check=True, self_collision_opt=True,
+            position_threshold=POS_TOL, rotation_threshold=ROT_TOL))
         assert list(self.mg.joint_names) == list(self.kin.names), (self.mg.joint_names, self.kin.names)
         models = list(self.mg.get_all_kinematics_instances()) + \
-            [r.dynamics_model.robot_model for r in self.ik_free.get_all_rollout_instances()]
+            [r.dynamics_model.robot_model for r in self.ik_free.get_all_rollout_instances()] + \
+            [r.dynamics_model.robot_model for r in self.ik_path.get_all_rollout_instances()]
         self.locks = _Locks(models, lock, k["urdf_path"])
         # bound costs keep their own copy of the joint limits (BoundCost.set_bounds clones them)
         self.bounds = [r.bound_cost.joint_limits for r in
-                       list(self.mg.get_all_rollout_instances()) + list(self.ik_free.get_all_rollout_instances())
+                       list(self.mg.get_all_rollout_instances()) + list(self.ik_free.get_all_rollout_instances()) +
+                       list(self.ik_path.get_all_rollout_instances())
                        if getattr(r, "bound_cost", None) is not None and r.bound_cost.joint_limits is not None]
         self.kcs = self.locks.models
         self.limits = None
@@ -191,6 +197,8 @@ class _Arm:
         self.disabled_links = set()
         self.mg.warmup(enable_graph=False, warmup_js_trajopt=True)
         self.ik_free.solve_single(self._pose(*self.kin.tcp(self.kin.posture)))
+        p, R = self.kin.tcp(self.kin.posture)
+        self.path_ik([p] * 2, [R] * 2, self.kin.posture)
 
     # ------------------------------------------------------------- state
     def prepare(self, kin, other_q, links_off):
@@ -267,6 +275,38 @@ class _Arm:
             score = np.where(near <= MAX_STEP, score, 1e3 + near)
         return Q[int(np.argmin(score))], True
 
+    def path_ik(self, P, Rs, q0):
+        """Kinematic IK for a sequence of TCP poses in batched calls (PATH_BATCH per call, every
+        problem seeded with q0 and regularised towards it); chained greedily: each waypoint takes
+        the successful solution closest to the previous one.  Returns (qs, ok)."""
+        from curobo.types.math import Pose
+        t = self.torch
+        n_dof = len(self.kin.names)
+        out, q = [], np.clip(np.asarray(q0, float), self.lo, self.hi)
+        for c in range(0, len(P), PATH_BATCH):
+            Pc, Rc = P[c:c + PATH_BATCH], Rs[c:c + PATH_BATCH]
+            k = len(Pc)
+            pos = np.array(list(Pc) + [Pc[-1]] * (PATH_BATCH - k), np.float32)
+            quat = np.array([_quat_wxyz(R) for R in list(Rc) + [Rc[-1]] * (PATH_BATCH - k)], np.float32)
+            seed = t.as_tensor(np.tile(q.astype(np.float32), (PATH_BATCH, N_SEEDS, 1)), device="cuda")
+            retract = t.as_tensor(np.tile(q.astype(np.float32), (PATH_BATCH, 1)), device="cuda")
+            r = self.ik_path.solve_batch(Pose(t.as_tensor(pos, device="cuda"), t.as_tensor(quat, device="cuda")),
+                                         retract_config=retract, seed_config=seed, return_seeds=N_RETURN)
+            Q = r.solution.view(PATH_BATCH, -1, n_dof).cpu().numpy().astype(float)
+            ok = r.success.view(PATH_BATCH, -1).cpu().numpy().astype(bool)
+            ok &= np.all((Q >= self.lo - 1e-4) & (Q <= self.hi + 1e-4), axis=2)
+            for i in range(k):
+                if not ok[i].any():
+                    return out, False
+                cand = Q[i][ok[i]]
+                jump = np.max(np.abs(cand - q), axis=1)
+                j = int(np.argmin(jump))
+                if jump[j] > MAX_STEP:
+                    return out, False
+                q = cand[j]
+                out.append(q)
+        return out, True
+
     def feasible(self, Q):
         """Per row of Q: inside the limits, no self or world collision."""
         # collision only: a measured posture may sit on a limit the solvers keep clear of
@@ -290,6 +330,7 @@ class _Arm:
 
 
 class Motion:
+    @_timed("init_s")
     def __init__(self, stage, ann, robot_cfg=ROBOT_CFG):
         import yaml
         from curobo.geom.sdf.utils import create_collision_checker
@@ -463,22 +504,27 @@ class Motion:
     def ik(self, kin, p, R, seeds, collision, other_q=None, coll_kw=None, local=False):
         STATS["ik"] += 1
         with self._query(kin, other_q, coll_kw, [p], collision) as arm:
-            q, ok = arm.ik(p, R, seeds, collision, local)
-            if collision and not ok and DIAG:
-                qf, okf = arm.ik(p, R, seeds, False, local)
-                key = "ik_fail_collision" if okf else "ik_fail_reach"
-                STATS[key] = STATS.get(key, 0) + 1
-                if okf and STATS[key] <= 40:
-                    print(f"[motion] {kin.side} IK blocked at {np.round(p, 3).tolist()}: {self._explain(arm, qf)}",
-                          flush=True)
+            # kinematic IK first (cheap): most failures are out of reach, and a kinematic answer
+            # that is already collision-free needs no world-aware solve
+            q, ok = arm.ik(p, R, seeds, False, local)
+            if collision and not ok:
+                STATS["ik_fail_reach"] = STATS.get("ik_fail_reach", 0) + 1
+            elif collision and not arm.feasible(q[None])[0]:
+                qf = q
+                q, ok = arm.ik(p, R, [qf] + list(seeds), True, local)
+                if not ok:
+                    STATS["ik_fail_collision"] = STATS.get("ik_fail_collision", 0) + 1
+                    if DIAG and STATS["ik_fail_collision"] <= 40:
+                        print(f"[motion] {kin.side} IK blocked at {np.round(p, 3).tolist()}: "
+                              f"{self._explain(arm, qf)}", flush=True)
         STATS["ik_ok"] += int(ok)
         return q, ok
 
     @_timed("cart_s")
     def cart_path(self, kin, q0, p_goal, R_goal, step, collision, other_q=None, coll_kw=None):
-        """Straight TCP line (slerp orientation) as cuRobo IK solutions, each seeded with the
-        last; continuous (<= MAX_STEP rad per joint between waypoints) and, with collision,
-        every waypoint and the joint segments between them feasible."""
+        """Straight TCP line (slerp orientation) as cuRobo IK solutions (batched, see
+        _Arm.path_ik); continuous (<= MAX_STEP rad per joint between waypoints) and, with
+        collision, every waypoint and the joint segments between them feasible."""
         from scipy.spatial.transform import Slerp
         STATS["cart"] += 1
         p0, R0 = kin.tcp(q0)
@@ -487,17 +533,12 @@ class Motion:
         n = max(n, int(np.ceil(ang / 0.05)) + 1)
         slerp = Slerp([0, 1], Rotation.from_matrix([R0, R_goal]))
         us = np.linspace(0, 1, n)[1:]
-        out, q = [], np.asarray(q0, float)
         with self._query(kin, other_q, coll_kw, [p0, p_goal], collision) as arm:
-            for u in us:
-                qn, ok = arm.ik(p0 + (p_goal - p0) * u, slerp(u).as_matrix(), [q], collision, local=True)
-                if not ok or float(np.max(np.abs(qn - q))) > MAX_STEP:
-                    return out, False
-                out.append(qn)
-                q = qn
-            if collision and out:
-                if not self._segments_free(arm, [np.asarray(q0, float)] + out):
-                    return out, False
+            out, ok = arm.path_ik([p0 + (p_goal - p0) * u for u in us], [slerp(u).as_matrix() for u in us], q0)
+            if not ok:
+                return out, False
+            if collision and not self._segments_free(arm, [np.asarray(q0, float)] + out):
+                return out, False
         STATS["cart_ok"] += 1
         return out, True
 
