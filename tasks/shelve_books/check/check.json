@@ -43,9 +43,9 @@
    "z": 1.0751
   },
   "/World/TaskAssets/cup_side_table/Asset/breakfast_cup": {
-   "drift_m": 0.0103,
-   "z0": 0.7592,
-   "z": 0.7645
+   "drift_m": 0.0,
+   "z0": 0.7862,
+   "z": 0.7862
   },
   "/World/TaskAssets/mug_dining_cabinet/Asset/breakfast_mug": {
    "drift_m": 0.0,
@@ -142,8 +142,6 @@
   "/World/ArticulatedAssets/kitchen_microwave/joints/microwave_door_hinge": -0.0
  },
  "robot_drift_m": 0.0,
- "unstable": [
-  "/World/TaskAssets/cup_side_table/Asset/breakfast_cup"
- ],
- "pass": false
+ "unstable": [],
+ "pass": true
 }
