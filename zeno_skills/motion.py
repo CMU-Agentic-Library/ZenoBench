@@ -66,8 +66,11 @@ CLEAR_CAP = 0.05          # m: clearance measured up to this (find_park scores m
 PATH_BATCH = 32           # Cartesian waypoints solved per batched IK call (fixed: CUDA graph shape)
 PIN = 1e-3                # half band of a pinned joint (lo == hi)
 MAX_STEP = 0.25           # largest joint change between two waypoints of a Cartesian path
-TRAJOPT_SEEDS = 12        # trajectory-optimisation seeds per plan (fixed: CUDA graph shape)
-GRAPH_SEEDS = 4           # graph-search seeds that seed the optimiser around obstacles
+TRAJOPT_SEEDS = 6         # trajectory-optimisation seeds per plan (fixed: CUDA graph shape)
+GRAPH_SEEDS = 2           # graph-search seeds that seed the optimiser around obstacles
+# The seeds size the planner's working buffers, which a process keeps from its first plan: 12 / 4
+# peaked at 13.2 GB of a 24 GB card in a full episode, 6 / 2 at 10.3 GB (obstacle count does not
+# matter, an empty world costs 182 MB either way).
 PLAN_ATTEMPTS, PLAN_TIMEOUT = 5, 8.0
 APPROACH_FRACTION = 0.5   # constrained Cartesian legs: the last half of the trajectory is the straight approach
 APPROACH_ALIGN = 0.95     # |cos| between the leg and a goal-frame axis for a straight-approach constraint

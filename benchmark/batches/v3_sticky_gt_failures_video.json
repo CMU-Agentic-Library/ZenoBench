@@ -1,0 +1,101 @@
+[
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "cup_available",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "fruits_on_table",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bottle_on_cabinet",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "book_on_desk",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "P04_bottle",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "P05_flip_book",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "P07_present_and_brace",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "P14_restore_swap",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "P15_arrange_and_sort",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "P16_empty_mug",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "P17_pour",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]
