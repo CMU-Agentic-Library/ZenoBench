@@ -26,8 +26,9 @@ Planners (same low-level skills, same observation limits except the oracle):
 The episode is episode.episode.Episode, the same class the env_service worker drives.  Its
 profile (episode/profiles/*/*.yaml) follows the planner: ``oracle`` for the oracle, ``benchmark``
 for every other planner; ``--profile`` overrides it (the run directory then ends in
-``@<profile>``).  ``--tasks`` takes any catalog, also skill_library/tasks.json (one variant
-``default`` per task, its skill subgraph as the ``nominal`` route).
+``@<profile>``, a level profile's ``/`` written as ``_`` so the run stays one directory deep).
+``--tasks`` takes any catalog, also skill_library/tasks.json (one variant ``default`` per task,
+its skill subgraph as the ``nominal`` route).
 
 Output: <out>/<task>/<seed>_<route-or-planner>/ result.json, calls.jsonl,
 config.json (scene, profile, config_hash, episode_hash), first-person images (images/),
@@ -102,7 +103,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
     label = route if planner == "scripted" else f"{planner}" + (f"-{route}" if planner == "oracle" else "") + \
         (f"-{policy.rsplit(':', 1)[-1]}" if planner == "recovery" and policy else "")
     if profile:
-        label += f"@{prof['name']}"
+        label += "@" + prof["name"].replace("/", "_")   # a level profile ("sticky/gt") must not nest the run dir
     out = Path(out_root) / task["task_id"] / f"s{seed}_{cfg['variant']}_{label}"
     out.mkdir(parents=True, exist_ok=True)
     config = {"task_id": task["task_id"], "exp_id": f"{task['exp_id']}-s{seed}-{label}", "seed": seed,

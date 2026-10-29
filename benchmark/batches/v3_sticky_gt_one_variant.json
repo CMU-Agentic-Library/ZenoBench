@@ -1,0 +1,330 @@
+[
+ {
+  "task": "T01_book_to_dining_table",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "overhang_ready",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "clear",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "small_and_large",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "cup_available",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "pen_available",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "free",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "microwave_works",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "sponge_on_island",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "lid_off",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "can_on_island",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "fruits_on_table",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "toys_out",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "dishes_on_tv_stand",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T15_book_face_up",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "book_free",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "pin_free",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "lid_off",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "at_island",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bin_on_bookcase",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bottle_on_cabinet",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "book_on_desk",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P01_body_and_gesture",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P02_perception",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P03_rolling_pin",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P04_bottle",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P05_flip_book",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P06_two_hands",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P07_present_and_brace",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P08_block_alignment",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P09_sweep_blocks",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P11_stove_cycle",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P12_cabinet",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P13_microwave_buttons",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P14_restore_swap",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P15_arrange_and_sort",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P16_empty_mug",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P17_pour",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P19_spoon_dip",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P20_hide_block",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P21_clear_cabinet",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P22_chill_oatmeal",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ },
+ {
+  "task": "P18_floor_pick",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt"
+ }
+]
