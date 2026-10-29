@@ -74,6 +74,10 @@ def episode_config(task: dict, seed: int, variant: str | None = None, difficulty
         # objects the base scene does not have (an asset of annotations/assets.json placed like ``move``);
         # only present when used, so the configurations and hashes of every other variant stay as they were
         cfg["add"] = copy.deepcopy(add)
+    if v.get("failures"):
+        # v5 failure injection (failure_injection/): declared failures of this variant; only present when
+        # used, so every earlier configuration and hash stays as it was
+        cfg["failures"] = copy.deepcopy(v["failures"])
     vary = v["vary"] if "vary" in v else scene.get("vary")
     if vary:
         apply_vary(cfg, vary, random.Random(f"{task['task_id']}:{variant}:{seed}:vary"))
@@ -95,7 +99,7 @@ def config_hash(cfg: dict) -> str:
         if isinstance(x, (list, tuple)):
             return [r(v) for v in x]
         return x
-    keys = PHYSICAL_KEYS + (("add",) if cfg.get("add") else ())
+    keys = PHYSICAL_KEYS + (("add",) if cfg.get("add") else ()) + (("failures",) if cfg.get("failures") else ())
     blob = json.dumps({k: r(cfg.get(k)) for k in keys}, sort_keys=True)
     return hashlib.sha1(blob.encode()).hexdigest()[:12]
 

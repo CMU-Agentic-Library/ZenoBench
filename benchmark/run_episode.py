@@ -130,7 +130,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
               "profile": prof["name"], "profile_hash": prof["hash"],
               "planner": planner, "route": route, "calls": [], "success": False, "started": time.time(),
               "eval_log_version": 2}
-    ep = None
+    ep = injector = None
     calls_f = open(out / "calls.jsonl", "w")
 
     def log_row(row):
@@ -141,6 +141,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
     try:
         ep = Episode(task, cfg, prof, out, video=video, images=images,
                      image_dir=out / "images" if images else None)
+        from failure_injection.runtime import install as install_failures
+        injector = install_failures(ep, cfg)          # v5: declared failures (none: the runner is untouched)
         if registry is not None:
             from skill_ext.dispatch import install
             install(ep, registry, track)
@@ -217,6 +219,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                     report["stopped_at"] = i
                     break
         chk = ep.check()
+        if injector is not None:
+            report["failure_injection"] = injector.summary()     # evaluation only; never shown to a planner
         report["goal"] = chk["goal"]
         report["dropped"] = chk["dropped"]
         report["final_state"] = chk["final_state"]           # side effects for benchmark/evaluate.py
