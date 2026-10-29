@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "zenobench/skill_ext/skill.schema.json",
+  "title": "ZenoBench user skill (SKILL.md front matter)",
+  "type": "object",
+  "required": ["name", "description", "parameters", "executor"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]{1,47}$",
+             "description": "the verb a planner calls; must not be a built-in verb"},
+    "description": {"type": "string", "minLength": 8, "description": "one or two sentences for the planner"},
+    "version": {"type": ["string", "integer"]},
+    "author": {"type": "string"},
+    "use_when": {"type": "string"},
+    "parameters": {"type": "object", "additionalProperties": {"$ref": "#/$defs/parameter"}},
+    "preconditions": {"type": "array", "items": {"$ref": "#/$defs/atom"},
+                      "description": "checked on live GT state before the executor runs; a false one refuses the call"},
+    "effects": {"type": "array", "items": {"$ref": "#/$defs/atom"},
+                "description": "expected effects, checked on live GT state after the executor; a false one fails the call"},
+    "outputs": {"type": "object", "additionalProperties": {"type": "object"}},
+    "related": {"type": "object", "properties": {
+      "fallbacks": {"type": "array", "items": {"type": "string"}},
+      "alternatives": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false},
+    "failure_modes": {"type": "array", "items": {"type": "string"}},
+    "executor": {"$ref": "#/$defs/executor"}
+  },
+  "$defs": {
+    "parameter": {
+      "type": "object", "required": ["type"], "additionalProperties": false,
+      "properties": {
+        "type": {"enum": ["place_ref", "object_list", "object_ref", "unit_vec2", "support_ref", "number",
+                           "button_ref", "lid_ref", "xy", "pose2d", "receptacle_ref", "room_ref", "appliance_ref",
+                           "tag", "hand", "articulated_ref", "category_map", "entity_ref", "tool_ref",
+                           "furniture_ref", "positive_number", "container_ref", "string", "integer", "boolean"]},
+        "required": {"type": "boolean"},
+        "default": {},
+        "enum": {"type": "array"},
+        "description": {"type": "string"}
+      }
+    },
+    "atom": {"oneOf": [
+      {"type": "string", "pattern": "^\\s*(not\\s+)?[a-z_][a-z0-9_]*\\s*\\(.*\\)\\s*$"},
+      {"type": "object", "required": ["pred"], "additionalProperties": false,
+       "properties": {"pred": {"type": "string"}, "args": {"type": "object"}, "negated": {"type": "boolean"}}}
+    ]},
+    "step": {"type": "object", "required": ["skill"], "additionalProperties": false,
+             "properties": {"skill": {"type": "string"}, "args": {"type": "object"},
+                            "optional": {"type": "boolean", "description": "a failure of this step does not stop the skill"}}},
+    "executor": {
+      "type": "object", "required": ["type"], "additionalProperties": false,
+      "properties": {
+        "type": {"enum": ["scripted", "python", "vla", "rl", "scripted_policy"],
+                 "description": "scripted: a fixed chain of skill calls; python: a function/class run with the skill context; vla / rl / scripted_policy: an observation->action policy run through the action interface"},
+        "entry": {"type": "string", "pattern": "^[A-Za-z0-9_./-]+(\\.py)?:[A-Za-z_][A-Za-z0-9_]*$",
+                  "description": "file.py:Name (relative to the SKILL.md) or package.module:Name"},
+        "steps": {"type": "array", "items": {"$ref": "#/$defs/step"}},
+        "config": {"type": "object"},
+        "action_space": {"enum": ["ee_delta", "joint_delta", "skill_calls"]},
+        "observation": {"type": "array", "items": {"enum": ["images", "robot", "visible_objects", "proprio", "instruction"]}},
+        "max_steps": {"type": "integer"},
+        "privileged": {"type": "boolean", "description": "the executor may read GT state (scripted baselines only; never on the Open-Skill leaderboard)"}
+      }
+    }
+  }
+}
