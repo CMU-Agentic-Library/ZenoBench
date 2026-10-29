@@ -1004,6 +1004,16 @@ V4_CONSTRAINT = {      # (kind, check atoms that hold at the start) of each v4 H
     "lookalike_bin": ("resource", [["inside", "toy_block_in_bin_1", "toy_storage_bin"]]),
     "table_full": ("destination", [["on", "buffet_tray_1", "dining_table_2/top"]]),
 }
+# Open-Skill track demonstrations (not formal variants): routes that call the example user skills of
+# skill_ext/examples; run with --track open --skills skill_ext/examples
+OPEN_TRACK_ROUTES = {"T06_block_destination_occupied": {
+    "open_deliver": [S("look", target="kitchen_island/top"),
+                     S("deliver", object="wooden_block_a", support="kitchen_cabinet_6/top")],
+    "open_policies": [S("look", target="kitchen_island/top"), S("navigate", destination="wooden_block_a"),
+                      S("pick", object="wooden_block_a"), S("raise_held", object="wooden_block_a", height_m=0.04),
+                      S("rl_raise_held", object="wooden_block_a"), S("vla_raise_held", object="wooden_block_a"),
+                      S("navigate", destination="kitchen_cabinet_6/top"),
+                      S("place", object="wooden_block_a", receptacle="kitchen_cabinet_6/top")]}}
 HARD_FROM_V4 = "task"           # every v4 Hard is a task-level replanning variant (initial constraint)
 OVERLAY = ("move", "add", "remove", "start", "thermal_sources", "thermal_override", "vary", "conditions")
 FIELDS = OVERLAY + ("goal", "instruction", "instruction_zh", "watch", "failures", "may_end_on_floor")
@@ -1061,6 +1071,9 @@ def build_task(t: dict) -> dict:
             v["v5"] = meta
             if difficulty(v) != tier:
                 raise ValueError(f"{t['task_id']}/{vid}: v3 tier {difficulty(v)} != formal {tier}")
+    for rname, steps in OPEN_TRACK_ROUTES.get(t["task_id"], {}).items():
+        t["routes"][rname] = {"steps": steps, "kind": "open_track_demo", "track": "open",
+                              "skills": ["skill_ext/examples"]}
     t["v5_formal"] = formal
     t["v5_supplementary"] = sorted(set(t["variants"]) - {x for ids in formal.values() for x in ids})
     t["benchmark_version"] = "v5"

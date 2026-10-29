@@ -8267,6 +8267,87 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_cabinet_filled"
+    },
+    "open_deliver": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "deliver",
+       "args": {
+        "object": "wooden_block_a",
+        "support": "kitchen_cabinet_6/top"
+       }
+      }
+     ],
+     "kind": "open_track_demo",
+     "track": "open",
+     "skills": [
+      "skill_ext/examples"
+     ]
+    },
+    "open_policies": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "raise_held",
+       "args": {
+        "object": "wooden_block_a",
+        "height_m": 0.04
+       }
+      },
+      {
+       "skill": "rl_raise_held",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "vla_raise_held",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "kitchen_cabinet_6/top"
+       }
+      }
+     ],
+     "kind": "open_track_demo",
+     "track": "open",
+     "skills": [
+      "skill_ext/examples"
+     ]
     }
    },
    "benchmark_version": "v5",
