@@ -178,8 +178,11 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
         else:
             _, steps = resolve_steps(task, cfg, route)
             for i, st in enumerate(steps):
-                expect = st.get("expect", "ok") if planner == "scripted" else "ok"
-                if planner == "oracle" and (st.get("expect") == "fail" or st.get("role") == "unwind"):
+                # an injected failure (v5) is forced by the environment, not a useless call: every planner
+                # meets it, so it keeps its expectation and the oracle does not skip it
+                expect = st.get("expect", "ok") if planner == "scripted" or st.get("injected") else "ok"
+                if planner == "oracle" and not st.get("injected") and \
+                        (st.get("expect") == "fail" or st.get("role") == "unwind"):
                     continue                           # the oracle knows the failing call is useless (and
                                                        # skips the steps that only undo its side effects)
                 tries = 3 if planner == "retry" else 1

@@ -38,7 +38,7 @@ PLACEMENT_MODES = ("tipped", "displaced")
 # the skills each action-level failure attaches to
 ACTION_SKILLS = {"grasp": ("pick",), "slip": ("navigate",), "placement": ("place", "drop", "stack"),
                  "ik": ("pick", "place", "open", "close", "drop", "stack", "press", "wipe", "uncover", "expose",
-                        "separate", "push", "flip", "roll", "stir", "regrasp")}
+                        "separate", "push", "flip", "roll", "stir", "regrasp", "hide", "cover", "inspect")}
 
 
 class FailureSpecError(ValueError):
@@ -96,9 +96,11 @@ def validate(failures, where="failures", objects=None, articulated=None, support
                     errs.append(f"{p}: a {k} failure attaches to {ACTION_SKILLS[k]}, not {trig['skill']!r}")
                 if int(trig.get("nth", 1)) < 1:
                     errs.append(f"{p}: nth counts from 1")
-                for v in (trig.get("args") or {}).values():
-                    if isinstance(v, str) and objects is not None and "/" not in v and v not in objects \
-                            and (articulated is None or v not in articulated):
+                for key, v in (trig.get("args") or {}).items():
+                    if key in ("object", "container", "lid") and isinstance(v, str) and objects is not None \
+                            and v not in objects:
+                        errs.append(f"{p}: trigger names unknown {v!r}")
+                    if key == "articulated" and articulated is not None and v not in articulated:
                         errs.append(f"{p}: trigger names unknown {v!r}")
             if f.get("after_fired") is not None and f["after_fired"] not in ids:
                 errs.append(f"{p}: after_fired names no failure of this variant")
@@ -122,7 +124,7 @@ def validate(failures, where="failures", objects=None, articulated=None, support
                 errs.append(f"{p}: when must be initial or dynamic")
             if w == "initial" and not f.get("check"):
                 errs.append(f"{p}: an initial constraint needs check atoms (verified at the start)")
-            if w == "dynamic":
+            if w == "dynamic" or f.get("event"):
                 ev = f.get("event") or {}
                 if ev.get("type") not in EVENTS:
                     errs.append(f"{p}: event.type must be one of {EVENTS}")
@@ -130,10 +132,12 @@ def validate(failures, where="failures", objects=None, articulated=None, support
                     known("object", ev.get("object"), objects, p)
                     if ev["type"] == "move_object":
                         to = ev.get("to") or {}
-                        if not {"support", "xy"} <= set(to):
-                            errs.append(f"{p}: move_object needs to {{support, xy, yaw_deg?}}")
-                        else:
+                        if "xy" not in to or not ("support" in to or "z" in to):
+                            errs.append(f"{p}: move_object needs to {{support | z, xy, yaw_deg?}}")
+                        elif to.get("support") is not None:
                             known("support", to["support"], supports, p)
+                        elif to.get("z") is None:
+                            errs.append(f"{p}: move_object without a support needs z")
                     else:
                         known("object", ev.get("container"), objects, p)
                 elif ev["type"] == "set_joint":

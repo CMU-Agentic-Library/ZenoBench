@@ -194,7 +194,7 @@ class FailureRunner:
             res.postconditions = list(res.postconditions) + [{"atom": r["atom"], "holds": r["holds"],
                                                               "detail": r["detail"]} for r in rows]
 
-    def _event(self, f):
+    def _event(self, f, record=True):
         rig = self.rig
         ev = f["event"]
         if ev["type"] in ("move_object", "into"):
@@ -216,7 +216,8 @@ class FailureRunner:
                       "z": float(cb[2]) + float(ev.get("floor_m", 0.012)), "yaw_deg": ev.get("yaw_deg", 0.0)}
             pos, q = self._pose_on(name, to)
             self._teleport(name, pos, q)
-            self._record(f, True, event=ev["type"], object=name, to=to, landed_on=self._support_of(name))
+            if record:
+                self._record(f, True, event=ev["type"], object=name, to=to, landed_on=self._support_of(name))
         elif ev["type"] == "set_joint":
             a = next(x for x in rig.ann.articulated if x["name"] == ev["articulated"])
             v = a["closed_q"] if ev["value"] == "closed" else a["open_q"] if ev["value"] == "open" else float(ev["value"])
@@ -224,7 +225,8 @@ class FailureRunner:
             art.set_joint_positions(np.array([v], dtype=np.float32), joint_indices=np.array([dof]))
             art.set_joint_velocities(np.array([0.0], dtype=np.float32), joint_indices=np.array([dof]))
             rig.step(90)
-            self._record(f, True, event="set_joint", articulated=a["name"], value=v, measured=round(rig.joint(a["name"]), 3))
+            if record:
+                self._record(f, True, event="set_joint", articulated=a["name"], value=v, measured=round(rig.joint(a["name"]), 3))
 
     def _atoms(self, atoms):
         from episode.episode import evaluate_goal
@@ -235,6 +237,8 @@ class FailureRunner:
     def check_initial(self):
         for f in self.failures:
             if mode(f) == "initial":
+                if f.get("event"):
+                    self._event(f, record=False)      # an initial state the scene overlay cannot express (a door ajar)
                 rows = self._atoms(f["check"])
                 self._record(f, all(r["holds"] for r in rows), check=rows)
 
