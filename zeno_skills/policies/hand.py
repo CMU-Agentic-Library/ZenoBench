@@ -328,6 +328,9 @@ class ReleaseInPlacePolicy(AtomicPolicy):
         return True
 
 
+PAST_VERTICAL_DEG = 95.0      # flip: an arc below this has not carried the object over its pivot edge
+
+
 class FlipFlatPolicy(AtomicPolicy):
     """Turn an edge-held flat object over by pivoting it about its far edge:
     the gripped near edge travels up and over on an arc (the hand pitches with
@@ -375,10 +378,13 @@ class FlipFlatPolicy(AtomicPolicy):
             raise SkillFailure(f"flip {name}: the arc stopped at {reached:.0f} deg")
         rig.grip(rig.held.get("pre_open", 0.04), 50)
         rig.held = None
-        if reached < 90.0:
-            # the wrist ran out of pitch before vertical: open, keep the hand
-            # orientation, and carry on along the arc so the open fingers push
-            # the raised edge over the pivot
+        if reached < PAST_VERTICAL_DEG:
+            # the wrist ran out of pitch before the object was past vertical:
+            # open, keep the hand orientation, and carry on along the arc so the
+            # open fingers push the raised edge over the pivot. An arc that ends
+            # exactly on vertical needs this as much as one that ends short -
+            # the object is balanced on the pivot edge and releasing there just
+            # leaves it standing (P05 came to rest at z dot -0.26).
             R_end = Rotation.from_rotvec(k * math.radians(reached)).as_matrix() @ R0
             pushed = reached
             for deg in np.arange(reached + step_deg, release_deg + 15.0 + 1e-6, step_deg):
@@ -390,7 +396,7 @@ class FlipFlatPolicy(AtomicPolicy):
                     rig.log("flip_push_limit", deg=float(deg), reason=str(exc))
                     break
                 pushed = float(deg)
-            if pushed < 95.0:
+            if pushed < PAST_VERTICAL_DEG:
                 # finish with a straight horizontal push of the raised edge over the pivot
                 t, R1 = rig.kin.tcp(rig.q_cmd)
                 for d in (0.12, 0.08, 0.05):
@@ -401,7 +407,7 @@ class FlipFlatPolicy(AtomicPolicy):
                         break
                     except SkillFailure as exc:
                         rig.log("flip_push_straight_short", d=d, reason=str(exc))
-                if pushed < 95.0:
+                if pushed < PAST_VERTICAL_DEG:
                     # the arm is at its limit: the holonomic base carries the open hand forward
                     bx, by, byaw = rig.base_pose()
                     rig.sync_world()
@@ -414,9 +420,9 @@ class FlipFlatPolicy(AtomicPolicy):
                             break
                 rig.step(120)
                 up = quat_R(rig.obj_pose(name)[1])[:, 2]
-                pushed = pushed if up[2] < -0.5 else min(pushed, 94.0)
+                pushed = pushed if up[2] < -0.5 else min(pushed, PAST_VERTICAL_DEG - 1.0)
             rig.log("flip_push", released_deg=reached, pushed_deg=pushed)
-            if pushed < 95.0:
+            if pushed < PAST_VERTICAL_DEG:
                 raise SkillFailure(f"flip {name}: the open-hand push stopped at {pushed:.0f} deg")
             reached = pushed
         t, R1 = rig.kin.tcp(rig.q_cmd)

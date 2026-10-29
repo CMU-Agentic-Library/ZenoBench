@@ -35,6 +35,11 @@ measured). If `TRAJOPT_SEEDS` / `GRAPH_SEEDS` go back up, re-measure first.
   solution - **T11, T04, P15**.
 * `f4907e2` `place()` replayed the grasp relation, putting down an object that
   rotated in the fingers at that angle - **T20**.
+* `36d93ea` P14's route looked at the island from wherever `restore` parked the
+  base - **P14's `look`** (the route still fails later, see the triage below).
+* the flip arc's open-hand push was gated on `reached < 90`, so an arc that
+  stopped exactly on vertical released a balanced object instead of pushing it
+  over - **P05**.
 
 Two attributions that turned out to be **wrong**, recorded so they are not
 repeated: T14 was not a regression from thinning book_red (at 7 cm the fingers
@@ -68,10 +73,6 @@ pose above handled_cooking_pot" is gone.
 ### P04_bottle - `upright_object(juice_bottle)` NO_PATH
 "no policy path matches the bound nouns and robot state" with the bottle at
 91.1 deg: there is no route for righting a bottle that is lying down.
-
-### P05_flip_book - `flipped(paperback_book)` false (z dot -0.26)
-Postcondition failure after `flip_object`. Flipped to passing once under the
-halved planner seeds (31308ac), so it is marginal rather than deterministic.
 
 ### P14_restore_swap - `face kitchen_island/top: turning in place would hit furniture`
 `look_target` refuses to turn. The route needs the robot to face the island
@@ -148,12 +149,25 @@ three tomatoes never left the mug. contract_059 already records the limit:
 "Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach
 over the stove". Route and grasp are both fine; this is reach.
 
-### P05 - the flip arc runs out of IK
+### P05 - the flip arc runs out of IK - fixed
 
-`flip_arc_limit deg 100.0, reason "no IK for flip_arc"`, then
-`flip_withdraw_short` and twice `flip_finish_push_short`, both "no IK". The book
-is released at ~90 deg and settles on edge (`up_z -0.257`). Route and grasp are
-both fine; this is reach, and it is the marginal one - it passed once already.
+Not reach after all, and not the route or the grasp. `FlipFlatPolicy` pivots the
+object about its far edge and opens the fingers once it is past vertical; if the
+wrist runs out of pitch first, it keeps the hand open and pushes the raised edge
+over - continuing the arc, then a straight push, then driving the base forward.
+That whole chain was gated on `reached < 90.0`.
+
+P05's arc stopped at exactly 90 deg (`flip_arc_limit deg 100.0`), so the gate
+read "past vertical", the fingers opened on a book balanced on its pivot edge,
+and it settled at `up_z -0.257`. T15_book_face_up is the same book on the same
+island: its arc stopped at 80 deg, took the push chain, and the base push
+(`flip_push_base d 0.1`) turned it over to `up_z -1.0` - that run is why the
+gate is wrong rather than the reach.
+
+Fixed by gating on `PAST_VERTICAL_DEG = 95.0` instead (the step is 10 deg, so
+this is exactly "90 or less"), the same bar the push chain already used for its
+own success. `benchmark/runs/p05_flip_fix`: six calls green, `flipped` and `on`
+both OK, `flip_result up_z -1.0`. T15 is unaffected - 80 is below either gate.
 
 ## Useful machinery
 
