@@ -1462,16 +1462,24 @@ def _edge_pinch_impl(rig, name, s, n, attempt=False):
     rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label="edge_grasp", collision=False)
     rig.caption = f"PICK {name}: pinch the overhang"
     rig.grip(0.0, 120)
+    # the pinched point in the object's frame: a flat object held at its
+    # overhang pivots on the support edge, so its bottom centre rises far less
+    # than the hand does (book_red: 15 mm of a 40 mm lift, right at the old
+    # threshold) even when the pinch holds
+    p0, q0 = rig.obj_pose(name)
+    pinch_local = quat_R(q0).T @ (tcp - p0)
     rig.caption = f"PICK {name}: lift and pull out"
     rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="edge_lift", collision=False)
     rig.step(40)
     b2 = geo.bottom(name, rig.state())
+    p1, q1 = rig.obj_pose(name)
+    rise = float((p1 + quat_R(q1) @ pinch_local)[2] - tcp[2])
     f = rig.fingers()
-    held = bool(f.min() > 0.003) and b2[2] - b[2] > 0.015
+    held = bool(f.min() > 0.003) and rise > 0.015
     rig.log("pick_result", obj=name, kind="edge_pinch", lift_m=round(float(b2[2] - b[2]), 4),
-            fingers=f.round(4).tolist(), held=held)
+            pinch_rise_m=round(rise, 4), fingers=f.round(4).tolist(), held=held)
     if not held:
-        raise SkillFailure(f"edge pinch {name}: not held (lift {b2[2] - b[2]:.3f} m)")
+        raise SkillFailure(f"edge pinch {name}: not held (pinched edge rose {rise:.3f} m)")
     rig.move_to(pull, R, step=0.004, steps_per_wp=4, label="edge_pull", collision=False)
     rig.focus_z = None
     tcp_now, R_now = rig.kin.tcp(rig.q_cmd)
