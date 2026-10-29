@@ -787,8 +787,12 @@ PROBES = [
            S("press", button="kitchen_microwave/start_button"), S("wait", seconds=3), S("stop", appliance=MW)],
           [["in_appliance", "oatmeal", MW], ["not heating", MW]], ["k_microwave"], watch=["oatmeal"]),
     probe("P14_restore_swap", "Move a block to the stove, put it back where it was, then swap it with the soda can.",
+          # restore parks the base wherever its own place search lands (behind the island, 0.55 m from
+          # the top): looking at the island from there is a 105 deg turn in place, which the clearance
+          # check refuses. Drive to the island first, as every other route does before a look.
           [S("look", target=ISLAND), S("fetch", object="wooden_block_a", receptacle=STOVE_TOP),
-           S("restore", object="wooden_block_a"), S("look", target=ISLAND), S("swap", a="wooden_block_a", b="soda_can")],
+           S("restore", object="wooden_block_a"), S("navigate", destination=ISLAND), S("look", target=ISLAND),
+           S("swap", a="wooden_block_a", b="soda_can")],
           [["positions_swapped", "wooden_block_a", "soda_can"]], ["k_restore_swap", "skill_library/tasks.json:swap_blocks"],
           watch=["wooden_block_a", "soda_can"]),
     probe("P15_arrange_and_sort", "Group two blocks and the can on the island, then sort the can into the trash and a block onto the stove.",

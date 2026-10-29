@@ -12550,6 +12550,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"

@@ -57,13 +57,13 @@ log `quat_R(rig.obj_pose(name)[1])[2, 2]` before and after the release. Tilt
 present before the release means the hand put it down that way; tilt appearing
 after means it toppled.
 
-### P16_empty_mug - `pick cherry_tomato_1: not held (lift 0.000 m)`
+### P16_empty_mug - `pick cherry_tomato_1: not held (lift 0.001 m)`
 `empty_container(mug -> handled_cooking_pot)` fails on the nested pick of a
 cherry tomato. Reproduces identically across runs.
 
-### P17_pour - `hover mug: no base pose above handled_cooking_pot`
-`find_park` rejects all 3433 candidates: footprint 1479, out_of_reach 348,
-ik 150. A park-search problem, same family as f25ed6b but a different gate.
+### P17_pour - `pour: 0/3 items reached handled_cooking_pot`
+In 1029b `hover` passes and `pour` is the failing call; the older run's "no base
+pose above handled_cooking_pot" is gone.
 
 ### P04_bottle - `upright_object(juice_bottle)` NO_PATH
 "no policy path matches the bound nouns and robot state" with the bottle at
@@ -76,6 +76,84 @@ halved planner seeds (31308ac), so it is marginal rather than deterministic.
 ### P14_restore_swap - `face kitchen_island/top: turning in place would hit furniture`
 `look_target` refuses to turn. The route needs the robot to face the island
 from where it stands.
+
+## Triage 2026-10-29 (second pass): route bug vs grasp annotation vs capability
+
+The five non-P07 failures were each checked against two questions - is the
+oracle's step sequence wrong, and is the object's GT grasp annotation wrong.
+Only P14 answered yes to either.
+
+### P14 - route bug, fixed
+
+`restore` parks the base wherever its own place search lands (7.551, 2.298 -
+behind the island) and the route then calls `look(kitchen_island/top)` from
+there: a 105 deg turn in place, which the clearance check refuses. `look` has no
+path that drives; every other route in the benchmark navigates before it looks
+(`P14` was the only `look` after a composite skill that relocates the base).
+
+Fixed in `benchmark/define_tasks.py` by inserting `navigate(kitchen_island/top)`
+before the second look; `benchmark/tasks.json` and `benchmark/v3/tasks.json`
+regenerated. Verified in `benchmark/runs/p14_navigate_fix`: the look passes and
+the route reaches `swap`, two calls further than before.
+
+**P14 still fails**, now for two reasons that are neither a route bug nor a
+grasp annotation, so they were left alone:
+
+* `swap` dies on `pick_object(soda_can)`: `MotionGenStatus.GRAPH_FAIL` at
+  `pick_pre` ("Start or End state in collision") from park (8.05, 1.162, 165).
+* Even a clean `swap` cannot satisfy the goal. `positions_swapped` compares to
+  the **episode start** (6 cm tolerance), but `restore` only guarantees
+  `at_initial_place`, which checks the *support*, not the spot: contract_061
+  calls `policy_015` with no hint, so the block came back 0.49 m from where it
+  started, and `swap` then copies that drifted xy onto the can. A fix would be
+  an `initial_xy` noun attribute (the episode's `annotation.json` already
+  carries the exact start position) passed as `hint` in contract_061, plus
+  tightening `at_initial_place` to check xy. Not done - it changes `restore`
+  everywhere.
+
+### P04 - contract coverage gap, not the annotation
+
+`contract_044:upright` has exactly one path, gated on
+`object.grasp_types contains top_pinch`, and `juice_bottle` is annotated
+`side_pinch` only. That annotation is right: `contract_043:tip` describes itself
+as laying down "a carton or bottle that is too tall to top-pinch", and T20 picks
+the bottle through the pick contract's `annotation_dispatch` path every run. So
+`tip` and `upright` are declared alternatives of each other while `upright`
+cannot undo `tip` on the one object class `tip` exists for.
+
+Candidate fix (not applied): a second path in contract_044 gated on `side_pinch`
+with `policy_061` (annotation dispatch) in place of `policy_010`, then the same
+`policy_054` / `policy_015`. `UprightObjectPolicy` itself is grasp-agnostic - it
+only wants a right-only grasp - so this is a contract edit plus a sim check.
+
+### P16 - the hand cannot enter the mug
+
+The scene's mug is 9.3 cm across and 12 cm tall (rim at z 0.98) with the three
+tomatoes resting on its floor at z 0.884. `empty`'s first path
+(`pick_each_inside`, `when: []`, so it always wins) reaches in with the top
+pinch. The arm never arrives: `pick_pre` lands with `tcp_err 0.081 m`,
+`pick_grasp` with `tcp_err 0.128 m` and `q_err 0.57` on one joint - the hand is
+held off by contact - and the fingers then close on nothing (0.000 m).
+
+The annotation is not the problem: T09_tomato_soup picks the same tomatoes with
+the same `top_pinch` grasp and passes, and its scene definition deliberately
+*moves them out of the mug* onto the island first. The alternative path
+`pour_out` would not help either - that is exactly P17.
+
+### P17 - the wrist cannot tilt the mug far enough
+
+`pour` plans a 40 deg tilt, walks it up, and stops: `pour_tilt_limit deg 80,
+reason "no IK for pour_tilt"`. Measured cup tilt topped out at 55.9 deg, and the
+three tomatoes never left the mug. contract_059 already records the limit:
+"Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach
+over the stove". Route and grasp are both fine; this is reach.
+
+### P05 - the flip arc runs out of IK
+
+`flip_arc_limit deg 100.0, reason "no IK for flip_arc"`, then
+`flip_withdraw_short` and twice `flip_finish_push_short`, both "no IK". The book
+is released at ~90 deg and settles on edge (`up_z -0.257`). Route and grasp are
+both fine; this is reach, and it is the marginal one - it passed once already.
 
 ## Useful machinery
 
