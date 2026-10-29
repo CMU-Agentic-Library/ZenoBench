@@ -28,13 +28,14 @@ from .evaluator import quat_R
 from .kinematics import gripper_rot
 from .planner import find_park, joint_reachable, plan_path, torque_ratio
 from .rig import Dropped, SkillFailure
-from .sticky import note_grasp, welded
+from .sticky import note_grasp, rest_R, welded
 
 TCP_BACKOFF = 0.12
 EDGE_GRIP_DEPTH = 0.045       # edge pinch: TCP up to this far inside the gripped edge
 EDGE_PAD_CLEAR = 0.025        # ... but the lower pad stays this far outside the support edge
 EDGE_PLACE_OVERHANG = 0.065   # edge place: gripped edge this far past the support edge
 EDGE_MIN_OVERHANG = 0.055     # below this the lower finger hits the support edge
+PLACE_LEVEL_MIN = 5.0        # deg: a held object tilted more than this is levelled for the place
 COM_MARGIN = 0.035            # centre of mass stays this far inside the edge while overhanging
 PUSH_SEG = 0.25               # longest single push; the base re-parks between pushes
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
@@ -1747,6 +1748,22 @@ def place(rig, name, support, xy=None):
         body_z = s["z"] + rig.held["body_minus_low"] + 0.01
     body = np.array([xy[0], xy[1], body_z])
     off0, R0 = rig.held["tcp_minus_body"], rig.held["R"]
+    relations = [(off0, R0, None)]
+    if rig.held["kind"] != "corner":
+        # The grasp relation is replayed as it was measured, so an object that
+        # tilted in the fingers while it was lifted is put down tilted (a side
+        # pinched juice bottle came to rest 25 deg over and failed upright()).
+        # Keep the measured hand-to-object relation but ask for the object
+        # levelled; the measured relation stays as the fallback, since the
+        # levelled hand pose can be out of reach where the tilted one is not.
+        p_obj, q_obj = rig.obj_pose(name)
+        R_obj = quat_R(q_obj)
+        over = math.degrees(math.acos(max(-1.0, min(1.0, float(R_obj[2, 2])))))
+        if over > PLACE_LEVEL_MIN:
+            tcp_now, R_tcp = rig.kin.tcp(rig.q_cmd)
+            R_rest = rest_R(q_obj)
+            relations.insert(0, (R_rest @ (R_obj.T @ (np.asarray(tcp_now, float) - np.asarray(p_obj, float))),
+                                 R_rest @ (R_obj.T @ R_tcp), round(over, 1)))
     rig.sync_world()
     rig.kin.coll_kw = {"ignore_fingers": True}
     park = None
@@ -1804,49 +1821,58 @@ def place(rig, name, support, xy=None):
                         float(rig.geo.bottom(o_, st_slots)[2]) < tcp_p[2] + 0.02:
                     return o_
         return None
-    for psi in np.radians([0, 90, -90, 45, -45, 135, -135, 180]):
-        Rz = rz(psi)
-        off, R = Rz @ off0, Rz @ R0
-        legs = [(body + off + np.array([0, 0, 0.06]), R), (body + off + np.array([0, 0, 0.01]), R)]
-        blocker = slots_blocked(body + off, R) if shelf_front is None and not container else None
-        if blocker is not None:
-            rig.log("place_yaw_slot_blocked", deg=round(math.degrees(psi)), by=blocker)
-            continue
-        if clear_z0 is not None:
-            # pass over the tallest neighbour (a lidded pot beside the burner)
-            low0 = body[2] + 0.06 - (body_z - s["z"])
-            if clear_z0 + 0.03 > low0:
-                legs.insert(0, (legs[0][0] + np.array([0, 0, clear_z0 + 0.03 - low0]), R))
-        if shelf_front is not None:
-            out = np.r_[shelf_front * 0.16, 0.0]
-            legs = [(body + off + out + np.array([0, 0, 0.03]), R), (body + off + np.array([0, 0, 0.03]), R),
-                    (body + off + np.array([0, 0, 0.01]), R)]
-        if s.get("furniture") == "kitchen_microwave":
-            # Approach the opening from in front of the right corner: with a
-            # rim-held bowl, the rearward side park brushes the oven back wall.
-            park = find_park(rig.kin, rig.world, legs, near=(4.95, 2.18, 165.0),
-                             max_tries=1, q_start=None, travel_q=None)
-        if park is None:
-            park = find_park(rig.kin, rig.world, legs, near=search_near, max_tries=120,
-                             q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(),
-                             carry=rig.held is not None)
-        if park:
-            rig.log("place_yaw", deg=round(math.degrees(psi)))
-            break
-    if park is None and clear_z0 is not None:
-        # no base reaches over the tall neighbour: plan the plain approach
-        rig.log("place_clearance_dropped", obj=name)
-        clear_z0 = None
+    clear_z1 = clear_z0
+    for off0, R0, levelled in relations:
+        clear_z0 = clear_z1
         for psi in np.radians([0, 90, -90, 45, -45, 135, -135, 180]):
             Rz = rz(psi)
             off, R = Rz @ off0, Rz @ R0
             legs = [(body + off + np.array([0, 0, 0.06]), R), (body + off + np.array([0, 0, 0.01]), R)]
-            park = find_park(rig.kin, rig.world, legs, near=search_near, max_tries=120,
-                             q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(),
-                             carry=rig.held is not None)
+            blocker = slots_blocked(body + off, R) if shelf_front is None and not container else None
+            if blocker is not None:
+                rig.log("place_yaw_slot_blocked", deg=round(math.degrees(psi)), by=blocker)
+                continue
+            if clear_z0 is not None:
+                # pass over the tallest neighbour (a lidded pot beside the burner)
+                low0 = body[2] + 0.06 - (body_z - s["z"])
+                if clear_z0 + 0.03 > low0:
+                    legs.insert(0, (legs[0][0] + np.array([0, 0, clear_z0 + 0.03 - low0]), R))
+            if shelf_front is not None:
+                out = np.r_[shelf_front * 0.16, 0.0]
+                legs = [(body + off + out + np.array([0, 0, 0.03]), R), (body + off + np.array([0, 0, 0.03]), R),
+                        (body + off + np.array([0, 0, 0.01]), R)]
+            if s.get("furniture") == "kitchen_microwave":
+                # Approach the opening from in front of the right corner: with a
+                # rim-held bowl, the rearward side park brushes the oven back wall.
+                park = find_park(rig.kin, rig.world, legs, near=(4.95, 2.18, 165.0),
+                                 max_tries=1, q_start=None, travel_q=None)
+            if park is None:
+                park = find_park(rig.kin, rig.world, legs, near=search_near, max_tries=120,
+                                 q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(),
+                                 carry=rig.held is not None)
             if park:
                 rig.log("place_yaw", deg=round(math.degrees(psi)))
                 break
+        if park is None and clear_z0 is not None:
+            # no base reaches over the tall neighbour: plan the plain approach
+            rig.log("place_clearance_dropped", obj=name)
+            clear_z0 = None
+            for psi in np.radians([0, 90, -90, 45, -45, 135, -135, 180]):
+                Rz = rz(psi)
+                off, R = Rz @ off0, Rz @ R0
+                legs = [(body + off + np.array([0, 0, 0.06]), R), (body + off + np.array([0, 0, 0.01]), R)]
+                park = find_park(rig.kin, rig.world, legs, near=search_near, max_tries=120,
+                                 q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(),
+                                 carry=rig.held is not None)
+                if park:
+                    rig.log("place_yaw", deg=round(math.degrees(psi)))
+                    break
+        if park is not None:
+            if levelled is not None:
+                rig.log("place_level", obj=name, tilt_deg=levelled)
+            break
+        if levelled is not None:
+            rig.log("place_level_dropped", obj=name, tilt_deg=levelled)   # levelled hand pose out of reach
     if park is None:
         from .planner import LAST_PARK_DIAG
         raise SkillFailure(f"place {name}: target {tuple(round(v, 2) for v in xy)} on {support} unreachable "
