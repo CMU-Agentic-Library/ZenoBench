@@ -57,12 +57,26 @@ def _segment_free(kin, qa, qb):
     return kin.segment_free(np.asarray(qa, float), np.asarray(qb, float))
 
 
-def joint_reachable(kin, qa, qb):
+def joint_reachable(kin, qa, qb, carry=False):
     """A collision-free joint-space move qa -> qb exists: straight, or a cuRobo
-    trajectory (the options Rig.joint_path executes)."""
-    if _segment_free(kin, qa, qb):
+    trajectory (the options Rig.joint_path executes).  ``carry`` (an object in
+    the hand) asks for the same tilt-held trajectory the execution will use:
+    without it a park passes the search on a free plan and then fails the
+    constrained one it actually has to run."""
+    qa, qb = np.asarray(qa, float), np.asarray(qb, float)
+    if _segment_free(kin, qa, qb) and not (carry and _tips_over(kin, qa, qb)):
         return True
-    return kin.plan(qa, qb)[0] is not None
+    return kin.plan(qa, qb, carry=carry)[0] is not None
+
+
+def _tips_over(kin, qa, qb):
+    """The straight interpolation qa -> qb tilts a held object past CARRY_TILT while the
+    goal pose itself does not (Rig.joint_path's test: that is when it plans instead)."""
+    from .kinematics import CARRY_TILT, max_tilt, tilt
+    R0 = kin.tcp(qa)[1]
+    k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
+    dense = [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+    return max_tilt(kin, R0, dense[::10] + [qb]) > CARRY_TILT and tilt(R0, kin.tcp(qb)[1]) <= CARRY_TILT
 
 
 def torque_ratio(kin, q, force):
@@ -109,7 +123,7 @@ def rank_parks(found):
 def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
               yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
               score=None, n_best=None, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None,
-              check=None):
+              check=None, carry=False):
     """Return (x, y, yaw_deg, qs) or None.
 
     Without ``score`` the first PARK_CANDIDATES feasible parks are ranked by park_quality
@@ -119,6 +133,8 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
     travel_q: arm posture while the base drives there (tucked, or the carry
               pose); a park where it would already hit the furniture is
               rejected (the footprint check covers the base column only).
+    carry:    an object is in the hand: the unfold from travel_q is checked with
+              the tilt held, as Rig.joint_path will plan it.
 
     targets: list of (p, R) TCP poses executed in order from this park.
     ride:    optional callable(x, y, yaw_deg, q_last) -> bool that validates a
@@ -185,7 +201,7 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         if check is not None and not check(x, y, yaw, qs):
             LAST_PARK_DIAG["check"] = LAST_PARK_DIAG.get("check", 0) + 1
             continue
-        if travel_q is not None and cost >= 0 and not joint_reachable(kin, travel_q, qs[0]):
+        if travel_q is not None and cost >= 0 and not joint_reachable(kin, travel_q, qs[0], carry=carry):
             LAST_PARK_DIAG["unfold"] += 1
             continue                    # the arm cannot unfold to the first target here
         if ride is not None and not ride(x, y, yaw, qs[-1]):

@@ -1828,7 +1828,8 @@ def place(rig, name, support, xy=None):
                              max_tries=1, q_start=None, travel_q=None)
         if park is None:
             park = find_park(rig.kin, rig.world, legs, near=search_near, max_tries=120,
-                             q_start=q_start, travel_q=travel_q, path_from=rig.base_pose())
+                             q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(),
+                             carry=rig.held is not None)
         if park:
             rig.log("place_yaw", deg=round(math.degrees(psi)))
             break
@@ -1841,7 +1842,8 @@ def place(rig, name, support, xy=None):
             off, R = Rz @ off0, Rz @ R0
             legs = [(body + off + np.array([0, 0, 0.06]), R), (body + off + np.array([0, 0, 0.01]), R)]
             park = find_park(rig.kin, rig.world, legs, near=search_near, max_tries=120,
-                             q_start=q_start, travel_q=travel_q, path_from=rig.base_pose())
+                             q_start=q_start, travel_q=travel_q, path_from=rig.base_pose(),
+                             carry=rig.held is not None)
             if park:
                 rig.log("place_yaw", deg=round(math.degrees(psi)))
                 break
