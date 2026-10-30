@@ -231,12 +231,31 @@ def check_variant(task, tier, vid, contracts, assets, seeds=SEEDS):
                     probs.append((seed, f"failure {f['id']}: {obj} would land on {m}"))
             if to.get("support") in sups and not _inside_support(box, sups[to["support"]]):
                 probs.append((seed, f"failure {f['id']}: {obj} lands outside {to['support']}"))
+        for gname, shift in (cfg.get("vary_applied") or {}).items():
+            if gname == "start" or not any(shift[:2]):
+                continue
+            members = set(gname.split("+"))
+            for n in members:
+                if n not in objs:
+                    continue
+                if objs[n].get("support") in sups and not _inside_support(objs[n]["aabb"], sups[objs[n]["support"]], 0.0) \
+                        and _inside_support(_unshifted(objs[n]["aabb"], shift), sups[objs[n]["support"]], 0.0):
+                    probs.append((seed, f"seed shift {shift} pushes {n} over the edge of {objs[n]['support']}"))
+                for m, o in objs.items():
+                    if m not in members and abs(o["aabb"][2] - objs[n]["aabb"][2]) < 0.3 \
+                            and overlap(objs[n]["aabb"], o["aabb"], -0.002) \
+                            and not overlap(_unshifted(objs[n]["aabb"], shift), o["aabb"], -0.002):
+                        probs.append((seed, f"seed shift {shift} pushes {n} into {m}"))
         x0, y0, _ = cfg.get("start") or json.loads((ROOT / cfg["base"] / "task.json").read_text())["robot_start"]
         for n, o in objs.items():
             b = o["aabb"]
             if b[2] < 0.15 and b[0] - 0.45 < x0 < b[3] + 0.45 and b[1] - 0.45 < y0 < b[4] + 0.45:
                 probs.append((seed, f"robot start within 0.45 m of {n} on the floor"))
     return probs
+
+
+def _unshifted(box, shift):
+    return [box[0] - shift[0], box[1] - shift[1], box[2], box[3] - shift[0], box[4] - shift[1], box[5]]
 
 
 def _is_literal(n):
@@ -290,6 +309,8 @@ def static(doc, seeds=SEEDS):
                 out["problems"].append({"task": t["task_id"], "problem": f"same configuration {h}: {vs}"})
         # v3 variants keep their configuration exactly
         for vid, v in v3[t["task_id"]]["variants"].items():
+            if t["variants"][vid].get("v5", {}).get("seed_vary_added"):
+                continue                        # v5 adds seeded object variation; v3 keeps the original
             for seed in seeds:
                 if episode_config(v3[t["task_id"]], seed, vid)["config_hash"] != episode_config(t, seed, vid)["config_hash"]:
                     out["problems"].append({"task": t["task_id"], "variant": vid, "seed": seed,

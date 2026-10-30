@@ -222,8 +222,9 @@ class FailureRunner:
             a = next(x for x in rig.ann.articulated if x["name"] == ev["articulated"])
             v = a["closed_q"] if ev["value"] == "closed" else a["open_q"] if ev["value"] == "open" else float(ev["value"])
             art, dof = rig._arts[a["name"]], rig._dof[a["name"]]
-            art.set_joint_positions(np.array([v], dtype=np.float32), joint_indices=np.array([dof]))
-            art.set_joint_velocities(np.array([0.0], dtype=np.float32), joint_indices=np.array([dof]))
+            t = rig.torch                                   # the articulation API takes torch tensors
+            art.set_joint_positions(t.tensor([v], dtype=t.float32), joint_indices=t.tensor([dof]))
+            art.set_joint_velocities(t.tensor([0.0], dtype=t.float32), joint_indices=t.tensor([dof]))
             rig.step(90)
             if record:
                 self._record(f, True, event="set_joint", articulated=a["name"], value=v, measured=round(rig.joint(a["name"]), 3))

@@ -195,7 +195,28 @@
       "tier": "easy",
       "challenge": "the book already overhangs the island's front edge by about 6 cm",
       "derived_from": "overhang_ready",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.01,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "no_overhang": {
@@ -224,7 +245,28 @@
       "tier": "medium",
       "challenge": "the book overhangs the front edge by 1.5 cm only: the edge pinch fails until it is exposed",
       "derived_from": "no_overhang",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.01,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "far_no_overhang": {
@@ -263,7 +305,28 @@
       "tier": "medium",
       "challenge": "the robot starts at the wall cabinet facing away; the book on the island does not overhang enough",
       "derived_from": "far_no_overhang",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.01,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "table_set": {
@@ -1952,6 +2015,53 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_pushed_back"
+    },
+    "x_two_hand_nominal": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book",
+        "hands": "both"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ],
+     "kind": "experiment"
     }
    },
    "benchmark_version": "v5",
@@ -2049,7 +2159,24 @@
    "variants": {
     "clear": {
      "note": "the blocks stand 30 cm apart, every finger slot is free",
-     "move": {},
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v2",
      "condition_types": [],
      "decisions": [
@@ -2059,7 +2186,33 @@
       "tier": "easy",
       "challenge": "the blocks stand 30 cm apart, every finger slot is free",
       "derived_from": "clear",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "crowded": {
@@ -2080,6 +2233,22 @@
         1.59
        ],
        "yaw_deg": 0
+      },
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
       }
      },
      "conditions": [
@@ -2096,7 +2265,35 @@
       "tier": "medium",
       "challenge": "block B is boxed in: the oatmeal bowl right behind it and the end of the rolling pin right beside it (3 mm gaps), so both pinch axes of B have a finger slot taken",
       "derived_from": "crowded",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "oatmeal",
+         "rolling_pin",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "far_crowded": {
@@ -2126,6 +2323,22 @@
         1.59
        ],
        "yaw_deg": 0
+      },
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
       }
      },
      "since": "v2",
@@ -2143,7 +2356,35 @@
       "tier": "medium",
       "challenge": "the robot starts at the wall cabinet facing away; block B is boxed in",
       "derived_from": "far_crowded",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "oatmeal",
+         "rolling_pin",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "edge_base": {
@@ -3392,7 +3633,16 @@
    "variants": {
     "small_and_large": {
      "note": "two open containers: a mug (8 cm opening) on the island and the wide storage bin (34 x 30 cm) on the TV stand",
-     "move": {},
+     "move": {
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "conditions": [
       "small_container_present"
      ],
@@ -3407,7 +3657,32 @@
       "tier": "medium",
       "challenge": "two open containers: a mug (8 cm opening) on the island and the wide storage bin (34 x 30 cm) on the TV stand",
       "derived_from": "small_and_large",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "large_only": {
@@ -3424,7 +3699,18 @@
       "tier": "easy",
       "challenge": "no mug: the storage bin on the TV stand is the only open container",
       "derived_from": "large_only",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "move": {},
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "far_small_and_large": {
@@ -3453,7 +3739,42 @@
       "tier": "medium",
       "challenge": "the robot starts at the wall cabinet facing away; a mug on the island, the storage bin on the TV stand",
       "derived_from": "far_small_and_large",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "move": {
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "three_containers": {
@@ -5217,6 +5538,14 @@
         1.64
        ],
        "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
       }
      },
      "remove": [
@@ -5231,7 +5560,33 @@
       "tier": "easy",
       "challenge": "a cup stands on the island next to the mug",
       "derived_from": "cup_available",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "cup_counter_b",
+         "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "no_cup": {
@@ -5253,7 +5608,42 @@
       "tier": "medium",
       "challenge": "there is no cup in the house: the mug is the legal substitute",
       "derived_from": "no_cup",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "move": {
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "no_cup_mug_away": {
@@ -5290,7 +5680,32 @@
       "tier": "medium",
       "challenge": "no cup in the house and the mug stands on the TV stand, out of the first view",
       "derived_from": "no_cup_mug_away",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "e2_from_dining_room": {
@@ -6522,7 +6937,18 @@
       "tier": "medium",
       "challenge": "only the pencil lies on the low bookcase",
       "derived_from": "no_pen",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "move": {},
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "no_pen_pencil_away": {
@@ -6559,7 +6985,32 @@
       "tier": "medium",
       "challenge": "no pen; the pencil lies on the dining table in another room",
       "derived_from": "no_pen_pencil_away",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "pencil"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "e1_pencil_asked": {
@@ -7112,7 +7563,7 @@
    "nominal": "nominal",
    "oracle": {
     "no_pen": "alternative_pencil",
-    "no_pen_pencil_away": "hard_search_pencil",
+    "no_pen_pencil_away": "v5fix_hard_search_pencil",
     "e1_pencil_asked": "v5_e1_pencil_asked",
     "e2_pencil_asked_far": "v5_e2_pencil_asked_far",
     "m_grasp_pencil": "v5_m_grasp_pencil",
@@ -7693,10 +8144,16 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "pencil",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        },
        "role": "recover"
       },
@@ -7746,6 +8203,71 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_pencil_taken"
+    },
+    "v5fix_hard_search_pencil": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pen"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pencil"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pencil"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pencil",
+        "receptacle": "desk_1/top"
+       }
+      }
+     ],
+     "kind": "v5_route_fix",
+     "fixes": "hard_search_pencil"
     }
    },
    "benchmark_version": "v5",
@@ -7829,7 +8351,32 @@
    "variants": {
     "free": {
      "note": "the cabinet top is empty",
-     "move": {},
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4096,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v2",
      "condition_types": [],
      "decisions": [
@@ -7839,7 +8386,47 @@
       "tier": "easy",
       "challenge": "the cabinet top is empty",
       "derived_from": "free",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       },
+       {
+        "names": [
+         "pot_lid"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "occupied": {
@@ -7860,6 +8447,22 @@
         0.36
        ],
        "yaw_deg": 0.0
+      },
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
       }
      },
      "conditions": [
@@ -7876,7 +8479,33 @@
       "tier": "medium",
       "challenge": "the pot lid and the oatmeal bowl take up the cabinet top: the 15 cm gap between them is too narrow for a block",
       "derived_from": "occupied",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "occupied_block_away": {
@@ -7909,6 +8538,14 @@
         6.3
        ],
        "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
       }
      },
      "since": "v2",
@@ -7926,7 +8563,46 @@
       "tier": "medium",
       "challenge": "the cabinet top is full and the block was left on the dining table",
       "derived_from": "occupied_block_away",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "display_hidden": {
@@ -9488,7 +10164,17 @@
       "tier": "easy",
       "challenge": "the microwave heats",
       "derived_from": "microwave_works",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "microwave_broken": {
@@ -9512,7 +10198,18 @@
       "tier": "medium",
       "challenge": "the microwave runs its cycle but does not heat: the heat call fails on the measured temperature",
       "derived_from": "microwave_broken",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "move": {},
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "broken_oatmeal_away": {
@@ -9551,7 +10248,28 @@
       "tier": "medium",
       "challenge": "the microwave does not heat and the oatmeal was left on the wall cabinet (carried from the dining table it slipped out of the rim pinch, 2/2)",
       "derived_from": "broken_oatmeal_away",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "oatmeal"
+        ],
+        "step": 0.01,
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "microwave_holds_pot": {
@@ -11035,7 +11753,16 @@
    "variants": {
     "sponge_on_island": {
      "note": "the sponge lies on the island",
-     "move": {},
+     "move": {
+      "kitchen_sponge": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.164,
+        1.8184
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v2",
      "condition_types": [],
      "decisions": [
@@ -11045,7 +11772,32 @@
       "tier": "easy",
       "challenge": "the sponge lies on the island",
       "derived_from": "sponge_on_island",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "sponge_on_tv_stand": {
@@ -11074,7 +11826,32 @@
       "tier": "medium",
       "challenge": "the sponge lies on the TV stand behind the island",
       "derived_from": "sponge_on_tv_stand",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "far_sponge_tv": {
@@ -11112,7 +11889,32 @@
       "tier": "medium",
       "challenge": "the robot starts in the dining room; the sponge is on the TV stand",
       "derived_from": "far_sponge_tv",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "island_cluttered": {
@@ -11331,9 +12133,9 @@
     "e2_from_dining_room": {
      "move": {},
      "start": [
-      4.24,
-      5.12,
-      120.0
+      4.764,
+      0.699,
+      20.0
      ],
      "vary": {
       "groups": [],
@@ -11346,10 +12148,10 @@
      },
      "difficulty": "easy",
      "since": "v5",
-     "note": "the robot starts in the dining room",
+     "note": "the robot starts by the wall cabinet, across the kitchen",
      "v5": {
       "tier": "easy",
-      "challenge": "the robot starts in the dining room",
+      "challenge": "the robot starts by the wall cabinet, across the kitchen",
       "derived_from": "sponge_on_island"
      }
     },
@@ -12991,6 +13793,13 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "approach",
        "args": {
         "target": "kitchen_island/top"
@@ -13155,7 +13964,24 @@
    "variants": {
     "lid_on": {
      "note": "the lid is on the pot",
-     "move": {},
+     "move": {
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4096,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "conditions": [
       "lid_on"
      ],
@@ -13170,7 +13996,29 @@
       "tier": "medium",
       "challenge": "the lid is on the pot",
       "derived_from": "lid_on",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "handled_cooking_pot",
+         "pot_lid"
+        ],
+        "step": 0.01,
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "lid_off": {
@@ -13181,6 +14029,14 @@
        "xy": [
         8.715,
         1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
        ],
        "yaw_deg": 0.0
       }
@@ -13194,7 +14050,17 @@
       "tier": "easy",
       "challenge": "the lid lies on the stove beside the pot (where uncover sets it aside)",
       "derived_from": "lid_off",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "lid_on_spoon_away": {
@@ -13214,6 +14080,22 @@
         0.36
        ],
        "yaw_deg": -49.3
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4096,
+        1.725
+       ],
+       "yaw_deg": 0.0
       }
      },
      "since": "v2",
@@ -13231,7 +14113,43 @@
       "tier": "medium",
       "challenge": "the lid is on the pot and the spoon was left on the low wall cabinet",
       "derived_from": "lid_on_spoon_away",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "breakfast_spoon"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       },
+       {
+        "names": [
+         "handled_cooking_pot",
+         "pot_lid"
+        ],
+        "step": 0.01,
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "cookware_choice": {
@@ -14239,6 +15157,13 @@
       {
        "skill": "look",
        "args": {
+        "target": "kitchen_stove/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
         "target": "kitchen_island/top"
        }
       },
@@ -14897,7 +15822,16 @@
    "variants": {
     "can_on_island": {
      "note": "the can stands on the island",
-     "move": {},
+     "move": {
+      "soda_can": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1797,
+        1.645
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v2",
      "condition_types": [],
      "decisions": [
@@ -14907,7 +15841,32 @@
       "tier": "easy",
       "challenge": "the can stands on the island",
       "derived_from": "can_on_island",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "soda_can"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "can_in_dining_room": {
@@ -14936,7 +15895,32 @@
       "tier": "medium",
       "challenge": "the can stands on the dining table in the next room, out of sight",
       "derived_from": "can_in_dining_room",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "soda_can"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "far_can_far": {
@@ -14974,7 +15958,32 @@
       "tier": "medium",
       "challenge": "the robot starts in the dining room, the can is on the TV stand",
       "derived_from": "far_can_far",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "soda_can"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "e2_from_dining_room": {
@@ -16094,7 +17103,17 @@
       "tier": "easy",
       "challenge": "the apple on the dining table, the basket on the bedroom bookcase",
       "derived_from": "fruits_on_table",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "basket_missing": {
@@ -16117,7 +17136,17 @@
       "tier": "medium",
       "challenge": "no fruit basket on the bookcase: the serving tray on the study desk",
       "derived_from": "basket_missing",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "basket_gone_bowl_there": {
@@ -17290,7 +18319,17 @@
       "tier": "easy",
       "challenge": "the car on the living-room floor, the duck on the TV stand",
       "derived_from": "toys_out",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "duck_in_study": {
@@ -17319,7 +18358,32 @@
       "tier": "medium",
       "challenge": "the duck was left on the study desk",
       "derived_from": "duck_in_study",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "toys_everywhere": {
@@ -19436,7 +20500,16 @@
    "variants": {
     "dishes_on_tv_stand": {
      "note": "bowl and cup on the living-room TV stand, the spoon on the dining table",
-     "move": {},
+     "move": {
+      "bowl": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        8.0304,
+        0.3409
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v3",
      "condition_types": [],
      "decisions": [
@@ -19446,7 +20519,32 @@
       "tier": "easy",
       "challenge": "bowl and cup on the living-room TV stand, the spoon on the dining table",
       "derived_from": "dishes_on_tv_stand",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "bowl"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "no_cup": {
@@ -19457,7 +20555,16 @@
      "remove": [
       "cup"
      ],
-     "move": {},
+     "move": {
+      "bowl": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        8.0304,
+        0.3409
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v3",
      "condition_types": [
       "object_absent"
@@ -19469,7 +20576,32 @@
       "tier": "medium",
       "challenge": "no cup in the house: the mug on the bedroom bookcase",
       "derived_from": "no_cup",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "bowl"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "bowl_on_cabinet": {
@@ -19498,7 +20630,28 @@
       "tier": "medium",
       "challenge": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
       "derived_from": "bowl_on_cabinet",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "bowl"
+        ],
+        "step": 0.01,
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "no_cup_bowl_on_cabinet": {
@@ -19535,7 +20688,28 @@
       "tier": "medium",
       "challenge": "no cup, and the bowl on the low wall cabinet",
       "derived_from": "no_cup_bowl_on_cabinet",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "bowl"
+        ],
+        "step": 0.01,
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "no_cup_spoon_boxed_in": {
@@ -21625,7 +22799,28 @@
       "tier": "easy",
       "challenge": "the book lies on the island with free paths to the front edge",
       "derived_from": "book_free",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.01,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "book_out_of_view": {
@@ -21659,7 +22854,28 @@
       "tier": "medium",
       "challenge": "the robot starts at the wall cabinet facing away",
       "derived_from": "book_out_of_view",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.01,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "e2_from_dining_room": {
@@ -22734,7 +23950,28 @@
       "tier": "easy",
       "challenge": "the pin lies 3 mm from the island's front edge with room behind it",
       "derived_from": "pin_free",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "rolling_pin"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "pin_out_of_view": {
@@ -22768,7 +24005,28 @@
       "tier": "medium",
       "challenge": "the robot starts at the wall cabinet facing away",
       "derived_from": "pin_out_of_view",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "rolling_pin"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "e2_from_dining_room": {
@@ -23842,6 +25100,22 @@
         1.655
        ],
        "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
       }
      },
      "since": "v3",
@@ -23853,7 +25127,32 @@
       "tier": "easy",
       "challenge": "the lid lies on the stove beside the pot",
       "derived_from": "lid_off",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "lid_on": {
@@ -23861,7 +25160,32 @@
      "conditions": [
       "lid_on"
      ],
-     "move": {},
+     "move": {
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4096,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v3",
      "condition_types": [
       "state_precondition"
@@ -23873,7 +25197,43 @@
       "tier": "medium",
       "challenge": "the lid is on the pot: hide is refused until the pot is uncovered",
       "derived_from": "lid_on",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       },
+       {
+        "names": [
+         "handled_cooking_pot",
+         "pot_lid"
+        ],
+        "step": 0.01,
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "block_crowded": {
@@ -23913,6 +25273,14 @@
         1.59
        ],
        "yaw_deg": 0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
       }
      },
      "since": "v3",
@@ -23926,7 +25294,34 @@
       "tier": "medium",
       "challenge": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
       "derived_from": "block_crowded",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "oatmeal",
+         "rolling_pin",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "lid_on_crowded": {
@@ -23959,6 +25354,22 @@
         1.59
        ],
        "yaw_deg": 0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4096,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
       }
      },
      "since": "v3",
@@ -23975,7 +25386,45 @@
       "tier": "medium",
       "challenge": "the lid is on the pot and the block is boxed in",
       "derived_from": "lid_on_crowded",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "oatmeal",
+         "rolling_pin",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       },
+       {
+        "names": [
+         "handled_cooking_pot",
+         "pot_lid"
+        ],
+        "step": 0.01,
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "far_lid_on": {
@@ -25259,7 +26708,24 @@
    "variants": {
     "at_island": {
      "note": "the robot starts at its default spot in front of the island",
-     "move": {},
+     "move": {
+      "plate_inside_kitchen_cabinet": {
+       "support": "kitchen_cabinet_6/inside_shelf",
+       "xy": [
+        3.6299,
+        0.3599
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_inside_kitchen_cabinet": {
+       "support": "kitchen_cabinet_6/inside_shelf",
+       "xy": [
+        3.3599,
+        0.3601
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v3",
      "condition_types": [],
      "decisions": [
@@ -25269,7 +26735,17 @@
       "tier": "easy",
       "challenge": "the robot starts at its default spot in front of the island",
       "derived_from": "at_island",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "e2_from_dining_room": {
@@ -26312,7 +27788,16 @@
    "variants": {
     "bin_on_bookcase": {
      "note": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
-     "move": {},
+     "move": {
+      "wide_storage_bin": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0888,
+        -0.4277
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "since": "v3",
      "condition_types": [],
      "decisions": [
@@ -26322,7 +27807,17 @@
       "tier": "easy",
       "challenge": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
       "derived_from": "bin_on_bookcase",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "lookalike_bin": {
@@ -28127,7 +29622,32 @@
       "tier": "easy",
       "challenge": "the bottle on the low wall cabinet top",
       "derived_from": "bottle_on_cabinet",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "juice_bottle"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "table_full": {
@@ -30258,7 +31778,16 @@
      "conditions": [
       "no_overhang"
      ],
-     "move": {},
+     "move": {
+      "book_red": {
+       "support": "desk_1/top",
+       "xy": [
+        -1.2411,
+        -6.1711
+       ],
+       "yaw_deg": 90.0
+      }
+     },
      "since": "v3",
      "condition_types": [
       "grasp_blocked"
@@ -30270,7 +31799,28 @@
       "tier": "medium",
       "challenge": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
       "derived_from": "book_on_desk",
-      "existing": true
+      "existing": true,
+      "seed_vary_added": true
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "book_red"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
      }
     },
     "shelf_taken": {
@@ -31893,6 +33443,55 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_shelf_taken"
+    },
+    "x_two_hand_nominal": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red",
+        "hands": "both"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "bookcase_2/top"
+       }
+      }
+     ],
+     "kind": "experiment"
     }
    },
    "vary": {

@@ -487,8 +487,8 @@ def T08(t, R):
         "medium": ["sponge_on_tv_stand", "far_sponge_tv", "m_grasp_sponge"],
         "hard": ["island_cluttered", "h_action_grasp_and_ik", "h_mixed_cluttered_grasp", "h_dynamic_sponge_taken"],
         "new": {
-            "e2_from_dining_room": dict(tier="easy", base="sponge_on_island", start=START["dining"],
-                                        challenge="the robot starts in the dining room",
+            "e2_from_dining_room": dict(tier="easy", base="sponge_on_island", start=START["kitchen_wall"],
+                                        challenge="the robot starts by the wall cabinet, across the kitchen",
                                         route=prefix(nom, S("navigate", destination="kitchen_island/top"))),
             "m_grasp_sponge": dict(tier="medium", base="sponge_on_island", failures=[f_grasp(X)],
                                    challenge="the sponge slips on the first pick", route=with_grasp(nom, X)),
@@ -520,7 +520,8 @@ def T09(t, R):
         "new": {
             "e2_from_dining_room": dict(tier="easy", base="lid_off", start=START["dining"],
                                         challenge="the robot starts in the dining room",
-                                        route=prefix(nom, S("navigate", destination="kitchen_island/top"))),
+                                        route=prefix(nom, S("navigate", destination="kitchen_island/top"),
+                                                     S("look", target="kitchen_stove/top"))),
             "m_grasp_spoon": dict(tier="medium", base="lid_off", failures=[f_grasp(X)],
                                   challenge="the spoon slips on the first pick", route=with_grasp(nom, X)),
             "h_action_grasp_and_ik": dict(
@@ -1023,6 +1024,36 @@ V4_CONSTRAINT = {      # (kind, check atoms that hold at the start) of each v4 H
 }
 # Open-Skill track demonstrations (not formal variants): routes that call the example user skills of
 # skill_ext/examples; run with --track open --skills skill_ext/examples
+def _search_to_look(steps, obj, place):
+    """search(obj) -> drive to the place and look at it (the thin pencil is not found by search's views)."""
+    steps = copy.deepcopy(steps)
+    i = next(i for i, st in enumerate(steps) if st["skill"] == "search" and st["args"].get("object") == obj)
+    steps[i:i + 1] = [REC(S("navigate", destination=place)), REC(S("look", target=place))]
+    return steps
+
+
+# Oracle routes of existing variants that fail in physics for a route reason: v5 maps the variant to a
+# fixed copy (``v5fix_<route>``); the v3 route stays as it is in both catalogs.
+ROUTE_FIX = {
+    "T05_pen_or_pencil_to_desk": {"no_pen_pencil_away": ("hard_search_pencil",
+                                                         lambda r: _search_to_look(r, "pencil", "dining_table_2/top"))},
+}
+
+
+# Physics experiments (not oracle routes): a route variant is tried here first and becomes an oracle only
+# after it passes in Isaac Sim.
+def _two_hand(steps, x):
+    steps = copy.deepcopy(steps)
+    for st in steps:
+        if st["skill"] == "pick" and st["args"].get("object") == x:
+            st["args"]["hands"] = "both"
+    return steps
+
+
+EXPERIMENT_ROUTES = {
+    "T01_book_to_dining_table": {"x_two_hand_nominal": lambda R: _two_hand(R("nominal"), "paperback_book")},
+    "T14_shelve_the_book": {"x_two_hand_nominal": lambda R: _two_hand(R("nominal"), "book_red")},
+}
 OPEN_TRACK_ROUTES = {"T06_block_destination_occupied": {
     "open_deliver": [S("look", target="kitchen_island/top"),
                      S("deliver", object="wooden_block_a", support="kitchen_cabinet_6/top")],
@@ -1034,6 +1065,104 @@ OPEN_TRACK_ROUTES = {"T06_block_destination_occupied": {
 HARD_FROM_V4 = "task"           # every v4 Hard is a task-level replanning variant (initial constraint)
 OVERLAY = ("move", "add", "remove", "start", "thermal_sources", "thermal_override", "vary", "conditions")
 FIELDS = OVERLAY + ("goal", "instruction", "instruction_zh", "watch", "failures", "may_end_on_floor")
+
+
+# ----------------------------------------------------------------- seed diversity (A-lite step 1)
+JITTER_M = 0.02          # half range of the seeded object shift (1 cm grid)
+EDGE_LOCK_M = 0.04       # an object this close to a support edge does not move across that edge
+_BASE = {}
+
+
+def _base_objects(base):
+    if base not in _BASE:
+        ann = json.loads((ROOT / base / "annotation.json").read_text())
+        _BASE[base] = ({o["name"]: o for o in ann["objects"]}, {x["name"]: x for x in ann["supports"]})
+    return _BASE[base]
+
+
+def _base_pose(o, asset):
+    """{support, xy, yaw_deg} of a base-scene object whose yaw is recoverable from its box (0 / 90 deg);
+    None for a tilted, rotated-by-another-angle or floor object."""
+    if not o.get("support"):
+        return None
+    b = o["aabb"]
+    dx, dy = b[3] - b[0], b[4] - b[1]
+    sx, sy = asset["size"][:2]
+    if abs(dx - sx) < 0.006 and abs(dy - sy) < 0.006:
+        yaw = 0.0
+    elif abs(dx - sy) < 0.006 and abs(dy - sx) < 0.006:
+        yaw = 90.0
+    else:
+        return None
+    return {"support": o["support"], "xy": [round((b[0] + b[3]) / 2, 4), round((b[1] + b[4]) / 2, 4)], "yaw_deg": yaw}
+
+
+def _box(asset, m, sup):
+    import math
+    half = [asset["size"][0] / 2, asset["size"][1] / 2]
+    if abs(math.sin(math.radians(m.get("yaw_deg", 0.0)))) > 0.7:
+        half = half[::-1]
+    return [m["xy"][0] - half[0], m["xy"][1] - half[1], m["xy"][0] + half[0], m["xy"][1] + half[1]]
+
+
+def seed_vary(t, v):
+    """A vary block for a variant without one: a rigid shift of the task objects that stand on supports,
+    grouped per support (gaps that make a condition hold stay as declared), locked across a support edge
+    an object is near (overhangs stay as declared), plus the start variation of the v4 Hard."""
+    objs, sups = _base_objects(t["scene"]["base"])
+    assets = json.loads((ROOT / "annotations/assets.json").read_text())
+    removed = set(t["scene"].get("remove", [])) | set(v.get("remove", []))
+    move = dict(v.get("move", {}))
+    for n in t.get("watch", []):                      # task objects still at their base pose join the overlay
+        if n in objs and n not in move and n not in removed:
+            pose = _base_pose(objs[n], assets[objs[n]["asset"]])
+            if pose:
+                move[n] = pose
+    groups = {}
+    for n, m in move.items():
+        if not m.get("support") or m["support"] not in sups or n not in objs:
+            continue
+        g = groups.setdefault(m["support"], {"names": [], "dx": JITTER_M, "dy": JITTER_M})
+        g["names"].append(n)
+        a = sups[m["support"]].get("aabb_xy")
+        if a:
+            bx = _box(assets[objs[n]["asset"]], m, sups)
+            if bx[0] - a[0] < EDGE_LOCK_M or a[2] - bx[2] < EDGE_LOCK_M:
+                g["dx"] = 0.0
+            if bx[1] - a[1] < EDGE_LOCK_M or a[3] - bx[3] < EDGE_LOCK_M:
+                g["dy"] = 0.0
+    out = []
+    for sup, g in sorted(groups.items()):
+        boxes = {n: _box(assets[objs[n]["asset"]], move[n], sups) for n in g["names"]}
+        others = []
+        for n, o in objs.items():                    # what else stands on that support in this variant
+            if n in g["names"] or n in removed:
+                continue
+            m = move.get(n)
+            if m is not None:
+                if m.get("support") == sup and n in objs:
+                    others.append(_box(assets[objs[n]["asset"]], m, sups))
+            elif o.get("support") == sup:
+                others.append([o["aabb"][0], o["aabb"][1], o["aabb"][3], o["aabb"][4]])
+        rng = {}
+        for ax, (lo_i, hi_i) in (("dx", (0, 2)), ("dy", (1, 3))):
+            if not g[ax]:
+                continue
+            neg = pos = JITTER_M
+            o_lo, o_hi = (1, 3) if ax == "dx" else (0, 2)     # the other axis: does the object overlap it?
+            for b in boxes.values():
+                for ob in others:
+                    if b[o_lo] < ob[o_hi] and ob[o_lo] < b[o_hi]:          # in line along this axis
+                        if ob[hi_i] <= b[lo_i]:
+                            neg = min(neg, b[lo_i] - ob[hi_i] - 0.005)
+                        elif ob[lo_i] >= b[hi_i]:
+                            pos = min(pos, ob[lo_i] - b[hi_i] - 0.005)
+            neg, pos = max(0.0, int(neg * 100) / 100), max(0.0, int(pos * 100) / 100)
+            if neg or pos:
+                rng[ax] = [-neg, pos]
+        if rng:
+            out.append(dict(names=sorted(g["names"]), step=0.01, **rng))
+    return move, {"groups": out, "start": copy.deepcopy(VARY["start"])}
 
 
 # ----------------------------------------------------------------- assembly
@@ -1092,9 +1221,22 @@ def build_task(t: dict) -> dict:
             v["v5"] = meta
             if difficulty(v) != tier:
                 raise ValueError(f"{t['task_id']}/{vid}: v3 tier {difficulty(v)} != formal {tier}")
+    for vid, (rname, fn) in ROUTE_FIX.get(t["task_id"], {}).items():
+        new = f"v5fix_{rname}"
+        t["routes"][new] = {"steps": fn(copy.deepcopy(t["routes"][rname]["steps"])), "kind": "v5_route_fix",
+                            "fixes": rname}
+        t["oracle"][vid] = new
+    for rname, fn in EXPERIMENT_ROUTES.get(t["task_id"], {}).items():
+        t["routes"][rname] = {"steps": fn(R), "kind": "experiment"}
     for rname, steps in OPEN_TRACK_ROUTES.get(t["task_id"], {}).items():
         t["routes"][rname] = {"steps": steps, "kind": "open_track_demo", "track": "open",
                               "skills": ["skill_ext/examples"]}
+    for ids in formal.values():
+        for vid in ids:
+            v = t["variants"][vid]
+            if not v.get("vary"):
+                v["move"], v["vary"] = seed_vary(t, v)
+                v["v5"]["seed_vary_added"] = True    # differs from the v3 configuration of the same id
     t["v5_formal"] = formal
     t["v5_supplementary"] = sorted(set(t["variants"]) - {x for ids in formal.values() for x in ids})
     t["benchmark_version"] = "v5"
@@ -1229,7 +1371,8 @@ REBASE = {
                                 ("open", {"articulated": "kitchen_cabinet_6"}))],
             "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone "
                          "takes the pencil to the dining table: close the cabinet again and search the pencil",
-            "route": tr[:3] + [REC(S("search", object="pencil", region="dining_room_0_1")),
+            "route": tr[:3] + [REC(S("navigate", destination="dining_table_2/top")),
+                               REC(S("look", target="dining_table_2/top")),
                                REC(S("navigate", destination="kitchen_cabinet_6")),
                                REC(S("close", articulated="kitchen_cabinet_6")),
                                REC(S("navigate", destination="pencil")), REC(S("pick", object="pencil")),
@@ -1249,8 +1392,9 @@ REBASE = {
                                 ("look", {"target": "kitchen_island/top"}))],
             "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge "
                          "to the wall cabinet: search it",
-            "route": _before(tr, "navigate", [S("search", object="kitchen_sponge", region="living_room_0_0")],
-                             destination="kitchen_sponge")}},
+            "route": _before(_before(tr, "navigate", [S("search", object="kitchen_sponge", region="living_room_0_0")],
+                                     destination="kitchen_sponge"),
+                             "approach", [S("navigate", destination="kitchen_island/top")], target="kitchen_island/top")}},
     "T09_tomato_soup": {
         "h_action_grasp_and_ik": lambda tr, R: {"route": with_ik(with_grasp(tr, SPOON), "pick", "pot_lid")},
         "h_dynamic_spoon_taken": lambda tr, R: {"route": _before(tr, "navigate", [S("search", object=SPOON, region="living_room_0_0")], destination=SPOON)}},
