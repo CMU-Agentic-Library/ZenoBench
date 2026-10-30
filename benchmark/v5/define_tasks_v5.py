@@ -99,7 +99,8 @@ def with_slip(steps, x):
     """x slips at the start of its first carry (it falls where it was picked); pick it again, drive on."""
     steps = copy.deepcopy(steps)
     i = first_carry(steps, x)
-    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("pick", object=x)), REC(steps[i])]
+    # it fell where it was picked, possibly out of the head's view: re-park at it (approach looks at the target)
+    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("approach", target=x)), REC(S("pick", object=x)), REC(steps[i])]
     return steps
 
 
@@ -108,8 +109,8 @@ def with_place_miss(steps, x, skill="place"):
     steps = copy.deepcopy(steps)
     i = find(steps, skill, last=True, object=x)
     dest = S("navigate", destination=steps[i]["args"].get("receptacle") or steps[i]["args"].get("container"))
-    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("navigate", destination=x)), REC(S("pick", object=x)),
-                      REC(dest), REC(steps[i])]
+    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("navigate", destination=x)), REC(S("approach", target=x)),
+                      REC(S("pick", object=x)), REC(dest), REC(steps[i])]
     return steps
 
 
