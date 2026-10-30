@@ -1680,7 +1680,7 @@
    "to": "skill_043",
    "to_verb": "heat",
    "kind": "alternative",
-   "when": "no microwave is available: heat in a pot on the stove",
+   "when": "no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove",
    "bind": {
     "food": "$food",
     "appliance": "kitchen_stove"

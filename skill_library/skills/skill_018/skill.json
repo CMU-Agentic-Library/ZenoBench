@@ -7,7 +7,7 @@
  "noun": "object",
  "title": "Place a held object",
  "group": "grasp_and_hand",
- "signature": "place(object: object_ref, receptacle: receptacle_ref, hint_xy: xy?, pass_by: pose2d?)",
+ "signature": "place(object: object_ref, receptacle: receptacle_ref, hint_xy: xy?, near: entity_ref?, pass_by: pose2d?)",
  "action_predicate": {
   "name": "place_object",
   "verb": "place",
@@ -16,10 +16,11 @@
    "object",
    "receptacle",
    "hint_xy",
+   "near",
    "pass_by"
   ]
  },
- "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past.",
+ "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
  "use_when": "A held object must end up resting on a support, in a container or on a burner.",
  "not_to_be_confused_with": {
   "drop": "drop releases above a container opening without lowering.",
@@ -41,6 +42,11 @@
    "type": "xy",
    "required": false,
    "description": "Optional preferred position on a surface."
+  },
+  "near": {
+   "type": "entity_ref",
+   "required": false,
+   "description": "Optional: put it on the free spot of the surface closest to this object (e.g. the bowl next to the spoon). Use instead of hint_xy."
   },
   "pass_by": {
    "type": "pose2d",

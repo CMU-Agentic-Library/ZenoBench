@@ -1,6 +1,6 @@
 # contract_013 — Crouch the torso
 
-Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.
+Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.
 
 Paired SkillNode: `skill_005` (`crouch-torso`).
 
@@ -16,7 +16,7 @@ Paired SkillNode: `skill_005` (`crouch-torso`).
 
 ## Policy paths
 
-- `to_height` when args.height_m: `policy_004($height_m)`
+- `to_height` when args.height_m is given: `policy_004($height_m)`
 - `lowest` when always: `policy_005()`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

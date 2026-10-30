@@ -16,7 +16,7 @@
    "height_m"
   ]
  },
- "description": "Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.",
+ "description": "Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.",
  "use_when": "The next target is low (floor, low shelf) or the head must look under something.",
  "not_to_be_confused_with": {
   "bend": "bend pitches the waist forward; crouch lowers the torso vertically."
@@ -25,7 +25,7 @@
   "height_m": {
    "type": "number",
    "required": false,
-   "description": "Optional torso joint target in [-0.54, 0]; omit for the lowest."
+   "description": "Optional torso joint target in [-0.54, -0.03] m (0 is full height: use stand); omit for the lowest."
   }
  },
  "required_inputs": [],
@@ -106,7 +106,7 @@
   {
    "path_id": "to_height",
    "when": [
-    "args.height_m"
+    "args.height_m is given"
    ],
    "extra_preconditions": [],
    "extra_postconditions": [

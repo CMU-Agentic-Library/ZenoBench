@@ -161,7 +161,7 @@ contract 本身的失败放在结果的 `error_code` 里，HTTP 仍是 200：
 | `UNKNOWN_CONTRACT` | 没有这个动词 | 没有 | 无 |
 | `BAD_CALL` | 调用不是 `{"contract", "args"}` 结构 | 没有 | 无 |
 | `INPUT_MISSING` | 缺少必填参数 | 没有 | 无 |
-| `INPUT_UNKNOWN` | 参数名不认识，或参数值不在枚举里（如 `grasp`、`hands`） | 没有 | 无 |
+| `INPUT_UNKNOWN` | 参数名不认识，参数值不在枚举里（如 `grasp`、`hands`），或互斥参数同时给出（`place` 的 `hint_xy` 和 `near`） | 没有 | 无 |
 | `NOUN_INVALID` | 物件名不在场景中，或类型不符（比如把 support 当 object） | 没有 | 无 |
 | `PRECONDITION_FAILED` | 执行前检查不满足 | 没有 | 前置条件 |
 | `NO_PATH` | 前置条件都满足，但绑定的名词和机器人当前状态（如手里拿着什么）没有匹配的 policy 路径 | 没有 | 前置条件 |

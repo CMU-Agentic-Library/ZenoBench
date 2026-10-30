@@ -1,13 +1,13 @@
 ---
 name: place-object
-description: "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past."
+description: "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past."
 ---
 
 # Place a held object (`skill_018`)
 
-`place(object: object_ref, receptacle: receptacle_ref, hint_xy: xy?, pass_by: pose2d?)`
+`place(object: object_ref, receptacle: receptacle_ref, hint_xy: xy?, near: entity_ref?, pass_by: pose2d?)`
 
-Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past.
+Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.
 
 ## When to use
 
@@ -24,6 +24,7 @@ A held object must end up resting on a support, in a container or on a burner.
 - `object` (`object_ref`): The held object.
 - `receptacle` (`receptacle_ref`): A support surface or an open container.
 - `hint_xy` (`xy`, optional): Optional preferred position on a surface.
+- `near` (`entity_ref`, optional): Optional: put it on the free spot of the surface closest to this object (e.g. the bowl next to the spoon). Use instead of hint_xy.
 - `pass_by` (`pose2d`, optional): Optional base waypoint: place while driving past.
 
 ## Outputs

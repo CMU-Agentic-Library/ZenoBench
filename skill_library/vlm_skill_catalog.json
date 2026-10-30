@@ -2181,7 +2181,7 @@
      "height_m"
     ]
    },
-   "description": "Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.",
+   "description": "Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.",
    "use_when": "The next target is low (floor, low shelf) or the head must look under something.",
    "not_to_be_confused_with": {
     "bend": "bend pitches the waist forward; crouch lowers the torso vertically."
@@ -2190,7 +2190,7 @@
     "height_m": {
      "type": "number",
      "required": false,
-     "description": "Optional torso joint target in [-0.54, 0]; omit for the lowest."
+     "description": "Optional torso joint target in [-0.54, -0.03] m (0 is full height: use stand); omit for the lowest."
     }
    },
    "required_inputs": [],
@@ -2271,7 +2271,7 @@
     {
      "path_id": "to_height",
      "when": [
-      "args.height_m"
+      "args.height_m is given"
      ],
      "extra_preconditions": [],
      "extra_postconditions": [
@@ -5518,7 +5518,7 @@
    "noun": "object",
    "title": "Place a held object",
    "group": "grasp_and_hand",
-   "signature": "place(object: object_ref, receptacle: receptacle_ref, hint_xy: xy?, pass_by: pose2d?)",
+   "signature": "place(object: object_ref, receptacle: receptacle_ref, hint_xy: xy?, near: entity_ref?, pass_by: pose2d?)",
    "action_predicate": {
     "name": "place_object",
     "verb": "place",
@@ -5527,10 +5527,11 @@
      "object",
      "receptacle",
      "hint_xy",
+     "near",
      "pass_by"
     ]
    },
-   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past.",
+   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
    "use_when": "A held object must end up resting on a support, in a container or on a burner.",
    "not_to_be_confused_with": {
     "drop": "drop releases above a container opening without lowering.",
@@ -5552,6 +5553,11 @@
      "type": "xy",
      "required": false,
      "description": "Optional preferred position on a surface."
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional: put it on the free spot of the surface closest to this object (e.g. the bowl next to the spoon). Use instead of hint_xy."
     },
     "pass_by": {
      "type": "pose2d",
@@ -7415,17 +7421,18 @@
    "noun": "object",
    "title": "Lift a held object",
    "group": "grasp_and_hand",
-   "signature": "lift(object: object_ref, height_m: positive_number)",
+   "signature": "lift(object: object_ref, height_m: positive_number, near: entity_ref?)",
    "action_predicate": {
     "name": "lift_object",
     "verb": "lift",
     "noun": "object",
     "arguments": [
      "object",
-     "height_m"
+     "height_m",
+     "near"
     ]
    },
-   "description": "Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).",
+   "description": "Raise the held object until its bottom is at least the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. above a bin rim or a furniture edge before carrying).",
    "use_when": "A held object must be raised to a height (clear an obstacle, show it).",
    "not_to_be_confused_with": {
     "stand": "stand moves the torso, not the held object.",
@@ -7441,8 +7448,13 @@
     "height_m": {
      "type": "positive_number",
      "required": true,
-     "description": "Minimum world height of the object's bottom.",
+     "description": "Minimum height of the object's bottom: world height, or above the top of near when near is given.",
      "default": 0.55
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim)."
     }
    },
    "required_inputs": [
@@ -7673,17 +7685,18 @@
    "noun": "object",
    "title": "Lower a held object",
    "group": "grasp_and_hand",
-   "signature": "lower(object: object_ref, height_m: positive_number)",
+   "signature": "lower(object: object_ref, height_m: positive_number, near: entity_ref?)",
    "action_predicate": {
     "name": "lower_object",
     "verb": "lower",
     "noun": "object",
     "arguments": [
      "object",
-     "height_m"
+     "height_m",
+     "near"
     ]
    },
-   "description": "Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).",
+   "description": "Move the held object down until its bottom is at most the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. under a low shelf clearance, just above a pot rim).",
    "use_when": "A held object must be brought down to a height without releasing it.",
    "not_to_be_confused_with": {
     "place": "lower keeps holding the object."
@@ -7697,7 +7710,12 @@
     "height_m": {
      "type": "positive_number",
      "required": true,
-     "description": "Maximum world height of the object's bottom."
+     "description": "Maximum height of the object's bottom: world height, or above the top of near when near is given."
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim)."
     }
    },
    "required_inputs": [
@@ -12551,7 +12569,7 @@
      "temp_c"
     ]
    },
-   "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).",
+   "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed.",
    "use_when": "Food must reach a target temperature with the microwave or the stove.",
    "not_to_be_confused_with": {
     "chill": "opposite direction, in the refrigerator.",
@@ -12772,7 +12790,7 @@
       "policy_090",
       "policy_094"
      ],
-     "note": "Food must be inside a pot (or pan) whose bottom rests on the burner."
+     "note": "The food's own bowl, or a pot holding the food, must stand on the burner disc; no lid needed."
     }
    ],
    "relations": {
@@ -12871,12 +12889,12 @@
      {
       "skill_id": "skill_043",
       "verb": "heat",
-      "when": "no microwave is available: heat in a pot on the stove",
+      "when": "no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove",
       "bind": {
        "food": "$food",
        "appliance": "kitchen_stove"
       },
-      "reason": "Same verb, other noun: the stove path pours/places the food into the pot first."
+      "reason": "Same verb, other noun: place the food's bowl on a free burner first (kitchen_stove/top)."
      },
      {
       "skill_id": "skill_068",

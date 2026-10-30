@@ -6,13 +6,13 @@
  "verb": "crouch",
  "noun": "torso",
  "name": "Crouch the torso",
- "description": "Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.",
+ "description": "Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.",
  "group": "base_and_body",
  "inputs": {
   "height_m": {
    "type": "number",
    "required": false,
-   "description": "Optional torso joint target in [-0.54, 0]; omit for the lowest."
+   "description": "Optional torso joint target in [-0.54, -0.03] m (0 is full height: use stand); omit for the lowest."
   }
  },
  "outputs": {},
@@ -94,7 +94,7 @@
      {
       "noun": "args",
       "field": "height_m",
-      "op": "truthy",
+      "op": "set",
       "value": true
      }
     ],

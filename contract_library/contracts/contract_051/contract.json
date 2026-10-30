@@ -6,7 +6,7 @@
  "verb": "heat",
  "noun": "food",
  "name": "Heat food",
- "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).",
+ "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed.",
  "group": "articulated_and_appliance",
  "inputs": {
   "food": {
@@ -289,7 +289,7 @@
      }
     ],
     "ensures": [],
-    "note": "Food must be inside a pot (or pan) whose bottom rests on the burner."
+    "note": "The food's own bowl, or a pot holding the food, must stand on the burner disc; no lid needed."
    }
   ]
  },
@@ -319,12 +319,12 @@
   {
    "kind": "alternative",
    "to": "heat",
-   "when": "no microwave is available: heat in a pot on the stove",
+   "when": "no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove",
    "bind": {
     "food": "$food",
     "appliance": "kitchen_stove"
    },
-   "reason": "Same verb, other noun: the stove path pours/places the food into the pot first.",
+   "reason": "Same verb, other noun: place the food's bowl on a free burner first (kitchen_stove/top).",
    "to_skill_id": "skill_043"
   },
   {

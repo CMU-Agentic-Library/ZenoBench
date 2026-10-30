@@ -57,7 +57,7 @@ def cond_text(c):
     return {"equals": f"{c['noun']}.{c['field']} == {v!r}", "in": f"{c['noun']}.{c['field']} in {v!r}",
             "contains": f"{v!r} in {c['noun']}.{c['field']}", "gte": f"{c['noun']}.{c['field']} >= {v}",
             "lte": f"{c['noun']}.{c['field']} <= {v}", "truthy": f"{c['noun']}.{c['field']}",
-            "falsy": f"not {c['noun']}.{c['field']}"}[c["op"]]
+            "falsy": f"not {c['noun']}.{c['field']}", "set": f"{c['noun']}.{c['field']} is given"}[c["op"]]
 
 
 def node_name(rec, sep):

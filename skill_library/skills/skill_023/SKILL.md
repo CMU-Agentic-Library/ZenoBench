@@ -1,13 +1,13 @@
 ---
 name: lift-object
-description: "Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying)."
+description: "Raise the held object until its bottom is at least the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. above a bin rim or a furniture edge before carrying)."
 ---
 
 # Lift a held object (`skill_023`)
 
-`lift(object: object_ref, height_m: positive_number)`
+`lift(object: object_ref, height_m: positive_number, near: entity_ref?)`
 
-Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).
+Raise the held object until its bottom is at least the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. above a bin rim or a furniture edge before carrying).
 
 ## When to use
 
@@ -22,7 +22,8 @@ A held object must be raised to a height (clear an obstacle, show it).
 ## Inputs
 
 - `object` (`object_ref`): The held object.
-- `height_m` (`positive_number`, default 0.55): Minimum world height of the object's bottom.
+- `height_m` (`positive_number`, default 0.55): Minimum height of the object's bottom: world height, or above the top of near when near is given.
+- `near` (`entity_ref`, optional): Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim).
 
 ## Applicability
 

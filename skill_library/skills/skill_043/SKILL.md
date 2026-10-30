@@ -1,13 +1,13 @@
 ---
 name: heat-food
-description: "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off)."
+description: "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed."
 ---
 
 # Heat food (`skill_043`)
 
 `heat(food: object_ref, appliance: appliance_ref, temp_c: number)`
 
-Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).
+Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed.
 
 ## When to use
 
@@ -63,7 +63,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 1. `policy_094(@appliance.power_button, state=True)`
 2. `policy_090($food, $temp_c, $appliance)`
 - extra precondition `in_cookware_on_burner(food=$food, appliance=$appliance)`
-- Food must be inside a pot (or pan) whose bottom rests on the burner.
+- The food's own bowl, or a pot holding the food, must stand on the burner disc; no lid needed.
 
 ## Relations
 
@@ -78,7 +78,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Fallback on failure: `place` (`skill_018`) (repair, repairs in_appliance) — the food is not in the appliance
 - Fallback on failure: `wait` (`skill_056`) (recover) — the food is still below the target when the time budget ends
 - Fallback on failure: `pour` (`skill_039`) (recover) — the food is in a cup, not in the pot on the burner
-- Alternative: `heat` (`skill_043`) — no microwave is available: heat in a pot on the stove
+- Alternative: `heat` (`skill_043`) — no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove
 - Alternative: `stop` (`skill_068`) — heat stops automatically at a target temperature
 
 ## Failure

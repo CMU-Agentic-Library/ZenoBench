@@ -879,13 +879,13 @@
    "verb": "crouch",
    "noun": "torso",
    "name": "Crouch the torso",
-   "description": "Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.",
+   "description": "Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.",
    "group": "base_and_body",
    "inputs": {
     "height_m": {
      "type": "number",
      "required": false,
-     "description": "Optional torso joint target in [-0.54, 0]; omit for the lowest."
+     "description": "Optional torso joint target in [-0.54, -0.03] m (0 is full height: use stand); omit for the lowest."
     }
    },
    "outputs": {},
@@ -967,7 +967,7 @@
        {
         "noun": "args",
         "field": "height_m",
-        "op": "truthy",
+        "op": "set",
         "value": true
        }
       ],
@@ -3743,7 +3743,7 @@
    "verb": "place",
    "noun": "object",
    "name": "Place a held object",
-   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while driving past.",
+   "description": "Put the right-held object down on a support surface or into an open container and release it. The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a named object), or while driving past.",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -3760,6 +3760,11 @@
      "type": "xy",
      "required": false,
      "description": "Optional preferred position on a surface."
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional: put it on the free spot of the surface closest to this object (e.g. the bowl next to the spoon). Use instead of hint_xy."
     },
     "pass_by": {
      "type": "pose2d",
@@ -4122,6 +4127,10 @@
     "receptacle": {
      "type": "receptacle_ref",
      "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+    },
+    "near": {
+     "type": "entity_ref",
+     "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
     }
    },
    "action_predicate": {
@@ -4132,6 +4141,7 @@
      "object",
      "receptacle",
      "hint_xy",
+     "near",
      "pass_by"
     ]
    },
@@ -5453,7 +5463,7 @@
    "verb": "lift",
    "noun": "object",
    "name": "Lift a held object",
-   "description": "Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).",
+   "description": "Raise the held object until its bottom is at least the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. above a bin rim or a furniture edge before carrying).",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -5464,8 +5474,13 @@
     "height_m": {
      "type": "positive_number",
      "required": true,
-     "description": "Minimum world height of the object's bottom.",
+     "description": "Minimum height of the object's bottom: world height, or above the top of near when near is given.",
      "default": 0.55
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim)."
     }
    },
    "outputs": {},
@@ -5560,6 +5575,10 @@
     "object": {
      "type": "object_ref",
      "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+    },
+    "near": {
+     "type": "entity_ref",
+     "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
     }
    },
    "action_predicate": {
@@ -5568,7 +5587,8 @@
     "noun": "object",
     "arguments": [
      "object",
-     "height_m"
+     "height_m",
+     "near"
     ]
    },
    "policy_plan": {
@@ -5632,7 +5652,7 @@
    "verb": "lower",
    "noun": "object",
    "name": "Lower a held object",
-   "description": "Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).",
+   "description": "Move the held object down until its bottom is at most the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. under a low shelf clearance, just above a pot rim).",
    "group": "grasp_and_hand",
    "inputs": {
     "object": {
@@ -5643,7 +5663,12 @@
     "height_m": {
      "type": "positive_number",
      "required": true,
-     "description": "Maximum world height of the object's bottom."
+     "description": "Maximum height of the object's bottom: world height, or above the top of near when near is given."
+    },
+    "near": {
+     "type": "entity_ref",
+     "required": false,
+     "description": "Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim)."
     }
    },
    "outputs": {},
@@ -5738,6 +5763,10 @@
     "object": {
      "type": "object_ref",
      "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+    },
+    "near": {
+     "type": "entity_ref",
+     "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
     }
    },
    "action_predicate": {
@@ -5746,7 +5775,8 @@
     "noun": "object",
     "arguments": [
      "object",
-     "height_m"
+     "height_m",
+     "near"
     ]
    },
    "policy_plan": {
@@ -9976,7 +10006,7 @@
    "verb": "heat",
    "noun": "food",
    "name": "Heat food",
-   "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or in a pot on the stove burner (power key on, wait, power key off).",
+   "description": "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave (start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed.",
    "group": "articulated_and_appliance",
    "inputs": {
     "food": {
@@ -10259,7 +10289,7 @@
        }
       ],
       "ensures": [],
-      "note": "Food must be inside a pot (or pan) whose bottom rests on the burner."
+      "note": "The food's own bowl, or a pot holding the food, must stand on the burner disc; no lid needed."
      }
     ]
    },
@@ -10289,12 +10319,12 @@
     {
      "kind": "alternative",
      "to": "heat",
-     "when": "no microwave is available: heat in a pot on the stove",
+     "when": "no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove",
      "bind": {
       "food": "$food",
       "appliance": "kitchen_stove"
      },
-     "reason": "Same verb, other noun: the stove path pours/places the food into the pot first.",
+     "reason": "Same verb, other noun: place the food's bowl on a free burner first (kitchen_stove/top).",
      "to_skill_id": "skill_043"
     },
     {

@@ -6,7 +6,7 @@
  "verb": "lift",
  "noun": "object",
  "name": "Lift a held object",
- "description": "Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a furniture edge before carrying).",
+ "description": "Raise the held object until its bottom is at least the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. above a bin rim or a furniture edge before carrying).",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {
@@ -17,8 +17,13 @@
   "height_m": {
    "type": "positive_number",
    "required": true,
-   "description": "Minimum world height of the object's bottom.",
+   "description": "Minimum height of the object's bottom: world height, or above the top of near when near is given.",
    "default": 0.55
+  },
+  "near": {
+   "type": "entity_ref",
+   "required": false,
+   "description": "Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim)."
   }
  },
  "outputs": {},
@@ -113,6 +118,10 @@
   "object": {
    "type": "object_ref",
    "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
+  },
+  "near": {
+   "type": "entity_ref",
+   "attributes_from": "zeno_skills.skill_runtime.bind_nouns (GT)"
   }
  },
  "action_predicate": {
@@ -121,7 +130,8 @@
   "noun": "object",
   "arguments": [
    "object",
-   "height_m"
+   "height_m",
+   "near"
   ]
  },
  "policy_plan": {

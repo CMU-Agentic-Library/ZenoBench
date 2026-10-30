@@ -49,7 +49,7 @@ def O(type_, desc):
 
 
 def W(noun, field, op, value=True):
-    if op not in ("equals", "in", "contains", "gte", "lte", "truthy", "falsy"):
+    if op not in ("equals", "in", "contains", "gte", "lte", "truthy", "falsy", "set"):
         raise ValueError(op)
     return {"noun": noun, "field": field, "op": op, "value": value}
 
@@ -235,14 +235,15 @@ skill("retreat", "obstacle", "Retreat from an obstacle",
       failure_modes=["the path behind the base is blocked"])
 
 skill("crouch", "torso", "Crouch the torso",
-      "Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.",
+      "Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on "
+      "the floor by itself, so a floor pick needs no crouch first.",
       group=G,
-      inputs={"height_m": I("number", "Optional torso joint target in [-0.54, 0]; omit for the lowest.",
-                            required=False)},
+      inputs={"height_m": I("number", "Optional torso joint target in [-0.54, -0.03] m (0 is full height: use "
+                            "stand); omit for the lowest.", required=False)},
       requires=[],
       ensures=[P("torso_raised", negated=True)],
       invalidates=["torso_raised()", "torso_lowered()", "torso_at(*)", "reachable(*)", "in_view(*)"],
-      paths=[Path("to_height", [W("args", "height_m", "truthy")], [St("policy_004", "$height_m")],
+      paths=[Path("to_height", [W("args", "height_m", "set")], [St("policy_004", "$height_m")],
                   ensures=[P("torso_at", height_m="$height_m")]),
              Path("lowest", [], [St("policy_005")], ensures=[P("torso_lowered")])],
       relations=[R("sequence", "pick", "the object is on the floor or a low shelf", reason="floor reach"),
@@ -516,12 +517,14 @@ skill("pick", "object", "Pick an object",
 skill("place", "object", "Place a held object",
       "Put the right-held object down on a support surface or into an open container and release it. "
       "The path follows the receptacle and grasp: microwave cavity (insert, release, withdraw), container, "
-      "edge-held flat object slid back over an edge, ordinary surface (optionally near a hint point), or while "
-      "driving past.",
+      "edge-held flat object slid back over an edge, ordinary surface (optionally at a hint point or next to a "
+      "named object), or while driving past.",
       group=G,
       inputs={"object": I("object_ref", "The held object."),
               "receptacle": I("receptacle_ref", "A support surface or an open container."),
               "hint_xy": I("xy", "Optional preferred position on a surface.", required=False),
+              "near": I("entity_ref", "Optional: put it on the free spot of the surface closest to this object "
+                        "(e.g. the bowl next to the spoon). Use instead of hint_xy.", required=False),
               "pass_by": I("pose2d", "Optional base waypoint: place while driving past.", required=False)},
       outputs={"position": O("xy", "Measured bottom position after release.")},
       requires=[P("holding", hand="right", object="$object"), P("base_near", place="$receptacle")],
@@ -645,11 +648,14 @@ skill("handover", "object", "Hand an object over to the left hand",
                  R("alternative", "brace", "the left hand should hold an object that stays on its support")])
 
 skill("lift", "object", "Lift a held object",
-      "Raise the held object until its bottom is at least the given world height (e.g. above a bin rim or a "
-      "furniture edge before carrying).",
+      "Raise the held object until its bottom is at least the given height, in world metres (a table top is about "
+      "0.9 m) or above a named reference object (e.g. above a bin rim or a furniture edge before carrying).",
       group=G,
       inputs={"object": I("object_ref", "The held object."),
-              "height_m": I("positive_number", "Minimum world height of the object's bottom.", default=0.55)},
+              "height_m": I("positive_number", "Minimum height of the object's bottom: world height, or above "
+                            "the top of near when near is given.", default=0.55),
+              "near": I("entity_ref", "Optional reference: height_m is then measured above its top (e.g. 0.05 "
+                        "above a pot's rim).", required=False)},
       requires=[P("holding", hand="right", object="$object")],
       ensures=[P("held_above", object="$object", height_m="$height_m"), P("holding", hand="right", object="$object")],
       invalidates=["held_below($object,*)"],
@@ -659,10 +665,14 @@ skill("lift", "object", "Lift a held object",
       distinct_from={"stand": "stand moves the torso, not the held object.", "lower": "opposite direction."})
 
 skill("lower", "object", "Lower a held object",
-      "Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).",
+      "Move the held object down until its bottom is at most the given height, in world metres (a table top is about "
+      "0.9 m) or above a named reference object (e.g. under a low shelf clearance, just above a pot rim).",
       group=G,
       inputs={"object": I("object_ref", "The held object."),
-              "height_m": I("positive_number", "Maximum world height of the object's bottom.")},
+              "height_m": I("positive_number", "Maximum height of the object's bottom: world height, or above "
+                            "the top of near when near is given."),
+              "near": I("entity_ref", "Optional reference: height_m is then measured above its top (e.g. 0.05 "
+                        "above a pot's rim).", required=False)},
       requires=[P("holding", hand="right", object="$object")],
       ensures=[P("held_below", object="$object", height_m="$height_m"), P("holding", hand="right", object="$object")],
       invalidates=["held_above($object,*)"],
@@ -990,7 +1000,8 @@ skill("press", "button", "Press a button",
 
 skill("heat", "food", "Heat food",
       "Bring food to a target temperature with an appliance and switch the heat off: in the closed microwave "
-      "(start key + wait) or in a pot on the stove burner (power key on, wait, power key off).",
+      "(start key + wait) or on a stove burner (power key on, wait, power key off). On the stove the food's own "
+      "bowl can stand directly on the burner; a pot is only needed for loose food, and no lid is needed.",
       group=G,
       inputs={"food": I("object_ref", "The food item (has task-level thermal state)."),
               "appliance": I("appliance_ref", "kitchen_microwave or kitchen_stove."),
@@ -1008,14 +1019,14 @@ skill("heat", "food", "Heat food",
                [St("policy_094", "@appliance.power_button", state=True),
                 St("policy_090", "$food", "$temp_c", "$appliance")],
                requires=[P("in_cookware_on_burner", food="$food", appliance="$appliance")],
-               note="Food must be inside a pot (or pan) whose bottom rests on the burner."),
+               note="The food's own bowl, or a pot holding the food, must stand on the burner disc; no lid needed."),
       ],
       relations=[R("sequence", "open", "the heated food is taken out of the microwave",
                    bind={"articulated": "$appliance"}),
                  R("sequence", "pick", "the heated food is served", bind={"object": "$food"}),
-                 R("alternative", "heat", "no microwave is available: heat in a pot on the stove",
+                 R("alternative", "heat", "no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove",
                    bind={"food": "$food", "appliance": "kitchen_stove"},
-                   reason="Same verb, other noun: the stove path pours/places the food into the pot first."),
+                   reason="Same verb, other noun: place the food's bowl on a free burner first (kitchen_stove/top)."),
                  R("fallback", "close", "the microwave door is open", bind={"articulated": "$appliance"},
                    fallback_type="repair", repairs="is_closed"),
                  R("fallback", "place", "the food is not in the appliance", bind={"object": "$food"},

@@ -1,13 +1,13 @@
 ---
 name: lower-object
-description: "Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance)."
+description: "Move the held object down until its bottom is at most the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. under a low shelf clearance, just above a pot rim)."
 ---
 
 # Lower a held object (`skill_024`)
 
-`lower(object: object_ref, height_m: positive_number)`
+`lower(object: object_ref, height_m: positive_number, near: entity_ref?)`
 
-Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).
+Move the held object down until its bottom is at most the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. under a low shelf clearance, just above a pot rim).
 
 ## When to use
 
@@ -20,7 +20,8 @@ A held object must be brought down to a height without releasing it.
 ## Inputs
 
 - `object` (`object_ref`): The held object.
-- `height_m` (`positive_number`): Maximum world height of the object's bottom.
+- `height_m` (`positive_number`): Maximum height of the object's bottom: world height, or above the top of near when near is given.
+- `near` (`entity_ref`, optional): Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim).
 
 ## Applicability
 

@@ -347,6 +347,34 @@ def bind_nouns(rig, contract, values):
     return nouns
 
 
+def entity_top_z(rig, name, st=None):
+    """World height of an entity's top: an object's box top, a support's surface,
+    else its representative point."""
+    st = st or rig.state()
+    kind, rec = entity_kind(rig.ann, name)
+    if kind == "object":
+        return float(rig.geo.bottom(name, st)[2]) + float(rig.ann.asset_of(rig.ann.objects[name])["size"][2])
+    if kind == "support":
+        return float(rec["z"])
+    return float(entity_point(rig, name, st)[2])
+
+
+def resolve_near(rig, verb, values):
+    """``near`` names a reference entity in place of a number the planner would
+    have to compute: place puts the object on the free spot closest to it (it
+    becomes ``hint_xy``); lift / lower measure ``height_m`` above its top (it
+    becomes the world height the policies and predicates use)."""
+    near = values.get("near")
+    if near is None:
+        return
+    if verb == "place":
+        if values.get("hint_xy") is not None:
+            raise ContractError("INPUT_UNKNOWN", "place: give either hint_xy or near, not both")
+        values["hint_xy"] = [round(float(v), 3) for v in entity_point(rig, near)[:2]]
+    elif verb in ("lift", "lower"):
+        values["height_m"] = round(entity_top_z(rig, near) + float(values["height_m"]), 3)
+
+
 # ----------------------------------------------------------------- value resolution
 def resolve_value(v, values, nouns, outputs):
     if isinstance(v, str):
@@ -381,6 +409,8 @@ def condition_holds(cond, nouns):
         return val is not None and val <= ref
     if op == "truthy":
         return bool(val)
+    if op == "set":
+        return val is not None
     if op == "falsy":
         return not val
     raise ValueError(op)
@@ -458,6 +488,9 @@ class SkillContractRunner:
         ctx = {"before": before_snapshot(rig)}
         try:
             nouns = bind_nouns(rig, c, values)
+            if values.get("near") is not None:
+                resolve_near(rig, c["verb"], values)
+                nouns["args"] = dict(values)
             res.bound_nouns = {k: {f: v for f, v in d.items() if not isinstance(v, (list, dict)) or len(str(v)) < 300}
                                for k, d in nouns.items() if k != "args"}
             failed = self._check(c["requires"], values, nouns, ctx, res.preconditions)

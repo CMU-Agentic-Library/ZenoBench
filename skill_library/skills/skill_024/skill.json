@@ -7,17 +7,18 @@
  "noun": "object",
  "title": "Lower a held object",
  "group": "grasp_and_hand",
- "signature": "lower(object: object_ref, height_m: positive_number)",
+ "signature": "lower(object: object_ref, height_m: positive_number, near: entity_ref?)",
  "action_predicate": {
   "name": "lower_object",
   "verb": "lower",
   "noun": "object",
   "arguments": [
    "object",
-   "height_m"
+   "height_m",
+   "near"
   ]
  },
- "description": "Move the held object down until its bottom is at most the given height (e.g. under a low shelf clearance).",
+ "description": "Move the held object down until its bottom is at most the given height, in world metres (a table top is about 0.9 m) or above a named reference object (e.g. under a low shelf clearance, just above a pot rim).",
  "use_when": "A held object must be brought down to a height without releasing it.",
  "not_to_be_confused_with": {
   "place": "lower keeps holding the object."
@@ -31,7 +32,12 @@
   "height_m": {
    "type": "positive_number",
    "required": true,
-   "description": "Maximum world height of the object's bottom."
+   "description": "Maximum height of the object's bottom: world height, or above the top of near when near is given."
+  },
+  "near": {
+   "type": "entity_ref",
+   "required": false,
+   "description": "Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim)."
   }
  },
  "required_inputs": [

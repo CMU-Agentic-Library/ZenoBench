@@ -1,13 +1,13 @@
 ---
 name: crouch-torso
-description: "Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work."
+description: "Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first."
 ---
 
 # Crouch the torso (`skill_005`)
 
 `crouch(height_m: number?)`
 
-Lower the torso lift to its bottom (or a requested height) for floor and low-shelf work.
+Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.
 
 ## When to use
 
@@ -19,7 +19,7 @@ The next target is low (floor, low shelf) or the head must look under something.
 
 ## Inputs
 
-- `height_m` (`number`, optional): Optional torso joint target in [-0.54, 0]; omit for the lowest.
+- `height_m` (`number`, optional): Optional torso joint target in [-0.54, -0.03] m (0 is full height: use stand); omit for the lowest.
 
 ## Applicability
 
@@ -47,7 +47,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `to_height` — when args.height_m
+### `to_height` — when args.height_m is given
 
 1. `policy_004($height_m)`
 - extra postcondition `torso_at(height_m=$height_m)`
