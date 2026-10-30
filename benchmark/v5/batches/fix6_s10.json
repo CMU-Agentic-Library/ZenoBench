@@ -1,0 +1,26 @@
+[
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "h_task_can_in_microwave",
+  "route": "v5_h_task_can_in_microwave"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "h_action_ik_pick_and_drop",
+  "route": "v5_h_action_ik_pick_and_drop"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "h_mixed_microwave_ik",
+  "route": "v5_h_mixed_microwave_ik"
+ },
+ {
+  "task": "T08_wipe_island",
+  "seed": 15,
+  "variant": "sponge_on_island",
+  "route": "nominal"
+ }
+]

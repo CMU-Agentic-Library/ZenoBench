@@ -32,6 +32,13 @@
     "(execution) every episode whose start is more than 1 m from the scene spawn"
    ],
    "why": "reset fix, configuration hashes unchanged: the reset slid the anchored base in a straight line from the scene spawn to the start pose, through the kitchen island and fridge, knocking task objects off before the first step (seed 10: T03/T04/T06/T07/T16/T17 E2, T16 m_start_dining_away). benchmark/scene.py spawn_at_start now authors the robot at a far start before the simulation starts."
+  },
+  {
+   "date": "2026-10-30",
+   "variants": [
+    "T08_wipe_island/sponge_on_island"
+   ],
+   "why": "sponge yaw: the seed-variation overlay re-spawned the sponge at yaw 0 (its box cannot tell 0 from 180 deg) while the scene has it at ~177 deg; re-spawned, pick's own re-park knocked it off the island (seed 10 and 15, all rounds) whereas the scene pose passes on current code (v3 layout, seeds 10 and 15). The overlay keeps the scene's 180 deg (define_tasks_v5.BASE_YAW_DEG)."
   }
  ],
  "episodes": {
@@ -735,16 +742,16 @@
   "T08_wipe_island/m_grasp_sponge/17": "bfa2a6fee8ad",
   "T08_wipe_island/m_grasp_sponge/18": "b971dc89270b",
   "T08_wipe_island/m_grasp_sponge/19": "1ed6fddd8a23",
-  "T08_wipe_island/sponge_on_island/10": "605e997f35db",
-  "T08_wipe_island/sponge_on_island/11": "f98216c5fd84",
-  "T08_wipe_island/sponge_on_island/12": "8bd097a0c4e1",
-  "T08_wipe_island/sponge_on_island/13": "d2febb431442",
-  "T08_wipe_island/sponge_on_island/14": "dc8a19c05a63",
-  "T08_wipe_island/sponge_on_island/15": "dbdea0975bcf",
-  "T08_wipe_island/sponge_on_island/16": "d3fa830fc011",
-  "T08_wipe_island/sponge_on_island/17": "85aa0cda3388",
-  "T08_wipe_island/sponge_on_island/18": "b5667be37baf",
-  "T08_wipe_island/sponge_on_island/19": "d3335c7edb01",
+  "T08_wipe_island/sponge_on_island/10": "168fbd572847",
+  "T08_wipe_island/sponge_on_island/11": "82604ea6989b",
+  "T08_wipe_island/sponge_on_island/12": "d4469bfc79bd",
+  "T08_wipe_island/sponge_on_island/13": "58754f941bdc",
+  "T08_wipe_island/sponge_on_island/14": "774f374543ec",
+  "T08_wipe_island/sponge_on_island/15": "493c31ffe2bf",
+  "T08_wipe_island/sponge_on_island/16": "f64b9cd77c83",
+  "T08_wipe_island/sponge_on_island/17": "15f647192840",
+  "T08_wipe_island/sponge_on_island/18": "edeee954c178",
+  "T08_wipe_island/sponge_on_island/19": "3ce72730c472",
   "T08_wipe_island/sponge_on_tv_stand/10": "3d5bbfe8fdca",
   "T08_wipe_island/sponge_on_tv_stand/11": "eabb2ce9cfcf",
   "T08_wipe_island/sponge_on_tv_stand/12": "14aa85d0f526",

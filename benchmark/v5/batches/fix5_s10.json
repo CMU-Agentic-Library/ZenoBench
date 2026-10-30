@@ -1,0 +1,26 @@
+[
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "variant": "h_dynamic_mug_taken",
+  "route": "v5_h_dynamic_mug_taken"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "seed": 10,
+  "variant": "shelf_taken",
+  "route": "v5fix_shelf_taken"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "variant": "h_dynamic_cube_moved",
+  "route": "v5_h_dynamic_cube_moved"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "variant": "lid_off",
+  "route": "v5x_lid_off"
+ }
+]

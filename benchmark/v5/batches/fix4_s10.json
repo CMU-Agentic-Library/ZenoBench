@@ -1,0 +1,80 @@
+[
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "variant": "lid_off",
+  "route": "v5x_lid_off"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "variant": "m_grasp_spoon",
+  "route": "v5_m_grasp_spoon"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "variant": "cookware_choice",
+  "route": "v5x_cookware_choice"
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "seed": 10,
+  "variant": "e1_pencil_asked",
+  "route": "v5_e1_pencil_asked"
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "variant": "lookalike_bin",
+  "route": "v5x_lookalike_bin"
+ },
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "variant": "toys_out",
+  "route": "v5x_toys_out"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "h_task_can_in_microwave",
+  "route": "v5_h_task_can_in_microwave"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "h_action_ik_pick_and_drop",
+  "route": "v5_h_action_ik_pick_and_drop"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "h_mixed_microwave_ik",
+  "route": "v5_h_mixed_microwave_ik"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "seed": 10,
+  "variant": "h_dynamic_can_moved",
+  "route": "v5_h_dynamic_can_moved"
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "variant": "e2_from_dining_room",
+  "route": "v5_e2_from_dining_room"
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "variant": "h_action_grasp_and_ik",
+  "route": "v5_h_action_grasp_and_ik"
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "variant": "m_ik_cup",
+  "route": "v5_m_ik_cup"
+ }
+]
