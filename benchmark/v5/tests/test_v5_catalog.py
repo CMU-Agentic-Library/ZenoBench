@@ -88,4 +88,4 @@ def test_configurations_frozen():
 def test_skill_coverage_of_oracle_routes():
     used = {s["skill"] for t in DOC["tasks"] for ids in t["v5_formal"].values() for v in ids
             for s in t["routes"][t["oracle"][v]]["steps"]}
-    assert len(used) >= 59, sorted(used)
+    assert len(used) >= 60, sorted(used)

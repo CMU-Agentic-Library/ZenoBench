@@ -1194,7 +1194,7 @@ def _crouch_look(steps, skill, x, nth=0, until=("place", "rolling_pin"), **match
 
 TOMATOES = ["cherry_tomato_1", "cherry_tomato_2"]
 
-# Skill coverage 54 -> 59: small chores the household goal calls for, on formal variants whose oracle passed
+# Skill coverage 54 -> 60: small chores the household goal calls for, on formal variants whose oracle passed
 # (configurations unchanged).
 COVERAGE_EXTRA = {
     "T09_tomato_soup": {
@@ -1210,6 +1210,8 @@ COVERAGE_EXTRA = {
         "lookalike_bin": lambda r: _ins_before(r, [S("touch", object="foam_cube")], "pick",
                                                object="foam_cube")},  # foam or wood: probe by contact
     "T12_tidy_toys": {"toys_out": lambda r: r + [REC(S("nod"))]},  # tell the kid the toys are away
+    "T18_check_cabinet_dishes": {                                      # tap the re-closed door: shut properly
+        "m_ik_close": lambda r: r + [S("knock", articulated="kitchen_cabinet_6")]},
 }
 
 

@@ -30027,10 +30027,17 @@
         "articulated": "kitchen_cabinet_6"
        },
        "role": "recover"
+      },
+      {
+       "skill": "knock",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "m_ik_close"
+     "kind": "v5_skill_coverage",
+     "variant": "m_ik_close",
+     "edited_from": "v5_m_ik_close"
     },
     "v5_m_door_left_open": {
      "steps": [

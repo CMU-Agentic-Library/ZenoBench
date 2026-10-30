@@ -12,5 +12,12 @@
   "variant": "free",
   "route": "nominal",
   "tier": "easy"
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "seed": 10,
+  "variant": "m_ik_close",
+  "route": "v5_m_ik_close",
+  "tier": "medium"
  }
 ]
