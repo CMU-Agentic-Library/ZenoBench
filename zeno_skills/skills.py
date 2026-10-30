@@ -277,7 +277,7 @@ def check_left_held(rig, label):
     body, _ = rig.obj_pose(h["name"])
     slip = abs(float(np.linalg.norm(tcp-body))-float(np.linalg.norm(h["tcp_minus_body"])))
     fingers = rig.left_fingers()
-    if slip > 0.06 or float(fingers.sum()) < 0.004:
+    if slip > 0.05 or float(fingers.sum()) < 0.004:
         rig.log("left_dropped", obj=h["name"], during=label, slip_m=round(slip, 3),
                 fingers=fingers.round(4).tolist())
         rig.left_held = None

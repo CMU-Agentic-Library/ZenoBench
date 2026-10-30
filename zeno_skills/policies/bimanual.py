@@ -62,7 +62,7 @@ def check_bimanual_hold(rig, name, label):
     ):
         tcp, _ = kin.tcp(q)
         slip = abs(np.linalg.norm(tcp-body)-np.linalg.norm(held["tcp_minus_body"]))
-        if slip > 0.06 or float(fingers.sum()) < 0.004:
+        if slip > 0.05 or float(fingers.sum()) < 0.004:
             rig.log("bimanual_slip", side=side, obj=name, slip_m=round(float(slip), 4),
                     fingers=fingers.tolist())
             raise SkillFailure(f"{label}: {side} grasp slipped from {name}")
@@ -683,6 +683,6 @@ class OpenDoorWhileLeftHoldsPolicy(AtomicPolicy):
         body, _ = rig.obj_pose(object_name)
         tcp, _ = rig.left_kin.tcp(rig.left_q())
         slip = abs(np.linalg.norm(tcp-body)-np.linalg.norm(left["tcp_minus_body"]))
-        if slip > 0.06 or rig.left_fingers().min() < 0.002:
+        if slip > 0.05 or float(rig.left_fingers().sum()) < 0.004:
             raise SkillFailure("open door while left holds: left grasp slipped")
         return q

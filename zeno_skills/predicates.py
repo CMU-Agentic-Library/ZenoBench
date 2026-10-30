@@ -327,7 +327,7 @@ def _holding(rig, ctx, hand, object):
     body, _ = rig.obj_pose(object)
     slip = abs(float(np.linalg.norm(tcp - body)) - float(np.linalg.norm(h["tcp_minus_body"])))
     fingers = rig.fingers() if hand == "right" else rig.left_fingers()
-    ok = slip <= 0.05 and float(np.min(fingers)) > 0.002
+    ok = slip <= 0.05 and float(fingers.sum()) > 0.004
     return ok, f"slip {slip:.3f} m, fingers {np.round(fingers, 4).tolist()}"
 
 
