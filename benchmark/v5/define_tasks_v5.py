@@ -1262,8 +1262,10 @@ ROUTE_REPAIRS = {
                             "study_timing_early": lambda r: _repark_nav(r, "bowl"),
                             "h_mixed_boxed_in_ik": lambda r: _repark_nav(r, "spoon"),
                             # the bowl landed 6 cm south of its hint and the setting spanned 0.42 m (s10): the mug
-                            # goes 4 cm nearer the spoon (13 cm apart, still clear of the 4 cm that tipped it)
-                            "h_dynamic_mug_taken": lambda r: _hint(r, [3.0, 6.78], [3.0, 6.74])},
+                            # goes 4 cm nearer the spoon (13 cm apart, still clear of the 4 cm that tipped it);
+                            # place scatters +-5 cm (s11: mug 5 cm past its hint, 0.414 m), so the bowl goes 3 cm nearer too
+                            "h_dynamic_mug_taken": lambda r: _hint(_hint(r, [3.0, 6.78], [3.0, 6.74]),
+                                                                   [3.0, 6.44], [3.0, 6.47])},
     "T19_recycling": {vid: (lambda r: _repark_nav(r, "foam_cube")) for vid in ("m_ik_cube", "h_mixed_lookalike_ik")},
     # from the island park the stove top is out of sight: look at the pot from the stove, then go to the island
     "T09_tomato_soup": {"e2_from_dining_room": lambda r: _ins_after(

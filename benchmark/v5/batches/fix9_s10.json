@@ -19,5 +19,19 @@
   "variant": "m_ik_close",
   "route": "v5_m_ik_close",
   "tier": "medium"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 10,
+  "variant": "h_dynamic_mug_taken",
+  "route": "v5_h_dynamic_mug_taken",
+  "tier": "hard"
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "seed": 11,
+  "variant": "h_dynamic_mug_taken",
+  "route": "v5_h_dynamic_mug_taken",
+  "tier": "hard"
  }
 ]
