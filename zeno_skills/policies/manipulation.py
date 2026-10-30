@@ -163,7 +163,10 @@ class PushPolicy(AtomicPolicy):
             raise SkillFailure("push: right hand must be empty")
         surface = self.rig.ann.support(support) if isinstance(support, str) else support
         actual = self.rig.geo.support_under(name, self.rig.state())
-        if actual is None or actual["name"] != surface["name"]:
+        if surface is None or actual is None:
+            # the support binding is None when the object rests on nothing annotated
+            raise SkillFailure(f"push {name}: object is not on an annotated support")
+        if actual["name"] != surface["name"]:
             raise SkillFailure(f"push {name}: object is not on {surface['name']}")
         n = np.asarray(direction, dtype=float)
         if n.shape != (2,) or not np.isfinite(n).all() or not np.isclose(np.linalg.norm(n), 1.0, atol=1e-3):
@@ -180,7 +183,9 @@ def _contact_direction(rig, name, support, direction, distance):
         raise SkillFailure(f"contact motion: unknown object {name}")
     surface = rig.ann.support(support) if isinstance(support, str) else support
     actual = rig.geo.support_under(name, rig.state())
-    if actual is None or actual["name"] != surface["name"]:
+    if surface is None or actual is None:
+        raise SkillFailure(f"contact motion {name}: object is not on an annotated support")
+    if actual["name"] != surface["name"]:
         raise SkillFailure(f"contact motion {name}: object is not on {surface['name']}")
     n = np.asarray(direction, dtype=float)
     if n.shape != (2,) or not np.all(np.isfinite(n)) or not np.isclose(np.linalg.norm(n), 1.0, atol=1e-3):
