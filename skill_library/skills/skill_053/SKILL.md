@@ -49,7 +49,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 1. `policy_092($object)`
 2. `policy_061($object)`
 3. `policy_092(@object.initial_support)`
-4. `policy_015($object, @object.initial_support)`
+4. `policy_015($object, @object.initial_support, hint=@object.initial_xy)`
 
 ## Relations
 

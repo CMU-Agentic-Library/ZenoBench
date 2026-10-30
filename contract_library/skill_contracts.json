@@ -12396,7 +12396,9 @@
          "$object",
          "@object.initial_support"
         ],
-        "kwargs": {}
+        "kwargs": {
+         "hint": "@object.initial_xy"
+        }
        }
       ],
       "requires": [],

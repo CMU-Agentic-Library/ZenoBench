@@ -147,7 +147,7 @@
     "policy_092($object)",
     "policy_061($object)",
     "policy_092(@object.initial_support)",
-    "policy_015($object, @object.initial_support)"
+    "policy_015($object, @object.initial_support, hint=@object.initial_xy)"
    ],
    "policies": [
     "policy_015",

@@ -166,7 +166,8 @@ def _state(rig, ctx):
 def memory(rig):
     mem = getattr(rig, "memory", None)
     if mem is None:
-        mem = {"observed": {}, "wiped": {}, "stirred": {}, "explored": {}, "initial_support": {}}
+        mem = {"observed": {}, "wiped": {}, "stirred": {}, "explored": {}, "initial_support": {},
+               "initial_xy": {}}
         try:
             rig.memory = mem
         except Exception:

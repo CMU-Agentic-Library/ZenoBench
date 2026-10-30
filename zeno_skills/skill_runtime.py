@@ -155,6 +155,7 @@ def object_attrs(rig, name, st, values=None):
         "is_container": bool(asset.get("container")), "is_lid": "lid" in tags,
         "lid": lid, "contents": contents,
         "initial_support": (getattr(rig, "memory", {}) or {}).get("initial_support", {}).get(name) or obj.get("support"),
+        "initial_xy": (getattr(rig, "memory", {}) or {}).get("initial_xy", {}).get(name),
         "xy": [float(bottom[0]), float(bottom[1])], "bearing_abs_deg": _bearing(rig, name, st),
     }
     if sup is not None:

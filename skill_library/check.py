@@ -116,7 +116,8 @@ NOUN_FIELDS = {
     "object": {"instance", "kind", "asset", "tags", "grasp_types", "support", "support_category", "on_floor",
                "location", "appliance", "in_container", "held_by", "held_kind", "flat", "tall", "lying", "wide_box",
                "handle_collider", "near_closed_edge", "edge_ready", "is_container", "is_lid", "lid", "contents",
-               "initial_support", "xy", "bearing_abs_deg", "buffer_xy", "sort_target", "aside_support"},
+               "initial_support", "initial_xy", "xy", "bearing_abs_deg", "buffer_xy", "sort_target",
+               "aside_support"},
     "support": {"instance", "kind", "category", "furniture", "z", "objects", "is_microwave_cavity", "appliance",
                 "bearing_abs_deg", "free_xy", "burner_xy", "roomiest_xy"},
     "articulated": {"instance", "kind", "type", "category", "has_handle", "powered", "is_open", "power_button", "wide_open_q",
@@ -147,7 +148,8 @@ def field_type(type_, fld):
     """Type of a noun attribute when it is used as a value."""
     table = {"support": "support_ref", "initial_support": "support_ref", "lid": "lid_ref",
              "appliance": "appliance_ref", "power_button": "button_ref", "contents": "object_list",
-             "objects": "object_list", "xy": "xy", "buffer_xy": "xy", "free_xy": "xy", "burner_xy": "xy", "sort_target": "receptacle_ref",
+             "objects": "object_list", "xy": "xy", "initial_xy": "xy", "buffer_xy": "xy", "free_xy": "xy",
+             "burner_xy": "xy", "sort_target": "receptacle_ref",
              "instance": type_, "right_object": "object_ref", "left_object": "object_ref",
              "in_container": "container_ref"}
     return table.get(fld)

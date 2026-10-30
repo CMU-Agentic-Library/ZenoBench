@@ -1180,7 +1180,7 @@ skill("restore", "object", "Restore an object to its place",
       paths=[Path("dispatch_pick_place", [W("object", "initial_support", "truthy")],
                   [St("policy_092", "$object"), St("policy_061", "$object"),
                    St("policy_092", "@object.initial_support"),
-                   St("policy_015", "$object", "@object.initial_support")])],
+                   St("policy_015", "$object", "@object.initial_support", hint="@object.initial_xy")])],
       relations=[R("alternative", "fetch", "a different destination is wanted", bind={"object": "$object"}),
                  R("sequence", "tuck", "the robot drives on", bind={"hand": "right"})])
 

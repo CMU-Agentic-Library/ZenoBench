@@ -208,6 +208,9 @@ class Episode:
         rig.step(120)
         self.start = before_snapshot(rig)                 # relative goal predicates compare to the start
         self.start["_removed"] = cfg["remove"]
+        # where each object settled at t0: restore() puts an object back on this spot,
+        # not just back on the same support
+        rig.memory["initial_xy"] = {n: [float(b[0]), float(b[1])] for n, b in self.start["bottoms"].items()}
         self.initial_positions = {n: [round(v, 3) for v in self.start["objects"][n]["pos"]]
                                   for n in task.get("watch", []) if n in self.start["objects"]}
         self.runner, self.observer = self._make_runner(image_dir)

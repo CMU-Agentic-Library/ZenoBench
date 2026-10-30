@@ -16,6 +16,6 @@ Paired SkillNode: `skill_053` (`restore-object`).
 
 ## Policy paths
 
-- `dispatch_pick_place` when object.initial_support: `policy_092($object)` -> `policy_061($object)` -> `policy_092(@object.initial_support)` -> `policy_015($object, @object.initial_support)`
+- `dispatch_pick_place` when object.initial_support: `policy_092($object)` -> `policy_061($object)` -> `policy_092(@object.initial_support)` -> `policy_015($object, @object.initial_support, hint=@object.initial_xy)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

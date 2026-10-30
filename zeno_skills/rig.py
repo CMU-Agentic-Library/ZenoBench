@@ -85,7 +85,9 @@ class Rig:
         # Facts the robot recorded (seen objects, wiped surfaces ...) and the
         # support each object started on; see predicates.memory().
         self.memory = {"observed": {}, "wiped": {}, "stirred": {}, "explored": {},
-                       "initial_support": {n: o.get("support") for n, o in ann.objects.items()}}
+                       "initial_support": {n: o.get("support") for n, o in ann.objects.items()},
+                       # filled by Episode once the scene has settled; see predicates.memory()
+                       "initial_xy": {}}
 
     def configure_thermal(self, task):
         if task.get("thermal"):
