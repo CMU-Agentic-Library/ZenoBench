@@ -76,35 +76,40 @@ def first_carry(steps, x):
 
 
 def with_grasp(steps, x, nth=1):
-    """The nth pick of x is injected to fail (the object falls back); look at it and pick it again."""
+    """The nth pick of x is injected to fail (the object falls back); pick it again."""
     steps = copy.deepcopy(steps)
     i = find(steps, "pick", object=x)
-    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("look", target=x)), REC(steps[i])]
+    steps[i:i + 1] = [FAIL(steps[i], True), REC(steps[i])]        # it fell back where it was: pick again
     return steps
+
+
+IK_TARGET = {"place": "receptacle", "stack": "base", "drop": "container", "wipe": "surface", "hide": "receptacle"}
 
 
 def with_ik(steps, skill, x, key="object"):
     """The first ``skill`` on x is refused (no IK from this park); re-park with approach, then retry."""
     steps = copy.deepcopy(steps)
     i = find(steps, skill, **{key: x})
-    target = x if skill != "place" else steps[i]["args"].get("receptacle", x)
+    target = steps[i]["args"].get(IK_TARGET.get(skill, key), x)
     steps[i:i + 1] = [FAIL(steps[i], True), REC(S("approach", target=target)), REC(steps[i])]
     return steps
 
 
 def with_slip(steps, x):
-    """x slips at the start of its first carry; look, pick it again, drive on."""
+    """x slips at the start of its first carry (it falls where it was picked); pick it again, drive on."""
     steps = copy.deepcopy(steps)
     i = first_carry(steps, x)
-    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("look", target=x)), REC(S("pick", object=x)), REC(steps[i])]
+    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("pick", object=x)), REC(steps[i])]
     return steps
 
 
 def with_place_miss(steps, x, skill="place"):
-    """The last place / drop of x is injected to miss; look, pick it again, repeat the same placement."""
+    """The last place / drop of x is injected to miss; go to it, pick it again, go back, repeat the placement."""
     steps = copy.deepcopy(steps)
     i = find(steps, skill, last=True, object=x)
-    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("look", target=x)), REC(S("pick", object=x)), REC(steps[i])]
+    dest = S("navigate", destination=steps[i]["args"].get("receptacle") or steps[i]["args"].get("container"))
+    steps[i:i + 1] = [FAIL(steps[i], True), REC(S("navigate", destination=x)), REC(S("pick", object=x)),
+                      REC(dest), REC(steps[i])]
     return steps
 
 
@@ -237,7 +242,7 @@ def T02(t, R):
                                  ("pick", {"object": "wooden_block_b"}))],
                 challenge="after block B is picked, someone shoves block A to the island edge: stacking on it "
                           "would topple, so B goes down in the open and A is stacked on B",
-                route=nom[:3] + [REC(S("look", target="wooden_block_a")),
+                route=nom[:3] + [REC(S("navigate", destination="wooden_block_a")),
                                  REC(S("place", object="wooden_block_b", receptacle="kitchen_island/top",
                                        hint_xy=[7.0, 1.66])),
                                  REC(S("navigate", destination="wooden_block_a")),

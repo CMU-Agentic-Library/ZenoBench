@@ -321,6 +321,10 @@ def make_batch(doc, seeds, variants=None):
     return jobs
 
 
+def route_sha1(steps) -> str:
+    return hashlib.sha1(json.dumps(steps, sort_keys=True).encode()).hexdigest()[:12]
+
+
 def classify(res: dict) -> str:
     if res.get("crash"):
         return "crash"
@@ -328,13 +332,13 @@ def classify(res: dict) -> str:
         return "incomplete"
     if res.get("route_violations"):
         return "route_violation"
+    if "stopped_at" in res:
+        return "stopped"                        # an expected-ok call failed (later triggers never reached)
     fi = res.get("failure_injection")
     if fi:
         not_manifest = [r["id"] for r in fi["log"] if not r["manifested"]]
         if fi["not_fired"] or not_manifest:
             return "failure_not_triggered"
-    if "stopped_at" in res:
-        return "stopped"
     if not res.get("task_success"):
         return "goal_failed"
     return "passed"
@@ -347,6 +351,7 @@ def report(doc, runs, seeds=SEEDS):
         for s in seeds:
             cfg = episode_config(t, s, vid)
             want[(t["task_id"], vid, s)] = {"tier": tier, "hash": cfg["config_hash"],
+                                            "route_sha1": route_sha1(t["routes"][t["oracle"][vid]]["steps"]),
                                             "hard_category": t["variants"][vid]["v5"].get("hard_category"),
                                             "route": t["oracle"][vid]}
     got = {}
@@ -359,6 +364,9 @@ def report(doc, runs, seeds=SEEDS):
                 continue
             key = (r.get("task_id"), r.get("variant"), r.get("seed"))
             if key not in want or r.get("route") != want[key]["route"]:
+                continue
+            if r.get("route_sha1") != want[key]["route_sha1"]:
+                stale += 1                      # run with another version of the route (or before it was recorded)
                 continue
             if r.get("config_hash") != want[key]["hash"]:
                 stale += 1

@@ -2591,13 +2591,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "wooden_block_b"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "wooden_block_b"
@@ -2652,13 +2645,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "wooden_block_b"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "wooden_block_b"
@@ -2691,7 +2677,7 @@
       {
        "skill": "approach",
        "args": {
-        "target": "wooden_block_b"
+        "target": "wooden_block_a"
        },
        "role": "recover"
       },
@@ -2729,13 +2715,6 @@
        "role": "failure",
        "expect": "fail",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "wooden_block_a"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -2789,9 +2768,9 @@
        }
       },
       {
-       "skill": "look",
+       "skill": "navigate",
        "args": {
-        "target": "wooden_block_a"
+        "destination": "wooden_block_a"
        },
        "role": "recover"
       },
@@ -4066,13 +4045,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "breakfast_spoon"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "breakfast_spoon"
@@ -4200,13 +4172,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "rolling_pin"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "rolling_pin"
@@ -4237,9 +4202,9 @@
        "injected": true
       },
       {
-       "skill": "look",
+       "skill": "navigate",
        "args": {
-        "target": "rolling_pin"
+        "destination": "rolling_pin"
        },
        "role": "recover"
       },
@@ -4247,6 +4212,13 @@
        "skill": "pick",
        "args": {
         "object": "rolling_pin"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
        },
        "role": "recover"
       },
@@ -6529,13 +6501,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "pencil"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "pencil"
@@ -6658,13 +6623,6 @@
        "role": "failure",
        "expect": "fail",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "pencil"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -8042,13 +8000,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "wooden_block_a"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "wooden_block_a"
@@ -8101,13 +8052,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "wooden_block_a"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -8180,13 +8124,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "wooden_block_a"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -9552,13 +9489,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "oatmeal"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -11019,13 +10949,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_sponge"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "kitchen_sponge"
@@ -11078,13 +11001,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_sponge"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -11190,13 +11106,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_sponge"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -12551,13 +12460,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "breakfast_spoon"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "breakfast_spoon"
@@ -12665,13 +12567,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "breakfast_spoon"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -12805,13 +12700,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "breakfast_spoon"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -13950,7 +13838,7 @@
       {
        "skill": "approach",
        "args": {
-        "target": "soda_can"
+        "target": "trash_can"
        },
        "role": "recover"
       },
@@ -14892,13 +14780,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "apple"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "apple"
@@ -15025,13 +14906,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "apple"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "apple"
@@ -15107,13 +14981,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "apple"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -16500,13 +16367,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "toy_car"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "toy_car"
@@ -16669,13 +16529,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "toy_car"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",
@@ -21806,7 +21659,7 @@
       {
        "skill": "approach",
        "args": {
-        "target": "wooden_block_b"
+        "target": "handled_cooking_pot"
        },
        "role": "recover"
       },
@@ -21824,7 +21677,7 @@
       {
        "skill": "approach",
        "args": {
-        "target": "wooden_block_b"
+        "target": "handled_cooking_pot"
        },
        "role": "recover"
       },
@@ -24059,13 +23912,6 @@
        "injected": true
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "soda_can"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "soda_can"
@@ -24308,9 +24154,9 @@
        "injected": true
       },
       {
-       "skill": "look",
+       "skill": "navigate",
        "args": {
-        "target": "soda_can"
+        "destination": "soda_can"
        },
        "role": "recover"
       },
@@ -24318,6 +24164,13 @@
        "skill": "pick",
        "args": {
         "object": "soda_can"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
        },
        "role": "recover"
       },
@@ -24343,13 +24196,6 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "foam_cube"
-       },
-       "role": "recover"
       },
       {
        "skill": "pick",

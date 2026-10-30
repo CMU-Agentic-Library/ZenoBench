@@ -70,3 +70,4 @@ def test_classification_rules():
     assert V.classify({"failure_injection": fi, "task_success": True}) == "passed"
     assert V.classify({"task_success": False}) == "goal_failed"
     assert V.classify({"stopped_at": 3, "task_success": False}) == "stopped"
+    assert V.classify({"stopped_at": 3, "failure_injection": fi}) == "stopped"

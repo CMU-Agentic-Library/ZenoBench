@@ -177,6 +177,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                          "state": state_summary(rig, task), "eval": record.pop("eval")})
         else:
             _, steps = resolve_steps(task, cfg, route)
+            report["route_sha1"] = hashlib.sha1(json.dumps(task["routes"][route]["steps"], sort_keys=True)
+                                                .encode()).hexdigest()[:12]
             for i, st in enumerate(steps):
                 # an injected failure (v5) is forced by the environment, not a useless call: every planner
                 # meets it, so it keeps its expectation and the oracle does not skip it
