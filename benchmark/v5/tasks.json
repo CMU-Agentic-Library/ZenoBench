@@ -563,9 +563,93 @@
         1.548
        ],
        "yaw_deg": 90
+      },
+      "bowl_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        5.65
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        6.093
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.502
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        7.041
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.46
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.84
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon_target_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.38,
+        7.04
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.2,
+        7.6
+       ],
+       "yaw_deg": 0.0
       }
      },
+     "conditions": [
+      "spot_quality"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_table_set",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "bowl_side_table",
+         "dining_table_2/top"
+        ],
+        [
+         "on",
+         "plate_counter_a",
+         "dining_table_2/top"
+        ]
+       ]
+      },
       {
        "id": "ik_pick_paperback_book",
        "kind": "ik",
@@ -591,6 +675,113 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "clear_of",
+        "paperback_book",
+        [
+         "bowl_side_table",
+         "plate_counter_a",
+         "cup_side_table",
+         "plate_counter_b",
+         "clutter_cereal_a",
+         "mug_dining_cabinet",
+         "spoon_target_table",
+         "clutter_cereal_b"
+        ],
+        0.05
+       ],
+       [
+        "near_any",
+        "paperback_book",
+        [
+         "bowl_side_table",
+         "plate_counter_a",
+         "plate_counter_b"
+        ],
+        0.15
+       ],
+       [
+        "near_start",
+        "bowl_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "mug_dining_cabinet",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "upright",
+        "cup_side_table"
+       ],
+       [
+        "upright",
+        "mug_dining_cabinet"
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Bring the paperback from the island to the dining table and put it where it is easy to read without getting in the way of the tableware.",
+     "instruction_zh": "请把岛台上的书送到餐桌上，放在方便阅读、又不影响其他餐具的位置。",
+     "watch": [
+      "paperback_book",
+      "bowl_side_table",
+      "plate_counter_a",
+      "cup_side_table",
+      "plate_counter_b",
+      "clutter_cereal_a",
+      "mug_dining_cabinet",
+      "spoon_target_table",
+      "clutter_cereal_b"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -602,11 +793,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "both the pick at the island and the place at the table are refused from their first parks",
+     "note": "the table is set: choose a reading spot clear of the tableware; and both the pick at the island and the place at the table are refused from their first parks",
      "v5": {
       "tier": "hard",
-      "challenge": "both the pick at the island and the place at the table are refused from their first parks",
-      "derived_from": "overhang_ready",
+      "challenge": "the table is set: choose a reading spot clear of the tableware; and both the pick at the island and the place at the table are refused from their first parks",
+      "derived_from": "table_set",
       "hard_category": "action"
      }
     },
@@ -854,9 +1045,93 @@
         1.548
        ],
        "yaw_deg": 90
+      },
+      "bowl_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        5.65
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        6.093
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.502
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        7.041
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.46
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.84
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon_target_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.38,
+        7.04
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.2,
+        7.6
+       ],
+       "yaw_deg": 0.0
       }
      },
+     "conditions": [
+      "spot_quality"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_table_set",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "bowl_side_table",
+         "dining_table_2/top"
+        ],
+        [
+         "on",
+         "plate_counter_a",
+         "dining_table_2/top"
+        ]
+       ]
+      },
       {
        "id": "dependency_paperback_book",
        "kind": "dependency",
@@ -883,6 +1158,113 @@
        }
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "clear_of",
+        "paperback_book",
+        [
+         "bowl_side_table",
+         "plate_counter_a",
+         "cup_side_table",
+         "plate_counter_b",
+         "clutter_cereal_a",
+         "mug_dining_cabinet",
+         "spoon_target_table",
+         "clutter_cereal_b"
+        ],
+        0.05
+       ],
+       [
+        "near_any",
+        "paperback_book",
+        [
+         "bowl_side_table",
+         "plate_counter_a",
+         "plate_counter_b"
+        ],
+        0.15
+       ],
+       [
+        "near_start",
+        "bowl_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "mug_dining_cabinet",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "upright",
+        "cup_side_table"
+       ],
+       [
+        "upright",
+        "mug_dining_cabinet"
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Bring the paperback from the island to the dining table and put it where it is easy to read without getting in the way of the tableware.",
+     "instruction_zh": "请把岛台上的书送到餐桌上，放在方便阅读、又不影响其他餐具的位置。",
+     "watch": [
+      "paperback_book",
+      "bowl_side_table",
+      "plate_counter_a",
+      "cup_side_table",
+      "plate_counter_b",
+      "clutter_cereal_a",
+      "mug_dining_cabinet",
+      "spoon_target_table",
+      "clutter_cereal_b"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -894,11 +1276,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "while the robot drives over, someone pushes the book back from the edge: the edge pinch fails until it is exposed again",
+     "note": "the table is set: choose a reading spot clear of the tableware; and while the robot drives over, someone pushes the book back from the edge: the edge pinch fails until it is exposed again",
      "v5": {
       "tier": "hard",
-      "challenge": "while the robot drives over, someone pushes the book back from the edge: the edge pinch fails until it is exposed again",
-      "derived_from": "overhang_ready",
+      "challenge": "the table is set: choose a reading spot clear of the tableware; and while the robot drives over, someone pushes the book back from the edge: the edge pinch fails until it is exposed again",
+      "derived_from": "table_set",
       "hard_category": "dynamic"
      }
     }
@@ -1388,17 +1770,23 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "paperback_book",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.72,
-         6.5
+         6.737
         ]
        },
-       "expect": "fail",
        "role": "failure",
+       "expect": "fail",
        "injected": true
       },
       {
@@ -1415,7 +1803,7 @@
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.72,
-         6.5
+         6.737
         ]
        },
        "role": "recover"
@@ -1510,6 +1898,12 @@
        }
       },
       {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -1522,19 +1916,25 @@
        "args": {
         "object": "paperback_book"
        },
-       "role": "recovery"
+       "role": "recover"
       },
       {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
        },
-       "role": "retry_after_recovery"
+       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
@@ -1544,9 +1944,10 @@
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.72,
-         6.5
+         6.737
         ]
-       }
+       },
+       "role": "alternative"
       }
      ],
      "kind": "v5_oracle",
@@ -1894,31 +2295,106 @@
      }
     },
     "h_action_grasp_and_ik": {
-     "move": {},
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.535
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.66
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "unstable_base"
+     ],
      "failures": [
       {
-       "id": "grasp_wooden_block_b",
-       "kind": "grasp",
+       "id": "dependency_v4_edge_base",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_island/top"
+        ]
+       ]
+      },
+      {
+       "id": "ik_pick_wooden_block_a",
+       "kind": "ik",
        "trigger": {
         "skill": "pick",
         "args": {
-         "object": "wooden_block_b"
+         "object": "wooden_block_a"
         },
         "nth": 1
-       }
+       },
+       "until": "base_skill"
       },
       {
-       "id": "ik_stack_wooden_block_b",
+       "id": "ik_stack_wooden_block_a",
        "kind": "ik",
        "trigger": {
         "skill": "stack",
         "args": {
-         "object": "wooden_block_b"
+         "object": "wooden_block_a"
         },
         "nth": 1
        },
        "until": "base_skill"
       }
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Stack the two wooden blocks steadily somewhere suitable on the island, without knocking anything over.",
+     "instruction_zh": "请把两块木积木稳稳叠在岛台合适位置，不要碰倒其他物品。",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "rolling_pin",
+      "oatmeal"
      ],
      "vary": {
       "groups": [],
@@ -1931,11 +2407,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "block B slips on the first pick, then the first stack is refused from its park",
+     "note": "block A sits at the island edge: stack on the open block instead; and block B slips on the first pick, then the first stack is refused from its park",
      "v5": {
       "tier": "hard",
-      "challenge": "block B slips on the first pick, then the first stack is refused from its park",
-      "derived_from": "clear",
+      "challenge": "block A sits at the island edge: stack on the open block instead; and block B slips on the first pick, then the first stack is refused from its park",
+      "derived_from": "edge_base",
       "hard_category": "action"
      }
     },
@@ -2632,46 +3108,16 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "wooden_block_b"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "expect": "fail",
-       "role": "failure",
-       "injected": true
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
         "destination": "wooden_block_a"
        }
       },
       {
-       "skill": "stack",
+       "skill": "pick",
        "args": {
-        "object": "wooden_block_b",
-        "base": "wooden_block_a"
+        "object": "wooden_block_a"
        },
-       "expect": "fail",
        "role": "failure",
+       "expect": "fail",
        "injected": true
       },
       {
@@ -2682,10 +3128,46 @@
        "role": "recover"
       },
       {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_b"
+       }
+      },
+      {
        "skill": "stack",
        "args": {
-        "object": "wooden_block_b",
-        "base": "wooden_block_a"
+        "object": "wooden_block_a",
+        "base": "wooden_block_b"
+       },
+       "role": "failure",
+       "expect": "fail",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_a",
+        "base": "wooden_block_b"
        },
        "role": "recover"
       }
@@ -3134,10 +3616,34 @@
      }
     },
     "h_action_slip_and_miss": {
-     "remove": [
-      "mug"
+     "move": {},
+     "add": {
+      "small_storage_bin": {
+       "asset": "small_storage_bin",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.85,
+        0.4
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "joint_capacity"
      ],
      "failures": [
+      {
+       "id": "capacity_v4_three_containers",
+       "kind": "capacity",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "small_storage_bin",
+         "tv_stand_2/top"
+        ]
+       ]
+      },
       {
        "id": "slip_rolling_pin",
        "kind": "slip",
@@ -3154,7 +3660,7 @@
        "to": {
         "support": "tv_stand_2/top",
         "xy": [
-         7.75,
+         6.88,
          0.36
         ],
         "yaw_deg": 0
@@ -3175,6 +3681,61 @@
        }
       }
      ],
+     "goal": {
+      "any": [
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "wide_storage_bin"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "wide_storage_bin"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "mug"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "mug"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "small_storage_bin"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "small_storage_bin"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
+     "instruction_zh": "烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
+     "watch": [
+      "rolling_pin",
+      "breakfast_spoon",
+      "mug",
+      "wide_storage_bin",
+      "small_storage_bin"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -3186,11 +3747,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the rolling pin slips at the start of the carry, and the first place misses the bin",
+     "note": "allocate by size: the pin only fits the wide bin; and the rolling pin slips at the start of the carry, and the first place misses the bin",
      "v5": {
       "tier": "hard",
-      "challenge": "the rolling pin slips at the start of the carry, and the first place misses the bin",
-      "derived_from": "large_only",
+      "challenge": "allocate by size: the pin only fits the wide bin; and the rolling pin slips at the start of the carry, and the first place misses the bin",
+      "derived_from": "three_containers",
       "hard_category": "action"
      }
     },
@@ -3311,10 +3872,34 @@
      }
     },
     "h_dynamic_spoon_taken": {
-     "remove": [
-      "mug"
+     "move": {},
+     "add": {
+      "small_storage_bin": {
+       "asset": "small_storage_bin",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.85,
+        0.4
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "joint_capacity"
      ],
      "failures": [
+      {
+       "id": "capacity_v4_three_containers",
+       "kind": "capacity",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "small_storage_bin",
+         "tv_stand_2/top"
+        ]
+       ]
+      },
       {
        "id": "resource_breakfast_spoon",
        "kind": "resource",
@@ -3341,6 +3926,61 @@
        }
       }
      ],
+     "goal": {
+      "any": [
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "wide_storage_bin"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "wide_storage_bin"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "mug"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "mug"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "small_storage_bin"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "small_storage_bin"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
+     "instruction_zh": "烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
+     "watch": [
+      "rolling_pin",
+      "breakfast_spoon",
+      "mug",
+      "wide_storage_bin",
+      "small_storage_bin"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -3352,11 +3992,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "once the robot has looked around, someone takes the spoon to the wall cabinet: it is not where it was seen and must be searched for",
+     "note": "allocate by size: the pin only fits the wide bin; and once the robot has looked around, someone takes the spoon to the wall cabinet: it is not where it was seen and must be searched for",
      "v5": {
       "tier": "hard",
-      "challenge": "once the robot has looked around, someone takes the spoon to the wall cabinet: it is not where it was seen and must be searched for",
-      "derived_from": "large_only",
+      "challenge": "allocate by size: the pin only fits the wide bin; and once the robot has looked around, someone takes the spoon to the wall cabinet: it is not where it was seen and must be searched for",
+      "derived_from": "three_containers",
       "hard_category": "dynamic"
      }
     }
@@ -4120,6 +4760,24 @@
        }
       },
       {
+       "skill": "measure",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "small_storage_bin"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "breakfast_spoon"
@@ -4148,7 +4806,8 @@
        "args": {
         "object": "breakfast_spoon",
         "container": "wide_storage_bin"
-       }
+       },
+       "role": "alternative"
       },
       {
        "skill": "navigate",
@@ -4204,8 +4863,8 @@
         "object": "rolling_pin",
         "receptacle": "wide_storage_bin"
        },
-       "expect": "fail",
        "role": "failure",
+       "expect": "fail",
        "injected": true
       },
       {
@@ -4380,6 +5039,24 @@
        }
       },
       {
+       "skill": "measure",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "small_storage_bin"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
        "skill": "search",
        "args": {
         "object": "breakfast_spoon",
@@ -4416,7 +5093,8 @@
        "args": {
         "object": "breakfast_spoon",
         "container": "wide_storage_bin"
-       }
+       },
+       "role": "alternative"
       },
       {
        "skill": "navigate",
@@ -4447,7 +5125,8 @@
        "args": {
         "object": "rolling_pin",
         "receptacle": "wide_storage_bin"
-       }
+       },
+       "role": "alternative"
       }
      ],
      "kind": "v5_oracle",
@@ -4814,12 +5493,45 @@
         1.64
        ],
        "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.335,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.7,
+        0.36
+       ],
+       "yaw_deg": 0.0
       }
      },
      "remove": [
       "juice_bottle"
      ],
      "failures": [
+      {
+       "id": "destination_initial",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "oatmeal",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "on",
+         "pot_lid",
+         "kitchen_cabinet_6/top"
+        ]
+       ]
+      },
       {
        "id": "ik_pick_cup_counter_b",
        "kind": "ik",
@@ -4845,6 +5557,46 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "cup_counter_b",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "cup_counter_b"
+        ]
+       ],
+       [
+        [
+         "on",
+         "mug",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "mug"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "upright",
+        "oatmeal"
+       ],
+       [
+        "upright",
+        "pot_lid"
+       ]
+      ]
+     },
      "vary": {
       "groups": [],
       "start": {
@@ -4856,11 +5608,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the first cup pick and the first place on the cabinet are both refused from their parks",
+     "note": "the drinks spot is taken: make room first; and the first cup pick and the first place on the cabinet are both refused from their parks",
      "v5": {
       "tier": "hard",
-      "challenge": "the first cup pick and the first place on the cabinet are both refused from their parks",
-      "derived_from": "cup_available",
+      "challenge": "the drinks spot is taken: make room first; and the first cup pick and the first place on the cabinet are both refused from their parks",
+      "derived_from": "h_task_spot_taken",
       "hard_category": "action"
      }
     },
@@ -5437,6 +6189,43 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_cabinet_4/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "cup_counter_b"
        }
       },
@@ -5982,13 +6771,40 @@
      }
     },
     "h_action_grasp_and_ik": {
+     "move": {
+      "pencil": {
+       "support": "kitchen_cabinet_6/inside_shelf",
+       "xy": [
+        3.63,
+        0.36
+       ],
+       "yaw_deg": 90
+      }
+     },
      "remove": [
-      "pen"
+      "pen",
+      "plate_inside_kitchen_cabinet"
      ],
      "conditions": [
       "no_pen"
      ],
      "failures": [
+      {
+       "id": "dependency_initial",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "is_closed",
+         "kitchen_cabinet_6"
+        ],
+        [
+         "on",
+         "pencil",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ]
+      },
       {
        "id": "grasp_pencil",
        "kind": "grasp",
@@ -6013,6 +6829,36 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "pen",
+         "desk_1/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "pencil",
+         "desk_1/top"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ]
+      ]
+     },
+     "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.",
+     "instruction_zh": "孩子写作业需要笔。请把钢笔拿到书房书桌上；没有钢笔就拿铅笔。铅笔收在矮墙柜里，拿完请把柜门关好。",
      "vary": {
       "groups": [],
       "start": {
@@ -6024,11 +6870,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the pencil slips on the first pick and the first place on the desk is refused",
+     "note": "no pen; the pencil is behind a closed cabinet door (close it again); and the pencil slips on the first pick and the first place on the desk is refused",
      "v5": {
       "tier": "hard",
-      "challenge": "the pencil slips on the first pick and the first place on the desk is refused",
-      "derived_from": "no_pen",
+      "challenge": "no pen; the pencil is behind a closed cabinet door (close it again); and the pencil slips on the first pick and the first place on the desk is refused",
+      "derived_from": "h_task_pencil_in_cabinet",
       "hard_category": "action"
      }
     },
@@ -6125,21 +6971,48 @@
      }
     },
     "h_dynamic_pencil_taken": {
+     "move": {
+      "pencil": {
+       "support": "kitchen_cabinet_6/inside_shelf",
+       "xy": [
+        3.63,
+        0.36
+       ],
+       "yaw_deg": 90
+      }
+     },
      "remove": [
-      "pen"
+      "pen",
+      "plate_inside_kitchen_cabinet"
      ],
      "conditions": [
       "no_pen"
      ],
      "failures": [
       {
+       "id": "dependency_initial",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "is_closed",
+         "kitchen_cabinet_6"
+        ],
+        [
+         "on",
+         "pencil",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ]
+      },
+      {
        "id": "resource_pencil",
        "kind": "resource",
        "when": "dynamic",
        "trigger": {
-        "skill": "look",
+        "skill": "open",
         "args": {
-         "target": "bookcase_2/top"
+         "articulated": "kitchen_cabinet_6"
         },
         "nth": 1,
         "on": "success"
@@ -6158,6 +7031,36 @@
        }
       }
      ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "pen",
+         "desk_1/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "pencil",
+         "desk_1/top"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ]
+      ]
+     },
+     "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.",
+     "instruction_zh": "孩子写作业需要笔。请把钢笔拿到书房书桌上；没有钢笔就拿铅笔。铅笔收在矮墙柜里，拿完请把柜门关好。",
      "vary": {
       "groups": [],
       "start": {
@@ -6169,11 +7072,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "no pen; just after the robot saw the pencil, someone takes it to the dining table",
+     "note": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone takes the pencil to the dining table: close the cabinet again and search the pencil",
      "v5": {
       "tier": "hard",
-      "challenge": "no pen; just after the robot saw the pencil, someone takes it to the dining table",
-      "derived_from": "no_pen",
+      "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone takes the pencil to the dining table: close the cabinet again and search the pencil",
+      "derived_from": "h_task_pencil_in_cabinet",
       "hard_category": "dynamic"
      }
     }
@@ -6605,37 +7508,34 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/top"
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/top"
+        "target": "kitchen_cabinet_6/inside_shelf"
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "pen"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "navigate",
-       "args": {
         "destination": "pencil"
-       },
-       "role": "alternative"
+       }
       },
       {
        "skill": "pick",
        "args": {
         "object": "pencil"
        },
-       "role": "failure",
        "expect": "fail",
+       "role": "failure",
        "injected": true
       },
       {
@@ -6644,6 +7544,19 @@
         "object": "pencil"
        },
        "role": "recover"
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_6",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
       },
       {
        "skill": "navigate",
@@ -6764,22 +7677,20 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/top"
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
        }
       },
       {
        "skill": "look",
        "args": {
-        "target": "bookcase_2/top"
+        "target": "kitchen_cabinet_6/inside_shelf"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen"
-       },
-       "expect": "fail",
-       "role": "failure"
       },
       {
        "skill": "search",
@@ -6787,32 +7698,50 @@
         "object": "pencil",
         "region": "dining_room_0_1"
        },
-       "role": "alternative"
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "pencil"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "pick",
        "args": {
         "object": "pencil"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "desk_1/top"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "place",
        "args": {
         "object": "pencil",
         "receptacle": "desk_1/top"
-       }
+       },
+       "role": "recover"
       }
      ],
      "kind": "v5_oracle",
@@ -7224,8 +8153,59 @@
      }
     },
     "h_action_slip_and_ik": {
-     "move": {},
+     "move": {
+      "clutter_cereal_a": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.2777,
+        0.44
+       ],
+       "yaw_deg": 90
+      },
+      "clutter_cereal_b": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.4327,
+        0.44
+       ],
+       "yaw_deg": 90
+      },
+      "juice_bottle": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.71,
+        0.45
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "clutter_cereal_c": {
+       "asset": "cereal_box",
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.588,
+        0.44
+       ],
+       "yaw_deg": 90
+      }
+     },
+     "conditions": [
+      "spot_quality"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_display_hidden",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "juice_bottle",
+         "kitchen_cabinet_6/top"
+        ]
+       ]
+      },
       {
        "id": "slip_wooden_block_a",
        "kind": "slip",
@@ -7248,6 +8228,106 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "front_visible",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.02
+        ]
+       ],
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "tv_stand_2/top"
+        ],
+        [
+         "front_visible",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.02
+        ]
+       ],
+       [
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "front_visible",
+         "wooden_block_b"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.02
+        ]
+       ],
+       [
+        [
+         "on",
+         "wooden_block_b",
+         "tv_stand_2/top"
+        ],
+        [
+         "front_visible",
+         "wooden_block_b"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.02
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "upright",
+        "clutter_cereal_c"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Put the toy block on display on the low wall cabinet or the TV stand, in a spot where it can be seen clearly and stands steadily.",
+     "instruction_zh": "请把积木展示在靠墙矮柜或电视柜上一个醒目、稳定的位置。",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "juice_bottle",
+      "clutter_cereal_c"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -7259,11 +8339,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the block slips on the way, then the first place on the cabinet is refused",
+     "note": "the cabinet's free space is hidden: display on the TV stand; and the block slips on the way, then the first place on the cabinet is refused",
      "v5": {
       "tier": "hard",
-      "challenge": "the block slips on the way, then the first place on the cabinet is refused",
-      "derived_from": "free",
+      "challenge": "the cabinet's free space is hidden: display on the TV stand; and the block slips on the way, then the first place on the cabinet is refused",
+      "derived_from": "display_hidden",
       "hard_category": "action"
      }
     },
@@ -8054,6 +9134,12 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
@@ -8068,10 +9154,10 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_6/top"
+        "destination": "tv_stand_2/top"
        },
-       "expect": "fail",
        "role": "failure",
+       "expect": "fail",
        "injected": true
       },
       {
@@ -8091,7 +9177,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_cabinet_6/top"
+        "destination": "tv_stand_2/top"
        },
        "role": "recover"
       },
@@ -8099,16 +9185,16 @@
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "kitchen_cabinet_6/top"
+        "receptacle": "tv_stand_2/top"
        },
-       "expect": "fail",
        "role": "failure",
+       "expect": "fail",
        "injected": true
       },
       {
        "skill": "approach",
        "args": {
-        "target": "kitchen_cabinet_6/top"
+        "target": "tv_stand_2/top"
        },
        "role": "recover"
       },
@@ -8116,7 +9202,7 @@
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "kitchen_cabinet_6/top"
+        "receptacle": "tv_stand_2/top"
        },
        "role": "recover"
       }
@@ -8609,8 +9695,41 @@
      }
     },
     "h_action_ik_and_slip": {
-     "move": {},
+     "move": {
+      "handled_cooking_pot": {
+       "support": "kitchen_microwave/inside_floor",
+       "xy": [
+        4.5,
+        2.5
+       ],
+       "yaw_deg": 0
+      },
+      "pot_lid": {
+       "support": null,
+       "z": 0.88,
+       "xy": [
+        4.5,
+        2.5
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "conditions": [
+      "appliance_occupied"
+     ],
      "failures": [
+      {
+       "id": "resource_v4_microwave_holds_pot",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "in_appliance",
+         "handled_cooking_pot",
+         "kitchen_microwave"
+        ]
+       ]
+      },
       {
        "id": "ik_pick_oatmeal",
        "kind": "ik",
@@ -8633,6 +9752,38 @@
        }
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "temperature_at_least",
+        "oatmeal",
+        40
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "is_closed",
+        "kitchen_microwave"
+       ],
+       [
+        "not on_floor",
+        "handled_cooking_pot"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Warm up the leftover oatmeal for breakfast to at least 40 C in a way that works. When you are done, the stove must be off and the microwave door closed.",
+     "instruction_zh": "请用合适方式把燕麦粥加热到至少 40°C，完成后关火并关好微波炉门。",
+     "watch": [
+      "oatmeal",
+      "handled_cooking_pot",
+      "pot_lid"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -8644,11 +9795,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the first pick is refused and the bowl then slips at the start of the carry",
+     "note": "the microwave holds the soup pot: heat on the stove; and the first pick is refused and the bowl then slips at the start of the carry",
      "v5": {
       "tier": "hard",
-      "challenge": "the first pick is refused and the bowl then slips at the start of the carry",
-      "derived_from": "microwave_works",
+      "challenge": "the microwave holds the soup pot: heat on the stove; and the first pick is refused and the bowl then slips at the start of the carry",
+      "derived_from": "microwave_holds_pot",
       "hard_category": "action"
      }
     },
@@ -8753,8 +9904,41 @@
      }
     },
     "h_dynamic_door_opened": {
-     "move": {},
+     "move": {
+      "handled_cooking_pot": {
+       "support": "kitchen_microwave/inside_floor",
+       "xy": [
+        4.5,
+        2.5
+       ],
+       "yaw_deg": 0
+      },
+      "pot_lid": {
+       "support": null,
+       "z": 0.88,
+       "xy": [
+        4.5,
+        2.5
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "conditions": [
+      "appliance_occupied"
+     ],
      "failures": [
+      {
+       "id": "resource_v4_microwave_holds_pot",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "in_appliance",
+         "handled_cooking_pot",
+         "kitchen_microwave"
+        ]
+       ]
+      },
       {
        "id": "dependency_kitchen_microwave",
        "kind": "dependency",
@@ -8773,6 +9957,38 @@
        }
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "temperature_at_least",
+        "oatmeal",
+        40
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "is_closed",
+        "kitchen_microwave"
+       ],
+       [
+        "not on_floor",
+        "handled_cooking_pot"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Warm up the leftover oatmeal for breakfast to at least 40 C in a way that works. When you are done, the stove must be off and the microwave door closed.",
+     "instruction_zh": "请用合适方式把燕麦粥加热到至少 40°C，完成后关火并关好微波炉门。",
+     "watch": [
+      "oatmeal",
+      "handled_cooking_pot",
+      "pot_lid"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -8784,11 +10000,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "just after the robot closes the microwave, someone opens the door again: heating needs it closed",
+     "note": "the microwave holds the soup pot: heat on the stove; and just after the robot closes the microwave, someone opens the door again: heating needs it closed",
      "v5": {
       "tier": "hard",
-      "challenge": "just after the robot closes the microwave, someone opens the door again: heating needs it closed",
-      "derived_from": "microwave_works",
+      "challenge": "the microwave holds the soup pot: heat on the stove; and just after the robot closes the microwave, someone opens the door again: heating needs it closed",
+      "derived_from": "microwave_holds_pot",
       "hard_category": "dynamic"
      }
     }
@@ -9477,6 +10693,18 @@
       {
        "skill": "look",
        "args": {
+        "target": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
         "target": "kitchen_island/top"
        }
       },
@@ -9512,10 +10740,10 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_microwave/inside_floor"
+        "destination": "kitchen_stove/top"
        },
-       "expect": "fail",
        "role": "failure",
+       "expect": "fail",
        "injected": true
       },
       {
@@ -9535,7 +10763,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_microwave/inside_floor"
+        "destination": "kitchen_stove/top"
        },
        "role": "recover"
       },
@@ -9543,22 +10771,18 @@
        "skill": "place",
        "args": {
         "object": "oatmeal",
-        "receptacle": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
+        "receptacle": "kitchen_stove/top"
+       },
+       "role": "alternative"
       },
       {
        "skill": "heat",
        "args": {
         "food": "oatmeal",
-        "appliance": "kitchen_microwave",
+        "appliance": "kitchen_stove",
         "temp_c": 40
-       }
+       },
+       "role": "alternative"
       }
      ],
      "kind": "v5_oracle",
@@ -9670,6 +10894,18 @@
       {
        "skill": "look",
        "args": {
+        "target": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
         "target": "kitchen_island/top"
        }
       },
@@ -9688,45 +10924,38 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_microwave/inside_floor"
-       }
+        "destination": "kitchen_stove/top"
+       },
+       "role": "alternative"
       },
       {
        "skill": "place",
        "args": {
         "object": "oatmeal",
-        "receptacle": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
+        "receptacle": "kitchen_stove/top"
+       },
+       "role": "alternative"
       },
       {
        "skill": "heat",
        "args": {
         "food": "oatmeal",
-        "appliance": "kitchen_microwave",
+        "appliance": "kitchen_stove",
         "temp_c": 40
        },
-       "expect": "fail",
-       "role": "failure"
+       "role": "alternative"
       },
       {
-       "skill": "close",
+       "skill": "navigate",
        "args": {
-        "articulated": "kitchen_microwave"
+        "destination": "kitchen_microwave"
        },
        "role": "recover"
       },
       {
-       "skill": "heat",
+       "skill": "close",
        "args": {
-        "food": "oatmeal",
-        "appliance": "kitchen_microwave",
-        "temp_c": 40
+        "articulated": "kitchen_microwave"
        },
        "role": "recover"
       }
@@ -10158,8 +11387,109 @@
      }
     },
     "h_action_grasp_and_ik": {
-     "move": {},
+     "move": {
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.75,
+        1.62
+       ],
+       "yaw_deg": 0
+      },
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.1,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "soda_can": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.45,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.8,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.97,
+        1.88
+       ],
+       "yaw_deg": 0.0
+      },
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.27,
+        1.88
+       ],
+       "yaw_deg": 0
+      },
+      "breakfast_spoon": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.63,
+        1.88
+       ],
+       "yaw_deg": 0
+      },
+      "juice_bottle": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.94,
+        1.88
+       ],
+       "yaw_deg": 0.0
+      },
+      "kitchen_sponge": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.38
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "surface_cluttered"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_island_cluttered",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "soda_can",
+         "kitchen_island/top"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_island/top"
+        ]
+       ]
+      },
       {
        "id": "grasp_kitchen_sponge",
        "kind": "grasp",
@@ -10184,6 +11514,107 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "on",
+        "kitchen_sponge",
+        "tv_stand_2/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "near_start",
+        "rolling_pin",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "wooden_block_a",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "soda_can",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "wooden_block_b",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "mug",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "oatmeal",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "paperback_book",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "breakfast_spoon",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "juice_bottle",
+        0.12,
+        0.03
+       ],
+       [
+        "upright",
+        "soda_can"
+       ],
+       [
+        "upright",
+        "mug"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "upright",
+        "oatmeal"
+       ]
+      ]
+     },
+     "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
+     "instruction_zh": "用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵放回原处。",
+     "watch": [
+      "kitchen_sponge",
+      "rolling_pin",
+      "wooden_block_a",
+      "soda_can",
+      "wooden_block_b",
+      "mug",
+      "oatmeal",
+      "paperback_book",
+      "breakfast_spoon",
+      "juice_bottle"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -10195,11 +11626,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the sponge slips on the first pick, and the first wipe is refused from its park",
+     "note": "the island is cluttered: clear the strip, wipe, put things back; and the sponge slips on the first pick, and the first wipe is refused from its park",
      "v5": {
       "tier": "hard",
-      "challenge": "the sponge slips on the first pick, and the first wipe is refused from its park",
-      "derived_from": "sponge_on_island",
+      "challenge": "the island is cluttered: clear the strip, wipe, put things back; and the sponge slips on the first pick, and the first wipe is refused from its park",
+      "derived_from": "island_cluttered",
       "hard_category": "action"
      }
     },
@@ -10440,8 +11871,109 @@
      }
     },
     "h_dynamic_sponge_taken": {
-     "move": {},
+     "move": {
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.75,
+        1.62
+       ],
+       "yaw_deg": 0
+      },
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.1,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "soda_can": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.45,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.8,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.97,
+        1.88
+       ],
+       "yaw_deg": 0.0
+      },
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.27,
+        1.88
+       ],
+       "yaw_deg": 0
+      },
+      "breakfast_spoon": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.63,
+        1.88
+       ],
+       "yaw_deg": 0
+      },
+      "juice_bottle": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.94,
+        1.88
+       ],
+       "yaw_deg": 0.0
+      },
+      "kitchen_sponge": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.38
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "surface_cluttered"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_island_cluttered",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "soda_can",
+         "kitchen_island/top"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_island/top"
+        ]
+       ]
+      },
       {
        "id": "resource_kitchen_sponge",
        "kind": "resource",
@@ -10458,15 +11990,116 @@
         "type": "move_object",
         "object": "kitchen_sponge",
         "to": {
-         "support": "tv_stand_2/top",
+         "support": "kitchen_cabinet_6/top",
          "xy": [
-          7.6,
-          0.38
+          3.7,
+          0.36
          ],
          "yaw_deg": 0.0
         }
        }
       }
+     ],
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "on",
+        "kitchen_sponge",
+        "tv_stand_2/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "near_start",
+        "rolling_pin",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "wooden_block_a",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "soda_can",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "wooden_block_b",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "mug",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "oatmeal",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "paperback_book",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "breakfast_spoon",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "juice_bottle",
+        0.12,
+        0.03
+       ],
+       [
+        "upright",
+        "soda_can"
+       ],
+       [
+        "upright",
+        "mug"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "upright",
+        "oatmeal"
+       ]
+      ]
+     },
+     "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
+     "instruction_zh": "用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵放回原处。",
+     "watch": [
+      "kitchen_sponge",
+      "rolling_pin",
+      "wooden_block_a",
+      "soda_can",
+      "wooden_block_b",
+      "mug",
+      "oatmeal",
+      "paperback_book",
+      "breakfast_spoon",
+      "juice_bottle"
      ],
      "vary": {
       "groups": [],
@@ -10479,11 +12112,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "after the robot looked at the island, someone puts the sponge on the TV stand",
+     "note": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it",
      "v5": {
       "tier": "hard",
-      "challenge": "after the robot looked at the island, someone puts the sponge on the TV stand",
-      "derived_from": "sponge_on_island",
+      "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it",
+      "derived_from": "island_cluttered",
       "hard_category": "dynamic"
      }
     }
@@ -11017,6 +12650,39 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.14,
+         0.44
+        ]
+       },
+       "role": "insert"
+      },
+      {
        "skill": "look",
        "args": {
         "target": "tv_stand_2/top"
@@ -11045,6 +12711,12 @@
        "role": "recover"
       },
       {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
        "skill": "wipe",
        "args": {
         "surface": "kitchen_island/top",
@@ -11070,11 +12742,50 @@
        "role": "recover"
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top"
+        "receptacle": "tv_stand_2/top"
        }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.8,
+         1.62
+        ]
+       },
+       "role": "restore"
       }
      ],
      "kind": "v5_oracle",
@@ -11218,8 +12929,46 @@
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
        },
-       "role": "recover"
+       "role": "insert"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "tv_stand_2/top",
+        "hint_xy": [
+         7.14,
+         0.44
+        ]
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
       },
       {
        "skill": "search",
@@ -11255,11 +13004,50 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top"
+        "receptacle": "tv_stand_2/top"
        }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       },
+       "role": "restore"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.8,
+         1.62
+        ]
+       },
+       "role": "restore"
       }
      ],
      "kind": "v5_oracle",
@@ -11591,6 +13379,22 @@
     },
     "h_action_grasp_and_ik": {
      "move": {
+      "bowl_kitchen_cabinet": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.2,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_counter": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
       "pot_lid": {
        "support": "kitchen_stove/top",
        "xy": [
@@ -11600,7 +13404,22 @@
        "yaw_deg": 0.0
       }
      },
+     "conditions": [
+      "cookware_choice"
+     ],
      "failures": [
+      {
+       "id": "resource_v4_cookware_choice",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "bowl_kitchen_cabinet",
+         "kitchen_island/top"
+        ]
+       ]
+      },
       {
        "id": "grasp_breakfast_spoon",
        "kind": "grasp",
@@ -11625,6 +13444,17 @@
        "until": "base_skill"
       }
      ],
+     "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
+     "instruction_zh": "请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。",
+     "watch": [
+      "cherry_tomato_1",
+      "cherry_tomato_2",
+      "handled_cooking_pot",
+      "pot_lid",
+      "breakfast_spoon",
+      "bowl_kitchen_cabinet",
+      "mug_counter"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -11636,11 +13466,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the spoon slips on its first pick and the first lid pick is refused",
+     "note": "choose the pot over the nearer bowl and mug; and the spoon slips on its first pick and the first lid pick is refused",
      "v5": {
       "tier": "hard",
-      "challenge": "the spoon slips on its first pick and the first lid pick is refused",
-      "derived_from": "lid_off",
+      "challenge": "choose the pot over the nearer bowl and mug; and the spoon slips on its first pick and the first lid pick is refused",
+      "derived_from": "cookware_choice",
       "hard_category": "action"
      }
     },
@@ -11731,6 +13561,22 @@
     },
     "h_dynamic_spoon_taken": {
      "move": {
+      "bowl_kitchen_cabinet": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.2,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_counter": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
       "pot_lid": {
        "support": "kitchen_stove/top",
        "xy": [
@@ -11740,7 +13586,22 @@
        "yaw_deg": 0.0
       }
      },
+     "conditions": [
+      "cookware_choice"
+     ],
      "failures": [
+      {
+       "id": "resource_v4_cookware_choice",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "bowl_kitchen_cabinet",
+         "kitchen_island/top"
+        ]
+       ]
+      },
       {
        "id": "resource_breakfast_spoon",
        "kind": "resource",
@@ -11767,6 +13628,17 @@
        }
       }
      ],
+     "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
+     "instruction_zh": "请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。",
+     "watch": [
+      "cherry_tomato_1",
+      "cherry_tomato_2",
+      "handled_cooking_pot",
+      "pot_lid",
+      "breakfast_spoon",
+      "bowl_kitchen_cabinet",
+      "mug_counter"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -11778,11 +13650,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
+     "note": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
      "v5": {
       "tier": "hard",
-      "challenge": "while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
-      "derived_from": "lid_off",
+      "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
+      "derived_from": "cookware_choice",
       "hard_category": "dynamic"
      }
     }
@@ -12579,6 +14451,12 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
        "skill": "collect",
        "args": {
         "objects": [
@@ -12586,7 +14464,8 @@
          "cherry_tomato_2"
         ],
         "container": "handled_cooking_pot"
-       }
+       },
+       "role": "alternative"
       },
       {
        "skill": "navigate",
@@ -12821,6 +14700,12 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
        "skill": "collect",
        "args": {
         "objects": [
@@ -12828,7 +14713,8 @@
          "cherry_tomato_2"
         ],
         "container": "handled_cooking_pot"
-       }
+       },
+       "role": "alternative"
       },
       {
        "skill": "search",
@@ -13218,8 +15104,33 @@
      }
     },
     "h_action_ik_pick_and_drop": {
-     "move": {},
+     "move": {
+      "soda_can": {
+       "support": "kitchen_microwave/inside_floor",
+       "xy": [
+        4.5,
+        2.5
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "failures": [
+      {
+       "id": "dependency_initial",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "is_closed",
+         "kitchen_microwave"
+        ],
+        [
+         "in_appliance",
+         "soda_can",
+         "kitchen_microwave"
+        ]
+       ]
+      },
       {
        "id": "ik_pick_soda_can",
        "kind": "ik",
@@ -13245,6 +15156,25 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_microwave"
+       ]
+      ]
+     },
+     "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
+     "instruction_zh": "有人把空汽水罐落在微波炉里了。请把它扔进垃圾桶，并把微波炉门关好。",
      "vary": {
       "groups": [],
       "start": {
@@ -13256,11 +15186,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the first pick and the first drop over the trash can are both refused from their parks",
+     "note": "the can is in the closed microwave (close it again); and the first pick and the first drop over the trash can are both refused from their parks",
      "v5": {
       "tier": "hard",
-      "challenge": "the first pick and the first drop over the trash can are both refused from their parks",
-      "derived_from": "can_on_island",
+      "challenge": "the can is in the closed microwave (close it again); and the first pick and the first drop over the trash can are both refused from their parks",
+      "derived_from": "h_task_can_in_microwave",
       "hard_category": "action"
      }
     },
@@ -13339,16 +15269,41 @@
      }
     },
     "h_dynamic_can_moved": {
-     "move": {},
+     "move": {
+      "soda_can": {
+       "support": "kitchen_microwave/inside_floor",
+       "xy": [
+        4.5,
+        2.5
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "failures": [
+      {
+       "id": "dependency_initial",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "is_closed",
+         "kitchen_microwave"
+        ],
+        [
+         "in_appliance",
+         "soda_can",
+         "kitchen_microwave"
+        ]
+       ]
+      },
       {
        "id": "resource_soda_can",
        "kind": "resource",
        "when": "dynamic",
        "trigger": {
-        "skill": "explore_room",
+        "skill": "open",
         "args": {
-         "room": "living_room_0_0"
+         "articulated": "kitchen_microwave"
         },
         "nth": 1,
         "on": "success"
@@ -13367,6 +15322,25 @@
        }
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_microwave"
+       ]
+      ]
+     },
+     "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
+     "instruction_zh": "有人把空汽水罐落在微波炉里了。请把它扔进垃圾桶，并把微波炉门关好。",
      "vary": {
       "groups": [],
       "start": {
@@ -13378,11 +15352,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "after the robot looked around the living room, someone carries the can to the dining table",
+     "note": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
      "v5": {
       "tier": "hard",
-      "challenge": "after the robot looked around the living room, someone carries the can to the dining table",
-      "derived_from": "can_on_island",
+      "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
+      "derived_from": "h_task_can_in_microwave",
       "hard_category": "dynamic"
      }
     }
@@ -13800,15 +15774,21 @@
     "v5_h_action_ik_pick_and_drop": {
      "steps": [
       {
-       "skill": "look",
+       "skill": "navigate",
        "args": {
-        "target": "kitchen_island/top"
+        "destination": "kitchen_microwave"
        }
       },
       {
-       "skill": "explore_room",
+       "skill": "open",
        "args": {
-        "room": "living_room_0_0"
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_microwave/inside_floor"
        }
       },
       {
@@ -13841,23 +15821,22 @@
        "role": "recover"
       },
       {
-       "skill": "lift",
+       "skill": "retreat",
        "args": {
-        "object": "soda_can",
-        "height_m": 0.95
+        "obstacle": "kitchen_microwave",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
        }
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
-       }
-      },
-      {
-       "skill": "hover",
-       "args": {
-        "object": "soda_can",
-        "target": "trash_can"
        }
       },
       {
@@ -13971,24 +15950,22 @@
     "v5_h_dynamic_can_moved": {
      "steps": [
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
        "skill": "look",
        "args": {
-        "target": "kitchen_island/top"
+        "target": "kitchen_microwave/inside_floor"
        }
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "soda_can"
-       },
-       "expect": "fail",
-       "role": "failure"
       },
       {
        "skill": "search",
@@ -13996,32 +15973,50 @@
         "object": "soda_can",
         "region": "dining_room_0_1"
        },
-       "role": "recovery"
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "soda_can"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "pick",
        "args": {
         "object": "soda_can"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "drop",
        "args": {
         "object": "soda_can",
         "container": "trash_can"
-       }
+       },
+       "role": "recover"
       }
      ],
      "kind": "v5_oracle",
@@ -14268,18 +16263,46 @@
      }
     },
     "h_action_grasp_and_ik": {
-     "move": {},
+     "move": {
+      "bowl_kitchen_cabinet": {
+       "support": "bookcase_2/top",
+       "xy": [
+        0.92,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "fruit_basket"
+     ],
+     "conditions": [
+      "decoy_destination"
+     ],
      "failures": [
       {
-       "id": "grasp_apple",
-       "kind": "grasp",
+       "id": "resource_v4_basket_gone_bowl_there",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "bowl_kitchen_cabinet",
+         "bookcase_2/top"
+        ]
+       ]
+      },
+      {
+       "id": "ik_pick_apple",
+       "kind": "ik",
        "trigger": {
         "skill": "pick",
         "args": {
          "object": "apple"
         },
         "nth": 1
-       }
+       },
+       "until": "base_skill"
       },
       {
        "id": "ik_place_apple",
@@ -14294,6 +16317,13 @@
        "until": "base_skill"
       }
      ],
+     "instruction": "Put the apple from the dining table into the fruit basket on the bedroom bookcase; if the basket is not there, put it on the serving tray on the study desk.",
+     "instruction_zh": "请把餐桌上的苹果放进卧室书架的果篮；若果篮不在，就放进书桌的托盘。",
+     "watch": [
+      "apple",
+      "serving_tray",
+      "bowl_kitchen_cabinet"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -14305,11 +16335,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the apple slips on the first pick and the first place into the basket is refused",
+     "note": "no basket, a bowl in its place: use the stated tray; and the apple slips on the first pick and the first place into the basket is refused",
      "v5": {
       "tier": "hard",
-      "challenge": "the apple slips on the first pick and the first place into the basket is refused",
-      "derived_from": "fruits_on_table",
+      "challenge": "no basket, a bowl in its place: use the stated tray; and the apple slips on the first pick and the first place into the basket is refused",
+      "derived_from": "basket_gone_bowl_there",
       "hard_category": "action"
      }
     },
@@ -14941,6 +16971,13 @@
        "injected": true
       },
       {
+       "skill": "approach",
+       "args": {
+        "target": "apple"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "apple"
@@ -14960,19 +16997,40 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "serving_tray"
+       },
+       "role": "alternative"
+      },
+      {
        "skill": "place",
        "args": {
         "object": "apple",
-        "receptacle": "fruit_basket"
+        "receptacle": "serving_tray"
        },
-       "expect": "fail",
        "role": "failure",
+       "expect": "fail",
        "injected": true
       },
       {
        "skill": "approach",
        "args": {
-        "target": "fruit_basket"
+        "target": "serving_tray"
        },
        "role": "recover"
       },
@@ -14980,7 +17038,7 @@
        "skill": "place",
        "args": {
         "object": "apple",
-        "receptacle": "fruit_basket"
+        "receptacle": "serving_tray"
        },
        "role": "recover"
       }
@@ -15583,8 +17641,115 @@
      }
     },
     "h_action_grasp_and_ik": {
-     "move": {},
+     "move": {
+      "rubber_duck": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.95,
+        -6.02
+       ],
+       "yaw_deg": 128.7
+      }
+     },
+     "add": {
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.84,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.13,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "stored_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.375
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_4": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_5": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_6": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.375
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "remove": [
+      "storage_basket"
+     ],
+     "conditions": [
+      "joint_capacity"
+     ],
      "failures": [
+      {
+       "id": "capacity_v4_toys_everywhere",
+       "kind": "capacity",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "toy_bin_small",
+         "bookcase_2/top"
+        ]
+       ]
+      },
       {
        "id": "grasp_toy_car",
        "kind": "grasp",
@@ -15597,10 +17762,10 @@
        }
       },
       {
-       "id": "ik_place_rubber_duck",
+       "id": "ik_drop_rubber_duck",
        "kind": "ik",
        "trigger": {
-        "skill": "place",
+        "skill": "drop",
         "args": {
          "object": "rubber_duck"
         },
@@ -15608,6 +17773,106 @@
        },
        "until": "base_skill"
       }
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_bin_small"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_bin_small"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_bin_small"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_tray"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_tray"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_bin_small"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_tray"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_tray"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "fully_inside",
+        "stored_block_1",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_2",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_3",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_4",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_5",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_6",
+        "toy_bin_small"
+       ],
+       [
+        "upright",
+        "toy_bin_small"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
+     "instruction_zh": "快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。",
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "toy_bin_small",
+      "toy_tray"
      ],
      "vary": {
       "groups": [],
@@ -15620,11 +17885,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the car slips on its first pick, the duck's first place is refused",
+     "note": "no basket: allocate the toys by size; and the car slips on its first pick, the duck's first place is refused",
      "v5": {
       "tier": "hard",
-      "challenge": "the car slips on its first pick, the duck's first place is refused",
-      "derived_from": "toys_out",
+      "challenge": "no basket: allocate the toys by size; and the car slips on its first pick, the duck's first place is refused",
+      "derived_from": "toys_everywhere",
       "hard_category": "action"
      }
     },
@@ -15871,8 +18136,115 @@
      }
     },
     "h_dynamic_duck_taken": {
-     "move": {},
+     "move": {
+      "rubber_duck": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.95,
+        -6.02
+       ],
+       "yaw_deg": 128.7
+      }
+     },
+     "add": {
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.84,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.13,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "stored_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.375
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_4": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_5": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_6": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.375
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "remove": [
+      "storage_basket"
+     ],
+     "conditions": [
+      "joint_capacity"
+     ],
      "failures": [
+      {
+       "id": "capacity_v4_toys_everywhere",
+       "kind": "capacity",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "toy_bin_small",
+         "bookcase_2/top"
+        ]
+       ]
+      },
       {
        "id": "resource_rubber_duck",
        "kind": "resource",
@@ -15889,15 +18261,115 @@
         "type": "move_object",
         "object": "rubber_duck",
         "to": {
-         "support": "desk_1/top",
+         "support": "dining_table_2/top",
          "xy": [
-          -0.95,
-          -6.02
+          3.7,
+          6.3
          ],
-         "yaw_deg": 128.7
+         "yaw_deg": 0.0
         }
        }
       }
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_bin_small"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_bin_small"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_bin_small"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_tray"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_tray"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_bin_small"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "toy_car",
+         "toy_tray"
+        ],
+        [
+         "fully_inside",
+         "rubber_duck",
+         "toy_tray"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "fully_inside",
+        "stored_block_1",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_2",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_3",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_4",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_5",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_6",
+        "toy_bin_small"
+       ],
+       [
+        "upright",
+        "toy_bin_small"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
+     "instruction_zh": "快睡觉了，请把房间里分散的玩具全部收好，放入卧室合适的储物容器。",
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "toy_bin_small",
+      "toy_tray"
      ],
      "vary": {
       "groups": [],
@@ -15910,11 +18382,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "after the robot looked around the living room, the kid carries the duck to the study desk",
+     "note": "no basket (allocate the toys by size), and the kid carries the duck to the dining table",
      "v5": {
       "tier": "hard",
-      "challenge": "after the robot looked around the living room, the kid carries the duck to the study desk",
-      "derived_from": "toys_out",
+      "challenge": "no basket (allocate the toys by size), and the kid carries the duck to the dining table",
+      "derived_from": "toys_everywhere",
       "hard_category": "dynamic"
      }
     }
@@ -16539,9 +19011,27 @@
     "v5_h_action_grasp_and_ik": {
      "steps": [
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "bedroom_0_1"
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_tray"
        }
       },
       {
@@ -16575,15 +19065,23 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "storage_basket"
+        "destination": "toy_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "toy_car",
-        "receptacle": "storage_basket"
+        "receptacle": "toy_tray"
        }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "living_room_0_1"
+       },
+       "role": "recovery"
       },
       {
        "skill": "navigate",
@@ -16600,14 +19098,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "storage_basket"
+        "destination": "toy_bin_small"
        }
       },
       {
-       "skill": "place",
+       "skill": "drop",
        "args": {
         "object": "rubber_duck",
-        "receptacle": "storage_basket"
+        "container": "toy_bin_small"
        },
        "expect": "fail",
        "role": "failure",
@@ -16616,15 +19114,15 @@
       {
        "skill": "approach",
        "args": {
-        "target": "storage_basket"
+        "target": "toy_bin_small"
        },
        "role": "recover"
       },
       {
-       "skill": "place",
+       "skill": "drop",
        "args": {
         "object": "rubber_duck",
-        "receptacle": "storage_basket"
+        "container": "toy_bin_small"
        },
        "role": "recover"
       }
@@ -16746,9 +19244,27 @@
     "v5_h_dynamic_duck_taken": {
      "steps": [
       {
-       "skill": "explore_room",
+       "skill": "navigate",
        "args": {
-        "room": "bedroom_0_1"
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_tray"
        }
       },
       {
@@ -16772,29 +19288,21 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "storage_basket"
+        "destination": "toy_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "toy_car",
-        "receptacle": "storage_basket"
+        "receptacle": "toy_tray"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rubber_duck"
-       },
-       "expect": "fail",
-       "role": "failure"
       },
       {
        "skill": "search",
        "args": {
         "object": "rubber_duck",
-        "region": "living_room_0_1"
+        "region": "dining_room_0_1"
        },
        "role": "recovery"
       },
@@ -16813,14 +19321,14 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "storage_basket"
+        "destination": "toy_bin_small"
        }
       },
       {
-       "skill": "place",
+       "skill": "drop",
        "args": {
         "object": "rubber_duck",
-        "receptacle": "storage_basket"
+        "container": "toy_bin_small"
        }
       }
      ],
@@ -17213,8 +19721,68 @@
      }
     },
     "h_action_ik_and_grasp": {
-     "move": {},
+     "move": {
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.86,
+        7.22
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.86,
+        7.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.22,
+        7.24
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.22,
+        7.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.1,
+        7.88
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "cup"
+     ],
+     "conditions": [
+      "no_cup",
+      "anchor_boxed_in"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_no_cup_spoon_boxed_in",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "clutter_cereal_a",
+         "dining_table_2/top"
+        ]
+       ]
+      },
       {
        "id": "ik_pick_bowl",
        "kind": "ik",
@@ -17228,17 +19796,96 @@
        "until": "base_skill"
       },
       {
-       "id": "ik_place_cup",
+       "id": "ik_place_mug",
        "kind": "ik",
        "trigger": {
         "skill": "place",
         "args": {
-         "object": "cup"
+         "object": "mug"
         },
         "nth": 1
        },
        "until": "base_skill"
       }
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "cup",
+         "dining_table_2/top"
+        ],
+        [
+         "upright",
+         "cup"
+        ],
+        [
+         "grouped",
+         [
+          "bowl",
+          "cup",
+          "spoon"
+         ],
+         "dining_table_2/top",
+         0.4
+        ]
+       ],
+       [
+        [
+         "on",
+         "mug",
+         "dining_table_2/top"
+        ],
+        [
+         "upright",
+         "mug"
+        ],
+        [
+         "grouped",
+         [
+          "bowl",
+          "mug",
+          "spoon"
+         ],
+         "dining_table_2/top",
+         0.4
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "on",
+        "bowl",
+        "dining_table_2/top"
+       ],
+       [
+        "upright",
+        "bowl"
+       ],
+       [
+        "on",
+        "spoon",
+        "dining_table_2/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
+     "instruction_zh": "请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。",
+     "watch": [
+      "bowl",
+      "cup",
+      "mug",
+      "spoon",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "plate_counter_a",
+      "plate_counter_b",
+      "plate_dining_cabinet"
      ],
      "vary": {
       "groups": [],
@@ -17251,11 +19898,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the first bowl pick and the first cup place are both refused from their parks",
+     "note": "the setting is boxed in (and no cup): move the setting; and the first bowl pick and the first cup place are both refused from their parks",
      "v5": {
       "tier": "hard",
-      "challenge": "the first bowl pick and the first cup place are both refused from their parks",
-      "derived_from": "dishes_on_tv_stand",
+      "challenge": "the setting is boxed in (and no cup): move the setting; and the first bowl pick and the first cup place are both refused from their parks",
+      "derived_from": "no_cup_spoon_boxed_in",
       "hard_category": "action"
      }
     },
@@ -17434,8 +20081,68 @@
      }
     },
     "h_dynamic_bowl_taken": {
-     "move": {},
+     "move": {
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.86,
+        7.22
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        2.86,
+        7.7
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.22,
+        7.24
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.22,
+        7.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.1,
+        7.88
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "cup"
+     ],
+     "conditions": [
+      "no_cup",
+      "anchor_boxed_in"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_no_cup_spoon_boxed_in",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "clutter_cereal_a",
+         "dining_table_2/top"
+        ]
+       ]
+      },
       {
        "id": "resource_bowl",
        "kind": "resource",
@@ -17462,6 +20169,85 @@
        }
       }
      ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "cup",
+         "dining_table_2/top"
+        ],
+        [
+         "upright",
+         "cup"
+        ],
+        [
+         "grouped",
+         [
+          "bowl",
+          "cup",
+          "spoon"
+         ],
+         "dining_table_2/top",
+         0.4
+        ]
+       ],
+       [
+        [
+         "on",
+         "mug",
+         "dining_table_2/top"
+        ],
+        [
+         "upright",
+         "mug"
+        ],
+        [
+         "grouped",
+         [
+          "bowl",
+          "mug",
+          "spoon"
+         ],
+         "dining_table_2/top",
+         0.4
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "on",
+        "bowl",
+        "dining_table_2/top"
+       ],
+       [
+        "upright",
+        "bowl"
+       ],
+       [
+        "on",
+        "spoon",
+        "dining_table_2/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
+     "instruction_zh": "请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。",
+     "watch": [
+      "bowl",
+      "cup",
+      "mug",
+      "spoon",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "plate_counter_a",
+      "plate_counter_b",
+      "plate_dining_cabinet"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -17473,11 +20259,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "after the robot saw the dishes, someone puts the bowl on the wall cabinet",
+     "note": "the setting is boxed in (and no cup): move the setting; and after the robot saw the dishes, someone puts the bowl on the wall cabinet",
      "v5": {
       "tier": "hard",
-      "challenge": "after the robot saw the dishes, someone puts the bowl on the wall cabinet",
-      "derived_from": "dishes_on_tv_stand",
+      "challenge": "the setting is boxed in (and no cup): move the setting; and after the robot saw the dishes, someone puts the bowl on the wall cabinet",
+      "derived_from": "no_cup_spoon_boxed_in",
       "hard_category": "dynamic"
      }
     }
@@ -18254,10 +21040,49 @@
     "v5_h_action_ik_and_grasp": {
      "steps": [
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
        "skill": "look",
        "args": {
         "target": "dining_table_2/top"
        }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spoon"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "spoon"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "spoon",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.02,
+         6.61
+        ]
+       },
+       "role": "insert"
       },
       {
        "skill": "navigate",
@@ -18312,22 +21137,31 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.05,
-         7.1
+         3.0,
+         6.44
         ]
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "cup"
-       }
+        "destination": "bookcase_2/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       },
+       "role": "alternative"
       },
       {
        "skill": "pick",
        "args": {
-        "object": "cup"
-       }
+        "object": "mug"
+       },
+       "role": "alternative"
       },
       {
        "skill": "navigate",
@@ -18338,11 +21172,11 @@
       {
        "skill": "place",
        "args": {
-        "object": "cup",
+        "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.2,
-         7.4
+         3.0,
+         6.78
         ]
        },
        "expect": "fail",
@@ -18359,11 +21193,11 @@
       {
        "skill": "place",
        "args": {
-        "object": "cup",
+        "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.2,
-         7.4
+         3.0,
+         6.78
         ]
        },
        "role": "recover"
@@ -18521,10 +21355,49 @@
     "v5_h_dynamic_bowl_taken": {
      "steps": [
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
        "skill": "look",
        "args": {
         "target": "dining_table_2/top"
        }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spoon"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "spoon"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "spoon",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.02,
+         6.61
+        ]
+       },
+       "role": "insert"
       },
       {
        "skill": "navigate",
@@ -18539,49 +21412,12 @@
        }
       },
       {
-       "skill": "navigate",
-       "args": {
-        "destination": "cup"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cup"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.2,
-         7.4
-        ]
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bowl"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
        "skill": "search",
        "args": {
         "object": "bowl",
         "region": "living_room_0_0"
        },
-       "role": "recovery"
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -18607,8 +21443,46 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.05,
-         7.1
+         3.0,
+         6.44
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.0,
+         6.78
         ]
        }
       }
@@ -18986,9 +21860,30 @@
         1.59
        ],
        "yaw_deg": 90
+      },
+      "wooden_block_a": {
+       "support": null,
+       "z": 0.886,
+       "xy": [
+        7.62,
+        1.65
+       ],
+       "yaw_deg": 0.0
       }
      },
      "failures": [
+      {
+       "id": "dependency_initial",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "paperback_book"
+        ]
+       ]
+      },
       {
        "id": "ik_flip_paperback_book",
        "kind": "ik",
@@ -19002,7 +21897,7 @@
        "until": "base_skill"
       },
       {
-       "id": "ik_flip_again",
+       "id": "ik_flip_paperback_book_again",
        "kind": "ik",
        "trigger": {
         "skill": "flip",
@@ -19015,6 +21910,28 @@
        "after_fired": "ik_flip_paperback_book"
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "flipped",
+        "paperback_book"
+       ],
+       [
+        "on",
+        "paperback_book",
+        "kitchen_island/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "on",
+        "wooden_block_a",
+        "kitchen_island/top"
+       ]
+      ]
+     },
      "vary": {
       "groups": [],
       "start": {
@@ -19026,11 +21943,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the flip is refused from two parks in a row: re-park twice",
+     "note": "a block lies on the book: take it off first; and the flip is refused from two parks in a row: re-park twice",
      "v5": {
       "tier": "hard",
-      "challenge": "the flip is refused from two parks in a row: re-park twice",
-      "derived_from": "book_free",
+      "challenge": "a block lies on the book: take it off first; and the flip is refused from two parks in a row: re-park twice",
+      "derived_from": "h_task_block_on_book",
       "hard_category": "action"
      }
     },
@@ -19130,35 +22047,80 @@
         1.59
        ],
        "yaw_deg": 90
+      },
+      "wooden_block_a": {
+       "support": null,
+       "z": 0.886,
+       "xy": [
+        7.62,
+        1.65
+       ],
+       "yaw_deg": 0.0
       }
      },
      "failures": [
       {
-       "id": "resource_paperback_book",
-       "kind": "resource",
+       "id": "dependency_initial",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "paperback_book"
+        ]
+       ]
+      },
+      {
+       "id": "dependency_wooden_block_a",
+       "kind": "dependency",
        "when": "dynamic",
        "trigger": {
-        "skill": "look",
+        "skill": "place",
         "args": {
-         "target": "kitchen_island/top"
+         "object": "wooden_block_a"
         },
         "nth": 1,
         "on": "success"
        },
        "event": {
         "type": "move_object",
-        "object": "paperback_book",
+        "object": "wooden_block_a",
+        "onto": "paperback_book",
         "to": {
-         "support": "kitchen_island/top",
+         "support": null,
+         "z": 0.886,
          "xy": [
-          7.9,
-          1.59
+          7.62,
+          1.65
          ],
-         "yaw_deg": 90
+         "yaw_deg": 0.0
         }
        }
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "flipped",
+        "paperback_book"
+       ],
+       [
+        "on",
+        "paperback_book",
+        "kitchen_island/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "on",
+        "wooden_block_a",
+        "kitchen_island/top"
+       ]
+      ]
+     },
      "vary": {
       "groups": [],
       "start": {
@@ -19170,11 +22132,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "after the robot looked, someone slides the book along the island",
+     "note": "a block lies on the book; right after the robot takes it off, the kid puts it back on: take it off again before flipping",
      "v5": {
       "tier": "hard",
-      "challenge": "after the robot looked, someone slides the book along the island",
-      "derived_from": "book_free",
+      "challenge": "a block lies on the book; right after the robot takes it off, the kid puts it back on: take it off again before flipping",
+      "derived_from": "h_task_block_on_book",
       "hard_category": "dynamic"
      }
     }
@@ -19425,6 +22387,29 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.2,
+         1.85
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "paperback_book"
        }
       },
@@ -19544,9 +22529,58 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.2,
+         1.85
+        ]
+       }
+      },
+      {
        "skill": "look",
        "args": {
-        "target": "paperback_book"
+        "target": "kitchen_island/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.3,
+         1.85
+        ]
        },
        "role": "recover"
       },
@@ -19943,9 +22977,29 @@
         1.541
        ],
        "yaw_deg": 0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.69,
+        1.7
+       ],
+       "yaw_deg": 0.0
       }
      },
      "failures": [
+      {
+       "id": "dependency_initial",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "oatmeal",
+         "kitchen_island/top"
+        ]
+       ]
+      },
       {
        "id": "ik_roll_rolling_pin",
        "kind": "ik",
@@ -19959,7 +23013,7 @@
        "until": "base_skill"
       },
       {
-       "id": "ik_roll_again",
+       "id": "ik_roll_rolling_pin_again",
        "kind": "ik",
        "trigger": {
         "skill": "roll",
@@ -19972,6 +23026,37 @@
        "after_fired": "ik_roll_rolling_pin"
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "object_rolled",
+        "rolling_pin"
+       ],
+       [
+        "on",
+        "rolling_pin",
+        "kitchen_island/top"
+       ],
+       [
+        "away_from_edge",
+        "rolling_pin",
+        0.06
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "on",
+        "oatmeal",
+        "kitchen_island/top"
+       ],
+       [
+        "upright",
+        "oatmeal"
+       ]
+      ]
+     },
      "vary": {
       "groups": [],
       "start": {
@@ -19983,11 +23068,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the roll is refused from two parks in a row",
+     "note": "a bowl stands in the rolling path: move it first; and the roll is refused from two parks in a row",
      "v5": {
       "tier": "hard",
-      "challenge": "the roll is refused from two parks in a row",
-      "derived_from": "pin_free",
+      "challenge": "a bowl stands in the rolling path: move it first; and the roll is refused from two parks in a row",
+      "derived_from": "h_task_bowl_behind",
       "hard_category": "action"
      }
     },
@@ -20436,6 +23521,29 @@
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.3,
+         1.85
+        ]
        }
       },
       {
@@ -20975,15 +24083,27 @@
     "h_action_ik_twice": {
      "move": {
       "pot_lid": {
-       "support": "kitchen_stove/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
-        8.715,
-        1.655
+        3.335,
+        0.36
        ],
        "yaw_deg": 0.0
       }
      },
      "failures": [
+      {
+       "id": "resource_initial",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "pot_lid",
+         "kitchen_cabinet_6/top"
+        ]
+       ]
+      },
       {
        "id": "ik_hide_wooden_block_b",
        "kind": "ik",
@@ -20997,7 +24117,7 @@
        "until": "base_skill"
       },
       {
-       "id": "ik_hide_again",
+       "id": "ik_hide_wooden_block_b_again",
        "kind": "ik",
        "trigger": {
         "skill": "hide",
@@ -21021,11 +24141,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the hide is refused from two parks in a row",
+     "note": "the lid is on the wall cabinet: fetch it first; and the hide is refused from two parks in a row",
      "v5": {
       "tier": "hard",
-      "challenge": "the hide is refused from two parks in a row",
-      "derived_from": "lid_off",
+      "challenge": "the lid is on the wall cabinet: fetch it first; and the hide is refused from two parks in a row",
+      "derived_from": "h_task_lid_elsewhere",
       "hard_category": "action"
      }
     },
@@ -21088,15 +24208,27 @@
     "h_dynamic_lid_put_on": {
      "move": {
       "pot_lid": {
-       "support": "kitchen_stove/top",
+       "support": "kitchen_cabinet_6/top",
        "xy": [
-        8.715,
-        1.655
+        3.335,
+        0.36
        ],
        "yaw_deg": 0.0
       }
      },
      "failures": [
+      {
+       "id": "resource_initial",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "pot_lid",
+         "kitchen_cabinet_6/top"
+        ]
+       ]
+      },
       {
        "id": "dependency_pot_lid",
        "kind": "dependency",
@@ -21136,11 +24268,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "while the robot looks for the block, someone puts the lid back on the pot",
+     "note": "the lid is on the wall cabinet: fetch it first; and while the robot looks for the block, someone puts the lid back on the pot",
      "v5": {
       "tier": "hard",
-      "challenge": "while the robot looks for the block, someone puts the lid back on the pot",
-      "derived_from": "lid_off",
+      "challenge": "the lid is on the wall cabinet: fetch it first; and while the robot looks for the block, someone puts the lid back on the pot",
+      "derived_from": "h_task_lid_elsewhere",
       "hard_category": "dynamic"
      }
     }
@@ -21659,6 +24791,47 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pot_lid",
+        "receptacle": "kitchen_stove/top",
+        "hint_xy": [
+         8.715,
+         1.655
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "handled_cooking_pot"
        }
       },
@@ -21830,6 +25003,47 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "pot_lid",
+        "receptacle": "kitchen_stove/top",
+        "hint_xy": [
+         8.715,
+         1.655
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "handled_cooking_pot"
        }
       },
@@ -21865,26 +25079,29 @@
        "skill": "navigate",
        "args": {
         "destination": "handled_cooking_pot"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "uncover",
        "args": {
         "container": "handled_cooking_pot"
        },
-       "role": "recovery"
+       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "kitchen_island/top"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "hide",
@@ -21893,7 +25110,7 @@
         "receptacle": "handled_cooking_pot",
         "lid": "pot_lid"
        },
-       "role": "retry_after_recovery"
+       "role": "recover"
       }
      ],
      "kind": "v5_oracle",
@@ -22260,8 +25477,29 @@
      }
     },
     "h_action_ik_open_and_close": {
-     "move": {},
+     "move": {
+      "bowl_inside_kitchen_cabinet": {
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "failures": [
+      {
+       "id": "resource_initial",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "bowl_inside_kitchen_cabinet",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ]
+      },
       {
        "id": "ik_open_kitchen_cabinet_6",
        "kind": "ik",
@@ -22287,6 +25525,32 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "observed",
+        "plate_inside_kitchen_cabinet"
+       ],
+       [
+        "observed",
+        "bowl_inside_kitchen_cabinet"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ]
+      ]
+     },
+     "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinets for dinner. Have a look inside and close the cabinet doors properly afterwards.",
+     "instruction_zh": "奶奶想知道矮墙柜里还有没有干净的盘子和碗做晚饭用。请看一下柜子里面，看完把柜门关好。",
      "vary": {
       "groups": [],
       "start": {
@@ -22298,11 +25562,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the first open and the first close are both refused from their parks",
+     "note": "the bowl is in the other cabinet: check and close both; and the first open and the first close are both refused from their parks",
      "v5": {
       "tier": "hard",
-      "challenge": "the first open and the first close are both refused from their parks",
-      "derived_from": "at_island",
+      "challenge": "the bowl is in the other cabinet: check and close both; and the first open and the first close are both refused from their parks",
+      "derived_from": "h_task_two_cabinets",
       "hard_category": "action"
      }
     },
@@ -22389,8 +25653,29 @@
      }
     },
     "h_dynamic_door_closed": {
-     "move": {},
+     "move": {
+      "bowl_inside_kitchen_cabinet": {
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "failures": [
+      {
+       "id": "resource_initial",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "bowl_inside_kitchen_cabinet",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ]
+      },
       {
        "id": "dependency_kitchen_cabinet_6",
        "kind": "dependency",
@@ -22409,6 +25694,32 @@
        }
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "observed",
+        "plate_inside_kitchen_cabinet"
+       ],
+       [
+        "observed",
+        "bowl_inside_kitchen_cabinet"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ]
+      ]
+     },
+     "instruction": "Grandma wants to know whether there is still a clean plate and bowl in the low wall cabinets for dinner. Have a look inside and close the cabinet doors properly afterwards.",
+     "instruction_zh": "奶奶想知道矮墙柜里还有没有干净的盘子和碗做晚饭用。请看一下柜子里面，看完把柜门关好。",
      "vary": {
       "groups": [],
       "start": {
@@ -22420,11 +25731,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "just after the robot opens the door, someone pushes it shut: inspecting needs it open",
+     "note": "the bowl is in the other cabinet: check and close both; and just after the robot opens the door, someone pushes it shut: inspecting needs it open",
      "v5": {
       "tier": "hard",
-      "challenge": "just after the robot opens the door, someone pushes it shut: inspecting needs it open",
-      "derived_from": "at_island",
+      "challenge": "the bowl is in the other cabinet: check and close both; and just after the robot opens the door, someone pushes it shut: inspecting needs it open",
+      "derived_from": "h_task_two_cabinets",
       "hard_category": "dynamic"
      }
     }
@@ -22760,6 +26071,30 @@
         "articulated": "kitchen_cabinet_6"
        },
        "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "inspect",
+       "args": {
+        "receptacle": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
       }
      ],
      "kind": "v5_oracle",
@@ -22876,6 +26211,30 @@
        "skill": "close",
        "args": {
         "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "inspect",
+       "args": {
+        "receptacle": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
        }
       }
      ],
@@ -23200,8 +26559,74 @@
      }
     },
     "h_action_grasp_and_miss": {
-     "move": {},
+     "move": {
+      "soda_can": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "toy_storage_bin": {
+       "asset": "wide_storage_bin",
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_block_in_bin_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.632,
+       "xy": [
+        1.33,
+        0.4
+       ],
+       "yaw_deg": 0
+      },
+      "toy_block_in_bin_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.632,
+       "xy": [
+        1.47,
+        0.45
+       ],
+       "yaw_deg": 20
+      },
+      "used_plastic_cup": {
+       "asset": "plastic_cup",
+       "support": null,
+       "z": 0.721,
+       "xy": [
+        1.2,
+        -0.5
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "conditions": [
+      "decoy_destination",
+      "item_out_of_view"
+     ],
      "failures": [
+      {
+       "id": "resource_v4_lookalike_bin",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "inside",
+         "toy_block_in_bin_1",
+         "toy_storage_bin"
+        ]
+       ]
+      },
       {
        "id": "grasp_foam_cube",
        "kind": "grasp",
@@ -23241,6 +26666,32 @@
        }
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "foam_cube",
+        "wide_storage_bin"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
+     "instruction_zh": "把易拉罐和泡沫块送到卧室矮书架附近用于回收的宽储物箱中。",
+     "watch": [
+      "soda_can",
+      "foam_cube",
+      "wide_storage_bin",
+      "toy_storage_bin"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -23252,11 +26703,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the can's first drop misses the bin, the cube slips on its first pick",
+     "note": "a look-alike bin on the way: use the instructed one; and the can's first drop misses the bin, the cube slips on its first pick",
      "v5": {
       "tier": "hard",
-      "challenge": "the can's first drop misses the bin, the cube slips on its first pick",
-      "derived_from": "bin_on_bookcase",
+      "challenge": "a look-alike bin on the way: use the instructed one; and the can's first drop misses the bin, the cube slips on its first pick",
+      "derived_from": "lookalike_bin",
       "hard_category": "action"
      }
     },
@@ -23388,8 +26839,74 @@
      }
     },
     "h_dynamic_can_moved": {
-     "move": {},
+     "move": {
+      "soda_can": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "toy_storage_bin": {
+       "asset": "wide_storage_bin",
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_block_in_bin_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.632,
+       "xy": [
+        1.33,
+        0.4
+       ],
+       "yaw_deg": 0
+      },
+      "toy_block_in_bin_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.632,
+       "xy": [
+        1.47,
+        0.45
+       ],
+       "yaw_deg": 20
+      },
+      "used_plastic_cup": {
+       "asset": "plastic_cup",
+       "support": null,
+       "z": 0.721,
+       "xy": [
+        1.2,
+        -0.5
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "conditions": [
+      "decoy_destination",
+      "item_out_of_view"
+     ],
      "failures": [
+      {
+       "id": "resource_v4_lookalike_bin",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "inside",
+         "toy_block_in_bin_1",
+         "toy_storage_bin"
+        ]
+       ]
+      },
       {
        "id": "resource_soda_can",
        "kind": "resource",
@@ -23406,15 +26923,41 @@
         "type": "move_object",
         "object": "soda_can",
         "to": {
-         "support": "dining_table_2/top",
+         "support": "kitchen_cabinet_6/top",
          "xy": [
           3.7,
-          6.3
+          0.36
          ],
          "yaw_deg": 0.0
         }
        }
       }
+     ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "foam_cube",
+        "wide_storage_bin"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
+     "instruction_zh": "把易拉罐和泡沫块送到卧室矮书架附近用于回收的宽储物箱中。",
+     "watch": [
+      "soda_can",
+      "foam_cube",
+      "wide_storage_bin",
+      "toy_storage_bin"
      ],
      "vary": {
       "groups": [],
@@ -23427,11 +26970,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "after the robot looked around the living room, someone takes the can to the dining table",
+     "note": "a look-alike bin on the way (use the instructed one), and someone takes the can from the dining table to the wall cabinet",
      "v5": {
       "tier": "hard",
-      "challenge": "after the robot looked around the living room, someone takes the can to the dining table",
-      "derived_from": "bin_on_bookcase",
+      "challenge": "a look-alike bin on the way (use the instructed one), and someone takes the can from the dining table to the wall cabinet",
+      "derived_from": "lookalike_bin",
       "hard_category": "dynamic"
      }
     }
@@ -24143,6 +27686,14 @@
        }
       },
       {
+       "skill": "search",
+       "args": {
+        "object": "soda_can",
+        "region": "dining_room_0_1"
+       },
+       "role": "recovery"
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "soda_can"
@@ -24404,7 +27955,7 @@
        "skill": "search",
        "args": {
         "object": "soda_can",
-        "region": "dining_room_0_1"
+        "region": "living_room_0_0"
        },
        "role": "recovery"
       },
@@ -24994,7 +28545,173 @@
        "yaw_deg": 0
       }
      },
+     "add": {
+      "buffet_tray_1": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.068,
+        5.776
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_2": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.558,
+        5.776
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_3": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.9885,
+        6.181
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_4": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.313,
+        6.181
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_5": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.6375,
+        6.181
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_6": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.068,
+        6.586
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_7": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.558,
+        6.586
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_8": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.9885,
+        6.991
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_9": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.313,
+        6.991
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_10": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.6375,
+        6.991
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_11": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.068,
+        7.396
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_12": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.558,
+        7.396
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_bowl_1": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.945,
+        7.765
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_bowl_2": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.191,
+        7.765
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_bowl_3": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.437,
+        7.765
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_bowl_4": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.683,
+        7.765
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "conditions": [
+      "destination_full"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_table_full",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "buffet_tray_1",
+         "dining_table_2/top"
+        ]
+       ]
+      },
       {
        "id": "ik_pick_juice_bottle",
        "kind": "ik",
@@ -25020,6 +28737,67 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "juice_bottle",
+        "dining_table_2/top"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "buffet_tray_1",
+         "buffet_tray_2",
+         "party_plate_3",
+         "party_plate_4",
+         "party_plate_5",
+         "buffet_tray_6",
+         "buffet_tray_7",
+         "party_plate_8",
+         "party_plate_9",
+         "party_plate_10",
+         "buffet_tray_11",
+         "buffet_tray_12",
+         "party_bowl_1",
+         "party_bowl_2",
+         "party_bowl_3",
+         "party_bowl_4"
+        ],
+        "dining_table_2/top",
+        14
+       ]
+      ]
+     },
+     "instruction": "Find the juice bottle and put it back on the dining table, standing up; if needed, first make room among the things on the table.",
+     "instruction_zh": "找到果汁瓶，确保它直立放回餐桌；必要时先为桌面其他物品腾出空间。",
+     "watch": [
+      "juice_bottle",
+      "buffet_tray_1",
+      "buffet_tray_2",
+      "party_plate_3",
+      "party_plate_4",
+      "party_plate_5",
+      "buffet_tray_6",
+      "buffet_tray_7",
+      "party_plate_8",
+      "party_plate_9",
+      "party_plate_10",
+      "buffet_tray_11",
+      "buffet_tray_12",
+      "party_bowl_1",
+      "party_bowl_2",
+      "party_bowl_3",
+      "party_bowl_4"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -25031,11 +28809,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the first pick and the first place are both refused from their parks",
+     "note": "the party table is full: make room first; and the first pick and the first place are both refused from their parks",
      "v5": {
       "tier": "hard",
-      "challenge": "the first pick and the first place are both refused from their parks",
-      "derived_from": "bottle_on_cabinet",
+      "challenge": "the party table is full: make room first; and the first pick and the first place are both refused from their parks",
+      "derived_from": "table_full",
       "hard_category": "action"
      }
     },
@@ -25321,7 +29099,173 @@
        "yaw_deg": 0
       }
      },
+     "add": {
+      "buffet_tray_1": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.068,
+        5.776
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_2": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.558,
+        5.776
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_3": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.9885,
+        6.181
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_4": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.313,
+        6.181
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_5": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.6375,
+        6.181
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_6": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.068,
+        6.586
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_7": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.558,
+        6.586
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_8": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.9885,
+        6.991
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_9": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.313,
+        6.991
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_plate_10": {
+       "asset": "breakfast_plate",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.6375,
+        6.991
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_11": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.068,
+        7.396
+       ],
+       "yaw_deg": 0.0
+      },
+      "buffet_tray_12": {
+       "asset": "serving_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.558,
+        7.396
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_bowl_1": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        2.945,
+        7.765
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_bowl_2": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.191,
+        7.765
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_bowl_3": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.437,
+        7.765
+       ],
+       "yaw_deg": 0.0
+      },
+      "party_bowl_4": {
+       "asset": "breakfast_bowl",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.683,
+        7.765
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "conditions": [
+      "destination_full"
+     ],
      "failures": [
+      {
+       "id": "destination_v4_table_full",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "buffet_tray_1",
+         "dining_table_2/top"
+        ]
+       ]
+      },
       {
        "id": "resource_juice_bottle",
        "kind": "resource",
@@ -25348,6 +29292,67 @@
        }
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "juice_bottle",
+        "dining_table_2/top"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "count_on_at_least",
+        [
+         "buffet_tray_1",
+         "buffet_tray_2",
+         "party_plate_3",
+         "party_plate_4",
+         "party_plate_5",
+         "buffet_tray_6",
+         "buffet_tray_7",
+         "party_plate_8",
+         "party_plate_9",
+         "party_plate_10",
+         "buffet_tray_11",
+         "buffet_tray_12",
+         "party_bowl_1",
+         "party_bowl_2",
+         "party_bowl_3",
+         "party_bowl_4"
+        ],
+        "dining_table_2/top",
+        14
+       ]
+      ]
+     },
+     "instruction": "Find the juice bottle and put it back on the dining table, standing up; if needed, first make room among the things on the table.",
+     "instruction_zh": "找到果汁瓶，确保它直立放回餐桌；必要时先为桌面其他物品腾出空间。",
+     "watch": [
+      "juice_bottle",
+      "buffet_tray_1",
+      "buffet_tray_2",
+      "party_plate_3",
+      "party_plate_4",
+      "party_plate_5",
+      "buffet_tray_6",
+      "buffet_tray_7",
+      "party_plate_8",
+      "party_plate_9",
+      "party_plate_10",
+      "buffet_tray_11",
+      "buffet_tray_12",
+      "party_bowl_1",
+      "party_bowl_2",
+      "party_bowl_3",
+      "party_bowl_4"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -25359,11 +29364,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "just after the robot saw the bottle, someone takes it to the TV stand",
+     "note": "the party table is full: make room first; and just after the robot saw the bottle, someone takes it to the TV stand",
      "v5": {
       "tier": "hard",
-      "challenge": "just after the robot saw the bottle, someone takes it to the TV stand",
-      "derived_from": "bottle_on_cabinet",
+      "challenge": "the party table is full: make room first; and just after the robot saw the bottle, someone takes it to the TV stand",
+      "derived_from": "table_full",
       "hard_category": "dynamic"
      }
     }
@@ -25824,6 +29829,53 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "party_bowl_1",
+        "receptacle": "buffet_tray_11"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_cabinet_6/top"
        }
       },
@@ -25874,8 +29926,8 @@
         "object": "juice_bottle",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.0,
-         7.3
+         2.945,
+         7.765
         ]
        },
        "expect": "fail",
@@ -25895,8 +29947,8 @@
         "object": "juice_bottle",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.0,
-         7.3
+         2.945,
+         7.765
         ]
        },
        "role": "recover"
@@ -26020,6 +30072,53 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "party_bowl_1",
+        "receptacle": "buffet_tray_11"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "kitchen_cabinet_6/top"
        }
       },
@@ -26061,8 +30160,8 @@
         "object": "juice_bottle",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.0,
-         7.3
+         2.945,
+         7.765
         ]
        }
       }
@@ -26394,11 +30493,40 @@
      }
     },
     "h_action_ik_pick_and_place": {
-     "move": {},
+     "move": {
+      "mug_shelf": {
+       "support": "bookcase_2/top",
+       "xy": [
+        0.86,
+        -0.53
+       ],
+       "yaw_deg": 0.0
+      },
+      "shelf_blocker": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.13,
+        -0.43
+       ],
+       "yaw_deg": 90
+      }
+     },
      "conditions": [
-      "no_overhang"
+      "destination_full"
      ],
      "failures": [
+      {
+       "id": "destination_v4_shelf_taken",
+       "kind": "destination",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "mug_shelf",
+         "bookcase_2/top"
+        ]
+       ]
+      },
       {
        "id": "ik_expose_book_red",
        "kind": "ik",
@@ -26424,6 +30552,38 @@
        "until": "base_skill"
       }
      ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "book_red",
+        "bookcase_2/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "upright",
+        "mug_shelf"
+       ],
+       [
+        "not on_floor",
+        "mug_shelf"
+       ],
+       [
+        "not on_floor",
+        "shelf_blocker"
+       ]
+      ]
+     },
+     "instruction": "Put the red book back on the low bookcase in the bedroom, and deal properly with whatever is taking up the space there.",
+     "instruction_zh": "把红书放回卧室矮书架，并妥善处理原有占位物。",
+     "watch": [
+      "book_red",
+      "mug_shelf",
+      "shelf_blocker"
+     ],
      "vary": {
       "groups": [],
       "start": {
@@ -26435,11 +30595,11 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the first expose and the first shelving place are both refused",
+     "note": "the shelf is taken: move the mug first; and the first expose and the first shelving place are both refused",
      "v5": {
       "tier": "hard",
-      "challenge": "the first expose and the first shelving place are both refused",
-      "derived_from": "book_on_desk",
+      "challenge": "the shelf is taken: move the mug first; and the first expose and the first shelving place are both refused",
+      "derived_from": "shelf_taken",
       "hard_category": "action"
      }
     },
@@ -27403,6 +31563,44 @@
     },
     "v5_h_action_ik_pick_and_place": {
      "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug_shelf"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug_shelf"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug_shelf",
+        "receptacle": "bookcase_2/top",
+        "hint_xy": [
+         0.79,
+         -0.31
+        ]
+       },
+       "role": "insert"
+      },
       {
        "skill": "navigate",
        "args": {

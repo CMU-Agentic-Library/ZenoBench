@@ -135,13 +135,16 @@ def check_variant(task, tier, vid, contracts, assets, seeds=SEEDS):
     cat = meta.get("hard_category")
     if tier == "hard":
         cats = category(fails) if fails else set()
-        want = {"task": lambda c: (not c and v.get("conditions")) or c == {"task"} or c == {"task", "dynamic"} and False,
-                "action": lambda c: c == {"action"} and sum(f["kind"] in ("grasp", "slip", "placement", "ik")
-                                                           for f in fails) >= 2,
+        n_act = sum(f["kind"] in ("grasp", "slip", "placement", "ik") for f in fails)
+        want = {"task": lambda c: (not c and v.get("conditions")) or c == {"task"},
+                "action": lambda c: "task" in c and n_act >= 2,
                 "mixed": lambda c: "mixed" in c,
                 "dynamic": lambda c: "dynamic" in c}
         if cat in want and not want[cat](cats):
             probs.append((None, f"hard category {cat} but failures give {sorted(cats)}"))
+        # every Hard contains task-level replanning: a declared task-level constraint, or a v4 Hard's own condition
+        if not ("task" in cats or (cat == "task" and v.get("conditions"))):
+            probs.append((None, "a Hard variant without a task-level constraint"))
     # route vs failures: every action failure's nth matching call is a step marked injected + expect fail
     for f in fails:
         t = f.get("trigger")

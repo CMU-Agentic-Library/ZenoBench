@@ -16,15 +16,18 @@ read). It adds a separate catalog, `benchmark/v5/tasks.json`, with the same 20 t
   overhanging); E2 an independent nominal layout (another start room, a longer trip).
 * **Medium (3)**: skill-level adaptation. v3 Medium conditions first (search, alternative, fallback), then
   action-level injected failures with a local recovery (retry after a slip, re-park after an IK refusal).
-* **Hard (4)**, one per category (`variants[*].v5.hard_category`):
-  * `task`: task-level replanning forced by the environment: the v4 Hard where one exists (13 tasks), a new
-    initial constraint for the other 7 (T04 drinks spot taken, T05 pencil behind a closed door, T10 can in
-    the closed microwave, T15 a block on the book, T16 a bowl in the pin's path, T17 the lid elsewhere, T18
-    the bowl in the other cabinet);
-  * `action`: two action-level failures whose recoveries chain;
-  * `mixed`: a task-level constraint (declared and checked at the start) plus an action-level failure;
-  * `dynamic`: a task-level event while the robot works (an object moved, a door opened / closed, a
-    destination filled).
+* **Hard (4)**: every Hard requires task-level replanning (decompose / insert / replace); action failures
+  and dynamic events are the smaller, local part on top. One per category (`variants[*].v5.hard_category`):
+  * `task`: the task-level constraint alone: the v4 Hard where one exists (13 tasks), a new initial
+    constraint for the other 7 (T04 drinks spot taken, T05 pencil behind a closed door, T10 can in the
+    closed microwave, T15 a block on the book, T16 a bowl in the pin's path, T17 the lid elsewhere, T18 the
+    bowl in the other cabinet);
+  * `action`: the same task-level scene plus two chained action-level failures (local fallbacks);
+  * `mixed`: the same task-level scene (declared and checked at the start) plus one action-level failure;
+  * `dynamic`: a task-level event while the robot works; 14 of them run in the task-level scene as well
+    (the event alone would only need a local recovery), the other 6 change the plan by themselves
+    (T02 base pushed to the edge, T14 shelf filled, T16 bowl pushed into the path, T04 / T06 / T11
+    resource or destination gone: substitute).
 
 Every variant states its challenge (`v5.challenge`), resolves to a goal (the task's or its own), and maps to
 one oracle route (`oracle[variant]`, new ones named `v5_<variant>`). Failing steps carry `expect: fail`;

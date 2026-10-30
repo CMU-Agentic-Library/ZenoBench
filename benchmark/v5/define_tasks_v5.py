@@ -176,10 +176,21 @@ def P(support, x, y, yaw=0.0):
 #   {id: {"tier", "base": existing variant whose overlay is copied, "challenge", "route": steps | name,
 #         + any variant field (move, add, start, failures, goal, instruction, ...)}}
 def design(t, R):
-    """t: the v3 task; R(name): a copy of one of its routes' steps."""
+    """t: the v3 task; R(name): a copy of one of its routes' steps.  The per-task design, then the
+    task-level rebase of its Action / local-Dynamic Hard variants (REBASE)."""
     tid = t["task_id"]
-    D = DESIGNS[tid]
-    return D(t, R)
+    d = DESIGNS[tid](t, R)
+    tb = TASK_HARD[tid]
+    tr = d["new"][tb]["route"] if tb in d["new"] else R(t["oracle"][tb])
+    for vid, fn in REBASE.get(tid, {}).items():
+        spec = d["new"][vid]
+        over = fn(copy.deepcopy(tr), R)
+        spec.update(base=tb, **over)
+        spec["challenge"] = f"{TASK_HARD_NOTE[tid]}; and {spec['challenge']}" if "challenge" not in over else spec["challenge"]
+        for k in ("move", "remove", "goal", "instruction", "instruction_zh"):
+            if k not in over:
+                spec.pop(k, None)               # the task Hard's own scene / goal / instruction carry over
+    return d
 
 
 def T01(t, R):
@@ -270,7 +281,7 @@ def T03(t, R):
             "h_action_slip_and_miss": dict(
                 tier="hard", hard="action", base="large_only",
                 failures=[f_slip("rolling_pin"),
-                          f_place_miss("rolling_pin", P("tv_stand_2/top", 7.75, 0.36, 0),
+                          f_place_miss("rolling_pin", P("tv_stand_2/top", 6.88, 0.36, 0),
                                        [["inside", "rolling_pin", "wide_storage_bin"]])],
                 challenge="the rolling pin slips at the start of the carry, and the first place misses the bin",
                 route=with_place_miss(with_slip(nom, "rolling_pin"), "rolling_pin")),
@@ -1037,7 +1048,7 @@ def build_task(t: dict) -> dict:
     for vid, spec in d["new"].items():
         if vid in t["variants"]:
             raise ValueError(f"{t['task_id']}: {vid} exists in v3")
-        base = copy.deepcopy(t["variants"][spec["base"]])
+        base = copy.deepcopy(t["variants"][spec["base"]])          # an existing or an earlier new variant
         v = {k: base[k] for k in OVERLAY if k in base and k != "vary"}
         if "move" in spec:
             v["move"] = {**v.get("move", {}), **copy.deepcopy(spec["move"])}
@@ -1058,6 +1069,10 @@ def build_task(t: dict) -> dict:
             v["v5"]["hard_category"] = spec["hard"]
         if spec.get("failures"):
             v["failures"] = copy.deepcopy(spec["failures"])
+        inherited = [f for f in base.get("failures", []) if f.get("when") == "initial"]
+        if spec["tier"] == "hard" and inherited:
+            ids = {f["id"] for f in v.get("failures", [])}
+            v["failures"] = [f for f in copy.deepcopy(inherited) if f["id"] not in ids] + v.get("failures", [])
         if spec["tier"] == "hard" and spec["base"] in V4_CONSTRAINT:
             kind, check = V4_CONSTRAINT[spec["base"]]       # the inherited v4 environment, verified at the start
             v["failures"] = [f_initial(kind, check, fid=f"{kind}_v4_{spec['base']}")] + v.get("failures", [])
@@ -1118,6 +1133,198 @@ def main():
     OUT.write_text(text)
     n = sum(len(ids) for t in doc["tasks"] for ids in t["v5_formal"].values())
     print(f"wrote {OUT.relative_to(ROOT)}: {len(doc['tasks'])} tasks, {n} formal variants")
+
+
+
+# ----------------------------------------------------------------- task-level rebase of the Hard tier
+# Every Hard contains task-level replanning: the 20 Action Hard and the 14 Dynamic Hard whose recovery was
+# only local (search / reopen / re-expose) run in their task's task-level Hard scene (v4 Hard or the new
+# initial constraint), and keep their action failures / event as the smaller, local part.
+TASK_HARD = {"T01_book_to_dining_table": "table_set", "T02_stack_blocks": "edge_base",
+             "T03_utensils_one_container": "three_containers", "T04_cup_or_mug_to_cabinet": "h_task_spot_taken",
+             "T05_pen_or_pencil_to_desk": "h_task_pencil_in_cabinet", "T06_block_destination_occupied": "display_hidden",
+             "T07_heat_oatmeal": "microwave_holds_pot", "T08_wipe_island": "island_cluttered",
+             "T09_tomato_soup": "cookware_choice", "T10_trash_the_can": "h_task_can_in_microwave",
+             "T11_collect_fruits": "basket_gone_bowl_there", "T12_tidy_toys": "toys_everywhere",
+             "T13_breakfast_setup": "no_cup_spoon_boxed_in", "T14_shelve_the_book": "shelf_taken",
+             "T15_book_face_up": "h_task_block_on_book", "T16_rolling_pin_at_edge": "h_task_bowl_behind",
+             "T17_hide_and_seek_block": "h_task_lid_elsewhere", "T18_check_cabinet_dishes": "h_task_two_cabinets",
+             "T19_recycling": "lookalike_bin", "T20_juice_back_to_table": "table_full"}
+TASK_HARD_NOTE = {
+    "T01_book_to_dining_table": "the table is set: choose a reading spot clear of the tableware",
+    "T02_stack_blocks": "block A sits at the island edge: stack on the open block instead",
+    "T03_utensils_one_container": "allocate by size: the pin only fits the wide bin",
+    "T04_cup_or_mug_to_cabinet": "the drinks spot is taken: make room first",
+    "T05_pen_or_pencil_to_desk": "no pen; the pencil is behind a closed cabinet door (close it again)",
+    "T06_block_destination_occupied": "the cabinet's free space is hidden: display on the TV stand",
+    "T07_heat_oatmeal": "the microwave holds the soup pot: heat on the stove",
+    "T08_wipe_island": "the island is cluttered: clear the strip, wipe, put things back",
+    "T09_tomato_soup": "choose the pot over the nearer bowl and mug",
+    "T10_trash_the_can": "the can is in the closed microwave (close it again)",
+    "T11_collect_fruits": "no basket, a bowl in its place: use the stated tray",
+    "T12_tidy_toys": "no basket: allocate the toys by size",
+    "T13_breakfast_setup": "the setting is boxed in (and no cup): move the setting",
+    "T14_shelve_the_book": "the shelf is taken: move the mug first",
+    "T15_book_face_up": "a block lies on the book: take it off first",
+    "T16_rolling_pin_at_edge": "a bowl stands in the rolling path: move it first",
+    "T17_hide_and_seek_block": "the lid is on the wall cabinet: fetch it first",
+    "T18_check_cabinet_dishes": "the bowl is in the other cabinet: check and close both",
+    "T19_recycling": "a look-alike bin on the way: use the instructed one",
+    "T20_juice_back_to_table": "the party table is full: make room first",
+}
+
+
+def _after(steps, skill, new, **match):
+    steps = copy.deepcopy(steps)
+    i = find(steps, skill, **match)
+    return steps[:i + 1] + [REC(x) for x in new] + steps[i + 1:]
+
+
+def _before(steps, skill, new, **match):
+    steps = copy.deepcopy(steps)
+    i = find(steps, skill, **match)
+    return steps[:i] + [REC(x) for x in new] + steps[i:]
+
+
+def _region(steps, obj, region):
+    steps = copy.deepcopy(steps)
+    for st in steps:
+        if st["skill"] == "search" and st["args"].get("object") == obj:
+            st["args"]["region"] = region
+    return steps
+
+
+def _expose_retry(steps, x):
+    steps = copy.deepcopy(steps)
+    i = find(steps, "pick", object=x)
+    steps[i:i + 1] = [FAIL(steps[i]), REC(S("expose", object=x)), REC(steps[i])]
+    return steps
+
+
+def _ik_twice(steps, skill, x, fid1, key="object"):
+    return {"failures": [f_ik(skill, x, key=key, fid=fid1),
+                         {**f_ik(skill, x, key=key, fid=fid1 + "_again"), "after_fired": fid1,
+                          "trigger": {"skill": skill, "args": {key: x}, "nth": 2}}],
+            "route": with_ik(with_ik(steps, skill, x, key=key), skill, x, key=key)}
+
+
+BOOK, SPOON, CAN = "paperback_book", "breakfast_spoon", "soda_can"
+REBASE = {
+    "T01_book_to_dining_table": {
+        "h_action_ik_pick_and_place": lambda tr, R: {"route": with_ik(with_ik(tr, "pick", BOOK), "place", BOOK)},
+        "h_dynamic_pushed_back": lambda tr, R: {"route": _expose_retry(tr, BOOK)}},
+    "T02_stack_blocks": {
+        "h_action_grasp_and_ik": lambda tr, R: {
+            "failures": [f_ik("pick", "wooden_block_a"), f_ik("stack", "wooden_block_a")],
+            "route": with_ik(with_ik(tr, "pick", "wooden_block_a"), "stack", "wooden_block_a")}},
+    "T03_utensils_one_container": {
+        "h_action_slip_and_miss": lambda tr, R: {"route": with_place_miss(with_slip(tr, "rolling_pin"), "rolling_pin")},
+        "h_dynamic_spoon_taken": lambda tr, R: {"route": _before(tr, "navigate", [S("search", object=SPOON, region="living_room_0_0")], destination=SPOON)}},
+    "T04_cup_or_mug_to_cabinet": {
+        "h_action_ik_and_grasp": lambda tr, R: {"route": with_ik(with_ik(tr, "pick", "cup_counter_b"), "place", "cup_counter_b")}},
+    "T05_pen_or_pencil_to_desk": {
+        "h_action_grasp_and_ik": lambda tr, R: {"route": with_ik(with_grasp(tr, "pencil"), "place", "pencil")},
+        "h_dynamic_pencil_taken": lambda tr, R: {
+            "failures": [f_move("resource", "pencil", P("dining_table_2/top", 3.7, 6.3),
+                                ("open", {"articulated": "kitchen_cabinet_6"}))],
+            "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone "
+                         "takes the pencil to the dining table: close the cabinet again and search the pencil",
+            "route": tr[:3] + [REC(S("search", object="pencil", region="dining_room_0_1")),
+                               REC(S("navigate", destination="kitchen_cabinet_6")),
+                               REC(S("close", articulated="kitchen_cabinet_6")),
+                               REC(S("navigate", destination="pencil")), REC(S("pick", object="pencil")),
+                               REC(S("navigate", destination="desk_1/top")),
+                               REC(S("place", object="pencil", receptacle="desk_1/top"))]}},
+    "T06_block_destination_occupied": {
+        "h_action_slip_and_ik": lambda tr, R: {"route": with_ik(with_slip(tr, "wooden_block_a"), "place", "wooden_block_a")}},
+    "T07_heat_oatmeal": {
+        "h_action_ik_and_slip": lambda tr, R: {"route": with_slip(with_ik(tr, "pick", "oatmeal"), "oatmeal")},
+        "h_dynamic_door_opened": lambda tr, R: {
+            "route": tr + [REC(S("navigate", destination="kitchen_microwave")),
+                           REC(S("close", articulated="kitchen_microwave"))]}},
+    "T08_wipe_island": {
+        "h_action_grasp_and_ik": lambda tr, R: {"route": with_ik(with_grasp(tr, "kitchen_sponge"), "wipe", "kitchen_island/top", key="surface")},
+        "h_dynamic_sponge_taken": lambda tr, R: {
+            "failures": [f_move("resource", "kitchen_sponge", P("kitchen_cabinet_6/top", 3.7, 0.36),
+                                ("look", {"target": "kitchen_island/top"}))],
+            "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge "
+                         "to the wall cabinet: search it",
+            "route": _before(tr, "navigate", [S("search", object="kitchen_sponge", region="living_room_0_0")],
+                             destination="kitchen_sponge")}},
+    "T09_tomato_soup": {
+        "h_action_grasp_and_ik": lambda tr, R: {"route": with_ik(with_grasp(tr, SPOON), "pick", "pot_lid")},
+        "h_dynamic_spoon_taken": lambda tr, R: {"route": _before(tr, "navigate", [S("search", object=SPOON, region="living_room_0_0")], destination=SPOON)}},
+    "T10_trash_the_can": {
+        "h_action_ik_pick_and_drop": lambda tr, R: {"route": with_ik(with_ik(tr, "pick", CAN), "drop", CAN)},
+        "h_dynamic_can_moved": lambda tr, R: {
+            "failures": [f_move("resource", CAN, P("dining_table_2/top", 3.7, 6.3),
+                                ("open", {"articulated": "kitchen_microwave"}))],
+            "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can "
+                         "to the dining table: close the microwave again and search the can",
+            "route": tr[:3] + [REC(S("search", object=CAN, region="dining_room_0_1")),
+                               REC(S("navigate", destination="kitchen_microwave")),
+                               REC(S("close", articulated="kitchen_microwave")),
+                               REC(S("navigate", destination=CAN)), REC(S("pick", object=CAN)),
+                               REC(S("navigate", destination="trash_can")),
+                               REC(S("drop", object=CAN, container="trash_can"))]}},
+    "T11_collect_fruits": {
+        "h_action_grasp_and_ik": lambda tr, R: {"failures": [f_ik("pick", "apple"), f_ik("place", "apple")],
+                                                "route": with_ik(with_ik(tr, "pick", "apple"), "place", "apple")}},
+    "T12_tidy_toys": {
+        "h_action_grasp_and_ik": lambda tr, R: {"failures": [f_grasp("toy_car"), f_ik("drop", "rubber_duck")],
+                                                "route": with_ik(with_grasp(tr, "toy_car"), "drop", "rubber_duck")},
+        "h_dynamic_duck_taken": lambda tr, R: {
+            "failures": [f_move("resource", "rubber_duck", P("dining_table_2/top", 3.7, 6.3),
+                                ("explore_room", {"room": "living_room_0_0"}))],
+            "challenge": "no basket (allocate the toys by size), and the kid carries the duck to the dining table",
+            "route": _region(tr, "rubber_duck", "dining_room_0_1")}},
+    "T13_breakfast_setup": {
+        "h_action_ik_and_grasp": lambda tr, R: {"failures": [f_ik("pick", "bowl"), f_ik("place", "mug", fid="ik_place_mug")],
+                                                "route": with_ik(with_ik(tr, "pick", "bowl"), "place", "mug")},
+        "h_dynamic_bowl_taken": lambda tr, R: {"route": _after(tr, "look", [S("search", object="bowl", region="living_room_0_0")], target="tv_stand_2/top")}},
+    "T14_shelve_the_book": {
+        "h_action_ik_pick_and_place": lambda tr, R: {"route": with_ik(with_ik(tr, "expose", "book_red"), "place", "book_red")}},
+    "T15_book_face_up": {
+        "h_action_ik_twice": lambda tr, R: _ik_twice(tr, "flip", BOOK, "ik_flip_paperback_book"),
+        "h_dynamic_book_moved": lambda tr, R: {
+            "failures": [{**f_move("dependency", "wooden_block_a",
+                                   {"support": None, "z": 0.886, "xy": [7.62, 1.65], "yaw_deg": 0.0},
+                                   ("place", {"object": "wooden_block_a"})),
+                          "event": {"type": "move_object", "object": "wooden_block_a", "onto": BOOK,
+                                    "to": {"support": None, "z": 0.886, "xy": [7.62, 1.65], "yaw_deg": 0.0}}}],
+            "challenge": "a block lies on the book; right after the robot takes it off, the kid puts it back on: take "
+                         "it off again before flipping",
+            "route": _before(tr, "navigate", [S("look", target="kitchen_island/top"),
+                                              S("navigate", destination="wooden_block_a"), S("pick", object="wooden_block_a"),
+                                              S("place", object="wooden_block_a", receptacle="kitchen_island/top",
+                                                hint_xy=[7.3, 1.85])], destination=BOOK)}},
+    "T16_rolling_pin_at_edge": {
+        "h_action_ik_twice": lambda tr, R: _ik_twice(tr, "roll", "rolling_pin", "ik_roll_rolling_pin")},
+    "T17_hide_and_seek_block": {
+        "h_action_ik_twice": lambda tr, R: _ik_twice(tr, "hide", "wooden_block_b", "ik_hide_wooden_block_b"),
+        "h_dynamic_lid_put_on": lambda tr, R: {
+            "route": tr[:-1] + [FAIL(tr[-1]), REC(S("navigate", destination="handled_cooking_pot")),
+                                REC(S("uncover", container="handled_cooking_pot")),
+                                REC(S("navigate", destination="kitchen_island/top")),
+                                REC(S("look", target="kitchen_island/top")), REC(tr[-1])]}},
+    "T18_check_cabinet_dishes": {
+        "h_action_ik_open_and_close": lambda tr, R: {
+            "route": with_ik(with_ik(tr, "open", "kitchen_cabinet_6", key="articulated"), "close", "kitchen_cabinet_6",
+                             key="articulated")},
+        "h_dynamic_door_closed": lambda tr, R: {
+            "route": tr[:2] + [FAIL(tr[2]), REC(tr[1]), REC(tr[2])] + tr[3:]}},
+    "T19_recycling": {
+        "h_action_grasp_and_miss": lambda tr, R: {"route": with_grasp(with_place_miss(tr, CAN, skill="drop"), "foam_cube")},
+        "h_dynamic_can_moved": lambda tr, R: {
+            "failures": [f_move("resource", CAN, P("kitchen_cabinet_6/top", 3.7, 0.36),
+                                ("explore_room", {"room": "living_room_0_0"}))],
+            "challenge": "a look-alike bin on the way (use the instructed one), and someone takes the can from the "
+                         "dining table to the wall cabinet",
+            "route": _region(tr, CAN, "living_room_0_0")}},
+    "T20_juice_back_to_table": {
+        "h_action_ik_pick_and_place": lambda tr, R: {"route": with_ik(with_ik(tr, "pick", "juice_bottle"), "place", "juice_bottle")},
+        "h_dynamic_bottle_taken": lambda tr, R: {"route": _after(tr, "look", [S("search", object="juice_bottle", region="living_room_0_0")], target="kitchen_cabinet_6/top")}},
+}
 
 
 if __name__ == "__main__":
