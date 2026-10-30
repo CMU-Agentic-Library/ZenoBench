@@ -1369,9 +1369,9 @@
    ],
    "nominal": "nominal",
    "oracle": {
-    "overhang_ready": "nominal",
-    "no_overhang": "fallback_expose",
-    "far_no_overhang": "hard_search_expose",
+    "overhang_ready": "v5fix_overhang_ready",
+    "no_overhang": "v5fix_no_overhang",
+    "far_no_overhang": "v5fix_far_no_overhang",
     "table_set": "v5fix_table_set",
     "e2_from_dining_room": "v5_e2_from_dining_room",
     "m_ik_pick": "v5_m_ik_pick",
@@ -1707,6 +1707,13 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -1760,6 +1767,13 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -1770,6 +1784,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "paperback_book"
        },
@@ -1825,6 +1846,13 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -1835,6 +1863,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "paperback_book"
        },
@@ -1917,6 +1952,13 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -1927,6 +1969,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "paperback_book"
        },
@@ -1988,6 +2037,13 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -1999,6 +2055,13 @@
        "skill": "expose",
        "args": {
         "object": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
        },
        "role": "recover"
       },
@@ -2063,6 +2126,13 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "paperback_book"
@@ -2095,6 +2165,204 @@
      ],
      "since": "v4",
      "fixes": "hard_reading_spot"
+    },
+    "v5fix_overhang_ready": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "overhang_ready"
+     ],
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ],
+     "since": "v2",
+     "fixes": "nominal"
+    },
+    "v5fix_no_overhang": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "no_overhang"
+     ],
+     "recovery": "Pick -> failure -> Expose -> Pick",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "paperback_book"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ],
+     "since": "v2",
+     "fixes": "fallback_expose"
+    },
+    "v5fix_far_no_overhang": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "far_no_overhang"
+     ],
+     "recovery": "search the book -> Pick fails -> Expose -> Pick",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "paperback_book",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "paperback_book"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ],
+     "since": "v2",
+     "fixes": "hard_search_expose"
     },
     "x_two_hand_nominal": {
      "steps": [
@@ -2932,8 +3200,8 @@
    "nominal": "nominal",
    "oracle": {
     "clear": "nominal",
-    "crowded": "fallback_separate",
-    "far_crowded": "hard_search_separate",
+    "crowded": "v5fix_crowded",
+    "far_crowded": "v5fix_far_crowded",
     "edge_base": "hard_stack_on_open_block",
     "e2_from_wall_cabinet": "v5_e2_from_wall_cabinet",
     "m_grasp_b": "v5_m_grasp_b",
@@ -3465,6 +3733,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "wooden_block_a"
@@ -3644,6 +3919,176 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_base_moved_to_edge"
+    },
+    "v5fix_crowded": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "crowded"
+     ],
+     "recovery": "Pick -> failure -> Separate -> Pick",
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "separate",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      }
+     ],
+     "since": "v2",
+     "fixes": "fallback_separate"
+    },
+    "v5fix_far_crowded": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "far_crowded"
+     ],
+     "recovery": "search the blocks -> Pick fails -> Separate -> Pick",
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_a",
+        "region": "living_room_0_0"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "separate",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "retry_after_recovery"
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      }
+     ],
+     "since": "v2",
+     "fixes": "hard_search_separate"
     }
    },
    "benchmark_version": "v5",
@@ -5234,6 +5679,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "rolling_pin"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "rolling_pin"
@@ -5391,6 +5843,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "rolling_pin"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "rolling_pin"
        },
@@ -6707,6 +7166,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "cup_counter_b"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "cup_counter_b"
@@ -6847,6 +7313,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "oatmeal"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "oatmeal"
@@ -6960,6 +7433,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "oatmeal"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "oatmeal"
        },
@@ -10020,6 +10500,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "wooden_block_a"
@@ -10081,6 +10568,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "wooden_block_a"
        },
@@ -11645,6 +12139,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "oatmeal"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "oatmeal"
@@ -11804,6 +12305,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "oatmeal"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "oatmeal"
        },
@@ -15914,6 +16422,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "pot_lid"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "pot_lid"
@@ -17765,6 +18280,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "soda_can"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "soda_can"
@@ -17907,6 +18429,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "soda_can"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "soda_can"
@@ -17998,6 +18527,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "soda_can"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "soda_can"
        },
@@ -21511,6 +22047,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "toy_car"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "toy_car"
@@ -21625,12 +22168,18 @@
        }
       },
       {
-       "skill": "search",
+       "skill": "navigate",
        "args": {
-        "object": "rubber_duck",
-        "region": "dining_room_0_1"
+        "destination": "dining_table_2/top"
        },
-       "role": "recovery"
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -21692,6 +22241,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "toy_car"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "toy_car"
        },
@@ -21802,6 +22358,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "rubber_duck"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "rubber_duck"
        },
@@ -23764,6 +24327,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "bowl"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "bowl"
@@ -23887,6 +24457,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "spoon"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "spoon"
        },
@@ -24175,6 +24752,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "bowl"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "bowl"
@@ -24297,6 +24881,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "cup"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "cup"
        },
@@ -26402,17 +26993,12 @@
     "v5_e2_from_dining_room": {
      "steps": [
       {
-       "skill": "navigate",
+       "skill": "search",
        "args": {
-        "destination": "kitchen_island/top"
+        "object": "rolling_pin",
+        "region": "living_room_0_0"
        },
        "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
       },
       {
        "skill": "navigate",
@@ -26662,6 +27248,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "oatmeal"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "oatmeal"
        },
@@ -27534,10 +28127,10 @@
    },
    "nominal": "nominal",
    "oracle": {
-    "lid_off": "nominal",
-    "lid_on": "fallback_uncover",
-    "block_crowded": "fallback_separate",
-    "lid_on_crowded": "hard_uncover_separate",
+    "lid_off": "v5fix_lid_off",
+    "lid_on": "v5fix_lid_on",
+    "block_crowded": "v5fix_block_crowded",
+    "lid_on_crowded": "v5fix_lid_on_crowded",
     "far_lid_on": "hard_search_uncover",
     "e2_from_dining_room": "v5_e2_from_dining_room",
     "h_task_lid_elsewhere": "v5_h_task_lid_elsewhere",
@@ -27905,7 +28498,7 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "handled_cooking_pot"
+        "destination": "kitchen_stove/top"
        }
       },
       {
@@ -28176,6 +28769,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "pot_lid"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "pot_lid"
@@ -28352,6 +28952,296 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_lid_put_on"
+    },
+    "v5fix_lid_off": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "lid_off"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      }
+     ],
+     "since": "v3",
+     "fixes": "nominal"
+    },
+    "v5fix_lid_on": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "lid_on"
+     ],
+     "recovery": "Hide refused (lid on) -> Uncover -> Hide",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "retry_after_recovery"
+      }
+     ],
+     "since": "v3",
+     "fixes": "fallback_uncover"
+    },
+    "v5fix_block_crowded": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "block_crowded"
+     ],
+     "recovery": "Hide fails (its pick of the block fails) -> Separate -> Hide",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "separate",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "retry_after_recovery"
+      }
+     ],
+     "since": "v3",
+     "fixes": "fallback_separate"
+    },
+    "v5fix_lid_on_crowded": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "lid_on_crowded"
+     ],
+     "recovery": "Hide refused (lid) -> Uncover; Hide fails (pick) -> Separate -> Hide",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "separate",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "retry_after_recovery"
+      }
+     ],
+     "since": "v3",
+     "fixes": "hard_uncover_separate"
     }
    },
    "vary": {
@@ -31074,6 +31964,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "foam_cube"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "foam_cube"
@@ -31180,6 +32077,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "soda_can"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "soda_can"
        },
@@ -31334,6 +32238,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "foam_cube"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "foam_cube"
        },
@@ -31775,6 +32686,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "foam_cube"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "foam_cube"
        },
@@ -33313,7 +34231,7 @@
    "nominal": "nominal",
    "oracle": {
     "bottle_on_cabinet": "nominal",
-    "table_full": "hard_make_room_first",
+    "table_full": "v5fix_table_full",
     "e2_from_bedroom_hall": "v5_e2_from_bedroom_hall",
     "m_ik_pick": "v5_m_ik_pick",
     "m_ik_place": "v5_m_ik_place",
@@ -33596,9 +34514,9 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "sidestep",
        "args": {
-        "target": "juice_bottle"
+        "distance_m": 0.12
        },
        "role": "recover"
       },
@@ -33770,6 +34688,13 @@
        "role": "insert"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "party_bowl_1"
@@ -33818,9 +34743,9 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "sidestep",
        "args": {
-        "target": "juice_bottle"
+        "distance_m": 0.12
        },
        "role": "recover"
       },
@@ -33903,6 +34828,13 @@
        "role": "insert"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "party_bowl_1"
@@ -33913,6 +34845,13 @@
       },
       {
        "skill": "approach",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "party_bowl_1"
        },
@@ -34013,6 +34952,13 @@
        "role": "insert"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "party_bowl_1"
@@ -34085,6 +35031,112 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_bottle_taken"
+    },
+    "v5fix_table_full": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "table_full"
+     ],
+     "recovery": "the table has no free spot: stack one bowl onto the tray beside it, bring the bottle back in its place",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "party_bowl_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "party_bowl_1"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "party_bowl_1",
+        "receptacle": "buffet_tray_11"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "juice_bottle"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "juice_bottle"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "juice_bottle",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         2.945,
+         7.765
+        ]
+       }
+      }
+     ],
+     "since": "v4",
+     "fixes": "hard_make_room_first"
     }
    },
    "vary": {
@@ -34307,7 +35359,7 @@
        "support": "desk_1/top",
        "xy": [
         -1.241,
-        -5.769
+        -6.271
        ],
        "yaw_deg": 90
       }
@@ -34337,7 +35389,7 @@
        "support": "desk_1/top",
        "xy": [
         -1.241,
-        -5.769
+        -6.271
        ],
        "yaw_deg": 90
       }
@@ -34745,8 +35797,8 @@
    },
    "nominal": "nominal",
    "oracle": {
-    "book_on_desk": "nominal",
-    "shelf_taken": "hard_make_room_first",
+    "book_on_desk": "v5fix_book_on_desk",
+    "shelf_taken": "v5fix_shelf_taken",
     "e1_book_ready": "v5_e1_book_ready",
     "e2_book_ready_far": "v5_e2_book_ready_far",
     "m_ik_place": "v5_m_ik_place",
@@ -35411,6 +36463,13 @@
        "role": "recovery"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "book_red"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "book_red"
@@ -35492,6 +36551,13 @@
        "skill": "expose",
        "args": {
         "object": "book_red"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "book_red"
        },
        "role": "recover"
       },
@@ -35600,6 +36666,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "book_red"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "book_red"
@@ -35678,6 +36751,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "mug_shelf"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "mug_shelf"
@@ -35719,6 +36799,13 @@
        "args": {
         "object": "book_red"
        }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "book_red"
+       },
+       "role": "recover"
       },
       {
        "skill": "pick",
@@ -35826,6 +36913,13 @@
        "role": "recover"
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "book_red"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "book_red"
@@ -35850,6 +36944,165 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_shelf_taken"
+    },
+    "v5fix_book_on_desk": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "book_on_desk"
+     ],
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "book_red"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "bookcase_2/top"
+       }
+      }
+     ],
+     "since": "v3",
+     "fixes": "nominal"
+    },
+    "v5fix_shelf_taken": {
+     "kind": "v5_route_fix",
+     "variants": [
+      "shelf_taken"
+     ],
+     "recovery": "the front of the bookcase top is taken: move the mug to the back corner, then fetch the book",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug_shelf"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug_shelf"
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug_shelf",
+        "receptacle": "bookcase_2/top",
+        "hint_xy": [
+         0.79,
+         -0.31
+        ]
+       },
+       "role": "insert"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       }
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "book_red"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "book_red"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "book_red",
+        "receptacle": "bookcase_2/top"
+       }
+      }
+     ],
+     "since": "v4",
+     "fixes": "hard_make_room_first"
     },
     "x_two_hand_nominal": {
      "steps": [

@@ -692,7 +692,7 @@ def T13(t, R):
 def T14(t, R):
     nom = R("nominal")
     X = "book_red"
-    ready = {X: P("desk_1/top", -1.241, -5.769, 90)}
+    ready = {X: P("desk_1/top", -1.241, -6.271, 90)}     # 6.5 cm past the robot-side (south) edge, y -6.326
     ready_route = [s for s in nom if s["skill"] != "expose"]
     return {
         "easy": ["e1_book_ready", "e2_book_ready_far"],
@@ -1129,6 +1129,43 @@ def _reload_from_inside(steps):
 
 MW_BUTTON = "kitchen_microwave/start_button"
 
+def _first_nav(steps, old, new):
+    steps = copy.deepcopy(steps)
+    i = find(steps, "navigate", destination=old)
+    steps[i] = dict(steps[i], args=dict(steps[i]["args"], destination=new))
+    return steps
+
+
+def _search_island(steps):
+    """From the dining room the pin at the far edge of the island is not in the island view: search the room."""
+    steps = copy.deepcopy(steps)
+    i = find(steps, "navigate", destination="rolling_pin")
+    return [REC(S("search", object="rolling_pin", region="living_room_0_0"))] + steps[i:]
+
+
+def _sidestep_for_approach(steps, x):
+    """The re-park after an IK refusal: approach finds no base pose for x; a 12 cm sidestep re-parks instead."""
+    steps = copy.deepcopy(steps)
+    i = find(steps, "approach", target=x)
+    steps[i] = REC(S("sidestep", distance_m=0.12))
+    return steps
+
+
+# contact after a re-park / an expose: the object is no longer in the current view
+REFRESH_BEFORE = ("approach", "expose", "separate", "uncover", "push")
+
+
+def _refresh_view(steps):
+    out = []
+    for st in copy.deepcopy(steps):
+        x = st["args"].get("object")
+        prev = out[-1] if out else None
+        if st["skill"] == "pick" and prev and prev["skill"] in REFRESH_BEFORE and x in prev["args"].values():
+            out.append(REC(S("look", target=x)))
+        out.append(st)
+    return out
+
+
 # place() lands the book ~6 cm short of hint_xy towards the robot; aim at the middle of the free slot
 T01_SLOT = ([3.72, 6.737], [3.72, 6.80])
 
@@ -1145,6 +1182,13 @@ ROUTE_REPAIRS = {
         "m_ik_oatmeal": lambda r: _approach_before(r, "heat", MW_BUTTON, appliance="kitchen_microwave"),
         "e2_from_dining_room": lambda r: _approach_before(r, "press", MW_BUTTON),
         "h_action_ik_and_slip": _reload_from_inside},
+    "T12_tidy_toys": {"h_dynamic_duck_taken": lambda r: _search_to_look(r, "rubber_duck", "dining_table_2/top")},
+    "T16_rolling_pin_at_edge": {"e2_from_dining_room": _search_island},
+    "T17_hide_and_seek_block": {vid: (lambda r: _first_nav(r, "handled_cooking_pot", "kitchen_stove/top"))
+                                for vid in ("lid_off", "e2_from_dining_room", "lid_on", "block_crowded",
+                                            "lid_on_crowded")},
+    "T20_juice_back_to_table": {vid: (lambda r: _sidestep_for_approach(r, "juice_bottle"))
+                                for vid in ("m_ik_pick", "h_action_ik_pick_and_place")},
     "T09_tomato_soup": {vid: (lambda r: _look_before(r, "uncover", "handled_cooking_pot"))
                         for vid in ("lid_on", "lid_on_spoon_away")},
 }
@@ -1479,6 +1523,15 @@ def build_task(t: dict) -> dict:
         if new != old:
             t["routes"][new].update(kind="v5_route_fix", fixes=old)
         t["oracle"][vid] = new
+    for vid in [x for ids in formal.values() for x in ids] + study:
+        old = t["oracle"][vid]
+        steps = _refresh_view(t["routes"][old]["steps"])
+        if steps != t["routes"][old]["steps"]:
+            new = old if old.startswith("v5") else f"v5fix_{vid}"
+            t["routes"][new] = dict(copy.deepcopy(t["routes"][old]), steps=steps)
+            if new != old:
+                t["routes"][new].update(kind="v5_route_fix", fixes=old)
+            t["oracle"][vid] = new
     for rname, fn in EXPERIMENT_ROUTES.get(t["task_id"], {}).items():
         t["routes"][rname] = {"steps": fn(R), "kind": "experiment"}
     for rname, steps in OPEN_TRACK_ROUTES.get(t["task_id"], {}).items():
