@@ -39,6 +39,13 @@
     "T08_wipe_island/sponge_on_island"
    ],
    "why": "sponge yaw: the seed-variation overlay re-spawned the sponge at yaw 0 (its box cannot tell 0 from 180 deg) while the scene has it at ~177 deg; re-spawned, pick's own re-park knocked it off the island (seed 10 and 15, all rounds) whereas the scene pose passes on current code (v3 layout, seeds 10 and 15). The overlay keeps the scene's 180 deg (define_tasks_v5.BASE_YAW_DEG)."
+  },
+  {
+   "date": "2026-10-30",
+   "variants": [
+    "T06_block_destination_occupied/free"
+   ],
+   "why": "lid inside the pot: the variant moves the pot lid to its own scene spot on the pot (stove top); with the v5 seed shift the overlay spawned it at stove-top height inside the pot, the depenetration threw it off the stove (seed 11: on the kitchen floor, counted as a dropped object; seed 10 earlier: fell through the floor). It now spawns on the rim like T09/T17 lid_on (define_tasks_v5.SPAWN_FIXES)."
   }
  ],
  "episodes": {
@@ -512,16 +519,16 @@
   "T06_block_destination_occupied/e2_from_dining_room/17": "20056d8aa94c",
   "T06_block_destination_occupied/e2_from_dining_room/18": "b2cbb00635bb",
   "T06_block_destination_occupied/e2_from_dining_room/19": "76406348cd7e",
-  "T06_block_destination_occupied/free/10": "33d1106e7635",
-  "T06_block_destination_occupied/free/11": "98ac3206e10a",
-  "T06_block_destination_occupied/free/12": "3c5ed0205908",
-  "T06_block_destination_occupied/free/13": "a9c2cb8df567",
-  "T06_block_destination_occupied/free/14": "471b3ecedd04",
-  "T06_block_destination_occupied/free/15": "265a924db777",
-  "T06_block_destination_occupied/free/16": "c53554640aa6",
-  "T06_block_destination_occupied/free/17": "c41cacb62871",
-  "T06_block_destination_occupied/free/18": "f6e21daf39d8",
-  "T06_block_destination_occupied/free/19": "505c9e9f3a7b",
+  "T06_block_destination_occupied/free/10": "9a3423718eb3",
+  "T06_block_destination_occupied/free/11": "81413599a214",
+  "T06_block_destination_occupied/free/12": "cba86342d042",
+  "T06_block_destination_occupied/free/13": "0880dd3025d8",
+  "T06_block_destination_occupied/free/14": "d2c69e73036b",
+  "T06_block_destination_occupied/free/15": "be9d14a17ea1",
+  "T06_block_destination_occupied/free/16": "233247bf0345",
+  "T06_block_destination_occupied/free/17": "c2a052afca4c",
+  "T06_block_destination_occupied/free/18": "3b525426a3db",
+  "T06_block_destination_occupied/free/19": "44ed815e4fa4",
   "T06_block_destination_occupied/h_action_slip_and_ik/10": "f04323c622ff",
   "T06_block_destination_occupied/h_action_slip_and_ik/11": "b1a8c5706447",
   "T06_block_destination_occupied/h_action_slip_and_ik/12": "c1e47a61f6a1",

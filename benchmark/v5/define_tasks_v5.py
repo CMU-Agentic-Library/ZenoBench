@@ -1219,6 +1219,7 @@ COVERAGE_EXTRA = {
 # stays, so the seed shift still moves pot and lid together.
 LID_ON_RIM = {"z": 0.8591}
 SPAWN_FIXES = {(tid, vid): {"pot_lid": LID_ON_RIM} for tid, vid in (
+    ("T06_block_destination_occupied", "free"),
     ("T09_tomato_soup", "lid_on"), ("T09_tomato_soup", "lid_on_spoon_away"),
     ("T17_hide_and_seek_block", "lid_on"), ("T17_hide_and_seek_block", "lid_on_crowded"))}
 

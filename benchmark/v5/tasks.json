@@ -9093,7 +9093,8 @@
         8.4096,
         1.725
        ],
-       "yaw_deg": 0.0
+       "yaw_deg": 0.0,
+       "z": 0.8591
       }
      },
      "since": "v2",
@@ -9106,7 +9107,10 @@
       "challenge": "the cabinet top is empty",
       "derived_from": "free",
       "existing": true,
-      "seed_vary_added": true
+      "seed_vary_added": true,
+      "spawn_fix": [
+       "pot_lid"
+      ]
      },
      "vary": {
       "groups": [
