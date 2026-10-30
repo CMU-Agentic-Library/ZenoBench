@@ -1096,6 +1096,60 @@ ROUTE_FIX = {
 }
 
 
+def _look_before(steps, skill, target, nth=0, **match):
+    """Look at ``target`` right before the ``nth`` (non-failing) ``skill`` step: the object moved or left the view
+    after a failure, and contact skills need it in the current view."""
+    steps = copy.deepcopy(steps)
+    i = -1
+    for _ in range(nth + 1):
+        i = find(steps, skill, start=i + 1, **match)
+    return steps[:i] + [REC(S("look", target=target))] + steps[i:]
+
+
+def _hint(steps, old, new):
+    steps = copy.deepcopy(steps)
+    for st in steps:
+        if st["args"].get("hint_xy") == old:
+            st["args"]["hint_xy"] = new
+    return steps
+
+
+def _approach_before(steps, skill, target, **match):
+    return _before(steps, skill, [S("approach", target=target)], **match)
+
+
+def _reload_from_inside(steps):
+    """Take the food back out from the park that loaded it (the retrieval reverses the measured insertion)."""
+    steps = copy.deepcopy(steps)
+    reopen = find(steps, "open", last=True, articulated="kitchen_microwave")
+    i = find(steps, "navigate", start=reopen + 1, destination="oatmeal")
+    steps[i] = REC(S("navigate", destination="kitchen_microwave/inside_floor"))
+    return steps
+
+
+MW_BUTTON = "kitchen_microwave/start_button"
+
+# place() lands the book ~6 cm short of hint_xy towards the robot; aim at the middle of the free slot
+T01_SLOT = ([3.72, 6.737], [3.72, 6.80])
+
+# Physics repairs of formal oracle routes found in the seed-10 round (configurations unchanged): existing
+# routes get a ``v5fix_<variant>`` copy, v5 routes are edited in place.
+ROUTE_REPAIRS = {
+    "T01_book_to_dining_table": {vid: (lambda r: _hint(r, *T01_SLOT)) for vid in
+                                 ("table_set", "h_action_ik_pick_and_place", "h_mixed_table_set_ik",
+                                  "h_dynamic_pushed_back")},
+    "T03_utensils_one_container": {
+        "far_small_and_large": lambda r: _look_before(r, "lift", "rolling_pin", object="rolling_pin"),
+        "h_action_slip_and_miss": lambda r: _look_before(r, "pick", "rolling_pin", nth=2, object="rolling_pin")},
+    "T07_heat_oatmeal": {
+        "m_ik_oatmeal": lambda r: _approach_before(r, "heat", MW_BUTTON, appliance="kitchen_microwave"),
+        "e2_from_dining_room": lambda r: _approach_before(r, "press", MW_BUTTON),
+        "h_action_ik_and_slip": _reload_from_inside},
+    "T09_tomato_soup": {vid: (lambda r: _look_before(r, "uncover", "handled_cooking_pot"))
+                        for vid in ("lid_on", "lid_on_spoon_away")},
+}
+
+
 # ----------------------------------------------------------------- skill coverage of the oracle routes
 # Skills the household context calls for, added to oracle routes of formal variants (configurations
 # unchanged).  New v5 variants: their own route is edited; existing variants get a ``v5x_<variant>`` route.
@@ -1131,7 +1185,7 @@ def _clear_spot(steps):
 def _microwave_press_wait(steps):
     steps = copy.deepcopy(steps)
     i = find(steps, "heat")
-    return steps[:i] + [REC(S("press", button="kitchen_microwave/body/start_button")), REC(S("wait", seconds=90))] \
+    return steps[:i] + [REC(S("press", button="kitchen_microwave/start_button")), REC(S("wait", seconds=90))] \
         + steps[i + 1:]
 
 
@@ -1141,16 +1195,16 @@ def _brace_stir(steps):
 
 
 def _crouch_floor_pick(steps, x):
+    """Crouch for the low pick; stand up once the hand is empty again (posture moves refuse a held object)."""
     steps = _ins_before(steps, [S("crouch")], "pick", object=x)
-    return _ins_after(steps, [S("stand")], "pick", object=x)
+    return _ins_after(steps, [S("stand")], "place", object=x)
 
 
 def _cabinet_explore_bend(steps):
     steps = copy.deepcopy(steps)
     i = find(steps, "look", target="kitchen_cabinet_6/inside_shelf")
-    steps[i] = REC(S("explore_furniture", furniture="kitchen_cabinet_6"))
-    steps = _ins_before(steps, [S("bend")], "pick", object="pencil")
-    return _ins_after(steps, [S("straighten")], "pick", object="pencil")
+    steps[i:i + 1] = [REC(S("bend")), REC(S("explore_furniture", furniture="kitchen_cabinet_6")), REC(S("straighten"))]
+    return steps
 
 
 def _push_bowl_aside(steps):
@@ -1163,14 +1217,14 @@ def _push_bowl_aside(steps):
 
 ORACLE_EDITS = {
     "T01_book_to_dining_table": {
-        "e2_from_dining_room": lambda r: _ins_after(r, [S("face", target="kitchen_island/top")], "navigate",
-                                                    destination="kitchen_island/top"),
+        "e2_from_dining_room": lambda r: _ins_after(r, [S("tuck", hand="right"), S("face", target="kitchen_island/top")],
+                                                    "navigate", destination="kitchen_island/top"),
         "m_ik_pick": lambda r: _ins_before(r, [S("reset")], "approach", target="paperback_book")},
     "T02_stack_blocks": {
-        "e2_from_wall_cabinet": lambda r: _ins_after(r, [S("face", target="kitchen_island/top")], "navigate",
-                                                     destination="kitchen_island/top")},
+        "e2_from_wall_cabinet": lambda r: _ins_after(r, [S("tuck", hand="right"),
+                                                         S("face", target="kitchen_island/top")],
+                                                     "navigate", destination="kitchen_island/top")},
     "T03_utensils_one_container": {"e2_from_dining_room": _fetch_spoon},
-    "T04_cup_or_mug_to_cabinet": {"h_task_spot_taken": _clear_spot},
     "T05_pen_or_pencil_to_desk": {"h_task_pencil_in_cabinet": _cabinet_explore_bend},
     "T06_block_destination_occupied": {
         "e2_from_dining_room": lambda r: r + [REC(S("square", object="wooden_block_a"))]},
@@ -1418,6 +1472,13 @@ def build_task(t: dict) -> dict:
         t["routes"][new] = dict(copy.deepcopy(t["routes"][old]), steps=fn(copy.deepcopy(t["routes"][old]["steps"])),
                                 kind="v5_skill_coverage", edited_from=old)
         t["oracle"][vid] = new
+    for vid, fn in ROUTE_REPAIRS.get(t["task_id"], {}).items():
+        old = t["oracle"][vid]
+        new = old if old.startswith("v5") else f"v5fix_{vid}"
+        t["routes"][new] = dict(copy.deepcopy(t["routes"][old]), steps=fn(copy.deepcopy(t["routes"][old]["steps"])))
+        if new != old:
+            t["routes"][new].update(kind="v5_route_fix", fixes=old)
+        t["oracle"][vid] = new
     for rname, fn in EXPERIMENT_ROUTES.get(t["task_id"], {}).items():
         t["routes"][rname] = {"steps": fn(R), "kind": "experiment"}
     for rname, steps in OPEN_TRACK_ROUTES.get(t["task_id"], {}).items():
@@ -1551,10 +1612,11 @@ def f_grasp_persist(x):
             "trigger": {"skill": "pick", "args": {"object": x}, "nth": 1}}
 
 
-def f_ik_persist(skill, x, key="object", fid=None):
-    """Cross-level: ``skill`` on x is out of reach from every park; the plan must change destination / strategy."""
+def f_ik_persist(skill, x, key="object", fid=None, **where):
+    """Cross-level: ``skill`` on x is out of reach from every park; the plan must change destination / strategy.
+    ``where`` pins the blocked destination / appliance, so the substitute is not blocked as well."""
     return {"id": fid or f"ik_{skill}_{x}_persistent", "kind": "ik", "persist": True, "until": "never",
-            "trigger": {"skill": skill, "args": {key: x}, "nth": 1}}
+            "trigger": {"skill": skill, "args": {key: x, **where}, "nth": 1}}
 
 
 def _cut(steps, skill, **match):
@@ -1621,7 +1683,8 @@ REBASE = {
     "T07_heat_oatmeal": {
         "h_action_ik_and_slip": lambda tr, R: {
             "base": "microwave_works",
-            "failures": [f_ik("pick", "oatmeal"), f_ik_persist("heat", "oatmeal", key="food")],
+            "failures": [f_ik("pick", "oatmeal"), f_ik_persist("heat", "oatmeal", key="food",
+                                                                    appliance="kitchen_microwave")],
             "challenge": "the first bowl pick is refused (re-park), then starting the microwave is out of reach from "
                          "every park: take the bowl out and heat it on the stove, close the microwave",
             "strategy": "heating procedure replaced: microwave -> stove (take the bowl out, place, heat, close)",
@@ -1664,7 +1727,7 @@ REBASE = {
     "T11_collect_fruits": {
         "h_action_grasp_and_ik": lambda tr, R: {
             "base": "fruits_on_table",
-            "failures": [f_grasp("apple"), f_ik_persist("place", "apple")],
+            "failures": [f_grasp("apple"), f_ik_persist("place", "apple", receptacle="fruit_basket")],
             "challenge": "the apple slips on the first pick (retry), then the basket is out of reach from every park "
                          "(re-parking does not help): the stated tray on the study desk instead",
             "cross_level": "cross-level: persistent placement failure -> substitute destination",

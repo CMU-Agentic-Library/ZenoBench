@@ -172,6 +172,9 @@ def check_variant(task, tier, vid, contracts, assets, seeds=SEEDS):
         cfg, ann = episode_scene(task, seed, vid)
         objs, sups, arts, furn, rooms, appl = names_of(ann)
         known = set(objs) | set(sups) | arts | furn | rooms | appl | {"right", "left"}
+        # appliance buttons, written <appliance>/<button> (zeno_skills.predicates.entity_kind)
+        known |= {f"{x['name']}/{k}" for x in ann.get("articulated", []) for k, y in x.items()
+                  if isinstance(y, dict) and "center" in y}
         for a in goal.get("all", []) + [x for g in goal.get("any", []) for x in g]:
             p = a[0][4:] if a[0].startswith("not ") else a[0]
             if p not in preds:
