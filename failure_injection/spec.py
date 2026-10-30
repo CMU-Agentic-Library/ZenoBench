@@ -38,7 +38,7 @@ PLACEMENT_MODES = ("tipped", "displaced")
 # the skills each action-level failure attaches to
 ACTION_SKILLS = {"grasp": ("pick",), "slip": ("navigate",), "placement": ("place", "drop", "stack"),
                  "ik": ("pick", "place", "open", "close", "drop", "stack", "press", "wipe", "uncover", "expose",
-                        "separate", "push", "flip", "roll", "stir", "regrasp", "hide", "cover", "inspect")}
+                        "separate", "push", "flip", "roll", "stir", "regrasp", "hide", "cover", "inspect", "heat")}
 
 
 class FailureSpecError(ValueError):
@@ -104,6 +104,10 @@ def validate(failures, where="failures", objects=None, articulated=None, support
                         errs.append(f"{p}: trigger names unknown {v!r}")
             if f.get("after_fired") is not None and f["after_fired"] not in ids:
                 errs.append(f"{p}: after_fired names no failure of this variant")
+        if f.get("persist") and k not in ("grasp", "ik"):
+            errs.append(f"{p}: only grasp and ik failures can be persistent")
+        if k == "ik" and f.get("persist") and f.get("until", "never") != "never":
+            errs.append(f"{p}: a persistent ik failure has until: never")
         if k == "slip" and not (trig or {}).get("while_holding"):
             errs.append(f"{p}: slip needs trigger.while_holding")
         if k == "placement":

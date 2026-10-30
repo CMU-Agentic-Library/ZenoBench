@@ -55,19 +55,21 @@ class FailureRunner:
             return False
         if f.get("after_fired") and f["after_fired"] not in self.fired:
             return False
-        return f["id"] not in self.fired
+        return f["id"] not in self.fired or bool(f.get("persist"))
 
     def _due(self, f, verb, args):
         """Count a matching call; True when this is the nth."""
         if not self._matches(f, verb, args):
             return False
         self.counts[f["id"]] += 1
-        return self.counts[f["id"]] == int(f["trigger"].get("nth", 1))
+        nth = int(f["trigger"].get("nth", 1))
+        # a persistent failure (cross-level: the object / place is unusable) fires on every call from the nth on
+        return self.counts[f["id"]] >= nth if f.get("persist") else self.counts[f["id"]] == nth
 
     def _record(self, f, manifested, **detail):
         row = {"id": f["id"], "kind": f["kind"], "mode": mode(f), "call_index": self.call_index,
                "tick": int(getattr(self.rig, "tick", 0)), "manifested": bool(manifested), **detail}
-        self.fired[f["id"]] = row
+        self.fired.setdefault(f["id"], row)
         self.failure_log.append(row)
         self.rig.log("failure_event", **{k: v for k, v in row.items() if k != "id"}, fid=f["id"])
         return row
@@ -98,7 +100,7 @@ class FailureRunner:
                 self._record(f, True, object=name, landed_on=self._support_of(name))
                 return self._refuse(c, args, "POLICY_FAILED", f"carry: {name} slipped out of the hand while carrying it")
         res = self._base.run(key, args, depth)
-        if self.ik_block and verb in BASE_SKILLS and res.success:
+        if self.ik_block and self.ik_block["until"] != "never" and verb in BASE_SKILLS and res.success:
             self.ik_block = None                          # re-parked: the next attempt plans from a new pose
         for f in self.failures:
             if f["kind"] == "grasp" and self._due(f, verb, args):

@@ -136,14 +136,15 @@ def check_variant(task, tier, vid, contracts, assets, seeds=SEEDS):
     if tier == "hard":
         cats = category(fails) if fails else set()
         n_act = sum(f["kind"] in ("grasp", "slip", "placement", "ik") for f in fails)
+        persistent = any(f.get("persist") for f in fails)     # cross-level: an unusable object / place
         want = {"task": lambda c: (not c and v.get("conditions")) or c == {"task"},
-                "action": lambda c: "task" in c and n_act >= 2,
+                "action": lambda c: ("task" in c or persistent) and n_act >= 2,
                 "mixed": lambda c: "mixed" in c,
                 "dynamic": lambda c: "dynamic" in c}
         if cat in want and not want[cat](cats):
             probs.append((None, f"hard category {cat} but failures give {sorted(cats)}"))
         # every Hard contains task-level replanning: a declared task-level constraint, or a v4 Hard's own condition
-        if not ("task" in cats or (cat == "task" and v.get("conditions"))):
+        if not ("task" in cats or persistent or (cat == "task" and v.get("conditions"))):
             probs.append((None, "a Hard variant without a task-level constraint"))
     # route vs failures: every action failure's nth matching call is a step marked injected + expect fail
     for f in fails:
@@ -329,6 +330,10 @@ def static(doc, seeds=SEEDS):
                 for s, p in probs:
                     out["problems"].append({"task": t["task_id"], "variant": vid, "seed": s, "problem": p})
         out["per_task"][t["task_id"]] = {"episodes": len(seeds) * 9, "static_ok": n_ok}
+        for vid in t.get("v5_study", []):                    # failure-timing study: checked, counted apart
+            out["study_episodes"] = out.get("study_episodes", 0) + len(seeds)
+            for sd, p in check_variant(t, "medium", vid, contracts, assets, seeds):
+                out["problems"].append({"task": t["task_id"], "variant": vid, "seed": sd, "problem": p, "study": True})
     out["static_ok"] = sum(x["static_ok"] for x in out["per_task"].values())
     return out
 
@@ -508,6 +513,7 @@ def main():
         out = static(doc)
         out["tasks_sha1"] = hashlib.sha1(TASKS.read_bytes()).hexdigest()
         Path(a.out).write_text(json.dumps(out, indent=1))
+        print(f"study: {out.get('study_episodes', 0)} episodes (failure timing, not formal)")
         print(f"static: {out['variants']} variants, {out['episodes']} episodes, {out['static_ok']} statically ok, "
               f"{len(out['problems'])} problems")
         for p in out["problems"][:80]:

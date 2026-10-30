@@ -297,3 +297,17 @@ def test_failures_never_reach_the_planner():
     res = SimpleNamespace(success=False, error_code="POLICY_FAILED", error="pick_lift: mug not held (lift 0.000 m)",
                           preconditions=[], postconditions=[], outputs={}, children=[])
     assert public_view_is_clean(public_result({"contract": "pick", "args": {"object": "mug"}}, res))
+
+
+def test_persistent_failures_fire_every_time(monkeypatch):
+    fs = [{"id": "g", "kind": "grasp", "persist": True, "trigger": {"skill": "pick", "args": {"object": "mug"}}},
+          {"id": "i", "kind": "ik", "persist": True, "until": "never",
+           "trigger": {"skill": "place", "args": {"object": "oatmeal"}}}]
+    inj, base, rig = make(fs, monkeypatch)
+    assert not inj.run("pick", {"object": "mug"}).success
+    assert not inj.run("pick", {"object": "mug"}).success          # the cup cannot be held: switch object
+    assert inj.run("pick", {"object": "oatmeal"}).success
+    assert "no IK" in inj.run("place", {"object": "oatmeal", "support": "dining_table_2/top"}).error
+    inj.run("approach", {"target": "dining_table_2/top"})
+    assert "no IK" in inj.run("place", {"object": "oatmeal", "support": "dining_table_2/top"}).error   # re-park does not help
+    assert [r["id"] for r in inj.failure_log].count("g") == 2 and inj.summary()["manifested"] == ["g", "i"]

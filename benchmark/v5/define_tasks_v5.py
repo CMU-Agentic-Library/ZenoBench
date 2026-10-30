@@ -185,11 +185,16 @@ def design(t, R):
     for vid, fn in REBASE.get(tid, {}).items():
         spec = d["new"][vid]
         over = fn(copy.deepcopy(tr), R)
-        spec.update(base=tb, **over)
+        rename = over.pop("rename", None)
+        spec.update({"base": tb, **over})
         spec["challenge"] = f"{TASK_HARD_NOTE[tid]}; and {spec['challenge']}" if "challenge" not in over else spec["challenge"]
         for k in ("move", "remove", "goal", "instruction", "instruction_zh"):
             if k not in over:
                 spec.pop(k, None)               # the task Hard's own scene / goal / instruction carry over
+        if rename:
+            d["new"][rename] = d["new"].pop(vid)
+            for tier in ("easy", "medium", "hard"):
+                d[tier] = [rename if x == vid else x for x in d[tier]]
     return d
 
 
@@ -1032,6 +1037,57 @@ def _search_to_look(steps, obj, place):
     return steps
 
 
+# ----------------------------------------------------------------- failure-timing study (not formal)
+# Four long tasks, one failure type each, at an early / middle / late point of the nominal plan: how the
+# recovery decision depends on the progress already made.  Supplementary variants (``v5_study``), run
+# and reported apart from the 180 formal variants.
+LID_AWAY = P("kitchen_island/top", 7.95, 1.86)           # set down on the island, off the stove
+
+
+def _lid_taken(after, route):
+    return {"failures": [f_move("resource", "pot_lid", LID_AWAY, after, fid="resource_lid")], "route": route}
+
+
+def _timing_t09(R):
+    nom = R("nominal")
+    search = [S("search", object="pot_lid", region="living_room_0_0")]
+    late_i = find(nom, "pick", object="pot_lid")
+    late = nom[:late_i] + [FAIL(nom[late_i]), REC(search[0]), REC(S("navigate", destination="pot_lid")),
+                           REC(nom[late_i])] + nom[late_i + 1:]
+    return {"early": _lid_taken(("look", {"target": "kitchen_island/top"}),
+                                _before(nom, "navigate", search, destination="pot_lid")),
+            "middle": _lid_taken(("stir", {"container": "handled_cooking_pot"}),
+                                 _before(nom, "navigate", search, destination="pot_lid")),
+            "late": _lid_taken(("navigate", {"destination": "pot_lid"}), late)}
+
+
+def _timing_ik(R, picks):
+    """IK refusal (re-park and retry) on the given (skill, object) steps of the nominal plan."""
+    nom = R("nominal")
+    return {k: {"failures": [f_ik(sk, x)], "route": with_ik(nom, sk, x)} for k, (sk, x) in picks.items()}
+
+
+def _timing_t19(R):
+    nom = R("nominal")
+    return {"early": {"failures": [f_grasp(CAN)], "route": with_grasp(nom, CAN)},
+            "middle": {"failures": [f_grasp("foam_cube")], "route": with_grasp(nom, "foam_cube")},
+            "late": {"failures": [f_place_miss("foam_cube", P("bookcase_2/top", 0.80, -0.43),
+                                               [["inside", "foam_cube", "wide_storage_bin"]], skill="drop")],
+                     "route": with_place_miss(nom, "foam_cube", skill="drop")}}
+
+
+TIMING_STUDY = {
+    "T09_tomato_soup": ("lid_off", "someone sets the pot lid down on the island", _timing_t09),
+    "T12_tidy_toys": ("toys_out", "a refused manipulation (re-park and retry)",
+                      lambda R: _timing_ik(R, {"early": ("pick", "toy_car"), "middle": ("pick", "rubber_duck"),
+                                               "late": ("place", "rubber_duck")})),
+    "T13_breakfast_setup": ("dishes_on_tv_stand", "a refused manipulation (re-park and retry)",
+                            lambda R: _timing_ik(R, {"early": ("pick", "bowl"), "middle": ("pick", "cup"),
+                                                     "late": ("place", "cup")})),
+    "T19_recycling": ("bin_on_bookcase", "an object slips / a drop misses", _timing_t19),
+}
+
+
 # Oracle routes of existing variants that fail in physics for a route reason: v5 maps the variant to a
 # fixed copy (``v5fix_<route>``); the v3 route stays as it is in both catalogs.
 ROUTE_FIX = {
@@ -1194,6 +1250,9 @@ def build_task(t: dict) -> dict:
         v["since"] = "v5"
         v["note"] = spec["challenge"]
         v["v5"] = {"tier": spec["tier"], "challenge": spec["challenge"], "derived_from": spec["base"]}
+        for k in ("strategy", "cross_level"):
+            if spec.get(k):
+                v["v5"][k] = spec[k]
         if spec["tier"] == "hard":
             v["v5"]["hard_category"] = spec["hard"]
         if spec.get("failures"):
@@ -1221,6 +1280,26 @@ def build_task(t: dict) -> dict:
             v["v5"] = meta
             if difficulty(v) != tier:
                 raise ValueError(f"{t['task_id']}/{vid}: v3 tier {difficulty(v)} != formal {tier}")
+    study = []
+    if t["task_id"] in TIMING_STUDY:
+        base_id, what, fn = TIMING_STUDY[t["task_id"]]
+        nom_len = len(t["routes"][t["oracle"][base_id]]["steps"])
+        for timing, spec in fn(R).items():
+            vid = f"study_timing_{timing}"
+            v = {k: copy.deepcopy(t["variants"][base_id][k]) for k in ("move", "add", "remove", "start")
+                 if k in t["variants"][base_id]}
+            fail_i = next(i for i, st in enumerate(spec["route"]) if st.get("expect") == "fail" or
+                          any(st["skill"] == f["trigger"]["skill"] and all(st["args"].get(k) == x for k, x in
+                              (f["trigger"].get("args") or {}).items()) for f in spec["failures"]))
+            v.update(difficulty="medium", since="v5", failures=spec["failures"], vary=copy.deepcopy(VARY),
+                     note=f"{what}, {timing} in the plan (step {fail_i} of {nom_len})",
+                     v5={"study": "failure_timing", "timing": timing, "progress": round(fail_i / nom_len, 2),
+                         "derived_from": base_id, "challenge": f"{what} at the {timing} stage"})
+            t["variants"][vid] = v
+            t["routes"][f"v5_{vid}"] = {"steps": spec["route"], "kind": "v5_study", "variant": vid}
+            t["oracle"][vid] = f"v5_{vid}"
+            study.append(vid)
+    t["v5_study"] = study
     for vid, (rname, fn) in ROUTE_FIX.get(t["task_id"], {}).items():
         new = f"v5fix_{rname}"
         t["routes"][new] = {"steps": fn(copy.deepcopy(t["routes"][rname]["steps"])), "kind": "v5_route_fix",
@@ -1238,7 +1317,7 @@ def build_task(t: dict) -> dict:
                 v["move"], v["vary"] = seed_vary(t, v)
                 v["v5"]["seed_vary_added"] = True    # differs from the v3 configuration of the same id
     t["v5_formal"] = formal
-    t["v5_supplementary"] = sorted(set(t["variants"]) - {x for ids in formal.values() for x in ids})
+    t["v5_supplementary"] = sorted(set(t["variants"]) - {x for ids in formal.values() for x in ids} - set(study))
     t["benchmark_version"] = "v5"
     return t
 
@@ -1351,6 +1430,36 @@ def _ik_twice(steps, skill, x, fid1, key="object"):
 
 
 BOOK, SPOON, CAN = "paperback_book", "breakfast_spoon", "soda_can"
+
+
+def f_grasp_persist(x):
+    """Cross-level: x cannot be held at all (every pick of it slips); the plan must change object."""
+    return {"id": f"grasp_{x}_persistent", "kind": "grasp", "persist": True,
+            "trigger": {"skill": "pick", "args": {"object": x}, "nth": 1}}
+
+
+def f_ik_persist(skill, x, key="object", fid=None):
+    """Cross-level: ``skill`` on x is out of reach from every park; the plan must change destination / strategy."""
+    return {"id": fid or f"ik_{skill}_{x}_persistent", "kind": "ik", "persist": True, "until": "never",
+            "trigger": {"skill": skill, "args": {key: x}, "nth": 1}}
+
+
+def _cut(steps, skill, **match):
+    """(steps before the first ``skill`` step, that step)."""
+    i = find(steps, skill, **match)
+    return copy.deepcopy(steps[:i]), copy.deepcopy(steps[i])
+
+
+def _cut_skip(steps, skill, n=1, **match):
+    """Drop the first ``n`` steps starting at the first ``skill`` step (e.g. the trip to where the item was)."""
+    steps = copy.deepcopy(steps)
+    i = find(steps, skill, **match)
+    return steps[:i] + steps[i + n:]
+
+
+def _two_fails(step):
+    """The call fails, the planner retries once (same failure: it is not local), then gives up on it."""
+    return [FAIL(step, True), FAIL(step, True)]
 REBASE = {
     "T01_book_to_dining_table": {
         "h_action_ik_pick_and_place": lambda tr, R: {"route": with_ik(with_ik(tr, "pick", BOOK), "place", BOOK)},
@@ -1361,9 +1470,25 @@ REBASE = {
             "route": with_ik(with_ik(tr, "pick", "wooden_block_a"), "stack", "wooden_block_a")}},
     "T03_utensils_one_container": {
         "h_action_slip_and_miss": lambda tr, R: {"route": with_place_miss(with_slip(tr, "rolling_pin"), "rolling_pin")},
-        "h_dynamic_spoon_taken": lambda tr, R: {"route": _before(tr, "navigate", [S("search", object=SPOON, region="living_room_0_0")], destination=SPOON)}},
+        "h_dynamic_spoon_taken": lambda tr, R: {
+            "rename": "h_dynamic_pin_taken",
+            "failures": [f_move("resource", "rolling_pin", P("kitchen_cabinet_6/top", 3.5, 0.45),
+                                ("drop", {"object": SPOON}))],
+            "challenge": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone "
+                         "takes the pin to the wall cabinet: keep the spoon where it is, find the pin",
+            "route": _before(tr, "navigate", [S("search", object="rolling_pin", region="living_room_0_0")],
+                             destination="rolling_pin")}},
     "T04_cup_or_mug_to_cabinet": {
-        "h_action_ik_and_grasp": lambda tr, R: {"route": with_ik(with_ik(tr, "pick", "cup_counter_b"), "place", "cup_counter_b")}},
+        "h_action_ik_and_grasp": lambda tr, R: {
+            "failures": [f_ik("pick", "oatmeal"), f_grasp_persist("cup_counter_b")],
+            "challenge": "make room on the drinks spot (the first bowl pick is refused: re-park), then the cup cannot "
+                         "be held at all (it slips every time): set out the mug instead",
+            "cross_level": "cross-level: persistent grasp failure -> substitute object",
+            "route": with_ik(_cut(tr, "pick", object="cup_counter_b")[0], "pick", "oatmeal")
+            + _two_fails(_cut(tr, "pick", object="cup_counter_b")[1])
+            + [REC(S("navigate", destination="mug")), REC(S("pick", object="mug")),
+               REC(S("navigate", destination="kitchen_cabinet_6/top")),
+               REC(S("place", object="mug", receptacle="kitchen_cabinet_6/top"))]}},
     "T05_pen_or_pencil_to_desk": {
         "h_action_grasp_and_ik": lambda tr, R: {"route": with_ik(with_grasp(tr, "pencil"), "place", "pencil")},
         "h_dynamic_pencil_taken": lambda tr, R: {
@@ -1381,7 +1506,19 @@ REBASE = {
     "T06_block_destination_occupied": {
         "h_action_slip_and_ik": lambda tr, R: {"route": with_ik(with_slip(tr, "wooden_block_a"), "place", "wooden_block_a")}},
     "T07_heat_oatmeal": {
-        "h_action_ik_and_slip": lambda tr, R: {"route": with_slip(with_ik(tr, "pick", "oatmeal"), "oatmeal")},
+        "h_action_ik_and_slip": lambda tr, R: {
+            "base": "microwave_works",
+            "failures": [f_ik("pick", "oatmeal"), f_ik_persist("heat", "oatmeal", key="food")],
+            "challenge": "the first bowl pick is refused (re-park), then starting the microwave is out of reach from "
+                         "every park: take the bowl out and heat it on the stove, close the microwave",
+            "strategy": "heating procedure replaced: microwave -> stove (take the bowl out, place, heat, close)",
+            "cross_level": "persistent appliance failure -> stove procedure",
+            "route": with_ik(R("nominal")[:-1], "pick", "oatmeal") + _two_fails(R("nominal")[-1])
+            + [REC(S("open", articulated="kitchen_microwave")), REC(S("navigate", destination="oatmeal")),
+               REC(S("pick", object="oatmeal")), REC(S("navigate", destination="kitchen_stove/top")),
+               REC(S("place", object="oatmeal", receptacle="kitchen_stove/top")),
+               REC(S("heat", food="oatmeal", appliance="kitchen_stove", temp_c=40)),
+               REC(S("navigate", destination="kitchen_microwave")), REC(S("close", articulated="kitchen_microwave"))]},
         "h_dynamic_door_opened": lambda tr, R: {
             "route": tr + [REC(S("navigate", destination="kitchen_microwave")),
                            REC(S("close", articulated="kitchen_microwave"))]}},
@@ -1412,20 +1549,43 @@ REBASE = {
                                REC(S("navigate", destination="trash_can")),
                                REC(S("drop", object=CAN, container="trash_can"))]}},
     "T11_collect_fruits": {
-        "h_action_grasp_and_ik": lambda tr, R: {"failures": [f_ik("pick", "apple"), f_ik("place", "apple")],
-                                                "route": with_ik(with_ik(tr, "pick", "apple"), "place", "apple")}},
+        "h_action_grasp_and_ik": lambda tr, R: {
+            "base": "fruits_on_table",
+            "failures": [f_grasp("apple"), f_ik_persist("place", "apple")],
+            "challenge": "the apple slips on the first pick (retry), then the basket is out of reach from every park "
+                         "(re-parking does not help): the stated tray on the study desk instead",
+            "cross_level": "cross-level: persistent placement failure -> substitute destination",
+            "route": with_grasp(_cut(R("nominal"), "place", object="apple")[0], "apple")
+            + [FAIL(_cut(R("nominal"), "place", object="apple")[1], True),
+               REC(S("approach", target="fruit_basket")), FAIL(_cut(R("nominal"), "place", object="apple")[1], True)]
+            + [REC(x) for x in R("alternative_tray")[-4:]]}},
     "T12_tidy_toys": {
         "h_action_grasp_and_ik": lambda tr, R: {"failures": [f_grasp("toy_car"), f_ik("drop", "rubber_duck")],
                                                 "route": with_ik(with_grasp(tr, "toy_car"), "drop", "rubber_duck")},
         "h_dynamic_duck_taken": lambda tr, R: {
             "failures": [f_move("resource", "rubber_duck", P("dining_table_2/top", 3.7, 6.3),
-                                ("explore_room", {"room": "living_room_0_0"}))],
-            "challenge": "no basket (allocate the toys by size), and the kid carries the duck to the dining table",
+                                ("place", {"object": "toy_car"}))],
+            "challenge": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the "
+                         "duck to the dining table: keep the car, find the duck",
             "route": _region(tr, "rubber_duck", "dining_room_0_1")}},
     "T13_breakfast_setup": {
-        "h_action_ik_and_grasp": lambda tr, R: {"failures": [f_ik("pick", "bowl"), f_ik("place", "mug", fid="ik_place_mug")],
-                                                "route": with_ik(with_ik(tr, "pick", "bowl"), "place", "mug")},
-        "h_dynamic_bowl_taken": lambda tr, R: {"route": _after(tr, "look", [S("search", object="bowl", region="living_room_0_0")], target="tv_stand_2/top")}},
+        "h_action_ik_and_grasp": lambda tr, R: {
+            "base": "dishes_on_tv_stand",
+            "failures": [f_ik("pick", "bowl"), f_grasp_persist("cup")],
+            "challenge": "the first bowl pick is refused (re-park), then the cup cannot be held at all: the mug on "
+                         "the bedroom bookcase replaces it",
+            "cross_level": "cross-level: persistent grasp failure -> substitute object",
+            "route": with_ik(_cut(R("nominal"), "pick", object="cup")[0], "pick", "bowl")
+            + _two_fails(_cut(R("nominal"), "pick", object="cup")[1])
+            + [REC(x) for x in R("alternative_mug")[-5:]]},
+        "h_dynamic_bowl_taken": lambda tr, R: {
+            "rename": "h_dynamic_mug_taken",
+            "failures": [f_move("resource", "mug", P("kitchen_cabinet_6/top", 3.68, 0.36), ("place", {"object": "bowl"}))],
+            "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the "
+                         "wall cabinet: keep the setting, find the mug",
+            "route": _before(_cut_skip(tr, "navigate", destination="bookcase_2/top", n=2), "pick",
+                             [S("search", object="mug", region="living_room_0_0"), S("navigate", destination="mug")],
+                             object="mug")}},
     "T14_shelve_the_book": {
         "h_action_ik_pick_and_place": lambda tr, R: {"route": with_ik(with_ik(tr, "expose", "book_red"), "place", "book_red")}},
     "T15_book_face_up": {
@@ -1460,11 +1620,12 @@ REBASE = {
     "T19_recycling": {
         "h_action_grasp_and_miss": lambda tr, R: {"route": with_grasp(with_place_miss(tr, CAN, skill="drop"), "foam_cube")},
         "h_dynamic_can_moved": lambda tr, R: {
-            "failures": [f_move("resource", CAN, P("kitchen_cabinet_6/top", 3.7, 0.36),
-                                ("explore_room", {"room": "living_room_0_0"}))],
-            "challenge": "a look-alike bin on the way (use the instructed one), and someone takes the can from the "
-                         "dining table to the wall cabinet",
-            "route": _region(tr, CAN, "living_room_0_0")}},
+            "rename": "h_dynamic_cube_moved",
+            "failures": [f_move("resource", "foam_cube", P("tv_stand_2/top", 7.0, 0.36), ("drop", {"object": CAN}))],
+            "challenge": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone "
+                         "puts the foam cube on the TV stand: keep the can, find the cube",
+            "route": _before(tr, "navigate", [S("search", object="foam_cube", region="living_room_0_0")],
+                             destination="foam_cube")}},
     "T20_juice_back_to_table": {
         "h_action_ik_pick_and_place": lambda tr, R: {"route": with_ik(with_ik(tr, "pick", "juice_bottle"), "place", "juice_bottle")},
         "h_dynamic_bottle_taken": lambda tr, R: {"route": _after(tr, "look", [S("search", object="juice_bottle", region="living_room_0_0")], target="kitchen_cabinet_6/top")}},

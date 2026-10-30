@@ -2092,6 +2092,7 @@
     "spoon_target_table",
     "clutter_cereal_b"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "overhang_ready",
@@ -3573,6 +3574,7 @@
     "kitchen_island/top",
     "tv_stand_2/top"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "clear",
@@ -4192,7 +4194,7 @@
       "hard_category": "mixed"
      }
     },
-    "h_dynamic_spoon_taken": {
+    "h_dynamic_pin_taken": {
      "move": {},
      "add": {
       "small_storage_bin": {
@@ -4222,27 +4224,27 @@
        ]
       },
       {
-       "id": "resource_breakfast_spoon",
+       "id": "resource_rolling_pin",
        "kind": "resource",
        "when": "dynamic",
        "trigger": {
-        "skill": "look",
+        "skill": "drop",
         "args": {
-         "target": "tv_stand_2/top"
+         "object": "breakfast_spoon"
         },
         "nth": 1,
         "on": "success"
        },
        "event": {
         "type": "move_object",
-        "object": "breakfast_spoon",
+        "object": "rolling_pin",
         "to": {
          "support": "kitchen_cabinet_6/top",
          "xy": [
-          3.7,
-          0.36
+          3.5,
+          0.45
          ],
-         "yaw_deg": 90
+         "yaw_deg": 0.0
         }
        }
       }
@@ -4313,10 +4315,10 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "allocate by size: the pin only fits the wide bin; and once the robot has looked around, someone takes the spoon to the wall cabinet: it is not where it was seen and must be searched for",
+     "note": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone takes the pin to the wall cabinet: keep the spoon where it is, find the pin",
      "v5": {
       "tier": "hard",
-      "challenge": "allocate by size: the pin only fits the wide bin; and once the robot has looked around, someone takes the spoon to the wall cabinet: it is not where it was seen and must be searched for",
+      "challenge": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone takes the pin to the wall cabinet: keep the spoon where it is, find the pin",
       "derived_from": "three_containers",
       "hard_category": "dynamic"
      }
@@ -4372,7 +4374,7 @@
     "m_grasp_spoon": "v5_m_grasp_spoon",
     "h_action_slip_and_miss": "v5_h_action_slip_and_miss",
     "h_mixed_three_containers_ik": "v5_h_mixed_three_containers_ik",
-    "h_dynamic_spoon_taken": "v5_h_dynamic_spoon_taken"
+    "h_dynamic_pin_taken": "v5_h_dynamic_pin_taken"
    },
    "routes": {
     "nominal": {
@@ -5345,7 +5347,7 @@
      "kind": "v5_oracle",
      "variant": "h_mixed_three_containers_ik"
     },
-    "v5_h_dynamic_spoon_taken": {
+    "v5_h_dynamic_pin_taken": {
      "steps": [
       {
        "skill": "look",
@@ -5378,14 +5380,6 @@
        }
       },
       {
-       "skill": "search",
-       "args": {
-        "object": "breakfast_spoon",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "breakfast_spoon"
@@ -5416,6 +5410,14 @@
         "container": "wide_storage_bin"
        },
        "role": "alternative"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rolling_pin",
+        "region": "living_room_0_0"
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -5451,7 +5453,7 @@
       }
      ],
      "kind": "v5_oracle",
-     "variant": "h_dynamic_spoon_taken"
+     "variant": "h_dynamic_pin_taken"
     }
    },
    "benchmark_version": "v5",
@@ -5479,6 +5481,7 @@
     "kitchen_island",
     "small_storage_bin"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "large_only",
@@ -5493,7 +5496,7 @@
      "three_containers",
      "h_action_slip_and_miss",
      "h_mixed_three_containers_ik",
-     "h_dynamic_spoon_taken"
+     "h_dynamic_pin_taken"
     ]
    },
    "v5_supplementary": []
@@ -5948,28 +5951,28 @@
        ]
       },
       {
-       "id": "ik_pick_cup_counter_b",
+       "id": "ik_pick_oatmeal",
        "kind": "ik",
        "trigger": {
         "skill": "pick",
         "args": {
-         "object": "cup_counter_b"
+         "object": "oatmeal"
         },
         "nth": 1
        },
        "until": "base_skill"
       },
       {
-       "id": "ik_place_cup",
-       "kind": "ik",
+       "id": "grasp_cup_counter_b_persistent",
+       "kind": "grasp",
+       "persist": true,
        "trigger": {
-        "skill": "place",
+        "skill": "pick",
         "args": {
          "object": "cup_counter_b"
         },
         "nth": 1
-       },
-       "until": "base_skill"
+       }
       }
      ],
      "goal": {
@@ -6023,11 +6026,12 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the drinks spot is taken: make room first; and the first cup pick and the first place on the cabinet are both refused from their parks",
+     "note": "make room on the drinks spot (the first bowl pick is refused: re-park), then the cup cannot be held at all (it slips every time): set out the mug instead",
      "v5": {
       "tier": "hard",
-      "challenge": "the drinks spot is taken: make room first; and the first cup pick and the first place on the cabinet are both refused from their parks",
+      "challenge": "make room on the drinks spot (the first bowl pick is refused: re-park), then the cup cannot be held at all (it slips every time): set out the mug instead",
       "derived_from": "h_task_spot_taken",
+      "cross_level": "cross-level: persistent grasp failure -> substitute object",
       "hard_category": "action"
      }
     },
@@ -6623,7 +6627,24 @@
        "skill": "pick",
        "args": {
         "object": "oatmeal"
-       }
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "oatmeal"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -6654,16 +6675,25 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "pick",
        "args": {
-        "target": "cup_counter_b"
+        "object": "cup_counter_b"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
        },
        "role": "recover"
       },
       {
        "skill": "pick",
        "args": {
-        "object": "cup_counter_b"
+        "object": "mug"
        },
        "role": "recover"
       },
@@ -6671,29 +6701,13 @@
        "skill": "navigate",
        "args": {
         "destination": "kitchen_cabinet_6/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "cup_counter_b",
-        "receptacle": "kitchen_cabinet_6/top"
-       },
-       "expect": "fail",
-       "role": "failure",
-       "injected": true
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_cabinet_6/top"
        },
        "role": "recover"
       },
       {
        "skill": "place",
        "args": {
-        "object": "cup_counter_b",
+        "object": "mug",
         "receptacle": "kitchen_cabinet_6/top"
        },
        "role": "recover"
@@ -6857,6 +6871,7 @@
     "kitchen_cabinet_6/top",
     "kitchen_island/top"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "cup_available",
@@ -8291,6 +8306,7 @@
     "desk_1/top",
     "bookcase_2/top"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "e1_pencil_asked",
@@ -10106,6 +10122,7 @@
     "juice_bottle",
     "clutter_cereal_c"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "free",
@@ -10413,41 +10430,8 @@
      }
     },
     "h_action_ik_and_slip": {
-     "move": {
-      "handled_cooking_pot": {
-       "support": "kitchen_microwave/inside_floor",
-       "xy": [
-        4.5,
-        2.5
-       ],
-       "yaw_deg": 0
-      },
-      "pot_lid": {
-       "support": null,
-       "z": 0.88,
-       "xy": [
-        4.5,
-        2.5
-       ],
-       "yaw_deg": 0
-      }
-     },
-     "conditions": [
-      "appliance_occupied"
-     ],
+     "move": {},
      "failures": [
-      {
-       "id": "resource_v4_microwave_holds_pot",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "in_appliance",
-         "handled_cooking_pot",
-         "kitchen_microwave"
-        ]
-       ]
-      },
       {
        "id": "ik_pick_oatmeal",
        "kind": "ik",
@@ -10461,46 +10445,18 @@
        "until": "base_skill"
       },
       {
-       "id": "slip_oatmeal",
-       "kind": "slip",
+       "id": "ik_heat_oatmeal_persistent",
+       "kind": "ik",
+       "persist": true,
+       "until": "never",
        "trigger": {
-        "skill": "navigate",
-        "while_holding": "oatmeal",
+        "skill": "heat",
+        "args": {
+         "food": "oatmeal"
+        },
         "nth": 1
        }
       }
-     ],
-     "goal": {
-      "all": [
-       [
-        "temperature_at_least",
-        "oatmeal",
-        40
-       ],
-       [
-        "not heating",
-        "kitchen_stove"
-       ],
-       [
-        "is_closed",
-        "kitchen_microwave"
-       ],
-       [
-        "not on_floor",
-        "handled_cooking_pot"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "instruction": "Warm up the leftover oatmeal for breakfast to at least 40 C in a way that works. When you are done, the stove must be off and the microwave door closed.",
-     "instruction_zh": "请用合适方式把燕麦粥加热到至少 40°C，完成后关火并关好微波炉门。",
-     "watch": [
-      "oatmeal",
-      "handled_cooking_pot",
-      "pot_lid"
      ],
      "vary": {
       "groups": [],
@@ -10513,11 +10469,13 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the microwave holds the soup pot: heat on the stove; and the first pick is refused and the bowl then slips at the start of the carry",
+     "note": "the first bowl pick is refused (re-park), then starting the microwave is out of reach from every park: take the bowl out and heat it on the stove, close the microwave",
      "v5": {
       "tier": "hard",
-      "challenge": "the microwave holds the soup pot: heat on the stove; and the first pick is refused and the bowl then slips at the start of the carry",
-      "derived_from": "microwave_holds_pot",
+      "challenge": "the first bowl pick is refused (re-park), then starting the microwave is out of reach from every park: take the bowl out and heat it on the stove, close the microwave",
+      "derived_from": "microwave_works",
+      "strategy": "heating procedure replaced: microwave -> stove (take the bowl out, place, heat, close)",
+      "cross_level": "persistent appliance failure -> stove procedure",
       "hard_category": "action"
      }
     },
@@ -11411,18 +11369,6 @@
       {
        "skill": "look",
        "args": {
-        "target": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
         "target": "kitchen_island/top"
        }
       },
@@ -11458,16 +11404,55 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_stove/top"
+        "destination": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 40
        },
-       "role": "failure",
        "expect": "fail",
+       "role": "failure",
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "heat",
        "args": {
-        "target": "oatmeal"
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 40
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
        },
        "role": "recover"
       },
@@ -11491,7 +11476,7 @@
         "object": "oatmeal",
         "receptacle": "kitchen_stove/top"
        },
-       "role": "alternative"
+       "role": "recover"
       },
       {
        "skill": "heat",
@@ -11500,7 +11485,21 @@
         "appliance": "kitchen_stove",
         "temp_c": 40
        },
-       "role": "alternative"
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       },
+       "role": "recover"
       }
      ],
      "kind": "v5_oracle",
@@ -11707,6 +11706,7 @@
     "handled_cooking_pot",
     "pot_lid"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "microwave_works",
@@ -13897,6 +13897,7 @@
     "breakfast_spoon",
     "juice_bottle"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "sponge_on_island",
@@ -14575,6 +14576,180 @@
       "derived_from": "cookware_choice",
       "hard_category": "dynamic"
      }
+    },
+    "study_timing_early": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "resource_lid",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "look",
+        "args": {
+         "target": "kitchen_island/top"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "pot_lid",
+        "to": {
+         "support": "kitchen_island/top",
+         "xy": [
+          7.95,
+          1.86
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "someone sets the pot lid down on the island, early in the plan (step 0 of 14)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "early",
+      "progress": 0.0,
+      "derived_from": "lid_off",
+      "challenge": "someone sets the pot lid down on the island at the early stage"
+     }
+    },
+    "study_timing_middle": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "resource_lid",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "stir",
+        "args": {
+         "container": "handled_cooking_pot"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "pot_lid",
+        "to": {
+         "support": "kitchen_island/top",
+         "xy": [
+          7.95,
+          1.86
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "someone sets the pot lid down on the island, middle in the plan (step 5 of 14)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "middle",
+      "progress": 0.36,
+      "derived_from": "lid_off",
+      "challenge": "someone sets the pot lid down on the island at the middle stage"
+     }
+    },
+    "study_timing_late": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "resource_lid",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "navigate",
+        "args": {
+         "destination": "pot_lid"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "pot_lid",
+        "to": {
+         "support": "kitchen_island/top",
+         "xy": [
+          7.95,
+          1.86
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "someone sets the pot lid down on the island, late in the plan (step 8 of 14)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "late",
+      "progress": 0.57,
+      "derived_from": "lid_off",
+      "challenge": "someone sets the pot lid down on the island at the late stage"
+     }
     }
    },
    "watch": [
@@ -14638,7 +14813,10 @@
     "m_grasp_spoon": "v5_m_grasp_spoon",
     "h_action_grasp_and_ik": "v5_h_action_grasp_and_ik",
     "h_mixed_cookware_grasp": "v5_h_mixed_cookware_grasp",
-    "h_dynamic_spoon_taken": "v5_h_dynamic_spoon_taken"
+    "h_dynamic_spoon_taken": "v5_h_dynamic_spoon_taken",
+    "study_timing_early": "v5_study_timing_early",
+    "study_timing_middle": "v5_study_timing_middle",
+    "study_timing_late": "v5_study_timing_late"
    },
    "routes": {
     "nominal": {
@@ -15729,6 +15907,343 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_spoon_taken"
+    },
+    "v5_study_timing_early": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pot_lid",
+        "region": "living_room_0_0"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_early"
+    },
+    "v5_study_timing_middle": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pot_lid",
+        "region": "living_room_0_0"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_middle"
+    },
+    "v5_study_timing_late": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       },
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pot_lid",
+        "region": "living_room_0_0"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_late"
     }
    },
    "benchmark_version": "v5",
@@ -15762,6 +16277,11 @@
     "kitchen_stove/top",
     "bowl_kitchen_cabinet",
     "mug_counter"
+   ],
+   "v5_study": [
+    "study_timing_early",
+    "study_timing_middle",
+    "study_timing_late"
    ],
    "v5_formal": {
     "easy": [
@@ -17052,6 +17572,7 @@
     "trash_can",
     "kitchen_island/top"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "can_on_island",
@@ -17292,66 +17813,32 @@
      }
     },
     "h_action_grasp_and_ik": {
-     "move": {
-      "bowl_kitchen_cabinet": {
-       "support": "bookcase_2/top",
-       "xy": [
-        0.92,
-        -0.43
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "remove": [
-      "fruit_basket"
-     ],
-     "conditions": [
-      "decoy_destination"
-     ],
+     "move": {},
      "failures": [
       {
-       "id": "resource_v4_basket_gone_bowl_there",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "bookcase_2/top"
-        ]
-       ]
-      },
-      {
-       "id": "ik_pick_apple",
-       "kind": "ik",
+       "id": "grasp_apple",
+       "kind": "grasp",
        "trigger": {
         "skill": "pick",
         "args": {
          "object": "apple"
         },
         "nth": 1
-       },
-       "until": "base_skill"
+       }
       },
       {
-       "id": "ik_place_apple",
+       "id": "ik_place_apple_persistent",
        "kind": "ik",
+       "persist": true,
+       "until": "never",
        "trigger": {
         "skill": "place",
         "args": {
          "object": "apple"
         },
         "nth": 1
-       },
-       "until": "base_skill"
+       }
       }
-     ],
-     "instruction": "Put the apple from the dining table into the fruit basket on the bedroom bookcase; if the basket is not there, put it on the serving tray on the study desk.",
-     "instruction_zh": "请把餐桌上的苹果放进卧室书架的果篮；若果篮不在，就放进书桌的托盘。",
-     "watch": [
-      "apple",
-      "serving_tray",
-      "bowl_kitchen_cabinet"
      ],
      "vary": {
       "groups": [],
@@ -17364,11 +17851,12 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "no basket, a bowl in its place: use the stated tray; and the apple slips on the first pick and the first place into the basket is refused",
+     "note": "the apple slips on the first pick (retry), then the basket is out of reach from every park (re-parking does not help): the stated tray on the study desk instead",
      "v5": {
       "tier": "hard",
-      "challenge": "no basket, a bowl in its place: use the stated tray; and the apple slips on the first pick and the first place into the basket is refused",
-      "derived_from": "basket_gone_bowl_there",
+      "challenge": "the apple slips on the first pick (retry), then the basket is out of reach from every park (re-parking does not help): the stated tray on the study desk instead",
+      "derived_from": "fruits_on_table",
+      "cross_level": "cross-level: persistent placement failure -> substitute destination",
       "hard_category": "action"
      }
     },
@@ -18000,13 +18488,6 @@
        "injected": true
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "apple"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "apple"
@@ -18026,40 +18507,50 @@
        }
       },
       {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "fruit_basket"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "fruit_basket"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "fruit_basket"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "desk_1/top"
        },
-       "role": "alternative"
+       "role": "recover"
       },
       {
        "skill": "look",
        "args": {
         "target": "desk_1/top"
        },
-       "role": "alternative"
+       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "serving_tray"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "apple",
-        "receptacle": "serving_tray"
-       },
-       "role": "failure",
-       "expect": "fail",
-       "injected": true
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "serving_tray"
        },
        "role": "recover"
       },
@@ -18271,6 +18762,7 @@
     "desk_1/top",
     "bowl_kitchen_cabinet"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "fruits_on_table",
@@ -19314,9 +19806,9 @@
        "kind": "resource",
        "when": "dynamic",
        "trigger": {
-        "skill": "explore_room",
+        "skill": "place",
         "args": {
-         "room": "living_room_0_0"
+         "object": "toy_car"
         },
         "nth": 1,
         "on": "success"
@@ -19446,12 +19938,120 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "no basket (allocate the toys by size), and the kid carries the duck to the dining table",
+     "note": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck",
      "v5": {
       "tier": "hard",
-      "challenge": "no basket (allocate the toys by size), and the kid carries the duck to the dining table",
+      "challenge": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck",
       "derived_from": "toys_everywhere",
       "hard_category": "dynamic"
+     }
+    },
+    "study_timing_early": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "ik_pick_toy_car",
+       "kind": "ik",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "toy_car"
+        },
+        "nth": 1
+       },
+       "until": "base_skill"
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "a refused manipulation (re-park and retry), early in the plan (step 3 of 10)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "early",
+      "progress": 0.3,
+      "derived_from": "toys_out",
+      "challenge": "a refused manipulation (re-park and retry) at the early stage"
+     }
+    },
+    "study_timing_middle": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "ik_pick_rubber_duck",
+       "kind": "ik",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "rubber_duck"
+        },
+        "nth": 1
+       },
+       "until": "base_skill"
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "a refused manipulation (re-park and retry), middle in the plan (step 7 of 10)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "middle",
+      "progress": 0.7,
+      "derived_from": "toys_out",
+      "challenge": "a refused manipulation (re-park and retry) at the middle stage"
+     }
+    },
+    "study_timing_late": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "ik_place_rubber_duck",
+       "kind": "ik",
+       "trigger": {
+        "skill": "place",
+        "args": {
+         "object": "rubber_duck"
+        },
+        "nth": 1
+       },
+       "until": "base_skill"
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "a refused manipulation (re-park and retry), late in the plan (step 9 of 10)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "late",
+      "progress": 0.9,
+      "derived_from": "toys_out",
+      "challenge": "a refused manipulation (re-park and retry) at the late stage"
      }
     }
    },
@@ -19495,7 +20095,10 @@
     "m_ik_duck_place": "v5_m_ik_duck_place",
     "h_action_grasp_and_ik": "v5_h_action_grasp_and_ik",
     "h_mixed_everywhere_ik": "v5_h_mixed_everywhere_ik",
-    "h_dynamic_duck_taken": "v5_h_dynamic_duck_taken"
+    "h_dynamic_duck_taken": "v5_h_dynamic_duck_taken",
+    "study_timing_early": "v5_study_timing_early",
+    "study_timing_middle": "v5_study_timing_middle",
+    "study_timing_late": "v5_study_timing_late"
    },
    "routes": {
     "nominal": {
@@ -20398,6 +21001,262 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_duck_taken"
+    },
+    "v5_study_timing_early": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "toy_car"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_early"
+    },
+    "v5_study_timing_middle": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "rubber_duck"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_middle"
+    },
+    "v5_study_timing_late": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "storage_basket"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "storage_basket"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "storage_basket"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "storage_basket"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_late"
     }
    },
    "vary": {
@@ -20458,6 +21317,11 @@
     "stored_block_4",
     "stored_block_5",
     "stored_block_6"
+   ],
+   "v5_study": [
+    "study_timing_early",
+    "study_timing_middle",
+    "study_timing_late"
    ],
    "v5_formal": {
     "easy": [
@@ -20895,68 +21759,8 @@
      }
     },
     "h_action_ik_and_grasp": {
-     "move": {
-      "clutter_cereal_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.86,
-        7.22
-       ],
-       "yaw_deg": 0.0
-      },
-      "clutter_cereal_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        2.86,
-        7.7
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.22,
-        7.24
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.22,
-        7.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_dining_cabinet": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.1,
-        7.88
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "remove": [
-      "cup"
-     ],
-     "conditions": [
-      "no_cup",
-      "anchor_boxed_in"
-     ],
+     "move": {},
      "failures": [
-      {
-       "id": "destination_v4_no_cup_spoon_boxed_in",
-       "kind": "destination",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "clutter_cereal_a",
-         "dining_table_2/top"
-        ]
-       ]
-      },
       {
        "id": "ik_pick_bowl",
        "kind": "ik",
@@ -20970,96 +21774,17 @@
        "until": "base_skill"
       },
       {
-       "id": "ik_place_mug",
-       "kind": "ik",
+       "id": "grasp_cup_persistent",
+       "kind": "grasp",
+       "persist": true,
        "trigger": {
-        "skill": "place",
+        "skill": "pick",
         "args": {
-         "object": "mug"
+         "object": "cup"
         },
         "nth": 1
-       },
-       "until": "base_skill"
+       }
       }
-     ],
-     "goal": {
-      "any": [
-       [
-        [
-         "on",
-         "cup",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "cup"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "cup",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.4
-        ]
-       ],
-       [
-        [
-         "on",
-         "mug",
-         "dining_table_2/top"
-        ],
-        [
-         "upright",
-         "mug"
-        ],
-        [
-         "grouped",
-         [
-          "bowl",
-          "mug",
-          "spoon"
-         ],
-         "dining_table_2/top",
-         0.4
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "on",
-        "bowl",
-        "dining_table_2/top"
-       ],
-       [
-        "upright",
-        "bowl"
-       ],
-       [
-        "on",
-        "spoon",
-        "dining_table_2/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
-     "instruction_zh": "请在餐桌已有的勺子旁摆好碗和杯子；没有 Cup 可用 Mug，保证摆放合理。",
-     "watch": [
-      "bowl",
-      "cup",
-      "mug",
-      "spoon",
-      "clutter_cereal_a",
-      "clutter_cereal_b",
-      "plate_counter_a",
-      "plate_counter_b",
-      "plate_dining_cabinet"
      ],
      "vary": {
       "groups": [],
@@ -21072,11 +21797,12 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the setting is boxed in (and no cup): move the setting; and the first bowl pick and the first cup place are both refused from their parks",
+     "note": "the first bowl pick is refused (re-park), then the cup cannot be held at all: the mug on the bedroom bookcase replaces it",
      "v5": {
       "tier": "hard",
-      "challenge": "the setting is boxed in (and no cup): move the setting; and the first bowl pick and the first cup place are both refused from their parks",
-      "derived_from": "no_cup_spoon_boxed_in",
+      "challenge": "the first bowl pick is refused (re-park), then the cup cannot be held at all: the mug on the bedroom bookcase replaces it",
+      "derived_from": "dishes_on_tv_stand",
+      "cross_level": "cross-level: persistent grasp failure -> substitute object",
       "hard_category": "action"
      }
     },
@@ -21254,7 +21980,7 @@
       "hard_category": "mixed"
      }
     },
-    "h_dynamic_bowl_taken": {
+    "h_dynamic_mug_taken": {
      "move": {
       "clutter_cereal_a": {
        "support": "dining_table_2/top",
@@ -21318,20 +22044,20 @@
        ]
       },
       {
-       "id": "resource_bowl",
+       "id": "resource_mug",
        "kind": "resource",
        "when": "dynamic",
        "trigger": {
-        "skill": "look",
+        "skill": "place",
         "args": {
-         "target": "tv_stand_2/top"
+         "object": "bowl"
         },
         "nth": 1,
         "on": "success"
        },
        "event": {
         "type": "move_object",
-        "object": "bowl",
+        "object": "mug",
         "to": {
          "support": "kitchen_cabinet_6/top",
          "xy": [
@@ -21433,12 +22159,120 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "the setting is boxed in (and no cup): move the setting; and after the robot saw the dishes, someone puts the bowl on the wall cabinet",
+     "note": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug",
      "v5": {
       "tier": "hard",
-      "challenge": "the setting is boxed in (and no cup): move the setting; and after the robot saw the dishes, someone puts the bowl on the wall cabinet",
+      "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug",
       "derived_from": "no_cup_spoon_boxed_in",
       "hard_category": "dynamic"
+     }
+    },
+    "study_timing_early": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "ik_pick_bowl",
+       "kind": "ik",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "bowl"
+        },
+        "nth": 1
+       },
+       "until": "base_skill"
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "a refused manipulation (re-park and retry), early in the plan (step 4 of 11)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "early",
+      "progress": 0.36,
+      "derived_from": "dishes_on_tv_stand",
+      "challenge": "a refused manipulation (re-park and retry) at the early stage"
+     }
+    },
+    "study_timing_middle": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "ik_pick_cup",
+       "kind": "ik",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "cup"
+        },
+        "nth": 1
+       },
+       "until": "base_skill"
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "a refused manipulation (re-park and retry), middle in the plan (step 8 of 11)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "middle",
+      "progress": 0.73,
+      "derived_from": "dishes_on_tv_stand",
+      "challenge": "a refused manipulation (re-park and retry) at the middle stage"
+     }
+    },
+    "study_timing_late": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "ik_place_cup",
+       "kind": "ik",
+       "trigger": {
+        "skill": "place",
+        "args": {
+         "object": "cup"
+        },
+        "nth": 1
+       },
+       "until": "base_skill"
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "a refused manipulation (re-park and retry), late in the plan (step 10 of 11)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "late",
+      "progress": 0.91,
+      "derived_from": "dishes_on_tv_stand",
+      "challenge": "a refused manipulation (re-park and retry) at the late stage"
      }
     }
    },
@@ -21519,7 +22353,10 @@
     "e2_from_kitchen": "v5_e2_from_kitchen",
     "h_action_ik_and_grasp": "v5_h_action_ik_and_grasp",
     "h_mixed_boxed_in_ik": "v5_h_mixed_boxed_in_ik",
-    "h_dynamic_bowl_taken": "v5_h_dynamic_bowl_taken"
+    "h_dynamic_mug_taken": "v5_h_dynamic_mug_taken",
+    "study_timing_early": "v5_study_timing_early",
+    "study_timing_middle": "v5_study_timing_middle",
+    "study_timing_late": "v5_study_timing_late"
    },
    "routes": {
     "nominal": {
@@ -22214,49 +23051,10 @@
     "v5_h_action_ik_and_grasp": {
      "steps": [
       {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
        "skill": "look",
        "args": {
         "target": "dining_table_2/top"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "spoon"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "spoon"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "spoon",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.02,
-         6.61
-        ]
-       },
-       "role": "insert"
       },
       {
        "skill": "navigate",
@@ -22311,56 +23109,60 @@
         "object": "bowl",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.0,
-         6.44
+         3.05,
+         7.1
         ]
        }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "bookcase_2/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       },
-       "role": "alternative"
+        "destination": "cup"
+       }
       },
       {
        "skill": "pick",
        "args": {
-        "object": "mug"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "mug",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.0,
-         6.78
-        ]
+        "object": "cup"
        },
        "expect": "fail",
        "role": "failure",
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "pick",
        "args": {
-        "target": "dining_table_2/top"
+        "object": "cup"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
        },
        "role": "recover"
       },
@@ -22370,8 +23172,8 @@
         "object": "mug",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
-         3.0,
-         6.78
+         3.2,
+         7.4
         ]
        },
        "role": "recover"
@@ -22526,7 +23328,7 @@
      "kind": "v5_oracle",
      "variant": "h_mixed_boxed_in_ik"
     },
-    "v5_h_dynamic_bowl_taken": {
+    "v5_h_dynamic_mug_taken": {
      "steps": [
       {
        "skill": "navigate",
@@ -22586,14 +23388,6 @@
        }
       },
       {
-       "skill": "search",
-       "args": {
-        "object": "bowl",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "bowl"
@@ -22623,18 +23417,19 @@
        }
       },
       {
-       "skill": "navigate",
+       "skill": "search",
        "args": {
-        "destination": "bookcase_2/top"
+        "object": "mug",
+        "region": "living_room_0_0"
        },
-       "role": "alternative"
+       "role": "recover"
       },
       {
-       "skill": "look",
+       "skill": "navigate",
        "args": {
-        "target": "bookcase_2/top"
+        "destination": "mug"
        },
-       "role": "alternative"
+       "role": "recover"
       },
       {
        "skill": "pick",
@@ -22662,7 +23457,309 @@
       }
      ],
      "kind": "v5_oracle",
-     "variant": "h_dynamic_bowl_taken"
+     "variant": "h_dynamic_mug_taken"
+    },
+    "v5_study_timing_early": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "bowl"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_early"
+    },
+    "v5_study_timing_middle": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "cup"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_middle"
+    },
+    "v5_study_timing_late": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "dining_table_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_late"
     }
    },
    "vary": {
@@ -22731,6 +23828,11 @@
     "plate_counter_b",
     "plate_dining_cabinet"
    ],
+   "v5_study": [
+    "study_timing_early",
+    "study_timing_middle",
+    "study_timing_late"
+   ],
    "v5_formal": {
     "easy": [
      "dishes_on_tv_stand",
@@ -22745,7 +23847,7 @@
      "no_cup_spoon_boxed_in",
      "h_action_ik_and_grasp",
      "h_mixed_boxed_in_ik",
-     "h_dynamic_bowl_taken"
+     "h_dynamic_mug_taken"
     ]
    },
    "v5_supplementary": []
@@ -23881,6 +24983,7 @@
     "paperback_book",
     "kitchen_island/top"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "book_free",
@@ -25042,6 +26145,7 @@
     "rolling_pin",
     "kitchen_island/top"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "pin_free",
@@ -26660,6 +27764,7 @@
     "kitchen_stove/top",
     "kitchen_island/top"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "lid_off",
@@ -27748,6 +28853,7 @@
     "bowl_inside_kitchen_cabinet",
     "kitchen_cabinet_6"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "at_island",
@@ -28333,7 +29439,7 @@
       "hard_category": "mixed"
      }
     },
-    "h_dynamic_can_moved": {
+    "h_dynamic_cube_moved": {
      "move": {
       "soda_can": {
        "support": "dining_table_2/top",
@@ -28403,24 +29509,24 @@
        ]
       },
       {
-       "id": "resource_soda_can",
+       "id": "resource_foam_cube",
        "kind": "resource",
        "when": "dynamic",
        "trigger": {
-        "skill": "explore_room",
+        "skill": "drop",
         "args": {
-         "room": "living_room_0_0"
+         "object": "soda_can"
         },
         "nth": 1,
         "on": "success"
        },
        "event": {
         "type": "move_object",
-        "object": "soda_can",
+        "object": "foam_cube",
         "to": {
-         "support": "kitchen_cabinet_6/top",
+         "support": "tv_stand_2/top",
          "xy": [
-          3.7,
+          7.0,
           0.36
          ],
          "yaw_deg": 0.0
@@ -28465,12 +29571,133 @@
      },
      "difficulty": "hard",
      "since": "v5",
-     "note": "a look-alike bin on the way (use the instructed one), and someone takes the can from the dining table to the wall cabinet",
+     "note": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone puts the foam cube on the TV stand: keep the can, find the cube",
      "v5": {
       "tier": "hard",
-      "challenge": "a look-alike bin on the way (use the instructed one), and someone takes the can from the dining table to the wall cabinet",
+      "challenge": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone puts the foam cube on the TV stand: keep the can, find the cube",
       "derived_from": "lookalike_bin",
       "hard_category": "dynamic"
+     }
+    },
+    "study_timing_early": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "grasp_soda_can",
+       "kind": "grasp",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "soda_can"
+        },
+        "nth": 1
+       }
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "an object slips / a drop misses, early in the plan (step 4 of 14)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "early",
+      "progress": 0.29,
+      "derived_from": "bin_on_bookcase",
+      "challenge": "an object slips / a drop misses at the early stage"
+     }
+    },
+    "study_timing_middle": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "grasp_foam_cube",
+       "kind": "grasp",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "foam_cube"
+        },
+        "nth": 1
+       }
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "an object slips / a drop misses, middle in the plan (step 11 of 14)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "middle",
+      "progress": 0.79,
+      "derived_from": "bin_on_bookcase",
+      "challenge": "an object slips / a drop misses at the middle stage"
+     }
+    },
+    "study_timing_late": {
+     "move": {},
+     "difficulty": "medium",
+     "since": "v5",
+     "failures": [
+      {
+       "id": "place_foam_cube",
+       "kind": "placement",
+       "mode": "displaced",
+       "to": {
+        "support": "bookcase_2/top",
+        "xy": [
+         0.8,
+         -0.43
+        ],
+        "yaw_deg": 0.0
+       },
+       "report": [
+        [
+         "inside",
+         "foam_cube",
+         "wide_storage_bin"
+        ]
+       ],
+       "trigger": {
+        "skill": "drop",
+        "args": {
+         "object": "foam_cube"
+        },
+        "nth": 1
+       }
+      }
+     ],
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     },
+     "note": "an object slips / a drop misses, late in the plan (step 13 of 14)",
+     "v5": {
+      "study": "failure_timing",
+      "timing": "late",
+      "progress": 0.93,
+      "derived_from": "bin_on_bookcase",
+      "challenge": "an object slips / a drop misses at the late stage"
      }
     }
    },
@@ -28507,7 +29734,10 @@
     "m_ik_cube": "v5_m_ik_cube",
     "h_action_grasp_and_miss": "v5_h_action_grasp_and_miss",
     "h_mixed_lookalike_ik": "v5_h_mixed_lookalike_ik",
-    "h_dynamic_can_moved": "v5_h_dynamic_can_moved"
+    "h_dynamic_cube_moved": "v5_h_dynamic_cube_moved",
+    "study_timing_early": "v5_study_timing_early",
+    "study_timing_middle": "v5_study_timing_middle",
+    "study_timing_late": "v5_study_timing_late"
    },
    "routes": {
     "nominal": {
@@ -29426,7 +30656,7 @@
      "kind": "v5_oracle",
      "variant": "h_mixed_lookalike_ik"
     },
-    "v5_h_dynamic_can_moved": {
+    "v5_h_dynamic_cube_moved": {
      "steps": [
       {
        "skill": "explore_room",
@@ -29450,9 +30680,313 @@
        "skill": "search",
        "args": {
         "object": "soda_can",
-        "region": "living_room_0_0"
+        "region": "dining_room_0_1"
        },
        "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "foam_cube",
+        "region": "living_room_0_0"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "foam_cube"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "foam_cube",
+        "container": "wide_storage_bin"
+       }
+      }
+     ],
+     "kind": "v5_oracle",
+     "variant": "h_dynamic_cube_moved"
+    },
+    "v5_study_timing_early": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "foam_cube"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "foam_cube",
+        "container": "wide_storage_bin"
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_early"
+    },
+    "v5_study_timing_middle": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "foam_cube"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "foam_cube",
+        "container": "wide_storage_bin"
+       }
+      }
+     ],
+     "kind": "v5_study",
+     "variant": "study_timing_middle"
+    },
+    "v5_study_timing_late": {
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
       },
       {
        "skill": "navigate",
@@ -29520,11 +31054,50 @@
        "args": {
         "object": "foam_cube",
         "container": "wide_storage_bin"
-       }
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "foam_cube"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "foam_cube"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "foam_cube",
+        "container": "wide_storage_bin"
+       },
+       "role": "recover"
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_can_moved"
+     "kind": "v5_study",
+     "variant": "study_timing_late"
     }
    },
    "vary": {
@@ -29560,6 +31133,11 @@
     "bookcase_2/top",
     "toy_storage_bin"
    ],
+   "v5_study": [
+    "study_timing_early",
+    "study_timing_middle",
+    "study_timing_late"
+   ],
    "v5_formal": {
     "easy": [
      "bin_on_bookcase",
@@ -29574,7 +31152,7 @@
      "lookalike_bin",
      "h_action_grasp_and_miss",
      "h_mixed_lookalike_ik",
-     "h_dynamic_can_moved"
+     "h_dynamic_cube_moved"
     ]
    },
    "v5_supplementary": []
@@ -31737,6 +33315,7 @@
     "party_bowl_3",
     "party_bowl_4"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "bottle_on_cabinet",
@@ -33532,6 +35111,7 @@
     "bookcase_3/top",
     "shelf_blocker"
    ],
+   "v5_study": [],
    "v5_formal": {
     "easy": [
      "e1_book_ready",

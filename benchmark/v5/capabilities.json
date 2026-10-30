@@ -1,0 +1,2122 @@
+[
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "overhang_ready",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "no_overhang",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions fallback"
+  }
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "far_no_overhang",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore/fallback"
+  }
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "m_ik_pick",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "table_set",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "DR"
+  ],
+  "evidence": {
+   "DR": "v4 decision insert"
+  }
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "h_action_ik_pick_and_place",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "h_mixed_table_set_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T01_book_to_dining_table",
+  "variant": "h_dynamic_pushed_back",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps expose"
+  }
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "clear",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "e2_from_wall_cabinet",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "crowded",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions fallback"
+  }
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "far_crowded",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore/fallback"
+  }
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "m_grasp_b",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry"
+  }
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "edge_base",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "AF",
+   "DR",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "substitute wooden_block_a",
+   "DR": "v4 decision insert",
+   "SR": "stack roles swapped"
+  }
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "h_action_grasp_and_ik",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute wooden_block_a",
+   "SR": "stack roles swapped"
+  }
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "h_mixed_edge_base_grasp",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "substitute wooden_block_a",
+   "SR": "stack roles swapped"
+  }
+ },
+ {
+  "task": "T02_stack_blocks",
+  "variant": "h_dynamic_base_moved_to_edge",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "GD",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute wooden_block_a",
+   "GD": "goal objects to kitchen_island/top/wooden_block_b",
+   "SR": "stack roles swapped"
+  }
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "large_only",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "small_and_large",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions alternative"
+  }
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "far_small_and_large",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "decisions alternative/explore",
+   "PP": "breakfast_spoon achieved before the failure / event at step 10 and kept"
+  }
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "m_grasp_spoon",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry"
+  }
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "three_containers",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "GD"
+  ],
+  "evidence": {
+   "GD": "v4 decision decompose; measures mug/small_storage_bin/rolling_pin"
+  }
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "h_action_slip_and_miss",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "GD"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "GD": "measures mug/small_storage_bin/rolling_pin"
+  }
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "h_mixed_three_containers_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "GD",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "GD": "measures mug/small_storage_bin/rolling_pin",
+   "PP": "breakfast_spoon achieved before the failure / event at step 11 and kept"
+  }
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "variant": "h_dynamic_pin_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "GD",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "local steps search",
+   "GD": "measures mug/small_storage_bin/rolling_pin",
+   "PP": "breakfast_spoon achieved before the failure / event at step 10 and kept"
+  }
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "cup_available",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions alternative, substitute mug"
+  }
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "no_cup_mug_away",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions alternative/explore, substitute mug"
+  }
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "m_ik_cup",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "h_task_spot_taken",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "substitute oatmeal"
+  }
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "h_action_ik_and_grasp",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "CL"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute mug/oatmeal",
+   "CL": "persistent grasp on pick(cup_counter_b) -> cross-level: persistent grasp failure -> substitute object"
+  }
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "h_mixed_spot_taken_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute oatmeal"
+  }
+ },
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "variant": "h_dynamic_cup_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps look, substitute mug"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "e1_pencil_asked",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "substitute pencil"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "e2_pencil_asked_far",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "substitute pencil"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "no_pen",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions alternative, substitute pencil"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "no_pen_pencil_away",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions alternative/explore, local steps look, substitute pencil"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "m_grasp_pencil",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "substitute pencil"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "h_task_pencil_in_cabinet",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "substitute pencil",
+   "DR": "inserted subgoal on kitchen_cabinet_6"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "h_action_grasp_and_ik",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute pencil",
+   "DR": "inserted subgoal on kitchen_cabinet_6"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "h_mixed_cabinet_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute pencil",
+   "DR": "inserted subgoal on kitchen_cabinet_6"
+  }
+ },
+ {
+  "task": "T05_pen_or_pencil_to_desk",
+  "variant": "h_dynamic_pencil_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps look, substitute pencil",
+   "DR": "inserted subgoal on kitchen_cabinet_6"
+  }
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "free",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "occupied",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "CL"
+  ],
+  "evidence": {
+   "AF": "decisions alternative",
+   "CL": "place(wooden_block_a) fails -> uses tv_stand_2/top"
+  }
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "occupied_block_away",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "CL"
+  ],
+  "evidence": {
+   "AF": "decisions alternative/explore",
+   "CL": "place(wooden_block_a) fails -> uses tv_stand_2/top"
+  }
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "m_slip_block",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "display_hidden",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "DR"
+  ],
+  "evidence": {
+   "DR": "v4 decision insert"
+  }
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "h_action_slip_and_ik",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "h_mixed_hidden_grasp",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry"
+  }
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "variant": "h_dynamic_cabinet_filled",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "CL"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry",
+   "CL": "place(wooden_block_a) fails -> uses tv_stand_2/top"
+  }
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "microwave_works",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "microwave_broken",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "decisions alternative",
+   "SR": "appliance kitchen_stove"
+  }
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "broken_oatmeal_away",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "CL",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "decisions alternative/explore",
+   "SR": "appliance kitchen_stove",
+   "CL": "heat(kitchen_microwave) fails -> uses kitchen_stove/kitchen_stove/top"
+  }
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "m_ik_oatmeal",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "microwave_holds_pot",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "SR"
+  ],
+  "evidence": {
+   "SR": "v4 decision replace; appliance kitchen_stove"
+  }
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "h_action_ik_and_slip",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "CL",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "SR": "appliance kitchen_stove; heating procedure replaced: microwave -> stove (take the bowl out, place, heat, close)",
+   "CL": "persistent ik on heat(oatmeal) -> persistent appliance failure -> stove procedure"
+  }
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "h_mixed_pot_inside_grasp",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "SR": "appliance kitchen_stove"
+  }
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "variant": "h_dynamic_door_opened",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "SR"
+  ],
+  "evidence": {
+   "SR": "appliance kitchen_stove"
+  }
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "sponge_on_island",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "sponge_on_tv_stand",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore"
+  }
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "far_sponge_tv",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore"
+  }
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "m_grasp_sponge",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry"
+  }
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "island_cluttered",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "DR"
+  ],
+  "evidence": {
+   "DR": "inserted subgoal on wooden_block_b"
+  }
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "h_action_grasp_and_ik",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on wooden_block_b"
+  }
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "h_mixed_cluttered_grasp",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry",
+   "DR": "inserted subgoal on wooden_block_b"
+  }
+ },
+ {
+  "task": "T08_wipe_island",
+  "variant": "h_dynamic_sponge_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps search",
+   "DR": "inserted subgoal on wooden_block_b"
+  }
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "lid_off",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps look"
+  }
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "lid_on",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions fallback"
+  }
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "lid_on_spoon_away",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore/fallback"
+  }
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "m_grasp_spoon",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry",
+   "PP": "cherry_tomato_1/cherry_tomato_2 achieved before the failure / event at step 3 and kept"
+  }
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "cookware_choice",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "SR"
+  ],
+  "evidence": {
+   "SR": "v4 decision replace"
+  }
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "h_action_grasp_and_ik",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "PP": "cherry_tomato_1/cherry_tomato_2 achieved before the failure / event at step 4 and kept"
+  }
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "h_mixed_cookware_grasp",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry",
+   "PP": "cherry_tomato_1/cherry_tomato_2 achieved before the failure / event at step 4 and kept"
+  }
+ },
+ {
+  "task": "T09_tomato_soup",
+  "variant": "h_dynamic_spoon_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "local steps search",
+   "PP": "cherry_tomato_1/cherry_tomato_2 achieved before the failure / event at step 3 and kept"
+  }
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "can_on_island",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "can_in_dining_room",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore"
+  }
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "far_can_far",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore"
+  }
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "m_ik_can",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "h_task_can_in_microwave",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "DR"
+  ],
+  "evidence": {
+   "DR": "inserted subgoal on kitchen_microwave"
+  }
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "h_action_ik_pick_and_drop",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on kitchen_microwave"
+  }
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "h_mixed_microwave_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on kitchen_microwave"
+  }
+ },
+ {
+  "task": "T10_trash_the_can",
+  "variant": "h_dynamic_can_moved",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps search",
+   "DR": "inserted subgoal on kitchen_microwave"
+  }
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "fruits_on_table",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "e2_from_kitchen",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "basket_missing",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "CL"
+  ],
+  "evidence": {
+   "AF": "decisions alternative",
+   "CL": "place(apple) fails -> uses serving_tray"
+  }
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "m_grasp_apple",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry"
+  }
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "m_ik_basket",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "basket_gone_bowl_there",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "GD"
+  ],
+  "evidence": {
+   "GD": "v4 decision decompose"
+  }
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "h_action_grasp_and_ik",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "CL"
+  ],
+  "evidence": {
+   "AF": "local steps approach/look",
+   "CL": "persistent ik on place(apple) -> cross-level: persistent placement failure -> substitute destination"
+  }
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "h_mixed_bowl_there_grasp",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry"
+  }
+ },
+ {
+  "task": "T11_collect_fruits",
+  "variant": "h_dynamic_basket_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "toys_out",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "e2_from_kitchen",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "duck_in_study",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore"
+  }
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "m_grasp_car",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry"
+  }
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "m_ik_duck_place",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "PP": "toy_car achieved before the failure / event at step 9 and kept"
+  }
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "toys_everywhere",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "GD"
+  ],
+  "evidence": {
+   "GD": "v4 decision decompose; goal objects to toy_bin_small/toy_tray; measures toy_bin_small/toy_tray"
+  }
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "h_action_grasp_and_ik",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "GD"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "GD": "goal objects to toy_bin_small/toy_tray; measures toy_bin_small/toy_tray"
+  }
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "h_mixed_everywhere_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "GD"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "GD": "goal objects to toy_bin_small/toy_tray; measures toy_bin_small/toy_tray"
+  }
+ },
+ {
+  "task": "T12_tidy_toys",
+  "variant": "h_dynamic_duck_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "GD",
+   "PP"
+  ],
+  "evidence": {
+   "GD": "goal objects to toy_bin_small/toy_tray; measures toy_bin_small/toy_tray",
+   "PP": "toy_car achieved before the failure / event at step 9 and kept"
+  }
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "dishes_on_tv_stand",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "e2_from_kitchen",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "no_cup",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions alternative, substitute mug"
+  }
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "bowl_on_cabinet",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore"
+  }
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "no_cup_bowl_on_cabinet",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions alternative/explore, substitute mug"
+  }
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "no_cup_spoon_boxed_in",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "AF",
+   "DR",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "decisions alternative, substitute mug/spoon",
+   "DR": "v4 decision insert",
+   "SR": "goal anchor relocated: spoon"
+  }
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "h_action_ik_and_grasp",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "CL"
+  ],
+  "evidence": {
+   "AF": "local steps approach/look, substitute mug",
+   "CL": "persistent grasp on pick(cup) -> cross-level: persistent grasp failure -> substitute object"
+  }
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "h_mixed_boxed_in_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute mug/spoon",
+   "SR": "goal anchor relocated: spoon"
+  }
+ },
+ {
+  "task": "T13_breakfast_setup",
+  "variant": "h_dynamic_mug_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "PP",
+   "SR"
+  ],
+  "evidence": {
+   "AF": "local steps search, substitute mug/spoon",
+   "SR": "goal anchor relocated: spoon",
+   "PP": "bowl achieved before the failure / event at step 12 and kept"
+  }
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "book_free",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "book_out_of_view",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore"
+  }
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "m_ik_flip",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "m_start_dining_away",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "h_task_block_on_book",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "substitute wooden_block_a"
+  }
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "h_action_ik_twice",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute wooden_block_a"
+  }
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "h_mixed_block_on_book_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute wooden_block_a"
+  }
+ },
+ {
+  "task": "T15_book_face_up",
+  "variant": "h_dynamic_book_moved",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps look, substitute wooden_block_a"
+  }
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "pin_free",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "pin_out_of_view",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions explore"
+  }
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "m_ik_roll",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "m_start_dining_away",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "h_task_bowl_behind",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "substitute oatmeal"
+  }
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "h_action_ik_twice",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute oatmeal"
+  }
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "h_mixed_bowl_behind_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute oatmeal"
+  }
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "variant": "h_dynamic_bowl_put_behind",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps look, substitute oatmeal"
+  }
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "lid_off",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "lid_on",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions fallback"
+  }
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "block_crowded",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions fallback"
+  }
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "lid_on_crowded",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions fallback"
+  }
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "h_task_lid_elsewhere",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "DR"
+  ],
+  "evidence": {
+   "DR": "inserted subgoal on pot_lid"
+  }
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "h_action_ik_twice",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on pot_lid"
+  }
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "h_mixed_lid_elsewhere_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on pot_lid"
+  }
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "variant": "h_dynamic_lid_put_on",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps look/uncover",
+   "DR": "inserted subgoal on pot_lid"
+  }
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "at_island",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "e2_from_dining_room",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "m_ik_open",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "m_ik_close",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "m_door_left_open",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "h_task_two_cabinets",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "DR",
+   "GD"
+  ],
+  "evidence": {
+   "DR": "inserted subgoal on kitchen_cabinet_4",
+   "GD": "inspects kitchen_cabinet_4/kitchen_cabinet_6"
+  }
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "h_action_ik_open_and_close",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "DR",
+   "GD"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on kitchen_cabinet_4",
+   "GD": "inspects kitchen_cabinet_4/kitchen_cabinet_6"
+  }
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "h_mixed_two_cabinets_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "DR",
+   "GD"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on kitchen_cabinet_4",
+   "GD": "inspects kitchen_cabinet_4/kitchen_cabinet_6"
+  }
+ },
+ {
+  "task": "T18_check_cabinet_dishes",
+  "variant": "h_dynamic_door_closed",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "DR",
+   "GD"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry",
+   "DR": "inserted subgoal on kitchen_cabinet_4",
+   "GD": "inspects kitchen_cabinet_4/kitchen_cabinet_6"
+  }
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "bin_on_bookcase",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "e2_from_kitchen",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "m_can_in_dining_room",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "m_grasp_can",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "expected failure then retry"
+  }
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "m_ik_cube",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "PP": "soda_can achieved before the failure / event at step 11 and kept"
+  }
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "lookalike_bin",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "GD"
+  ],
+  "evidence": {
+   "GD": "v4 decision decompose"
+  }
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "h_action_grasp_and_miss",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "h_mixed_lookalike_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "PP": "soda_can achieved before the failure / event at step 12 and kept"
+  }
+ },
+ {
+  "task": "T19_recycling",
+  "variant": "h_dynamic_cube_moved",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "PP"
+  ],
+  "evidence": {
+   "AF": "local steps search",
+   "PP": "soda_can achieved before the failure / event at step 11 and kept"
+  }
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "bottle_on_cabinet",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "e2_from_bedroom_hall",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "m_ik_pick",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "m_ik_place",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "m_bottle_on_tv_stand",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "table_full",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "DR"
+  ],
+  "evidence": {
+   "DR": "inserted subgoal on party_bowl_1"
+  }
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "h_action_ik_pick_and_place",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on party_bowl_1"
+  }
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "h_mixed_table_full_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps approach",
+   "DR": "inserted subgoal on party_bowl_1"
+  }
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "variant": "h_dynamic_bottle_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps search",
+   "DR": "inserted subgoal on party_bowl_1"
+  }
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "e1_book_ready",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "e2_book_ready_far",
+  "tier": "easy",
+  "hard_category": null,
+  "caps": [],
+  "evidence": {}
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "book_on_desk",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "decisions fallback"
+  }
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "m_ik_place",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  }
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "m_ik_pick",
+  "tier": "medium",
+  "hard_category": null,
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach/expose"
+  }
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "shelf_taken",
+  "tier": "hard",
+  "hard_category": "task",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "substitute mug_shelf",
+   "DR": "v4 decision insert"
+  }
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "h_action_ik_pick_and_place",
+  "tier": "hard",
+  "hard_category": "action",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach/expose, substitute mug_shelf"
+  }
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "h_mixed_shelf_taken_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach, substitute mug_shelf"
+  }
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "variant": "h_dynamic_shelf_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "caps": [
+   "AF",
+   "DR"
+  ],
+  "evidence": {
+   "AF": "local steps expose/look",
+   "DR": "inserted subgoal on mug_shelf"
+  }
+ }
+]
