@@ -1675,6 +1675,13 @@
        "role": "recover"
       },
       {
+       "skill": "face",
+       "args": {
+        "target": "kitchen_island/top"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
@@ -1716,8 +1723,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_m_ik_pick": {
      "steps": [
@@ -1732,6 +1740,11 @@
        "args": {
         "destination": "paperback_book"
        }
+      },
+      {
+       "skill": "reset",
+       "args": {},
+       "role": "recover"
       },
       {
        "skill": "approach",
@@ -1780,8 +1793,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "m_ik_pick"
+     "kind": "v5_skill_coverage",
+     "variant": "m_ik_pick",
+     "edited_from": "v5_m_ik_pick"
     },
     "v5_h_action_ik_pick_and_place": {
      "steps": [
@@ -3244,6 +3258,13 @@
        "role": "recover"
       },
       {
+       "skill": "face",
+       "args": {
+        "target": "kitchen_island/top"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
@@ -3282,8 +3303,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_wall_cabinet"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_wall_cabinet",
+     "edited_from": "v5_e2_from_wall_cabinet"
     },
     "v5_m_grasp_b": {
      "steps": [
@@ -4913,35 +4935,12 @@
        }
       },
       {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "drop",
+       "skill": "fetch",
        "args": {
         "object": "breakfast_spoon",
-        "container": "wide_storage_bin"
-       }
+        "receptacle": "wide_storage_bin"
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -4975,8 +4974,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_m_grasp_spoon": {
      "steps": [
@@ -6544,29 +6544,12 @@
        }
       },
       {
-       "skill": "navigate",
+       "skill": "clear",
        "args": {
-        "destination": "oatmeal"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "oatmeal"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_4/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "oatmeal",
+        "support": "kitchen_cabinet_6/top",
         "receptacle": "kitchen_cabinet_4/top"
-       }
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -6594,8 +6577,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "h_task_spot_taken"
+     "kind": "v5_skill_coverage",
+     "variant": "h_task_spot_taken",
+     "edited_from": "v5_h_task_spot_taken"
     },
     "v5_h_action_ik_and_grasp": {
      "steps": [
@@ -7922,10 +7906,11 @@
        }
       },
       {
-       "skill": "look",
+       "skill": "explore_furniture",
        "args": {
-        "target": "kitchen_cabinet_6/inside_shelf"
-       }
+        "furniture": "kitchen_cabinet_6"
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -7934,10 +7919,20 @@
        }
       },
       {
+       "skill": "bend",
+       "args": {},
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "pencil"
        }
+      },
+      {
+       "skill": "straighten",
+       "args": {},
+       "role": "recover"
       },
       {
        "skill": "retreat",
@@ -7966,8 +7961,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "h_task_pencil_in_cabinet"
+     "kind": "v5_skill_coverage",
+     "variant": "h_task_pencil_in_cabinet",
+     "edited_from": "v5_h_task_pencil_in_cabinet"
     },
     "v5_h_action_grasp_and_ik": {
      "steps": [
@@ -9751,10 +9747,18 @@
         "object": "wooden_block_a",
         "receptacle": "kitchen_cabinet_6/top"
        }
+      },
+      {
+       "skill": "square",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "recover"
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_m_slip_block": {
      "steps": [
@@ -11261,16 +11265,23 @@
        }
       },
       {
-       "skill": "heat",
+       "skill": "press",
        "args": {
-        "food": "oatmeal",
-        "appliance": "kitchen_microwave",
-        "temp_c": 40
-       }
+        "button": "kitchen_microwave/body/start_button"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "wait",
+       "args": {
+        "seconds": 90
+       },
+       "role": "recover"
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_m_ik_oatmeal": {
      "steps": [
@@ -11308,9 +11319,9 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "sidestep",
        "args": {
-        "target": "oatmeal"
+        "distance_m": 0.12
        },
        "role": "recover"
       },
@@ -11349,8 +11360,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "m_ik_oatmeal"
+     "kind": "v5_skill_coverage",
+     "variant": "m_ik_oatmeal",
+     "edited_from": "v5_m_ik_oatmeal"
     },
     "v5_h_action_ik_and_slip": {
      "steps": [
@@ -15374,11 +15386,33 @@
        }
       },
       {
+       "skill": "brace",
+       "args": {
+        "object": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "stir",
        "args": {
         "container": "handled_cooking_pot",
         "tool": "breakfast_spoon"
        }
+      },
+      {
+       "skill": "release",
+       "args": {
+        "object": "handled_cooking_pot",
+        "hand": "left"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "tuck",
+       "args": {
+        "hand": "left"
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -15433,8 +15467,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_m_grasp_spoon": {
      "steps": [
@@ -17154,6 +17189,14 @@
        }
       },
       {
+       "skill": "lower",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.5
+       },
+       "role": "recover"
+      },
+      {
        "skill": "drop",
        "args": {
         "object": "soda_can",
@@ -17161,8 +17204,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_m_ik_can": {
      "steps": [
@@ -18010,7 +18054,7 @@
    "oracle": {
     "fruits_on_table": "nominal",
     "basket_missing": "alternative_tray",
-    "basket_gone_bowl_there": "hard_tray_not_bowl",
+    "basket_gone_bowl_there": "v5x_basket_gone_bowl_there",
     "e2_from_kitchen": "v5_e2_from_kitchen",
     "m_grasp_apple": "v5_m_grasp_apple",
     "m_ik_basket": "v5_m_ik_basket",
@@ -18717,6 +18761,89 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_basket_taken"
+    },
+    "v5x_basket_gone_bowl_there": {
+     "kind": "v5_skill_coverage",
+     "variants": [
+      "basket_gone_bowl_there"
+     ],
+     "recovery": "no basket on the bookcase, only a bowl the instruction does not allow: the tray on the study desk",
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "identify",
+       "args": {
+        "object": "bowl_kitchen_cabinet"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "serving_tray"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "serving_tray"
+       },
+       "role": "alternative"
+      }
+     ],
+     "since": "v4",
+     "edited_from": "hard_tray_not_bowl"
     }
    },
    "vary": {
@@ -20464,10 +20591,20 @@
        }
       },
       {
+       "skill": "crouch",
+       "args": {},
+       "role": "recover"
+      },
+      {
        "skill": "pick",
        "args": {
         "object": "toy_car"
        }
+      },
+      {
+       "skill": "stand",
+       "args": {},
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -20508,8 +20645,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_kitchen"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_kitchen",
+     "edited_from": "v5_e2_from_kitchen"
     },
     "v5_m_grasp_car": {
      "steps": [
@@ -23043,10 +23181,24 @@
          7.4
         ]
        }
+      },
+      {
+       "skill": "arrange",
+       "args": {
+        "objects": [
+         "bowl",
+         "cup",
+         "spoon"
+        ],
+        "support": "dining_table_2/top",
+        "max_dist_m": 0.4
+       },
+       "role": "recover"
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_kitchen"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_kitchen",
+     "edited_from": "v5_e2_from_kitchen"
     },
     "v5_h_action_ik_and_grasp": {
      "steps": [
@@ -25753,10 +25905,19 @@
         "object": "rolling_pin",
         "distance_m": 0.12
        }
+      },
+      {
+       "skill": "center",
+       "args": {
+        "object": "rolling_pin",
+        "margin_m": 0.06
+       },
+       "role": "recover"
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_m_ik_roll": {
      "steps": [
@@ -25843,21 +26004,16 @@
        }
       },
       {
-       "skill": "pick",
-       "args": {
-        "object": "oatmeal"
-       }
-      },
-      {
-       "skill": "place",
+       "skill": "push",
        "args": {
         "object": "oatmeal",
-        "receptacle": "kitchen_island/top",
-        "hint_xy": [
-         7.3,
-         1.85
-        ]
-       }
+        "direction_xy": [
+         0.0,
+         1.0
+        ],
+        "distance_m": 0.15
+       },
+       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -25873,8 +26029,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "h_task_bowl_behind"
+     "kind": "v5_skill_coverage",
+     "variant": "h_task_bowl_behind",
+     "edited_from": "v5_h_task_bowl_behind"
     },
     "v5_h_action_ik_twice": {
      "steps": [
@@ -27255,10 +27412,16 @@
         "receptacle": "handled_cooking_pot",
         "lid": "pot_lid"
        }
+      },
+      {
+       "skill": "wave",
+       "args": {},
+       "role": "recover"
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_h_task_lid_elsewhere": {
      "steps": [
@@ -28416,10 +28579,25 @@
        "args": {
         "articulated": "kitchen_cabinet_6"
        }
+      },
+      {
+       "skill": "tuck",
+       "args": {
+        "hand": "right"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "point",
+       "args": {
+        "target": "kitchen_cabinet_6"
+       },
+       "role": "recover"
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_dining_room"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_dining_room",
+     "edited_from": "v5_e2_from_dining_room"
     },
     "v5_m_ik_open": {
      "steps": [
@@ -29727,7 +29905,7 @@
    "nominal": "nominal",
    "oracle": {
     "bin_on_bookcase": "nominal",
-    "lookalike_bin": "hard_instructed_bin",
+    "lookalike_bin": "v5x_lookalike_bin",
     "e2_from_kitchen": "v5_e2_from_kitchen",
     "m_can_in_dining_room": "v5_m_can_in_dining_room",
     "m_grasp_can": "v5_m_grasp_can",
@@ -30020,6 +30198,13 @@
        }
       },
       {
+       "skill": "shake",
+       "args": {
+        "object": "soda_can"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "bookcase_2/top"
@@ -30076,8 +30261,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_from_kitchen"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_from_kitchen",
+     "edited_from": "v5_e2_from_kitchen"
     },
     "v5_m_can_in_dining_room": {
      "steps": [
@@ -31098,6 +31284,118 @@
      ],
      "kind": "v5_study",
      "variant": "study_timing_late"
+    },
+    "v5x_lookalike_bin": {
+     "kind": "v5_skill_coverage",
+     "variants": [
+      "lookalike_bin"
+     ],
+     "recovery": "a wide bin with toys stands on the way: keep to the recycling bin by the bedroom bookcase",
+     "steps": [
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "soda_can",
+        "region": "dining_room_0_1"
+       },
+       "role": "recovery"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "identify",
+       "args": {
+        "object": "wide_storage_bin"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "foam_cube"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "foam_cube"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "foam_cube",
+        "container": "wide_storage_bin"
+       }
+      }
+     ],
+     "since": "v4",
+     "edited_from": "hard_instructed_bin"
     }
    },
    "vary": {
@@ -34531,6 +34829,14 @@
        }
       },
       {
+       "skill": "regrasp",
+       "args": {
+        "object": "book_red",
+        "support": "desk_1/top"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "bookcase_2/top"
@@ -34544,8 +34850,9 @@
        }
       }
      ],
-     "kind": "v5_oracle",
-     "variant": "e2_book_ready_far"
+     "kind": "v5_skill_coverage",
+     "variant": "e2_book_ready_far",
+     "edited_from": "v5_e2_book_ready_far"
     },
     "v5_m_ik_place": {
      "steps": [

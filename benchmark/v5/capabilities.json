@@ -380,12 +380,8 @@
   "variant": "h_task_spot_taken",
   "tier": "hard",
   "hard_category": "task",
-  "caps": [
-   "AF"
-  ],
-  "evidence": {
-   "AF": "substitute oatmeal"
-  }
+  "caps": [],
+  "evidence": {}
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -495,7 +491,7 @@
    "DR"
   ],
   "evidence": {
-   "AF": "substitute pencil",
+   "AF": "local steps explore_furniture, substitute pencil",
    "DR": "inserted subgoal on kitchen_cabinet_6"
   }
  },
@@ -702,7 +698,7 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
+   "AF": "expected failure then retry"
   }
  },
  {
@@ -1556,7 +1552,7 @@
    "AF"
   ],
   "evidence": {
-   "AF": "substitute oatmeal"
+   "AF": "local steps push"
   }
  },
  {

@@ -71,3 +71,21 @@ def test_classification_rules():
     assert V.classify({"task_success": False}) == "goal_failed"
     assert V.classify({"stopped_at": 3, "task_success": False}) == "stopped"
     assert V.classify({"stopped_at": 3, "failure_injection": fi}) == "stopped"
+
+
+def test_configurations_frozen():
+    """After the freeze only oracle routes may change: every episode's configuration hash is as frozen."""
+    from benchmark.scene import episode_config
+    frozen = json.loads((ROOT / "benchmark/v5/FREEZE.json").read_text())["episodes"]
+    now = {}
+    for t in DOC["tasks"]:
+        for v in [x for ids in t["v5_formal"].values() for x in ids] + t.get("v5_study", []):
+            for s in range(10, 20):
+                now[f"{t['task_id']}/{v}/{s}"] = episode_config(t, s, v)["config_hash"]
+    assert now == frozen
+
+
+def test_skill_coverage_of_oracle_routes():
+    used = {s["skill"] for t in DOC["tasks"] for ids in t["v5_formal"].values() for v in ids
+            for s in t["routes"][t["oracle"][v]]["steps"]}
+    assert len(used) >= 55, sorted(used)

@@ -1096,6 +1096,113 @@ ROUTE_FIX = {
 }
 
 
+# ----------------------------------------------------------------- skill coverage of the oracle routes
+# Skills the household context calls for, added to oracle routes of formal variants (configurations
+# unchanged).  New v5 variants: their own route is edited; existing variants get a ``v5x_<variant>`` route.
+def _ins_after(steps, new, skill, **match):
+    return _after(steps, skill, new, **match)
+
+
+def _ins_before(steps, new, skill, **match):
+    return _before(steps, skill, new, **match)
+
+
+def _replace_recovery(steps, old_skill, new):
+    """Replace the first recovery step ``old_skill`` (role recover) with ``new`` steps."""
+    steps = copy.deepcopy(steps)
+    i = next(i for i, st in enumerate(steps) if st["skill"] == old_skill and st.get("role") == "recover")
+    return steps[:i] + [REC(x) for x in new] + steps[i + 1:]
+
+
+def _fetch_spoon(steps):
+    steps = copy.deepcopy(steps)
+    i = find(steps, "navigate", destination=SPOON)
+    j = find(steps, "drop", object=SPOON)
+    return steps[:i] + [REC(S("fetch", object=SPOON, receptacle="wide_storage_bin"))] + steps[j + 1:]
+
+
+def _clear_spot(steps):
+    steps = copy.deepcopy(steps)
+    i = find(steps, "navigate", destination="oatmeal")
+    j = find(steps, "place", object="oatmeal")
+    return steps[:i] + [REC(S("clear", support="kitchen_cabinet_6/top", receptacle="kitchen_cabinet_4/top"))] + steps[j + 1:]
+
+
+def _microwave_press_wait(steps):
+    steps = copy.deepcopy(steps)
+    i = find(steps, "heat")
+    return steps[:i] + [REC(S("press", button="kitchen_microwave/body/start_button")), REC(S("wait", seconds=90))] \
+        + steps[i + 1:]
+
+
+def _brace_stir(steps):
+    steps = _ins_before(steps, [S("brace", object="handled_cooking_pot")], "stir")
+    return _ins_after(steps, [S("release", object="handled_cooking_pot", hand="left"), S("tuck", hand="left")], "stir")
+
+
+def _crouch_floor_pick(steps, x):
+    steps = _ins_before(steps, [S("crouch")], "pick", object=x)
+    return _ins_after(steps, [S("stand")], "pick", object=x)
+
+
+def _cabinet_explore_bend(steps):
+    steps = copy.deepcopy(steps)
+    i = find(steps, "look", target="kitchen_cabinet_6/inside_shelf")
+    steps[i] = REC(S("explore_furniture", furniture="kitchen_cabinet_6"))
+    steps = _ins_before(steps, [S("bend")], "pick", object="pencil")
+    return _ins_after(steps, [S("straighten")], "pick", object="pencil")
+
+
+def _push_bowl_aside(steps):
+    """Slide the bowl further back, out of the rolling path, instead of lifting it."""
+    steps = copy.deepcopy(steps)
+    i = find(steps, "pick", object="oatmeal")
+    j = find(steps, "place", object="oatmeal")
+    return steps[:i] + [REC(S("push", object="oatmeal", direction_xy=[0.0, 1.0], distance_m=0.15))] + steps[j + 1:]
+
+
+ORACLE_EDITS = {
+    "T01_book_to_dining_table": {
+        "e2_from_dining_room": lambda r: _ins_after(r, [S("face", target="kitchen_island/top")], "navigate",
+                                                    destination="kitchen_island/top"),
+        "m_ik_pick": lambda r: _ins_before(r, [S("reset")], "approach", target="paperback_book")},
+    "T02_stack_blocks": {
+        "e2_from_wall_cabinet": lambda r: _ins_after(r, [S("face", target="kitchen_island/top")], "navigate",
+                                                     destination="kitchen_island/top")},
+    "T03_utensils_one_container": {"e2_from_dining_room": _fetch_spoon},
+    "T04_cup_or_mug_to_cabinet": {"h_task_spot_taken": _clear_spot},
+    "T05_pen_or_pencil_to_desk": {"h_task_pencil_in_cabinet": _cabinet_explore_bend},
+    "T06_block_destination_occupied": {
+        "e2_from_dining_room": lambda r: r + [REC(S("square", object="wooden_block_a"))]},
+    "T07_heat_oatmeal": {
+        "e2_from_dining_room": _microwave_press_wait,
+        "m_ik_oatmeal": lambda r: _replace_recovery(r, "approach", [S("sidestep", distance_m=0.12)])},
+    "T09_tomato_soup": {"e2_from_dining_room": _brace_stir},
+    "T11_collect_fruits": {
+        "basket_gone_bowl_there": lambda r: _ins_after(r, [S("identify", object="bowl_kitchen_cabinet")], "look",
+                                                       target="bookcase_2/top")},
+    "T12_tidy_toys": {"e2_from_kitchen": lambda r: _crouch_floor_pick(r, "toy_car")},
+    "T13_breakfast_setup": {
+        "e2_from_kitchen": lambda r: r + [REC(S("arrange", objects=["bowl", "cup", "spoon"],
+                                                support="dining_table_2/top", max_dist_m=0.4))]},
+    "T14_shelve_the_book": {
+        "e2_book_ready_far": lambda r: _ins_after(r, [S("regrasp", object="book_red", support="desk_1/top")],
+                                                  "pick", object="book_red")},
+    "T10_trash_the_can": {
+        "e2_from_dining_room": lambda r: _ins_before(r, [S("lower", object=CAN, height_m=0.5)], "drop", object=CAN)},
+    "T16_rolling_pin_at_edge": {
+        "e2_from_dining_room": lambda r: r + [REC(S("center", object="rolling_pin", margin_m=0.06))],
+        "h_task_bowl_behind": _push_bowl_aside},
+    "T17_hide_and_seek_block": {"e2_from_dining_room": lambda r: r + [REC(S("wave"))]},      # tell the kid: ready
+    "T18_check_cabinet_dishes": {"e2_from_dining_room": lambda r: r + [REC(S("tuck", hand="right")),
+                                                                      REC(S("point", target="kitchen_cabinet_6"))]},
+    "T19_recycling": {
+        "lookalike_bin": lambda r: _ins_after(r, [S("identify", object="wide_storage_bin")], "look",
+                                              target="bookcase_2/top"),
+        "e2_from_kitchen": lambda r: _ins_after(r, [S("shake", object="soda_can")], "pick", object="soda_can")},
+}
+
+
 # Physics experiments (not oracle routes): a route variant is tried here first and becomes an oracle only
 # after it passes in Isaac Sim.
 def _two_hand(steps, x):
@@ -1304,6 +1411,12 @@ def build_task(t: dict) -> dict:
         new = f"v5fix_{rname}"
         t["routes"][new] = {"steps": fn(copy.deepcopy(t["routes"][rname]["steps"])), "kind": "v5_route_fix",
                             "fixes": rname}
+        t["oracle"][vid] = new
+    for vid, fn in ORACLE_EDITS.get(t["task_id"], {}).items():
+        old = t["oracle"][vid]
+        new = old if t["variants"][vid].get("since") == "v5" else f"v5x_{vid}"
+        t["routes"][new] = dict(copy.deepcopy(t["routes"][old]), steps=fn(copy.deepcopy(t["routes"][old]["steps"])),
+                                kind="v5_skill_coverage", edited_from=old)
         t["oracle"][vid] = new
     for rname, fn in EXPERIMENT_ROUTES.get(t["task_id"], {}).items():
         t["routes"][rname] = {"steps": fn(R), "kind": "experiment"}
