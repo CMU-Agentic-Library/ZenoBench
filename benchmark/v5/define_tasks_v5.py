@@ -1119,12 +1119,12 @@ def _approach_before(steps, skill, target, **match):
 
 
 def _reload_from_inside(steps):
-    """Take the food back out from the park that loaded it (the retrieval reverses the measured insertion)."""
+    """Take the food back out from the park that loaded it (the retrieval reverses the measured insertion):
+    close, the refused heat and open leave the base there, a new navigate parks elsewhere."""
     steps = copy.deepcopy(steps)
     reopen = find(steps, "open", last=True, articulated="kitchen_microwave")
     i = find(steps, "navigate", start=reopen + 1, destination="oatmeal")
-    steps[i] = REC(S("navigate", destination="kitchen_microwave/inside_floor"))
-    return steps
+    return steps[:i] + steps[i + 1:]
 
 
 MW_BUTTON = "kitchen_microwave/start_button"
@@ -1143,11 +1143,12 @@ def _search_island(steps):
     return [REC(S("search", object="rolling_pin", region="living_room_0_0"))] + steps[i:]
 
 
-def _sidestep_for_approach(steps, x):
-    """The re-park after an IK refusal: approach finds no base pose for x; a 12 cm sidestep re-parks instead."""
+def _sidestep_for_approach(steps, x, d=0.12):
+    """The re-park after an IK refusal: approach finds no base pose for x; a 12 cm sidestep re-parks instead
+    (to the right where the left side is occupied)."""
     steps = copy.deepcopy(steps)
     i = find(steps, "approach", target=x)
-    steps[i] = REC(S("sidestep", distance_m=0.12))
+    steps[i] = REC(S("sidestep", distance_m=d))
     return steps
 
 
@@ -1166,6 +1167,41 @@ def _refresh_view(steps):
     return out
 
 
+def _repark_nav(steps, x):
+    """Re-park with navigate after the refused pick of ``x``: approach parks so close to a low support that
+    ``x`` falls below the head's pitch range (look and pick are then refused); navigate clears the IK block too."""
+    steps = copy.deepcopy(steps)
+    for i in range(1, len(steps)):
+        p, st = steps[i - 1], steps[i]
+        if st["skill"] == "approach" and st["args"].get("target") == x and p["skill"] == "pick" \
+                and p.get("expect") == "fail" and p["args"].get("object") == x:
+            steps[i] = REC(S("navigate", destination=x))
+            return steps
+    raise KeyError(f"no approach {x} after a refused pick")
+
+
+def _crouch_look(steps, skill, x, nth=0, until=("place", "rolling_pin"), **match):
+    """Crouch and look at the low ``x`` before the ``nth`` ``skill`` step; stand once the hand is empty again."""
+    steps = _look_before(steps, skill, x, nth=nth, **match)
+    i = max(k for k, st in enumerate(steps) if st["skill"] == "look" and st["args"].get("target") == x
+            and k < len(steps) and st.get("role") == "recover")
+    steps = steps[:i] + [REC(S("crouch"))] + steps[i:]
+    sk, obj = until
+    j = next(k for k in range(i, len(steps)) if steps[k]["skill"] == sk and steps[k].get("expect") != "fail"
+             and obj in steps[k]["args"].values())
+    return steps[:j + 1] + [REC(S("stand"))] + steps[j + 1:]
+
+
+# Spawn poses that physics resolves violently.  The lid "on the pot" was put on the stove top, inside the pot
+# it is wider than; the depenetration pops it onto the rim, or (with the v5 seed shifts) throws pot and lid off
+# the stove.  It now spawns on the rim (bottom at the rim height, as the dynamic lid event puts it); the support
+# stays, so the seed shift still moves pot and lid together.
+LID_ON_RIM = {"z": 0.8591}
+SPAWN_FIXES = {(tid, vid): {"pot_lid": LID_ON_RIM} for tid, vid in (
+    ("T09_tomato_soup", "lid_on"), ("T09_tomato_soup", "lid_on_spoon_away"),
+    ("T17_hide_and_seek_block", "lid_on"), ("T17_hide_and_seek_block", "lid_on_crowded"))}
+
+
 # place() lands the book ~6 cm short of hint_xy towards the robot; aim at the middle of the free slot
 T01_SLOT = ([3.72, 6.737], [3.72, 6.80])
 
@@ -1177,20 +1213,31 @@ ROUTE_REPAIRS = {
                                   "h_dynamic_pushed_back")},
     "T03_utensils_one_container": {
         "far_small_and_large": lambda r: _look_before(r, "lift", "rolling_pin", object="rolling_pin"),
-        "h_action_slip_and_miss": lambda r: _look_before(r, "pick", "rolling_pin", nth=2, object="rolling_pin")},
+        "h_action_slip_and_miss": lambda r: _crouch_look(r, "pick", "rolling_pin", nth=2, object="rolling_pin")},
     "T07_heat_oatmeal": {
         "m_ik_oatmeal": lambda r: _approach_before(r, "heat", MW_BUTTON, appliance="kitchen_microwave"),
         "e2_from_dining_room": lambda r: _approach_before(r, "press", MW_BUTTON),
         "h_action_ik_and_slip": _reload_from_inside},
-    "T12_tidy_toys": {"h_dynamic_duck_taken": lambda r: _search_to_look(r, "rubber_duck", "dining_table_2/top")},
-    "T16_rolling_pin_at_edge": {"e2_from_dining_room": _search_island},
-    "T17_hide_and_seek_block": {vid: (lambda r: _first_nav(r, "handled_cooking_pot", "kitchen_stove/top"))
-                                for vid in ("lid_off", "e2_from_dining_room", "lid_on", "block_crowded",
-                                            "lid_on_crowded")},
-    "T20_juice_back_to_table": {vid: (lambda r: _sidestep_for_approach(r, "juice_bottle"))
-                                for vid in ("m_ik_pick", "h_action_ik_pick_and_place")},
-    "T09_tomato_soup": {vid: (lambda r: _look_before(r, "uncover", "handled_cooking_pot"))
-                        for vid in ("lid_on", "lid_on_spoon_away")},
+    "T12_tidy_toys": {"h_dynamic_duck_taken": lambda r: _search_to_look(r, "rubber_duck", "dining_table_2/top"),
+                      "h_mixed_everywhere_ik": lambda r: _repark_nav(r, "toy_car"),
+                      "study_timing_early": lambda r: _repark_nav(r, "toy_car"),
+                      "study_timing_middle": lambda r: _repark_nav(r, "rubber_duck")},
+    "T17_hide_and_seek_block": {
+        **{vid: (lambda r: _first_nav(r, "handled_cooking_pot", "kitchen_stove/top"))
+           for vid in ("lid_off", "lid_on", "block_crowded", "lid_on_crowded")},
+        # from the dining room side the lid is behind the pot: search the kitchen for it
+        "e2_from_dining_room": lambda r: _ins_before(_first_nav(r, "handled_cooking_pot", "kitchen_stove/top"),
+                                                     [S("search", object="pot_lid", region="living_room_0_0")],
+                                                     "hide")},
+    "T20_juice_back_to_table": {"m_ik_pick": lambda r: _sidestep_for_approach(r, "juice_bottle"),
+                                "h_action_ik_pick_and_place": lambda r: _sidestep_for_approach(r, "juice_bottle", -0.12)},
+    "T14_shelve_the_book": {"shelf_taken": lambda r: _look_before(r, "pick", "desk_1/top", object="book_red")},
+    "T04_cup_or_mug_to_cabinet": {vid: (lambda r: _repark_nav(r, "oatmeal"))
+                                  for vid in ("h_action_ik_and_grasp", "h_mixed_spot_taken_ik")},
+    "T13_breakfast_setup": {"h_action_ik_and_grasp": lambda r: _repark_nav(r, "bowl"),
+                            "study_timing_early": lambda r: _repark_nav(r, "bowl"),
+                            "h_mixed_boxed_in_ik": lambda r: _repark_nav(r, "spoon")},
+    "T19_recycling": {vid: (lambda r: _repark_nav(r, "foam_cube")) for vid in ("m_ik_cube", "h_mixed_lookalike_ik")},
 }
 
 
@@ -1543,6 +1590,9 @@ def build_task(t: dict) -> dict:
             if not v.get("vary"):
                 v["move"], v["vary"] = seed_vary(t, v)
                 v["v5"]["seed_vary_added"] = True    # differs from the v3 configuration of the same id
+            for name, fix in SPAWN_FIXES.get((t["task_id"], vid), {}).items():
+                v["move"][name] = {**v["move"][name], **fix}
+                v["v5"]["spawn_fix"] = sorted(SPAWN_FIXES[(t["task_id"], vid)])
     t["v5_formal"] = formal
     t["v5_supplementary"] = sorted(set(t["variants"]) - {x for ids in formal.values() for x in ids} - set(study))
     t["benchmark_version"] = "v5"

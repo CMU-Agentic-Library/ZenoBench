@@ -225,7 +225,38 @@ def make_prepare(cfg: dict):
             orient = ops["xformOp:orient"]
             val = Gf.Quatd(q[0], Gf.Vec3d(q[1], q[2], q[3]))
             orient.Set(val if isinstance(orient.Get(), Gf.Quatd) else Gf.Quatf(val))
+        spawn_at_start(stage, cfg)
     return prepare
+
+
+ROBOT_PRIM, ROBOT_ANCHOR = "/World/ZenoMalo", "/World/ZenoMalo/base_anchor"
+SPAWN_SLIDE_M = 1.0
+
+
+def spawn_at_start(stage, cfg: dict) -> bool:
+    """Put the robot at a far ``start`` before the simulation starts.  The episode reset slides the
+    anchored base from the scene's spawn to ``start`` in a straight line; across a room that line goes
+    through the kitchen island and the fridge and knocks objects off before the first step.  Short
+    offsets (seed jitter) keep the slide."""
+    from pxr import Gf, UsdGeom
+    if not cfg.get("start"):
+        return False
+    ops = {op.GetOpName(): op for op in UsdGeom.Xformable(stage.GetPrimAtPath(ROBOT_PRIM)).GetOrderedXformOps()}
+    s0 = ops["xformOp:translate"].Get()
+    x, y, yaw = (float(v) for v in cfg["start"])
+    if math.hypot(x - s0[0], y - s0[1]) <= SPAWN_SLIDE_M:
+        return False
+    ops["xformOp:translate"].Set(Gf.Vec3d(x, y, s0[2]))
+    if "xformOp:rotateZ" in ops:
+        ops["xformOp:rotateZ"].Set(yaw)
+    else:
+        UsdGeom.Xformable(stage.GetPrimAtPath(ROBOT_PRIM)).AddRotateZOp().Set(yaw)
+    anchor = stage.GetPrimAtPath(ROBOT_ANCHOR)
+    z = anchor.GetAttribute("physics:localPos0").Get()[2]
+    anchor.GetAttribute("physics:localPos0").Set(Gf.Vec3f(x, y, z))
+    h = math.radians(yaw) / 2
+    anchor.GetAttribute("physics:localRot0").Set(Gf.Quatf(math.cos(h), 0.0, 0.0, math.sin(h)))
+    return True
 
 
 ADD_ROOT = "/World/Tasks"           # added objects sit next to the base scene's task objects
