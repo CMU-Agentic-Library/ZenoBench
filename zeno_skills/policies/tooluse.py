@@ -73,16 +73,19 @@ class WipeSurfacePolicy(AtomicPolicy):
         # offset to the centre: from behind a long counter that pointed along it)
         edges = [(abs(x - x0), np.array([1.0, 0.0])), (abs(x1 - x), np.array([-1.0, 0.0])),
                  (abs(y - y0), np.array([0.0, 1.0])), (abs(y1 - y), np.array([0.0, -1.0]))]
-        inward = min(edges, key=lambda e: e[0])[1]
-        along = np.array([-inward[1], inward[0]])
         size = np.asarray(rig.ann.asset_of(rig.ann.objects[tool])["size"], float)
         width = float(min(size[:2]))
         best = None
-        # 8 cm in; when objects stand along that line, a strip closer to the edge (4.5 cm in)
-        for inset, shift in [(i, sh) for i in (0.08, 0.045) for sh in np.linspace(-0.4, 0.4, 9)]:
-            if best is not None and inset != best[3]:
+        # 8 cm in; when objects stand along that line, a strip closer to the edge (4.5 cm in); when the
+        # nearest edge is lined with objects, the next nearest edge (the base re-parks for the strip below)
+        for _, inward, inset, shift in [(d, e, i, sh) for d, e in sorted(edges, key=lambda e: e[0])
+                                        for i in (0.08, 0.045) for sh in np.linspace(-0.4, 0.4, 9)]:
+            if best is not None and (inset != best[3] or inward is not best[4]):
                 break
+            along = np.array([-inward[1], inward[0]])
             near = np.array([min(max(x, x0 + inset), x1 - inset), min(max(y, y0 + inset), y1 - inset)])
+            k = 0 if inward[0] else 1                                   # onto this edge's line
+            near[k] = (x0, y0)[k] + inset if inward[k] > 0 else (x1, y1)[k] - inset
             c = near + along * shift
             a, b = c - along * length / 2, c + along * length / 2
             if not all(x0 + 0.03 <= p[0] <= x1 - 0.03 and y0 + 0.03 <= p[1] <= y1 - 0.03 for p in (a, b)):
@@ -94,10 +97,11 @@ class WipeSurfacePolicy(AtomicPolicy):
                 continue
             score = abs(shift)
             if best is None or score < best[0]:
-                best = (score, a, b, inset)
+                best = (score, a, b, inset, inward)
         if best is None:
             raise SkillFailure(f"wipe {support}: no free strip near the robot")
-        _, a, b, _ = best
+        _, a, b, _, inward = best
+        along = np.array([-inward[1], inward[0]])
         stow_load(rig)
         tcp, R, body_in_tcp, _ = _held_frame(rig, tool)
         body, _ = rig.obj_pose(tool)
