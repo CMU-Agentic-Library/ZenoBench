@@ -1040,13 +1040,6 @@
        }
       },
       {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "wooden_block_a"
@@ -1102,13 +1095,6 @@
         "object": "wooden_block_b"
        },
        "role": "retry_after_recovery"
-      },
-      {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
       },
       {
        "skill": "navigate",
@@ -1171,13 +1157,6 @@
         "object": "wooden_block_b"
        },
        "role": "retry_after_recovery"
-      },
-      {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
       },
       {
        "skill": "navigate",
@@ -1249,13 +1228,6 @@
         "object": "wooden_block_b"
        },
        "role": "retry_after_recovery"
-      },
-      {
-       "skill": "rotate",
-       "args": {
-        "object": "wooden_block_b",
-        "degrees": 30
-       }
       },
       {
        "skill": "navigate",

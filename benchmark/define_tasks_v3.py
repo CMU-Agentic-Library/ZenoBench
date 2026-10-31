@@ -625,6 +625,17 @@ def drop_retired_steps(x):
     return x
 
 
+# route steps v3 leaves out of a task's v2 routes (benchmark/tasks.json keeps them).  T02: the block was turned 30 deg
+# before stacking, which neither the instruction nor on_top_of asks for (P08 keeps it: it asks for a rotated stack)
+V3_DROPPED_STEPS = {"T02_stack_blocks": {"rotate"}}
+
+
+def drop_v3_steps(task):
+    skills = V3_DROPPED_STEPS.get(task["task_id"], set())
+    for r in task["routes"].values():
+        r["steps"] = [s for s in r["steps"] if s["skill"] not in skills]
+
+
 def build(ext_all=None, new_tasks=None):
     ext_all = EXT if ext_all is None else ext_all
     tasks = copy.deepcopy(v2.TASKS) + copy.deepcopy(NEW_TASKS if new_tasks is None else new_tasks)
@@ -658,6 +669,7 @@ def build(ext_all=None, new_tasks=None):
     v4_hard.merge(tasks)
     tasks = drop_retired_steps(tasks)
     for t in tasks:
+        drop_v3_steps(t)
         t["entities"] = entities_of(t)
     return tasks
 
