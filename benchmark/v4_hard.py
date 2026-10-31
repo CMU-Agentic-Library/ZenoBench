@@ -109,8 +109,9 @@ HARD = {}
 
 # ----------------------------------------------------------------- T08 wipe the island (insert: clear, wipe, restore)
 # after cooking the island is cluttered along both long strips.  wipe sweeps a 30 cm strip 8 cm in from the edge
-# the robot stands at (from the sponge on the TV stand, approach parks at x 7.74 on the front: strip x 7.59-7.89,
-# y 1.595, s10 and s11), shifted at most 40 cm along the edge, and it refuses ("no free strip near the robot") when
+# the robot stands at (from the sponge on the TV stand the retired approach parked at x 7.74 on the front: strip
+# x 7.59-7.89, y 1.595, s10 and s11; navigate to the island now takes the base to that front side), centred on the
+# robot's x and shifted at most 40 cm along the edge, and it refuses ("no free strip near the robot") when
 # every such strip is taken.  (Until the 2026-10-26 fix its free-strip test passed the box in the wrong order and
 # the sponge shoved block B 9 cm aside, s10.)  The plan has to take what stands in the strip off the island first
 # and put it back afterwards; the verifier tells a put-back object (picked up, within 12 cm) from a pushed one
@@ -147,7 +148,7 @@ HARD["T08_wipe_island"] = {
         "hard_proactive": {
             "kind": "alternative", "variants": ["island_cluttered"],
             "recovery": "block B stands in the strip the robot wipes: move it to the TV stand, wipe, put it back",
-            "steps": [S("look", target=ISLAND), *_t08_aside, *_t08_sponge,
+            "steps": [S("look", target=ISLAND), *_t08_aside, *_t08_sponge, S("navigate", destination=ISLAND),
                       S("wipe", surface=ISLAND, tool="kitchen_sponge"),
                       S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV),
                       # back on its own spot: restore returns an object to its start support at a free spot near
@@ -160,7 +161,7 @@ HARD["T08_wipe_island"] = {
             "kind": "negative", "variants": ["island_cluttered"],
             "note": "the Easy plan: wipe with the clutter in place; wipe refuses (no free strip near the robot) and "
                     "the plan puts the sponge away without clearing (before the wipe fix the sponge shoved block B)",
-            "steps": [S("look", target=ISLAND), *_t08_sponge,
+            "steps": [S("look", target=ISLAND), *_t08_sponge, S("navigate", destination=ISLAND),
                       S("wipe", "fail", surface=ISLAND, tool="kitchen_sponge"),
                       S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV)]}},
     "oracle": {"island_cluttered": "hard_proactive"},

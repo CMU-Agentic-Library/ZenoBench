@@ -4560,6 +4560,12 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
        "skill": "wipe",
        "args": {
         "surface": "kitchen_island/top",
@@ -4592,6 +4598,12 @@
        "skill": "pick",
        "args": {
         "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -4636,6 +4648,12 @@
        "skill": "pick",
        "args": {
         "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -4717,6 +4735,12 @@
        "skill": "pick",
        "args": {
         "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
        }
       },
       {
@@ -4804,6 +4828,12 @@
        "skill": "pick",
        "args": {
         "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
        }
       },
       {
