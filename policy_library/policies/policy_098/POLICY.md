@@ -21,7 +21,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).plan_reach.execute(...)`
 - Class: `PlanReachPolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_010:approach/reach_on_the_move
 
 ## Recorded evidence
 

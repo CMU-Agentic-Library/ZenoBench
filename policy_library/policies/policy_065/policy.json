@@ -45,7 +45,6 @@
   },
   "availability": "callable",
   "skill_contract_paths": [
-    "contract_010:approach/park",
     "contract_025:pick/floor_top"
   ],
   "legacy_family_contracts": [],

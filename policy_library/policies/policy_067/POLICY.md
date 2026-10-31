@@ -22,7 +22,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).retreat_from.execute(...)`
 - Class: `RetreatFromPolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_012:retreat/bimanual_or_left_load
+- Skill Contract paths: contract_012:retreat/bimanual_or_left_load, contract_012:retreat/untucked
 
 ## Recorded evidence
 
