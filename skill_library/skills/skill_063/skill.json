@@ -17,7 +17,7 @@
    "target"
   ]
  },
- "description": "Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without releasing it, e.g. to show or to align before a drop.",
+ "description": "Hold the carried object 6 cm above a target without releasing it, e.g. to show or to align before a drop: above a container's opening, a support's centre, a burner, or a door's handle.",
  "use_when": "A held object must be positioned over a target before dropping or pouring.",
  "not_to_be_confused_with": {
   "drop": "hover keeps the grasp.",

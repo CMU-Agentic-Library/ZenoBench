@@ -73,6 +73,21 @@
   "on_no_match": "NO_PATH: the Contract refuses without moving",
   "paths": [
    {
+    "path_id": "already_facing",
+    "when": [
+     {
+      "noun": "target",
+      "field": "bearing_abs_deg",
+      "op": "lte",
+      "value": 2
+     }
+    ],
+    "steps": [],
+    "requires": [],
+    "ensures": [],
+    "note": "The heading error is already under 2 deg: nothing moves."
+   },
+   {
     "path_id": "rotate_empty",
     "when": [
      {
@@ -89,9 +104,15 @@
      },
      {
       "noun": "robot",
-      "field": "right_arm_stowed",
+      "field": "base_ready",
       "op": "truthy",
       "value": true
+     },
+     {
+      "noun": "target",
+      "field": "bearing_abs_deg",
+      "op": "lte",
+      "value": 88
      }
     ],
     "steps": [
@@ -113,7 +134,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": "Tucked and empty: the measured in-place rotation primitive."
+    "note": "Fully tucked (arm, torso and waist at rest), empty, target within 88 deg: the measured in-place rotation primitive."
    },
    {
     "path_id": "rotate_loaded",
@@ -129,7 +150,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": "With a load or unfolded arm: slower turn with grasp checks."
+    "note": "With a load, a target further round, or an untucked posture: an empty arm is tucked first (which also raises the torso and straightens the waist), a load turns slower."
    }
   ]
  },

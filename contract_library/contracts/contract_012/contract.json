@@ -154,7 +154,14 @@
    },
    {
     "path_id": "empty",
-    "when": [],
+    "when": [
+     {
+      "noun": "robot",
+      "field": "base_ready",
+      "op": "truthy",
+      "value": true
+     }
+    ],
     "steps": [
      {
       "policy": "policy_100",
@@ -175,7 +182,24 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
+    "note": "Fully tucked and empty: reverse along the heading, at most 0.5 m; refuses when the obstacle is behind the robot (face away from it, or it is already behind you)."
+   },
+   {
+    "path_id": "untucked",
+    "when": [],
+    "steps": [
+     {
+      "policy": "policy_067",
+      "args": [
+       "$obstacle",
+       "$distance_m"
+      ],
+      "kwargs": {}
+     }
+    ],
+    "requires": [],
+    "ensures": [],
+    "note": "Arm, torso or waist away from rest: back straight away from the obstacle footprint."
    }
   ]
  },

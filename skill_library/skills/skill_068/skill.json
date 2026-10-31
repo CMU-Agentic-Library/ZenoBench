@@ -76,7 +76,7 @@
     "appliance": "$appliance"
    },
    "negated": true,
-   "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+   "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
    "kind": "fluent",
    "gt_sources": [
     "thermal_state"
@@ -94,7 +94,7 @@
      "appliance": "$appliance"
     },
     "negated": true,
-    "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+    "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
     "kind": "fluent",
     "gt_sources": [
      "thermal_state"

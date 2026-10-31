@@ -12,7 +12,7 @@
   "distance_m": {
    "type": "number",
    "required": true,
-   "description": "Lateral displacement in metres (left > 0)."
+   "description": "Lateral displacement in metres (left > 0), not 0."
   }
  },
  "outputs": {},
@@ -79,9 +79,21 @@
      },
      {
       "noun": "robot",
-      "field": "right_arm_stowed",
+      "field": "base_ready",
       "op": "truthy",
       "value": true
+     },
+     {
+      "noun": "args",
+      "field": "distance_m",
+      "op": "gte",
+      "value": -0.5
+     },
+     {
+      "noun": "args",
+      "field": "distance_m",
+      "op": "lte",
+      "value": 0.5
      }
     ],
     "steps": [
@@ -119,11 +131,11 @@
  "relations": [
   {
    "kind": "sequence",
-   "to": "approach",
-   "when": "the target is now in front of the arm",
+   "to": "pick",
+   "when": "the object is now in front of the arm",
    "bind": {},
    "reason": "small lateral offset fixed",
-   "to_skill_id": "skill_002",
+   "to_skill_id": "skill_017",
    "sequence_type": "then"
   },
   {

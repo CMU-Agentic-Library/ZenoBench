@@ -165,7 +165,7 @@ contract 本身的失败放在结果的 `error_code` 里，HTTP 仍是 200：
 | `NOUN_INVALID` | 物件名不在场景中，或类型不符（比如把 support 当 object） | 没有 | 无 |
 | `PRECONDITION_FAILED` | 执行前检查不满足 | 没有 | 前置条件 |
 | `NO_PATH` | 前置条件都满足，但绑定的名词和机器人当前状态（如手里拿着什么）没有匹配的 policy 路径 | 没有 | 前置条件 |
-| `POLICY_FAILED` | policy 执行中失败（没抓住、规划不出路径、掉落等） | 可能已动 | 前置条件 |
+| `POLICY_FAILED` | policy 执行中失败（没抓住、规划不出路径、掉落等），或参数超出 policy 的可用范围 | 可能已动 | 前置条件 |
 | `POSTCONDITION_FAILED` | 动作做完了，但后置条件不成立 | 动了 | 前置和后置条件 |
 | `SUBSKILL_FAILED` | composite skill 的某一步失败，详见 `failed_step` | 可能已动 | composite 自己的前置条件，加 `failed_step` 里那一步的前后置条件 |
 | `INTERNAL_ERROR` | 仿真或 skill 定义出错 | 可能已动 | 无 |

@@ -1,6 +1,6 @@
 # contract_013 — Crouch the torso
 
-Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.
+Lower the torso lift to its bottom (or a requested height) for low-shelf work; a held object goes down with the body. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.
 
 Paired SkillNode: `skill_005` (`crouch-torso`).
 

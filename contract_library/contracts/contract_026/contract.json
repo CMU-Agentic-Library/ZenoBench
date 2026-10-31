@@ -827,7 +827,7 @@
   {
    "kind": "fallback",
    "to": "drop",
-   "when": "a deep container leaves no room to lower the hand inside",
+   "when": "the hand cannot reach the robot-side release spot inside the container",
    "bind": {
     "object": "$object",
     "container": "$receptacle"
@@ -835,17 +835,6 @@
    "reason": "",
    "fallback_type": "substitute",
    "to_skill_id": "skill_019"
-  },
-  {
-   "kind": "fallback",
-   "to": "approach",
-   "when": "the receptacle is out of reach",
-   "bind": {
-    "target": "$receptacle"
-   },
-   "reason": "a base pose with verified IK above the receptacle",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_002"
   },
   {
    "kind": "fallback",

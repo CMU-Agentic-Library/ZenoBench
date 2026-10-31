@@ -130,8 +130,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Next step: `close` (`skill_041`) (enables) — the object went into a cabinet or appliance whose door must be shut
 - Next step: `heat` (`skill_043`) (enables) — the food went into the microwave or onto the stove
 - Next step: `tuck` (`skill_009`) (enables) — the hand is empty and the robot drives next
-- Fallback on failure: `drop` (`skill_019`) (substitute) — a deep container leaves no room to lower the hand inside
-- Fallback on failure: `approach` (`skill_002`) (recover) — the receptacle is out of reach
+- Fallback on failure: `drop` (`skill_019`) (substitute) — the hand cannot reach the robot-side release spot inside the container
 - Fallback on failure: `open` (`skill_040`) (repair, repairs is_open) — the receptacle is behind a closed door
 - Fallback on failure: `uncover` (`skill_046`) (repair, repairs uncovered) — the container has its lid on
 - Fallback on failure: `regrasp` (`skill_026`) (recover) — the object turned in the hand and no longer clears the target

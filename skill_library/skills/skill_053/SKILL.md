@@ -1,13 +1,13 @@
 ---
 name: restore-object
-description: "Return an object to the support it occupied at the start of the episode."
+description: "Return an object to the spot it occupied at the start of the episode (the free spot of its starting support closest to it); also works when it was only moved along that support. Success is judged on the support, not the exact spot."
 ---
 
 # Restore an object to its place (`skill_053`)
 
 `restore(object: object_ref)`
 
-Return an object to the support it occupied at the start of the episode.
+Return an object to the spot it occupied at the start of the episode (the free spot of its starting support closest to it); also works when it was only moved along that support. Success is judged on the support, not the exact spot.
 
 ## When to use
 
@@ -23,12 +23,11 @@ An object must return to where it was at the start.
 
 ## Applicability
 
-Requires hand_empty(hand=right); not at_initial_place(object=$object).
+Requires hand_empty(hand=right).
 
 ## Preconditions (checked on live GT state before moving)
 
 - `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
-- `not at_initial_place(object=$object)` — Object is back on the support it occupied when the episode started. GT: object_pose, initial_scene_annotation.
 
 ## Postconditions (verified on live GT state)
 

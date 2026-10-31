@@ -1,13 +1,13 @@
 ---
 name: hover-object
-description: "Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without releasing it, e.g. to show or to align before a drop."
+description: "Hold the carried object 6 cm above a target without releasing it, e.g. to show or to align before a drop: above a container's opening, a support's centre, a burner, or a door's handle."
 ---
 
 # Hover a held object over a target (`skill_063`)
 
 `hover(object: object_ref, target: entity_ref)`
 
-Hold the carried object centred 6 cm above a target (a container opening, a spot on a surface) without releasing it, e.g. to show or to align before a drop.
+Hold the carried object 6 cm above a target without releasing it, e.g. to show or to align before a drop: above a container's opening, a support's centre, a burner, or a door's handle.
 
 ## When to use
 

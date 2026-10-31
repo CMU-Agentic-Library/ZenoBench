@@ -262,8 +262,10 @@ def policy_contract_relations(catalog: list[dict]) -> Mapping[str, Mapping[str, 
                    for path in contract["policy_plan"]["paths"]
                    for pid in _walk(path["steps"])
                    if pid in public_to_old}
-    if ids != covered | active_used:
-        raise ValueError(f"contract mapping does not cover catalog: {sorted(ids - covered - active_used)}")
+    # retired policies (skill_library/check.py RETIRED_POLICIES) are reached by no path on purpose
+    retired = {public_to_old[pid] for pid in active.get("retired_policies", {}) if pid in public_to_old}
+    if ids != covered | active_used | retired:
+        raise ValueError(f"contract mapping does not cover catalog: {sorted(ids - covered - active_used - retired)}")
     return MappingProxyType(relations)
 
 

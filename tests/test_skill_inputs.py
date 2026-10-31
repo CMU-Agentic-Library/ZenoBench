@@ -55,3 +55,55 @@ def test_without_near_nothing_changes(ref):
     values = {"object": "breakfast_spoon", "height_m": 0.95, "near": None}
     resolve_near(ref, "lower", values)
     assert values["height_m"] == 0.95
+
+
+def test_place_near_with_pass_by_is_refused(ref):
+    values = {"object": "bowl", "receptacle": "dining_table_2/top", "hint_xy": None, "near": "spoon",
+              "pass_by": [3.0, 6.5, 90.0]}
+    with pytest.raises(ContractError, match="pass_by"):
+        resolve_near(ref, "place", values)
+
+
+def _path(verb, nouns):
+    return next(p["path_id"] for p in CONTRACTS[verb]["policy_plan"]["paths"]
+                if all(condition_holds(w, nouns) for w in p["when"]))
+
+
+EMPTY_READY = {"right_held": False, "left_held": False, "base_ready": True}
+
+
+@pytest.mark.parametrize("bearing, robot, want", [
+    (1.0, EMPTY_READY, "already_facing"),
+    (60.0, EMPTY_READY, "rotate_empty"),
+    (150.0, EMPTY_READY, "rotate_loaded"),                 # beyond the in-place primitive's 90 deg
+    (60.0, dict(EMPTY_READY, base_ready=False), "rotate_loaded"),   # crouched, bent or arm out
+])
+def test_face_routes_what_the_rotation_primitive_refuses(bearing, robot, want):
+    assert _path("face", {"target": {"bearing_abs_deg": bearing}, "robot": robot}) == want
+
+
+@pytest.mark.parametrize("distance, ready, want", [
+    (0.3, True, "empty_tucked"), (-0.4, True, "empty_tucked"),
+    (0.8, True, "loaded"), (0.3, False, "loaded"),
+])
+def test_sidestep_routes_long_or_untucked_moves_to_the_general_policy(distance, ready, want):
+    robot = dict(EMPTY_READY, base_ready=ready)
+    assert _path("sidestep", {"args": {"distance_m": distance}, "robot": robot}) == want
+
+
+def test_policy_value_error_is_a_policy_failure(monkeypatch):
+    from zeno_skills import policies
+
+    class Refusing:
+        def __init__(self, rig):
+            pass
+
+        def __getattr__(self, name):
+            return SimpleNamespace(execute=lambda *a, **k: (_ for _ in ()).throw(ValueError("out of range")))
+
+    monkeypatch.setattr(policies, "PolicySuite", Refusing)
+    runner = skill_runtime.SkillContractRunner.__new__(skill_runtime.SkillContractRunner)
+    runner.rig = SimpleNamespace(log=lambda *a, **k: None)
+    with pytest.raises(ContractError) as exc:
+        runner._run_steps([{"policy": "policy_103", "args": [700]}], {}, {}, {}, SimpleNamespace(policy_steps=[]), 0)
+    assert exc.value.code == "POLICY_FAILED" and "out of range" in str(exc.value)

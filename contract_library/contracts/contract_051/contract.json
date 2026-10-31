@@ -171,7 +171,7 @@
     "appliance": "$appliance"
    },
    "negated": true,
-   "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+   "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
    "kind": "fluent",
    "gt_sources": [
     "thermal_state"
@@ -363,7 +363,7 @@
   {
    "kind": "fallback",
    "to": "pour",
-   "when": "the food is in a cup, not in the pot on the burner",
+   "when": "loose food sits in a held cup and the pot on the burner is the vessel to heat",
    "bind": {},
    "reason": "pouring the cup into the pot on the burner puts the food in the heated vessel",
    "fallback_type": "recover",

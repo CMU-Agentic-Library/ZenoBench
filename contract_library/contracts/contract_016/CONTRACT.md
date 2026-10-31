@@ -1,6 +1,6 @@
 # contract_016 — Straighten the waist
 
-Return the waist pitch to upright.
+Return the waist pitch to upright; a held object pitches back with the body. (navigate, tuck and reset also straighten the waist when the right hand is empty.)
 
 Paired SkillNode: `skill_008` (`straighten-waist`).
 

@@ -81,7 +81,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length.",
+   "meaning": "Object on its side: longest axis within 30 deg of horizontal and vertical extent <= 60 % of its length.",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",

@@ -1,6 +1,6 @@
 # contract_014 — Stand up to full height
 
-Raise the torso lift to its top travel height.
+Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when the right hand is empty.)
 
 Paired SkillNode: `skill_006` (`stand-torso`).
 

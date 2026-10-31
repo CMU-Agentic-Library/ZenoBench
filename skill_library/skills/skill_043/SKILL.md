@@ -40,7 +40,7 @@ Requires hand_empty(hand=right); base_near(place=$appliance). Depending on the b
 ## Postconditions (verified on live GT state)
 
 - `temperature_at_least(object=$food, temp_c=$temp_c)` — Task-level food temperature at or above the threshold. GT: thermal_state.
-- `not heating(appliance=$appliance)` — The appliance's heat source is on (microwave cycle or stove burner). GT: thermal_state.
+- `not heating(appliance=$appliance)` — Must be false: The appliance's heat source is on (microwave cycle or stove burner). GT: thermal_state.
 
 ## Verifier
 
@@ -71,15 +71,15 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `stir` (`skill_038`) (then) — the stirred food is heated
 - Previous step: `close` (`skill_041`) (enables) — a microwave or fridge must be closed before its cycle
 - Previous step: `press` (`skill_042`) (enables) — the start key began a cycle
-- Previous step: `cover` (`skill_045`) (enables) — the covered pot is heated
+- Previous step: `cover` (`skill_045`) (enables) — the pot is heated with its lid on (heat itself needs no lid)
 - Next step: `open` (`skill_040`) (then) — the heated food is taken out of the microwave
 - Next step: `pick` (`skill_017`) (then) — the heated food is served
 - Fallback on failure: `close` (`skill_041`) (repair, repairs is_closed) — the microwave door is open
 - Fallback on failure: `place` (`skill_018`) (repair, repairs in_appliance) — the food is not in the appliance
 - Fallback on failure: `wait` (`skill_056`) (recover) — the food is still below the target when the time budget ends
-- Fallback on failure: `pour` (`skill_039`) (recover) — the food is in a cup, not in the pot on the burner
+- Fallback on failure: `pour` (`skill_039`) (recover) — loose food sits in a held cup and the pot on the burner is the vessel to heat
 - Alternative: `heat` (`skill_043`) — no working microwave: put the food (its bowl directly, or in a pot) on a burner and heat on the stove
-- Alternative: `stop` (`skill_068`) — heat stops automatically at a target temperature
+- Alternative: `stop` (`skill_068`) — use heat instead when heat stops automatically at a target temperature
 
 ## Failure
 

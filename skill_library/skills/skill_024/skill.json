@@ -158,12 +158,12 @@
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_093($object, $height_m)"
+    "policy_093($object, $height_m, down_only=True)"
    ],
    "policies": [
     "policy_093"
    ],
-   "note": ""
+   "note": "An object already that low does not move."
   }
  ],
  "relations": {

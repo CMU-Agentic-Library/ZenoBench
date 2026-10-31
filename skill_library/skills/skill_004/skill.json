@@ -145,7 +145,7 @@
   {
    "path_id": "empty",
    "when": [
-    "always (default path)"
+    "robot.base_ready"
    ],
    "extra_preconditions": [],
    "extra_postconditions": [],
@@ -157,7 +157,22 @@
     "policy_037",
     "policy_100"
    ],
-   "note": ""
+   "note": "Fully tucked and empty: reverse along the heading, at most 0.5 m; refuses when the obstacle is behind the robot (face away from it, or it is already behind you)."
+  },
+  {
+   "path_id": "untucked",
+   "when": [
+    "always (default path)"
+   ],
+   "extra_preconditions": [],
+   "extra_postconditions": [],
+   "chain": [
+    "policy_067($obstacle, $distance_m)"
+   ],
+   "policies": [
+    "policy_067"
+   ],
+   "note": "Arm, torso or waist away from rest: back straight away from the obstacle footprint."
   }
  ],
  "relations": {

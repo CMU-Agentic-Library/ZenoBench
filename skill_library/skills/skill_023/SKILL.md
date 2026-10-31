@@ -22,7 +22,7 @@ A held object must be raised to a height (clear an obstacle, show it).
 ## Inputs
 
 - `object` (`object_ref`): The held object.
-- `height_m` (`positive_number`, default 0.55): Minimum height of the object's bottom: world height, or above the top of near when near is given.
+- `height_m` (`positive_number`): Minimum height of the object's bottom: world height, or above the top of near when near is given. An object already that high does not move.
 - `near` (`entity_ref`, optional): Optional reference: height_m is then measured above its top (e.g. 0.05 above a pot's rim).
 
 ## Applicability
@@ -61,9 +61,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Next step: `navigate` (`skill_001`) (then) — the object is carried over furniture
 - Next step: `drop` (`skill_019`) (enables) — the object is released over a tall container
 - Is a fallback for: `navigate` (`skill_001`) (recover) — a carried object hangs too low for the doorway clearance
-- Alternative: `present` (`skill_016`) — only the height of the load matters
-- Alternative: `lower` (`skill_024`) — opposite direction
-- Alternative: `hover` (`skill_063`) — only a height matters
+- Alternative: `present` (`skill_016`) — use lift instead when only the height of the load matters
+- Alternative: `lower` (`skill_024`) — use lift instead when opposite direction
+- Alternative: `hover` (`skill_063`) — use lift instead when only a height matters
 
 ## Failure
 

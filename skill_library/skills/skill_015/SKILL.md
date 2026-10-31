@@ -63,7 +63,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `wave` (`skill_060`) (enables) — the robot then indicates something
 - Next step: `tuck` (`skill_009`) (enables) — the gesture is finished
 - Alternative: `look` (`skill_011`) — a gaze is enough to indicate the target
-- Alternative: `touch` (`skill_065`) — contact is not allowed
+- Alternative: `touch` (`skill_065`) — use point instead when contact is not allowed
 
 ## Failure
 

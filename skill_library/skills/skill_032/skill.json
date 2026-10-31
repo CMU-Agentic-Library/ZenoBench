@@ -16,7 +16,7 @@
    "object"
   ]
  },
- "description": "Push an object straight away from its closest neighbour until there is room for a finger (>= 3.5 cm gap) without leaving the support.",
+ "description": "Push an object straight away from its closest neighbour until there is room for the fingers beside it, without leaving the support.",
  "use_when": "Two objects are too close for the fingers to fit beside one of them.",
  "not_to_be_confused_with": {
   "push": "separate pushes until a finger fits beside the object."
@@ -34,7 +34,7 @@
  "outputs": {},
  "applicability": {
   "always": false,
-  "summary": "Requires hand_empty(hand=right); base_near(place=$object); not grasp_clearance(object=$object)."
+  "summary": "Requires hand_empty(hand=right); base_near(place=$object)."
  },
  "preconditions": [
   {
@@ -63,21 +63,6 @@
    "gt_sources": [
     "base_pose",
     "scene_annotation"
-   ],
-   "checked": "before execution on live GT state; the Contract does not move if false"
-  },
-  {
-   "predicate": "not grasp_clearance(object=$object)",
-   "name": "grasp_clearance",
-   "args": {
-    "object": "$object"
-   },
-   "negated": true,
-   "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
-   "kind": "fluent",
-   "gt_sources": [
-    "object_pose",
-    "asset_annotation"
    ],
    "checked": "before execution on live GT state; the Contract does not move if false"
   }

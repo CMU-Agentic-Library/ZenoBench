@@ -1,13 +1,13 @@
 ---
 name: tuck-arm
-description: "Fold an empty arm to its travel posture along a collision-checked path."
+description: "Fold an empty arm to its travel posture. The right fold also raises the torso and straightens the waist (the travel posture includes them); the left fold moves only the left arm. A loaded arm is not folded: navigate carries the load in its carry pose."
 ---
 
 # Tuck an arm (`skill_009`)
 
 `tuck(hand: hand)`
 
-Fold an empty arm to its travel posture along a collision-checked path.
+Fold an empty arm to its travel posture. The right fold also raises the torso and straightens the waist (the travel posture includes them); the left fold moves only the left arm. A loaded arm is not folded: navigate carries the load in its carry pose.
 
 ## When to use
 
@@ -15,7 +15,7 @@ Before driving through a narrow passage or after a hand action left the arm out.
 
 ## Not to be confused with
 
-- `reset`: reset also restores torso, waist and head; tuck only folds the arm.
+- `reset`: reset also opens the fingers and checks the full home posture; tuck folds one arm (the right fold restores torso and waist too).
 
 ## Inputs
 

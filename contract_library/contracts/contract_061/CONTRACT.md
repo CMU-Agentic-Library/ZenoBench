@@ -1,13 +1,12 @@
 # contract_061 — Restore an object to its place
 
-Return an object to the support it occupied at the start of the episode.
+Return an object to the spot it occupied at the start of the episode (the free spot of its starting support closest to it); also works when it was only moved along that support. Success is judged on the support, not the exact spot.
 
 Paired SkillNode: `skill_053` (`restore-object`).
 
 ## Precheck
 
 - [all paths] `hand_empty(hand=right)` — GT: gripper_state
-- [all paths] `not at_initial_place(object=$object)` — GT: object_pose, initial_scene_annotation
 
 ## Verifier
 

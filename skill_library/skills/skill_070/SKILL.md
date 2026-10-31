@@ -20,8 +20,8 @@ An object must end up out of sight inside a closed container.
 ## Inputs
 
 - `object` (`object_ref`): The object to hide.
-- `receptacle` (`receptacle_ref`): A lidded container or a cabinet interior shelf.
-- `lid` (`lid_ref`, optional): The lid to use for a container.
+- `receptacle` (`receptacle_ref`): A lidded container, or an inside shelf of a cabinet or appliance with an annotated door.
+- `lid` (`lid_ref`, optional): The lid to cover the container with: required when the receptacle is a container (it is not found automatically).
 
 ## Composite skill
 

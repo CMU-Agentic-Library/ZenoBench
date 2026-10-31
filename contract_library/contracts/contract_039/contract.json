@@ -162,14 +162,14 @@
   },
   {
    "kind": "fallback",
-   "to": "approach",
+   "to": "pull",
    "when": "no base pose reaches behind the object",
    "bind": {
-    "target": "$object"
+    "object": "$object"
    },
-   "reason": "",
-   "fallback_type": "repair",
-   "to_skill_id": "skill_002"
+   "reason": "dragging it toward the base brings its far side into reach",
+   "fallback_type": "recover",
+   "to_skill_id": "skill_030"
   }
  ],
  "failure": {

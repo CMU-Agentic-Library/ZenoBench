@@ -53,7 +53,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 - Next step: `pick` (`skill_017`) (enables) — the touched object is then grasped
 - Alternative: `point` (`skill_015`) — contact is not allowed
-- Alternative: `knock` (`skill_066`) — an object, not a door, is to be tapped
+- Alternative: `knock` (`skill_066`) — use touch instead when an object, not a door, is to be tapped
 
 ## Failure
 

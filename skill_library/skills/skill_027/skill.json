@@ -16,7 +16,7 @@
    "object"
   ]
  },
- "description": "Pinch a resting container with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.",
+ "description": "Pinch an object resting on a support (a container, or any object with a top or handle pinch) with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.",
  "use_when": "An object must be held still by the left hand while the right hand works on it.",
  "not_to_be_confused_with": {
   "pick": "brace leaves the object on its support."
@@ -150,7 +150,7 @@
   {
    "path_id": "left_rim_pinch",
    "when": [
-    "object.location in ['support', 'floor', 'container']"
+    "object.location in ['support', 'container']"
    ],
    "extra_preconditions": [],
    "extra_postconditions": [],
@@ -160,7 +160,7 @@
    "policies": [
     "policy_077"
    ],
-   "note": "Only an object standing in the open (not behind an appliance or cabinet door)."
+   "note": "Only an object standing in the open on a support (not on the floor, not behind an appliance or cabinet door)."
   }
  ],
  "relations": {
@@ -199,7 +199,7 @@
    {
     "skill_id": "skill_022",
     "verb": "handover",
-    "when": "the left hand should hold an object that stays on its support",
+    "when": "use brace instead when the left hand should hold an object that stays on its support",
     "bind": {}
    }
   ]

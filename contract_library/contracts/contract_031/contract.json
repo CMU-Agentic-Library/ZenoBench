@@ -17,8 +17,7 @@
   "height_m": {
    "type": "positive_number",
    "required": true,
-   "description": "Minimum height of the object's bottom: world height, or above the top of near when near is given.",
-   "default": 0.55
+   "description": "Minimum height of the object's bottom: world height, or above the top of near when near is given. An object already that high does not move."
   },
   "near": {
    "type": "entity_ref",

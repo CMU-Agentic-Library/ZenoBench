@@ -63,7 +63,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Next step: `cover` (`skill_045`) (enables) — the pot is covered again
 - Next step: `heat` (`skill_043`) (then) — the stirred food is heated
 - Fallback on failure: `brace` (`skill_027`) (recover) — the container slides while stirring
-- Alternative: `dip` (`skill_069`) — the contents must be mixed
+- Alternative: `dip` (`skill_069`) — use stir instead when the contents must be mixed
 
 ## Failure
 

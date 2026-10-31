@@ -33,7 +33,7 @@ Requires hand_empty(hand=right); base_near(place=$object); upright(object=$objec
 
 ## Postconditions (verified on live GT state)
 
-- `lying(object=$object)` — Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length. GT: object_pose, asset_annotation.
+- `lying(object=$object)` — Object on its side: longest axis within 30 deg of horizontal and vertical extent <= 60 % of its length. GT: object_pose, asset_annotation.
 
 ## Verifier
 

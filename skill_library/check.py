@@ -110,6 +110,10 @@ RETIRED_POLICIES = {
                   "the floor runs nearly horizontally over its top face, so the upper pad never presses the top "
                   "and the lower pad would have to sit below the floor; it held nothing in any of 11 Isaac Sim "
                   "attempts (notebook, books, toy car). Flat objects on the floor have no pick path.",
+    "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach "
+                  "was removed (every manipulation skill chooses its own base park).",
+    "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every "
+                  "manipulation skill chooses its own base park).",
 }
 
 NOUN_FIELDS = {
@@ -128,7 +132,7 @@ NOUN_FIELDS = {
     "room": {"instance", "kind", "bearing_abs_deg"},
     "furniture": {"instance", "kind", "bearing_abs_deg"},
     "robot": {"right_held", "left_held", "right_object", "left_object", "right_kind", "both_hold_same",
-              "right_arm_stowed"},
+              "right_arm_stowed", "base_ready"},
 }
 TYPE_FIELDS = {
     "object_ref": "object", "container_ref": "object", "lid_ref": "object", "tool_ref": "object",

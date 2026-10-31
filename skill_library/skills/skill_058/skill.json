@@ -17,9 +17,9 @@
   ]
  },
  "description": "Look at an object and report its current axis-aligned size.",
- "use_when": "The size or distance of an object must be known before choosing a grasp or place.",
+ "use_when": "The size of an object must be known before choosing a grasp or place.",
  "not_to_be_confused_with": {
-  "identify": "identify returns the category, measure the size and distance."
+  "identify": "identify returns the category, measure the size."
  },
  "inputs": {
   "object": {
@@ -33,7 +33,7 @@
  ],
  "outputs": {
   "size_m": {
-   "type": "xy",
+   "type": "xyz",
    "description": "World-frame size [dx, dy, dz] in metres."
   }
  },

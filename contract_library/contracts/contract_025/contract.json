@@ -6,7 +6,7 @@
  "verb": "pick",
  "noun": "object",
  "name": "Pick an object",
- "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, floor corner pinch, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items.",
+ "description": "Grasp one object with the right gripper and lift it. The grasp path is chosen from the object's GT annotation and state: microwave cavity grasp, slide-to-edge + edge pinch for flat items, handle pinch, rectangular or round rim pinch, top pinch, or a two-handed lift for wide items. Flat objects lying on the floor cannot be picked.",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {
@@ -26,12 +26,9 @@
   "grasp": {
    "type": "tag",
    "required": false,
-   "description": "Optional grasp style to request: handle, rim, top or edge.",
+   "description": "Optional: \"handle\" grasps by the handle when the object has an annotated one; otherwise the grasp follows the annotation (rim before handle before top).",
    "enum": [
-    "handle",
-    "rim",
-    "top",
-    "edge"
+    "handle"
    ]
   },
   "pass_by": {
@@ -42,8 +39,8 @@
  },
  "outputs": {
   "grasp": {
-   "type": "hand",
-   "description": "Grasp route actually used."
+   "type": "tag",
+   "description": "Kind of hold: pinch, edge, corner or bimanual (the selected path names the grasp route)."
   },
   "lift_m": {
    "type": "number",
@@ -158,7 +155,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
+   "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -220,7 +217,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge.",
+   "meaning": "A flat object overhangs a support edge enough for an edge pinch (>= 5.5 cm) while its centre of mass stays 3.5 cm inside the edge. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -237,7 +234,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
+   "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -253,7 +250,7 @@
     "object": "$object"
    },
    "negated": false,
-   "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap.",
+   "meaning": "Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. (A feasibility estimate: the benchmark profiles only record it and attempt the action.)",
    "kind": "fluent",
    "gt_sources": [
     "object_pose",
@@ -688,7 +685,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": "Slide the flat item until it overhangs a free edge, then pinch the overhang."
+    "note": "Slide the flat item until it overhangs a free edge, then pinch the overhang. In the benchmark profiles the slide is left out: call expose first, then pick takes flat_overhang_ready."
    },
    {
     "path_id": "rect_rim",
@@ -893,17 +890,6 @@
    "reason": "dragging it toward the base brings it into the arm's envelope",
    "fallback_type": "recover",
    "to_skill_id": "skill_030"
-  },
-  {
-   "kind": "fallback",
-   "to": "approach",
-   "when": "no grasp is reachable from base poses near the current one",
-   "bind": {
-    "target": "$object"
-   },
-   "reason": "a base pose with verified IK at the object",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_002"
   },
   {
    "kind": "fallback",

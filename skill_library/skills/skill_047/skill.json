@@ -269,13 +269,13 @@
    {
     "skill_id": "skill_054",
     "verb": "swap",
-    "when": "only one object needs to move",
+    "when": "use fetch instead when only one object needs to move",
     "bind": {}
    },
    {
     "skill_id": "skill_070",
     "verb": "hide",
-    "when": "the object only needs to move",
+    "when": "use fetch instead when the object only needs to move",
     "bind": {}
    }
   ]

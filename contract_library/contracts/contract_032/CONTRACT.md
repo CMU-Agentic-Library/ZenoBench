@@ -15,6 +15,6 @@ Paired SkillNode: `skill_024` (`lower-object`).
 
 ## Policy paths
 
-- `descend` when always: `policy_093($object, $height_m)`
+- `descend` when always: `policy_093($object, $height_m, down_only=True)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

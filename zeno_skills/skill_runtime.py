@@ -288,9 +288,11 @@ def robot_attrs(rig):
     r = held_name(rig, "right")
     l = held_name(rig, "left")
     stowed = float(np.max(np.abs(rig.q()[2:] - rig.kin.rest[2:]))) < 0.10
+    # what the direct base primitives (policy_036 / policy_037) require: empty, and arm, torso and waist at rest
+    ready = rig.held is None and float(np.max(np.abs(rig.q() - rig.kin.rest))) <= 0.05
     return {"right_held": r is not None, "left_held": l is not None, "right_object": r, "left_object": l,
             "right_kind": rig.held.get("kind") if rig.held else None, "both_hold_same": r is not None and r == l,
-            "right_arm_stowed": stowed}
+            "right_arm_stowed": stowed, "base_ready": ready}
 
 
 SLOT_VALIDATORS = {
@@ -370,6 +372,8 @@ def resolve_near(rig, verb, values):
     if verb == "place":
         if values.get("hint_xy") is not None:
             raise ContractError("INPUT_UNKNOWN", "place: give either hint_xy or near, not both")
+        if values.get("pass_by") is not None:
+            raise ContractError("INPUT_UNKNOWN", "place: near cannot be combined with pass_by")
         values["hint_xy"] = [round(float(v), 3) for v in entity_point(rig, near)[:2]]
     elif verb in ("lift", "lower"):
         values["height_m"] = round(entity_top_z(rig, near) + float(values["height_m"]), 3)
@@ -643,12 +647,18 @@ class SkillContractRunner:
             record = {"policy": pid, "args": [a if isinstance(a, (str, int, float, bool)) else "<value>" for a in args]}
             res.policy_steps.append(record)
             self.rig.log("policy_start", policy=pid)
-            out = getattr(suite, pid).execute(*args, **kwargs)
+            try:
+                out = getattr(suite, pid).execute(*args, **kwargs)
+            except ValueError as exc:
+                # an argument outside the policy's range: a refused call with measurements, not an internal error
+                raise ContractError("POLICY_FAILED", f"{pid}: {exc}") from exc
             record["success"] = True
             if step.get("as"):
                 outputs[step["as"]] = out if isinstance(out, dict) else {"value": out}
             if isinstance(out, dict):
                 outputs.setdefault("_last", {}).update(out)
+            elif out is not None:
+                outputs.setdefault("_last", {})["value"] = out
 
     def _outputs(self, c, outputs, values, nouns, ctx):
         rig = self.rig
@@ -682,9 +692,11 @@ class SkillContractRunner:
                 v = [float(x) for x in rig.geo.bottom(values["object"], rig.state())[:2]]
             elif name == "lid":
                 v = nouns.get("container", {}).get("lid")
-            elif name == "moved":
+            elif name == "moved" and ("support" in nouns or "container" in nouns):
                 v = [n for n in (nouns.get("support", {}).get("objects") or nouns.get("container", {}).get("contents") or [])]
-            elif name in ("contents", "seen", "visited", "found_on", "coverage", "turns"):
+            elif name in ("moved", "coverage", "turns"):
+                v = last.get("value")
+            elif name in ("contents", "seen", "visited", "found_on"):
                 v = last.get(name)
             else:
                 v = None

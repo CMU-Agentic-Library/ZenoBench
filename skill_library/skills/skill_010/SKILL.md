@@ -15,7 +15,7 @@ Start or end of a task, or after a failure, to return to a known posture.
 
 ## Not to be confused with
 
-- `tuck`: tuck only folds one arm; reset also restores torso and waist.
+- `tuck`: reset also opens the fingers and verifies torso, waist and arm together; the head is not moved.
 
 ## Inputs
 
@@ -59,8 +59,8 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Next step: `navigate` (`skill_001`) (then) — after a failed manipulation, before driving on
-- Alternative: `stand` (`skill_006`) — the arm and waist must also be restored
-- Alternative: `straighten` (`skill_008`) — the arm and torso must also be restored
+- Alternative: `stand` (`skill_006`) — use reset instead when the arm and waist must also be restored
+- Alternative: `straighten` (`skill_008`) — use reset instead when the arm and torso must also be restored
 
 ## Failure
 

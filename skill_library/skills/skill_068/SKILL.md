@@ -33,7 +33,7 @@ Requires hand_empty(hand=right); base_near(place=$appliance).
 
 ## Postconditions (verified on live GT state)
 
-- `not heating(appliance=$appliance)` — The appliance's heat source is on (microwave cycle or stove burner). GT: thermal_state.
+- `not heating(appliance=$appliance)` — Must be false: The appliance's heat source is on (microwave cycle or stove burner). GT: thermal_state.
 
 ## Verifier
 

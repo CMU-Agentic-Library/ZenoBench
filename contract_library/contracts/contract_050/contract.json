@@ -6,7 +6,7 @@
  "verb": "press",
  "noun": "button",
  "name": "Press a button",
- "description": "Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).",
+ "description": "Press an annotated appliance button with the closed fingertips and retract: the microwave door key (the press is recorded, the door does not move: use open), the microwave start key (refused unless the door is closed and task food is inside), or the stove power key (which toggles the burner).",
  "group": "articulated_and_appliance",
  "inputs": {
   "button": {
@@ -217,7 +217,7 @@
       }
      }
     ],
-    "note": ""
+    "note": "Fails without moving the door when no task food is inside the cavity."
    },
    {
     "path_id": "microwave_door_key",
@@ -242,7 +242,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
+    "note": "Only the key press: the door stays as it is (open presses this key itself)."
    },
    {
     "path_id": "generic_key",
@@ -284,12 +284,14 @@
    "sequence_type": "enables"
   },
   {
-   "kind": "alternative",
-   "to": "open",
-   "when": "the door key is pressed only to open the microwave door",
+   "kind": "fallback",
+   "to": "close",
+   "when": "the start key was refused because the microwave door is open",
    "bind": {},
    "reason": "",
-   "to_skill_id": "skill_040"
+   "fallback_type": "repair",
+   "repairs": "is_closed",
+   "to_skill_id": "skill_041"
   }
  ],
  "failure": {

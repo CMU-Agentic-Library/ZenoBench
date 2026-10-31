@@ -16,7 +16,7 @@
    "object"
   ]
  },
- "description": "Look at an object and report its category and tags (asset annotation) once it is in the head camera view.",
+ "description": "Look at an object and report its asset name and tags (asset annotation) once it is in the head camera view.",
  "use_when": "The category or identity of a visible object must be confirmed.",
  "not_to_be_confused_with": {
   "look": "look only aims the camera.",
@@ -35,11 +35,11 @@
  "outputs": {
   "category": {
    "type": "tag",
-   "description": "Asset category."
+   "description": "Asset name, e.g. soda_can."
   },
   "tags": {
    "type": "object_list",
-   "description": "Annotated tags."
+   "description": "Annotated tags, e.g. drink, can."
   }
  },
  "applicability": {
@@ -144,9 +144,9 @@
    {
     "skill_id": "skill_049",
     "verb": "sort",
-    "when": "the category decides the destination",
+    "when": "the tags decide the destination",
     "bind": {},
-    "reason": "category output",
+    "reason": "tags output",
     "type": "then"
    }
   ],

@@ -811,22 +811,12 @@
    {
     "skill_id": "skill_019",
     "verb": "drop",
-    "when": "a deep container leaves no room to lower the hand inside",
+    "when": "the hand cannot reach the robot-side release spot inside the container",
     "bind": {
      "object": "$object",
      "container": "$receptacle"
     },
     "type": "substitute"
-   },
-   {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "the receptacle is out of reach",
-    "bind": {
-     "target": "$receptacle"
-    },
-    "reason": "a base pose with verified IK above the receptacle",
-    "type": "recover"
    },
    {
     "skill_id": "skill_040",

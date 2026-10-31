@@ -1,13 +1,13 @@
 ---
 name: identify-object
-description: "Look at an object and report its category and tags (asset annotation) once it is in the head camera view."
+description: "Look at an object and report its asset name and tags (asset annotation) once it is in the head camera view."
 ---
 
 # Identify an object (`skill_057`)
 
 `identify(object: object_ref)`
 
-Look at an object and report its category and tags (asset annotation) once it is in the head camera view.
+Look at an object and report its asset name and tags (asset annotation) once it is in the head camera view.
 
 ## When to use
 
@@ -24,8 +24,8 @@ The category or identity of a visible object must be confirmed.
 
 ## Outputs
 
-- `category` (`tag`): Asset category.
-- `tags` (`object_list`): Annotated tags.
+- `category` (`tag`): Asset name, e.g. soda_can.
+- `tags` (`object_list`): Annotated tags, e.g. drink, can.
 
 ## Applicability
 
@@ -55,7 +55,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Next step: `sort` (`skill_049`) (then) — the category decides the destination
+- Next step: `sort` (`skill_049`) (then) — the tags decide the destination
 - Fallback on failure: `navigate` (`skill_001`) (recover) — the object is not visible from here
 - Alternative: `measure` (`skill_058`) — the size, not the category, is needed
 

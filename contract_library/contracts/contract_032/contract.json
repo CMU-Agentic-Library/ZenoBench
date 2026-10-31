@@ -147,12 +147,14 @@
        "$object",
        "$height_m"
       ],
-      "kwargs": {}
+      "kwargs": {
+       "down_only": true
+      }
      }
     ],
     "requires": [],
     "ensures": [],
-    "note": ""
+    "note": "An object already that low does not move."
    }
   ]
  },

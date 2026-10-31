@@ -51,7 +51,8 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ### `descend` — when always (default path)
 
-1. `policy_093($object, $height_m)`
+1. `policy_093($object, $height_m, down_only=True)`
+- An object already that low does not move.
 
 ## Relations
 

@@ -84,7 +84,6 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `approach` (`skill_002`) (then) — the target is a door or drawer
 - Previous step: `retreat` (`skill_004`) (then) — a door's swing needs room in front of the robot
 - Previous step: `handover` (`skill_022`) (enables) — the right hand must open a door while the left carries the load
 - Previous step: `heat` (`skill_043`) (then) — the heated food is taken out of the microwave
@@ -96,11 +95,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Next step: `close` (`skill_041`) (then) — the door must be shut afterwards
 - Fallback on failure: `retreat` (`skill_004`) (recover) — the door swing hits the base
 - Fallback on failure: `handover` (`skill_022`) (repair, repairs hand_empty) — the right hand still holds a load
-- Fallback on failure: `approach` (`skill_002`) (recover) — the handle is out of reach
 - Is a fallback for: `pick` (`skill_017`) (repair) — the object is inside a closed cabinet or appliance
 - Is a fallback for: `place` (`skill_018`) (repair) — the receptacle is behind a closed door
 - Is a fallback for: `explore_furniture` (`skill_071`) (recover) — a closed cabinet door hides the inside layers
-- Alternative: `press` (`skill_042`) — the door key is pressed only to open the microwave door
 
 ## Failure
 

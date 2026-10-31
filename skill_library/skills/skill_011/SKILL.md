@@ -66,11 +66,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `navigate` (`skill_001`) (then) — the destination must be observed first
 - Previous step: `face` (`skill_003`) (then) — the target must be observed
 - Previous step: `nod` (`skill_061`) (then) — the robot looks back at a target
-- Next step: `approach` (`skill_002`) (then) — the observed target will be manipulated
 - Fallback on failure: `navigate` (`skill_001`) (repair) — the line of sight is blocked
 - Alternative: `inspect` (`skill_012`) — the target is a receptacle whose contents matter
-- Alternative: `point` (`skill_015`) — a gaze is enough to indicate the target
-- Alternative: `explore_furniture` (`skill_071`) — only one layer must be seen
+- Alternative: `point` (`skill_015`) — use look instead when a gaze is enough to indicate the target
+- Alternative: `explore_furniture` (`skill_071`) — use look instead when only one layer must be seen
 
 ## Failure
 

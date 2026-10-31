@@ -488,12 +488,12 @@ class CoverWithLidPolicy(AtomicPolicy):
 class SetHeldHeightPolicy(AtomicPolicy):
     """Move the held object vertically until its bottom is at ``height_m``."""
 
-    def execute(self, name, height_m, *, tolerance=0.02):
+    def execute(self, name, height_m, *, tolerance=0.02, down_only=False):
         rig = self.rig
         _require_held(rig, name, "set height")
         bottom = float(rig.geo.bottom(name, rig.state())[2])
         dz = float(height_m) - bottom
-        if abs(dz) <= tolerance:
+        if abs(dz) <= tolerance or (down_only and dz > 0):
             return bottom
         skills.held_vertical_move(rig, dz, "held_height")
         skills.check_held(rig, "held_height")

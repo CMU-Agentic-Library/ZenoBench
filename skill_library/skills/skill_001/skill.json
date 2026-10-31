@@ -19,7 +19,6 @@
  "description": "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.",
  "use_when": "The robot must be in another room or next to another piece of furniture.",
  "not_to_be_confused_with": {
-  "approach": "approach fine-parks so the arm reaches one target; navigate only gets near.",
   "retreat": "retreat moves straight back from a place without a destination."
  },
  "inputs": {
@@ -208,13 +207,13 @@
   ],
   "next": [
    {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "a manipulation target is on the destination",
+    "skill_id": "skill_017",
+    "verb": "pick",
+    "when": "the object to grasp is the destination",
     "bind": {
-     "target": "$destination"
+     "object": "$destination"
     },
-    "reason": "navigate leaves the base near; approach makes the target IK-reachable.",
+    "reason": "navigate leaves the base near; pick chooses its own grasp park from there.",
     "type": "enables"
    },
    {
@@ -257,12 +256,6 @@
   ],
   "fallback_for": [
    {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "no base pose near the current one reaches the target",
-    "type": "repair"
-   },
-   {
     "skill_id": "skill_011",
     "verb": "look",
     "when": "the line of sight is blocked",
@@ -279,13 +272,13 @@
    {
     "skill_id": "skill_003",
     "verb": "face",
-    "when": "turning in place is blocked by furniture",
+    "when": "use navigate instead when turning in place is blocked by furniture",
     "bind": {}
    },
    {
     "skill_id": "skill_055",
     "verb": "sidestep",
-    "when": "a larger move is needed",
+    "when": "use navigate instead when a larger move is needed",
     "bind": {}
    }
   ]

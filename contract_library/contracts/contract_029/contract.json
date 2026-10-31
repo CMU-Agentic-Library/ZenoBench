@@ -6,7 +6,7 @@
  "verb": "release",
  "noun": "object",
  "name": "Release an object",
- "description": "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off.",
+ "description": "Open one gripper where the object already rests (e.g. let go of a braced pot, or of an object that was set down by another action) and back the fingers off. Nothing is checked under the object: if nothing supports it, it falls.",
  "group": "grasp_and_hand",
  "inputs": {
   "object": {

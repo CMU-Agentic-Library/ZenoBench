@@ -1,13 +1,13 @@
 ---
 name: brace-object
-description: "Pinch a resting container with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it."
+description: "Pinch an object resting on a support (a container, or any object with a top or handle pinch) with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it."
 ---
 
 # Brace an object with the left hand (`skill_027`)
 
 `brace(object: object_ref)`
 
-Pinch a resting container with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.
+Pinch an object resting on a support (a container, or any object with a top or handle pinch) with the left gripper so it cannot slide while the right hand stirs, wipes or pours into it.
 
 ## When to use
 
@@ -48,17 +48,17 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `left_rim_pinch` — when object.location in ['support', 'floor', 'container']
+### `left_rim_pinch` — when object.location in ['support', 'container']
 
 1. `policy_077($object)`
-- Only an object standing in the open (not behind an appliance or cabinet door).
+- Only an object standing in the open on a support (not on the floor, not behind an appliance or cabinet door).
 
 ## Relations
 
 - Next step: `stir` (`skill_038`) (then) — the braced container is stirred
 - Next step: `release` (`skill_021`) (enables) — bracing is finished
 - Is a fallback for: `stir` (`skill_038`) (recover) — the container slides while stirring
-- Alternative: `handover` (`skill_022`) — the left hand should hold an object that stays on its support
+- Alternative: `handover` (`skill_022`) — use brace instead when the left hand should hold an object that stays on its support
 
 ## Failure
 

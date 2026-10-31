@@ -1,7 +1,7 @@
 # ZenoBench 动词 SkillNode 库（schema 2）
 
 <!-- counts:start -->
-**71 个 SkillNode**（`skill_001`–`skill_071`，71 个不同动词）一一对应 **71 个 Contract**（`contract_009`–`contract_079`），共 **121 条按名词选择的 policy 路径**，覆盖 **115/116 个底层 policy**（1 个因物理上不可行而退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、51 条 then、45 条 fallback （repair 14、recover 28、substitute 3）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
+**70 个 SkillNode**（`skill_001`–`skill_071`，`skill_002` 已退役不再使用，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_079`），共 **120 条按名词选择的 policy 路径**，覆盖 **113/116 个底层 policy**（3 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、47 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
 <!-- counts:end -->
 
 ## 设计
@@ -87,12 +87,11 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | SkillNode | Verb + noun | Signature | Paths (noun-selected) | Postconditions |
 |---|---|---|---|---|
 | `skill_001` | **navigate** place | `navigate(destination)` | two_hand_carry, carry, empty | `base_near` |
-| `skill_002` | **approach** target | `approach(target, pass_by?)` | reach_on_the_move, park | `reachable` |
-| `skill_003` | **face** target | `face(target)` | rotate_empty, rotate_loaded | `facing` |
-| `skill_004` | **retreat** obstacle | `retreat(obstacle, distance_m)` | microwave_door_sweep, bimanual_or_left_load, loaded, empty | `base_clear_of` |
+| `skill_003` | **face** target | `face(target)` | already_facing, rotate_empty, rotate_loaded | `facing` |
+| `skill_004` | **retreat** obstacle | `retreat(obstacle, distance_m)` | microwave_door_sweep, bimanual_or_left_load, loaded, empty, untucked | `base_clear_of` |
 | `skill_005` | **crouch** torso | `crouch(height_m?)` | to_height, lowest | `torso_raised` + `torso_at`, `torso_lowered` |
 | `skill_006` | **stand** torso | `stand()` | highest | `torso_raised` |
-| `skill_007` | **bend** waist | `bend(pitch_rad?)` | to_pitch, full | `waist_bent` |
+| `skill_007` | **bend** waist | `bend(pitch_rad?)` | to_pitch, full | `waist_straight` + `waist_bent` |
 | `skill_008` | **straighten** waist | `straighten()` | upright | `waist_straight` |
 | `skill_009` | **tuck** arm | `tuck(hand)` | left, right | `arm_stowed` |
 | `skill_010` | **reset** posture | `reset()` | joint_home | `arm_stowed`, `torso_raised`, `waist_straight` |
@@ -136,7 +135,7 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_048` | **collect** objects | `collect(objects, container)` | fetch_each | `all_inside` |
 | `skill_049` | **sort** objects | `sort(objects, rule)` | fetch_by_tag | `sorted_by_category` |
 | `skill_050` | **clear** support | `clear(support, receptacle)` | fetch_each_on_support | `support_clear` |
-| `skill_051` | **empty** container | `empty(container, receptacle)` | pick_each_inside, pour_out | `container_empty` |
+| `skill_051` | **empty** container | `empty(container, receptacle)` | pick_each_inside | `container_empty` |
 | `skill_052` | **arrange** objects | `arrange(objects, support, max_dist_m)` | place_near_common_spot | `grouped` |
 | `skill_053` | **restore** object | `restore(object)` | dispatch_pick_place | `at_initial_place`, `hand_empty` |
 | `skill_054` | **swap** objects | `swap(a, b)` | via_buffer | `positions_swapped`, `hand_empty` |

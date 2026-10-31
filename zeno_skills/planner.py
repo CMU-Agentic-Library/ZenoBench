@@ -128,7 +128,9 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
 
     Without ``score`` the first PARK_CANDIDATES feasible parks are ranked by park_quality
     (rank_parks) and the best is taken; with ``score`` (a skill's own criterion, lowest wins)
-    the first ``n_best`` (default 1).  The current base pose, when it works, is kept as is.
+    the first ``n_best`` (default 1).  ``near`` with a yaw is the current base pose: when it
+    works it competes with those parks (it costs no drive, so a park must be clearly better
+    to move there); with ``max_tries=1`` it is the only pose tried (a probe of that pose).
 
     travel_q: arm posture while the base drives there (tucked, or the carry
               pose); a park where it would already hit the furniture is
@@ -172,6 +174,7 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         n_best = PARK_CANDIDATES if score is None else 1
     tried = 0
     found = []
+    stay = False
     diag = {"candidates": len(cands), "out_of_reach": 0, "footprint": 0, "travel_pose": 0, "ik": 0,
             "unfold": 0, "ride": 0}
     LAST_PARK_DIAG.clear()
@@ -214,12 +217,15 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
             LAST_PARK_DIAG["no_path"] = LAST_PARK_DIAG.get("no_path", 0) + 1
             continue
         if cost < 0:
-            return x, y, yaw, qs
+            if max_tries <= 1:
+                return x, y, yaw, qs
+            stay = True                 # the current pose works: rank it against n_best others
+            cost = 0.0
         if score is None:
             found.append((cost, park_quality(kin, qs, targets), (x, y, yaw, qs)))
         else:
             found.append((score(x, y, yaw, qs), (x, y, yaw, qs)))
-        if len(found) >= n_best:
+        if len(found) >= n_best + stay:
             break
     if found and score is None:
         ranked, total = rank_parks(found)
@@ -230,7 +236,9 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         kin.set_base((x, y, 0.0), math.radians(yaw))
         return ranked[0][2]
     if found:
-        found.sort(key=lambda t: t[0])
+        found.sort(key=lambda t: t[0])          # stable: on a tie the current pose (first found) stays
+        x, y, yaw, qs = found[0][1]
+        kin.set_base((x, y, 0.0), math.radians(yaw))
         return found[0][1]
     print("find_park: no park", {k: v for k, v in LAST_PARK_DIAG.items() if v}, flush=True)
     return None

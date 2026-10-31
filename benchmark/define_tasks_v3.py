@@ -439,7 +439,7 @@ BEDROOM = "bedroom_0_1"
 _t19_first = [S("navigate", destination=TV), S("look", target=TV),
               S("navigate", destination="soda_can"), S("pick", object="soda_can"),
               S("navigate", destination=BOOKCASE), S("look", target=BOOKCASE)]
-_t19_can = [S("navigate", destination=BIN), S("approach", target=BIN), S("drop", object="soda_can", container=BIN)]
+_t19_can = [S("navigate", destination=BIN), S("drop", object="soda_can", container=BIN)]
 _t19_cube = [S("navigate", destination="foam_cube"), S("pick", object="foam_cube"),
              S("navigate", destination=BIN), S("drop", object="foam_cube", container=BIN)]
 # the cube on the floor 0.8 m ahead of the start is below the first view: look at it was refused (NOT_OBSERVED, s10,
@@ -592,6 +592,21 @@ def entities_of(task: dict) -> list[str]:
     return out
 
 
+# skills removed from the library: their steps are dropped from the routes v3 inherits from v2 (benchmark/tasks.json
+# keeps them with its evidence).  approach: the next skill chooses its own base park.
+RETIRED_SKILLS = {"approach"}
+
+
+def drop_retired_steps(x):
+    """``x`` with every route step of a retired skill removed (nested lists and dicts included)."""
+    if isinstance(x, list):
+        return [drop_retired_steps(v) for v in x
+                if not (isinstance(v, dict) and v.get("skill") in RETIRED_SKILLS and "args" in v)]
+    if isinstance(x, dict):
+        return {k: drop_retired_steps(v) for k, v in x.items()}
+    return x
+
+
 def build(ext_all=None, new_tasks=None):
     ext_all = EXT if ext_all is None else ext_all
     tasks = copy.deepcopy(v2.TASKS) + copy.deepcopy(NEW_TASKS if new_tasks is None else new_tasks)
@@ -623,6 +638,7 @@ def build(ext_all=None, new_tasks=None):
         t["not_adopted"] = ext.get("not_adopted", [])
     relabel_v3_hard(tasks)
     v4_hard.merge(tasks)
+    tasks = drop_retired_steps(tasks)
     for t in tasks:
         t["entities"] = entities_of(t)
     return tasks
@@ -653,7 +669,8 @@ def main():
                                "note": __doc__.strip().splitlines()[0], "eval_seeds": EVAL_SEEDS,
                                "condition_registry": {k: {"type": a, "decision": b, "meaning": c}
                                                       for k, (a, b, c) in {**CONDITIONS, **v4_hard.CONDITIONS}.items()},
-                               "tasks": tasks + [dict(p, entities=entities_of(p)) for p in copy.deepcopy(v2.PROBES)]},
+                               "tasks": tasks + [dict(p, entities=entities_of(p))
+                                                 for p in drop_retired_steps(copy.deepcopy(v2.PROBES))]},
                               indent=1))
     nv = sum(len(t["variants"]) for t in tasks)
     print(f"{len(tasks)} tasks, {nv} variants + {len(v2.PROBES)} probes -> {out}")

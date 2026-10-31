@@ -26,11 +26,11 @@ temperature uses a separate task-level model. Success is measured from simulator
 ## SkillNode / Contract / Policy
 
 <!-- library:start -->
-**71 个动词 SkillNode**，一一对应 71 个 Contract，共 121 条按名词选择的 policy 路径，覆盖 115/116 个底层 policy（退役 1 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 72 个 GT 谓词；关系图有 100 条上一步/下一步、45 条 fallback、46 条 alternative。
+**70 个动词 SkillNode**，一一对应 70 个 Contract，共 120 条按名词选择的 policy 路径，覆盖 113/116 个底层 policy（退役 3 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 72 个 GT 谓词；关系图有 96 条上一步/下一步、40 条 fallback、46 条 alternative。
 
 | 类别 | 动词 |
 |---|---|
-| 底盘与身体 | `navigate`, `approach`, `face`, `retreat`, `crouch`, `stand`, `bend`, `straighten`, `tuck`, `reset`, `sidestep`, `wait` |
+| 底盘与身体 | `navigate`, `face`, `retreat`, `crouch`, `stand`, `bend`, `straighten`, `tuck`, `reset`, `sidestep`, `wait` |
 | 感知与手势 | `look`, `inspect`, `search`, `explore_room`, `point`, `present`, `identify`, `measure`, `count`, `wave`, `nod`, `explore_furniture` |
 | 抓取与手 | `pick`, `place`, `drop`, `stack`, `release`, `handover`, `lift`, `lower`, `rotate`, `regrasp`, `brace`, `flip`, `shake`, `hover`, `square` |
 | 非抓取接触与工具 | `push`, `pull`, `expose`, `separate`, `center`, `roll`, `tip`, `upright`, `wipe`, `stir`, `pour`, `touch`, `knock`, `sweep`, `dip` |

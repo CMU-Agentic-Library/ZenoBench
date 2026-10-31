@@ -111,7 +111,7 @@
     "appliance": "$appliance"
    },
    "negated": true,
-   "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+   "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
    "kind": "fluent",
    "gt_sources": [
     "thermal_state"
@@ -145,7 +145,7 @@
      "appliance": "$appliance"
     },
     "negated": true,
-    "meaning": "The appliance's heat source is on (microwave cycle or stove burner).",
+    "meaning": "Must be false: The appliance's heat source is on (microwave cycle or stove burner).",
     "kind": "fluent",
     "gt_sources": [
      "thermal_state"
@@ -271,7 +271,7 @@
    {
     "skill_id": "skill_045",
     "verb": "cover",
-    "when": "the covered pot is heated",
+    "when": "the pot is heated with its lid on (heat itself needs no lid)",
     "type": "enables"
    }
   ],
@@ -327,7 +327,7 @@
    {
     "skill_id": "skill_039",
     "verb": "pour",
-    "when": "the food is in a cup, not in the pot on the burner",
+    "when": "loose food sits in a held cup and the pot on the burner is the vessel to heat",
     "bind": {},
     "reason": "pouring the cup into the pot on the burner puts the food in the heated vessel",
     "type": "recover"
@@ -348,7 +348,7 @@
    {
     "skill_id": "skill_068",
     "verb": "stop",
-    "when": "heat stops automatically at a target temperature",
+    "when": "use heat instead when heat stops automatically at a target temperature",
     "bind": {}
    }
   ]

@@ -58,7 +58,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Previous step: `stir` (`skill_038`) (enables) — the pot is covered again
-- Next step: `heat` (`skill_043`) (enables) — the covered pot is heated
+- Next step: `heat` (`skill_043`) (enables) — the pot is heated with its lid on (heat itself needs no lid)
 - Alternative: `uncover` (`skill_046`) — opposite effect
 
 ## Failure

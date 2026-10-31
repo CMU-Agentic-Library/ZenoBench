@@ -15,7 +15,6 @@ The robot must be in another room or next to another piece of furniture.
 
 ## Not to be confused with
 
-- `approach`: approach fine-parks so the arm reaches one target; navigate only gets near.
 - `retreat`: retreat moves straight back from a place without a destination.
 
 ## Inputs
@@ -79,16 +78,15 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Previous step: `lift` (`skill_023`) (then) — the object is carried over furniture
 - Previous step: `close` (`skill_041`) (then) — the robot leaves
 - Previous step: `explore_furniture` (`skill_071`) (then) — an object seen on a layer must be fetched
-- Next step: `approach` (`skill_002`) (enables) — a manipulation target is on the destination
+- Next step: `pick` (`skill_017`) (enables) — the object to grasp is the destination
 - Next step: `look` (`skill_011`) (then) — the destination must be observed first
 - Fallback on failure: `retreat` (`skill_004`) (recover) — navigation fails because the base or load is wedged against furniture
 - Fallback on failure: `tuck` (`skill_009`) (recover) — navigation fails because the empty arm cannot fold
 - Fallback on failure: `lift` (`skill_023`) (recover) — a carried object hangs too low for the doorway clearance
-- Is a fallback for: `approach` (`skill_002`) (repair) — no base pose near the current one reaches the target
 - Is a fallback for: `look` (`skill_011`) (repair) — the line of sight is blocked
 - Is a fallback for: `identify` (`skill_057`) (recover) — the object is not visible from here
-- Alternative: `face` (`skill_003`) — turning in place is blocked by furniture
-- Alternative: `sidestep` (`skill_055`) — a larger move is needed
+- Alternative: `face` (`skill_003`) — use navigate instead when turning in place is blocked by furniture
+- Alternative: `sidestep` (`skill_055`) — use navigate instead when a larger move is needed
 
 ## Failure
 

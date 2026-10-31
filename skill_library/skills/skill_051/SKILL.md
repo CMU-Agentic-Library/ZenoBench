@@ -20,7 +20,7 @@ A container must be emptied into another container or onto a surface.
 ## Inputs
 
 - `container` (`container_ref`): The container to empty.
-- `receptacle` (`receptacle_ref`): Where the contents go (a container for the pouring path).
+- `receptacle` (`receptacle_ref`): Where the contents go: a support or a container.
 
 ## Outputs
 
@@ -28,7 +28,7 @@ A container must be emptied into another container or onto a surface.
 
 ## Composite skill
 
-Runs these Skill Contracts inside one call: `navigate`, `place`, `pick`, `pour`.
+Runs these Skill Contracts inside one call: `navigate`, `place`.
 
 - One call runs the whole chain of the selected path below; each nested step is a full Skill Contract (preconditions, policy, postconditions on GT state). It counts as a single Contract call.
 - The chain includes its own navigation: there is no need to navigate or approach first.
@@ -58,16 +58,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ### `pick_each_inside` — when always (default path)
 
 1. `for each item in @container.contents: policy_092($container) -> policy_061($item) -> [navigate](destination=$receptacle) -> [place](object=$item, receptacle=$receptacle)`
-- Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)
-
-### `pour_out` — when 'rim_pinch' in container.grasp_types and receptacle.kind == 'object'
-
-1. `[navigate](destination=$container)`
-2. `[pick](object=$container)`
-3. `[navigate](destination=$receptacle)`
-4. `[pour](source=$container, target=$receptacle)`
-5. `[place](object=$container, receptacle=@container.support)`
-- A cup or mug of loose items is emptied by pouring, then put back.
+- Take the items out one by one; empty never pours (pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove). To pour, call pour.
 
 ## Relations
 

@@ -183,13 +183,13 @@
    {
     "skill_id": "skill_062",
     "verb": "shake",
-    "when": "the orientation, not the contents, matters",
+    "when": "use rotate instead when the orientation, not the contents, matters",
     "bind": {}
    },
    {
     "skill_id": "skill_064",
     "verb": "square",
-    "when": "the object is already in the hand",
+    "when": "use rotate instead when the object is already in the hand",
     "bind": {}
    }
   ]

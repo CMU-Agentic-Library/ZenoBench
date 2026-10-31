@@ -57,9 +57,9 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 ## Relations
 
 - Next step: `pick` (`skill_017`) (then) — the object is now close enough to grasp
-- Is a fallback for: `approach` (`skill_002`) (substitute) — the object sits too deep on its support
 - Is a fallback for: `pick` (`skill_017`) (recover) — the object sits too deep to reach
-- Alternative: `push` (`skill_029`) — the object should come toward the robot
+- Is a fallback for: `expose` (`skill_031`) (recover) — no base pose reaches behind the object
+- Alternative: `push` (`skill_029`) — use pull instead when the object should come toward the robot
 
 ## Failure
 

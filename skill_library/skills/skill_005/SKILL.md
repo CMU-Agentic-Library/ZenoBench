@@ -1,13 +1,13 @@
 ---
 name: crouch-torso
-description: "Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first."
+description: "Lower the torso lift to its bottom (or a requested height) for low-shelf work; a held object goes down with the body. pick reaches an object on the floor by itself, so a floor pick needs no crouch first."
 ---
 
 # Crouch the torso (`skill_005`)
 
 `crouch(height_m: number?)`
 
-Lower the torso lift to its bottom (or a requested height) for low-shelf work. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.
+Lower the torso lift to its bottom (or a requested height) for low-shelf work; a held object goes down with the body. pick reaches an object on the floor by itself, so a floor pick needs no crouch first.
 
 ## When to use
 
@@ -19,7 +19,7 @@ The next target is low (floor, low shelf) or the head must look under something.
 
 ## Inputs
 
-- `height_m` (`number`, optional): Optional torso joint target in [-0.54, -0.03] m (0 is full height: use stand); omit for the lowest.
+- `height_m` (`number`, optional): Optional torso joint target in [-0.53, -0.05] m (0 is full height: use stand); omit for the lowest.
 
 ## Applicability
 
@@ -31,7 +31,7 @@ Always applicable.
 
 ## Postconditions (verified on live GT state)
 
-- `not torso_raised()` — Torso lift within 3 cm of its highest position (travel height). GT: torso_joint.
+- `not torso_raised()` — Must be false: Torso lift within 3 cm of its highest position (travel height). GT: torso_joint.
 
 ## Verifier
 
@@ -62,6 +62,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 - Next step: `pick` (`skill_017`) (then) — the object is on the floor or a low shelf
 - Next step: `stand` (`skill_006`) (then) — low work is done
 - Is a fallback for: `pick` (`skill_017`) (recover) — the object is on the floor or a low shelf
+- Alternative: `bend` (`skill_007`) — use crouch instead when the target is low rather than far away
 
 ## Failure
 

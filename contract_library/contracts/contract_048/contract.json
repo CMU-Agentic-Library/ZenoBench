@@ -426,17 +426,6 @@
    "fallback_type": "repair",
    "repairs": "hand_empty",
    "to_skill_id": "skill_022"
-  },
-  {
-   "kind": "fallback",
-   "to": "approach",
-   "when": "the handle is out of reach",
-   "bind": {
-    "target": "$articulated"
-   },
-   "reason": "a base pose with verified IK at the handle",
-   "fallback_type": "recover",
-   "to_skill_id": "skill_002"
   }
  ],
  "failure": {

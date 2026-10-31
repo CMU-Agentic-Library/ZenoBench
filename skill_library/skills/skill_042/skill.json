@@ -16,7 +16,7 @@
    "button"
   ]
  },
- "description": "Press an annotated appliance button with the closed fingertips and retract: the microwave door key, the microwave start key, or the stove power key (which toggles the burner).",
+ "description": "Press an annotated appliance button with the closed fingertips and retract: the microwave door key (the press is recorded, the door does not move: use open), the microwave start key (refused unless the door is closed and task food is inside), or the stove power key (which toggles the burner).",
  "use_when": "A button (microwave keys, stove power key) must be pressed.",
  "not_to_be_confused_with": {
   "heat": "heat guarantees a temperature; press guarantees only the key press.",
@@ -201,7 +201,7 @@
     "policy_028",
     "policy_029"
    ],
-   "note": ""
+   "note": "Fails without moving the door when no task food is inside the cavity."
   },
   {
    "path_id": "microwave_door_key",
@@ -216,7 +216,7 @@
    "policies": [
     "policy_033"
    ],
-   "note": ""
+   "note": "Only the key press: the door stays as it is (open presses this key itself)."
   },
   {
    "path_id": "generic_key",
@@ -235,14 +235,7 @@
   }
  ],
  "relations": {
-  "previous": [
-   {
-    "skill_id": "skill_002",
-    "verb": "approach",
-    "when": "the target is a button",
-    "type": "then"
-   }
-  ],
+  "previous": [],
   "next": [
    {
     "skill_id": "skill_043",
@@ -262,16 +255,18 @@
     "type": "enables"
    }
   ],
-  "fallback": [],
-  "fallback_for": [],
-  "alternative": [
+  "fallback": [
    {
-    "skill_id": "skill_040",
-    "verb": "open",
-    "when": "the door key is pressed only to open the microwave door",
-    "bind": {}
+    "skill_id": "skill_041",
+    "verb": "close",
+    "when": "the start key was refused because the microwave door is open",
+    "bind": {},
+    "type": "repair",
+    "repairs": "is_closed"
    }
-  ]
+  ],
+  "fallback_for": [],
+  "alternative": []
  },
  "failure": {
   "codes": [

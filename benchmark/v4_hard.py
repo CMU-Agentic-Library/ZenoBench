@@ -147,7 +147,7 @@ HARD["T08_wipe_island"] = {
         "hard_proactive": {
             "kind": "alternative", "variants": ["island_cluttered"],
             "recovery": "block B stands in the strip the robot wipes: move it to the TV stand, wipe, put it back",
-            "steps": [S("look", target=ISLAND), *_t08_aside, *_t08_sponge, S("approach", target=ISLAND),
+            "steps": [S("look", target=ISLAND), *_t08_aside, *_t08_sponge,
                       S("wipe", surface=ISLAND, tool="kitchen_sponge"),
                       S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV),
                       # back on its own spot: restore returns an object to its start support at a free spot near
@@ -160,7 +160,7 @@ HARD["T08_wipe_island"] = {
             "kind": "negative", "variants": ["island_cluttered"],
             "note": "the Easy plan: wipe with the clutter in place; wipe refuses (no free strip near the robot) and "
                     "the plan puts the sponge away without clearing (before the wipe fix the sponge shoved block B)",
-            "steps": [S("look", target=ISLAND), *_t08_sponge, S("approach", target=ISLAND),
+            "steps": [S("look", target=ISLAND), *_t08_sponge,
                       S("wipe", "fail", surface=ISLAND, tool="kitchen_sponge"),
                       S("navigate", destination=TV), S("place", object="kitchen_sponge", receptacle=TV)]}},
     "oracle": {"island_cluttered": "hard_proactive"},
@@ -229,7 +229,7 @@ T01_GOAL = {"all": [["on", "paperback_book", DINING], ["clear_of", "paperback_bo
                     *[["upright", n] for n in ("cup_side_table", "mug_dining_cabinet", "clutter_cereal_a",
                                                "clutter_cereal_b")], ["hand_empty", "right"]]}
 _t01_carry = [S("look", target=ISLAND), S("navigate", destination="paperback_book"),
-              S("approach", target="paperback_book"), S("pick", object="paperback_book"),
+              S("pick", object="paperback_book"),
               S("navigate", destination=DINING), S("look", target=DINING)]
 HARD["T01_book_to_dining_table"] = {
     "variants": {"table_set": hard(
@@ -278,14 +278,13 @@ HARD["T02_stack_blocks"] = {
             "steps": [S("look", target=ISLAND), S("navigate", destination="wooden_block_a"),
                       S("pick", object="wooden_block_a", role="alternative"),
                       S("navigate", destination="wooden_block_b"),
-                      S("approach", target="wooden_block_b"),
                       S("stack", object="wooden_block_a", base="wooden_block_b", role="alternative")]},
         "naive_stack_on_edge_block": {
             "kind": "negative", "variants": ["edge_base"], "note": "the Easy plan: B onto A at the edge",
             # (picked straight after navigate, the arm reached B from the island's back and missed it, s10)
             "steps": [S("look", target=ISLAND), S("navigate", destination="wooden_block_b"),
-                      S("approach", target="wooden_block_b"), S("pick", object="wooden_block_b"),
-                      S("navigate", destination="wooden_block_a"), S("approach", target="wooden_block_a"),
+                      S("pick", object="wooden_block_b"),
+                      S("navigate", destination="wooden_block_a"),
                       S("stack", object="wooden_block_b", base="wooden_block_a")]}},
     "oracle": {"edge_base": "hard_stack_on_open_block"},
     "vary": {"edge_base": vary()},
@@ -320,10 +319,10 @@ HARD["T03_utensils_one_container"] = {
             "steps": [S("look", target=ISLAND), S("look", target=TV), S("measure", object="mug"),
                       S("measure", object=SMALL_BIN), S("measure", object="rolling_pin"),
                       S("navigate", destination="breakfast_spoon"), S("pick", object="breakfast_spoon"),
-                      S("navigate", destination=T03_BIN), S("approach", target=T03_BIN),
+                      S("navigate", destination=T03_BIN),
                       S("drop", object="breakfast_spoon", container=T03_BIN, role="alternative"),
                       S("navigate", destination="rolling_pin"), S("pick", object="rolling_pin"),
-                      S("navigate", destination=T03_BIN), S("approach", target=T03_BIN),
+                      S("navigate", destination=T03_BIN),
                       S("place", object="rolling_pin", receptacle=T03_BIN, role="alternative")]},
         "naive_spoon_in_small_bin": {
             "kind": "negative", "variants": ["three_containers"],
@@ -331,9 +330,9 @@ HARD["T03_utensils_one_container"] = {
             "steps": [S("look", target=ISLAND), S("look", target=TV), S("navigate", destination="breakfast_spoon"),
                       # (dropped straight after navigate: no base pose above the bin, s10)
                       S("pick", object="breakfast_spoon"), S("navigate", destination=SMALL_BIN),
-                      S("approach", target=SMALL_BIN), S("drop", object="breakfast_spoon", container=SMALL_BIN),
+                      S("drop", object="breakfast_spoon", container=SMALL_BIN),
                       S("navigate", destination="rolling_pin"), S("pick", object="rolling_pin"),
-                      S("navigate", destination=SMALL_BIN), S("approach", target=SMALL_BIN),
+                      S("navigate", destination=SMALL_BIN),
                       S("place", object="rolling_pin", receptacle=SMALL_BIN)]}},
     "oracle": {"three_containers": "hard_measure_then_wide_bin"},
     "vary": {"three_containers": vary()},
@@ -476,7 +475,6 @@ HARD["T19_recycling"] = {
                                           S("navigate", destination="soda_can"),
                                           S("pick", object="soda_can"), S("navigate", destination=BOOKCASE),
                                           S("look", target=BOOKCASE), S("navigate", destination="wide_storage_bin"),
-                                          S("approach", target="wide_storage_bin"),
                                           S("drop", object="soda_can", container="wide_storage_bin"),
                                           S("navigate", destination="foam_cube"), S("pick", object="foam_cube"),
                                           S("navigate", destination="wide_storage_bin"),
@@ -597,14 +595,13 @@ HARD["T14_shelve_the_book"] = {
                       S("navigate", destination=BOOKCASE), S("place", object="book_red", receptacle=BOOKCASE)]},
         "probe_approach_then_place": {
             "kind": "diagnostic", "variants": ["shelf_taken"],
-            "note": "the book placement on the bookcase top after an approach / with a hint (place_flat regression)",
+            "note": "the book placement on the bookcase top with a hint (place_flat regression)",
             "steps": [S("navigate", destination=BOOKCASE), S("look", target=BOOKCASE),
                       S("navigate", destination="mug_shelf"), S("pick", object="mug_shelf"),
                       S("place", object="mug_shelf", receptacle=BOOKCASE, hint_xy=[0.79, -0.31]),
                       S("navigate", destination=DESK), S("look", target=DESK),
                       S("navigate", destination="book_red"), S("expose", object="book_red"),
                       S("pick", object="book_red"), S("navigate", destination=BOOKCASE),
-                      S("approach", target=BOOKCASE),
                       S("place", object="book_red", receptacle=BOOKCASE, hint_xy=[0.98, -0.52])]},
         "naive_book_elsewhere": {
             "kind": "negative", "variants": ["shelf_taken"],
@@ -724,9 +721,6 @@ HARD["T20_juice_back_to_table"] = {
                         "in its place",
             "steps": [S("navigate", destination=DINING), S("look", target=DINING),
                       S("navigate", destination="party_bowl_1", role="insert"),
-                      # square to the bowl first: from the navigate pose the rim pinch held once and slipped once
-                      # while moving it (s10)
-                      S("approach", target="party_bowl_1", role="insert"),
                       S("pick", object="party_bowl_1", role="insert"),
                       # onto the tray next to it (carried to the wall cabinet it slipped out of the hand, s10)
                       S("place", object="party_bowl_1", receptacle="buffet_tray_11", role="insert"),

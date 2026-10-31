@@ -202,7 +202,7 @@
   {
    "kind": "sequence",
    "to": "heat",
-   "when": "the covered pot is heated",
+   "when": "the pot is heated with its lid on (heat itself needs no lid)",
    "bind": {},
    "reason": "stove path",
    "to_skill_id": "skill_043",

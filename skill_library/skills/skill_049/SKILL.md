@@ -56,7 +56,7 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Relations
 
-- Previous step: `identify` (`skill_057`) (then) — the category decides the destination
+- Previous step: `identify` (`skill_057`) (then) — the tags decide the destination
 - Next step: `close` (`skill_041`) (then) — a sorted container sits in a cabinet
 - Alternative: `collect` (`skill_048`) — all objects go into one container
 

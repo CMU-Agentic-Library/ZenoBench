@@ -42,7 +42,7 @@ REF_TYPES = {
     "support_ref": "an annotated horizontal support surface",
     "receptacle_ref": "a support surface or an open container",
     "articulated_ref": "an annotated door, drawer or appliance door",
-    "appliance_ref": "an articulated appliance with a thermal role (microwave, refrigerator)",
+    "appliance_ref": "an appliance with a thermal role (microwave, refrigerator, stove)",
     "button_ref": "an annotated appliance button, written <appliance>/<button>",
     "room_ref": "an annotated room",
     "furniture_ref": "a piece of furniture with annotated support layers (shelves, top), cabinets included",
@@ -55,8 +55,9 @@ VALUE_TYPES = {
     "positive_number": "a number > 0",
     "unit_vec2": "a horizontal unit vector [x, y]",
     "xy": "a world position [x, y] in metres",
+    "xyz": "a 3-vector [x, y, z] in metres",
     "object_list": "a non-empty list of object refs",
-    "category_map": "an object tag -> container ref mapping",
+    "category_map": "an object tag -> container or support ref mapping",
     "tag": "an asset tag or asset name, e.g. \"fruit\", \"toy\", \"cherry_tomato\"",
 }
 ALL_TYPES = {**REF_TYPES, **VALUE_TYPES}
@@ -582,7 +583,7 @@ def lying_state(rig, name, st):
 
 
 @predicate("lying", [("object", "object_ref")], "fluent",
-           "Object on its side: longest axis within 60 deg of horizontal and vertical extent <= 60 % of its length.")
+           "Object on its side: longest axis within 30 deg of horizontal and vertical extent <= 60 % of its length.")
 def _lying(rig, ctx, object):
     ok, axis_z, vertical = lying_state(rig, object, _state(rig, ctx))
     return ok, f"long-axis z {axis_z:.2f}, vertical extent {vertical:.3f} m"

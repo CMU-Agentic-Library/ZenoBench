@@ -64,10 +64,16 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 1. `policy_035($distance_m)`
 - Straight reverse with the right-hand load.
 
-### `empty` — when always (default path)
+### `empty` — when robot.base_ready
 
 1. `policy_100($obstacle, $distance_m) as plan`
 2. `policy_037(#plan.forward_m)`
+- Fully tucked and empty: reverse along the heading, at most 0.5 m; refuses when the obstacle is behind the robot (face away from it, or it is already behind you).
+
+### `untucked` — when always (default path)
+
+1. `policy_067($obstacle, $distance_m)`
+- Arm, torso or waist away from rest: back straight away from the obstacle footprint.
 
 ## Relations
 

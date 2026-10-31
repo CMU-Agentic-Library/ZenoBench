@@ -130,7 +130,7 @@ class ExploreRoomPolicy(AtomicPolicy):
             order.append(nxt)
             rest.remove(nxt)
             x, y = nxt[0], nxt[1]
-        seen = set()
+        seen, viewed = set(), set()
         visited = 0
         for pose in order:
             try:
@@ -148,7 +148,7 @@ class ExploreRoomPolicy(AtomicPolicy):
                     rig.drive_base([(bx, by, byaw + turn)])
                 for yaw in (-1.0, -0.5, 0.0, 0.5, 1.0):
                     drive_head(rig, yaw, 0.3, steps=50)       # positive pitch looks down
-                    record_view(rig)
+                    viewed.update(record_view(rig))
                     for k, pts in targets.items():
                         if k not in seen and any(project_to_head_camera(rig, p, exclude=n)[0] for p, n in pts):
                             seen.add(k)
@@ -160,7 +160,9 @@ class ExploreRoomPolicy(AtomicPolicy):
                 furniture=furniture)
         if cov < 0.75:
             raise SkillFailure(f"explore {room}: coverage {cov:.2f}")
-        return {"coverage": cov, "seen": sorted(k for k in seen if not k.startswith("furniture:")),
+        # every object that came into view (the coverage targets hold no objects in the benchmark)
+        objects = viewed | {k for k in seen if not k.startswith("furniture:")}
+        return {"coverage": cov, "seen": sorted(objects),
                 "furniture": furniture}
 
 

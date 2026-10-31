@@ -22,8 +22,8 @@
  },
  "outputs": {
   "grasp": {
-   "type": "hand",
-   "description": "Grasp kind after the regrasp."
+   "type": "tag",
+   "description": "Kind of hold after the regrasp: pinch, edge, corner or bimanual."
   }
  },
  "requires": [

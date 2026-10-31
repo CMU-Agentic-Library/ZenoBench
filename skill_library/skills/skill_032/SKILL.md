@@ -1,13 +1,13 @@
 ---
 name: separate-object
-description: "Push an object straight away from its closest neighbour until there is room for a finger (>= 3.5 cm gap) without leaving the support."
+description: "Push an object straight away from its closest neighbour until there is room for the fingers beside it, without leaving the support."
 ---
 
 # Separate an object from its neighbour (`skill_032`)
 
 `separate(object: object_ref)`
 
-Push an object straight away from its closest neighbour until there is room for a finger (>= 3.5 cm gap) without leaving the support.
+Push an object straight away from its closest neighbour until there is room for the fingers beside it, without leaving the support.
 
 ## When to use
 
@@ -23,13 +23,12 @@ Two objects are too close for the fingers to fit beside one of them.
 
 ## Applicability
 
-Requires hand_empty(hand=right); base_near(place=$object); not grasp_clearance(object=$object).
+Requires hand_empty(hand=right); base_near(place=$object).
 
 ## Preconditions (checked on live GT state before moving)
 
 - `hand_empty(hand=right)` — The given gripper holds nothing. GT: gripper_state.
 - `base_near(place=$object)` — Base centre within 1.3 m of the place's footprint (inside the room for a room). GT: base_pose, scene_annotation.
-- `not grasp_clearance(object=$object)` — Some annotated pinch of the object has both finger slots (2.8 x 1.2 cm, at the pre-grasp opening) free of neighbours; objects without a pinch need 3.5 cm of free footprint gap. GT: object_pose, asset_annotation.
 
 ## Postconditions (verified on live GT state)
 

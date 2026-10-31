@@ -171,13 +171,13 @@
  "relations": [
   {
    "kind": "sequence",
-   "to": "approach",
-   "when": "a manipulation target is on the destination",
+   "to": "pick",
+   "when": "the object to grasp is the destination",
    "bind": {
-    "target": "$destination"
+    "object": "$destination"
    },
-   "reason": "navigate leaves the base near; approach makes the target IK-reachable.",
-   "to_skill_id": "skill_002",
+   "reason": "navigate leaves the base near; pick chooses its own grasp park from there.",
+   "to_skill_id": "skill_017",
    "sequence_type": "enables"
   },
   {

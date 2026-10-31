@@ -11,13 +11,13 @@
    "id": "relation_001",
    "from": "skill_001",
    "from_verb": "navigate",
-   "to": "skill_002",
-   "to_verb": "approach",
+   "to": "skill_017",
+   "to_verb": "pick",
    "kind": "sequence",
    "sequence_type": "enables",
-   "when": "a manipulation target is on the destination",
+   "when": "the object to grasp is the destination",
    "bind": {
-    "target": "$destination"
+    "object": "$destination"
    },
    "automatic": false
   },
@@ -75,89 +75,6 @@
   },
   {
    "id": "relation_006",
-   "from": "skill_002",
-   "from_verb": "approach",
-   "to": "skill_017",
-   "to_verb": "pick",
-   "kind": "sequence",
-   "sequence_type": "then",
-   "when": "the target is an object to grasp",
-   "bind": {
-    "object": "$target"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_007",
-   "from": "skill_002",
-   "from_verb": "approach",
-   "to": "skill_040",
-   "to_verb": "open",
-   "kind": "sequence",
-   "sequence_type": "then",
-   "when": "the target is a door or drawer",
-   "bind": {
-    "articulated": "$target"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_008",
-   "from": "skill_002",
-   "from_verb": "approach",
-   "to": "skill_042",
-   "to_verb": "press",
-   "kind": "sequence",
-   "sequence_type": "then",
-   "when": "the target is a button",
-   "bind": {
-    "button": "$target"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_009",
-   "from": "skill_002",
-   "from_verb": "approach",
-   "to": "skill_001",
-   "to_verb": "navigate",
-   "kind": "fallback",
-   "fallback_type": "repair",
-   "repairs": "base_near",
-   "when": "no base pose near the current one reaches the target",
-   "bind": {
-    "destination": "$target"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_010",
-   "from": "skill_002",
-   "from_verb": "approach",
-   "to": "skill_007",
-   "to_verb": "bend",
-   "kind": "fallback",
-   "fallback_type": "recover",
-   "when": "the target is just beyond the arm envelope",
-   "bind": {},
-   "automatic": false
-  },
-  {
-   "id": "relation_011",
-   "from": "skill_002",
-   "from_verb": "approach",
-   "to": "skill_030",
-   "to_verb": "pull",
-   "kind": "fallback",
-   "fallback_type": "substitute",
-   "when": "the object sits too deep on its support",
-   "bind": {
-    "object": "$target"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_012",
    "from": "skill_003",
    "from_verb": "face",
    "to": "skill_011",
@@ -171,7 +88,7 @@
    "automatic": false
   },
   {
-   "id": "relation_013",
+   "id": "relation_007",
    "from": "skill_003",
    "from_verb": "face",
    "to": "skill_015",
@@ -185,7 +102,7 @@
    "automatic": false
   },
   {
-   "id": "relation_014",
+   "id": "relation_008",
    "from": "skill_003",
    "from_verb": "face",
    "to": "skill_001",
@@ -198,7 +115,7 @@
    "automatic": false
   },
   {
-   "id": "relation_015",
+   "id": "relation_009",
    "from": "skill_004",
    "from_verb": "retreat",
    "to": "skill_001",
@@ -210,7 +127,7 @@
    "automatic": false
   },
   {
-   "id": "relation_016",
+   "id": "relation_010",
    "from": "skill_004",
    "from_verb": "retreat",
    "to": "skill_040",
@@ -224,7 +141,7 @@
    "automatic": false
   },
   {
-   "id": "relation_017",
+   "id": "relation_011",
    "from": "skill_005",
    "from_verb": "crouch",
    "to": "skill_017",
@@ -236,7 +153,7 @@
    "automatic": false
   },
   {
-   "id": "relation_018",
+   "id": "relation_012",
    "from": "skill_005",
    "from_verb": "crouch",
    "to": "skill_006",
@@ -248,7 +165,7 @@
    "automatic": false
   },
   {
-   "id": "relation_019",
+   "id": "relation_013",
    "from": "skill_006",
    "from_verb": "stand",
    "to": "skill_001",
@@ -260,7 +177,7 @@
    "automatic": false
   },
   {
-   "id": "relation_020",
+   "id": "relation_014",
    "from": "skill_006",
    "from_verb": "stand",
    "to": "skill_010",
@@ -271,7 +188,7 @@
    "automatic": false
   },
   {
-   "id": "relation_021",
+   "id": "relation_015",
    "from": "skill_007",
    "from_verb": "bend",
    "to": "skill_008",
@@ -283,19 +200,30 @@
    "automatic": false
   },
   {
-   "id": "relation_022",
+   "id": "relation_016",
    "from": "skill_007",
    "from_verb": "bend",
-   "to": "skill_002",
-   "to_verb": "approach",
+   "to": "skill_017",
+   "to_verb": "pick",
    "kind": "sequence",
    "sequence_type": "then",
-   "when": "the target was just out of reach",
+   "when": "the object lies deep on the surface",
    "bind": {},
    "automatic": false
   },
   {
-   "id": "relation_023",
+   "id": "relation_017",
+   "from": "skill_007",
+   "from_verb": "bend",
+   "to": "skill_005",
+   "to_verb": "crouch",
+   "kind": "alternative",
+   "when": "the target is low rather than far away",
+   "bind": {},
+   "automatic": false
+  },
+  {
+   "id": "relation_018",
    "from": "skill_008",
    "from_verb": "straighten",
    "to": "skill_001",
@@ -307,7 +235,7 @@
    "automatic": false
   },
   {
-   "id": "relation_024",
+   "id": "relation_019",
    "from": "skill_008",
    "from_verb": "straighten",
    "to": "skill_010",
@@ -318,7 +246,7 @@
    "automatic": false
   },
   {
-   "id": "relation_025",
+   "id": "relation_020",
    "from": "skill_009",
    "from_verb": "tuck",
    "to": "skill_001",
@@ -330,7 +258,7 @@
    "automatic": false
   },
   {
-   "id": "relation_026",
+   "id": "relation_021",
    "from": "skill_009",
    "from_verb": "tuck",
    "to": "skill_004",
@@ -342,7 +270,7 @@
    "automatic": false
   },
   {
-   "id": "relation_027",
+   "id": "relation_022",
    "from": "skill_010",
    "from_verb": "reset",
    "to": "skill_001",
@@ -354,21 +282,7 @@
    "automatic": false
   },
   {
-   "id": "relation_028",
-   "from": "skill_011",
-   "from_verb": "look",
-   "to": "skill_002",
-   "to_verb": "approach",
-   "kind": "sequence",
-   "sequence_type": "then",
-   "when": "the observed target will be manipulated",
-   "bind": {
-    "target": "$target"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_029",
+   "id": "relation_023",
    "from": "skill_011",
    "from_verb": "look",
    "to": "skill_001",
@@ -382,7 +296,7 @@
    "automatic": false
   },
   {
-   "id": "relation_030",
+   "id": "relation_024",
    "from": "skill_011",
    "from_verb": "look",
    "to": "skill_012",
@@ -395,7 +309,7 @@
    "automatic": false
   },
   {
-   "id": "relation_031",
+   "id": "relation_025",
    "from": "skill_012",
    "from_verb": "inspect",
    "to": "skill_017",
@@ -407,7 +321,7 @@
    "automatic": false
   },
   {
-   "id": "relation_032",
+   "id": "relation_026",
    "from": "skill_012",
    "from_verb": "inspect",
    "to": "skill_051",
@@ -421,7 +335,7 @@
    "automatic": false
   },
   {
-   "id": "relation_033",
+   "id": "relation_027",
    "from": "skill_012",
    "from_verb": "inspect",
    "to": "skill_011",
@@ -434,7 +348,7 @@
    "automatic": false
   },
   {
-   "id": "relation_034",
+   "id": "relation_028",
    "from": "skill_013",
    "from_verb": "search",
    "to": "skill_001",
@@ -448,7 +362,7 @@
    "automatic": false
   },
   {
-   "id": "relation_035",
+   "id": "relation_029",
    "from": "skill_013",
    "from_verb": "search",
    "to": "skill_014",
@@ -460,7 +374,7 @@
    "automatic": false
   },
   {
-   "id": "relation_036",
+   "id": "relation_030",
    "from": "skill_013",
    "from_verb": "search",
    "to": "skill_071",
@@ -472,7 +386,7 @@
    "automatic": false
   },
   {
-   "id": "relation_037",
+   "id": "relation_031",
    "from": "skill_013",
    "from_verb": "search",
    "to": "skill_012",
@@ -484,7 +398,7 @@
    "automatic": false
   },
   {
-   "id": "relation_038",
+   "id": "relation_032",
    "from": "skill_014",
    "from_verb": "explore_room",
    "to": "skill_013",
@@ -496,7 +410,7 @@
    "automatic": false
   },
   {
-   "id": "relation_039",
+   "id": "relation_033",
    "from": "skill_014",
    "from_verb": "explore_room",
    "to": "skill_071",
@@ -508,7 +422,7 @@
    "automatic": false
   },
   {
-   "id": "relation_040",
+   "id": "relation_034",
    "from": "skill_015",
    "from_verb": "point",
    "to": "skill_009",
@@ -522,7 +436,7 @@
    "automatic": false
   },
   {
-   "id": "relation_041",
+   "id": "relation_035",
    "from": "skill_015",
    "from_verb": "point",
    "to": "skill_011",
@@ -535,7 +449,7 @@
    "automatic": false
   },
   {
-   "id": "relation_042",
+   "id": "relation_036",
    "from": "skill_016",
    "from_verb": "present",
    "to": "skill_018",
@@ -549,7 +463,7 @@
    "automatic": false
   },
   {
-   "id": "relation_043",
+   "id": "relation_037",
    "from": "skill_016",
    "from_verb": "present",
    "to": "skill_022",
@@ -563,7 +477,7 @@
    "automatic": false
   },
   {
-   "id": "relation_044",
+   "id": "relation_038",
    "from": "skill_016",
    "from_verb": "present",
    "to": "skill_023",
@@ -576,7 +490,7 @@
    "automatic": false
   },
   {
-   "id": "relation_045",
+   "id": "relation_039",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_001",
@@ -588,7 +502,7 @@
    "automatic": false
   },
   {
-   "id": "relation_046",
+   "id": "relation_040",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_018",
@@ -602,7 +516,7 @@
    "automatic": false
   },
   {
-   "id": "relation_047",
+   "id": "relation_041",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_023",
@@ -616,7 +530,7 @@
    "automatic": false
   },
   {
-   "id": "relation_048",
+   "id": "relation_042",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_031",
@@ -631,7 +545,7 @@
    "automatic": false
   },
   {
-   "id": "relation_049",
+   "id": "relation_043",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_032",
@@ -646,7 +560,7 @@
    "automatic": false
   },
   {
-   "id": "relation_050",
+   "id": "relation_044",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_030",
@@ -660,21 +574,7 @@
    "automatic": false
   },
   {
-   "id": "relation_051",
-   "from": "skill_017",
-   "from_verb": "pick",
-   "to": "skill_002",
-   "to_verb": "approach",
-   "kind": "fallback",
-   "fallback_type": "recover",
-   "when": "no grasp is reachable from base poses near the current one",
-   "bind": {
-    "target": "$object"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_052",
+   "id": "relation_045",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_036",
@@ -688,7 +588,7 @@
    "automatic": false
   },
   {
-   "id": "relation_053",
+   "id": "relation_046",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_005",
@@ -700,7 +600,7 @@
    "automatic": false
   },
   {
-   "id": "relation_054",
+   "id": "relation_047",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_046",
@@ -712,7 +612,7 @@
    "automatic": false
   },
   {
-   "id": "relation_055",
+   "id": "relation_048",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_040",
@@ -725,7 +625,7 @@
    "automatic": false
   },
   {
-   "id": "relation_056",
+   "id": "relation_049",
    "from": "skill_017",
    "from_verb": "pick",
    "to": "skill_026",
@@ -738,7 +638,7 @@
    "automatic": false
   },
   {
-   "id": "relation_057",
+   "id": "relation_050",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_041",
@@ -750,7 +650,7 @@
    "automatic": false
   },
   {
-   "id": "relation_058",
+   "id": "relation_051",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_043",
@@ -764,7 +664,7 @@
    "automatic": false
   },
   {
-   "id": "relation_059",
+   "id": "relation_052",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_009",
@@ -778,14 +678,14 @@
    "automatic": false
   },
   {
-   "id": "relation_060",
+   "id": "relation_053",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_019",
    "to_verb": "drop",
    "kind": "fallback",
    "fallback_type": "substitute",
-   "when": "a deep container leaves no room to lower the hand inside",
+   "when": "the hand cannot reach the robot-side release spot inside the container",
    "bind": {
     "object": "$object",
     "container": "$receptacle"
@@ -793,21 +693,7 @@
    "automatic": false
   },
   {
-   "id": "relation_061",
-   "from": "skill_018",
-   "from_verb": "place",
-   "to": "skill_002",
-   "to_verb": "approach",
-   "kind": "fallback",
-   "fallback_type": "recover",
-   "when": "the receptacle is out of reach",
-   "bind": {
-    "target": "$receptacle"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_062",
+   "id": "relation_054",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_040",
@@ -820,7 +706,7 @@
    "automatic": false
   },
   {
-   "id": "relation_063",
+   "id": "relation_055",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_046",
@@ -835,7 +721,7 @@
    "automatic": false
   },
   {
-   "id": "relation_064",
+   "id": "relation_056",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_026",
@@ -849,7 +735,7 @@
    "automatic": false
   },
   {
-   "id": "relation_065",
+   "id": "relation_057",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_020",
@@ -862,7 +748,7 @@
    "automatic": false
   },
   {
-   "id": "relation_066",
+   "id": "relation_058",
    "from": "skill_018",
    "from_verb": "place",
    "to": "skill_019",
@@ -876,7 +762,7 @@
    "automatic": false
   },
   {
-   "id": "relation_067",
+   "id": "relation_059",
    "from": "skill_019",
    "from_verb": "drop",
    "to": "skill_017",
@@ -888,7 +774,7 @@
    "automatic": false
   },
   {
-   "id": "relation_068",
+   "id": "relation_060",
    "from": "skill_019",
    "from_verb": "drop",
    "to": "skill_018",
@@ -902,7 +788,7 @@
    "automatic": false
   },
   {
-   "id": "relation_069",
+   "id": "relation_061",
    "from": "skill_020",
    "from_verb": "stack",
    "to": "skill_017",
@@ -914,7 +800,7 @@
    "automatic": false
   },
   {
-   "id": "relation_070",
+   "id": "relation_062",
    "from": "skill_020",
    "from_verb": "stack",
    "to": "skill_017",
@@ -926,7 +812,7 @@
    "automatic": false
   },
   {
-   "id": "relation_071",
+   "id": "relation_063",
    "from": "skill_020",
    "from_verb": "stack",
    "to": "skill_018",
@@ -939,7 +825,7 @@
    "automatic": false
   },
   {
-   "id": "relation_072",
+   "id": "relation_064",
    "from": "skill_021",
    "from_verb": "release",
    "to": "skill_009",
@@ -953,7 +839,7 @@
    "automatic": false
   },
   {
-   "id": "relation_073",
+   "id": "relation_065",
    "from": "skill_021",
    "from_verb": "release",
    "to": "skill_019",
@@ -966,7 +852,7 @@
    "automatic": false
   },
   {
-   "id": "relation_074",
+   "id": "relation_066",
    "from": "skill_022",
    "from_verb": "handover",
    "to": "skill_040",
@@ -978,7 +864,7 @@
    "automatic": false
   },
   {
-   "id": "relation_075",
+   "id": "relation_067",
    "from": "skill_022",
    "from_verb": "handover",
    "to": "skill_017",
@@ -990,7 +876,7 @@
    "automatic": false
   },
   {
-   "id": "relation_076",
+   "id": "relation_068",
    "from": "skill_022",
    "from_verb": "handover",
    "to": "skill_027",
@@ -1001,7 +887,7 @@
    "automatic": false
   },
   {
-   "id": "relation_077",
+   "id": "relation_069",
    "from": "skill_023",
    "from_verb": "lift",
    "to": "skill_001",
@@ -1013,7 +899,7 @@
    "automatic": false
   },
   {
-   "id": "relation_078",
+   "id": "relation_070",
    "from": "skill_023",
    "from_verb": "lift",
    "to": "skill_019",
@@ -1027,7 +913,7 @@
    "automatic": false
   },
   {
-   "id": "relation_079",
+   "id": "relation_071",
    "from": "skill_024",
    "from_verb": "lower",
    "to": "skill_018",
@@ -1041,7 +927,7 @@
    "automatic": false
   },
   {
-   "id": "relation_080",
+   "id": "relation_072",
    "from": "skill_024",
    "from_verb": "lower",
    "to": "skill_023",
@@ -1054,7 +940,7 @@
    "automatic": false
   },
   {
-   "id": "relation_081",
+   "id": "relation_073",
    "from": "skill_025",
    "from_verb": "rotate",
    "to": "skill_018",
@@ -1068,7 +954,7 @@
    "automatic": false
   },
   {
-   "id": "relation_082",
+   "id": "relation_074",
    "from": "skill_025",
    "from_verb": "rotate",
    "to": "skill_026",
@@ -1081,7 +967,7 @@
    "automatic": false
   },
   {
-   "id": "relation_083",
+   "id": "relation_075",
    "from": "skill_026",
    "from_verb": "regrasp",
    "to": "skill_018",
@@ -1095,7 +981,7 @@
    "automatic": false
   },
   {
-   "id": "relation_084",
+   "id": "relation_076",
    "from": "skill_027",
    "from_verb": "brace",
    "to": "skill_038",
@@ -1109,7 +995,7 @@
    "automatic": false
   },
   {
-   "id": "relation_085",
+   "id": "relation_077",
    "from": "skill_027",
    "from_verb": "brace",
    "to": "skill_021",
@@ -1124,7 +1010,7 @@
    "automatic": false
   },
   {
-   "id": "relation_086",
+   "id": "relation_078",
    "from": "skill_028",
    "from_verb": "flip",
    "to": "skill_033",
@@ -1138,7 +1024,7 @@
    "automatic": false
   },
   {
-   "id": "relation_087",
+   "id": "relation_079",
    "from": "skill_028",
    "from_verb": "flip",
    "to": "skill_033",
@@ -1152,7 +1038,7 @@
    "automatic": false
   },
   {
-   "id": "relation_088",
+   "id": "relation_080",
    "from": "skill_029",
    "from_verb": "push",
    "to": "skill_017",
@@ -1166,7 +1052,7 @@
    "automatic": false
   },
   {
-   "id": "relation_089",
+   "id": "relation_081",
    "from": "skill_029",
    "from_verb": "push",
    "to": "skill_030",
@@ -1177,7 +1063,7 @@
    "automatic": false
   },
   {
-   "id": "relation_090",
+   "id": "relation_082",
    "from": "skill_030",
    "from_verb": "pull",
    "to": "skill_017",
@@ -1191,7 +1077,7 @@
    "automatic": false
   },
   {
-   "id": "relation_091",
+   "id": "relation_083",
    "from": "skill_031",
    "from_verb": "expose",
    "to": "skill_017",
@@ -1205,7 +1091,7 @@
    "automatic": false
   },
   {
-   "id": "relation_092",
+   "id": "relation_084",
    "from": "skill_031",
    "from_verb": "expose",
    "to": "skill_028",
@@ -1219,21 +1105,21 @@
    "automatic": false
   },
   {
-   "id": "relation_093",
+   "id": "relation_085",
    "from": "skill_031",
    "from_verb": "expose",
-   "to": "skill_002",
-   "to_verb": "approach",
+   "to": "skill_030",
+   "to_verb": "pull",
    "kind": "fallback",
-   "fallback_type": "repair",
+   "fallback_type": "recover",
    "when": "no base pose reaches behind the object",
    "bind": {
-    "target": "$object"
+    "object": "$object"
    },
    "automatic": false
   },
   {
-   "id": "relation_094",
+   "id": "relation_086",
    "from": "skill_032",
    "from_verb": "separate",
    "to": "skill_017",
@@ -1247,7 +1133,7 @@
    "automatic": false
   },
   {
-   "id": "relation_095",
+   "id": "relation_087",
    "from": "skill_033",
    "from_verb": "center",
    "to": "skill_029",
@@ -1260,7 +1146,7 @@
    "automatic": false
   },
   {
-   "id": "relation_096",
+   "id": "relation_088",
    "from": "skill_033",
    "from_verb": "center",
    "to": "skill_017",
@@ -1274,7 +1160,7 @@
    "automatic": false
   },
   {
-   "id": "relation_097",
+   "id": "relation_089",
    "from": "skill_034",
    "from_verb": "roll",
    "to": "skill_017",
@@ -1288,7 +1174,7 @@
    "automatic": false
   },
   {
-   "id": "relation_098",
+   "id": "relation_090",
    "from": "skill_034",
    "from_verb": "roll",
    "to": "skill_029",
@@ -1301,7 +1187,7 @@
    "automatic": false
   },
   {
-   "id": "relation_099",
+   "id": "relation_091",
    "from": "skill_035",
    "from_verb": "tip",
    "to": "skill_034",
@@ -1315,7 +1201,7 @@
    "automatic": false
   },
   {
-   "id": "relation_100",
+   "id": "relation_092",
    "from": "skill_035",
    "from_verb": "tip",
    "to": "skill_017",
@@ -1329,7 +1215,7 @@
    "automatic": false
   },
   {
-   "id": "relation_101",
+   "id": "relation_093",
    "from": "skill_035",
    "from_verb": "tip",
    "to": "skill_036",
@@ -1340,7 +1226,7 @@
    "automatic": false
   },
   {
-   "id": "relation_102",
+   "id": "relation_094",
    "from": "skill_036",
    "from_verb": "upright",
    "to": "skill_017",
@@ -1354,7 +1240,7 @@
    "automatic": false
   },
   {
-   "id": "relation_103",
+   "id": "relation_095",
    "from": "skill_036",
    "from_verb": "upright",
    "to": "skill_035",
@@ -1365,7 +1251,7 @@
    "automatic": false
   },
   {
-   "id": "relation_104",
+   "id": "relation_096",
    "from": "skill_037",
    "from_verb": "wipe",
    "to": "skill_018",
@@ -1379,7 +1265,7 @@
    "automatic": false
   },
   {
-   "id": "relation_105",
+   "id": "relation_097",
    "from": "skill_037",
    "from_verb": "wipe",
    "to": "skill_050",
@@ -1393,7 +1279,7 @@
    "automatic": false
   },
   {
-   "id": "relation_106",
+   "id": "relation_098",
    "from": "skill_038",
    "from_verb": "stir",
    "to": "skill_045",
@@ -1407,7 +1293,7 @@
    "automatic": false
   },
   {
-   "id": "relation_107",
+   "id": "relation_099",
    "from": "skill_038",
    "from_verb": "stir",
    "to": "skill_043",
@@ -1419,7 +1305,7 @@
    "automatic": false
   },
   {
-   "id": "relation_108",
+   "id": "relation_100",
    "from": "skill_038",
    "from_verb": "stir",
    "to": "skill_027",
@@ -1433,7 +1319,7 @@
    "automatic": false
   },
   {
-   "id": "relation_109",
+   "id": "relation_101",
    "from": "skill_039",
    "from_verb": "pour",
    "to": "skill_018",
@@ -1447,7 +1333,7 @@
    "automatic": false
   },
   {
-   "id": "relation_110",
+   "id": "relation_102",
    "from": "skill_039",
    "from_verb": "pour",
    "to": "skill_038",
@@ -1461,7 +1347,7 @@
    "automatic": false
   },
   {
-   "id": "relation_111",
+   "id": "relation_103",
    "from": "skill_039",
    "from_verb": "pour",
    "to": "skill_046",
@@ -1476,7 +1362,7 @@
    "automatic": false
   },
   {
-   "id": "relation_112",
+   "id": "relation_104",
    "from": "skill_040",
    "from_verb": "open",
    "to": "skill_017",
@@ -1488,7 +1374,7 @@
    "automatic": false
   },
   {
-   "id": "relation_113",
+   "id": "relation_105",
    "from": "skill_040",
    "from_verb": "open",
    "to": "skill_018",
@@ -1500,7 +1386,7 @@
    "automatic": false
   },
   {
-   "id": "relation_114",
+   "id": "relation_106",
    "from": "skill_040",
    "from_verb": "open",
    "to": "skill_041",
@@ -1514,7 +1400,7 @@
    "automatic": false
   },
   {
-   "id": "relation_115",
+   "id": "relation_107",
    "from": "skill_040",
    "from_verb": "open",
    "to": "skill_004",
@@ -1528,7 +1414,7 @@
    "automatic": false
   },
   {
-   "id": "relation_116",
+   "id": "relation_108",
    "from": "skill_040",
    "from_verb": "open",
    "to": "skill_022",
@@ -1541,21 +1427,7 @@
    "automatic": false
   },
   {
-   "id": "relation_117",
-   "from": "skill_040",
-   "from_verb": "open",
-   "to": "skill_002",
-   "to_verb": "approach",
-   "kind": "fallback",
-   "fallback_type": "recover",
-   "when": "the handle is out of reach",
-   "bind": {
-    "target": "$articulated"
-   },
-   "automatic": false
-  },
-  {
-   "id": "relation_118",
+   "id": "relation_109",
    "from": "skill_041",
    "from_verb": "close",
    "to": "skill_043",
@@ -1569,7 +1441,7 @@
    "automatic": false
   },
   {
-   "id": "relation_119",
+   "id": "relation_110",
    "from": "skill_041",
    "from_verb": "close",
    "to": "skill_044",
@@ -1583,7 +1455,7 @@
    "automatic": false
   },
   {
-   "id": "relation_120",
+   "id": "relation_111",
    "from": "skill_041",
    "from_verb": "close",
    "to": "skill_001",
@@ -1595,7 +1467,7 @@
    "automatic": false
   },
   {
-   "id": "relation_121",
+   "id": "relation_112",
    "from": "skill_041",
    "from_verb": "close",
    "to": "skill_004",
@@ -1609,7 +1481,7 @@
    "automatic": false
   },
   {
-   "id": "relation_122",
+   "id": "relation_113",
    "from": "skill_042",
    "from_verb": "press",
    "to": "skill_043",
@@ -1621,7 +1493,7 @@
    "automatic": false
   },
   {
-   "id": "relation_123",
+   "id": "relation_114",
    "from": "skill_042",
    "from_verb": "press",
    "to": "skill_009",
@@ -1635,18 +1507,20 @@
    "automatic": false
   },
   {
-   "id": "relation_124",
+   "id": "relation_115",
    "from": "skill_042",
    "from_verb": "press",
-   "to": "skill_040",
-   "to_verb": "open",
-   "kind": "alternative",
-   "when": "the door key is pressed only to open the microwave door",
+   "to": "skill_041",
+   "to_verb": "close",
+   "kind": "fallback",
+   "fallback_type": "repair",
+   "repairs": "is_closed",
+   "when": "the start key was refused because the microwave door is open",
    "bind": {},
    "automatic": false
   },
   {
-   "id": "relation_125",
+   "id": "relation_116",
    "from": "skill_043",
    "from_verb": "heat",
    "to": "skill_040",
@@ -1660,7 +1534,7 @@
    "automatic": false
   },
   {
-   "id": "relation_126",
+   "id": "relation_117",
    "from": "skill_043",
    "from_verb": "heat",
    "to": "skill_017",
@@ -1674,7 +1548,7 @@
    "automatic": false
   },
   {
-   "id": "relation_127",
+   "id": "relation_118",
    "from": "skill_043",
    "from_verb": "heat",
    "to": "skill_043",
@@ -1688,7 +1562,7 @@
    "automatic": false
   },
   {
-   "id": "relation_128",
+   "id": "relation_119",
    "from": "skill_043",
    "from_verb": "heat",
    "to": "skill_041",
@@ -1703,7 +1577,7 @@
    "automatic": false
   },
   {
-   "id": "relation_129",
+   "id": "relation_120",
    "from": "skill_043",
    "from_verb": "heat",
    "to": "skill_018",
@@ -1718,7 +1592,7 @@
    "automatic": false
   },
   {
-   "id": "relation_130",
+   "id": "relation_121",
    "from": "skill_043",
    "from_verb": "heat",
    "to": "skill_056",
@@ -1730,19 +1604,19 @@
    "automatic": false
   },
   {
-   "id": "relation_131",
+   "id": "relation_122",
    "from": "skill_043",
    "from_verb": "heat",
    "to": "skill_039",
    "to_verb": "pour",
    "kind": "fallback",
    "fallback_type": "recover",
-   "when": "the food is in a cup, not in the pot on the burner",
+   "when": "loose food sits in a held cup and the pot on the burner is the vessel to heat",
    "bind": {},
    "automatic": false
   },
   {
-   "id": "relation_132",
+   "id": "relation_123",
    "from": "skill_044",
    "from_verb": "chill",
    "to": "skill_040",
@@ -1756,7 +1630,7 @@
    "automatic": false
   },
   {
-   "id": "relation_133",
+   "id": "relation_124",
    "from": "skill_044",
    "from_verb": "chill",
    "to": "skill_041",
@@ -1771,19 +1645,19 @@
    "automatic": false
   },
   {
-   "id": "relation_134",
+   "id": "relation_125",
    "from": "skill_045",
    "from_verb": "cover",
    "to": "skill_043",
    "to_verb": "heat",
    "kind": "sequence",
    "sequence_type": "enables",
-   "when": "the covered pot is heated",
+   "when": "the pot is heated with its lid on (heat itself needs no lid)",
    "bind": {},
    "automatic": false
   },
   {
-   "id": "relation_135",
+   "id": "relation_126",
    "from": "skill_045",
    "from_verb": "cover",
    "to": "skill_046",
@@ -1794,7 +1668,7 @@
    "automatic": false
   },
   {
-   "id": "relation_136",
+   "id": "relation_127",
    "from": "skill_046",
    "from_verb": "uncover",
    "to": "skill_039",
@@ -1808,7 +1682,7 @@
    "automatic": false
   },
   {
-   "id": "relation_137",
+   "id": "relation_128",
    "from": "skill_046",
    "from_verb": "uncover",
    "to": "skill_038",
@@ -1822,7 +1696,7 @@
    "automatic": false
   },
   {
-   "id": "relation_138",
+   "id": "relation_129",
    "from": "skill_046",
    "from_verb": "uncover",
    "to": "skill_017",
@@ -1834,7 +1708,7 @@
    "automatic": false
   },
   {
-   "id": "relation_139",
+   "id": "relation_130",
    "from": "skill_046",
    "from_verb": "uncover",
    "to": "skill_045",
@@ -1845,7 +1719,7 @@
    "automatic": false
   },
   {
-   "id": "relation_140",
+   "id": "relation_131",
    "from": "skill_047",
    "from_verb": "fetch",
    "to": "skill_047",
@@ -1857,7 +1731,7 @@
    "automatic": false
   },
   {
-   "id": "relation_141",
+   "id": "relation_132",
    "from": "skill_047",
    "from_verb": "fetch",
    "to": "skill_053",
@@ -1870,7 +1744,7 @@
    "automatic": false
   },
   {
-   "id": "relation_142",
+   "id": "relation_133",
    "from": "skill_047",
    "from_verb": "fetch",
    "to": "skill_013",
@@ -1884,7 +1758,7 @@
    "automatic": false
   },
   {
-   "id": "relation_143",
+   "id": "relation_134",
    "from": "skill_048",
    "from_verb": "collect",
    "to": "skill_041",
@@ -1896,7 +1770,7 @@
    "automatic": false
   },
   {
-   "id": "relation_144",
+   "id": "relation_135",
    "from": "skill_048",
    "from_verb": "collect",
    "to": "skill_049",
@@ -1907,7 +1781,7 @@
    "automatic": false
   },
   {
-   "id": "relation_145",
+   "id": "relation_136",
    "from": "skill_049",
    "from_verb": "sort",
    "to": "skill_048",
@@ -1918,7 +1792,7 @@
    "automatic": false
   },
   {
-   "id": "relation_146",
+   "id": "relation_137",
    "from": "skill_049",
    "from_verb": "sort",
    "to": "skill_041",
@@ -1930,7 +1804,7 @@
    "automatic": false
   },
   {
-   "id": "relation_147",
+   "id": "relation_138",
    "from": "skill_050",
    "from_verb": "clear",
    "to": "skill_037",
@@ -1944,7 +1818,7 @@
    "automatic": false
   },
   {
-   "id": "relation_148",
+   "id": "relation_139",
    "from": "skill_050",
    "from_verb": "clear",
    "to": "skill_052",
@@ -1958,7 +1832,7 @@
    "automatic": false
   },
   {
-   "id": "relation_149",
+   "id": "relation_140",
    "from": "skill_051",
    "from_verb": "empty",
    "to": "skill_050",
@@ -1969,7 +1843,7 @@
    "automatic": false
   },
   {
-   "id": "relation_150",
+   "id": "relation_141",
    "from": "skill_051",
    "from_verb": "empty",
    "to": "skill_046",
@@ -1984,7 +1858,7 @@
    "automatic": false
   },
   {
-   "id": "relation_151",
+   "id": "relation_142",
    "from": "skill_052",
    "from_verb": "arrange",
    "to": "skill_050",
@@ -1998,7 +1872,7 @@
    "automatic": false
   },
   {
-   "id": "relation_152",
+   "id": "relation_143",
    "from": "skill_053",
    "from_verb": "restore",
    "to": "skill_047",
@@ -2011,7 +1885,7 @@
    "automatic": false
   },
   {
-   "id": "relation_153",
+   "id": "relation_144",
    "from": "skill_053",
    "from_verb": "restore",
    "to": "skill_009",
@@ -2025,7 +1899,7 @@
    "automatic": false
   },
   {
-   "id": "relation_154",
+   "id": "relation_145",
    "from": "skill_054",
    "from_verb": "swap",
    "to": "skill_047",
@@ -2036,7 +1910,7 @@
    "automatic": false
   },
   {
-   "id": "relation_155",
+   "id": "relation_146",
    "from": "skill_054",
    "from_verb": "swap",
    "to": "skill_009",
@@ -2050,19 +1924,19 @@
    "automatic": false
   },
   {
-   "id": "relation_156",
+   "id": "relation_147",
    "from": "skill_055",
    "from_verb": "sidestep",
-   "to": "skill_002",
-   "to_verb": "approach",
+   "to": "skill_017",
+   "to_verb": "pick",
    "kind": "sequence",
    "sequence_type": "then",
-   "when": "the target is now in front of the arm",
+   "when": "the object is now in front of the arm",
    "bind": {},
    "automatic": false
   },
   {
-   "id": "relation_157",
+   "id": "relation_148",
    "from": "skill_055",
    "from_verb": "sidestep",
    "to": "skill_001",
@@ -2073,7 +1947,7 @@
    "automatic": false
   },
   {
-   "id": "relation_158",
+   "id": "relation_149",
    "from": "skill_056",
    "from_verb": "wait",
    "to": "skill_040",
@@ -2085,19 +1959,19 @@
    "automatic": false
   },
   {
-   "id": "relation_159",
+   "id": "relation_150",
    "from": "skill_057",
    "from_verb": "identify",
    "to": "skill_049",
    "to_verb": "sort",
    "kind": "sequence",
    "sequence_type": "then",
-   "when": "the category decides the destination",
+   "when": "the tags decide the destination",
    "bind": {},
    "automatic": false
   },
   {
-   "id": "relation_160",
+   "id": "relation_151",
    "from": "skill_057",
    "from_verb": "identify",
    "to": "skill_058",
@@ -2110,7 +1984,7 @@
    "automatic": false
   },
   {
-   "id": "relation_161",
+   "id": "relation_152",
    "from": "skill_057",
    "from_verb": "identify",
    "to": "skill_001",
@@ -2124,7 +1998,7 @@
    "automatic": false
   },
   {
-   "id": "relation_162",
+   "id": "relation_153",
    "from": "skill_058",
    "from_verb": "measure",
    "to": "skill_017",
@@ -2136,7 +2010,7 @@
    "automatic": false
   },
   {
-   "id": "relation_163",
+   "id": "relation_154",
    "from": "skill_058",
    "from_verb": "measure",
    "to": "skill_057",
@@ -2149,7 +2023,7 @@
    "automatic": false
   },
   {
-   "id": "relation_164",
+   "id": "relation_155",
    "from": "skill_059",
    "from_verb": "count",
    "to": "skill_048",
@@ -2161,7 +2035,7 @@
    "automatic": false
   },
   {
-   "id": "relation_165",
+   "id": "relation_156",
    "from": "skill_059",
    "from_verb": "count",
    "to": "skill_014",
@@ -2173,7 +2047,7 @@
    "automatic": false
   },
   {
-   "id": "relation_166",
+   "id": "relation_157",
    "from": "skill_060",
    "from_verb": "wave",
    "to": "skill_015",
@@ -2185,7 +2059,7 @@
    "automatic": false
   },
   {
-   "id": "relation_167",
+   "id": "relation_158",
    "from": "skill_060",
    "from_verb": "wave",
    "to": "skill_061",
@@ -2196,7 +2070,7 @@
    "automatic": false
   },
   {
-   "id": "relation_168",
+   "id": "relation_159",
    "from": "skill_061",
    "from_verb": "nod",
    "to": "skill_011",
@@ -2208,7 +2082,7 @@
    "automatic": false
   },
   {
-   "id": "relation_169",
+   "id": "relation_160",
    "from": "skill_061",
    "from_verb": "nod",
    "to": "skill_060",
@@ -2219,7 +2093,7 @@
    "automatic": false
   },
   {
-   "id": "relation_170",
+   "id": "relation_161",
    "from": "skill_062",
    "from_verb": "shake",
    "to": "skill_039",
@@ -2233,7 +2107,7 @@
    "automatic": false
   },
   {
-   "id": "relation_171",
+   "id": "relation_162",
    "from": "skill_062",
    "from_verb": "shake",
    "to": "skill_025",
@@ -2246,7 +2120,7 @@
    "automatic": false
   },
   {
-   "id": "relation_172",
+   "id": "relation_163",
    "from": "skill_063",
    "from_verb": "hover",
    "to": "skill_019",
@@ -2261,7 +2135,7 @@
    "automatic": false
   },
   {
-   "id": "relation_173",
+   "id": "relation_164",
    "from": "skill_063",
    "from_verb": "hover",
    "to": "skill_021",
@@ -2275,7 +2149,7 @@
    "automatic": false
   },
   {
-   "id": "relation_174",
+   "id": "relation_165",
    "from": "skill_063",
    "from_verb": "hover",
    "to": "skill_023",
@@ -2288,7 +2162,7 @@
    "automatic": false
   },
   {
-   "id": "relation_175",
+   "id": "relation_166",
    "from": "skill_064",
    "from_verb": "square",
    "to": "skill_020",
@@ -2300,7 +2174,7 @@
    "automatic": false
   },
   {
-   "id": "relation_176",
+   "id": "relation_167",
    "from": "skill_064",
    "from_verb": "square",
    "to": "skill_025",
@@ -2313,7 +2187,7 @@
    "automatic": false
   },
   {
-   "id": "relation_177",
+   "id": "relation_168",
    "from": "skill_065",
    "from_verb": "touch",
    "to": "skill_017",
@@ -2327,7 +2201,7 @@
    "automatic": false
   },
   {
-   "id": "relation_178",
+   "id": "relation_169",
    "from": "skill_065",
    "from_verb": "touch",
    "to": "skill_015",
@@ -2340,7 +2214,7 @@
    "automatic": false
   },
   {
-   "id": "relation_179",
+   "id": "relation_170",
    "from": "skill_066",
    "from_verb": "knock",
    "to": "skill_040",
@@ -2354,7 +2228,7 @@
    "automatic": false
   },
   {
-   "id": "relation_180",
+   "id": "relation_171",
    "from": "skill_066",
    "from_verb": "knock",
    "to": "skill_065",
@@ -2365,7 +2239,7 @@
    "automatic": false
   },
   {
-   "id": "relation_181",
+   "id": "relation_172",
    "from": "skill_067",
    "from_verb": "sweep",
    "to": "skill_048",
@@ -2377,7 +2251,7 @@
    "automatic": false
   },
   {
-   "id": "relation_182",
+   "id": "relation_173",
    "from": "skill_067",
    "from_verb": "sweep",
    "to": "skill_029",
@@ -2388,7 +2262,7 @@
    "automatic": false
   },
   {
-   "id": "relation_183",
+   "id": "relation_174",
    "from": "skill_068",
    "from_verb": "stop",
    "to": "skill_017",
@@ -2400,7 +2274,7 @@
    "automatic": false
   },
   {
-   "id": "relation_184",
+   "id": "relation_175",
    "from": "skill_068",
    "from_verb": "stop",
    "to": "skill_043",
@@ -2411,7 +2285,7 @@
    "automatic": false
   },
   {
-   "id": "relation_185",
+   "id": "relation_176",
    "from": "skill_069",
    "from_verb": "dip",
    "to": "skill_038",
@@ -2426,7 +2300,7 @@
    "automatic": false
   },
   {
-   "id": "relation_186",
+   "id": "relation_177",
    "from": "skill_069",
    "from_verb": "dip",
    "to": "skill_038",
@@ -2440,7 +2314,7 @@
    "automatic": false
   },
   {
-   "id": "relation_187",
+   "id": "relation_178",
    "from": "skill_070",
    "from_verb": "hide",
    "to": "skill_047",
@@ -2453,7 +2327,7 @@
    "automatic": false
   },
   {
-   "id": "relation_188",
+   "id": "relation_179",
    "from": "skill_070",
    "from_verb": "hide",
    "to": "skill_009",
@@ -2467,7 +2341,7 @@
    "automatic": false
   },
   {
-   "id": "relation_189",
+   "id": "relation_180",
    "from": "skill_071",
    "from_verb": "explore_furniture",
    "to": "skill_001",
@@ -2479,7 +2353,7 @@
    "automatic": false
   },
   {
-   "id": "relation_190",
+   "id": "relation_181",
    "from": "skill_071",
    "from_verb": "explore_furniture",
    "to": "skill_040",
@@ -2493,7 +2367,7 @@
    "automatic": false
   },
   {
-   "id": "relation_191",
+   "id": "relation_182",
    "from": "skill_071",
    "from_verb": "explore_furniture",
    "to": "skill_011",

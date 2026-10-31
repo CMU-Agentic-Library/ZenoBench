@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import contextlib
+
 import numpy as np
 
 from .base import AtomicPolicy
@@ -35,45 +37,52 @@ class TuckArmPolicy(AtomicPolicy):
 
 
 def _move_posture_joint(rig, joint_name, target, tolerance):
-    """Move one posture joint; tuck first if the initial arm sweep is blocked."""
-    if rig.held is not None:
-        raise SkillFailure(f"{joint_name}: release the held object first")
+    """Move one posture joint.  Empty-handed, tuck first if the initial arm sweep is
+    blocked; with a load, the held object is in the plan's collision model, a blocked
+    sweep backs the base out instead, and the grasp is checked afterwards."""
     idx = rig.kin.names.index(joint_name)
     target = float(target)
     lo, hi = float(rig.kin.lo[idx]), float(rig.kin.hi[idx])
     if not lo <= target <= hi:
         raise ValueError(f"{joint_name} target {target:.3f} outside [{lo:.3f}, {hi:.3f}]")
-    q_goal = rig.q_cmd.copy()
-    q_goal[idx] = target
-    rig.sync_world()
+    from .. import skills
+
+    def plan():
+        rig.sync_world()
+        q_goal = rig.q_cmd.copy()
+        q_goal[idx] = target
+        return rig.joint_path(q_goal, joint_name)
+
     old_kw = rig.kin.coll_kw
     rig.kin.coll_kw = {}
     try:
-        try:
-            path = rig.joint_path(q_goal, joint_name)
-        except SkillFailure:
-            TuckArmPolicy(rig).execute()
-            rig.sync_world()
-            q_goal = rig.q_cmd.copy()
-            q_goal[idx] = target
+        with rig.held_collision() if rig.held is not None else contextlib.nullcontext():
             try:
-                path = rig.joint_path(q_goal, joint_name)
+                path = plan()
             except SkillFailure:
-                # the tucked hand would sweep into the furniture in front:
-                # back the base away and try once more
-                from .. import skills
-                skills._back_off(rig, 0.35)
-                rig.sync_world()
-                q_goal = rig.q_cmd.copy()
-                q_goal[idx] = target
-                path = rig.joint_path(q_goal, joint_name)
-        rig.follow(path)
+                if rig.held is not None:
+                    # the load would sweep into the furniture in front: back out with it and try again
+                    skills._back_off(rig, 0.35)
+                    path = plan()
+                else:
+                    TuckArmPolicy(rig).execute()
+                    try:
+                        path = plan()
+                    except SkillFailure:
+                        # the tucked hand would sweep into the furniture in front:
+                        # back the base away and try once more
+                        skills._back_off(rig, 0.35)
+                        path = plan()
+            rig.follow(path)
     finally:
         rig.kin.coll_kw = old_kw
+    skills.check_held(rig, joint_name)
+    skills.check_left_held(rig, joint_name)
     actual = float(rig.q()[idx])
     if abs(actual - target) > tolerance:
         raise SkillFailure(f"{joint_name}: actual {actual:.3f}, target {target:.3f}")
-    rig.log("posture_joint", joint=joint_name, target=round(target, 3), actual=round(actual, 3))
+    rig.log("posture_joint", joint=joint_name, target=round(target, 3), actual=round(actual, 3),
+            held=(rig.held or {}).get("name"))
     return actual
 
 

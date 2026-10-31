@@ -1,13 +1,13 @@
 ---
 name: stand-torso
-description: "Raise the torso lift to its top travel height."
+description: "Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when the right hand is empty.)"
 ---
 
 # Stand up to full height (`skill_006`)
 
 `stand()`
 
-Raise the torso lift to its top travel height.
+Raise the torso lift to its top travel height; a held object rises with the body. (navigate, tuck and reset also raise the torso when the right hand is empty.)
 
 ## When to use
 

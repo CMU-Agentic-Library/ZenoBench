@@ -17,7 +17,7 @@
   "receptacle": {
    "type": "receptacle_ref",
    "required": true,
-   "description": "Where the contents go (a container for the pouring path)."
+   "description": "Where the contents go: a support or a container."
   }
  },
  "outputs": {
@@ -164,61 +164,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": "Take the items out one by one. (Pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove; the pour path is kept as an alternative.)"
-   },
-   {
-    "path_id": "pour_out",
-    "when": [
-     {
-      "noun": "container",
-      "field": "grasp_types",
-      "op": "contains",
-      "value": "rim_pinch"
-     },
-     {
-      "noun": "receptacle",
-      "field": "kind",
-      "op": "equals",
-      "value": "object"
-     }
-    ],
-    "steps": [
-     {
-      "call": "navigate",
-      "args": {
-       "destination": "$container"
-      }
-     },
-     {
-      "call": "pick",
-      "args": {
-       "object": "$container"
-      }
-     },
-     {
-      "call": "navigate",
-      "args": {
-       "destination": "$receptacle"
-      }
-     },
-     {
-      "call": "pour",
-      "args": {
-       "source": "$container",
-       "target": "$receptacle"
-      }
-     },
-     {
-      "call": "place",
-      "args": {
-       "object": "$container",
-       "receptacle": "@container.support"
-      }
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": "A cup or mug of loose items is emptied by pouring, then put back."
+    "note": "Take the items out one by one; empty never pours (pouring loose solids needs the cup past ~90 deg, which the arm cannot reach over the stove). To pour, call pour."
    }
   ]
  },

@@ -17,12 +17,12 @@
   "receptacle": {
    "type": "receptacle_ref",
    "required": true,
-   "description": "A lidded container or a cabinet interior shelf."
+   "description": "A lidded container, or an inside shelf of a cabinet or appliance with an annotated door."
   },
   "lid": {
    "type": "lid_ref",
    "required": false,
-   "description": "The lid to use for a container."
+   "description": "The lid to cover the container with: required when the receptacle is a container (it is not found automatically)."
   }
  },
  "outputs": {},
