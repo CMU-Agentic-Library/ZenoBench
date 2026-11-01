@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import contextlib
-
 import numpy as np
 
 from .base import AtomicPolicy
@@ -56,24 +54,23 @@ def _move_posture_joint(rig, joint_name, target, tolerance):
     old_kw = rig.kin.coll_kw
     rig.kin.coll_kw = {}
     try:
-        with rig.held_collision() if rig.held is not None else contextlib.nullcontext():
-            try:
+        try:
+            path = plan()
+        except SkillFailure:
+            if rig.held is not None:
+                # the load would sweep into the furniture in front: back out with it and try again
+                skills._back_off(rig, 0.35)
                 path = plan()
-            except SkillFailure:
-                if rig.held is not None:
-                    # the load would sweep into the furniture in front: back out with it and try again
+            else:
+                TuckArmPolicy(rig).execute()
+                try:
+                    path = plan()
+                except SkillFailure:
+                    # the tucked hand would sweep into the furniture in front:
+                    # back the base away and try once more
                     skills._back_off(rig, 0.35)
                     path = plan()
-                else:
-                    TuckArmPolicy(rig).execute()
-                    try:
-                        path = plan()
-                    except SkillFailure:
-                        # the tucked hand would sweep into the furniture in front:
-                        # back the base away and try once more
-                        skills._back_off(rig, 0.35)
-                        path = plan()
-            rig.follow(path)
+        rig.follow(path)
     finally:
         rig.kin.coll_kw = old_kw
     skills.check_held(rig, joint_name)

@@ -8,12 +8,17 @@ from __future__ import annotations
 import json
 import math
 from contextlib import contextmanager
+from dataclasses import replace
 
 import numpy as np
 
 from .clearance import BASE_DRIVE, FREE, LEGACY, MONITOR_EVERY, Clearance
-from .kinematics import CARRY_TILT, ArmKin, FINGERS, LEFT_ARM_FOLD, max_tilt, tilt, vel_limits, yaw_quat_wxyz
+from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ANCHOR, ASSET
+
+BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
+CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
+RIM_VEL = 0.25            # rad/s: ...with a container hanging from a one-hand rim pinch (it pivots in the pads)
 
 
 class SkillFailure(RuntimeError):
@@ -57,6 +62,7 @@ class Rig:
         self.frames = []             # JPEG bytes, composed as they are rendered
         self.events, self.caption, self.trace = [], "", []
         self.clear = Clearance(self)        # collision policy of the motions + contact monitor (clearance.py)
+        self._scope = False                 # a motion is being planned (_planning)
         self._log = log
         self._arts, self._dof, self._bodies = {}, {}, {}
         by_prim = {}
@@ -270,6 +276,22 @@ class Rig:
                     imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
                 self.frames.append(self._compose(imgs, self.caption))
 
+    def _held_container(self):
+        """The right hand holds a container (by its rim: it hangs off a thin wall)."""
+        h = self.held
+        if h is None or h.get("kind") == "bimanual" or h.get("name") not in self.ann.objects:
+            return False
+        return bool(self.ann.asset_of(self.ann.objects[h["name"]]).get("container"))
+
+    def _vmax(self):
+        """Joint speeds paths are executed at: 60% of the URDF limits (torso lift is 0.117 m/s;
+        ignoring this was a 0.29 m tracking error); with an object in the hand the arm joints at
+        most CARRY_VEL (RIM_VEL for a rim-held container) so it is not flung."""
+        v = 0.6 * vel_limits(self.kin.names)
+        if self._carrying():
+            v[2:] = np.minimum(v[2:], RIM_VEL if self._held_container() else CARRY_VEL)
+        return v
+
     def follow_smooth(self, qs, steps_per_wp=3, settle=150, tol=0.01):
         """Follow the same planned joint waypoints with a gentle start and stop.
 
@@ -279,7 +301,7 @@ class Rig:
         points = [self.q_cmd.copy()] + [np.asarray(q, float) for q in qs]
         if len(points) == 1:
             return
-        vmax = 0.6 * vel_limits(self.kin.names)
+        vmax = self._vmax()
         segment_times = [max(steps_per_wp / 120,
                              float(np.max(np.abs(b - a) / vmax)))
                          for a, b in zip(points[:-1], points[1:])]
@@ -307,9 +329,11 @@ class Rig:
             self.step(2)
 
     def follow(self, qs, steps_per_wp=3, settle=150, tol=0.01):
-        """Waypoints time-scaled to 60% of URDF velocity limits (torso lift is
-        0.117 m/s; ignoring this was a 0.29 m tracking error)."""
-        vmax = 0.6 * vel_limits(self.kin.names)
+        """Waypoints time-scaled to the joint speeds of _vmax; with an object in the hand always
+        follow_smooth's gentle start and stop (a jerk shakes it out of the pinch)."""
+        if self._carrying():
+            return self.follow_smooth(qs, steps_per_wp, settle, tol)
+        vmax = self._vmax()
         for q in qs:
             need = int(math.ceil(np.max(np.abs(q - self.q_cmd) / vmax) * 120))
             self.q_cmd = q
@@ -319,18 +343,19 @@ class Rig:
                 break
             self.step(2)
 
+    # ------------------------------------------------------------ arm motions
+    # Every arm motion has two ways (docs/COLLISION_PLAN.md principle 2): collision-checked, the
+    # straight move when it is free, else a planned trajectory; unchecked, the straight move.
+    # A checked motion with a fallback Allow that finds no path makes the unchecked one, logged.
     def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, allow=FREE, q_hint=None,
                 smooth=False):
-        """Straight TCP line; then the planner-validated step; then (collision-checked legs) a
-        constrained cuRobo trajectory: clear of the obstacle, ending in a straight approach,
-        the tilt held when carrying; then a joint-space move to ``q_hint`` (a
-        planner-validated solution).  ``allow`` (clearance.Allow): what the move may touch."""
+        """Move the TCP to (p, R): the straight line, else a planned trajectory (_move_path).
+        ``q_hint``: a joint solution of the target (find_park's), the planner's joint goal.
+        ``allow`` (clearance.Allow): what the move may touch (_motion_path)."""
         self.sync_world()
-        if allow.fallback:
-            qs, allow = self._checked_else_straight(
-                label, lambda a: self._move_path(p, R, step, label, a, q_hint), self.kin)
-        else:
-            qs = self._move_path(p, R, step, label, allow, q_hint)
+        p = np.asarray(p, float)
+        qs, allow = self._motion_path(label, allow, self.kin, lambda: self._move_path(p, R, step, label, q_hint),
+                                      lambda: self._straight_move(p, R, step, label, q_hint))
         self.clear.motion(label, allow)
         (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
         tcp, _ = self.kin.tcp(self.q())
@@ -342,136 +367,149 @@ class Rig:
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
 
-    def _checked_else_straight(self, label, plan, kin):
-        """FREE_ELSE_STRAIGHT: ``plan(FREE)``; when that finds no path, or the arm already starts
-        in collision, ``plan(LEGACY)`` (the unchecked move the leg always made) and log the
-        fallback with what that path runs into.  (waypoints, the Allow they were planned under)."""
-        start = self.q_cmd if kin is self.kin else np.r_[self.q_cmd[:2], self.left_q_cmd]
-        if not kin.free(start):
-            why = "starts in collision: " + kin.explain(start)
-        else:
-            try:
-                qs = plan(FREE)
-                self.clear.planned(label)
-                return qs, FREE
-            except SkillFailure as exc:
-                why = str(exc)
-        qs = plan(LEGACY)
-        hit = next((kin.explain(q) for q in list(qs[::5]) + list(qs[-1:]) if not kin.free(q)), None)
+    def _start(self, kin):
+        return self.q_cmd if kin is self.kin else np.r_[self.q_cmd[:2], self.left_q_cmd]
+
+    def _motion_path(self, label, allow, kin, plan, straight):
+        """(waypoints, the Allow they run under) of one motion of ``kin``'s arm.  Unchecked (or no
+        world): ``straight()``.  Checked: ``plan()`` inside _planning, its path verified against
+        what only the hand may touch; when that finds no path -- or, for a fallback Allow, the
+        arm already starts in collision -- a fallback Allow makes ``straight()`` and logs a
+        clearance_fallback with what that path runs into, any other raises SkillFailure."""
+        if not allow.checked or kin.scene is None:
+            return straight(), allow
+        start = self._start(kin)
+        with self._planning(kin, allow, start) as resolved:
+            if allow.fallback and not kin.free(start):
+                why = "starts in collision: " + kin.explain(start)
+            else:
+                try:
+                    qs = plan()
+                    if not kin.verify(start, qs):
+                        raise SkillFailure(f"{label}: the arm would run into what only the hand may touch")
+                    if allow.fallback:
+                        self.clear.planned(label)
+                    return qs, resolved
+                except SkillFailure as exc:
+                    if not allow.fallback:
+                        raise
+                    why = str(exc)
+        qs = straight()
+        with self._planning(kin, allow, start):
+            hit = next((kin.explain(q) for q in list(qs[::5]) + list(qs[-1:]) if not kin.free(q)), None)
         self.clear.fallback(label, why, hit)
         return qs, LEGACY
 
-    def _move_path(self, p, R, step, label, allow, q_hint):
-        """move_to's joint waypoints under ``allow`` (FREE or unchecked); SkillFailure when none."""
-        collision = allow.checked
-        scene = self.kin.scene
-        if not collision:
-            self.kin.scene = None
+    @contextmanager
+    def _planning(self, kin, allow, start):
+        """Query state for planning one motion of ``kin``'s arm from ``start`` (Motion.scope): what
+        that hand holds is in the collision model; a from_contact Allow switches off what the hand
+        and its load touch at the start.  Yields ``allow`` with those as its touch / held_on (what
+        the contact monitor then accepts).  Nested: the outer state stands."""
+        motion = kin.motion
+        if motion is None or getattr(self, "_scope", False):
+            yield allow
+            return
+        self._scope = True
         try:
-            qs, ok = self.kin.cart_path(self.q_cmd, np.asarray(p, float), R, step=step)
-            if not ok and step < 0.02:
-                qs, ok = self.kin.cart_path(self.q_cmd, np.asarray(p, float), R, step=0.02)
-                if ok:        # densify for smooth tracking
-                    dense = []
-                    prev = self.q_cmd
-                    for q in qs:
-                        k = max(1, int(np.max(np.abs(q - prev)) / 0.01))
-                        dense += [prev + (q - prev) * u for u in np.linspace(0, 1, k + 1)[1:]]
-                        prev = q
-                    qs = dense
-            if not ok and collision and scene is not None:
-                qs_c, status = self.kin.plan_to(self.q_cmd, np.asarray(p, float), R, carry=self._carrying())
-                if qs_c is not None:
-                    self.log("constrained_leg", target=label, waypoints=len(qs_c), carry=self._carrying())
-                    qs, ok = self.joint_path_via(qs_c), True
-                else:
-                    self.log("constrained_leg_failed", target=label, status=status)
-            if not ok and q_hint is not None:
-                # a large joint-space swing is always collision-checked, even for
-                # contact moves (a 2 rad swing put the forearm through a trash can)
-                big = float(np.max(np.abs(np.asarray(q_hint, float) - self.q_cmd))) > 1.0
-                if big:
-                    self.kin.scene = scene          # restored for this check even in contact moves
-                qs = self.joint_path(np.asarray(q_hint, float), label, allow=FREE if big else allow)
-                ok = True
-            if not ok:
-                q_goal, ok2 = self.kin.ik_global(np.asarray(p, float), R, seeds=[self.q_cmd])
-                if not ok2:
-                    raise SkillFailure(f"no IK for {label or p}")
-                qs = self.joint_path(q_goal, label, allow=allow)
+            with motion.scope(self, kin, start, allow.from_contact) as (touch, held_on):
+                if allow.from_contact:
+                    self.log("leave_contact", side=kin.side, touch=list(touch), held_on=list(held_on),
+                             colliders=len(motion.off))
+                if touch or held_on:
+                    allow = replace(allow, hand=kin.side, links="hand", touch=allow.touch + touch,
+                                    held_on=allow.held_on + held_on)
+                yield allow
+        finally:
+            self._scope = False
+
+    def _move_path(self, p, R, step, label, q_hint):
+        """move_to's collision-checked waypoints: the straight TCP line, else Motion.plan_to (the
+        pose under constraints, else the joint goal of _goal)."""
+        qs, ok = self.kin.cart_path(self.q_cmd, p, R, step=step)
+        if ok:
+            return qs
+        carry = self._carrying()
+        qs, how = self.kin.plan_to(self.q_cmd, p, R, carry=carry, q_goal=self._goal(p, R, q_hint))
+        if qs is None:
+            raise SkillFailure(f"no collision-free path to {label or p}: {how}")
+        self.log("planned_leg", target=label, how=how, waypoints=len(qs), carry=carry)
+        return self.joint_path_via(qs)
+
+    def _goal(self, p, R, q_hint):
+        """Joint goal for a planned leg to (p, R): ``q_hint`` re-solved at the actual base on its
+        branch, else a collision-free IK solution near q_hint / the current posture, else q_hint
+        itself (solved where find_park put the base); None when there is none."""
+        seeds = [np.asarray(q_hint, float)] if q_hint is not None else []
+        if seeds:
+            q, ok = self.kin.ik(p, R, seeds[0])
+            if ok and self.kin.free(q):
+                return q
+        q, ok = self.kin.ik_global(p, R, seeds=seeds + [self.q_cmd])
+        if ok:
+            return q
+        return seeds[0] if seeds and self.kin.free(seeds[0]) else None
+
+    def _straight_move(self, p, R, step, label, q_hint):
+        """move_to's unchecked waypoints: the straight TCP line, else (no IK along it) the straight
+        joint move to an IK solution near q_hint / the current posture.  Towards a q_hint, a joint
+        swing over BIG_SWING rad is not made unchecked: it is planned (joint_path), or SkillFailure."""
+        scene, self.kin.scene = self.kin.scene, None
+        try:
+            qs, ok = self.kin.cart_path(self.q_cmd, p, R, step=step)
+            if ok:
+                return qs
+            seeds = [np.asarray(q_hint, float)] if q_hint is not None else []
+            q_goal, ok = self.kin.ik_global(p, R, seeds=seeds + [self.q_cmd])
         finally:
             self.kin.scene = scene
-        return qs
-
-    @contextmanager
-    def held_collision(self, side="right"):
-        """Moves inside plan the held object (its box as spheres on the hand) clear of the world
-        (Motion._attach_held); only once it touches nothing.  For transport legs: a box is
-        too coarse for putting an object down into or among things."""
-        motion = self.kin.motion
-        if motion is None:
-            yield
-            return
-        motion.held_collision.add(side)
-        try:
-            yield
-        finally:
-            if motion.release_held(side):
-                self.log("held_collision", side=side, state=None)
+        if not ok:
+            raise SkillFailure(f"no IK for {label or p}")
+        if scene is not None and seeds and float(np.max(np.abs(q_goal - self.q_cmd))) > BIG_SWING:
+            return self._joint_path(q_goal, label, FREE)[0]
+        return self._dense(self.q_cmd, q_goal)
 
     def _carrying(self):
         """An object in the right hand (its tilt is held on planned moves)."""
         return self.held is not None and self.held.get("kind") != "bimanual"
 
+    @staticmethod
+    def _dense(qa, qb):
+        """Straight joint interpolation qa -> qb, about 0.01 rad apart (qa left out)."""
+        k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
+        return [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+
     def joint_path_via(self, vias):
         """Dense joint waypoints from q_cmd through ``vias`` (already checked)."""
         out, qa = [], self.q_cmd.copy()
         for qb in vias:
-            k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
-            out += [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+            out += self._dense(qa, np.asarray(qb, float))
             qa = qb
         return out
 
     def joint_path(self, q_goal, label=None, allow=FREE):
-        """Joint-space move to q_goal, collision-checked (the straight
-        interpolation used to sweep the hand through a cabinet): straight if
-        that is free, else a cuRobo trajectory, else fail instead of pushing
-        through.  An unchecked ``allow`` takes the straight interpolation."""
-        if allow.fallback:
-            qs, allow = self._checked_else_straight(label, lambda a: self._joint_path(q_goal, label, a), self.kin)
-        else:
-            qs = self._joint_path(q_goal, label, allow)
+        """Joint-space move to q_goal: the straight interpolation when it is collision-free (and keeps
+        a held object level), else a cuRobo trajectory, else (checked) SkillFailure instead of
+        pushing through (the straight interpolation once swept the hand through a cabinet);
+        unchecked, the straight interpolation."""
+        qs, allow = self._joint_path(np.asarray(q_goal, float), label, allow)
         self.clear.motion(label, allow)
         return qs
 
     def _joint_path(self, q_goal, label, allow):
-        check = allow.checked
-        q0 = self.q_cmd.copy()
+        return self._motion_path(label, allow, self.kin, lambda: self._joint_plan(q_goal, label),
+                                 lambda: self._dense(self.q_cmd.copy(), q_goal))
 
-        def dense(qa, qb):
-            k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
-            return [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+    def _joint_plan(self, q_goal, label):
+        q0 = self.q_cmd.copy()
         carry = self._carrying()
-        if not check or self.kin.scene is None or self.kin.segment_free(q0, q_goal):
-            if not (check and carry and self.kin.scene is not None) or \
-                    max_tilt(self.kin, self.kin.tcp(q0)[1], dense(q0, q_goal)[::10] + [q_goal]) <= CARRY_TILT or \
-                    tilt(self.kin.tcp(q0)[1], self.kin.tcp(q_goal)[1]) > CARRY_TILT:
-                return dense(q0, q_goal)
-            # free, but it tips the held object over on the way: a tilt-held trajectory instead
-        if not self.kin.free(q0) and self.kin.free(q_goal):
-            # starting in contact (hand still at a handle it just released):
-            # no collision-free path can start here, leave the contact directly
-            self.log("joint_from_contact", target=label)
-            return dense(q0, q_goal)
+        if self.kin.segment_free(q0, q_goal) and not (carry and tips_over(self.kin, q0, q_goal)):
+            return self._dense(q0, q_goal)
         qs, status = self.kin.plan(q0, q_goal, carry=carry)
         if qs is None:
             raise SkillFailure(f"joint move to {label}: no collision-free trajectory ({status})")
         self.log("joint_plan", target=label, waypoints=len(qs), carry=carry)
-        out, prev = [], q0
-        for q in qs:
-            out += dense(prev, q)
-            prev = q
-        return out
+        return self.joint_path_via(qs)
 
     def grip(self, width, steps=100, gradual=False):
         if getattr(self, "sticky", None) is not None:
@@ -561,10 +599,8 @@ class Rig:
         self.sync_world()
         self.world.left_active = True
         p = np.asarray(p, float)
-        if allow.fallback:
-            qs, allow = self._checked_else_straight(label, lambda a: self._left_path(p, R, label, a), self.left_kin)
-        else:
-            qs = self._left_path(p, R, label, allow)
+        qs, allow = self._motion_path(label, allow, self.left_kin, lambda: self._left_path(p, R, label, FREE),
+                                      lambda: self._left_path(p, R, label, LEGACY))
         self.clear.motion(label, allow)
         self.left_follow(qs)
         tcp, _ = self.left_kin.tcp(self.left_q())
@@ -599,48 +635,24 @@ class Rig:
         return qs
 
     def tuck(self):
-        """Fold the arm to the rest posture without sweeping through furniture
-        or an open door: try (direct | up | back+up) Cartesian retreats, then a
-        joint-space fold, every waypoint collision-checked."""
-        self.clear.motion("tuck", FREE)
+        """Fold the arm to the rest posture: joint_path (straight when that is free, else a cuRobo
+        trajectory).  False, the arm left where it is, when there is none."""
         self.sync_world()
-        tcp, R = self.kin.tcp(self.q_cmd)
-        back = R[:, 2] * 0.15                       # -approach direction
         kw = self.kin.coll_kw
         self.kin.coll_kw = {"ignore_fingers": True}
         try:
-            for pre in ([], [tcp + np.array([0, 0, 0.15])], [tcp + back, tcp + back + np.array([0, 0, 0.25])],
-                        [tcp + np.array([0, 0, 0.30])]):
-                qs, q, ok = [], self.q_cmd, True
-                for p in pre:
-                    seg, ok = self.kin.cart_path(q, p, R, 0.02)
-                    if not ok:
-                        break
-                    qs += seg
-                    q = seg[-1]
-                if not ok:
-                    continue
-                for target in (self.kin.rest,):
-                    if not self.kin.free(target):
-                        continue
-                    n = max(2, int(np.max(np.abs(target - q)) / 0.01))
-                    fold = [q + (target - q) * u for u in np.linspace(0, 1, n)[1:]]
-                    if self.kin.segment_free(q, target):
-                        self.follow(qs + fold)
-                        return True
-            # the straight fold clips the furniture/door: a cuRobo trajectory,
-            # only with an open hand (closed on a handle, the arm must not
-            # fold away: the caller backs the base out and pulls instead)
             rest = self.kin.rest
-            if float(self.grip_cmd) > 0.02 and self.kin.free(rest):
-                qs, status = self.kin.plan(self.q_cmd, rest)
-                if qs is not None:
-                    self.log("tuck_planned", waypoints=len(qs))
-                    self.follow(self.joint_path_via(qs))
-                    return True
-            self.log("tuck_blocked", rest_penetration=round(self.kin.penetration(self.kin.rest), 4),
-                     current_penetration=round(self.kin.penetration(self.q_cmd), 4))
-            return False
+            try:
+                if not self.kin.free(rest):
+                    raise SkillFailure("the rest posture collides here")
+                qs = self.joint_path(rest, "tuck")
+            except SkillFailure as exc:
+                self.log("tuck_blocked", reason=str(exc)[:200],
+                         rest_penetration=round(self.kin.penetration(rest), 4),
+                         current_penetration=round(self.kin.penetration(self.q_cmd), 4))
+                return False
+            self.follow(qs)
+            return True
         finally:
             self.kin.coll_kw = kw
 
@@ -664,10 +676,8 @@ class Rig:
         pivots under base accelerations: it is driven at half speed with a
         longer ramp.  The arms are not checked along the path (BASE_DRIVE)."""
         self.clear.motion("drive_base", BASE_DRIVE)
-        if self.held is not None and self.held.get("kind") != "bimanual":
-            a = self.ann.asset_of(self.ann.objects[self.held["name"]]) if self.held["name"] in self.ann.objects else {}
-            if a.get("container"):
-                speed, turn, ramp = min(speed, 0.18), min(turn, 0.35), max(ramp, 1.8)
+        if self._held_container():
+            speed, turn, ramp = min(speed, 0.18), min(turn, 0.35), max(ramp, 1.8)
         if getattr(self, "left_held", None) is not None and self.held is None:
             # a load in the left hand alone (after a handover) hangs from one
             # pinch: drive gently (a full-speed drive shook a rolling pin out)

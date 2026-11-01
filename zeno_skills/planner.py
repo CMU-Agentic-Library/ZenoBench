@@ -16,7 +16,7 @@ import math
 import numpy as np
 
 from .collision import BASE_HALF
-from .kinematics import manipulability
+from .kinematics import manipulability, tips_over
 
 # The base drives facing along the path (drive_base yaws to the segment
 # direction), so laterally only the half width of the 0.49 m column matters;
@@ -64,19 +64,9 @@ def joint_reachable(kin, qa, qb, carry=False):
     without it a park passes the search on a free plan and then fails the
     constrained one it actually has to run."""
     qa, qb = np.asarray(qa, float), np.asarray(qb, float)
-    if _segment_free(kin, qa, qb) and not (carry and _tips_over(kin, qa, qb)):
+    if _segment_free(kin, qa, qb) and not (carry and tips_over(kin, qa, qb)):
         return True
     return kin.plan(qa, qb, carry=carry)[0] is not None
-
-
-def _tips_over(kin, qa, qb):
-    """The straight interpolation qa -> qb tilts a held object past CARRY_TILT while the
-    goal pose itself does not (Rig.joint_path's test: that is when it plans instead)."""
-    from .kinematics import CARRY_TILT, max_tilt, tilt
-    R0 = kin.tcp(qa)[1]
-    k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
-    dense = [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
-    return max_tilt(kin, R0, dense[::10] + [qb]) > CARRY_TILT and tilt(R0, kin.tcp(qb)[1]) <= CARRY_TILT
 
 
 def torque_ratio(kin, q, force):

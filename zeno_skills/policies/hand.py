@@ -22,7 +22,7 @@ from scipy.spatial.transform import Rotation
 from .base import AtomicPolicy
 from .. import skills
 from ..annotations import rz
-from ..clearance import FREE_ELSE_STRAIGHT, LEGACY
+from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
 from ..planner import find_park
 from ..predicates import lid_on, tilt_deg
 from ..rig import SkillFailure
@@ -114,7 +114,7 @@ class DropIntoPolicy(AtomicPolicy):
         rig.held = None
         t, R1 = rig.kin.tcp(rig.q_cmd)
         try:
-            rig.move_to(t + np.array([0, 0, 0.06]), R1, step=0.01, label="drop_retreat", allow=FREE_ELSE_STRAIGHT)
+            rig.move_to(t + np.array([0, 0, 0.06]), R1, step=0.01, label="drop_retreat", allow=LEAVE_CONTACT)
         except SkillFailure as exc:
             rig.log("drop_retreat_short", reason=str(exc))
         rig.step(120)
@@ -219,7 +219,7 @@ class RegraspPolicy(AtomicPolicy):
             rig.grip(rig.held.get("pre_open", 0.04), 60, gradual=True)
             rig.held = None
             t, R = rig.kin.tcp(rig.q_cmd)
-            rig.move_to(t + np.array([0, 0, 0.06]), R, step=0.005, label="regrasp_clear", allow=FREE_ELSE_STRAIGHT)
+            rig.move_to(t + np.array([0, 0, 0.06]), R, step=0.005, label="regrasp_clear", allow=LEAVE_CONTACT)
         else:
             x, y, _ = rig.base_pose()
             hint = (min(max(x, x0 + 0.12), x1 - 0.12), min(max(y, y0 + 0.12), y1 - 0.12))
@@ -311,7 +311,7 @@ class ReleaseInPlacePolicy(AtomicPolicy):
             rig.held = None
             t, R = rig.kin.tcp(rig.q_cmd)
             try:
-                rig.move_to(t + 0.06 * R[:, 2], R, step=0.005, label="release_back", allow=FREE_ELSE_STRAIGHT)
+                rig.move_to(t + 0.06 * R[:, 2], R, step=0.005, label="release_back", allow=LEAVE_CONTACT)
             except SkillFailure as exc:
                 rig.log("release_back_short", reason=str(exc))
         else:
@@ -321,7 +321,7 @@ class ReleaseInPlacePolicy(AtomicPolicy):
             rig.left_held = None
             t, R = rig.left_kin.tcp(rig.left_q())
             try:
-                rig.move_left_to(t + 0.06 * R[:, 2], R, label="left_release_back", allow=FREE_ELSE_STRAIGHT)
+                rig.move_left_to(t + 0.06 * R[:, 2], R, label="left_release_back", allow=LEAVE_CONTACT)
             except SkillFailure as exc:
                 rig.log("left_release_back_short", reason=str(exc))
         rig.step(60)
@@ -428,7 +428,7 @@ class FlipFlatPolicy(AtomicPolicy):
             reached = pushed
         t, R1 = rig.kin.tcp(rig.q_cmd)
         try:
-            rig.move_to(t - 0.08 * (-R1[:, 2]), R1, step=0.005, label="flip_withdraw", allow=FREE_ELSE_STRAIGHT)
+            rig.move_to(t - 0.08 * (-R1[:, 2]), R1, step=0.005, label="flip_withdraw", allow=LEAVE_CONTACT)
         except SkillFailure as exc:
             rig.log("flip_withdraw_short", reason=str(exc))
         rig.step(150)

@@ -3,9 +3,11 @@
 ``Allow``      what one motion may touch.  ``FREE`` (the default) checks the whole robot;
                ``FREE_ELSE_STRAIGHT`` checks it too, but where no collision-free path exists it
                makes the unchecked straight move it always made and logs a
-               ``clearance_fallback``; ``unchecked(reason)`` turns checking off for that motion,
-               and ``LEGACY`` is the unchecked motion every former ``collision=False`` became
-               (not migrated yet).
+               ``clearance_fallback``; ``LEAVE_CONTACT`` is that for a motion that starts in contact
+               (just grasped, just let go): what the hand and its load touch at the start they may
+               touch on the way out (Rig._planning); ``unchecked(reason)`` turns checking off for
+               that motion, and ``LEGACY`` is the unchecked motion every former ``collision=False``
+               became (not migrated yet).
 ``Clearance``  ``rig.clear``: the skill scope (each skill starts with a fresh ``coll_kw`` on both
                arms and gives the caller's back when it ends) and the contact monitor.
 
@@ -50,13 +52,15 @@ class Allow:
     held_on: tuple[str, ...] = ()    # entities the held object may touch (its support, a container)
     checked: bool = True             # False: the motion is not collision-checked at all
     fallback: bool = False           # checked, but no collision-free path: the unchecked straight move
+    from_contact: bool = False       # what the hand and its load touch at the start: touch / held_on
     reason: str = ""
 
     def __post_init__(self):
-        if (not self.checked or self.fallback or self.touch or self.held_on) and not self.reason:
+        if (not self.checked or self.fallback or self.from_contact or self.touch or self.held_on) and \
+                not self.reason:
             raise ValueError("an Allow that permits contact needs a reason")
-        if self.fallback and not self.checked:
-            raise ValueError("fallback is for a checked motion")
+        if (self.fallback or self.from_contact) and not self.checked:
+            raise ValueError("fallback and from_contact are for a checked motion")
 
     def permits(self, link: str, entity: str) -> bool:
         """The monitor's test: link (e.g. right_gripper_link, or held:<object> for what a hand
@@ -89,6 +93,12 @@ LEGACY = unchecked("legacy: unchecked before docs/COLLISION_AUDIT.md, not migrat
 # collision-free when a path exists, else the straight move it always made, logged
 FREE_ELSE_STRAIGHT = Allow(fallback=True, reason="free-space leg: collision-free when a path exists, "
                                                  "else the straight unchecked move, logged")
+# a motion that starts in contact (just grasped, just let go): the hand (fingers, gripper, wrist
+# camera) and what it holds may touch what they touch at the start, nothing else; planned like
+# FREE_ELSE_STRAIGHT (a hand resting on the support left no collision-free start to plan from)
+LEAVE_CONTACT = Allow(fallback=True, from_contact=True,
+                      reason="leaves the contact it starts in: the hand and its load may touch what they touch at the "
+                             "start, else as FREE_ELSE_STRAIGHT")
 BASE_DRIVE = unchecked("base drive: the arms are not checked along the base path yet")
 
 

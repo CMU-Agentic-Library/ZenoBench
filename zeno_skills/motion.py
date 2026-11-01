@@ -19,9 +19,11 @@ Collision semantics:
     not, to that arm (to the other arm only while its hand is at it: a handover);
     nor is an object whose box (+3 cm) contains a query's TCP target (the
     object being grasped or pushed);
-  * inside ``Rig.held_collision`` (the carry legs) the held object is a grid of spheres
-    filling its box on the arm's ``<side>_held_object`` link: the planner keeps it clear
-    of the world (never of the robot itself).  Not while it still touches something;
+  * inside ``scope`` (every collision-checked rig motion, Rig._planning) the held object is a
+    grid of spheres filling its box on the arm's ``<side>_held_object`` link: the planner keeps
+    it clear of the world (never of the robot itself).  Not while it still touches something,
+    unless the motion leaves that contact (``from_contact``: those colliders are off, and
+    ``verify`` checks the rest of the robot against them);
   * ``ignore_fingers`` turns the finger spheres off; ``hand_touches_part`` the
     finger, gripper and wrist-camera spheres (hand on a handle);
   * obstacles farther than CULL m from the base are switched off (speed);
@@ -44,7 +46,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from . import scene_geometry as G
-from .kinematics import CARRY_TILT, manipulability, max_tilt, tilt
+from .kinematics import CARRY_TILT, manipulability, max_tilt, tilt, tips_over
 
 ROOT = Path(__file__).resolve().parents[1]
 ROBOT_CFG = ROOT / "robot_sources/curobo/zeno_malo.yml"
@@ -75,7 +77,8 @@ GRAPH_SEEDS = 2           # graph-search seeds that seed the optimiser around ob
 PLAN_ATTEMPTS, PLAN_TIMEOUT = 5, 8.0
 APPROACH_FRACTION = 0.5   # constrained Cartesian legs: the last half of the trajectory is the straight approach
 APPROACH_ALIGN = 0.95     # |cos| between the leg and a goal-frame axis for a straight-approach constraint
-HELD_SPHERES = 32         # spheres pre-allocated per arm for the held object (Rig.held_collision)
+HELD_SPHERES = 32         # spheres pre-allocated per arm for the held object (scope)
+COARSE_STEP = 0.02        # m: a finer Cartesian line that fails is solved again at this step, then densified
 os.environ.setdefault("CUROBO_TORCH_CUDA_GRAPH_RESET", "1")
 
 DIAG = os.environ.get("ZENO_MOTION_DIAG") == "1"     # print why a collision IK was blocked
@@ -479,8 +482,8 @@ class Motion:
             self._extent[c.name] = (ctr, float(np.linalg.norm(h)))
         self.enabled = {c.name: True for c in self.cols.items}
         self.held = {"right": set(), "left": set()}     # side -> owners that arm holds (not obstacles to it)
-        self.held_collision = set()      # sides whose held object is planned against (Rig.held_collision)
-        self.held_state = {}             # side -> held object on its sphere link (or why it is off)
+        self._held_sph = {}              # side -> spheres of the held object on its held link (scope), or None
+        self.off = set()                 # colliders a from_contact scope switched off (the motion leaves them)
         self._held_box = {}              # object name -> (frame collider, lo, hi): its box in that collider's frame
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
@@ -511,7 +514,7 @@ class Motion:
         for c in self.cols.items:
             ctr = self._centre(c)
             near = np.hypot(*(ctr[:2] - self.cull_at)) - self._extent[c.name][1] < CULL
-            self._set_enabled(c, near and c.owner not in held and c.owner not in allow)
+            self._set_enabled(c, near and c.owner not in held and c.owner not in allow and c.name not in self.off)
 
     def _live_poses(self, rig, record=True, owners=None):
         """{body: 4x4} of the object and part bodies whose simulator pose differs from the synced
@@ -592,39 +595,70 @@ class Motion:
             arm = self.arms[side]
             arm.prepare(kin, other_q, {f"{side}_{l}" for l in FINGER_LINKS})
             self._apply(base, side=side)
-            h = rig.held if side == "right" else getattr(rig, "left_held", None)
-            want = side in self.held_collision
-            prev = self.held_state.get(side)
-            state = None
-            if want or prev:
-                state = self._attach_held(arm, kin, q, h if want else None)
             hits = self._touching(arm, q)
-            if state is not None and held_link(side) in hits:
-                # still on its support (or in a container): no collision-free start, left off
-                self._attach_held(arm, kin, q, None)
-                state += " (touching: off)"
-            if state != prev:
-                rig.log("held_collision", side=side, state=state)
-            self.held_state[side] = state
             touching[side] = {l for l in hits if l.startswith(side + "_") and l != held_link(side)}
         self.other_touching = {"right": touching["left"], "left": touching["right"]}
         self.cull_at = None
 
-    def release_held(self, side):
-        """Rig.held_collision ends: the held link emptied now (not only at the next sync).
-        Whether it held something."""
-        self.held_collision.discard(side)
-        was = self.held_state.get(side)
-        if was:
+    @contextmanager
+    def scope(self, rig, kin, q, from_contact=False):
+        """One collision-checked rig motion of ``kin``'s arm from q (Rig._planning).  What that hand
+        holds is in the arm's collision model, its box as spheres on the held link (left out, and
+        logged, while it still touches something at q).  ``from_contact`` (the motion leaves the
+        contact it starts in): the colliders the hand (fingers, gripper, wrist camera) and its
+        load touch at q are off for the queries inside -- ``verify`` then checks the rest of the
+        robot against them, the second query of COLLISION_AUDIT 4.1.  Yields (touch, held_on): the
+        entities switched off for the hand and for the load."""
+        side = kin.side
+        h = rig.held if side == "right" else getattr(rig, "left_held", None)
+        q = np.asarray(q, float)
+        touch, held_on = set(), set()
+        try:
+            with self._query(kin, kin._other_q(), kin.coll_kw) as arm:
+                name = self._attach_held(arm, kin, q, h)
+                if from_contact:
+                    load = held_link(side)
+                    for link, c, ent in self._contacts(arm, q, {f"{side}_{l}" for l in HAND_LINKS} | {load}):
+                        self.off.add(c.name)
+                        (held_on if link == load else touch).add(ent)
+                    if self.off:
+                        self._apply(kin.base_p[:2], side=side)
+                if name is not None and held_link(side) in self._touching(arm, q):
+                    # still on its support (or in a container): no collision-free start, left out
+                    self._attach_held(arm, kin, q, None)
+                    rig.log("held_collision", side=side, state=f"{name} (touching: off)")
+            yield tuple(sorted(touch)), tuple(sorted(held_on))
+        finally:
+            self.off = set()
             self._attach_held(self.arms[side], None, None, None)
-        self.held_state[side] = None
-        return bool(was)
+            self.cull_at = None
+
+    @_timed("check_s")
+    def verify(self, kin, q0, qs, other_q=None, coll_kw=None):
+        """A path planned inside a from_contact ``scope``: the robot apart from the hand and its load
+        clear of the colliders switched off too, at q0, every waypoint of qs and the joint
+        segments between them.  True when nothing is off."""
+        if not self.off:
+            return True
+        STATS["check"] += 1
+        side = kin.side
+        off, self.off = self.off, set()
+        sph = self._held_sph.get(side)
+        try:
+            if sph is not None:
+                self._set_held_spheres(self.arms[side], None)
+            with self._query(kin, other_q, dict(coll_kw or {}, hand_touches_part=True)) as arm:
+                path = [np.asarray(q0, float)] + [np.asarray(q, float) for q in qs]
+                return bool(arm.feasible(path[0][None])[0]) and self._segments_free(arm, path)
+        finally:
+            self.off = off
+            if sph is not None:
+                self._set_held_spheres(self.arms[side], sph)
+            self.cull_at = None
 
     def _attach_held(self, arm, kin, q, h):
         """Spheres of the held object ``h`` (box_spheres of its box, in the TCP frame at q) on
         the arm's held link; None (or a bimanual hold): the link emptied.  Returns the name."""
-        t = arm.torch
-        link = held_link(arm.side)
         name = None if h is None or h.get("kind") == "bimanual" else h.get("name")
         sph = None
         if name is not None and self.by_owner.get(f"object:{name}"):
@@ -640,13 +674,21 @@ class Motion:
             sph[:len(b), 3] = b[:, 3]
         else:
             name = None
+        if sph is not None or self._held_sph.get(arm.side) is not None:
+            self._set_held_spheres(arm, sph)
+        self._held_sph[arm.side] = sph
+        return name
+
+    def _set_held_spheres(self, arm, sph):
+        """Write the held link's spheres (None: emptied) into every robot model of the arm."""
+        t = arm.torch
+        link = held_link(arm.side)
         for kc in arm.kcs:
             if sph is None:
                 kc.detach_object(link)
             else:
                 kc.attach_object(sphere_tensor=t.as_tensor(sph, device=kc.link_spheres.device,
                                                            dtype=kc.link_spheres.dtype), link_name=link)
-        return name
 
     def _box_of(self, name):
         """The object's box (every collider) in the frame of its first collider, cached."""
@@ -764,22 +806,36 @@ class Motion:
         """Straight TCP line (slerp orientation) as cuRobo IK solutions (batched, see
         _Arm.path_ik); continuous (<= MAX_STEP rad per joint between waypoints) and, with
         collision, every waypoint and the joint segments between them feasible."""
-        from scipy.spatial.transform import Slerp
         STATS["cart"] += 1
+        q0 = np.asarray(q0, float)
         p0, R0 = kin.tcp(q0)
+        with self._query(kin, other_q, coll_kw, [p0, p_goal], collision) as arm:
+            out, ok = self._line(arm, q0, p0, R0, p_goal, R_goal, step, collision)
+            if not ok and step < COARSE_STEP:
+                # one failed IK of many waypoints sinks a fine line that a coarser one passes
+                out, ok = self._line(arm, q0, p0, R0, p_goal, R_goal, COARSE_STEP, collision)
+                if ok:                                      # densified for smooth tracking
+                    dense, prev = [], q0
+                    for q in out:
+                        k = max(1, int(np.max(np.abs(q - prev)) / 0.01))
+                        dense += [prev + (q - prev) * u for u in np.linspace(0, 1, k + 1)[1:]]
+                        prev = q
+                    out = dense
+        STATS["cart_ok"] += int(ok)
+        return out, ok
+
+    def _line(self, arm, q0, p0, R0, p_goal, R_goal, step, collision):
+        """cart_path's waypoints at ``step`` m (and 0.05 rad of orientation) apart."""
+        from scipy.spatial.transform import Slerp
         n = max(2, int(np.ceil(np.linalg.norm(p_goal - p0) / step)) + 1)
         ang = np.linalg.norm(Rotation.from_matrix(R_goal @ R0.T).as_rotvec())
         n = max(n, int(np.ceil(ang / 0.05)) + 1)
         slerp = Slerp([0, 1], Rotation.from_matrix([R0, R_goal]))
         us = np.linspace(0, 1, n)[1:]
-        with self._query(kin, other_q, coll_kw, [p0, p_goal], collision) as arm:
-            out, ok = arm.path_ik([p0 + (p_goal - p0) * u for u in us], [slerp(u).as_matrix() for u in us], q0)
-            if not ok:
-                return out, False
-            if collision and not self._segments_free(arm, [np.asarray(q0, float)] + out):
-                return out, False
-        STATS["cart_ok"] += 1
-        return out, True
+        out, ok = arm.path_ik([p0 + (p_goal - p0) * u for u in us], [slerp(u).as_matrix() for u in us], q0)
+        if ok and collision and not self._segments_free(arm, [q0] + out):
+            ok = False
+        return out, ok
 
     def _segments_free(self, arm, qs, res=0.05):
         dense = []
@@ -809,25 +865,33 @@ class Motion:
         STATS["plan"] += 1
         q0, q1 = np.asarray(q0, float), np.asarray(q1, float)
         with self._query(kin, other_q, coll_kw) as arm:
-            qs, status = arm.plan(q0, q1)
-            R0 = kin.tcp(q0)[1]
-            p1, R1 = kin.tcp(q1)
-            if carry and tilt(R0, R1) <= CARRY_TILT and (qs is None or max_tilt(kin, R0, qs) > CARRY_TILT):
-                STATS["plan_carry"] = STATS.get("plan_carry", 0) + 1
-                qc, sc = arm.plan_pose(q0, p1, R1, arm.tilt_metric())
-                if qc is not None and max_tilt(kin, R0, qc) <= CARRY_TILT:
-                    qs, status = qc, None
-                else:
-                    qs, status = None, f"carry tilt held: {sc or 'tilts %.2f rad' % max_tilt(kin, R0, qc)}"
+            qs, status = self._plan_js(arm, kin, q0, q1, carry)
         STATS["plan_ok"] += int(qs is not None)
         return qs, status
 
+    def _plan_js(self, arm, kin, q0, q1, carry):
+        """plan's trajectory in the current query state."""
+        qs, status = arm.plan(q0, q1)
+        R0 = kin.tcp(q0)[1]
+        p1, R1 = kin.tcp(q1)
+        if carry and tilt(R0, R1) <= CARRY_TILT and (qs is None or max_tilt(kin, R0, qs) > CARRY_TILT):
+            STATS["plan_carry"] = STATS.get("plan_carry", 0) + 1
+            qc, sc = arm.plan_pose(q0, p1, R1, arm.tilt_metric())
+            if qc is not None and max_tilt(kin, R0, qc) <= CARRY_TILT:
+                qs, status = qc, None
+            else:
+                qs, status = None, f"carry tilt held: {sc or 'tilts %.2f rad' % max_tilt(kin, R0, qc)}"
+        return qs, status
+
     @_timed("plan_s")
-    def plan_to(self, kin, q0, p0, p, R, other_q=None, coll_kw=None, carry=False):
-        """Constrained trajectory for a Cartesian leg p0 -> (p, R) whose straight line is blocked:
-        with an object in the hand the tilt is held throughout; otherwise the trajectory may
-        leave the line to clear the obstacle but ends with a straight approach along it
-        (Arm.approach_metric).  (qs, None) or (None, status)."""
+    def plan_to(self, kin, q0, p0, p, R, other_q=None, coll_kw=None, carry=False, q_goal=None):
+        """The planned trajectory of a Cartesian leg p0 -> (p, R) whose straight line is blocked.
+        First constrained to the pose: with an object in the hand the tilt is held throughout;
+        otherwise the trajectory may leave the line to clear the obstacle but ends with a
+        straight approach along it (Arm.approach_metric).  Else to the joint goal ``q_goal`` (a
+        solution of (p, R), e.g. the one find_park validated): the straight joint move when it is
+        free and keeps a held object level, else a trajectory, the tilt held with a load.
+        (qs, "pose" | "joint") or (None, status)."""
         STATS["plan_to"] = STATS.get("plan_to", 0) + 1
         q0 = np.asarray(q0, float)
         with self._query(kin, other_q, coll_kw, [p0, p]) as arm:
@@ -836,16 +900,26 @@ class Motion:
                 metric = arm.tilt_metric()
             else:
                 metric = arm.approach_metric(p0, p, R)
-            if metric is None:
-                return None, "leg follows no TCP axis: no constrained approach"
-            qs, status = arm.plan_pose(q0, np.asarray(p, float), R, metric)
-            if qs is not None and carry and max_tilt(kin, R0, qs) > CARRY_TILT + tilt(R0, R):
-                qs, status = None, "held object tilts on the planned leg"
+            qs, status = None, "leg follows no TCP axis: no constrained approach"
+            if metric is not None:
+                qs, status = arm.plan_pose(q0, np.asarray(p, float), R, metric)
+                if qs is not None and carry and max_tilt(kin, R0, qs) > CARRY_TILT + tilt(R0, R):
+                    qs, status = None, "held object tilts on the planned leg"
+            how = "pose"
+            if qs is None and q_goal is not None:
+                q_goal = np.asarray(q_goal, float)
+                how = "joint"
+                if self._segments_free(arm, [q0, q_goal]) and not (carry and tips_over(kin, q0, q_goal)):
+                    qs = [q_goal]
+                else:
+                    qs, s2 = self._plan_js(arm, kin, q0, q_goal, carry)
+                    status = f"{status}; joint goal: {s2}"
         STATS["plan_to_ok"] = STATS.get("plan_to_ok", 0) + int(qs is not None)
-        return qs, status
+        return (qs, how) if qs is not None else (None, status)
 
-    def _touching(self, arm, q):
-        """{link: depth} of the robot's links penetrating the world at q."""
+    def _sphere_depths(self, arm, q):
+        """(spheres (n, 4) world, penetration depth (n,), link of each) of the arm's robot model at q;
+        depth 0 for spheres clear of the world or switched off."""
         import torch
         from curobo.geom.sdf.world import CollisionQueryBuffer
         sph = arm.spheres(np.asarray(q, float))
@@ -856,12 +930,51 @@ class Motion:
         buf = CollisionQueryBuffer.initialize_from_shape(q4.shape, arm.mg.tensor_args, self.checker.collision_types)
         d = self.checker.get_sphere_distance(q4, buf, torch.ones(1, device="cuda"), torch.zeros(1, device="cuda"),
                                              sum_collisions=False).view(-1).cpu().numpy()
-        r = sph[:, 3].cpu().numpy()
+        s = sph.cpu().numpy()
+        d = np.where(s[:, 3] > 0, np.maximum(d, 0.0), 0.0)
+        return s, d, [by_idx.get(int(i), str(i)) for i in idx]
+
+    def _touching(self, arm, q):
+        """{link: depth} of the robot's links penetrating the world at q."""
+        _, d, links = self._sphere_depths(arm, q)
         hits = {}
-        for i in np.nonzero((d > 0) & (r > 0))[0]:
-            link = by_idx.get(int(idx[i]), str(idx[i]))
-            hits[link] = max(hits.get(link, 0.0), float(d[i]))
+        for i in np.nonzero(d > 0)[0]:
+            hits[links[i]] = max(hits.get(links[i], 0.0), float(d[i]))
         return hits
+
+    def _contacts(self, arm, q, links):
+        """[(link, collider, entity)] of the spheres of ``links`` penetrating the world at q: every
+        enabled collider whose box reaches the sphere (a large mesh's box holds spheres it does not
+        touch, so the nearest box need not be the one penetrated), and the entity the contact
+        monitor reports it under."""
+        s, d, link_of = self._sphere_depths(arm, q)
+        cols = [c for c in self.cols.items if self.enabled[c.name]]
+        out = []
+        for i in np.nonzero(d > 0)[0]:
+            if link_of[i] not in links:
+                continue
+            p, r = s[i, :3], float(s[i, 3])
+            for c in self._colliders_at(p, r, cols):
+                out.append((link_of[i], c, self._entity(c) if c.owner != "static" else
+                            self._furniture_at(p, r) or self._entity(c)))
+        return out
+
+    def _colliders_at(self, p, r, cols):
+        """The colliders in ``cols`` whose box (in its own frame) reaches sphere (p, r)."""
+        out = []
+        for c in cols:
+            ctr, rad = self._extent[c.name]
+            T = G.world_pose(c, self.body_pose.get)
+            if np.linalg.norm(T[:3, :3] @ ctr + T[:3, 3] - p) > rad + r:
+                continue
+            local = T[:3, :3].T @ (p - T[:3, 3])
+            if c.kind == "cuboid":
+                lo, hi = -0.5 * np.asarray(c.dims, float), 0.5 * np.asarray(c.dims, float)
+            else:
+                lo, hi = c.vertices.min(0), c.vertices.max(0)
+            if np.linalg.norm(np.maximum(np.maximum(lo - local, local - hi), 0.0)) <= r:
+                out.append(c)
+        return out
 
     def explain(self, kin, q, other_q=None, coll_kw=None):
         """Which links of q penetrate the world (deepest first), else self collision / limits."""
@@ -948,8 +1061,15 @@ class Motion:
 
     def _nearest_entity(self, p, r, poses, cols):
         """Entity of the collider in ``cols`` closest to sphere (p, r): distance to its box in its own frame."""
+        c = self._nearest_collider(p, r, poses, cols)
+        if c is None:
+            return "?"
+        return self._entity(c) if c.owner != "static" else self._furniture_at(p, r) or self._entity(c)
+
+    def _nearest_collider(self, p, r, poses, cols):
+        """The collider in ``cols`` closest to sphere (p, r) (distance to its box in its own frame), or None."""
         at = lambda b: poses[b] if b in poses else self.body_pose.get(b)
-        best, ent = np.inf, "?"
+        best, out = np.inf, None
         for c in cols:
             ctr, rad = self._extent[c.name]
             T = G.world_pose(c, at)
@@ -962,8 +1082,8 @@ class Motion:
                 lo, hi = c.vertices.min(0), c.vertices.max(0)
             d = float(np.linalg.norm(np.maximum(np.maximum(lo - local, local - hi), 0.0)))
             if d < best:
-                best, ent = d, (self._entity(c) if c.owner != "static" else self._furniture_at(p, r) or self._entity(c))
-        return ent
+                best, out = d, c
+        return out
 
     def _furniture_at(self, p, r):
         """The annotated obstacle a static contact at sphere (p, r) belongs to: the smallest box

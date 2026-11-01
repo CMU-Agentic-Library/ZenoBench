@@ -1,6 +1,5 @@
 """Torso and waist moves with a load: the held object rides along instead of refusing the move."""
 
-import contextlib
 from types import SimpleNamespace
 
 import numpy as np
@@ -31,10 +30,6 @@ class FakeRig:
             raise SkillFailure("blocked")
         return [q_goal]
 
-    def held_collision(self):
-        self.calls.append("held_collision")
-        return contextlib.nullcontext()
-
     def follow(self, path):
         self.q_cmd = np.asarray(path[-1], float)
 
@@ -59,7 +54,6 @@ def test_stand_with_a_load_moves_and_checks_the_grasp(record):
     rig = FakeRig(held={"name": "mug"})
     rig.q_cmd[0] = -0.4
     assert posture.RaiseTorsoPolicy(rig).execute() == pytest.approx(0.0)
-    assert "held_collision" in rig.calls
     assert ("check_held", "torso_lift_joint") in record
 
 

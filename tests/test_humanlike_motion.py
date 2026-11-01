@@ -9,6 +9,9 @@ from zeno_skills.rig import Rig
 
 
 class FakeRig:
+    held = None
+    _vmax, _carrying = Rig._vmax, Rig._carrying
+
     def __init__(self):
         self.kin = SimpleNamespace(names=ArmKin().names)
         self.q_cmd = np.zeros(len(self.kin.names))

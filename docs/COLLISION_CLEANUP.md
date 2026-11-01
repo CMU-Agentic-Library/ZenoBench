@@ -24,6 +24,8 @@ R 类不列。下面只列要动的。
 
 这一层不先收拾，后面删路点时退路的行为就不对。**放进步骤 1。**
 
+**状态（2026-11-01，步骤 1）：** L2 并进 `Motion.cart_path`；L4、L5 并进 `Motion.plan_to` 的关节目标一档（`q_hint` 重解为目标和种子，查碰撞）；退路改为 `_straight_move`（不查碰撞的直线，没有 IK 时关节插值，朝 `q_hint` 摆动 >1 rad 仍规划）；`_joint_path` 的倾斜检查改用 `kinematics.tips_over`，`joint_from_contact` 删除；`tuck` 改为直接规划 `q → rest`，候选列表和夹爪判断删除（夹爪判断移到 `_move_with_retry_impl`）；`follow` 的慢速、平滑按持物统一处理。`_left_path`、`follow_both`、`joint_path_via` 留给步骤 5；`planner.py` 三项暂不动，理由见 `COLLISION_PLAN.md` 步骤 1 实施记录。
+
 **`move_to` 现在的各级退路：**
 
 | 级 | 位置 | 内容 | 处理 |

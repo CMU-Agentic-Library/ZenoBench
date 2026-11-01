@@ -71,6 +71,16 @@ def max_tilt(kin, R0, qs):
     return max((tilt(R0, kin.tcp(q)[1]) for q in qs), default=0.0)
 
 
+def tips_over(kin, qa, qb):
+    """The straight joint interpolation qa -> qb tilts a held object past CARRY_TILT while the goal
+    pose itself does not: such a move is planned with the tilt held instead."""
+    qa, qb = np.asarray(qa, float), np.asarray(qb, float)
+    R0 = kin.tcp(qa)[1]
+    k = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
+    dense = [qa + (qb - qa) * u for u in np.linspace(0, 1, k)[1:]]
+    return max_tilt(kin, R0, dense[::10] + [qb]) > CARRY_TILT and tilt(R0, kin.tcp(qb)[1]) <= CARRY_TILT
+
+
 def manipulability(kin, q):
     """Yoshikawa manipulability of the arm joints at q (sqrt det J J^T; torso and waist left out)."""
     J = kin.jac(np.asarray(q, float))[0][:, 2:]
@@ -259,10 +269,18 @@ class ArmKin:
         holds the tilt of an object in the hand."""
         return self._motion().plan(self, q0, q1, self._other_q(), self.coll_kw, carry=carry)
 
-    def plan_to(self, q0, p_goal, R_goal, carry=False):
-        """Constrained trajectory for a blocked Cartesian leg (Motion.plan_to)."""
+    def plan_to(self, q0, p_goal, R_goal, carry=False, q_goal=None):
+        """Planned trajectory for a blocked Cartesian leg, ending at the pose or at ``q_goal``
+        (Motion.plan_to): (qs, "pose" | "joint") or (None, status)."""
         return self._motion().plan_to(self, np.asarray(q0, float), self.tcp(q0)[0], np.asarray(p_goal, float),
-                                      R_goal, self._other_q(), self.coll_kw, carry=carry)
+                                      R_goal, self._other_q(), self.coll_kw, carry=carry, q_goal=q_goal)
+
+    def verify(self, q0, qs):
+        """Inside a from_contact planning scope: the robot apart from the hand and its load clear of
+        what the hand may touch (Motion.verify).  True without a world or a scope."""
+        if self.scene is None or self.motion is None:
+            return True
+        return self.motion.verify(self, q0, qs, self._other_q(), self.coll_kw)
 
     def clearance(self, Q, targets=()):
         """Per row of Q: the arm's distance to the world (m, capped; Motion.clearance)."""

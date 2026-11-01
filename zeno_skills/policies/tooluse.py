@@ -17,7 +17,7 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from .. import skills
-from ..clearance import FREE_ELSE_STRAIGHT, LEGACY
+from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
 from ..evaluator import quat_R
 from ..planner import find_park
 from ..predicates import memory, objects_inside
@@ -271,7 +271,7 @@ class StirContainerPolicy(AtomicPolicy):
                 inside=bool(memory(rig).get("dipped", {}).get(container)))
         if turns <= 0:
             rig.step(90)
-            rig.move_to(above, R_goal, step=0.005, label="dip_out", allow=FREE_ELSE_STRAIGHT)
+            rig.move_to(above, R_goal, step=0.005, label="dip_out", allow=LEAVE_CONTACT)
             skills.check_held(rig, "dip")
             if not memory(rig).get("dipped", {}).get(container):
                 raise SkillFailure(f"dip {container}: the tip did not get below the rim inside")
@@ -296,7 +296,7 @@ class StirContainerPolicy(AtomicPolicy):
                 swept += abs((ang - prev + math.pi) % (2 * math.pi) - math.pi)
             prev = ang if inside else None
         skills.check_held(rig, "stir")
-        rig.move_to(above, R_goal, step=0.005, label="stir_out", allow=FREE_ELSE_STRAIGHT)
+        rig.move_to(above, R_goal, step=0.005, label="stir_out", allow=LEAVE_CONTACT)
         n_turns = swept / (2 * math.pi)
         memory(rig)["stirred"][container] = max(n_turns, memory(rig)["stirred"].get(container, 0.0))
         rig.log("stir_result", tool=tool, container=container, turns=round(n_turns, 2))
