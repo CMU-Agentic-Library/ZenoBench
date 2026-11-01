@@ -88,6 +88,7 @@ def main():
     def write_result():
         report["wall_s"] = round(time.time() - t_start, 1)
         report["skill_calls"] = len(report["calls"])
+        report["contacts"] = ep.rig.clear.summary()      # contact monitor (zeno_skills/clearance.py)
         (out / "result.json").write_text(json.dumps(report, indent=1, default=float))
 
     try:

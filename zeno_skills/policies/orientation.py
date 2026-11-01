@@ -9,6 +9,7 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from .. import skills
+from ..clearance import LEGACY
 from ..evaluator import quat_R
 from ..rig import SkillFailure
 
@@ -230,7 +231,7 @@ class UprightObjectPolicy(AtomicPolicy):
                 continue
             try:
                 rig.move_to(target - np.array([0, 0, 0.026]), R, step=0.002, steps_per_wp=6,
-                            label="upright_lower", collision=False)
+                            label="upright_lower", allow=LEGACY)
             except SkillFailure as exc:
                 # no IK for the last 2.6 cm: an upright bottle released from
                 # there stands (rather than dropping it into the fallback)
@@ -242,7 +243,7 @@ class UprightObjectPolicy(AtomicPolicy):
             for up in (0.08, 0.05):
                 try:
                     rig.move_to(t2 + R2[:, 2] * 0.06 + np.array([0, 0, up]), R2, step=0.005,
-                                label="upright_release_clear", collision=False)
+                                label="upright_release_clear", allow=LEGACY)
                     break
                 except SkillFailure:
                     continue
@@ -268,7 +269,7 @@ class UprightObjectPolicy(AtomicPolicy):
         t, R = rig.kin.tcp(rig.q_cmd)
         for d in (np.array([0, 0, 0.08]), np.array([0, 0, 0.04]), R[:, 2] * 0.06):
             try:
-                rig.move_to(t + d, R, step=0.005, label="upright_release_clear", collision=False)
+                rig.move_to(t + d, R, step=0.005, label="upright_release_clear", allow=LEGACY)
                 break
             except SkillFailure as exc:
                 rig.log("upright_release_clear_short", reason=str(exc))
@@ -308,7 +309,7 @@ class UprightObjectPolicy(AtomicPolicy):
         skills._goto_park(rig, park)
         rig.grip(min(0.04, radius + 0.015), 40)
         for (tp, tR), lab in zip(legs, ("upright_top_pre", "upright_top_in", "upright_top_grasp")):
-            rig.move_to(tp, tR, step=0.004, steps_per_wp=4, label=lab, collision=False, smooth=True)
+            rig.move_to(tp, tR, step=0.004, steps_per_wp=4, label=lab, allow=LEGACY, smooth=True)
         rig.grip(0.0, 120, gradual=True)
         f_full = rig.fingers().copy()
         # pivot on the base end: the hand (firm grip) travels on an arc around
@@ -326,7 +327,7 @@ class UprightObjectPolicy(AtomicPolicy):
             Rot = Rotation.from_rotvec(k * math.radians(deg)).as_matrix()
             try:
                 rig.move_to(pivot + Rot @ v0, Rot @ R0, step=0.004, steps_per_wp=4, label="upright_pivot",
-                            collision=False, smooth=True)
+                            allow=LEGACY, smooth=True)
             except SkillFailure as exc:
                 rig.log("upright_pivot_limit", deg=float(deg), reason=str(exc))
                 break
@@ -339,7 +340,7 @@ class UprightObjectPolicy(AtomicPolicy):
             t, Rn = rig.kin.tcp(rig.q_cmd)
             for d in (0.06, 0.03):
                 try:
-                    rig.move_to(t + Rn[:, 2] * d, Rn, step=0.004, label="upright_pivot_out", collision=False)
+                    rig.move_to(t + Rn[:, 2] * d, Rn, step=0.004, label="upright_pivot_out", allow=LEGACY)
                     break
                 except SkillFailure:
                     continue
@@ -359,7 +360,7 @@ class UprightObjectPolicy(AtomicPolicy):
         rig.grip(light, 40)
         for k in range(1, 7):
             rig.move_to(p + np.array([0, 0, lift_h * k / 6]), R, step=0.003, steps_per_wp=6,
-                        label="upright_hang_lift", collision=False, smooth=True)
+                        label="upright_hang_lift", allow=LEGACY, smooth=True)
             rig.step(30)
         rig.step(150)
         rig.grip(0.0, 80, gradual=True)               # clamp again once it hangs

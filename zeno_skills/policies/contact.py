@@ -15,6 +15,7 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
+from ..clearance import LEGACY
 from ..kinematics import gripper_rot
 from ..planner import find_park
 from ..predicates import finger_slots_free, neighbour_gap, tilt_deg, GRASP_GAP_M
@@ -175,9 +176,9 @@ def _contact_sweep(rig, name, start_xy, n, z_tcp, travel, label, side_ok=False):
         rig.grip(0.0, 30)
         p0 = rig.obj_pose(name)[0]
         rig.move_to(*legs[0], step=0.02, label=f"{label}_above", q_hint=park[3][0])
-    rig.move_to(*legs[1], step=0.005, steps_per_wp=4, label=f"{label}_down", collision=False)
-    rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label=f"{label}_sweep", collision=False)
-    rig.move_to(*legs[3], step=0.01, label=f"{label}_up", collision=False)
+    rig.move_to(*legs[1], step=0.005, steps_per_wp=4, label=f"{label}_down", allow=LEGACY)
+    rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label=f"{label}_sweep", allow=LEGACY)
+    rig.move_to(*legs[3], step=0.01, label=f"{label}_up", allow=LEGACY)
     rig.grip(0.04, 60)
     rig.step(90)
     return rig.obj_pose(name)[0] - p0

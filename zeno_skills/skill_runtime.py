@@ -20,6 +20,8 @@ A Contract call:
 
 from __future__ import annotations
 
+import contextlib
+
 import json
 import math
 from dataclasses import dataclass, field
@@ -469,6 +471,13 @@ class SkillContractRunner:
 
     # -------------------------------------------------------------
     def run(self, key, args: dict, depth=0) -> SkillResult:
+        """One skill call.  It runs with fresh collision settings (``rig.clear.skill``): whatever
+        the previous skill set on the arms does not carry over."""
+        clear = getattr(self.rig, "clear", None)
+        with clear.skill(self.contract(key)["verb"]) if clear is not None else contextlib.nullcontext():
+            return self._run(key, args, depth)
+
+    def _run(self, key, args: dict, depth=0) -> SkillResult:
         c = self.contract(key)
         rig = self.rig
         values = {}

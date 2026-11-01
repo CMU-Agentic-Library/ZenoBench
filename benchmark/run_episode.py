@@ -220,6 +220,7 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
         if ep is not None:
             rig = ep.rig
             report["events"] = rig.events[-300:]
+            report["contacts"] = rig.clear.summary()      # contact monitor (zeno_skills/clearance.py)
             if ep.observer is not None:
                 report["observation_cache"] = ep.observer.cache
                 report["images"] = ep.observer.images

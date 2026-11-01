@@ -27,6 +27,8 @@ cover"; this script scores how a planner behaved.  Definitions: README,
   recov_*   of the episodes with >= 1 failure of that class, the share that succeeded (n shown)
   repeat    share of pre + exec failures followed by the same call with the same arguments
   drops / side / budget   floor drops, non-goal objects moved > 5 cm, closed-loop budget hits
+  contacts  robot link / obstacle contacts the motion did not allow, per episode (contact monitor,
+            zeno_skills/clearance.py; a metric only, it fails nothing); n = episodes that recorded it
 N/A: no sample for that ratio.
 
 Quantitative protocol (benchmark/protocol.py; section "Quantitative protocol (12 metrics)", ``protocol`` and
@@ -163,6 +165,9 @@ def episode_metrics(r, task, verified_refs):
         if sum((a_ - b_) ** 2 for a_, b_ in zip(p0, p1)) ** 0.5 > SIDE_EFFECT_M:
             side.append(n)
     m["side"] = side
+    contacts = r.get("contacts") or {}
+    m["contacts"] = contacts.get("unexpected") if contacts.get("checks") else None
+    m["contacts_by_skill"] = contacts.get("by_skill", {})
     m["stop_reason"] = r.get("stop_reason")
     m["budget"] = r.get("stop_reason") == "budget"
     return m
@@ -221,6 +226,8 @@ def aggregate(eps):
     out["drops"] = sum(m["dropped"] for _, m in done)
     out["side"] = mean([len(m["side"]) for _, m in done])
     out["budget"] = sum(m["budget"] for _, m in done)
+    seen = [m["contacts"] for _, m in done if m["contacts"] is not None]
+    out["contacts"], out["contacts_n"] = mean(seen), len(seen)
     return out
 
 
@@ -241,7 +248,23 @@ COLS = [("n", 0, None), ("incomplete", 0, None), ("SR", 1, None), ("SR_task", 1,
         ("unseen", 0, None), ("ghost", 0, None), ("not_in_view", 0, None), ("pre", 0, None), ("exec", 0, None),
         ("invalid", 0, None), ("recov_gate", 1, "recov_gate_n"), ("recov_pre", 1, "recov_pre_n"),
         ("recov_exec", 1, "recov_exec_n"), ("repeat", 1, "repeat_n"), ("drops", 0, None), ("side", 0, None),
-        ("budget", 0, None)]
+        ("budget", 0, None), ("contacts", 0, "contacts_n")]
+
+
+def contact_table(eps):
+    """Unexpected contacts summed per skill over the episodes that ran the contact monitor."""
+    total, n_eps = defaultdict(int), defaultdict(int)
+    for _, m in eps:
+        for skill, n in (m.get("contacts_by_skill") or {}).items():
+            total[skill] += n
+            n_eps[skill] += 1
+    if not total:
+        return []
+    return ["## Unexpected contacts by skill", "",
+            "Contact monitor (zeno_skills/clearance.py): robot links found inside the world that the "
+            "motion did not allow; each new link / obstacle pair counts once.", "",
+            "| Skill | Contacts | Episodes |", "|---|---|---|"] + [
+        f"| {k} | {total[k]} | {n_eps[k]} |" for k in sorted(total, key=lambda k: -total[k])] + [""]
 
 
 def table(groups, keys):
@@ -388,7 +411,8 @@ def main():
           + (f" ({len(not_counted)} runs of another configuration not counted)" if not_counted else "") + ". "
           "Column definitions: README, *Evaluation*; N/A = no sample; (n) = denominator.", "", PLANNER_NOTE, "",
           "## By planner", ""] + table({g: aggregate(v) for g, v in by_planner.items()}, ["planner"]) + [
-          "", f"## By {', '.join(keys)}", ""] + table(aggs, keys) + [""] + spec["markdown"] + ["", "## Episodes", "",
+          "", f"## By {', '.join(keys)}", ""] + table(aggs, keys) + [""] + contact_table(eps) + spec["markdown"] + [
+          "", "## Episodes", "",
           "| Task | Seed | Variant | Tier | Planner | Route | S | GC | Skill ok | Calls / L_ref | Gate u/g/v | Pre / exec / invalid (repeat) | Stop | Side effects |",
           "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r, m in sorted(eps, key=lambda x: (x[0]["task_id"], x[0].get("planner"), str(x[0].get("route")), x[0]["seed"])):

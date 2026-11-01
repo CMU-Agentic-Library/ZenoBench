@@ -89,7 +89,7 @@ class RightJointMovePolicy(AtomicPolicy):
         if tolerance <= 0:
             raise ValueError("joint tolerance must be positive")
         self.rig.sync_world()
-        path = self.rig.joint_path(q_goal, label="right_joint_move", check=True)
+        path = self.rig.joint_path(q_goal, label="right_joint_move")
         self.rig.follow(path)
         actual = np.asarray(self.rig.q(), dtype=float)
         if np.max(np.abs(actual - q_goal)) > tolerance:

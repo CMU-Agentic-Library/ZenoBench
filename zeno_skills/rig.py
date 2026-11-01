@@ -11,6 +11,7 @@ from contextlib import contextmanager
 
 import numpy as np
 
+from .clearance import BASE_DRIVE, FREE, MONITOR_EVERY, Clearance
 from .kinematics import CARRY_TILT, ArmKin, FINGERS, LEFT_ARM_FOLD, max_tilt, tilt, vel_limits, yaw_quat_wxyz
 from .physics import ANCHOR, ASSET
 
@@ -55,6 +56,7 @@ class Rig:
         self.tick, self.stride = 0, stride
         self.frames = []             # JPEG bytes, composed as they are rendered
         self.events, self.caption, self.trace = [], "", []
+        self.clear = Clearance(self)        # collision policy of the motions + contact monitor (clearance.py)
         self._log = log
         self._arts, self._dof, self._bodies = {}, {}, {}
         by_prim = {}
@@ -259,6 +261,8 @@ class Rig:
             self.tick += 1
             if self.tick % 12 == 0:
                 self._advance_thermal(0.1)
+            if self.clear.monitor and self.tick % MONITOR_EVERY == 0:
+                self.clear.tick()
             if render:
                 imgs = []
                 for cam in self.cams.values():
@@ -315,12 +319,14 @@ class Rig:
                 break
             self.step(2)
 
-    def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, collision=True, q_hint=None,
+    def move_to(self, p, R, step=0.01, steps_per_wp=3, label=None, allow=FREE, q_hint=None,
                 smooth=False):
         """Straight TCP line; then the planner-validated step; then (collision-checked legs) a
         constrained cuRobo trajectory: clear of the obstacle, ending in a straight approach,
         the tilt held when carrying; then a joint-space move to ``q_hint`` (a
-        planner-validated solution)."""
+        planner-validated solution).  ``allow`` (clearance.Allow): what the move may touch."""
+        self.clear.motion(label, allow)
+        collision = allow.checked
         self.sync_world()
         scene = self.kin.scene
         if not collision:
@@ -350,13 +356,13 @@ class Rig:
                 big = float(np.max(np.abs(np.asarray(q_hint, float) - self.q_cmd))) > 1.0
                 if big:
                     self.kin.scene = scene          # restored for this check even in contact moves
-                qs = self.joint_path(np.asarray(q_hint, float), label, check=collision or big)
+                qs = self.joint_path(np.asarray(q_hint, float), label, allow=FREE if big else allow)
                 ok = True
             if not ok:
                 q_goal, ok2 = self.kin.ik_global(np.asarray(p, float), R, seeds=[self.q_cmd])
                 if not ok2:
                     raise SkillFailure(f"no IK for {label or p}")
-                qs = self.joint_path(q_goal, label, check=collision)
+                qs = self.joint_path(q_goal, label, allow=allow)
         finally:
             self.kin.scene = scene
         (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
@@ -398,11 +404,13 @@ class Rig:
             qa = qb
         return out
 
-    def joint_path(self, q_goal, label=None, check=True):
+    def joint_path(self, q_goal, label=None, allow=FREE):
         """Joint-space move to q_goal, collision-checked (the straight
         interpolation used to sweep the hand through a cabinet): straight if
         that is free, else a cuRobo trajectory, else fail instead of pushing
-        through."""
+        through.  An unchecked ``allow`` takes the straight interpolation."""
+        self.clear.motion(label, allow)
+        check = allow.checked
         q0 = self.q_cmd.copy()
 
         def dense(qa, qb):
@@ -475,6 +483,7 @@ class Rig:
 
     def follow_both(self, right_goal, left_goal, *, label="bimanual", steps=None):
         """Drive both arms at once while checking each sampled paired posture."""
+        self.clear.motion(label, FREE)
         self.sync_world()
         self.world.left_active = True
         qr0 = self.q_cmd.copy()
@@ -512,8 +521,10 @@ class Rig:
         if max(right_error, left_error) > 0.06:
             raise SkillFailure(f"{label}: joint tracking error exceeded 0.06 rad")
 
-    def move_left_to(self, p, R, *, label=None, collision=True):
-        """Collision-checked Cartesian motion for the left fingertip TCP."""
+    def move_left_to(self, p, R, *, label=None, allow=FREE):
+        """Collision-checked Cartesian motion for the left fingertip TCP; ``allow`` as in move_to."""
+        self.clear.motion(label, allow)
+        collision = allow.checked
         self.sync_world()
         self.world.left_active = True
         p = np.asarray(p, float)
@@ -548,6 +559,7 @@ class Rig:
         """Fold the arm to the rest posture without sweeping through furniture
         or an open door: try (direct | up | back+up) Cartesian retreats, then a
         joint-space fold, every waypoint collision-checked."""
+        self.clear.motion("tuck", FREE)
         self.sync_world()
         tcp, R = self.kin.tcp(self.q_cmd)
         back = R[:, 2] * 0.15                       # -approach direction
@@ -607,7 +619,8 @@ class Rig:
 
         A container held by a one-hand rim pinch hangs off a thin wall and
         pivots under base accelerations: it is driven at half speed with a
-        longer ramp."""
+        longer ramp.  The arms are not checked along the path (BASE_DRIVE)."""
+        self.clear.motion("drive_base", BASE_DRIVE)
         if self.held is not None and self.held.get("kind") != "bimanual":
             a = self.ann.asset_of(self.ann.objects[self.held["name"]]) if self.held["name"] in self.ann.objects else {}
             if a.get("container"):

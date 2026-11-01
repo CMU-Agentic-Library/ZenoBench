@@ -46,6 +46,7 @@ DEFAULTS = {
         "static_explore": False,          # explore covers the static layout only
         "edge_pinch_upright_waist": False,
         "sticky_hands": False,            # false | carry: weld while held | snap: carry + snap a failed pick / place
+        "contact_monitor": True,          # log robot links inside the world (zeno_skills/clearance.py); a metric
     },
     "observation": {
         "cameras": list(CAMERAS),
@@ -161,9 +162,13 @@ def _validate(p):
                                " shows them; set allow_leak: true to run it anyway")
 
 
+NOT_HASHED = ("contact_monitor",)    # execution switches that only record: the episode runs the same
+
+
 def profile_hash(prof) -> str:
-    """Hash of everything that changes an episode (not the profile's name)."""
+    """Hash of everything that changes an episode (not the profile's name, nor NOT_HASHED)."""
     body = {k: v for k, v in prof.items() if k not in ("name", "hash")}
+    body["execution"] = {k: v for k, v in body["execution"].items() if k not in NOT_HASHED}
     return hashlib.sha1(json.dumps(body, sort_keys=True).encode()).hexdigest()[:12]
 
 
@@ -199,6 +204,8 @@ def apply_rig_flags(rig, prof):
     rig.occlusion = ex["occlusion"]
     rig.static_explore = ex["static_explore"]
     rig.edge_pinch_upright_waist = ex["edge_pinch_upright_waist"]
+    if getattr(rig, "clear", None) is not None:
+        rig.clear.monitor = ex["contact_monitor"]
     rig.sticky = None
     if ex["sticky_hands"]:
         from zeno_skills.sticky import StickyHands

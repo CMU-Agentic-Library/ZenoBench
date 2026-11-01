@@ -149,11 +149,12 @@ def main():
                 if rig.held is None or rig.held["name"] != tok[1]:
                     raise SkillFailure(f"tilt fixture: right hand is not holding {tok[1]}")
                 from scipy.spatial.transform import Rotation
+                from zeno_skills.clearance import unchecked
                 from zeno_skills.evaluator import tilt_deg
                 p, R = rig.kin.tcp(rig.q())
                 tipped = R @ Rotation.from_euler("x", float(tok[2]), degrees=True).as_matrix()
                 rig.move_to(p, tipped, step=0.008, steps_per_wp=5,
-                            label="tilt_held_fixture", collision=False)
+                            label="tilt_held_fixture", allow=unchecked("test fixture: tips the held object in place"))
                 rig.step(60)
                 _, quat = rig.obj_pose(tok[1])
                 row["tilt_deg"] = float(tilt_deg(quat))

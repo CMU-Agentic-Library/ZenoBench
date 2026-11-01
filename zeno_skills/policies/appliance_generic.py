@@ -13,6 +13,7 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
+from ..clearance import LEGACY
 from ..kinematics import gripper_rot
 from ..planner import find_park
 from ..predicates import entity_kind
@@ -67,8 +68,8 @@ class PressButtonPolicy(AtomicPolicy):
         rig.grip(0.0, 40)
         rig.caption = f"PRESS {button}"
         rig.move_to(*targets[0], label="button_pre", q_hint=park[3][0])
-        rig.move_to(*targets[1], step=0.005, label="button_align", collision=False)
-        rig.move_to(contact, R, step=0.003, label="button_press", collision=False)
+        rig.move_to(*targets[1], step=0.005, label="button_align", allow=LEGACY)
+        rig.move_to(contact, R, step=0.003, label="button_press", allow=LEGACY)
         rig.step(24)
         tcp, _ = rig.kin.tcp(rig.q())
         miss = float(np.linalg.norm(tcp - contact))
@@ -78,7 +79,7 @@ class PressButtonPolicy(AtomicPolicy):
             thermal.on[app] = not current
         rig.log("button_press", button=button, appliance=app, error_m=round(miss, 4),
                 on=bool(thermal.on.get(app)) if thermal is not None else None)
-        rig.move_to(pre, R, step=0.005, label="button_retract", collision=False)
+        rig.move_to(pre, R, step=0.005, label="button_retract", allow=LEGACY)
         return bool(thermal.on.get(app)) if thermal is not None else True
 
 
