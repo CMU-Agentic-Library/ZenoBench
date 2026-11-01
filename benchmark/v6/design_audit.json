@@ -1,11 +1,11 @@
 {
- "families": 233,
- "episodes": 2330,
+ "families": 234,
+ "episodes": 2340,
  "tiers": {
   "v5/easy": 38,
   "v5/hard": 55,
   "v5/medium": 87,
-  "v6/hard": 42,
+  "v6/hard": 43,
   "v6/medium": 11
  },
  "coverage": {
@@ -43,12 +43,13 @@
    "new": 6
   },
   "GD": {
-   "variants": 22,
-   "designs": 21,
+   "variants": 23,
+   "designs": 22,
    "tasks": 12,
    "mechanisms": [
     "capacity/initial",
     "condition/joint_capacity",
+    "condition/multi_object_goal",
     "dependency/dynamic-set_joint",
     "grasp/transient",
     "ik/persistent",
@@ -64,11 +65,11 @@
    ],
    "categories": {
     "dynamic": 7,
-    "task": 10,
+    "task": 11,
     "action": 3,
     "mixed": 2
    },
-   "new": 14
+   "new": 15
   },
   "SR": {
    "variants": 24,
@@ -234,8 +235,8 @@
    "h_mixed_shelf_taken_ik"
   ]
  },
- "distinct_hard_signatures": 68,
- "hard_families": 97,
+ "distinct_hard_signatures": 69,
+ "hard_families": 98,
  "retiered": [
   {
    "task": "T01_book_to_dining_table",
@@ -477,34 +478,37 @@
  "control_tiers": {
   "medium": 23,
   "easy": 69,
-  "hard": 4,
+  "hard": 5,
   "non-formal": 1
  },
  "ladders": 19,
- "multi_case_families": 53,
+ "multi_case_families": 55,
  "decision_factors": {
   "which object lies on the book (blocking relation)": 1,
   "failure mechanism (grasp slip vs reach)": 1,
-  "where the event takes the resource": 9,
+  "where the event takes the resource": 8,
   "where the resource is to be found (seed extension)": 27,
   "which cabinet holds the preferred item": 2,
   "failure mechanism and where the substitute is": 1,
+  "what occupies the destination (occupancy)": 1,
   "where the substitute is": 3,
   "where the food is": 1,
   "which substitute exists and where": 1,
   "where the second tomato was left": 1,
-  "which subgoal the event undoes": 1,
+  "which subgoal the event undoes, and when (failure timing)": 1,
   "which closed place holds the item": 3,
+  "which bin is already half full (capacity)": 1,
+  "where the event takes the resource, and when (failure timing)": 1,
   "how many candidate places (and an empty one) the instruction names": 1,
   "which object blocks the reach (blocking relation)": 1
  },
  "status": {
-  "STATIC_VALIDATED": 182,
+  "STATIC_VALIDATED": 183,
   "PHYSICS_VALIDATED": 51
  },
  "hard_categories": {
   "action": 31,
-  "task": 23,
+  "task": 24,
   "mixed": 13,
   "dynamic": 30
  },
@@ -519,11 +523,12 @@
   "appliance_occupied": 1,
   "surface_cluttered": 1,
   "joint_capacity": 1,
+  "multi_object_goal": 1,
   "destination_full": 2
  },
  "static": {
-  "episodes": 2330,
-  "static_ok": 2330
+  "episodes": 2340,
+  "static_ok": 2340
  },
  "static_problems": 0,
  "static_stale": false,
@@ -1916,12 +1921,13 @@
     "DR:relocate-obstacle"
    ],
    "cases": [
-    "x6_dr_spot_filled_dynamic"
+    "x6_dr_spot_filled_dynamic__bowl",
+    "x6_dr_spot_filled_dynamic__block"
    ],
-   "factor": null,
+   "factor": "what occupies the destination (occupancy)",
    "control": "cup_available",
-   "challenge": "right after the robot picks the cup, someone puts the oatmeal bowl and the pot lid on the drinks spot",
-   "rationale": "the destination is now full for any drink: set the cup down, move the bowl to the other low cabinet, then set the cup; the bowl is not a goal object (only kept upright)",
+   "challenge": "right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy block) on the drinks spot",
+   "rationale": "the destination is now full for any drink: set the cup down, move what stands in the way (the bowl, or the toy block next to the lid) to the other low cabinet, then set the cup; neither is a goal object",
    "physics": "0/0 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
@@ -3966,9 +3972,10 @@
    ],
    "cases": [
     "x6_pp_tomato_taken_out__tomato2",
-    "x6_pp_tomato_taken_out__tomato1"
+    "x6_pp_tomato_taken_out__tomato1",
+    "x6_pp_tomato_taken_out__tomato2_after_stir"
    ],
-   "factor": "which subgoal the event undoes",
+   "factor": "which subgoal the event undoes, and when (failure timing)",
    "control": "lid_off",
    "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
    "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
@@ -5049,6 +5056,39 @@
   },
   {
    "task": "T12_tidy_toys",
+   "family": "x6_gd_bins_capacity",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "condition/multi_object_goal"
+   ],
+   "strategies": [
+    "GD:allocation"
+   ],
+   "cases": [
+    "x6_gd_bins_capacity__left_full",
+    "x6_gd_bins_capacity__right_full"
+   ],
+   "factor": "which bin is already half full (capacity)",
+   "control": "toys_everywhere",
+   "challenge": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
+   "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T12_tidy_toys",
    "family": "x6_cl_basket_unreachable",
    "origin": "v6",
    "tier": "hard",
@@ -5488,12 +5528,13 @@
     "PP:redo-undone-part"
    ],
    "cases": [
+    "x6_pp_spoon_moved__early",
     "x6_pp_spoon_moved__table_end",
     "x6_pp_spoon_moved__tv_stand"
    ],
-   "factor": "where the event takes the resource",
+   "factor": "where the event takes the resource, and when (failure timing)",
    "control": "dishes_on_tv_stand",
-   "challenge": "right after the cup is set, the kid moves the spoon away (to the far end of the table, or to the TV stand)",
+   "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
    "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
    "physics": "0/0 of 10",
    "status": "STATIC_VALIDATED",

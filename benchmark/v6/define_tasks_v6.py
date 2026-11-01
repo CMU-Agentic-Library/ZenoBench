@@ -248,10 +248,13 @@ def T04(t):
                      fid="destination_lid"),
               f_move("destination", "oatmeal", P("kitchen_cabinet_6/top", 3.7, 0.36), ("pick", {"object": C}),
                      fid="destination_oatmeal")]
-    make_room = base[:4] + recs(look("kitchen_cabinet_6/top"), nav("kitchen_cabinet_4/top"),
-                                place(C, "kitchen_cabinet_4/top", [1.2, 0.42]), nav("oatmeal"), pick("oatmeal"),
-                                nav("kitchen_cabinet_4/top"), place("oatmeal", "kitchen_cabinet_4/top", [1.55, 0.42]),
-                                nav(C), pick(C), nav("kitchen_cabinet_6/top"), place(C, "kitchen_cabinet_6/top"))
+    def make_room(x):
+        return base[:4] + recs(look("kitchen_cabinet_6/top"), nav("kitchen_cabinet_4/top"),
+                               place(C, "kitchen_cabinet_4/top", [1.2, 0.42]), nav(x), pick(x),
+                               nav("kitchen_cabinet_4/top"), place(x, "kitchen_cabinet_4/top", [1.55, 0.42]),
+                               nav(C), pick(C), nav("kitchen_cabinet_6/top"), place(C, "kitchen_cabinet_6/top"))
+    filled_block = [filled[0], f_move("destination", "wooden_block_a", P("kitchen_cabinet_6/top", 3.62, 0.36),
+                                      ("pick", {"object": C}), fid="destination_block")]
     cab_goal = {"all": [["on", C, "kitchen_cabinet_6/top"], ["upright", C], ["hand_empty", "right"],
                         ["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]}
 
@@ -296,12 +299,20 @@ def T04(t):
             hyp=[H("AF", level="task")]),
         "x6_dr_spot_filled_dynamic": dict(
             tier="hard", hard="dynamic", base="cup_available", control="cup_available", goal=spot_goal,
-            challenge="right after the robot picks the cup, someone puts the oatmeal bowl and the pot lid on the "
-                      "drinks spot",
-            rationale="the destination is now full for any drink: set the cup down, move the bowl to the other low "
-                      "cabinet, then set the cup; the bowl is not a goal object (only kept upright)",
-            cases={"": dict(failures=filled, route=make_room)},
-            hyp=[H("DR", blocker="oatmeal", blocked={"skill": "place", "target": C}, cause="failure:destination_oatmeal")]),
+            challenge="right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy "
+                      "block) on the drinks spot",
+            rationale="the destination is now full for any drink: set the cup down, move what stands in the way (the "
+                      "bowl, or the toy block next to the lid) to the other low cabinet, then set the cup; neither is a "
+                      "goal object",
+            factor="what occupies the destination (occupancy)",
+            cases={"bowl": dict(failures=filled, route=make_room("oatmeal"),
+                                hyp=[H("DR", blocker="oatmeal", blocked={"skill": "place", "target": C},
+                                       cause="failure:destination_oatmeal")]),
+                   "block": dict(move={"wooden_block_a": P("kitchen_island/top", 7.2, 1.85)}, failures=filled_block,
+                                 route=make_room("wooden_block_a"),
+                                 hyp=[H("DR", blocker="wooden_block_a", blocked={"skill": "place", "target": C},
+                                        cause="failure:destination_block")])},
+            hyp=[]),
     }
 
 
@@ -619,13 +630,21 @@ def T09(t):
             tier="hard", hard="dynamic", base="lid_off", control="lid_off",
             challenge="right after the tomatoes go into the pot, the kid takes one back out onto the island",
             rationale="one subgoal is undone, the other still holds: put back only the missing tomato",
-            factor="which subgoal the event undoes",
-            cases={f"tomato{x[-1]}": dict(
+            factor="which subgoal the event undoes, and when (failure timing)",
+            cases={**{f"tomato{x[-1]}": dict(
                 failures=[f_move("resource", x, P("kitchen_island/top", 7.8 if x == TOMATOES[1] else 7.63, 1.62),
                                  ("collect", {"container": POT}), fid="resource_tomato")], route=tomato_out(x),
                 hyp=[H("PP", kept={"atom": ["inside", y, POT], "by": {"skill": "collect", "args": {"container": POT}}},
                        event="resource_tomato")])
                 for x, y in ((TOMATOES[1], TOMATOES[0]), (TOMATOES[0], TOMATOES[1]))},
+                "tomato2_after_stir": dict(
+                    failures=[f_move("resource", TOMATOES[1], P("kitchen_island/top", 7.8, 1.62),
+                                     ("stir", {"container": POT}), fid="resource_tomato")],
+                    route=base[:at(base, "stir") + 1] + recs(look("kitchen_island/top"), nav(TOMATOES[1]), pick(TOMATOES[1]),
+                                                              nav(POT), S("drop", object=TOMATOES[1], container=POT))
+                    + base[at(base, "stir") + 1:],
+                    hyp=[H("PP", kept={"atom": ["inside", TOMATOES[0], POT], "by": {"skill": "collect", "args": {"container": POT}}},
+                           event="resource_tomato")])},
             hyp=[]),
     }
 
@@ -695,8 +714,47 @@ def T12(t):
         + recs(nav("bookcase_2/top"), look("bookcase_2/top"), place(CAR, "toy_tray"), nav(DUCK), pick(DUCK),
                nav("bookcase_2/top"), place(DUCK, "toy_tray"))
     k = at(base, "navigate", destination=DUCK)
+    ev = t["variants"]["toys_everywhere"]
+    bins = {"left": (0.84, -0.43), "right": (1.13, -0.43)}
+    names = {"left": "toy_bin_small", "right": "toy_bin_small_2"}
+
+    def half_full(side):
+        """the six stored blocks in the ``side`` bin (two columns, the duck's gap in the middle)"""
+        x0, y0 = bins[side]
+        return {f"stored_block_{i + 1}": {"asset": "wooden_block", "support": None, "z": 0.718,
+                                          "xy": [round(x0 + dx, 3), round(y0 + dy, 3)], "yaw_deg": 0}
+                for i, (dx, dy) in enumerate((a, b) for a in (-0.078, 0.078) for b in (-0.055, 0.0, 0.055))}
+
+    def cap_case(full):
+        empty = "right" if full == "left" else "left"
+        add = {names["left"]: {"asset": "small_storage_bin", "support": "bookcase_2/top", "xy": list(bins["left"]), "yaw_deg": 0.0},
+               names["right"]: {"asset": "small_storage_bin", "support": "bookcase_2/top", "xy": list(bins["right"]), "yaw_deg": 0.0},
+               **half_full(full)}
+        goal = {"all": [["fully_inside", f"stored_block_{i}", names[full]] for i in range(1, 7)]
+                + [["fully_inside", CAR, names[empty]], ["fully_inside", DUCK, names[full]], ["upright", names[full]],
+                   ["upright", names[empty]], ["hand_empty", "right"]]}
+        route = [nav("bookcase_2/top"), look("bookcase_2/top"), S("measure", object=names["left"]),
+                 S("measure", object=names["right"]), S("explore_room", room="living_room_0_0"), nav(CAR), pick(CAR),
+                 nav(names[empty]), place(CAR, names[empty]), S("search", object=DUCK, region="living_room_0_1"),
+                 nav(DUCK), pick(DUCK), nav(names[full]), S("drop", object=DUCK, container=names[full])]
+        return dict(add=add, goal=goal, route=route,
+                    hyp=[H("GD", kind="allocation", allocation={CAR: names[empty], DUCK: names[full]},
+                           cause=f"overlay:{names['right']}")])
     moved = lambda region: base[:k] + recs(S("search", object=DUCK, region=region)) + base[k:]  # noqa: E731
     return {
+        "x6_gd_bins_capacity": dict(
+            tier="hard", hard="task", base="toys_out", control="toys_everywhere",
+            remove=[BASKET], move={DUCK: copy.deepcopy(ev["move"][DUCK])}, watch=[CAR, DUCK, names["left"], names["right"]],
+            may_end_on_floor=[CAR],
+            instruction="It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on "
+                        "the bedroom bookcase, each toy completely inside a bin.",
+            factor="which bin is already half full (capacity)",
+            challenge="no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed "
+                      "decides which); the car is on the living-room floor, the duck on the study desk",
+            rationale="the half-full bin only has room for the duck (between the block columns), the car needs the "
+                      "empty bin: allocate by remaining capacity, which flips with the seed",
+            cases={"left_full": cap_case("left"), "right_full": cap_case("right")},
+            hyp=[]),
         "x6_cl_basket_unreachable": dict(
             tier="hard", hard="action", base="toys_out", control="m_ik_duck_place", add={"toy_tray": tray}, goal=goal,
             watch=[CAR, DUCK, BASKET, "toy_tray"],
@@ -777,12 +835,18 @@ def T13(t):
             cases={"": dict(failures=[f_slip(CUP)], route=with_slip(base, CUP))}, hyp=[H("AF", level="local")]),
         "x6_pp_spoon_moved": dict(
             tier="hard", hard="dynamic", base="dishes_on_tv_stand", control="dishes_on_tv_stand",
-            factor="where the event takes the resource",
-            challenge="right after the cup is set, the kid moves the spoon away (to the far end of the table, or to "
-                      "the TV stand)",
+            factor="where the event takes the resource, and when (failure timing)",
+            challenge="the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the "
+                      "cup is set or already right after the bowl is set",
             rationale="bowl and cup are in place; only the grouping is broken: bring the spoon back next to them "
                       "instead of moving the dishes",
-            cases={"table_end": dict(failures=[f_move("resource", SPOON, P("dining_table_2/top", 3.6, 5.75),
+            cases={"early": dict(failures=[f_move("resource", SPOON, P("dining_table_2/top", 3.6, 5.75),
+                                                  ("place", {"object": BOWL}), fid="resource_spoon")],
+                                 route=base[:at(base, "place", object=BOWL) + 1]
+                                 + recs(look("dining_table_2/top"), nav(SPOON), pick(SPOON), nav("dining_table_2/top"),
+                                        place(SPOON, "dining_table_2/top", [2.98, 7.46]))
+                                 + base[at(base, "place", object=BOWL) + 1:]),
+                   "table_end": dict(failures=[f_move("resource", SPOON, P("dining_table_2/top", 3.6, 5.75),
                                                       ("place", {"object": CUP}), fid="resource_spoon")],
                                      route=spoon_back([])),
                    "tv_stand": dict(failures=[f_move("resource", SPOON, P("tv_stand_2/top", 7.0, 0.36),

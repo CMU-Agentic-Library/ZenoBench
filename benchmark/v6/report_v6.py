@@ -364,11 +364,17 @@ def design_md(doc, a):
     md.append(f"| 5 | one difficulty definition, control variants | rule in `hypotheses.py`; "
               f"{sum(a['control_tiers'].values())} Hard families with a control in the task | PASS |")
     mh = sum(1 for r in rows if r["tier"] == "hard" and len(r["cases"]) > 1)
+    fac = lambda *keys: [r for r in rows if r["factor"] and any(k in r["factor"] for k in keys)]  # noqa: E731
+    factors = {"substitute availability / location": fac("substitute"),
+               "container capacity": fac("capacity"), "target occupancy": fac("occupancy"),
+               "blocking relation": fac("blocking"), "failure timing": fac("timing"),
+               "recovery path (where the item / resource is, where an event takes it)": fac("holds", "to be found", "food is", "event"),
+               "failure mechanism": fac("mechanism")}
+    a["seed_factors"] = {k: [f"{short(r['task'])}/{r['family']}" for r in v] for k, v in factors.items()}
+    c6 = all(factors.values())
     md.append(f"| 6 | decision-relevant seed diversity, reproducible | {a['multi_case_families']} / {a['families']} "
-              f"families ({mh} / {a['hard_families']} Hard) vary a decision fact per seed; factor coverage below; "
-              "every seed reproducible | **PARTIAL** - substitute availability / location, item location, event "
-              "destination, blocking relation, failure mechanism: per seed; failure timing: separate study variants; "
-              "container capacity and target occupancy: per variant only (not per seed) |")
+              f"families ({mh} / {a['hard_families']} Hard) vary a decision fact per seed; every factor of the goal "
+              "varies per seed in at least one family (table below); seeds reproducible | " + _check(c6) + " |")
     md.append("| 7 | full spec per variant | instruction, initial conditions, failure triggers, goal, verified "
               "capabilities, oracle route, challenge / rationale, success criteria for every concrete variant: "
               "`variant_cards.json` | PASS |")
@@ -398,28 +404,25 @@ def design_md(doc, a):
            "signature with another in its task; 0 static problems). The thresholds are the goal's own; the "
            "capability rules are in `hypotheses.py` with negative tests. Whether this is competitive at IROS is a "
            "reviewer judgement - see the comparison below.", "",
-           "### Seed-diversity factors", "",
-           "| factor (goal item 6) | how it varies | families |", "|---|---|---|",
-           f"| substitute availability / location | per seed | {sum(1 for r in rows if r['factor'] and 'substitute' in r['factor'])} |",
-           f"| where the item / resource is (closed place, room) | per seed | {sum(1 for r in rows if r['factor'] and ('holds' in r['factor'] or 'to be found' in r['factor'] or 'food is' in r['factor']))} |",
-           f"| where an event takes a resource / which subgoal it undoes | per seed | {sum(1 for r in rows if r['factor'] and ('event' in r['factor']))} |",
-           f"| blocking relation | per seed | {sum(1 for r in rows if r['factor'] and 'block' in r['factor'])} |",
-           f"| failure mechanism | per seed | {sum(1 for r in rows if r['factor'] and 'mechanism' in r['factor'])} |",
-           "| failure timing | separate variants: v5 failure-timing study (T09, T12, T13, T19 x early / middle / late) | 12 study variants |",
-           "| container capacity, target occupancy | per variant (e.g. T03 / T12 allocation, T04 / T14 / T20 occupied "
-           "destinations), not per seed: varying them per seed changes which capability a seed needs, and a family's "
-           "capability hypothesis must hold for every seed | 0 per seed |",
-           "", "### External comparison (approximate figures from the cited papers; check before quoting)", "",
+           "### Seed-diversity factors (per seed, each case its own oracle route)", "",
+           "| factor (goal item 6) | families | which |", "|---|---|---|"] + [
+           f"| {k} | {len(v)} | {', '.join(v[:8])}{' ...' if len(v) > 8 else ''} |" for k, v in a["seed_factors"].items()] + [
+           "", "The 27 v5 families with a seed-extension case keep their v5 variant as one case (configuration and "
+           "hash unchanged). The remaining families vary object positions and the start pose per seed.",
+           "", "### External comparison (figures checked against the papers, Nov 2026)", "",
            "| benchmark | tasks / scenes | failures and recovery | what it measures |", "|---|---|---|---|",
-           "| ALFRED (CVPR 2020) | 7 task types, ~120 rooms | none injected | instruction following |",
-           "| BEHAVIOR-1K (CoRL 2022) | 1,000 activities, 50 scenes | none injected | long-horizon activities |",
-           "| LIBERO (NeurIPS D&B 2023) | 130 tasks | none | lifelong manipulation learning |",
-           "| RoboCasa (RSS 2024) | 100 tasks, ~120 kitchens | none | generalist policies |",
-           "| REFLECT / RoboFail (CoRL 2023) | ~100 failure scenarios | real failures, explained / corrected offline | failure reasoning |",
+           "| ALFRED (CVPR 2020) | 7 task types, 120 scenes, 8,055 demonstrations / 25,743 directives | none injected | instruction following |",
+           "| BEHAVIOR-1K (CoRL 2022) | 1,000 activities, 50 scenes | none injected | long-horizon everyday activities |",
+           "| LIBERO (NeurIPS 2023 D&B) | 130 tasks in 4 suites | none | lifelong manipulation learning |",
+           "| RoboCasa (RSS 2024) | 100 tasks (25 atomic, 75 composite), 120 kitchen scenes | none | generalist policies |",
+           "| REFLECT / RoboFail (CoRL 2023) | 100 simulated failure scenarios (10 tasks x 10) + 30 real | injected, explained and corrected after the fact | failure reasoning |",
            f"| ZenoBench v6 | 20 tasks, {a['families']} families, {a['episodes']} episodes, 1 house | injected action / "
-           "task / mixed / dynamic failures, persistent vs transient, hidden from the planner; oracle routes; "
-           "matched controls; per-family capability hypotheses | task-level replanning under failures and "
-           "constraint changes |", "",
+           "task / mixed / dynamic failures, persistent vs transient, hidden from the planner, decision cases per "
+           "seed; oracle routes; matched controls; checked capability hypotheses | online task-level replanning "
+           "under failures and constraint changes |", "",
+           "Sources: arxiv.org/abs/1912.01734 (ALFRED), proceedings.mlr.press/v205/li23a (BEHAVIOR-1K), "
+           "arxiv.org/abs/2306.03310 (LIBERO), roboticsproceedings.org/rss20/p050 (RoboCasa), "
+           "proceedings.mlr.press/v229/liu23g (REFLECT).", "",
            "Where v6 is stronger: controlled, reproducible failures with a capability label that is checked, not "
            "asserted, and a control for each Hard family. Where it is weaker and a reviewer will say so: one house and "
            "20 base tasks (no cross-scene claim is made), physical solvability shown so far for "

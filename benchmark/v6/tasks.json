@@ -11489,7 +11489,7 @@
       }
      }
     },
-    "x6_dr_spot_filled_dynamic": {
+    "x6_dr_spot_filled_dynamic__bowl": {
      "move": {
       "cup_counter_b": {
        "support": "kitchen_island/top",
@@ -11605,17 +11605,17 @@
      ],
      "difficulty": "hard",
      "since": "v6",
-     "note": "right after the robot picks the cup, someone puts the oatmeal bowl and the pot lid on the drinks spot",
+     "note": "right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy block) on the drinks spot",
      "v6": {
       "family": "x6_dr_spot_filled_dynamic",
-      "case": null,
+      "case": "bowl",
       "tier": "hard",
       "hard_category": "dynamic",
-      "challenge": "right after the robot picks the cup, someone puts the oatmeal bowl and the pot lid on the drinks spot",
-      "rationale": "the destination is now full for any drink: set the cup down, move the bowl to the other low cabinet, then set the cup; the bowl is not a goal object (only kept upright)",
+      "challenge": "right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy block) on the drinks spot",
+      "rationale": "the destination is now full for any drink: set the cup down, move what stands in the way (the bowl, or the toy block next to the lid) to the other low cabinet, then set the cup; neither is a goal object",
       "control": "cup_available",
       "contrast": null,
-      "factor": null,
+      "factor": "what occupies the destination (occupancy)",
       "derived_from": "cup_available",
       "hypotheses": [
        {
@@ -11635,6 +11635,181 @@
         "names": [
          "cup_counter_b",
          "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_dr_spot_filled_dynamic__block": {
+     "move": {
+      "cup_counter_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.64
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.2,
+        1.85
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "juice_bottle"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on",
+         "cup_counter_b",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "cup_counter_b"
+        ]
+       ],
+       [
+        [
+         "on",
+         "mug",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "upright",
+         "mug"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "upright",
+        "oatmeal"
+       ],
+       [
+        "upright",
+        "pot_lid"
+       ]
+      ]
+     },
+     "failures": [
+      {
+       "id": "destination_lid",
+       "kind": "destination",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "cup_counter_b"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "pot_lid",
+        "to": {
+         "support": "kitchen_cabinet_6/top",
+         "xy": [
+          3.335,
+          0.36
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      },
+      {
+       "id": "destination_block",
+       "kind": "destination",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "cup_counter_b"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "wooden_block_a",
+        "to": {
+         "support": "kitchen_cabinet_6/top",
+         "xy": [
+          3.62,
+          0.36
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy block) on the drinks spot",
+     "v6": {
+      "family": "x6_dr_spot_filled_dynamic",
+      "case": "block",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy block) on the drinks spot",
+      "rationale": "the destination is now full for any drink: set the cup down, move what stands in the way (the bowl, or the toy block next to the lid) to the other low cabinet, then set the cup; neither is a goal object",
+      "control": "cup_available",
+      "contrast": null,
+      "factor": "what occupies the destination (occupancy)",
+      "derived_from": "cup_available",
+      "hypotheses": [
+       {
+        "cap": "DR",
+        "blocker": "wooden_block_a",
+        "blocked": {
+         "skill": "place",
+         "target": "cup_counter_b"
+        },
+        "cause": "failure:destination_block"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "cup_counter_b",
+         "mug",
+         "wooden_block_a"
         ],
         "step": 0.01,
         "dx": [
@@ -11713,7 +11888,8 @@
     "x6_gd_cup_in_cabinets__cup_in_6": "v6_x6_gd_cup_in_cabinets__cup_in_6",
     "x6_cl_cup_unusable__slip": "v6_x6_cl_cup_unusable__slip",
     "x6_cl_cup_unusable__ik_mug_away": "v6_x6_cl_cup_unusable__ik_mug_away",
-    "x6_dr_spot_filled_dynamic": "v6_x6_dr_spot_filled_dynamic"
+    "x6_dr_spot_filled_dynamic__bowl": "v6_x6_dr_spot_filled_dynamic__bowl",
+    "x6_dr_spot_filled_dynamic__block": "v6_x6_dr_spot_filled_dynamic__block"
    },
    "routes": {
     "nominal": {
@@ -12793,7 +12969,7 @@
      "kind": "v6_oracle",
      "variant": "x6_cl_cup_unusable__ik_mug_away"
     },
-    "v6_x6_dr_spot_filled_dynamic": {
+    "v6_x6_dr_spot_filled_dynamic__bowl": {
      "steps": [
       {
        "skill": "look",
@@ -12909,7 +13085,125 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_dr_spot_filled_dynamic"
+     "variant": "x6_dr_spot_filled_dynamic__bowl"
+    },
+    "v6_x6_dr_spot_filled_dynamic__block": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup_counter_b"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup_counter_b",
+        "receptacle": "kitchen_cabinet_4/top",
+        "hint_xy": [
+         1.2,
+         0.42
+        ]
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "kitchen_cabinet_4/top",
+        "hint_xy": [
+         1.55,
+         0.42
+        ]
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup_counter_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup_counter_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup_counter_b",
+        "receptacle": "kitchen_cabinet_6/top"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_dr_spot_filled_dynamic__block"
     }
    },
    "benchmark_version": "v6",
@@ -13236,20 +13530,21 @@
      "hard_category": "dynamic",
      "control": "cup_available",
      "cases": [
-      "x6_dr_spot_filled_dynamic"
+      "x6_dr_spot_filled_dynamic__bowl",
+      "x6_dr_spot_filled_dynamic__block"
      ],
-     "factor": null,
+     "factor": "what occupies the destination (occupancy)",
      "seeds": {
-      "10": "x6_dr_spot_filled_dynamic",
-      "11": "x6_dr_spot_filled_dynamic",
-      "12": "x6_dr_spot_filled_dynamic",
-      "13": "x6_dr_spot_filled_dynamic",
-      "14": "x6_dr_spot_filled_dynamic",
-      "15": "x6_dr_spot_filled_dynamic",
-      "16": "x6_dr_spot_filled_dynamic",
-      "17": "x6_dr_spot_filled_dynamic",
-      "18": "x6_dr_spot_filled_dynamic",
-      "19": "x6_dr_spot_filled_dynamic"
+      "10": "x6_dr_spot_filled_dynamic__bowl",
+      "11": "x6_dr_spot_filled_dynamic__block",
+      "12": "x6_dr_spot_filled_dynamic__block",
+      "13": "x6_dr_spot_filled_dynamic__block",
+      "14": "x6_dr_spot_filled_dynamic__bowl",
+      "15": "x6_dr_spot_filled_dynamic__bowl",
+      "16": "x6_dr_spot_filled_dynamic__bowl",
+      "17": "x6_dr_spot_filled_dynamic__block",
+      "18": "x6_dr_spot_filled_dynamic__bowl",
+      "19": "x6_dr_spot_filled_dynamic__block"
      },
      "tier": "hard",
      "capabilities": [
@@ -13558,7 +13853,7 @@
      "tier_rule": "hard",
      "control": "m_ik_cup"
     },
-    "x6_dr_spot_filled_dynamic": {
+    "x6_dr_spot_filled_dynamic__bowl": {
      "source": "declared",
      "verified": [
       "DR"
@@ -13575,6 +13870,30 @@
         "target": "cup_counter_b"
        },
        "cause": "failure:destination_oatmeal"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "cup_available"
+    },
+    "x6_dr_spot_filled_dynamic__block": {
+     "source": "declared",
+     "verified": [
+      "DR"
+     ],
+     "core": [
+      "DR"
+     ],
+     "evidence": {
+      "DR": {
+       "cap": "DR",
+       "blocker": "wooden_block_a",
+       "blocked": {
+        "skill": "place",
+        "target": "cup_counter_b"
+       },
+       "cause": "failure:destination_block"
       }
      },
      "rejected": [],
@@ -30274,7 +30593,7 @@
       "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
       "control": "lid_off",
       "contrast": null,
-      "factor": "which subgoal the event undoes",
+      "factor": "which subgoal the event undoes, and when (failure timing)",
       "derived_from": "lid_off",
       "hypotheses": [
        {
@@ -30364,7 +30683,7 @@
       "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
       "control": "lid_off",
       "contrast": null,
-      "factor": "which subgoal the event undoes",
+      "factor": "which subgoal the event undoes, and when (failure timing)",
       "derived_from": "lid_off",
       "hypotheses": [
        {
@@ -30373,6 +30692,96 @@
          "atom": [
           "inside",
           "cherry_tomato_2",
+          "handled_cooking_pot"
+         ],
+         "by": {
+          "skill": "collect",
+          "args": {
+           "container": "handled_cooking_pot"
+          }
+         }
+        },
+        "event": "resource_tomato"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_pp_tomato_taken_out__tomato2_after_stir": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "resource_tomato",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "stir",
+        "args": {
+         "container": "handled_cooking_pot"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "cherry_tomato_2",
+        "to": {
+         "support": "kitchen_island/top",
+         "xy": [
+          7.8,
+          1.62
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
+     "v6": {
+      "family": "x6_pp_tomato_taken_out",
+      "case": "tomato2_after_stir",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
+      "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "which subgoal the event undoes, and when (failure timing)",
+      "derived_from": "lid_off",
+      "hypotheses": [
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "inside",
+          "cherry_tomato_1",
           "handled_cooking_pot"
          ],
          "by": {
@@ -30473,7 +30882,8 @@
     "x6_pp_lid_taken_after_stir__cabinet4": "v6_x6_pp_lid_taken_after_stir__cabinet4",
     "x6_pp_lid_taken_after_stir__dining": "v6_x6_pp_lid_taken_after_stir__dining",
     "x6_pp_tomato_taken_out__tomato2": "v6_x6_pp_tomato_taken_out__tomato2",
-    "x6_pp_tomato_taken_out__tomato1": "v6_x6_pp_tomato_taken_out__tomato1"
+    "x6_pp_tomato_taken_out__tomato1": "v6_x6_pp_tomato_taken_out__tomato1",
+    "x6_pp_tomato_taken_out__tomato2_after_stir": "v6_x6_pp_tomato_taken_out__tomato2_after_stir"
    },
    "routes": {
     "nominal": {
@@ -33715,6 +34125,141 @@
      ],
      "kind": "v6_oracle",
      "variant": "x6_pp_tomato_taken_out__tomato1"
+    },
+    "v6_x6_pp_tomato_taken_out__tomato2_after_stir": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cherry_tomato_2"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cherry_tomato_2"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "cherry_tomato_2",
+        "container": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_pp_tomato_taken_out__tomato2_after_stir"
     }
    },
    "benchmark_version": "v6",
@@ -34138,19 +34683,20 @@
      "control": "lid_off",
      "cases": [
       "x6_pp_tomato_taken_out__tomato2",
-      "x6_pp_tomato_taken_out__tomato1"
+      "x6_pp_tomato_taken_out__tomato1",
+      "x6_pp_tomato_taken_out__tomato2_after_stir"
      ],
-     "factor": "which subgoal the event undoes",
+     "factor": "which subgoal the event undoes, and when (failure timing)",
      "seeds": {
-      "10": "x6_pp_tomato_taken_out__tomato1",
-      "11": "x6_pp_tomato_taken_out__tomato1",
+      "10": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "11": "x6_pp_tomato_taken_out__tomato2",
       "12": "x6_pp_tomato_taken_out__tomato1",
       "13": "x6_pp_tomato_taken_out__tomato2",
-      "14": "x6_pp_tomato_taken_out__tomato2",
-      "15": "x6_pp_tomato_taken_out__tomato1",
-      "16": "x6_pp_tomato_taken_out__tomato2",
+      "14": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "15": "x6_pp_tomato_taken_out__tomato2",
+      "16": "x6_pp_tomato_taken_out__tomato2_after_stir",
       "17": "x6_pp_tomato_taken_out__tomato1",
-      "18": "x6_pp_tomato_taken_out__tomato2",
+      "18": "x6_pp_tomato_taken_out__tomato1",
       "19": "x6_pp_tomato_taken_out__tomato2"
      },
      "tier": "hard",
@@ -34730,6 +35276,38 @@
         "atom": [
          "inside",
          "cherry_tomato_2",
+         "handled_cooking_pot"
+        ],
+        "by": {
+         "skill": "collect",
+         "args": {
+          "container": "handled_cooking_pot"
+         }
+        }
+       },
+       "event": "resource_tomato"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "lid_off"
+    },
+    "x6_pp_tomato_taken_out__tomato2_after_stir": {
+     "source": "declared",
+     "verified": [
+      "PP"
+     ],
+     "core": [
+      "PP"
+     ],
+     "evidence": {
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "inside",
+         "cherry_tomato_1",
          "handled_cooking_pot"
         ],
         "by": {
@@ -42784,6 +43362,434 @@
       "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
      }
     },
+    "x6_gd_bins_capacity__left_full": {
+     "move": {
+      "rubber_duck": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.95,
+        -6.02
+       ],
+       "yaw_deg": 128.7
+      }
+     },
+     "remove": [
+      "storage_basket"
+     ],
+     "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on the bedroom bookcase, each toy completely inside a bin.",
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "toy_bin_small",
+      "toy_bin_small_2"
+     ],
+     "may_end_on_floor": [
+      "toy_car"
+     ],
+     "add": {
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.84,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_bin_small_2": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.13,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "stored_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.762,
+        -0.375
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_4": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_5": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_6": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        0.918,
+        -0.375
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "fully_inside",
+        "stored_block_1",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_2",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_3",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_4",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_5",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "stored_block_6",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "toy_car",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "rubber_duck",
+        "toy_bin_small"
+       ],
+       [
+        "upright",
+        "toy_bin_small"
+       ],
+       [
+        "upright",
+        "toy_bin_small_2"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "conditions": [
+      "multi_object_goal"
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
+     "v6": {
+      "family": "x6_gd_bins_capacity",
+      "case": "left_full",
+      "tier": "hard",
+      "hard_category": "task",
+      "challenge": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
+      "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+      "control": "toys_everywhere",
+      "contrast": null,
+      "factor": "which bin is already half full (capacity)",
+      "derived_from": "toys_out",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "allocation",
+        "allocation": {
+         "toy_car": "toy_bin_small_2",
+         "rubber_duck": "toy_bin_small"
+        },
+        "cause": "overlay:toy_bin_small_2"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_gd_bins_capacity__right_full": {
+     "move": {
+      "rubber_duck": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.95,
+        -6.02
+       ],
+       "yaw_deg": 128.7
+      }
+     },
+     "remove": [
+      "storage_basket"
+     ],
+     "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on the bedroom bookcase, each toy completely inside a bin.",
+     "watch": [
+      "toy_car",
+      "rubber_duck",
+      "toy_bin_small",
+      "toy_bin_small_2"
+     ],
+     "may_end_on_floor": [
+      "toy_car"
+     ],
+     "add": {
+      "toy_bin_small": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        0.84,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "toy_bin_small_2": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.13,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "stored_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.052,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.052,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_3": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.052,
+        -0.375
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_4": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.208,
+        -0.485
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_5": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.208,
+        -0.43
+       ],
+       "yaw_deg": 0
+      },
+      "stored_block_6": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.208,
+        -0.375
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "fully_inside",
+        "stored_block_1",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_2",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_3",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_4",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_5",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "stored_block_6",
+        "toy_bin_small_2"
+       ],
+       [
+        "fully_inside",
+        "toy_car",
+        "toy_bin_small"
+       ],
+       [
+        "fully_inside",
+        "rubber_duck",
+        "toy_bin_small_2"
+       ],
+       [
+        "upright",
+        "toy_bin_small_2"
+       ],
+       [
+        "upright",
+        "toy_bin_small"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "conditions": [
+      "multi_object_goal"
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
+     "v6": {
+      "family": "x6_gd_bins_capacity",
+      "case": "right_full",
+      "tier": "hard",
+      "hard_category": "task",
+      "challenge": "no storage basket; two small bins on the bookcase, one of them already half full of blocks (seed decides which); the car is on the living-room floor, the duck on the study desk",
+      "rationale": "the half-full bin only has room for the duck (between the block columns), the car needs the empty bin: allocate by remaining capacity, which flips with the seed",
+      "control": "toys_everywhere",
+      "contrast": null,
+      "factor": "which bin is already half full (capacity)",
+      "derived_from": "toys_out",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "allocation",
+        "allocation": {
+         "toy_car": "toy_bin_small",
+         "rubber_duck": "toy_bin_small_2"
+        },
+        "cause": "overlay:toy_bin_small_2"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
     "x6_cl_basket_unreachable": {
      "move": {},
      "add": {
@@ -43133,6 +44139,8 @@
     "h_action_grasp_and_ik__alt_dining_table_2": "v6_h_action_grasp_and_ik__alt_dining_table_2",
     "h_mixed_everywhere_ik__alt_dining_table_2": "v6_h_mixed_everywhere_ik__alt_dining_table_2",
     "h_dynamic_duck_taken__alt_tv_stand_2": "v6_h_dynamic_duck_taken__alt_tv_stand_2",
+    "x6_gd_bins_capacity__left_full": "v6_x6_gd_bins_capacity__left_full",
+    "x6_gd_bins_capacity__right_full": "v6_x6_gd_bins_capacity__right_full",
     "x6_cl_basket_unreachable": "v6_x6_cl_basket_unreachable",
     "x6_pp_duck_moved__dining": "v6_x6_pp_duck_moved__dining",
     "x6_pp_duck_moved__study": "v6_x6_pp_duck_moved__study"
@@ -44900,6 +45908,192 @@
      "kind": "v6_seed_extension",
      "variant": "h_dynamic_duck_taken__alt_tv_stand_2"
     },
+    "v6_x6_gd_bins_capacity__left_full": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "rubber_duck",
+        "container": "toy_bin_small"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_bins_capacity__left_full"
+    },
+    "v6_x6_gd_bins_capacity__right_full": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "explore_room",
+       "args": {
+        "room": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_car"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_car"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "toy_car",
+        "receptacle": "toy_bin_small"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_bin_small_2"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "rubber_duck",
+        "container": "toy_bin_small_2"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_bins_capacity__right_full"
+    },
     "v6_x6_cl_basket_unreachable": {
      "steps": [
       {
@@ -45507,6 +46701,33 @@
       "GD",
       "PP",
       "SR"
+     ]
+    },
+    "x6_gd_bins_capacity": {
+     "origin": "v6",
+     "design_tier": "hard",
+     "hard_category": "task",
+     "control": "toys_everywhere",
+     "cases": [
+      "x6_gd_bins_capacity__left_full",
+      "x6_gd_bins_capacity__right_full"
+     ],
+     "factor": "which bin is already half full (capacity)",
+     "seeds": {
+      "10": "x6_gd_bins_capacity__left_full",
+      "11": "x6_gd_bins_capacity__left_full",
+      "12": "x6_gd_bins_capacity__right_full",
+      "13": "x6_gd_bins_capacity__right_full",
+      "14": "x6_gd_bins_capacity__right_full",
+      "15": "x6_gd_bins_capacity__right_full",
+      "16": "x6_gd_bins_capacity__left_full",
+      "17": "x6_gd_bins_capacity__left_full",
+      "18": "x6_gd_bins_capacity__left_full",
+      "19": "x6_gd_bins_capacity__right_full"
+     },
+     "tier": "hard",
+     "capabilities": [
+      "GD"
      ]
     },
     "x6_cl_basket_unreachable": {
@@ -46172,6 +47393,54 @@
      "tier_rule": "hard",
      "control": "toys_out"
     },
+    "x6_gd_bins_capacity__left_full": {
+     "source": "declared",
+     "verified": [
+      "GD"
+     ],
+     "core": [
+      "GD"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "allocation",
+       "allocation": {
+        "toy_car": "toy_bin_small_2",
+        "rubber_duck": "toy_bin_small"
+       },
+       "cause": "overlay:toy_bin_small_2"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "toys_everywhere"
+    },
+    "x6_gd_bins_capacity__right_full": {
+     "source": "declared",
+     "verified": [
+      "GD"
+     ],
+     "core": [
+      "GD"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "allocation",
+       "allocation": {
+        "toy_car": "toy_bin_small",
+        "rubber_duck": "toy_bin_small_2"
+       },
+       "cause": "overlay:toy_bin_small_2"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "toys_everywhere"
+    },
     "x6_cl_basket_unreachable": {
      "source": "declared",
      "verified": [
@@ -46288,6 +47557,7 @@
      "h_action_grasp_and_ik",
      "h_mixed_everywhere_ik",
      "h_dynamic_duck_taken",
+     "x6_gd_bins_capacity",
      "x6_cl_basket_unreachable",
      "x6_pp_duck_moved"
     ]
@@ -47830,6 +49100,103 @@
       }
      }
     },
+    "x6_pp_spoon_moved__early": {
+     "move": {
+      "bowl": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        8.0304,
+        0.3409
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "resource_spoon",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "place",
+        "args": {
+         "object": "bowl"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "spoon",
+        "to": {
+         "support": "dining_table_2/top",
+         "xy": [
+          3.6,
+          5.75
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
+     "v6": {
+      "family": "x6_pp_spoon_moved",
+      "case": "early",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
+      "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
+      "control": "dishes_on_tv_stand",
+      "contrast": null,
+      "factor": "where the event takes the resource, and when (failure timing)",
+      "derived_from": "dishes_on_tv_stand",
+      "hypotheses": [
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "on",
+          "bowl",
+          "dining_table_2/top"
+         ],
+         "by": {
+          "skill": "place",
+          "args": {
+           "object": "bowl"
+          }
+         }
+        },
+        "event": "resource_spoon"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "bowl"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
     "x6_pp_spoon_moved__table_end": {
      "move": {
       "bowl": {
@@ -47870,17 +49237,17 @@
      ],
      "difficulty": "hard",
      "since": "v6",
-     "note": "right after the cup is set, the kid moves the spoon away (to the far end of the table, or to the TV stand)",
+     "note": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
      "v6": {
       "family": "x6_pp_spoon_moved",
       "case": "table_end",
       "tier": "hard",
       "hard_category": "dynamic",
-      "challenge": "right after the cup is set, the kid moves the spoon away (to the far end of the table, or to the TV stand)",
+      "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
       "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
       "control": "dishes_on_tv_stand",
       "contrast": null,
-      "factor": "where the event takes the resource",
+      "factor": "where the event takes the resource, and when (failure timing)",
       "derived_from": "dishes_on_tv_stand",
       "hypotheses": [
        {
@@ -47967,17 +49334,17 @@
      ],
      "difficulty": "hard",
      "since": "v6",
-     "note": "right after the cup is set, the kid moves the spoon away (to the far end of the table, or to the TV stand)",
+     "note": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
      "v6": {
       "family": "x6_pp_spoon_moved",
       "case": "tv_stand",
       "tier": "hard",
       "hard_category": "dynamic",
-      "challenge": "right after the cup is set, the kid moves the spoon away (to the far end of the table, or to the TV stand)",
+      "challenge": "the kid moves the spoon away (to the far end of the table, or to the TV stand), right after the cup is set or already right after the bowl is set",
       "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
       "control": "dishes_on_tv_stand",
       "contrast": null,
-      "factor": "where the event takes the resource",
+      "factor": "where the event takes the resource, and when (failure timing)",
       "derived_from": "dishes_on_tv_stand",
       "hypotheses": [
        {
@@ -49016,6 +50383,7 @@
     "x6_cl_cup_slips__mug_bookcase": "v6_x6_cl_cup_slips__mug_bookcase",
     "x6_cl_cup_slips__mug_cabinet": "v6_x6_cl_cup_slips__mug_cabinet",
     "x6_m_slip_cup": "v6_x6_m_slip_cup",
+    "x6_pp_spoon_moved__early": "v6_x6_pp_spoon_moved__early",
     "x6_pp_spoon_moved__table_end": "v6_x6_pp_spoon_moved__table_end",
     "x6_pp_spoon_moved__tv_stand": "v6_x6_pp_spoon_moved__tv_stand",
     "x6_gd_bowl_put_away__in_cabinet": "v6_x6_gd_bowl_put_away__in_cabinet",
@@ -51248,6 +52616,128 @@
      "kind": "v6_oracle",
      "variant": "x6_m_slip_cup"
     },
+    "v6_x6_pp_spoon_moved__early": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "spoon"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "spoon"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "spoon",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         2.98,
+         7.46
+        ]
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_pp_spoon_moved__early"
+    },
     "v6_x6_pp_spoon_moved__table_end": {
      "steps": [
       {
@@ -52478,21 +53968,22 @@
      "hard_category": "dynamic",
      "control": "dishes_on_tv_stand",
      "cases": [
+      "x6_pp_spoon_moved__early",
       "x6_pp_spoon_moved__table_end",
       "x6_pp_spoon_moved__tv_stand"
      ],
-     "factor": "where the event takes the resource",
+     "factor": "where the event takes the resource, and when (failure timing)",
      "seeds": {
-      "10": "x6_pp_spoon_moved__tv_stand",
-      "11": "x6_pp_spoon_moved__table_end",
-      "12": "x6_pp_spoon_moved__table_end",
-      "13": "x6_pp_spoon_moved__tv_stand",
+      "10": "x6_pp_spoon_moved__table_end",
+      "11": "x6_pp_spoon_moved__early",
+      "12": "x6_pp_spoon_moved__tv_stand",
+      "13": "x6_pp_spoon_moved__table_end",
       "14": "x6_pp_spoon_moved__table_end",
-      "15": "x6_pp_spoon_moved__tv_stand",
-      "16": "x6_pp_spoon_moved__tv_stand",
+      "15": "x6_pp_spoon_moved__early",
+      "16": "x6_pp_spoon_moved__early",
       "17": "x6_pp_spoon_moved__tv_stand",
-      "18": "x6_pp_spoon_moved__table_end",
-      "19": "x6_pp_spoon_moved__table_end"
+      "18": "x6_pp_spoon_moved__early",
+      "19": "x6_pp_spoon_moved__tv_stand"
      },
      "tier": "hard",
      "capabilities": [
@@ -52921,6 +54412,38 @@
      "rejected": [],
      "retry_solvable": true,
      "tier_rule": "medium",
+     "control": "dishes_on_tv_stand"
+    },
+    "x6_pp_spoon_moved__early": {
+     "source": "declared",
+     "verified": [
+      "PP"
+     ],
+     "core": [
+      "PP"
+     ],
+     "evidence": {
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "on",
+         "bowl",
+         "dining_table_2/top"
+        ],
+        "by": {
+         "skill": "place",
+         "args": {
+          "object": "bowl"
+         }
+        }
+       },
+       "event": "resource_spoon"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
      "control": "dishes_on_tv_stand"
     },
     "x6_pp_spoon_moved__table_end": {

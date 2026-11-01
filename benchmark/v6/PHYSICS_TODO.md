@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 51 families are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1820 episodes remain (530 of the 53 new families): `batches/physics_todo.json`; the new families alone: `batches/physics_v6_new.json`.
+* 1830 episodes remain (540 of the 54 new families): `batches/physics_todo.json`; the new families alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new families without a skill dependency (`depends on` -), (2) after each skill fix the families that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 families below 10/10 after each skill fix.
 
@@ -112,6 +112,7 @@
 | T12 | h_action_grasp_and_ik | hard | 2/5 of 10 | - |
 | T12 | h_mixed_everywhere_ik | hard | 2/5 of 10 | - |
 | T12 | h_dynamic_duck_taken | hard | 1/5 of 10 | - |
+| T12 | x6_gd_bins_capacity | hard | 0/0 of 10 | - |
 | T12 | x6_cl_basket_unreachable | hard | 0/0 of 10 | - |
 | T12 | x6_pp_duck_moved | hard | 0/0 of 10 | - |
 | T13 | dishes_on_tv_stand | easy | 8/10 of 10 | - |

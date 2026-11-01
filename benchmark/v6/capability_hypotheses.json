@@ -2565,6 +2565,25 @@
  },
  {
   "task": "T12_tidy_toys",
+  "family": "x6_gd_bins_capacity",
+  "tier": "hard",
+  "capabilities": [
+   "GD"
+  ],
+  "core": [
+   "GD"
+  ],
+  "same_design_as": null,
+  "expected": {
+   "oracle": "success",
+   "fixed": "fail",
+   "retry": "fail",
+   "task_level_replanner": "success (needs GD)"
+  },
+  "falsified_if": "retry succeeds on this Hard family"
+ },
+ {
+  "task": "T12_tidy_toys",
   "family": "x6_cl_basket_unreachable",
   "tier": "hard",
   "capabilities": [

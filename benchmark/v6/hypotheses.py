@@ -388,8 +388,8 @@ def check_GD(c: Ctx, h):
             r.append("cause does not concern the batch step")
     elif kind == "allocation":
         alloc = h["allocation"]
-        if len(alloc) < 2 or len(set(alloc.values())) < 2:
-            r.append("needs >= 2 objects in >= 2 receptacles")
+        if len(alloc) < 2:
+            r.append("needs >= 2 objects to allocate")
         for o, rec in alloc.items():
             if not any(ok(s) and s["skill"] in ACH and s["args"].get(ACH[s["skill"]][0]) == o and
                        related(s["args"].get(ACH[s["skill"]][1]) or "", rec) for s in c.route):
