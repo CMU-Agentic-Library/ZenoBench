@@ -666,9 +666,10 @@ def T09(t):
                 "tomato2_after_stir": dict(
                     failures=[f_move("resource", TOMATOES[1], P("kitchen_island/top", 7.8, 1.62),
                                      ("stir", {"container": POT}), fid="resource_tomato")],
-                    route=base[:at(base, "stir") + 1] + recs(look("kitchen_island/top"), nav(TOMATOES[1]), pick(TOMATOES[1]),
-                                                              nav(POT), S("drop", object=TOMATOES[1], container=POT))
-                    + base[at(base, "stir") + 1:],
+                    route=base[:at(base, "place", object=SP) + 1] + recs(look("kitchen_island/top"), nav(TOMATOES[1]),
+                                                                          pick(TOMATOES[1]), nav(POT),
+                                                                          S("drop", object=TOMATOES[1], container=POT))
+                    + base[at(base, "place", object=SP) + 1:],
                     hyp=[H("PP", kept={"atom": ["inside", TOMATOES[0], POT], "by": {"skill": "collect", "args": {"container": POT}}},
                            event="resource_tomato")])},
             hyp=[]),
@@ -746,12 +747,13 @@ def T12(t):
     CAR, DUCK, BASKET = "toy_car", "rubber_duck", "storage_basket"
     base = OR(t, "toys_out")         # explore, explore, nav car, pick, nav basket, place, nav duck, pick, nav basket, place, nod
     tray = copy.deepcopy(t["variants"]["toys_everywhere"]["add"]["toy_tray"])
+    small = copy.deepcopy(t["variants"]["toys_everywhere"]["add"]["toy_bin_small"])
     goal = {"all": [["upright", BASKET], ["hand_empty", "right"]],
-            "any": [[["inside", CAR, a], ["inside", DUCK, b]] for a in (BASKET, "toy_tray") for b in (BASKET, "toy_tray")]}
+            "any": [[["inside", CAR, a], ["inside", DUCK, b]] for a in (BASKET, "toy_tray") for b in (BASKET, "toy_bin_small")]}
     i = at(base, "place", object=CAR)
     unreach = with_grasp(base[:i], CAR) + refused_twice(base[i], BASKET) \
         + recs(nav("bookcase_2/top"), look("bookcase_2/top"), place(CAR, "toy_tray"), nav(DUCK), pick(DUCK),
-               nav("bookcase_2/top"), place(DUCK, "toy_tray"))
+               nav("toy_bin_small"), S("drop", object=DUCK, container="toy_bin_small"))
     k = at(base, "navigate", destination=DUCK)
     ev = t["variants"]["toys_everywhere"]
     bins = {"left": (0.84, -0.43), "right": (1.13, -0.43)}
@@ -795,13 +797,14 @@ def T12(t):
             cases={"left_full": cap_case("left"), "right_full": cap_case("right")},
             hyp=[]),
         "x6_cl_basket_unreachable": dict(
-            tier="hard", hard="action", base="toys_out", control="m_ik_duck_place", add={"toy_tray": tray}, goal=goal,
-            watch=[CAR, DUCK, BASKET, "toy_tray"],
+            tier="hard", hard="action", base="toys_out", control="m_ik_duck_place",
+            add={"toy_tray": tray, "toy_bin_small": small}, goal=goal, watch=[CAR, DUCK, BASKET, "toy_tray", "toy_bin_small"],
             instruction="It is nearly bedtime. Put the kid's toy car and rubber duck away in the storage basket in the "
-                        "bedroom; if you cannot get them into it, the toy tray on the bedroom bookcase is fine.",
+                        "bedroom; if you cannot get them into it, use the toy tray and the small toy bin on the bedroom "
+                        "bookcase (the duck is too tall for the tray).",
             challenge="the car slips on its first pick; then nothing can be put into the basket from any park",
-            rationale="the basket is unreachable for every toy (persistent, pinned to the basket): the destination "
-                      "changes to the stated tray, and the duck goes straight there without trying the basket",
+            rationale="the basket is unreachable for every toy (persistent, pinned to the basket): the destinations "
+                      "change to the stated tray (car) and small bin (duck), without trying the basket for the duck",
             cases={"": dict(failures=[f_grasp(CAR), f_ik_where("place", "ik_place_basket_persistent", receptacle=BASKET)],
                             route=unreach)},
             hyp=[H("CL", failure="ik_place_basket_persistent", change="destination", to="toy_tray"),

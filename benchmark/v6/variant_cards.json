@@ -19710,12 +19710,13 @@
    18,
    19
   ],
-  "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away in the storage basket in the bedroom; if you cannot get them into it, the toy tray on the bedroom bookcase is fine.",
+  "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away in the storage basket in the bedroom; if you cannot get them into it, use the toy tray and the small toy bin on the bedroom bookcase (the duck is too tall for the tray).",
   "initial_conditions": {
    "scene": "tasks/tidy_toys",
    "start": null,
    "moved": [],
    "added": [
+    "toy_bin_small",
     "toy_tray"
    ],
    "removed": [],
@@ -19787,7 +19788,7 @@
      [
       "inside",
       "rubber_duck",
-      "toy_tray"
+      "toy_bin_small"
      ]
     ],
     [
@@ -19811,7 +19812,7 @@
      [
       "inside",
       "rubber_duck",
-      "toy_tray"
+      "toy_bin_small"
      ]
     ]
    ]
@@ -19836,7 +19837,7 @@
   "control": "m_ik_duck_place",
   "oracle_route": "v6_x6_cl_basket_unreachable",
   "challenge": "the car slips on its first pick; then nothing can be put into the basket from any park",
-  "rationale": "the basket is unreachable for every toy (persistent, pinned to the basket): the destination changes to the stated tray, and the duck goes straight there without trying the basket",
+  "rationale": "the basket is unreachable for every toy (persistent, pinned to the basket): the destinations change to the stated tray (car) and small bin (duck), without trying the basket for the duck",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T12_tidy_toys/x6_pp_duck_moved__dining": {

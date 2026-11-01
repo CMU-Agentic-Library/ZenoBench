@@ -5213,7 +5213,7 @@
    "factor": null,
    "control": "m_ik_duck_place",
    "challenge": "the car slips on its first pick; then nothing can be put into the basket from any park",
-   "rationale": "the basket is unreachable for every toy (persistent, pinned to the basket): the destination changes to the stated tray, and the duck goes straight there without trying the basket",
+   "rationale": "the basket is unreachable for every toy (persistent, pinned to the basket): the destinations change to the stated tray (car) and small bin (duck), without trying the basket for the duck",
    "physics": "0/0 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,

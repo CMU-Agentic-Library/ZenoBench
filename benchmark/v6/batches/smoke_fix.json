@@ -1,0 +1,16 @@
+[
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "x6_pp_tomato_taken_out__tomato2_after_stir",
+"route": "v6_x6_pp_tomato_taken_out__tomato2_after_stir",
+"tier": "hard"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "x6_cl_basket_unreachable",
+"route": "v6_x6_cl_basket_unreachable",
+"tier": "hard"
+}
+]

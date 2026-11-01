@@ -21,7 +21,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | mug | 29 | 18 | 38% | carry slip 16, other 1, placement result 1 | T04 T13 | 4 | carry: mug slipped out of the hand while carrying it |
 | approach | kitchen_island/top | 43 | 17 | 28% | other 16, IK / reach / base pose 1 | T08 | 1 | approach kitchen_island/top: parked but IK fails at [7.564, 1.565, 0.96] |
 | place | book_red | 8 | 17 | 68% | carry slip 7, placement result 5, IK / reach / base pose 3 | T14 | 3 | flat_turn: book_red slipped out of the hand while carrying it |
-| drop | rubber_duck | 23 | 15 | 39% | carry slip 7, IK / reach / base pose 4, other 4 | T12 | 1 | no IK for drop_prelift |
+| drop | rubber_duck | 23 | 15 | 39% | carry slip 7, IK / reach / base pose 4, other 4 | T12 | 2 | no IK for drop_prelift |
 | place | cup_counter_b | 27 | 14 | 34% | carry slip 10, placement result 3, other 1 | T04 | 2 | place_above: cup_counter_b slipped out of the hand while carrying it |
 | pick | breakfast_spoon | 146 | 12 | 8% | grasp miss 12 | T03 T09 | 5 | pick breakfast_spoon: not held (lift -0.001 m) |
 | hide | wooden_block_b | 35 | 12 | 26% | carry slip 6, placement result 3, grasp miss 2 | T17 | 3 | SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): p |
@@ -103,5 +103,6 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 5. **Search of small objects** on the dining table (smoke run: `search wooden_block_b` did not see the block on the dining table in T06) and of the pot lid (v5: `search pot_lid` 0/10 in T17).
 6. **Bimanual flat pick** (`pick(hands=both)`, zeno_skills/policies/bimanual.py): it needs the book's long side (half length >= 9 cm) along an overhanging edge; the T01 / T14 books overhang with the short side (yaw 90), so the two-handed carry of `x6_sr_two_hand_carry` stops there (smoke runs v6_smoke3/4, after the injected slips and the slip restore worked). Either accept short-edge overhangs or provide a re-orientation the route can call.
 7. **Apple pick from the bookcase top** after it rolled out of the basket (T11 `x6_cl_apple_rolls_out`, smoke: `not held`).
-8. New primitive uses: cherry-tomato `pick` + `drop` into the pot (T09 split), `place` into the trash can (T10) and of the foam cube into the bin (T19), `drop` + `cover` instead of `hide` (T17), three-block `stack` (T02).
+8. **From the oracle smoke of the 40 new families without a known blocker** (benchmark/runs/v6_smoke_free, one episode each; 18 pass end to end after two route fixes): `search` misses the object (floor block, wooden block, rubber duck, mug: 5), grasp `not held` (apple on the bookcase, orange, oatmeal bowl, pot lid: 5), carry slips of the paperback / mug (4), `look` / `face` blocked or the object out of the frustum (4), no IK for `hover_above` (T10) and the microwave button press (T07), placement off the support (spoon on the island), and the T12 two-bin capacity episode ending with a toy not fully inside.
+9. New primitive uses: cherry-tomato `pick` + `drop` into the pot (T09 split), `place` into the trash can (T10) and of the foam cube into the bin (T19), `drop` + `cover` instead of `hide` (T17), three-block `stack` (T02).
 

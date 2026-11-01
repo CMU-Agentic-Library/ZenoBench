@@ -392,6 +392,11 @@ def design_md(doc, a):
               f"{a['hard_families']} Hard; {nd} frozen v5 near-duplicates marked and counted once; no new family "
               f"duplicates another in its task | {_check(not any(f.startswith('x6_') for v in a['duplicates_within_task'].values() for f in v))} |")
     sm = smoke_rows(doc)
+    cur = [r for r in sm if r["current"] and r["run"] in ("v6_smoke_free", "v6_smoke_fix")]
+    latest = {}
+    for r in cur:
+        latest[(r["task"], r["variant"])] = r
+    n_pass = sum(r["status"] == "passed" for r in latest.values())
     rt = [r for r in sm if r["run"] == "v6_smoke_retry"]
     md += ["", "## Baseline discrimination smoke (Retry planner)", "",
            "The prediction in `capability_hypotheses.json`: a retry planner (nominal plan, a failed call repeated up to "
@@ -409,6 +414,9 @@ def design_md(doc, a):
            "four T16 variants built on that constraint (`EMPIRICAL_FALSIFIED` in hypotheses.py) and the tier rule "
            "moves them to Medium.", ""]
     md += ["", "## Physical smoke runs (failure-injection features in Isaac Sim)", "",
+           f"Oracle smoke of the new families without a known skill blocker: {len(latest)} variants run once, "
+           f"{n_pass} pass end to end; every non-passing one stops at a skill or perception step (SKILL_FIX_LIST.md "
+           "item 8). These are smoke results, not validation: PHYSICS_VALIDATED needs 10/10 seeds.", "",
            "Light checks, not a validation grid: one episode per new runtime feature. `current`: the result's hash "
            "and route match this catalog (earlier rows show what the route fixes were based on).", "",
            "| run | task | variant | seed | current | result | injected failures fired / manifested | stopped at |",
@@ -567,7 +575,13 @@ def skill_fix(doc, rows):
            "re-orientation the route can call.",
            "7. **Apple pick from the bookcase top** after it rolled out of the basket (T11 `x6_cl_apple_rolls_out`, "
            "smoke: `not held`).",
-           "8. New primitive uses: cherry-tomato `pick` + `drop` into the pot (T09 split), `place` into the trash can "
+           "8. **From the oracle smoke of the 40 new families without a known blocker** (benchmark/runs/v6_smoke_free, "
+           "one episode each; 18 pass end to end after two route fixes): `search` misses the object (floor block, "
+           "wooden block, rubber duck, mug: 5), grasp `not held` (apple on the bookcase, orange, oatmeal bowl, pot "
+           "lid: 5), carry slips of the paperback / mug (4), `look` / `face` blocked or the object out of the "
+           "frustum (4), no IK for `hover_above` (T10) and the microwave button press (T07), placement off the "
+           "support (spoon on the island), and the T12 two-bin capacity episode ending with a toy not fully inside.",
+           "9. New primitive uses: cherry-tomato `pick` + `drop` into the pot (T09 split), `place` into the trash can "
            "(T10) and of the foam cube into the bin (T19), `drop` + `cover` instead of `hide` (T17), three-block "
            "`stack` (T02).", ""]
     (V6 / "SKILL_FIX_LIST.md").write_text("\n".join(md) + "\n")

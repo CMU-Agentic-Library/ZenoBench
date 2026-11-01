@@ -89,6 +89,8 @@ Result: Medium 4/4 succeed, Hard 5/6 fail. The exception, T16 `h_task_bowl_behin
 
 ## Physical smoke runs (failure-injection features in Isaac Sim)
 
+Oracle smoke of the new families without a known skill blocker: 40 variants run once, 18 pass end to end; every non-passing one stops at a skill or perception step (SKILL_FIX_LIST.md item 8). These are smoke results, not validation: PHYSICS_VALIDATED needs 10/10 seeds.
+
 Light checks, not a validation grid: one episode per new runtime feature. `current`: the result's hash and route match this catalog (earlier rows show what the route fixes were based on).
 
 | run | task | variant | seed | current | result | injected failures fired / manifested | stopped at |
@@ -111,6 +113,48 @@ Light checks, not a validation grid: one episode per new runtime feature. `curre
 | v6_smoke3 | T20 | x6_cl_bottle_behind_mug__bowl | 10 | yes | stopped | 2/2 | pick: pick juice_bottle: not held (lift -0.000 m) |
 | v6_smoke4 | T01 | x6_sr_two_hand_carry | 10 | yes | stopped | 1/2 | pick: bimanual flat pick: paperback_book needs a safe overhanging edge |
 | v6_smoke4 | T14 | x6_sr_two_hand_carry | 10 | yes | stopped | 1/2 | pick: bimanual flat pick: book_red needs a safe overhanging edge |
+| v6_smoke_fix | T09 | x6_pp_tomato_taken_out__tomato2_after_stir | 10 | yes | passed | 1/1 | - |
+| v6_smoke_fix | T12 | x6_cl_basket_unreachable | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T01 | x6_dr_block_on_book__sponge | 10 | yes | stopped | 1/1 | navigate: carry: paperback_book slipped out of the hand while carrying it |
+| v6_smoke_free | T01 | x6_m_slip_book | 10 | yes | stopped | 1/1 | navigate: carry: paperback_book slipped out of the hand while carrying it |
+| v6_smoke_free | T02 | x6_cl_base_a_unreachable | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T02 | x6_cl_block_b_unholdable__grasp | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T02 | x6_gd_tower_with_event__tv_stand | 10 | yes | stopped | 1/1 | search: search floor_block: not seen at ['kitchen_island', 'tv_stand_2', 'kitchen_stove', 'breakfast_fridge', 'kitchen_microwave |
+| v6_smoke_free | T04 | x6_cl_cup_unusable__slip | 10 | yes | stopped | 2/2 | place: carry: mug slipped out of the hand while carrying it |
+| v6_smoke_free | T04 | x6_dr_spot_filled_dynamic__bowl | 10 | yes | stopped | 2/2 | pick: pick oatmeal: not held (lift 0.000 m) |
+| v6_smoke_free | T05 | x6_cl_pen_unholdable__pencil_away | 10 | yes | stopped | 0/2 | navigate: NOT_OBSERVED: 'pen' is not a known place or an observed object |
+| v6_smoke_free | T06 | x6_cl_block_a_unholdable__b_island | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T06 | x6_cl_cabinet_unreachable | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T06 | x6_gd_two_displays_event__dining | 10 | yes | stopped | 1/1 | search: search wooden_block_b: not seen at ['cell_shelf_4', 'cell_shelf_3', 'kitchen_cabinet_3', 'dining_table_2', 'large_shelf_ |
+| v6_smoke_free | T06 | x6_m_grasp_block_a | 10 | yes | passed | 1/1 | - |
+| v6_smoke_free | T06 | x6_m_ik_place_cabinet | 10 | yes | passed | 1/1 | - |
+| v6_smoke_free | T07 | x6_cl_microwave_door_stuck__oatmeal_cabinet | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T07 | x6_m_ik_open_microwave | 10 | yes | stopped | 1/1 | heat: no IK for microwave_button_press |
+| v6_smoke_free | T07 | x6_pp_door_opened_after_heat | 10 | yes | passed | 1/1 | - |
+| v6_smoke_free | T07 | x6_sr_microwave_taken | 10 | yes | stopped | 2/2 | look: look at kitchen_microwave/inside_floor: line of sight blocked (h 0, v -4 deg) |
+| v6_smoke_free | T09 | x6_cl_spoon_unholdable__spoon_dining | 10 | yes | stopped | 1/2 | place: place spoon_target_table: xy err 0.019 m, on support False (bottom at (8.05, 1.67, 0.942)) |
+| v6_smoke_free | T09 | x6_gd_tomato_elsewhere__dining | 10 | yes | passed | 1/1 | - |
+| v6_smoke_free | T09 | x6_m_ik_collect | 10 | yes | passed | 1/1 | - |
+| v6_smoke_free | T09 | x6_pp_tomato_taken_out__tomato2_after_stir | 10 | no | stopped | 1/1 | pick: PRECONDITION_FAILED: hand_empty(hand=right) is false (right holds breakfast_spoon) |
+| v6_smoke_free | T09 | x6_sr_collect_refused | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T10 | x6_m_ik_drop | 10 | yes | stopped | 0/1 | hover: no IK for hover_above |
+| v6_smoke_free | T10 | x6_sr_drop_refused | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T11 | x6_cl_apple_rolls_out | 10 | yes | stopped | 2/2 | pick: pick apple: not held (lift -0.000 m) |
+| v6_smoke_free | T11 | x6_gd_fruits_event | 10 | yes | stopped | 1/1 | pick: pick orange_2: not held (lift 0.000 m) |
+| v6_smoke_free | T11 | x6_m_apple_rolls_out_once | 10 | yes | stopped | 1/1 | pick: pick apple: not held (lift 0.000 m) |
+| v6_smoke_free | T12 | x6_cl_basket_unreachable | 10 | no | stopped | 2/2 | place: place rubber_duck in toy_tray: height 0.095 m outside [0, 0.085] |
+| v6_smoke_free | T12 | x6_gd_bins_capacity__left_full | 10 | yes | goal_failed | 0/0 | - |
+| v6_smoke_free | T12 | x6_pp_duck_moved__dining | 10 | yes | stopped | 1/1 | search: search rubber_duck: not seen at ['cell_shelf_3', 'cell_shelf_4', 'kitchen_cabinet_3', 'dining_table_2', 'cabinet_3', 'la |
+| v6_smoke_free | T13 | x6_cl_cup_slips__mug_cabinet | 10 | yes | stopped | 1/2 | look: look at bowl: outside frustum (h -0, v -41 deg, 0.8 m) |
+| v6_smoke_free | T13 | x6_gd_two_settings__cabinet4 | 10 | yes | stopped | 1/1 | search: search mug: not seen at ['dining_table_2', 'large_shelf_6', 'cell_shelf_4', 'cabinet_3', 'cell_shelf_3', 'kitchen_cabine |
+| v6_smoke_free | T13 | x6_m_slip_cup | 10 | yes | stopped | 1/1 | look: NOT_FOUND: 'cup' is not visible at its last observed position |
+| v6_smoke_free | T13 | x6_pp_spoon_moved__table_end | 10 | yes | stopped | 1/1 | look: face dining_table_2/top: turning in place would hit furniture |
+| v6_smoke_free | T14 | x6_m_slip_book | 10 | yes | stopped | 1/1 | place: place book_red: it turned in the grip (0.80 m below the fingers) |
+| v6_smoke_free | T17 | x6_gd_hide_both_event__dining | 10 | yes | stopped | 1/1 | uncover: pick pot_lid: not held (lift -0.009 m) |
+| v6_smoke_free | T17 | x6_m_ik_hide | 10 | yes | passed | 1/1 | - |
+| v6_smoke_free | T17 | x6_sr_hide_refused | 10 | yes | passed | 2/2 | - |
+| v6_smoke_free | T19 | x6_m_ik_drop_cube | 10 | yes | passed | 1/1 | - |
+| v6_smoke_free | T19 | x6_sr_cube_drop_refused | 10 | yes | passed | 2/2 | - |
 | v6_smoke_retry | T02 | edge_base | 10 | no | goal_failed | 0/0 | - |
 | v6_smoke_retry | T02 | m_grasp_b | 10 | no | passed | 1/1 | pick: pick_lift: wooden_block_b not held (lift 0.000 m) |
 | v6_smoke_retry | T03 | m_grasp_spoon | 10 | no | passed | 1/1 | pick: pick_lift: breakfast_spoon not held (lift 0.000 m) |
