@@ -35,6 +35,7 @@ class FailureRunner:
         self.failure_log: list[dict] = []
         self.ik_block: dict | None = None
         self.call_index = 0
+        self.anchor_xy: dict[str, list[float]] = {}      # until_moved objects: their pose at the start
         self._assets = json.loads((ROOT / "annotations/assets.json").read_text())
         self._supports = {s["name"]: s for s in rig.ann.supports}
 
@@ -53,9 +54,21 @@ class FailureRunner:
             return False
         if t.get("while_holding") and (self.rig.held or {}).get("name") != t["while_holding"]:
             return False
+        if t.get("one_handed") and (getattr(self.rig, "left_held", None) or {}).get("name") == t.get("while_holding"):
+            return False                                  # carried with both hands: this failure does not apply
         if f.get("after_fired") and f["after_fired"] not in self.fired:
             return False
+        if f.get("until_moved") and self._moved(f["until_moved"]):
+            return False                                  # the obstruction was moved away: the action works again
         return f["id"] not in self.fired or bool(f.get("persist"))
+
+    def _moved(self, name) -> bool:
+        """True once ``name`` stands more than 3 cm (xy) from where it stood at the start."""
+        if name not in self.anchor_xy:
+            return False
+        p = self.rig.obj_pose(name)[0]
+        x0, y0 = self.anchor_xy[name]
+        return math.hypot(float(p[0]) - x0, float(p[1]) - y0) > 0.03
 
     def _due(self, f, verb, args):
         """Count a matching call; True when this is the nth."""
@@ -82,14 +95,21 @@ class FailureRunner:
         self.call_index += 1
         # IK: refused before any motion, until the base is re-parked by a base skill
         blk = self.ik_block
-        if blk and verb == blk["verb"] and _target(args) == blk["target"]:
+        if blk and blk.get("until_moved") and self._moved(blk["until_moved"]):
+            self.ik_block = blk = None
+        if blk and verb == blk["verb"] and _target(args) == blk["target"] \
+                and all(args.get(k) == v for k, v in blk["where"].items()):
             blk["refusals"] += 1
             return self._refuse(c, args, "POLICY_FAILED", blk["message"])
         for f in self.failures:
             if f["kind"] == "ik" and self._due(f, verb, args):
                 msg = f"{_stage(verb)}: no IK solution reaches {_target(args)} from this base pose"
+                # ``where``: the trigger's other arguments (a pinned destination / appliance), so a blocked
+                # basket does not block the same object's place on the substitute tray
+                where = {k: v for k, v in (f["trigger"].get("args") or {}).items() if v != _target(args)}
                 self.ik_block = {"verb": verb, "target": _target(args), "message": msg, "refusals": 1,
-                                 "until": f.get("until", "base_skill"), "fid": f["id"]}
+                                 "until": f.get("until", "base_skill"), "fid": f["id"], "where": where,
+                                 "until_moved": f.get("until_moved")}
                 self._record(f, True, verb=verb, target=_target(args), base=list(map(float, self.rig.base_pose())))
                 if self.ik_block["until"] == "once":
                     self.ik_block = None
@@ -238,6 +258,10 @@ class FailureRunner:
 
     # ------------------------------------------------------------------ start / end
     def check_initial(self):
+        for f in self.failures:
+            if f.get("until_moved") and f["until_moved"] in self.rig.ann.objects:
+                p = self.rig.obj_pose(f["until_moved"])[0]
+                self.anchor_xy[f["until_moved"]] = [float(p[0]), float(p[1])]
         for f in self.failures:
             if mode(f) == "initial":
                 if f.get("event"):

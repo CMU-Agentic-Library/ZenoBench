@@ -311,3 +311,66 @@ def test_persistent_failures_fire_every_time(monkeypatch):
     inj.run("approach", {"target": "dining_table_2/top"})
     assert "no IK" in inj.run("place", {"object": "oatmeal", "support": "dining_table_2/top"}).error   # re-park does not help
     assert [r["id"] for r in inj.failure_log].count("g") == 2 and inj.summary()["manifested"] == ["g", "i"]
+
+
+def test_persistent_ik_pinned_destination_leaves_the_substitute_free(monkeypatch):
+    # the basket is out of reach from every park; the same apple's place on the tray must still work
+    fs = [{"id": "i", "kind": "ik", "persist": True, "until": "never",
+           "trigger": {"skill": "place", "args": {"object": "mug", "support": "storage_bin"}}}]
+    inj, base, rig = make(fs, monkeypatch)
+    inj.run("pick", {"object": "mug"})
+    assert "no IK" in inj.run("place", {"object": "mug", "support": "storage_bin"}).error
+    inj.run("approach", {"target": "storage_bin"})
+    assert "no IK" in inj.run("place", {"object": "mug", "support": "storage_bin"}).error
+    assert inj.run("place", {"object": "mug", "support": "dining_table_2/top"}).success
+
+
+def test_until_moved_ends_when_the_neighbour_is_moved(monkeypatch):
+    fs = [{"id": "g", "kind": "grasp", "persist": True, "until_moved": "oatmeal",
+           "trigger": {"skill": "pick", "args": {"object": "mug"}}}]
+    inj, base, rig = make(fs, monkeypatch)
+    inj.check_initial()
+    assert not inj.run("pick", {"object": "mug"}).success
+    assert not inj.run("pick", {"object": "mug"}).success          # boxed in: retrying does not help
+    rig.poses["oatmeal"] = (rig.poses["oatmeal"][0] + [0.02, 0, 0], rig.poses["oatmeal"][1])
+    assert not inj.run("pick", {"object": "mug"}).success          # nudged 2 cm: still in the way
+    rig.poses["oatmeal"] = (rig.poses["oatmeal"][0] + [0.1, 0, 0], rig.poses["oatmeal"][1])
+    assert inj.run("pick", {"object": "mug"}).success              # moved away: the slot is free
+
+
+def test_until_moved_ik_block_clears(monkeypatch):
+    fs = [{"id": "i", "kind": "ik", "persist": True, "until": "never", "until_moved": "oatmeal",
+           "trigger": {"skill": "pick", "args": {"object": "mug"}}}]
+    inj, base, rig = make(fs, monkeypatch)
+    inj.check_initial()
+    assert "no IK" in inj.run("pick", {"object": "mug"}).error
+    inj.run("approach", {"target": "mug"})
+    assert "no IK" in inj.run("pick", {"object": "mug"}).error
+    rig.poses["oatmeal"] = (rig.poses["oatmeal"][0] + [0.2, 0, 0], rig.poses["oatmeal"][1])
+    assert inj.run("pick", {"object": "mug"}).success
+
+
+def test_persistent_one_handed_slip_spares_a_two_handed_carry(monkeypatch):
+    fs = [{"id": "s", "kind": "slip", "persist": True,
+           "trigger": {"skill": "navigate", "while_holding": "mug", "one_handed": True}}]
+    inj, base, rig = make(fs, monkeypatch)
+    rig.left_held = None
+    inj.run("pick", {"object": "mug"})
+    assert "slipped" in inj.run("navigate", {"destination": "a"}).error
+    inj.run("pick", {"object": "mug"})
+    assert "slipped" in inj.run("navigate", {"destination": "a"}).error   # every one-handed carry
+    inj.run("pick", {"object": "mug"})
+    rig.left_held = {"name": "mug"}                                      # steadied with the left hand
+    assert inj.run("navigate", {"destination": "a"}).success
+
+
+@pytest.mark.parametrize("bad, needle", [
+    ({"id": "x", "kind": "placement", "persist": True, "mode": "tipped", "report": [["upright", "mug"]],
+      "trigger": {"skill": "place", "args": {"object": "mug"}}}, "only grasp, slip and ik"),
+    ({"id": "x", "kind": "grasp", "until_moved": "oatmeal", "trigger": {"skill": "pick", "args": {"object": "mug"}}},
+     "until_moved needs a persistent"),
+    ({"id": "x", "kind": "grasp", "trigger": {"skill": "pick", "one_handed": True}}, "one_handed applies"),
+])
+def test_invalid_persistence_specs(bad, needle):
+    with pytest.raises(FailureSpecError, match=needle):
+        validate([bad])

@@ -12,6 +12,11 @@ A variant lists its failures under ``"failures"``.  Each failure is one of
                     authored ``report`` atoms that no longer hold.
   * ``ik``        - the manipulation is refused before any motion with ``no IK solution from this base
                     pose`` and stays refused until the base is moved by a base skill (re-park).
+* **persistent** action failures (``"persist": true``; grasp, slip or ik with ``until: never``) fire on every
+  matching call from the nth on: the object cannot be held / carried one-handed / reached there at all, so a
+  retry cannot help and the plan must change (cross-level recovery).  ``"until_moved": <object>`` ends the
+  persistence once that object stands > 3 cm from its start pose (a neighbour blocking the finger slot or
+  the reach: the recovery is to move it).  ``trigger.one_handed`` (slip): a two-handed carry is not affected.
 * **task-level** (``capacity``, ``destination``, ``resource``, ``dependency``):
   * ``initial`` - the constraint is in the scene overlay (move / add / remove); ``check`` atoms must
                   hold at the start (the trigger is verified, nothing is changed at run time);
@@ -104,8 +109,14 @@ def validate(failures, where="failures", objects=None, articulated=None, support
                         errs.append(f"{p}: trigger names unknown {v!r}")
             if f.get("after_fired") is not None and f["after_fired"] not in ids:
                 errs.append(f"{p}: after_fired names no failure of this variant")
-        if f.get("persist") and k not in ("grasp", "ik"):
-            errs.append(f"{p}: only grasp and ik failures can be persistent")
+        if f.get("persist") and k not in ("grasp", "ik", "slip"):
+            errs.append(f"{p}: only grasp, slip and ik failures can be persistent")
+        if f.get("until_moved") is not None:
+            if not f.get("persist") or k not in ("grasp", "ik"):
+                errs.append(f"{p}: until_moved needs a persistent grasp or ik failure")
+            known("object", f["until_moved"], objects, p)
+        if (trig or {}).get("one_handed") and k != "slip":
+            errs.append(f"{p}: one_handed applies to slip failures")
         if k == "ik" and f.get("persist") and f.get("until", "never") != "never":
             errs.append(f"{p}: a persistent ik failure has until: never")
         if k == "slip" and not (trig or {}).get("while_holding"):
