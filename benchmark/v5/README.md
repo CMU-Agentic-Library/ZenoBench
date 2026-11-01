@@ -1,5 +1,8 @@
 # ZenoBench v5: extensible skills, failure injection, 180 formal variants
 
+> The task-design layer on top of v5 is [benchmark/v6](../v6/README.md): 53 new task-level families, one difficulty
+> rule with independently checked capability hypotheses, decision-diverse seeds. v5 configurations are unchanged.
+
 v5 builds on v3/v4 (`benchmark/v3/`, unchanged and still the catalog Graph Manager and the HTTP service
 read). It adds a separate catalog, `benchmark/v5/tasks.json`, with the same 20 task ids.
 

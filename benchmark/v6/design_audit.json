@@ -1,0 +1,7898 @@
+{
+ "families": 233,
+ "episodes": 2330,
+ "tiers": {
+  "v5/easy": 38,
+  "v5/hard": 55,
+  "v5/medium": 87,
+  "v6/hard": 42,
+  "v6/medium": 11
+ },
+ "coverage": {
+  "DR": {
+   "variants": 41,
+   "designs": 36,
+   "tasks": 11,
+   "mechanisms": [
+    "capacity/initial",
+    "condition/destination_full",
+    "condition/joint_capacity",
+    "condition/surface_cluttered",
+    "dependency/dynamic-move_object",
+    "dependency/initial",
+    "destination/dynamic-move_object",
+    "destination/initial",
+    "grasp/persistent",
+    "grasp/transient",
+    "ik/persistent-until-moved",
+    "ik/transient",
+    "resource/dynamic-move_object",
+    "resource/initial"
+   ],
+   "strategies": [
+    "DR:open-door",
+    "DR:push-aside",
+    "DR:relocate-obstacle"
+   ],
+   "categories": {
+    "task": 13,
+    "action": 9,
+    "mixed": 10,
+    "dynamic": 9
+   },
+   "new": 6
+  },
+  "GD": {
+   "variants": 22,
+   "designs": 21,
+   "tasks": 12,
+   "mechanisms": [
+    "capacity/initial",
+    "condition/joint_capacity",
+    "dependency/dynamic-set_joint",
+    "grasp/transient",
+    "ik/persistent",
+    "ik/transient",
+    "resource/dynamic-move_object",
+    "resource/initial"
+   ],
+   "strategies": [
+    "GD:allocation",
+    "GD:decomposition",
+    "GD:inspection",
+    "GD:split"
+   ],
+   "categories": {
+    "dynamic": 7,
+    "task": 10,
+    "action": 3,
+    "mixed": 2
+   },
+   "new": 14
+  },
+  "SR": {
+   "variants": 24,
+   "designs": 24,
+   "tasks": 9,
+   "mechanisms": [
+    "capacity/initial",
+    "condition/appliance_occupied",
+    "condition/joint_capacity",
+    "condition/microwave_broken",
+    "condition/not_in_view",
+    "condition/unstable_base",
+    "dependency/dynamic-set_joint",
+    "dependency/initial",
+    "destination/dynamic-move_object",
+    "grasp/persistent",
+    "grasp/transient",
+    "ik/persistent",
+    "ik/transient",
+    "resource/dynamic-move_object",
+    "resource/initial",
+    "slip/persistent"
+   ],
+   "strategies": [
+    "SR:collect->drop",
+    "SR:drop->place",
+    "SR:heat->heat(appliance)",
+    "SR:heat->place(appliance)",
+    "SR:hide->drop",
+    "SR:pick->pick(hands)",
+    "SR:place->drop",
+    "SR:place->heat(appliance)",
+    "SR:stack->place(base)",
+    "SR:stack->stack(base)"
+   ],
+   "categories": {
+    "action": 12,
+    "task": 5,
+    "mixed": 3,
+    "dynamic": 4
+   },
+   "new": 10
+  },
+  "CL": {
+   "variants": 21,
+   "designs": 21,
+   "tasks": 15,
+   "mechanisms": [
+    "dependency/initial",
+    "destination/initial",
+    "grasp/persistent",
+    "grasp/transient",
+    "ik/persistent",
+    "ik/persistent-until-moved",
+    "ik/transient",
+    "placement/persistent",
+    "slip/persistent",
+    "slip/transient"
+   ],
+   "strategies": [
+    "CL:appliance",
+    "CL:destination",
+    "CL:object",
+    "CL:procedure",
+    "CL:subgoal"
+   ],
+   "categories": {
+    "action": 20,
+    "mixed": 1
+   },
+   "new": 18
+  },
+  "PP": {
+   "variants": 22,
+   "designs": 22,
+   "tasks": 12,
+   "mechanisms": [
+    "capacity/initial",
+    "dependency/dynamic-set_joint",
+    "destination/initial",
+    "grasp/persistent",
+    "grasp/transient",
+    "ik/persistent",
+    "ik/transient",
+    "resource/dynamic-move_object",
+    "resource/initial",
+    "slip/persistent"
+   ],
+   "strategies": [
+    "PP:fetch-moved-resource",
+    "PP:redo-undone-part",
+    "PP:restore-state",
+    "PP:switch-after-progress"
+   ],
+   "categories": {
+    "dynamic": 18,
+    "action": 4
+   },
+   "new": 16
+  },
+  "AF": {
+   "variants": 69,
+   "designs": 63,
+   "tasks": 19,
+   "mechanisms": [
+    "capacity/initial",
+    "condition/appliance_occupied",
+    "condition/destination_full",
+    "condition/joint_capacity",
+    "condition/microwave_broken",
+    "condition/not_in_view",
+    "condition/surface_cluttered",
+    "dependency/dynamic-move_object",
+    "dependency/dynamic-set_joint",
+    "dependency/initial",
+    "destination/initial",
+    "grasp/persistent",
+    "grasp/transient",
+    "ik/persistent",
+    "ik/transient",
+    "placement/persistent",
+    "resource/dynamic-move_object",
+    "resource/initial",
+    "slip/persistent",
+    "slip/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "AF:task"
+   ],
+   "categories": {
+    "action": 22,
+    "mixed": 12,
+    "dynamic": 22,
+    "task": 13
+   },
+   "new": 18
+  }
+ },
+ "duplicates_within_task": {
+  "T10: DR | dependency/initial; ik/transient": [
+   "h_action_ik_pick_and_drop",
+   "h_mixed_microwave_ik"
+  ],
+  "T15: DR | dependency/initial; ik/transient": [
+   "h_action_ik_twice",
+   "h_mixed_block_on_book_ik"
+  ],
+  "T16: DR | dependency/initial; ik/transient": [
+   "h_action_ik_twice",
+   "h_mixed_bowl_behind_ik"
+  ],
+  "T18: GD | ik/transient; resource/initial": [
+   "h_action_ik_open_and_close",
+   "h_mixed_two_cabinets_ik"
+  ],
+  "T20: DR | destination/initial; ik/transient": [
+   "h_action_ik_pick_and_place",
+   "h_mixed_table_full_ik"
+  ],
+  "T14: DR | destination/initial; ik/transient": [
+   "h_action_ik_pick_and_place",
+   "h_mixed_shelf_taken_ik"
+  ]
+ },
+ "distinct_hard_signatures": 68,
+ "hard_families": 97,
+ "retiered": [
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "table_set",
+   "retiered": "hard -> medium",
+   "caps": []
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "h_action_ik_pick_and_place",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "h_mixed_table_set_ik",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "h_dynamic_pushed_back",
+   "retiered": "hard -> medium",
+   "caps": []
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "three_containers",
+   "retiered": "hard -> medium",
+   "caps": []
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "h_action_slip_and_miss",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "h_mixed_three_containers_ik",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "h_dynamic_cup_taken",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "e1_pencil_asked",
+   "retiered": "easy -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "e2_pencil_asked_far",
+   "retiered": "easy -> medium",
+   "caps": []
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "display_hidden",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "h_action_slip_and_ik",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "h_mixed_hidden_grasp",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "h_dynamic_cabinet_filled",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "microwave_broken",
+   "retiered": "medium -> hard",
+   "caps": [
+    "AF",
+    "SR"
+   ]
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "broken_oatmeal_away",
+   "retiered": "medium -> hard",
+   "caps": [
+    "AF",
+    "SR"
+   ]
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "cookware_choice",
+   "retiered": "hard -> medium",
+   "caps": []
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "h_action_grasp_and_ik",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "h_mixed_cookware_grasp",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "basket_gone_bowl_there",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "h_mixed_bowl_there_grasp",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "h_dynamic_basket_taken",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "no_cup_spoon_boxed_in",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "h_mixed_boxed_in_ik",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "h_task_lid_elsewhere",
+   "retiered": "hard -> medium",
+   "caps": []
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "h_action_ik_twice",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "h_mixed_lid_elsewhere_ik",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "h_dynamic_lid_put_on",
+   "retiered": "hard -> medium",
+   "caps": []
+  },
+  {
+   "task": "T19_recycling",
+   "family": "lookalike_bin",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T19_recycling",
+   "family": "h_action_grasp_and_miss",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T19_recycling",
+   "family": "h_mixed_lookalike_ik",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  }
+ ],
+ "control_tiers": {
+  "medium": 23,
+  "easy": 69,
+  "hard": 4,
+  "non-formal": 1
+ },
+ "ladders": 19,
+ "multi_case_families": 26,
+ "decision_factors": {
+  "which object lies on the book (blocking relation)": 1,
+  "failure mechanism (grasp slip vs reach)": 1,
+  "where the event takes the resource": 9,
+  "which cabinet holds the preferred item": 2,
+  "failure mechanism and where the substitute is": 1,
+  "where the substitute is": 3,
+  "where the food is": 1,
+  "which substitute exists and where": 1,
+  "where the second tomato was left": 1,
+  "which subgoal the event undoes": 1,
+  "which closed place holds the item": 3,
+  "how many candidate places (and an empty one) the instruction names": 1,
+  "which object blocks the reach (blocking relation)": 1
+ },
+ "status": {
+  "STATIC_VALIDATED": 174,
+  "PHYSICS_VALIDATED": 59
+ },
+ "hard_categories": {
+  "action": 31,
+  "task": 23,
+  "mixed": 13,
+  "dynamic": 30
+ },
+ "failure_modes_in_hard": {
+  "transient": 47,
+  "persistent": 24,
+  "initial": 51,
+  "unstable_base": 1,
+  "dynamic": 30,
+  "microwave_broken": 2,
+  "not_in_view": 1,
+  "appliance_occupied": 1,
+  "surface_cluttered": 1,
+  "joint_capacity": 1,
+  "destination_full": 2
+ },
+ "static": {
+  "episodes": 2330,
+  "static_ok": 2330
+ },
+ "static_problems": 0,
+ "static_stale": false,
+ "rows": [
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "overhang_ready",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "overhang_ready"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the book already overhangs the island's front edge by about 6 cm",
+   "rationale": "",
+   "physics": "1/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the robot starts in the dining room; a longer trip to the island and back",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "no_overhang",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_overhang"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "no_overhang"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the book overhangs the front edge by 1.5 cm only: the edge pinch fails until it is exposed",
+   "rationale": "",
+   "physics": "6/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "far_no_overhang",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_overhang",
+    "condition/start_elsewhere"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "far_no_overhang"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the robot starts at the wall cabinet facing away; the book on the island does not overhang enough",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "m_ik_pick",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_pick"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the first pick is refused (no IK from that park): re-park and retry",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "table_set",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "task",
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "condition/spot_quality"
+   ],
+   "strategies": [],
+   "cases": [
+    "table_set"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the dining table is set for breakfast along its east edge; one free edge slot leaves room around the book",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "h_action_ik_pick_and_place",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "action",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_action_ik_pick_and_place"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the table is set: choose a reading spot clear of the tableware; and both the pick at the island and the place at the table are refused from their first parks",
+   "rationale": "",
+   "physics": "4/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "h_mixed_table_set_ik",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "mixed",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_mixed_table_set_ik"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the set table (choose a reading spot clear of the tableware) and a refused first pick",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "h_dynamic_pushed_back",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "dynamic",
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "dependency/dynamic-move_object",
+    "destination/initial"
+   ],
+   "strategies": [],
+   "cases": [
+    "h_dynamic_pushed_back"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the table is set: choose a reading spot clear of the tableware; and while the robot drives over, someone pushes the book back from the edge: the edge pinch fails until it is exposed again",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "x6_sr_two_hand_carry",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "SR"
+   ],
+   "mechanisms": [
+    "ik/transient",
+    "slip/persistent"
+   ],
+   "strategies": [
+    "CL:procedure",
+    "SR:pick->pick(hands)"
+   ],
+   "cases": [
+    "x6_sr_two_hand_carry"
+   ],
+   "factor": null,
+   "control": "x6_m_slip_book",
+   "challenge": "the paperback slips out of the one-handed pinch at the start of every carry; the first place on the table is also refused from its park",
+   "rationale": "a one-handed retry fails every time (persistent slip), so the carry procedure must change: pick the book with both hands (the left hand steadies it); solvable because pick(hands=both) is a library skill and the slip only affects one-handed carries",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "x6_m_slip_book",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "slip/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_slip_book"
+   ],
+   "factor": null,
+   "control": "overhang_ready",
+   "challenge": "the paperback slips once at the start of the carry",
+   "rationale": "matched control of x6_sr_two_hand_carry: the same slip, transient, so picking it again works",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T01_book_to_dining_table",
+   "family": "x6_dr_block_on_book",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial"
+   ],
+   "strategies": [
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "x6_dr_block_on_book__block",
+    "x6_dr_block_on_book__sponge"
+   ],
+   "factor": "which object lies on the book (blocking relation)",
+   "control": "overhang_ready",
+   "challenge": "a toy block (or the sponge) lies on top of the paperback",
+   "rationale": "the book cannot be lifted with something on it: take that off (and leave it on the island) first; it is not part of the goal, so this is an inserted precondition",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "clear",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "clear"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "the blocks stand 30 cm apart, every finger slot is free",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "e2_from_wall_cabinet",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_wall_cabinet"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "the robot starts by the wall cabinet, facing the island",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "crowded",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/crowded"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "crowded"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "block B is boxed in: the oatmeal bowl right behind it and the end of the rolling pin right beside it (3 mm gaps), so both pinch axes of B have a finger slot taken",
+   "rationale": "",
+   "physics": "4/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "far_crowded",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/crowded",
+    "condition/start_elsewhere"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "far_crowded"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "the robot starts at the wall cabinet facing away; block B is boxed in",
+   "rationale": "",
+   "physics": "1/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "m_grasp_b",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_grasp_b"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "block B slips from the fingers on the first pick",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "edge_base",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "condition/unstable_base"
+   ],
+   "strategies": [
+    "SR:stack->stack(base)"
+   ],
+   "cases": [
+    "edge_base"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "block A sits at the island's front edge (5 mm over it), block B in the open",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "h_action_grasp_and_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "SR:stack->stack(base)"
+   ],
+   "cases": [
+    "h_action_grasp_and_ik"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "block A sits at the island edge: stack on the open block instead; and block B slips on the first pick, then the first stack is refused from its park",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "h_mixed_edge_base_grasp",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "SR:stack->stack(base)"
+   ],
+   "cases": [
+    "h_mixed_edge_base_grasp"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "block A at the island edge must not be the base, and it slips on the first pick",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "h_dynamic_base_moved_to_edge",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "destination/dynamic-move_object"
+   ],
+   "strategies": [
+    "SR:stack->place(base)"
+   ],
+   "cases": [
+    "h_dynamic_base_moved_to_edge"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "after block B is picked, someone shoves block A to the island edge: stacking on it would topple, so B goes down in the open and A is stacked on B",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "x6_cl_base_a_unreachable",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "SR"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/persistent"
+   ],
+   "strategies": [
+    "CL:object",
+    "SR:stack->stack(base)"
+   ],
+   "cases": [
+    "x6_cl_base_a_unreachable"
+   ],
+   "factor": null,
+   "control": "clear",
+   "challenge": "no park reaches the top of block A for the stack (block B in hand); block A slips on its first pick",
+   "rationale": "stacking on A is impossible however the robot re-parks (persistent, pinned to A as the base): set B down and swap the roles, A goes on top of B",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "x6_cl_block_b_unholdable",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "SR"
+   ],
+   "mechanisms": [
+    "grasp/persistent",
+    "ik/persistent",
+    "ik/transient"
+   ],
+   "strategies": [
+    "CL:object",
+    "SR:stack->stack(base)"
+   ],
+   "cases": [
+    "x6_cl_block_b_unholdable__grasp",
+    "x6_cl_block_b_unholdable__ik"
+   ],
+   "factor": "failure mechanism (grasp slip vs reach)",
+   "control": "m_grasp_b",
+   "challenge": "block B cannot be picked at all (it slips every time / no park reaches it); the first stack of the other block is refused from its park",
+   "rationale": "the goal allows either block on top: when B cannot be held, swap the roles and stack A on B; retrying B never works (persistent)",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T02_stack_blocks",
+   "family": "x6_gd_tower_with_event",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "GD",
+    "PP"
+   ],
+   "core": [
+    "GD",
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "GD:decomposition",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_gd_tower_with_event__tv_stand",
+    "x6_gd_tower_with_event__dining"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "edge_base",
+   "challenge": "three blocks, one at the island edge (it must not be the base); once the first two are stacked, the kid takes the third block to the TV stand",
+   "rationale": "the tower decomposes into two ordered stack subgoals with a base constraint (the edge block goes on top of the middle, never at the bottom); the event removes a resource after the first subgoal: keep the two-block stack and fetch the third",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "large_only",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "large_only"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "no mug: the storage bin on the TV stand is the only open container",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "small_and_large",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/small_container_present"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "small_and_large"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "two open containers: a mug (8 cm opening) on the island and the wide storage bin (34 x 30 cm) on the TV stand",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "far_small_and_large",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/small_container_present",
+    "condition/start_elsewhere"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "far_small_and_large"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "the robot starts at the wall cabinet facing away; a mug on the island, the storage bin on the TV stand",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "m_grasp_spoon",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_grasp_spoon"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "the spoon slips from the fingers on the first pick",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "three_containers",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "task",
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "condition/joint_capacity"
+   ],
+   "strategies": [],
+   "cases": [
+    "three_containers"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "the mug on the island next to the utensils, a small storage bin (22 x 17 cm) and the wide storage bin side by side on the TV stand: the spoon fits the small bin, the 22 cm rolling pin only the wide one",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "h_action_slip_and_miss",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "action",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "capacity/initial",
+    "placement/transient",
+    "slip/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_action_slip_and_miss"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "allocate by size: the pin only fits the wide bin; and the rolling pin slips at the start of the carry, and the first place misses the bin",
+   "rationale": "",
+   "physics": "6/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "h_mixed_three_containers_ik",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "mixed",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "capacity/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_mixed_three_containers_ik"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "allocate by size (the pin only fits the wide bin) and the first pin pick is refused",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T03_utensils_one_container",
+   "family": "h_dynamic_pin_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "capacity/initial",
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "h_dynamic_pin_taken"
+   ],
+   "factor": null,
+   "control": "large_only",
+   "challenge": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone takes the pin to the wall cabinet: keep the spoon where it is, find the pin",
+   "rationale": "",
+   "physics": "4/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "cup_available",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "cup_available"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "a cup stands on the island next to the mug",
+   "rationale": "",
+   "physics": "6/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "1/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "no_cup",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_cup"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "no_cup"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "there is no cup in the house: the mug is the legal substitute",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "no_cup_mug_away",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_cup",
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "no_cup_mug_away"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "no cup in the house and the mug stands on the TV stand, out of the first view",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "m_ik_cup",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_cup"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "the first cup pick is refused (no IK from that park): re-park and retry",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "h_task_spot_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_task_spot_taken"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "the drinks spot is taken by the oatmeal bowl and the pot lid (no free spot for a cup): make room first (move the bowl), then set the cup",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "h_action_ik_and_grasp",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL",
+    "DR"
+   ],
+   "core": [
+    "CL",
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "grasp/persistent",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "CL:object",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_action_ik_and_grasp"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "make room on the drinks spot (the first bowl pick is refused: re-park), then the cup cannot be held at all (it slips every time): set out the mug instead",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "h_mixed_spot_taken_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_mixed_spot_taken_ik"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "make room on the cabinet, and the first pick of the bowl is refused",
+   "rationale": "",
+   "physics": "6/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "h_dynamic_cup_taken",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "dynamic",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "h_dynamic_cup_taken"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "right after the robot looked, someone takes the cup away: the mug next to it is the allowed substitute (or search the cup)",
+   "rationale": "",
+   "physics": "4/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "x6_gd_cup_in_cabinets",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_cup_in_cabinets__cup_in_4",
+    "x6_gd_cup_in_cabinets__cup_in_6"
+   ],
+   "factor": "which cabinet holds the preferred item",
+   "control": "no_cup",
+   "challenge": "the mug is in plain view, but a cup is preferred and the cups are kept in closed cabinets: the cup is in one of the two (seed decides which)",
+   "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "x6_cl_cup_unusable",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL"
+   ],
+   "core": [
+    "CL"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/persistent",
+    "ik/transient",
+    "slip/persistent"
+   ],
+   "strategies": [
+    "AF:task",
+    "CL:object"
+   ],
+   "cases": [
+    "x6_cl_cup_unusable__slip",
+    "x6_cl_cup_unusable__ik_mug_away"
+   ],
+   "factor": "failure mechanism and where the substitute is",
+   "control": "m_ik_cup",
+   "challenge": "the cup cannot be used: it slips out of the hand at every carry, or no park reaches it while the mug stands on the TV stand",
+   "rationale": "persistent failures on the cup make retries useless; the instruction allows a mug, so the object changes (cross-level); in the second case the mug must also be found",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T04_cup_or_mug_to_cabinet",
+   "family": "x6_dr_spot_filled_dynamic",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/dynamic-move_object"
+   ],
+   "strategies": [
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "x6_dr_spot_filled_dynamic"
+   ],
+   "factor": null,
+   "control": "cup_available",
+   "challenge": "right after the robot picks the cup, someone puts the oatmeal bowl and the pot lid on the drinks spot",
+   "rationale": "the destination is now full for any drink: set the cup down, move the bowl to the other low cabinet, then set the cup; the bowl is not a goal object (only kept upright)",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "e1_pencil_asked",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "easy",
+   "retiered": "easy -> medium",
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_pen"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "e1_pencil_asked"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "bring the named pencil from the bedroom bookcase",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "e2_pencil_asked_far",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "easy",
+   "retiered": "easy -> medium",
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "condition/no_pen"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_pencil_asked_far"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "the same chore starting in the kitchen: a long trip across the house",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "no_pen",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_pen"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "no_pen"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "only the pencil lies on the low bookcase",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "no_pen_pencil_away",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_pen",
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "no_pen_pencil_away"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "no pen; the pencil lies on the dining table in another room",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "m_grasp_pencil",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_grasp_pencil"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "no pen (pencil substitute) and the pencil slips on the first pick",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "h_task_pencil_in_cabinet",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:open-door"
+   ],
+   "cases": [
+    "h_task_pencil_in_cabinet"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "no pen; the pencil is behind a closed cabinet door: open, take it, close again",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "h_action_grasp_and_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "grasp/transient",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:open-door"
+   ],
+   "cases": [
+    "h_action_grasp_and_ik"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "no pen; the pencil is behind a closed cabinet door (close it again); and the pencil slips on the first pick and the first place on the desk is refused",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "h_mixed_cabinet_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:open-door"
+   ],
+   "cases": [
+    "h_mixed_cabinet_ik"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "the pencil behind a closed door, and the first open is refused from its park",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "h_dynamic_pencil_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:open-door"
+   ],
+   "cases": [
+    "h_dynamic_pencil_taken"
+   ],
+   "factor": null,
+   "control": "e1_pencil_asked",
+   "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone takes the pencil to the dining table: close the cabinet again and search the pencil",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "x6_cl_pen_unholdable",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL"
+   ],
+   "core": [
+    "CL"
+   ],
+   "mechanisms": [
+    "grasp/persistent",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:task",
+    "CL:object"
+   ],
+   "cases": [
+    "x6_cl_pen_unholdable__pencil_here",
+    "x6_cl_pen_unholdable__pencil_away"
+   ],
+   "factor": "where the substitute is",
+   "control": "pen_available",
+   "challenge": "a pen lies on the bookcase but cannot be held (it slips from the pinch every time); the pencil is on the bookcase too, or in another room",
+   "rationale": "the pen is there, so 'no pen' is not observable: only the repeated grasp failure tells the planner to fall back to the pencil the instruction allows (cross-level); the control no_pen has no pen at all",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "x6_gd_pencil_other_cabinet",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "DR",
+    "GD"
+   ],
+   "core": [
+    "DR",
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "DR:open-door",
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_pencil_other_cabinet"
+   ],
+   "factor": null,
+   "control": "h_task_pencil_in_cabinet",
+   "challenge": "the pencil is not in the low wall cabinet the instruction names but in the other low cabinet",
+   "rationale": "the expected location is empty: the search decomposes over the candidate cabinets (inspect the second one, open and close both); the door is a precondition of the pick",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T05_pen_or_pencil_to_desk",
+   "family": "x6_gd_pen_or_pencil_cabinets",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_pen_or_pencil_cabinets__pen_in_4",
+    "x6_gd_pen_or_pencil_cabinets__pen_in_6"
+   ],
+   "factor": "which cabinet holds the preferred item",
+   "control": "h_task_pencil_in_cabinet",
+   "challenge": "writing things are in the two low cabinets: a pencil in one, the pen in the other (seed decides which)",
+   "rationale": "the preference (a pen if there is one) makes finding the pencil insufficient: the cabinets are inspected until the pen is found (reference route: the pencil's cabinet first)",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "free",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "free"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "the cabinet top is empty",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "occupied",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/destination_occupied"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "occupied"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "the pot lid and the oatmeal bowl take up the cabinet top: the 15 cm gap between them is too narrow for a block",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "occupied_block_away",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/destination_occupied",
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "occupied_block_away"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "the cabinet top is full and the block was left on the dining table",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "m_slip_block",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "slip/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_slip_block"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "the block slips at the start of the carry",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "display_hidden",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "task",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/spot_quality"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "display_hidden"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "three cereal boxes and the juice bottle stand along the wall cabinet's front; the free space behind them is hidden from the room, the TV stand is open",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "h_action_slip_and_ik",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "action",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient",
+    "slip/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_action_slip_and_ik"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "the cabinet's free space is hidden: display on the TV stand; and the block slips on the way, then the first place on the cabinet is refused",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "h_mixed_hidden_grasp",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "mixed",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "destination/initial",
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_mixed_hidden_grasp"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "the cabinet's free space is hidden behind a row (display on the TV stand) and the block slips on the first pick",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "h_dynamic_cabinet_filled",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "dynamic",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "destination/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "h_dynamic_cabinet_filled"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "after the block is picked, someone puts the pot lid and the oatmeal on the cabinet top: no room left, the TV stand is the other allowed display",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "x6_cl_block_a_unholdable",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL"
+   ],
+   "core": [
+    "CL"
+   ],
+   "mechanisms": [
+    "grasp/persistent",
+    "slip/transient"
+   ],
+   "strategies": [
+    "AF:task",
+    "CL:object"
+   ],
+   "cases": [
+    "x6_cl_block_a_unholdable__b_island",
+    "x6_cl_block_a_unholdable__b_dining"
+   ],
+   "factor": "where the substitute is",
+   "control": "x6_m_grasp_block_a",
+   "challenge": "block A slips out of the fingers at every pick; block B (on the island or left on the dining table) slips once at the start of its carry",
+   "rationale": "the goal accepts either block: after A fails persistently the object changes to B (found where it is), a transient slip of B only needs a re-pick",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "x6_m_grasp_block_a",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_grasp_block_a"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "block A slips from the fingers on the first pick",
+   "rationale": "matched control of x6_cl_block_a_unholdable: transient, the second pick works",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "x6_cl_cabinet_unreachable",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL"
+   ],
+   "core": [
+    "CL"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/persistent"
+   ],
+   "strategies": [
+    "AF:task",
+    "CL:destination"
+   ],
+   "cases": [
+    "x6_cl_cabinet_unreachable"
+   ],
+   "factor": null,
+   "control": "x6_m_ik_place_cabinet",
+   "challenge": "block A slips on the first pick; then the cabinet top cannot be reached from any park",
+   "rationale": "re-parking does not help (persistent refusal pinned to the cabinet): the destination changes to the TV stand, the other display the instruction allows",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "x6_m_ik_place_cabinet",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_ik_place_cabinet"
+   ],
+   "factor": null,
+   "control": "free",
+   "challenge": "the first place on the cabinet top is refused from its park",
+   "rationale": "matched control of x6_cl_cabinet_unreachable: one re-park fixes it",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T06_block_destination_occupied",
+   "family": "x6_gd_two_displays_event",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "GD",
+    "PP"
+   ],
+   "core": [
+    "GD",
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "GD:decomposition",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_gd_two_displays_event__dining",
+    "x6_gd_two_displays_event__cabinet4"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "free",
+   "challenge": "two blocks to two displays; once the first block is on the cabinet, the kid carries the other block to the dining table",
+   "rationale": "the goal decomposes into one placement per display; the event moves the second resource after the first subgoal holds: keep block A where it is, find block B",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "microwave_works",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "microwave_works"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the microwave heats",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "microwave_broken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "medium",
+   "retiered": "medium -> hard",
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "condition/microwave_broken"
+   ],
+   "strategies": [
+    "AF:task",
+    "SR:place->heat(appliance)"
+   ],
+   "cases": [
+    "microwave_broken"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the microwave runs its cycle but does not heat: the heat call fails on the measured temperature",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "broken_oatmeal_away",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "medium",
+   "retiered": "medium -> hard",
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "condition/microwave_broken",
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task",
+    "SR:heat->place(appliance)"
+   ],
+   "cases": [
+    "broken_oatmeal_away"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the microwave does not heat and the oatmeal was left on the wall cabinet (carried from the dining table it slipped out of the rim pinch, 2/2)",
+   "rationale": "",
+   "physics": "4/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "m_ik_oatmeal",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_oatmeal"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the first pick of the bowl is refused from its park",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "microwave_holds_pot",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "condition/appliance_occupied"
+   ],
+   "strategies": [
+    "AF:task",
+    "SR:place->heat(appliance)"
+   ],
+   "cases": [
+    "microwave_holds_pot"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the soup pot with its lid stands in the microwave (no room for the bowl beside it); both burners are free",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "h_action_ik_and_slip",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "ik/persistent",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "SR:place->heat(appliance)"
+   ],
+   "cases": [
+    "h_action_ik_and_slip"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the first bowl pick is refused (re-park), then starting the microwave is out of reach from every park: take the bowl out and heat it on the stove, close the microwave",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "h_mixed_pot_inside_grasp",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "ik/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local",
+    "SR:place->heat(appliance)"
+   ],
+   "cases": [
+    "h_mixed_pot_inside_grasp"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the microwave holds the soup pot (use the stove) and the first bowl pick is refused",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "h_dynamic_door_opened",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "dependency/dynamic-set_joint",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "SR:place->heat(appliance)"
+   ],
+   "cases": [
+    "h_dynamic_door_opened"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the microwave holds the soup pot: heat on the stove; and just after the robot closes the microwave, someone opens the door again: heating needs it closed",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "x6_cl_microwave_door_stuck",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "SR"
+   ],
+   "mechanisms": [
+    "ik/persistent",
+    "ik/transient"
+   ],
+   "strategies": [
+    "CL:appliance",
+    "SR:heat->heat(appliance)"
+   ],
+   "cases": [
+    "x6_cl_microwave_door_stuck__oatmeal_island",
+    "x6_cl_microwave_door_stuck__oatmeal_cabinet"
+   ],
+   "factor": "where the food is",
+   "control": "x6_m_ik_open_microwave",
+   "challenge": "the microwave door cannot be opened from any park; the first pick of the bowl is refused (the bowl is on the island, or on the wall cabinet out of view)",
+   "rationale": "the microwave procedure is unavailable (persistent): heat on the stove instead; the microwave stays closed, which the goal requires anyway",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "x6_m_ik_open_microwave",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_ik_open_microwave"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "the first open of the microwave door is refused from its park",
+   "rationale": "matched control of x6_cl_microwave_door_stuck: one re-park fixes it",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "x6_sr_microwave_taken",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "SR"
+   ],
+   "core": [
+    "SR"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "SR:heat->heat(appliance)"
+   ],
+   "cases": [
+    "x6_sr_microwave_taken"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "while the robot fetches the bowl, someone puts the covered soup pot into the open microwave",
+   "rationale": "the appliance is occupied after the plan was made: the robot sees it on arrival, closes the door and heats on the stove (now free) instead; the pot must not be taken out onto the floor",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T07_heat_oatmeal",
+   "family": "x6_pp_door_opened_after_heat",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "dependency/dynamic-set_joint"
+   ],
+   "strategies": [
+    "PP:restore-state"
+   ],
+   "cases": [
+    "x6_pp_door_opened_after_heat"
+   ],
+   "factor": null,
+   "control": "microwave_works",
+   "challenge": "right after the oatmeal is warm, someone opens the microwave door to look",
+   "rationale": "the heating subgoal already holds; only the door subgoal is undone: close it again without re-heating (re-running the plan would heat again)",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "sponge_on_island",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "sponge_on_island"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "the sponge lies on the island",
+   "rationale": "",
+   "physics": "7/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "the robot starts by the wall cabinet, across the kitchen",
+   "rationale": "",
+   "physics": "6/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "sponge_on_tv_stand",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/tool_away_from_surface"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "sponge_on_tv_stand"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "the sponge lies on the TV stand behind the island",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "far_sponge_tv",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/start_elsewhere",
+    "condition/tool_away_from_surface"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "far_sponge_tv"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "the robot starts in the dining room; the sponge is on the TV stand",
+   "rationale": "",
+   "physics": "1/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "m_grasp_sponge",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_grasp_sponge"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "the sponge slips on the first pick",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "island_cluttered",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "condition/surface_cluttered"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "island_cluttered"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "after cooking the island is cluttered along both long strips (pin, two blocks, can and mug in front; bowl, book, spoon and bottle behind, staggered); the sponge dries on the TV stand",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "h_action_grasp_and_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "grasp/transient",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_action_grasp_and_ik"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "the island is cluttered: clear the strip, wipe, put things back; and the sponge slips on the first pick, and the first wipe is refused from its park",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "h_mixed_cluttered_grasp",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_mixed_cluttered_grasp"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "clear the strip first (put everything back) and the sponge slips on the first pick",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "h_dynamic_sponge_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_dynamic_sponge_taken"
+   ],
+   "factor": null,
+   "control": "sponge_on_island",
+   "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T08_wipe_island",
+   "family": "x6_pp_sponge_taken_after_wipe",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_pp_sponge_taken_after_wipe__tv_stand",
+    "x6_pp_sponge_taken_after_wipe__cabinet6"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "sponge_on_island",
+   "challenge": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
+   "rationale": "the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without wiping again",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "lid_off",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "lid_off"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid lies on the stove beside the pot (where uncover sets it aside)",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "lid_on",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/lid_on"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "lid_on"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid is on the pot",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "lid_on_spoon_away",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/lid_on",
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "lid_on_spoon_away"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid is on the pot and the spoon was left on the low wall cabinet",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "m_grasp_spoon",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_grasp_spoon"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the spoon slips on the first pick",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "cookware_choice",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "task",
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "condition/cookware_choice"
+   ],
+   "strategies": [],
+   "cases": [
+    "cookware_choice"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "a breakfast bowl and a mug stand by the tomatoes on the island; the pot is on the stove, its lid beside it",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "h_action_grasp_and_ik",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "action",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_action_grasp_and_ik"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "choose the pot over the nearer bowl and mug; and the spoon slips on its first pick and the first lid pick is refused",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "h_mixed_cookware_grasp",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "mixed",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_mixed_cookware_grasp"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "choose the pot over the nearer bowl and mug, and the spoon slips on the first pick",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "h_dynamic_spoon_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "PP:fetch-moved-resource"
+   ],
+   "cases": [
+    "h_dynamic_spoon_taken"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "x6_cl_spoon_unholdable",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL",
+    "PP"
+   ],
+   "core": [
+    "CL",
+    "PP"
+   ],
+   "mechanisms": [
+    "grasp/persistent",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:task",
+    "CL:object",
+    "PP:switch-after-progress"
+   ],
+   "cases": [
+    "x6_cl_spoon_unholdable__spoon_cabinet",
+    "x6_cl_spoon_unholdable__spoon_dining"
+   ],
+   "factor": "which substitute exists and where",
+   "control": "m_grasp_spoon",
+   "challenge": "once the tomatoes are in the pot, the breakfast spoon cannot be held (it slips every time); another spoon is on the wall cabinet, or only one on the dining table; the first lid pick is refused",
+   "rationale": "stirring needs a spoon, not this spoon: switch to another spoon (found where it is) and keep the tomatoes in the pot",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "x6_sr_collect_refused",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "GD",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "GD",
+    "SR"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/persistent"
+   ],
+   "strategies": [
+    "CL:procedure",
+    "GD:split",
+    "SR:collect->drop"
+   ],
+   "cases": [
+    "x6_sr_collect_refused"
+   ],
+   "factor": null,
+   "control": "x6_m_ik_collect",
+   "challenge": "collecting both tomatoes into the pot at once is refused from every park; the first single tomato pick slips",
+   "rationale": "the batch skill is unavailable (persistent): decompose into one pick-and-drop per tomato",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "x6_gd_tomato_elsewhere",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "GD:split"
+   ],
+   "cases": [
+    "x6_gd_tomato_elsewhere__dining",
+    "x6_gd_tomato_elsewhere__cabinet6"
+   ],
+   "factor": "where the second tomato was left",
+   "control": "lid_off",
+   "challenge": "one cherry tomato is on the island, the other was left on the dining table or on the wall cabinet",
+   "rationale": "collecting both at once only works for tomatoes on one surface: split the batch, collect the near one, fetch the other on its own",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "x6_m_ik_collect",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_ik_collect"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the first collect into the pot is refused from its park",
+   "rationale": "matched control of x6_sr_collect_refused: one re-park fixes it",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "x6_pp_lid_taken_after_stir",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "PP:fetch-moved-resource"
+   ],
+   "cases": [
+    "x6_pp_lid_taken_after_stir__cabinet4",
+    "x6_pp_lid_taken_after_stir__dining"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "lid_off",
+   "challenge": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
+   "rationale": "tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T09_tomato_soup",
+   "family": "x6_pp_tomato_taken_out",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_pp_tomato_taken_out__tomato2",
+    "x6_pp_tomato_taken_out__tomato1"
+   ],
+   "factor": "which subgoal the event undoes",
+   "control": "lid_off",
+   "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
+   "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "can_on_island",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "can_on_island"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the can stands on the island",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "can_in_dining_room",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "can_in_dining_room"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the can stands on the dining table in the next room, out of sight",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "far_can_far",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/not_in_view",
+    "condition/start_elsewhere"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "far_can_far"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the robot starts in the dining room, the can is on the TV stand",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "m_ik_can",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_can"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the first can pick is refused from its park",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "h_task_can_in_microwave",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:open-door"
+   ],
+   "cases": [
+    "h_task_can_in_microwave"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the can is inside the closed microwave: open it, take the can, close it, then trash it",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "h_action_ik_pick_and_drop",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:open-door"
+   ],
+   "cases": [
+    "h_action_ik_pick_and_drop"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the can is in the closed microwave (close it again); and the first pick and the first drop over the trash can are both refused from their parks",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "h_mixed_microwave_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:open-door"
+   ],
+   "cases": [
+    "h_mixed_microwave_ik"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the can behind the microwave door, and the first pick inside is refused",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false,
+   "same_design_as": "h_action_ik_pick_and_drop"
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "h_dynamic_can_moved",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:open-door"
+   ],
+   "cases": [
+    "h_dynamic_can_moved"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "x6_gd_can_put_away",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "DR:open-door",
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_can_put_away__in_cabinet",
+    "x6_gd_can_put_away__in_microwave"
+   ],
+   "factor": "which closed place holds the item",
+   "control": "h_task_can_in_microwave",
+   "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
+   "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "x6_sr_drop_refused",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "SR"
+   ],
+   "mechanisms": [
+    "ik/persistent",
+    "ik/transient"
+   ],
+   "strategies": [
+    "CL:procedure",
+    "SR:drop->place"
+   ],
+   "cases": [
+    "x6_sr_drop_refused"
+   ],
+   "factor": null,
+   "control": "x6_m_ik_drop",
+   "challenge": "dropping the can over the trash can is refused from every park; the first pick is refused",
+   "rationale": "the drop procedure is unavailable (persistent): put the can into the trash can with a place instead",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "x6_m_ik_drop",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_ik_drop"
+   ],
+   "factor": null,
+   "control": "can_on_island",
+   "challenge": "the first drop over the trash can is refused from its park",
+   "rationale": "matched control of x6_sr_drop_refused: one re-park fixes it",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "fruits_on_table",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "fruits_on_table"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "the apple on the dining table, the basket on the bedroom bookcase",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "e2_from_kitchen",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_kitchen"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "the robot starts in the kitchen",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "basket_missing",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/container_absent"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "basket_missing"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "no fruit basket on the bookcase: the serving tray on the study desk",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "m_grasp_apple",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_grasp_apple"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "the apple slips on the first pick",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "m_ik_basket",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_basket"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "the first place into the basket is refused from its park",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "basket_gone_bowl_there",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "task",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/decoy_destination"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "basket_gone_bowl_there"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "no fruit basket: a breakfast bowl stands on the bookcase where the basket usually is; the serving tray is on the study desk",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "h_action_grasp_and_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL"
+   ],
+   "core": [
+    "CL"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/persistent"
+   ],
+   "strategies": [
+    "AF:local",
+    "CL:destination"
+   ],
+   "cases": [
+    "h_action_grasp_and_ik"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "the apple slips on the first pick (retry), then the basket is out of reach from every park (re-parking does not help): the stated tray on the study desk instead",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": "failure-injection fix 019e517 (pinned IK block)",
+   "retry_solvable": false
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "h_mixed_bowl_there_grasp",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "mixed",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_mixed_bowl_there_grasp"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "the basket is gone and a bowl stands in its place (use the tray), and the apple slips",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "h_dynamic_basket_taken",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "dynamic",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "h_dynamic_basket_taken"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "while the robot picks the apple, someone takes the basket away: the serving tray on the study desk is the stated substitute",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "x6_gd_fruits_event",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "GD",
+    "PP"
+   ],
+   "core": [
+    "GD",
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "GD:decomposition",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_gd_fruits_event"
+   ],
+   "factor": null,
+   "control": "basket_missing",
+   "challenge": "two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes the orange to the TV stand",
+   "rationale": "the goal decomposes into one placement per fruit; the event moves the second resource after the first subgoal holds: keep the apple, find the orange",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "x6_cl_apple_rolls_out",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL"
+   ],
+   "core": [
+    "CL"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "placement/persistent"
+   ],
+   "strategies": [
+    "AF:task",
+    "CL:destination"
+   ],
+   "cases": [
+    "x6_cl_apple_rolls_out"
+   ],
+   "factor": null,
+   "control": "x6_m_apple_rolls_out_once",
+   "challenge": "the apple rolls back out of the basket onto the bookcase every time it is put in; the apple slips on its first pick",
+   "rationale": "the basket does not keep the apple (persistent placement failure, pinned to the basket): the instruction's tray on the study desk replaces it",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T11_collect_fruits",
+   "family": "x6_m_apple_rolls_out_once",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "placement/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_apple_rolls_out_once"
+   ],
+   "factor": null,
+   "control": "fruits_on_table",
+   "challenge": "the apple rolls back out of the basket once",
+   "rationale": "matched control of x6_cl_apple_rolls_out: transient, putting it in again works",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "toys_out",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "toys_out"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "the car on the living-room floor, the duck on the TV stand",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "e2_from_kitchen",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_kitchen"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "the robot starts in the kitchen",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "duck_in_study",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "duck_in_study"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "the duck was left on the study desk",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "m_grasp_car",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_grasp_car"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "the car slips on the first pick from the floor",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "m_ik_duck_place",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_duck_place"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "the first place of the duck into the basket is refused",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "toys_everywhere",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "DR",
+    "GD",
+    "SR"
+   ],
+   "core": [
+    "DR",
+    "GD",
+    "SR"
+   ],
+   "mechanisms": [
+    "condition/joint_capacity"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle",
+    "GD:allocation",
+    "SR:place->drop"
+   ],
+   "cases": [
+    "toys_everywhere"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "h_action_grasp_and_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "DR",
+    "GD",
+    "SR"
+   ],
+   "core": [
+    "DR",
+    "GD",
+    "SR"
+   ],
+   "mechanisms": [
+    "capacity/initial",
+    "grasp/transient",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle",
+    "GD:allocation",
+    "SR:place->drop"
+   ],
+   "cases": [
+    "h_action_grasp_and_ik"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "no basket: allocate the toys by size; and the car slips on its first pick, the duck's first place is refused",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "h_mixed_everywhere_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR",
+    "GD",
+    "SR"
+   ],
+   "core": [
+    "DR",
+    "GD",
+    "SR"
+   ],
+   "mechanisms": [
+    "capacity/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle",
+    "GD:allocation",
+    "SR:place->drop"
+   ],
+   "cases": [
+    "h_mixed_everywhere_ik"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "allocate the toys by size (no basket) and the first car pick is refused",
+   "rationale": "",
+   "physics": "6/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "h_dynamic_duck_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "DR",
+    "GD",
+    "PP",
+    "SR"
+   ],
+   "core": [
+    "DR",
+    "GD",
+    "PP",
+    "SR"
+   ],
+   "mechanisms": [
+    "capacity/initial",
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle",
+    "GD:allocation",
+    "PP:redo-undone-part",
+    "SR:place->drop"
+   ],
+   "cases": [
+    "h_dynamic_duck_taken"
+   ],
+   "factor": null,
+   "control": "toys_out",
+   "challenge": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck",
+   "rationale": "",
+   "physics": "4/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "x6_cl_basket_unreachable",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL"
+   ],
+   "core": [
+    "CL"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/persistent"
+   ],
+   "strategies": [
+    "AF:task",
+    "CL:destination"
+   ],
+   "cases": [
+    "x6_cl_basket_unreachable"
+   ],
+   "factor": null,
+   "control": "m_ik_duck_place",
+   "challenge": "the car slips on its first pick; then nothing can be put into the basket from any park",
+   "rationale": "the basket is unreachable for every toy (persistent, pinned to the basket): the destination changes to the stated tray, and the duck goes straight there without trying the basket",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T12_tidy_toys",
+   "family": "x6_pp_duck_moved",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_pp_duck_moved__dining",
+    "x6_pp_duck_moved__study"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "toys_out",
+   "challenge": "once the car is in the basket, the kid carries the duck to another room (dining table or study desk)",
+   "rationale": "the car subgoal holds; the duck must be found where it went: keep the car, search the duck",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "dishes_on_tv_stand",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "dishes_on_tv_stand"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "bowl and cup on the living-room TV stand, the spoon on the dining table",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "e2_from_kitchen",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_kitchen"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "the robot starts in the hall by the kitchen",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "no_cup",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_cup"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "no_cup"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "no cup in the house: the mug on the bedroom bookcase",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "bowl_on_cabinet",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "bowl_on_cabinet"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "no_cup_bowl_on_cabinet",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_cup",
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "no_cup_bowl_on_cabinet"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "no cup, and the bowl on the low wall cabinet",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "no_cup_spoon_boxed_in",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "task",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/anchor_boxed_in",
+    "condition/no_cup"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "no_cup_spoon_boxed_in"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "no cup (the mug on the bedroom bookcase substitutes); the spoon on the dining table is boxed in by cereal boxes and plates, no room for a bowl or a mug next to it",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "h_action_ik_and_grasp",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL",
+    "PP"
+   ],
+   "core": [
+    "CL",
+    "PP"
+   ],
+   "mechanisms": [
+    "grasp/persistent",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "CL:object",
+    "PP:switch-after-progress"
+   ],
+   "cases": [
+    "h_action_ik_and_grasp"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "the first bowl pick is refused (re-park), then the cup cannot be held at all: the mug on the bedroom bookcase replaces it",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "h_mixed_boxed_in_ik",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "mixed",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_mixed_boxed_in_ik"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "move the boxed-in setting (no cup: mug) and the first spoon pick is refused",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "h_dynamic_mug_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "h_dynamic_mug_taken"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug",
+   "rationale": "",
+   "physics": "4/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "x6_cl_cup_slips",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "CL",
+    "PP"
+   ],
+   "core": [
+    "CL",
+    "PP"
+   ],
+   "mechanisms": [
+    "ik/transient",
+    "slip/persistent"
+   ],
+   "strategies": [
+    "AF:task",
+    "CL:object",
+    "PP:switch-after-progress"
+   ],
+   "cases": [
+    "x6_cl_cup_slips__mug_bookcase",
+    "x6_cl_cup_slips__mug_cabinet"
+   ],
+   "factor": "where the substitute is",
+   "control": "x6_m_slip_cup",
+   "challenge": "the first bowl pick is refused (re-park); once the bowl is set, the cup slips out of the hand at every carry; the mug is on the bedroom bookcase or on the wall cabinet",
+   "rationale": "the cup cannot be carried at all: the instruction allows a mug, found where it is; the bowl on the table stays",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "x6_m_slip_cup",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "slip/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_slip_cup"
+   ],
+   "factor": null,
+   "control": "dishes_on_tv_stand",
+   "challenge": "the cup slips once at the start of its carry",
+   "rationale": "matched control of x6_cl_cup_slips: transient, picking it again works",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "x6_pp_spoon_moved",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_pp_spoon_moved__table_end",
+    "x6_pp_spoon_moved__tv_stand"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "dishes_on_tv_stand",
+   "challenge": "right after the cup is set, the kid moves the spoon away (to the far end of the table, or to the TV stand)",
+   "rationale": "bowl and cup are in place; only the grouping is broken: bring the spoon back next to them instead of moving the dishes",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "x6_gd_bowl_put_away",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "DR",
+    "GD"
+   ],
+   "core": [
+    "DR",
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "DR:open-door",
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_bowl_put_away__in_cabinet",
+    "x6_gd_bowl_put_away__in_microwave"
+   ],
+   "factor": "which closed place holds the item",
+   "control": "bowl_on_cabinet",
+   "challenge": "no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
+   "rationale": "the bowl's location is a disjunction resolved by inspecting both places (reference route: the worse order); the cup is set as usual and the doors are closed again",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T13_breakfast_setup",
+   "family": "x6_gd_two_settings",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "GD",
+    "PP"
+   ],
+   "core": [
+    "GD",
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "GD:decomposition",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_gd_two_settings__cabinet6",
+    "x6_gd_two_settings__cabinet4"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "dishes_on_tv_stand",
+   "challenge": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
+   "rationale": "the goal decomposes into two place settings with an allocation of the cups and bowls; the event moves the second place's resource after the first setting holds: keep it, find the mug",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "book_free",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "book_free"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "the book lies on the island with free paths to the front edge",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "6/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "book_out_of_view",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/start_elsewhere"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "book_out_of_view"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "the robot starts at the wall cabinet facing away",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "m_ik_flip",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_flip"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "the first flip is refused from its park",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "m_start_dining_away",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/start_elsewhere"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "m_start_dining_away"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "the robot starts in the dining room facing away: find the book",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "h_task_block_on_book",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_task_block_on_book"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "a toy block lies on the book: take it off (and leave it on the island) before flipping",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "h_action_ik_twice",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_action_ik_twice"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "a block lies on the book: take it off first; and the flip is refused from two parks in a row: re-park twice",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "h_mixed_block_on_book_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_mixed_block_on_book_ik"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "clear the block off the book, and the first flip is refused",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false,
+   "same_design_as": "h_action_ik_twice"
+  },
+  {
+   "task": "T15_book_face_up",
+   "family": "h_dynamic_book_moved",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/dynamic-move_object",
+    "dependency/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_dynamic_book_moved"
+   ],
+   "factor": null,
+   "control": "book_free",
+   "challenge": "a block lies on the book; right after the robot takes it off, the kid puts it back on: take it off again before flipping",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "pin_free",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "pin_free"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "the pin lies 3 mm from the island's front edge with room behind it",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "pin_out_of_view",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/start_elsewhere"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "pin_out_of_view"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "the robot starts at the wall cabinet facing away",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "m_ik_roll",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_roll"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "the first roll is refused from its park",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "m_start_dining_away",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/start_elsewhere"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "m_start_dining_away"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "the robot starts in the dining room facing away: find the pin",
+   "rationale": "",
+   "physics": "8/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "h_task_bowl_behind",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial"
+   ],
+   "strategies": [
+    "DR:push-aside"
+   ],
+   "cases": [
+    "h_task_bowl_behind"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "the oatmeal bowl stands right behind the pin, in its rolling path: move it first",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "h_action_ik_twice",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_action_ik_twice"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "a bowl stands in the rolling path: move it first; and the roll is refused from two parks in a row",
+   "rationale": "",
+   "physics": "9/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "h_mixed_bowl_behind_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_mixed_bowl_behind_ik"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "move the bowl out of the rolling path, and its first pick is refused",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false,
+   "same_design_as": "h_action_ik_twice"
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "h_dynamic_bowl_put_behind",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_dynamic_bowl_put_behind"
+   ],
+   "factor": null,
+   "control": "pin_free",
+   "challenge": "after the robot looked, someone pushes the oatmeal bowl into the pin's rolling path",
+   "rationale": "",
+   "physics": "6/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "lid_off",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "lid_off"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid lies on the stove beside the pot",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "lid_on",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/lid_on"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "lid_on"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid is on the pot: hide is refused until the pot is uncovered",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "block_crowded",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/crowded"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "block_crowded"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid lies beside the pot; the block is boxed in by the oatmeal bowl and the rolling pin (3 mm, T02's crowd)",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "lid_on_crowded",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/crowded",
+    "condition/lid_on"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "lid_on_crowded"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid is on the pot and the block is boxed in",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "h_task_lid_elsewhere",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "task",
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [],
+   "cases": [
+    "h_task_lid_elsewhere"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the pot's lid was left on the wall cabinet: fetch it to the stove first, then hide",
+   "rationale": "",
+   "physics": "5/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "h_action_ik_twice",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "action",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_action_ik_twice"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid is on the wall cabinet: fetch it first; and the hide is refused from two parks in a row",
+   "rationale": "",
+   "physics": "7/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "h_mixed_lid_elsewhere_ik",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "mixed",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_mixed_lid_elsewhere_ik"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "fetch the lid first, and its first pick is refused",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "h_dynamic_lid_put_on",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "dynamic",
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "dependency/dynamic-move_object",
+    "resource/initial"
+   ],
+   "strategies": [],
+   "cases": [
+    "h_dynamic_lid_put_on"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the lid is on the wall cabinet: fetch it first; and while the robot looks for the block, someone puts the lid back on the pot",
+   "rationale": "",
+   "physics": "1/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "x6_sr_hide_refused",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "SR"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/persistent"
+   ],
+   "strategies": [
+    "CL:procedure",
+    "SR:hide->drop"
+   ],
+   "cases": [
+    "x6_sr_hide_refused"
+   ],
+   "factor": null,
+   "control": "x6_m_ik_hide",
+   "challenge": "the hide skill is refused from every park; the first block pick slips",
+   "rationale": "the composite procedure is unavailable (persistent): realise it with primitives (pick the block, drop it into the pot, pick the lid, cover)",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "x6_m_ik_hide",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_ik_hide"
+   ],
+   "factor": null,
+   "control": "lid_off",
+   "challenge": "the first hide is refused from its park",
+   "rationale": "matched control of x6_sr_hide_refused: one re-park fixes it",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "x6_pp_lid_lifted",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "PP:fetch-moved-resource"
+   ],
+   "cases": [
+    "x6_pp_lid_lifted__cabinet4",
+    "x6_pp_lid_lifted__dining"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "lid_off",
+   "challenge": "right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
+   "rationale": "the block is still in the pot: find the lid and cover again, do not take the block out",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T17_hide_and_seek_block",
+   "family": "x6_gd_hide_both_event",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "GD",
+    "PP"
+   ],
+   "core": [
+    "GD",
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "GD:decomposition",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "x6_gd_hide_both_event__tv_stand",
+    "x6_gd_hide_both_event__dining"
+   ],
+   "factor": "where the event takes the resource",
+   "control": "lid_off",
+   "challenge": "two blocks to hide in one pot; once the first is hidden, the kid takes the other block to the TV stand",
+   "rationale": "the goal decomposes into two hides that share the lid (uncover between them); the event moves the second block after the first subgoal holds: keep the first hidden, find the second",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "at_island",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "at_island"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "the robot starts at its default spot in front of the island",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "e2_from_dining_room",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_dining_room"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "the robot starts in the dining room",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "m_ik_open",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_open"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "the first open is refused from its park",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "m_ik_close",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_close"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "the first close is refused from its park",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "m_door_left_open",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "dependency/initial"
+   ],
+   "strategies": [],
+   "cases": [
+    "m_door_left_open"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "the door was left open: no need to open it (open would be refused), inspect and close",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "h_task_two_cabinets",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "GD:inspection"
+   ],
+   "cases": [
+    "h_task_two_cabinets"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "the bowl is not in the first cabinet: check the other low cabinet too and close both",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "h_action_ik_open_and_close",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "ik/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local",
+    "GD:inspection"
+   ],
+   "cases": [
+    "h_action_ik_open_and_close"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "the bowl is in the other cabinet: check and close both; and the first open and the first close are both refused from their parks",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "h_mixed_two_cabinets_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "ik/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local",
+    "GD:inspection"
+   ],
+   "cases": [
+    "h_mixed_two_cabinets_ik"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "check both cabinets, and the second cabinet's first open is refused",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false,
+   "same_design_as": "h_action_ik_open_and_close"
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "h_dynamic_door_closed",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "dependency/dynamic-set_joint",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "GD:inspection"
+   ],
+   "cases": [
+    "h_dynamic_door_closed"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "the bowl is in the other cabinet: check and close both; and just after the robot opens the door, someone pushes it shut: inspecting needs it open",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "x6_gd_bowl_elsewhere",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "GD"
+   ],
+   "core": [
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_bowl_elsewhere__two_places",
+    "x6_gd_bowl_elsewhere__three_places"
+   ],
+   "factor": "how many candidate places (and an empty one) the instruction names",
+   "control": "at_island",
+   "challenge": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
+   "rationale": "the first place answers only half of the question: the inspection continues, past an empty place when there is one, until both dishes are seen",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T18_check_cabinet_dishes",
+   "family": "x6_pp_door_reopened",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "dependency/dynamic-set_joint"
+   ],
+   "strategies": [
+    "PP:restore-state"
+   ],
+   "cases": [
+    "x6_pp_door_reopened"
+   ],
+   "factor": null,
+   "control": "at_island",
+   "challenge": "right after the robot closes the cabinet, someone opens the door again",
+   "rationale": "both dishes were already seen: close the door again, do not inspect again",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T19_recycling",
+   "family": "bin_on_bookcase",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "bin_on_bookcase"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "can on the TV stand, cube on the floor, the bin on the bedroom low bookcase",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T19_recycling",
+   "family": "e2_from_kitchen",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_kitchen"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "the robot starts in the kitchen",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T19_recycling",
+   "family": "m_can_in_dining_room",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/not_in_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "m_can_in_dining_room"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "the can was left on the dining table, out of view: search it",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T19_recycling",
+   "family": "m_grasp_can",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_grasp_can"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "the can slips on the first pick",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T19_recycling",
+   "family": "m_ik_cube",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_cube"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "the first floor pick of the cube is refused from its park",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T19_recycling",
+   "family": "lookalike_bin",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "task",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/decoy_destination",
+    "condition/item_out_of_view"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "lookalike_bin"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "the can was left on the dining table (out of view); a look-alike wide storage bin with toy blocks in it stands on the living-room cabinet by the bedroom door; the recycling bin with a used plastic cup in it is on the bedroom bookcase",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T19_recycling",
+   "family": "h_action_grasp_and_miss",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "action",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "grasp/transient",
+    "placement/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_action_grasp_and_miss"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "a look-alike bin on the way: use the instructed one; and the can's first drop misses the bin, the cube slips on its first pick",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T19_recycling",
+   "family": "h_mixed_lookalike_ik",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "hard",
+   "retiered": "hard -> medium",
+   "hard_category": "mixed",
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "h_mixed_lookalike_ik"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "route both items past the look-alike bin to the instructed one, and the first cube pick is refused",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T19_recycling",
+   "family": "h_dynamic_cube_moved",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "PP"
+   ],
+   "core": [
+    "PP"
+   ],
+   "mechanisms": [
+    "resource/dynamic-move_object",
+    "resource/initial"
+   ],
+   "strategies": [
+    "AF:task",
+    "PP:redo-undone-part"
+   ],
+   "cases": [
+    "h_dynamic_cube_moved"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone puts the foam cube on the TV stand: keep the can, find the cube",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T19_recycling",
+   "family": "x6_sr_cube_drop_refused",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "PP",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "PP",
+    "SR"
+   ],
+   "mechanisms": [
+    "grasp/transient",
+    "ik/persistent"
+   ],
+   "strategies": [
+    "CL:procedure",
+    "PP:switch-after-progress",
+    "SR:drop->place"
+   ],
+   "cases": [
+    "x6_sr_cube_drop_refused"
+   ],
+   "factor": null,
+   "control": "x6_m_ik_drop_cube",
+   "challenge": "once the can is in the bin, the cube slips on its first pick, then dropping it over the bin is refused from every park (the light foam would not fall in)",
+   "rationale": "the drop procedure is unavailable for the cube (persistent): place it into the bin instead, and keep the can where it is",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T19_recycling",
+   "family": "x6_m_ik_drop_cube",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_ik_drop_cube"
+   ],
+   "factor": null,
+   "control": "bin_on_bookcase",
+   "challenge": "the first drop of the cube over the bin is refused from its park",
+   "rationale": "matched control of x6_sr_cube_drop_refused: one re-park fixes it",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "bottle_on_cabinet",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "bottle_on_cabinet"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "the bottle on the low wall cabinet top",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "e2_from_bedroom_hall",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_from_bedroom_hall"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "the robot starts in the kitchen",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "m_ik_pick",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_pick"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "the first bottle pick is refused from its park",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "m_ik_place",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_place"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "the first place on the table is refused from its park",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "m_bottle_on_tv_stand",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "condition/not_in_view"
+   ],
+   "strategies": [],
+   "cases": [
+    "m_bottle_on_tv_stand"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "table_full",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "condition/destination_full"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "table_full"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "the bottle on the low wall cabinet; the dining table is covered by six trays, six plates and four bowls: no spot left for the bottle to stand",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "h_action_ik_pick_and_place",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_action_ik_pick_and_place"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "the party table is full: make room first; and the first pick and the first place are both refused from their parks",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "h_mixed_table_full_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_mixed_table_full_ik"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "make room on the party table, and the first bowl pick is refused",
+   "rationale": "",
+   "physics": "1/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false,
+   "same_design_as": "h_action_ik_pick_and_place"
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "h_dynamic_bottle_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "resource/dynamic-move_object"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_dynamic_bottle_taken"
+   ],
+   "factor": null,
+   "control": "bottle_on_cabinet",
+   "challenge": "the party table is full: make room first; and just after the robot saw the bottle, someone takes it to the TV stand",
+   "rationale": "",
+   "physics": "10/10 of 10",
+   "status": "PHYSICS_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "x6_cl_bottle_behind_mug",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "CL",
+    "DR"
+   ],
+   "core": [
+    "CL",
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/persistent-until-moved"
+   ],
+   "strategies": [
+    "CL:subgoal",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "x6_cl_bottle_behind_mug__mug",
+    "x6_cl_bottle_behind_mug__bowl"
+   ],
+   "factor": "which object blocks the reach (blocking relation)",
+   "control": "m_ik_pick",
+   "challenge": "the bottle stands in the back corner of the cabinet top with a mug (or a bowl) right in front of it: no park reaches the bottle until that object is moved",
+   "rationale": "re-parking cannot help while the object blocks the reach (wall behind, object in front), so the recovery inserts a subgoal on an object outside the goal: move it aside first",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T20_juice_back_to_table",
+   "family": "x6_gd_bottle_put_away",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "DR",
+    "GD"
+   ],
+   "core": [
+    "DR",
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "DR:open-door",
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_bottle_put_away__in_cabinet_4",
+    "x6_gd_bottle_put_away__in_cabinet_6"
+   ],
+   "factor": "which closed place holds the item",
+   "control": "bottle_on_cabinet",
+   "challenge": "the bottle was put away in one of the two low cabinets",
+   "rationale": "a disjunction over closed places: inspect them (reference route: the worse order), take the bottle, close both doors",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "e1_book_ready",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e1_book_ready"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "the book already overhangs the desk's front edge: pick it and shelve it",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "e2_book_ready_far",
+   "origin": "v5",
+   "tier": "easy",
+   "v5_tier": "easy",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [],
+   "core": [],
+   "mechanisms": [
+    "none"
+   ],
+   "strategies": [],
+   "cases": [
+    "e2_book_ready_far"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "the same chore starting in the hall by the kitchen",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "book_on_desk",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "condition/no_overhang"
+   ],
+   "strategies": [
+    "AF:task"
+   ],
+   "cases": [
+    "book_on_desk"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "the red book flat on the desk, no overhang (pick fails: edge pinch overhang -0.025 m, s10, v3_round8)",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "m_ik_place",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_place"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "the first shelving place is refused from its park",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "m_ik_pick",
+   "origin": "v5",
+   "tier": "medium",
+   "v5_tier": "medium",
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "m_ik_pick"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "the first expose is refused from its park (re-park, then expose and pick)",
+   "rationale": "",
+   "physics": "2/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "shelf_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "condition/destination_full"
+   ],
+   "strategies": [
+    "AF:task",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "shelf_taken"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "the flat red book on the study desk; a mug and the rubber duck take up the front and the east end of the bedroom bookcase top",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "h_action_ik_pick_and_place",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_action_ik_pick_and_place"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "the shelf is taken: move the mug first; and the first expose and the first shelving place are both refused",
+   "rationale": "",
+   "physics": "0/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "h_mixed_shelf_taken_ik",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "AF",
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/initial",
+    "ik/transient"
+   ],
+   "strategies": [
+    "AF:local",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_mixed_shelf_taken_ik"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "make room on the shelf first, and the first mug pick is refused",
+   "rationale": "",
+   "physics": "3/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false,
+   "same_design_as": "h_action_ik_pick_and_place"
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "h_dynamic_shelf_taken",
+   "origin": "v5",
+   "tier": "hard",
+   "v5_tier": "hard",
+   "retiered": null,
+   "hard_category": "dynamic",
+   "caps": [
+    "DR"
+   ],
+   "core": [
+    "DR"
+   ],
+   "mechanisms": [
+    "destination/dynamic-move_object"
+   ],
+   "strategies": [
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "h_dynamic_shelf_taken"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "while the robot is at the desk, someone puts a mug and the duck on the bookcase top: move the mug to a legal place before shelving",
+   "rationale": "",
+   "physics": "1/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "x6_sr_two_hand_carry",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "action",
+   "caps": [
+    "CL",
+    "SR"
+   ],
+   "core": [
+    "CL",
+    "SR"
+   ],
+   "mechanisms": [
+    "ik/transient",
+    "slip/persistent"
+   ],
+   "strategies": [
+    "CL:procedure",
+    "SR:pick->pick(hands)"
+   ],
+   "cases": [
+    "x6_sr_two_hand_carry"
+   ],
+   "factor": null,
+   "control": "x6_m_slip_book",
+   "challenge": "the red book slips out of the one-handed pinch at the start of every carry; the first shelving place is refused from its park",
+   "rationale": "one-handed retries never work (persistent): carry it with both hands instead",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "x6_m_slip_book",
+   "origin": "v6",
+   "tier": "medium",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": null,
+   "caps": [
+    "AF"
+   ],
+   "core": [],
+   "mechanisms": [
+    "slip/transient"
+   ],
+   "strategies": [
+    "AF:local"
+   ],
+   "cases": [
+    "x6_m_slip_book"
+   ],
+   "factor": null,
+   "control": "e1_book_ready",
+   "challenge": "the red book slips once at the start of the carry",
+   "rationale": "matched control of x6_sr_two_hand_carry: transient, picking it again works",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": true
+  }
+ ]
+}
