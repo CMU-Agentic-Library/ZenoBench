@@ -1519,7 +1519,7 @@
       }
      }
     },
-    "x6_dr_block_on_book": {
+    "x6_dr_block_on_book__block": {
      "move": {
       "paperback_book": {
        "support": "kitchen_island/top",
@@ -1558,22 +1558,106 @@
      ],
      "difficulty": "hard",
      "since": "v6",
-     "note": "a toy block lies on top of the paperback",
+     "note": "a toy block (or the sponge) lies on top of the paperback",
      "v6": {
       "family": "x6_dr_block_on_book",
-      "case": null,
+      "case": "block",
       "tier": "hard",
       "hard_category": "task",
-      "challenge": "a toy block lies on top of the paperback",
-      "rationale": "the book cannot be lifted with the block on it: take the block off (and leave it on the island) first; the block is not part of the goal, so this is an inserted precondition",
+      "challenge": "a toy block (or the sponge) lies on top of the paperback",
+      "rationale": "the book cannot be lifted with something on it: take that off (and leave it on the island) first; it is not part of the goal, so this is an inserted precondition",
       "control": "overhang_ready",
       "contrast": null,
-      "factor": null,
+      "factor": "which object lies on the book (blocking relation)",
       "derived_from": "overhang_ready",
       "hypotheses": [
        {
         "cap": "DR",
         "blocker": "wooden_block_a",
+        "blocked": {
+         "skill": "pick",
+         "target": "paperback_book"
+        },
+        "cause": "failure:dependency_initial"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.01,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_dr_block_on_book__sponge": {
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.548
+       ],
+       "yaw_deg": 90
+      },
+      "kitchen_sponge": {
+       "support": null,
+       "z": 0.886,
+       "xy": [
+        7.62,
+        1.59
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "dependency_initial",
+       "kind": "dependency",
+       "when": "initial",
+       "check": [
+        [
+         "on_top_of",
+         "kitchen_sponge",
+         "paperback_book"
+        ]
+       ]
+      }
+     ],
+     "conditions": [
+      "multi_object_goal"
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "a toy block (or the sponge) lies on top of the paperback",
+     "v6": {
+      "family": "x6_dr_block_on_book",
+      "case": "sponge",
+      "tier": "hard",
+      "hard_category": "task",
+      "challenge": "a toy block (or the sponge) lies on top of the paperback",
+      "rationale": "the book cannot be lifted with something on it: take that off (and leave it on the island) first; it is not part of the goal, so this is an inserted precondition",
+      "control": "overhang_ready",
+      "contrast": null,
+      "factor": "which object lies on the book (blocking relation)",
+      "derived_from": "overhang_ready",
+      "hypotheses": [
+       {
+        "cap": "DR",
+        "blocker": "kitchen_sponge",
         "blocked": {
          "skill": "pick",
          "target": "paperback_book"
@@ -1636,7 +1720,8 @@
     "h_dynamic_pushed_back": "v5_h_dynamic_pushed_back",
     "x6_sr_two_hand_carry": "v6_x6_sr_two_hand_carry",
     "x6_m_slip_book": "v6_x6_m_slip_book",
-    "x6_dr_block_on_book": "v6_x6_dr_block_on_book"
+    "x6_dr_block_on_book__block": "v6_x6_dr_block_on_book__block",
+    "x6_dr_block_on_book__sponge": "v6_x6_dr_block_on_book__sponge"
    },
    "routes": {
     "nominal": {
@@ -2713,9 +2798,9 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "paperback_book"
+        "destination": "paperback_book"
        },
        "role": "recover"
       },
@@ -2743,9 +2828,23 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "paperback_book"
        },
        "role": "recover"
       },
@@ -2851,9 +2950,9 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "paperback_book"
+        "destination": "paperback_book"
        },
        "role": "recover"
       },
@@ -2893,7 +2992,7 @@
      "kind": "v6_oracle",
      "variant": "x6_m_slip_book"
     },
-    "v6_x6_dr_block_on_book": {
+    "v6_x6_dr_block_on_book__block": {
      "steps": [
       {
        "skill": "look",
@@ -2971,7 +3070,87 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_dr_block_on_book"
+     "variant": "x6_dr_block_on_book__block"
+    },
+    "v6_x6_dr_block_on_book__sponge": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.2,
+         1.85
+        ]
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_dr_block_on_book__sponge"
     }
    },
    "benchmark_version": "v6",
@@ -3293,20 +3472,21 @@
      "hard_category": "task",
      "control": "overhang_ready",
      "cases": [
-      "x6_dr_block_on_book"
+      "x6_dr_block_on_book__block",
+      "x6_dr_block_on_book__sponge"
      ],
-     "factor": null,
+     "factor": "which object lies on the book (blocking relation)",
      "seeds": {
-      "10": "x6_dr_block_on_book",
-      "11": "x6_dr_block_on_book",
-      "12": "x6_dr_block_on_book",
-      "13": "x6_dr_block_on_book",
-      "14": "x6_dr_block_on_book",
-      "15": "x6_dr_block_on_book",
-      "16": "x6_dr_block_on_book",
-      "17": "x6_dr_block_on_book",
-      "18": "x6_dr_block_on_book",
-      "19": "x6_dr_block_on_book"
+      "10": "x6_dr_block_on_book__sponge",
+      "11": "x6_dr_block_on_book__block",
+      "12": "x6_dr_block_on_book__block",
+      "13": "x6_dr_block_on_book__sponge",
+      "14": "x6_dr_block_on_book__sponge",
+      "15": "x6_dr_block_on_book__block",
+      "16": "x6_dr_block_on_book__block",
+      "17": "x6_dr_block_on_book__sponge",
+      "18": "x6_dr_block_on_book__block",
+      "19": "x6_dr_block_on_book__sponge"
      },
      "tier": "hard",
      "capabilities": [
@@ -3498,7 +3678,7 @@
      "tier_rule": "medium",
      "control": "overhang_ready"
     },
-    "x6_dr_block_on_book": {
+    "x6_dr_block_on_book__block": {
      "source": "declared",
      "verified": [
       "DR"
@@ -3510,6 +3690,30 @@
       "DR": {
        "cap": "DR",
        "blocker": "wooden_block_a",
+       "blocked": {
+        "skill": "pick",
+        "target": "paperback_book"
+       },
+       "cause": "failure:dependency_initial"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "overhang_ready"
+    },
+    "x6_dr_block_on_book__sponge": {
+     "source": "declared",
+     "verified": [
+      "DR"
+     ],
+     "core": [
+      "DR"
+     ],
+     "evidence": {
+      "DR": {
+       "cap": "DR",
+       "blocker": "kitchen_sponge",
        "blocked": {
         "skill": "pick",
         "target": "paperback_book"
@@ -4246,6 +4450,118 @@
       "hard_category": "dynamic"
      }
     },
+    "x6_cl_base_a_unreachable": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "ik_stack_on_a_persistent",
+       "kind": "ik",
+       "persist": true,
+       "until": "never",
+       "trigger": {
+        "skill": "stack",
+        "args": {
+         "base": "wooden_block_a"
+        },
+        "nth": 1
+       }
+      },
+      {
+       "id": "grasp_wooden_block_a",
+       "kind": "grasp",
+       "trigger": {
+        "skill": "pick",
+        "args": {
+         "object": "wooden_block_a"
+        },
+        "nth": 1
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "no park reaches the top of block A for the stack (block B in hand); block A slips on its first pick",
+     "v6": {
+      "family": "x6_cl_base_a_unreachable",
+      "case": null,
+      "tier": "hard",
+      "hard_category": "action",
+      "challenge": "no park reaches the top of block A for the stack (block B in hand); block A slips on its first pick",
+      "rationale": "stacking on A is impossible however the robot re-parks (persistent, pinned to A as the base): set B down and swap the roles, A goes on top of B",
+      "control": "clear",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "clear",
+      "hypotheses": [
+       {
+        "cap": "CL",
+        "failure": "ik_stack_on_a_persistent",
+        "change": "object",
+        "to": "wooden_block_a"
+       },
+       {
+        "cap": "SR",
+        "nominal": {
+         "skill": "stack",
+         "args": {
+          "object": "wooden_block_b",
+          "base": "wooden_block_a"
+         }
+        },
+        "replacement": {
+         "skill": "stack",
+         "args": {
+          "object": "wooden_block_a",
+          "base": "wooden_block_b"
+         }
+        },
+        "cause": "failure:ik_stack_on_a_persistent"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
     "x6_cl_block_b_unholdable__grasp": {
      "move": {
       "wooden_block_a": {
@@ -4471,7 +4787,7 @@
       }
      }
     },
-    "x6_gd_tower_with_event": {
+    "x6_gd_tower_with_event__tv_stand": {
      "move": {
       "wooden_block_a": {
        "support": "kitchen_island/top",
@@ -4638,14 +4954,254 @@
      "note": "three blocks, one at the island edge (it must not be the base); once the first two are stacked, the kid takes the third block to the TV stand",
      "v6": {
       "family": "x6_gd_tower_with_event",
-      "case": null,
+      "case": "tv_stand",
       "tier": "hard",
       "hard_category": "dynamic",
       "challenge": "three blocks, one at the island edge (it must not be the base); once the first two are stacked, the kid takes the third block to the TV stand",
       "rationale": "the tower decomposes into two ordered stack subgoals with a base constraint (the edge block goes on top of the middle, never at the bottom); the event removes a resource after the first subgoal: keep the two-block stack and fetch the third",
       "control": "edge_base",
       "contrast": null,
-      "factor": null,
+      "factor": "where the event takes the resource",
+      "derived_from": "edge_base",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "decomposition",
+        "subgoals": [
+         [
+          "on_top_of",
+          "wooden_block_a",
+          "wooden_block_b"
+         ],
+         [
+          "on_top_of",
+          "floor_block",
+          "wooden_block_a"
+         ]
+        ],
+        "cause": "goal"
+       },
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "on_top_of",
+          "wooden_block_a",
+          "wooden_block_b"
+         ],
+         "by": {
+          "skill": "stack",
+          "args": {
+           "object": "wooden_block_a"
+          }
+         }
+        },
+        "event": "resource_floor_block"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "floor_block",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_gd_tower_with_event__dining": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.535
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.66
+       ],
+       "yaw_deg": 0.0
+      },
+      "floor_block": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.95,
+        1.85
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "unstable_base"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "on",
+         "floor_block",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "on",
+         "floor_block",
+         "kitchen_island/top"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Tidy the toy blocks on the kitchen island: stack all three wooden blocks steadily into one tower on the island.",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     "failures": [
+      {
+       "id": "resource_floor_block",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "stack",
+        "args": {
+         "object": "wooden_block_a",
+         "base": "wooden_block_b"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "floor_block",
+        "to": {
+         "support": "dining_table_2/top",
+         "xy": [
+          3.7,
+          6.3
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "three blocks, one at the island edge (it must not be the base); once the first two are stacked, the kid takes the third block to the TV stand",
+     "v6": {
+      "family": "x6_gd_tower_with_event",
+      "case": "dining",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "three blocks, one at the island edge (it must not be the base); once the first two are stacked, the kid takes the third block to the TV stand",
+      "rationale": "the tower decomposes into two ordered stack subgoals with a base constraint (the edge block goes on top of the middle, never at the bottom); the event removes a resource after the first subgoal: keep the two-block stack and fetch the third",
+      "control": "edge_base",
+      "contrast": null,
+      "factor": "where the event takes the resource",
       "derived_from": "edge_base",
       "hypotheses": [
        {
@@ -4758,9 +5314,11 @@
     "h_action_grasp_and_ik": "v5_h_action_grasp_and_ik",
     "h_mixed_edge_base_grasp": "v5_h_mixed_edge_base_grasp",
     "h_dynamic_base_moved_to_edge": "v5_h_dynamic_base_moved_to_edge",
+    "x6_cl_base_a_unreachable": "v6_x6_cl_base_a_unreachable",
     "x6_cl_block_b_unholdable__grasp": "v6_x6_cl_block_b_unholdable__grasp",
     "x6_cl_block_b_unholdable__ik": "v6_x6_cl_block_b_unholdable__ik",
-    "x6_gd_tower_with_event": "v6_x6_gd_tower_with_event"
+    "x6_gd_tower_with_event__tv_stand": "v6_x6_gd_tower_with_event__tv_stand",
+    "x6_gd_tower_with_event__dining": "v6_x6_gd_tower_with_event__dining"
    },
    "routes": {
     "nominal": {
@@ -5643,6 +6201,127 @@
      "since": "v2",
      "fixes": "hard_search_separate"
     },
+    "v6_x6_cl_base_a_unreachable": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       },
+       "expect": "fail",
+       "role": "failure",
+       "injected": true
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "kitchen_island/top",
+        "hint_xy": [
+         7.0,
+         1.8
+        ]
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "failure",
+       "expect": "fail",
+       "injected": true
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_a",
+        "base": "wooden_block_b"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_cl_base_a_unreachable"
+    },
     "v6_x6_cl_block_b_unholdable__grasp": {
      "steps": [
       {
@@ -5851,7 +6530,7 @@
      "kind": "v6_oracle",
      "variant": "x6_cl_block_b_unholdable__ik"
     },
-    "v6_x6_gd_tower_with_event": {
+    "v6_x6_gd_tower_with_event__tv_stand": {
      "steps": [
       {
        "skill": "look",
@@ -5941,7 +6620,99 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_tower_with_event"
+     "variant": "x6_gd_tower_with_event__tv_stand"
+    },
+    "v6_x6_gd_tower_with_event__dining": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_a",
+        "base": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "floor_block",
+        "region": "dining_room_0_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "floor_block"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "floor_block"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "floor_block",
+        "base": "wooden_block_a"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_tower_with_event__dining"
     }
    },
    "benchmark_version": "v6",
@@ -6122,6 +6893,7 @@
       "19": "edge_base"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "SR"
@@ -6146,6 +6918,7 @@
       "19": "h_action_grasp_and_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -6171,6 +6944,7 @@
       "19": "h_mixed_edge_base_grasp"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -6196,8 +6970,36 @@
       "19": "h_dynamic_base_moved_to_edge"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
+      "SR"
+     ]
+    },
+    "x6_cl_base_a_unreachable": {
+     "origin": "v6",
+     "design_tier": "hard",
+     "hard_category": "action",
+     "control": "clear",
+     "cases": [
+      "x6_cl_base_a_unreachable"
+     ],
+     "factor": null,
+     "seeds": {
+      "10": "x6_cl_base_a_unreachable",
+      "11": "x6_cl_base_a_unreachable",
+      "12": "x6_cl_base_a_unreachable",
+      "13": "x6_cl_base_a_unreachable",
+      "14": "x6_cl_base_a_unreachable",
+      "15": "x6_cl_base_a_unreachable",
+      "16": "x6_cl_base_a_unreachable",
+      "17": "x6_cl_base_a_unreachable",
+      "18": "x6_cl_base_a_unreachable",
+      "19": "x6_cl_base_a_unreachable"
+     },
+     "tier": "hard",
+     "capabilities": [
+      "CL",
       "SR"
      ]
     },
@@ -6235,20 +7037,21 @@
      "hard_category": "dynamic",
      "control": "edge_base",
      "cases": [
-      "x6_gd_tower_with_event"
+      "x6_gd_tower_with_event__tv_stand",
+      "x6_gd_tower_with_event__dining"
      ],
-     "factor": null,
+     "factor": "where the event takes the resource",
      "seeds": {
-      "10": "x6_gd_tower_with_event",
-      "11": "x6_gd_tower_with_event",
-      "12": "x6_gd_tower_with_event",
-      "13": "x6_gd_tower_with_event",
-      "14": "x6_gd_tower_with_event",
-      "15": "x6_gd_tower_with_event",
-      "16": "x6_gd_tower_with_event",
-      "17": "x6_gd_tower_with_event",
-      "18": "x6_gd_tower_with_event",
-      "19": "x6_gd_tower_with_event"
+      "10": "x6_gd_tower_with_event__tv_stand",
+      "11": "x6_gd_tower_with_event__dining",
+      "12": "x6_gd_tower_with_event__dining",
+      "13": "x6_gd_tower_with_event__tv_stand",
+      "14": "x6_gd_tower_with_event__dining",
+      "15": "x6_gd_tower_with_event__tv_stand",
+      "16": "x6_gd_tower_with_event__tv_stand",
+      "17": "x6_gd_tower_with_event__dining",
+      "18": "x6_gd_tower_with_event__tv_stand",
+      "19": "x6_gd_tower_with_event__dining"
      },
      "tier": "hard",
      "capabilities": [
@@ -6472,6 +7275,47 @@
      "tier_rule": "hard",
      "control": "clear"
     },
+    "x6_cl_base_a_unreachable": {
+     "source": "declared",
+     "verified": [
+      "CL",
+      "SR"
+     ],
+     "core": [
+      "CL",
+      "SR"
+     ],
+     "evidence": {
+      "CL": {
+       "cap": "CL",
+       "failure": "ik_stack_on_a_persistent",
+       "change": "object",
+       "to": "wooden_block_a"
+      },
+      "SR": {
+       "cap": "SR",
+       "nominal": {
+        "skill": "stack",
+        "args": {
+         "object": "wooden_block_b",
+         "base": "wooden_block_a"
+        }
+       },
+       "replacement": {
+        "skill": "stack",
+        "args": {
+         "object": "wooden_block_a",
+         "base": "wooden_block_b"
+        }
+       },
+       "cause": "failure:ik_stack_on_a_persistent"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "clear"
+    },
     "x6_cl_block_b_unholdable__grasp": {
      "source": "declared",
      "verified": [
@@ -6554,7 +7398,63 @@
      "tier_rule": "hard",
      "control": "m_grasp_b"
     },
-    "x6_gd_tower_with_event": {
+    "x6_gd_tower_with_event__tv_stand": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "GD",
+      "PP"
+     ],
+     "core": [
+      "GD",
+      "PP"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "decomposition",
+       "subgoals": [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ]
+       ],
+       "cause": "goal"
+      },
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "by": {
+         "skill": "stack",
+         "args": {
+          "object": "wooden_block_a"
+         }
+        }
+       },
+       "event": "resource_floor_block"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "edge_base"
+    },
+    "x6_gd_tower_with_event__dining": {
      "source": "declared",
      "verified": [
       "AF",
@@ -6626,6 +7526,7 @@
      "h_action_grasp_and_ik",
      "h_mixed_edge_base_grasp",
      "h_dynamic_base_moved_to_edge",
+     "x6_cl_base_a_unreachable",
      "x6_cl_block_b_unholdable",
      "x6_gd_tower_with_event"
     ]
@@ -8883,6 +9784,7 @@
       "19": "h_dynamic_pin_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -11780,6 +12682,7 @@
       "19": "h_task_spot_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -11805,6 +12708,7 @@
       "19": "h_action_ik_and_grasp"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -11831,6 +12735,7 @@
       "19": "h_mixed_spot_taken_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -14930,6 +15835,7 @@
       "19": "h_task_pencil_in_cabinet"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -14955,6 +15861,7 @@
       "19": "h_action_grasp_and_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -14980,6 +15887,7 @@
       "19": "h_mixed_cabinet_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -15005,6 +15913,7 @@
       "19": "h_dynamic_pencil_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -17004,7 +17913,7 @@
       }
      }
     },
-    "x6_gd_two_displays_event": {
+    "x6_gd_two_displays_event__dining": {
      "move": {
       "wooden_block_a": {
        "support": "kitchen_island/top",
@@ -17099,14 +18008,199 @@
      "note": "two blocks to two displays; once the first block is on the cabinet, the kid carries the other block to the dining table",
      "v6": {
       "family": "x6_gd_two_displays_event",
-      "case": null,
+      "case": "dining",
       "tier": "hard",
       "hard_category": "dynamic",
       "challenge": "two blocks to two displays; once the first block is on the cabinet, the kid carries the other block to the dining table",
       "rationale": "the goal decomposes into one placement per display; the event moves the second resource after the first subgoal holds: keep block A where it is, find block B",
       "control": "free",
       "contrast": null,
-      "factor": null,
+      "factor": "where the event takes the resource",
+      "derived_from": "free",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "decomposition",
+        "subgoals": [
+         [
+          "on",
+          "wooden_block_a",
+          "kitchen_cabinet_6/top"
+         ],
+         [
+          "on",
+          "wooden_block_b",
+          "tv_stand_2/top"
+         ]
+        ],
+        "cause": "goal"
+       },
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "on",
+          "wooden_block_a",
+          "kitchen_cabinet_6/top"
+         ],
+         "by": {
+          "skill": "place",
+          "args": {
+           "object": "wooden_block_a"
+          }
+         }
+        },
+        "event": "resource_block_b"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       },
+       {
+        "names": [
+         "pot_lid"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_gd_two_displays_event__cabinet4": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4096,
+        1.725
+       ],
+       "yaw_deg": 0.0,
+       "z": 0.8591
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "tv_stand_2/top"
+        ]
+       ],
+       [
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "tv_stand_2/top"
+        ]
+       ]
+      ]
+     },
+     "instruction": "Put both toy blocks on display: one on the low wall cabinet and one on the TV stand, so they can be seen from both rooms.",
+     "failures": [
+      {
+       "id": "resource_block_b",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "place",
+        "args": {
+         "object": "wooden_block_a"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "wooden_block_b",
+        "to": {
+         "support": "kitchen_cabinet_4/top",
+         "xy": [
+          1.4,
+          0.42
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "two blocks to two displays; once the first block is on the cabinet, the kid carries the other block to the dining table",
+     "v6": {
+      "family": "x6_gd_two_displays_event",
+      "case": "cabinet4",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "two blocks to two displays; once the first block is on the cabinet, the kid carries the other block to the dining table",
+      "rationale": "the goal decomposes into one placement per display; the event moves the second resource after the first subgoal holds: keep block A where it is, find block B",
+      "control": "free",
+      "contrast": null,
+      "factor": "where the event takes the resource",
       "derived_from": "free",
       "hypotheses": [
        {
@@ -17253,7 +18347,8 @@
     "x6_m_grasp_block_a": "v6_x6_m_grasp_block_a",
     "x6_cl_cabinet_unreachable": "v6_x6_cl_cabinet_unreachable",
     "x6_m_ik_place_cabinet": "v6_x6_m_ik_place_cabinet",
-    "x6_gd_two_displays_event": "v6_x6_gd_two_displays_event"
+    "x6_gd_two_displays_event__dining": "v6_x6_gd_two_displays_event__dining",
+    "x6_gd_two_displays_event__cabinet4": "v6_x6_gd_two_displays_event__cabinet4"
    },
    "routes": {
     "nominal": {
@@ -18385,7 +19480,7 @@
      "kind": "v6_oracle",
      "variant": "x6_m_ik_place_cabinet"
     },
-    "v6_x6_gd_two_displays_event": {
+    "v6_x6_gd_two_displays_event__dining": {
      "steps": [
       {
        "skill": "look",
@@ -18457,7 +19552,80 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_two_displays_event"
+     "variant": "x6_gd_two_displays_event__dining"
+    },
+    "v6_x6_gd_two_displays_event__cabinet4": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "tv_stand_2/top"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_two_displays_event__cabinet4"
     }
    },
    "benchmark_version": "v6",
@@ -18838,20 +20006,21 @@
      "hard_category": "dynamic",
      "control": "free",
      "cases": [
-      "x6_gd_two_displays_event"
+      "x6_gd_two_displays_event__dining",
+      "x6_gd_two_displays_event__cabinet4"
      ],
-     "factor": null,
+     "factor": "where the event takes the resource",
      "seeds": {
-      "10": "x6_gd_two_displays_event",
-      "11": "x6_gd_two_displays_event",
-      "12": "x6_gd_two_displays_event",
-      "13": "x6_gd_two_displays_event",
-      "14": "x6_gd_two_displays_event",
-      "15": "x6_gd_two_displays_event",
-      "16": "x6_gd_two_displays_event",
-      "17": "x6_gd_two_displays_event",
-      "18": "x6_gd_two_displays_event",
-      "19": "x6_gd_two_displays_event"
+      "10": "x6_gd_two_displays_event__dining",
+      "11": "x6_gd_two_displays_event__dining",
+      "12": "x6_gd_two_displays_event__cabinet4",
+      "13": "x6_gd_two_displays_event__cabinet4",
+      "14": "x6_gd_two_displays_event__dining",
+      "15": "x6_gd_two_displays_event__dining",
+      "16": "x6_gd_two_displays_event__cabinet4",
+      "17": "x6_gd_two_displays_event__cabinet4",
+      "18": "x6_gd_two_displays_event__dining",
+      "19": "x6_gd_two_displays_event__cabinet4"
      },
      "tier": "hard",
      "capabilities": [
@@ -19113,7 +20282,63 @@
      "tier_rule": "medium",
      "control": "free"
     },
-    "x6_gd_two_displays_event": {
+    "x6_gd_two_displays_event__dining": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "GD",
+      "PP"
+     ],
+     "core": [
+      "GD",
+      "PP"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "decomposition",
+       "subgoals": [
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_cabinet_6/top"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "tv_stand_2/top"
+        ]
+       ],
+       "cause": "goal"
+      },
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "on",
+         "wooden_block_a",
+         "kitchen_cabinet_6/top"
+        ],
+        "by": {
+         "skill": "place",
+         "args": {
+          "object": "wooden_block_a"
+         }
+        }
+       },
+       "event": "resource_block_b"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "free"
+    },
+    "x6_gd_two_displays_event__cabinet4": {
      "source": "declared",
      "verified": [
       "AF",
@@ -21344,21 +22569,14 @@
        "args": {
         "object": "oatmeal"
        },
-       "role": "failure",
        "expect": "fail",
+       "role": "failure",
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "oatmeal"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "oatmeal"
+        "destination": "oatmeal"
        },
        "role": "recover"
       },
@@ -21737,6 +22955,7 @@
      },
      "v5_tier": "medium",
      "retiered": "medium -> hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -21763,6 +22982,7 @@
      },
      "v5_tier": "medium",
      "retiered": "medium -> hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -21812,6 +23032,7 @@
       "19": "microwave_holds_pot"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -21837,6 +23058,7 @@
       "19": "h_action_ik_and_slip"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -21862,6 +23084,7 @@
       "19": "h_mixed_pot_inside_grasp"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -21887,6 +23110,7 @@
       "19": "h_dynamic_door_opened"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -23650,7 +24874,7 @@
       "hard_category": "dynamic"
      }
     },
-    "x6_pp_sponge_taken_after_wipe": {
+    "x6_pp_sponge_taken_after_wipe__tv_stand": {
      "move": {
       "kitchen_sponge": {
        "support": "kitchen_island/top",
@@ -23693,14 +24917,114 @@
      "note": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
      "v6": {
       "family": "x6_pp_sponge_taken_after_wipe",
-      "case": null,
+      "case": "tv_stand",
       "tier": "hard",
       "hard_category": "dynamic",
       "challenge": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
       "rationale": "the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without wiping again",
       "control": "sponge_on_island",
       "contrast": null,
-      "factor": null,
+      "factor": "where the event takes the resource",
+      "derived_from": "sponge_on_island",
+      "hypotheses": [
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "wiped",
+          "kitchen_island/top"
+         ],
+         "by": {
+          "skill": "wipe",
+          "args": {
+           "surface": "kitchen_island/top"
+          }
+         }
+        },
+        "event": "resource_sponge"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_pp_sponge_taken_after_wipe__cabinet6": {
+     "move": {
+      "kitchen_sponge": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.164,
+        1.8184
+       ],
+       "yaw_deg": 180.0
+      }
+     },
+     "failures": [
+      {
+       "id": "resource_sponge",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "place",
+        "args": {
+         "object": "kitchen_sponge"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "kitchen_sponge",
+        "to": {
+         "support": "kitchen_cabinet_6/top",
+         "xy": [
+          3.7,
+          0.36
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
+     "v6": {
+      "family": "x6_pp_sponge_taken_after_wipe",
+      "case": "cabinet6",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
+      "rationale": "the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without wiping again",
+      "control": "sponge_on_island",
+      "contrast": null,
+      "factor": "where the event takes the resource",
       "derived_from": "sponge_on_island",
       "hypotheses": [
        {
@@ -23785,7 +25109,8 @@
     "h_action_grasp_and_ik": "v5_h_action_grasp_and_ik",
     "h_mixed_cluttered_grasp": "v5_h_mixed_cluttered_grasp",
     "h_dynamic_sponge_taken": "v5_h_dynamic_sponge_taken",
-    "x6_pp_sponge_taken_after_wipe": "v6_x6_pp_sponge_taken_after_wipe"
+    "x6_pp_sponge_taken_after_wipe__tv_stand": "v6_x6_pp_sponge_taken_after_wipe__tv_stand",
+    "x6_pp_sponge_taken_after_wipe__cabinet6": "v6_x6_pp_sponge_taken_after_wipe__cabinet6"
    },
    "routes": {
     "nominal": {
@@ -24691,7 +26016,7 @@
      "kind": "v5_oracle",
      "variant": "h_dynamic_sponge_taken"
     },
-    "v6_x6_pp_sponge_taken_after_wipe": {
+    "v6_x6_pp_sponge_taken_after_wipe__tv_stand": {
      "steps": [
       {
        "skill": "look",
@@ -24741,8 +26066,14 @@
       {
        "skill": "search",
        "args": {
-        "object": "kitchen_sponge",
-        "region": "living_room_0_0"
+        "object": "kitchen_sponge"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
        },
        "role": "recover"
       },
@@ -24777,7 +26108,101 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_sponge_taken_after_wipe"
+     "variant": "x6_pp_sponge_taken_after_wipe__tv_stand"
+    },
+    "v6_x6_pp_sponge_taken_after_wipe__cabinet6": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "kitchen_sponge"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_cabinet_6/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_pp_sponge_taken_after_wipe__cabinet6"
     }
    },
    "benchmark_version": "v6",
@@ -24969,6 +26394,7 @@
       "19": "island_cluttered"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -24994,6 +26420,7 @@
       "19": "h_action_grasp_and_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -25019,6 +26446,7 @@
       "19": "h_mixed_cluttered_grasp"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -25044,6 +26472,7 @@
       "19": "h_dynamic_sponge_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -25056,20 +26485,21 @@
      "hard_category": "dynamic",
      "control": "sponge_on_island",
      "cases": [
-      "x6_pp_sponge_taken_after_wipe"
+      "x6_pp_sponge_taken_after_wipe__tv_stand",
+      "x6_pp_sponge_taken_after_wipe__cabinet6"
      ],
-     "factor": null,
+     "factor": "where the event takes the resource",
      "seeds": {
-      "10": "x6_pp_sponge_taken_after_wipe",
-      "11": "x6_pp_sponge_taken_after_wipe",
-      "12": "x6_pp_sponge_taken_after_wipe",
-      "13": "x6_pp_sponge_taken_after_wipe",
-      "14": "x6_pp_sponge_taken_after_wipe",
-      "15": "x6_pp_sponge_taken_after_wipe",
-      "16": "x6_pp_sponge_taken_after_wipe",
-      "17": "x6_pp_sponge_taken_after_wipe",
-      "18": "x6_pp_sponge_taken_after_wipe",
-      "19": "x6_pp_sponge_taken_after_wipe"
+      "10": "x6_pp_sponge_taken_after_wipe__tv_stand",
+      "11": "x6_pp_sponge_taken_after_wipe__cabinet6",
+      "12": "x6_pp_sponge_taken_after_wipe__tv_stand",
+      "13": "x6_pp_sponge_taken_after_wipe__cabinet6",
+      "14": "x6_pp_sponge_taken_after_wipe__tv_stand",
+      "15": "x6_pp_sponge_taken_after_wipe__tv_stand",
+      "16": "x6_pp_sponge_taken_after_wipe__cabinet6",
+      "17": "x6_pp_sponge_taken_after_wipe__cabinet6",
+      "18": "x6_pp_sponge_taken_after_wipe__tv_stand",
+      "19": "x6_pp_sponge_taken_after_wipe__cabinet6"
      },
      "tier": "hard",
      "capabilities": [
@@ -25266,7 +26696,43 @@
      "tier_rule": "hard",
      "control": "sponge_on_island"
     },
-    "x6_pp_sponge_taken_after_wipe": {
+    "x6_pp_sponge_taken_after_wipe__tv_stand": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "PP"
+     ],
+     "core": [
+      "PP"
+     ],
+     "evidence": {
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "wiped",
+         "kitchen_island/top"
+        ],
+        "by": {
+         "skill": "wipe",
+         "args": {
+          "surface": "kitchen_island/top"
+         }
+        }
+       },
+       "event": "resource_sponge"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "sponge_on_island"
+    },
+    "x6_pp_sponge_taken_after_wipe__cabinet6": {
      "source": "declared",
      "verified": [
       "AF",
@@ -26475,6 +27941,222 @@
       }
      }
     },
+    "x6_gd_tomato_elsewhere__dining": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "cherry_tomato_2": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "resource_tomato_apart",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "cherry_tomato_2",
+         "dining_table_2/top"
+        ]
+       ]
+      }
+     ],
+     "conditions": [
+      "multi_object_goal"
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "one cherry tomato is on the island, the other was left on the dining table or on the wall cabinet",
+     "v6": {
+      "family": "x6_gd_tomato_elsewhere",
+      "case": "dining",
+      "tier": "hard",
+      "hard_category": "task",
+      "challenge": "one cherry tomato is on the island, the other was left on the dining table or on the wall cabinet",
+      "rationale": "collecting both at once only works for tomatoes on one surface: split the batch, collect the near one, fetch the other on its own",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "where the second tomato was left",
+      "derived_from": "lid_off",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "split",
+        "batch": {
+         "skill": "collect",
+         "args": {
+          "objects": [
+           "cherry_tomato_1",
+           "cherry_tomato_2"
+          ]
+         }
+        },
+        "parts": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "cause": "failure:resource_tomato_apart"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "cherry_tomato_2"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_gd_tomato_elsewhere__cabinet6": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "cherry_tomato_2": {
+       "support": "kitchen_cabinet_6/top",
+       "xy": [
+        3.7,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "resource_tomato_apart",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "cherry_tomato_2",
+         "kitchen_cabinet_6/top"
+        ]
+       ]
+      }
+     ],
+     "conditions": [
+      "multi_object_goal"
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "one cherry tomato is on the island, the other was left on the dining table or on the wall cabinet",
+     "v6": {
+      "family": "x6_gd_tomato_elsewhere",
+      "case": "cabinet6",
+      "tier": "hard",
+      "hard_category": "task",
+      "challenge": "one cherry tomato is on the island, the other was left on the dining table or on the wall cabinet",
+      "rationale": "collecting both at once only works for tomatoes on one surface: split the batch, collect the near one, fetch the other on its own",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "where the second tomato was left",
+      "derived_from": "lid_off",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "split",
+        "batch": {
+         "skill": "collect",
+         "args": {
+          "objects": [
+           "cherry_tomato_1",
+           "cherry_tomato_2"
+          ]
+         }
+        },
+        "parts": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "cause": "failure:resource_tomato_apart"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "cherry_tomato_2"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
     "x6_m_ik_collect": {
      "move": {
       "pot_lid": {
@@ -26540,7 +28222,7 @@
       }
      }
     },
-    "x6_pp_lid_taken_after_stir": {
+    "x6_pp_lid_taken_after_stir__cabinet4": {
      "move": {
       "pot_lid": {
        "support": "kitchen_stove/top",
@@ -26591,14 +28273,14 @@
      "note": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
      "v6": {
       "family": "x6_pp_lid_taken_after_stir",
-      "case": null,
+      "case": "cabinet4",
       "tier": "hard",
       "hard_category": "dynamic",
       "challenge": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
       "rationale": "tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
       "control": "lid_off",
       "contrast": null,
-      "factor": null,
+      "factor": "where the event takes the resource",
       "derived_from": "lid_off",
       "hypotheses": [
        {
@@ -26634,7 +28316,101 @@
       }
      }
     },
-    "x6_pp_tomato_taken_out": {
+    "x6_pp_lid_taken_after_stir__dining": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "resource_lid",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "stir",
+        "args": {
+         "container": "handled_cooking_pot"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "pot_lid",
+        "to": {
+         "support": "dining_table_2/top",
+         "xy": [
+          3.7,
+          6.3
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
+     "v6": {
+      "family": "x6_pp_lid_taken_after_stir",
+      "case": "dining",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
+      "rationale": "tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "where the event takes the resource",
+      "derived_from": "lid_off",
+      "hypotheses": [
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "inside",
+          "cherry_tomato_1",
+          "handled_cooking_pot"
+         ],
+         "by": {
+          "skill": "collect",
+          "args": {
+           "container": "handled_cooking_pot"
+          }
+         }
+        },
+        "event": "resource_lid"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_pp_tomato_taken_out__tomato2": {
      "move": {
       "pot_lid": {
        "support": "kitchen_stove/top",
@@ -26685,14 +28461,14 @@
      "note": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
      "v6": {
       "family": "x6_pp_tomato_taken_out",
-      "case": null,
+      "case": "tomato2",
       "tier": "hard",
       "hard_category": "dynamic",
       "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
       "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
       "control": "lid_off",
       "contrast": null,
-      "factor": null,
+      "factor": "which subgoal the event undoes",
       "derived_from": "lid_off",
       "hypotheses": [
        {
@@ -26701,6 +28477,96 @@
          "atom": [
           "inside",
           "cherry_tomato_1",
+          "handled_cooking_pot"
+         ],
+         "by": {
+          "skill": "collect",
+          "args": {
+           "container": "handled_cooking_pot"
+          }
+         }
+        },
+        "event": "resource_tomato"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_pp_tomato_taken_out__tomato1": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "resource_tomato",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "collect",
+        "args": {
+         "container": "handled_cooking_pot"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "cherry_tomato_1",
+        "to": {
+         "support": "kitchen_island/top",
+         "xy": [
+          7.63,
+          1.62
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
+     "v6": {
+      "family": "x6_pp_tomato_taken_out",
+      "case": "tomato1",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
+      "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "which subgoal the event undoes",
+      "derived_from": "lid_off",
+      "hypotheses": [
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "inside",
+          "cherry_tomato_2",
           "handled_cooking_pot"
          ],
          "by": {
@@ -26793,9 +28659,13 @@
     "x6_cl_spoon_unholdable__spoon_cabinet": "v6_x6_cl_spoon_unholdable__spoon_cabinet",
     "x6_cl_spoon_unholdable__spoon_dining": "v6_x6_cl_spoon_unholdable__spoon_dining",
     "x6_sr_collect_refused": "v6_x6_sr_collect_refused",
+    "x6_gd_tomato_elsewhere__dining": "v6_x6_gd_tomato_elsewhere__dining",
+    "x6_gd_tomato_elsewhere__cabinet6": "v6_x6_gd_tomato_elsewhere__cabinet6",
     "x6_m_ik_collect": "v6_x6_m_ik_collect",
-    "x6_pp_lid_taken_after_stir": "v6_x6_pp_lid_taken_after_stir",
-    "x6_pp_tomato_taken_out": "v6_x6_pp_tomato_taken_out"
+    "x6_pp_lid_taken_after_stir__cabinet4": "v6_x6_pp_lid_taken_after_stir__cabinet4",
+    "x6_pp_lid_taken_after_stir__dining": "v6_x6_pp_lid_taken_after_stir__dining",
+    "x6_pp_tomato_taken_out__tomato2": "v6_x6_pp_tomato_taken_out__tomato2",
+    "x6_pp_tomato_taken_out__tomato1": "v6_x6_pp_tomato_taken_out__tomato1"
    },
    "routes": {
     "nominal": {
@@ -28902,6 +30772,278 @@
      "kind": "v6_oracle",
      "variant": "x6_sr_collect_refused"
     },
+    "v6_x6_gd_tomato_elsewhere__dining": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1"
+        ],
+        "container": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "cherry_tomato_2",
+        "region": "dining_room_0_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cherry_tomato_2"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cherry_tomato_2"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "cherry_tomato_2",
+        "container": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_tomato_elsewhere__dining"
+    },
+    "v6_x6_gd_tomato_elsewhere__cabinet6": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1"
+        ],
+        "container": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "cherry_tomato_2",
+        "region": "living_room_0_0"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cherry_tomato_2"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cherry_tomato_2"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "cherry_tomato_2",
+        "container": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_tomato_elsewhere__cabinet6"
+    },
     "v6_x6_m_ik_collect": {
      "steps": [
       {
@@ -29022,7 +31164,7 @@
      "kind": "v6_oracle",
      "variant": "x6_m_ik_collect"
     },
-    "v6_x6_pp_lid_taken_after_stir": {
+    "v6_x6_pp_lid_taken_after_stir__cabinet4": {
      "steps": [
       {
        "skill": "look",
@@ -29133,9 +31275,123 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_lid_taken_after_stir"
+     "variant": "x6_pp_lid_taken_after_stir__cabinet4"
     },
-    "v6_x6_pp_tomato_taken_out": {
+    "v6_x6_pp_lid_taken_after_stir__dining": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pot_lid",
+        "region": "dining_room_0_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_pp_lid_taken_after_stir__dining"
+    },
+    "v6_x6_pp_tomato_taken_out__tomato2": {
      "steps": [
       {
        "skill": "look",
@@ -29268,7 +31524,142 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_tomato_taken_out"
+     "variant": "x6_pp_tomato_taken_out__tomato2"
+    },
+    "v6_x6_pp_tomato_taken_out__tomato1": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cherry_tomato_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cherry_tomato_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "cherry_tomato_1",
+        "container": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_pp_tomato_taken_out__tomato1"
     }
    },
    "benchmark_version": "v6",
@@ -29535,6 +31926,7 @@
       "19": "h_dynamic_spoon_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -29598,6 +31990,34 @@
       "SR"
      ]
     },
+    "x6_gd_tomato_elsewhere": {
+     "origin": "v6",
+     "design_tier": "hard",
+     "hard_category": "task",
+     "control": "lid_off",
+     "cases": [
+      "x6_gd_tomato_elsewhere__dining",
+      "x6_gd_tomato_elsewhere__cabinet6"
+     ],
+     "factor": "where the second tomato was left",
+     "seeds": {
+      "10": "x6_gd_tomato_elsewhere__dining",
+      "11": "x6_gd_tomato_elsewhere__cabinet6",
+      "12": "x6_gd_tomato_elsewhere__dining",
+      "13": "x6_gd_tomato_elsewhere__dining",
+      "14": "x6_gd_tomato_elsewhere__cabinet6",
+      "15": "x6_gd_tomato_elsewhere__dining",
+      "16": "x6_gd_tomato_elsewhere__cabinet6",
+      "17": "x6_gd_tomato_elsewhere__cabinet6",
+      "18": "x6_gd_tomato_elsewhere__cabinet6",
+      "19": "x6_gd_tomato_elsewhere__dining"
+     },
+     "tier": "hard",
+     "capabilities": [
+      "AF",
+      "GD"
+     ]
+    },
     "x6_m_ik_collect": {
      "origin": "v6",
      "design_tier": "medium",
@@ -29630,20 +32050,21 @@
      "hard_category": "dynamic",
      "control": "lid_off",
      "cases": [
-      "x6_pp_lid_taken_after_stir"
+      "x6_pp_lid_taken_after_stir__cabinet4",
+      "x6_pp_lid_taken_after_stir__dining"
      ],
-     "factor": null,
+     "factor": "where the event takes the resource",
      "seeds": {
-      "10": "x6_pp_lid_taken_after_stir",
-      "11": "x6_pp_lid_taken_after_stir",
-      "12": "x6_pp_lid_taken_after_stir",
-      "13": "x6_pp_lid_taken_after_stir",
-      "14": "x6_pp_lid_taken_after_stir",
-      "15": "x6_pp_lid_taken_after_stir",
-      "16": "x6_pp_lid_taken_after_stir",
-      "17": "x6_pp_lid_taken_after_stir",
-      "18": "x6_pp_lid_taken_after_stir",
-      "19": "x6_pp_lid_taken_after_stir"
+      "10": "x6_pp_lid_taken_after_stir__cabinet4",
+      "11": "x6_pp_lid_taken_after_stir__dining",
+      "12": "x6_pp_lid_taken_after_stir__dining",
+      "13": "x6_pp_lid_taken_after_stir__dining",
+      "14": "x6_pp_lid_taken_after_stir__cabinet4",
+      "15": "x6_pp_lid_taken_after_stir__cabinet4",
+      "16": "x6_pp_lid_taken_after_stir__dining",
+      "17": "x6_pp_lid_taken_after_stir__dining",
+      "18": "x6_pp_lid_taken_after_stir__cabinet4",
+      "19": "x6_pp_lid_taken_after_stir__cabinet4"
      },
      "tier": "hard",
      "capabilities": [
@@ -29657,20 +32078,21 @@
      "hard_category": "dynamic",
      "control": "lid_off",
      "cases": [
-      "x6_pp_tomato_taken_out"
+      "x6_pp_tomato_taken_out__tomato2",
+      "x6_pp_tomato_taken_out__tomato1"
      ],
-     "factor": null,
+     "factor": "which subgoal the event undoes",
      "seeds": {
-      "10": "x6_pp_tomato_taken_out",
-      "11": "x6_pp_tomato_taken_out",
-      "12": "x6_pp_tomato_taken_out",
-      "13": "x6_pp_tomato_taken_out",
-      "14": "x6_pp_tomato_taken_out",
-      "15": "x6_pp_tomato_taken_out",
-      "16": "x6_pp_tomato_taken_out",
-      "17": "x6_pp_tomato_taken_out",
-      "18": "x6_pp_tomato_taken_out",
-      "19": "x6_pp_tomato_taken_out"
+      "10": "x6_pp_tomato_taken_out__tomato1",
+      "11": "x6_pp_tomato_taken_out__tomato1",
+      "12": "x6_pp_tomato_taken_out__tomato1",
+      "13": "x6_pp_tomato_taken_out__tomato2",
+      "14": "x6_pp_tomato_taken_out__tomato2",
+      "15": "x6_pp_tomato_taken_out__tomato1",
+      "16": "x6_pp_tomato_taken_out__tomato2",
+      "17": "x6_pp_tomato_taken_out__tomato1",
+      "18": "x6_pp_tomato_taken_out__tomato2",
+      "19": "x6_pp_tomato_taken_out__tomato2"
      },
      "tier": "hard",
      "capabilities": [
@@ -29979,6 +32401,82 @@
      "tier_rule": "hard",
      "control": "x6_m_ik_collect"
     },
+    "x6_gd_tomato_elsewhere__dining": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "GD"
+     ],
+     "core": [
+      "GD"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "split",
+       "batch": {
+        "skill": "collect",
+        "args": {
+         "objects": [
+          "cherry_tomato_1",
+          "cherry_tomato_2"
+         ]
+        }
+       },
+       "parts": [
+        "cherry_tomato_1",
+        "cherry_tomato_2"
+       ],
+       "cause": "failure:resource_tomato_apart"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "lid_off"
+    },
+    "x6_gd_tomato_elsewhere__cabinet6": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "GD"
+     ],
+     "core": [
+      "GD"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "split",
+       "batch": {
+        "skill": "collect",
+        "args": {
+         "objects": [
+          "cherry_tomato_1",
+          "cherry_tomato_2"
+         ]
+        }
+       },
+       "parts": [
+        "cherry_tomato_1",
+        "cherry_tomato_2"
+       ],
+       "cause": "failure:resource_tomato_apart"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "lid_off"
+    },
     "x6_m_ik_collect": {
      "source": "declared",
      "verified": [
@@ -29996,7 +32494,7 @@
      "tier_rule": "medium",
      "control": "lid_off"
     },
-    "x6_pp_lid_taken_after_stir": {
+    "x6_pp_lid_taken_after_stir__cabinet4": {
      "source": "declared",
      "verified": [
       "AF",
@@ -30033,7 +32531,44 @@
      "tier_rule": "hard",
      "control": "lid_off"
     },
-    "x6_pp_tomato_taken_out": {
+    "x6_pp_lid_taken_after_stir__dining": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "PP"
+     ],
+     "core": [
+      "PP"
+     ],
+     "evidence": {
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "inside",
+         "cherry_tomato_1",
+         "handled_cooking_pot"
+        ],
+        "by": {
+         "skill": "collect",
+         "args": {
+          "container": "handled_cooking_pot"
+         }
+        }
+       },
+       "event": "resource_lid"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "lid_off"
+    },
+    "x6_pp_tomato_taken_out__tomato2": {
      "source": "declared",
      "verified": [
       "PP"
@@ -30048,6 +32583,38 @@
         "atom": [
          "inside",
          "cherry_tomato_1",
+         "handled_cooking_pot"
+        ],
+        "by": {
+         "skill": "collect",
+         "args": {
+          "container": "handled_cooking_pot"
+         }
+        }
+       },
+       "event": "resource_tomato"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "lid_off"
+    },
+    "x6_pp_tomato_taken_out__tomato1": {
+     "source": "declared",
+     "verified": [
+      "PP"
+     ],
+     "core": [
+      "PP"
+     ],
+     "evidence": {
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "inside",
+         "cherry_tomato_2",
          "handled_cooking_pot"
         ],
         "by": {
@@ -30084,6 +32651,7 @@
      "h_dynamic_spoon_taken",
      "x6_cl_spoon_unholdable",
      "x6_sr_collect_refused",
+     "x6_gd_tomato_elsewhere",
      "x6_pp_lid_taken_after_stir",
      "x6_pp_tomato_taken_out"
     ]
@@ -32311,6 +34879,7 @@
       "19": "h_task_can_in_microwave"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -32336,6 +34905,7 @@
       "19": "h_action_ik_pick_and_drop"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -32361,6 +34931,7 @@
       "19": "h_mixed_microwave_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -32386,6 +34957,7 @@
       "19": "h_dynamic_can_moved"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -33184,6 +35756,181 @@
       "hard_category": "dynamic"
      }
     },
+    "x6_gd_fruits_event": {
+     "move": {},
+     "remove": [
+      "fruit_basket"
+     ],
+     "conditions": [
+      "container_absent"
+     ],
+     "add": {
+      "orange_2": {
+       "asset": "orange",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.63,
+        5.66
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "inside",
+         "apple",
+         "fruit_basket"
+        ],
+        [
+         "inside",
+         "orange_2",
+         "fruit_basket"
+        ]
+       ],
+       [
+        [
+         "inside",
+         "apple",
+         "fruit_basket"
+        ],
+        [
+         "inside",
+         "orange_2",
+         "serving_tray"
+        ]
+       ],
+       [
+        [
+         "inside",
+         "apple",
+         "serving_tray"
+        ],
+        [
+         "inside",
+         "orange_2",
+         "fruit_basket"
+        ]
+       ],
+       [
+        [
+         "inside",
+         "apple",
+         "serving_tray"
+        ],
+        [
+         "inside",
+         "orange_2",
+         "serving_tray"
+        ]
+       ]
+      ]
+     },
+     "instruction": "Lunch is over and the apple and the orange are still on the dining table. Put them into the fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray on the study desk will do.",
+     "watch": [
+      "apple",
+      "orange_2",
+      "serving_tray"
+     ],
+     "failures": [
+      {
+       "id": "resource_orange",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "place",
+        "args": {
+         "object": "apple"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "orange_2",
+        "to": {
+         "support": "tv_stand_2/top",
+         "xy": [
+          7.2,
+          0.36
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes the orange to the TV stand",
+     "v6": {
+      "family": "x6_gd_fruits_event",
+      "case": null,
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes the orange to the TV stand",
+      "rationale": "the goal decomposes into one placement per fruit; the event moves the second resource after the first subgoal holds: keep the apple, find the orange",
+      "control": "basket_missing",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "basket_missing",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "decomposition",
+        "subgoals": [
+         [
+          "inside",
+          "apple",
+          "serving_tray"
+         ],
+         [
+          "inside",
+          "orange_2",
+          "serving_tray"
+         ]
+        ],
+        "cause": "goal"
+       },
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "inside",
+          "apple",
+          "serving_tray"
+         ],
+         "by": {
+          "skill": "place",
+          "args": {
+           "object": "apple"
+          }
+         }
+        },
+        "event": "resource_orange"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
     "x6_cl_apple_rolls_out": {
      "move": {},
      "failures": [
@@ -33206,8 +35953,8 @@
        "to": {
         "support": "bookcase_2/top",
         "xy": [
-         1.2,
-         -0.36
+         1.21,
+         -0.29
         ],
         "yaw_deg": 0.0
        },
@@ -33276,8 +36023,8 @@
        "to": {
         "support": "bookcase_2/top",
         "xy": [
-         1.2,
-         -0.36
+         1.21,
+         -0.29
         ],
         "yaw_deg": 0.0
        },
@@ -33370,6 +36117,7 @@
     "h_action_grasp_and_ik": "v5_h_action_grasp_and_ik",
     "h_mixed_bowl_there_grasp": "v5_h_mixed_bowl_there_grasp",
     "h_dynamic_basket_taken": "v5_h_dynamic_basket_taken",
+    "x6_gd_fruits_event": "v6_x6_gd_fruits_event",
     "x6_cl_apple_rolls_out": "v6_x6_cl_apple_rolls_out",
     "x6_m_apple_rolls_out_once": "v6_x6_m_apple_rolls_out_once"
    },
@@ -34156,6 +36904,114 @@
      "since": "v4",
      "edited_from": "hard_tray_not_bowl"
     },
+    "v6_x6_gd_fruits_event": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "apple"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "apple"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "desk_1/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "desk_1/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "serving_tray"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "apple",
+        "receptacle": "serving_tray"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "orange_2",
+        "region": "living_room_0_0"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "orange_2"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "orange_2"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "serving_tray"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "orange_2",
+        "receptacle": "serving_tray"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_fruits_event"
+    },
     "v6_x6_cl_apple_rolls_out": {
      "steps": [
       {
@@ -34215,6 +37071,13 @@
        "injected": true
       },
       {
+       "skill": "approach",
+       "args": {
+        "target": "apple"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "look",
        "args": {
         "target": "apple"
@@ -34237,6 +37100,13 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "apple"
+       },
+       "role": "recover"
       },
       {
        "skill": "look",
@@ -34332,6 +37202,13 @@
        "expect": "fail",
        "role": "failure",
        "injected": true
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "apple"
+       },
+       "role": "recover"
       },
       {
        "skill": "look",
@@ -34583,6 +37460,7 @@
       "19": "h_action_grasp_and_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -34637,6 +37515,34 @@
      "tier": "medium",
      "capabilities": [
       "AF"
+     ]
+    },
+    "x6_gd_fruits_event": {
+     "origin": "v6",
+     "design_tier": "hard",
+     "hard_category": "dynamic",
+     "control": "basket_missing",
+     "cases": [
+      "x6_gd_fruits_event"
+     ],
+     "factor": null,
+     "seeds": {
+      "10": "x6_gd_fruits_event",
+      "11": "x6_gd_fruits_event",
+      "12": "x6_gd_fruits_event",
+      "13": "x6_gd_fruits_event",
+      "14": "x6_gd_fruits_event",
+      "15": "x6_gd_fruits_event",
+      "16": "x6_gd_fruits_event",
+      "17": "x6_gd_fruits_event",
+      "18": "x6_gd_fruits_event",
+      "19": "x6_gd_fruits_event"
+     },
+     "tier": "hard",
+     "capabilities": [
+      "AF",
+      "GD",
+      "PP"
      ]
     },
     "x6_cl_apple_rolls_out": {
@@ -34842,6 +37748,62 @@
      "tier_rule": "medium",
      "control": "fruits_on_table"
     },
+    "x6_gd_fruits_event": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "GD",
+      "PP"
+     ],
+     "core": [
+      "GD",
+      "PP"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "decomposition",
+       "subgoals": [
+        [
+         "inside",
+         "apple",
+         "serving_tray"
+        ],
+        [
+         "inside",
+         "orange_2",
+         "serving_tray"
+        ]
+       ],
+       "cause": "goal"
+      },
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "inside",
+         "apple",
+         "serving_tray"
+        ],
+        "by": {
+         "skill": "place",
+         "args": {
+          "object": "apple"
+         }
+        }
+       },
+       "event": "resource_orange"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "basket_missing"
+    },
     "x6_cl_apple_rolls_out": {
      "source": "declared",
      "verified": [
@@ -34902,6 +37864,7 @@
     ],
     "hard": [
      "h_action_grasp_and_ik",
+     "x6_gd_fruits_event",
      "x6_cl_apple_rolls_out"
     ]
    },
@@ -38284,6 +41247,7 @@
       "19": "toys_everywhere"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -38311,6 +41275,7 @@
       "19": "h_action_grasp_and_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -38338,6 +41303,7 @@
       "19": "h_mixed_everywhere_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -38365,6 +41331,7 @@
       "19": "h_dynamic_duck_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -40632,7 +43599,7 @@
       }
      }
     },
-    "x6_gd_two_settings": {
+    "x6_gd_two_settings__cabinet6": {
      "move": {
       "bowl": {
        "support": "tv_stand_2/top",
@@ -40840,14 +43807,304 @@
      "note": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
      "v6": {
       "family": "x6_gd_two_settings",
-      "case": null,
+      "case": "cabinet6",
       "tier": "hard",
       "hard_category": "dynamic",
       "challenge": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
       "rationale": "the goal decomposes into two place settings with an allocation of the cups and bowls; the event moves the second place's resource after the first setting holds: keep it, find the mug",
       "control": "dishes_on_tv_stand",
       "contrast": null,
-      "factor": null,
+      "factor": "where the event takes the resource",
+      "derived_from": "dishes_on_tv_stand",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "decomposition",
+        "subgoals": [
+         [
+          "grouped",
+          [
+           "bowl",
+           "cup",
+           "spoon"
+          ]
+         ],
+         [
+          "grouped",
+          [
+           "bowl_kitchen_cabinet",
+           "mug",
+           "spoon_target_table"
+          ]
+         ]
+        ],
+        "cause": "goal"
+       },
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "on",
+          "bowl",
+          "dining_table_2/top"
+         ],
+         "by": {
+          "skill": "place",
+          "args": {
+           "object": "bowl"
+          }
+         }
+        },
+        "event": "resource_mug"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "bowl",
+         "bowl_kitchen_cabinet"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_gd_two_settings__cabinet4": {
+     "move": {
+      "bowl": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        8.0304,
+        0.3409
+       ],
+       "yaw_deg": 0.0
+      },
+      "bowl_kitchen_cabinet": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        6.9,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "bowl",
+        "dining_table_2/top"
+       ],
+       [
+        "on",
+        "bowl_kitchen_cabinet",
+        "dining_table_2/top"
+       ],
+       [
+        "upright",
+        "bowl"
+       ],
+       [
+        "upright",
+        "bowl_kitchen_cabinet"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ],
+      "any": [
+       [
+        [
+         "grouped",
+         [
+          "bowl",
+          "cup",
+          "spoon"
+         ],
+         "dining_table_2/top",
+         0.5
+        ],
+        [
+         "grouped",
+         [
+          "bowl_kitchen_cabinet",
+          "mug",
+          "spoon_target_table"
+         ],
+         "dining_table_2/top",
+         0.5
+        ],
+        [
+         "upright",
+         "cup"
+        ],
+        [
+         "upright",
+         "mug"
+        ]
+       ],
+       [
+        [
+         "grouped",
+         [
+          "bowl",
+          "mug",
+          "spoon"
+         ],
+         "dining_table_2/top",
+         0.5
+        ],
+        [
+         "grouped",
+         [
+          "bowl_kitchen_cabinet",
+          "cup",
+          "spoon_target_table"
+         ],
+         "dining_table_2/top",
+         0.5
+        ],
+        [
+         "upright",
+         "mug"
+        ],
+        [
+         "upright",
+         "cup"
+        ]
+       ],
+       [
+        [
+         "grouped",
+         [
+          "bowl_kitchen_cabinet",
+          "cup",
+          "spoon"
+         ],
+         "dining_table_2/top",
+         0.5
+        ],
+        [
+         "grouped",
+         [
+          "bowl",
+          "mug",
+          "spoon_target_table"
+         ],
+         "dining_table_2/top",
+         0.5
+        ],
+        [
+         "upright",
+         "cup"
+        ],
+        [
+         "upright",
+         "mug"
+        ]
+       ],
+       [
+        [
+         "grouped",
+         [
+          "bowl_kitchen_cabinet",
+          "mug",
+          "spoon"
+         ],
+         "dining_table_2/top",
+         0.5
+        ],
+        [
+         "grouped",
+         [
+          "bowl",
+          "cup",
+          "spoon_target_table"
+         ],
+         "dining_table_2/top",
+         0.5
+        ],
+        [
+         "upright",
+         "mug"
+        ],
+        [
+         "upright",
+         "cup"
+        ]
+       ]
+      ]
+     },
+     "instruction": "Set two breakfast places at the dining table: next to each spoon, a bowl and a cup (a mug is fine where there is no cup).",
+     "watch": [
+      "bowl",
+      "bowl_kitchen_cabinet",
+      "cup",
+      "mug",
+      "spoon",
+      "spoon_target_table"
+     ],
+     "failures": [
+      {
+       "id": "resource_mug",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "place",
+        "args": {
+         "object": "cup"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "mug",
+        "to": {
+         "support": "kitchen_cabinet_4/top",
+         "xy": [
+          1.4,
+          0.42
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
+     "v6": {
+      "family": "x6_gd_two_settings",
+      "case": "cabinet4",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "two places, two bowls on the TV stand, one cup and the mug; once the first place is set, someone takes the mug to the wall cabinet",
+      "rationale": "the goal decomposes into two place settings with an allocation of the cups and bowls; the event moves the second place's resource after the first setting holds: keep it, find the mug",
+      "control": "dishes_on_tv_stand",
+      "contrast": null,
+      "factor": "where the event takes the resource",
       "derived_from": "dishes_on_tv_stand",
       "hypotheses": [
        {
@@ -41011,7 +44268,8 @@
     "x6_pp_spoon_moved__tv_stand": "v6_x6_pp_spoon_moved__tv_stand",
     "x6_gd_bowl_put_away__in_cabinet": "v6_x6_gd_bowl_put_away__in_cabinet",
     "x6_gd_bowl_put_away__in_microwave": "v6_x6_gd_bowl_put_away__in_microwave",
-    "x6_gd_two_settings": "v6_x6_gd_two_settings"
+    "x6_gd_two_settings__cabinet6": "v6_x6_gd_two_settings__cabinet6",
+    "x6_gd_two_settings__cabinet4": "v6_x6_gd_two_settings__cabinet4"
    },
    "routes": {
     "nominal": {
@@ -43436,7 +46694,7 @@
      "kind": "v6_oracle",
      "variant": "x6_gd_bowl_put_away__in_microwave"
     },
-    "v6_x6_gd_two_settings": {
+    "v6_x6_gd_two_settings__cabinet6": {
      "steps": [
       {
        "skill": "look",
@@ -43590,7 +46848,162 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_two_settings"
+     "variant": "x6_gd_two_settings__cabinet6"
+    },
+    "v6_x6_gd_two_settings__cabinet4": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.05,
+         7.1
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cup"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "cup"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "cup",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.2,
+         7.4
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bowl_kitchen_cabinet"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "bowl_kitchen_cabinet"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "bowl_kitchen_cabinet",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.7,
+         7.12
+        ]
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "mug"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.62,
+         7.62
+        ]
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_two_settings__cabinet4"
     }
    },
    "vary": {
@@ -43843,6 +47256,7 @@
       "19": "h_action_ik_and_grasp"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -43894,6 +47308,7 @@
       "19": "h_dynamic_mug_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -44016,20 +47431,21 @@
      "hard_category": "dynamic",
      "control": "dishes_on_tv_stand",
      "cases": [
-      "x6_gd_two_settings"
+      "x6_gd_two_settings__cabinet6",
+      "x6_gd_two_settings__cabinet4"
      ],
-     "factor": null,
+     "factor": "where the event takes the resource",
      "seeds": {
-      "10": "x6_gd_two_settings",
-      "11": "x6_gd_two_settings",
-      "12": "x6_gd_two_settings",
-      "13": "x6_gd_two_settings",
-      "14": "x6_gd_two_settings",
-      "15": "x6_gd_two_settings",
-      "16": "x6_gd_two_settings",
-      "17": "x6_gd_two_settings",
-      "18": "x6_gd_two_settings",
-      "19": "x6_gd_two_settings"
+      "10": "x6_gd_two_settings__cabinet4",
+      "11": "x6_gd_two_settings__cabinet4",
+      "12": "x6_gd_two_settings__cabinet6",
+      "13": "x6_gd_two_settings__cabinet4",
+      "14": "x6_gd_two_settings__cabinet6",
+      "15": "x6_gd_two_settings__cabinet4",
+      "16": "x6_gd_two_settings__cabinet6",
+      "17": "x6_gd_two_settings__cabinet4",
+      "18": "x6_gd_two_settings__cabinet6",
+      "19": "x6_gd_two_settings__cabinet6"
      },
      "tier": "hard",
      "capabilities": [
@@ -44468,7 +47884,69 @@
      "tier_rule": "hard",
      "control": "bowl_on_cabinet"
     },
-    "x6_gd_two_settings": {
+    "x6_gd_two_settings__cabinet6": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "GD",
+      "PP"
+     ],
+     "core": [
+      "GD",
+      "PP"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "decomposition",
+       "subgoals": [
+        [
+         "grouped",
+         [
+          "bowl",
+          "cup",
+          "spoon"
+         ]
+        ],
+        [
+         "grouped",
+         [
+          "bowl_kitchen_cabinet",
+          "mug",
+          "spoon_target_table"
+         ]
+        ]
+       ],
+       "cause": "goal"
+      },
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "on",
+         "bowl",
+         "dining_table_2/top"
+        ],
+        "by": {
+         "skill": "place",
+         "args": {
+          "object": "bowl"
+         }
+        }
+       },
+       "event": "resource_mug"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "dishes_on_tv_stand"
+    },
+    "x6_gd_two_settings__cabinet4": {
      "source": "declared",
      "verified": [
       "AF",
@@ -45841,6 +49319,7 @@
       "19": "h_task_block_on_book"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -45866,6 +49345,7 @@
       "19": "h_action_ik_twice"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -45891,6 +49371,7 @@
       "19": "h_mixed_block_on_book_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -45916,6 +49397,7 @@
       "19": "h_dynamic_book_moved"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -47440,6 +50922,7 @@
       "19": "h_task_bowl_behind"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "DR"
@@ -47464,6 +50947,7 @@
       "19": "h_action_ik_twice"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -47489,6 +50973,7 @@
       "19": "h_mixed_bowl_behind_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -47514,6 +50999,7 @@
       "19": "h_dynamic_bowl_put_behind"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -48601,7 +52087,7 @@
       }
      }
     },
-    "x6_pp_lid_lifted": {
+    "x6_pp_lid_lifted__cabinet4": {
      "move": {
       "pot_lid": {
        "support": "kitchen_stove/top",
@@ -48660,14 +52146,14 @@
      "note": "right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
      "v6": {
       "family": "x6_pp_lid_lifted",
-      "case": null,
+      "case": "cabinet4",
       "tier": "hard",
       "hard_category": "dynamic",
       "challenge": "right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
       "rationale": "the block is still in the pot: find the lid and cover again, do not take the block out",
       "control": "lid_off",
       "contrast": null,
-      "factor": null,
+      "factor": "where the event takes the resource",
       "derived_from": "lid_off",
       "hypotheses": [
        {
@@ -48717,7 +52203,123 @@
       }
      }
     },
-    "x6_gd_hide_both_event": {
+    "x6_pp_lid_lifted__dining": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "failures": [
+      {
+       "id": "resource_lid",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "hide",
+        "args": {
+         "object": "wooden_block_b"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "pot_lid",
+        "to": {
+         "support": "dining_table_2/top",
+         "xy": [
+          3.7,
+          6.3
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
+     "v6": {
+      "family": "x6_pp_lid_lifted",
+      "case": "dining",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
+      "rationale": "the block is still in the pot: find the lid and cover again, do not take the block out",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "where the event takes the resource",
+      "derived_from": "lid_off",
+      "hypotheses": [
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "hidden",
+          "wooden_block_b"
+         ],
+         "by": {
+          "skill": "hide",
+          "args": {
+           "object": "wooden_block_b"
+          }
+         }
+        },
+        "event": "resource_lid"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_gd_hide_both_event__tv_stand": {
      "move": {
       "pot_lid": {
        "support": "kitchen_stove/top",
@@ -48814,14 +52416,184 @@
      "note": "two blocks to hide in one pot; once the first is hidden, the kid takes the other block to the TV stand",
      "v6": {
       "family": "x6_gd_hide_both_event",
-      "case": null,
+      "case": "tv_stand",
       "tier": "hard",
       "hard_category": "dynamic",
       "challenge": "two blocks to hide in one pot; once the first is hidden, the kid takes the other block to the TV stand",
       "rationale": "the goal decomposes into two hides that share the lid (uncover between them); the event moves the second block after the first subgoal holds: keep the first hidden, find the second",
       "control": "lid_off",
       "contrast": null,
-      "factor": null,
+      "factor": "where the event takes the resource",
+      "derived_from": "lid_off",
+      "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "decomposition",
+        "subgoals": [
+         [
+          "hidden",
+          "wooden_block_b"
+         ],
+         [
+          "hidden",
+          "floor_block"
+         ]
+        ],
+        "cause": "goal"
+       },
+       {
+        "cap": "PP",
+        "kept": {
+         "atom": [
+          "hidden",
+          "wooden_block_b"
+         ],
+         "by": {
+          "skill": "hide",
+          "args": {
+           "object": "wooden_block_b"
+          }
+         }
+        },
+        "event": "resource_floor_block"
+       },
+       {
+        "cap": "AF",
+        "level": "task"
+       }
+      ]
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "floor_block",
+         "wooden_block_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "x6_gd_hide_both_event__dining": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "floor_block": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.25,
+        1.85
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "hidden",
+        "wooden_block_b"
+       ],
+       [
+        "hidden",
+        "floor_block"
+       ],
+       [
+        "covered",
+        "handled_cooking_pot",
+        "pot_lid"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "We are playing hide-and-seek with the kid's toy blocks: hide both wooden blocks in the empty pot on the stove and put the lid on so they cannot see them.",
+     "watch": [
+      "wooden_block_b",
+      "floor_block",
+      "pot_lid",
+      "handled_cooking_pot",
+      "oatmeal",
+      "rolling_pin"
+     ],
+     "failures": [
+      {
+       "id": "resource_floor_block",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "hide",
+        "args": {
+         "object": "wooden_block_b"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "floor_block",
+        "to": {
+         "support": "dining_table_2/top",
+         "xy": [
+          3.7,
+          6.3
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "difficulty": "hard",
+     "since": "v6",
+     "note": "two blocks to hide in one pot; once the first is hidden, the kid takes the other block to the TV stand",
+     "v6": {
+      "family": "x6_gd_hide_both_event",
+      "case": "dining",
+      "tier": "hard",
+      "hard_category": "dynamic",
+      "challenge": "two blocks to hide in one pot; once the first is hidden, the kid takes the other block to the TV stand",
+      "rationale": "the goal decomposes into two hides that share the lid (uncover between them); the event moves the second block after the first subgoal holds: keep the first hidden, find the second",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "where the event takes the resource",
       "derived_from": "lid_off",
       "hypotheses": [
        {
@@ -48926,8 +52698,10 @@
     "h_dynamic_lid_put_on": "v5_h_dynamic_lid_put_on",
     "x6_sr_hide_refused": "v6_x6_sr_hide_refused",
     "x6_m_ik_hide": "v6_x6_m_ik_hide",
-    "x6_pp_lid_lifted": "v6_x6_pp_lid_lifted",
-    "x6_gd_hide_both_event": "v6_x6_gd_hide_both_event"
+    "x6_pp_lid_lifted__cabinet4": "v6_x6_pp_lid_lifted__cabinet4",
+    "x6_pp_lid_lifted__dining": "v6_x6_pp_lid_lifted__dining",
+    "x6_gd_hide_both_event__tv_stand": "v6_x6_gd_hide_both_event__tv_stand",
+    "x6_gd_hide_both_event__dining": "v6_x6_gd_hide_both_event__dining"
    },
    "routes": {
     "nominal": {
@@ -50225,7 +53999,7 @@
      "kind": "v6_oracle",
      "variant": "x6_m_ik_hide"
     },
-    "v6_x6_pp_lid_lifted": {
+    "v6_x6_pp_lid_lifted__cabinet4": {
      "steps": [
       {
        "skill": "navigate",
@@ -50304,9 +54078,91 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_lid_lifted"
+     "variant": "x6_pp_lid_lifted__cabinet4"
     },
-    "v6_x6_gd_hide_both_event": {
+    "v6_x6_pp_lid_lifted__dining": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "pot_lid",
+        "region": "dining_room_0_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_pp_lid_lifted__dining"
+    },
+    "v6_x6_gd_hide_both_event__tv_stand": {
      "steps": [
       {
        "skill": "navigate",
@@ -50387,7 +54243,90 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_hide_both_event"
+     "variant": "x6_gd_hide_both_event__tv_stand"
+    },
+    "v6_x6_gd_hide_both_event__dining": {
+     "steps": [
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "wooden_block_b",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "floor_block",
+        "region": "dining_room_0_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "uncover",
+       "args": {
+        "container": "handled_cooking_pot"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "floor_block"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "floor_block"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "hide",
+       "args": {
+        "object": "floor_block",
+        "receptacle": "handled_cooking_pot",
+        "lid": "pot_lid"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "x6_gd_hide_both_event__dining"
     }
    },
    "vary": {
@@ -50779,20 +54718,21 @@
      "hard_category": "dynamic",
      "control": "lid_off",
      "cases": [
-      "x6_pp_lid_lifted"
+      "x6_pp_lid_lifted__cabinet4",
+      "x6_pp_lid_lifted__dining"
      ],
-     "factor": null,
+     "factor": "where the event takes the resource",
      "seeds": {
-      "10": "x6_pp_lid_lifted",
-      "11": "x6_pp_lid_lifted",
-      "12": "x6_pp_lid_lifted",
-      "13": "x6_pp_lid_lifted",
-      "14": "x6_pp_lid_lifted",
-      "15": "x6_pp_lid_lifted",
-      "16": "x6_pp_lid_lifted",
-      "17": "x6_pp_lid_lifted",
-      "18": "x6_pp_lid_lifted",
-      "19": "x6_pp_lid_lifted"
+      "10": "x6_pp_lid_lifted__cabinet4",
+      "11": "x6_pp_lid_lifted__cabinet4",
+      "12": "x6_pp_lid_lifted__dining",
+      "13": "x6_pp_lid_lifted__dining",
+      "14": "x6_pp_lid_lifted__dining",
+      "15": "x6_pp_lid_lifted__cabinet4",
+      "16": "x6_pp_lid_lifted__cabinet4",
+      "17": "x6_pp_lid_lifted__dining",
+      "18": "x6_pp_lid_lifted__cabinet4",
+      "19": "x6_pp_lid_lifted__dining"
      },
      "tier": "hard",
      "capabilities": [
@@ -50806,20 +54746,21 @@
      "hard_category": "dynamic",
      "control": "lid_off",
      "cases": [
-      "x6_gd_hide_both_event"
+      "x6_gd_hide_both_event__tv_stand",
+      "x6_gd_hide_both_event__dining"
      ],
-     "factor": null,
+     "factor": "where the event takes the resource",
      "seeds": {
-      "10": "x6_gd_hide_both_event",
-      "11": "x6_gd_hide_both_event",
-      "12": "x6_gd_hide_both_event",
-      "13": "x6_gd_hide_both_event",
-      "14": "x6_gd_hide_both_event",
-      "15": "x6_gd_hide_both_event",
-      "16": "x6_gd_hide_both_event",
-      "17": "x6_gd_hide_both_event",
-      "18": "x6_gd_hide_both_event",
-      "19": "x6_gd_hide_both_event"
+      "10": "x6_gd_hide_both_event__dining",
+      "11": "x6_gd_hide_both_event__tv_stand",
+      "12": "x6_gd_hide_both_event__dining",
+      "13": "x6_gd_hide_both_event__tv_stand",
+      "14": "x6_gd_hide_both_event__dining",
+      "15": "x6_gd_hide_both_event__dining",
+      "16": "x6_gd_hide_both_event__dining",
+      "17": "x6_gd_hide_both_event__tv_stand",
+      "18": "x6_gd_hide_both_event__tv_stand",
+      "19": "x6_gd_hide_both_event__tv_stand"
      },
      "tier": "hard",
      "capabilities": [
@@ -51019,7 +54960,7 @@
      "tier_rule": "medium",
      "control": "lid_off"
     },
-    "x6_pp_lid_lifted": {
+    "x6_pp_lid_lifted__cabinet4": {
      "source": "declared",
      "verified": [
       "AF",
@@ -51055,7 +54996,96 @@
      "tier_rule": "hard",
      "control": "lid_off"
     },
-    "x6_gd_hide_both_event": {
+    "x6_pp_lid_lifted__dining": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "PP"
+     ],
+     "core": [
+      "PP"
+     ],
+     "evidence": {
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "hidden",
+         "wooden_block_b"
+        ],
+        "by": {
+         "skill": "hide",
+         "args": {
+          "object": "wooden_block_b"
+         }
+        }
+       },
+       "event": "resource_lid"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "lid_off"
+    },
+    "x6_gd_hide_both_event__tv_stand": {
+     "source": "declared",
+     "verified": [
+      "AF",
+      "GD",
+      "PP"
+     ],
+     "core": [
+      "GD",
+      "PP"
+     ],
+     "evidence": {
+      "GD": {
+       "cap": "GD",
+       "kind": "decomposition",
+       "subgoals": [
+        [
+         "hidden",
+         "wooden_block_b"
+        ],
+        [
+         "hidden",
+         "floor_block"
+        ]
+       ],
+       "cause": "goal"
+      },
+      "PP": {
+       "cap": "PP",
+       "kept": {
+        "atom": [
+         "hidden",
+         "wooden_block_b"
+        ],
+        "by": {
+         "skill": "hide",
+         "args": {
+          "object": "wooden_block_b"
+         }
+        }
+       },
+       "event": "resource_floor_block"
+      },
+      "AF": {
+       "cap": "AF",
+       "level": "task"
+      }
+     },
+     "rejected": [],
+     "retry_solvable": false,
+     "tier_rule": "hard",
+     "control": "lid_off"
+    },
+    "x6_gd_hide_both_event__dining": {
      "source": "declared",
      "verified": [
       "AF",
@@ -51666,7 +55696,7 @@
       "hard_category": "dynamic"
      }
     },
-    "x6_gd_bowl_in_microwave": {
+    "x6_gd_bowl_elsewhere__two_places": {
      "move": {
       "plate_inside_kitchen_cabinet": {
        "support": "kitchen_cabinet_6/inside_shelf",
@@ -51729,17 +55759,17 @@
      ],
      "difficulty": "hard",
      "since": "v6",
-     "note": "the plate is in the wall cabinet, the bowl was left in the microwave",
+     "note": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
      "v6": {
-      "family": "x6_gd_bowl_in_microwave",
-      "case": null,
+      "family": "x6_gd_bowl_elsewhere",
+      "case": "two_places",
       "tier": "hard",
       "hard_category": "task",
-      "challenge": "the plate is in the wall cabinet, the bowl was left in the microwave",
-      "rationale": "the cabinet answers only half of the question: the inspection continues at the second place",
+      "challenge": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
+      "rationale": "the first place answers only half of the question: the inspection continues, past an empty place when there is one, until both dishes are seen",
       "control": "at_island",
       "contrast": null,
-      "factor": null,
+      "factor": "how many candidate places (and an empty one) the instruction names",
       "derived_from": "at_island",
       "hypotheses": [
        {
@@ -51778,7 +55808,7 @@
       }
      }
     },
-    "x6_gd_three_places": {
+    "x6_gd_bowl_elsewhere__three_places": {
      "move": {
       "plate_inside_kitchen_cabinet": {
        "support": "kitchen_cabinet_6/inside_shelf",
@@ -51845,19 +55875,28 @@
      ],
      "difficulty": "hard",
      "since": "v6",
-     "note": "the plate is in the wall cabinet, the other low cabinet is empty, the bowl is in the microwave",
+     "note": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
      "v6": {
-      "family": "x6_gd_three_places",
-      "case": null,
+      "family": "x6_gd_bowl_elsewhere",
+      "case": "three_places",
       "tier": "hard",
       "hard_category": "task",
-      "challenge": "the plate is in the wall cabinet, the other low cabinet is empty, the bowl is in the microwave",
-      "rationale": "three candidate places, the answer is spread over two of them and one is empty: the inspection must continue past the empty cabinet",
-      "control": "h_task_two_cabinets",
+      "challenge": "the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the instruction also names the other low cabinet, which is empty",
+      "rationale": "the first place answers only half of the question: the inspection continues, past an empty place when there is one, until both dishes are seen",
+      "control": "at_island",
       "contrast": null,
-      "factor": null,
+      "factor": "how many candidate places (and an empty one) the instruction names",
       "derived_from": "at_island",
       "hypotheses": [
+       {
+        "cap": "GD",
+        "kind": "inspection",
+        "places": [
+         "kitchen_cabinet_6",
+         "kitchen_microwave"
+        ],
+        "cause": "failure:resource_bowl_elsewhere"
+       },
        {
         "cap": "GD",
         "kind": "inspection",
@@ -52012,8 +56051,8 @@
     "h_action_ik_open_and_close": "v5_h_action_ik_open_and_close",
     "h_mixed_two_cabinets_ik": "v5_h_mixed_two_cabinets_ik",
     "h_dynamic_door_closed": "v5_h_dynamic_door_closed",
-    "x6_gd_bowl_in_microwave": "v6_x6_gd_bowl_in_microwave",
-    "x6_gd_three_places": "v6_x6_gd_three_places",
+    "x6_gd_bowl_elsewhere__two_places": "v6_x6_gd_bowl_elsewhere__two_places",
+    "x6_gd_bowl_elsewhere__three_places": "v6_x6_gd_bowl_elsewhere__three_places",
     "x6_pp_door_reopened": "v6_x6_pp_door_reopened"
    },
    "routes": {
@@ -52503,7 +56542,7 @@
      "kind": "v5_oracle",
      "variant": "h_dynamic_door_closed"
     },
-    "v6_x6_gd_bowl_in_microwave": {
+    "v6_x6_gd_bowl_elsewhere__two_places": {
      "steps": [
       {
        "skill": "navigate",
@@ -52555,9 +56594,9 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_bowl_in_microwave"
+     "variant": "x6_gd_bowl_elsewhere__two_places"
     },
-    "v6_x6_gd_three_places": {
+    "v6_x6_gd_bowl_elsewhere__three_places": {
      "steps": [
       {
        "skill": "navigate",
@@ -52633,7 +56672,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_gd_three_places"
+     "variant": "x6_gd_bowl_elsewhere__three_places"
     },
     "v6_x6_pp_door_reopened": {
      "steps": [
@@ -52856,6 +56895,7 @@
       "19": "h_task_two_cabinets"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -52881,6 +56921,7 @@
       "19": "h_action_ik_open_and_close"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -52906,6 +56947,7 @@
       "19": "h_mixed_two_cabinets_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -52931,58 +56973,34 @@
       "19": "h_dynamic_door_closed"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
       "GD"
      ]
     },
-    "x6_gd_bowl_in_microwave": {
+    "x6_gd_bowl_elsewhere": {
      "origin": "v6",
      "design_tier": "hard",
      "hard_category": "task",
      "control": "at_island",
      "cases": [
-      "x6_gd_bowl_in_microwave"
+      "x6_gd_bowl_elsewhere__two_places",
+      "x6_gd_bowl_elsewhere__three_places"
      ],
-     "factor": null,
+     "factor": "how many candidate places (and an empty one) the instruction names",
      "seeds": {
-      "10": "x6_gd_bowl_in_microwave",
-      "11": "x6_gd_bowl_in_microwave",
-      "12": "x6_gd_bowl_in_microwave",
-      "13": "x6_gd_bowl_in_microwave",
-      "14": "x6_gd_bowl_in_microwave",
-      "15": "x6_gd_bowl_in_microwave",
-      "16": "x6_gd_bowl_in_microwave",
-      "17": "x6_gd_bowl_in_microwave",
-      "18": "x6_gd_bowl_in_microwave",
-      "19": "x6_gd_bowl_in_microwave"
-     },
-     "tier": "hard",
-     "capabilities": [
-      "GD"
-     ]
-    },
-    "x6_gd_three_places": {
-     "origin": "v6",
-     "design_tier": "hard",
-     "hard_category": "task",
-     "control": "h_task_two_cabinets",
-     "cases": [
-      "x6_gd_three_places"
-     ],
-     "factor": null,
-     "seeds": {
-      "10": "x6_gd_three_places",
-      "11": "x6_gd_three_places",
-      "12": "x6_gd_three_places",
-      "13": "x6_gd_three_places",
-      "14": "x6_gd_three_places",
-      "15": "x6_gd_three_places",
-      "16": "x6_gd_three_places",
-      "17": "x6_gd_three_places",
-      "18": "x6_gd_three_places",
-      "19": "x6_gd_three_places"
+      "10": "x6_gd_bowl_elsewhere__two_places",
+      "11": "x6_gd_bowl_elsewhere__two_places",
+      "12": "x6_gd_bowl_elsewhere__three_places",
+      "13": "x6_gd_bowl_elsewhere__two_places",
+      "14": "x6_gd_bowl_elsewhere__three_places",
+      "15": "x6_gd_bowl_elsewhere__two_places",
+      "16": "x6_gd_bowl_elsewhere__three_places",
+      "17": "x6_gd_bowl_elsewhere__two_places",
+      "18": "x6_gd_bowl_elsewhere__three_places",
+      "19": "x6_gd_bowl_elsewhere__three_places"
      },
      "tier": "hard",
      "capabilities": [
@@ -53197,7 +57215,7 @@
      "tier_rule": "hard",
      "control": "at_island"
     },
-    "x6_gd_bowl_in_microwave": {
+    "x6_gd_bowl_elsewhere__two_places": {
      "source": "declared",
      "verified": [
       "GD"
@@ -53221,7 +57239,7 @@
      "tier_rule": "hard",
      "control": "at_island"
     },
-    "x6_gd_three_places": {
+    "x6_gd_bowl_elsewhere__three_places": {
      "source": "declared",
      "verified": [
       "GD"
@@ -53235,7 +57253,6 @@
        "kind": "inspection",
        "places": [
         "kitchen_cabinet_6",
-        "kitchen_cabinet_4",
         "kitchen_microwave"
        ],
        "cause": "failure:resource_bowl_elsewhere"
@@ -53244,7 +57261,7 @@
      "rejected": [],
      "retry_solvable": false,
      "tier_rule": "hard",
-     "control": "h_task_two_cabinets"
+     "control": "at_island"
     },
     "x6_pp_door_reopened": {
      "source": "declared",
@@ -53293,8 +57310,7 @@
      "h_action_ik_open_and_close",
      "h_mixed_two_cabinets_ik",
      "h_dynamic_door_closed",
-     "x6_gd_bowl_in_microwave",
-     "x6_gd_three_places",
+     "x6_gd_bowl_elsewhere",
      "x6_pp_door_reopened"
     ]
    },
@@ -56339,6 +60355,7 @@
       "19": "h_dynamic_cube_moved"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -57978,7 +61995,7 @@
        "support": "kitchen_cabinet_6/top",
        "xy": [
         3.7,
-        0.255
+        0.265
        ],
        "yaw_deg": 0.0
       },
@@ -57986,7 +62003,7 @@
        "support": "kitchen_cabinet_6/top",
        "xy": [
         3.7,
-        0.38
+        0.39
        ],
        "yaw_deg": 0.0
       }
@@ -58079,7 +62096,7 @@
        "support": "kitchen_cabinet_6/top",
        "xy": [
         3.68,
-        0.25
+        0.26
        ],
        "yaw_deg": 0.0
       },
@@ -58087,7 +62104,7 @@
        "support": "kitchen_cabinet_6/top",
        "xy": [
         3.68,
-        0.405
+        0.408
        ],
        "yaw_deg": 0.0
       }
@@ -59364,20 +63381,6 @@
        "injected": true
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "juice_bottle"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "juice_bottle"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "juice_bottle"
@@ -59484,20 +63487,6 @@
        "injected": true
       },
       {
-       "skill": "approach",
-       "args": {
-        "target": "juice_bottle"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "juice_bottle"
-       },
-       "role": "recover"
-      },
-      {
        "skill": "pick",
        "args": {
         "object": "juice_bottle"
@@ -59521,14 +63510,17 @@
        "role": "recover"
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4/top"
+       },
+       "role": "recover"
+      },
+      {
        "skill": "place",
        "args": {
         "object": "bowl_kitchen_cabinet",
-        "receptacle": "kitchen_cabinet_6/top",
-        "hint_xy": [
-         3.33,
-         0.4
-        ]
+        "receptacle": "kitchen_cabinet_4/top"
        },
        "role": "recover"
       },
@@ -59987,6 +63979,7 @@
       "19": "table_full"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -60012,6 +64005,7 @@
       "19": "h_action_ik_pick_and_place"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -60037,6 +64031,7 @@
       "19": "h_mixed_table_full_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -60062,6 +64057,7 @@
       "19": "h_dynamic_bottle_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -62611,9 +66607,9 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "book_red"
+        "destination": "book_red"
        },
        "role": "recover"
       },
@@ -62641,9 +66637,23 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
+       "args": {
+        "destination": "book_red"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "look",
        "args": {
         "target": "book_red"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "expose",
+       "args": {
+        "object": "book_red"
        },
        "role": "recover"
       },
@@ -62734,9 +66744,9 @@
        "injected": true
       },
       {
-       "skill": "approach",
+       "skill": "navigate",
        "args": {
-        "target": "book_red"
+        "destination": "book_red"
        },
        "role": "recover"
       },
@@ -62966,6 +66976,7 @@
       "19": "shelf_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "task",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -62991,6 +67002,7 @@
       "19": "h_action_ik_pick_and_place"
      },
      "v5_tier": "hard",
+     "hard_category": "action",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -63016,6 +67028,7 @@
       "19": "h_mixed_shelf_taken_ik"
      },
      "v5_tier": "hard",
+     "hard_category": "mixed",
      "tier": "hard",
      "capabilities": [
       "AF",
@@ -63041,6 +67054,7 @@
       "19": "h_dynamic_shelf_taken"
      },
      "v5_tier": "hard",
+     "hard_category": "dynamic",
      "tier": "hard",
      "capabilities": [
       "DR"

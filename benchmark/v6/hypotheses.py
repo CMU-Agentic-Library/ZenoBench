@@ -381,8 +381,9 @@ def check_GD(c: Ctx, h):
         if any(ok(s) and match(s, batch) for s in c.route[t0 + 1:]):
             r.append("the oracle still runs the batch step")
         for p in h["parts"]:
-            if not any(ok(s) and s["skill"] in ACH and s["args"].get("object") == p for s in c.route[t0 + 1:]):
-                r.append(f"no single achieving step for {p}")
+            if not any(ok(s) and s["skill"] in ACH and not match(s, batch) and
+                       (s["args"].get("object") == p or p in (s["args"].get("objects") or [])) for s in c.route[t0 + 1:]):
+                r.append(f"no separate achieving step for {p}")
         if ents and not touches(ents, vals({"args": batch["args"]})):
             r.append("cause does not concern the batch step")
     elif kind == "allocation":
@@ -736,6 +737,13 @@ def apply_audit(doc):
                 info["v5_tier"] = info["design_tier"]
                 if tier != info["design_tier"]:
                     info["retiered"] = f"{info['design_tier']} -> {tier}"
+                v = t["variants"][fam]
+                if tier == "hard":
+                    from failure_injection.spec import category
+                    cats = category(v.get("failures", []))
+                    info["hard_category"] = (v.get("v5") or {}).get("hard_category") or \
+                        ("mixed" if "mixed" in cats else "dynamic" if "dynamic" in cats else
+                         "action" if cats == {"action"} else "task")
             info["tier"] = tier
             info["capabilities"] = sorted(set.intersection(*[set(aud[v]["verified"]) for v in info["cases"]]))
             formal[tier].append(fam)

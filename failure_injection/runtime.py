@@ -36,6 +36,7 @@ class FailureRunner:
         self.ik_block: dict | None = None
         self.call_index = 0
         self.anchor_xy: dict[str, list[float]] = {}      # until_moved objects: their pose at the start
+        self.pick_pose: dict[str, tuple] = {}            # object -> (pos, quat) before its last pick
         self._assets = json.loads((ROOT / "annotations/assets.json").read_text())
         self._supports = {s["name"]: s for s in rig.ann.supports}
 
@@ -117,8 +118,19 @@ class FailureRunner:
             if f["kind"] == "slip" and self._due(f, verb, args):
                 name = f["trigger"]["while_holding"]
                 self._release()
-                self._record(f, True, object=name, landed_on=self._support_of(name))
+                landed = self._support_of(name)
+                restored = False
+                if name in self.pick_pose and (landed is None or float(self.rig.obj_pose(name)[0][2]) <
+                                               float(self.pick_pose[name][0][2]) - 0.05):
+                    # the hand was past the support's edge (an edge-pinch pick): the slip puts the object back where
+                    # it was picked, as the spec says ("falls back onto the support it was picked from")
+                    self._teleport(name, *self.pick_pose[name])
+                    landed, restored = self._support_of(name), True
+                self._record(f, True, object=name, landed_on=landed, restored=restored)
                 return self._refuse(c, args, "POLICY_FAILED", f"carry: {name} slipped out of the hand while carrying it")
+        if verb == "pick" and args.get("object") in getattr(self.rig.ann, "objects", {}):
+            p, q = self.rig.obj_pose(args["object"])
+            self.pick_pose[args["object"]] = (np.array(p, float), np.array(q, float))
         res = self._base.run(key, args, depth)
         if self.ik_block and self.ik_block["until"] != "never" and verb in BASE_SKILLS and res.success:
             self.ik_block = None                          # re-parked: the next attempt plans from a new pose

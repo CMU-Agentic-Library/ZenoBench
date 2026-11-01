@@ -130,7 +130,7 @@ def test_a_transient_failure_is_not_cross_level():
 
 
 def test_dr_needs_a_cause_naming_the_blocker():
-    _, c = _ctx("T01_book_to_dining_table", "x6_dr_block_on_book")
+    _, c = _ctx("T01_book_to_dining_table", "x6_dr_block_on_book__block")
     h = dict(c.v["v6"]["hypotheses"][0], blocker="rolling_pin")
     assert H.check_DR(c, h)
 

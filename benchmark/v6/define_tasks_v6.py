@@ -121,10 +121,15 @@ def T01(t):
     base = OR(t, "overhang_ready")                      # look, nav, approach, look, pick, nav table, place
     i = at(base, "pick", object=B)
     carry, place_ = base[i + 1], base[i + 2]
-    two_hand = (base[:i + 1] + [FAIL(carry, True)] + recs(S("approach", target=B), look(B), pick(B))
-                + [FAIL(carry, True)] + recs(S("approach", target=B), look(B), pick(B, hands="both"), carry)
-                + [place_])
-    blocked = {"wooden_block_a": {"support": None, "z": 0.886, "xy": [7.62, 1.59], "yaw_deg": 0.0}}
+    # re-park at the slipped flat book with navigate: approach parks so close that it leaves the head's view
+    two_hand = (base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B))
+                + [FAIL(carry, True)] + recs(nav(B), look(B), S("expose", object=B), pick(B, hands="both"), carry)
+                + [place_])           # the bimanual flat pick needs an overhanging edge: expose first
+    slip_once = base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B), carry) + [place_]
+    on_book = lambda x: {x: {"support": None, "z": 0.886, "xy": [7.62, 1.59], "yaw_deg": 0.0}}  # noqa: E731
+
+    def clear_book(x):
+        return [look("kitchen_island/top")] + recs(nav(x), pick(x), place(x, "kitchen_island/top", [7.2, 1.85])) + base[1:]
     return {
         "x6_sr_two_hand_carry": dict(
             tier="hard", hard="action", base="overhang_ready", control="x6_m_slip_book",
@@ -143,19 +148,21 @@ def T01(t):
             tier="medium", base="overhang_ready", control="overhang_ready",
             challenge="the paperback slips once at the start of the carry",
             rationale="matched control of x6_sr_two_hand_carry: the same slip, transient, so picking it again works",
-            cases={"": dict(failures=[f_slip(B)], route=with_slip(base, B))},
+            cases={"": dict(failures=[f_slip(B)], route=slip_once)},
             hyp=[H("AF", level="local")]),
         "x6_dr_block_on_book": dict(
-            tier="hard", hard="task", base="overhang_ready", control="overhang_ready", move=blocked,
-            challenge="a toy block lies on top of the paperback",
-            rationale="the book cannot be lifted with the block on it: take the block off (and leave it on the "
-                      "island) first; the block is not part of the goal, so this is an inserted precondition",
-            cases={"": dict(failures=[f_initial("dependency", [["on_top_of", "wooden_block_a", B]])],
-                            route=[look("kitchen_island/top")] + recs(
-                                nav("wooden_block_a"), pick("wooden_block_a"),
-                                place("wooden_block_a", "kitchen_island/top", [7.2, 1.85])) + base[1:])},
-            hyp=[H("DR", blocker="wooden_block_a", blocked={"skill": "pick", "target": B},
-                   cause="failure:dependency_initial")]),
+            tier="hard", hard="task", base="overhang_ready", control="overhang_ready",
+            factor="which object lies on the book (blocking relation)",
+            challenge="a toy block (or the sponge) lies on top of the paperback",
+            rationale="the book cannot be lifted with something on it: take that off (and leave it on the island) "
+                      "first; it is not part of the goal, so this is an inserted precondition",
+            cases={{"wooden_block_a": "block", "kitchen_sponge": "sponge"}[x]: dict(
+                move=on_book(x), failures=[f_initial("dependency", [["on_top_of", x, B]])],
+                                          route=clear_book(x),
+                                          hyp=[H("DR", blocker=x, blocked={"skill": "pick", "target": B},
+                                                 cause="failure:dependency_initial")])
+                   for x in ("wooden_block_a", "kitchen_sponge")},
+            hyp=[]),
     }
 
 
@@ -178,11 +185,25 @@ def T02(t):
                            ["on", b, "kitchen_island/top"]]
                           for b in (B, F) for m in (A, B, F) for top in (A, B, F) if len({b, m, top}) == 3],
                   "all": [["hand_empty", "right"]]}
-    tower = [look("kitchen_island/top")] + recs(nav(A), pick(A), nav(B), S("approach", target=B),
-                                                S("stack", object=A, base=B)) \
-        + recs(S("search", object=F, region="living_room_0_0"), nav(F), pick(F), nav(B), S("approach", target=B),
-               S("stack", object=F, base=A))
+    def tower(region):
+        return [look("kitchen_island/top")] + recs(nav(A), pick(A), nav(B), S("approach", target=B),
+                                                   S("stack", object=A, base=B)) \
+            + recs(S("search", object=F, region=region), nav(F), pick(F), nav(B), S("approach", target=B),
+                   S("stack", object=F, base=A))
+    put_down = base[:5] + refused_twice(base[5], A) + with_grasp(recs(
+        place(B, "kitchen_island/top", [7.0, 1.8]), nav(A), pick(A), nav(B), S("approach", target=B),
+        S("stack", object=A, base=B)), A)
     return {
+        "x6_cl_base_a_unreachable": dict(
+            tier="hard", hard="action", base="clear", control="clear",
+            challenge="no park reaches the top of block A for the stack (block B in hand); block A slips on its "
+                      "first pick",
+            rationale="stacking on A is impossible however the robot re-parks (persistent, pinned to A as the base): "
+                      "set B down and swap the roles, A goes on top of B",
+            cases={"": dict(failures=[f_ik_where("stack", "ik_stack_on_a_persistent", base=A), f_grasp(A)], route=put_down)},
+            hyp=[H("CL", failure="ik_stack_on_a_persistent", change="object", to=A),
+                 H("SR", nominal={"skill": "stack", "args": {"object": B, "base": A}},
+                   replacement={"skill": "stack", "args": {"object": A, "base": B}}, cause="failure:ik_stack_on_a_persistent")]),
         "x6_cl_block_b_unholdable": dict(
             tier="hard", hard="action", base="clear", control="m_grasp_b",
             factor="failure mechanism (grasp slip vs reach)",
@@ -202,9 +223,11 @@ def T02(t):
             rationale="the tower decomposes into two ordered stack subgoals with a base constraint (the edge block "
                       "goes on top of the middle, never at the bottom); the event removes a resource after the first "
                       "subgoal: keep the two-block stack and fetch the third",
-            cases={"": dict(failures=[f_move("resource", F, P("tv_stand_2/top", 7.0, 0.36),
-                                             ("stack", {"object": A, "base": B}), fid="resource_floor_block")],
-                            route=tower)},
+            factor="where the event takes the resource",
+            cases={c: dict(failures=[f_move("resource", F, to, ("stack", {"object": A, "base": B}), fid="resource_floor_block")],
+                           route=tower(region))
+                   for c, to, region in (("tv_stand", P("tv_stand_2/top", 7.0, 0.36), "living_room_0_0"),
+                                         ("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"))},
             hyp=[H("GD", kind="decomposition", subgoals=[["on_top_of", a, b] for a, b in order], cause="goal"),
                  H("PP", kept={"atom": ["on_top_of", A, B], "by": {"skill": "stack", "args": {"object": A}}},
                    event="resource_floor_block"),
@@ -365,8 +388,8 @@ def T06(t):
         + recs(nav("tv_stand_2/top"), place(A, "tv_stand_2/top"))
     displays = {"all": [["hand_empty", "right"]],
                 "any": [[["on", x, "kitchen_cabinet_6/top"], ["on", y, "tv_stand_2/top"]] for x, y in ((A, B), (B, A))]}
-    two = base[:5] + recs(S("search", object=B, region="dining_room_0_1"), nav(B), pick(B), nav("tv_stand_2/top"),
-                          place(B, "tv_stand_2/top"))
+    two = lambda *sr: base[:5] + recs(S("search", object=B, **dict(sr)), nav(B), pick(B), nav("tv_stand_2/top"),  # noqa: E731
+                                      place(B, "tv_stand_2/top"))
     return {
         "x6_cl_block_a_unholdable": dict(
             tier="hard", hard="action", base="free", control="x6_m_grasp_block_a",
@@ -406,8 +429,12 @@ def T06(t):
                       "block to the dining table",
             rationale="the goal decomposes into one placement per display; the event moves the second resource after "
                       "the first subgoal holds: keep block A where it is, find block B",
-            cases={"": dict(failures=[f_move("resource", B, P("dining_table_2/top", 3.7, 6.3),
-                                             ("place", {"object": A}), fid="resource_block_b")], route=two)},
+            factor="where the event takes the resource",
+            cases={"dining": dict(failures=[f_move("resource", B, P("dining_table_2/top", 3.7, 6.3),
+                                                   ("place", {"object": A}), fid="resource_block_b")],
+                                  route=two(("region", "dining_room_0_1"))),
+                   "cabinet4": dict(failures=[f_move("resource", B, P("kitchen_cabinet_4/top", 1.4, 0.42),
+                                                     ("place", {"object": A}), fid="resource_block_b")], route=two())},
             hyp=[H("GD", kind="decomposition", subgoals=[["on", A, "kitchen_cabinet_6/top"], ["on", B, "tv_stand_2/top"]],
                    cause="goal"),
                  H("PP", kept={"atom": ["on", A, "kitchen_cabinet_6/top"], "by": {"skill": "place", "args": {"object": A}}},
@@ -422,8 +449,9 @@ def T07(t):
     stove = [nav("kitchen_stove/top"), place(X, "kitchen_stove/top"), S("heat", food=X, appliance="kitchen_stove", temp_c=40)]
     stuck_island = base[:1] + refused_twice(base[1], MW) + with_ik(recs(look("kitchen_island/top"), nav(X), pick(X), *stove),
                                                                    "pick", X)
-    stuck_cab = base[:1] + refused_twice(base[1], MW) + with_ik(recs(S("search", object=X, region="living_room_0_0"),
-                                                                     nav(X), pick(X), *stove), "pick", X)
+    # the bowl on the wall cabinet: re-park with navigate (turning in place at an approach park hits furniture)
+    stuck_cab = base[:1] + refused_twice(base[1], MW) + recs(S("search", object=X, region="living_room_0_0"), nav(X)) \
+        + [FAIL(pick(X), True)] + recs(nav(X), pick(X), *stove)
     stuck_fail = [f_ik_persist("open", MW, key="articulated"), f_ik("pick", X)]
     holds = t["variants"]["microwave_holds_pot"]
     pot_in = [f_move("resource", "handled_cooking_pot", P("kitchen_microwave/inside_floor", 4.5, 2.5),
@@ -479,7 +507,7 @@ def T07(t):
 def T08(t):
     X = "kitchen_sponge"
     base = OR(t, "sponge_on_island")
-    back = base + recs(look("kitchen_island/top"), S("search", object=X, region="living_room_0_0"), nav(X), pick(X),
+    back = base + recs(look("kitchen_island/top"), S("search", object=X), nav(X), pick(X),
                        nav("kitchen_island/top"), place(X, "kitchen_island/top"))
     return {
         "x6_pp_sponge_taken_after_wipe": dict(
@@ -487,8 +515,11 @@ def T08(t):
             challenge="right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
             rationale="the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without "
                       "wiping again",
-            cases={"": dict(failures=[f_move("resource", X, P("tv_stand_2/top", 7.6, 0.38),
-                                             ("place", {"object": X}), fid="resource_sponge")], route=back)},
+            factor="where the event takes the resource",
+            cases={c: dict(failures=[f_move("resource", X, to, ("place", {"object": X}), fid="resource_sponge")],
+                           route=back[:-4] + recs(look(where)) + back[-4:])
+                   for c, to, where in (("tv_stand", P("tv_stand_2/top", 7.6, 0.38), "tv_stand_2/top"),
+                                        ("cabinet6", P("kitchen_cabinet_6/top", 3.7, 0.36), "kitchen_cabinet_6/top"))},
             hyp=[H("PP", kept={"atom": ["wiped", "kitchen_island/top"], "by": {"skill": "wipe", "args": {"surface": "kitchen_island/top"}}},
                    event="resource_sponge"), H("AF", level="task")]),
     }
@@ -513,10 +544,15 @@ def T09(t):
                     nav(TOMATOES[1]), pick(TOMATOES[1]), nav(POT), S("drop", object=TOMATOES[1], container=POT))
     split = base[:1] + refused_twice(col, POT) + with_grasp(per_item, TOMATOES[0]) + base[2:]
     j_lid = at(base, "navigate", destination=LID)
-    lid_taken = base[:j_lid] + recs(look("kitchen_stove/top"), S("search", object=LID)) + base[j_lid:]
-    tomato_out = base[:2] + recs(look("kitchen_island/top"), nav(TOMATOES[1]), pick(TOMATOES[1]), nav(POT),
-                                 S("drop", object=TOMATOES[1], container=POT)) + base[2:]
+    lid_taken = lambda *sr: base[:j_lid] + recs(look("kitchen_stove/top"), S("search", object=LID, **dict(sr))) + base[j_lid:]  # noqa: E731
+    tomato_out = lambda x: base[:2] + recs(look("kitchen_island/top"), nav(x), pick(x), nav(POT),  # noqa: E731
+                                           S("drop", object=x, container=POT)) + base[2:]
     kept_tomato = {"atom": ["inside", TOMATOES[0], POT], "by": {"skill": "collect", "args": {"container": POT}}}
+
+    def apart(region):
+        return base[:1] + recs(S("collect", objects=[TOMATOES[0]], container=POT),
+                               S("search", object=TOMATOES[1], region=region), nav(TOMATOES[1]), pick(TOMATOES[1]),
+                               nav(POT), S("drop", object=TOMATOES[1], container=POT)) + base[2:]
     return {
         "x6_cl_spoon_unholdable": dict(
             tier="hard", hard="action", base="lid_off", control="m_grasp_spoon",
@@ -546,6 +582,20 @@ def T09(t):
                  H("GD", kind="split", batch={"skill": "collect", "args": {"container": POT}}, parts=TOMATOES,
                    cause="failure:ik_collect_persistent"),
                  H("CL", failure="ik_collect_persistent", change="procedure", to="drop")]),
+        "x6_gd_tomato_elsewhere": dict(
+            tier="hard", hard="task", base="lid_off", control="lid_off",
+            factor="where the second tomato was left",
+            challenge="one cherry tomato is on the island, the other was left on the dining table or on the wall "
+                      "cabinet",
+            rationale="collecting both at once only works for tomatoes on one surface: split the batch, collect the "
+                      "near one, fetch the other on its own",
+            cases={c: dict(move={TOMATOES[1]: to},
+                           failures=[f_initial("resource", [["on", TOMATOES[1], to["support"]]], fid="resource_tomato_apart")],
+                           route=apart(region))
+                   for c, to, region in (("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"),
+                                         ("cabinet6", P("kitchen_cabinet_6/top", 3.7, 0.36), "living_room_0_0"))},
+            hyp=[H("GD", kind="split", batch={"skill": "collect", "args": {"objects": TOMATOES}}, parts=TOMATOES,
+                   cause=f"failure:resource_tomato_apart"), H("AF", level="task")]),
         "x6_m_ik_collect": dict(
             tier="medium", base="lid_off", control="lid_off",
             challenge="the first collect into the pot is refused from its park",
@@ -558,16 +608,25 @@ def T09(t):
             tier="hard", hard="dynamic", base="lid_off", control="lid_off",
             challenge="right after the robot stirs, someone takes the pot lid to the other low cabinet",
             rationale="tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
-            cases={"": dict(failures=[f_move("resource", LID, P("kitchen_cabinet_4/top", 1.4, 0.42),
-                                             ("stir", {"container": POT}), fid="resource_lid")], route=lid_taken)},
+            factor="where the event takes the resource",
+            cases={"cabinet4": dict(failures=[f_move("resource", LID, P("kitchen_cabinet_4/top", 1.4, 0.42),
+                                                     ("stir", {"container": POT}), fid="resource_lid")], route=lid_taken()),
+                   "dining": dict(failures=[f_move("resource", LID, P("dining_table_2/top", 3.7, 6.3),
+                                                   ("stir", {"container": POT}), fid="resource_lid")],
+                                  route=lid_taken(("region", "dining_room_0_1")))},
             hyp=[H("PP", kept=kept_tomato, event="resource_lid"), H("AF", level="task")]),
         "x6_pp_tomato_taken_out": dict(
             tier="hard", hard="dynamic", base="lid_off", control="lid_off",
             challenge="right after the tomatoes go into the pot, the kid takes one back out onto the island",
             rationale="one subgoal is undone, the other still holds: put back only the missing tomato",
-            cases={"": dict(failures=[f_move("resource", TOMATOES[1], P("kitchen_island/top", 7.8, 1.62),
-                                             ("collect", {"container": POT}), fid="resource_tomato")], route=tomato_out)},
-            hyp=[H("PP", kept=kept_tomato, event="resource_tomato")]),
+            factor="which subgoal the event undoes",
+            cases={f"tomato{x[-1]}": dict(
+                failures=[f_move("resource", x, P("kitchen_island/top", 7.8 if x == TOMATOES[1] else 7.63, 1.62),
+                                 ("collect", {"container": POT}), fid="resource_tomato")], route=tomato_out(x),
+                hyp=[H("PP", kept={"atom": ["inside", y, POT], "by": {"skill": "collect", "args": {"container": POT}}},
+                       event="resource_tomato")])
+                for x, y in ((TOMATOES[1], TOMATOES[0]), (TOMATOES[0], TOMATOES[1]))},
+            hyp=[]),
     }
 
 
@@ -693,9 +752,9 @@ def T13(t):
                 "any": [[["grouped", [x, c1, SPOON], "dining_table_2/top", 0.5], ["grouped", [y, c2, s2], "dining_table_2/top", 0.5],
                          ["upright", c1], ["upright", c2]]
                         for x, y in ((BOWL, b2), (b2, BOWL)) for c1, c2 in ((CUP, MUG), (MUG, CUP))]}
-    two = base + recs(nav(b2), pick(b2), nav("dining_table_2/top"), place(b2, "dining_table_2/top", [3.7, 7.12]),
-                      S("search", object=MUG, region="living_room_0_0"), nav(MUG), pick(MUG), nav("dining_table_2/top"),
-                      place(MUG, "dining_table_2/top", [3.62, 7.62]))
+    two = lambda *sr: base + recs(nav(b2), pick(b2), nav("dining_table_2/top"), place(b2, "dining_table_2/top", [3.7, 7.12]),  # noqa: E731
+                                  S("search", object=MUG, **dict(sr)), nav(MUG), pick(MUG), nav("dining_table_2/top"),
+                                  place(MUG, "dining_table_2/top", [3.62, 7.62]))
     kept_bowl = {"atom": ["on", BOWL, "dining_table_2/top"], "by": {"skill": "place", "args": {"object": BOWL}}}
     return {
         "x6_cl_cup_slips": dict(
@@ -762,8 +821,12 @@ def T13(t):
                       "someone takes the mug to the wall cabinet",
             rationale="the goal decomposes into two place settings with an allocation of the cups and bowls; the "
                       "event moves the second place's resource after the first setting holds: keep it, find the mug",
-            cases={"": dict(failures=[f_move("resource", MUG, P("kitchen_cabinet_6/top", 3.68, 0.36),
-                                             ("place", {"object": CUP}), fid="resource_mug")], route=two)},
+            factor="where the event takes the resource",
+            cases={"cabinet6": dict(failures=[f_move("resource", MUG, P("kitchen_cabinet_6/top", 3.68, 0.36),
+                                                     ("place", {"object": CUP}), fid="resource_mug")],
+                                    route=two(("region", "living_room_0_0"))),
+                   "cabinet4": dict(failures=[f_move("resource", MUG, P("kitchen_cabinet_4/top", 1.4, 0.42),
+                                                     ("place", {"object": CUP}), fid="resource_mug")], route=two())},
             hyp=[H("GD", kind="decomposition", subgoals=[["grouped", [BOWL, CUP, SPOON]], ["grouped", [b2, MUG, s2]]],
                    cause="goal"),
                  H("PP", kept=kept_bowl, event="resource_mug"), H("AF", level="task")]),
@@ -775,8 +838,9 @@ def T14(t):
     base = OR(t, "e1_book_ready")                 # nav desk, look, nav book, pick, nav bookcase, place
     i = at(base, "pick", object=B)
     carry, place_ = base[i + 1], base[i + 2]
-    two = (base[:i + 1] + [FAIL(carry, True)] + recs(S("approach", target=B), look(B), pick(B)) + [FAIL(carry, True)]
-           + recs(S("approach", target=B), look(B), pick(B, hands="both"), carry) + [place_])
+    two = (base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B)) + [FAIL(carry, True)]
+           + recs(nav(B), look(B), S("expose", object=B), pick(B, hands="both"), carry) + [place_])
+    slip_once = base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B), carry) + [place_]
     return {
         "x6_sr_two_hand_carry": dict(
             tier="hard", hard="action", base="e1_book_ready", control="x6_m_slip_book",
@@ -793,7 +857,7 @@ def T14(t):
             tier="medium", base="e1_book_ready", control="e1_book_ready",
             challenge="the red book slips once at the start of the carry",
             rationale="matched control of x6_sr_two_hand_carry: transient, picking it again works",
-            cases={"": dict(failures=[f_slip(B)], route=with_slip(base, B))}, hyp=[H("AF", level="local")]),
+            cases={"": dict(failures=[f_slip(B)], route=slip_once)}, hyp=[H("AF", level="local")]),
     }
 
 
@@ -804,11 +868,11 @@ def T17(t):
     primitive = recs(nav(B), pick(B), nav(POT), S("drop", object=B, container=POT), nav(LID), pick(LID), nav(POT),
                      S("cover", container=POT, lid=LID))
     refused = base[:-1] + refused_twice(hide, POT) + with_grasp(primitive, B)
-    lifted = base + recs(look("kitchen_stove/top"), S("search", object=LID), nav(LID), pick(LID),
-                         nav(POT), S("cover", container=POT, lid=LID))
+    lifted = lambda *sr: base + recs(look("kitchen_stove/top"), S("search", object=LID, **dict(sr)), nav(LID), pick(LID),  # noqa: E731
+                                     nav(POT), S("cover", container=POT, lid=LID))
     both_goal = {"all": [["hidden", B], ["hidden", F], ["covered", POT, LID], ["hand_empty", "right"]]}
-    both = base + recs(S("search", object=F, region="living_room_0_0"), nav(POT), S("uncover", container=POT),
-                       nav(F), look(F), S("hide", object=F, receptacle=POT, lid=LID))
+    both = lambda region: base + recs(S("search", object=F, region=region), nav(POT), S("uncover", container=POT),  # noqa: E731
+                                      nav(F), look(F), S("hide", object=F, receptacle=POT, lid=LID))
     return {
         "x6_sr_hide_refused": dict(
             tier="hard", hard="action", base="lid_off", control="x6_m_ik_hide",
@@ -829,8 +893,12 @@ def T17(t):
             tier="hard", hard="dynamic", base="lid_off", control="lid_off",
             challenge="right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
             rationale="the block is still in the pot: find the lid and cover again, do not take the block out",
-            cases={"": dict(failures=[f_move("resource", LID, P("kitchen_cabinet_4/top", 1.4, 0.42),
-                                             ("hide", {"object": B}), fid="resource_lid")], route=lifted)},
+            factor="where the event takes the resource",
+            cases={"cabinet4": dict(failures=[f_move("resource", LID, P("kitchen_cabinet_4/top", 1.4, 0.42),
+                                                     ("hide", {"object": B}), fid="resource_lid")], route=lifted()),
+                   "dining": dict(failures=[f_move("resource", LID, P("dining_table_2/top", 3.7, 6.3),
+                                                   ("hide", {"object": B}), fid="resource_lid")],
+                                  route=lifted(("region", "dining_room_0_1")))},
             hyp=[H("PP", kept={"atom": ["hidden", B], "by": {"skill": "hide", "args": {"object": B}}}, event="resource_lid"),
                  H("AF", level="task")]),
         "x6_gd_hide_both_event": dict(
@@ -842,8 +910,11 @@ def T17(t):
                       "TV stand",
             rationale="the goal decomposes into two hides that share the lid (uncover between them); the event moves "
                       "the second block after the first subgoal holds: keep the first hidden, find the second",
-            cases={"": dict(failures=[f_move("resource", F, P("tv_stand_2/top", 7.0, 0.36), ("hide", {"object": B}),
-                                             fid="resource_floor_block")], route=both)},
+            factor="where the event takes the resource",
+            cases={c: dict(failures=[f_move("resource", F, to, ("hide", {"object": B}), fid="resource_floor_block")],
+                           route=both(region))
+                   for c, to, region in (("tv_stand", P("tv_stand_2/top", 7.0, 0.36), "living_room_0_0"),
+                                         ("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"))},
             hyp=[H("GD", kind="decomposition", subgoals=[["hidden", B], ["hidden", F]], cause="goal"),
                  H("PP", kept={"atom": ["hidden", B], "by": {"skill": "hide", "args": {"object": B}}},
                    event="resource_floor_block"), H("AF", level="task")]),
@@ -861,27 +932,27 @@ def T18(t):
     goal_3["all"].append(["is_closed", C4])
     in_mw = {"support": "kitchen_microwave/inside_floor", "xy": [4.5, 2.5], "yaw_deg": 0.0}
     return {
-        "x6_gd_bowl_in_microwave": dict(
-            tier="hard", hard="task", base="at_island", control="at_island", goal=goal_mw,
+        "x6_gd_bowl_elsewhere": dict(
+            tier="hard", hard="task", base="at_island", control="at_island",
             move={"bowl_inside_kitchen_cabinet": in_mw},
-            instruction="Grandma wants to know whether there is still a clean plate and bowl for dinner, in the low "
-                        "wall cabinet or the microwave. Have a look and close every door properly afterwards.",
-            challenge="the plate is in the wall cabinet, the bowl was left in the microwave",
-            rationale="the cabinet answers only half of the question: the inspection continues at the second place",
-            cases={"": dict(failures=[f_initial("resource", [["on", "bowl_inside_kitchen_cabinet", "kitchen_microwave/inside_floor"]],
-                                                fid="resource_bowl_elsewhere")], route=base + mw)},
+            factor="how many candidate places (and an empty one) the instruction names",
+            challenge="the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the "
+                      "instruction also names the other low cabinet, which is empty",
+            rationale="the first place answers only half of the question: the inspection continues, past an empty "
+                      "place when there is one, until both dishes are seen",
+            cases={"two_places": dict(goal=goal_mw, route=base + mw,
+                                      instruction="Grandma wants to know whether there is still a clean plate and bowl "
+                                                  "for dinner, in the low wall cabinet or the microwave. Have a look "
+                                                  "and close every door properly afterwards."),
+                   "three_places": dict(goal=goal_3, route=base + c4 + mw,
+                                        instruction="Grandma wants to know whether there is still a clean plate and bowl "
+                                                    "for dinner somewhere in the low kitchen cabinets or the microwave. "
+                                                    "Have a look and close every door properly afterwards.",
+                                        hyp=[H("GD", kind="inspection", places=[C6, C4, MW],
+                                               cause="failure:resource_bowl_elsewhere")])},
+            failures=[f_initial("resource", [["on", "bowl_inside_kitchen_cabinet", "kitchen_microwave/inside_floor"]],
+                                fid="resource_bowl_elsewhere")],
             hyp=[H("GD", kind="inspection", places=[C6, MW], cause="failure:resource_bowl_elsewhere")]),
-        "x6_gd_three_places": dict(
-            tier="hard", hard="task", base="at_island", control="h_task_two_cabinets", goal=goal_3,
-            move={"bowl_inside_kitchen_cabinet": in_mw},
-            instruction="Grandma wants to know whether there is still a clean plate and bowl for dinner somewhere in "
-                        "the low kitchen cabinets or the microwave. Have a look and close every door properly afterwards.",
-            challenge="the plate is in the wall cabinet, the other low cabinet is empty, the bowl is in the microwave",
-            rationale="three candidate places, the answer is spread over two of them and one is empty: the "
-                      "inspection must continue past the empty cabinet",
-            cases={"": dict(failures=[f_initial("resource", [["on", "bowl_inside_kitchen_cabinet", "kitchen_microwave/inside_floor"]],
-                                                fid="resource_bowl_elsewhere")], route=base + c4 + mw)},
-            hyp=[H("GD", kind="inspection", places=[C6, C4, MW], cause="failure:resource_bowl_elsewhere")]),
         "x6_pp_door_reopened": dict(
             tier="hard", hard="dynamic", base="at_island", control="at_island",
             challenge="right after the robot closes the cabinet, someone opens the door again",
@@ -926,10 +997,12 @@ def T20(t):
     base = OR(t, "bottle_on_cabinet")           # nav cab6 top, look, nav bottle, pick, nav dining, place
     i = at(base, "pick", object=J)
 
-    def behind(blocker):
-        return base[:i] + refused_twice(base[i], J) + recs(nav(blocker), pick(blocker),
-                                                          place(blocker, "kitchen_cabinet_6/top", [3.33, 0.4]),
-                                                          nav(J), look(J)) + [REC(base[i])] + base[i + 1:]
+    def behind(blocker, aside):
+        return base[:i] + refused_twice(base[i]) + recs(nav(blocker), pick(blocker), *aside, nav(J), look(J)) \
+            + [REC(base[i])] + base[i + 1:]
+    on_cab6 = [place(M, "kitchen_cabinet_6/top", [3.33, 0.4])]
+    # the bowl needs more room than the cabinet top has left: the other low cabinet
+    on_cab4 = [nav("kitchen_cabinet_4/top"), S("place", object="bowl_kitchen_cabinet", receptacle="kitchen_cabinet_4/top")]
     BW = "bowl_kitchen_cabinet"
     instr = ("Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, "
              "standing up, and close the cabinets again.")
@@ -945,15 +1018,15 @@ def T20(t):
                       "of it: no park reaches the bottle until that object is moved",
             rationale="re-parking cannot help while the object blocks the reach (wall behind, object in front), so the "
                       "recovery inserts a subgoal on an object outside the goal: move it aside first",
-            cases={"mug": dict(move={J: P("kitchen_cabinet_6/top", 3.7, 0.255), M: P("kitchen_cabinet_6/top", 3.7, 0.38)},
+            cases={"mug": dict(move={J: P("kitchen_cabinet_6/top", 3.7, 0.265), M: P("kitchen_cabinet_6/top", 3.7, 0.39)},
                                failures=[f_initial("dependency", [["on", M, "kitchen_cabinet_6/top"]], fid="dependency_in_front"),
-                                         {**f_ik_persist("pick", J), "until_moved": M}], route=behind(M),
+                                         {**f_ik_persist("pick", J), "until_moved": M}], route=behind(M, on_cab6),
                                hyp=[H("DR", blocker=M, blocked={"skill": "pick", "target": J}, cause="failure:dependency_in_front"),
                                     H("CL", failure=f"ik_pick_{J}_persistent", change="subgoal", to=M)]),
-                   "bowl": dict(move={J: P("kitchen_cabinet_6/top", 3.68, 0.25), BW: P("kitchen_cabinet_6/top", 3.68, 0.405)},
+                   "bowl": dict(move={J: P("kitchen_cabinet_6/top", 3.68, 0.26), BW: P("kitchen_cabinet_6/top", 3.68, 0.408)},
                                 remove=["spoon_kitchen_cabinet"],
                                 failures=[f_initial("dependency", [["on", BW, "kitchen_cabinet_6/top"]], fid="dependency_in_front"),
-                                          {**f_ik_persist("pick", J), "until_moved": BW}], route=behind(BW),
+                                          {**f_ik_persist("pick", J), "until_moved": BW}], route=behind(BW, on_cab4),
                                 hyp=[H("DR", blocker=BW, blocked={"skill": "pick", "target": J}, cause="failure:dependency_in_front"),
                                      H("CL", failure=f"ik_pick_{J}_persistent", change="subgoal", to=BW)])},
             hyp=[]),
@@ -988,12 +1061,38 @@ def T11(t):
     base = OR(t, "fruits_on_table")             # nav dining, look, nav apple, pick, nav bookcase, look, place basket
     i = at(base, "place", object=X)
     roll = {"id": "placement_apple_basket_persistent", "kind": "placement", "mode": "displaced", "persist": True,
-            "to": P("bookcase_2/top", 1.2, -0.36), "report": [["inside", X, BASKET]],
+            "to": P("bookcase_2/top", 1.21, -0.29), "report": [["inside", X, BASKET]],
             "trigger": {"skill": "place", "args": {"object": X, "receptacle": BASKET}, "nth": 1}}
     once = dict(roll, id="placement_apple_basket", persist=False)
     tray = recs(nav("desk_1/top"), look("desk_1/top"), nav("serving_tray"), place(X, "serving_tray"))
-    again = [FAIL(base[i], True)] + recs(look(X), pick(X))
+    # re-park at the apple that rolled out (from the bookcase park the basket hides it)
+    again = [FAIL(base[i], True)] + recs(S("approach", target=X), pick(X))
+    O = "orange_2"
+    fruit_goal = {"all": [["hand_empty", "right"]],
+                  "any": [[["inside", X, a], ["inside", O, b]] for a in (BASKET, "serving_tray") for b in (BASKET, "serving_tray")]}
+    two = RT(t, "alternative_tray")
+    k = next(i for i, st in enumerate(two) if st.get("expect") == "fail")
+    two = [st for st in two[:k]] + recs(nav("desk_1/top"), look("desk_1/top"), nav("serving_tray"), place(X, "serving_tray"),
+                                        S("search", object=O, region="living_room_0_0"), nav(O), pick(O),
+                                        nav("serving_tray"), place(O, "serving_tray"))
     return {
+        "x6_gd_fruits_event": dict(
+            tier="hard", hard="dynamic", base="basket_missing", control="basket_missing",
+            add={O: {"asset": "orange", "support": "dining_table_2/top", "xy": [3.63, 5.66], "yaw_deg": 0.0}},
+            goal=fruit_goal, watch=[X, O, "serving_tray"],
+            instruction="Lunch is over and the apple and the orange are still on the dining table. Put them into the "
+                        "fruit basket on the low bookcase in the bedroom; if the basket is not there, the serving tray "
+                        "on the study desk will do.",
+            challenge="two fruits, no basket (the stated tray instead); once the apple is on the tray, the kid takes "
+                      "the orange to the TV stand",
+            rationale="the goal decomposes into one placement per fruit; the event moves the second resource after the "
+                      "first subgoal holds: keep the apple, find the orange",
+            cases={"": dict(failures=[f_move("resource", O, P("tv_stand_2/top", 7.2, 0.36), ("place", {"object": X}),
+                                             fid="resource_orange")], route=two)},
+            hyp=[H("GD", kind="decomposition", subgoals=[["inside", X, "serving_tray"], ["inside", O, "serving_tray"]],
+                   cause="goal"),
+                 H("PP", kept={"atom": ["inside", X, "serving_tray"], "by": {"skill": "place", "args": {"object": X}}},
+                   event="resource_orange"), H("AF", level="task")]),
         "x6_cl_apple_rolls_out": dict(
             tier="hard", hard="action", base="fruits_on_table", control="x6_m_apple_rolls_out_once",
             challenge="the apple rolls back out of the basket onto the bookcase every time it is put in; the apple "

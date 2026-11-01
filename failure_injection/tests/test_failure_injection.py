@@ -387,3 +387,21 @@ def test_persistent_placement_displaces_every_time(monkeypatch):
         assert not inj.run("place", {"object": "mug", "support": "storage_bin"}).success
     inj.run("pick", {"object": "mug"})
     assert inj.run("place", {"object": "mug", "support": "dining_table_2/top"}).success   # another place works
+
+
+def test_slip_past_the_edge_falls_back_onto_the_support(monkeypatch):
+    fs = [{"id": "s", "kind": "slip", "trigger": {"skill": "navigate", "while_holding": "mug"}}]
+    inj, base, rig = make(fs, monkeypatch)
+    p0 = rig.poses["mug"][0].copy()
+    inj.run("pick", {"object": "mug"})
+    rig.poses["mug"] = (p0 + [0, -0.1, 0.05], rig.poses["mug"][1])          # lifted and drawn over the edge
+    seq = iter([None, "kitchen_island/top"])                                  # fell off, then back on the island
+    monkeypatch.setattr(R.FailureRunner, "_support_of", lambda self, n: next(seq))
+    real_release = R.FailureRunner._release
+    def drop(self):
+        real_release(self)
+        rig.poses["mug"] = (np.array([1.0, 0.9, 0.05]), rig.poses["mug"][1])   # on the floor
+        return 0.0
+    monkeypatch.setattr(R.FailureRunner, "_release", drop)
+    assert "slipped" in inj.run("navigate", {"destination": "a"}).error
+    assert np.allclose(rig.poses["mug"][0], p0) and inj.failure_log[-1]["restored"] is True
