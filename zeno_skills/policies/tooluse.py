@@ -17,7 +17,7 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from .. import skills
-from ..clearance import LEGACY
+from ..clearance import FREE_ELSE_STRAIGHT, LEGACY
 from ..evaluator import quat_R
 from ..planner import find_park
 from ..predicates import memory, objects_inside
@@ -133,7 +133,7 @@ class WipeSurfacePolicy(AtomicPolicy):
             raise SkillFailure(f"wipe {support}: no base pose reaches the strip (rejected: {_park_diag()})")
         skills._goto_park(rig, park)
         rig.caption = f"WIPE {support} with {tool}"
-        rig.move_to(*legs[0], step=0.01, label="wipe_above", allow=LEGACY, smooth=True)
+        rig.move_to(*legs[0], step=0.01, label="wipe_above", allow=FREE_ELSE_STRAIGHT, smooth=True)
         rig.move_to(*legs[1], step=0.003, steps_per_wp=5, label="wipe_press", allow=LEGACY)
         n_cells = max(1, int(round(length / 0.02)))
         covered = np.zeros(n_cells, bool)
@@ -250,12 +250,13 @@ class StirContainerPolicy(AtomicPolicy):
         rig.caption = f"STIR {container} with {tool}"
         t0, R0 = rig.kin.tcp(rig.q_cmd)
         try:            # a short lift first when the arm allows; "above" itself was planned reachable
-            rig.move_to(t0 + np.array([0, 0, 0.05]), R0, step=0.01, label="stir_raise", allow=LEGACY)
+            rig.move_to(t0 + np.array([0, 0, 0.05]), R0, step=0.01, label="stir_raise", allow=FREE_ELSE_STRAIGHT)
         except SkillFailure as exc:
             if rig.held is None:
                 raise
             rig.log("stir_raise_skipped", reason=str(exc))
-        rig.move_to(above, R_goal, step=0.005, steps_per_wp=5, label="stir_above", allow=LEGACY, smooth=True,
+        rig.move_to(above, R_goal, step=0.005, steps_per_wp=5, label="stir_above",
+                    allow=FREE_ELSE_STRAIGHT, smooth=True,
                     q_hint=park[3][0])
         rig.move_to(tcp_for_tip(0.0), R_goal, step=0.003, steps_per_wp=5, label="stir_dip", allow=LEGACY)
         swept, prev = 0.0, None
@@ -270,7 +271,7 @@ class StirContainerPolicy(AtomicPolicy):
                 inside=bool(memory(rig).get("dipped", {}).get(container)))
         if turns <= 0:
             rig.step(90)
-            rig.move_to(above, R_goal, step=0.005, label="dip_out", allow=LEGACY)
+            rig.move_to(above, R_goal, step=0.005, label="dip_out", allow=FREE_ELSE_STRAIGHT)
             skills.check_held(rig, "dip")
             if not memory(rig).get("dipped", {}).get(container):
                 raise SkillFailure(f"dip {container}: the tip did not get below the rim inside")
@@ -295,7 +296,7 @@ class StirContainerPolicy(AtomicPolicy):
                 swept += abs((ang - prev + math.pi) % (2 * math.pi) - math.pi)
             prev = ang if inside else None
         skills.check_held(rig, "stir")
-        rig.move_to(above, R_goal, step=0.005, label="stir_out", allow=LEGACY)
+        rig.move_to(above, R_goal, step=0.005, label="stir_out", allow=FREE_ELSE_STRAIGHT)
         n_turns = swept / (2 * math.pi)
         memory(rig)["stirred"][container] = max(n_turns, memory(rig)["stirred"].get(container, 0.0))
         rig.log("stir_result", tool=tool, container=container, turns=round(n_turns, 2))
@@ -452,7 +453,7 @@ class PourIntoPolicy(AtomicPolicy):
             # use the planned (verified) pose and pour direction
             rig.log("pour_over_planned", measured=np.round(goal, 3).tolist())
             goal, R, u, lip_xy = planned_goal, planned_R, planned_u, planned_lip
-        rig.move_to(goal, R, step=0.005, steps_per_wp=5, label="pour_over", allow=LEGACY, smooth=True)
+        rig.move_to(goal, R, step=0.005, steps_per_wp=5, label="pour_over", allow=FREE_ELSE_STRAIGHT, smooth=True)
         skills.check_held(rig, "pour_over")
         q_over = rig.q_cmd.copy()
         axis = np.cross([0, 0, 1.0], np.r_[u, 0.0])
@@ -466,7 +467,8 @@ class PourIntoPolicy(AtomicPolicy):
             # largest planned angle (the straight tilt path can lose its IK branch)
             hint = park[3][1] if planned_tilt and len(park[3]) > 1 and abs(ang - planned_tilt) < 1e-6 else None
             try:
-                rig.move_to(goal_k, Rk, step=0.004, steps_per_wp=5, label="pour_tilt", allow=LEGACY, smooth=True,
+                rig.move_to(goal_k, Rk, step=0.004, steps_per_wp=5, label="pour_tilt",
+                            allow=FREE_ELSE_STRAIGHT, smooth=True,
                             q_hint=hint)
             except SkillFailure as exc:
                 rig.log("pour_tilt_limit", deg=float(ang), reason=str(exc))
@@ -476,7 +478,8 @@ class PourIntoPolicy(AtomicPolicy):
                 # (verified) tilt configuration is reachable in joint space
                 ang = float(planned_tilt)
                 try:
-                    rig.follow(rig.joint_path(park[3][1], "pour_tilt_planned", allow=LEGACY), steps_per_wp=8)
+                    rig.follow(rig.joint_path(park[3][1], "pour_tilt_planned",
+                                              allow=FREE_ELSE_STRAIGHT), steps_per_wp=8)
                     skills.check_held(rig, "pour_tilt_planned")
                 except Dropped:
                     raise
@@ -507,7 +510,7 @@ class PourIntoPolicy(AtomicPolicy):
                 for a_ in (reached - 12.0, reached):
                     goal_k, Rk = tilted(goal, R, u, lip_xy, a_)
                     try:
-                        rig.move_to(goal_k, Rk, step=0.004, steps_per_wp=3, label="pour_rock", allow=LEGACY)
+                        rig.move_to(goal_k, Rk, step=0.004, steps_per_wp=3, label="pour_rock", allow=FREE_ELSE_STRAIGHT)
                     except SkillFailure:
                         break
                 rig.step(60)
@@ -517,13 +520,14 @@ class PourIntoPolicy(AtomicPolicy):
         try:
             for ang in np.arange(reached - 10.0, -1e-6, -10.0):
                 goal_k, Rk = tilted(goal, R, u, lip_xy, ang)
-                rig.move_to(goal_k, Rk, step=0.002, steps_per_wp=8, label="pour_return", allow=LEGACY, smooth=True)
+                rig.move_to(goal_k, Rk, step=0.002, steps_per_wp=8, label="pour_return",
+                            allow=FREE_ELSE_STRAIGHT, smooth=True)
         except SkillFailure as exc:
             if rig.held is None:
                 raise
             # no straight IK back from the planned tilt: retrace in joint space
             rig.log("pour_return_joint", reason=str(exc))
-            rig.follow(rig.joint_path(q_over, "pour_return", allow=LEGACY), steps_per_wp=10)
+            rig.follow(rig.joint_path(q_over, "pour_return", allow=FREE_ELSE_STRAIGHT), steps_per_wp=10)
         skills.check_held(rig, "pour_return")
         rig.step(60)
         moved = [n for n in items if rig.geo.inside(n, target, rig.state())[0]]

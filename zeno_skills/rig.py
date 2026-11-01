@@ -11,7 +11,7 @@ from contextlib import contextmanager
 
 import numpy as np
 
-from .clearance import BASE_DRIVE, FREE, MONITOR_EVERY, Clearance
+from .clearance import BASE_DRIVE, FREE, LEGACY, MONITOR_EVERY, Clearance
 from .kinematics import CARRY_TILT, ArmKin, FINGERS, LEFT_ARM_FOLD, max_tilt, tilt, vel_limits, yaw_quat_wxyz
 from .physics import ANCHOR, ASSET
 
@@ -325,9 +325,45 @@ class Rig:
         constrained cuRobo trajectory: clear of the obstacle, ending in a straight approach,
         the tilt held when carrying; then a joint-space move to ``q_hint`` (a
         planner-validated solution).  ``allow`` (clearance.Allow): what the move may touch."""
-        self.clear.motion(label, allow)
-        collision = allow.checked
         self.sync_world()
+        if allow.fallback:
+            qs, allow = self._checked_else_straight(
+                label, lambda a: self._move_path(p, R, step, label, a, q_hint), self.kin)
+        else:
+            qs = self._move_path(p, R, step, label, allow, q_hint)
+        self.clear.motion(label, allow)
+        (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
+        tcp, _ = self.kin.tcp(self.q())
+        err = float(np.linalg.norm(tcp - p))
+        qe = self.q() - self.q_cmd
+        extra = {}
+        if np.max(np.abs(qe)) > 0.05:
+            extra = {"q": np.round(self.q(), 3).tolist(), "q_cmd": np.round(self.q_cmd, 3).tolist()}
+        self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
+        return err
+
+    def _checked_else_straight(self, label, plan, kin):
+        """FREE_ELSE_STRAIGHT: ``plan(FREE)``; when that finds no path, or the arm already starts
+        in collision, ``plan(LEGACY)`` (the unchecked move the leg always made) and log the
+        fallback with what that path runs into.  (waypoints, the Allow they were planned under)."""
+        start = self.q_cmd if kin is self.kin else np.r_[self.q_cmd[:2], self.left_q_cmd]
+        if not kin.free(start):
+            why = "starts in collision: " + kin.explain(start)
+        else:
+            try:
+                qs = plan(FREE)
+                self.clear.planned(label)
+                return qs, FREE
+            except SkillFailure as exc:
+                why = str(exc)
+        qs = plan(LEGACY)
+        hit = next((kin.explain(q) for q in list(qs[::5]) + list(qs[-1:]) if not kin.free(q)), None)
+        self.clear.fallback(label, why, hit)
+        return qs, LEGACY
+
+    def _move_path(self, p, R, step, label, allow, q_hint):
+        """move_to's joint waypoints under ``allow`` (FREE or unchecked); SkillFailure when none."""
+        collision = allow.checked
         scene = self.kin.scene
         if not collision:
             self.kin.scene = None
@@ -365,15 +401,7 @@ class Rig:
                 qs = self.joint_path(q_goal, label, allow=allow)
         finally:
             self.kin.scene = scene
-        (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
-        tcp, _ = self.kin.tcp(self.q())
-        err = float(np.linalg.norm(tcp - p))
-        qe = self.q() - self.q_cmd
-        extra = {}
-        if np.max(np.abs(qe)) > 0.05:
-            extra = {"q": np.round(self.q(), 3).tolist(), "q_cmd": np.round(self.q_cmd, 3).tolist()}
-        self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
-        return err
+        return qs
 
     @contextmanager
     def held_collision(self, side="right"):
@@ -409,7 +437,14 @@ class Rig:
         interpolation used to sweep the hand through a cabinet): straight if
         that is free, else a cuRobo trajectory, else fail instead of pushing
         through.  An unchecked ``allow`` takes the straight interpolation."""
+        if allow.fallback:
+            qs, allow = self._checked_else_straight(label, lambda a: self._joint_path(q_goal, label, a), self.kin)
+        else:
+            qs = self._joint_path(q_goal, label, allow)
         self.clear.motion(label, allow)
+        return qs
+
+    def _joint_path(self, q_goal, label, allow):
         check = allow.checked
         q0 = self.q_cmd.copy()
 
@@ -523,11 +558,25 @@ class Rig:
 
     def move_left_to(self, p, R, *, label=None, allow=FREE):
         """Collision-checked Cartesian motion for the left fingertip TCP; ``allow`` as in move_to."""
-        self.clear.motion(label, allow)
-        collision = allow.checked
         self.sync_world()
         self.world.left_active = True
         p = np.asarray(p, float)
+        if allow.fallback:
+            qs, allow = self._checked_else_straight(label, lambda a: self._left_path(p, R, label, a), self.left_kin)
+        else:
+            qs = self._left_path(p, R, label, allow)
+        self.clear.motion(label, allow)
+        self.left_follow(qs)
+        tcp, _ = self.left_kin.tcp(self.left_q())
+        err = float(np.linalg.norm(tcp-p))
+        self.log("left_reach", target=label, tcp_err_m=round(err, 4))
+        if err > 0.03:
+            raise SkillFailure(f"left arm: TCP missed {label or p} by {err:.3f} m")
+        return err
+
+    def _left_path(self, p, R, label, allow):
+        """move_left_to's waypoints under ``allow`` (FREE or unchecked); SkillFailure when none."""
+        collision = allow.checked
         scene = self.left_kin.scene
         if not collision:
             self.left_kin.scene = None
@@ -547,13 +596,7 @@ class Rig:
                     qs = [start+(goal-start)*u for u in np.linspace(0, 1, n)[1:]]
         finally:
             self.left_kin.scene = scene
-        self.left_follow(qs)
-        tcp, _ = self.left_kin.tcp(self.left_q())
-        err = float(np.linalg.norm(tcp-p))
-        self.log("left_reach", target=label, tcp_err_m=round(err, 4))
-        if err > 0.03:
-            raise SkillFailure(f"left arm: TCP missed {label or p} by {err:.3f} m")
-        return err
+        return qs
 
     def tuck(self):
         """Fold the arm to the rest posture without sweeping through furniture

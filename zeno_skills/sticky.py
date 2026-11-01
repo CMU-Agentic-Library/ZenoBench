@@ -44,7 +44,7 @@ import math
 
 import numpy as np
 
-from .clearance import LEGACY
+from .clearance import FREE_ELSE_STRAIGHT
 from .evaluator import quat_R
 from .physics import ASSET
 
@@ -250,7 +250,7 @@ class StickyHands:
         tcp, R = rig.kin.tcp(rig.q_cmd)
         for up in (0.15, 0.10, 0.06):
             try:
-                rig.move_to(tcp + np.array([0, 0, up]), R, step=0.005, label="sticky_clear", allow=LEGACY)
+                rig.move_to(tcp + np.array([0, 0, up]), R, step=0.005, label="sticky_clear", allow=FREE_ELSE_STRAIGHT)
                 break
             except SkillFailure:
                 continue
@@ -420,7 +420,8 @@ class StickyHands:
             tcp, Rt = rig.kin.tcp(rig.q_cmd)
             for up in (0.10, 0.05):
                 try:
-                    rig.move_to(tcp + np.array([0, 0, up]), Rt, step=0.005, label="sticky_clear", allow=LEGACY)
+                    rig.move_to(tcp + np.array([0, 0, up]), Rt, step=0.005, label="sticky_clear",
+                                allow=FREE_ELSE_STRAIGHT)
                     break
                 except SkillFailure:
                     continue

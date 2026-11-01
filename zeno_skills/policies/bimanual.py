@@ -11,7 +11,7 @@ import numpy as np
 from .base import AtomicPolicy
 from .embedded import SlideToEdgePolicy
 from .. import skills
-from ..clearance import LEGACY
+from ..clearance import FREE_ELSE_STRAIGHT
 from ..kinematics import gripper_rot
 from ..planner import plan_path
 from ..rig import SkillFailure, Dropped
@@ -553,7 +553,8 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
         rtcp, rR = rig.kin.tcp(rig.q_cmd)
         for d in (0.06, 0.03):
             try:
-                rig.move_to(rtcp + np.array([0, 0, d]), rR, step=0.004, label="handover_right_clear", allow=LEGACY)
+                rig.move_to(rtcp + np.array([0, 0, d]), rR, step=0.004, label="handover_right_clear",
+                            allow=FREE_ELSE_STRAIGHT)
                 break
             except SkillFailure:
                 continue
@@ -629,7 +630,7 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
                 try:
                     # follow the planned joints exactly: a free IK re-solve bent the
                     # waist and left the left arm's plan (same torso) unreachable
-                    rig.follow(rig.joint_path(qr, "handover_present_across", allow=LEGACY), steps_per_wp=6)
+                    rig.follow(rig.joint_path(qr, "handover_present_across", allow=FREE_ELSE_STRAIGHT), steps_per_wp=6)
                     skills.check_held(rig, "handover_present_across")
                 except Dropped:
                     raise

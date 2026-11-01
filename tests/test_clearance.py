@@ -6,11 +6,11 @@ import numpy as np
 import pytest
 
 from tools.audit_collision import bool_switches, sites
-from zeno_skills.clearance import FREE, LEGACY, Allow, Clearance, unchecked
+from zeno_skills.clearance import FREE, FREE_ELSE_STRAIGHT, LEGACY, Allow, Clearance, unchecked
 
 # motions still passed allow=LEGACY (unchecked, not migrated).  Lower it as they move to a real
 # Allow; it must never go up.
-LEGACY_BUDGET = 111
+LEGACY_BUDGET = 48
 
 
 def test_motions_take_allow_not_a_boolean_switch():
@@ -28,6 +28,12 @@ def test_contact_needs_a_reason():
     with pytest.raises(ValueError):
         Allow(hand="right", touch=("mug",))
     assert FREE.checked and not LEGACY.checked and LEGACY.reason
+    with pytest.raises(ValueError):
+        Allow(fallback=True)
+    with pytest.raises(ValueError):
+        Allow(checked=False, fallback=True, reason="x")
+    assert FREE_ELSE_STRAIGHT.checked and FREE_ELSE_STRAIGHT.fallback and not FREE_ELSE_STRAIGHT.permits(
+        "right_gripper_left_finger_link", "mug")
 
 
 def test_permits_only_the_listed_hand_links_and_entities():
@@ -99,3 +105,48 @@ def test_the_contact_monitor_switch_does_not_change_the_profile_hash(tmp_path):
     a, b = load_profile(str(on)), load_profile(str(off))
     assert a["execution"]["contact_monitor"] and not b["execution"]["contact_monitor"]
     assert a["hash"] == b["hash"]
+
+
+def _fallback_rig(start_free=True):
+    from zeno_skills.rig import Rig
+    logged = []
+    kin = SimpleNamespace(free=lambda q: start_free if np.allclose(q, 0) else float(q[0]) < 0.5,
+                          explain=lambda q: f"world right_arm_link_6 at {float(q[0]):.1f}")
+    rig = SimpleNamespace(q_cmd=np.zeros(9), left_q_cmd=np.zeros(7), kin=kin, tick=7,
+                          log=lambda ev, **kw: logged.append((ev, kw)))
+    rig.clear = Clearance(rig)
+    rig.clear.skills = ["place"]
+    return Rig, rig, kin, logged
+
+
+def test_free_else_straight_takes_the_checked_path_when_there_is_one():
+    Rig, rig, kin, logged = _fallback_rig()
+    asked = []
+    qs, allow = Rig._checked_else_straight(rig, "place_above", lambda a: asked.append(a) or ["checked"], kin)
+    assert qs == ["checked"] and allow is FREE and asked == [FREE]
+    assert rig.clear.counts["planned"] == 1 and rig.clear.counts["fallback"] == 0 and logged == []
+
+
+def test_free_else_straight_falls_back_to_the_straight_move_and_says_why():
+    from zeno_skills.rig import SkillFailure
+    Rig, rig, kin, logged = _fallback_rig()
+
+    def plan(a):
+        if a is FREE:
+            raise SkillFailure("joint move to place_above: no collision-free trajectory")
+        return [np.full(9, x) for x in (0.2, 0.4, 0.6, 0.8)]
+    qs, allow = Rig._checked_else_straight(rig, "place_above", plan, kin)
+    assert allow is LEGACY and len(qs) == 4
+    s = rig.clear.summary()
+    assert s["fallback"] == 1 and s["fallback_by_leg"] == {"place_above": 1}
+    rec = s["fallbacks"][0]
+    assert rec["skill"] == "place" and "no collision-free" in rec["why"] and rec["hit"] == "world right_arm_link_6 at 0.8"
+    assert logged[0][0] == "clearance_fallback"
+
+
+def test_free_else_straight_does_not_plan_from_a_colliding_start():
+    Rig, rig, kin, logged = _fallback_rig(start_free=False)
+    asked = []
+    qs, allow = Rig._checked_else_straight(rig, "release_back", lambda a: asked.append(a) or [np.zeros(9)], kin)
+    assert asked == [LEGACY] and allow is LEGACY
+    assert rig.clear.fallbacks[0]["why"].startswith("starts in collision")

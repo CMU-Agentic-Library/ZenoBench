@@ -147,7 +147,7 @@ def unchecked(reason):       ...     # 逃生口，替代现在的 collision=Fal
 
 - 用 `profile` 开关控制（`execution.contact_monitor`），所有 profile 默认打开（决定 3）。
 - **必须没有副作用。** 10-31 的诊断探针调用了 `arm.prepare` 和 `_apply`，会改动规划用的锁定值、关闭的连杆和剔除中心。正式版改用独立的全身运动学模型来算碰撞球；障碍物位姿和启用状态在检查前临时改动，检查后原样恢复，剔除中心不碰。
-  - 当时同一个 P12 s11 换了 park、变成了成功，我曾归因于探针的副作用。这个归因不成立：见 7.3，规划本身在相同输入下就会分叉。
+  - 当时同一个 P12 s11 换了 park、变成了成功，我曾归因于探针的副作用。这个归因不成立：见 7.4，规划本身在相同输入下就会分叉。
 - 意外接触只作为指标，不影响任务成败（决定 2）。评估脚本新增两项：每个 episode 的意外接触次数，以及 `clearance_fallback` 次数，并按 skill 汇总。
 
 ### 4.4 清理
@@ -170,7 +170,7 @@ def unchecked(reason):       ...     # 逃生口，替代现在的 collision=Fal
 |---|---|---|---|
 | 0 | 把 AST 审计脚本放进 `tools/`；加 `unexpected_contact` 监视器（4.3），不改任何检查 | 无 | 跑一轮 41 个 episode 拿到第一份"实际意外接触"清单，并和第 2 节的静态清单对照 |
 | 1 | 加 `clearance.py`：定义 `Allow`、`rig.clear.scope`；`contract_runtime` 每个 skill 开始时重置上下文；`coll_kw` 只经过 `scope` 写入；所有 `collision=False` 机械地换成 `unchecked(reason=原标签)`；加单元测试：禁止出现裸的 `collision=False`，`unchecked` 必须带理由 | 只有修复 `coll_kw` 泄漏这一项会改变行为 | 回归测试中失败数不增加；监视器记录的意外接触数不增加 |
-| 2 | 空中移动（附录 A 第 1 类）改成 `FREE` 加统一退路，先改 `place`，再改 pick 的抬起、`held_vertical_move`、drop、hover、pour、stir、release、open 和 close 之后的后撤 | 分两步：先开 `mode="measure"`，照旧走直线，只记录"带检查会不会通过"；跑一轮回归后，再按类切换成 `mode="plan"`，即先规划无碰撞路径，规划不出来就退回直线并记日志 | P07 s10 在打开监视器时没有意外接触；回归不变差 |
+| 2 | 空中移动（附录 A 第 1 类）改成 `FREE_ELSE_STRAIGHT`：先规划无碰撞路径，规划不出来就退回直线并记日志 | 只在"直线会撞、而规划器能找到别的路"时改变行为。原计划的 `measure` 一步省掉了：退回直线时行为和以前完全一样，`clearance_fallback` 日志已经记下了"带检查过不去"的每一处 | P07 s10 在打开监视器时没有意外接触；回归不变差 |
 | 3 | 接触动作（附录 A 第 2 类）改成 `grasp` / `handle` / `press` / `sweep` / `set_down`，用两次查询的语义 | 同上，先 measure 再 plan | 监视器只剩 `allow` 范围内的接触 |
 | 4 | `drive_base` 沿路径检查手臂和手里的物体；`_back_off`、边走边放、wipe 和 flip 的底盘推、handover 时开车，都传入各自的 `allow` | 同上 | 搬运类任务（T10、T12、T13、T20）回归不变差 |
 | 5 | 左臂统一：`LeftArmFoldPolicy` 和左臂的运动都走 `rig.clear`；删掉另一只手手指的豁免和 `other_touching`；做 4.4 的清理 | 有变化 | 涉及双手的任务（P06、P07、handover）回归不变差 |
@@ -188,7 +188,7 @@ def unchecked(reason):       ...     # 逃生口，替代现在的 collision=Fal
 
 ## 7. 进度
 
-### 7.1 阶段 0 和 1：代码已完成（2026-10-31，未提交）
+### 7.1 阶段 0 和 1：已完成（2026-10-31，提交 `ef01cb1`）
 
 | 内容 | 位置 |
 |---|---|
@@ -225,7 +225,33 @@ def unchecked(reason):       ...     # 逃生口，替代现在的 collision=Fal
 
 前两行和第四行发生在"带检查"的动作里，原因是 `ignore_fingers`（2.2 节）：这些动作检查时不算自己的手指。
 
-### 7.3 新发现：同样的输入，规划结果不确定
+### 7.3 阶段 2：已完成（2026-11-01）
+
+- **新的 `Allow`：** `FREE_ELSE_STRAIGHT`（`Allow.fallback`）。
+- **实现：** `Rig._checked_else_straight` 被 `move_to`、`move_left_to`、`joint_path` 共用，流程是：
+  1. 起点不在碰撞中时，先按 `FREE` 规划，依次尝试直线、约束规划、`q_hint`、全局 IK。
+  2. 规划失败，或者起点已经处于碰撞中，就按 `LEGACY` 走原来那条直线。
+  3. 退回时调用 `clear.fallback` 记一条 `clearance_fallback`：写明规划失败的原因，以及直线路径上第一处碰撞的连杆（新增的 `ArmKin.explain` / `Motion.explain`）。
+- **迁移范围：** 第 1 类 63 处，其中 60 处 `move_to` / `move_left_to`、3 处 `joint_path`。`LEGACY` 从 111 降到 48（`LEGACY_BUDGET = 48`），剩下的都是第 2 类接触动作。
+- **评估指标：** `result.json` 的 `contacts` 里新增 `planned` / `fallback` / `fallback_by_leg` / `fallbacks`；`EVALUATION.md` 新增 `fallbacks` 列和"Clearance fallbacks by motion"表。
+- **测试：** 223 个全部通过；`build_skill_library --check` 通过。
+
+**冒烟测试**（seed 10，各任务第一个 variation，sticky/gt，不录像，和 10-31 三种子测试中 seed 10 的同一批 episode 对比）：
+
+| episode | 结果 | 10-31 | 规划成功 / 退回直线 | 意外接触 |
+|---|---|---|---|---|
+| P07 present_and_brace | 成功 | 失败 | 12 / 0 | 2 |
+| P17 pour | 失败（"0/3 items reached"，已知的能力缺口） | 失败 | 25 / 0 | 2 |
+| P19 spoon_dip | 成功 | 成功 | 10 / 0 | 5 |
+| T09 tomato_soup | 成功 | 成功 | 14 / 0 | 8 |
+| T10 trash_the_can | 成功 | 成功 | 4 / 1 | 2 |
+| T13 breakfast_setup | 成功 | 成功 | 6 / 2 | 3 |
+
+- 没有出现新的失败。P07 这次成功，可能来自 `b0bbcdd` 的下垂收起姿态，也可能是 7.4 说的规划随机性，单次结果分不清。
+- **3 次退回直线**都是 `pick_lift`，原因是"起点已经处于碰撞中"：刚夹住物体时，夹爪本体（`gripper_link`）贴着物体或支撑面 2–27 mm。这类情况要等阶段 3 用 `grasp` 预设声明"可以碰被抓的物体"，届时就不必再退回。
+- **剩下的意外接触**几乎都发生在已经带检查的 pick 动作里：`pick_grasp` 10 次、`pick_pre_far` 9 次，另有 `place_above` 1 次。原因是这些动作用了 `ignore_fingers`，手指不参与检查。这也是阶段 3 的范围。
+
+### 7.4 新发现：同样的输入，规划结果不确定
 
 同一个 P07 s10、同样的代码、同样关掉监视器，连跑两次：一次 `present` 的约束规划给出 32 个路点并成功，另一次给出 60 个路点，接着 `shake` 报 "no IK for shake" 而失败。物理过程在 tick 2695 之前逐事件完全一致，分叉就出现在这一次 cuRobo 规划上。开监视器时也是两种结果都出现过，所以和监视器无关。
 
@@ -237,7 +263,7 @@ def unchecked(reason):       ...     # 逃生口，替代现在的 collision=Fal
 
 | skill | 动作标签 | 位置 |
 |---|---|---|
-| place / stack / cover / 放进容器 | `place_above`（只有放进容器时才检查）、`place_rise`、`place_back_from_edge`、`place_over_neighbours`、`table_staging`、`table_pre_lift`、`container_pre_lift`、`microwave_pre_lift`、`container_exit`、`place_insert`、`place_lower` | `skills.py` `place`（:1727 起） |
+| place / stack / cover / 放进容器 | `place_above`（只有放进容器时才检查）、`place_rise`、`place_back_from_edge`、`place_over_neighbours`、`table_staging`、`table_pre_lift`、`container_pre_lift`、`microwave_pre_lift`、`container_exit`、松手后的后撤（`place_retreat_*`）。`place_insert`、`place_lower` 是把物体放到支撑面上，阶段 2 实施时移到第 2 类 | `skills.py` `place`（:1727 起） |
 | 沿边放下扁平物体 | `flat_over`、`flat_back_out`、`flat_retreat`、`flat_up`（落下和推的那几步属于第 2 类） | `skills.py` `place_flat`（:2326 起） |
 | pick 的抬起和退出 | `pick_lift`、`pick_fail_clear`、`edge_lift`、`edge_pull`、`corner_lift`、`handle_pick_lift`、从微波炉取物的 `cavity_pick_front` / `above` / `lift` | `_pick_pinch_core`、`_edge_pinch_impl`、`_corner_pinch`、`handle_grasp.py`、`embedded.py` |
 | lower / lift / 调高度 | `held_vertical_move` 整段（pour、regrasp、upright 也在用） | `skills.py:231` |
@@ -260,7 +286,7 @@ def unchecked(reason):       ...     # 逃生口，替代现在的 collision=Fal
 | press / heat / stop | `button_align`、`button_press`、`button_retract`，以及微波炉按钮的 align、press、release | `press` |
 | knock、touch | `knock_tap`、`knock_back`、`knock_retract`、`touch_down`、`touch_up` | `press` |
 | push / pull / center / separate / sweep | `*_down`、`push_slide`、`push_up`，以及 `_contact_sweep` 的 down、sweep、up | `sweep` |
-| wipe | `wipe_above`、`wipe_press`、`wipe_lift` | `sweep` |
+| wipe | `wipe_press`、`wipe_lift`（`wipe_above` 只是移到台面上方，阶段 2 实施时移到第 1 类） | `sweep` |
 | stir | `stir_dip`、`stir_circle` | `sweep` |
 | close（推门） | `close_push_contact` | `handle` |
 | pick 最后夹取那一下 | `pick_grasp_fix`、`edge_pre`、`edge_grasp`、`corner_pre`、`corner_grasp`、`corner_grasp_retry` | `grasp` |
@@ -268,3 +294,4 @@ def unchecked(reason):       ...     # 逃生口，替代现在的 collision=Fal
 | flip、upright | `flip_arc`、`flip_push*`、`upright_pivot*`、`upright_lower`、`upright_hang_lift`、`upright_release_clear` | `grasp` 或 `set_down` |
 | 沿边放下扁平物体 | `flat_lower`、`flat_release_down`、`flat_push_down`、`flat_push` | `set_down` 或 `sweep` |
 | 微波炉放入 | `microwave_insert` | `set_down` |
+| place 落下 | `place_insert`、`place_lower`（阶段 2 实施时从第 1 类移来） | `set_down` |

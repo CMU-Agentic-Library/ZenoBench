@@ -219,6 +219,12 @@ class ArmKin:
             return True
         return self._motion().free(self, q, self._other_q(), self.coll_kw)
 
+    def explain(self, q):
+        """What q runs into: its deepest colliding links (motion.Motion.explain)."""
+        if self.scene is None:
+            return ""
+        return self._motion().explain(self, q, self._other_q(), self.coll_kw)
+
     def segment_free(self, qa, qb):
         if self.scene is None:
             return True

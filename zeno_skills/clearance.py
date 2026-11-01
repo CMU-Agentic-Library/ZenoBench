@@ -1,8 +1,11 @@
 """Collision policy of robot motions (docs/COLLISION_AUDIT.md).
 
 ``Allow``      what one motion may touch.  ``FREE`` (the default) checks the whole robot;
-               ``unchecked(reason)`` turns checking off for that motion, and ``LEGACY`` is the
-               unchecked motion every former ``collision=False`` became (not migrated yet).
+               ``FREE_ELSE_STRAIGHT`` checks it too, but where no collision-free path exists it
+               makes the unchecked straight move it always made and logs a
+               ``clearance_fallback``; ``unchecked(reason)`` turns checking off for that motion,
+               and ``LEGACY`` is the unchecked motion every former ``collision=False`` became
+               (not migrated yet).
 ``Clearance``  ``rig.clear``: the skill scope (each skill starts with a fresh ``coll_kw`` on both
                arms and gives the caller's back when it ends) and the contact monitor.
 
@@ -25,7 +28,7 @@ HAND_LINKS = FINGER_LINKS + ("gripper_link", "gripper_camera_link")
 MONITOR_EVERY = 30          # ticks (4 per simulated second)
 MIN_DEPTH = 0.003           # m: shallower penetration is the sphere model's noise
 STILL = 1e-3                # rad / m: a robot that moved less since the last check is not checked again
-MAX_RECORDS = 200           # contact onsets kept per episode (the counts keep counting)
+MAX_RECORDS = 200           # contact onsets / fallbacks kept per episode (the counts keep counting)
 
 
 @dataclass(frozen=True)
@@ -36,11 +39,14 @@ class Allow:
     touch: tuple[str, ...] = ()      # entities that hand may touch (object, part, support)
     held_on: tuple[str, ...] = ()    # entities the held object may touch (its support, a container)
     checked: bool = True             # False: the motion is not collision-checked at all
+    fallback: bool = False           # checked, but no collision-free path: the unchecked straight move
     reason: str = ""
 
     def __post_init__(self):
-        if (not self.checked or self.touch or self.held_on) and not self.reason:
+        if (not self.checked or self.fallback or self.touch or self.held_on) and not self.reason:
             raise ValueError("an Allow that permits contact needs a reason")
+        if self.fallback and not self.checked:
+            raise ValueError("fallback is for a checked motion")
 
     def permits(self, link: str, entity: str) -> bool:
         """The monitor's test: link (e.g. right_gripper_link) touching entity (object / part name)."""
@@ -60,6 +66,10 @@ def unchecked(reason: str) -> Allow:
 
 
 LEGACY = unchecked("legacy: unchecked before docs/COLLISION_AUDIT.md, not migrated yet")
+# a free-space leg that used to be unchecked (COLLISION_AUDIT.md phase 2, decision 1): planned
+# collision-free when a path exists, else the straight move it always made, logged
+FREE_ELSE_STRAIGHT = Allow(fallback=True, reason="free-space leg: collision-free when a path exists, "
+                                                 "else the straight unchecked move, logged")
 BASE_DRIVE = unchecked("base drive: the arms are not checked along the base path yet")
 
 
@@ -75,7 +85,9 @@ class Clearance:
         self._live = set()               # (link, entity) pairs touching at the last check
         self._last = None                # robot state at the last check
         self.records = []
-        self.counts = {"unexpected": 0, "allowed": 0, "checks": 0, "by_skill": {}, "by_leg": {}}
+        self.fallbacks = []
+        self.counts = {"unexpected": 0, "allowed": 0, "checks": 0, "by_skill": {}, "by_leg": {},
+                       "fallback": 0, "planned": 0, "fallback_by_leg": {}}
 
     # ------------------------------------------------------------- skill scope
     @contextmanager
@@ -99,6 +111,22 @@ class Clearance:
         judges contacts against it until the next one."""
         self.leg = label
         self.allow = allow
+
+    def planned(self, label):
+        """A FREE_ELSE_STRAIGHT leg got a collision-free path."""
+        self.counts["planned"] += 1
+
+    def fallback(self, label, why, hit=None):
+        """A FREE_ELSE_STRAIGHT leg had no collision-free path and makes the straight move:
+        ``why`` the planner's refusal, ``hit`` what the straight path runs into."""
+        skill = self.skills[-1] if self.skills else None
+        self.counts["fallback"] += 1
+        key = label or "-"
+        self.counts["fallback_by_leg"][key] = self.counts["fallback_by_leg"].get(key, 0) + 1
+        rec = {"tick": self.rig.tick, "skill": skill, "leg": label, "why": why[:200], "hit": hit}
+        if len(self.fallbacks) < MAX_RECORDS:
+            self.fallbacks.append(rec)
+        self.rig.log("clearance_fallback", **{k: v for k, v in rec.items() if k != "tick"})
 
     # ------------------------------------------------------------- contact monitor
     def tick(self):
@@ -143,4 +171,4 @@ class Clearance:
 
     def summary(self):
         """result.json ``contacts``."""
-        return {**self.counts, "records": self.records}
+        return {**self.counts, "records": self.records, "fallbacks": self.fallbacks}

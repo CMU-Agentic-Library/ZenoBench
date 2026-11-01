@@ -863,6 +863,11 @@ class Motion:
             hits[link] = max(hits.get(link, 0.0), float(d[i]))
         return hits
 
+    def explain(self, kin, q, other_q=None, coll_kw=None):
+        """Which links of q penetrate the world (deepest first), else self collision / limits."""
+        with self._query(kin, other_q, coll_kw) as arm:
+            return self._explain(arm, np.clip(np.asarray(q, float), arm.lo, arm.hi))
+
     def _explain(self, arm, q):
         """Which links of q penetrate the world (deepest first), else self collision / limits."""
         hits = self._touching(arm, q)

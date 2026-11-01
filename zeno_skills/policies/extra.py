@@ -24,7 +24,7 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
-from ..clearance import LEGACY
+from ..clearance import FREE_ELSE_STRAIGHT, LEGACY
 from ..evaluator import quat_R
 from ..kinematics import gripper_rot
 from ..perception import project_to_head_camera
@@ -60,10 +60,11 @@ class ShakeHeldPolicy(AtomicPolicy):
         done = 0
         for _ in range(int(cycles)):
             for s in (1, -1):
-                rig.move_to(tcp + s * amplitude * lat, R, step=0.004, steps_per_wp=3, label="shake", allow=LEGACY)
+                rig.move_to(tcp + s * amplitude * lat, R, step=0.004, steps_per_wp=3, label="shake",
+                            allow=FREE_ELSE_STRAIGHT)
             skills.check_held(rig, "shake")
             done += 1
-        rig.move_to(tcp, R, step=0.004, label="shake_end", allow=LEGACY)
+        rig.move_to(tcp, R, step=0.004, label="shake_end", allow=FREE_ELSE_STRAIGHT)
         rig.step(30)
         gap1 = float(rig.fingers().sum())
         rig.log("shake_grip", obj=name, gap_before=round(gap0, 4), gap_after=round(gap1, 4))
@@ -108,7 +109,8 @@ class WaveHandPolicy(AtomicPolicy):
         n = 0
         for _ in range(int(swings)):
             for sgn in (1, -1):
-                rig.move_to(centre + sgn * 0.10 * lat, R, step=0.01, steps_per_wp=2, label="wave_swing", allow=LEGACY)
+                rig.move_to(centre + sgn * 0.10 * lat, R, step=0.01, steps_per_wp=2, label="wave_swing",
+                            allow=FREE_ELSE_STRAIGHT)
             n += 1
         _mem(rig, "gestures")["wave"] = n
         rig.log("wave_result", swings=n)
@@ -384,9 +386,10 @@ class HoverOverPolicy(AtomicPolicy):
         if low < top + clearance_m:
             t0, R0 = rig.kin.tcp(rig.q_cmd)
             rig.move_to(t0 + np.array([0, 0, top + clearance_m + 0.05 - low]), R0, step=0.005, label="hover_lift",
-                        allow=LEGACY)
-        rig.move_to(goal + np.array([0, 0, 0.05]), R, step=0.005, label="hover_above", allow=LEGACY, smooth=True)
-        rig.move_to(goal, R, step=0.004, label="hover_settle", allow=LEGACY, smooth=True)
+                        allow=FREE_ELSE_STRAIGHT)
+        rig.move_to(goal + np.array([0, 0, 0.05]), R, step=0.005, label="hover_above",
+                    allow=FREE_ELSE_STRAIGHT, smooth=True)
+        rig.move_to(goal, R, step=0.004, label="hover_settle", allow=FREE_ELSE_STRAIGHT, smooth=True)
         skills.check_held(rig, "hover")
         rig.step(30)
         return {"bottom_above_target_m": float(rig.geo.bottom(name, rig.state())[2] - top), "hang_m": hang}

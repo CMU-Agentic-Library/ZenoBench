@@ -24,7 +24,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from .annotations import rz
-from .clearance import FREE, LEGACY
+from .clearance import FREE, FREE_ELSE_STRAIGHT, LEGACY
 from .evaluator import quat_R
 from .kinematics import gripper_rot
 from .planner import find_park, joint_reachable, plan_path, torque_ratio
@@ -256,9 +256,9 @@ def held_vertical_move(rig, dz, label, R_goal=None, step=0.005, allow_pull=True)
         try:
             if pull > 0:
                 rig.move_to(stage, R, step=step, steps_per_wp=5,
-                            label=f"{label}_stage", allow=LEGACY, smooth=True, q_hint=q_stage)
+                            label=f"{label}_stage", allow=FREE_ELSE_STRAIGHT, smooth=True, q_hint=q_stage)
                 check_held(rig, f"{label}_stage")
-            rig.move_to(goal, R_goal, step=step, steps_per_wp=5, label=label, allow=LEGACY, smooth=True)
+            rig.move_to(goal, R_goal, step=step, steps_per_wp=5, label=label, allow=FREE_ELSE_STRAIGHT, smooth=True)
             check_held(rig, label)
             return goal
         except SkillFailure as exc:
@@ -598,15 +598,15 @@ def _move_articulated(rig, name, goal, verb):
     # the hand is free already: back off as far as the arm allows, then up
     for back in (0.14, 0.08, 0.04):
         try:
-            rig.move_to(p - back * appr, R, step=0.006, steps_per_wp=4, label=f"{verb}_back", allow=LEGACY)
+            rig.move_to(p - back * appr, R, step=0.006, steps_per_wp=4, label=f"{verb}_back", allow=FREE_ELSE_STRAIGHT)
             rig.move_to(p - back * appr + np.array([0, 0, 0.12]), R, step=0.01, label=f"{verb}_up",
-                        allow=LEGACY)
+                        allow=FREE_ELSE_STRAIGHT)
             break
         except SkillFailure as e:
             rig.log("retreat_short", back=back, reason=str(e))
     else:                                 # no straight retreat: at least lift the open hand off the handle
         try:
-            rig.move_to(p + np.array([0, 0, 0.08]), R, step=0.005, label=f"{verb}_up", allow=LEGACY)
+            rig.move_to(p + np.array([0, 0, 0.08]), R, step=0.005, label=f"{verb}_up", allow=FREE_ELSE_STRAIGHT)
         except SkillFailure as e:
             rig.log("retreat_short", back=0.0, reason=str(e))
     rig.step(60)
@@ -758,7 +758,7 @@ def _push_close(rig, name):
     n_now = (rig.ann.motion(a, q) @ np.linalg.inv(rig.ann.motion(a, q0)))[:3, :3] @ normal
     for back in (0.12, 0.06):
         try:
-            rig.move_to(p_now + n_now * back, R_now, step=0.006, label="close_push_back", allow=LEGACY)
+            rig.move_to(p_now + n_now * back, R_now, step=0.006, label="close_push_back", allow=FREE_ELSE_STRAIGHT)
             break
         except SkillFailure as e:
             rig.log("retreat_short", back=back, reason=str(e))
@@ -1156,7 +1156,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
     rig.grip(0.0, 120, gradual=True)
     rig.caption = f"PICK {name}: lift"
     rig.move_to(g["p"] + np.array([0, 0, _lift_height(g)]), g["R"], step=0.002, steps_per_wp=6, label="pick_lift",
-                allow=LEGACY, smooth=True)
+                allow=FREE_ELSE_STRAIGHT, smooth=True)
     rig.step(40)
     after, _ = rig.obj_pose(name)
     f = rig.fingers()
@@ -1171,7 +1171,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
         rig.grip(0.04, 60)
         t_, R_ = rig.kin.tcp(rig.q_cmd)
         try:
-            rig.move_to(t_ + np.array([0, 0, 0.08]), R_, step=0.005, label="pick_fail_clear", allow=LEGACY)
+            rig.move_to(t_ + np.array([0, 0, 0.08]), R_, step=0.005, label="pick_fail_clear", allow=FREE_ELSE_STRAIGHT)
         except SkillFailure:
             pass
         raise SkillFailure(f"pick {name}: not held (lift {after[2] - pos[2]:.3f} m)")
@@ -1396,7 +1396,7 @@ def _corner_pinch(rig, name):
     rig.caption = f"PICK {name}: close across the edge and the top face"
     rig.grip(0.0, 140)
     rig.caption = f"PICK {name}: lift"
-    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="corner_lift", allow=LEGACY)
+    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="corner_lift", allow=FREE_ELSE_STRAIGHT)
     rig.step(40)
     st2 = rig.state()
     b2 = geo.bottom(name, st2)
@@ -1495,7 +1495,7 @@ def _edge_pinch_impl(rig, name, s, n, attempt=False):
     p0, q0 = rig.obj_pose(name)
     pinch_local = quat_R(q0).T @ (tcp - p0)
     rig.caption = f"PICK {name}: lift and pull out"
-    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="edge_lift", allow=LEGACY)
+    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="edge_lift", allow=FREE_ELSE_STRAIGHT)
     rig.step(40)
     b2 = geo.bottom(name, rig.state())
     p1, q1 = rig.obj_pose(name)
@@ -1506,7 +1506,7 @@ def _edge_pinch_impl(rig, name, s, n, attempt=False):
             pinch_rise_m=round(rise, 4), fingers=f.round(4).tolist(), held=held)
     if not held:
         raise SkillFailure(f"edge pinch {name}: not held (pinched edge rose {rise:.3f} m)")
-    rig.move_to(pull, R, step=0.004, steps_per_wp=4, label="edge_pull", allow=LEGACY)
+    rig.move_to(pull, R, step=0.004, steps_per_wp=4, label="edge_pull", allow=FREE_ELSE_STRAIGHT)
     rig.focus_z = None
     tcp_now, R_now = rig.kin.tcp(rig.q_cmd)
     body, _ = rig.obj_pose(name)
@@ -1685,9 +1685,9 @@ def withdraw_microwave_cavity(rig, name):
         raise SkillFailure(f"microwave withdraw {name}: hand left release pose")
     try:
         rig.move_to(corrected[1][0] + np.array([0, 0, 0.06]), R, step=0.003,
-                    label="microwave_release_up", allow=LEGACY)
+                    label="microwave_release_up", allow=FREE_ELSE_STRAIGHT)
         rig.move_to(corrected[0][0] + np.array([0, 0, 0.06]), R, step=0.004,
-                    label="microwave_retreat", allow=LEGACY)
+                    label="microwave_retreat", allow=FREE_ELSE_STRAIGHT)
     except SkillFailure as e:
         rig.log("retreat_short", reason=str(e))
     # This arm pose cleared the actual open door during loading. Reuse it as
@@ -1933,7 +1933,7 @@ def place(rig, name, support, xy=None):
             forward = tcp_lift.copy()
             forward[0] += 0.20
             rig.move_to(forward, R_lift, step=0.005, steps_per_wp=5,
-                        label="table_staging", allow=LEGACY)
+                        label="table_staging", allow=FREE_ELSE_STRAIGHT)
             check_held(rig, "table_staging")
             tcp_lift, R_lift = rig.kin.tcp(rig.q_cmd)
             bottom = float(geo.bottom(name, rig.state())[2])
@@ -1941,7 +1941,7 @@ def place(rig, name, support, xy=None):
             rig.log("table_pre_lift_target", obj=name, bottom_z=round(bottom, 3),
                     target_bottom_z=round(s["z"] + 0.04, 3), tcp=np.round(tcp_lift, 3).tolist())
             rig.move_to(tcp_lift + np.array([0, 0, dz]), R_lift, step=0.005,
-                        steps_per_wp=5, label="table_pre_lift", allow=LEGACY)
+                        steps_per_wp=5, label="table_pre_lift", allow=FREE_ELSE_STRAIGHT)
             check_held(rig, "table_pre_lift")
             rig.drive_base([base_at_table], speed=0.15)
             check_held(rig, "table_edge_clear")
@@ -1951,7 +1951,7 @@ def place(rig, name, support, xy=None):
         raise_by = max(0.0, s["z"] + 0.08 - bottom_z)
         if raise_by > 0.01:
             rig.move_to(tcp + np.array([0, 0, raise_by]), R_lift, step=0.005,
-                        steps_per_wp=6, label="microwave_pre_lift", allow=LEGACY)
+                        steps_per_wp=6, label="microwave_pre_lift", allow=FREE_ELSE_STRAIGHT)
             check_held(rig, "microwave_pre_lift")
     # the object may have turned in the pinch on the way (bowls held at the
     # rim, spoons): re-measure how it hangs now and aim its body at xy with its
@@ -1996,7 +1996,7 @@ def place(rig, name, support, xy=None):
         if prelift > 0.01:
             tcp_lift, R_lift = rig.kin.tcp(rig.q_cmd)
             rig.move_to(tcp_lift + np.array([0, 0, prelift]), R_lift,
-                        step=0.005, steps_per_wp=6, label="container_pre_lift", allow=LEGACY)
+                        step=0.005, steps_per_wp=6, label="container_pre_lift", allow=FREE_ELSE_STRAIGHT)
             check_held(rig, "container_pre_lift")
             rig.log("container_pre_lift_result", obj=name, container=container,
                     bottom_z=round(float(geo.bottom(name, rig.state())[2]), 4),
@@ -2023,7 +2023,7 @@ def place(rig, name, support, xy=None):
         for d in ((min(0.10, max(need, 0.02)), 0.04) if inside else ()):
             try:
                 rig.move_to(t_now + np.r_[out * d, 0.0], R_now, step=0.002, steps_per_wp=10,
-                            label="place_back_from_edge", smooth=True, allow=LEGACY)
+                            label="place_back_from_edge", smooth=True, allow=FREE_ELSE_STRAIGHT)
                 check_held(rig, "place_back_from_edge")
                 break
             except SkillFailure as exc:
@@ -2034,10 +2034,11 @@ def place(rig, name, support, xy=None):
         rise_z = over[2] if over is not None else legs[0][0][2]
         mid = np.array([t_now[0], t_now[1], rise_z])
         if rig.kin.ik_global(mid, R, seeds=[rig.q_cmd])[1]:
-            rig.move_to(mid, R, step=0.002, steps_per_wp=10, label="place_rise", smooth=True, allow=LEGACY)
+            rig.move_to(mid, R, step=0.002, steps_per_wp=10, label="place_rise", smooth=True, allow=FREE_ELSE_STRAIGHT)
             check_held(rig, "place_rise")
     if over is not None:
-        rig.move_to(over, R, step=0.002, steps_per_wp=10, label="place_over_neighbours", smooth=True, allow=LEGACY)
+        rig.move_to(over, R, step=0.002, steps_per_wp=10, label="place_over_neighbours", smooth=True,
+                    allow=FREE_ELSE_STRAIGHT)
         check_held(rig, "place_over_neighbours")
     import contextlib
     guard = contextlib.nullcontext()
@@ -2073,7 +2074,7 @@ def place(rig, name, support, xy=None):
             # into a container the hand travels down past furniture (a floor bin
             # beside the stove): check the arm against the scene on the way
             err = rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True,
-                              allow=FREE if container else LEGACY, q_hint=hints[0])
+                              allow=FREE if container else FREE_ELSE_STRAIGHT, q_hint=hints[0])
         if err > 0.03:
             raise SkillFailure(f"place {name}: hand blocked above support ({err:.3f} m)")
     except SkillFailure as e:
@@ -2085,7 +2086,8 @@ def place(rig, name, support, xy=None):
         # reached from the loaded arm configuration.
         rig.log("place_remeasure_fallback", obj=name, reason=str(e))
         legs, hints = planned_legs, park_qs
-        rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True, allow=LEGACY,
+        rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True,
+                    allow=FREE_ELSE_STRAIGHT,
                     q_hint=hints[0])
     stage_pos, _ = rig.obj_pose(name)
     rig.log("place_after_above", obj=name, pos=np.round(stage_pos, 4).tolist(),
@@ -2153,7 +2155,7 @@ def place(rig, name, support, xy=None):
     errors = []
     for label, target in retreats:
         try:
-            rig.move_to(target, R, step=0.004, label=label, smooth=True, allow=LEGACY)
+            rig.move_to(target, R, step=0.004, label=label, smooth=True, allow=FREE_ELSE_STRAIGHT)
             break
         except SkillFailure as e:
             errors.append(str(e))
@@ -2166,7 +2168,7 @@ def place(rig, name, support, xy=None):
         exit_target, exit_orientation = container_exit_pose
         try:
             rig.move_to(exit_target, exit_orientation, step=0.005, steps_per_wp=6,
-                        label="container_exit", allow=LEGACY)
+                        label="container_exit", allow=FREE_ELSE_STRAIGHT)
         except SkillFailure as e:
             rig.log("container_exit_short", reason=str(e))
     rig.step(90)
@@ -2461,14 +2463,14 @@ def place_flat(rig, name, support, hint=None):
             legs = [legs[0], (legs[1][0] + np.array([0, 0, need]), legs[1][1]), legs[2]]
             rig.log("flat_over_raised", obj=name, raised_m=round(need, 3))
         rig.caption = f"PLACE {name}: slide in over the surface"
-        rig.move_to(*legs[1], step=0.004, steps_per_wp=4, label="flat_over", allow=LEGACY)
+        rig.move_to(*legs[1], step=0.004, steps_per_wp=4, label="flat_over", allow=FREE_ELSE_STRAIGHT)
         err = float(np.linalg.norm(rig.kin.tcp(rig.q())[0] - legs[1][0]))
         if err < 0.02 or attempts >= 2 or rig.held is None:
             break
         # the book caught on the shelf (side panel / a neighbour): back out
         # and use the next free spot
         rig.log("flat_over_blocked", obj=name, err_m=round(err, 3), centre=[round(v, 3) for v in c])
-        rig.move_to(*legs[0], step=0.004, label="flat_back_out", allow=LEGACY)
+        rig.move_to(*legs[0], step=0.004, label="flat_back_out", allow=FREE_ELSE_STRAIGHT)
         check_held(rig, "flat_back_out")
         # skip spots within 8 cm of the blocked one (3 cm steps along the edge)
         cands = cands[:idx + 1] + [t for t in cands[idx + 1:] if np.linalg.norm(t[2] - c) > 0.08]
@@ -2488,12 +2490,13 @@ def place_flat(rig, name, support, hint=None):
     push_end = np.r_[(tcp + n3 * (held["depth"] - over_p - 0.01))[:2], low[2]]
     try:
         rig.move_to(up, R, step=0.003, steps_per_wp=4, label="flat_release_down", allow=LEGACY)
-        rig.move_to(out, R, step=0.004, label="flat_retreat", allow=LEGACY)
+        rig.move_to(out, R, step=0.004, label="flat_retreat", allow=FREE_ELSE_STRAIGHT)
         rig.grip(0.0, 40)
         rig.caption = f"PLACE {name}: push it fully onto the surface"
         rig.move_to(low, R, step=0.004, label="flat_push_down", allow=LEGACY)
         rig.move_to(push_end, R, step=0.003, steps_per_wp=4, label="flat_push", allow=LEGACY)
-        rig.move_to(push_end + n3 * 0.12 + np.array([0, 0, 0.06]), R, step=0.01, label="flat_up", allow=LEGACY)
+        rig.move_to(push_end + n3 * 0.12 + np.array([0, 0, 0.06]), R, step=0.01, label="flat_up",
+                    allow=FREE_ELSE_STRAIGHT)
     except SkillFailure as e:
         rig.log("retreat_short", reason=str(e))
     rig.step(90)

@@ -7,7 +7,7 @@ import numpy as np
 from .base import AtomicPolicy
 from .posture import LowerTorsoPolicy, SetWaistPitchPolicy
 from .. import skills
-from ..clearance import LEGACY
+from ..clearance import FREE_ELSE_STRAIGHT, LEGACY
 from ..kinematics import gripper_rot
 from ..rig import SkillFailure
 
@@ -239,11 +239,11 @@ class PickFromCavityPolicy(AtomicPolicy):
             R = stage["R"]
             rig.grip(stage["pre_open"], 40)
             front_err = rig.move_to(target+np.array([0, -0.10, 0.06]), R,
-                                    label="cavity_pick_front", allow=LEGACY)
+                                    label="cavity_pick_front", allow=FREE_ELSE_STRAIGHT)
             if front_err > 0.02:
                 raise SkillFailure(f"pick from cavity {name}: front approach missed by {front_err:.3f} m")
             above_err = rig.move_to(target+np.array([0, 0, 0.045]), R,
-                                    label="cavity_pick_above", allow=LEGACY)
+                                    label="cavity_pick_above", allow=FREE_ELSE_STRAIGHT)
             if above_err > 0.20:
                 raise SkillFailure(f"pick from cavity {name}: upper approach missed by {above_err:.3f} m")
             if above_err > 0.02:
@@ -266,7 +266,7 @@ class PickFromCavityPolicy(AtomicPolicy):
                 return result
             fingers = rig.grip(0.0, 120)
             rig.move_to(target+np.array([0, 0, 0.07]), R, step=0.003,
-                        steps_per_wp=5, label="cavity_pick_lift", allow=LEGACY)
+                        steps_per_wp=5, label="cavity_pick_lift", allow=FREE_ELSE_STRAIGHT)
             rig.step(40)
             after, _ = rig.obj_pose(name)
             if after[2]-before[2] < 0.015 or fingers.min() < 0.003:
