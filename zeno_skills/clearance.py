@@ -12,8 +12,11 @@
 The contact monitor (profile switch ``execution.contact_monitor``) checks every
 ``MONITOR_EVERY`` ticks which robot links sit inside the world at the real joint state and
 base pose (Motion.robot_contacts) and logs each new link / obstacle pair as an
-``unexpected_contact`` event, unless the current motion's Allow permits it.  A metric only:
-it never fails a skill, and it leaves the planner's state exactly as it found it.
+``unexpected_contact`` event, unless the current motion's Allow permits it; what a hand holds
+counts as part of the robot (link ``held:<object>``, judged by ``Allow.held_on``).  A movable
+object is pushed away before a sphere sinks into it, so the monitor also watches the near
+objects nobody holds and logs a ``disturbed_object`` event when one moves or tips.  A metric
+only: it never fails a skill, and it leaves the planner's state exactly as it found it.
 """
 
 from __future__ import annotations
@@ -29,6 +32,13 @@ MONITOR_EVERY = 30          # ticks (4 per simulated second)
 MIN_DEPTH = 0.003           # m: shallower penetration is the sphere model's noise
 STILL = 1e-3                # rad / m: a robot that moved less since the last check is not checked again
 MAX_RECORDS = 200           # contact onsets / fallbacks kept per episode (the counts keep counting)
+# Disturbed objects: a movable object is pushed away at once, so a robot sphere never sinks into
+# it by MIN_DEPTH (a spoon carried along the island knocked a bottle over unseen); the monitor
+# watches the near objects' poses instead
+MOVED_M = 0.02              # m an object nobody holds may drift between checks...
+MOVED_TILT = 20.0           # ...or deg its up axis may tip (turning about it is not counted)
+SETTLE_TICKS = 240          # an object just let go, or just knocked, settles (falls into a bin, rolls) this long
+CARRIED_M = 0.02            # m: an object that moved like a held one since the last check rides in / on it
 
 
 @dataclass(frozen=True)
@@ -49,7 +59,10 @@ class Allow:
             raise ValueError("fallback is for a checked motion")
 
     def permits(self, link: str, entity: str) -> bool:
-        """The monitor's test: link (e.g. right_gripper_link) touching entity (object / part name)."""
+        """The monitor's test: link (e.g. right_gripper_link, or held:<object> for what a hand
+        holds) touching entity (object / part name)."""
+        if link.startswith("held:"):
+            return any(entity == t or entity.startswith(t + "/") for t in self.held_on)
         if self.hand is None or not link.startswith(self.hand + "_"):
             return False
         names = HAND_LINKS if self.links == "hand" else FINGER_LINKS
@@ -58,6 +71,12 @@ class Allow:
 
 
 FREE = Allow()
+
+
+def _up(q):
+    """The z axis of quaternion q (w, x, y, z)."""
+    w, x, y, z = (float(v) for v in q)
+    return np.array([2 * (x * z + w * y), 2 * (y * z - w * x), 1 - 2 * (x * x + y * y)])
 
 
 def unchecked(reason: str) -> Allow:
@@ -87,7 +106,15 @@ class Clearance:
         self.records = []
         self.fallbacks = []
         self.counts = {"unexpected": 0, "allowed": 0, "checks": 0, "by_skill": {}, "by_leg": {},
-                       "fallback": 0, "planned": 0, "fallback_by_leg": {}}
+                       "fallback": 0, "planned": 0, "fallback_by_leg": {},
+                       "disturbed": 0, "disturbed_by_skill": {}, "disturbed_by_leg": {}}
+        self.disturbances = []
+        self._ref = {}                   # object -> (pos, quat wxyz) where it last stood
+        self._held = set()               # objects held at the last check
+        self._let_go = {}                # object -> tick it was let go
+        self._prev = {}                  # object -> position at the last check
+        self._held_since = {}            # object -> tick it was last picked up
+        self._pending = []               # disturbances waiting SETTLE_TICKS: not the object being picked up
 
     # ------------------------------------------------------------- skill scope
     @contextmanager
@@ -146,6 +173,8 @@ class Clearance:
             self.monitor = False
             return
         self.counts["checks"] += 1
+        self._watch_objects(motion)
+        self._confirm_disturbances()
         pairs = {(link, ent): depth for link, ent, depth in hits}
         new = [p for p in pairs if p not in self._live]
         self._live = set(pairs)
@@ -169,6 +198,76 @@ class Clearance:
             self.records.append(rec)
         self.rig.log("unexpected_contact", **{k: v for k, v in rec.items() if k != "tick"})
 
+    def _watch_objects(self, motion):
+        """Queue a disturbance (see _confirm_disturbances) for each object near the base that nobody holds and
+        that moved MOVED_M or tipped MOVED_TILT since it last stood still, unless the motion's
+        Allow lets the hand (or what it holds) touch it, it was let go less than SETTLE_TICKS
+        ago, or it moved with what a hand holds (rides in / on it).  A disturbed object is
+        reported once, then left to settle for SETTLE_TICKS."""
+        rig = self.rig
+        held = {h["name"] for h in (getattr(rig, "held", None), getattr(rig, "left_held", None)) if h}
+        for n in self._held - held:
+            self._let_go[n] = rig.tick
+        for n in held - self._held:
+            self._held_since[n] = rig.tick
+        self._held = held
+        near = {o.split(":", 1)[1] for o in getattr(motion, "_mon_near", ()) if o.startswith("object:")} - held
+        prev, self._prev = self._prev, {}
+        carried_steps = []
+        for n in held:
+            self._prev[n] = rig.obj_pose(n)[0]
+            if n in prev and np.linalg.norm(self._prev[n] - prev[n]) > 0.005:
+                carried_steps.append(self._prev[n] - prev[n])
+        moved = []
+        for n in sorted(near):
+            p, q = rig.obj_pose(n)
+            self._prev[n] = p
+            ref = self._ref.get(n)
+            if ref is None or rig.tick - self._let_go.get(n, -SETTLE_TICKS) < SETTLE_TICKS or \
+                    (n in prev and any(np.linalg.norm(p - prev[n] - c) < CARRIED_M for c in carried_steps)):
+                self._ref[n] = (p, q)
+                continue
+            d = float(np.linalg.norm(p - ref[0]))
+            ang = float(np.degrees(np.arccos(np.clip(np.dot(_up(q), _up(ref[1])), -1.0, 1.0))))
+            if d < MOVED_M and ang < MOVED_TILT:
+                continue
+            self._ref[n] = (p, q)
+            if any(n == t or n.startswith(t + "/") for t in self.allow.touch + self.allow.held_on):
+                continue
+            self._let_go[n] = rig.tick           # rolling on after the knock: not new
+            moved.append({"object": n, "moved_m": round(d, 3), "tilt_deg": round(ang, 1)})
+        for n in list(self._ref):
+            if n not in near:
+                del self._ref[n]                 # out of sight (or held): a fresh reference later
+        if moved:
+            self._pending.append({"tick": rig.tick, "skill": self.skills[-1] if self.skills else None,
+                                  "leg": self.leg, "checked": self.allow.checked, "objects": moved})
+
+    def _confirm_disturbances(self, final=False):
+        """Log the pending disturbances SETTLE_TICKS old (all of them when ``final``), leaving out
+        objects a hand has picked up since: the object being picked moves with the hand before
+        the pick declares it held."""
+        rig = self.rig
+        keep = []
+        for rec in self._pending:
+            if not final and rig.tick - rec["tick"] < SETTLE_TICKS:
+                keep.append(rec)
+                continue
+            rec["objects"] = [o for o in rec["objects"]
+                              if self._held_since.get(o["object"], -1) < rec["tick"]]
+            if not rec["objects"]:
+                continue
+            n = len(rec["objects"])
+            self.counts["disturbed"] += n
+            for key, k in (("disturbed_by_skill", rec["skill"] or "-"), ("disturbed_by_leg", rec["leg"] or "-")):
+                self.counts[key][k] = self.counts[key].get(k, 0) + n
+            if len(self.disturbances) < MAX_RECORDS:
+                self.disturbances.append(rec)
+            rig.log("disturbed_object", at_tick=rec["tick"], **{k: v for k, v in rec.items() if k != "tick"})
+        self._pending = keep
+
     def summary(self):
         """result.json ``contacts``."""
-        return {**self.counts, "records": self.records, "fallbacks": self.fallbacks}
+        self._confirm_disturbances(final=True)
+        return {**self.counts, "records": self.records, "fallbacks": self.fallbacks,
+                "disturbances": self.disturbances}

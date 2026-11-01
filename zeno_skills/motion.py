@@ -982,8 +982,10 @@ class Motion:
     def robot_contacts(self, rig, min_depth=0.0):
         """[(link, entity, depth m)] of robot links inside the world at the real joint state and
         base pose: objects and parts at their simulator poses, nothing either hand holds (nor
-        what it carries), obstacles within CULL.  The planner's world (obstacle poses, enabled
-        colliders, cull centre) is exactly as before when this returns."""
+        what it carries), obstacles within CULL.  What a hand holds counts as part of the robot:
+        its box (box_spheres) at its simulator pose, reported as link ``held:<name>``.  The
+        planner's world (obstacle poses, enabled colliders, cull centre) is exactly as before
+        when this returns."""
         import torch
         from curobo.geom.sdf.world import CollisionQueryBuffer
         model, names, links = self._monitor_model()
@@ -996,8 +998,9 @@ class Motion:
             vals[f"{side}_gripper_left_finger_axis"], vals[f"{side}_gripper_right_finger_axis"] = map(float, f[:2])
         q = torch.tensor([[float(vals.get(n, 0.0)) for n in names]], device="cuda", dtype=torch.float32)
         sph = model.get_state(q).link_spheres_tensor.view(1, 1, -1, 4).contiguous()
-        held = set(self.held["right"]) | set(self.held["left"]) | {
-            f"object:{h['name']}" for h in (rig.held, getattr(rig, "left_held", None)) if h}
+        carried = sorted({h["name"] for h in (rig.held, getattr(rig, "left_held", None))
+                          if h and self.by_owner.get(f"object:{h['name']}")})
+        held = set(self.held["right"]) | set(self.held["left"]) | {f"object:{n}" for n in carried}
         # colliders the check uses: within CULL of the base, not held; and the objects and parts
         # within MONITOR_NEAR, whose simulator poses are read (reading them all was 24 ms a check).
         # Kept while the base stays within RECULL and the hands hold the same things.
@@ -1012,7 +1015,18 @@ class Motion:
                     self._mon_cols.append(c)
                     if c.owner != "static" and gap < MONITOR_NEAR:
                         self._mon_near.add(c.owner)
-        poses = self._live_poses(rig, record=False, owners=self._mon_near)
+        poses = self._live_poses(rig, record=False, owners=self._mon_near | {f"object:{n}" for n in carried})
+        if carried:
+            live = lambda b: poses[b] if b in poses else self.body_pose.get(b)
+            extra = []
+            for n in carried:
+                frame, lo, hi = self._box_of(n)
+                T = G.world_pose(frame, live)
+                bs = box_spheres(lo, hi)
+                extra.append(np.c_[bs[:, :3] @ T[:3, :3].T + T[:3, 3], bs[:, 3]])
+                links = links + [f"held:{n}"] * len(bs)
+            sph = torch.cat([sph, torch.as_tensor(np.vstack(extra), device=sph.device,
+                                                  dtype=sph.dtype).view(1, 1, -1, 4)], dim=2).contiguous()
         use = {c.name for c in self._mon_cols}
         flip = [c for c in self.cols.items if self.enabled[c.name] != (c.name in use)]
         try:

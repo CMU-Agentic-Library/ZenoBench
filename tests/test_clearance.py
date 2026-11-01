@@ -50,6 +50,15 @@ def test_permits_only_the_listed_hand_links_and_entities():
     assert not LEGACY.permits("right_gripper_left_finger_link", "mug")
 
 
+def test_what_a_hand_holds_may_touch_only_its_held_on_entities():
+    down = Allow(hand="right", held_on=("kitchen_island",), reason="set down")
+    assert down.permits("held:mug", "kitchen_island/top")
+    assert not down.permits("held:mug", "juice_bottle")
+    assert not down.permits("right_gripper_link", "kitchen_island")       # the hand itself: not listed
+    assert not FREE.permits("held:mug", "kitchen_island")
+    assert not Allow(hand="right", touch=("mug",), reason="grasp").permits("held:mug", "mug")
+
+
 def test_a_skill_starts_with_fresh_collision_settings_and_restores_the_callers():
     kin, left = SimpleNamespace(coll_kw={"hand_touches_part": True}), SimpleNamespace(coll_kw={"ignore_fingers": True})
     rig = SimpleNamespace(kin=kin, left_kin=left)
@@ -150,3 +159,53 @@ def test_free_else_straight_does_not_plan_from_a_colliding_start():
     qs, allow = Rig._checked_else_straight(rig, "release_back", lambda a: asked.append(a) or [np.zeros(9)], kin)
     assert asked == [LEGACY] and allow is LEGACY
     assert rig.clear.fallbacks[0]["why"].startswith("starts in collision")
+
+
+def test_monitor_logs_objects_pushed_away_unless_held_let_go_carried_or_allowed():
+    logged = []
+    poses = {"juice_bottle": [7.65, 1.66, 0.95], "mug": [7.95, 1.66, 0.92], "spoon": [7.40, 1.70, 0.87],
+             "tomato": [7.0, 1.0, 0.9]}
+    upright = np.array([1.0, 0.0, 0.0, 0.0])
+    motion = SimpleNamespace(robot_contacts=lambda rig, depth: [],
+                             _mon_near={"object:juice_bottle", "object:mug", "object:spoon", "object:tomato",
+                                        "part:kitchen_cabinet_6"})
+    pose = [0.0]
+    rig = SimpleNamespace(kin=SimpleNamespace(motion=motion, coll_kw={}), tick=0, held=None, left_held=None,
+                          log=lambda ev, **kw: logged.append((ev, kw)),
+                          obj_pose=lambda n: (np.array(poses[n], float), upright),
+                          base_pose=lambda: (pose[0], 0.0, 0.0), q=lambda: np.zeros(9), left_q=lambda: np.zeros(9),
+                          fingers=lambda: np.zeros(2), left_fingers=lambda: np.zeros(2))
+    clear = Clearance(rig)
+    clear.skills = ["navigate"]
+
+    def tick(n=30):
+        rig.tick += n
+        pose[0] += 0.01
+        clear.tick()
+    rig.held = {"name": "spoon"}
+    clear.motion("drive_base", FREE)
+    tick()                                                   # first look: references only
+    poses["juice_bottle"][0] += 0.05                         # knocked over by the carried spoon
+    poses["spoon"][0] += 0.3                                 # held: rides along
+    tick()
+    poses["spoon"][0] += 0.05                                # held: rides along...
+    poses["tomato"][0] += 0.05                               # ...and so does what sits in it
+    tick()
+    rig.held = None                                          # let go of the spoon: it settles
+    tick()
+    poses["spoon"][2] -= 0.1
+    tick()
+    clear.motion("push_slide", Allow(hand="right", touch=("mug",), reason="push"))
+    poses["mug"][0] += 0.1                                   # the push target moves: allowed
+    tick(SETTLE := 300)
+    poses["spoon"][0] += 0.05                                # long settled: now a disturbance
+    tick()
+    poses["tomato"][0] += 0.05                               # pushed by the hand that then picks it up
+    tick()
+    rig.held = {"name": "tomato"}
+    tick()
+    s = clear.summary()
+    assert s["disturbed"] == 2 and s["disturbed_by_leg"] == {"drive_base": 1, "push_slide": 1}
+    objs = [o["object"] for ev, kw in logged if ev == "disturbed_object" for o in kw["objects"]]
+    assert objs == ["juice_bottle", "spoon"]
+    assert s["disturbances"][0]["objects"] == [{"object": "juice_bottle", "moved_m": 0.05, "tilt_deg": 0.0}]

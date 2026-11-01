@@ -344,19 +344,49 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None):
     if path is None:
         raise SkillFailure(f"{label}: no base path to {pose}")
     rig.log("path", waypoints=[[round(v, 2) for v in w] for w in path])
-    if rig.held is None and rig.left_held is None:
-        rig.drive_base(path)
-    elif rig.held is None:
-        check_left_held(rig, "left_carry_start")
-        rig.drive_base(path, speed=0.17, turn=0.30, ramp=1.2)
-        check_left_held(rig, "left_carry_end")
-    else:
-        obj = rig.ann.asset_of(rig.ann.objects[rig.held["name"]])
-        if obj.get("container"):
+    with _hang_while_driving(rig):
+        if rig.held is None and rig.left_held is None:
+            rig.drive_base(path)
+        elif rig.held is None:
+            check_left_held(rig, "left_carry_start")
             rig.drive_base(path, speed=0.17, turn=0.30, ramp=1.2)
+            check_left_held(rig, "left_carry_end")
         else:
-            rig.drive_base(path, speed=0.25, turn=0.5)
-        check_held(rig, "carry")
+            obj = rig.ann.asset_of(rig.ann.objects[rig.held["name"]])
+            if obj.get("container"):
+                rig.drive_base(path, speed=0.17, turn=0.30, ramp=1.2)
+            else:
+                rig.drive_base(path, speed=0.25, turn=0.5)
+            check_held(rig, "carry")
+
+
+def _swing_arm(rig, side, arm_q, label):
+    """Move one arm's joints (torso and waist kept) to ``arm_q``: straight in joint space when
+    that is clear, else a cuRobo trajectory.  False (logged) when neither exists."""
+    kin = rig.kin if side == "right" else rig.left_kin
+    start = rig.q_cmd.copy() if side == "right" else np.r_[rig.q_cmd[:2], rig.left_q_cmd]
+    goal = np.r_[start[:2], np.asarray(arm_q, float)[2:]]
+    if np.max(np.abs(goal - start)) < 0.05:
+        return True
+    rig.clear.motion(label, FREE)
+    if kin.segment_free(start, goal):
+        vias = [goal]
+    else:
+        vias, status = kin.plan(start, goal)
+        if vias is None:
+            rig.log(f"{label}_blocked", side=side, status=str(status))
+            return False
+    if side == "right":
+        rig.follow(rig.joint_path_via(vias))
+    else:
+        qs, qa = [], start
+        for qb in vias:
+            n = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
+            qs += [qa + (qb - qa) * u for u in np.linspace(0, 1, n)[1:]]
+            qa = qb
+        rig.left_follow(qs)
+    rig.log(label, side=side)
+    return True
 
 
 def _fold_left(rig):
@@ -365,21 +395,31 @@ def _fold_left(rig):
     neither exists it stays where it is."""
     if rig.left_held is not None:
         return
-    start = np.r_[rig.q_cmd[:2], rig.left_q_cmd]
-    goal = np.r_[rig.q_cmd[:2], rig.left_kin.rest[2:]]
-    if np.max(np.abs(goal - start)) < 0.05:
-        return
     rig.sync_world()
-    if rig.left_kin.segment_free(start, goal):
-        n = max(2, int(np.max(np.abs(goal - start)) / 0.01))
-        qs = [start + (goal - start) * u for u in np.linspace(0, 1, n)[1:]]
-    else:
-        qs, status = rig.left_kin.plan(start, goal)
-        if qs is None:
-            rig.log("left_fold_blocked", status=str(status))
-            return
-    rig.left_follow(qs)
-    rig.log("left_fold", before_drive=True)
+    _swing_arm(rig, "left", rig.left_kin.rest, "left_fold")
+
+
+@contextmanager
+def _hang_while_driving(rig):
+    """An empty arm in its travel posture hangs at the side (DRIVE_Q, inside the base
+    column) while the base drives, and is raised back to the travel posture on arrival, so
+    the skills that follow start from the tuck they always had.  An arm that cannot swing
+    down stays tucked; one that cannot swing back up stays hanging (IK seeds it from the
+    elbow-out posture)."""
+    hung = []
+    rig.sync_world()
+    for side in ("right", "left"):
+        kin = rig.kin if side == "right" else rig.left_kin
+        held = rig.held if side == "right" else rig.left_held
+        q = rig.q_cmd if side == "right" else np.r_[rig.q_cmd[:2], rig.left_q_cmd]
+        if held is None and np.max(np.abs(q[2:] - kin.rest[2:])) < 0.05 and \
+                _swing_arm(rig, side, kin.drive, "drive_hang"):
+            hung.append(side)
+    yield
+    if hung:
+        rig.sync_world()
+    for side in hung:
+        _swing_arm(rig, side, (rig.kin if side == "right" else rig.left_kin).rest, "drive_raise")
 
 
 def _travel_q(rig):
