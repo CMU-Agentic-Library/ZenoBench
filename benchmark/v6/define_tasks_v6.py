@@ -115,6 +115,20 @@ def open_explore(art):
     return [nav(art), S("open", articulated=art), S("bend"), S("explore_furniture", furniture=art), S("straighten")]
 
 
+def behind_wall(steps, target, blocker, aside):
+    """The target stands against the wall with ``blocker`` right in front: every pick of the target is refused
+    (no reach, no room to slide it out) until the blocker is moved aside; then pick the target as planned."""
+    i = find(steps, "pick", object=target)
+    return steps[:i] + refused_twice(steps[i]) + recs(nav(blocker), pick(blocker), place(blocker, *aside), nav(target),
+                                                      look(target)) + [REC(steps[i])] + steps[i + 1:]
+
+
+def put_away(steps_before, art_first, art_second, take, steps_after):
+    """Inspect two closed cabinets in the worse order, take the item from the second, close both."""
+    return steps_before + open_explore(art_first) + [S("close", articulated=art_first)] + open_explore(art_second) \
+        + take(art_second) + steps_after
+
+
 # ----------------------------------------------------------------- per-task families
 def T01(t):
     B = "paperback_book"
@@ -520,7 +534,19 @@ def T08(t):
     base = OR(t, "sponge_on_island")
     back = base + recs(look("kitchen_island/top"), S("search", object=X), nav(X), pick(X),
                        nav("kitchen_island/top"), place(X, "kitchen_island/top"))
+    tv = OR(t, "sponge_on_tv_stand")
     return {
+        "x6_cl_sponge_behind_mug": dict(
+            tier="hard", hard="mixed", base="sponge_on_tv_stand", control="m_grasp_sponge",
+            move={X: P("tv_stand_2/top", 7.6, 0.245, 180.0), "mug": P("tv_stand_2/top", 7.6, 0.36)},
+            challenge="the sponge lies at the back of the TV stand, against the wall, with a mug right in front of it",
+            rationale="no park reaches the sponge while the mug is in front and the wall behind (persistent until the "
+                      "mug is moved): insert the subgoal of moving the mug, then fetch the sponge",
+            cases={"": dict(failures=[f_initial("dependency", [["on", "mug", "tv_stand_2/top"]], fid="dependency_in_front"),
+                                      {**f_ik_persist("pick", X), "until_moved": "mug"}],
+                            route=behind_wall(tv, X, "mug", ("tv_stand_2/top", [7.0, 0.36])))},
+            hyp=[H("DR", blocker="mug", blocked={"skill": "pick", "target": X}, cause="failure:dependency_in_front"),
+                 H("CL", failure=f"ik_pick_{X}_persistent", change="subgoal", to="mug")]),
         "x6_pp_sponge_taken_after_wipe": dict(
             tier="hard", hard="dynamic", base="sponge_on_island", control="sponge_on_island",
             challenge="right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
@@ -662,7 +688,20 @@ def T10(t):
     in_mw = copy.deepcopy(t["variants"]["h_task_can_in_microwave"]["move"][CAN])
     base = OR(t, "can_on_island")
     j = at(base, "drop", object=CAN)
+    on_tv = recs(look("tv_stand_2/top")) + base[1:]
     return {
+        "x6_cl_can_behind_bottle": dict(
+            tier="hard", hard="mixed", base="can_on_island", control="m_ik_can",
+            move={CAN: P("tv_stand_2/top", 7.2, 0.245), "juice_bottle": P("tv_stand_2/top", 7.2, 0.33)},
+            challenge="the can stands at the back of the TV stand, against the wall, with the juice bottle right in front",
+            rationale="no park reaches the can while the bottle blocks it (persistent until the bottle is moved): move "
+                      "the bottle aside first",
+            cases={"": dict(failures=[f_initial("dependency", [["on", "juice_bottle", "tv_stand_2/top"]],
+                                                fid="dependency_in_front"),
+                                      {**f_ik_persist("pick", CAN), "until_moved": "juice_bottle"}],
+                            route=behind_wall(on_tv, CAN, "juice_bottle", ("tv_stand_2/top", [7.7, 0.36])))},
+            hyp=[H("DR", blocker="juice_bottle", blocked={"skill": "pick", "target": CAN}, cause="failure:dependency_in_front"),
+                 H("CL", failure=f"ik_pick_{CAN}_persistent", change="subgoal", to="juice_bottle")]),
         "x6_gd_can_put_away": dict(
             tier="hard", hard="task", base="can_on_island", control="h_task_can_in_microwave",
             factor="which closed place holds the item",
@@ -905,7 +944,30 @@ def T14(t):
     two = (base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B)) + [FAIL(carry, True)]
            + recs(nav(B), look(B), S("expose", object=B), pick(B, hands="both"), carry) + [place_])
     slip_once = base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B), carry) + [place_]
+    shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 90.0},
+             "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 90.0}}
+    take = lambda art: [nav(B), S("expose", object=B), pick(B), S("retreat", obstacle=art, distance_m=0.3),  # noqa: E731
+                        S("close", articulated=art)]
+    book_goal = copy.deepcopy(t["goal"])
+    book_goal["all"] += [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
+    shelve = [nav("bookcase_2/top"), place(B, "bookcase_2/top")]
     return {
+        "x6_gd_book_put_away": dict(
+            tier="hard", hard="task", base="e1_book_ready", control="book_on_desk", goal=book_goal,
+            remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
+            instruction="The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it "
+                        "back on the low bookcase in the bedroom, and close the cabinets again.",
+            factor="which closed place holds the item",
+            challenge="the red book is in one of the two low kitchen cabinets (seed decides which)",
+            rationale="the location is a disjunction over closed places: inspect them (reference route: the worse "
+                      "order), take the book out, close both doors",
+            cases={f"in_{w[-1]}": dict(move={B: shelf[w]}, route=put_away([], o, w, take, shelve),
+                                       failures=[f_initial("resource", [["on", B, f"{w}/inside_shelf"]], fid="resource_book_put_away")],
+                                       hyp=[H("DR", blocker=w, blocked={"skill": "pick", "target": B},
+                                              cause="failure:resource_book_put_away")])
+                   for w, o in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4"))},
+            hyp=[H("GD", kind="inspection", places=["kitchen_cabinet_6", "kitchen_cabinet_4"],
+                   cause="failure:resource_book_put_away")]),
         "x6_sr_two_hand_carry": dict(
             tier="hard", hard="action", base="e1_book_ready", control="x6_m_slip_book",
             challenge="the red book slips out of the one-handed pinch at the start of every carry; the first shelving "
@@ -1033,7 +1095,30 @@ def T19(t):
     base = OR(t, "bin_on_bookcase")             # ... approach bin, drop can, nav cube, pick cube, nav bin, drop cube
     j = at(base, "drop", object=CUBE)
     refused = with_grasp(base[:j], CUBE) + refused_twice(base[j], BIN) + recs(place(CUBE, BIN))
+    shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0},
+             "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.63, 0.36], "yaw_deg": 0.0}}
+    take = lambda art: [nav(CAN), pick(CAN), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]  # noqa: E731
+    i_can = at(base, "pick", object=CAN)
+    rest = base[i_can + 1:]
+    can_goal = copy.deepcopy(t["goal"])
+    can_goal["all"] += [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
     return {
+        "x6_gd_can_put_away": dict(
+            tier="hard", hard="task", base="bin_on_bookcase", control="m_can_in_dining_room", goal=can_goal,
+            remove=["plate_inside_kitchen_cabinet"],
+            instruction="Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and "
+                        "the foam packing cube from the delivery lies on the living-room floor; take both to the wide "
+                        "storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.",
+            factor="which closed place holds the item",
+            challenge="the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+            rationale="inspect the closed places for the can (reference route: the worse order), then recycle both",
+            cases={f"in_{w[-1]}": dict(move={CAN: shelf[w]}, route=put_away([], o, w, take, rest),
+                                       failures=[f_initial("resource", [["on", CAN, f"{w}/inside_shelf"]], fid="resource_can_put_away")],
+                                       hyp=[H("DR", blocker=w, blocked={"skill": "pick", "target": CAN},
+                                              cause="failure:resource_can_put_away")])
+                   for w, o in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4"))},
+            hyp=[H("GD", kind="inspection", places=["kitchen_cabinet_6", "kitchen_cabinet_4"],
+                   cause="failure:resource_can_put_away")]),
         "x6_sr_cube_drop_refused": dict(
             tier="hard", hard="action", base="bin_on_bookcase", control="x6_m_ik_drop_cube",
             challenge="once the can is in the bin, the cube slips on its first pick, then dropping it over the bin is "

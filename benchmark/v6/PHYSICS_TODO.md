@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 51 families are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1830 episodes remain (540 of the 54 new families): `batches/physics_todo.json`; the new families alone: `batches/physics_v6_new.json`.
+* 1870 episodes remain (580 of the 58 new families): `batches/physics_todo.json`; the new families alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new families without a skill dependency (`depends on` -), (2) after each skill fix the families that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 families below 10/10 after each skill fix.
 
@@ -74,6 +74,7 @@
 | T08 | h_action_grasp_and_ik | hard | 0/10 of 10 | wipe reach |
 | T08 | h_mixed_cluttered_grasp | hard | 0/10 of 10 | wipe reach |
 | T08 | h_dynamic_sponge_taken | hard | 0/5 of 10 | wipe reach |
+| T08 | x6_cl_sponge_behind_mug | hard | 0/0 of 10 | wipe reach |
 | T08 | x6_pp_sponge_taken_after_wipe | hard | 0/0 of 10 | wipe reach |
 | T09 | e2_from_dining_room | easy | 0/10 of 10 | - |
 | T09 | lid_on | medium | 5/10 of 10 | - |
@@ -98,6 +99,7 @@
 | T10 | h_action_ik_pick_and_drop | hard | 0/10 of 10 | pick from the microwave cavity |
 | T10 | h_mixed_microwave_ik | hard | 0/10 of 10 | pick from the microwave cavity |
 | T10 | h_dynamic_can_moved | hard | 5/5 of 10 | pick from the microwave cavity |
+| T10 | x6_cl_can_behind_bottle | hard | 0/0 of 10 | juice bottle grasp |
 | T10 | x6_gd_can_put_away | hard | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
 | T10 | x6_sr_drop_refused | hard | 0/0 of 10 | - |
 | T10 | x6_m_ik_drop | medium | 0/0 of 10 | - |
@@ -140,8 +142,8 @@
 | T15 | h_dynamic_book_moved | hard | 2/10 of 10 | - |
 | T16 | e2_from_dining_room | easy | 8/10 of 10 | - |
 | T16 | m_start_dining_away | medium | 8/10 of 10 | - |
-| T16 | h_action_ik_twice | hard | 9/10 of 10 | - |
-| T16 | h_dynamic_bowl_put_behind | hard | 6/10 of 10 | - |
+| T16 | h_action_ik_twice | medium | 9/10 of 10 | - |
+| T16 | h_dynamic_bowl_put_behind | medium | 6/10 of 10 | - |
 | T17 | e2_from_dining_room | easy | 0/10 of 10 | search of the pot lid |
 | T17 | lid_on | medium | 5/10 of 10 | - |
 | T17 | block_crowded | medium | 2/10 of 10 | - |
@@ -166,6 +168,7 @@
 | T19 | h_action_grasp_and_miss | medium | 2/5 of 10 | - |
 | T19 | h_mixed_lookalike_ik | medium | 5/5 of 10 | - |
 | T19 | h_dynamic_cube_moved | hard | 0/5 of 10 | - |
+| T19 | x6_gd_can_put_away | hard | 0/0 of 10 | low cabinet doors |
 | T19 | x6_sr_cube_drop_refused | hard | 0/0 of 10 | - |
 | T19 | x6_m_ik_drop_cube | medium | 0/0 of 10 | - |
 | T20 | bottle_on_cabinet | easy | 2/10 of 10 | juice bottle grasp |
@@ -188,5 +191,6 @@
 | T14 | h_action_ik_pick_and_place | hard | 0/10 of 10 | - |
 | T14 | h_mixed_shelf_taken_ik | hard | 3/10 of 10 | - |
 | T14 | h_dynamic_shelf_taken | hard | 1/10 of 10 | - |
+| T14 | x6_gd_book_put_away | hard | 0/0 of 10 | low cabinet doors |
 | T14 | x6_sr_two_hand_carry | hard | 0/0 of 10 | bimanual flat pick (long side along an overhanging edge) |
 | T14 | x6_m_slip_book | medium | 0/0 of 10 | - |

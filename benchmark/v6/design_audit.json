@@ -1,17 +1,17 @@
 {
- "families": 234,
- "episodes": 2340,
+ "families": 238,
+ "episodes": 2380,
  "tiers": {
   "v5/easy": 38,
-  "v5/hard": 55,
-  "v5/medium": 87,
-  "v6/hard": 43,
+  "v5/hard": 51,
+  "v5/medium": 91,
+  "v6/hard": 47,
   "v6/medium": 11
  },
  "coverage": {
   "DR": {
    "variants": 41,
-   "designs": 36,
+   "designs": 37,
    "tasks": 11,
    "mechanisms": [
     "capacity/initial",
@@ -31,21 +31,20 @@
    ],
    "strategies": [
     "DR:open-door",
-    "DR:push-aside",
     "DR:relocate-obstacle"
    ],
    "categories": {
-    "task": 13,
-    "action": 9,
-    "mixed": 10,
-    "dynamic": 9
+    "task": 14,
+    "action": 8,
+    "mixed": 11,
+    "dynamic": 8
    },
-   "new": 6
+   "new": 10
   },
   "GD": {
-   "variants": 23,
-   "designs": 22,
-   "tasks": 12,
+   "variants": 25,
+   "designs": 24,
+   "tasks": 14,
    "mechanisms": [
     "capacity/initial",
     "condition/joint_capacity",
@@ -65,11 +64,11 @@
    ],
    "categories": {
     "dynamic": 7,
-    "task": 11,
+    "task": 13,
     "action": 3,
     "mixed": 2
    },
-   "new": 15
+   "new": 17
   },
   "SR": {
    "variants": 24,
@@ -114,9 +113,9 @@
    "new": 10
   },
   "CL": {
-   "variants": 21,
-   "designs": 21,
-   "tasks": 15,
+   "variants": 23,
+   "designs": 23,
+   "tasks": 16,
    "mechanisms": [
     "dependency/initial",
     "destination/initial",
@@ -138,9 +137,9 @@
    ],
    "categories": {
     "action": 20,
-    "mixed": 1
+    "mixed": 3
    },
-   "new": 18
+   "new": 20
   },
   "PP": {
    "variants": 22,
@@ -171,9 +170,9 @@
    "new": 16
   },
   "AF": {
-   "variants": 69,
-   "designs": 63,
-   "tasks": 19,
+   "variants": 66,
+   "designs": 61,
+   "tasks": 18,
    "mechanisms": [
     "capacity/initial",
     "condition/appliance_occupied",
@@ -201,9 +200,9 @@
     "AF:task"
    ],
    "categories": {
-    "action": 22,
-    "mixed": 12,
-    "dynamic": 22,
+    "action": 21,
+    "mixed": 11,
+    "dynamic": 21,
     "task": 13
    },
    "new": 18
@@ -218,10 +217,6 @@
    "h_action_ik_twice",
    "h_mixed_block_on_book_ik"
   ],
-  "T16: DR | dependency/initial; ik/transient": [
-   "h_action_ik_twice",
-   "h_mixed_bowl_behind_ik"
-  ],
   "T18: GD | ik/transient; resource/initial": [
    "h_action_ik_open_and_close",
    "h_mixed_two_cabinets_ik"
@@ -235,7 +230,7 @@
    "h_mixed_shelf_taken_ik"
   ]
  },
- "distinct_hard_signatures": 69,
+ "distinct_hard_signatures": 67,
  "hard_families": 98,
  "retiered": [
   {
@@ -423,6 +418,36 @@
    ]
   },
   {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "h_task_bowl_behind",
+   "retiered": "hard -> medium",
+   "caps": []
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "h_action_ik_twice",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "h_mixed_bowl_behind_ik",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
+   "task": "T16_rolling_pin_at_edge",
+   "family": "h_dynamic_bowl_put_behind",
+   "retiered": "hard -> medium",
+   "caps": [
+    "AF"
+   ]
+  },
+  {
    "task": "T17_hide_and_seek_block",
    "family": "h_task_lid_elsewhere",
    "retiered": "hard -> medium",
@@ -476,13 +501,13 @@
   }
  ],
  "control_tiers": {
-  "medium": 23,
-  "easy": 69,
+  "medium": 27,
+  "easy": 65,
   "hard": 5,
   "non-formal": 1
  },
- "ladders": 19,
- "multi_case_families": 55,
+ "ladders": 18,
+ "multi_case_families": 57,
  "decision_factors": {
   "which object lies on the book (blocking relation)": 1,
   "failure mechanism (grasp slip vs reach)": 1,
@@ -496,28 +521,28 @@
   "which substitute exists and where": 1,
   "where the second tomato was left": 1,
   "which subgoal the event undoes, and when (failure timing)": 1,
-  "which closed place holds the item": 3,
+  "which closed place holds the item": 5,
   "which bin is already half full (capacity)": 1,
   "where the event takes the resource, and when (failure timing)": 1,
   "how many candidate places (and an empty one) the instruction names": 1,
   "which object blocks the reach (blocking relation)": 1
  },
  "status": {
-  "STATIC_VALIDATED": 183,
+  "STATIC_VALIDATED": 187,
   "PHYSICS_VALIDATED": 51
  },
  "hard_categories": {
-  "action": 31,
-  "task": 24,
-  "mixed": 13,
-  "dynamic": 30
+  "action": 30,
+  "task": 25,
+  "mixed": 14,
+  "dynamic": 29
  },
  "failure_modes_in_hard": {
-  "transient": 47,
-  "persistent": 24,
-  "initial": 51,
+  "transient": 45,
+  "persistent": 26,
+  "initial": 52,
   "unstable_base": 1,
-  "dynamic": 30,
+  "dynamic": 29,
   "microwave_broken": 2,
   "not_in_view": 1,
   "appliance_occupied": 1,
@@ -527,8 +552,8 @@
   "destination_full": 2
  },
  "static": {
-  "episodes": 2340,
-  "static_ok": 2340
+  "episodes": 2380,
+  "static_ok": 2380
  },
  "static_problems": 0,
  "static_stale": false,
@@ -3470,6 +3495,42 @@
   },
   {
    "task": "T08_wipe_island",
+   "family": "x6_cl_sponge_behind_mug",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "CL",
+    "DR"
+   ],
+   "core": [
+    "CL",
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/persistent-until-moved"
+   ],
+   "strategies": [
+    "CL:subgoal",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "x6_cl_sponge_behind_mug"
+   ],
+   "factor": null,
+   "control": "m_grasp_sponge",
+   "challenge": "the sponge lies at the back of the TV stand, against the wall, with a mug right in front of it",
+   "rationale": "no park reaches the sponge while the mug is in front and the wall behind (persistent until the mug is moved): insert the subgoal of moving the mug, then fetch the sponge",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T08_wipe_island",
    "family": "x6_pp_sponge_taken_after_wipe",
    "origin": "v6",
    "tier": "hard",
@@ -4266,6 +4327,42 @@
    "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
    "rationale": "",
    "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T10_trash_the_can",
+   "family": "x6_cl_can_behind_bottle",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "mixed",
+   "caps": [
+    "CL",
+    "DR"
+   ],
+   "core": [
+    "CL",
+    "DR"
+   ],
+   "mechanisms": [
+    "dependency/initial",
+    "ik/persistent-until-moved"
+   ],
+   "strategies": [
+    "CL:subgoal",
+    "DR:relocate-obstacle"
+   ],
+   "cases": [
+    "x6_cl_can_behind_bottle"
+   ],
+   "factor": null,
+   "control": "m_ik_can",
+   "challenge": "the can stands at the back of the TV stand, against the wall, with the juice bottle right in front",
+   "rationale": "no park reaches the can while the bottle blocks it (persistent until the bottle is moved): move the bottle aside first",
+   "physics": "0/0 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -6043,22 +6140,16 @@
    "task": "T16_rolling_pin_at_edge",
    "family": "h_task_bowl_behind",
    "origin": "v5",
-   "tier": "hard",
+   "tier": "medium",
    "v5_tier": "hard",
-   "retiered": null,
+   "retiered": "hard -> medium",
    "hard_category": "task",
-   "caps": [
-    "DR"
-   ],
-   "core": [
-    "DR"
-   ],
+   "caps": [],
+   "core": [],
    "mechanisms": [
     "dependency/initial"
    ],
-   "strategies": [
-    "DR:push-aside"
-   ],
+   "strategies": [],
    "cases": [
     "h_task_bowl_behind"
    ],
@@ -6075,24 +6166,20 @@
    "task": "T16_rolling_pin_at_edge",
    "family": "h_action_ik_twice",
    "origin": "v5",
-   "tier": "hard",
+   "tier": "medium",
    "v5_tier": "hard",
-   "retiered": null,
+   "retiered": "hard -> medium",
    "hard_category": "action",
    "caps": [
-    "AF",
-    "DR"
+    "AF"
    ],
-   "core": [
-    "DR"
-   ],
+   "core": [],
    "mechanisms": [
     "dependency/initial",
     "ik/transient"
    ],
    "strategies": [
-    "AF:local",
-    "DR:relocate-obstacle"
+    "AF:local"
    ],
    "cases": [
     "h_action_ik_twice"
@@ -6110,24 +6197,20 @@
    "task": "T16_rolling_pin_at_edge",
    "family": "h_mixed_bowl_behind_ik",
    "origin": "v5",
-   "tier": "hard",
+   "tier": "medium",
    "v5_tier": "hard",
-   "retiered": null,
+   "retiered": "hard -> medium",
    "hard_category": "mixed",
    "caps": [
-    "AF",
-    "DR"
+    "AF"
    ],
-   "core": [
-    "DR"
-   ],
+   "core": [],
    "mechanisms": [
     "dependency/initial",
     "ik/transient"
    ],
    "strategies": [
-    "AF:local",
-    "DR:relocate-obstacle"
+    "AF:local"
    ],
    "cases": [
     "h_mixed_bowl_behind_ik"
@@ -6139,30 +6222,25 @@
    "physics": "10/10 of 10",
    "status": "PHYSICS_VALIDATED",
    "rerun_needed": null,
-   "retry_solvable": false,
-   "same_design_as": "h_action_ik_twice"
+   "retry_solvable": false
   },
   {
    "task": "T16_rolling_pin_at_edge",
    "family": "h_dynamic_bowl_put_behind",
    "origin": "v5",
-   "tier": "hard",
+   "tier": "medium",
    "v5_tier": "hard",
-   "retiered": null,
+   "retiered": "hard -> medium",
    "hard_category": "dynamic",
    "caps": [
-    "AF",
-    "DR"
+    "AF"
    ],
-   "core": [
-    "DR"
-   ],
+   "core": [],
    "mechanisms": [
     "dependency/dynamic-move_object"
    ],
    "strategies": [
-    "AF:task",
-    "DR:relocate-obstacle"
+    "AF:task"
    ],
    "cases": [
     "h_dynamic_bowl_put_behind"
@@ -7198,6 +7276,42 @@
   },
   {
    "task": "T19_recycling",
+   "family": "x6_gd_can_put_away",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "DR",
+    "GD"
+   ],
+   "core": [
+    "DR",
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "DR:open-door",
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_can_put_away__in_4",
+    "x6_gd_can_put_away__in_6"
+   ],
+   "factor": "which closed place holds the item",
+   "control": "m_can_in_dining_room",
+   "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+   "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
+   "physics": "0/0 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T19_recycling",
    "family": "x6_sr_cube_drop_refused",
    "origin": "v6",
    "tier": "hard",
@@ -7893,6 +8007,42 @@
    "challenge": "while the robot is at the desk, someone puts a mug and the duck on the bookcase top: move the mug to a legal place before shelving",
    "rationale": "",
    "physics": "1/10 of 10",
+   "status": "STATIC_VALIDATED",
+   "rerun_needed": null,
+   "retry_solvable": false
+  },
+  {
+   "task": "T14_shelve_the_book",
+   "family": "x6_gd_book_put_away",
+   "origin": "v6",
+   "tier": "hard",
+   "v5_tier": null,
+   "retiered": null,
+   "hard_category": "task",
+   "caps": [
+    "DR",
+    "GD"
+   ],
+   "core": [
+    "DR",
+    "GD"
+   ],
+   "mechanisms": [
+    "resource/initial"
+   ],
+   "strategies": [
+    "DR:open-door",
+    "GD:inspection"
+   ],
+   "cases": [
+    "x6_gd_book_put_away__in_4",
+    "x6_gd_book_put_away__in_6"
+   ],
+   "factor": "which closed place holds the item",
+   "control": "book_on_desk",
+   "challenge": "the red book is in one of the two low kitchen cabinets (seed decides which)",
+   "rationale": "the location is a disjunction over closed places: inspect them (reference route: the worse order), take the book out, close both doors",
+   "physics": "0/0 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false

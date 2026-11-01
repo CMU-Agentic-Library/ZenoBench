@@ -11920,6 +11920,114 @@
   "rationale": "seed extension of the v5 design: the kitchen_sponge ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T08_wipe_island/x6_cl_sponge_behind_mug": {
+  "family": "x6_cl_sponge_behind_mug",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge",
+    "mug"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "tool_away_from_surface"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "mug",
+     "tv_stand_2/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "dependency_in_front",
+    "kind": "dependency",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "ik_pick_kitchen_sponge_persistent",
+    "kind": "ik",
+    "persist": true,
+    "until_moved": "mug",
+    "trigger": {
+     "skill": "pick",
+     "args": {
+      "object": "kitchen_sponge"
+     },
+     "nth": 1
+    },
+    "event": null,
+    "when": "action"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "wiped",
+     "kitchen_island/top"
+    ],
+    [
+     "on",
+     "kitchen_sponge",
+     "kitchen_island/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "CL",
+   "DR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "mug",
+    "blocked": {
+     "skill": "pick",
+     "target": "kitchen_sponge"
+    },
+    "cause": "failure:dependency_in_front"
+   },
+   "CL": {
+    "cap": "CL",
+    "failure": "ik_pick_kitchen_sponge_persistent",
+    "change": "subgoal",
+    "to": "mug"
+   }
+  },
+  "retry_solvable": false,
+  "control": "m_grasp_sponge",
+  "oracle_route": "v6_x6_cl_sponge_behind_mug",
+  "challenge": "the sponge lies at the back of the TV stand, against the wall, with a mug right in front of it",
+  "rationale": "no park reaches the sponge while the mug is in front and the wall behind (persistent until the mug is moved): insert the subgoal of moving the mug, then fetch the sponge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T08_wipe_island/x6_pp_sponge_taken_after_wipe__tv_stand": {
   "family": "x6_pp_sponge_taken_after_wipe",
   "tier": "hard",
@@ -15632,6 +15740,108 @@
   "oracle_route": "v6_h_dynamic_can_moved__alt_tv_stand_2",
   "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can (here the soda_can is on tv_stand_2/top)",
   "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/x6_cl_can_behind_bottle": {
+  "family": "x6_cl_can_behind_bottle",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "juice_bottle",
+    "soda_can"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": [
+    [
+     "on",
+     "juice_bottle",
+     "tv_stand_2/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "dependency_in_front",
+    "kind": "dependency",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "ik_pick_soda_can_persistent",
+    "kind": "ik",
+    "persist": true,
+    "until_moved": "juice_bottle",
+    "trigger": {
+     "skill": "pick",
+     "args": {
+      "object": "soda_can"
+     },
+     "nth": 1
+    },
+    "event": null,
+    "when": "action"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "CL",
+   "DR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "juice_bottle",
+    "blocked": {
+     "skill": "pick",
+     "target": "soda_can"
+    },
+    "cause": "failure:dependency_in_front"
+   },
+   "CL": {
+    "cap": "CL",
+    "failure": "ik_pick_soda_can_persistent",
+    "change": "subgoal",
+    "to": "juice_bottle"
+   }
+  },
+  "retry_solvable": false,
+  "control": "m_ik_can",
+  "oracle_route": "v6_x6_cl_can_behind_bottle",
+  "challenge": "the can stands at the back of the TV stand, against the wall, with the juice bottle right in front",
+  "rationale": "no park reaches the can while the bottle blocks it (persistent until the bottle is moved): move the bottle aside first",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T10_trash_the_can/x6_gd_can_put_away__in_cabinet": {
@@ -24145,8 +24355,8 @@
  },
  "T16_rolling_pin_at_edge/h_task_bowl_behind": {
   "family": "h_task_bowl_behind",
-  "tier": "hard",
-  "hard_category": "task",
+  "tier": "medium",
+  "hard_category": null,
   "seeds": [
    10,
    11,
@@ -24220,20 +24430,8 @@
     ]
    ]
   },
-  "expected_capabilities": [
-   "DR"
-  ],
-  "capability_evidence": {
-   "DR": {
-    "cap": "DR",
-    "blocker": "oatmeal",
-    "blocked": {
-     "skill": "roll",
-     "target": "rolling_pin"
-    },
-    "cause": "failure:dependency_initial"
-   }
-  },
+  "expected_capabilities": [],
+  "capability_evidence": {},
   "retry_solvable": false,
   "control": "pin_free",
   "oracle_route": "v5_h_task_bowl_behind",
@@ -24243,8 +24441,8 @@
  },
  "T16_rolling_pin_at_edge/h_action_ik_twice": {
   "family": "h_action_ik_twice",
-  "tier": "hard",
-  "hard_category": "action",
+  "tier": "medium",
+  "hard_category": null,
   "seeds": [
    10,
    11,
@@ -24349,19 +24547,9 @@
    ]
   },
   "expected_capabilities": [
-   "AF",
-   "DR"
+   "AF"
   ],
   "capability_evidence": {
-   "DR": {
-    "cap": "DR",
-    "blocker": "oatmeal",
-    "blocked": {
-     "skill": "roll",
-     "target": "rolling_pin"
-    },
-    "cause": "failure:dependency_initial"
-   },
    "AF": {
     "cap": "AF",
     "level": "local"
@@ -24376,8 +24564,8 @@
  },
  "T16_rolling_pin_at_edge/h_mixed_bowl_behind_ik": {
   "family": "h_mixed_bowl_behind_ik",
-  "tier": "hard",
-  "hard_category": "mixed",
+  "tier": "medium",
+  "hard_category": null,
   "seeds": [
    10,
    11,
@@ -24467,19 +24655,9 @@
    ]
   },
   "expected_capabilities": [
-   "AF",
-   "DR"
+   "AF"
   ],
   "capability_evidence": {
-   "DR": {
-    "cap": "DR",
-    "blocker": "oatmeal",
-    "blocked": {
-     "skill": "roll",
-     "target": "rolling_pin"
-    },
-    "cause": "failure:dependency_initial"
-   },
    "AF": {
     "cap": "AF",
     "level": "local"
@@ -24494,8 +24672,8 @@
  },
  "T16_rolling_pin_at_edge/h_dynamic_bowl_put_behind": {
   "family": "h_dynamic_bowl_put_behind",
-  "tier": "hard",
-  "hard_category": "dynamic",
+  "tier": "medium",
+  "hard_category": null,
   "seeds": [
    10,
    11,
@@ -24582,19 +24760,9 @@
    ]
   },
   "expected_capabilities": [
-   "AF",
-   "DR"
+   "AF"
   ],
   "capability_evidence": {
-   "DR": {
-    "cap": "DR",
-    "blocker": "oatmeal",
-    "blocked": {
-     "skill": "roll",
-     "target": "rolling_pin"
-    },
-    "cause": "failure:dependency_oatmeal"
-   },
    "AF": {
     "cap": "AF",
     "level": "task"
@@ -28226,6 +28394,210 @@
   "rationale": "seed extension of the v5 design: the foam_cube ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T19_recycling/x6_gd_can_put_away__in_4": {
+  "family": "x6_gd_can_put_away",
+  "tier": "hard",
+  "hard_category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   17,
+   18
+  ],
+  "instruction": "Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/recycle_and_store",
+   "start": null,
+   "moved": [
+    "soda_can",
+    "wide_storage_bin"
+   ],
+   "added": [],
+   "removed": [
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "item_put_away"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "soda_can",
+     "kitchen_cabinet_4/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_can_put_away",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "foam_cube",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "DR",
+   "GD"
+  ],
+  "capability_evidence": {
+   "GD": {
+    "cap": "GD",
+    "kind": "inspection",
+    "places": [
+     "kitchen_cabinet_6",
+     "kitchen_cabinet_4"
+    ],
+    "cause": "failure:resource_can_put_away"
+   },
+   "DR": {
+    "cap": "DR",
+    "blocker": "kitchen_cabinet_4",
+    "blocked": {
+     "skill": "pick",
+     "target": "soda_can"
+    },
+    "cause": "failure:resource_can_put_away"
+   }
+  },
+  "retry_solvable": false,
+  "control": "m_can_in_dining_room",
+  "oracle_route": "v6_x6_gd_can_put_away__in_4",
+  "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+  "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T19_recycling/x6_gd_can_put_away__in_6": {
+  "family": "x6_gd_can_put_away",
+  "tier": "hard",
+  "hard_category": "task",
+  "seeds": [
+   11,
+   14,
+   15,
+   16,
+   19
+  ],
+  "instruction": "Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling, on the low bookcase in the bedroom. Close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/recycle_and_store",
+   "start": null,
+   "moved": [
+    "soda_can",
+    "wide_storage_bin"
+   ],
+   "added": [],
+   "removed": [
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "item_put_away"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "soda_can",
+     "kitchen_cabinet_6/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_can_put_away",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "foam_cube",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "DR",
+   "GD"
+  ],
+  "capability_evidence": {
+   "GD": {
+    "cap": "GD",
+    "kind": "inspection",
+    "places": [
+     "kitchen_cabinet_6",
+     "kitchen_cabinet_4"
+    ],
+    "cause": "failure:resource_can_put_away"
+   },
+   "DR": {
+    "cap": "DR",
+    "blocker": "kitchen_cabinet_6",
+    "blocked": {
+     "skill": "pick",
+     "target": "soda_can"
+    },
+    "cause": "failure:resource_can_put_away"
+   }
+  },
+  "retry_solvable": false,
+  "control": "m_can_in_dining_room",
+  "oracle_route": "v6_x6_gd_can_put_away__in_6",
+  "challenge": "the can is in one of the two low kitchen cabinets (seed decides which); the cube on the floor",
+  "rationale": "inspect the closed places for the can (reference route: the worse order), then recycle both",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T19_recycling/x6_sr_cube_drop_refused": {
   "family": "x6_sr_cube_drop_refused",
   "tier": "hard",
@@ -30716,6 +31088,200 @@
   "oracle_route": "v5_h_dynamic_shelf_taken",
   "challenge": "while the robot is at the desk, someone puts a mug and the duck on the bookcase top: move the mug to a legal place before shelving",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/x6_gd_book_put_away__in_4": {
+  "family": "x6_gd_book_put_away",
+  "tier": "hard",
+  "hard_category": "task",
+  "seeds": [
+   10,
+   13,
+   14,
+   15,
+   16
+  ],
+  "instruction": "The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it back on the low bookcase in the bedroom, and close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "item_put_away"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "book_red",
+     "kitchen_cabinet_4/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_book_put_away",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "book_red",
+     "bookcase_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "DR",
+   "GD"
+  ],
+  "capability_evidence": {
+   "GD": {
+    "cap": "GD",
+    "kind": "inspection",
+    "places": [
+     "kitchen_cabinet_6",
+     "kitchen_cabinet_4"
+    ],
+    "cause": "failure:resource_book_put_away"
+   },
+   "DR": {
+    "cap": "DR",
+    "blocker": "kitchen_cabinet_4",
+    "blocked": {
+     "skill": "pick",
+     "target": "book_red"
+    },
+    "cause": "failure:resource_book_put_away"
+   }
+  },
+  "retry_solvable": false,
+  "control": "book_on_desk",
+  "oracle_route": "v6_x6_gd_book_put_away__in_4",
+  "challenge": "the red book is in one of the two low kitchen cabinets (seed decides which)",
+  "rationale": "the location is a disjunction over closed places: inspect them (reference route: the worse order), take the book out, close both doors",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T14_shelve_the_book/x6_gd_book_put_away__in_6": {
+  "family": "x6_gd_book_put_away",
+  "tier": "hard",
+  "hard_category": "task",
+  "seeds": [
+   11,
+   12,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it back on the low bookcase in the bedroom, and close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/shelve_books",
+   "start": null,
+   "moved": [
+    "book_red"
+   ],
+   "added": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "item_put_away"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "book_red",
+     "kitchen_cabinet_6/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_book_put_away",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "book_red",
+     "bookcase_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "DR",
+   "GD"
+  ],
+  "capability_evidence": {
+   "GD": {
+    "cap": "GD",
+    "kind": "inspection",
+    "places": [
+     "kitchen_cabinet_6",
+     "kitchen_cabinet_4"
+    ],
+    "cause": "failure:resource_book_put_away"
+   },
+   "DR": {
+    "cap": "DR",
+    "blocker": "kitchen_cabinet_6",
+    "blocked": {
+     "skill": "pick",
+     "target": "book_red"
+    },
+    "cause": "failure:resource_book_put_away"
+   }
+  },
+  "retry_solvable": false,
+  "control": "book_on_desk",
+  "oracle_route": "v6_x6_gd_book_put_away__in_6",
+  "challenge": "the red book is in one of the two low kitchen cabinets (seed decides which)",
+  "rationale": "the location is a disjunction over closed places: inspect them (reference route: the worse order), take the book out, close both doors",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T14_shelve_the_book/x6_sr_two_hand_carry": {

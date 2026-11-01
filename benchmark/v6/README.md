@@ -2,18 +2,19 @@
 
 v6 is the task-design layer on top of v5. It reads `benchmark/v5/tasks.json` and never writes it: every v5
 variant, oracle route and episode hash is unchanged (FREEZE.json, 1,800 hashes checked by `validate_v6.py` and
-the tests). v6 adds **54 new families** on 17 of the 20 base tasks and applies **one difficulty definition** to
-all 234 formal families. What v6 is meant to measure: whether a planner replans correctly at the task level when
+the tests). v6 adds **58 new families** on 17 of the 20 base tasks and applies **one difficulty definition** to
+all 238 formal families. What v6 is meant to measure: whether a planner replans correctly at the task level when
 execution fails or constraints change, not cross-scene generalisation.
 
 | | |
 |---|---|
 | base tasks | 20 (one house, existing assets only) |
-| formal families | 234 = 180 v5 + 54 new (each with seeds 10-19, 2,340 episodes) |
-| tiers | Easy 38, Medium 98, Hard 98 (`DESIGN_AUDIT.md`) |
-| Hard core capabilities | each of DR, GD, SR, CL, PP on >= 20 distinct designs and >= 9 tasks |
-| static checks | 2,340 / 2,340 episodes |
-| decision-diverse seeds | 55 families (41 of 98 Hard), covering substitute availability, capacity, occupancy, blocking relation, failure timing, item / resource location, failure mechanism |
+| formal families | 238 = 180 v5 + 58 new (each with seeds 10-19, 2,380 episodes) |
+| tiers | Easy 38, Medium 102, Hard 98 (`DESIGN_AUDIT.md`) |
+| Hard core capabilities | DR 37, GD 24, SR 24, CL 23, PP 22 distinct designs, each on >= 9 tasks |
+| baseline smoke | Retry planner: Medium 4/4 succeed, Hard 5/6 fail; the exception's claim withdrawn (T16) |
+| static checks | 2,380 / 2,380 episodes |
+| decision-diverse seeds | 57 families (43 of 98 Hard), covering substitute availability, capacity, occupancy, blocking relation, failure timing, item / resource location, failure mechanism |
 | physics | 51 families PHYSICS_VALIDATED (v5 grid, 10/10); the rest STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
 ## Concepts

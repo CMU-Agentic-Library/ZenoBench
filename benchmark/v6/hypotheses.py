@@ -543,6 +543,14 @@ def check_AF(c: Ctx, h):
     return r
 
 
+# Capability claims a physical baseline run contradicted: (task, variant) -> (capability, evidence).  The rule
+# checks are static; when a planner that lacks the capability solves the variant in simulation, the claim is withdrawn.
+EMPIRICAL_FALSIFIED = {
+    ("T16_rolling_pin_at_edge", v): ("DR", "retry planner succeeded on h_task_bowl_behind (benchmark/runs/"
+                                     "v6_smoke_retry, seed 10): the roll pushes the bowl along and the goal does not "
+                                     "forbid it, so the bowl in the rolling path is not an obstruction")
+    for v in ("h_task_bowl_behind", "h_action_ik_twice", "h_mixed_bowl_behind_ik", "h_dynamic_bowl_put_behind")}
+
 CHECK = {"DR": check_DR, "GD": check_GD, "SR": check_SR, "CL": check_CL, "PP": check_PP, "AF": check_AF}
 
 
@@ -690,8 +698,11 @@ def audit_variant(task, vid):
     declared = (c.v.get("v6") or {}).get("hypotheses")
     hyps = declared if declared is not None else propose(c)
     verified, rejected, evidence = [], [], {}
+    falsified = EMPIRICAL_FALSIFIED.get((task["task_id"], vid))
     for h in hyps:
         reasons = CHECK[h["cap"]](c, h)
+        if falsified and h["cap"] == falsified[0] and not reasons:
+            reasons = [f"empirically falsified: {falsified[1]}"]
         if reasons:
             rejected.append({**h, "reasons": reasons})
         else:
@@ -706,6 +717,7 @@ def audit_variant(task, vid):
     return {"source": "declared" if declared is not None else "proposed", "verified": sorted(verified),
             "core": sorted(core), "evidence": evidence,
             "rejected": rejected if declared is not None else [], "retry_solvable": rs, "tier_rule": tier,
+            "empirically_falsified": falsified[1] if falsified else None,
             "control": c.control}
 
 

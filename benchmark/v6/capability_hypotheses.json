@@ -1666,6 +1666,27 @@
  },
  {
   "task": "T08_wipe_island",
+  "family": "x6_cl_sponge_behind_mug",
+  "tier": "hard",
+  "capabilities": [
+   "CL",
+   "DR"
+  ],
+  "core": [
+   "CL",
+   "DR"
+  ],
+  "same_design_as": null,
+  "expected": {
+   "oracle": "success",
+   "fixed": "fail",
+   "retry": "fail",
+   "task_level_replanner": "success (needs CL, DR)"
+  },
+  "falsified_if": "retry succeeds on this Hard family"
+ },
+ {
+  "task": "T08_wipe_island",
   "family": "x6_pp_sponge_taken_after_wipe",
   "tier": "hard",
   "capabilities": [
@@ -2113,6 +2134,27 @@
    "fixed": "fail",
    "retry": "fail",
    "task_level_replanner": "success (needs DR)"
+  },
+  "falsified_if": "retry succeeds on this Hard family"
+ },
+ {
+  "task": "T10_trash_the_can",
+  "family": "x6_cl_can_behind_bottle",
+  "tier": "hard",
+  "capabilities": [
+   "CL",
+   "DR"
+  ],
+  "core": [
+   "CL",
+   "DR"
+  ],
+  "same_design_as": null,
+  "expected": {
+   "oracle": "success",
+   "fixed": "fail",
+   "retry": "fail",
+   "task_level_replanner": "success (needs CL, DR)"
   },
   "falsified_if": "retry succeeds on this Hard family"
  },
@@ -3125,81 +3167,68 @@
  {
   "task": "T16_rolling_pin_at_edge",
   "family": "h_task_bowl_behind",
-  "tier": "hard",
-  "capabilities": [
-   "DR"
-  ],
-  "core": [
-   "DR"
-  ],
+  "tier": "medium",
+  "capabilities": [],
+  "core": [],
   "same_design_as": null,
   "expected": {
    "oracle": "success",
    "fixed": "fail",
    "retry": "fail",
-   "task_level_replanner": "success (needs DR)"
+   "task_level_replanner": "success (needs AF)"
   },
-  "falsified_if": "retry succeeds on this Hard family"
+  "falsified_if": null
  },
  {
   "task": "T16_rolling_pin_at_edge",
   "family": "h_action_ik_twice",
-  "tier": "hard",
+  "tier": "medium",
   "capabilities": [
-   "AF",
-   "DR"
+   "AF"
   ],
-  "core": [
-   "DR"
-  ],
+  "core": [],
   "same_design_as": null,
   "expected": {
    "oracle": "success",
    "fixed": "fail",
    "retry": "fail",
-   "task_level_replanner": "success (needs DR)"
+   "task_level_replanner": "success (needs AF)"
   },
-  "falsified_if": "retry succeeds on this Hard family"
+  "falsified_if": null
  },
  {
   "task": "T16_rolling_pin_at_edge",
   "family": "h_mixed_bowl_behind_ik",
-  "tier": "hard",
+  "tier": "medium",
   "capabilities": [
-   "AF",
-   "DR"
+   "AF"
   ],
-  "core": [
-   "DR"
-  ],
-  "same_design_as": "h_action_ik_twice",
-  "expected": {
-   "oracle": "success",
-   "fixed": "fail",
-   "retry": "fail",
-   "task_level_replanner": "success (needs DR)"
-  },
-  "falsified_if": "retry succeeds on this Hard family"
- },
- {
-  "task": "T16_rolling_pin_at_edge",
-  "family": "h_dynamic_bowl_put_behind",
-  "tier": "hard",
-  "capabilities": [
-   "AF",
-   "DR"
-  ],
-  "core": [
-   "DR"
-  ],
+  "core": [],
   "same_design_as": null,
   "expected": {
    "oracle": "success",
    "fixed": "fail",
    "retry": "fail",
-   "task_level_replanner": "success (needs DR)"
+   "task_level_replanner": "success (needs AF)"
   },
-  "falsified_if": "retry succeeds on this Hard family"
+  "falsified_if": null
+ },
+ {
+  "task": "T16_rolling_pin_at_edge",
+  "family": "h_dynamic_bowl_put_behind",
+  "tier": "medium",
+  "capabilities": [
+   "AF"
+  ],
+  "core": [],
+  "same_design_as": null,
+  "expected": {
+   "oracle": "success",
+   "fixed": "fail",
+   "retry": "fail",
+   "task_level_replanner": "success (needs AF)"
+  },
+  "falsified_if": null
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -3779,6 +3808,27 @@
  },
  {
   "task": "T19_recycling",
+  "family": "x6_gd_can_put_away",
+  "tier": "hard",
+  "capabilities": [
+   "DR",
+   "GD"
+  ],
+  "core": [
+   "DR",
+   "GD"
+  ],
+  "same_design_as": null,
+  "expected": {
+   "oracle": "success",
+   "fixed": "fail",
+   "retry": "fail",
+   "task_level_replanner": "success (needs DR, GD)"
+  },
+  "falsified_if": "retry succeeds on this Hard family"
+ },
+ {
+  "task": "T19_recycling",
   "family": "x6_sr_cube_drop_refused",
   "tier": "hard",
   "capabilities": [
@@ -4175,6 +4225,27 @@
    "fixed": "fail",
    "retry": "fail",
    "task_level_replanner": "success (needs DR)"
+  },
+  "falsified_if": "retry succeeds on this Hard family"
+ },
+ {
+  "task": "T14_shelve_the_book",
+  "family": "x6_gd_book_put_away",
+  "tier": "hard",
+  "capabilities": [
+   "DR",
+   "GD"
+  ],
+  "core": [
+   "DR",
+   "GD"
+  ],
+  "same_design_as": null,
+  "expected": {
+   "oracle": "success",
+   "fixed": "fail",
+   "retry": "fail",
+   "task_level_replanner": "success (needs DR, GD)"
   },
   "falsified_if": "retry succeeds on this Hard family"
  },

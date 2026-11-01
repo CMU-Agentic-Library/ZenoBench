@@ -259,6 +259,9 @@ def predictions(doc, rows):
     return out
 
 
+from benchmark.v6.hypotheses import EMPIRICAL_FALSIFIED  # noqa: E402
+
+
 def smoke_rows(doc):
     """Physical smoke episodes of v6 features (benchmark/runs/v6_smoke*): did the injected failures fire, does
     the result belong to the current catalog, where did the episode end."""
@@ -389,6 +392,22 @@ def design_md(doc, a):
               f"{a['hard_families']} Hard; {nd} frozen v5 near-duplicates marked and counted once; no new family "
               f"duplicates another in its task | {_check(not any(f.startswith('x6_') for v in a['duplicates_within_task'].values() for f in v))} |")
     sm = smoke_rows(doc)
+    rt = [r for r in sm if r["run"] == "v6_smoke_retry"]
+    md += ["", "## Baseline discrimination smoke (Retry planner)", "",
+           "The prediction in `capability_hypotheses.json`: a retry planner (nominal plan, a failed call repeated up to "
+           "twice) succeeds on Medium transient-failure variants and fails on every Hard family. One episode each, on "
+           "families whose oracle passed 10/10 in the v5 grid (so physics does not confound the result).", "",
+           "| task | family | tier when run | retry result | as predicted |", "|---|---|---|---|---|"]
+    for r in rt:
+        x = next((x for x in rows if x["task"] == r["task"] and r["variant"] in x["cases"]), {})
+        before = "hard" if (r["task"], r["variant"]) in EMPIRICAL_FALSIFIED else x.get("tier", "?")
+        ok = r["status"] == "passed"
+        md.append(f"| {short(r['task'])} | {r['variant']} | {before} | {'success' if ok else 'fail'} | "
+                  f"{'yes' if ok == (before != 'hard') else 'NO: the Hard claim is withdrawn (below)'} |")
+    md += ["", "Result: Medium 4/4 succeed, Hard 5/6 fail. The exception, T16 `h_task_bowl_behind` (Retry succeeded: "
+           "the roll pushes the bowl along and the goal allows it), falsified its DR claim; DR is withdrawn from the "
+           "four T16 variants built on that constraint (`EMPIRICAL_FALSIFIED` in hypotheses.py) and the tier rule "
+           "moves them to Medium.", ""]
     md += ["", "## Physical smoke runs (failure-injection features in Isaac Sim)", "",
            "Light checks, not a validation grid: one episode per new runtime feature. `current`: the result's hash "
            "and route match this catalog (earlier rows show what the route fixes were based on).", "",
