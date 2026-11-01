@@ -47,4 +47,4 @@ python -m pytest -q benchmark/v5/tests failure_injection/tests skill_ext/tests
 ```
 
 Static evidence (configuration) and physical evidence (simulated episodes) are reported separately; an
-unrun episode is `unrun`, never passed. See [VALIDATION.md](VALIDATION.md) for the latest results.
+unrun episode is `unrun`, never passed. See [VALIDATION.md](VALIDATION.md) for the latest results and [REPORT.md](REPORT.md) for the baseline summary.

@@ -4,16 +4,26 @@
   "variant": "overhang_ready",
   "tier": "easy",
   "hard_category": null,
-  "caps": [],
-  "evidence": {}
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T01_book_to_dining_table",
   "variant": "e2_from_dining_room",
   "tier": "easy",
   "hard_category": null,
-  "caps": [],
-  "evidence": {}
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T01_book_to_dining_table",
@@ -24,8 +34,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "decisions fallback"
-  }
+   "AF": "decisions fallback, local steps look"
+  },
+  "af_level": "task"
  },
  {
   "task": "T01_book_to_dining_table",
@@ -36,8 +47,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "decisions explore/fallback"
-  }
+   "AF": "decisions explore/fallback, local steps look"
+  },
+  "af_level": "task"
  },
  {
   "task": "T01_book_to_dining_table",
@@ -48,8 +60,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T01_book_to_dining_table",
@@ -57,11 +70,14 @@
   "tier": "hard",
   "hard_category": "task",
   "caps": [
+   "AF",
    "DR"
   ],
   "evidence": {
+   "AF": "local steps look",
    "DR": "v4 decision insert"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T01_book_to_dining_table",
@@ -72,8 +88,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T01_book_to_dining_table",
@@ -84,8 +101,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T01_book_to_dining_table",
@@ -96,8 +114,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps expose"
-  }
+   "AF": "local steps expose/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T02_stack_blocks",
@@ -105,7 +124,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T02_stack_blocks",
@@ -113,7 +133,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T02_stack_blocks",
@@ -124,8 +145,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "decisions fallback"
-  }
+   "AF": "decisions fallback, local steps look"
+  },
+  "af_level": "task"
  },
  {
   "task": "T02_stack_blocks",
@@ -136,8 +158,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "decisions explore/fallback"
-  }
+   "AF": "decisions explore/fallback, local steps look"
+  },
+  "af_level": "task"
  },
  {
   "task": "T02_stack_blocks",
@@ -149,7 +172,8 @@
   ],
   "evidence": {
    "AF": "expected failure then retry"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T02_stack_blocks",
@@ -165,7 +189,8 @@
    "AF": "substitute wooden_block_a",
    "DR": "v4 decision insert",
    "SR": "stack roles swapped"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T02_stack_blocks",
@@ -177,9 +202,10 @@
    "SR"
   ],
   "evidence": {
-   "AF": "local steps approach, substitute wooden_block_a",
+   "AF": "local steps approach/look, substitute wooden_block_a",
    "SR": "stack roles swapped"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T02_stack_blocks",
@@ -193,7 +219,8 @@
   "evidence": {
    "AF": "substitute wooden_block_a",
    "SR": "stack roles swapped"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T02_stack_blocks",
@@ -209,7 +236,8 @@
    "AF": "local steps approach, substitute wooden_block_a",
    "GD": "goal objects to kitchen_island/top/wooden_block_b",
    "SR": "stack roles swapped"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T03_utensils_one_container",
@@ -217,7 +245,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T03_utensils_one_container",
@@ -225,7 +254,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T03_utensils_one_container",
@@ -237,7 +267,8 @@
   ],
   "evidence": {
    "AF": "decisions alternative"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T03_utensils_one_container",
@@ -249,9 +280,10 @@
    "PP"
   ],
   "evidence": {
-   "AF": "decisions alternative/explore",
+   "AF": "decisions alternative/explore, local steps look",
    "PP": "breakfast_spoon achieved before the failure / event at step 10 and kept"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T03_utensils_one_container",
@@ -263,7 +295,8 @@
   ],
   "evidence": {
    "AF": "expected failure then retry"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T03_utensils_one_container",
@@ -275,7 +308,8 @@
   ],
   "evidence": {
    "GD": "v4 decision decompose; measures mug/small_storage_bin/rolling_pin"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T03_utensils_one_container",
@@ -287,9 +321,10 @@
    "GD"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "GD": "measures mug/small_storage_bin/rolling_pin"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T03_utensils_one_container",
@@ -302,10 +337,11 @@
    "PP"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "GD": "measures mug/small_storage_bin/rolling_pin",
    "PP": "breakfast_spoon achieved before the failure / event at step 11 and kept"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T03_utensils_one_container",
@@ -321,7 +357,8 @@
    "AF": "local steps search",
    "GD": "measures mug/small_storage_bin/rolling_pin",
    "PP": "breakfast_spoon achieved before the failure / event at step 10 and kept"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -329,7 +366,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -337,7 +375,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -349,7 +388,8 @@
   ],
   "evidence": {
    "AF": "decisions alternative, substitute mug"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -361,7 +401,8 @@
   ],
   "evidence": {
    "AF": "decisions alternative/explore, substitute mug"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -372,16 +413,22 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
   "variant": "h_task_spot_taken",
   "tier": "hard",
   "hard_category": "task",
-  "caps": [],
-  "evidence": {}
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "substitute oatmeal"
+  },
+  "af_level": "task"
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -393,9 +440,10 @@
    "CL"
   ],
   "evidence": {
-   "AF": "local steps approach, substitute mug/oatmeal",
+   "AF": "substitute mug/oatmeal",
    "CL": "persistent grasp on pick(cup_counter_b) -> cross-level: persistent grasp failure -> substitute object"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -406,8 +454,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach, substitute oatmeal"
-  }
+   "AF": "substitute oatmeal"
+  },
+  "af_level": "task"
  },
  {
   "task": "T04_cup_or_mug_to_cabinet",
@@ -419,7 +468,8 @@
   ],
   "evidence": {
    "AF": "local steps look, substitute mug"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -431,7 +481,8 @@
   ],
   "evidence": {
    "AF": "substitute pencil"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -443,7 +494,8 @@
   ],
   "evidence": {
    "AF": "substitute pencil"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -455,7 +507,8 @@
   ],
   "evidence": {
    "AF": "decisions alternative, substitute pencil"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -467,7 +520,8 @@
   ],
   "evidence": {
    "AF": "decisions alternative/explore, local steps look, substitute pencil"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -479,7 +533,8 @@
   ],
   "evidence": {
    "AF": "substitute pencil"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -493,7 +548,8 @@
   "evidence": {
    "AF": "local steps explore_furniture, substitute pencil",
    "DR": "inserted subgoal on kitchen_cabinet_6"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -507,7 +563,8 @@
   "evidence": {
    "AF": "local steps approach, substitute pencil",
    "DR": "inserted subgoal on kitchen_cabinet_6"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -521,7 +578,8 @@
   "evidence": {
    "AF": "local steps approach, substitute pencil",
    "DR": "inserted subgoal on kitchen_cabinet_6"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T05_pen_or_pencil_to_desk",
@@ -535,7 +593,8 @@
   "evidence": {
    "AF": "local steps look, substitute pencil",
    "DR": "inserted subgoal on kitchen_cabinet_6"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T06_block_destination_occupied",
@@ -543,7 +602,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T06_block_destination_occupied",
@@ -551,7 +611,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T06_block_destination_occupied",
@@ -565,7 +626,8 @@
   "evidence": {
    "AF": "decisions alternative",
    "CL": "place(wooden_block_a) fails -> uses tv_stand_2/top"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T06_block_destination_occupied",
@@ -579,7 +641,8 @@
   "evidence": {
    "AF": "decisions alternative/explore",
    "CL": "place(wooden_block_a) fails -> uses tv_stand_2/top"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T06_block_destination_occupied",
@@ -590,8 +653,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T06_block_destination_occupied",
@@ -603,7 +667,8 @@
   ],
   "evidence": {
    "DR": "v4 decision insert"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T06_block_destination_occupied",
@@ -614,8 +679,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T06_block_destination_occupied",
@@ -627,7 +693,8 @@
   ],
   "evidence": {
    "AF": "expected failure then retry"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T06_block_destination_occupied",
@@ -641,7 +708,8 @@
   "evidence": {
    "AF": "expected failure then retry",
    "CL": "place(wooden_block_a) fails -> uses tv_stand_2/top"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T07_heat_oatmeal",
@@ -649,15 +717,21 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T07_heat_oatmeal",
   "variant": "e2_from_dining_room",
   "tier": "easy",
   "hard_category": null,
-  "caps": [],
-  "evidence": {}
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps approach"
+  },
+  "af_level": "local"
  },
  {
   "task": "T07_heat_oatmeal",
@@ -671,7 +745,8 @@
   "evidence": {
    "AF": "decisions alternative",
    "SR": "appliance kitchen_stove"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T07_heat_oatmeal",
@@ -687,7 +762,8 @@
    "AF": "decisions alternative/explore",
    "SR": "appliance kitchen_stove",
    "CL": "heat(kitchen_microwave) fails -> uses kitchen_stove/kitchen_stove/top"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T07_heat_oatmeal",
@@ -698,8 +774,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "expected failure then retry"
-  }
+   "AF": "local steps approach"
+  },
+  "af_level": "local"
  },
  {
   "task": "T07_heat_oatmeal",
@@ -711,7 +788,8 @@
   ],
   "evidence": {
    "SR": "v4 decision replace; appliance kitchen_stove"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T07_heat_oatmeal",
@@ -724,10 +802,11 @@
    "SR"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "SR": "appliance kitchen_stove; heating procedure replaced: microwave -> stove (take the bowl out, place, heat, close)",
    "CL": "persistent ik on heat(oatmeal) -> persistent appliance failure -> stove procedure"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T07_heat_oatmeal",
@@ -739,9 +818,10 @@
    "SR"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "SR": "appliance kitchen_stove"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T07_heat_oatmeal",
@@ -753,7 +833,8 @@
   ],
   "evidence": {
    "SR": "appliance kitchen_stove"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T08_wipe_island",
@@ -761,7 +842,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T08_wipe_island",
@@ -769,7 +851,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T08_wipe_island",
@@ -781,7 +864,8 @@
   ],
   "evidence": {
    "AF": "decisions explore"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T08_wipe_island",
@@ -793,7 +877,8 @@
   ],
   "evidence": {
    "AF": "decisions explore"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T08_wipe_island",
@@ -805,7 +890,8 @@
   ],
   "evidence": {
    "AF": "expected failure then retry"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T08_wipe_island",
@@ -817,7 +903,8 @@
   ],
   "evidence": {
    "DR": "inserted subgoal on wooden_block_b"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T08_wipe_island",
@@ -831,7 +918,8 @@
   "evidence": {
    "AF": "local steps approach",
    "DR": "inserted subgoal on wooden_block_b"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T08_wipe_island",
@@ -845,7 +933,8 @@
   "evidence": {
    "AF": "expected failure then retry",
    "DR": "inserted subgoal on wooden_block_b"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T08_wipe_island",
@@ -859,7 +948,8 @@
   "evidence": {
    "AF": "local steps search",
    "DR": "inserted subgoal on wooden_block_b"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T09_tomato_soup",
@@ -867,7 +957,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T09_tomato_soup",
@@ -879,7 +970,8 @@
   ],
   "evidence": {
    "AF": "local steps look"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T09_tomato_soup",
@@ -891,7 +983,8 @@
   ],
   "evidence": {
    "AF": "decisions fallback"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T09_tomato_soup",
@@ -903,7 +996,8 @@
   ],
   "evidence": {
    "AF": "decisions explore/fallback"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T09_tomato_soup",
@@ -917,7 +1011,8 @@
   "evidence": {
    "AF": "expected failure then retry",
    "PP": "cherry_tomato_1/cherry_tomato_2 achieved before the failure / event at step 3 and kept"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T09_tomato_soup",
@@ -929,7 +1024,8 @@
   ],
   "evidence": {
    "SR": "v4 decision replace"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T09_tomato_soup",
@@ -941,9 +1037,10 @@
    "PP"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "PP": "cherry_tomato_1/cherry_tomato_2 achieved before the failure / event at step 4 and kept"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T09_tomato_soup",
@@ -957,7 +1054,8 @@
   "evidence": {
    "AF": "expected failure then retry",
    "PP": "cherry_tomato_1/cherry_tomato_2 achieved before the failure / event at step 4 and kept"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T09_tomato_soup",
@@ -971,7 +1069,8 @@
   "evidence": {
    "AF": "local steps search",
    "PP": "cherry_tomato_1/cherry_tomato_2 achieved before the failure / event at step 3 and kept"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T10_trash_the_can",
@@ -979,7 +1078,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T10_trash_the_can",
@@ -987,7 +1087,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T10_trash_the_can",
@@ -999,7 +1100,8 @@
   ],
   "evidence": {
    "AF": "decisions explore"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T10_trash_the_can",
@@ -1011,7 +1113,8 @@
   ],
   "evidence": {
    "AF": "decisions explore"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T10_trash_the_can",
@@ -1022,8 +1125,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T10_trash_the_can",
@@ -1035,7 +1139,8 @@
   ],
   "evidence": {
    "DR": "inserted subgoal on kitchen_microwave"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T10_trash_the_can",
@@ -1047,9 +1152,10 @@
    "DR"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "DR": "inserted subgoal on kitchen_microwave"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T10_trash_the_can",
@@ -1061,9 +1167,10 @@
    "DR"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "DR": "inserted subgoal on kitchen_microwave"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T10_trash_the_can",
@@ -1077,7 +1184,8 @@
   "evidence": {
    "AF": "local steps search",
    "DR": "inserted subgoal on kitchen_microwave"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T11_collect_fruits",
@@ -1085,7 +1193,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T11_collect_fruits",
@@ -1093,7 +1202,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T11_collect_fruits",
@@ -1107,7 +1217,8 @@
   "evidence": {
    "AF": "decisions alternative",
    "CL": "place(apple) fails -> uses serving_tray"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T11_collect_fruits",
@@ -1119,7 +1230,8 @@
   ],
   "evidence": {
    "AF": "expected failure then retry"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T11_collect_fruits",
@@ -1131,7 +1243,8 @@
   ],
   "evidence": {
    "AF": "local steps approach"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T11_collect_fruits",
@@ -1143,7 +1256,8 @@
   ],
   "evidence": {
    "GD": "v4 decision decompose"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T11_collect_fruits",
@@ -1157,7 +1271,8 @@
   "evidence": {
    "AF": "local steps approach/look",
    "CL": "persistent ik on place(apple) -> cross-level: persistent placement failure -> substitute destination"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T11_collect_fruits",
@@ -1169,7 +1284,8 @@
   ],
   "evidence": {
    "AF": "expected failure then retry"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T11_collect_fruits",
@@ -1177,7 +1293,8 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T12_tidy_toys",
@@ -1185,7 +1302,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T12_tidy_toys",
@@ -1193,7 +1311,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T12_tidy_toys",
@@ -1205,7 +1324,8 @@
   ],
   "evidence": {
    "AF": "decisions explore"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T12_tidy_toys",
@@ -1217,7 +1337,8 @@
   ],
   "evidence": {
    "AF": "expected failure then retry"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T12_tidy_toys",
@@ -1231,7 +1352,8 @@
   "evidence": {
    "AF": "local steps approach",
    "PP": "toy_car achieved before the failure / event at step 9 and kept"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T12_tidy_toys",
@@ -1243,7 +1365,8 @@
   ],
   "evidence": {
    "GD": "v4 decision decompose; goal objects to toy_bin_small/toy_tray; measures toy_bin_small/toy_tray"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T12_tidy_toys",
@@ -1257,7 +1380,8 @@
   "evidence": {
    "AF": "local steps approach",
    "GD": "goal objects to toy_bin_small/toy_tray; measures toy_bin_small/toy_tray"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T12_tidy_toys",
@@ -1269,9 +1393,10 @@
    "GD"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "expected failure then retry",
    "GD": "goal objects to toy_bin_small/toy_tray; measures toy_bin_small/toy_tray"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T12_tidy_toys",
@@ -1279,13 +1404,16 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "caps": [
+   "AF",
    "GD",
    "PP"
   ],
   "evidence": {
+   "AF": "local steps look",
    "GD": "goal objects to toy_bin_small/toy_tray; measures toy_bin_small/toy_tray",
    "PP": "toy_car achieved before the failure / event at step 9 and kept"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T13_breakfast_setup",
@@ -1293,7 +1421,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T13_breakfast_setup",
@@ -1301,7 +1430,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T13_breakfast_setup",
@@ -1313,7 +1443,8 @@
   ],
   "evidence": {
    "AF": "decisions alternative, substitute mug"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T13_breakfast_setup",
@@ -1325,7 +1456,8 @@
   ],
   "evidence": {
    "AF": "decisions explore"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T13_breakfast_setup",
@@ -1337,7 +1469,8 @@
   ],
   "evidence": {
    "AF": "decisions alternative/explore, substitute mug"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T13_breakfast_setup",
@@ -1353,7 +1486,8 @@
    "AF": "decisions alternative, substitute mug/spoon",
    "DR": "v4 decision insert",
    "SR": "goal anchor relocated: spoon"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T13_breakfast_setup",
@@ -1365,9 +1499,10 @@
    "CL"
   ],
   "evidence": {
-   "AF": "local steps approach/look, substitute mug",
+   "AF": "local steps look, substitute mug",
    "CL": "persistent grasp on pick(cup) -> cross-level: persistent grasp failure -> substitute object"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T13_breakfast_setup",
@@ -1379,9 +1514,10 @@
    "SR"
   ],
   "evidence": {
-   "AF": "local steps approach, substitute mug/spoon",
+   "AF": "substitute mug/spoon",
    "SR": "goal anchor relocated: spoon"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T13_breakfast_setup",
@@ -1397,7 +1533,8 @@
    "AF": "local steps search, substitute mug/spoon",
    "SR": "goal anchor relocated: spoon",
    "PP": "bowl achieved before the failure / event at step 12 and kept"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T15_book_face_up",
@@ -1405,7 +1542,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T15_book_face_up",
@@ -1413,7 +1551,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T15_book_face_up",
@@ -1425,7 +1564,8 @@
   ],
   "evidence": {
    "AF": "decisions explore"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T15_book_face_up",
@@ -1437,7 +1577,8 @@
   ],
   "evidence": {
    "AF": "local steps approach"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T15_book_face_up",
@@ -1445,7 +1586,8 @@
   "tier": "medium",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T15_book_face_up",
@@ -1457,7 +1599,8 @@
   ],
   "evidence": {
    "AF": "substitute wooden_block_a"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T15_book_face_up",
@@ -1469,7 +1612,8 @@
   ],
   "evidence": {
    "AF": "local steps approach, substitute wooden_block_a"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T15_book_face_up",
@@ -1481,7 +1625,8 @@
   ],
   "evidence": {
    "AF": "local steps approach, substitute wooden_block_a"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T15_book_face_up",
@@ -1493,7 +1638,8 @@
   ],
   "evidence": {
    "AF": "local steps look, substitute wooden_block_a"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1501,7 +1647,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1509,7 +1656,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1521,7 +1669,8 @@
   ],
   "evidence": {
    "AF": "decisions explore"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1533,7 +1682,8 @@
   ],
   "evidence": {
    "AF": "local steps approach"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1541,7 +1691,8 @@
   "tier": "medium",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1553,7 +1704,8 @@
   ],
   "evidence": {
    "AF": "local steps push"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1565,7 +1717,8 @@
   ],
   "evidence": {
    "AF": "local steps approach, substitute oatmeal"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1576,8 +1729,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach, substitute oatmeal"
-  }
+   "AF": "local steps approach/look, substitute oatmeal"
+  },
+  "af_level": "task"
  },
  {
   "task": "T16_rolling_pin_at_edge",
@@ -1589,7 +1743,8 @@
   ],
   "evidence": {
    "AF": "local steps look, substitute oatmeal"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1597,15 +1752,21 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T17_hide_and_seek_block",
   "variant": "e2_from_dining_room",
   "tier": "easy",
   "hard_category": null,
-  "caps": [],
-  "evidence": {}
+  "caps": [
+   "AF"
+  ],
+  "evidence": {
+   "AF": "local steps search"
+  },
+  "af_level": "task"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1617,7 +1778,8 @@
   ],
   "evidence": {
    "AF": "decisions fallback"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1629,7 +1791,8 @@
   ],
   "evidence": {
    "AF": "decisions fallback"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1641,7 +1804,8 @@
   ],
   "evidence": {
    "AF": "decisions fallback"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1653,7 +1817,8 @@
   ],
   "evidence": {
    "DR": "inserted subgoal on pot_lid"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1667,7 +1832,8 @@
   "evidence": {
    "AF": "local steps approach",
    "DR": "inserted subgoal on pot_lid"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1679,9 +1845,10 @@
    "DR"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "DR": "inserted subgoal on pot_lid"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T17_hide_and_seek_block",
@@ -1695,7 +1862,8 @@
   "evidence": {
    "AF": "local steps look/uncover",
    "DR": "inserted subgoal on pot_lid"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1703,7 +1871,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1711,7 +1880,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1723,7 +1893,8 @@
   ],
   "evidence": {
    "AF": "local steps approach"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1735,7 +1906,8 @@
   ],
   "evidence": {
    "AF": "local steps approach"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1743,7 +1915,8 @@
   "tier": "medium",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1757,7 +1930,8 @@
   "evidence": {
    "DR": "inserted subgoal on kitchen_cabinet_4",
    "GD": "inspects kitchen_cabinet_4/kitchen_cabinet_6"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1773,7 +1947,8 @@
    "AF": "local steps approach",
    "DR": "inserted subgoal on kitchen_cabinet_4",
    "GD": "inspects kitchen_cabinet_4/kitchen_cabinet_6"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1789,7 +1964,8 @@
    "AF": "local steps approach",
    "DR": "inserted subgoal on kitchen_cabinet_4",
    "GD": "inspects kitchen_cabinet_4/kitchen_cabinet_6"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T18_check_cabinet_dishes",
@@ -1805,7 +1981,8 @@
    "AF": "expected failure then retry",
    "DR": "inserted subgoal on kitchen_cabinet_4",
    "GD": "inspects kitchen_cabinet_4/kitchen_cabinet_6"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T19_recycling",
@@ -1813,7 +1990,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T19_recycling",
@@ -1821,7 +1999,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T19_recycling",
@@ -1829,7 +2008,8 @@
   "tier": "medium",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T19_recycling",
@@ -1841,7 +2021,8 @@
   ],
   "evidence": {
    "AF": "expected failure then retry"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T19_recycling",
@@ -1853,9 +2034,10 @@
    "PP"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "expected failure then retry",
    "PP": "soda_can achieved before the failure / event at step 11 and kept"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T19_recycling",
@@ -1867,7 +2049,8 @@
   ],
   "evidence": {
    "GD": "v4 decision decompose"
-  }
+  },
+  "af_level": null
  },
  {
   "task": "T19_recycling",
@@ -1878,8 +2061,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T19_recycling",
@@ -1891,9 +2075,10 @@
    "PP"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "expected failure then retry",
    "PP": "soda_can achieved before the failure / event at step 12 and kept"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T19_recycling",
@@ -1907,7 +2092,8 @@
   "evidence": {
    "AF": "local steps search",
    "PP": "soda_can achieved before the failure / event at step 11 and kept"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T20_juice_back_to_table",
@@ -1915,7 +2101,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T20_juice_back_to_table",
@@ -1923,7 +2110,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T20_juice_back_to_table",
@@ -1934,8 +2122,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "expected failure then retry"
+  },
+  "af_level": "local"
  },
  {
   "task": "T20_juice_back_to_table",
@@ -1947,7 +2136,8 @@
   ],
   "evidence": {
    "AF": "local steps approach"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T20_juice_back_to_table",
@@ -1955,7 +2145,8 @@
   "tier": "medium",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T20_juice_back_to_table",
@@ -1963,11 +2154,14 @@
   "tier": "hard",
   "hard_category": "task",
   "caps": [
+   "AF",
    "DR"
   ],
   "evidence": {
+   "AF": "local steps look",
    "DR": "inserted subgoal on party_bowl_1"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T20_juice_back_to_table",
@@ -1979,9 +2173,10 @@
    "DR"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "DR": "inserted subgoal on party_bowl_1"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T20_juice_back_to_table",
@@ -1993,9 +2188,10 @@
    "DR"
   ],
   "evidence": {
-   "AF": "local steps approach",
+   "AF": "local steps approach/look",
    "DR": "inserted subgoal on party_bowl_1"
-  }
+  },
+  "af_level": "local"
  },
  {
   "task": "T20_juice_back_to_table",
@@ -2007,9 +2203,10 @@
    "DR"
   ],
   "evidence": {
-   "AF": "local steps search",
+   "AF": "local steps look/search",
    "DR": "inserted subgoal on party_bowl_1"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T14_shelve_the_book",
@@ -2017,7 +2214,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T14_shelve_the_book",
@@ -2025,7 +2223,8 @@
   "tier": "easy",
   "hard_category": null,
   "caps": [],
-  "evidence": {}
+  "evidence": {},
+  "af_level": null
  },
  {
   "task": "T14_shelve_the_book",
@@ -2036,8 +2235,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "decisions fallback"
-  }
+   "AF": "decisions fallback, local steps look"
+  },
+  "af_level": "task"
  },
  {
   "task": "T14_shelve_the_book",
@@ -2048,8 +2248,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach"
-  }
+   "AF": "local steps approach/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T14_shelve_the_book",
@@ -2060,8 +2261,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach/expose"
-  }
+   "AF": "local steps approach/expose/look"
+  },
+  "af_level": "local"
  },
  {
   "task": "T14_shelve_the_book",
@@ -2073,9 +2275,10 @@
    "DR"
   ],
   "evidence": {
-   "AF": "substitute mug_shelf",
+   "AF": "local steps look, substitute mug_shelf",
    "DR": "v4 decision insert"
-  }
+  },
+  "af_level": "task"
  },
  {
   "task": "T14_shelve_the_book",
@@ -2086,8 +2289,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach/expose, substitute mug_shelf"
-  }
+   "AF": "local steps approach/expose/look, substitute mug_shelf"
+  },
+  "af_level": "task"
  },
  {
   "task": "T14_shelve_the_book",
@@ -2098,8 +2302,9 @@
    "AF"
   ],
   "evidence": {
-   "AF": "local steps approach, substitute mug_shelf"
-  }
+   "AF": "local steps approach/look, substitute mug_shelf"
+  },
+  "af_level": "task"
  },
  {
   "task": "T14_shelve_the_book",
@@ -2113,6 +2318,7 @@
   "evidence": {
    "AF": "local steps expose/look",
    "DR": "inserted subgoal on mug_shelf"
-  }
+  },
+  "af_level": "local"
  }
 ]

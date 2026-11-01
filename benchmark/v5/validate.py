@@ -388,27 +388,27 @@ def report(doc, runs, seeds=SEEDS):
                                             "route": t["oracle"][vid]}
     got = {}
     stale = 0
-    for d in runs:
-        for f in sorted(Path(d).glob("*/*/result.json")):
-            try:
-                r = json.loads(f.read_text())
-            except ValueError:
-                continue
-            key = (r.get("task_id"), r.get("variant"), r.get("seed"))
-            if key not in want or r.get("route") != want[key]["route"]:
-                continue
-            if r.get("route_sha1") != want[key]["route_sha1"]:
-                stale += 1                      # run with another version of the route (or before it was recorded)
-                continue
-            if r.get("config_hash") != want[key]["hash"]:
-                stale += 1
-                continue
-            got[key] = {"status": classify(r), "file": str(f.relative_to(ROOT)) if f.is_relative_to(ROOT) else str(f),
-                        "stopped_at": r.get("stopped_at"), "wall_s": r.get("wall_s"),
-                        "failed_goal": [g["atom"] for g in (r.get("goal") or {}).get("all", []) if not g["holds"]],
-                        "failure_injection": {k: (r.get("failure_injection") or {}).get(k)
-                                              for k in ("fired", "manifested", "not_fired")},
-                        "stop_call": _stop_call(r)}
+    files = [f for d in runs for f in Path(d).glob("*/*/result.json")]
+    for f in sorted(files, key=lambda f: f.stat().st_mtime):    # the newest valid run of an episode wins
+        try:
+            r = json.loads(f.read_text())
+        except ValueError:
+            continue
+        key = (r.get("task_id"), r.get("variant"), r.get("seed"))
+        if key not in want or r.get("route") != want[key]["route"]:
+            continue
+        if r.get("route_sha1") != want[key]["route_sha1"]:
+            stale += 1                      # run with another version of the route (or before it was recorded)
+            continue
+        if r.get("config_hash") != want[key]["hash"]:
+            stale += 1
+            continue
+        got[key] = {"status": classify(r), "file": str(f.relative_to(ROOT)) if f.is_relative_to(ROOT) else str(f),
+                    "stopped_at": r.get("stopped_at"), "wall_s": r.get("wall_s"),
+                    "failed_goal": [g["atom"] for g in (r.get("goal") or {}).get("all", []) if not g["holds"]],
+                    "failure_injection": {k: (r.get("failure_injection") or {}).get(k)
+                                          for k in ("fired", "manifested", "not_fired")},
+                    "stop_call": _stop_call(r)}
     rows = []
     for key, w in want.items():
         g = got.get(key)
