@@ -25393,7 +25393,7 @@
         "args": {
          "object": "paperback_book"
         },
-        "nth": 2
+        "nth": 1
        },
        "until": "base_skill",
        "after_fired": "ik_flip_paperback_book"
@@ -26552,7 +26552,7 @@
         "args": {
          "object": "rolling_pin"
         },
-        "nth": 2
+        "nth": 1
        },
        "until": "base_skill",
        "after_fired": "ik_roll_rolling_pin"
@@ -27868,7 +27868,7 @@
         "args": {
          "object": "wooden_block_b"
         },
-        "nth": 2
+        "nth": 1
        },
        "until": "base_skill",
        "after_fired": "ik_hide_wooden_block_b"

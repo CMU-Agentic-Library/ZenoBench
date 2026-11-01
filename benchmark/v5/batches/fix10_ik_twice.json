@@ -1,0 +1,212 @@
+[
+{
+"task": "T15_book_face_up",
+"seed": 10,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 11,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 12,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 13,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 14,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 15,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 16,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 17,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 18,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T15_book_face_up",
+"seed": 19,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 11,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 12,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 13,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 14,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 15,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 16,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 17,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 18,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 19,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 11,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 12,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 13,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 14,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 15,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 16,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 17,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 18,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 19,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice",
+"tier": "hard"
+}
+]

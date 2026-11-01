@@ -764,7 +764,7 @@ def T15(t, R):
             "h_action_ik_twice": dict(
                 tier="hard", hard="action", base="book_free",
                 failures=[f_ik("flip", X), {**f_ik("flip", X, fid="ik_flip_again"), "after_fired": f"ik_flip_{X}",
-                                            "trigger": {"skill": "flip", "args": {"object": X}, "nth": 2}}],
+                                            "trigger": {"skill": "flip", "args": {"object": X}, "nth": 1}}],
                 challenge="the flip is refused from two parks in a row: re-park twice",
                 route=with_ik(with_ik(nom, "flip", X), "flip", X)),
             "h_mixed_block_on_book_ik": dict(
@@ -812,7 +812,7 @@ def T16(t, R):
             "h_action_ik_twice": dict(
                 tier="hard", hard="action", base="pin_free",
                 failures=[f_ik("roll", X), {**f_ik("roll", X, fid="ik_roll_again"), "after_fired": f"ik_roll_{X}",
-                                            "trigger": {"skill": "roll", "args": {"object": X}, "nth": 2}}],
+                                            "trigger": {"skill": "roll", "args": {"object": X}, "nth": 1}}],
                 challenge="the roll is refused from two parks in a row",
                 route=with_ik(with_ik(nom, "roll", X), "roll", X)),
             "h_mixed_bowl_behind_ik": dict(
@@ -854,7 +854,7 @@ def T17(t, R):
                 tier="hard", hard="action", base="lid_off",
                 failures=[f_ik("hide", "wooden_block_b"),
                           {**f_ik("hide", "wooden_block_b", fid="ik_hide_again"), "after_fired": "ik_hide_wooden_block_b",
-                           "trigger": {"skill": "hide", "args": {"object": "wooden_block_b"}, "nth": 2}}],
+                           "trigger": {"skill": "hide", "args": {"object": "wooden_block_b"}, "nth": 1}}],
                 challenge="the hide is refused from two parks in a row",
                 route=with_ik(with_ik(nom, "hide", "wooden_block_b"), "hide", "wooden_block_b")),
             "h_mixed_lid_elsewhere_ik": dict(
@@ -1740,9 +1740,10 @@ def _expose_retry(steps, x):
 
 
 def _ik_twice(steps, skill, x, fid1, key="object"):
+    # after_fired gates the counting too, so nth 1 = the next call after the first refusal (nth 2 hit the 3rd)
     return {"failures": [f_ik(skill, x, key=key, fid=fid1),
                          {**f_ik(skill, x, key=key, fid=fid1 + "_again"), "after_fired": fid1,
-                          "trigger": {"skill": skill, "args": {key: x}, "nth": 2}}],
+                          "trigger": {"skill": skill, "args": {key: x}, "nth": 1}}],
             "route": with_ik(with_ik(steps, skill, x, key=key), skill, x, key=key)}
 
 
