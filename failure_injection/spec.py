@@ -12,8 +12,9 @@ A variant lists its failures under ``"failures"``.  Each failure is one of
                     authored ``report`` atoms that no longer hold.
   * ``ik``        - the manipulation is refused before any motion with ``no IK solution from this base
                     pose`` and stays refused until the base is moved by a base skill (re-park).
-* **persistent** action failures (``"persist": true``; grasp, slip or ik with ``until: never``) fire on every
-  matching call from the nth on: the object cannot be held / carried one-handed / reached there at all, so a
+* **persistent** action failures (``"persist": true``; grasp, slip, placement or ik with ``until: never``) fire on
+  every matching call from the nth on: the object cannot be held / carried one-handed / stays put there /
+  reached there at all, so a
   retry cannot help and the plan must change (cross-level recovery).  ``"until_moved": <object>`` ends the
   persistence once that object stands > 3 cm from its start pose (a neighbour blocking the finger slot or
   the reach: the recovery is to move it).  ``trigger.one_handed`` (slip): a two-handed carry is not affected.
@@ -43,7 +44,8 @@ PLACEMENT_MODES = ("tipped", "displaced")
 # the skills each action-level failure attaches to
 ACTION_SKILLS = {"grasp": ("pick",), "slip": ("navigate",), "placement": ("place", "drop", "stack"),
                  "ik": ("pick", "place", "open", "close", "drop", "stack", "press", "wipe", "uncover", "expose",
-                        "separate", "push", "flip", "roll", "stir", "regrasp", "hide", "cover", "inspect", "heat")}
+                        "separate", "push", "flip", "roll", "stir", "regrasp", "hide", "cover", "inspect", "heat",
+                        "collect")}
 
 
 class FailureSpecError(ValueError):
@@ -109,8 +111,8 @@ def validate(failures, where="failures", objects=None, articulated=None, support
                         errs.append(f"{p}: trigger names unknown {v!r}")
             if f.get("after_fired") is not None and f["after_fired"] not in ids:
                 errs.append(f"{p}: after_fired names no failure of this variant")
-        if f.get("persist") and k not in ("grasp", "ik", "slip"):
-            errs.append(f"{p}: only grasp, slip and ik failures can be persistent")
+        if f.get("persist") and k not in ("grasp", "ik", "slip", "placement"):
+            errs.append(f"{p}: only grasp, slip, placement and ik failures can be persistent")
         if f.get("until_moved") is not None:
             if not f.get("persist") or k not in ("grasp", "ik"):
                 errs.append(f"{p}: until_moved needs a persistent grasp or ik failure")

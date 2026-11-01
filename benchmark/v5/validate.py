@@ -109,7 +109,7 @@ def check_variant(task, tier, vid, contracts, assets, seeds=SEEDS):
     v = task["variants"][vid]
     if difficulty_of(v) != tier:
         probs.append((None, f"tier {difficulty_of(v)} != formal {tier}"))
-    meta = v.get("v5") or {}
+    meta = v.get("v5") or v.get("v6") or {}          # v6 (benchmark/v6) variants carry their meta under "v6"
     if not meta.get("challenge"):
         probs.append((None, "no stated challenge"))
     if tier == "hard" and meta.get("hard_category") not in HARD:

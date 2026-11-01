@@ -1,0 +1,90 @@
+{
+ "families": 231,
+ "episodes": 2310,
+ "static_ok": 2310,
+ "problems": [],
+ "per_task": {
+  "T01_book_to_dining_table": {
+   "episodes": 120,
+   "static_ok": 120
+  },
+  "T02_stack_blocks": {
+   "episodes": 110,
+   "static_ok": 110
+  },
+  "T03_utensils_one_container": {
+   "episodes": 90,
+   "static_ok": 90
+  },
+  "T04_cup_or_mug_to_cabinet": {
+   "episodes": 120,
+   "static_ok": 120
+  },
+  "T05_pen_or_pencil_to_desk": {
+   "episodes": 120,
+   "static_ok": 120
+  },
+  "T06_block_destination_occupied": {
+   "episodes": 140,
+   "static_ok": 140
+  },
+  "T07_heat_oatmeal": {
+   "episodes": 130,
+   "static_ok": 130
+  },
+  "T08_wipe_island": {
+   "episodes": 100,
+   "static_ok": 100
+  },
+  "T09_tomato_soup": {
+   "episodes": 140,
+   "static_ok": 140
+  },
+  "T10_trash_the_can": {
+   "episodes": 120,
+   "static_ok": 120
+  },
+  "T11_collect_fruits": {
+   "episodes": 110,
+   "static_ok": 110
+  },
+  "T12_tidy_toys": {
+   "episodes": 110,
+   "static_ok": 110
+  },
+  "T13_breakfast_setup": {
+   "episodes": 140,
+   "static_ok": 140
+  },
+  "T15_book_face_up": {
+   "episodes": 90,
+   "static_ok": 90
+  },
+  "T16_rolling_pin_at_edge": {
+   "episodes": 90,
+   "static_ok": 90
+  },
+  "T17_hide_and_seek_block": {
+   "episodes": 130,
+   "static_ok": 130
+  },
+  "T18_check_cabinet_dishes": {
+   "episodes": 120,
+   "static_ok": 120
+  },
+  "T19_recycling": {
+   "episodes": 110,
+   "static_ok": 110
+  },
+  "T20_juice_back_to_table": {
+   "episodes": 110,
+   "static_ok": 110
+  },
+  "T14_shelve_the_book": {
+   "episodes": 110,
+   "static_ok": 110
+  }
+ },
+ "v5_hashes_checked": 1800,
+ "tasks_sha1": "79724e4f5f81b6931d914733a8cbc680b28c96bc"
+}

@@ -365,8 +365,8 @@ def test_persistent_one_handed_slip_spares_a_two_handed_carry(monkeypatch):
 
 
 @pytest.mark.parametrize("bad, needle", [
-    ({"id": "x", "kind": "placement", "persist": True, "mode": "tipped", "report": [["upright", "mug"]],
-      "trigger": {"skill": "place", "args": {"object": "mug"}}}, "only grasp, slip and ik"),
+    ({"id": "x", "kind": "dependency", "persist": True, "check": [["on", "mug", "t"]]},
+     "only grasp, slip, placement and ik"),
     ({"id": "x", "kind": "grasp", "until_moved": "oatmeal", "trigger": {"skill": "pick", "args": {"object": "mug"}}},
      "until_moved needs a persistent"),
     ({"id": "x", "kind": "grasp", "trigger": {"skill": "pick", "one_handed": True}}, "one_handed applies"),
@@ -374,3 +374,16 @@ def test_persistent_one_handed_slip_spares_a_two_handed_carry(monkeypatch):
 def test_invalid_persistence_specs(bad, needle):
     with pytest.raises(FailureSpecError, match=needle):
         validate([bad])
+
+
+def test_persistent_placement_displaces_every_time(monkeypatch):
+    f = {"id": "p", "kind": "placement", "mode": "displaced", "persist": True,
+         "trigger": {"skill": "place", "args": {"object": "mug", "support": "storage_bin"}},
+         "to": {"support": "dining_table_2/top", "xy": [3.5, 6.0]}, "report": [["inside", "mug", "storage_bin"]]}
+    inj, base, rig = make([f], monkeypatch, atoms=lambda a: [{"atom": str(x), "holds": False, "detail": ""} for x in a])
+    monkeypatch.setattr(R.FailureRunner, "_pose_on", lambda self, n, to: ([3.5, 6.0, 0.8], [1, 0, 0, 0]))
+    for _ in range(2):
+        inj.run("pick", {"object": "mug"})
+        assert not inj.run("place", {"object": "mug", "support": "storage_bin"}).success
+    inj.run("pick", {"object": "mug"})
+    assert inj.run("place", {"object": "mug", "support": "dining_table_2/top"}).success   # another place works
