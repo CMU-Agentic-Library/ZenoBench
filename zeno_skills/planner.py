@@ -197,7 +197,7 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
             if not clear:
                 LAST_PARK_DIAG["travel_pose"] += 1
                 continue
-        qs = _ik_sequence(kin, targets, q0=q_start if cost < 0 else None)
+        qs = _ik_sequence(kin, targets, q0=kin.ik_seed(q_start) if cost < 0 and q_start is not None else None)
         if qs is None:
             LAST_PARK_DIAG["ik"] += 1
             continue

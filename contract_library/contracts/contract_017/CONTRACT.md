@@ -1,6 +1,6 @@
 # contract_017 — Tuck an arm
 
-Fold an empty arm to its travel posture. The right fold also raises the torso and straightens the waist (the travel posture includes them); the left fold moves only the left arm. A loaded arm is not folded: navigate carries the load in its carry pose.
+Fold an empty arm to its travel posture: hanging straight down at the side, inside the base footprint. The right fold also raises the torso and straightens the waist (the travel posture includes them); the left fold moves only the left arm. A loaded arm is not folded: navigate carries the load in its carry pose.
 
 Paired SkillNode: `skill_009` (`tuck-arm`).
 

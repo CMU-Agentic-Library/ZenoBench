@@ -16,7 +16,7 @@
    "hand"
   ]
  },
- "description": "Fold an empty arm to its travel posture. The right fold also raises the torso and straightens the waist (the travel posture includes them); the left fold moves only the left arm. A loaded arm is not folded: navigate carries the load in its carry pose.",
+ "description": "Fold an empty arm to its travel posture: hanging straight down at the side, inside the base footprint. The right fold also raises the torso and straightens the waist (the travel posture includes them); the left fold moves only the left arm. A loaded arm is not folded: navigate carries the load in its carry pose.",
  "use_when": "Before driving through a narrow passage or after a hand action left the arm out.",
  "not_to_be_confused_with": {
   "reset": "reset also opens the fingers and checks the full home posture; tuck folds one arm (the right fold restores torso and waist too)."

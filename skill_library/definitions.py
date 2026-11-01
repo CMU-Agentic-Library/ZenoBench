@@ -117,7 +117,8 @@ G = "base_and_body"
 
 skill("navigate", "place", "Navigate to a place",
       "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, "
-      "articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.",
+      "articulated part or object. An empty arm is folded to its travel posture (hanging at the side, inside the "
+      "base footprint), a loaded one held in the compact carry pose.",
       group=G,
       inputs={"destination": I("place_ref", "Where to go: a room, furniture, support, articulated part or object.")},
       outputs={"base_pose": O("pose2d", "Measured base pose [x, y, yaw_deg] at arrival.")},
@@ -264,7 +265,8 @@ skill("straighten", "waist", "Straighten the waist",
                  R("alternative", "reset", "the arm and torso must also be restored")])
 
 skill("tuck", "arm", "Tuck an arm",
-      "Fold an empty arm to its travel posture. The right fold also raises the torso and straightens the waist "
+      "Fold an empty arm to its travel posture: hanging straight down at the side, inside the base footprint. "
+      "The right fold also raises the torso and straightens the waist "
       "(the travel posture includes them); the left fold moves only the left arm. A loaded arm is not folded: "
       "navigate carries the load in its carry pose.",
       group=G,

@@ -329,6 +329,7 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None):
             bottom_z = float(rig.geo.bottom(rig.held["name"], rig.state())[2])
             rig.log("carry_height", bottom_z=round(bottom_z, 3), requested=round(float(min_bottom_z), 3))
         check_held(rig, "carry_up")
+    _fold_left(rig)
     rig.sync_world()
     path = None
     loaded = rig.held is not None or rig.left_held is not None
@@ -355,6 +356,29 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None):
         else:
             rig.drive_base(path, speed=0.25, turn=0.5)
         check_held(rig, "carry")
+
+
+def _fold_left(rig):
+    """An empty left arm left out (a brace, a hold released) folds to its travel posture
+    before the base drives: straight when that is clear, else a cuRobo trajectory; when
+    neither exists it stays where it is."""
+    if rig.left_held is not None:
+        return
+    start = np.r_[rig.q_cmd[:2], rig.left_q_cmd]
+    goal = np.r_[rig.q_cmd[:2], rig.left_kin.rest[2:]]
+    if np.max(np.abs(goal - start)) < 0.05:
+        return
+    rig.sync_world()
+    if rig.left_kin.segment_free(start, goal):
+        n = max(2, int(np.max(np.abs(goal - start)) / 0.01))
+        qs = [start + (goal - start) * u for u in np.linspace(0, 1, n)[1:]]
+    else:
+        qs, status = rig.left_kin.plan(start, goal)
+        if qs is None:
+            rig.log("left_fold_blocked", status=str(status))
+            return
+    rig.left_follow(qs)
+    rig.log("left_fold", before_drive=True)
 
 
 def _travel_q(rig):

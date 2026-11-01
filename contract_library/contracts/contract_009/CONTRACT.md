@@ -1,6 +1,6 @@
 # contract_009 — Navigate to a place
 
-Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.
+Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. An empty arm is folded to its travel posture (hanging at the side, inside the base footprint), a loaded one held in the compact carry pose.
 
 Paired SkillNode: `skill_001` (`navigate-place`).
 

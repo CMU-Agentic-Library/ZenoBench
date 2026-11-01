@@ -16,7 +16,7 @@
    "destination"
   ]
  },
- "description": "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. The arm is tucked when empty, or held in the compact carry pose with the load.",
+ "description": "Drive the holonomic base to a free stand-off pose next to a room, piece of furniture, support, articulated part or object. An empty arm is folded to its travel posture (hanging at the side, inside the base footprint), a loaded one held in the compact carry pose.",
  "use_when": "The robot must be in another room or next to another piece of furniture.",
  "not_to_be_confused_with": {
   "retreat": "retreat moves straight back from a place without a destination."
