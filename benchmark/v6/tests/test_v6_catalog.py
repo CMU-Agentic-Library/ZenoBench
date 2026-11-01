@@ -44,7 +44,7 @@ def test_every_family_has_ten_reproducible_seeds():
         for fam, info in t["v6_families"].items():
             seeds = {int(k): v for k, v in info["seeds"].items()}
             assert sorted(seeds) == SEEDS
-            if info["origin"] == "v6":
+            if info["origin"] == "v6" or len(info["cases"]) > 1:
                 assert seeds == seed_cases(tid, fam, info["cases"])
                 c = Counter(seeds.values())
                 assert set(c) == set(info["cases"]) and max(c.values()) - min(c.values()) <= 1

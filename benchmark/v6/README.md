@@ -13,7 +13,8 @@ execution fails or constraints change, not cross-scene generalisation.
 | tiers | Easy 38, Medium 98, Hard 97 (`DESIGN_AUDIT.md`) |
 | Hard core capabilities | each of DR, GD, SR, CL, PP on >= 20 distinct designs and >= 9 tasks |
 | static checks | 2,330 / 2,330 episodes |
-| physics | 59 families PHYSICS_VALIDATED (v5 grid, 10/10); the rest STATIC_VALIDATED (`PHYSICS_TODO.md`) |
+| decision-diverse seeds | 53 families (39 of 97 Hard): 26 new + 27 v5 families with a seed-extension case |
+| physics | 51 families PHYSICS_VALIDATED (v5 grid, 10/10); the rest STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
 ## Concepts
 
@@ -21,7 +22,9 @@ execution fails or constraints change, not cross-scene generalisation.
   case changes a fact the plan depends on (which substitute exists and where, which closed place holds the item,
   where an event takes a resource, which object blocks the reach). Each case is a concrete variant
   `<family>__<case>` with its own configuration and oracle route; seeds 10-19 map to cases through a fixed-RNG,
-  balanced manifest (`v6_families[fam]["seeds"]`). A v5 variant is a one-case family.
+  balanced manifest (`v6_families[fam]["seeds"]`). A v5 variant is a one-case family; 27 v5 families whose plan
+  must find a resource get a **seed-extension** case (the resource in another known-valid place, the search and
+  route change) next to the unchanged v5 variant.
 * **Tiers** (`hypotheses.py`, the same rule for v5 and v6): **Easy** - the nominal plan works; **Medium** - one
   local adaptation (transient failure, search, a stated substitute, a constraint) without a core capability;
   **Hard** - at least one verified core capability and not solvable by retrying the control plan. 31 v5 labels

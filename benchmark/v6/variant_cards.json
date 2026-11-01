@@ -3735,15 +3735,10 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "seeds": [
-   10,
-   11,
    12,
    13,
    14,
-   15,
-   16,
    17,
-   18,
    19
   ],
   "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
@@ -3882,6 +3877,155 @@
   "oracle_route": "v5_h_dynamic_pin_taken",
   "challenge": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone takes the pin to the wall cabinet: keep the spoon where it is, find the pin",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/h_dynamic_pin_taken__alt_dining_table_2": {
+  "family": "h_dynamic_pin_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   10,
+   11,
+   15,
+   16,
+   18
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "small_storage_bin"
+   ],
+   "removed": [],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "small_storage_bin",
+     "tv_stand_2/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "capacity_v4_three_containers",
+    "kind": "capacity",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_rolling_pin",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "drop",
+     "args": {
+      "object": "breakfast_spoon"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "rolling_pin",
+     "to": {
+      "support": "dining_table_2/top",
+      "xy": [
+       3.7,
+       6.3
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "fully_inside",
+      "rolling_pin",
+      "wide_storage_bin"
+     ],
+     [
+      "fully_inside",
+      "breakfast_spoon",
+      "wide_storage_bin"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "rolling_pin",
+      "mug"
+     ],
+     [
+      "fully_inside",
+      "breakfast_spoon",
+      "mug"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "rolling_pin",
+      "small_storage_bin"
+     ],
+     [
+      "fully_inside",
+      "breakfast_spoon",
+      "small_storage_bin"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "PP"
+  ],
+  "capability_evidence": {
+   "PP": {
+    "cap": "PP",
+    "kept": {
+     "atom": [
+      "fully_inside",
+      "breakfast_spoon",
+      "wide_storage_bin"
+     ],
+     "by": {
+      "skill": "drop",
+      "args": {
+       "object": "breakfast_spoon"
+      }
+     }
+    },
+    "event": "resource_rolling_pin"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "large_only",
+  "oracle_route": "v6_h_dynamic_pin_taken__alt_dining_table_2",
+  "challenge": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone takes the pin to the wall cabinet: keep the spoon where it is, find the pin (here the rolling_pin is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the rolling_pin ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/cup_available": {
@@ -4120,14 +4264,9 @@
   "hard_category": null,
   "seeds": [
    10,
-   11,
-   12,
-   13,
    14,
    15,
    16,
-   17,
-   18,
    19
   ],
   "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
@@ -4194,6 +4333,83 @@
   "oracle_route": "hard_count_search_mug",
   "challenge": "no cup in the house and the mug stands on the TV stand, out of the first view",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/no_cup_mug_away__alt_dining_table_2": {
+  "family": "no_cup_mug_away",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   11,
+   12,
+   13,
+   17,
+   18
+  ],
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "mug"
+   ],
+   "added": [],
+   "removed": [
+    "cup_counter_b"
+   ],
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "cup_available",
+  "oracle_route": "v6_no_cup_mug_away__alt_dining_table_2",
+  "challenge": "no cup in the house and the mug stands on the TV stand, out of the first view (here the mug is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the mug ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/m_ik_cup": {
@@ -6073,12 +6289,7 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "seeds": [
-   10,
-   11,
    12,
-   13,
-   14,
-   15,
    16,
    17,
    18,
@@ -6201,6 +6412,136 @@
   "oracle_route": "v5_h_dynamic_pencil_taken",
   "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone takes the pencil to the dining table: close the cabinet again and search the pencil",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/h_dynamic_pencil_taken__alt_tv_stand_2": {
+  "family": "h_dynamic_pencil_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   10,
+   11,
+   13,
+   14,
+   15
+  ],
+  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pencil"
+   ],
+   "added": [],
+   "removed": [
+    "pen",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "no_pen"
+   ],
+   "initial_checks": [
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "on",
+     "pencil",
+     "kitchen_cabinet_6/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "dependency_initial",
+    "kind": "dependency",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_pencil",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "open",
+     "args": {
+      "articulated": "kitchen_cabinet_6"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "pencil",
+     "to": {
+      "support": "tv_stand_2/top",
+      "xy": [
+       7.0,
+       0.36
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "DR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "kitchen_cabinet_6",
+    "blocked": {
+     "skill": "pick",
+     "target": "pencil"
+    },
+    "cause": "failure:dependency_initial"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_h_dynamic_pencil_taken__alt_tv_stand_2",
+  "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone takes the pencil to the dining table: close the cabinet again and search the pencil (here the pencil is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the pencil ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T05_pen_or_pencil_to_desk/x6_cl_pen_unholdable__pencil_here": {
@@ -6944,15 +7285,10 @@
   "tier": "medium",
   "hard_category": null,
   "seeds": [
-   10,
    11,
    12,
-   13,
-   14,
    15,
    16,
-   17,
-   18,
    19
   ],
   "instruction": "Put a toy block on display, either on the low wall cabinet or on the TV stand.",
@@ -7026,6 +7362,90 @@
   "oracle_route": "hard_search_alt_support",
   "challenge": "the cabinet top is full and the block was left on the dining table",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T06_block_destination_occupied/occupied_block_away__alt_tv_stand_2": {
+  "family": "occupied_block_away",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   10,
+   13,
+   14,
+   17,
+   18
+  ],
+  "instruction": "Put a toy block on display, either on the low wall cabinet or on the TV stand.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "destination_occupied",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_cabinet_6/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "wooden_block_a",
+      "tv_stand_2/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_cabinet_6/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "wooden_block_b",
+      "tv_stand_2/top"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "free",
+  "oracle_route": "v6_occupied_block_away__alt_tv_stand_2",
+  "challenge": "the cabinet top is full and the block was left on the dining table (here the wooden_block_a is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the wooden_block_a ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/m_slip_block": {
@@ -8805,12 +9225,7 @@
   "tier": "hard",
   "hard_category": "task",
   "seeds": [
-   10,
-   11,
-   12,
-   13,
    14,
-   15,
    16,
    17,
    18,
@@ -8886,6 +9301,89 @@
   "oracle_route": "hard_search_stove",
   "challenge": "the microwave does not heat and the oatmeal was left on the wall cabinet (carried from the dining table it slipped out of the rim pinch, 2/2)",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T07_heat_oatmeal/broken_oatmeal_away__alt_dining_table_2": {
+  "family": "broken_oatmeal_away",
+  "tier": "hard",
+  "hard_category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   15
+  ],
+  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "microwave_broken",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "temperature_at_least",
+     "oatmeal",
+     40
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "SR"
+  ],
+  "capability_evidence": {
+   "SR": {
+    "cap": "SR",
+    "nominal": {
+     "skill": "heat",
+     "args": {
+      "food": "oatmeal",
+      "appliance": "kitchen_microwave"
+     }
+    },
+    "replacement": {
+     "skill": "place",
+     "args": {
+      "object": "oatmeal",
+      "receptacle": "kitchen_microwave/inside_floor"
+     }
+    },
+    "cause": "overlay:oatmeal"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "microwave_works",
+  "oracle_route": "v6_broken_oatmeal_away__alt_dining_table_2",
+  "challenge": "the microwave does not heat and the oatmeal was left on the wall cabinet (carried from the dining table it slipped out of the rim pinch, 2/2) (here the oatmeal is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the oatmeal ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T07_heat_oatmeal/m_ik_oatmeal": {
@@ -10147,15 +10645,10 @@
   "hard_category": null,
   "seeds": [
    10,
-   11,
    12,
    13,
    14,
-   15,
-   16,
-   17,
-   18,
-   19
+   17
   ],
   "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
   "initial_conditions": {
@@ -10208,6 +10701,70 @@
   "oracle_route": "hard_search_approach",
   "challenge": "the robot starts in the dining room; the sponge is on the TV stand",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T08_wipe_island/far_sponge_tv__alt_dining_table_2": {
+  "family": "far_sponge_tv",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   11,
+   15,
+   16,
+   18,
+   19
+  ],
+  "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    4.24,
+    5.12,
+    120.0
+   ],
+   "moved": [
+    "kitchen_sponge"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "start_elsewhere",
+    "tool_away_from_surface"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "wiped",
+     "kitchen_island/top"
+    ],
+    [
+     "on",
+     "kitchen_sponge",
+     "kitchen_island/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "sponge_on_island",
+  "oracle_route": "v6_far_sponge_tv__alt_dining_table_2",
+  "challenge": "the robot starts in the dining room; the sponge is on the TV stand (here the kitchen_sponge is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the kitchen_sponge ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T08_wipe_island/m_grasp_sponge": {
@@ -10837,16 +11394,11 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "seeds": [
-   10,
-   11,
    12,
-   13,
    14,
    15,
    16,
-   17,
-   18,
-   19
+   18
   ],
   "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
   "initial_conditions": {
@@ -11031,6 +11583,202 @@
   "oracle_route": "v5_h_dynamic_sponge_taken",
   "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T08_wipe_island/h_dynamic_sponge_taken__alt_dining_table_2": {
+  "family": "h_dynamic_sponge_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   10,
+   11,
+   13,
+   17,
+   19
+  ],
+  "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "juice_bottle",
+    "kitchen_sponge",
+    "mug",
+    "oatmeal",
+    "paperback_book",
+    "rolling_pin",
+    "soda_can",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "surface_cluttered"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "soda_can",
+     "kitchen_island/top"
+    ],
+    [
+     "on",
+     "wooden_block_a",
+     "kitchen_island/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "destination_v4_island_cluttered",
+    "kind": "destination",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_kitchen_sponge",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "look",
+     "args": {
+      "target": "kitchen_island/top"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "kitchen_sponge",
+     "to": {
+      "support": "dining_table_2/top",
+      "xy": [
+       3.7,
+       6.3
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "wiped",
+     "kitchen_island/top"
+    ],
+    [
+     "on",
+     "kitchen_sponge",
+     "tv_stand_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "near_start",
+     "rolling_pin",
+     0.12,
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_a",
+     0.12,
+     0.03
+    ],
+    [
+     "near_start",
+     "soda_can",
+     0.12,
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_b",
+     0.12,
+     0.03
+    ],
+    [
+     "near_start",
+     "mug",
+     0.12,
+     0.03
+    ],
+    [
+     "near_start",
+     "oatmeal",
+     0.12,
+     0.03
+    ],
+    [
+     "near_start",
+     "paperback_book",
+     0.12,
+     0.03
+    ],
+    [
+     "near_start",
+     "breakfast_spoon",
+     0.12,
+     0.03
+    ],
+    [
+     "near_start",
+     "juice_bottle",
+     0.12,
+     0.03
+    ],
+    [
+     "upright",
+     "soda_can"
+    ],
+    [
+     "upright",
+     "mug"
+    ],
+    [
+     "upright",
+     "juice_bottle"
+    ],
+    [
+     "upright",
+     "oatmeal"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "DR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "wooden_block_b",
+    "blocked": {
+     "skill": "pick",
+     "target": "kitchen_sponge"
+    },
+    "cause": "overlay:wooden_block_b"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "sponge_on_island",
+  "oracle_route": "v6_h_dynamic_sponge_taken__alt_dining_table_2",
+  "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it (here the kitchen_sponge is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the kitchen_sponge ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T08_wipe_island/x6_pp_sponge_taken_after_wipe__tv_stand": {
@@ -11495,13 +12243,8 @@
   "hard_category": null,
   "seeds": [
    10,
-   11,
-   12,
-   13,
-   14,
    15,
    16,
-   17,
    18,
    19
   ],
@@ -11580,6 +12323,94 @@
   "oracle_route": "hard_uncover_search_spoon",
   "challenge": "the lid is on the pot and the spoon was left on the low wall cabinet",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T09_tomato_soup/lid_on_spoon_away__alt_dining_table_2": {
+  "family": "lid_on_spoon_away",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   17
+  ],
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "handled_cooking_pot",
+    "pot_lid"
+   ],
+   "added": [],
+   "removed": [
+    "spoon_kitchen_cabinet"
+   ],
+   "conditions": [
+    "lid_on",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "cherry_tomato_1",
+     "handled_cooking_pot"
+    ],
+    [
+     "inside",
+     "cherry_tomato_2",
+     "handled_cooking_pot"
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_1",
+     60
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_2",
+     60
+    ],
+    [
+     "stirred",
+     "handled_cooking_pot"
+    ],
+    [
+     "covered",
+     "handled_cooking_pot",
+     "pot_lid"
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "lid_off",
+  "oracle_route": "v6_lid_on_spoon_away__alt_dining_table_2",
+  "challenge": "the lid is on the pot and the spoon was left on the low wall cabinet (here the breakfast_spoon is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the breakfast_spoon ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/m_grasp_spoon": {
@@ -12029,14 +12860,9 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "seeds": [
-   10,
    11,
-   12,
-   13,
    14,
    15,
-   16,
-   17,
    18,
    19
   ],
@@ -12175,6 +13001,154 @@
   "oracle_route": "v5_h_dynamic_spoon_taken",
   "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T09_tomato_soup/h_dynamic_spoon_taken__alt_dining_table_2": {
+  "family": "h_dynamic_spoon_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   10,
+   12,
+   13,
+   16,
+   17
+  ],
+  "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "bowl_kitchen_cabinet",
+    "mug_counter",
+    "pot_lid"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "cookware_choice"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "bowl_kitchen_cabinet",
+     "kitchen_island/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_v4_cookware_choice",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_breakfast_spoon",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "collect",
+     "args": {
+      "container": "handled_cooking_pot"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "breakfast_spoon",
+     "to": {
+      "support": "dining_table_2/top",
+      "xy": [
+       3.7,
+       6.3
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "cherry_tomato_1",
+     "handled_cooking_pot"
+    ],
+    [
+     "inside",
+     "cherry_tomato_2",
+     "handled_cooking_pot"
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_1",
+     60
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_2",
+     60
+    ],
+    [
+     "stirred",
+     "handled_cooking_pot"
+    ],
+    [
+     "covered",
+     "handled_cooking_pot",
+     "pot_lid"
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "PP"
+  ],
+  "capability_evidence": {
+   "PP": {
+    "cap": "PP",
+    "kept": {
+     "atom": [
+      "stirred",
+      "handled_cooking_pot"
+     ],
+     "by": {
+      "skill": "collect",
+      "args": {
+       "objects": [
+        "cherry_tomato_1",
+        "cherry_tomato_2"
+       ]
+      }
+     }
+    },
+    "event": "resource_breakfast_spoon"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "lid_off",
+  "oracle_route": "v6_h_dynamic_spoon_taken__alt_dining_table_2",
+  "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet (here the breakfast_spoon is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the breakfast_spoon ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/x6_cl_spoon_unholdable__spoon_cabinet": {
@@ -13562,14 +14536,9 @@
   "tier": "medium",
   "hard_category": null,
   "seeds": [
-   10,
-   11,
-   12,
    13,
    14,
-   15,
    16,
-   17,
    18,
    19
   ],
@@ -13617,20 +14586,70 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T10_trash_the_can/far_can_far": {
-  "family": "far_can_far",
+ "T10_trash_the_can/can_in_dining_room__alt_tv_stand_2": {
+  "family": "can_in_dining_room",
   "tier": "medium",
   "hard_category": null,
   "seeds": [
    10,
    11,
    12,
-   13,
-   14,
    15,
-   16,
-   17,
-   18,
+   17
+  ],
+  "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "can_on_island",
+  "oracle_route": "v6_can_in_dining_room__alt_tv_stand_2",
+  "challenge": "the can stands on the dining table in the next room, out of sight (here the soda_can is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/far_can_far": {
+  "family": "far_can_far",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   11,
+   12,
+   13,
+   15,
    19
   ],
   "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
@@ -13680,6 +14699,66 @@
   "oracle_route": "hard_explore_search",
   "challenge": "the robot starts in the dining room, the can is on the TV stand",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/far_can_far__alt_dining_table_2": {
+  "family": "far_can_far",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   10,
+   14,
+   16,
+   17,
+   18
+  ],
+  "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    4.24,
+    5.12,
+    120.0
+   ],
+   "moved": [
+    "soda_can"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "start_elsewhere",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "can_on_island",
+  "oracle_route": "v6_far_can_far__alt_dining_table_2",
+  "challenge": "the robot starts in the dining room, the can is on the TV stand (here the soda_can is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T10_trash_the_can/m_ik_can": {
@@ -14075,16 +15154,11 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "seeds": [
-   10,
    11,
-   12,
    13,
    14,
-   15,
-   16,
    17,
-   18,
-   19
+   18
   ],
   "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
   "initial_conditions": {
@@ -14187,6 +15261,120 @@
   "oracle_route": "v5_h_dynamic_can_moved",
   "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/h_dynamic_can_moved__alt_tv_stand_2": {
+  "family": "h_dynamic_can_moved",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   10,
+   12,
+   15,
+   16,
+   19
+  ],
+  "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": [
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ],
+    [
+     "in_appliance",
+     "soda_can",
+     "kitchen_microwave"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "dependency_initial",
+    "kind": "dependency",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_soda_can",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "open",
+     "args": {
+      "articulated": "kitchen_microwave"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "soda_can",
+     "to": {
+      "support": "tv_stand_2/top",
+      "xy": [
+       7.0,
+       0.36
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "DR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "kitchen_microwave",
+    "blocked": {
+     "skill": "pick",
+     "target": "soda_can"
+    },
+    "cause": "failure:dependency_initial"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "can_on_island",
+  "oracle_route": "v6_h_dynamic_can_moved__alt_tv_stand_2",
+  "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can (here the soda_can is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T10_trash_the_can/x6_gd_can_put_away__in_cabinet": {
@@ -15779,12 +16967,7 @@
   "hard_category": null,
   "seeds": [
    10,
-   11,
-   12,
    13,
-   14,
-   15,
-   16,
    17,
    18,
    19
@@ -15840,6 +17023,70 @@
   "oracle_route": "explore_search_duck",
   "challenge": "the duck was left on the study desk",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/duck_in_study__alt_dining_table_2": {
+  "family": "duck_in_study",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   11,
+   12,
+   14,
+   15,
+   16
+  ],
+  "instruction": "It is nearly bedtime. Put the kid's toy car and rubber duck away in the storage basket in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "toy_car",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "rubber_duck",
+     "storage_basket"
+    ],
+    [
+     "upright",
+     "storage_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "toys_out",
+  "oracle_route": "v6_duck_in_study__alt_dining_table_2",
+  "challenge": "the duck was left on the study desk (here the rubber_duck is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T12_tidy_toys/m_grasp_car": {
@@ -16009,15 +17256,10 @@
   "tier": "hard",
   "hard_category": "task",
   "seeds": [
-   10,
-   11,
    12,
    13,
-   14,
-   15,
    16,
    17,
-   18,
    19
   ],
   "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
@@ -16193,6 +17435,190 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T12_tidy_toys/toys_everywhere__alt_dining_table_2": {
+  "family": "toys_everywhere",
+  "tier": "hard",
+  "hard_category": "task",
+  "seeds": [
+   10,
+   11,
+   14,
+   15,
+   18
+  ],
+  "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "toy_bin_small",
+    "toy_tray"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "DR",
+   "GD",
+   "SR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "toy_tray",
+    "blocked": {
+     "skill": "pick",
+     "target": "rubber_duck"
+    },
+    "cause": "overlay:toy_tray"
+   },
+   "SR": {
+    "cap": "SR",
+    "nominal": {
+     "skill": "place",
+     "args": {
+      "object": "rubber_duck",
+      "receptacle": "storage_basket"
+     }
+    },
+    "replacement": {
+     "skill": "drop",
+     "args": {
+      "object": "rubber_duck",
+      "container": "toy_bin_small"
+     }
+    },
+    "cause": "overlay:rubber_duck"
+   },
+   "GD": {
+    "cap": "GD",
+    "kind": "allocation",
+    "allocation": {
+     "toy_car": "toy_tray",
+     "rubber_duck": "toy_bin_small"
+    },
+    "cause": "overlay:rubber_duck"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "toys_out",
+  "oracle_route": "v6_toys_everywhere__alt_dining_table_2",
+  "challenge": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase (here the rubber_duck is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T12_tidy_toys/h_action_grasp_and_ik": {
   "family": "h_action_grasp_and_ik",
   "tier": "hard",
@@ -16200,14 +17626,9 @@
   "seeds": [
    10,
    11,
-   12,
-   13,
-   14,
-   15,
    16,
    17,
-   18,
-   19
+   18
   ],
   "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
   "initial_conditions": {
@@ -16428,19 +17849,244 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T12_tidy_toys/h_action_grasp_and_ik__alt_dining_table_2": {
+  "family": "h_action_grasp_and_ik",
+  "tier": "hard",
+  "hard_category": "action",
+  "seeds": [
+   12,
+   13,
+   14,
+   15,
+   19
+  ],
+  "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "toy_bin_small",
+    "toy_tray"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "toy_bin_small",
+     "bookcase_2/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "capacity_v4_toys_everywhere",
+    "kind": "capacity",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "grasp_toy_car",
+    "kind": "grasp",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "pick",
+     "args": {
+      "object": "toy_car"
+     },
+     "nth": 1
+    },
+    "event": null,
+    "when": "action"
+   },
+   {
+    "id": "ik_drop_rubber_duck",
+    "kind": "ik",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "drop",
+     "args": {
+      "object": "rubber_duck"
+     },
+     "nth": 1
+    },
+    "event": null,
+    "when": "action"
+   }
+  ],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "DR",
+   "GD",
+   "SR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "toy_tray",
+    "blocked": {
+     "skill": "pick",
+     "target": "rubber_duck"
+    },
+    "cause": "overlay:toy_tray"
+   },
+   "SR": {
+    "cap": "SR",
+    "nominal": {
+     "skill": "place",
+     "args": {
+      "object": "rubber_duck",
+      "receptacle": "storage_basket"
+     }
+    },
+    "replacement": {
+     "skill": "drop",
+     "args": {
+      "object": "rubber_duck",
+      "container": "toy_bin_small"
+     }
+    },
+    "cause": "failure:ik_drop_rubber_duck"
+   },
+   "GD": {
+    "cap": "GD",
+    "kind": "allocation",
+    "allocation": {
+     "toy_car": "toy_tray",
+     "rubber_duck": "toy_bin_small"
+    },
+    "cause": "failure:capacity_v4_toys_everywhere"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "local"
+   }
+  },
+  "retry_solvable": false,
+  "control": "toys_out",
+  "oracle_route": "v6_h_action_grasp_and_ik__alt_dining_table_2",
+  "challenge": "no basket: allocate the toys by size; and the car slips on its first pick, the duck's first place is refused (here the rubber_duck is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T12_tidy_toys/h_mixed_everywhere_ik": {
   "family": "h_mixed_everywhere_ik",
   "tier": "hard",
   "hard_category": "mixed",
   "seeds": [
-   10,
    11,
    12,
    13,
-   14,
-   15,
-   16,
-   17,
    18,
    19
   ],
@@ -16648,20 +18294,230 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T12_tidy_toys/h_mixed_everywhere_ik__alt_dining_table_2": {
+  "family": "h_mixed_everywhere_ik",
+  "tier": "hard",
+  "hard_category": "mixed",
+  "seeds": [
+   10,
+   14,
+   15,
+   16,
+   17
+  ],
+  "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "toy_bin_small",
+    "toy_tray"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "toy_bin_small",
+     "bookcase_2/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "capacity_v4_toys_everywhere",
+    "kind": "capacity",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "ik_pick_toy_car",
+    "kind": "ik",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "pick",
+     "args": {
+      "object": "toy_car"
+     },
+     "nth": 1
+    },
+    "event": null,
+    "when": "action"
+   }
+  ],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "DR",
+   "GD",
+   "SR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "toy_tray",
+    "blocked": {
+     "skill": "pick",
+     "target": "rubber_duck"
+    },
+    "cause": "overlay:toy_tray"
+   },
+   "SR": {
+    "cap": "SR",
+    "nominal": {
+     "skill": "place",
+     "args": {
+      "object": "rubber_duck",
+      "receptacle": "storage_basket"
+     }
+    },
+    "replacement": {
+     "skill": "drop",
+     "args": {
+      "object": "rubber_duck",
+      "container": "toy_bin_small"
+     }
+    },
+    "cause": "overlay:rubber_duck"
+   },
+   "GD": {
+    "cap": "GD",
+    "kind": "allocation",
+    "allocation": {
+     "toy_car": "toy_tray",
+     "rubber_duck": "toy_bin_small"
+    },
+    "cause": "failure:capacity_v4_toys_everywhere"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "local"
+   }
+  },
+  "retry_solvable": false,
+  "control": "toys_out",
+  "oracle_route": "v6_h_mixed_everywhere_ik__alt_dining_table_2",
+  "challenge": "allocate the toys by size (no basket) and the first car pick is refused (here the rubber_duck is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T12_tidy_toys/h_dynamic_duck_taken": {
   "family": "h_dynamic_duck_taken",
   "tier": "hard",
   "hard_category": "dynamic",
   "seeds": [
    10,
-   11,
    12,
-   13,
-   14,
    15,
    16,
-   17,
-   18,
    19
   ],
   "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
@@ -16896,6 +18752,251 @@
   "oracle_route": "v5_h_dynamic_duck_taken",
   "challenge": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T12_tidy_toys/h_dynamic_duck_taken__alt_tv_stand_2": {
+  "family": "h_dynamic_duck_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   11,
+   13,
+   14,
+   17,
+   18
+  ],
+  "instruction": "It is nearly bedtime. Put away all the toys lying around the house into suitable storage containers in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/tidy_toys",
+   "start": null,
+   "moved": [
+    "rubber_duck"
+   ],
+   "added": [
+    "stored_block_1",
+    "stored_block_2",
+    "stored_block_3",
+    "stored_block_4",
+    "stored_block_5",
+    "stored_block_6",
+    "toy_bin_small",
+    "toy_tray"
+   ],
+   "removed": [
+    "storage_basket"
+   ],
+   "conditions": [
+    "joint_capacity"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "toy_bin_small",
+     "bookcase_2/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "capacity_v4_toys_everywhere",
+    "kind": "capacity",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_rubber_duck",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "place",
+     "args": {
+      "object": "toy_car"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "rubber_duck",
+     "to": {
+      "support": "tv_stand_2/top",
+      "xy": [
+       7.0,
+       0.36
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_bin_small"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_bin_small"
+     ]
+    ],
+    [
+     [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     [
+      "fully_inside",
+      "rubber_duck",
+      "toy_tray"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "fully_inside",
+     "stored_block_1",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_2",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_3",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_4",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_5",
+     "toy_bin_small"
+    ],
+    [
+     "fully_inside",
+     "stored_block_6",
+     "toy_bin_small"
+    ],
+    [
+     "upright",
+     "toy_bin_small"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "DR",
+   "GD",
+   "PP",
+   "SR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "toy_tray",
+    "blocked": {
+     "skill": "pick",
+     "target": "rubber_duck"
+    },
+    "cause": "overlay:toy_tray"
+   },
+   "SR": {
+    "cap": "SR",
+    "nominal": {
+     "skill": "place",
+     "args": {
+      "object": "rubber_duck",
+      "receptacle": "storage_basket"
+     }
+    },
+    "replacement": {
+     "skill": "drop",
+     "args": {
+      "object": "rubber_duck",
+      "container": "toy_bin_small"
+     }
+    },
+    "cause": "failure:resource_rubber_duck"
+   },
+   "GD": {
+    "cap": "GD",
+    "kind": "allocation",
+    "allocation": {
+     "toy_car": "toy_tray",
+     "rubber_duck": "toy_bin_small"
+    },
+    "cause": "failure:capacity_v4_toys_everywhere"
+   },
+   "PP": {
+    "cap": "PP",
+    "kept": {
+     "atom": [
+      "fully_inside",
+      "toy_car",
+      "toy_tray"
+     ],
+     "by": {
+      "skill": "place",
+      "args": {
+       "object": "toy_car"
+      }
+     }
+    },
+    "event": "resource_rubber_duck"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "toys_out",
+  "oracle_route": "v6_h_dynamic_duck_taken__alt_tv_stand_2",
+  "challenge": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck (here the rubber_duck is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the rubber_duck ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T12_tidy_toys/x6_cl_basket_unreachable": {
@@ -17573,13 +19674,8 @@
    10,
    11,
    12,
-   13,
-   14,
    15,
-   16,
-   17,
-   18,
-   19
+   16
   ],
   "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
   "initial_conditions": {
@@ -17673,21 +19769,119 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T13_breakfast_setup/bowl_on_cabinet__alt_dining_table_2": {
+  "family": "bowl_on_cabinet",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   13,
+   14,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
+  "initial_conditions": {
+   "scene": "tasks/breakfast_setup",
+   "start": null,
+   "moved": [
+    "bowl"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "cup",
+      "dining_table_2/top"
+     ],
+     [
+      "upright",
+      "cup"
+     ],
+     [
+      "grouped",
+      [
+       "bowl",
+       "cup",
+       "spoon"
+      ],
+      "dining_table_2/top",
+      0.5
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "dining_table_2/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "grouped",
+      [
+       "bowl",
+       "mug",
+       "spoon"
+      ],
+      "dining_table_2/top",
+      0.5
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "on",
+     "bowl",
+     "dining_table_2/top"
+    ],
+    [
+     "upright",
+     "bowl"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "dishes_on_tv_stand",
+  "oracle_route": "v6_bowl_on_cabinet__alt_dining_table_2",
+  "challenge": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand) (here the bowl is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the bowl ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T13_breakfast_setup/no_cup_bowl_on_cabinet": {
   "family": "no_cup_bowl_on_cabinet",
   "tier": "medium",
   "hard_category": null,
   "seeds": [
-   10,
-   11,
    12,
-   13,
    14,
    15,
    16,
-   17,
-   18,
-   19
+   18
   ],
   "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
   "initial_conditions": {
@@ -17782,6 +19976,112 @@
   "oracle_route": "hard_search_bowl_mug",
   "challenge": "no cup, and the bowl on the low wall cabinet",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T13_breakfast_setup/no_cup_bowl_on_cabinet__alt_dining_table_2": {
+  "family": "no_cup_bowl_on_cabinet",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   10,
+   11,
+   13,
+   17,
+   19
+  ],
+  "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
+  "initial_conditions": {
+   "scene": "tasks/breakfast_setup",
+   "start": null,
+   "moved": [
+    "bowl"
+   ],
+   "added": [],
+   "removed": [
+    "cup"
+   ],
+   "conditions": [
+    "no_cup",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "cup",
+      "dining_table_2/top"
+     ],
+     [
+      "upright",
+      "cup"
+     ],
+     [
+      "grouped",
+      [
+       "bowl",
+       "cup",
+       "spoon"
+      ],
+      "dining_table_2/top",
+      0.5
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "dining_table_2/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "grouped",
+      [
+       "bowl",
+       "mug",
+       "spoon"
+      ],
+      "dining_table_2/top",
+      0.5
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "on",
+     "bowl",
+     "dining_table_2/top"
+    ],
+    [
+     "upright",
+     "bowl"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "dishes_on_tv_stand",
+  "oracle_route": "v6_no_cup_bowl_on_cabinet__alt_dining_table_2",
+  "challenge": "no cup, and the bowl on the low wall cabinet (here the bowl is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the bowl ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T13_breakfast_setup/no_cup_spoon_boxed_in": {
@@ -18220,13 +20520,8 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "seeds": [
-   10,
-   11,
-   12,
-   13,
    14,
    15,
-   16,
    17,
    18,
    19
@@ -18394,6 +20689,182 @@
   "oracle_route": "v5_h_dynamic_mug_taken",
   "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T13_breakfast_setup/h_dynamic_mug_taken__alt_dining_table_2": {
+  "family": "h_dynamic_mug_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   16
+  ],
+  "instruction": "Set a bowl and a cup next to the spoon that is already on the dining table; a mug is fine if there is no cup. Lay them out sensibly.",
+  "initial_conditions": {
+   "scene": "tasks/breakfast_setup",
+   "start": null,
+   "moved": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "plate_counter_a",
+    "plate_counter_b",
+    "plate_dining_cabinet"
+   ],
+   "added": [],
+   "removed": [
+    "cup"
+   ],
+   "conditions": [
+    "no_cup",
+    "anchor_boxed_in"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "clutter_cereal_a",
+     "dining_table_2/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "destination_v4_no_cup_spoon_boxed_in",
+    "kind": "destination",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_mug",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "place",
+     "args": {
+      "object": "bowl"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "mug",
+     "to": {
+      "support": "dining_table_2/top",
+      "xy": [
+       3.7,
+       6.3
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "cup",
+      "dining_table_2/top"
+     ],
+     [
+      "upright",
+      "cup"
+     ],
+     [
+      "grouped",
+      [
+       "bowl",
+       "cup",
+       "spoon"
+      ],
+      "dining_table_2/top",
+      0.4
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug",
+      "dining_table_2/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "grouped",
+      [
+       "bowl",
+       "mug",
+       "spoon"
+      ],
+      "dining_table_2/top",
+      0.4
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "on",
+     "bowl",
+     "dining_table_2/top"
+    ],
+    [
+     "upright",
+     "bowl"
+    ],
+    [
+     "on",
+     "spoon",
+     "dining_table_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "PP"
+  ],
+  "capability_evidence": {
+   "PP": {
+    "cap": "PP",
+    "kept": {
+     "atom": [
+      "on",
+      "bowl",
+      "dining_table_2/top"
+     ],
+     "by": {
+      "skill": "place",
+      "args": {
+       "object": "bowl"
+      }
+     }
+    },
+    "event": "resource_mug"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "dishes_on_tv_stand",
+  "oracle_route": "v6_h_dynamic_mug_taken__alt_dining_table_2",
+  "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug (here the mug is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the mug ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T13_breakfast_setup/x6_cl_cup_slips__mug_bookcase": {
@@ -24060,16 +26531,11 @@
   "tier": "medium",
   "hard_category": null,
   "seeds": [
-   10,
    11,
    12,
-   13,
    14,
    15,
-   16,
-   17,
-   18,
-   19
+   16
   ],
   "instruction": "Movie night is over. The empty soda can is still on the TV stand and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling. It is usually on the low bookcase in the bedroom.",
   "initial_conditions": {
@@ -24118,6 +26584,66 @@
   "oracle_route": "v5_m_can_in_dining_room",
   "challenge": "the can was left on the dining table, out of view: search it",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T19_recycling/m_can_in_dining_room__alt_tv_stand_2": {
+  "family": "m_can_in_dining_room",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   10,
+   13,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Movie night is over. The empty soda can is still on the TV stand and the foam packing cube from the delivery lies on the living-room floor; take both to the wide storage bin we use for recycling. It is usually on the low bookcase in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/recycle_and_store",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "foam_cube",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "bin_on_bookcase",
+  "oracle_route": "v6_m_can_in_dining_room__alt_tv_stand_2",
+  "challenge": "the can was left on the dining table, out of view: search it (here the soda_can is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T19_recycling/m_grasp_can": {
@@ -24279,16 +26805,11 @@
   "tier": "medium",
   "hard_category": null,
   "seeds": [
-   10,
    11,
    12,
-   13,
-   14,
    15,
    16,
-   17,
-   18,
-   19
+   17
   ],
   "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
   "initial_conditions": {
@@ -24345,21 +26866,82 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T19_recycling/lookalike_bin__alt_tv_stand_2": {
+  "family": "lookalike_bin",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   10,
+   13,
+   14,
+   18,
+   19
+  ],
+  "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/recycle_and_store",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "toy_block_in_bin_1",
+    "toy_block_in_bin_2",
+    "toy_storage_bin",
+    "used_plastic_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "decoy_destination",
+    "item_out_of_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "foam_cube",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "bin_on_bookcase",
+  "oracle_route": "v6_lookalike_bin__alt_tv_stand_2",
+  "challenge": "the can was left on the dining table (out of view); a look-alike wide storage bin with toy blocks in it stands on the living-room cabinet by the bedroom door; the recycling bin with a used plastic cup in it is on the bedroom bookcase (here the soda_can is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T19_recycling/h_action_grasp_and_miss": {
   "family": "h_action_grasp_and_miss",
   "tier": "medium",
   "hard_category": null,
   "seeds": [
-   10,
-   11,
-   12,
    13,
    14,
    15,
-   16,
    17,
-   18,
-   19
+   18
   ],
   "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
   "initial_conditions": {
@@ -24462,20 +27044,127 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T19_recycling/h_mixed_lookalike_ik": {
-  "family": "h_mixed_lookalike_ik",
+ "T19_recycling/h_action_grasp_and_miss__alt_tv_stand_2": {
+  "family": "h_action_grasp_and_miss",
   "tier": "medium",
   "hard_category": null,
   "seeds": [
    10,
    11,
    12,
-   13,
-   14,
-   15,
    16,
-   17,
-   18,
+   19
+  ],
+  "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/recycle_and_store",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "toy_block_in_bin_1",
+    "toy_block_in_bin_2",
+    "toy_storage_bin",
+    "used_plastic_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "decoy_destination",
+    "item_out_of_view"
+   ],
+   "initial_checks": [
+    [
+     "inside",
+     "toy_block_in_bin_1",
+     "toy_storage_bin"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_v4_lookalike_bin",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "grasp_foam_cube",
+    "kind": "grasp",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "pick",
+     "args": {
+      "object": "foam_cube"
+     },
+     "nth": 1
+    },
+    "event": null,
+    "when": "action"
+   },
+   {
+    "id": "place_soda_can",
+    "kind": "placement",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "drop",
+     "args": {
+      "object": "soda_can"
+     },
+     "nth": 1
+    },
+    "event": null,
+    "when": "action"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "foam_cube",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "local"
+   }
+  },
+  "retry_solvable": false,
+  "control": "bin_on_bookcase",
+  "oracle_route": "v6_h_action_grasp_and_miss__alt_tv_stand_2",
+  "challenge": "a look-alike bin on the way: use the instructed one; and the can's first drop misses the bin, the cube slips on its first pick (here the soda_can is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T19_recycling/h_mixed_lookalike_ik": {
+  "family": "h_mixed_lookalike_ik",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   10,
+   12,
+   13,
+   16,
    19
   ],
   "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
@@ -24564,6 +27253,103 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T19_recycling/h_mixed_lookalike_ik__alt_tv_stand_2": {
+  "family": "h_mixed_lookalike_ik",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   11,
+   14,
+   15,
+   17,
+   18
+  ],
+  "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/recycle_and_store",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "toy_block_in_bin_1",
+    "toy_block_in_bin_2",
+    "toy_storage_bin",
+    "used_plastic_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "decoy_destination",
+    "item_out_of_view"
+   ],
+   "initial_checks": [
+    [
+     "inside",
+     "toy_block_in_bin_1",
+     "toy_storage_bin"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_v4_lookalike_bin",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "ik_pick_foam_cube",
+    "kind": "ik",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "pick",
+     "args": {
+      "object": "foam_cube"
+     },
+     "nth": 1
+    },
+    "event": null,
+    "when": "action"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "foam_cube",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF"
+  ],
+  "capability_evidence": {
+   "AF": {
+    "cap": "AF",
+    "level": "local"
+   }
+  },
+  "retry_solvable": false,
+  "control": "bin_on_bookcase",
+  "oracle_route": "v6_h_mixed_lookalike_ik__alt_tv_stand_2",
+  "challenge": "route both items past the look-alike bin to the instructed one, and the first cube pick is refused (here the soda_can is on tv_stand_2/top)",
+  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T19_recycling/h_dynamic_cube_moved": {
   "family": "h_dynamic_cube_moved",
   "tier": "hard",
@@ -24572,13 +27358,8 @@
    10,
    11,
    12,
-   13,
-   14,
-   15,
    16,
-   17,
-   18,
-   19
+   17
   ],
   "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
   "initial_conditions": {
@@ -24694,6 +27475,133 @@
   "oracle_route": "v5_h_dynamic_cube_moved",
   "challenge": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone puts the foam cube on the TV stand: keep the can, find the cube",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T19_recycling/h_dynamic_cube_moved__alt_kitchen_cabinet_6": {
+  "family": "h_dynamic_cube_moved",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   13,
+   14,
+   15,
+   18,
+   19
+  ],
+  "instruction": "Take the empty soda can and the foam packing cube to the wide storage bin we use for recycling, near the low bookcase in the bedroom.",
+  "initial_conditions": {
+   "scene": "tasks/recycle_and_store",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "toy_block_in_bin_1",
+    "toy_block_in_bin_2",
+    "toy_storage_bin",
+    "used_plastic_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "decoy_destination",
+    "item_out_of_view"
+   ],
+   "initial_checks": [
+    [
+     "inside",
+     "toy_block_in_bin_1",
+     "toy_storage_bin"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_v4_lookalike_bin",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_foam_cube",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "drop",
+     "args": {
+      "object": "soda_can"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "foam_cube",
+     "to": {
+      "support": "kitchen_cabinet_6/top",
+      "xy": [
+       3.7,
+       0.36
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "foam_cube",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "PP"
+  ],
+  "capability_evidence": {
+   "PP": {
+    "cap": "PP",
+    "kept": {
+     "atom": [
+      "inside",
+      "soda_can",
+      "wide_storage_bin"
+     ],
+     "by": {
+      "skill": "drop",
+      "args": {
+       "object": "soda_can"
+      }
+     }
+    },
+    "event": "resource_foam_cube"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "bin_on_bookcase",
+  "oracle_route": "v6_h_dynamic_cube_moved__alt_kitchen_cabinet_6",
+  "challenge": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone puts the foam cube on the TV stand: keep the can, find the cube (here the foam_cube is on kitchen_cabinet_6/top)",
+  "rationale": "seed extension of the v5 design: the foam_cube ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T19_recycling/x6_sr_cube_drop_refused": {
@@ -25184,14 +28092,9 @@
   "tier": "medium",
   "hard_category": null,
   "seeds": [
-   10,
    11,
    12,
-   13,
    14,
-   15,
-   16,
-   17,
    18,
    19
   ],
@@ -25234,6 +28137,58 @@
   "oracle_route": "v5_m_bottle_on_tv_stand",
   "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T20_juice_back_to_table/m_bottle_on_tv_stand__alt_dining_table_2": {
+  "family": "m_bottle_on_tv_stand",
+  "tier": "medium",
+  "hard_category": null,
+  "seeds": [
+   10,
+   13,
+   15,
+   16,
+   17
+  ],
+  "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
+  "initial_conditions": {
+   "scene": "tasks/organize_utility_items",
+   "start": null,
+   "moved": [
+    "juice_bottle"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "juice_bottle",
+     "dining_table_2/top"
+    ],
+    [
+     "upright",
+     "juice_bottle"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "expected_capabilities": [],
+  "capability_evidence": {},
+  "retry_solvable": false,
+  "control": "bottle_on_cabinet",
+  "oracle_route": "v6_m_bottle_on_tv_stand__alt_dining_table_2",
+  "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it (here the juice_bottle is on dining_table_2/top)",
+  "rationale": "seed extension of the v5 design: the juice_bottle ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T20_juice_back_to_table/table_full": {
@@ -25672,16 +28627,11 @@
   "tier": "hard",
   "hard_category": "dynamic",
   "seeds": [
-   10,
-   11,
    12,
    13,
    14,
    15,
-   16,
-   17,
-   18,
-   19
+   16
   ],
   "instruction": "Find the juice bottle and put it back on the dining table, standing up; if needed, first make room among the things on the table.",
   "initial_conditions": {
@@ -25826,6 +28776,162 @@
   "oracle_route": "v5_h_dynamic_bottle_taken",
   "challenge": "the party table is full: make room first; and just after the robot saw the bottle, someone takes it to the TV stand",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T20_juice_back_to_table/h_dynamic_bottle_taken__alt_kitchen_cabinet_4": {
+  "family": "h_dynamic_bottle_taken",
+  "tier": "hard",
+  "hard_category": "dynamic",
+  "seeds": [
+   10,
+   11,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Find the juice bottle and put it back on the dining table, standing up; if needed, first make room among the things on the table.",
+  "initial_conditions": {
+   "scene": "tasks/organize_utility_items",
+   "start": null,
+   "moved": [
+    "juice_bottle"
+   ],
+   "added": [
+    "buffet_tray_1",
+    "buffet_tray_11",
+    "buffet_tray_12",
+    "buffet_tray_2",
+    "buffet_tray_6",
+    "buffet_tray_7",
+    "party_bowl_1",
+    "party_bowl_2",
+    "party_bowl_3",
+    "party_bowl_4",
+    "party_plate_10",
+    "party_plate_3",
+    "party_plate_4",
+    "party_plate_5",
+    "party_plate_8",
+    "party_plate_9"
+   ],
+   "removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "spoon_target_table"
+   ],
+   "conditions": [
+    "destination_full"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "buffet_tray_1",
+     "dining_table_2/top"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "destination_v4_table_full",
+    "kind": "destination",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   },
+   {
+    "id": "resource_juice_bottle",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": {
+     "skill": "look",
+     "args": {
+      "target": "kitchen_cabinet_6/top"
+     },
+     "nth": 1,
+     "on": "success"
+    },
+    "event": {
+     "type": "move_object",
+     "object": "juice_bottle",
+     "to": {
+      "support": "kitchen_cabinet_4/top",
+      "xy": [
+       1.4,
+       0.42
+      ],
+      "yaw_deg": 0.0
+     }
+    },
+    "when": "dynamic"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "juice_bottle",
+     "dining_table_2/top"
+    ],
+    [
+     "upright",
+     "juice_bottle"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "count_on_at_least",
+     [
+      "buffet_tray_1",
+      "buffet_tray_2",
+      "party_plate_3",
+      "party_plate_4",
+      "party_plate_5",
+      "buffet_tray_6",
+      "buffet_tray_7",
+      "party_plate_8",
+      "party_plate_9",
+      "party_plate_10",
+      "buffet_tray_11",
+      "buffet_tray_12",
+      "party_bowl_1",
+      "party_bowl_2",
+      "party_bowl_3",
+      "party_bowl_4"
+     ],
+     "dining_table_2/top",
+     14
+    ]
+   ]
+  },
+  "expected_capabilities": [
+   "AF",
+   "DR"
+  ],
+  "capability_evidence": {
+   "DR": {
+    "cap": "DR",
+    "blocker": "party_bowl_1",
+    "blocked": {
+     "skill": "pick",
+     "target": "juice_bottle"
+    },
+    "cause": "overlay:party_bowl_1"
+   },
+   "AF": {
+    "cap": "AF",
+    "level": "task"
+   }
+  },
+  "retry_solvable": false,
+  "control": "bottle_on_cabinet",
+  "oracle_route": "v6_h_dynamic_bottle_taken__alt_kitchen_cabinet_4",
+  "challenge": "the party table is full: make room first; and just after the robot saw the bottle, someone takes it to the TV stand (here the juice_bottle is on kitchen_cabinet_4/top)",
+  "rationale": "seed extension of the v5 design: the juice_bottle ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T20_juice_back_to_table/x6_cl_bottle_behind_mug__mug": {

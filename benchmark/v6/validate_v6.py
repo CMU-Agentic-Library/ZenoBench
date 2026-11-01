@@ -29,6 +29,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 TASKS = ROOT / "benchmark/v6/tasks.json"
+SEEDS = list(range(10, 20))
 OUT = ROOT / "benchmark/v6/STATIC.json"
 
 
@@ -75,11 +76,24 @@ def main():
             probs = []
             tier = info["tier"]
             if info["origin"] == "v5":
-                for s in info["seeds"]:
-                    h = episode_config(t, int(s), fam)["config_hash"]
+                for s in SEEDS:                  # the v5 variant itself: unchanged for every seed
+                    h = episode_config(t, s, fam)["config_hash"]
                     out["v5_hashes_checked"] += 1
                     if frozen.get(f"{tid}/{fam}/{s}") != h:
-                        probs.append((int(s), f"v5 configuration hash changed ({h})"))
+                        probs.append((s, f"v5 configuration hash changed ({h})"))
+                for v in info["cases"][1:]:      # seed extension: a second case, checked like a new variant
+                    seeds = sorted(int(s) for s, x in info["seeds"].items() if x == v)
+                    # the v5 per-variant rules with the v5 label (as the v5 variant was checked); the v6 tier below
+                    probs += [(s, f"{v}: {p}") for s, p in check_variant(t, info.get("v5_tier", tier), v, contracts,
+                                                                         assets, seeds)]
+                    if t["v6_audit"][v]["tier_rule"] != tier:
+                        probs.append((None, f"{v}: tier {t['v6_audit'][v]['tier_rule']} != family tier {tier}"))
+                if len(info["cases"]) > 1:
+                    if {str(k): v for k, v in seed_cases(tid, fam, info["cases"]).items()} != \
+                            {str(k): v for k, v in info["seeds"].items()}:
+                        probs.append((None, "seed manifest is not the deterministic assignment"))
+                    if len({route_sig(t["routes"][t["oracle"][v]]["steps"]) for v in info["cases"]}) < len(info["cases"]):
+                        probs.append((None, "two cases share one oracle route"))
                 hashes[episode_config(t, 10, fam)["config_hash"]].append(fam)
             else:
                 if {str(k): v for k, v in seed_cases(tid, fam, info["cases"]).items()} != \
@@ -104,7 +118,9 @@ def main():
                     for p in persistent_problems(t, v):
                         probs.append((None, f"{v}: {p}"))
                     seeds = sorted(int(s) for s, x in info["seeds"].items() if x == v)
-                    probs += [(s, f"{v}: {p}") for s, p in check_variant(t, tier, v, contracts, assets, seeds)]
+                    # the v5 per-variant rules with the v5 label (as the v5 variant was checked); the v6 tier below
+                    probs += [(s, f"{v}: {p}") for s, p in check_variant(t, info.get("v5_tier", tier), v, contracts,
+                                                                         assets, seeds)]
                 hashes[episode_config(t, 10, info["cases"][0])["config_hash"]].append(fam)
             n = len(info["seeds"])
             n_ep += n

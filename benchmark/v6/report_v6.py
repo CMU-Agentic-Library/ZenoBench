@@ -363,10 +363,12 @@ def design_md(doc, a):
               f"and is not retry-solvable; {len(a['retiered'])} v5 labels corrected | {_check(c4)} |")
     md.append(f"| 5 | one difficulty definition, control variants | rule in `hypotheses.py`; "
               f"{sum(a['control_tiers'].values())} Hard families with a control in the task | PASS |")
-    c6 = a["multi_case_families"] >= 20
-    md.append(f"| 6 | decision-relevant seed diversity, reproducible | {a['multi_case_families']} families with decision "
-              f"cases ({len(a['decision_factors'])} factors); positional jitter elsewhere; v5 seeds frozen | "
-              f"{_check(c6)} (v5 families positional by the freeze) |")
+    mh = sum(1 for r in rows if r["tier"] == "hard" and len(r["cases"]) > 1)
+    md.append(f"| 6 | decision-relevant seed diversity, reproducible | {a['multi_case_families']} / {a['families']} "
+              f"families ({mh} / {a['hard_families']} Hard) vary a decision fact per seed; factor coverage below; "
+              "every seed reproducible | **PARTIAL** - substitute availability / location, item location, event "
+              "destination, blocking relation, failure mechanism: per seed; failure timing: separate study variants; "
+              "container capacity and target occupancy: per variant only (not per seed) |")
     md.append("| 7 | full spec per variant | instruction, initial conditions, failure triggers, goal, verified "
               "capabilities, oracle route, challenge / rationale, success criteria for every concrete variant: "
               "`variant_cards.json` | PASS |")
@@ -390,7 +392,40 @@ def design_md(doc, a):
         md.append(f"| {r['run']} | {short(r['task'])} | {r['variant']} | {r['seed']} | {'yes' if r['current'] else 'no'} | "
                   f"{r['status']} | {len(r['manifested'] or [])}/{len((r['fired'] or [])) + len(r['not_fired'] or [])} | "
                   f"{(r['stop'] or '-').replace('|', '/')} |")
-    md += ["", "External dependencies (cannot be closed at the task level): physical solvability of the skills "
+    md += ["", "How the checklist is graded: every row is computed by `report_v6.py` from the catalog against a fixed "
+           "threshold (>= 20 distinct designs and >= 8 tasks per core capability; >= 3 failure mechanisms and >= 2 "
+           "recovery strategies per capability; every Hard verified and not retry-solvable; no new family sharing a "
+           "signature with another in its task; 0 static problems). The thresholds are the goal's own; the "
+           "capability rules are in `hypotheses.py` with negative tests. Whether this is competitive at IROS is a "
+           "reviewer judgement - see the comparison below.", "",
+           "### Seed-diversity factors", "",
+           "| factor (goal item 6) | how it varies | families |", "|---|---|---|",
+           f"| substitute availability / location | per seed | {sum(1 for r in rows if r['factor'] and 'substitute' in r['factor'])} |",
+           f"| where the item / resource is (closed place, room) | per seed | {sum(1 for r in rows if r['factor'] and ('holds' in r['factor'] or 'to be found' in r['factor'] or 'food is' in r['factor']))} |",
+           f"| where an event takes a resource / which subgoal it undoes | per seed | {sum(1 for r in rows if r['factor'] and ('event' in r['factor']))} |",
+           f"| blocking relation | per seed | {sum(1 for r in rows if r['factor'] and 'block' in r['factor'])} |",
+           f"| failure mechanism | per seed | {sum(1 for r in rows if r['factor'] and 'mechanism' in r['factor'])} |",
+           "| failure timing | separate variants: v5 failure-timing study (T09, T12, T13, T19 x early / middle / late) | 12 study variants |",
+           "| container capacity, target occupancy | per variant (e.g. T03 / T12 allocation, T04 / T14 / T20 occupied "
+           "destinations), not per seed: varying them per seed changes which capability a seed needs, and a family's "
+           "capability hypothesis must hold for every seed | 0 per seed |",
+           "", "### External comparison (approximate figures from the cited papers; check before quoting)", "",
+           "| benchmark | tasks / scenes | failures and recovery | what it measures |", "|---|---|---|---|",
+           "| ALFRED (CVPR 2020) | 7 task types, ~120 rooms | none injected | instruction following |",
+           "| BEHAVIOR-1K (CoRL 2022) | 1,000 activities, 50 scenes | none injected | long-horizon activities |",
+           "| LIBERO (NeurIPS D&B 2023) | 130 tasks | none | lifelong manipulation learning |",
+           "| RoboCasa (RSS 2024) | 100 tasks, ~120 kitchens | none | generalist policies |",
+           "| REFLECT / RoboFail (CoRL 2023) | ~100 failure scenarios | real failures, explained / corrected offline | failure reasoning |",
+           f"| ZenoBench v6 | 20 tasks, {a['families']} families, {a['episodes']} episodes, 1 house | injected action / "
+           "task / mixed / dynamic failures, persistent vs transient, hidden from the planner; oracle routes; "
+           "matched controls; per-family capability hypotheses | task-level replanning under failures and "
+           "constraint changes |", "",
+           "Where v6 is stronger: controlled, reproducible failures with a capability label that is checked, not "
+           "asserted, and a control for each Hard family. Where it is weaker and a reviewer will say so: one house and "
+           "20 base tasks (no cross-scene claim is made), physical solvability shown so far for "
+           f"{a['status'].get('PHYSICS_VALIDATED', 0)} families only, and no baseline yet showing that retry-style "
+           "planners fail exactly on the Hard tier (`capability_hypotheses.json` states the predictions to test).", "",
+           "External dependencies (cannot be closed at the task level): physical solvability of the skills "
            "(SKILL_FIX_LIST.md) and the simulation of every new family (PHYSICS_TODO.md).", "",
            "## Family matrix", "",
            "| task | family | tier | cat | capabilities | failure mechanisms | recovery strategies | cases | control | physics | status |",

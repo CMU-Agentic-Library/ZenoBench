@@ -481,11 +481,12 @@
   "non-formal": 1
  },
  "ladders": 19,
- "multi_case_families": 26,
+ "multi_case_families": 53,
  "decision_factors": {
   "which object lies on the book (blocking relation)": 1,
   "failure mechanism (grasp slip vs reach)": 1,
   "where the event takes the resource": 9,
+  "where the resource is to be found (seed extension)": 27,
   "which cabinet holds the preferred item": 2,
   "failure mechanism and where the substitute is": 1,
   "where the substitute is": 3,
@@ -498,8 +499,8 @@
   "which object blocks the reach (blocking relation)": 1
  },
  "status": {
-  "STATIC_VALIDATED": 174,
-  "PHYSICS_VALIDATED": 59
+  "STATIC_VALIDATED": 182,
+  "PHYSICS_VALIDATED": 51
  },
  "hard_categories": {
   "action": 31,
@@ -1529,13 +1530,14 @@
     "PP:redo-undone-part"
    ],
    "cases": [
-    "h_dynamic_pin_taken"
+    "h_dynamic_pin_taken",
+    "h_dynamic_pin_taken__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "large_only",
    "challenge": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone takes the pin to the wall cabinet: keep the spoon where it is, find the pin",
    "rationale": "",
-   "physics": "4/10 of 10",
+   "physics": "2/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -1642,13 +1644,14 @@
     "AF:task"
    ],
    "cases": [
-    "no_cup_mug_away"
+    "no_cup_mug_away",
+    "no_cup_mug_away__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "cup_available",
    "challenge": "no cup in the house and the mug stands on the TV stand, out of the first view",
    "rationale": "",
-   "physics": "9/10 of 10",
+   "physics": "4/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -2200,13 +2203,14 @@
     "DR:open-door"
    ],
    "cases": [
-    "h_dynamic_pencil_taken"
+    "h_dynamic_pencil_taken",
+    "h_dynamic_pencil_taken__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "e1_pencil_asked",
    "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone takes the pencil to the dining table: close the cabinet again and search the pencil",
    "rationale": "",
-   "physics": "0/10 of 10",
+   "physics": "0/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -2417,13 +2421,14 @@
     "AF:task"
    ],
    "cases": [
-    "occupied_block_away"
+    "occupied_block_away",
+    "occupied_block_away__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "free",
    "challenge": "the cabinet top is full and the block was left on the dining table",
    "rationale": "",
-   "physics": "8/10 of 10",
+   "physics": "3/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -2860,13 +2865,14 @@
     "SR:heat->place(appliance)"
    ],
    "cases": [
-    "broken_oatmeal_away"
+    "broken_oatmeal_away",
+    "broken_oatmeal_away__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "microwave_works",
    "challenge": "the microwave does not heat and the oatmeal was left on the wall cabinet (carried from the dining table it slipped out of the rim pinch, 2/2)",
    "rationale": "",
-   "physics": "4/10 of 10",
+   "physics": "2/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -3273,13 +3279,14 @@
     "AF:task"
    ],
    "cases": [
-    "far_sponge_tv"
+    "far_sponge_tv",
+    "far_sponge_tv__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "sponge_on_island",
    "challenge": "the robot starts in the dining room; the sponge is on the TV stand",
    "rationale": "",
-   "physics": "1/10 of 10",
+   "physics": "0/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -3443,13 +3450,14 @@
     "DR:relocate-obstacle"
    ],
    "cases": [
-    "h_dynamic_sponge_taken"
+    "h_dynamic_sponge_taken",
+    "h_dynamic_sponge_taken__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "sponge_on_island",
    "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it",
    "rationale": "",
-   "physics": "0/10 of 10",
+   "physics": "0/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -3591,13 +3599,14 @@
     "AF:task"
    ],
    "cases": [
-    "lid_on_spoon_away"
+    "lid_on_spoon_away",
+    "lid_on_spoon_away__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "lid_off",
    "challenge": "the lid is on the pot and the spoon was left on the low wall cabinet",
    "rationale": "",
-   "physics": "0/10 of 10",
+   "physics": "0/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -3745,14 +3754,15 @@
     "PP:fetch-moved-resource"
    ],
    "cases": [
-    "h_dynamic_spoon_taken"
+    "h_dynamic_spoon_taken",
+    "h_dynamic_spoon_taken__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "lid_off",
    "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
    "rationale": "",
-   "physics": "10/10 of 10",
-   "status": "PHYSICS_VALIDATED",
+   "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
   },
@@ -4038,14 +4048,15 @@
     "AF:task"
    ],
    "cases": [
-    "can_in_dining_room"
+    "can_in_dining_room",
+    "can_in_dining_room__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "can_on_island",
    "challenge": "the can stands on the dining table in the next room, out of sight",
    "rationale": "",
-   "physics": "10/10 of 10",
-   "status": "PHYSICS_VALIDATED",
+   "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
   },
@@ -4069,13 +4080,14 @@
     "AF:task"
    ],
    "cases": [
-    "far_can_far"
+    "far_can_far",
+    "far_can_far__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "can_on_island",
    "challenge": "the robot starts in the dining room, the can is on the TV stand",
    "rationale": "",
-   "physics": "9/10 of 10",
+   "physics": "5/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -4239,14 +4251,15 @@
     "DR:open-door"
    ],
    "cases": [
-    "h_dynamic_can_moved"
+    "h_dynamic_can_moved",
+    "h_dynamic_can_moved__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "can_on_island",
    "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
    "rationale": "",
-   "physics": "10/10 of 10",
-   "status": "PHYSICS_VALIDATED",
+   "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
   },
@@ -4791,13 +4804,14 @@
     "AF:task"
    ],
    "cases": [
-    "duck_in_study"
+    "duck_in_study",
+    "duck_in_study__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "toys_out",
    "challenge": "the duck was left on the study desk",
    "rationale": "",
-   "physics": "8/10 of 10",
+   "physics": "5/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -4891,13 +4905,14 @@
     "SR:place->drop"
    ],
    "cases": [
-    "toys_everywhere"
+    "toys_everywhere",
+    "toys_everywhere__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "toys_out",
    "challenge": "the car on the living-room floor, the duck on the study desk; no storage basket: a small bin already half full of blocks and a shallow tray on the bedroom bookcase",
    "rationale": "",
-   "physics": "3/10 of 10",
+   "physics": "1/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -4933,13 +4948,14 @@
     "SR:place->drop"
    ],
    "cases": [
-    "h_action_grasp_and_ik"
+    "h_action_grasp_and_ik",
+    "h_action_grasp_and_ik__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "toys_out",
    "challenge": "no basket: allocate the toys by size; and the car slips on its first pick, the duck's first place is refused",
    "rationale": "",
-   "physics": "3/10 of 10",
+   "physics": "2/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -4974,13 +4990,14 @@
     "SR:place->drop"
    ],
    "cases": [
-    "h_mixed_everywhere_ik"
+    "h_mixed_everywhere_ik",
+    "h_mixed_everywhere_ik__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "toys_out",
    "challenge": "allocate the toys by size (no basket) and the first car pick is refused",
    "rationale": "",
-   "physics": "6/10 of 10",
+   "physics": "2/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -5018,13 +5035,14 @@
     "SR:place->drop"
    ],
    "cases": [
-    "h_dynamic_duck_taken"
+    "h_dynamic_duck_taken",
+    "h_dynamic_duck_taken__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "toys_out",
    "challenge": "no basket (allocate the toys by size); once the car is in the tray, the kid carries the duck to the dining table: keep the car, find the duck",
    "rationale": "",
-   "physics": "4/10 of 10",
+   "physics": "1/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -5200,13 +5218,14 @@
     "AF:task"
    ],
    "cases": [
-    "bowl_on_cabinet"
+    "bowl_on_cabinet",
+    "bowl_on_cabinet__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "dishes_on_tv_stand",
    "challenge": "the bowl was left on the low wall cabinet, out of the first views (dining table, TV stand)",
    "rationale": "",
-   "physics": "3/10 of 10",
+   "physics": "3/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -5231,13 +5250,14 @@
     "AF:task"
    ],
    "cases": [
-    "no_cup_bowl_on_cabinet"
+    "no_cup_bowl_on_cabinet",
+    "no_cup_bowl_on_cabinet__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "dishes_on_tv_stand",
    "challenge": "no cup, and the bowl on the low wall cabinet",
    "rationale": "",
-   "physics": "0/10 of 10",
+   "physics": "0/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -5366,13 +5386,14 @@
     "PP:redo-undone-part"
    ],
    "cases": [
-    "h_dynamic_mug_taken"
+    "h_dynamic_mug_taken",
+    "h_dynamic_mug_taken__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "dishes_on_tv_stand",
    "challenge": "move the boxed-in setting (no cup: mug); once the bowl is set, someone takes the mug to the wall cabinet: keep the setting, find the mug",
    "rationale": "",
-   "physics": "4/10 of 10",
+   "physics": "2/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -6929,14 +6950,15 @@
     "AF:task"
    ],
    "cases": [
-    "m_can_in_dining_room"
+    "m_can_in_dining_room",
+    "m_can_in_dining_room__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "bin_on_bookcase",
    "challenge": "the can was left on the dining table, out of view: search it",
    "rationale": "",
-   "physics": "10/10 of 10",
-   "status": "PHYSICS_VALIDATED",
+   "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
   },
@@ -7020,14 +7042,15 @@
     "AF:task"
    ],
    "cases": [
-    "lookalike_bin"
+    "lookalike_bin",
+    "lookalike_bin__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "bin_on_bookcase",
    "challenge": "the can was left on the dining table (out of view); a look-alike wide storage bin with toy blocks in it stands on the living-room cabinet by the bedroom door; the recycling bin with a used plastic cup in it is on the bedroom bookcase",
    "rationale": "",
-   "physics": "10/10 of 10",
-   "status": "PHYSICS_VALIDATED",
+   "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
   },
@@ -7052,13 +7075,14 @@
     "AF:local"
    ],
    "cases": [
-    "h_action_grasp_and_miss"
+    "h_action_grasp_and_miss",
+    "h_action_grasp_and_miss__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "bin_on_bookcase",
    "challenge": "a look-alike bin on the way: use the instructed one; and the can's first drop misses the bin, the cube slips on its first pick",
    "rationale": "",
-   "physics": "3/10 of 10",
+   "physics": "2/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -7083,14 +7107,15 @@
     "AF:local"
    ],
    "cases": [
-    "h_mixed_lookalike_ik"
+    "h_mixed_lookalike_ik",
+    "h_mixed_lookalike_ik__alt_tv_stand_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "bin_on_bookcase",
    "challenge": "route both items past the look-alike bin to the instructed one, and the first cube pick is refused",
    "rationale": "",
-   "physics": "10/10 of 10",
-   "status": "PHYSICS_VALIDATED",
+   "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
   },
@@ -7118,13 +7143,14 @@
     "PP:redo-undone-part"
    ],
    "cases": [
-    "h_dynamic_cube_moved"
+    "h_dynamic_cube_moved",
+    "h_dynamic_cube_moved__alt_kitchen_cabinet_6"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "bin_on_bookcase",
    "challenge": "a look-alike bin on the way (use the instructed one); once the can is in the bin, someone puts the foam cube on the TV stand: keep the can, find the cube",
    "rationale": "",
-   "physics": "0/10 of 10",
+   "physics": "0/5 of 10",
    "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
@@ -7325,14 +7351,15 @@
    ],
    "strategies": [],
    "cases": [
-    "m_bottle_on_tv_stand"
+    "m_bottle_on_tv_stand",
+    "m_bottle_on_tv_stand__alt_dining_table_2"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "bottle_on_cabinet",
    "challenge": "the bottle is on the TV stand in the living room, out of the first view: search it",
    "rationale": "",
-   "physics": "10/10 of 10",
-   "status": "PHYSICS_VALIDATED",
+   "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
   },
@@ -7465,14 +7492,15 @@
     "DR:relocate-obstacle"
    ],
    "cases": [
-    "h_dynamic_bottle_taken"
+    "h_dynamic_bottle_taken",
+    "h_dynamic_bottle_taken__alt_kitchen_cabinet_4"
    ],
-   "factor": null,
+   "factor": "where the resource is to be found (seed extension)",
    "control": "bottle_on_cabinet",
    "challenge": "the party table is full: make room first; and just after the robot saw the bottle, someone takes it to the TV stand",
    "rationale": "",
-   "physics": "10/10 of 10",
-   "status": "PHYSICS_VALIDATED",
+   "physics": "5/5 of 10",
+   "status": "STATIC_VALIDATED",
    "rerun_needed": null,
    "retry_solvable": false
   },

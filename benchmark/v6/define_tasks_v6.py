@@ -1124,6 +1124,96 @@ NEW_CONDITIONS = {
 }
 
 
+# ----------------------------------------------------------------- seed extensions of v5 families
+# A v5 family whose plan must find a resource (moved there by a dynamic event, or out of view in the overlay) gets a
+# second case with the resource in another known-valid place: the search and the route change, the v5 variant itself
+# stays a case with its configuration and hash untouched.  SEED_EXT holds the place chosen per family (the first
+# candidate that passes every static check, found by ``python benchmark/v6/define_tasks_v6.py --select-ext``).
+EXT_PLACES = [("dining_table_2/top", [3.7, 6.3], "dining_room_0_1"), ("tv_stand_2/top", [7.0, 0.36], "living_room_0_0"),
+              ("kitchen_cabinet_4/top", [1.4, 0.42], None), ("kitchen_cabinet_6/top", [3.7, 0.36], "living_room_0_0")]
+SEED_EXT = {
+    ('T03_utensils_one_container', 'h_dynamic_pin_taken'): 0,
+    ('T04_cup_or_mug_to_cabinet', 'no_cup_mug_away'): 0,
+    ('T05_pen_or_pencil_to_desk', 'h_dynamic_pencil_taken'): 1,
+    ('T06_block_destination_occupied', 'occupied_block_away'): 1,
+    ('T07_heat_oatmeal', 'broken_oatmeal_away'): 0,
+    ('T08_wipe_island', 'far_sponge_tv'): 0,
+    ('T08_wipe_island', 'h_dynamic_sponge_taken'): 0,
+    ('T09_tomato_soup', 'h_dynamic_spoon_taken'): 0,
+    ('T09_tomato_soup', 'lid_on_spoon_away'): 0,
+    ('T10_trash_the_can', 'can_in_dining_room'): 1,
+    ('T10_trash_the_can', 'far_can_far'): 0,
+    ('T10_trash_the_can', 'h_dynamic_can_moved'): 1,
+    ('T12_tidy_toys', 'duck_in_study'): 0,
+    ('T12_tidy_toys', 'h_action_grasp_and_ik'): 0,
+    ('T12_tidy_toys', 'h_dynamic_duck_taken'): 1,
+    ('T12_tidy_toys', 'h_mixed_everywhere_ik'): 0,
+    ('T12_tidy_toys', 'toys_everywhere'): 0,
+    ('T13_breakfast_setup', 'bowl_on_cabinet'): 0,
+    ('T13_breakfast_setup', 'h_dynamic_mug_taken'): 0,
+    ('T13_breakfast_setup', 'no_cup_bowl_on_cabinet'): 0,
+    ('T19_recycling', 'h_action_grasp_and_miss'): 1,
+    ('T19_recycling', 'h_dynamic_cube_moved'): 3,
+    ('T19_recycling', 'h_mixed_lookalike_ik'): 1,
+    ('T19_recycling', 'lookalike_bin'): 1,
+    ('T19_recycling', 'm_can_in_dining_room'): 1,
+    ('T20_juice_back_to_table', 'h_dynamic_bottle_taken'): 2,
+    ('T20_juice_back_to_table', 'm_bottle_on_tv_stand'): 0,
+}
+
+
+def ext_target(t, fam):
+    """(mode, object, its place in the v5 variant, trigger skill args or None) when the family qualifies."""
+    v = t["variants"][fam]
+    steps = t["routes"][t["oracle"][fam]]["steps"]
+    looked = {s["args"].get("object") for s in steps if s["skill"] == "search"} | \
+        {s["args"].get("destination") for s in steps if s["skill"] == "navigate"}
+    for f in v.get("failures", []):
+        ev = f.get("event") or {}
+        if ev.get("type") == "move_object" and (ev["object"] in looked and
+                                                any(s["skill"] == "search" and s["args"].get("object") == ev["object"]
+                                                    for s in steps) or ev["to"].get("support") in looked):
+            return "event", ev["object"], ev["to"].get("support"), f["id"]
+    for s in steps:
+        if s["skill"] == "search":
+            x = s["args"].get("object")
+            m = (v.get("move") or {}).get(x)
+            if m and m.get("support"):
+                return "overlay", x, m["support"], None
+    return None
+
+
+def ext_variant(t, fam, k):
+    mode, x, old, fid = ext_target(t, fam)
+    sup, xy, region = EXT_PLACES[k]
+    v = copy.deepcopy(t["variants"][fam])
+    meta = v.pop("v5", {}) or {}
+    if mode == "event":
+        for f in v["failures"]:
+            if f["id"] == fid:
+                f["event"]["to"] = {"support": sup, "xy": list(xy), "yaw_deg": 0.0}
+    else:
+        v["move"][x] = {"support": sup, "xy": list(xy), "yaw_deg": 0.0}
+    steps = copy.deepcopy(t["routes"][t["oracle"][fam]]["steps"])
+    for st in steps:
+        if st["skill"] == "search" and st["args"].get("object") == x:
+            if region:
+                st["args"]["region"] = region
+            else:
+                st["args"].pop("region", None)
+        for key in ("destination", "target"):
+            if st["args"].get(key) == old:
+                st["args"][key] = sup
+    case = "alt_" + sup.split("/")[0]
+    v["since"] = "v6"
+    v["note"] = f"{meta.get('challenge') or v.get('note', '')} (here the {x} is on {sup})"
+    v["v6"] = {"family": fam, "case": case, "tier": meta.get("tier"), "hard_category": meta.get("hard_category"),
+               "challenge": v["note"], "derived_from": fam, "seed_extension": True,
+               "rationale": f"seed extension of the v5 design: the {x} ends up somewhere else, so where to search and the "
+                            "route change; everything else is the v5 variant"}
+    return f"{fam}__{case}", v, steps
+
+
 # ----------------------------------------------------------------- assembly
 def seed_cases(task_id, fam, cases):
     """Seeds 10-19 -> case ids: balanced (each case gets floor/ceil of 10 / k seeds), shuffled per family with a
@@ -1183,6 +1273,16 @@ def build_task(t: dict) -> dict:
         for vid in ids:
             families[vid] = {"origin": "v5", "design_tier": tier, "cases": [vid],
                              "seeds": {s: vid for s in SEEDS}}
+            k = SEED_EXT.get((t["task_id"], vid))
+            if k is not None:
+                alt, v, steps = ext_variant(t, vid, k)
+                t["variants"][alt] = v
+                t["routes"][f"v6_{alt}"] = {"steps": steps, "kind": "v6_seed_extension", "variant": alt}
+                t["oracle"][alt] = f"v6_{alt}"
+                fam = families[vid]
+                fam["cases"] = [vid, alt]
+                fam["seeds"] = seed_cases(t["task_id"], vid, fam["cases"])
+                fam["factor"] = "where the resource is to be found (seed extension)"
     for fam, spec in fams.items():
         if fam in t["variants"]:
             raise ValueError(f"{t['task_id']}: {fam} exists in v5")
