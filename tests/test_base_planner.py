@@ -146,3 +146,25 @@ def test_dense_sets_keep_the_ends_and_a_set_every_dense_step():
     assert kept[0, 0, 0] == 0.0 and kept[-1, 0, 0] == 0.3
     assert np.all(np.diff(kept[:, 0, 0]) <= bp.DENSE + 1e-9)
     assert len(kept) < len(fine)
+
+
+def test_the_fold_passes_to_the_same_arrival_posture_without_a_swing():
+    # fold (0) -> hang (1) -> arrive (0 again): on an open floor nothing swings
+    switches = [_sets(*[10 + k for k in range(bp.SWITCH_SAMPLES)]), _sets(*[20 + k for k in range(bp.SWITCH_SAMPLES)])]
+    steps, lat = bp.plan(_oracle(lambda *a: 0.0), (0.0, 0.0, 0.0), (1.0, 0.0, 0.0), _sets(0, 1, 0), switches)
+    assert steps is not None and all(st.kind == "drive" for st in steps)
+    assert lat.canon == [0, 1, 0] and lat.skip[0] == [2]
+
+
+def test_the_arms_hang_only_through_the_stretch_the_fold_does_not_fit():
+    # a corridor at x in [0.4, 0.6] the fold (0) does not fit, the hanging posture (1) does
+    blocked = lambda x, y, yaw, p: 0.05 if p == 0 and 0.4 <= x <= 0.6 else 0.0
+    switches = [_sets(*[10 + k for k in range(bp.SWITCH_SAMPLES)]), _sets(*[20 + k for k in range(bp.SWITCH_SAMPLES)])]
+    steps, lat = bp.plan(_oracle(blocked), (0.0, 0.0, 0.0), (1.0, 0.0, 0.0), _sets(0, 1, 0), switches)
+    assert steps is not None
+    sw = [st for st in steps if st.kind == "switch"]
+    assert [st.mode for st in sw] == [0, 1]
+    assert sw[0].path[0][0] < 0.4 and sw[1].path[0][0] > 0.6
+    for st in steps:
+        if st.kind == "drive" and st.mode != 1:
+            assert all(not 0.4 <= x <= 0.6 for x, y, yaw in _executed(st.path))

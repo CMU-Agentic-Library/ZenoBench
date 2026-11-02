@@ -1,7 +1,10 @@
 """Whole-body base planning (docs/COLLISION_PLAN.md step 2).
 
 The base moves on a lattice of (x, y, yaw) poses -- RES m, YAW_STEP deg -- carrying the arms in one of
-a chain of postures ("modes", e.g. current -> tucked -> a posture to arrive in).  A pose is feasible in a
+a chain of postures ("modes", e.g. current -> tucked -> hanging -> tucked).  A mode whose posture
+is the same as a later one's (the tuck and the arrival) passes to it where it stands without
+moving an arm: the modes between (hanging at the side, narrower) are a detour the search takes
+only where the path needs it.  A pose is feasible in a
 mode when the whole robot there is clear: the base column's footprint of the annotated furniture
 (WorldModel.footprints_clear -- the house's collision shells close doorways near the floor and
 the base collider is off in the simulator), both arms at that posture and what the hands hold of
@@ -77,6 +80,15 @@ class Lattice:
         self.footprint, self.start = footprint, start
         # per mode: the farthest sphere centre from the base centre (what a turn sweeps)
         self.reach = [float(np.max(np.hypot(s[:, 0], s[:, 1]))) if len(s) else 0.0 for s in modes]
+        # identical postures: one feasibility cache (canon), and the later reached from the earlier
+        # without moving an arm (skip); min_sw: switches still needed from a mode to the last
+        same = [[a.shape == b.shape and np.allclose(a, b) for b in modes] for a in modes]
+        self.canon = [next(c for c in range(m + 1) if same[c][m] and self._tol(c) == self._tol(m))
+                      for m in range(len(modes))]
+        self.skip = [[m2 for m2 in range(m + 2, len(modes)) if same[m][m2]] for m in range(len(modes))]
+        self.min_sw = [0] * len(modes)
+        for m in range(len(modes) - 2, -1, -1):
+            self.min_sw[m] = min([1 + self.min_sw[m + 1]] + [self.min_sw[m2] for m2 in self.skip[m]])
         self.cut = set()                 # (node, node) transitions the dense check refused
         self.start_low = True            # the start pose's footprint is clear (else leaving it is exempt)
         self.blocks = {}
@@ -117,7 +129,7 @@ class Lattice:
         if m == 0 and tuple(n[:3]) == self.start:
             return bool(self._block(i // BLOCK, j // BLOCK, ("mode", 0))[i % BLOCK, j % BLOCK, k % N_YAW] or
                         self.depths(np.array([self.pose(n)]), self.modes[0][None])[0, 0] <= self.tol0 + 1e-4)
-        return bool(self._block(i // BLOCK, j // BLOCK, ("mode", m))[i % BLOCK, j % BLOCK, k % N_YAW])
+        return bool(self._block(i // BLOCK, j // BLOCK, ("mode", self.canon[m]))[i % BLOCK, j % BLOCK, k % N_YAW])
 
     def reaches(self, n, goal_pose):
         """The straight move from lattice node n (in the last mode) to the exact goal pose is clear: a
@@ -151,13 +163,14 @@ class Lattice:
     def edge_ok(self, n, d, m):
         """The drive move NBRS[d] out of node n in mode m passes the dense check: known in the blocks
         a failed path activated for that move, assumed elsewhere (the path check finds out)."""
-        blk = self.blocks.get((n[0] // BLOCK, n[1] // BLOCK, ("edges", m, d)))
+        blk = self.blocks.get((n[0] // BLOCK, n[1] // BLOCK, ("edges", self.canon[m], d)))
         return True if blk is None else bool(blk[n[0] % BLOCK, n[1] % BLOCK, n[2] % N_YAW])
 
     def activate(self, n, d, m):
         """Dense-check the drive move NBRS[d] out of every node of n's block in mode m, one batch:
         the poses strictly between the two nodes (the nodes are the lattice's)."""
         bi, bj = n[0] // BLOCK, n[1] // BLOCK
+        m = self.canon[m]
         key = (bi, bj, ("edges", m, d))
         if key in self.blocks:
             return
@@ -254,11 +267,13 @@ def distance_field(passable, origin, goal, bounds, start):
 
 
 def search(lat, start, goal, bounds, field=None, goal_pose=None):
-    """A* over (i, j, k, mode) from ``start`` (i, j, k) in mode 0 to a node of the last mode within
-    one cell and one heading of ``goal`` (i, j, k) that reaches ``goal_pose`` (x, y, yaw rad)
-    straight -- or (goal None) to any pose of the last mode.  Transitions in ``lat.cut`` and drive
-    moves the activated blocks refuse (Lattice.edge_ok) are not taken.  ``field``: distance_field to the goal (else the straight-line distance).  Returns the
-    node list, or None."""
+    """A* over (i, j, k, mode) -- a mode passes to the next by a posture switch, or for free to a
+    later one of the same posture (Lattice.skip) -- from ``start`` (i, j, k) in mode 0 to a node of
+    the last mode within one cell and one heading of ``goal`` (i, j, k) that reaches ``goal_pose``
+    (x, y, yaw rad) straight -- or (goal None) to any pose of the last mode.  Transitions in
+    ``lat.cut`` and drive moves the activated blocks refuse (Lattice.edge_ok) are not taken.
+    ``field``: distance_field to the goal (else the straight-line distance).  Returns the node
+    list, or None."""
     last = len(lat.modes) - 1
     turn = TURN_COST * math.radians(YAW_STEP)
 
@@ -270,7 +285,7 @@ def search(lat, start, goal, bounds, field=None, goal_pose=None):
             d = D[n[0] - i0, n[1] - j0]
         else:
             d = math.hypot(n[0] - goal[0], n[1] - goal[1]) * RES
-        return d + _ang(n[2], goal[2]) * turn + SWITCH_COST * (last - n[3])
+        return d + _ang(n[2], goal[2]) * turn + SWITCH_COST * lat.min_sw[n[3]]
 
     s = (*start, 0)
     lat.expanded = 0
@@ -309,14 +324,18 @@ def search(lat, start, goal, bounds, field=None, goal_pose=None):
             steps.append((n, math.hypot(di, dj) * RES + abs(dk) * turn))
         if m < last:
             steps.append(((i, j, k, m + 1), SWITCH_COST))
+        steps += [((i, j, k, m2), 0.0) for m2 in lat.skip[m]]
         for n, dc in steps:
             if (cur, n) in lat.cut:
                 continue
             hn = h(n)
             if hn == math.inf:
                 continue                         # the inscribed cylinder cannot reach the goal from there
-            if n[3] != m:
+            if n[3] == m + 1:
                 if not (lat.can_switch(cur, m) and lat.free(n, n[3])):
+                    continue
+            elif n[3] != m:
+                if not lat.free(n, n[3]):        # a skip: the same posture, nothing moves
                     continue
             elif not lat.free(n, m):
                 continue
@@ -355,9 +374,11 @@ def _bad_transitions(lat, nodes):
     switches at every posture of their dense sampling; one batch per mode."""
     bad, drives = [], {}
     for a, b in zip(nodes[:-1], nodes[1:]):
-        if a[3] != b[3]:
+        if b[3] == a[3] + 1:
             if not lat.switch_clear(a, a[3]):
                 bad.append((a, b))
+        elif b[3] != a[3]:
+            continue                             # a skip: the same posture, nothing moves
         else:
             drives.setdefault(a[3], []).append((a, b))
     for m, pairs in drives.items():
@@ -442,7 +463,8 @@ def plan(depths, start, goal, modes, switches, area=None, footprint=None, passab
     for n in nodes[1:]:
         if n[3] != run[-1][3]:
             steps.append(_drive(lat, run))
-            steps.append(Step("switch", run[-1][3], [_deg(lat.pose(run[-1]))]))
+            if n[3] == run[-1][3] + 1:
+                steps.append(Step("switch", run[-1][3], [_deg(lat.pose(run[-1]))]))
             run = [n]
         else:
             run.append(n)

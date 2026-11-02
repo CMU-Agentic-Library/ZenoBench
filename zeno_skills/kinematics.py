@@ -30,6 +30,12 @@ FINGER_OPEN = 0.04          # m per finger (8 cm max gap)
 # compact right-arm fold (hand 0.29 m to the side, 0.33 m ahead), not used
 COMPACT_TUCK = [0.0, 0.0, 1.05, 0.46, 0.42, 2.04, -0.06, -0.26, 0.42]
 
+# Drive posture of either arm: hanging straight down at the side, joints 2 and 4 just off their
+# limits, every arm sphere inside the 0.52 m base column.  Narrower than the elbow-out tuck (the
+# right hand 0.67 m from the base centre): navigate offers it to the base planner as a detour
+# posture for the stretches the tuck does not fit (the dining room, T13/T19/T20 on 2026-11-02),
+# the tuck being the arrival posture it passes to without a swing elsewhere.
+DRIVE_Q = [0.0, 0.0, 0.0, 0.03, 0.0, 0.03, 0.0, 0.0, 0.0]
 # default left-arm travel posture; Rig can command all seven left joints
 LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_joint_4": 2.3}
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
@@ -154,6 +160,7 @@ class ArmKin:
         # and the fridge/cabinet/left-arm motions regressed; COMPACT_TUCK keeps
         # it for reference.)
         self.rest = self.posture.copy()
+        self.drive = np.clip(np.array(DRIVE_Q), self.lo, self.hi)
         self.base_p, self.base_R = np.zeros(3), np.eye(3)
 
     def set_base(self, xyz, yaw):

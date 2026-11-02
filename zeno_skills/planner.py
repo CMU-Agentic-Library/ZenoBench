@@ -61,9 +61,9 @@ def _segment_free(kin, qa, qb):
 
 
 def _whole_body(kin, travel_q):
-    """(depths, sphere sets) of the whole robot in the travel posture -- travel_q for the right arm,
-    the left folded unless it holds something -- for Motion.base_depths, or None without cuRobo
-    (or before the first sync)."""
+    """(depths, sphere sets, travel posture (right, left)) of the whole robot in the travel posture
+    -- travel_q for the right arm, the left folded unless it holds something -- for
+    Motion.base_depths, or None without cuRobo (or before the first sync)."""
     motion = getattr(kin, "motion", None)
     rig = getattr(motion, "rig", None) if motion is not None else None
     if rig is None:
@@ -71,21 +71,28 @@ def _whole_body(kin, travel_q):
     travel_q = np.asarray(travel_q, float)
     left = rig.left_kin.rest[2:] if rig.left_held is None else rig.left_q_cmd.copy()     # as skills.navigate arrives
     sets = motion.body_spheres(rig, [(travel_q, left)])
-    return (lambda poses, sph: motion.base_depths(rig, poses, sph)), sets
+    return (lambda poses, sph: motion.base_depths(rig, poses, sph)), sets, (travel_q, left)
 
 
 def _drivable(kin, world, body, origin, goal):
-    """The base can drive from ``origin`` to ``goal``: a whole-body base plan in the posture it
-    drives in (skills.navigate), or without cuRobo the column's grid path (plan_path)."""
+    """The base can drive from ``origin`` to ``goal``: a whole-body base plan in the postures it
+    drives in (skills.navigate: the travel posture, hanging where it does not fit), or without
+    cuRobo the column's grid path (plan_path)."""
     if body is None:
         return plan_path(world, origin, goal) is not None
     from . import base_planner
-    depths, sets = body
-    from .skills import scene_area
+    from .skills import posture_sets, scene_area, travel_postures
+    depths, _, travel = body
+    rig = kin.motion.rig
+    chain = [p for _, p in travel_postures(rig, travel, travel)]
+    if any(np.max(np.abs(p[0] - chain[0][0])) >= 0.02 for p in chain):
+        sets, switches, dense = posture_sets(rig, chain)
+    else:
+        sets, switches, dense = posture_sets(rig, chain[:1])
     area = scene_area(world)
     with kin.motion.base_world(area[:2], area[2:]):
-        return base_planner.plan(depths, origin, goal, sets, [], area=area,
-                                 footprint=world.footprints_clear, passable=world.circles_clear)[0] is not None
+        return base_planner.plan(depths, origin, goal, sets, switches, area=area, footprint=world.footprints_clear,
+                                 passable=world.circles_clear, dense_switches=dense)[0] is not None
 
 
 def joint_reachable(kin, qa, qb, carry=False):
@@ -214,7 +221,7 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
     if body is not None:
         # strict: parked there in its travel posture both arms and what the hands hold touch nothing
         # (the footprint was checked above); one batched check for every candidate
-        depths, sets = body
+        depths, sets, _ = body
         moving = [c for c in pool if c[0] >= 0]
         d = depths(np.array([[x, y, math.radians(yaw)] for _, x, y, yaw in moving]), sets)[0] if moving else []
         blocked = {c[1:] for c, dc in zip(moving, d) if dc > 1e-4}

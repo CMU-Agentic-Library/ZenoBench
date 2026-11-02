@@ -210,8 +210,9 @@ def check_left_held(rig, label):
 def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
     """Drive to ``pose`` on a whole-body base plan (relocate).  Empty-handed the arm folds first
     where it stands when the arm planner finds a way (else where the base plan finds room) and
-    drives folded; with a load in a hand it is brought into the carry pose first, the arms stay
-    as they are and the base drives slower.  ``arrive``: the arm posture to arrive in instead of the
+    drives folded, hanging both arms at the side only along the stretches the fold does not fit
+    (the planner's choice, travel_postures); with a load in a hand it is brought into the carry
+    pose first, the arms stay as they are and the base drives slower.  ``arrive``: the arm posture to arrive in instead of the
     fold (right-arm joints, or (right, left))."""
     if rig.held is None:
         rig.tuck()              # where the arm planner cannot fold it here, the base plan does (relocate)
@@ -235,11 +236,34 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
         speed = dict(speed=0.17, turn=0.30, ramp=1.2)
     else:
         speed = {}
-    relocate(rig, pose, [("fold", rest), ("arrive", end)], label=label, **speed)
+    relocate(rig, pose, travel_postures(rig, rest, end), label=label, **speed)
     if rig.held is not None:
         check_held(rig, "carry")
     if rig.left_held is not None:
         check_left_held(rig, "left_carry")
+
+
+def travel_postures(rig, rest, end):
+    """navigate's posture chain: the fold, the hanging detour (empty-handed: both arms at the side,
+    kin.drive), the arrival.  Where the arrival is the fold the planner passes to it without a
+    swing and hangs only where the path needs it (base_planner.Lattice.skip)."""
+    hang = rest if rig.held is not None or rig.left_held is not None else (rig.kin.drive, rig.left_kin.drive[2:])
+    return [("fold", rest), ("hang", hang), ("arrive", end)]
+
+
+def posture_sets(rig, postures):
+    """For base_planner.plan: (sphere sets per posture, per switch a few sets for the lattice,
+    per switch the sets every DENSE of motion) of postures [(right, left)]."""
+    from . import base_planner
+    motion = rig.kin.motion
+    sets = motion.body_spheres(rig, postures)
+    switches, dense = [], []
+    for (ra, la), (rb, lb) in zip(postures[:-1], postures[1:]):
+        us = np.linspace(0, 1, base_planner.SWITCH_FINE)
+        fine = motion.body_spheres(rig, [(ra + (rb - ra) * u, la + (lb - la) * u) for u in us])
+        switches.append(fine[np.round(np.linspace(0, len(fine) - 1, base_planner.SWITCH_SAMPLES)).astype(int)])
+        dense.append(base_planner.dense_sets(fine))
+    return sets, switches, dense
 
 
 def _rest_posture(rig):
@@ -280,14 +304,7 @@ def _base_plan(rig, goal, postures, label):
         if np.max(np.abs(qr - chain[-1][1][0])) < 0.02 and np.max(np.abs(ql - chain[-1][1][1])) < 0.02:
             continue
         chain.append((name, (qr, ql)))
-    sets = motion.body_spheres(rig, [c[1] for c in chain])
-    # each switch: a few postures for the lattice, and every DENSE of motion for the path's check
-    switches, dense = [], []
-    for (_, (ra, la)), (_, (rb, lb)) in zip(chain[:-1], chain[1:]):
-        us = np.linspace(0, 1, base_planner.SWITCH_FINE)
-        fine = motion.body_spheres(rig, [(ra + (rb - ra) * u, la + (lb - la) * u) for u in us])
-        switches.append(fine[np.round(np.linspace(0, len(fine) - 1, base_planner.SWITCH_SAMPLES)).astype(int)])
-        dense.append(base_planner.dense_sets(fine))
+    sets, switches, dense = posture_sets(rig, [c[1] for c in chain])
     import time
     t0 = time.perf_counter()
     area = scene_area(rig.world)
