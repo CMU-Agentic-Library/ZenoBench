@@ -21,9 +21,7 @@ Collision semantics:
     object being grasped or pushed);
   * inside ``scope`` (every collision-checked rig motion, Rig._planning) the held object is a
     grid of spheres filling its box on the arm's ``<side>_held_object`` link: the planner keeps
-    it clear of the world (never of the robot itself).  Not while it still touches something,
-    unless the motion leaves that contact (``from_contact``: those colliders are off, and
-    ``verify`` checks the rest of the robot against them);
+    it clear of the world (never of the robot itself).  Not while it still touches something;
   * ``ignore_fingers`` turns the finger spheres off; ``hand_touches_part`` the
     finger, gripper and wrist-camera spheres (hand on a handle);
   * obstacles farther than CULL m from the base are switched off (speed);
@@ -483,7 +481,6 @@ class Motion:
         self.enabled = {c.name: True for c in self.cols.items}
         self.held = {"right": set(), "left": set()}     # side -> owners that arm holds (not obstacles to it)
         self._held_sph = {}              # side -> spheres of the held object on its held link (scope), or None
-        self.off = set()                 # colliders a from_contact scope switched off (the motion leaves them)
         self._held_box = {}              # object name -> (frame collider, lo, hi): its box in that collider's frame
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
@@ -514,7 +511,7 @@ class Motion:
         for c in self.cols.items:
             ctr = self._centre(c)
             near = np.hypot(*(ctr[:2] - self.cull_at)) - self._extent[c.name][1] < CULL
-            self._set_enabled(c, near and c.owner not in held and c.owner not in allow and c.name not in self.off)
+            self._set_enabled(c, near and c.owner not in held and c.owner not in allow)
 
     def _live_poses(self, rig, record=True, owners=None):
         """{body: 4x4} of the object and part bodies whose simulator pose differs from the synced
@@ -601,59 +598,23 @@ class Motion:
         self.cull_at = None
 
     @contextmanager
-    def scope(self, rig, kin, q, from_contact=False):
-        """One collision-checked rig motion of ``kin``'s arm from q (Rig._planning).  What that hand
+    def scope(self, rig, kin, q):
+        """One collision-checked rig motion of ``kin``'s arm from q (Rig._planning): what that hand
         holds is in the arm's collision model, its box as spheres on the held link (left out, and
-        logged, while it still touches something at q).  ``from_contact`` (the motion leaves the
-        contact it starts in): the colliders the hand (fingers, gripper, wrist camera) and its
-        load touch at q are off for the queries inside -- ``verify`` then checks the rest of the
-        robot against them, the second query of COLLISION_AUDIT 4.1.  Yields (touch, held_on): the
-        entities switched off for the hand and for the load."""
+        logged, while it still touches something at q)."""
         side = kin.side
         h = rig.held if side == "right" else getattr(rig, "left_held", None)
         q = np.asarray(q, float)
-        touch, held_on = set(), set()
         try:
             with self._query(kin, kin._other_q(), kin.coll_kw) as arm:
                 name = self._attach_held(arm, kin, q, h)
-                if from_contact:
-                    load = held_link(side)
-                    for link, c, ent in self._contacts(arm, q, {f"{side}_{l}" for l in HAND_LINKS} | {load}):
-                        self.off.add(c.name)
-                        (held_on if link == load else touch).add(ent)
-                    if self.off:
-                        self._apply(kin.base_p[:2], side=side)
                 if name is not None and held_link(side) in self._touching(arm, q):
                     # still on its support (or in a container): no collision-free start, left out
                     self._attach_held(arm, kin, q, None)
                     rig.log("held_collision", side=side, state=f"{name} (touching: off)")
-            yield tuple(sorted(touch)), tuple(sorted(held_on))
+            yield
         finally:
-            self.off = set()
             self._attach_held(self.arms[side], None, None, None)
-            self.cull_at = None
-
-    @_timed("check_s")
-    def verify(self, kin, q0, qs, other_q=None, coll_kw=None):
-        """A path planned inside a from_contact ``scope``: the robot apart from the hand and its load
-        clear of the colliders switched off too, at q0, every waypoint of qs and the joint
-        segments between them.  True when nothing is off."""
-        if not self.off:
-            return True
-        STATS["check"] += 1
-        side = kin.side
-        off, self.off = self.off, set()
-        sph = self._held_sph.get(side)
-        try:
-            if sph is not None:
-                self._set_held_spheres(self.arms[side], None)
-            with self._query(kin, other_q, dict(coll_kw or {}, hand_touches_part=True)) as arm:
-                path = [np.asarray(q0, float)] + [np.asarray(q, float) for q in qs]
-                return bool(arm.feasible(path[0][None])[0]) and self._segments_free(arm, path)
-        finally:
-            self.off = off
-            if sph is not None:
-                self._set_held_spheres(self.arms[side], sph)
             self.cull_at = None
 
     def _attach_held(self, arm, kin, q, h):
@@ -941,40 +902,6 @@ class Motion:
         for i in np.nonzero(d > 0)[0]:
             hits[links[i]] = max(hits.get(links[i], 0.0), float(d[i]))
         return hits
-
-    def _contacts(self, arm, q, links):
-        """[(link, collider, entity)] of the spheres of ``links`` penetrating the world at q: every
-        enabled collider whose box reaches the sphere (a large mesh's box holds spheres it does not
-        touch, so the nearest box need not be the one penetrated), and the entity the contact
-        monitor reports it under."""
-        s, d, link_of = self._sphere_depths(arm, q)
-        cols = [c for c in self.cols.items if self.enabled[c.name]]
-        out = []
-        for i in np.nonzero(d > 0)[0]:
-            if link_of[i] not in links:
-                continue
-            p, r = s[i, :3], float(s[i, 3])
-            for c in self._colliders_at(p, r, cols):
-                out.append((link_of[i], c, self._entity(c) if c.owner != "static" else
-                            self._furniture_at(p, r) or self._entity(c)))
-        return out
-
-    def _colliders_at(self, p, r, cols):
-        """The colliders in ``cols`` whose box (in its own frame) reaches sphere (p, r)."""
-        out = []
-        for c in cols:
-            ctr, rad = self._extent[c.name]
-            T = G.world_pose(c, self.body_pose.get)
-            if np.linalg.norm(T[:3, :3] @ ctr + T[:3, 3] - p) > rad + r:
-                continue
-            local = T[:3, :3].T @ (p - T[:3, 3])
-            if c.kind == "cuboid":
-                lo, hi = -0.5 * np.asarray(c.dims, float), 0.5 * np.asarray(c.dims, float)
-            else:
-                lo, hi = c.vertices.min(0), c.vertices.max(0)
-            if np.linalg.norm(np.maximum(np.maximum(lo - local, local - hi), 0.0)) <= r:
-                out.append(c)
-        return out
 
     def explain(self, kin, q, other_q=None, coll_kw=None):
         """Which links of q penetrate the world (deepest first), else self collision / limits."""

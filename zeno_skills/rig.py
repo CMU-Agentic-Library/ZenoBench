@@ -12,7 +12,7 @@ from dataclasses import replace
 
 import numpy as np
 
-from .clearance import BASE_DRIVE, FREE, LEGACY, MONITOR_EVERY, Clearance
+from .clearance import BASE_DRIVE, FREE, HAND_LINKS, LEGACY, MONITOR_EVERY, Clearance
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ANCHOR, ASSET
 
@@ -372,56 +372,64 @@ class Rig:
 
     def _motion_path(self, label, allow, kin, plan, straight):
         """(waypoints, the Allow they run under) of one motion of ``kin``'s arm.  Unchecked (or no
-        world): ``straight()``.  Checked: ``plan()`` inside _planning, its path verified against
-        what only the hand may touch; when that finds no path -- or, for a fallback Allow, the
-        arm already starts in collision -- a fallback Allow makes ``straight()`` and logs a
-        clearance_fallback with what that path runs into, any other raises SkillFailure."""
+        world): ``straight()``.  Checked: ``plan()`` inside _planning; when that finds no path --
+        or, for a fallback Allow, the arm already starts in collision -- a fallback Allow makes
+        ``straight()`` and logs a clearance_fallback with what that path runs into, any other
+        raises SkillFailure."""
         if not allow.checked or kin.scene is None:
-            return straight(), allow
+            return straight(), self._from_contact(kin, allow)
         start = self._start(kin)
-        with self._planning(kin, allow, start) as resolved:
+        with self._planning(kin, start):
             if allow.fallback and not kin.free(start):
                 why = "starts in collision: " + kin.explain(start)
             else:
                 try:
                     qs = plan()
-                    if not kin.verify(start, qs):
-                        raise SkillFailure(f"{label}: the arm would run into what only the hand may touch")
                     if allow.fallback:
                         self.clear.planned(label)
-                    return qs, resolved
+                    return qs, allow
                 except SkillFailure as exc:
                     if not allow.fallback:
                         raise
                     why = str(exc)
         qs = straight()
-        with self._planning(kin, allow, start):
+        with self._planning(kin, start):
             hit = next((kin.explain(q) for q in list(qs[::5]) + list(qs[-1:]) if not kin.free(q)), None)
         self.clear.fallback(label, why, hit)
         return qs, LEGACY
 
     @contextmanager
-    def _planning(self, kin, allow, start):
-        """Query state for planning one motion of ``kin``'s arm from ``start`` (Motion.scope): what
-        that hand holds is in the collision model; a from_contact Allow switches off what the hand
-        and its load touch at the start.  Yields ``allow`` with those as its touch / held_on (what
-        the contact monitor then accepts).  Nested: the outer state stands."""
+    def _planning(self, kin, start):
+        """Query state for planning one motion of ``kin``'s arm from ``start``: what that hand holds
+        is in the collision model (Motion.scope).  Nested: the outer state stands."""
         motion = kin.motion
         if motion is None or getattr(self, "_scope", False):
-            yield allow
+            yield
             return
         self._scope = True
         try:
-            with motion.scope(self, kin, start, allow.from_contact) as (touch, held_on):
-                if allow.from_contact:
-                    self.log("leave_contact", side=kin.side, touch=list(touch), held_on=list(held_on),
-                             colliders=len(motion.off))
-                if touch or held_on:
-                    allow = replace(allow, hand=kin.side, links="hand", touch=allow.touch + touch,
-                                    held_on=allow.held_on + held_on)
-                yield allow
+            with motion.scope(self, kin, start):
+                yield
         finally:
             self._scope = False
+
+    def _from_contact(self, kin, allow):
+        """A from_contact Allow (clearance.LEAVE_CONTACT) with what ``kin``'s hand and its load touch
+        now -- as the contact monitor sees it -- as its touch / held_on; any other unchanged."""
+        if not allow.from_contact or kin.motion is None:
+            return allow
+        side = kin.side
+        h = self.held if side == "right" else getattr(self, "left_held", None)
+        hand = {f"{side}_{l}" for l in HAND_LINKS}
+        touch, held_on = set(), set()
+        for link, entity, _ in kin.motion.robot_contacts(self):
+            if link in hand:
+                touch.add(entity)
+            elif h is not None and link == f"held:{h['name']}":
+                held_on.add(entity)
+        self.log("leave_contact", side=side, touch=sorted(touch), held_on=sorted(held_on))
+        return replace(allow, hand=side, links="hand", touch=allow.touch + tuple(sorted(touch)),
+                       held_on=allow.held_on + tuple(sorted(held_on)))
 
     def _move_path(self, p, R, step, label, q_hint):
         """move_to's collision-checked waypoints: the straight TCP line, else Motion.plan_to (the

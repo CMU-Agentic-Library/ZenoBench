@@ -275,13 +275,6 @@ class ArmKin:
         return self._motion().plan_to(self, np.asarray(q0, float), self.tcp(q0)[0], np.asarray(p_goal, float),
                                       R_goal, self._other_q(), self.coll_kw, carry=carry, q_goal=q_goal)
 
-    def verify(self, q0, qs):
-        """Inside a from_contact planning scope: the robot apart from the hand and its load clear of
-        what the hand may touch (Motion.verify).  True without a world or a scope."""
-        if self.scene is None or self.motion is None:
-            return True
-        return self.motion.verify(self, q0, qs, self._other_q(), self.coll_kw)
-
     def clearance(self, Q, targets=()):
         """Per row of Q: the arm's distance to the world (m, capped; Motion.clearance)."""
         if self.scene is None:

@@ -29,7 +29,7 @@
 | 已提交 `a0a9574` | 原阶段 2：第 1 类空中运动 63 处改成 `FREE_ELSE_STRAIGHT`；`LEGACY` 111 → 48 | 审计 7.3 |
 | **未提交** | 收起姿态修复：`kin.rest` 恢复肘外姿态，下垂姿态 `DRIVE_Q` 只在 navigate 开车时用（`_hang_while_driving`） | 审计 7.5 |
 | **未提交** | 监视器把手里的物体算进机器人（`held:<物体>`），并记录被推动、碰倒的物体（`disturbed_object`） | 审计 7.6 |
-| 步骤 1（分支 `remove-handcoded-motion`） | 入口收敛、手里的物体进碰撞模型、`LEAVE_CONTACT`（两次查询）、持物限速平滑 | 第 4 节步骤 1 实施记录 |
+| 步骤 1（分支 `remove-handcoded-motion`） | 入口收敛、手里的物体进碰撞模型、`LEAVE_CONTACT`（接触段直线）、持物限速平滑 | 第 4 节步骤 1 实施记录 |
 | 已删除 | 原阶段 4 第一版：`Motion.sweep` / `Rig.drive_clear`、navigate 的手写备选路径、按方向挑选的 `_back_off` | 审计 8.4 |
 
 两项未提交的改动单元测试已过，直接提交，不单独做一轮验证；效果随第一次全量回归一起看。
@@ -41,7 +41,7 @@
 | 同样输入，cuRobo 规划结果会分叉 | P07 s10 连跑两次，一次成功一次 "no IK for shake" | 不单独处理，见第 3 节 |
 | 开到终点附近时手臂和底盘不检查（`plan_path` 的 `relax`） | T03 s11 垂着的手臂碰倒 `juice_bottle` | 步骤 2 |
 | 到 park 后抬不回收起姿态 | 收起姿态修复冒烟测试里 5 次 `drive_raise_blocked` | 步骤 2 |
-| ~~刚夹住时起点就在碰撞中，只能退回直线~~ | 步骤 1 用 `LEAVE_CONTACT` 解决（针对性检查 9 → 0） | 步骤 1 |
+| ~~刚夹住时起点就在碰撞中，只能退回直线~~ | 步骤 1 改成接触段 `LEAVE_CONTACT`，不再从接触状态规划 | 步骤 1 |
 | `ignore_fingers` 让带检查的动作不查手指 | `pick_grasp`、`pick_pre_far`、`tuck` 的手指压进台面 | 步骤 4、5 |
 | 左臂收臂直接插值，不经过任何检查 | `LeftArmFoldPolicy` 的 `link_7` 压进岛台 46 mm | 步骤 5 |
 
@@ -99,12 +99,12 @@
   - `joint_from_contact` 删掉（11-01 全量里一次都没触发）。
   - `tuck` 改成 `joint_path(rest)`：直线关节插值无碰撞就走，否则 cuRobo 规划，否则返回 False。四种手写前置后撤、单元素候选列表、"夹爪闭着不规划"都删了；唯一可能握着把手时收臂的调用方（`_move_with_retry_impl`）先松手再收。
 - **手里的物体进碰撞模型。** `Motion.scope` 在每次查碰撞的入口运动里把手里物体的包围盒球挂到该臂的 held link 上，运动规划完就卸下。`Rig.held_collision` 和 `Motion.sync` 里按开关挂载的逻辑删掉，`_carry_pose`、posture 的包装随之删掉。起点时物体还贴着东西、又没声明离开接触的，照旧这一段不带它，记 `held_collision ... (touching: off)`。`find_park` 等运动入口之外的查询不带手里的物体（放下位姿本来就贴着支撑面）。
-- **起点贴着支撑面：和计划的出入。** 11-01 全量的 87 次 `clearance_fallback` 里 87 次都是"starts in collision"（`pick_lift` 34、`edge_lift`/`edge_pull` 各 20、`flat_retreat` 8、`place_retreat_up` 3、`flat_up` 2），撞的全是**手部连杆**（`gripper_link`、腕部相机）压进支撑面（island、desk、tv_stand、dining_table），个别是墙，没有一次是手里的物体。所以只声明 `held_on` 消不掉这些退回。改成新的预设 `LEAVE_CONTACT`（`Allow.from_contact`）：起点时手（手指、夹爪、腕部相机）和手里物体碰到的碰撞体，这一段允许它们继续碰，运行时解析成 `touch` / `held_on` 写进监视器用的 Allow。实现就是审计 4.1 的两次查询：规划时关掉这些碰撞体（整台机器人），规划结果再用"这些碰撞体打开、手部连杆和手里物体关掉"逐段校验（`Motion.verify`），不过就算规划失败、走退路。用在刚抓起、刚松手和离开接触段的动作上：`pick_lift`、`pick_fail_clear`、`corner_lift`、`edge_lift`、`edge_pull`、`handle_pick_lift`、`cavity_pick_lift`、`place_retreat_*`、`flat_retreat`、`flat_up`、`regrasp_clear`、`release_back`、`left_release_back`、`drop_retreat`、`microwave_release_up`、`{verb}_back`、`close_push_back`、`dip_out`、`stir_out`、`flip_withdraw`。起点什么都没碰时它就等于 `FREE_ELSE_STRAIGHT`。
+- **起点贴着支撑面：和计划的出入。** 11-01 全量的 87 次 `clearance_fallback` 里 87 次都是"starts in collision"（`pick_lift` 34、`edge_lift`/`edge_pull` 各 20、`flat_retreat` 8、`place_retreat_up` 3、`flat_up` 2），撞的全是**手部连杆**（`gripper_link`、腕部相机）压进支撑面（island、desk、tv_stand、dining_table），个别是墙，没有一次是手里的物体。所以只声明 `held_on` 消不掉这些退回。改成新的预设 `LEAVE_CONTACT`（`Allow.from_contact`）：离开接触的这一小段是接触段（C 类），不查碰撞、走直线，不规划；之后的自由空间运动从这一段的终点开始规划，那里已经离开接触，用完整的世界，不需要任何豁免。运动开始时用监视器同一套 `robot_contacts` 看手（手指、夹爪、腕部相机）和手里物体碰着什么，解析成这一段 Allow 的 `touch` / `held_on`，只给监视器判断接触用（记 `leave_contact` 事件）。第一版曾用审计 4.1 的两次查询让规划器从接触状态出发（规划时整台机器人关掉这些碰撞体，事后校验手臂其余部分，不过就走退路），那是放宽问题再拒绝的做法，已删除。用在刚抓起、刚松手和离开接触段的动作上：`pick_lift`、`pick_fail_clear`、`corner_lift`、`edge_lift`、`edge_pull`、`handle_pick_lift`、`cavity_pick_lift`、`place_retreat_*`、`flat_retreat`、`flat_up`、`regrasp_clear`、`release_back`、`left_release_back`、`drop_retreat`、`microwave_release_up`、`{verb}_back`、`close_push_back`、`dip_out`、`stir_out`、`flip_withdraw`。这些动作原来是 `FREE_ELSE_STRAIGHT`，起点无碰撞时会规划；现在一律走直线（几厘米的退出或抬起）。
 - **K 类约束。**
   - 持物不甩：入口的时间参数化统一处理。手里有东西（非双手）时 `follow` 一律走 `follow_smooth`（平滑起停），手臂关节速度上限 0.5 rad/s，沿口捏着的容器 0.25 rad/s。各处手传的 `step`、`steps_per_wp`、`smooth` 暂时保留（只会更慢），步骤 3 合并到哪个 skill 就删到哪。
   - 持物不倾斜：位姿约束规划（`tilt_metric`）和关节规划的倾角保持原来就在规划器里；直线关节插值的倾角检查合并成 `kinematics.tips_over`，`planner.joint_reachable` 和入口共用。
   - IK 分支连续：`q_hint` 现在是规划的关节目标和 IK 种子（见上），pour、handover 传的 `q_hint` 都走这条路。skill 里为此拆的半程点和关节变化阈值（`held_vertical_move` 的 1.2 rad 等）属于步骤 3 删除的路点。
-- **针对性检查**（种子 10，`sticky/gt`，`benchmark/runs/step1_targeted_1101/`，对照 11-01 同一批条目）：成功 4/6（11-01 为 3/6：P06 新成功，T14、P16 两次都失败）；`clearance_fallback` 9 → 2，"starts in collision" 全部消失（P05 5 → 0、T14 3 → 0、P16 1 → 0）。剩下两次是规划器解不出来（`handover_present_across` GRAPH_FAIL、`hover_above` FINETUNE_TRAJOPT_FAIL），归"规划器能力不够"。T14 的失败点从放下后倾斜 30° 变成 `flat_pre` 无路可走：书在夹爪里下垂 65–74°，带进碰撞模型后目标位姿压进书架，原来 L5 不带物体的 IK 能到。手臂跟踪偏差（place 前 `carry_up` 的 `right_arm_joint_5` 差 1.3–1.4 rad）11-01 就有。`benchmark/runs/step1_targeted_1101_mixed/` 是中途改代码前后混跑的一轮，不作数。
+- **针对性检查**（用的是两次查询的第一版，改成接触段之后没有重跑；种子 10，`sticky/gt`，`benchmark/runs/step1_targeted_1101/`，对照 11-01 同一批条目）：成功 4/6（11-01 为 3/6：P06 新成功，T14、P16 两次都失败）；`clearance_fallback` 9 → 2，"starts in collision" 全部消失（P05 5 → 0、T14 3 → 0、P16 1 → 0）。剩下两次是规划器解不出来（`handover_present_across` GRAPH_FAIL、`hover_above` FINETUNE_TRAJOPT_FAIL），归"规划器能力不够"。T14 的失败点从放下后倾斜 30° 变成 `flat_pre` 无路可走：书在夹爪里下垂 65–74°，带进碰撞模型后目标位姿压进书架，原来 L5 不带物体的 IK 能到。手臂跟踪偏差（place 前 `carry_up` 的 `right_arm_joint_5` 差 1.3–1.4 rad）11-01 就有。`benchmark/runs/step1_targeted_1101_mixed/` 是中途改代码前后混跑的一轮，不作数。
 - **没动、留到后面的：** `planner._ik_sequence` 的反向链和 `_chain` 的"park 搜索只认直线"。park 搜索里加规划代价太高，而它选出的 `qs` 正是执行时的 `q_hint`，两边已经由"直线，否则规划到 `q_hint`"连起来；手写 park 删掉时（步骤 3）再看。`_left_path`、`follow_both`、`joint_path_via` 属于步骤 5。
 
 ### 步骤 2：底盘规划器
@@ -135,7 +135,7 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 
 **目的：** 原阶段 3。接触段（清单里的 C 类）改用 `Allow` 预设，`LEGACY` 清零。
 
-- [ ] 实现两次查询的语义（审计 4.1）：先关掉允许接触的手部连杆、X 照常算障碍；再打开手部连杆、只关掉 X。两次都过才算过。规划用第二种设置，再用第一种逐段校验。
+- [ ] ~~实现两次查询的语义（审计 4.1）~~：步骤 1 试过、已删除（放宽问题再拒绝）。接触段是任务规定方向的直线，不规划，接触只由监视器按 `Allow` 记录；自由空间段从无碰撞的点开始规划。规划用第二种设置，再用第一种逐段校验。
 - [ ] 按预设迁移：
 
 | 预设 | 动作 |

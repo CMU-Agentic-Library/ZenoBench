@@ -116,26 +116,27 @@ def test_the_contact_monitor_switch_does_not_change_the_profile_hash(tmp_path):
     assert a["hash"] == b["hash"]
 
 
-def _fallback_rig(start_free=True, verified=True, contacts=((), ())):
-    """A rig whose arm planning is faked: free(q) below q[0] = 0.5 (the start: ``start_free``),
-    verify -> ``verified``, Motion.scope yields ``contacts`` (touch, held_on)."""
+def _fallback_rig(start_free=True, contacts=()):
+    """A rig whose arm planning is faked: free(q) below q[0] = 0.5 (the start: ``start_free``);
+    the contact monitor sees ``contacts`` [(link, entity, depth)]."""
     from contextlib import contextmanager
 
     from zeno_skills.rig import Rig
     logged, scopes = [], []
 
     @contextmanager
-    def scope(rig, kin, q, from_contact):
-        scopes.append(from_contact)
-        yield contacts if from_contact else ((), ())
+    def scope(rig, kin, q):
+        scopes.append(True)
+        yield
     kin = SimpleNamespace(free=lambda q: start_free if np.allclose(q, 0) else float(q[0]) < 0.5,
                           explain=lambda q: f"world right_arm_link_6 at {float(q[0]):.1f}",
-                          verify=lambda q0, qs: verified, scene=object(), side="right",
-                          motion=SimpleNamespace(scope=scope, off=set()))
-    rig = SimpleNamespace(q_cmd=np.zeros(9), left_q_cmd=np.zeros(7), kin=kin, tick=7,
+                          scene=object(), side="right",
+                          motion=SimpleNamespace(scope=scope, robot_contacts=lambda rig: list(contacts)))
+    rig = SimpleNamespace(q_cmd=np.zeros(9), left_q_cmd=np.zeros(7), kin=kin, tick=7, held=None, left_held=None,
                           log=lambda ev, **kw: logged.append((ev, kw)))
     rig._start = lambda k: Rig._start(rig, k)
     rig._planning = lambda *a: Rig._planning(rig, *a)
+    rig._from_contact = lambda *a: Rig._from_contact(rig, *a)
     rig.clear = Clearance(rig)
     rig.clear.skills = ["place"]
     rig.scopes = scopes
@@ -197,35 +198,30 @@ def test_unchecked_motions_make_the_straight_move_without_planning():
     assert allow is LEGACY and len(qs) == 4 and rig.scopes == [] and logged == []
 
 
-def test_leaving_a_contact_allows_what_the_hand_and_its_load_touch_at_the_start():
+def test_leaving_a_contact_is_a_straight_segment_that_may_touch_what_it_starts_touching():
     from zeno_skills.clearance import LEAVE_CONTACT
-    Rig, rig, kin, logged = _fallback_rig(start_free=True, contacts=(("kitchen_island",), ("kitchen_island",)))
-    qs, allow = Rig._motion_path(rig, "pick_lift", LEAVE_CONTACT, kin, lambda: ["checked"], _straight)
-    assert qs == ["checked"] and rig.scopes == [True]
-    assert allow.hand == "right" and allow.links == "hand" and allow.from_contact and allow.fallback
+    Rig, rig, kin, logged = _fallback_rig(contacts=[("right_gripper_link", "kitchen_island", 0.004),
+                                                    ("right_gripper_left_finger_link", "mug", 0.002),
+                                                    ("held:mug", "kitchen_island", 0.001),
+                                                    ("right_arm_link_7", "kitchen_island", 0.002)])
+    rig.held = {"name": "mug", "kind": "pinch"}
+    qs, allow = Rig._motion_path(rig, "pick_lift", LEAVE_CONTACT, kin, lambda: pytest.fail("planned"), _straight)
+    assert len(qs) == 4 and rig.scopes == [] and not allow.checked     # not planned: the straight move
+    assert allow.hand == "right" and allow.links == "hand" and allow.touch == ("kitchen_island", "mug")
+    assert allow.held_on == ("kitchen_island",)
     assert allow.permits("right_gripper_link", "kitchen_island") and allow.permits("held:mug", "kitchen_island")
-    assert not allow.permits("right_arm_link_7", "kitchen_island")
+    assert not allow.permits("right_arm_link_7", "kitchen_island")     # the arm is still reported
     assert not allow.permits("right_gripper_link", "juice_bottle")
-    # nothing touched at the start: plain FREE_ELSE_STRAIGHT
-    Rig, rig, kin, logged = _fallback_rig()
-    assert Rig._motion_path(rig, "pick_lift", LEAVE_CONTACT, kin, lambda: ["checked"], _straight)[1] is LEAVE_CONTACT
+    assert logged[0] == ("leave_contact", {"side": "right", "touch": ["kitchen_island", "mug"],
+                                           "held_on": ["kitchen_island"]})
+    assert rig.clear.counts["fallback"] == 0
 
 
-def test_a_path_the_arm_cannot_take_through_what_only_the_hand_may_touch_falls_back():
-    from zeno_skills.clearance import LEAVE_CONTACT
-    Rig, rig, kin, logged = _fallback_rig(verified=False, contacts=(("kitchen_island",), ()))
-    qs, allow = Rig._motion_path(rig, "edge_lift", LEAVE_CONTACT, kin, lambda: ["checked"], _straight)
-    assert allow is LEGACY and len(qs) == 4
-    assert "only the hand may touch" in rig.clear.fallbacks[0]["why"]
-
-
-def test_from_contact_is_a_declared_checked_motion():
+def test_from_contact_needs_a_reason():
     from zeno_skills.clearance import LEAVE_CONTACT
     with pytest.raises(ValueError):
         Allow(from_contact=True)
-    with pytest.raises(ValueError):
-        Allow(checked=False, from_contact=True, reason="x")
-    assert LEAVE_CONTACT.checked and LEAVE_CONTACT.fallback and LEAVE_CONTACT.reason
+    assert not LEAVE_CONTACT.checked and LEAVE_CONTACT.from_contact and LEAVE_CONTACT.reason
 
 
 def test_monitor_logs_objects_pushed_away_unless_held_let_go_carried_or_allowed():
