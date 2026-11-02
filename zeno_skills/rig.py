@@ -266,7 +266,13 @@ class Rig:
                                                        joint_indices=self.left_fing))
             self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.head_cmd, dtype=t.float32),
                                                        joint_indices=self.head))
-            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.base_cmd, dtype=t.float32),
+            # the yaw target within half a turn of the joint's own reading: PhysX keeps the unlimited
+            # yaw joint (eREVOLUTE) in (-pi, pi] and refuses targets beyond +-2 pi, which left the
+            # base turned away from where the planner put it
+            base_q = self.base_cmd.copy()
+            yaw = float(self.robot.get_joint_positions()[self.base.long()][2])
+            base_q[2] = yaw + (base_q[2] - yaw + math.pi) % (2 * math.pi) - math.pi
+            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(base_q, dtype=t.float32),
                                                        joint_velocities=t.tensor(self.base_vel, dtype=t.float32),
                                                        joint_indices=self.base))
             self.base_vel = np.zeros(3)         # a set_base each tick keeps the base moving
@@ -675,14 +681,14 @@ class Rig:
     # ------------------------------------------------------------ base
     def set_base(self, x, y, yaw_deg):
         """Holonomic base: drive targets of its x, y and yaw joints for the next tick (velocity:
-        the step from the last target, so a pose set every tick is tracked without lag).  The yaw
-        target is unwrapped to within half a turn of the last one."""
+        the step from the last target, so a pose set every tick is tracked without lag; the yaw
+        step the short way round).  The yaw target is kept in (-pi, pi]."""
         yaw = math.radians(yaw_deg)
-        yaw = self.base_cmd[2] + (yaw - self.base_cmd[2] + math.pi) % (2 * math.pi) - math.pi
-        cmd = np.array([float(x), float(y), yaw])
+        dyaw = (yaw - self.base_cmd[2] + math.pi) % (2 * math.pi) - math.pi
+        step = np.array([float(x) - self.base_cmd[0], float(y) - self.base_cmd[1], dyaw])
         # capped: a far jump (a start pose set at once) at its one-tick speed would fling the robot
-        self.base_vel = np.clip((cmd - self.base_cmd) / self.sim.get_physics_dt(), -BASE_VMAX, BASE_VMAX)
-        self.base_cmd = cmd
+        self.base_vel = np.clip(step / self.sim.get_physics_dt(), -BASE_VMAX, BASE_VMAX)
+        self.base_cmd = np.array([float(x), float(y), (yaw + math.pi) % (2 * math.pi) - math.pi])
         self.kin.set_base((x, y, 0.0), yaw)
         self.left_kin.set_base((x, y, 0.0), yaw)
 
