@@ -320,9 +320,9 @@ def _base_plan(rig, goal, postures, label):
 
 
 def poses_clear(rig, poses):
-    """The base poses [(x, y, yaw_deg)] where the whole robot stands clear of the world in the
-    posture it arrives in after navigate (each empty arm folded, a loaded one as it is; base
-    column, what the hands hold): goals the base planner accepts.  All of them without cuRobo."""
+    """The base poses [(x, y, yaw_deg)] where the arms and what the hands hold stand clear of the
+    world in the posture navigate arrives in (each empty arm folded, a loaded one as it is): goals
+    the base planner accepts (the caller checks the footprint).  All of them without cuRobo."""
     motion = rig.kin.motion
     if motion is None or not poses:
         return list(poses)

@@ -1,11 +1,14 @@
 """Where to park the base and how to drive there.
 
 find_park   search base poses around a set of TCP targets; a pose is feasible
-            when the footprint is clear and every target is reachable by a
+            when the footprint is clear, the arms in their travel posture (and
+            what the hands hold) touch nothing, every target is reachable by a
             collision-free continuous IK path (optionally while the base rides
-            along with an articulated part).
+            along with an articulated part) and the base can drive there
+            (base_planner).
 plan_path   A* on a 5 cm grid over free base positions (circumscribed circle
-            of the base column), then shortcut smoothing.
+            of the base column), then shortcut smoothing: only without cuRobo
+            (base_planner plans the base drives).
 """
 
 from __future__ import annotations
@@ -213,8 +216,8 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
             break
     body = _whole_body(kin, travel_q) if travel_q is not None else None
     if body is not None:
-        # strict: the whole robot parked there in its travel posture (base column, both arms, what
-        # the hands hold) touches nothing; one batched check for every candidate
+        # strict: parked there in its travel posture both arms and what the hands hold touch nothing
+        # (the footprint was checked above); one batched check for every candidate
         depths, sets = body
         moving = [c for c in pool if c[0] >= 0]
         d = depths(np.array([[x, y, math.radians(yaw)] for _, x, y, yaw in moving]), sets)[0] if moving else []
