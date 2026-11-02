@@ -14,7 +14,6 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from ..kinematics import vel_limits
-from ..planner import plan_path
 from ..rig import SkillFailure
 
 
@@ -25,9 +24,8 @@ def _rotation(yaw_deg):
 def _path(rig, base_path):
     rig.sync_world()
     if len(base_path) == 3 and np.isscalar(base_path[0]):
-        path = plan_path(rig.world, rig.base_pose(), tuple(float(v) for v in base_path))
-        if path is None:
-            raise SkillFailure(f"synchronized motion: no base path to {base_path}")
+        from .. import skills
+        path = skills.plan_drive(rig, tuple(float(v) for v in base_path), "synchronized_motion")
     else:
         path = [tuple(float(v) for v in pose) for pose in base_path]
     if not path:

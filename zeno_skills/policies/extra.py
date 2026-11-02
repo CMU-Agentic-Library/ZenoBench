@@ -337,16 +337,12 @@ class SidestepPolicy(AtomicPolicy):
         x, y, yaw = rig.base_pose()
         d = float(left_m)
         tx, ty = x - math.sin(math.radians(yaw)) * d, y + math.cos(math.radians(yaw)) * d
-        rig.sync_world()
-        for u in np.linspace(0.1, 1.0, 6):
-            if not rig.world.footprint_clear(x + (tx - x) * u, y + (ty - y) * u, math.radians(yaw)):
-                raise SkillFailure("sidestep: the way is blocked")
         if rig.held is not None:
             skills.check_held(rig, "sidestep_start")
-            rig.drive_base([(tx, ty, yaw)], speed=0.12, turn=0.3, ramp=1.0)
+            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep", speed=0.12, turn=0.3, ramp=1.0)
             skills.check_held(rig, "sidestep_end")
         else:
-            rig.drive_base([(tx, ty, yaw)], speed=0.2)
+            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep", speed=0.2)
         return {"base_pose": list(rig.base_pose())}
 
 

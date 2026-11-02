@@ -15,6 +15,7 @@ from contextlib import contextmanager
 import numpy as np
 
 BASE_HALF = 0.26   # base column half size (0.244) + margin
+CIRCLE_RES = 0.025  # m: grid of circles_clear against the static boxes (half the base planner's lattice step)
 
 
 def _aabb_dist(pts, lo, hi):
@@ -90,6 +91,81 @@ class WorldModel:
             self._near = B[np.hypot(dx, dy) < r]
             self._near_key = key
         return self._near
+
+    def circles_clear(self, xy, r=BASE_HALF):
+        """(N,) bool: a vertical cylinder of radius r (the column's inscribed one) at each xy is clear
+        of the boxes up to the column's height and of the moving parts: a relaxation of
+        footprints_clear at every heading.  The static boxes come from a grid computed once
+        (CIRCLE_RES; the cell nearest each xy), the loose objects and moving parts per call."""
+        xy = np.atleast_2d(np.asarray(xy, float))
+        ok = self._static_circle_grid(r)(xy)
+        if len(self.base_only):
+            ok &= self._circles_clear_boxes(xy, self.base_only, r)
+        if self.ann.articulated:
+            for z in (0.15, 0.6):
+                ok[ok] &= self.moving_part_dist(np.c_[xy[ok], np.full(int(ok.sum()), z)]) > r
+        return ok
+
+    def _static_circle_grid(self, r):
+        """xy -> bool lookup of circles_clear against the static boxes, rasterised once."""
+        cache = self.__dict__.setdefault("_circle_grids", {})
+        if r not in cache:
+            B = self.B[(self.B[:, 2] > -0.5) & (self.B[:, 2] < 1.05)]
+            lo, hi = B[:, :2].min(0) - 1.0, B[:, 3:5].max(0) + 1.0
+            n = np.ceil((hi - lo) / CIRCLE_RES).astype(int) + 1
+            free = np.ones(n, bool)
+            for b in B:
+                i0, j0 = np.floor((b[:2] - r - lo) / CIRCLE_RES).astype(int)
+                i1, j1 = np.ceil((b[3:5] + r - lo) / CIRCLE_RES).astype(int)
+                i0, j0, i1, j1 = max(i0, 0), max(j0, 0), min(i1, n[0] - 1), min(j1, n[1] - 1)
+                gx = lo[0] + np.arange(i0, i1 + 1) * CIRCLE_RES
+                gy = lo[1] + np.arange(j0, j1 + 1) * CIRCLE_RES
+                dx = np.maximum(np.maximum(b[0] - gx, gx - b[3]), 0)[:, None]
+                dy = np.maximum(np.maximum(b[1] - gy, gy - b[4]), 0)[None, :]
+                free[i0:i1 + 1, j0:j1 + 1] &= np.hypot(dx, dy) > r
+
+            def lookup(xy):
+                ij = np.round((xy - lo) / CIRCLE_RES).astype(int)
+                inside = np.all((ij >= 0) & (ij < n), axis=1)
+                out = np.zeros(len(xy), bool)
+                out[inside] = free[ij[inside, 0], ij[inside, 1]]
+                return out
+            cache[r] = lookup
+        return cache[r]
+
+    @staticmethod
+    def _circles_clear_boxes(xy, B, r):
+        ok = np.ones(len(xy), bool)
+        for k in range(0, len(B), 64):
+            b = B[k:k + 64]
+            dx = np.maximum(np.maximum(b[None, :, 0] - xy[:, :1], xy[:, :1] - b[None, :, 3]), 0)
+            dy = np.maximum(np.maximum(b[None, :, 1] - xy[:, 1:], xy[:, 1:] - b[None, :, 4]), 0)
+            ok &= np.all(np.hypot(dx, dy) > r, axis=1)
+        return ok
+
+    def footprints_clear(self, poses, margin=0.03):
+        """footprint_clear for many base poses ((N, 3): x, y, yaw rad) at once: (N,) bool."""
+        poses = np.atleast_2d(np.asarray(poses, float))
+        g = np.linspace(-BASE_HALF, BASE_HALF, 6)
+        u, v, z = (a.ravel() for a in np.meshgrid(g, g, (0.15, 0.6), indexing="ij"))
+        c, s = np.cos(poses[:, 2])[:, None], np.sin(poses[:, 2])[:, None]
+        P = np.stack([poses[:, :1] + c * u - s * v, poses[:, 1:2] + s * u + c * v,
+                      np.broadcast_to(z, (len(poses), len(z)))], -1)            # (N, 72, 3)
+        lo, hi = poses[:, :2].min(0), poses[:, :2].max(0)
+        B = self.B[self.B[:, 2] > -0.5]                    # not the floor
+        if len(self.base_only):
+            B = np.vstack([B, self.base_only])
+        r = BASE_HALF * 1.5 + margin
+        B = B[(B[:, 3] > lo[0] - r) & (B[:, 0] < hi[0] + r) & (B[:, 4] > lo[1] - r) & (B[:, 1] < hi[1] + r)]
+        ok = np.ones(len(poses), bool)
+        for k in range(0, len(B), 64):
+            b = B[k:k + 64]
+            inside = np.all((P[:, :, None, :] > b[None, None, :, :3] - margin) &
+                            (P[:, :, None, :] < b[None, None, :, 3:] + margin), axis=-1)
+            ok &= ~inside.any(axis=(1, 2))
+        if self.ann.articulated:
+            ok &= (self.moving_part_dist(P.reshape(-1, 3)) > margin).reshape(len(poses), -1).all(axis=1)
+        return ok
 
     def footprint_clear(self, x, y, yaw, margin=0.03):
         """Base column (0.52 m square, 1.05 m tall) vs static boxes and parts."""

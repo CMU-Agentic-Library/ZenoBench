@@ -57,6 +57,8 @@ R 类不列。下面只列要动的。
 
 ## 2. 底盘（B 类，步骤 2）
 
+**状态（2026-11-02）：** 除 hand.py 的 flip 底盘推（接触动作，步骤 4）和 skills.py 的 `clear_microwave_door_sweep`（场景特例，步骤 3）外都已删掉或改成整机规划；`BackOffWithLoadPolicy` 保留为任务级原语，改成整机检查的直线后退。底盘规划器本身的几项（`relax`、`Grid` 只查底盘圆、`R_BASE`、开车时不查手臂、原地转身只查终点）由 `base_planner.py` 解决，见 `COLLISION_PLAN.md` 步骤 2 实施记录。
+
 | 位置 | 内容 |
 |---|---|
 | skills.py:160-186 | `_load_near_furniture` + `_back_off`：沿 −yaw 盲退，距离变体 `(dist, 0.2, 0.1)`，只查占地 |

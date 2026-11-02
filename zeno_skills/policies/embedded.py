@@ -229,10 +229,10 @@ class PickFromCavityPolicy(AtomicPolicy):
             # Reverse the measured insertion approach. Generic rim samples can
             # be unreachable through the narrow open door even when the pose
             # that loaded this exact object is reachable.
-            rig.sync_world()
             rig.kin.coll_kw = {"ignore_fingers": True}
-            rig.follow(rig.joint_path(rig.microwave_retrieval_q, "cavity_return_safe"))
-            rig.drive_base([stage["release_base"]], speed=0.12)
+            skills.relocate(rig, tuple(stage["release_base"]),
+                            [("cavity_return_safe", (rig.microwave_retrieval_q, rig.left_q_cmd.copy()), 1.5)],
+                            label="cavity_return_safe", speed=0.12)
             rig.sync_world()
             before, _ = rig.obj_pose(name)
             target = stage["release_tcp"] + before-stage["release_body"]

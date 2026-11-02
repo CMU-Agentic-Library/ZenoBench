@@ -142,10 +142,10 @@ class ExploreRoomPolicy(AtomicPolicy):
             for turn in (0.0, 180.0):           # look both ways from each viewpoint
                 if turn:
                     bx, by, byaw = rig.base_pose()
-                    rig.sync_world()
-                    if not rig.world.footprint_clear(bx, by, math.radians(byaw + turn)):
+                    try:
+                        skills.straight_base_move(rig, (bx, by, byaw + turn), f"explore_{room}_turn")
+                    except SkillFailure:
                         continue
-                    rig.drive_base([(bx, by, byaw + turn)])
                 for yaw in (-1.0, -0.5, 0.0, 0.5, 1.0):
                     drive_head(rig, yaw, 0.3, steps=50)       # positive pitch looks down
                     viewed.update(record_view(rig))

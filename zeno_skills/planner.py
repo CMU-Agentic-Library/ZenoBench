@@ -57,6 +57,38 @@ def _segment_free(kin, qa, qb):
     return kin.segment_free(np.asarray(qa, float), np.asarray(qb, float))
 
 
+def _whole_body(kin, travel_q):
+    """(depths, sphere sets) of the whole robot in the travel posture -- travel_q for the right arm,
+    the left folded unless it holds something -- for Motion.base_depths, or None without cuRobo
+    (or before the first sync)."""
+    motion = getattr(kin, "motion", None)
+    rig = getattr(motion, "rig", None) if motion is not None else None
+    if rig is None:
+        return None
+    travel_q = np.asarray(travel_q, float)
+    left = rig.left_kin.rest[2:] if rig.left_held is None else rig.left_q_cmd.copy()     # as skills.navigate arrives
+    sets = motion.body_spheres(rig, [(travel_q, left)])
+    return (lambda poses, sph: motion.base_depths(rig, poses, sph)), sets
+
+
+def _drivable(kin, world, body, origin, goal):
+    """The base can drive from ``origin`` to ``goal``: a whole-body base plan in the posture it
+    drives in (an empty folded arm hangs, skills.navigate), or without cuRobo the column's grid
+    path (plan_path)."""
+    if body is None:
+        return plan_path(world, origin, goal) is not None
+    from . import base_planner
+    depths, sets = body
+    rig = kin.motion.rig
+    if rig.held is None and rig.left_held is None:
+        sets = kin.motion.body_spheres(rig, [(kin.drive, rig.left_kin.drive[2:])])
+    from .skills import scene_area
+    area = scene_area(world)
+    with kin.motion.base_world(area[:2], area[2:]):
+        return base_planner.plan(depths, origin, goal, sets, [], [1.0], area=area,
+                                 footprint=world.footprints_clear, passable=world.circles_clear)[0] is not None
+
+
 def joint_reachable(kin, qa, qb, carry=False):
     """A collision-free joint-space move qa -> qb exists: straight, or a cuRobo
     trajectory (the options Rig.joint_path executes).  ``carry`` (an object in
@@ -162,13 +194,13 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         return bool(np.all(d < 0.78) and np.all((P[:, 2] > 0.0) & (P[:, 2] < 1.5)))
     if n_best is None:
         n_best = PARK_CANDIDATES if score is None else 1
-    tried = 0
     found = []
     stay = False
     diag = {"candidates": len(cands), "out_of_reach": 0, "footprint": 0, "travel_pose": 0, "ik": 0,
             "unfold": 0, "ride": 0}
     LAST_PARK_DIAG.clear()
     LAST_PARK_DIAG.update(diag)
+    pool = []
     for cost, x, y, yaw in cands:
         if not reachable(x, y, yaw):
             LAST_PARK_DIAG["out_of_reach"] += 1
@@ -176,11 +208,22 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         if not world.footprint_clear(x, y, math.radians(yaw)):
             LAST_PARK_DIAG["footprint"] += 1
             continue
-        tried += 1
-        if tried > max_tries:
+        pool.append((cost, x, y, yaw))
+        if len(pool) >= max_tries:
             break
+    body = _whole_body(kin, travel_q) if travel_q is not None else None
+    if body is not None:
+        # strict: the whole robot parked there in its travel posture (base column, both arms, what
+        # the hands hold) touches nothing; one batched check for every candidate
+        depths, sets = body
+        moving = [c for c in pool if c[0] >= 0]
+        d = depths(np.array([[x, y, math.radians(yaw)] for _, x, y, yaw in moving]), sets)[0] if moving else []
+        blocked = {c[1:] for c, dc in zip(moving, d) if dc > 1e-4}
+        LAST_PARK_DIAG["travel_pose"] += len(blocked)
+        pool = [c for c in pool if c[1:] not in blocked]
+    for cost, x, y, yaw in pool:
         kin.set_base((x, y, 0.0), math.radians(yaw))
-        if travel_q is not None and cost >= 0:
+        if body is None and travel_q is not None and cost >= 0:
             kw, kin.coll_kw = kin.coll_kw, {"ignore_fingers": kin.coll_kw.get("ignore_fingers", False)}
             clear = kin.free(travel_q)          # strict: the parked arm touches nothing
             kin.coll_kw = kw
@@ -202,7 +245,7 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
             continue
         origin = path_from if path_from is not None else (near if near is not None and len(near) == 3 else None)
         if origin is not None and cost >= 0 and \
-                math.hypot(x - origin[0], y - origin[1]) > 0.05 and plan_path(world, origin, (x, y, yaw)) is None:
+                math.hypot(x - origin[0], y - origin[1]) > 0.05 and not _drivable(kin, world, body, origin, (x, y, yaw)):
             # footprint-clear but enclosed (e.g. behind a counter): not drivable from here
             LAST_PARK_DIAG["no_path"] = LAST_PARK_DIAG.get("no_path", 0) + 1
             continue

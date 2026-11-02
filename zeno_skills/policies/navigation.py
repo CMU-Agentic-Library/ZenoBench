@@ -77,8 +77,17 @@ class BackOffWithLoadPolicy(AtomicPolicy):
         distance, min_distance = float(distance), float(min_distance)
         if not np.isfinite(distance) or not np.isfinite(min_distance) or distance <= 0 or not 0 < min_distance <= distance:
             raise ValueError("backoff distance must be positive and at least min_distance")
-        moved = skills._back_off(self.rig, distance)
-        skills.check_held(self.rig, "back_off_with_load")
+        rig = self.rig
+        x, y, yaw = rig.base_pose()
+        c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+        try:
+            skills.straight_base_move(rig, (x - c * distance, y - s * distance, yaw), "back_off_with_load", speed=0.2)
+        except SkillFailure:
+            skills.straight_base_move(rig, (x - c * min_distance, y - s * min_distance, yaw), "back_off_with_load",
+                                      speed=0.2)
+        bx, by, _ = rig.base_pose()
+        moved = max(0.0, (x - bx) * c + (y - by) * s)
+        skills.check_held(rig, "back_off_with_load")
         if moved < min_distance - 0.01:
             raise SkillFailure(f"back off with load: reversed only {moved:.3f} m")
         return moved
@@ -100,11 +109,8 @@ class BaseRotateInPlacePolicy(AtomicPolicy):
             raise ValueError("in-place rotation must be nonzero and within 90 degrees")
         _require_tucked_empty_base(self.rig, "base rotate")
         x, y, yaw = self.rig.base_pose()
-        for offset in np.linspace(0, delta, max(3, math.ceil(abs(delta) / 5) + 1)):
-            if not self.rig.world.footprint_clear(x, y, math.radians(yaw + offset)):
-                raise SkillFailure("base rotate: occupied footprint on turn arc")
         target = yaw + delta
-        self.rig.drive_base([(x, y, target)])
+        skills.straight_base_move(self.rig, (x, y, target), "base rotate")
         bx, by, actual = self.rig.base_pose()
         angle_error = abs((actual - target + 180) % 360 - 180)
         if math.hypot(bx - x, by - y) > 0.02 or angle_error > tolerance_deg:
@@ -124,10 +130,7 @@ class BaseTranslateLocalPolicy(AtomicPolicy):
         x, y, yaw = self.rig.base_pose()
         c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
         dx, dy = c * forward - s * left, s * forward + c * left
-        for u in np.linspace(0, 1, max(3, math.ceil(distance / 0.05) + 1)):
-            if not self.rig.world.footprint_clear(x + u * dx, y + u * dy, math.radians(yaw)):
-                raise SkillFailure("base translate: occupied footprint on straight path")
-        self.rig.drive_base([(x + dx, y + dy, yaw)])
+        skills.straight_base_move(self.rig, (x + dx, y + dy, yaw), "base translate")
         bx, by, actual_yaw = self.rig.base_pose()
         error = math.hypot(bx - x - dx, by - y - dy)
         if error > tolerance_m or abs((actual_yaw - yaw + 180) % 360 - 180) > 2:

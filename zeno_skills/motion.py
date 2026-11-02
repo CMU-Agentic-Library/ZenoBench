@@ -77,12 +77,13 @@ APPROACH_FRACTION = 0.5   # constrained Cartesian legs: the last half of the tra
 APPROACH_ALIGN = 0.95     # |cos| between the leg and a goal-frame axis for a straight-approach constraint
 HELD_SPHERES = 32         # spheres pre-allocated per arm for the held object (scope)
 COARSE_STEP = 0.02        # m: a finer Cartesian line that fails is solved again at this step, then densified
+BASE_CHUNK = 2048         # base poses per batched whole-body query (base_depths)
 os.environ.setdefault("CUROBO_TORCH_CUDA_GRAPH_RESET", "1")
 
 DIAG = os.environ.get("ZENO_MOTION_DIAG") == "1"     # print why a collision IK was blocked
 STATS = {"ik": 0, "ik_ok": 0, "cart": 0, "cart_ok": 0, "plan": 0, "plan_ok": 0, "check": 0,
          "ik_s": 0.0, "cart_s": 0.0, "plan_s": 0.0, "check_s": 0.0, "sync_s": 0.0, "init_s": 0.0,
-         "monitor_s": 0.0}
+         "monitor_s": 0.0, "base_s": 0.0}
 
 
 def _timed(key):
@@ -484,6 +485,8 @@ class Motion:
         self._held_box = {}              # object name -> (frame collider, lo, hi): its box in that collider's frame
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
+        self._sync_n = 0
+        self._base_scope = None
         self.by_owner = {}
         for c in self.cols.items:
             self.by_owner.setdefault(c.owner, []).append(c)
@@ -561,6 +564,8 @@ class Motion:
     @_timed("sync_s")
     def sync(self, rig):
         """Object and part poses from the simulator; held objects (and what they carry) off."""
+        self.rig = rig
+        self._sync_n = getattr(self, "_sync_n", 0) + 1
         moved = self._live_poses(rig)
         self.body_pose.update(moved)
         self._put_poses(moved)
@@ -953,6 +958,187 @@ class Motion:
             d = self.checker.get_sphere_distance(sph, buf, torch.ones(1, device="cuda"),
                                                  torch.zeros(1, device="cuda"), sum_collisions=False)
             return float(d.max().item()) if d.numel() else 0.0
+
+    # ------------------------------------------------------------- whole-body base check
+    def body_spheres(self, rig, postures):
+        """(P, S, 4) spheres of the robot above its base in the frame of its current base, one set per
+        posture (q_right: torso, waist, 7 right-arm joints; q_left: 7 left-arm joints): every link of
+        both arms, torso and head at that posture, and what each hand holds as box_spheres riding
+        rigidly on its TCP (where it sits in the hand now).  The base column has no spheres (its
+        collider is off): its footprint is checked on the annotated boxes (WorldModel)."""
+        import torch
+        model, names, link_of = self._monitor_model()
+        rows = []
+        head = rig.head_q()
+        fingers = {}
+        for side, f in (("right", rig.fingers()), ("left", rig.left_fingers())):
+            fingers[f"{side}_gripper_left_finger_axis"], fingers[f"{side}_gripper_right_finger_axis"] = map(float, f[:2])
+        for qr, ql in postures:
+            vals = {"base_x": 0.0, "base_y": 0.0, "base_yaw": 0.0, **head, **fingers}
+            vals.update(zip(rig.kin.names, np.asarray(qr, float)))
+            vals.update(zip(rig.left_kin.names[2:], np.asarray(ql, float)[-7:]))
+            rows.append([float(vals.get(n, 0.0)) for n in names])
+        q = torch.tensor(rows, device="cuda", dtype=torch.float32)
+        sph = model.get_state(q).link_spheres_tensor.view(len(postures), -1, 4).cpu().numpy().astype(float)
+        on = sph[0, :, 3] > 0
+        sph = sph[:, on]
+        self.body_names = [l for l, k in zip(link_of, on) if k]
+        bx, by, byaw = rig.base_pose()
+        T_base = np.eye(4)
+        T_base[:2, :2] = [[math.cos(math.radians(byaw)), -math.sin(math.radians(byaw))],
+                          [math.sin(math.radians(byaw)), math.cos(math.radians(byaw))]]
+        T_base[:2, 3] = bx, by
+        inv_base = np.linalg.inv(T_base)
+        extra = []
+        for side, kin, h in (("right", rig.kin, rig.held), ("left", rig.left_kin, getattr(rig, "left_held", None))):
+            if h is None or h.get("name") not in self.ann.objects or not self.by_owner.get(f"object:{h['name']}"):
+                continue
+            if h.get("kind") == "bimanual" and side == "left":
+                continue
+            frame, lo, hi = self._box_of(h["name"])
+            b = box_spheres(lo, hi)
+            T_obj = G.world_pose(frame, self.body_pose.get)
+            pts = (inv_base[:3, :3] @ (b[:, :3] @ T_obj[:3, :3].T + T_obj[:3, 3]).T).T + inv_base[:3, 3]
+            # the TCP in the base frame, wherever kin's base sits (find_park moves it around)
+            T_kin = np.eye(4)
+            T_kin[:3, :3], T_kin[:3, 3] = kin.base_R, kin.base_p
+            inv_kin = np.linalg.inv(T_kin)
+            now = rig.q_cmd if side == "right" else np.r_[rig.q_cmd[:2], rig.left_q_cmd]
+            T_now = inv_kin @ self._tcp_T(kin, now)
+            local = (pts - T_now[:3, 3]) @ T_now[:3, :3]              # in the TCP frame
+            sets = []
+            for qr, ql in postures:
+                T = inv_kin @ self._tcp_T(kin, qr if side == "right" else np.r_[np.asarray(qr, float)[:2], ql[-7:]])
+                sets.append(np.c_[local @ T[:3, :3].T + T[:3, 3], b[:, 3]])
+            extra.append(sets)
+            self.body_names += [f"held:{h['name']}"] * len(b)
+        return np.concatenate([sph] + [np.stack(e) for e in extra], axis=1)
+
+    @staticmethod
+    def _tcp_T(kin, q):
+        p, R = kin.tcp(np.asarray(q, float))
+        T = np.eye(4)
+        T[:3, :3], T[:3, 3] = R, p
+        return T
+
+    @_timed("base_s")
+    def base_depths(self, rig, poses, spheres, chunk=BASE_CHUNK):
+        """(P, N) deepest penetration (m, >= 0) of the robot into the world with its base at each of
+        ``poses`` ((N, 3): x, y, yaw rad) and its body as each of ``spheres`` ((P, S, 4) from
+        body_spheres).  The world: every collider within reach of the poses that neither hand holds,
+        objects and parts at their synced poses.  The planner's world (enabled colliders, cull centre)
+        is exactly as before when this returns."""
+        import torch
+        from curobo.geom.sdf.world import CollisionQueryBuffer
+        poses = np.atleast_2d(np.asarray(poses, float))
+        spheres = np.asarray(spheres, float)
+        P, S = spheres.shape[:2]
+        out = np.zeros((P, len(poses)))
+        if not len(poses):
+            return out
+        reach = float(np.max(np.linalg.norm(spheres[..., :2], axis=-1) + spheres[..., 3]))
+        lo, hi = poses[:, :2].min(0) - reach - 0.1, poses[:, :2].max(0) + reach + 0.1
+        scope = getattr(self, "_base_scope", None)
+        if scope is not None and np.all(lo >= scope[0]) and np.all(hi <= scope[1]):
+            flip, use = [], set()                     # base_world already set the world for the region
+        else:
+            use = self._region_colliders(lo, hi)
+            flip = [c for c in self.cols.items if self.enabled[c.name] != (c.name in use)]
+        sph = torch.as_tensor(spheres, device="cuda", dtype=torch.float32)          # (P, S, 4)
+        try:
+            for c in flip:
+                self._set_enabled(c, c.name in use)
+            for k in range(0, len(poses), chunk):
+                pc = torch.as_tensor(poses[k:k + chunk], device="cuda", dtype=torch.float32)
+                n = len(pc)
+                cy, sy = torch.cos(pc[:, 2]), torch.sin(pc[:, 2])
+                x, y = sph[..., 0][:, None], sph[..., 1][:, None]                     # (P, 1, S)
+                w = torch.empty((P, n, S, 4), device="cuda", dtype=torch.float32)
+                w[..., 0] = cy[None, :, None] * x - sy[None, :, None] * y + pc[None, :, 0, None]
+                w[..., 1] = sy[None, :, None] * x + cy[None, :, None] * y + pc[None, :, 1, None]
+                w[..., 2] = sph[..., 2][:, None]
+                w[..., 3] = sph[..., 3][:, None]
+                q4 = w.view(P * n, 1, S, 4).contiguous()
+                buf = CollisionQueryBuffer.initialize_from_shape(q4.shape, self.arms["right"].mg.tensor_args,
+                                                                 self.checker.collision_types)
+                d = self.checker.get_sphere_distance(q4, buf, torch.ones(1, device="cuda"),
+                                                     torch.zeros(1, device="cuda"), sum_collisions=False)
+                out[:, k:k + n] = d.view(P, n, S).max(dim=2).values.clamp(min=0.0).cpu().numpy()
+        finally:
+            for c in flip:
+                self._set_enabled(c, c.name not in use)
+            if flip:
+                self.cull_at = None
+        return out
+
+    def _region_colliders(self, lo, hi):
+        """Names of the colliders whose box reaches the xy box [lo, hi] that neither hand holds."""
+        held = set(self.held["right"]) | set(self.held["left"])
+        key = tuple(sorted(held))
+        if getattr(self, "_centres_key", None) != (id(self.body_pose), self._sync_n, key):
+            self._centres_key = (id(self.body_pose), self._sync_n, key)
+            self._centres = np.array([self._centre(c)[:2] for c in self.cols.items])
+            self._radii = np.array([self._extent[c.name][1] for c in self.cols.items])
+            self._usable = np.array([c.owner not in held for c in self.cols.items])
+        m = self._usable & np.all(self._centres + self._radii[:, None] > lo, axis=1) & \
+            np.all(self._centres - self._radii[:, None] < hi, axis=1)
+        return {c.name for c, k in zip(self.cols.items, m) if k}
+
+    @contextmanager
+    def base_world(self, lo, hi):
+        """The world of base_depths for every query inside whose poses stay in the xy box [lo, hi]
+        (the reach of the robot added): set once, restored after (a base plan's many queries)."""
+        r = 1.5
+        lo, hi = np.asarray(lo, float) - r, np.asarray(hi, float) + r
+        use = self._region_colliders(lo, hi)
+        flip = [c for c in self.cols.items if self.enabled[c.name] != (c.name in use)]
+        try:
+            for c in flip:
+                self._set_enabled(c, c.name in use)
+            self._base_scope = (lo, hi)               # the colliders enabled: base_depths' region must fit
+            yield
+        finally:
+            self._base_scope = None
+            for c in flip:
+                self._set_enabled(c, c.name not in use)
+            self.cull_at = None
+
+    def base_explain(self, rig, pose, spheres, top=4):
+        """What the robot runs into with its base at ``pose`` (x, y, yaw rad) and its body as
+        ``spheres`` ((S, 4), the last body_spheres set): its deepest (part, entity, mm)."""
+        import torch
+        from curobo.geom.sdf.world import CollisionQueryBuffer
+        x, y, yaw = pose
+        c, s_ = math.cos(yaw), math.sin(yaw)
+        w = np.asarray(spheres, float).copy()
+        w[:, 0], w[:, 1] = c * spheres[:, 0] - s_ * spheres[:, 1] + x, s_ * spheres[:, 0] + c * spheres[:, 1] + y
+        held = set(self.held["right"]) | set(self.held["left"])
+        use = {c_.name for c_ in self.cols.items if c_.owner not in held and
+               np.hypot(*(self._centre(c_)[:2] - [x, y])) - self._extent[c_.name][1] < 1.5}
+        cols = [c_ for c_ in self.cols.items if c_.name in use]
+        flip = [c_ for c_ in self.cols.items if self.enabled[c_.name] != (c_.name in use)]
+        try:
+            for c_ in flip:
+                self._set_enabled(c_, c_.name in use)
+            q4 = torch.as_tensor(w, device="cuda", dtype=torch.float32).view(1, 1, -1, 4).contiguous()
+            buf = CollisionQueryBuffer.initialize_from_shape(q4.shape, self.arms["right"].mg.tensor_args,
+                                                             self.checker.collision_types)
+            d = self.checker.get_sphere_distance(q4, buf, torch.ones(1, device="cuda"), torch.zeros(1, device="cuda"),
+                                                 sum_collisions=False).view(-1).cpu().numpy()
+        finally:
+            for c_ in flip:
+                self._set_enabled(c_, c_.name not in use)
+            self.cull_at = None
+        out, seen = [], set()
+        for i in np.argsort(-d):
+            if d[i] <= 0 or len(out) >= top:
+                break
+            name = self.body_names[i] if i < len(self.body_names) else "?"
+            ent = self._nearest_entity(w[i, :3], float(w[i, 3]), {}, cols)
+            if (name, ent) not in seen:
+                seen.add((name, ent))
+                out.append((name, ent, round(float(d[i]) * 1000)))
+        return out
 
     # ------------------------------------------------------------- contact monitor
     def _monitor_model(self):

@@ -14,30 +14,19 @@ class TuckArmPolicy(AtomicPolicy):
     def execute(self):
         if self.rig.held is not None:
             raise SkillFailure("tuck arm: release the held object first")
-        if not self.rig.tuck() and not self._recover():
+        from .. import skills
+        if not skills.fold_where_possible(self.rig, "tuck_arm"):
             raise SkillFailure("tuck arm: no collision-free retreat")
         if np.max(np.abs(self.rig.q() - self.rig.q_cmd)) > 0.05:
             raise SkillFailure("tuck arm: posture did not settle")
         return True
 
-    def _recover(self):
-        """Blocked next to an open door or furniture: back the base out, or
-        shift/turn it to where the folded arm is free, then fold again."""
-        from .. import skills
-        rig = self.rig
-        if skills._back_off(rig, dist=0.30) > 0.05 and rig.tuck():
-            rig.log("tuck_recovered", how="back_off")
-            return True
-        if skills._clear_for_tuck(rig) and rig.tuck():
-            rig.log("tuck_recovered", how="base_shift")
-            return True
-        return False
-
 
 def _move_posture_joint(rig, joint_name, target, tolerance):
-    """Move one posture joint.  Empty-handed, tuck first if the initial arm sweep is
-    blocked; with a load, the held object is in the plan's collision model, a blocked
-    sweep backs the base out instead, and the grasp is checked afterwards."""
+    """Move one posture joint.  Empty-handed, tuck first if the initial arm sweep is blocked; then
+    (or with a load: the held object is in the plan's collision model) the least base move after
+    which the joint moves straight clear of everything (skills.relocate); the grasp is checked
+    afterwards."""
     idx = rig.kin.names.index(joint_name)
     target = float(target)
     lo, hi = float(rig.kin.lo[idx]), float(rig.kin.hi[idx])
@@ -54,23 +43,22 @@ def _move_posture_joint(rig, joint_name, target, tolerance):
     old_kw = rig.kin.coll_kw
     rig.kin.coll_kw = {}
     try:
+        def reposition():
+            q_goal = rig.q_cmd.copy()
+            q_goal[idx] = target
+            skills.relocate(rig, None, [(joint_name, (q_goal, rig.left_q_cmd.copy()), 1.0)], label=joint_name,
+                            speed=0.15, turn=0.4)
         try:
-            path = plan()
+            rig.follow(plan())
         except SkillFailure:
             if rig.held is not None:
-                # the load would sweep into the furniture in front: back out with it and try again
-                skills._back_off(rig, 0.35)
-                path = plan()
+                reposition()            # the load would sweep into the furniture in front
             else:
                 TuckArmPolicy(rig).execute()
                 try:
-                    path = plan()
+                    rig.follow(plan())
                 except SkillFailure:
-                    # the tucked hand would sweep into the furniture in front:
-                    # back the base away and try once more
-                    skills._back_off(rig, 0.35)
-                    path = plan()
-        rig.follow(path)
+                    reposition()        # the tucked hand would sweep into the furniture in front
     finally:
         rig.kin.coll_kw = old_kw
     skills.check_held(rig, joint_name)

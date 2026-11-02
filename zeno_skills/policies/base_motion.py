@@ -15,7 +15,7 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
-from ..planner import find_park, plan_path
+from ..planner import find_park
 from ..predicates import (NEAR_M, entity_footprint, entity_kind, entity_point, ik_reachable,
                           reach_targets)
 from ..rig import SkillFailure
@@ -33,7 +33,9 @@ def _box_dist(box, xy):
 
 
 def standoff_poses(rig, place, ring=(0.45, 0.55, 0.70, 0.85, 1.0)):
-    """Free base poses around a place's footprint, facing it, nearest first."""
+    """Free base poses around a place's footprint, facing it, nearest first: the base column clear
+    of the annotated furniture, then the whole robot in its travel posture clear of the world
+    (skills.poses_clear)."""
     rig.sync_world()
     kind, rec = entity_kind(rig.ann, place)
     world = rig.world
@@ -54,7 +56,7 @@ def standoff_poses(rig, place, ring=(0.45, 0.55, 0.70, 0.85, 1.0)):
                 if world.footprint_clear(x, y, math.radians(yaw), margin=0.08):
                     out.append((r, x, y, yaw))
         out.sort()
-        return [(x, y, yaw) for _, x, y, yaw in out]
+        return skills.poses_clear(rig, [(x, y, yaw) for _, x, y, yaw in out])
     box = entity_footprint(rig, place)
     cx, cy = (box[0] + box[2]) / 2, (box[1] + box[3]) / 2
     for d in ring:
@@ -72,7 +74,7 @@ def standoff_poses(rig, place, ring=(0.45, 0.55, 0.70, 0.85, 1.0)):
                 continue
             out.append((math.hypot(x - x0, y - y0) + 0.3 * d, x, y, yaw))
     out.sort()
-    return [(x, y, yaw) for _, x, y, yaw in out]
+    return skills.poses_clear(rig, [(x, y, yaw) for _, x, y, yaw in out])
 
 
 class NavigateToPlacePolicy(AtomicPolicy):
@@ -146,15 +148,12 @@ class FaceTargetPolicy(AtomicPolicy):
         delta = (bearing - yaw + 180) % 360 - 180
         if abs(delta) <= tolerance_deg:
             return yaw
-        rig.sync_world()
-        if not rig.world.footprint_clear(x, y, math.radians(bearing)):
-            raise SkillFailure(f"face {target}: turning in place would hit furniture")
         if rig.held is None and rig.left_held is None:
             if not rig.tuck():
                 raise SkillFailure(f"face {target}: cannot fold the arm before turning")
-            rig.drive_base([(x, y, bearing)])
+            skills.straight_base_move(rig, (x, y, bearing), f"face {target}")
         else:
-            rig.drive_base([(x, y, bearing)], speed=0.15, turn=0.35, ramp=1.0)
+            skills.straight_base_move(rig, (x, y, bearing), f"face {target}", speed=0.15, turn=0.35, ramp=1.0)
         x2, y2, yaw2 = rig.base_pose()
         err = abs((bearing - yaw2 + 180) % 360 - 180)
         rig.log("face_result", target=target, yaw_deg=round(yaw2, 1), error_deg=round(err, 1))
@@ -179,19 +178,17 @@ class RetreatFromPolicy(AtomicPolicy):
         need = max(0.0, float(distance_m) - _box_dist(box, (x, y)))
         if need < 0.01:
             return 0.0
-        for d in (need + 0.03, need):
-            pts = [np.array([x, y]) + away * u for u in np.linspace(0.05, d, 6)]
-            if all(rig.world.footprint_clear(p[0], p[1], math.radians(yaw)) for p in pts):
-                if rig.held is not None:
-                    skills.check_held(rig, "retreat_start")
-                    rig.drive_base([(pts[-1][0], pts[-1][1], yaw)], speed=0.15, turn=0.3, ramp=1.0)
-                    skills.check_held(rig, "retreat_end")
-                else:
-                    rig.drive_base([(pts[-1][0], pts[-1][1], yaw)], speed=0.2)
-                moved = float(np.linalg.norm(np.asarray(rig.base_pose()[:2]) - np.array([x, y])))
-                rig.log("retreat_result", place=place, moved_m=round(moved, 3))
-                return moved
-        raise SkillFailure(f"retreat from {place}: the path behind the base is blocked")
+        end = np.array([x, y]) + away * (need + 0.03)
+        if rig.held is not None:
+            skills.check_held(rig, "retreat_start")
+            skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}", speed=0.15, turn=0.3,
+                                      ramp=1.0)
+            skills.check_held(rig, "retreat_end")
+        else:
+            skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}", speed=0.2)
+        moved = float(np.linalg.norm(np.asarray(rig.base_pose()[:2]) - np.array([x, y])))
+        rig.log("retreat_result", place=place, moved_m=round(moved, 3))
+        return moved
 
 
 class LeftArmFoldPolicy(AtomicPolicy):

@@ -674,7 +674,30 @@ class Rig:
         self.kin.set_base((x, y, 0.0), yaw)
         self.left_kin.set_base((x, y, 0.0), yaw)
 
-    def drive_base(self, path, speed=0.35, turn=0.8, ramp=0.8, on_step=None):
+    def swing(self, q_right, q_left, label, allow=FREE, settle=150, tol=0.01):
+        """Both arms (and the shared torso and waist) straight in joint space to (q_right: torso,
+        waist, 7 right-arm joints; q_left: 7 left-arm joints) with a gentle start and stop: a
+        posture switch the caller checked (the base planner's, Motion.base_depths)."""
+        self.clear.motion(label, allow)
+        r0, l0 = self.q_cmd.copy(), self.left_q_cmd.copy()
+        r1, l1 = np.asarray(q_right, float), np.asarray(q_left, float)[-len(l0):]
+        vr = self._vmax()
+        vl = np.minimum(0.6 * vel_limits(self.left_kin.names[2:]), vr[2:].max())
+        T = max(float(np.max(np.abs(r1 - r0) / vr)), float(np.max(np.abs(l1 - l0) / vl)), 0.05) * 1.5
+        n = max(2, int(math.ceil(T * 120)))
+        for i in range(1, n + 1):
+            u = i / n
+            u = u * u * (3 - 2 * u)
+            self.q_cmd = r0 + (r1 - r0) * u
+            self.left_q_cmd = l0 + (l1 - l0) * u
+            self.step(1)
+        for _ in range(settle):
+            if max(np.max(np.abs(self.q() - self.q_cmd)), np.max(np.abs(self.left_q()[2:] - self.left_q_cmd))) < tol:
+                break
+            self.step(2)
+        self.log("swing", target=label, q_err=round(float(np.max(np.abs(self.q() - self.q_cmd))), 4))
+
+    def drive_base(self, path, speed=0.35, turn=0.8, ramp=0.8, on_step=None, allow=BASE_DRIVE):
         """Follow a list of (x, y, yaw_deg) waypoints with one smooth time
         scaling over the whole path (accelerate over ``ramp`` s, cruise,
         decelerate) instead of stopping at every waypoint: the stop-and-go
@@ -682,8 +705,9 @@ class Rig:
 
         A container held by a one-hand rim pinch hangs off a thin wall and
         pivots under base accelerations: it is driven at half speed with a
-        longer ramp.  The arms are not checked along the path (BASE_DRIVE)."""
-        self.clear.motion("drive_base", BASE_DRIVE)
+        longer ramp.  ``allow``: BASE_DRIVE (the arms not checked along the path) unless the path
+        is a whole-body plan (base_planner)."""
+        self.clear.motion("drive_base", allow)
         if self._held_container():
             speed, turn, ramp = min(speed, 0.18), min(turn, 0.35), max(ramp, 1.8)
         if getattr(self, "left_held", None) is not None and self.held is None:
