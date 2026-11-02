@@ -30,16 +30,6 @@ FINGER_OPEN = 0.04          # m per finger (8 cm max gap)
 # compact right-arm fold (hand 0.29 m to the side, 0.33 m ahead), not used
 COMPACT_TUCK = [0.0, 0.0, 1.05, 0.46, 0.42, 2.04, -0.06, -0.26, 0.42]
 
-# Drive posture of either arm: hanging straight down at the side, joints 2 and 4 just off their
-# limits.  Every arm sphere stays inside the 0.52 m base column (0.17 m ahead, 0.26 m to the
-# side), so a base path that clears the column clears the arms too.  An empty tucked arm is
-# lowered to it only while navigate drives the base, and raised back to the travel posture on
-# arrival: the elbow-out travel posture held the right hand 0.49 m to the side and the left fold
-# reached 0.42 m ahead, and driving and turning beside a counter swept them through what stood
-# on it (P07, P12 on 2026-10-31).  Hanging as the resting posture regressed 2026-11-01: lowering
-# the torso put the hands into the floor, folding down from over a shelf found no path, and
-# find_park and the motions that start from the tuck failed to plan.
-DRIVE_Q = [0.0, 0.0, 0.0, 0.03, 0.0, 0.03, 0.0, 0.0, 0.0]
 # default left-arm travel posture; Rig can command all seven left joints
 LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_joint_4": 2.3}
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
@@ -162,9 +152,8 @@ class ArmKin:
         # Travel (tucked) posture = the same elbow-out posture.  (A compact fold
         # close to the chest was tried: it put every pick on another IK branch
         # and the fridge/cabinet/left-arm motions regressed; COMPACT_TUCK keeps
-        # it for reference.)  While the base drives, the tucked arm hangs (DRIVE_Q).
+        # it for reference.)
         self.rest = self.posture.copy()
-        self.drive = np.clip(np.array(DRIVE_Q), self.lo, self.hi)
         self.base_p, self.base_R = np.zeros(3), np.eye(3)
 
     def set_base(self, xyz, yaw):
@@ -244,18 +233,9 @@ class ArmKin:
             return True
         return self._motion().segment_free(self, qa, qb, self._other_q(), self.coll_kw)
 
-    def ik_seed(self, q):
-        """``q`` as an IK start: an arm left hanging (its raise after a drive was blocked) starts
-        from the elbow-out posture, with q's torso and waist, so the solution is on the branch
-        it always was."""
-        q = np.asarray(q, float)
-        if np.max(np.abs(q[2:] - self.drive[2:])) < 0.05:
-            return np.r_[q[:2], self.posture[2:]]
-        return q
-
     def ik_global(self, p_t, R_t, seeds=None):
         """cuRobo's multi-seed IK (collision-aware unless scene is None); seeds first."""
-        seeds = [self.ik_seed(s) for s in (seeds or [])] + [self.posture]
+        seeds = [np.asarray(s, float) for s in (seeds or [])] + [self.posture]
         return self._motion().ik(self, np.asarray(p_t, float), R_t, seeds, self.scene is not None,
                                  self._other_q(), self.coll_kw)
 

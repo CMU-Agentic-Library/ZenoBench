@@ -231,7 +231,7 @@ class PickFromCavityPolicy(AtomicPolicy):
             # that loaded this exact object is reachable.
             rig.kin.coll_kw = {"ignore_fingers": True}
             skills.relocate(rig, tuple(stage["release_base"]),
-                            [("cavity_return_safe", (rig.microwave_retrieval_q, rig.left_q_cmd.copy()), 1.5)],
+                            [("cavity_return_safe", (rig.microwave_retrieval_q, rig.left_q_cmd.copy()))],
                             label="cavity_return_safe", speed=0.12)
             rig.sync_world()
             before, _ = rig.obj_pose(name)

@@ -209,9 +209,9 @@ def check_left_held(rig, label):
 
 def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
     """Drive to ``pose`` on a whole-body base plan (relocate).  Empty-handed the arm folds first
-    where it stands when the arm planner finds a way, both arms hang at the side while driving and
-    fold back on arrival; with a load in a hand it is brought into the carry pose first, the arms
-    stay as they are and the base drives slower.  ``arrive``: the arm posture to arrive in instead of the
+    where it stands when the arm planner finds a way (else where the base plan finds room) and
+    drives folded; with a load in a hand it is brought into the carry pose first, the arms stay
+    as they are and the base drives slower.  ``arrive``: the arm posture to arrive in instead of the
     fold (right-arm joints, or (right, left))."""
     if rig.held is None:
         rig.tuck()              # where the arm planner cannot fold it here, the base plan does (relocate)
@@ -223,8 +223,6 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
         check_held(rig, "carry_up")
     _fold_left(rig)
     rest = _rest_posture(rig)
-    # empty-handed both arms hang at the side while driving; with a load they stay as they are
-    hang = rest if rig.held is not None or rig.left_held is not None else (rig.kin.drive, rig.left_kin.drive[2:])
     if arrive is None:
         end = rest
     elif isinstance(arrive, tuple):
@@ -237,7 +235,7 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
         speed = dict(speed=0.17, turn=0.30, ramp=1.2)
     else:
         speed = {}
-    relocate(rig, pose, [("fold", rest, 1.5), ("hang", hang, 1.0), ("arrive", end, 1.5)], label=label, **speed)
+    relocate(rig, pose, [("fold", rest), ("arrive", end)], label=label, **speed)
     if rig.held is not None:
         check_held(rig, "carry")
     if rig.left_held is not None:
@@ -253,8 +251,8 @@ def _rest_posture(rig):
 def relocate(rig, goal, postures=(), label="relocate", **drive):
     """Move the base to ``goal`` (x, y, yaw_deg; None: as little as possible) on a whole-body plan
     (base_planner): the arms leave their current posture and pass through ``postures`` -- [(name,
-    (right, left), driving cost weight)] -- in order, each switch made where the base stands
-    clear of everything with the arms anywhere between the two postures (a straight joint move).
+    (right, left))] -- in order, each switch made where the base stands clear of everything with
+    the arms anywhere between the two postures (a straight joint move).
     Nothing near the start or goal is exempt.  ``drive``: drive_base speeds.  SkillFailure when
     there is no such plan."""
     from .clearance import FREE
@@ -265,7 +263,7 @@ def relocate(rig, goal, postures=(), label="relocate", **drive):
                     waypoints=[[round(v, 2) for v in w] for w in st.path[1:]])
             rig.drive_base(st.path[1:], allow=FREE, **drive)
         else:
-            name, (qr, ql), _ = chain[st.mode + 1]
+            name, (qr, ql) = chain[st.mode + 1]
             rig.swing(qr, ql, f"{label}_{name}")
 
 
@@ -276,27 +274,31 @@ def _base_plan(rig, goal, postures, label):
     motion = rig.kin.motion
     if motion is None:
         raise SkillFailure(f"{label}: no whole-body model (cuRobo) to plan the base with")
-    chain = [("start", (rig.q_cmd.copy(), rig.left_q_cmd.copy()), 2.0)]
-    for name, (qr, ql), w in postures:
+    chain = [("start", (rig.q_cmd.copy(), rig.left_q_cmd.copy()))]
+    for name, (qr, ql) in postures:
         qr, ql = np.asarray(qr, float), np.asarray(ql, float)[-7:]
         if np.max(np.abs(qr - chain[-1][1][0])) < 0.02 and np.max(np.abs(ql - chain[-1][1][1])) < 0.02:
             continue
-        chain.append((name, (qr, ql), w))
+        chain.append((name, (qr, ql)))
     sets = motion.body_spheres(rig, [c[1] for c in chain])
-    switches = []
-    for (_, (ra, la), _), (_, (rb, lb), _) in zip(chain[:-1], chain[1:]):
-        us = np.linspace(0, 1, base_planner.SWITCH_SAMPLES)
-        switches.append(motion.body_spheres(rig, [(ra + (rb - ra) * u, la + (lb - la) * u) for u in us]))
+    # each switch: a few postures for the lattice, and every DENSE of motion for the path's check
+    switches, dense = [], []
+    for (_, (ra, la)), (_, (rb, lb)) in zip(chain[:-1], chain[1:]):
+        us = np.linspace(0, 1, base_planner.SWITCH_FINE)
+        fine = motion.body_spheres(rig, [(ra + (rb - ra) * u, la + (lb - la) * u) for u in us])
+        switches.append(fine[np.round(np.linspace(0, len(fine) - 1, base_planner.SWITCH_SAMPLES)).astype(int)])
+        dense.append(base_planner.dense_sets(fine))
     import time
     t0 = time.perf_counter()
     area = scene_area(rig.world)
     with motion.base_world(area[:2], area[2:]):
         steps, lat = base_planner.plan(lambda poses, sph: motion.base_depths(rig, poses, sph), rig.base_pose(),
-                                       goal, sets, switches, [c[2] for c in chain], area=area,
-                                       footprint=rig.world.footprints_clear, passable=rig.world.circles_clear)
+                                       goal, sets, switches, area=area, footprint=rig.world.footprints_clear,
+                                       passable=rig.world.circles_clear, dense_switches=dense)
     rig.log("base_plan", target=label, goal=None if goal is None else [round(float(v), 3) for v in goal],
             postures=[c[0] for c in chain], poses_checked=lat.evaluated, found=steps is not None,
-            expanded=getattr(lat, "expanded", 0), seconds=round(time.perf_counter() - t0, 2),
+            expanded=getattr(lat, "expanded", 0), rounds=getattr(lat, "rounds", 0),
+            seconds=round(time.perf_counter() - t0, 2),
             start_footprint=bool(rig.world.footprint_clear(*rig.base_pose()[:2], math.radians(rig.base_pose()[2]))),
             why=lat.why, tol0=round(lat.tol0, 4), visited=getattr(lat, "visited", None) if steps is None else None)
     if steps is None:
@@ -310,7 +312,7 @@ def _base_plan(rig, goal, postures, label):
             x, y, yaw = rig.base_pose()
             d = np.array(goal[:2]) - [x, y]
             p_ = np.array([x, y]) + d / max(np.linalg.norm(d), 1e-9) * 0.4
-            for m, (name, _, _) in enumerate(chain):
+            for m, (name, _) in enumerate(chain):
                 rig.log("base_plan_probe", target=label, posture=name,
                         hit=motion.base_explain(rig, (p_[0], p_[1], math.radians(yaw)), sets[m]),
                         footprint=bool(rig.world.footprint_clear(p_[0], p_[1], math.radians(yaw))))
@@ -350,6 +352,7 @@ def straight_base_move(rig, target, label, **drive):
     caller asks for, not a search -- after checking the whole robot (arms as they are, what the
     hands hold, base column) along it; it may not sink deeper than it starts.  SkillFailure
     (nothing moves) when it is blocked."""
+    from . import base_planner
     from .clearance import FREE
     rig.sync_world()
     motion = rig.kin.motion
@@ -357,10 +360,11 @@ def straight_base_move(rig, target, label, **drive):
     tx, ty, tyaw = target
     tyaw = yaw + (tyaw - yaw + 180.0) % 360.0 - 180.0
     if motion is not None:
-        n = int(max(math.hypot(tx - x, ty - y) / 0.03, abs(tyaw - yaw) / 3.0)) + 2
-        us = np.linspace(0, 1, n)
-        poses = np.c_[x + (tx - x) * us, y + (ty - y) * us, np.radians(yaw + (tyaw - yaw) * us)]
-        d = motion.base_depths(rig, poses, motion.body_spheres(rig, [(rig.q_cmd, rig.left_q_cmd)]))[0]
+        sph = motion.body_spheres(rig, [(rig.q_cmd, rig.left_q_cmd)])
+        poses = base_planner.segment((x, y, math.radians(yaw)), (tx, ty, math.radians(tyaw)),
+                                     float(np.max(np.hypot(sph[0][:, 0], sph[0][:, 1]))))
+        us = np.linspace(0, 1, len(poses))
+        d = motion.base_depths(rig, poses, sph)[0]
         low = rig.world.footprints_clear(poses)
         bad = (d > d[0] + 1e-4) | ~low
         bad[0] = False
@@ -382,7 +386,7 @@ def fold_where_possible(rig, label="fold"):
     if rig.tuck():
         return True
     try:
-        relocate(rig, None, [("fold", (rig.kin.rest, rig.left_q_cmd.copy()), 1.0)], label=label,
+        relocate(rig, None, [("fold", (rig.kin.rest, rig.left_q_cmd.copy()))], label=label,
                  speed=0.15, turn=0.4)
     except SkillFailure as exc:
         rig.log("fold_blocked", reason=str(exc)[:200])
@@ -1176,7 +1180,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
             floor=bool(floor_z < 0.05))
     rig.caption = f"PICK {name}: approach" + (" (torso down: floor)" if floor_z < 0.05 else "")
     if in_microwave and retrieval_q is not None:
-        relocate(rig, (x, y, yaw), [("microwave_pick_safe", (retrieval_q, rig.left_q_cmd.copy()), 1.5)],
+        relocate(rig, (x, y, yaw), [("microwave_pick_safe", (retrieval_q, rig.left_q_cmd.copy()))],
                  label="microwave_pick_safe", speed=0.2)
         rig.sync_world()
     else:
@@ -1956,7 +1960,7 @@ def place(rig, name, support, xy=None):
                     target_bottom_z=round(s["z"] + 0.04, 3), ik=bool(ok))
             if not ok:
                 raise SkillFailure(f"place {name}: no arm posture holds it above the table edge")
-            relocate(rig, park[:3], [("table_pre_lift", (q_lift, rig.left_q_cmd.copy()), 1.5)],
+            relocate(rig, park[:3], [("table_pre_lift", (q_lift, rig.left_q_cmd.copy()))],
                      label="table_pre_lift", speed=0.15, turn=0.3, ramp=1.2)
             check_held(rig, "table_edge_clear")
     if s.get("furniture") == "kitchen_microwave":
@@ -2070,7 +2074,7 @@ def place(rig, name, support, xy=None):
         # posture instead (a joint-space detour beside the open fridge jammed the arm
         # against it); the base plan shapes the arm where that is clear
         try:
-            relocate(rig, park[:3], [("place_preshape", (np.asarray(hints[0]), rig.left_q_cmd.copy()), 1.5)],
+            relocate(rig, park[:3], [("place_preshape", (np.asarray(hints[0]), rig.left_q_cmd.copy()))],
                      label="place_preshape", speed=0.08, turn=0.3, ramp=0.8)
             check_held(rig, "place_preshape_in")
         except Dropped:

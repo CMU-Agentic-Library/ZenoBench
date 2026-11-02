@@ -76,19 +76,15 @@ def _whole_body(kin, travel_q):
 
 def _drivable(kin, world, body, origin, goal):
     """The base can drive from ``origin`` to ``goal``: a whole-body base plan in the posture it
-    drives in (an empty folded arm hangs, skills.navigate), or without cuRobo the column's grid
-    path (plan_path)."""
+    drives in (skills.navigate), or without cuRobo the column's grid path (plan_path)."""
     if body is None:
         return plan_path(world, origin, goal) is not None
     from . import base_planner
     depths, sets = body
-    rig = kin.motion.rig
-    if rig.held is None and rig.left_held is None:
-        sets = kin.motion.body_spheres(rig, [(kin.drive, rig.left_kin.drive[2:])])
     from .skills import scene_area
     area = scene_area(world)
     with kin.motion.base_world(area[:2], area[2:]):
-        return base_planner.plan(depths, origin, goal, sets, [], [1.0], area=area,
+        return base_planner.plan(depths, origin, goal, sets, [], area=area,
                                  footprint=world.footprints_clear, passable=world.circles_clear)[0] is not None
 
 
@@ -233,7 +229,7 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
             if not clear:
                 LAST_PARK_DIAG["travel_pose"] += 1
                 continue
-        qs = _ik_sequence(kin, targets, q0=kin.ik_seed(q_start) if cost < 0 and q_start is not None else None)
+        qs = _ik_sequence(kin, targets, q0=q_start if cost < 0 and q_start is not None else None)
         if qs is None:
             LAST_PARK_DIAG["ik"] += 1
             continue

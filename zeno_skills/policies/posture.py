@@ -46,7 +46,7 @@ def _move_posture_joint(rig, joint_name, target, tolerance):
         def reposition():
             q_goal = rig.q_cmd.copy()
             q_goal[idx] = target
-            skills.relocate(rig, None, [(joint_name, (q_goal, rig.left_q_cmd.copy()), 1.0)], label=joint_name,
+            skills.relocate(rig, None, [(joint_name, (q_goal, rig.left_q_cmd.copy()))], label=joint_name,
                             speed=0.15, turn=0.4)
         try:
             rig.follow(plan())

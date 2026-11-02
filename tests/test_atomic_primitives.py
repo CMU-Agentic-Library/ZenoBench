@@ -82,7 +82,9 @@ def test_local_base_motion_checks_sweep_and_measured_pose():
     def drive(path, **kw):
         pose[:] = path[-1]
 
-    motion = SimpleNamespace(base_depths=base_depths, body_spheres=lambda rig, postures: np.zeros((1, 1, 4)))
+    # a hand 0.5 m out: a 15 deg turn sweeps it 13 cm, checked every base_planner.DENSE
+    motion = SimpleNamespace(base_depths=base_depths,
+                             body_spheres=lambda rig, postures: np.array([[[0.5, 0.0, 0.0, 0.05]]]))
     rig = SimpleNamespace(held=None, q=lambda: np.zeros(9), q_cmd=np.zeros(9), left_q_cmd=np.zeros(7),
                           kin=SimpleNamespace(rest=np.zeros(9), motion=motion), sync_world=lambda: None,
                           world=SimpleNamespace(footprints_clear=lambda poses: np.ones(len(poses), bool)),

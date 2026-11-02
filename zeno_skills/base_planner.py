@@ -1,7 +1,7 @@
 """Whole-body base planning (docs/COLLISION_PLAN.md step 2).
 
 The base moves on a lattice of (x, y, yaw) poses -- RES m, YAW_STEP deg -- carrying the arms in one of
-a chain of postures ("modes", e.g. current -> tucked -> hanging -> tucked).  A pose is feasible in a
+a chain of postures ("modes", e.g. current -> tucked -> a posture to arrive in).  A pose is feasible in a
 mode when the whole robot there is clear: the base column's footprint of the annotated furniture
 (WorldModel.footprints_clear -- the house's collision shells close doorways near the floor and
 the base collider is off in the simulator), both arms at that posture and what the hands hold of
@@ -10,6 +10,13 @@ where the straight joint interpolation between the two postures is.  A* finds th
 the start through every mode to the goal pose (or, without a goal, to the nearest pose where the
 last mode is reached: "where can the arm fold").  Feasibility is evaluated lazily, BLOCK x BLOCK
 cells and every yaw at once, so only the region the search touches costs GPU time.
+
+Between lattice poses the robot moves too: a 15 deg turn sweeps a hand 0.7 m out by 18 cm, a cell
+by 5 cm.  The path the search returns is checked edge by edge (and each posture switch) at poses
+no point of the robot moves more than DENSE apart.  Where an edge fails, the same move out of
+every node of its block is checked the same way (one batch) and the search runs again avoiding
+the failed ones (lazy edge evaluation: only the blocks and moves where a path failed pay for it).  The shortcuts that
+smooth the path are checked the same way.
 
 Nothing near the start or goal is exempt.  The robot starts where it is, though, and may already
 touch something in its start posture: in the first mode a pose is feasible when it does not sink
@@ -31,7 +38,11 @@ BLOCK = 8                   # cells per side of a lazily evaluated block (x ever
 TURN_COST = 1.0             # m of driving one radian of turning costs (cheap turns let every heading of a
                             # cell be expanded)
 SWITCH_COST = 0.3           # m a posture switch costs
-SWITCH_SAMPLES = 6          # postures checked along a switch (both ends included)
+SWITCH_SAMPLES = 6          # postures checked along a switch on the lattice (both ends included)
+SWITCH_FINE = 129           # postures a switch is sampled at, before dense_sets thins them to DENSE
+DENSE = 0.02                # m: the farthest any point of the robot moves between two poses (or postures)
+                            # the path is checked at
+LAZY_ROUNDS = 40            # searches a plan may take, each cutting the edges the last path failed on
 MARGIN = 2.0                # m the search may stray beyond the start / goal box
 REGION_RADIUS = 1.0         # m around the start searched for a goal region
 MAX_EXPAND = 200000
@@ -59,10 +70,15 @@ class Lattice:
     may penetrate (the start's own depth); ``footprint(poses)``: (N,) bool, the column's low part
     clear (any posture); the start node is exempt from it (the robot stands there)."""
 
-    def __init__(self, depths, origin, modes, switches, tol0=0.0, footprint=None, start=None):
+    def __init__(self, depths, origin, modes, switches, tol0=0.0, footprint=None, start=None, dense_switches=None):
         self.depths, self.origin = depths, np.asarray(origin, float)
         self.modes, self.switches, self.tol0 = modes, switches, tol0
+        self.dense_switches = switches if dense_switches is None else dense_switches
         self.footprint, self.start = footprint, start
+        # per mode: the farthest sphere centre from the base centre (what a turn sweeps)
+        self.reach = [float(np.max(np.hypot(s[:, 0], s[:, 1]))) if len(s) else 0.0 for s in modes]
+        self.cut = set()                 # (node, node) transitions the dense check refused
+        self.start_low = True            # the start pose's footprint is clear (else leaving it is exempt)
         self.blocks = {}
         self.evaluated = 0
 
@@ -108,19 +124,96 @@ class Lattice:
         tight park sits off the lattice, its nearest node may already touch what the goal clears."""
         key = ("goal", tuple(n[:3]))
         if key not in self.blocks:
-            m = len(self.modes) - 1
-            a, g = np.array(self.pose(n)), np.array(goal_pose, float)
-            g[2] = a[2] + (g[2] - a[2] + math.pi) % (2 * math.pi) - math.pi
-            poses = a + (g - a) * np.linspace(0, 1, 5)[:, None]
-            ok = bool(np.all(self.depths(poses, self.modes[m][None])[0] <= 1e-4))
-            if ok and self.footprint is not None:
-                ok = bool(np.all(self.footprint(poses)))
-            self.blocks[key] = ok
+            self.blocks[key] = self.segments_clear([(self.pose(n), goal_pose)], len(self.modes) - 1)[0]
         return self.blocks[key]
+
+    def segments_clear(self, segs, m, exempt=None):
+        """Per segment (a, b) (x, y, yaw rad): the whole robot in mode m clear at every pose of
+        segment(a, b), all in one batch; ``exempt[i]``: segment i leaves the start, whose footprint
+        is tight (the robot stands there already): its footprint counts from the first pose clear
+        of it on."""
+        runs = [segment(a, b, self.reach[m]) for a, b in segs]
+        cuts = np.cumsum([len(r) for r in runs])[:-1]
+        poses = np.vstack(runs)
+        ok = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + 1e-4
+        self.evaluated += len(poses)
+        out = []
+        lows = np.split(self.footprint(poses), cuts) if self.footprint is not None else None
+        for i, part in enumerate(np.split(ok, cuts)):
+            if lows is not None:
+                low = lows[i].copy()
+                if exempt is not None and exempt[i]:
+                    low[:int(np.argmax(low)) if low.any() else len(low)] = True
+                part = part & low
+            out.append(bool(np.all(part)))
+        return out
+
+    def edge_ok(self, n, d, m):
+        """The drive move NBRS[d] out of node n in mode m passes the dense check: known in the blocks
+        a failed path activated for that move, assumed elsewhere (the path check finds out)."""
+        blk = self.blocks.get((n[0] // BLOCK, n[1] // BLOCK, ("edges", m, d)))
+        return True if blk is None else bool(blk[n[0] % BLOCK, n[1] % BLOCK, n[2] % N_YAW])
+
+    def activate(self, n, d, m):
+        """Dense-check the drive move NBRS[d] out of every node of n's block in mode m, one batch:
+        the poses strictly between the two nodes (the nodes are the lattice's)."""
+        bi, bj = n[0] // BLOCK, n[1] // BLOCK
+        key = (bi, bj, ("edges", m, d))
+        if key in self.blocks:
+            return
+        ii, jj, kk = np.meshgrid(np.arange(BLOCK) + bi * BLOCK, np.arange(BLOCK) + bj * BLOCK,
+                                 np.arange(N_YAW), indexing="ij")
+        base = np.c_[self.origin[0] + ii.ravel() * RES, self.origin[1] + jj.ravel() * RES,
+                     np.radians(kk.ravel() * YAW_STEP)]
+        at_start = (ii.ravel() == self.start[0]) & (jj.ravel() == self.start[1]) & (kk.ravel() == self.start[2]) \
+            if m == 0 and not self.start_low else np.zeros(len(base), bool)
+        ok = np.ones(len(base), bool)
+        di, dj, dk = NBRS[d]
+        step = np.array([di * RES, dj * RES, math.radians(dk * YAW_STEP)])
+        k = int(math.ceil((math.hypot(step[0], step[1]) + self.reach[m] * abs(step[2])) / DENSE))
+        if k > 1:
+            us = np.arange(1, k) / k
+            poses = (base[:, None, :] + us[None, :, None] * step).reshape(-1, 3)
+            good = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + 1e-4
+            if self.footprint is not None:
+                good &= self.footprint(poses) | np.repeat(at_start, len(us))
+            ok = good.reshape(len(base), len(us)).all(axis=1)
+            self.evaluated += len(poses)
+        self.blocks[key] = ok.reshape(BLOCK, BLOCK, N_YAW)
+
+    def switch_clear(self, n, m):
+        """The switch m -> m+1 at node n, checked at every posture of its dense sampling."""
+        d = self.depths(np.array([self.pose(n)]), self.dense_switches[m])[:, 0]
+        self.evaluated += len(d)
+        return bool(np.all(d[:-1] <= self._tol(m) + 1e-4) and d[-1] <= self._tol(m + 1) + 1e-4)
 
     def can_switch(self, n, m):
         i, j, k = n[:3]
         return bool(self._block(i // BLOCK, j // BLOCK, ("switch", m))[i % BLOCK, j % BLOCK, k % N_YAW])
+
+
+def segment(a, b, reach):
+    """Poses (n, 3) along the straight (x, y, yaw) move from a to b (yaw rad, the short way round, as
+    Rig.drive_base drives it), so close that no point within ``reach`` of the base centre moves
+    more than DENSE from one to the next."""
+    a, b = np.asarray(a, float), np.array(b, float)
+    b[2] = a[2] + (b[2] - a[2] + math.pi) % (2 * math.pi) - math.pi
+    n = int(math.ceil((math.hypot(b[0] - a[0], b[1] - a[1]) + reach * abs(b[2] - a[2])) / DENSE)) + 1
+    return a + (b - a) * np.linspace(0, 1, max(n, 2))[:, None]
+
+
+def dense_sets(fine):
+    """Of the sphere sets ``fine`` ((P, S, 4) along a posture switch), the first, the last and
+    between them the last set before some sphere would move more than DENSE from the one kept
+    before (fine itself samples closer than DENSE)."""
+    keep, last = [0], fine[0]
+    for p in range(1, len(fine)):
+        if np.max(np.linalg.norm(fine[p][:, :3] - last[:, :3], axis=1)) > DENSE and keep[-1] != p - 1:
+            keep.append(p - 1)
+            last = fine[p - 1]
+    if keep[-1] != len(fine) - 1:
+        keep.append(len(fine) - 1)
+    return fine[keep]
 
 
 def _yaw_bin(yaw_deg):
@@ -160,15 +253,14 @@ def distance_field(passable, origin, goal, bounds, start):
     return D.reshape(nx, ny), i0, j0
 
 
-def search(lat, start, goal, weights, bounds, field=None, goal_pose=None):
-    """A* over (i, j, k, mode) from ``start`` (i, j, k) in mode 0 to ``goal`` (i, j, k) in the last
-    mode -- or a node one cell and one heading from it that reaches ``goal_pose`` (x, y, yaw rad)
-    straight -- or (goal None) to any pose of the last mode.  ``weights``: driving cost per mode;
-    ``field``: distance_field to the goal (else the straight-line distance).  Returns the node
-    list, or None."""
+def search(lat, start, goal, bounds, field=None, goal_pose=None):
+    """A* over (i, j, k, mode) from ``start`` (i, j, k) in mode 0 to a node of the last mode within
+    one cell and one heading of ``goal`` (i, j, k) that reaches ``goal_pose`` (x, y, yaw rad)
+    straight -- or (goal None) to any pose of the last mode.  Transitions in ``lat.cut`` and drive
+    moves the activated blocks refuse (Lattice.edge_ok) are not taken.  ``field``: distance_field to the goal (else the straight-line distance).  Returns the
+    node list, or None."""
     last = len(lat.modes) - 1
     turn = TURN_COST * math.radians(YAW_STEP)
-    wmin = min(weights[m] for m in range(len(weights)))
 
     def h(n):
         if goal is None:
@@ -178,7 +270,7 @@ def search(lat, start, goal, weights, bounds, field=None, goal_pose=None):
             d = D[n[0] - i0, n[1] - j0]
         else:
             d = math.hypot(n[0] - goal[0], n[1] - goal[1]) * RES
-        return wmin * (d + _ang(n[2], goal[2]) * turn) + SWITCH_COST * (last - n[3])
+        return d + _ang(n[2], goal[2]) * turn + SWITCH_COST * (last - n[3])
 
     s = (*start, 0)
     lat.expanded = 0
@@ -194,9 +286,9 @@ def search(lat, start, goal, weights, bounds, field=None, goal_pose=None):
         if cur in closed:
             continue                     # weighted A* without reopening: still within GREEDY of the best
         closed.add(cur)
-        if cur[3] == last and (goal is None or cur[:3] == tuple(goal) or (
-                goal_pose is not None and max(abs(cur[0] - goal[0]), abs(cur[1] - goal[1])) <= 1 and
-                _ang(cur[2], goal[2]) <= 1 and lat.reaches(cur, goal_pose))):
+        if cur[3] == last and (goal is None or (
+                max(abs(cur[0] - goal[0]), abs(cur[1] - goal[1])) <= 1 and _ang(cur[2], goal[2]) <= 1 and
+                lat.reaches(cur, goal_pose))):
             out = []
             while cur is not None:
                 out.append(cur)
@@ -210,14 +302,16 @@ def search(lat, start, goal, weights, bounds, field=None, goal_pose=None):
             return None
         i, j, k, m = cur
         steps = []
-        for di, dj, dk in NBRS:
+        for d, (di, dj, dk) in enumerate(NBRS):
             n = (i + di, j + dj, (k + dk) % N_YAW, m)
-            if not (bounds[0] <= n[0] <= bounds[2] and bounds[1] <= n[1] <= bounds[3]):
+            if not (bounds[0] <= n[0] <= bounds[2] and bounds[1] <= n[1] <= bounds[3]) or not lat.edge_ok(cur, d, m):
                 continue
-            steps.append((n, weights[m] * (math.hypot(di, dj) * RES + abs(dk) * turn)))
+            steps.append((n, math.hypot(di, dj) * RES + abs(dk) * turn))
         if m < last:
             steps.append(((i, j, k, m + 1), SWITCH_COST))
         for n, dc in steps:
+            if (cur, n) in lat.cut:
+                continue
             hn = h(n)
             if hn == math.inf:
                 continue                         # the inscribed cylinder cannot reach the goal from there
@@ -246,39 +340,68 @@ def _visited(lat, came):
     lat.visited = {m: (c, [round(v * RES, 2) for v in e]) for m, (c, e) in sorted(out.items())}
 
 
+def _move(a, b):
+    """The index in NBRS of the drive move from node a to its neighbour b."""
+    dk = (b[2] - a[2] + N_YAW // 2) % N_YAW - N_YAW // 2
+    return NBRS.index((b[0] - a[0], b[1] - a[1], dk))
+
+
+def _leaves_start(lat, n):
+    return n[3] == 0 and tuple(n[:3]) == lat.start and not lat.start_low
+
+
+def _bad_transitions(lat, nodes):
+    """The transitions of a searched path that fail the dense check: drives along segment(),
+    switches at every posture of their dense sampling; one batch per mode."""
+    bad, drives = [], {}
+    for a, b in zip(nodes[:-1], nodes[1:]):
+        if a[3] != b[3]:
+            if not lat.switch_clear(a, a[3]):
+                bad.append((a, b))
+        else:
+            drives.setdefault(a[3], []).append((a, b))
+    for m, pairs in drives.items():
+        ok = lat.segments_clear([(lat.pose(a), lat.pose(b)) for a, b in pairs], m,
+                                [_leaves_start(lat, a) for a, _ in pairs])
+        bad += [p for p, o in zip(pairs, ok) if not o]
+    return bad
+
+
 def _shortcut(lat, nodes, m):
     """Fewest lattice nodes of one mode's run: from each kept node, the farthest later one whose
-    straight (x, y, yaw) interpolation stays on feasible lattice poses."""
+    straight (x, y, yaw) move passes the dense check (every candidate of a node in one batch; the
+    next node always does, the search path was checked)."""
     if len(nodes) <= 2:
         return nodes
     out, i = [nodes[0]], 0
     while i < len(nodes) - 1:
-        j = len(nodes) - 1
-        while j > i + 1:
-            a, b = np.array(nodes[i][:3], float), np.array(nodes[j][:3], float)
-            dk = (b[2] - a[2] + N_YAW / 2) % N_YAW - N_YAW / 2
-            n = int(max(abs(b[0] - a[0]), abs(b[1] - a[1]), abs(dk))) + 1
-            if all(lat.free((int(round(a[0] + (b[0] - a[0]) * u)), int(round(a[1] + (b[1] - a[1]) * u)),
-                             int(round(a[2] + dk * u)) % N_YAW), m) for u in np.linspace(0, 1, n + 1)):
-                break
-            j -= 1
-        out.append(nodes[j])
-        i = j
+        js = list(range(i + 2, len(nodes)))
+        ok = lat.segments_clear([(lat.pose(nodes[i]), lat.pose(nodes[j])) for j in js], m,
+                                [_leaves_start(lat, nodes[i])] * len(js)) if js else []
+        i = max([j for j, o in zip(js, ok) if o], default=i + 1)
+        out.append(nodes[i])
     return out
 
 
-def plan(depths, start, goal, modes, switches, weights, area=None, footprint=None, passable=None):
+def plan(depths, start, goal, modes, switches, area=None, footprint=None, passable=None, dense_switches=None):
     """Base plan from ``start`` (x, y, yaw_deg) through every mode to ``goal`` (x, y, yaw_deg; None:
     the nearest pose where the last mode is reached).  ``depths`` / ``modes`` / ``switches`` as in
-    Lattice, ``weights`` the driving cost per mode, ``area`` (x0, y0, x1, y1) where the base may
-    go (else MARGIN around the start and goal), ``footprint`` as in Lattice, ``passable`` as in
-    distance_field (else the straight-line distance guides the search).  Returns ([Step],
-    lattice), or (None, lattice) with ``lattice.why``."""
+    Lattice, ``dense_switches`` the same switches sampled every DENSE (dense_sets; else
+    ``switches``), ``area`` (x0, y0, x1, y1) where the base may go (else MARGIN around the start
+    and goal), ``footprint`` as in Lattice, ``passable`` as in distance_field (else the
+    straight-line distance guides the search).  Returns ([Step], lattice), or (None, lattice)
+    with ``lattice.why``."""
     s = (0, 0, _yaw_bin(start[2]))
     here = np.array([[start[0], start[1], math.radians(start[2])], [start[0], start[1], math.radians(s[2] * YAW_STEP)]])
     tol0 = float(depths(here, modes[0][None]).max())      # where the robot stands it may already touch
-    lat = Lattice(depths, start[:2], modes, switches, tol0, footprint, s)
-    lat.why = None
+    lat = Lattice(depths, start[:2], modes, switches, tol0, footprint, s, dense_switches)
+    lat.why, lat.rounds = None, 0
+    if footprint is not None:
+        lat.start_low = bool(footprint(here[:1])[0])
+    # the exact start to its lattice heading: the first move of every path
+    if not lat.segments_clear([(here[0], here[1])], 0, [not lat.start_low])[0]:
+        lat.why, lat.expanded, lat.limit = "the turn to the start's lattice heading is blocked", 0, False
+        return None, lat
     gp = np.array([[goal[0], goal[1], math.radians(goal[2])]]) if goal is not None else None
     if goal is not None and (depths(gp, modes[-1][None])[0, 0] > 1e-4 or
                              (footprint is not None and not footprint(gp)[0])):
@@ -299,11 +422,21 @@ def plan(depths, start, goal, modes, switches, weights, area=None, footprint=Non
     if field is not None and field[0][s[0] - field[1], s[1] - field[2]] == math.inf:
         lat.why, lat.expanded, lat.limit = "no base path: even the column's inscribed circle cannot get there", 0, False
         return None, lat
-    nodes = search(lat, s, g, weights, bounds, field,
-                   None if goal is None else (goal[0], goal[1], math.radians(goal[2])))
-    if nodes is None:
-        lat.why = (f"search limit: {lat.expanded} states expanded" if lat.limit else "no whole-body path") + \
-            f" ({lat.evaluated} poses checked)"
+    for lat.rounds in range(1, LAZY_ROUNDS + 1):
+        nodes = search(lat, s, g, bounds, field, None if goal is None else (goal[0], goal[1], math.radians(goal[2])))
+        if nodes is None:
+            lat.why = (f"search limit: {lat.expanded} states expanded" if lat.limit else "no whole-body path") + \
+                f" ({lat.evaluated} poses checked, {lat.rounds} searches)"
+            return None, lat
+        bad = _bad_transitions(lat, nodes)
+        if not bad:
+            break
+        for a, b in bad:
+            lat.cut.add((a, b))
+            if a[3] == b[3]:
+                lat.activate(a, _move(a, b), a[3])
+    else:
+        lat.why = f"{LAZY_ROUNDS} searched paths each crossed a blocked edge"
         return None, lat
     steps, run = [], [nodes[0]]
     for n in nodes[1:]:
