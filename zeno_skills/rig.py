@@ -256,11 +256,15 @@ class Rig:
                                                        joint_indices=self.left_fing))
             self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.head_cmd, dtype=t.float32),
                                                        joint_indices=self.head))
-            # the yaw target within half a turn of the joint's own reading: PhysX keeps the unlimited
-            # yaw joint (eREVOLUTE) in (-pi, pi] and refuses targets beyond +-2 pi, which left the
-            # base turned away from where the planner put it
+            # the yaw target within half a turn of the joint's reading, the reading kept in
+            # [-pi, pi): PhysX refuses targets of the unlimited yaw joint (eREVOLUTE) beyond
+            # +-2 pi, which left the base turned away from where the planner put it, but lets the
+            # reading itself run on.  A reading past pi is set back by a turn (the same pose).
             base_q = self.base_cmd.copy()
             yaw = float(self.robot.get_joint_positions()[self.base.long()][2])
+            if abs(yaw) > math.pi:
+                yaw = (yaw + math.pi) % (2 * math.pi) - math.pi
+                self.robot.set_joint_positions(t.tensor([yaw], dtype=t.float32), joint_indices=self.base[2:])
             base_q[2] = yaw + (base_q[2] - yaw + math.pi) % (2 * math.pi) - math.pi
             self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(base_q, dtype=t.float32),
                                                        joint_velocities=t.tensor(self.base_vel, dtype=t.float32),
