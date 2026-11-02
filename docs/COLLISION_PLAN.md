@@ -49,7 +49,7 @@
 
 **每一步：** 单元测试、`build_skill_library --check`，加上这一步动到的 skill 对应的几个 episode。
 
-**全量（T、P 全部任务的所有 variation，种子 10、11，共 170 个 episode）：** 批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像）。只在三个节点跑：步骤 2 完成后、步骤 3 完成后、步骤 5 完成后。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`。第一次的对照是 11-01 那一轮（`benchmark/runs/v3_sticky_gt_1101_2seeds/`，`a0a9574`，138/170），它不含收起姿态修复。
+**全量（T、P 全部任务的所有 variation，种子 10、11，共 170 个 episode）：** 批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像）。只在三个节点跑：步骤 2 完成后、步骤 3 完成后、步骤 5 完成后。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`。第一次的对照是 11-01 那一轮（`benchmark/runs/v3_sticky_gt_1101_2seeds/`，`a0a9574`，108/170；138/170 是 10-31 的数），它不含收起姿态修复。
 
 **倒退怎么处理：** 不要求每一步都不倒退。每个新失败看日志和录像，归到下面三类之一：
 
@@ -140,6 +140,25 @@
   - 计划指定的三个：T03 s11 开车途中不再碰倒物体，成功；P12 s11 成功；P07 s11 失败。P07 的杯子是 `LeftArmFoldPolicy` 不查碰撞的左臂插值碰倒的（步骤 5），这次停车位置和 11-01 不同。
   - 用最终代码复查 16 个 episode（上面三个，加上走过被替换编排的 T07 microwave_works、P13、T19 bin_on_bookcase、P17、P08、P22，以及覆盖探索、转身、侧移、递交的 P01–P04、P06、T12 ×2、T13 dishes_on_tv_stand）：成功 13/16，11-01 同一批为 8/16。新成功 5 个，没有新失败；失败的 P17、P03、P04 在 11-01 也是同样原因失败。结果在 `benchmark/runs/step2_targeted_c/`，前几轮（`step2_targeted`、`_b`、`step2_probe*`）是中途版本。
   - 底盘规划单次 1–12 s（扩展几十到几千个状态），一个 episode 加起来几十秒。
+- **第一次全量回归**（`ea47359`，`benchmark/runs/v3_sticky_gt_1102_2seeds/`，`COMPARE.md`）：
+
+  | | 11-01（`a0a9574`） | 11-02（`ea47359`） |
+  |---|---|---|
+  | 成功 | 108/170 | 117/170（新成功 31，新失败 22） |
+  | `fallbacks` | 87 | 5 |
+  | `contacts`（unexpected） | 982 | 1040 |
+  | `disturbed` | 没有这个指标 | 175，其中 26 次记在 `drive_base` 上 |
+
+  22 个新失败的归类：
+
+  | 类别 | episode | 原因 | 处理 |
+  |---|---|---|---|
+  | 代码写错 | T01 overhang_ready ×2、T01 table_set ×2、T13 no_cup_spoon_boxed_in ×2、P15 s11、T05 pen_available s11（8 个） | 底盘搜索达到上限。终点格子是离精确终点最近的格点，`find_park` 选的停车点贴着家具，吸附后的格点已经碰了，终点格子永远到不了 | 已修：一格、一个朝向以内、直线到精确终点可行的格点就算到达（`Lattice.reaches`）。这 4 个 episode 重跑全部成功，46 次底盘规划全部找到（`benchmark/runs/step2_fix_goal/`） |
+  | 模型更严格 | P19 ×2、T09 lid_on s10（抓锅盖），大概率还有 P05 flip ×2 | `find_park` 的整机检查按到达姿态算左臂收起姿态，它的手指伸出底盘、碰到岛台，近处的停车点被拒。停得远了，伸手被岛台挡住 | 归步骤 5（`LEFT_ARM_FOLD` 和左臂运动） |
+  | 选点差异 | T08 sponge_on_tv_stand、far_sponge_tv、island_cluttered s10 | `navigate_place` 的站位现在按整机筛，站到了岛台另一侧；wipe 只在机器人附近 ±0.4 m 选擦拭带，那一侧有东西 | wipe 选带依赖站位是 F 类问题，归步骤 3 |
+  | 未细查 | T13 no_cup ×2、no_cup_bowl_on_cabinet ×2、T14 shelf_taken s11、T02 far_crowded s11 | 失败在 pick / place 环节（"not held"、目标不可达），推测是停车点或站位变化引起 | 下一次全量后再看 |
+
+  **开车时的扰动：** 26 次记在 `drive_base` 上，有真碰倒的（果汁瓶倾斜 50°、擀面杖 92°）。规划用零余量，格点之间只按 5 cm / 15° 吸附检查，执行时手臂还有跟踪误差，贴着东西开过去会刮到轻的物体。应该给手臂和手里物体的碰撞球加安全余量，还没做。
 
 ### 步骤 3：手臂按 skill 合并
 

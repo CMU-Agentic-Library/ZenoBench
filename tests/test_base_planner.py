@@ -90,3 +90,11 @@ def test_the_low_footprint_blocks_like_the_world_but_not_where_the_robot_stands(
         if a[0] < 0.35 <= b[0]:
             u = (0.35 - a[0]) / (b[0] - a[0])
             assert abs(a[1] + u * (b[1] - a[1])) >= 0.5 - 1e-6
+
+
+def test_a_tight_goal_off_the_lattice_is_reached_from_a_neighbouring_node():
+    # a park 2 cm short of a wall (x > 0.995): its nearest lattice node (x = 1.00) is inside the wall,
+    # the exact goal and the node before it (x = 0.95) are clear
+    wall = lambda x, y, yaw, p: 0.01 if x > 0.995 else 0.0
+    steps, lat = bp.plan(_oracle(wall), (0.0, 0.0, 0.0), (0.98, 0.0, 0.0), _sets(0), [], [1.0])
+    assert steps is not None and steps[-1].path[-1] == (0.98, 0.0, 0.0)

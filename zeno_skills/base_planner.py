@@ -103,6 +103,21 @@ class Lattice:
                         self.depths(np.array([self.pose(n)]), self.modes[0][None])[0, 0] <= self.tol0 + 1e-4)
         return bool(self._block(i // BLOCK, j // BLOCK, ("mode", m))[i % BLOCK, j % BLOCK, k % N_YAW])
 
+    def reaches(self, n, goal_pose):
+        """The straight move from lattice node n (in the last mode) to the exact goal pose is clear: a
+        tight park sits off the lattice, its nearest node may already touch what the goal clears."""
+        key = ("goal", tuple(n[:3]))
+        if key not in self.blocks:
+            m = len(self.modes) - 1
+            a, g = np.array(self.pose(n)), np.array(goal_pose, float)
+            g[2] = a[2] + (g[2] - a[2] + math.pi) % (2 * math.pi) - math.pi
+            poses = a + (g - a) * np.linspace(0, 1, 5)[:, None]
+            ok = bool(np.all(self.depths(poses, self.modes[m][None])[0] <= 1e-4))
+            if ok and self.footprint is not None:
+                ok = bool(np.all(self.footprint(poses)))
+            self.blocks[key] = ok
+        return self.blocks[key]
+
     def can_switch(self, n, m):
         i, j, k = n[:3]
         return bool(self._block(i // BLOCK, j // BLOCK, ("switch", m))[i % BLOCK, j % BLOCK, k % N_YAW])
@@ -145,9 +160,10 @@ def distance_field(passable, origin, goal, bounds, start):
     return D.reshape(nx, ny), i0, j0
 
 
-def search(lat, start, goal, weights, bounds, field=None):
+def search(lat, start, goal, weights, bounds, field=None, goal_pose=None):
     """A* over (i, j, k, mode) from ``start`` (i, j, k) in mode 0 to ``goal`` (i, j, k) in the last
-    mode, or (goal None) to any pose of the last mode.  ``weights``: driving cost per mode;
+    mode -- or a node one cell and one heading from it that reaches ``goal_pose`` (x, y, yaw rad)
+    straight -- or (goal None) to any pose of the last mode.  ``weights``: driving cost per mode;
     ``field``: distance_field to the goal (else the straight-line distance).  Returns the node
     list, or None."""
     last = len(lat.modes) - 1
@@ -178,7 +194,9 @@ def search(lat, start, goal, weights, bounds, field=None):
         if cur in closed:
             continue                     # weighted A* without reopening: still within GREEDY of the best
         closed.add(cur)
-        if cur[3] == last and (goal is None or cur[:3] == tuple(goal)):
+        if cur[3] == last and (goal is None or cur[:3] == tuple(goal) or (
+                goal_pose is not None and max(abs(cur[0] - goal[0]), abs(cur[1] - goal[1])) <= 1 and
+                _ang(cur[2], goal[2]) <= 1 and lat.reaches(cur, goal_pose))):
             out = []
             while cur is not None:
                 out.append(cur)
@@ -281,7 +299,8 @@ def plan(depths, start, goal, modes, switches, weights, area=None, footprint=Non
     if field is not None and field[0][s[0] - field[1], s[1] - field[2]] == math.inf:
         lat.why, lat.expanded, lat.limit = "no base path: even the column's inscribed circle cannot get there", 0, False
         return None, lat
-    nodes = search(lat, s, g, weights, bounds, field)
+    nodes = search(lat, s, g, weights, bounds, field,
+                   None if goal is None else (goal[0], goal[1], math.radians(goal[2])))
     if nodes is None:
         lat.why = (f"search limit: {lat.expanded} states expanded" if lat.limit else "no whole-body path") + \
             f" ({lat.evaluated} poses checked)"
