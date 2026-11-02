@@ -111,6 +111,75 @@ def patch_left_gripper(stage, finger_kp=1.0e4, finger_kd=300.0):
                 drive.GetDampingAttr().Set(finger_kd)
 
 
+BASE_LINKS = ("base_root_link", "base_x_link", "base_y_link")
+BASE_JOINTS = ("base_x_joint", "base_y_joint", "base_yaw_joint")
+
+
+def base_joints(stage, lin_kp=1.0e6, lin_kd=2.0e4, yaw_kp=2.0e4, yaw_kd=200.0):
+    """Runtime fix for scenes baked before it: the base hung on base_anchor, a fixed joint from
+    the world outside the articulation (a floating-base articulation whose root was base_link),
+    and moving that joint's frame dragged the robot by a constraint force.  Driving forward at
+    0.35 m/s the drag bent the waist to its 0.70 rad limit (40 deg, the hand down on the
+    counters), backward to -0.09; turning in place and sideways it did not.  Now the base is part
+    of a fixed-base articulation, as Isaac Lab's Ridgeback-Franka: world -fixed-> base_root_link
+    -x-> base_x_link -y-> base_y_link -yaw-> base_link, the joints along the world axes so their
+    values are the base pose (x m, y m, yaw).  Position drives (gains per m and per degree)
+    move it; base_anchor stays as the scene's record of the start and is disabled.  Must run
+    after anything that moves the robot's start (benchmark.scene.spawn_at_start).  Idempotent."""
+    from pxr import Gf, PhysxSchema, Sdf, UsdGeom, UsdPhysics
+    base = stage.GetPrimAtPath(f"{ASSET}/base_link")
+    if not base or stage.GetPrimAtPath(f"{ASSET}/{BASE_LINKS[0]}"):
+        return
+    cache = UsdGeom.XformCache()
+    start = cache.GetLocalToWorldTransform(base)
+    p = start.ExtractTranslation()
+    yaw = math.degrees(math.atan2(start[0][1], start[0][0]))
+    to_asset = cache.GetLocalToWorldTransform(stage.GetPrimAtPath(ASSET)).GetInverse()
+    base.RemoveAPI(UsdPhysics.ArticulationRootAPI)
+    base.RemoveAPI(PhysxSchema.PhysxArticulationAPI)
+    links = []
+    for name, (x, y) in zip(BASE_LINKS, ((0.0, 0.0), (p[0], 0.0), (p[0], p[1]))):
+        link = UsdGeom.Xform.Define(stage, f"{ASSET}/{name}")
+        world = Gf.Matrix4d().SetTranslate(Gf.Vec3d(x, y, p[2]))
+        link.AddTransformOp().Set(world * to_asset)
+        UsdPhysics.RigidBodyAPI.Apply(link.GetPrim())
+        PhysxSchema.PhysxRigidBodyAPI.Apply(link.GetPrim()).CreateDisableGravityAttr().Set(True)
+        mass = UsdPhysics.MassAPI.Apply(link.GetPrim())
+        mass.CreateMassAttr().Set(1.0)
+        mass.CreateDiagonalInertiaAttr().Set(Gf.Vec3f(0.01, 0.01, 0.01))
+        links.append(link.GetPath())
+    root = UsdPhysics.FixedJoint.Define(stage, f"{ASSET}/joints/base_root_joint")
+    root.CreateBody1Rel().SetTargets([links[0]])
+    root.CreateLocalPos0Attr().Set(Gf.Vec3f(0.0, 0.0, float(p[2])))
+    root.CreateLocalPos1Attr().Set(Gf.Vec3f(0.0, 0.0, 0.0))
+    UsdPhysics.ArticulationRootAPI.Apply(root.GetPrim())
+    PhysxSchema.PhysxArticulationAPI.Apply(root.GetPrim()).CreateEnabledSelfCollisionsAttr().Set(False)
+    chain = ((BASE_JOINTS[0], UsdPhysics.PrismaticJoint, "X", links[0], links[1], p[0]),
+             (BASE_JOINTS[1], UsdPhysics.PrismaticJoint, "Y", links[1], links[2], p[1]),
+             (BASE_JOINTS[2], UsdPhysics.RevoluteJoint, "Z", links[2], base.GetPath(), yaw))
+    for name, kind, axis, b0, b1, value in chain:
+        j = kind.Define(stage, f"{ASSET}/joints/{name}")
+        j.CreateAxisAttr().Set(axis)
+        j.CreateBody0Rel().SetTargets([b0])
+        j.CreateBody1Rel().SetTargets([b1])
+        j.CreateLocalPos0Attr().Set(Gf.Vec3f(0.0, 0.0, 0.0))
+        j.CreateLocalPos1Attr().Set(Gf.Vec3f(0.0, 0.0, 0.0))
+        j.CreateLocalRot0Attr().Set(Gf.Quatf(1.0, 0.0, 0.0, 0.0))
+        j.CreateLocalRot1Attr().Set(Gf.Quatf(1.0, 0.0, 0.0, 0.0))
+        lin = kind is UsdPhysics.PrismaticJoint
+        drive = UsdPhysics.DriveAPI.Apply(j.GetPrim(), "linear" if lin else "angular")
+        drive.CreateTypeAttr().Set("force")
+        drive.CreateStiffnessAttr().Set(lin_kp if lin else yaw_kp)
+        drive.CreateDampingAttr().Set(lin_kd if lin else yaw_kd)
+        drive.CreateTargetPositionAttr().Set(float(value))
+        state = PhysxSchema.JointStateAPI.Apply(j.GetPrim(), "linear" if lin else "angular")
+        state.CreatePositionAttr().Set(float(value))
+        state.CreateVelocityAttr().Set(0.0)
+    anchor = stage.GetPrimAtPath(ANCHOR)
+    if anchor:
+        anchor.GetAttribute("physics:jointEnabled").Set(False)
+
+
 def fix_robot(stage, x, y, yaw_deg, arm_kp=800.0, arm_kd=40.0, finger_kp=1.0e4, finger_kd=300.0):
     """Zeno Malo as imported from URDF had: zero damping on every drive, a free
     floating base on 2 N·m wheel drives (the base, not the door, moved when the
@@ -122,9 +191,9 @@ def fix_robot(stage, x, y, yaw_deg, arm_kp=800.0, arm_kd=40.0, finger_kp=1.0e4, 
     root.GetAttribute("xformOp:translate").Set(Gf.Vec3d(x, y, 0.0))
     root.GetAttribute("xformOp:rotateZ").Set(float(yaw_deg))
 
-    # Base anchor: fixed joint world -> base_link.  Moving its localPos0/Rot0
-    # drives the base (holonomic, no wheel dynamics); the controller in rig.py
-    # does this every tick.
+    # Base anchor: fixed joint world -> base_link, the record of the start pose.
+    # Moving its frame dragged the base and bent the waist: base_joints (at load)
+    # disables it and moves the base on joints instead.
     base = stage.GetPrimAtPath(ASSET + "/base_link")
     xf = UsdGeom.XformCache().GetLocalToWorldTransform(base)
     t = xf.ExtractTranslation()

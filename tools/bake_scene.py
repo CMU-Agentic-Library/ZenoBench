@@ -2,7 +2,7 @@
 
 Starts from the (stability-checked) taskready scene and writes every physics
 fix permanently (see zeno_skills/physics.py for what each fixes):
-  * robot: damped drives, gravity compensation, movable base anchor, finger
+  * robot: damped drives, gravity compensation, base anchor (the start pose; physics.base_joints moves the base), finger
     pad colliders, folded left arm, no floor-snagging base colliders
   * 15 cabinets + microwave: hinge/slide damping and friction
   * task objects: real inertia, thin-walled containers rebuilt as walls,

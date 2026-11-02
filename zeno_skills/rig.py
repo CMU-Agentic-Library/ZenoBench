@@ -1,6 +1,6 @@
 """Isaac Sim runtime for Zeno Malo: joint-drive control, holonomic base,
-state readout and recording.  Only robot drive targets and the base anchor are
-ever written; objects and furniture move only through contact.
+state readout and recording.  Only robot drive targets (the base's x, y and yaw joints
+among them) are ever written; objects and furniture move only through contact.
 """
 
 from __future__ import annotations
@@ -12,7 +12,7 @@ from contextlib import contextmanager
 import numpy as np
 
 from .kinematics import CARRY_TILT, ArmKin, FINGERS, LEFT_ARM_FOLD, max_tilt, tilt, vel_limits, yaw_quat_wxyz
-from .physics import ANCHOR, ASSET
+from .physics import ASSET, BASE_JOINTS
 
 
 class SkillFailure(RuntimeError):
@@ -21,6 +21,9 @@ class SkillFailure(RuntimeError):
 
 class Dropped(SkillFailure):
     """The held object left the hand while carrying it (worth a re-pick)."""
+
+
+BASE_VMAX = np.array([1.0, 1.0, 2.0])     # m/s, m/s, rad/s: base velocity targets beyond are clipped
 
 
 class Rig:
@@ -48,8 +51,10 @@ class Rig:
         self.head = torch.tensor([robot.dof_names.index(n) for n in ("head_yaw_joint", "head_pitch_joint")],
                                  dtype=torch.int32)
         self.head_cmd = np.zeros(2)
-        self.anchor = stage.GetPrimAtPath(ANCHOR)
-        self.base_z = float(self.anchor.GetAttribute("physics:localPos0").Get()[2])
+        # the base: x, y (m) and yaw (rad) joints of the articulation (physics.base_joints)
+        self.base = torch.tensor([robot.dof_names.index(n) for n in BASE_JOINTS], dtype=torch.int32)
+        self.base_cmd = self.robot.get_joint_positions()[self.base.long()].cpu().numpy().astype(float)
+        self.base_vel = np.zeros(3)
         self.q_cmd = self.q()
         self.grip_cmd = 0.04
         self.tick, self.stride = 0, stride
@@ -143,9 +148,8 @@ class Rig:
         return p.cpu().numpy().astype(float), q.cpu().numpy().astype(float)
 
     def base_pose(self):
-        p, q = self.robot.get_world_pose()
-        p = p.cpu().numpy().astype(float)
-        return p[0], p[1], math.degrees(2 * math.atan2(float(q[3]), float(q[0])))
+        x, y, yaw = self.robot.get_joint_positions()[self.base.long()].cpu().numpy().astype(float)
+        return float(x), float(y), (math.degrees(yaw) + 180.0) % 360.0 - 180.0
 
     def state(self):
         """{"objects": {name: {pos, quat}}, "joints": {art: q}} (evaluator format)."""
@@ -252,6 +256,10 @@ class Rig:
                                                        joint_indices=self.left_fing))
             self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.head_cmd, dtype=t.float32),
                                                        joint_indices=self.head))
+            self.robot.apply_action(ArticulationAction(joint_positions=t.tensor(self.base_cmd, dtype=t.float32),
+                                                       joint_velocities=t.tensor(self.base_vel, dtype=t.float32),
+                                                       joint_indices=self.base))
+            self.base_vel = np.zeros(3)         # a set_base each tick keeps the base moving
             render = bool(self.cams) and self.tick % self.stride == 0
             self.sim.step(render=render)
             self.tick += 1
@@ -592,11 +600,15 @@ class Rig:
 
     # ------------------------------------------------------------ base
     def set_base(self, x, y, yaw_deg):
-        """Holonomic base: move the anchor joint frame; PhysX drags the base."""
-        from pxr import Gf
+        """Holonomic base: drive targets of its x, y and yaw joints for the next tick (velocity:
+        the step from the last target, so a pose set every tick is tracked without lag).  The yaw
+        target is unwrapped to within half a turn of the last one."""
         yaw = math.radians(yaw_deg)
-        self.anchor.GetAttribute("physics:localPos0").Set(Gf.Vec3f(float(x), float(y), self.base_z))
-        self.anchor.GetAttribute("physics:localRot0").Set(Gf.Quatf(math.cos(yaw / 2), 0.0, 0.0, math.sin(yaw / 2)))
+        yaw = self.base_cmd[2] + (yaw - self.base_cmd[2] + math.pi) % (2 * math.pi) - math.pi
+        cmd = np.array([float(x), float(y), yaw])
+        # capped: a far jump (a start pose set at once) at its one-tick speed would fling the robot
+        self.base_vel = np.clip((cmd - self.base_cmd) / self.sim.get_physics_dt(), -BASE_VMAX, BASE_VMAX)
+        self.base_cmd = cmd
         self.kin.set_base((x, y, 0.0), yaw)
         self.left_kin.set_base((x, y, 0.0), yaw)
 
