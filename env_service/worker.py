@@ -67,6 +67,8 @@ def main():
         task = resolve_task(task, cfg["variant"])          # the variant's own instruction / goal, if any
         ep = Episode(task, cfg, load_profile(args.profile), out, video_path=args.video_path,
                      video_res=(360, 640), video_stride=8)
+        from failure_injection.runtime import install as install_failures
+        install_failures(ep, cfg)                      # v5 declared failures; the HTTP planner sees only feedback
         meta = ep.metadata()
         (out / "config.json").write_text(json.dumps(
             {"task_id": task["task_id"], "exp_id": out.name, "seed": args.seed, "planner": "http", "route": None,

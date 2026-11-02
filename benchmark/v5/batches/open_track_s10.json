@@ -1,0 +1,22 @@
+[
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "free",
+"route": "open_deliver",
+"track": "open",
+"skills": [
+"skill_ext/examples"
+]
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "free",
+"route": "open_policies",
+"track": "open",
+"skills": [
+"skill_ext/examples"
+]
+}
+]

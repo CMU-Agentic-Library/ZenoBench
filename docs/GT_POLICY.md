@@ -121,4 +121,4 @@ The complete-shell microwave has a separate control route. Button interaction is
 
 ## Physics and state model
 
-Zeno Malo's base uses a kinematic anchor; its arm and finger joints use drive targets. Object contact and articulated response occur in PhysX; the powered microwave hinge uses its joint drive. Temperature is a separate task-level model (`zeno_skills/thermal.py`), increasing only while the microwave is active, closed, and food is in the annotated cavity.
+Zeno Malo's base moves on holonomic x, y and yaw joints; they, the arm and the finger joints use drive targets. Object contact and articulated response occur in PhysX; the powered microwave hinge uses its joint drive. Temperature is a separate task-level model (`zeno_skills/thermal.py`), increasing only while the microwave is active, closed, and food is in the annotated cavity.

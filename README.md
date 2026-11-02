@@ -18,8 +18,8 @@ Left: <b>tidy_toys</b>. Right: <b>heat_without_microwave</b>.
 Core grasp and motion planning use annotations; appliance skills also contain scene-specific park hints.
 </sub></p>
 
-Physics is real PhysX contact. The rollout writes robot drive targets, the base anchor,
-and the powered microwave hinge target. Objects and doors are never teleported; food
+Physics is real PhysX contact. The rollout writes robot drive targets (the base's x, y and
+yaw joints among them) and the powered microwave hinge target. Objects and doors are never teleported; food
 temperature uses a separate task-level model. Success is measured from simulator state
 (joint angle, object pose, finger gap, and task temperature).
 
@@ -426,7 +426,7 @@ Each fix removes a bug found in the URDF→USD import. The code is in `zeno_skil
 | problem as imported | fix |
 |---|---|
 | All robot drives had damping 0 | Damped position drives; joint targets time-scaled to 60 % of URDF velocity limits (torso lift is 0.117 m/s) |
-| Floating base on 2 N·m wheel drives: the base moved instead of the door | Base anchor joint, moved kinematically (holonomic) |
+| Floating base on 2 N·m wheel drives: the base moved instead of the door | Fixed-base articulation with holonomic x, y, yaw base joints on position drives (`physics.base_joints`, applied at load). A first fix hung the base on a fixed joint from the world whose frame was moved: that drag bent the waist to its limit on every forward drive |
 | Finger colliders (convex decomposition) fused pad and rail into a wedge, so the fingers stalled 3.4 cm open | Pad-sized box colliders, rubber friction (μ 2.0, combine = max) |
 | Left arm hung into the floor when the torso lowered | Held folded |
 | Containers were imported as one convex hull (a solid dome) | Walls following the mesh profile plus a base plate |
@@ -515,7 +515,7 @@ media/                  README media, demo videos, rollout result.json files
 - The **banana** (curved, pinched off its centre of mass) and the **teddy bear** (plush, crown pinch)
   are annotated but were taken out of the task specs: their grasps do not survive a carry.
 - SkillNode verification measures every pre/postcondition on GT state, but a pass is one scene and one start state; [verification/STATUS.md](skill_library/verification/STATUS.md) lists which verbs and paths have passed and why the others fail. Task plans in `skill_library/plans/` are symbolic; executing a whole plan can still fail at a step that passed on its own (long carries of rim-held containers are the most fragile).
-- Kinematic holonomic base (anchor joint): no wheel dynamics. Base motion uses one smooth
+- Holonomic base on x, y, yaw joints: no wheel dynamics. Base motion uses one smooth
   time scaling per path (≤ 0.35 m/s, ramps of 0.8 s).
 - Robot links are gravity-compensated, like the real arm controller.
 - Generated asset sizes and masses come from a spec table in `tools/prepare_assets.py` (plus

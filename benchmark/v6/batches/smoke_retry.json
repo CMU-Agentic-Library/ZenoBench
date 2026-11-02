@@ -1,0 +1,72 @@
+[
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "edge_base",
+"planner": "retry",
+"tier": "hard"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "microwave_holds_pot",
+"planner": "retry",
+"tier": "hard"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 11,
+"variant": "h_dynamic_spoon_taken",
+"planner": "retry",
+"tier": "hard"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 11,
+"variant": "h_dynamic_can_moved",
+"planner": "retry",
+"tier": "hard"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "h_task_bowl_behind",
+"planner": "retry",
+"tier": "hard"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "h_dynamic_door_opened",
+"planner": "retry",
+"tier": "hard"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "m_grasp_b",
+"planner": "retry",
+"tier": "medium"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "m_grasp_apple",
+"planner": "retry",
+"tier": "medium"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "m_grasp_can",
+"planner": "retry",
+"tier": "medium"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "m_grasp_spoon",
+"planner": "retry",
+"tier": "medium"
+}
+]

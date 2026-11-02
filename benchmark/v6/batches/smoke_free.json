@@ -1,0 +1,282 @@
+[
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "x6_m_slip_book",
+"route": "v6_x6_m_slip_book",
+"tier": "medium"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "x6_dr_block_on_book__sponge",
+"route": "v6_x6_dr_block_on_book__sponge",
+"tier": "hard"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "x6_cl_base_a_unreachable",
+"route": "v6_x6_cl_base_a_unreachable",
+"tier": "hard"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "x6_cl_block_b_unholdable__grasp",
+"route": "v6_x6_cl_block_b_unholdable__grasp",
+"tier": "hard"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "x6_gd_tower_with_event__tv_stand",
+"route": "v6_x6_gd_tower_with_event__tv_stand",
+"tier": "hard"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "x6_cl_cup_unusable__slip",
+"route": "v6_x6_cl_cup_unusable__slip",
+"tier": "hard"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "x6_dr_spot_filled_dynamic__bowl",
+"route": "v6_x6_dr_spot_filled_dynamic__bowl",
+"tier": "hard"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "x6_cl_pen_unholdable__pencil_away",
+"route": "v6_x6_cl_pen_unholdable__pencil_away",
+"tier": "hard"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "x6_cl_block_a_unholdable__b_island",
+"route": "v6_x6_cl_block_a_unholdable__b_island",
+"tier": "hard"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "x6_m_grasp_block_a",
+"route": "v6_x6_m_grasp_block_a",
+"tier": "medium"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "x6_cl_cabinet_unreachable",
+"route": "v6_x6_cl_cabinet_unreachable",
+"tier": "hard"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "x6_m_ik_place_cabinet",
+"route": "v6_x6_m_ik_place_cabinet",
+"tier": "medium"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "x6_gd_two_displays_event__dining",
+"route": "v6_x6_gd_two_displays_event__dining",
+"tier": "hard"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "x6_cl_microwave_door_stuck__oatmeal_cabinet",
+"route": "v6_x6_cl_microwave_door_stuck__oatmeal_cabinet",
+"tier": "hard"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "x6_m_ik_open_microwave",
+"route": "v6_x6_m_ik_open_microwave",
+"tier": "medium"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "x6_sr_microwave_taken",
+"route": "v6_x6_sr_microwave_taken",
+"tier": "hard"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "x6_pp_door_opened_after_heat",
+"route": "v6_x6_pp_door_opened_after_heat",
+"tier": "hard"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "x6_cl_spoon_unholdable__spoon_dining",
+"route": "v6_x6_cl_spoon_unholdable__spoon_dining",
+"tier": "hard"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "x6_sr_collect_refused",
+"route": "v6_x6_sr_collect_refused",
+"tier": "hard"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "x6_gd_tomato_elsewhere__dining",
+"route": "v6_x6_gd_tomato_elsewhere__dining",
+"tier": "hard"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "x6_m_ik_collect",
+"route": "v6_x6_m_ik_collect",
+"tier": "medium"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "x6_pp_tomato_taken_out__tomato2_after_stir",
+"route": "v6_x6_pp_tomato_taken_out__tomato2_after_stir",
+"tier": "hard"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "x6_sr_drop_refused",
+"route": "v6_x6_sr_drop_refused",
+"tier": "hard"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "x6_m_ik_drop",
+"route": "v6_x6_m_ik_drop",
+"tier": "medium"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "x6_gd_fruits_event",
+"route": "v6_x6_gd_fruits_event",
+"tier": "hard"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "x6_cl_apple_rolls_out",
+"route": "v6_x6_cl_apple_rolls_out",
+"tier": "hard"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "x6_m_apple_rolls_out_once",
+"route": "v6_x6_m_apple_rolls_out_once",
+"tier": "medium"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "x6_gd_bins_capacity__left_full",
+"route": "v6_x6_gd_bins_capacity__left_full",
+"tier": "hard"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "x6_cl_basket_unreachable",
+"route": "v6_x6_cl_basket_unreachable",
+"tier": "hard"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "x6_pp_duck_moved__dining",
+"route": "v6_x6_pp_duck_moved__dining",
+"tier": "hard"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "x6_cl_cup_slips__mug_cabinet",
+"route": "v6_x6_cl_cup_slips__mug_cabinet",
+"tier": "hard"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "x6_m_slip_cup",
+"route": "v6_x6_m_slip_cup",
+"tier": "medium"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "x6_pp_spoon_moved__table_end",
+"route": "v6_x6_pp_spoon_moved__table_end",
+"tier": "hard"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "x6_gd_two_settings__cabinet4",
+"route": "v6_x6_gd_two_settings__cabinet4",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "x6_sr_hide_refused",
+"route": "v6_x6_sr_hide_refused",
+"tier": "hard"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "x6_m_ik_hide",
+"route": "v6_x6_m_ik_hide",
+"tier": "medium"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "x6_gd_hide_both_event__dining",
+"route": "v6_x6_gd_hide_both_event__dining",
+"tier": "hard"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "x6_sr_cube_drop_refused",
+"route": "v6_x6_sr_cube_drop_refused",
+"tier": "hard"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "x6_m_ik_drop_cube",
+"route": "v6_x6_m_ik_drop_cube",
+"tier": "medium"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "x6_m_slip_book",
+"route": "v6_x6_m_slip_book",
+"tier": "medium"
+}
+]

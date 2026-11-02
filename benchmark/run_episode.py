@@ -88,7 +88,8 @@ PLANNER_PROFILES = {"scripted": "benchmark", "fixed": "benchmark", "retry": "ben
 
 
 def run_episode(task, seed, route=None, planner="scripted", variant=None, out_root=OUT, video=False,
-                images=True, policy=None, difficulty=None, max_calls=None, tasks_file=TASKS, profile=None):
+                images=True, policy=None, difficulty=None, max_calls=None, tasks_file=TASKS, profile=None,
+                track="fixed", skill_dirs=()):
     from benchmark.scene import episode_config
     from episode.catalog import resolve_task
     from episode.episode import Episode, state_summary
@@ -104,6 +105,14 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
         (f"-{policy.rsplit(':', 1)[-1]}" if planner == "recovery" and policy else "")
     if profile:
         label += "@" + prof["name"].replace("/", "_")   # a level profile ("sticky/gt") must not nest the run dir
+    registry = None
+    if track != "fixed" or skill_dirs:
+        # v5 Open-Skill track: built-ins + user SKILL.md skills (skill_ext); the Fixed track runs nothing new
+        from skill_ext import SkillRegistry
+        registry = SkillRegistry.default()
+        for d in skill_dirs:
+            registry.load_dir(d)
+        label += f"+{track}"
     out = Path(out_root) / task["task_id"] / f"s{seed}_{cfg['variant']}_{label}"
     out.mkdir(parents=True, exist_ok=True)
     config = {"task_id": task["task_id"], "exp_id": f"{task['exp_id']}-s{seed}-{label}", "seed": seed,
@@ -111,13 +120,17 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
               "tasks_file": tasks_ref(tasks_file), "benchmark_version": task.get("benchmark_version", "v2"),
               "config_hash": cfg["config_hash"], "profile": prof["name"], "profile_hash": prof["hash"],
               "profile_body": prof, "started": time.strftime("%Y-%m-%d %H:%M:%S")}
+    if registry is not None:
+        config["skill_track"] = {"track": track, "skill_dirs": [str(d) for d in skill_dirs],
+                                 "fingerprint": registry.fingerprint(track),
+                                 "user_skills": registry.names(track, kind="user")}
     (out / "config.json").write_text(json.dumps(config, indent=1))
     report = {"task_id": task["task_id"], "exp_id": config["exp_id"], "seed": seed, "variant": cfg["variant"],
               "config_hash": cfg["config_hash"], "benchmark_version": config["benchmark_version"],
               "profile": prof["name"], "profile_hash": prof["hash"],
               "planner": planner, "route": route, "calls": [], "success": False, "started": time.time(),
               "eval_log_version": 2}
-    ep = None
+    ep = injector = None
     calls_f = open(out / "calls.jsonl", "w")
 
     def log_row(row):
@@ -128,6 +141,11 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
     try:
         ep = Episode(task, cfg, prof, out, video=video, images=images,
                      image_dir=out / "images" if images else None)
+        from failure_injection.runtime import install as install_failures
+        injector = install_failures(ep, cfg)          # v5: declared failures (none: the runner is untouched)
+        if registry is not None:
+            from skill_ext.dispatch import install
+            install(ep, registry, track)
         rig = ep.rig
         meta = ep.metadata()
         report["episode_hash"] = config["episode_hash"] = meta["episode_hash"]
@@ -140,7 +158,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
             from benchmark.planners import load_policy
             pol = load_policy(policy)
             report["stop_reason"] = "budget"     # max_calls reached without the planner ending the episode
-            pol.reset(task_instruction=task["instruction"], skills=task.get("skill_menu"))
+            pol.reset(task_instruction=task["instruction"],
+                      skills=registry.menu(track) if registry is not None else task.get("skill_menu"))
             for i in range(max_calls or profile_max_calls(prof, task)):
                 obs = ep.observation("path", f"step{i}")
                 t0 = time.time()
@@ -158,9 +177,14 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                          "state": state_summary(rig, task), "eval": record.pop("eval")})
         else:
             _, steps = resolve_steps(task, cfg, route)
+            report["route_sha1"] = hashlib.sha1(json.dumps(task["routes"][route]["steps"], sort_keys=True)
+                                                .encode()).hexdigest()[:12]
             for i, st in enumerate(steps):
-                expect = st.get("expect", "ok") if planner == "scripted" else "ok"
-                if planner == "oracle" and (st.get("expect") == "fail" or st.get("role") == "unwind"):
+                # an injected failure (v5) is forced by the environment, not a useless call: every planner
+                # meets it, so it keeps its expectation and the oracle does not skip it
+                expect = st.get("expect", "ok") if planner == "scripted" or st.get("injected") else "ok"
+                if planner == "oracle" and not st.get("injected") and \
+                        (st.get("expect") == "fail" or st.get("role") == "unwind"):
                     continue                           # the oracle knows the failing call is useless (and
                                                        # skips the steps that only undo its side effects)
                 tries = 3 if planner == "retry" else 1
@@ -200,6 +224,8 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
                     report["stopped_at"] = i
                     break
         chk = ep.check()
+        if injector is not None:
+            report["failure_injection"] = injector.summary()     # evaluation only; never shown to a planner
         report["goal"] = chk["goal"]
         report["dropped"] = chk["dropped"]
         report["final_state"] = chk["final_state"]           # side effects for benchmark/evaluate.py
@@ -252,6 +278,10 @@ def main():
     ap.add_argument("--profile", help="episode profile (name or YAML) instead of the planner's default "
                                       f"{PLANNER_PROFILES}")
     ap.add_argument("--max-calls", type=int, help="call budget of a recovery planner (default: task max_calls or 60)")
+    ap.add_argument("--track", default="fixed", choices=["fixed", "open"],
+                    help="v5 skill track: fixed = the built-in SkillNodes only (default, as before); "
+                         "open = built-ins + user SKILL.md skills from --skills")
+    ap.add_argument("--skills", action="append", help="directory of user skills (*/SKILL.md); repeatable")
     ap.add_argument("--video", action="store_true")
     ap.add_argument("--no-images", action="store_true")
     ap.add_argument("--out", default=str(OUT))
@@ -263,7 +293,7 @@ def main():
         return run_batch(a)
     tasks = load_tasks(a.tasks)
     run_episode(tasks[a.task], a.seed, a.route, a.planner, a.variant, a.out, a.video, not a.no_images, a.policy,
-                a.difficulty, a.max_calls, a.tasks, a.profile)
+                a.difficulty, a.max_calls, a.tasks, a.profile, a.track, a.skills or ())
 
 
 def run_batch(a):
@@ -278,9 +308,11 @@ def run_batch(a):
             j = queue.pop(0)
             cmd = [py, __file__, "--tasks", a.tasks, "--task", j["task"], "--seed", str(j.get("seed", 0)),
                    "--planner", j.get("planner", "scripted"), "--out", a.out]
-            for k in ("route", "variant", "policy", "difficulty", "max_calls", "profile"):
+            for k in ("route", "variant", "policy", "difficulty", "max_calls", "profile", "track"):
                 if j.get(k):
                     cmd += [f"--{k.replace('_', '-')}", str(j[k])]
+            for d in j.get("skills", []):
+                cmd += ["--skills", d]
             if j.get("video"):
                 cmd.append("--video")
             name = (f"{j['task']}_s{j.get('seed', 0)}_{j.get('variant') or j.get('difficulty') or 'any'}_"

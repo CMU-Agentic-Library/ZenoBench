@@ -1,0 +1,16 @@
+[
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "x6_sr_two_hand_carry",
+"route": "v6_x6_sr_two_hand_carry",
+"tier": "hard"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "x6_sr_two_hand_carry",
+"route": "v6_x6_sr_two_hand_carry",
+"tier": "hard"
+}
+]

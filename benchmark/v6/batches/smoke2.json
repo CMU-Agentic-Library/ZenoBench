@@ -1,0 +1,44 @@
+[
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "x6_sr_two_hand_carry",
+"route": "v6_x6_sr_two_hand_carry",
+"tier": "hard"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 11,
+"variant": "x6_cl_bottle_behind_mug__mug",
+"route": "v6_x6_cl_bottle_behind_mug__mug",
+"tier": "hard"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "x6_cl_bottle_behind_mug__bowl",
+"route": "v6_x6_cl_bottle_behind_mug__bowl",
+"tier": "hard"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "x6_cl_apple_rolls_out",
+"route": "v6_x6_cl_apple_rolls_out",
+"tier": "hard"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "x6_cl_microwave_door_stuck__oatmeal_cabinet",
+"route": "v6_x6_cl_microwave_door_stuck__oatmeal_cabinet",
+"tier": "hard"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 12,
+"variant": "x6_gd_two_displays_event__cabinet4",
+"route": "v6_x6_gd_two_displays_event__cabinet4",
+"tier": "hard"
+}
+]

@@ -12,7 +12,7 @@ articulated parts stay closed, robot holds its pose).
 | Solver | TGS, 16 position iterations, 120 Hz, scene-level CCD | `zeno_skills/physics.py:scene_settings` |
 | Contact materials | household 0.6 / 0.5 (average), finger pads 2.0 / 1.8 (max) | `zeno_skills/physics.py:materials` |
 | Asset sizes and masses | 40 assets; bounding-box densities 13–650 kg/m³ (containers low because hollow) | `annotations/assets.json` |
-| Robot drives | damped position drives, kinematic holonomic base anchor | `zeno_skills/physics.py` |
+| Robot drives | damped position drives, holonomic base joints (x, y, yaw) in the articulation | `zeno_skills/physics.py` |
 
 ## Problems found and fixed
 

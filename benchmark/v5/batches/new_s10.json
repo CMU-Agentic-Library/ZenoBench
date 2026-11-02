@@ -1,0 +1,710 @@
+[
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "m_ik_pick",
+"route": "v5_m_ik_pick"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "h_action_ik_pick_and_place",
+"route": "v5_h_action_ik_pick_and_place"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "h_mixed_table_set_ik",
+"route": "v5_h_mixed_table_set_ik"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "h_dynamic_pushed_back",
+"route": "v5_h_dynamic_pushed_back"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "e2_from_wall_cabinet",
+"route": "v5_e2_from_wall_cabinet"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "m_grasp_b",
+"route": "v5_m_grasp_b"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "h_action_grasp_and_ik",
+"route": "v5_h_action_grasp_and_ik"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "h_mixed_edge_base_grasp",
+"route": "v5_h_mixed_edge_base_grasp"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "m_grasp_spoon",
+"route": "v5_m_grasp_spoon"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "h_action_slip_and_miss",
+"route": "v5_h_action_slip_and_miss"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "h_mixed_three_containers_ik",
+"route": "v5_h_mixed_three_containers_ik"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "h_dynamic_spoon_taken",
+"route": "v5_h_dynamic_spoon_taken"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "m_ik_cup",
+"route": "v5_m_ik_cup"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "h_task_spot_taken",
+"route": "v5_h_task_spot_taken"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "h_action_ik_and_grasp",
+"route": "v5_h_action_ik_and_grasp"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "h_mixed_spot_taken_ik",
+"route": "v5_h_mixed_spot_taken_ik"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "h_dynamic_cup_taken",
+"route": "v5_h_dynamic_cup_taken"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "e2_pencil_asked_far",
+"route": "v5_e2_pencil_asked_far"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "m_grasp_pencil",
+"route": "v5_m_grasp_pencil"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "h_task_pencil_in_cabinet",
+"route": "v5_h_task_pencil_in_cabinet"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "h_action_grasp_and_ik",
+"route": "v5_h_action_grasp_and_ik"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "h_mixed_cabinet_ik",
+"route": "v5_h_mixed_cabinet_ik"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "h_dynamic_pencil_taken",
+"route": "v5_h_dynamic_pencil_taken"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "m_slip_block",
+"route": "v5_m_slip_block"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "h_action_slip_and_ik",
+"route": "v5_h_action_slip_and_ik"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "h_mixed_hidden_grasp",
+"route": "v5_h_mixed_hidden_grasp"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "h_dynamic_cabinet_filled",
+"route": "v5_h_dynamic_cabinet_filled"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "m_ik_oatmeal",
+"route": "v5_m_ik_oatmeal"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "h_action_ik_and_slip",
+"route": "v5_h_action_ik_and_slip"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "h_mixed_pot_inside_grasp",
+"route": "v5_h_mixed_pot_inside_grasp"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "m_grasp_sponge",
+"route": "v5_m_grasp_sponge"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "h_action_grasp_and_ik",
+"route": "v5_h_action_grasp_and_ik"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "h_mixed_cluttered_grasp",
+"route": "v5_h_mixed_cluttered_grasp"
+},
+{
+"task": "T08_wipe_island",
+"seed": 10,
+"variant": "h_dynamic_sponge_taken",
+"route": "v5_h_dynamic_sponge_taken"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "m_grasp_spoon",
+"route": "v5_m_grasp_spoon"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "h_action_grasp_and_ik",
+"route": "v5_h_action_grasp_and_ik"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "h_mixed_cookware_grasp",
+"route": "v5_h_mixed_cookware_grasp"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "h_dynamic_spoon_taken",
+"route": "v5_h_dynamic_spoon_taken"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "m_ik_can",
+"route": "v5_m_ik_can"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "h_task_can_in_microwave",
+"route": "v5_h_task_can_in_microwave"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "h_action_ik_pick_and_drop",
+"route": "v5_h_action_ik_pick_and_drop"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "h_mixed_microwave_ik",
+"route": "v5_h_mixed_microwave_ik"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "h_dynamic_can_moved",
+"route": "v5_h_dynamic_can_moved"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "e2_from_kitchen",
+"route": "v5_e2_from_kitchen"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "m_grasp_apple",
+"route": "v5_m_grasp_apple"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "m_ik_basket",
+"route": "v5_m_ik_basket"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "h_action_grasp_and_ik",
+"route": "v5_h_action_grasp_and_ik"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "h_mixed_bowl_there_grasp",
+"route": "v5_h_mixed_bowl_there_grasp"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "e2_from_kitchen",
+"route": "v5_e2_from_kitchen"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "m_grasp_car",
+"route": "v5_m_grasp_car"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "m_ik_duck_place",
+"route": "v5_m_ik_duck_place"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "h_action_grasp_and_ik",
+"route": "v5_h_action_grasp_and_ik"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "h_mixed_everywhere_ik",
+"route": "v5_h_mixed_everywhere_ik"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "h_dynamic_duck_taken",
+"route": "v5_h_dynamic_duck_taken"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "e2_from_kitchen",
+"route": "v5_e2_from_kitchen"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "h_action_ik_and_grasp",
+"route": "v5_h_action_ik_and_grasp"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "h_mixed_boxed_in_ik",
+"route": "v5_h_mixed_boxed_in_ik"
+},
+{
+"task": "T13_breakfast_setup",
+"seed": 10,
+"variant": "h_dynamic_bowl_taken",
+"route": "v5_h_dynamic_bowl_taken"
+},
+{
+"task": "T15_book_face_up",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T15_book_face_up",
+"seed": 10,
+"variant": "m_ik_flip",
+"route": "v5_m_ik_flip"
+},
+{
+"task": "T15_book_face_up",
+"seed": 10,
+"variant": "m_start_dining_away",
+"route": "v5_m_start_dining_away"
+},
+{
+"task": "T15_book_face_up",
+"seed": 10,
+"variant": "h_task_block_on_book",
+"route": "v5_h_task_block_on_book"
+},
+{
+"task": "T15_book_face_up",
+"seed": 10,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice"
+},
+{
+"task": "T15_book_face_up",
+"seed": 10,
+"variant": "h_mixed_block_on_book_ik",
+"route": "v5_h_mixed_block_on_book_ik"
+},
+{
+"task": "T15_book_face_up",
+"seed": 10,
+"variant": "h_dynamic_book_moved",
+"route": "v5_h_dynamic_book_moved"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "m_ik_roll",
+"route": "v5_m_ik_roll"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "m_start_dining_away",
+"route": "v5_m_start_dining_away"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "h_mixed_bowl_behind_ik",
+"route": "v5_h_mixed_bowl_behind_ik"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "h_dynamic_bowl_put_behind",
+"route": "v5_h_dynamic_bowl_put_behind"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "h_task_lid_elsewhere",
+"route": "v5_h_task_lid_elsewhere"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "h_action_ik_twice",
+"route": "v5_h_action_ik_twice"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "h_mixed_lid_elsewhere_ik",
+"route": "v5_h_mixed_lid_elsewhere_ik"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "h_dynamic_lid_put_on",
+"route": "v5_h_dynamic_lid_put_on"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
+"variant": "e2_from_dining_room",
+"route": "v5_e2_from_dining_room"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
+"variant": "m_ik_open",
+"route": "v5_m_ik_open"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
+"variant": "m_ik_close",
+"route": "v5_m_ik_close"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
+"variant": "m_door_left_open",
+"route": "v5_m_door_left_open"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
+"variant": "h_task_two_cabinets",
+"route": "v5_h_task_two_cabinets"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
+"variant": "h_action_ik_open_and_close",
+"route": "v5_h_action_ik_open_and_close"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
+"variant": "h_mixed_two_cabinets_ik",
+"route": "v5_h_mixed_two_cabinets_ik"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
+"variant": "h_dynamic_door_closed",
+"route": "v5_h_dynamic_door_closed"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "e2_from_kitchen",
+"route": "v5_e2_from_kitchen"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "m_can_in_dining_room",
+"route": "v5_m_can_in_dining_room"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "m_grasp_can",
+"route": "v5_m_grasp_can"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "m_ik_cube",
+"route": "v5_m_ik_cube"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "h_action_grasp_and_miss",
+"route": "v5_h_action_grasp_and_miss"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "h_mixed_lookalike_ik",
+"route": "v5_h_mixed_lookalike_ik"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "h_dynamic_can_moved",
+"route": "v5_h_dynamic_can_moved"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "e2_from_bedroom_hall",
+"route": "v5_e2_from_bedroom_hall"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "m_ik_pick",
+"route": "v5_m_ik_pick"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "m_ik_place",
+"route": "v5_m_ik_place"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "m_bottle_on_tv_stand",
+"route": "v5_m_bottle_on_tv_stand"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "h_action_ik_pick_and_place",
+"route": "v5_h_action_ik_pick_and_place"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "h_mixed_table_full_ik",
+"route": "v5_h_mixed_table_full_ik"
+},
+{
+"task": "T20_juice_back_to_table",
+"seed": 10,
+"variant": "h_dynamic_bottle_taken",
+"route": "v5_h_dynamic_bottle_taken"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "e1_book_ready",
+"route": "v5_e1_book_ready"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "e2_book_ready_far",
+"route": "v5_e2_book_ready_far"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "m_ik_place",
+"route": "v5_m_ik_place"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "m_ik_pick",
+"route": "v5_m_ik_pick"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "h_action_ik_pick_and_place",
+"route": "v5_h_action_ik_pick_and_place"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "h_mixed_shelf_taken_ik",
+"route": "v5_h_mixed_shelf_taken_ik"
+},
+{
+"task": "T14_shelve_the_book",
+"seed": 10,
+"variant": "h_dynamic_shelf_taken",
+"route": "v5_h_dynamic_shelf_taken"
+}
+]
