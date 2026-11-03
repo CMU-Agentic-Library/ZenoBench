@@ -88,9 +88,9 @@
  "v5_hashes_checked": 930,
  "categories": {
   "control": 20,
-  "action": 17,
-  "action_task": 13,
-  "task": 78
+  "action": 28,
+  "action_task": 15,
+  "task": 65
  },
- "tasks_sha1": "91eec3aee2311257b955a0d5d4b1e9203afef07f"
+ "tasks_sha1": "b991f23905d948c25241ec5217f2b5c338e61235"
 }

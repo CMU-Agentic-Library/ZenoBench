@@ -1710,10 +1710,11 @@
      ]
     },
     "h_dynamic_pushed_back": {
-     "category": "task",
-     "local": [],
+     "category": "action_task",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
      "longer": [
-      "event: dependency",
       "spot_quality"
      ]
     },
@@ -3295,11 +3296,11 @@
      "longer": []
     },
     "h_dynamic_base_moved_to_edge": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: destination"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     },
     "x6_gd_tower_with_event": {
      "category": "action_task",
@@ -11623,11 +11624,12 @@
      ]
     },
     "h_dynamic_door_opened": {
-     "category": "task",
-     "local": [],
+     "category": "action_task",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
      "longer": [
-      "appliance_occupied",
-      "event: dependency"
+      "appliance_occupied"
      ]
     },
     "x6_sr_microwave_taken": {
@@ -11638,11 +11640,11 @@
      ]
     },
     "x6_pp_door_opened_after_heat": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: dependency"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     }
    }
   },
@@ -17026,25 +17028,25 @@
      ]
     },
     "x6_pp_tomato_taken_out__tomato2": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     },
     "x6_pp_tomato_taken_out__tomato1": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     },
     "x6_pp_tomato_taken_out__tomato2_after_stir": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     }
    }
   },
@@ -26908,18 +26910,18 @@
      ]
     },
     "x6_pp_spoon_moved__early": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     },
     "x6_pp_spoon_moved__table_end": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     },
     "x6_pp_spoon_moved__tv_stand": {
      "category": "task",
@@ -27633,13 +27635,12 @@
      "longer": []
     },
     "h_dynamic_book_moved": {
-     "category": "action_task",
+     "category": "action",
      "local": [
-      "clear the object on the target / open the door first"
+      "clear the object on the target / open the door first",
+      "someone changed things at the work spot: put it right there"
      ],
-     "longer": [
-      "event: dependency"
-     ]
+     "longer": []
     }
    }
   },
@@ -28315,11 +28316,11 @@
      "longer": []
     },
     "h_dynamic_bowl_put_behind": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: dependency"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     }
    }
   },
@@ -30444,10 +30445,11 @@
      ]
     },
     "h_dynamic_lid_put_on": {
-     "category": "task",
-     "local": [],
+     "category": "action_task",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
      "longer": [
-      "event: dependency",
       "resource"
      ]
     },
@@ -31568,10 +31570,11 @@
      ]
     },
     "h_dynamic_door_closed": {
-     "category": "task",
-     "local": [],
+     "category": "action_task",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
      "longer": [
-      "event: dependency",
       "resource"
      ]
     },
@@ -31590,11 +31593,11 @@
      ]
     },
     "x6_pp_door_reopened": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: dependency"
-     ]
+     "category": "action",
+     "local": [
+      "someone changed things at the work spot: put it right there"
+     ],
+     "longer": []
     }
    }
   },
@@ -36940,13 +36943,12 @@
      "longer": []
     },
     "h_dynamic_shelf_taken": {
-     "category": "action_task",
+     "category": "action",
      "local": [
-      "expose the flat object over the edge, then pick it"
+      "expose the flat object over the edge, then pick it",
+      "someone changed things at the work spot: put it right there"
      ],
-     "longer": [
-      "event: destination"
-     ]
+     "longer": []
     },
     "x6_gd_book_put_away": {
      "category": "task",

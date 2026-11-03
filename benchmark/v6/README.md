@@ -8,7 +8,7 @@ puts each variant in one of four categories.
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
 | variants | 128; each runs seeds 10-19 (1,280 episodes) |
-| categories | control 20 (one per task), Action-Level 17, Task-Level 78, Action + Task 13 (`TRACKS.md`) |
+| categories | control 20 (one per task), Action-Level 28, Task-Level 65, Action + Task 15 (`TRACKS.md`) |
 | static checks | 1,280 / 1,280 episodes |
 | physics | 25 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
 
@@ -44,9 +44,9 @@ Each variant contains the fallback its category is about; the category reads onl
 | category | the variant needs | variants | episodes |
 |---|---|---|---|
 | **Control** | nothing: the nominal plan works (the reference for the others) | 20 | 200 |
-| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`) | 17 | 170 |
-| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, a dynamic event | 78 | 780 |
-| **Action + Task** | both | 13 | 130 |
+| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`) | 28 | 280 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 65 | 650 |
+| **Action + Task** | both | 15 | 150 |
 
 **No injected action failures, anywhere.** No IK refusal, grasp miss, slip or placement miss is forced on a
 call, once or every time. Every challenge comes from the scene (an absent or hidden object, a lid on, a closed

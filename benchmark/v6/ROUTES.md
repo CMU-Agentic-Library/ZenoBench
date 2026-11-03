@@ -17,11 +17,11 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Task-Level
 
 * `table_set` (v5fix_table_set, 8 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) +place(paperback_book,dining_table_2/top,[3.72, 6.8])
-* `h_dynamic_pushed_back` (v5_h_dynamic_pushed_back, 11 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) !pick(paperback_book) +expose(paperback_book) +look(paperback_book) +pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) +place(paperback_book,dining_table_2/top,[3.72, 6.8])
 
 ### Action + Task
 
 * `far_no_overhang` (v5fix_far_no_overhang, 8 steps): +search(paperback_book,living_room_0_0) navigate(paperback_book) !pick(paperback_book) +expose(paperback_book) +look(paperback_book) pick(paperback_book) navigate(dining_table_2/top) place(paperback_book,dining_table_2/top,[3.72, 6.5])
+* `h_dynamic_pushed_back` (v5_h_dynamic_pushed_back, 11 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) !pick(paperback_book) +expose(paperback_book) +look(paperback_book) +pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) +place(paperback_book,dining_table_2/top,[3.72, 6.8])
 
 ## T02_stack_blocks
 
@@ -33,9 +33,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 * `crowded` (v5fix_crowded, 10 steps): look(kitchen_island/top) navigate(wooden_block_b) !pick(wooden_block_b) +separate(wooden_block_b) +look(wooden_block_b) pick(wooden_block_b) rotate(wooden_block_b,30) navigate(wooden_block_a) approach(wooden_block_a) stack(wooden_block_b,wooden_block_a)
 * `edge_base` (hard_stack_on_open_block, 6 steps): look(kitchen_island/top) navigate(wooden_block_a) +pick(wooden_block_a) navigate(wooden_block_b) approach(wooden_block_b) +stack(wooden_block_a,wooden_block_b)
-
-### Task-Level
-
 * `h_dynamic_base_moved_to_edge` (v5_h_dynamic_base_moved_to_edge, 10 steps): look(kitchen_island/top) navigate(wooden_block_b) pick(wooden_block_b) +navigate(wooden_block_a) +place(wooden_block_b,kitchen_island/top,[7.0, 1.66]) +navigate(wooden_block_a) +pick(wooden_block_a) +navigate(wooden_block_b) +approach(wooden_block_b) +stack(wooden_block_a,wooden_block_b)
 
 ### Action + Task
@@ -118,15 +115,21 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 * `microwave_works` (nominal, 9 steps): navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_island/top) navigate(oatmeal) pick(oatmeal) navigate(kitchen_microwave/inside_floor) place(oatmeal,kitchen_microwave/inside_floor) close(kitchen_microwave) heat(oatmeal,kitchen_microwave,40)
 
+### Action-Level
+
+* `x6_pp_door_opened_after_heat` (v6_x6_pp_door_opened_after_heat, 10 steps): navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_island/top) navigate(oatmeal) pick(oatmeal) navigate(kitchen_microwave/inside_floor) place(oatmeal,kitchen_microwave/inside_floor) close(kitchen_microwave) heat(oatmeal,kitchen_microwave,40) +close(kitchen_microwave)
+
 ### Task-Level
 
 * `microwave_broken` (oracle_stove, 6 steps): look(kitchen_island/top) navigate(oatmeal) pick(oatmeal) navigate(kitchen_stove/top) place(oatmeal,kitchen_stove/top) heat(oatmeal,kitchen_stove,40)
 * `broken_oatmeal_away` (hard_search_stove, 16 steps): navigate(kitchen_microwave) open(kitchen_microwave) +search(oatmeal,living_room_0_0) navigate(oatmeal) pick(oatmeal) navigate(kitchen_microwave/inside_floor) place(oatmeal,kitchen_microwave/inside_floor) close(kitchen_microwave) !heat(oatmeal,kitchen_microwave,40) +stop(kitchen_microwave) +pick(oatmeal) +navigate(kitchen_stove/top) +place(oatmeal,kitchen_stove/top) +heat(oatmeal,kitchen_stove,40) navigate(kitchen_microwave) close(kitchen_microwave)
 * `broken_oatmeal_away__alt_dining_table_2` (v6_broken_oatmeal_away__alt_dining_table_2, 16 steps): navigate(kitchen_microwave) open(kitchen_microwave) +search(oatmeal,dining_room_0_1) navigate(oatmeal) pick(oatmeal) navigate(kitchen_microwave/inside_floor) place(oatmeal,kitchen_microwave/inside_floor) close(kitchen_microwave) !heat(oatmeal,kitchen_microwave,40) +stop(kitchen_microwave) +pick(oatmeal) +navigate(kitchen_stove/top) +place(oatmeal,kitchen_stove/top) +heat(oatmeal,kitchen_stove,40) navigate(kitchen_microwave) close(kitchen_microwave)
 * `microwave_holds_pot` (hard_stove_instead, 10 steps): navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_microwave/inside_floor) close(kitchen_microwave) look(kitchen_island/top) navigate(oatmeal) pick(oatmeal) +navigate(kitchen_stove/top) +place(oatmeal,kitchen_stove/top) +heat(oatmeal,kitchen_stove,40)
-* `h_dynamic_door_opened` (v5_h_dynamic_door_opened, 12 steps): navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_microwave/inside_floor) close(kitchen_microwave) look(kitchen_island/top) navigate(oatmeal) pick(oatmeal) +navigate(kitchen_stove/top) +place(oatmeal,kitchen_stove/top) +heat(oatmeal,kitchen_stove,40) +navigate(kitchen_microwave) +close(kitchen_microwave)
 * `x6_sr_microwave_taken` (v6_x6_sr_microwave_taken, 11 steps): navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_island/top) navigate(oatmeal) pick(oatmeal) navigate(kitchen_microwave/inside_floor) +look(kitchen_microwave/inside_floor) +close(kitchen_microwave) +navigate(kitchen_stove/top) +place(oatmeal,kitchen_stove/top) +heat(oatmeal,kitchen_stove,40)
-* `x6_pp_door_opened_after_heat` (v6_x6_pp_door_opened_after_heat, 10 steps): navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_island/top) navigate(oatmeal) pick(oatmeal) navigate(kitchen_microwave/inside_floor) place(oatmeal,kitchen_microwave/inside_floor) close(kitchen_microwave) heat(oatmeal,kitchen_microwave,40) +close(kitchen_microwave)
+
+### Action + Task
+
+* `h_dynamic_door_opened` (v5_h_dynamic_door_opened, 12 steps): navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_microwave/inside_floor) close(kitchen_microwave) look(kitchen_island/top) navigate(oatmeal) pick(oatmeal) +navigate(kitchen_stove/top) +place(oatmeal,kitchen_stove/top) +heat(oatmeal,kitchen_stove,40) +navigate(kitchen_microwave) +close(kitchen_microwave)
 
 ## T08_wipe_island
 
@@ -160,6 +163,9 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Action-Level
 
 * `lid_on` (fallback_uncover, 17 steps): look(kitchen_island/top) !collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) navigate(handled_cooking_pot) +uncover(handled_cooking_pot) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
+* `x6_pp_tomato_taken_out__tomato2` (v6_x6_pp_tomato_taken_out__tomato2, 19 steps): look(kitchen_island/top) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) +look(kitchen_island/top) +navigate(cherry_tomato_2) +pick(cherry_tomato_2) +navigate(handled_cooking_pot) +drop(cherry_tomato_2,handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
+* `x6_pp_tomato_taken_out__tomato1` (v6_x6_pp_tomato_taken_out__tomato1, 19 steps): look(kitchen_island/top) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) +look(kitchen_island/top) +navigate(cherry_tomato_1) +pick(cherry_tomato_1) +navigate(handled_cooking_pot) +drop(cherry_tomato_1,handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
+* `x6_pp_tomato_taken_out__tomato2_after_stir` (v6_x6_pp_tomato_taken_out__tomato2_after_stir, 19 steps): look(kitchen_island/top) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) +look(kitchen_island/top) +navigate(cherry_tomato_2) +pick(cherry_tomato_2) +navigate(handled_cooking_pot) +drop(cherry_tomato_2,handled_cooking_pot) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
 
 ### Task-Level
 
@@ -170,9 +176,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 * `x6_gd_tomato_elsewhere__cabinet6` (v6_x6_gd_tomato_elsewhere__cabinet6, 19 steps): look(kitchen_island/top) +collect(['cherry_tomato_1'],handled_cooking_pot) +search(cherry_tomato_2,living_room_0_0) +navigate(cherry_tomato_2) +pick(cherry_tomato_2) +navigate(handled_cooking_pot) +drop(cherry_tomato_2,handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
 * `x6_pp_lid_taken_after_stir__cabinet4` (v6_x6_pp_lid_taken_after_stir__cabinet4, 16 steps): look(kitchen_island/top) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) +look(kitchen_stove/top) +search(pot_lid) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
 * `x6_pp_lid_taken_after_stir__dining` (v6_x6_pp_lid_taken_after_stir__dining, 16 steps): look(kitchen_island/top) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) +look(kitchen_stove/top) +search(pot_lid,dining_room_0_1) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
-* `x6_pp_tomato_taken_out__tomato2` (v6_x6_pp_tomato_taken_out__tomato2, 19 steps): look(kitchen_island/top) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) +look(kitchen_island/top) +navigate(cherry_tomato_2) +pick(cherry_tomato_2) +navigate(handled_cooking_pot) +drop(cherry_tomato_2,handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
-* `x6_pp_tomato_taken_out__tomato1` (v6_x6_pp_tomato_taken_out__tomato1, 19 steps): look(kitchen_island/top) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) +look(kitchen_island/top) +navigate(cherry_tomato_1) +pick(cherry_tomato_1) +navigate(handled_cooking_pot) +drop(cherry_tomato_1,handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
-* `x6_pp_tomato_taken_out__tomato2_after_stir` (v6_x6_pp_tomato_taken_out__tomato2_after_stir, 19 steps): look(kitchen_island/top) collect(['cherry_tomato_1', 'cherry_tomato_2'],handled_cooking_pot) navigate(breakfast_spoon) pick(breakfast_spoon) navigate(handled_cooking_pot) stir(handled_cooking_pot,breakfast_spoon) navigate(kitchen_island/top) place(breakfast_spoon,kitchen_island/top) +look(kitchen_island/top) +navigate(cherry_tomato_2) +pick(cherry_tomato_2) +navigate(handled_cooking_pot) +drop(cherry_tomato_2,handled_cooking_pot) navigate(pot_lid) pick(pot_lid) navigate(handled_cooking_pot) cover(handled_cooking_pot,pot_lid) navigate(kitchen_stove) heat(cherry_tomato_1,kitchen_stove,60)
 
 ### Action + Task
 
@@ -241,6 +244,11 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 * `dishes_on_tv_stand` (nominal, 11 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4])
 
+### Action-Level
+
+* `x6_pp_spoon_moved__early` (v6_x6_pp_spoon_moved__early, 16 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) +look(dining_table_2/top) +navigate(spoon) +pick(spoon) +navigate(dining_table_2/top) +place(spoon,dining_table_2/top,[2.98, 7.46]) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4])
+* `x6_pp_spoon_moved__table_end` (v6_x6_pp_spoon_moved__table_end, 16 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4]) +look(dining_table_2/top) +navigate(spoon) +pick(spoon) +navigate(dining_table_2/top) +place(spoon,dining_table_2/top,[2.98, 7.46])
+
 ### Task-Level
 
 * `no_cup` (alternative_mug, 13 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) !navigate(cup) +navigate(bookcase_2/top) +look(bookcase_2/top) +pick(mug) navigate(dining_table_2/top) place(mug,dining_table_2/top,[3.2, 7.4])
@@ -248,8 +256,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 * `bowl_on_cabinet__alt_dining_table_2` (v6_bowl_on_cabinet__alt_dining_table_2, 13 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4]) !navigate(bowl) +search(bowl,dining_room_0_1) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1])
 * `no_cup_bowl_on_cabinet` (hard_search_bowl_mug, 15 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) !navigate(bowl) +search(bowl,living_room_0_0) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) !navigate(cup) +navigate(bookcase_2/top) +look(bookcase_2/top) +pick(mug) navigate(dining_table_2/top) place(mug,dining_table_2/top,[3.2, 7.4])
 * `no_cup_bowl_on_cabinet__alt_dining_table_2` (v6_no_cup_bowl_on_cabinet__alt_dining_table_2, 15 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) !navigate(bowl) +search(bowl,dining_room_0_1) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) !navigate(cup) +navigate(bookcase_2/top) +look(bookcase_2/top) +pick(mug) navigate(dining_table_2/top) place(mug,dining_table_2/top,[3.2, 7.4])
-* `x6_pp_spoon_moved__early` (v6_x6_pp_spoon_moved__early, 16 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) +look(dining_table_2/top) +navigate(spoon) +pick(spoon) +navigate(dining_table_2/top) +place(spoon,dining_table_2/top,[2.98, 7.46]) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4])
-* `x6_pp_spoon_moved__table_end` (v6_x6_pp_spoon_moved__table_end, 16 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4]) +look(dining_table_2/top) +navigate(spoon) +pick(spoon) +navigate(dining_table_2/top) +place(spoon,dining_table_2/top,[2.98, 7.46])
 * `x6_pp_spoon_moved__tv_stand` (v6_x6_pp_spoon_moved__tv_stand, 17 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(bowl) pick(bowl) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4]) +look(dining_table_2/top) +search(spoon,living_room_0_0) +navigate(spoon) +pick(spoon) +navigate(dining_table_2/top) +place(spoon,dining_table_2/top,[2.98, 7.46])
 * `x6_gd_bowl_put_away__in_cabinet` (v6_x6_gd_bowl_put_away__in_cabinet, 22 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_microwave/inside_floor) close(kitchen_microwave) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() navigate(bowl) pick(bowl) retreat(kitchen_cabinet_6,0.3) close(kitchen_cabinet_6) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4])
 * `x6_gd_bowl_put_away__in_microwave` (v6_x6_gd_bowl_put_away__in_microwave, 22 steps): look(dining_table_2/top) navigate(tv_stand_2/top) look(tv_stand_2/top) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() close(kitchen_cabinet_6) navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_microwave/inside_floor) navigate(bowl) pick(bowl) retreat(kitchen_microwave,0.3) close(kitchen_microwave) navigate(dining_table_2/top) place(bowl,dining_table_2/top,[3.05, 7.1]) navigate(cup) pick(cup) navigate(dining_table_2/top) place(cup,dining_table_2/top,[3.2, 7.4])
@@ -271,14 +277,11 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Action-Level
 
 * `h_task_block_on_book` (v5_h_task_block_on_book, 6 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) place(wooden_block_a,kitchen_island/top,[7.2, 1.85]) navigate(paperback_book) flip(paperback_book)
+* `h_dynamic_book_moved` (v5_h_dynamic_book_moved, 10 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) place(wooden_block_a,kitchen_island/top,[7.2, 1.85]) +look(kitchen_island/top) +navigate(wooden_block_a) +pick(wooden_block_a) +place(wooden_block_a,kitchen_island/top,[7.3, 1.85]) navigate(paperback_book) flip(paperback_book)
 
 ### Task-Level
 
 * `book_out_of_view` (explore_search_book, 3 steps): +search(paperback_book,living_room_0_0) navigate(paperback_book) flip(paperback_book)
-
-### Action + Task
-
-* `h_dynamic_book_moved` (v5_h_dynamic_book_moved, 10 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) place(wooden_block_a,kitchen_island/top,[7.2, 1.85]) +look(kitchen_island/top) +navigate(wooden_block_a) +pick(wooden_block_a) +place(wooden_block_a,kitchen_island/top,[7.3, 1.85]) navigate(paperback_book) flip(paperback_book)
 
 ## T16_rolling_pin_at_edge
 
@@ -289,11 +292,11 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Action-Level
 
 * `h_task_bowl_behind` (v5_h_task_bowl_behind, 5 steps): look(kitchen_island/top) navigate(oatmeal) +push(oatmeal,[0.0, 1.0],0.15) navigate(rolling_pin) roll(rolling_pin,0.12)
+* `h_dynamic_bowl_put_behind` (v5_h_dynamic_bowl_put_behind, 7 steps): +look(kitchen_island/top) +look(oatmeal) navigate(oatmeal) pick(oatmeal) place(oatmeal,kitchen_island/top,[7.3, 1.85]) navigate(rolling_pin) roll(rolling_pin,0.12)
 
 ### Task-Level
 
 * `pin_out_of_view` (explore_search_pin, 3 steps): +search(rolling_pin,living_room_0_0) navigate(rolling_pin) roll(rolling_pin,0.12)
-* `h_dynamic_bowl_put_behind` (v5_h_dynamic_bowl_put_behind, 7 steps): +look(kitchen_island/top) +look(oatmeal) navigate(oatmeal) pick(oatmeal) place(oatmeal,kitchen_island/top,[7.3, 1.85]) navigate(rolling_pin) roll(rolling_pin,0.12)
 
 ## T17_hide_and_seek_block
 
@@ -310,11 +313,14 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Task-Level
 
 * `h_task_lid_elsewhere` (v5_h_task_lid_elsewhere, 11 steps): navigate(kitchen_cabinet_6/top) look(kitchen_cabinet_6/top) navigate(pot_lid) pick(pot_lid) navigate(kitchen_stove/top) place(pot_lid,kitchen_stove/top,[8.715, 1.655]) navigate(handled_cooking_pot) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) hide(wooden_block_b,handled_cooking_pot,pot_lid)
-* `h_dynamic_lid_put_on` (v5_h_dynamic_lid_put_on, 16 steps): navigate(kitchen_cabinet_6/top) look(kitchen_cabinet_6/top) navigate(pot_lid) pick(pot_lid) navigate(kitchen_stove/top) place(pot_lid,kitchen_stove/top,[8.715, 1.655]) navigate(handled_cooking_pot) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) !hide(wooden_block_b,handled_cooking_pot,pot_lid) +navigate(handled_cooking_pot) +uncover(handled_cooking_pot) +navigate(kitchen_island/top) +look(kitchen_island/top) +hide(wooden_block_b,handled_cooking_pot,pot_lid)
 * `x6_pp_lid_lifted__cabinet4` (v6_x6_pp_lid_lifted__cabinet4, 11 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) hide(wooden_block_b,handled_cooking_pot,pot_lid) +look(kitchen_stove/top) +search(pot_lid) +navigate(pot_lid) +pick(pot_lid) +navigate(handled_cooking_pot) +cover(handled_cooking_pot,pot_lid)
 * `x6_pp_lid_lifted__dining` (v6_x6_pp_lid_lifted__dining, 11 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) hide(wooden_block_b,handled_cooking_pot,pot_lid) +look(kitchen_stove/top) +search(pot_lid,dining_room_0_1) +navigate(pot_lid) +pick(pot_lid) +navigate(handled_cooking_pot) +cover(handled_cooking_pot,pot_lid)
 * `x6_gd_hide_both_event__tv_stand` (v6_x6_gd_hide_both_event__tv_stand, 11 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) hide(wooden_block_b,handled_cooking_pot,pot_lid) +search(floor_block,living_room_0_0) +navigate(handled_cooking_pot) +uncover(handled_cooking_pot) +navigate(floor_block) +look(floor_block) +hide(floor_block,handled_cooking_pot,pot_lid)
 * `x6_gd_hide_both_event__dining` (v6_x6_gd_hide_both_event__dining, 11 steps): navigate(kitchen_stove/top) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) hide(wooden_block_b,handled_cooking_pot,pot_lid) +search(floor_block,dining_room_0_1) +navigate(handled_cooking_pot) +uncover(handled_cooking_pot) +navigate(floor_block) +look(floor_block) +hide(floor_block,handled_cooking_pot,pot_lid)
+
+### Action + Task
+
+* `h_dynamic_lid_put_on` (v5_h_dynamic_lid_put_on, 16 steps): navigate(kitchen_cabinet_6/top) look(kitchen_cabinet_6/top) navigate(pot_lid) pick(pot_lid) navigate(kitchen_stove/top) place(pot_lid,kitchen_stove/top,[8.715, 1.655]) navigate(handled_cooking_pot) look(kitchen_stove/top) navigate(kitchen_island/top) look(kitchen_island/top) !hide(wooden_block_b,handled_cooking_pot,pot_lid) +navigate(handled_cooking_pot) +uncover(handled_cooking_pot) +navigate(kitchen_island/top) +look(kitchen_island/top) +hide(wooden_block_b,handled_cooking_pot,pot_lid)
 
 ## T18_check_cabinet_dishes
 
@@ -325,14 +331,17 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 ### Action-Level
 
 * `m_door_left_open` (v5_m_door_left_open, 3 steps): navigate(kitchen_cabinet_6) inspect(kitchen_cabinet_6) close(kitchen_cabinet_6)
+* `x6_pp_door_reopened` (v6_x6_pp_door_reopened, 5 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) inspect(kitchen_cabinet_6) close(kitchen_cabinet_6) +close(kitchen_cabinet_6)
 
 ### Task-Level
 
 * `h_task_two_cabinets` (v5_h_task_two_cabinets, 8 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) inspect(kitchen_cabinet_6) close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) inspect(kitchen_cabinet_4) close(kitchen_cabinet_4)
-* `h_dynamic_door_closed` (v5_h_dynamic_door_closed, 10 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) !inspect(kitchen_cabinet_6) +open(kitchen_cabinet_6) +inspect(kitchen_cabinet_6) close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) inspect(kitchen_cabinet_4) close(kitchen_cabinet_4)
 * `x6_gd_bowl_elsewhere__two_places` (v6_x6_gd_bowl_elsewhere__two_places, 8 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) inspect(kitchen_cabinet_6) close(kitchen_cabinet_6) navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_microwave/inside_floor) close(kitchen_microwave)
 * `x6_gd_bowl_elsewhere__three_places` (v6_x6_gd_bowl_elsewhere__three_places, 12 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) inspect(kitchen_cabinet_6) close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) inspect(kitchen_cabinet_4) close(kitchen_cabinet_4) navigate(kitchen_microwave) open(kitchen_microwave) look(kitchen_microwave/inside_floor) close(kitchen_microwave)
-* `x6_pp_door_reopened` (v6_x6_pp_door_reopened, 5 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) inspect(kitchen_cabinet_6) close(kitchen_cabinet_6) +close(kitchen_cabinet_6)
+
+### Action + Task
+
+* `h_dynamic_door_closed` (v5_h_dynamic_door_closed, 10 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) !inspect(kitchen_cabinet_6) +open(kitchen_cabinet_6) +inspect(kitchen_cabinet_6) close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) inspect(kitchen_cabinet_4) close(kitchen_cabinet_4)
 
 ## T19_recycling
 
@@ -383,12 +392,9 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 * `book_on_desk` (v5fix_book_on_desk, 8 steps): navigate(desk_1/top) look(desk_1/top) navigate(book_red) expose(book_red) +look(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top)
 * `shelf_taken` (v5fix_shelf_taken, 13 steps): navigate(bookcase_2/top) look(bookcase_2/top) navigate(mug_shelf) pick(mug_shelf) place(mug_shelf,bookcase_2/top,[0.79, -0.31]) navigate(desk_1/top) look(desk_1/top) navigate(book_red) expose(book_red) +look(desk_1/top) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top)
+* `h_dynamic_shelf_taken` (v5_h_dynamic_shelf_taken, 15 steps): navigate(desk_1/top) look(desk_1/top) +navigate(bookcase_2/top) +look(bookcase_2/top) +navigate(mug_shelf) +pick(mug_shelf) +place(mug_shelf,bookcase_2/top,[0.79, -0.31]) +navigate(desk_1/top) +look(desk_1/top) +navigate(book_red) +expose(book_red) +look(book_red) +pick(book_red) +navigate(bookcase_2/top) +place(book_red,bookcase_2/top)
 
 ### Task-Level
 
 * `x6_gd_book_put_away__in_4` (v6_x6_gd_book_put_away__in_4, 19 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(book_red) expose(book_red) +look(book_red) pick(book_red) retreat(kitchen_cabinet_4,0.3) close(kitchen_cabinet_4) navigate(bookcase_2/top) place(book_red,bookcase_2/top)
 * `x6_gd_book_put_away__in_6` (v6_x6_gd_book_put_away__in_6, 19 steps): navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() close(kitchen_cabinet_4) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() navigate(book_red) expose(book_red) +look(book_red) pick(book_red) retreat(kitchen_cabinet_6,0.3) close(kitchen_cabinet_6) navigate(bookcase_2/top) place(book_red,bookcase_2/top)
-
-### Action + Task
-
-* `h_dynamic_shelf_taken` (v5_h_dynamic_shelf_taken, 15 steps): navigate(desk_1/top) look(desk_1/top) +navigate(bookcase_2/top) +look(bookcase_2/top) +navigate(mug_shelf) +pick(mug_shelf) +place(mug_shelf,bookcase_2/top,[0.79, -0.31]) +navigate(desk_1/top) +look(desk_1/top) +navigate(book_red) +expose(book_red) +look(book_red) +pick(book_red) +navigate(bookcase_2/top) +place(book_red,bookcase_2/top)

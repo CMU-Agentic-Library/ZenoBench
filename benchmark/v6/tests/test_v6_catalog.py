@@ -132,6 +132,17 @@ def test_no_injected_action_failure_anywhere():
         assert helper not in src, helper
 
 
+def test_events_put_right_at_the_work_spot_are_action_level():
+    cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
+    for tid, vid in (("T09_tomato_soup", "x6_pp_tomato_taken_out__tomato1"), ("T16_rolling_pin_at_edge",
+                     "h_dynamic_bowl_put_behind"), ("T18_check_cabinet_dishes", "x6_pp_door_reopened"),
+                     ("T13_breakfast_setup", "x6_pp_spoon_moved__table_end")):
+        assert cat(tid, vid) == "action", (tid, vid)
+    # taken to another room: searched for, Task-Level
+    assert cat("T13_breakfast_setup", "x6_pp_spoon_moved__tv_stand") == "task"
+    assert cat("T12_tidy_toys", "x6_pp_duck_moved") == "task"
+
+
 def test_injected_only_variants_are_dropped():
     t = TASKS["T01_book_to_dining_table"]
     assert t["v6_dropped"]["m_ik_pick"] == "only injected action failures"

@@ -11,7 +11,7 @@
 | T01 | no_overhang | action | 6/10 of 10 | - |
 | T01 | far_no_overhang | action_task | 5/10 of 10 | - |
 | T01 | table_set | task | 0/10 of 10 | - |
-| T01 | h_dynamic_pushed_back | task | 8/10 of 10 | - |
+| T01 | h_dynamic_pushed_back | action_task | 8/10 of 10 | - |
 | T01 | x6_dr_block_on_book__block | action | 0/0 of 10 | - |
 | T01 | x6_dr_block_on_book__sponge | action | 0/0 of 10 | - |
 | T02 | crowded | action | 4/10 of 10 | - |
@@ -39,7 +39,7 @@
 | T06 | x6_gd_two_displays_event | task | 0/0 of 10 | - |
 | T07 | broken_oatmeal_away | task | 2/5 of 10 | - |
 | T07 | x6_sr_microwave_taken | task | 0/0 of 10 | - |
-| T07 | x6_pp_door_opened_after_heat | task | 0/0 of 10 | - |
+| T07 | x6_pp_door_opened_after_heat | action | 0/0 of 10 | - |
 | T08 | sponge_on_island | control | 7/10 of 10 | wipe reach |
 | T08 | sponge_on_tv_stand | task | 0/10 of 10 | wipe reach |
 | T08 | far_sponge_tv | task | 0/5 of 10 | wipe reach |
@@ -52,9 +52,9 @@
 | T09 | h_dynamic_spoon_taken | task | 5/5 of 10 | - |
 | T09 | x6_gd_tomato_elsewhere | task | 0/0 of 10 | - |
 | T09 | x6_pp_lid_taken_after_stir | task | 0/0 of 10 | search of the pot lid |
-| T09 | x6_pp_tomato_taken_out__tomato2 | task | 0/0 of 10 | - |
-| T09 | x6_pp_tomato_taken_out__tomato1 | task | 0/0 of 10 | - |
-| T09 | x6_pp_tomato_taken_out__tomato2_after_stir | task | 0/0 of 10 | - |
+| T09 | x6_pp_tomato_taken_out__tomato2 | action | 0/0 of 10 | - |
+| T09 | x6_pp_tomato_taken_out__tomato1 | action | 0/0 of 10 | - |
+| T09 | x6_pp_tomato_taken_out__tomato2_after_stir | action | 0/0 of 10 | - |
 | T10 | can_on_island | control | 9/10 of 10 | - |
 | T10 | can_in_dining_room | task | 5/5 of 10 | - |
 | T10 | far_can_far | task | 5/5 of 10 | - |
@@ -73,29 +73,29 @@
 | T13 | no_cup_bowl_on_cabinet | task | 0/5 of 10 | - |
 | T13 | no_cup_spoon_boxed_in | action_task | 0/10 of 10 | - |
 | T13 | h_dynamic_mug_taken | action_task | 2/5 of 10 | - |
-| T13 | x6_pp_spoon_moved__early | task | 0/0 of 10 | - |
-| T13 | x6_pp_spoon_moved__table_end | task | 0/0 of 10 | - |
+| T13 | x6_pp_spoon_moved__early | action | 0/0 of 10 | - |
+| T13 | x6_pp_spoon_moved__table_end | action | 0/0 of 10 | - |
 | T13 | x6_pp_spoon_moved__tv_stand | task | 0/0 of 10 | - |
 | T13 | x6_gd_bowl_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
 | T13 | x6_gd_two_settings | task | 0/0 of 10 | - |
 | T15 | book_free | control | 9/10 of 10 | - |
 | T15 | book_out_of_view | task | 5/10 of 10 | - |
 | T15 | h_task_block_on_book | action | 3/10 of 10 | - |
-| T15 | h_dynamic_book_moved | action_task | 2/10 of 10 | - |
-| T16 | h_dynamic_bowl_put_behind | task | 6/10 of 10 | - |
+| T15 | h_dynamic_book_moved | action | 2/10 of 10 | - |
+| T16 | h_dynamic_bowl_put_behind | action | 6/10 of 10 | - |
 | T17 | lid_on | action | 5/10 of 10 | - |
 | T17 | block_crowded | action | 2/10 of 10 | - |
 | T17 | lid_on_crowded | action | 2/10 of 10 | - |
 | T17 | h_task_lid_elsewhere | task | 5/10 of 10 | - |
-| T17 | h_dynamic_lid_put_on | task | 1/10 of 10 | - |
+| T17 | h_dynamic_lid_put_on | action_task | 1/10 of 10 | - |
 | T17 | x6_pp_lid_lifted | task | 0/0 of 10 | search of the pot lid |
 | T17 | x6_gd_hide_both_event | task | 0/0 of 10 | - |
 | T18 | m_door_left_open | action | 0/10 of 10 | low cabinet doors |
 | T18 | h_task_two_cabinets | task | 0/10 of 10 | low cabinet doors |
-| T18 | h_dynamic_door_closed | task | 0/10 of 10 | low cabinet doors |
+| T18 | h_dynamic_door_closed | action_task | 0/10 of 10 | low cabinet doors |
 | T18 | x6_gd_bowl_elsewhere__two_places | task | 0/0 of 10 | low cabinet doors |
 | T18 | x6_gd_bowl_elsewhere__three_places | task | 0/0 of 10 | low cabinet doors |
-| T18 | x6_pp_door_reopened | task | 0/0 of 10 | low cabinet doors |
+| T18 | x6_pp_door_reopened | action | 0/0 of 10 | low cabinet doors |
 | T19 | m_can_in_dining_room | task | 5/5 of 10 | - |
 | T19 | lookalike_bin | task | 5/5 of 10 | - |
 | T19 | h_dynamic_cube_moved | task | 0/5 of 10 | - |
@@ -108,5 +108,5 @@
 | T14 | e1_book_ready | control | 0/10 of 10 | - |
 | T14 | book_on_desk | action | 2/10 of 10 | - |
 | T14 | shelf_taken | action | 0/10 of 10 | - |
-| T14 | h_dynamic_shelf_taken | action_task | 1/10 of 10 | - |
+| T14 | h_dynamic_shelf_taken | action | 1/10 of 10 | - |
 | T14 | x6_gd_book_put_away | task | 0/0 of 10 | low cabinet doors |

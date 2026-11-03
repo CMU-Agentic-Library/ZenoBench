@@ -3,11 +3,12 @@
 * **Action-Level** (``action``): a short fallback at the work spot - a few skills combined, then the task goes
   on as planned.  The scene makes it necessary (``LOCAL_CONDITIONS`` / ``local_failure``): a flat book pushed
   over the edge before the pick, a crowded block pulled apart, the pot lid taken off, an object lying on the
-  target or a closed door opened first, clutter moved aside before wiping, a full destination cleared.  No
-  injected action failure.
+  target or a closed door opened first, clutter moved aside before wiping, a full destination cleared; or a
+  dynamic event put right where the robot works (``event_is_local``: a book pushed back, a tomato taken out of the
+  pot, a door opened again).  No injected action failure.
 * **Task-Level** (``task``): the plan itself changes over a longer horizon - an absent object and its substitute,
-  a search in another place or room, a capacity split, another destination / appliance / cookware, any dynamic
-  event.
+  a search in another place or room, a capacity split, another destination / appliance / cookware, an object an
+  event takes elsewhere.
 * **Action + Task** (``action_task``): both in one variant.
 * **Control** (``control``): neither; the nominal plan works.
 
@@ -24,6 +25,7 @@ from __future__ import annotations
 import json
 import sys
 from collections import Counter
+from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -86,7 +88,72 @@ def local_failure(f):
     return None
 
 
+SEARCH = ("search", "explore_room", "explore_furniture")
+PLACE_SKILLS = ("navigate", "open", "inspect", "explore_furniture")
+
+
+@lru_cache(maxsize=None)
+def _objects(base):
+    return {o["name"]: o for o in json.loads((ROOT / base / "annotation.json").read_text())["objects"]}
+
+
+def _furniture(task, lid, name):
+    """The piece of furniture an object stands on (or a place / support name belongs to)."""
+    v = task["variants"][lid]
+    for src in (v.get("move", {}), v.get("add", {}), task["scene"].get("move", {})):
+        if name in src and src[name].get("support"):
+            return src[name]["support"].split("/")[0]
+    for f in v.get("failures") or []:                     # an object an event brings in
+        ev = f.get("event") or {}
+        if ev.get("object") == name and (ev.get("to") or {}).get("support"):
+            return ev["to"]["support"].split("/")[0]
+    o = _objects(task["scene"]["base"]).get(name)
+    return (o.get("support") or name).split("/")[0] if o else str(name).split("/")[0]
+
+
+def _places(task, lid, steps):
+    out = set()
+    for s in steps:
+        a = s["args"]
+        n = a.get("destination") or a.get("target") or a.get("articulated") or a.get("furniture")
+        if s["skill"] in PLACE_SKILLS and n:
+            out.add(_furniture(task, lid, n))
+    return out
+
+
+def _control(task):
+    return next((info["layouts"][0] for vid, info in task["v6_variants"].items()
+                 if all(not a and not b for a, b in (_content(task, x, False) for x in info["layouts"]))), None)
+
+
+def event_is_local(task, lid, f):
+    """A dynamic event the robot repairs where it works anyway: a door opened / closed again, or an object moved
+    to a place the robot works at (a book pushed back, a tomato taken out of the pot, a bowl pushed into the
+    path), with no search for it and no new place afterwards.  An object taken elsewhere (searched for), or a
+    repair at another place (another display, the stove, another cabinet) is a longer-horizon change."""
+    ev = f.get("event") or {}
+    if ev.get("type") == "set_joint":
+        return True
+    steps = task["routes"][task["oracle"][lid]]["steps"]
+    hits = trig_hits(steps, f)
+    if not hits or ev.get("type") != "move_object":
+        return False
+    i = hits[0]
+    after = steps[i + 1:]
+    if any(s["skill"] in SEARCH and s["args"].get("object") in (ev.get("object"), None) for s in after):
+        return False
+    ctl = _control(task)
+    known = _places(task, lid, steps[:i + 1]) | (_places(task, ctl, task["routes"][task["oracle"][ctl]]["steps"])
+                                                if ctl else set())
+    to = (ev.get("to") or {}).get("support") or (ev.get("onto") and _furniture(task, lid, ev["onto"]))
+    return bool(to) and to.split("/")[0] in known and not (_places(task, lid, after) - known)
+
+
 def content(task, lid):
+    return _content(task, lid, True)
+
+
+def _content(task, lid, events=True):
     """``(local, longer)``: why one layout is Action-Level / Task-Level (lists of reasons)."""
     v = task["variants"][lid]
     local, longer = [], []
@@ -97,7 +164,10 @@ def content(task, lid):
         if why:
             local.append(why)
         elif f.get("when") == "dynamic":
-            longer.append(f"event: {f['kind']}")
+            if events and event_is_local(task, lid, f):
+                local.append("someone changed things at the work spot: put it right there")
+            else:
+                longer.append(f"event: {f['kind']}")
         else:
             longer.append(f"{f['kind']}")
     for c in v.get("conditions") or []:
