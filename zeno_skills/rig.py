@@ -29,7 +29,7 @@ BASE_VMAX = np.array([1.0, 1.0, 2.0])     # m/s, m/s, rad/s: base velocity targe
 class Rig:
     sticky = None                # zeno_skills.sticky.StickyHands when the profile turns sticky hands on
 
-    def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=4, log=print,
+    def __init__(self, sim, stage, robot, kin, world, ann, cams=None, stride=8, log=print,
                  first_person_camera=None, wrist_cameras=None):
         import torch
         from isaacsim.core.prims import SingleArticulation, SingleRigidPrim
@@ -687,7 +687,7 @@ class Rig:
     # ------------------------------------------------------------ video
     @staticmethod
     def _compose(imgs, cap):
-        """Main view + inset of the second camera + caption, JPEG-encoded
+        """Main view (+ an inset of a second camera if given) + caption, JPEG-encoded
         (raw frames of a long episode do not fit in memory)."""
         import cv2
         img = np.ascontiguousarray(imgs[0])
@@ -700,12 +700,13 @@ class Rig:
         ok, buf = cv2.imencode(".jpg", img[..., ::-1], [cv2.IMWRITE_JPEG_QUALITY, 90])
         return buf
 
-    def write_video(self, path, fps=30):
+    def write_video(self, path, fps=None):
+        """The frames as an MP4 at real time (a frame every ``stride`` ticks of 120 Hz) unless ``fps``."""
         import cv2
         import imageio.v2 as imageio
         if not self.frames:
             return None
-        w = imageio.get_writer(path, fps=fps, macro_block_size=1, quality=8)
+        w = imageio.get_writer(path, fps=fps or 120 / self.stride, macro_block_size=1, quality=8)
         for buf in self.frames:
             w.append_data(cv2.imdecode(buf, cv2.IMREAD_COLOR)[..., ::-1])
         w.close()

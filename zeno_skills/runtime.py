@@ -3,7 +3,7 @@ tools/verify_skills.py and episode/episode.py.
 
     app = launch(video=True)                      # before any omni/isaac import
     rig = make_rig(app, "tasks/collect_fruits/scene.usd", "tasks/collect_fruits/annotation.json",
-                   video=True, res=(720, 1280), stride=4)
+                   video=True, res=(720, 1280), stride=8)
     ...skills...
     rig.write_video("run.mp4")
 """
@@ -41,7 +41,7 @@ def launch(video=True, first_person=False):
                         "fast_shutdown": True}).app
 
 
-def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=None, prepare=None,
+def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=None, prepare=None,
              handle_objects=(), first_person=False, first_person_res=(480, 640), wrist_cameras=False,
              first_person_focal_length=10.0):
     """Build a rig; optionally attach an RGB camera to Malo's stereo camera mount.
@@ -87,10 +87,10 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
     if video:
         from isaaclab.sensors import Camera, CameraCfg
         H, W = res
-        for k, f in (("follow", 13.0), ("wide", 11.0)):
-            cams[k] = Camera(CameraCfg(prim_path=f"/World/RunCam_{k}", update_period=0, height=H, width=W,
-                                       data_types=["rgb"], spawn=sim_utils.PinholeCameraCfg(
-                                           focal_length=f, clipping_range=(0.05, 40.0))))
+        # one camera at 15 fps (stride 8): with a second (wide) view at 30 fps rendering took ~70% of a step
+        cams["follow"] = Camera(CameraCfg(prim_path="/World/RunCam_follow", update_period=0, height=H, width=W,
+                                          data_types=["rgb"], spawn=sim_utils.PinholeCameraCfg(
+                                              focal_length=13.0, clipping_range=(0.05, 40.0))))
     first_person_camera = None
     if first_person:
         from isaaclab.sensors import Camera, CameraCfg
@@ -133,8 +133,8 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
         cam_state = {}
 
         def step_with_cams(n=1):
-            # cameras follow the base: over-the-shoulder + a higher wide view.
-            # Low targets (floor pick) get a lower, closer follow camera.
+            # the camera follows the base over the shoulder.
+            # Low targets (floor pick) get a lower, closer view.
             for _ in range(n):
                 if rig.tick % rig.stride == 0:
                     x, y, yaw = rig.base_pose()
@@ -159,8 +159,6 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=4, log=No
                     cam_state["eye"] = w(u, v, 1.35 + dz * tz)
                     cams["follow"].set_world_poses_from_view(torch.tensor([cam_state["eye"]], dtype=f32),
                                                              torch.tensor([tgt], dtype=f32))
-                    cams["wide"].set_world_poses_from_view(torch.tensor([w(-2.2, -1.2, 2.4)], dtype=f32),
-                                                           torch.tensor([w(0.4, 0.0, 0.5)], dtype=f32))
                     if rig.camera_override is not None:
                         eye, target = rig.camera_override
                         cams["follow"].set_world_poses_from_view(torch.tensor([eye], dtype=f32),
