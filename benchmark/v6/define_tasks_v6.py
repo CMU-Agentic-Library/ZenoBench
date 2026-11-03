@@ -33,9 +33,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from benchmark.v5.define_tasks_v5 import (FAIL, FIELDS, OVERLAY, P, REC, START, S, _refresh_view,  # noqa: E402
-                                          f_grasp, f_grasp_persist, f_ik, f_ik_persist, f_initial, f_joint, f_move,
-                                          f_slip, find, seed_vary, with_grasp, with_ik, with_slip)
+from benchmark.v5.define_tasks_v5 import (FIELDS, OVERLAY, P, REC, S, _refresh_view,  # noqa: E402
+                                          f_initial, f_joint, f_move, find, seed_vary)
 
 V5 = ROOT / "benchmark/v5/tasks.json"
 OUT = ROOT / "benchmark/v6/tasks.json"
@@ -44,25 +43,6 @@ TOMATOES = ["cherry_tomato_1", "cherry_tomato_2"]
 
 
 # ----------------------------------------------------------------- helpers
-def f_slip_persist(x, one_handed=False):
-    t = {"skill": "navigate", "while_holding": x, "nth": 1}
-    if one_handed:
-        t["one_handed"] = True
-    return {"id": f"slip_{x}_persistent", "kind": "slip", "persist": True, "trigger": t}
-
-
-def f_ik_where(skill, fid, **args):
-    """Persistent IK refusal of ``skill`` wherever ``args`` match (e.g. every drop into one container)."""
-    return {"id": fid, "kind": "ik", "persist": True, "until": "never", "trigger": {"skill": skill, "args": args, "nth": 1}}
-
-
-def refused_twice(step, repark=None):
-    """A persistent refusal: the call fails, a re-park (optional) and a retry fail the same way, then the
-    plan changes."""
-    out = [FAIL(step, True)]
-    if repark:
-        out.append(REC(S("approach", target=repark)))
-    return out + [FAIL(step, True)]
 
 
 def OR(t, vid):
@@ -102,14 +82,6 @@ def open_explore(art):
     return [nav(art), S("open", articulated=art), S("bend"), S("explore_furniture", furniture=art), S("straighten")]
 
 
-def behind_wall(steps, target, blocker, aside):
-    """The target stands against the wall with ``blocker`` right in front: every pick of the target is refused
-    (no reach, no room to slide it out) until the blocker is moved aside; then pick the target as planned."""
-    i = find(steps, "pick", object=target)
-    return steps[:i] + refused_twice(steps[i]) + recs(nav(blocker), pick(blocker), place(blocker, *aside), nav(target),
-                                                      look(target)) + [REC(steps[i])] + steps[i + 1:]
-
-
 def put_away(steps_before, art_first, art_second, take, steps_after):
     """Inspect two closed cabinets in the worse order, take the item from the second, close both."""
     return steps_before + open_explore(art_first) + [S("close", articulated=art_first)] + open_explore(art_second) \
@@ -120,32 +92,11 @@ def put_away(steps_before, art_first, art_second, take, steps_after):
 def T01(t):
     B = "paperback_book"
     base = OR(t, "overhang_ready")                      # look, nav, approach, look, pick, nav table, place
-    i = at(base, "pick", object=B)
-    carry, place_ = base[i + 1], base[i + 2]
-    # re-park at the slipped flat book with navigate: approach parks so close that it leaves the head's view
-    two_hand = (base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B))
-                + [FAIL(carry, True)] + recs(nav(B), look(B), S("expose", object=B), pick(B, hands="both"), carry)
-                + [place_])           # the bimanual flat pick needs an overhanging edge: expose first
-    slip_once = base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B), carry) + [place_]
     on_book = lambda x: {x: {"support": None, "z": 0.886, "xy": [7.62, 1.59], "yaw_deg": 0.0}}  # noqa: E731
 
     def clear_book(x):
         return [look("kitchen_island/top")] + recs(nav(x), pick(x), place(x, "kitchen_island/top", [7.2, 1.85])) + base[1:]
     return {
-        "x6_sr_two_hand_carry": dict(
-            base="overhang_ready", control="x6_m_slip_book",
-            challenge="the paperback slips out of the one-handed pinch at the start of every carry; the first place "
-                      "on the table is also refused from its park",
-            rationale="a one-handed retry fails every time (persistent slip), so the carry procedure must change: "
-                      "pick the book with both hands (the left hand steadies it); solvable because pick(hands=both) "
-                      "is a library skill and the slip only affects one-handed carries",
-            cases={"": dict(failures=[f_slip_persist(B, one_handed=True), f_ik("place", B)],
-                            route=with_ik(two_hand, "place", B))}),
-        "x6_m_slip_book": dict(
-            base="overhang_ready", control="overhang_ready",
-            challenge="the paperback slips once at the start of the carry",
-            rationale="matched control of x6_sr_two_hand_carry: the same slip, transient, so picking it again works",
-            cases={"": dict(failures=[f_slip(B)], route=slip_once)}),
         "x6_dr_block_on_book": dict(
             base="overhang_ready", control="overhang_ready",
             factor="which object lies on the book (blocking relation)",
@@ -161,15 +112,7 @@ def T01(t):
 
 def T02(t):
     A, B, F = "wooden_block_a", "wooden_block_b", "floor_block"
-    base = OR(t, "clear")                               # look, nav B, pick B, rotate B, nav A, stack B on A
-    swap_tail = recs(nav(A), pick(A), S("rotate", object=A, degrees=30), nav(B), S("approach", target=B),
-                     S("stack", object=A, base=B))
-    cases = {}
-    for case, fail, rep in (("grasp", f_grasp_persist(B), None), ("ik", f_ik_persist("pick", B), B)):
-        r = base[:2] + refused_twice(base[2], rep) + swap_tail
-        cases[case] = dict(failures=[fail, f_ik("stack", A)], route=with_ik(r, "stack", A))
     # three-block tower: block A at the edge (edge_base), block B in the open, the floor block put on the island
-    order = [(A, B), (F, A)]
     tower_goal = {"any": [[["on_top_of", m, b], ["on_top_of", top, m], ["away_from_edge", b, 0.05],
                            ["on", b, "kitchen_island/top"]]
                           for b in (B, F) for m in (A, B, F) for top in (A, B, F) if len({b, m, top}) == 3],
@@ -179,25 +122,7 @@ def T02(t):
                                                    S("stack", object=A, base=B)) \
             + recs(S("search", object=F, region=region), nav(F), pick(F), nav(B), S("approach", target=B),
                    S("stack", object=F, base=A))
-    put_down = base[:5] + refused_twice(base[5], A) + with_grasp(recs(
-        place(B, "kitchen_island/top", [7.0, 1.8]), nav(A), pick(A), nav(B), S("approach", target=B),
-        S("stack", object=A, base=B)), A)
     return {
-        "x6_cl_base_a_unreachable": dict(
-            base="clear", control="clear",
-            challenge="no park reaches the top of block A for the stack (block B in hand); block A slips on its "
-                      "first pick",
-            rationale="stacking on A is impossible however the robot re-parks (persistent, pinned to A as the base): "
-                      "set B down and swap the roles, A goes on top of B",
-            cases={"": dict(failures=[f_ik_where("stack", "ik_stack_on_a_persistent", base=A), f_grasp(A)], route=put_down)}),
-        "x6_cl_block_b_unholdable": dict(
-            base="clear", control="m_grasp_b",
-            factor="failure mechanism (grasp slip vs reach)",
-            challenge="block B cannot be picked at all (it slips every time / no park reaches it); the first stack "
-                      "of the other block is refused from its park",
-            rationale="the goal allows either block on top: when B cannot be held, swap the roles and stack A on B; "
-                      "retrying B never works (persistent)",
-            cases=cases),
         "x6_gd_tower_with_event": dict(
             base="edge_base", control="edge_base",
             move={F: P("kitchen_island/top", 6.95, 1.85)},
@@ -218,13 +143,8 @@ def T02(t):
 
 
 def T04(t):
-    C, M = "cup_counter_b", "mug"
+    C = "cup_counter_b"
     base = OR(t, "cup_available")                       # look, nav cup, pick cup, nav cab6, place cup
-    slip_r = base[:3] + [FAIL(base[3], True)] + recs(S("approach", target=C), look(C), pick(C)) + [FAIL(base[3], True)] \
-        + with_ik(recs(nav(M), pick(M), nav("kitchen_cabinet_6/top"), place(M, "kitchen_cabinet_6/top")), "pick", M)
-    ik_r = base[:2] + refused_twice(base[2], C) + with_grasp(recs(
-        S("search", object=M, region="living_room_0_0"), nav(M), pick(M), nav("kitchen_cabinet_6/top"),
-        place(M, "kitchen_cabinet_6/top")), M)
     spot_goal = copy.deepcopy(t["variants"]["h_task_spot_taken"]["goal"])
     filled = [f_move("destination", "pot_lid", P("kitchen_cabinet_6/top", 3.335, 0.36), ("pick", {"object": C}),
                      fid="destination_lid"),
@@ -264,16 +184,6 @@ def T04(t):
             rationale="the visible substitute must not end the search: the cabinets are inspected until the cup is "
                       "found (reference route: the worse order, the cup is in the second cabinet)",
             goal=cab_goal, cases=cup_cases),
-        "x6_cl_cup_unusable": dict(
-            base="cup_available", control="m_ik_cup",
-            factor="failure mechanism and where the substitute is",
-            challenge="the cup cannot be used: it slips out of the hand at every carry, or no park reaches it while "
-                      "the mug stands on the TV stand",
-            rationale="persistent failures on the cup make retries useless; the instruction allows a mug, so the "
-                      "object changes (cross-level); in the second case the mug must also be found",
-            cases={"slip": dict(failures=[f_slip_persist(C), f_ik("pick", M)], route=slip_r),
-                   "ik_mug_away": dict(move={M: P("tv_stand_2/top", 7.75, 0.36)},
-                                       failures=[f_ik_persist("pick", C), f_grasp(M)], route=ik_r)}),
         "x6_dr_spot_filled_dynamic": dict(
             base="cup_available", control="cup_available", goal=spot_goal,
             challenge="right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy "
@@ -289,10 +199,7 @@ def T04(t):
 
 
 def T05(t):
-    base = OR(t, "h_task_pencil_in_cabinet")
     tail_desk = [nav("desk_1/top"), place("pencil", "desk_1/top")]
-    nominal = RT(t, "nominal")                          # nav bookcase, look, nav pen, pick pen, nav desk, place pen
-    pen_fail = nominal[:3] + refused_twice(nominal[3])
     cab_goal = copy.deepcopy(t["variants"]["h_task_pencil_in_cabinet"]["goal"])
     cab_goal["all"].append(["is_closed", "kitchen_cabinet_4"])
     two_cab = ("The kid needs something to write with for homework. Bring a pen to the study desk; if there is no "
@@ -312,22 +219,6 @@ def T05(t):
     pen_goal = {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"], ["is_closed", "kitchen_cabinet_6"],
                         ["is_closed", "kitchen_cabinet_4"]]}
     return {
-        "x6_cl_pen_unholdable": dict(
-            base="pen_available", control="pen_available", contrast="no_pen",
-            factor="where the substitute is",
-            challenge="a pen lies on the bookcase but cannot be held (it slips from the pinch every time); the pencil "
-                      "is on the bookcase too, or in another room",
-            rationale="the pen is there, so 'no pen' is not observable: only the repeated grasp failure tells the "
-                      "planner to fall back to the pencil the instruction allows (cross-level); the control no_pen "
-                      "has no pen at all",
-            cases={"pencil_here": dict(failures=[f_grasp_persist("pen"), f_ik("place", "pencil")],
-                                       route=with_ik(pen_fail + recs(nav("pencil"), pick("pencil"), *tail_desk),
-                                                     "place", "pencil")),
-                   "pencil_away": dict(move={"pencil": P("dining_table_2/top", 3.7, 6.3)},
-                                       failures=[f_grasp_persist("pen"), f_ik("place", "pencil")],
-                                       route=with_ik(pen_fail + recs(S("search", object="pencil", region="dining_room_0_1"),
-                                                                     nav("pencil"), pick("pencil"), *tail_desk),
-                                                     "place", "pencil"))}),
         "x6_gd_pencil_other_cabinet": dict(
             base="h_task_pencil_in_cabinet", control="h_task_pencil_in_cabinet",
             move={"pencil": in4}, goal=cab_goal, instruction=other_cab,
@@ -357,43 +248,11 @@ def T05(t):
 def T06(t):
     A, B = "wooden_block_a", "wooden_block_b"
     base = OR(t, "free")                                 # look, nav A, pick A, nav cab6, place A cab6
-    fail_a = base[:2] + refused_twice(base[2])
-    to_b = recs(nav(B), pick(B), nav("kitchen_cabinet_6/top"), place(B, "kitchen_cabinet_6/top"))
-    dining_b = recs(S("search", object=B, region="dining_room_0_1")) + to_b
-    unreach = with_grasp(base[:4], A) + refused_twice(base[4], "kitchen_cabinet_6/top") \
-        + recs(nav("tv_stand_2/top"), place(A, "tv_stand_2/top"))
     displays = {"all": [["hand_empty", "right"]],
                 "any": [[["on", x, "kitchen_cabinet_6/top"], ["on", y, "tv_stand_2/top"]] for x, y in ((A, B), (B, A))]}
     two = lambda *sr: base[:5] + recs(S("search", object=B, **dict(sr)), nav(B), pick(B), nav("tv_stand_2/top"),  # noqa: E731
                                       place(B, "tv_stand_2/top"))
     return {
-        "x6_cl_block_a_unholdable": dict(
-            base="free", control="x6_m_grasp_block_a",
-            factor="where the substitute is",
-            challenge="block A slips out of the fingers at every pick; block B (on the island or left on the dining "
-                      "table) slips once at the start of its carry",
-            rationale="the goal accepts either block: after A fails persistently the object changes to B (found "
-                      "where it is), a transient slip of B only needs a re-pick",
-            cases={"b_island": dict(failures=[f_grasp_persist(A), f_slip(B)], route=with_slip(fail_a + to_b, B)),
-                   "b_dining": dict(move={B: P("dining_table_2/top", 3.7, 6.3)},
-                                    failures=[f_grasp_persist(A), f_slip(B)], route=with_slip(fail_a + dining_b, B))}),
-        "x6_m_grasp_block_a": dict(
-            base="free", control="free",
-            challenge="block A slips from the fingers on the first pick",
-            rationale="matched control of x6_cl_block_a_unholdable: transient, the second pick works",
-            cases={"": dict(failures=[f_grasp(A)], route=with_grasp(base, A))}),
-        "x6_cl_cabinet_unreachable": dict(
-            base="free", control="x6_m_ik_place_cabinet",
-            challenge="block A slips on the first pick; then the cabinet top cannot be reached from any park",
-            rationale="re-parking does not help (persistent refusal pinned to the cabinet): the destination changes "
-                      "to the TV stand, the other display the instruction allows",
-            cases={"": dict(failures=[f_grasp(A), f_ik_persist("place", A, receptacle="kitchen_cabinet_6/top")],
-                            route=unreach)}),
-        "x6_m_ik_place_cabinet": dict(
-            base="free", control="free",
-            challenge="the first place on the cabinet top is refused from its park",
-            rationale="matched control of x6_cl_cabinet_unreachable: one re-park fixes it",
-            cases={"": dict(failures=[f_ik("place", A)], route=with_ik(base, "place", A))}),
         "x6_gd_two_displays_event": dict(
             base="free", control="free", goal=displays,
             instruction="Put both toy blocks on display: one on the low wall cabinet and one on the TV stand, so they "
@@ -415,12 +274,6 @@ def T07(t):
     X, MW = "oatmeal", "kitchen_microwave"
     base = OR(t, "microwave_works")      # nav mw, open, look island, nav oat, pick, nav mw floor, place, close, heat
     stove = [nav("kitchen_stove/top"), place(X, "kitchen_stove/top"), S("heat", food=X, appliance="kitchen_stove", temp_c=40)]
-    stuck_island = base[:1] + refused_twice(base[1], MW) + with_ik(recs(look("kitchen_island/top"), nav(X), pick(X), *stove),
-                                                                   "pick", X)
-    # the bowl on the wall cabinet: re-park with navigate (turning in place at an approach park hits furniture)
-    stuck_cab = base[:1] + refused_twice(base[1], MW) + recs(S("search", object=X, region="living_room_0_0"), nav(X)) \
-        + [FAIL(pick(X), True)] + recs(nav(X), pick(X), *stove)
-    stuck_fail = [f_ik_persist("open", MW, key="articulated"), f_ik("pick", X)]
     holds = t["variants"]["microwave_holds_pot"]
     pot_in = [f_move("resource", "handled_cooking_pot", P("kitchen_microwave/inside_floor", 4.5, 2.5),
                      ("look", {"target": "kitchen_island/top"}), fid="resource_microwave_taken"),
@@ -430,22 +283,6 @@ def T07(t):
     taken = base[:6] + recs(look("kitchen_microwave/inside_floor"), S("close", articulated=MW), *stove)
     reopened = base + recs(S("close", articulated=MW))
     return {
-        "x6_cl_microwave_door_stuck": dict(
-            base="microwave_works", control="x6_m_ik_open_microwave",
-            factor="where the food is",
-            challenge="the microwave door cannot be opened from any park; the first pick of the bowl is refused (the "
-                      "bowl is on the island, or on the wall cabinet out of view)",
-            rationale="the microwave procedure is unavailable (persistent): heat on the stove instead; the microwave "
-                      "stays closed, which the goal requires anyway",
-            cases={"oatmeal_island": dict(failures=stuck_fail, route=stuck_island),
-                   "oatmeal_cabinet": dict(move={X: P("kitchen_cabinet_6/top", 3.7, 0.36)}, failures=stuck_fail,
-                                           route=stuck_cab)}),
-        "x6_m_ik_open_microwave": dict(
-            base="microwave_works", control="microwave_works",
-            challenge="the first open of the microwave door is refused from its park",
-            rationale="matched control of x6_cl_microwave_door_stuck: one re-park fixes it",
-            cases={"": dict(failures=[f_ik("open", MW, key="articulated")],
-                            route=with_ik(base, "open", MW, key="articulated"))}),
         "x6_sr_microwave_taken": dict(
             base="microwave_works", control="microwave_works",
             goal=copy.deepcopy(holds["goal"]),
@@ -468,17 +305,7 @@ def T08(t):
     base = OR(t, "sponge_on_island")
     back = base + recs(look("kitchen_island/top"), S("search", object=X), nav(X), pick(X),
                        nav("kitchen_island/top"), place(X, "kitchen_island/top"))
-    tv = OR(t, "sponge_on_tv_stand")
     return {
-        "x6_cl_sponge_behind_mug": dict(
-            base="sponge_on_tv_stand", control="m_grasp_sponge",
-            move={X: P("tv_stand_2/top", 7.6, 0.245, 180.0), "mug": P("tv_stand_2/top", 7.6, 0.36)},
-            challenge="the sponge lies at the back of the TV stand, against the wall, with a mug right in front of it",
-            rationale="no park reaches the sponge while the mug is in front and the wall behind (persistent until the "
-                      "mug is moved): insert the subgoal of moving the mug, then fetch the sponge",
-            cases={"": dict(failures=[f_initial("dependency", [["on", "mug", "tv_stand_2/top"]], fid="dependency_in_front"),
-                                      {**f_ik_persist("pick", X), "until_moved": "mug"}],
-                            route=behind_wall(tv, X, "mug", ("tv_stand_2/top", [7.0, 0.36])))}),
         "x6_pp_sponge_taken_after_wipe": dict(
             base="sponge_on_island", control="sponge_on_island",
             challenge="right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
@@ -496,49 +323,17 @@ def T09(t):
     SP, POT, LID = "breakfast_spoon", "handled_cooking_pot", "pot_lid"
     base = OR(t, "lid_off")        # look, collect, nav spoon, pick spoon, nav pot, stir, nav island, place spoon,
     #                                nav lid, pick lid, nav pot, cover, nav stove, heat
-    i_sp = at(base, "pick", object=SP)
-    lid_tail = base[at(base, "navigate", destination=LID):]
 
-    def alt_spoon(spoon, pre=()):
-        return recs(*pre, nav(spoon), pick(spoon), nav(POT), S("stir", container=POT, tool=spoon),
-                    nav("kitchen_island/top"), place(spoon, "kitchen_island/top"))
-    spoon_fail = base[:i_sp] + refused_twice(base[i_sp])
-    cabinet = with_ik(spoon_fail + alt_spoon("spoon_kitchen_cabinet") + lid_tail, "pick", LID)
-    dining = with_ik(spoon_fail + alt_spoon("spoon_target_table", (S("search", object="spoon_target_table",
-                                                                      region="dining_room_0_1"),)) + lid_tail, "pick", LID)
-    col = base[1]
-    per_item = recs(nav(TOMATOES[0]), pick(TOMATOES[0]), nav(POT), S("drop", object=TOMATOES[0], container=POT),
-                    nav(TOMATOES[1]), pick(TOMATOES[1]), nav(POT), S("drop", object=TOMATOES[1], container=POT))
-    split = base[:1] + refused_twice(col, POT) + with_grasp(per_item, TOMATOES[0]) + base[2:]
     j_lid = at(base, "navigate", destination=LID)
     lid_taken = lambda *sr: base[:j_lid] + recs(look("kitchen_stove/top"), S("search", object=LID, **dict(sr))) + base[j_lid:]  # noqa: E731
     tomato_out = lambda x: base[:2] + recs(look("kitchen_island/top"), nav(x), pick(x), nav(POT),  # noqa: E731
                                            S("drop", object=x, container=POT)) + base[2:]
-    kept_tomato = {"atom": ["inside", TOMATOES[0], POT], "by": {"skill": "collect", "args": {"container": POT}}}
 
     def apart(region):
         return base[:1] + recs(S("collect", objects=[TOMATOES[0]], container=POT),
                                S("search", object=TOMATOES[1], region=region), nav(TOMATOES[1]), pick(TOMATOES[1]),
                                nav(POT), S("drop", object=TOMATOES[1], container=POT)) + base[2:]
     return {
-        "x6_cl_spoon_unholdable": dict(
-            base="lid_off", control="m_grasp_spoon",
-            factor="which substitute exists and where",
-            challenge="once the tomatoes are in the pot, the breakfast spoon cannot be held (it slips every time); "
-                      "another spoon is on the wall cabinet, or only one on the dining table; the first lid pick is "
-                      "refused",
-            rationale="stirring needs a spoon, not this spoon: switch to another spoon (found where it is) and keep "
-                      "the tomatoes in the pot",
-            cases={"spoon_cabinet": dict(failures=[f_grasp_persist(SP), f_ik("pick", LID)], route=cabinet),
-                   "spoon_dining": dict(remove=["spoon_kitchen_cabinet"], failures=[f_grasp_persist(SP), f_ik("pick", LID)],
-                                        route=dining)}),
-        "x6_sr_collect_refused": dict(
-            base="lid_off", control="x6_m_ik_collect",
-            challenge="collecting both tomatoes into the pot at once is refused from every park; the first single "
-                      "tomato pick slips",
-            rationale="the batch skill is unavailable (persistent): decompose into one pick-and-drop per tomato",
-            cases={"": dict(failures=[f_ik_where("collect", "ik_collect_persistent", container=POT),
-                                      f_grasp(TOMATOES[0])], route=split)}),
         "x6_gd_tomato_elsewhere": dict(
             base="lid_off", control="lid_off",
             factor="where the second tomato was left",
@@ -551,13 +346,6 @@ def T09(t):
                            route=apart(region))
                    for c, to, region in (("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"),
                                          ("cabinet6", P("kitchen_cabinet_6/top", 3.7, 0.36), "living_room_0_0"))}),
-        "x6_m_ik_collect": dict(
-            base="lid_off", control="lid_off",
-            challenge="the first collect into the pot is refused from its park",
-            rationale="matched control of x6_sr_collect_refused: one re-park fixes it",
-            cases={"": dict(failures=[f_ik_where("collect", "ik_collect_once", container=POT) | {"persist": False,
-                                                                                                "until": "base_skill"}],
-                            route=base[:1] + [FAIL(col, True)] + recs(S("approach", target=POT), col) + base[2:])}),
         "x6_pp_lid_taken_after_stir": dict(
             base="lid_off", control="lid_off",
             challenge="right after the robot stirs, someone takes the pot lid to the other low cabinet",
@@ -598,20 +386,7 @@ def T10(t):
                         nav("trash_can"), S("drop", object=CAN, container="trash_can")]
     in_cab = {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.63, 0.36], "yaw_deg": 0.0}
     in_mw = copy.deepcopy(t["variants"]["h_task_can_in_microwave"]["move"][CAN])
-    base = OR(t, "can_on_island")
-    j = at(base, "drop", object=CAN)
-    on_tv = recs(look("tv_stand_2/top")) + base[1:]
     return {
-        "x6_cl_can_behind_bottle": dict(
-            base="can_on_island", control="m_ik_can",
-            move={CAN: P("tv_stand_2/top", 7.2, 0.245), "juice_bottle": P("tv_stand_2/top", 7.2, 0.33)},
-            challenge="the can stands at the back of the TV stand, against the wall, with the juice bottle right in front",
-            rationale="no park reaches the can while the bottle blocks it (persistent until the bottle is moved): move "
-                      "the bottle aside first",
-            cases={"": dict(failures=[f_initial("dependency", [["on", "juice_bottle", "tv_stand_2/top"]],
-                                                fid="dependency_in_front"),
-                                      {**f_ik_persist("pick", CAN), "until_moved": "juice_bottle"}],
-                            route=behind_wall(on_tv, CAN, "juice_bottle", ("tv_stand_2/top", [7.7, 0.36])))}),
         "x6_gd_can_put_away": dict(
             base="can_on_island", control="h_task_can_in_microwave",
             factor="which closed place holds the item",
@@ -628,33 +403,12 @@ def T10(t):
                                         + [S("close", articulated="kitchen_cabinet_6")] + mw + take("kitchen_microwave"),
                                         failures=[f_initial("resource", [["on", CAN, "kitchen_microwave/inside_floor"]],
                                                             fid="resource_can_put_away")])}),
-        "x6_sr_drop_refused": dict(
-            base="can_on_island", control="x6_m_ik_drop",
-            challenge="dropping the can over the trash can is refused from every park; the first pick is refused",
-            rationale="the drop procedure is unavailable (persistent): put the can into the trash can with a place "
-                      "instead",
-            cases={"": dict(failures=[f_ik("pick", CAN), f_ik_where("drop", "ik_drop_trash_persistent", container="trash_can")],
-                            route=with_ik(base[:j], "pick", CAN) + refused_twice(base[j], "trash_can")
-                            + recs(place(CAN, "trash_can")))}),
-        "x6_m_ik_drop": dict(
-            base="can_on_island", control="can_on_island",
-            challenge="the first drop over the trash can is refused from its park",
-            rationale="matched control of x6_sr_drop_refused: one re-park fixes it",
-            cases={"": dict(failures=[f_ik("drop", CAN)], route=with_ik(base, "drop", CAN))}),
     }
 
 
 def T12(t):
     CAR, DUCK, BASKET = "toy_car", "rubber_duck", "storage_basket"
     base = OR(t, "toys_out")         # explore, explore, nav car, pick, nav basket, place, nav duck, pick, nav basket, place, nod
-    tray = copy.deepcopy(t["variants"]["toys_everywhere"]["add"]["toy_tray"])
-    small = copy.deepcopy(t["variants"]["toys_everywhere"]["add"]["toy_bin_small"])
-    goal = {"all": [["upright", BASKET], ["hand_empty", "right"]],
-            "any": [[["inside", CAR, a], ["inside", DUCK, b]] for a in (BASKET, "toy_tray") for b in (BASKET, "toy_bin_small")]}
-    i = at(base, "place", object=CAR)
-    unreach = with_grasp(base[:i], CAR) + refused_twice(base[i], BASKET) \
-        + recs(nav("bookcase_2/top"), look("bookcase_2/top"), place(CAR, "toy_tray"), nav(DUCK), pick(DUCK),
-               nav("toy_bin_small"), S("drop", object=DUCK, container="toy_bin_small"))
     k = at(base, "navigate", destination=DUCK)
     ev = t["variants"]["toys_everywhere"]
     bins = {"left": (0.84, -0.43), "right": (1.13, -0.43)}
@@ -694,17 +448,6 @@ def T12(t):
             rationale="the half-full bin only has room for the duck (between the block columns), the car needs the "
                       "empty bin: allocate by remaining capacity, which flips with the seed",
             cases={"left_full": cap_case("left"), "right_full": cap_case("right")}),
-        "x6_cl_basket_unreachable": dict(
-            base="toys_out", control="m_ik_duck_place",
-            add={"toy_tray": tray, "toy_bin_small": small}, goal=goal, watch=[CAR, DUCK, BASKET, "toy_tray", "toy_bin_small"],
-            instruction="It is nearly bedtime. Put the kid's toy car and rubber duck away in the storage basket in the "
-                        "bedroom; if you cannot get them into it, use the toy tray and the small toy bin on the bedroom "
-                        "bookcase (the duck is too tall for the tray).",
-            challenge="the car slips on its first pick; then nothing can be put into the basket from any park",
-            rationale="the basket is unreachable for every toy (persistent, pinned to the basket): the destinations "
-                      "change to the stated tray (car) and small bin (duck), without trying the basket for the duck",
-            cases={"": dict(failures=[f_grasp(CAR), f_ik_where("place", "ik_place_basket_persistent", receptacle=BASKET)],
-                            route=unreach)}),
         "x6_pp_duck_moved": dict(
             base="toys_out", control="toys_out",
             factor="where the event takes the resource",
@@ -724,11 +467,6 @@ def T13(t):
     BOWL, CUP, MUG, SPOON = "bowl", "cup", "mug", "spoon"
     base = OR(t, "dishes_on_tv_stand")   # look dining, nav tv, look tv, nav bowl, pick bowl, nav dining, place bowl,
     #                                       nav cup, pick cup, nav dining, place cup
-    i = at(base, "pick", object=CUP)
-    mug_tail = lambda pre: recs(*pre, nav(MUG), pick(MUG), nav("dining_table_2/top"),  # noqa: E731
-                                place(MUG, "dining_table_2/top", [3.2, 7.4]))
-    slips = lambda pre: (with_ik(base[:i + 1], "pick", BOWL) + [FAIL(base[i + 1], True)]  # noqa: E731
-                         + recs(S("approach", target=CUP), look(CUP), pick(CUP)) + [FAIL(base[i + 1], True)] + mug_tail(pre))
     spoon_back = lambda pre: base + recs(look("dining_table_2/top"), *pre, nav(SPOON), pick(SPOON),  # noqa: E731
                                          nav("dining_table_2/top"), place(SPOON, "dining_table_2/top", [2.98, 7.46]))
     put_away = ("Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them "
@@ -749,24 +487,7 @@ def T13(t):
     two = lambda *sr: base + recs(nav(b2), pick(b2), nav("dining_table_2/top"), place(b2, "dining_table_2/top", [3.7, 7.12]),  # noqa: E731
                                   S("search", object=MUG, **dict(sr)), nav(MUG), pick(MUG), nav("dining_table_2/top"),
                                   place(MUG, "dining_table_2/top", [3.62, 7.62]))
-    kept_bowl = {"atom": ["on", BOWL, "dining_table_2/top"], "by": {"skill": "place", "args": {"object": BOWL}}}
     return {
-        "x6_cl_cup_slips": dict(
-            base="dishes_on_tv_stand", control="x6_m_slip_cup",
-            factor="where the substitute is",
-            challenge="the first bowl pick is refused (re-park); once the bowl is set, the cup slips out of the hand "
-                      "at every carry; the mug is on the bedroom bookcase or on the wall cabinet",
-            rationale="the cup cannot be carried at all: the instruction allows a mug, found where it is; the bowl "
-                      "on the table stays",
-            cases={"mug_bookcase": dict(route=slips([nav("bookcase_2/top"), look("bookcase_2/top")])),
-                   "mug_cabinet": dict(move={MUG: P("kitchen_cabinet_6/top", 3.68, 0.36)},
-                                       route=slips([S("search", object=MUG, region="living_room_0_0")]))},
-            failures=[f_ik("pick", BOWL), f_slip_persist(CUP)]),
-        "x6_m_slip_cup": dict(
-            base="dishes_on_tv_stand", control="dishes_on_tv_stand",
-            challenge="the cup slips once at the start of its carry",
-            rationale="matched control of x6_cl_cup_slips: transient, picking it again works",
-            cases={"": dict(failures=[f_slip(CUP)], route=with_slip(base, CUP))}),
         "x6_pp_spoon_moved": dict(
             base="dishes_on_tv_stand", control="dishes_on_tv_stand",
             factor="where the event takes the resource, and when (failure timing)",
@@ -823,12 +544,6 @@ def T13(t):
 
 def T14(t):
     B = "book_red"
-    base = OR(t, "e1_book_ready")                 # nav desk, look, nav book, pick, nav bookcase, place
-    i = at(base, "pick", object=B)
-    carry, place_ = base[i + 1], base[i + 2]
-    two = (base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B)) + [FAIL(carry, True)]
-           + recs(nav(B), look(B), S("expose", object=B), pick(B, hands="both"), carry) + [place_])
-    slip_once = base[:i + 1] + [FAIL(carry, True)] + recs(nav(B), look(B), pick(B), carry) + [place_]
     shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 90.0},
              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 90.0}}
     take = lambda art: [nav(B), S("expose", object=B), pick(B), S("retreat", obstacle=art, distance_m=0.3),  # noqa: E731
@@ -849,45 +564,18 @@ def T14(t):
             cases={f"in_{w[-1]}": dict(move={B: shelf[w]}, route=put_away([], o, w, take, shelve),
                                        failures=[f_initial("resource", [["on", B, f"{w}/inside_shelf"]], fid="resource_book_put_away")])
                    for w, o in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4"))}),
-        "x6_sr_two_hand_carry": dict(
-            base="e1_book_ready", control="x6_m_slip_book",
-            challenge="the red book slips out of the one-handed pinch at the start of every carry; the first shelving "
-                      "place is refused from its park",
-            rationale="one-handed retries never work (persistent): carry it with both hands instead",
-            cases={"": dict(failures=[f_slip_persist(B, one_handed=True), f_ik("place", B)],
-                            route=with_ik(two, "place", B))}),
-        "x6_m_slip_book": dict(
-            base="e1_book_ready", control="e1_book_ready",
-            challenge="the red book slips once at the start of the carry",
-            rationale="matched control of x6_sr_two_hand_carry: transient, picking it again works",
-            cases={"": dict(failures=[f_slip(B)], route=slip_once)}),
     }
 
 
 def T17(t):
     B, POT, LID, F = "wooden_block_b", "handled_cooking_pot", "pot_lid", "floor_block"
     base = OR(t, "lid_off")                     # nav stove, look stove, nav island, look island, hide
-    hide = base[-1]
-    primitive = recs(nav(B), pick(B), nav(POT), S("drop", object=B, container=POT), nav(LID), pick(LID), nav(POT),
-                     S("cover", container=POT, lid=LID))
-    refused = base[:-1] + refused_twice(hide, POT) + with_grasp(primitive, B)
     lifted = lambda *sr: base + recs(look("kitchen_stove/top"), S("search", object=LID, **dict(sr)), nav(LID), pick(LID),  # noqa: E731
                                      nav(POT), S("cover", container=POT, lid=LID))
     both_goal = {"all": [["hidden", B], ["hidden", F], ["covered", POT, LID], ["hand_empty", "right"]]}
     both = lambda region: base + recs(S("search", object=F, region=region), nav(POT), S("uncover", container=POT),  # noqa: E731
                                       nav(F), look(F), S("hide", object=F, receptacle=POT, lid=LID))
     return {
-        "x6_sr_hide_refused": dict(
-            base="lid_off", control="x6_m_ik_hide",
-            challenge="the hide skill is refused from every park; the first block pick slips",
-            rationale="the composite procedure is unavailable (persistent): realise it with primitives (pick the "
-                      "block, drop it into the pot, pick the lid, cover)",
-            cases={"": dict(failures=[f_ik_persist("hide", B), f_grasp(B)], route=refused)}),
-        "x6_m_ik_hide": dict(
-            base="lid_off", control="lid_off",
-            challenge="the first hide is refused from its park",
-            rationale="matched control of x6_sr_hide_refused: one re-park fixes it",
-            cases={"": dict(failures=[f_ik("hide", B)], route=with_ik(base, "hide", B))}),
         "x6_pp_lid_lifted": dict(
             base="lid_off", control="lid_off",
             challenge="right after the block is hidden, someone peeks and leaves the lid on the other low cabinet",
@@ -954,10 +642,8 @@ def T18(t):
 
 
 def T19(t):
-    CAN, CUBE, BIN = "soda_can", "foam_cube", "wide_storage_bin"
+    CAN = "soda_can"
     base = OR(t, "bin_on_bookcase")             # ... approach bin, drop can, nav cube, pick cube, nav bin, drop cube
-    j = at(base, "drop", object=CUBE)
-    refused = with_grasp(base[:j], CUBE) + refused_twice(base[j], BIN) + recs(place(CUBE, BIN))
     shelf = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0},
              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.63, 0.36], "yaw_deg": 0.0}}
     take = lambda art: [nav(CAN), pick(CAN), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]  # noqa: E731
@@ -978,34 +664,15 @@ def T19(t):
             cases={f"in_{w[-1]}": dict(move={CAN: shelf[w]}, route=put_away([], o, w, take, rest),
                                        failures=[f_initial("resource", [["on", CAN, f"{w}/inside_shelf"]], fid="resource_can_put_away")])
                    for w, o in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4"))}),
-        "x6_sr_cube_drop_refused": dict(
-            base="bin_on_bookcase", control="x6_m_ik_drop_cube",
-            challenge="once the can is in the bin, the cube slips on its first pick, then dropping it over the bin is "
-                      "refused from every park (the light foam would not fall in)",
-            rationale="the drop procedure is unavailable for the cube (persistent): place it into the bin instead, and "
-                      "keep the can where it is",
-            cases={"": dict(failures=[f_grasp(CUBE), f_ik_where("drop", "ik_drop_cube_persistent", object=CUBE, container=BIN)],
-                            route=refused)}),
-        "x6_m_ik_drop_cube": dict(
-            base="bin_on_bookcase", control="bin_on_bookcase",
-            challenge="the first drop of the cube over the bin is refused from its park",
-            rationale="matched control of x6_sr_cube_drop_refused: one re-park fixes it",
-            cases={"": dict(failures=[f_ik("drop", CUBE)], route=with_ik(base, "drop", CUBE))}),
     }
 
 
 def T20(t):
-    J, M = "juice_bottle", "mug_counter"
+    J = "juice_bottle"
     base = OR(t, "bottle_on_cabinet")           # nav cab6 top, look, nav bottle, pick, nav dining, place
     i = at(base, "pick", object=J)
 
-    def behind(blocker, aside):
-        return base[:i] + refused_twice(base[i]) + recs(nav(blocker), pick(blocker), *aside, nav(J), look(J)) \
-            + [REC(base[i])] + base[i + 1:]
-    on_cab6 = [place(M, "kitchen_cabinet_6/top", [3.33, 0.4])]
     # the bowl needs more room than the cabinet top has left: the other low cabinet
-    on_cab4 = [nav("kitchen_cabinet_4/top"), S("place", object="bowl_kitchen_cabinet", receptacle="kitchen_cabinet_4/top")]
-    BW = "bowl_kitchen_cabinet"
     instr = ("Someone put the juice bottle away in one of the low kitchen cabinets. Put it back on the dining table, "
              "standing up, and close the cabinets again.")
     goal = copy.deepcopy(t["goal"])
@@ -1013,20 +680,6 @@ def T20(t):
     tail = base[i + 1:]
     take = lambda art: [nav(J), pick(J), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]  # noqa: E731
     return {
-        "x6_cl_bottle_behind_mug": dict(
-            base="bottle_on_cabinet", control="m_ik_pick",
-            factor="which object blocks the reach (blocking relation)",
-            challenge="the bottle stands in the back corner of the cabinet top with a mug (or a bowl) right in front "
-                      "of it: no park reaches the bottle until that object is moved",
-            rationale="re-parking cannot help while the object blocks the reach (wall behind, object in front), so the "
-                      "recovery inserts a subgoal on an object outside the goal: move it aside first",
-            cases={"mug": dict(move={J: P("kitchen_cabinet_6/top", 3.7, 0.265), M: P("kitchen_cabinet_6/top", 3.7, 0.39)},
-                               failures=[f_initial("dependency", [["on", M, "kitchen_cabinet_6/top"]], fid="dependency_in_front"),
-                                         {**f_ik_persist("pick", J), "until_moved": M}], route=behind(M, on_cab6)),
-                   "bowl": dict(move={J: P("kitchen_cabinet_6/top", 3.68, 0.26), BW: P("kitchen_cabinet_6/top", 3.68, 0.408)},
-                                remove=["spoon_kitchen_cabinet"],
-                                failures=[f_initial("dependency", [["on", BW, "kitchen_cabinet_6/top"]], fid="dependency_in_front"),
-                                          {**f_ik_persist("pick", J), "until_moved": BW}], route=behind(BW, on_cab4))}),
         "x6_gd_bottle_put_away": dict(
             base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal,
             factor="which closed place holds the item",
@@ -1049,15 +702,6 @@ def T20(t):
 
 def T11(t):
     X, BASKET = "apple", "fruit_basket"
-    base = OR(t, "fruits_on_table")             # nav dining, look, nav apple, pick, nav bookcase, look, place basket
-    i = at(base, "place", object=X)
-    roll = {"id": "placement_apple_basket_persistent", "kind": "placement", "mode": "displaced", "persist": True,
-            "to": P("bookcase_2/top", 1.21, -0.29), "report": [["inside", X, BASKET]],
-            "trigger": {"skill": "place", "args": {"object": X, "receptacle": BASKET}, "nth": 1}}
-    once = dict(roll, id="placement_apple_basket", persist=False)
-    tray = recs(nav("desk_1/top"), look("desk_1/top"), nav("serving_tray"), place(X, "serving_tray"))
-    # re-park at the apple that rolled out (from the bookcase park the basket hides it)
-    again = [FAIL(base[i], True)] + recs(S("approach", target=X), pick(X))
     O = "orange_2"
     fruit_goal = {"all": [["hand_empty", "right"]],
                   "any": [[["inside", X, a], ["inside", O, b]] for a in (BASKET, "serving_tray") for b in (BASKET, "serving_tray")]}
@@ -1080,19 +724,6 @@ def T11(t):
                       "first subgoal holds: keep the apple, find the orange",
             cases={"": dict(failures=[f_move("resource", O, P("tv_stand_2/top", 7.2, 0.36), ("place", {"object": X}),
                                              fid="resource_orange")], route=two)}),
-        "x6_cl_apple_rolls_out": dict(
-            base="fruits_on_table", control="x6_m_apple_rolls_out_once",
-            challenge="the apple rolls back out of the basket onto the bookcase every time it is put in; the apple "
-                      "slips on its first pick",
-            rationale="the basket does not keep the apple (persistent placement failure, pinned to the basket): the "
-                      "instruction's tray on the study desk replaces it",
-            cases={"": dict(failures=[f_grasp(X), roll],
-                            route=with_grasp(base[:i], X) + again + again + tray)}),
-        "x6_m_apple_rolls_out_once": dict(
-            base="fruits_on_table", control="fruits_on_table",
-            challenge="the apple rolls back out of the basket once",
-            rationale="matched control of x6_cl_apple_rolls_out: transient, putting it in again works",
-            cases={"": dict(failures=[once], route=base[:i] + again + [REC(base[i])])}),
     }
 
 
@@ -1245,11 +876,9 @@ def make_variant(t, fam, spec, case, cspec):
 # how many places are named), not only in where things are: each case is a variant of its own.  The other
 # multi-case families keep one variant whose seeds choose among layouts (where the resource / substitute /
 # item is, where an event takes it, which bin is full).
-SPLIT = {("T01_book_to_dining_table", "x6_dr_block_on_book"), ("T02_stack_blocks", "x6_cl_block_b_unholdable"),
-         ("T04_cup_or_mug_to_cabinet", "x6_cl_cup_unusable"), ("T04_cup_or_mug_to_cabinet", "x6_dr_spot_filled_dynamic"),
-         ("T09_tomato_soup", "x6_cl_spoon_unholdable"), ("T09_tomato_soup", "x6_pp_tomato_taken_out"),
-         ("T13_breakfast_setup", "x6_pp_spoon_moved"), ("T18_check_cabinet_dishes", "x6_gd_bowl_elsewhere"),
-         ("T20_juice_back_to_table", "x6_cl_bottle_behind_mug")}
+SPLIT = {("T01_book_to_dining_table", "x6_dr_block_on_book"), ("T04_cup_or_mug_to_cabinet", "x6_dr_spot_filled_dynamic"),
+         ("T09_tomato_soup", "x6_pp_tomato_taken_out"), ("T13_breakfast_setup", "x6_pp_spoon_moved"),
+         ("T18_check_cabinet_dishes", "x6_gd_bowl_elsewhere")}
 
 
 # conditions that are no challenge for the variant's own instruction: it names the substitute itself

@@ -1,60 +1,60 @@
 {
- "variants": 156,
- "episodes": 1560,
- "static_ok": 1560,
+ "variants": 128,
+ "episodes": 1280,
+ "static_ok": 1280,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
-   "episodes": 80,
-   "static_ok": 80
+   "episodes": 70,
+   "static_ok": 70
   },
   "T02_stack_blocks": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 60,
+   "static_ok": 60
   },
   "T03_utensils_one_container": {
    "episodes": 50,
    "static_ok": 50
   },
   "T04_cup_or_mug_to_cabinet": {
-   "episodes": 110,
-   "static_ok": 110
+   "episodes": 80,
+   "static_ok": 80
   },
   "T05_pen_or_pencil_to_desk": {
-   "episodes": 80,
-   "static_ok": 80
+   "episodes": 70,
+   "static_ok": 70
   },
   "T06_block_destination_occupied": {
-   "episodes": 80,
-   "static_ok": 80
+   "episodes": 60,
+   "static_ok": 60
   },
   "T07_heat_oatmeal": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 70,
+   "static_ok": 70
   },
   "T08_wipe_island": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T09_tomato_soup": {
-   "episodes": 130,
-   "static_ok": 130
+   "episodes": 100,
+   "static_ok": 100
   },
   "T10_trash_the_can": {
-   "episodes": 80,
-   "static_ok": 80
+   "episodes": 60,
+   "static_ok": 60
   },
   "T11_collect_fruits": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 50,
+   "static_ok": 50
   },
   "T12_tidy_toys": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T13_breakfast_setup": {
-   "episodes": 130,
-   "static_ok": 130
+   "episodes": 110,
+   "static_ok": 110
   },
   "T15_book_face_up": {
    "episodes": 40,
@@ -65,32 +65,32 @@
    "static_ok": 40
   },
   "T17_hide_and_seek_block": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 80,
+   "static_ok": 80
   },
   "T18_check_cabinet_dishes": {
    "episodes": 70,
    "static_ok": 70
   },
   "T19_recycling": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T20_juice_back_to_table": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 50,
+   "static_ok": 50
   },
   "T14_shelve_the_book": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   }
  },
  "v5_hashes_checked": 930,
  "categories": {
   "control": 20,
-  "action": 20,
-  "action_task": 14,
-  "task": 102
+  "action": 17,
+  "action_task": 13,
+  "task": 78
  },
- "tasks_sha1": "9e2a38cabb7bcb40a0e6dd5182fdb33b92fadbb4"
+ "tasks_sha1": "91eec3aee2311257b955a0d5d4b1e9203afef07f"
 }

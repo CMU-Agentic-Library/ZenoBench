@@ -3,18 +3,19 @@
 * **Action-Level** (``action``): a short fallback at the work spot - a few skills combined, then the task goes
   on as planned.  The scene makes it necessary (``LOCAL_CONDITIONS`` / ``local_failure``): a flat book pushed
   over the edge before the pick, a crowded block pulled apart, the pot lid taken off, an object lying on the
-  target or a closed door opened first, clutter moved aside before wiping, a full destination cleared, an object
-  in front of the target moved away.  No injected action failure.
+  target or a closed door opened first, clutter moved aside before wiping, a full destination cleared.  No
+  injected action failure.
 * **Task-Level** (``task``): the plan itself changes over a longer horizon - an absent object and its substitute,
-  a search in another place or room, a capacity split, another destination / appliance / cookware, an action
-  that never succeeds (another object or procedure), any dynamic event.
+  a search in another place or room, a capacity split, another destination / appliance / cookware, any dynamic
+  event.
 * **Action + Task** (``action_task``): both in one variant.
 * **Control** (``control``): neither; the nominal plan works.
 
-Injected transient action failures (an IK refusal, a grasp miss, a slip or a placement miss that a retry fixes)
-are not part of the design: ``strip_injected`` removes them from every layout and, in its route, each call they
-failed with the repair up to the successful retry.  A variant left with nothing is dropped, one left equal to
-another variant is merged into it (``v6_dropped`` per task says which and why).
+Injected action failures (an IK refusal, a grasp miss, a slip or a placement miss forced on a call, once or every
+time) are not part of the design anywhere: ``strip_injected`` removes them from every layout and, in its route,
+each call they failed with the repair up to the successful retry.  A variant built on a failure that never goes
+away is dropped, one left with nothing is dropped, one left equal to another variant is merged into it
+(``v6_dropped`` per task says which and why).
 
     python benchmark/v6/tracks.py          # TRACKS.md and one batch per category (tasks.json must be current)
 """
@@ -65,8 +66,9 @@ SAME_DESIGN = {
 
 
 def injected(f):
-    """An injected transient action failure (a retry or re-approach fixes it)."""
-    return f["kind"] in ACTION_KINDS and not f.get("persist")
+    """An injected action failure: an IK refusal, a grasp miss, a slip or a placement miss forced on a call, once
+    or every time (``persist``, ``until_moved``).  None is part of the design."""
+    return f["kind"] in ACTION_KINDS
 
 
 def declares_condition(v, f):
@@ -81,8 +83,6 @@ def local_failure(f):
     the start, or a reach blocked until an object in front is moved."""
     if f["kind"] == "dependency" and f.get("when", "initial") == "initial":
         return "clear the object on the target / open the door first"
-    if f["kind"] in ACTION_KINDS and f.get("persist") and f.get("until_moved"):
-        return f"move {f['until_moved']} out of the way first"
     return None
 
 
@@ -98,8 +98,6 @@ def content(task, lid):
             local.append(why)
         elif f.get("when") == "dynamic":
             longer.append(f"event: {f['kind']}")
-        elif f["kind"] in ACTION_KINDS:
-            longer.append(f"{f['kind']} never succeeds")
         else:
             longer.append(f"{f['kind']}")
     for c in v.get("conditions") or []:
@@ -167,6 +165,10 @@ def strip_injected(doc):
                 if not drop:
                     continue
                 changed.add(vid)
+                if any(f.get("persist") for f in drop):
+                    # the route works around a failure that never goes away (another object, procedure or
+                    # place); without it the design has no reason to exist
+                    dropped[vid] = "built on an injected action failure that never goes away"
                 rname = t["oracle"][lid]
                 t["routes"][rname] = dict(t["routes"][rname],
                                           steps=project_route(t["routes"][rname]["steps"], drop))
@@ -179,6 +181,8 @@ def strip_injected(doc):
         # one design, one variant: unchanged variants first, so a stripped one merges into the original design
         seen = {}
         for vid in sorted(t["v6_variants"], key=lambda x: x in changed):
+            if vid in dropped:
+                continue
             info = t["v6_variants"][vid]
             kinds = [content(t, lid) for lid in info["layouts"]]
             if vid in changed and not any(a or b for a, b in kinds):
@@ -208,6 +212,14 @@ def strip_injected(doc):
                 c = controls[0] if controls and controls[0] != vid else None
             info["control"] = c
         t["v6_dropped"] = dropped
+        # configurations no variant uses (v5's study / supplementary ones) are not part of v6
+        used = {lid for info in t["v6_variants"].values() for lid in info["layouts"]}
+        for lid in [x for x in t["variants"] if x not in used]:
+            t["variants"].pop(lid)
+            t["oracle"].pop(lid, None)
+        keep = set(t["oracle"].values()) | {t.get("nominal")}
+        for r in [r for r in t["routes"] if r not in keep]:
+            t["routes"].pop(r)
     return doc
 
 
