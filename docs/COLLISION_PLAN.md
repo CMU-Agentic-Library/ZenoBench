@@ -339,7 +339,7 @@ drop、hover 的"上方 5–6 cm"是任务本身（在上方松手、悬停）�
 
 **全量之后的修正：** `skills.base_reachable` 判断站位能否开到时，没像底盘规划器那样把终点格子算作可通行，站位紧贴家具时会被误判为开不到（全量里 124 次站位选择有 4 次少了候选）。改成终点格子或它的 8 个邻格能到就算（`reached_cells`），没有重跑全量。
 
-**待定：** T10 的标准路线（`define_tasks.py` nominal）在开车前 `lift(soda_can, 0.95)`，是为高度和避障写的，按新规范由搬运姿态和底盘规划器负责；`search_first` 路线没有这一步也成功。改 benchmark 路线要先问。
+**T10 标准路线去掉开车前的 `lift(soda_can, 0.95)`**（2026-11-03 定）：它是为高度和避障写的，按新规范由搬运姿态和底盘规划器负责。重跑 T10 s10 成功（`/data/zenobench/leave_contact_exit/t10_nolift/`）；搬运姿态仍然够不着（`carry_pose_kept`，pick 的 IK 分支，3b）。
 
 ### 步骤 4：接触动作
 

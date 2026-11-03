@@ -3478,13 +3478,6 @@
        }
       },
       {
-       "skill": "lift",
-       "args": {
-        "object": "soda_can",
-        "height_m": 0.95
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"

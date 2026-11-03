@@ -479,8 +479,7 @@ TASKS.append({
     "routes": {
         "nominal": {"kind": "nominal", "variants": ["can_on_island"], "steps": [
             S("look", target=ISLAND), S("explore_room", room="living_room_0_0"),
-            S("navigate", destination="soda_can"), S("pick", object="soda_can"),
-            S("lift", object="soda_can", height_m=0.95), S("navigate", destination="trash_can"),
+            S("navigate", destination="soda_can"), S("pick", object="soda_can"), S("navigate", destination="trash_can"),
             S("hover", object="soda_can", target="trash_can"), S("drop", object="soda_can", container="trash_can")]},
         "search_first": {"kind": "fallback", "variants": ["can_in_dining_room"],
                          "recovery": "Pick refused (can not observed) -> Search -> found on the dining table",
