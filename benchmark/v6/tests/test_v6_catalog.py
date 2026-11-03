@@ -26,10 +26,20 @@ def test_catalog_is_up_to_date():
 
 
 def test_v5_configurations_and_routes_unchanged():
+    """v5 variants keep their configuration, except the injected action failures removed (or the variant dropped)."""
     v5 = {t["task_id"]: t for t in json.loads((ROOT / "benchmark/v5/tasks.json").read_text())["tasks"]}
     frozen = json.loads((ROOT / "benchmark/v5/FREEZE.json").read_text())["episodes"]
     for tid, t in TASKS.items():
         for vid in [x for ids in v5[tid]["v5_formal"].values() for x in ids]:
+            if vid in t["v6_dropped"]:
+                assert vid not in t["variants"]
+                continue
+            if "injected_removed" in t["variants"][vid]:
+                old = v5[tid]["variants"][vid]
+                assert sorted(f["id"] for f in old.get("failures", []) if f["id"] not in
+                              t["variants"][vid]["injected_removed"]) == \
+                    sorted(f["id"] for f in t["variants"][vid].get("failures", []))
+                continue
             assert t["variants"][vid] == v5[tid]["variants"][vid]
             assert t["routes"][t["oracle"][vid]] == v5[tid]["routes"][v5[tid]["oracle"][vid]]
             for s in (10, 15, 19):
@@ -82,70 +92,46 @@ def test_every_new_family_has_a_control_in_the_task(tid):
 
 
 # ----------------------------------------------------------------- tracks (benchmark/v6/tracks.py)
-def test_every_family_is_placed_in_its_tracks():
-    from benchmark.v6.tracks import SUBCATEGORIES, content, transient
+def test_every_variant_has_its_category():
+    from benchmark.v6.tracks import ORDER, category, content, injected
     for tid, t in TASKS.items():
-        tr = t["v6_tracks"]
-        merged = {m for x in tr["task"].values() for m in x.get("merged", [])}
-        placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | merged
-        assert placed == set(t["v6_variants"]), tid
-        assert not set(tr["controls"]) & (set(tr["task"]) | set(tr["action"])), tid
-        for fam, x in tr["action"].items():
-            assert x["sub"] in SUBCATEGORIES, (tid, fam)
-            assert x["action_failures"] or x["local_conditions"], (tid, fam)
-        for fam, x in tr["task"].items():
-            for v in x["layouts"]:
-                assert not any(transient(f) for f in t["variants"][v].get("failures") or []), (tid, fam, v)
-        for fam in tr["controls"]:
-            for v in t["v6_variants"][fam]["layouts"]:
-                assert content(t, v) == (False, False), (tid, fam, v)
-                assert not t["variants"][v].get("failures"), (tid, fam, v)
+        assert set(t["v6_tracks"]) == set(t["v6_variants"]), tid
+        for vid, info in t["v6_variants"].items():
+            local, longer = set(), set()
+            for lid in info["layouts"]:
+                assert not any(injected(f) for f in t["variants"][lid].get("failures") or []), (tid, lid)
+                a, b = content(t, lid)
+                local |= set(a)
+                longer |= set(b)
+            assert t["v6_tracks"][vid]["category"] == category(local, longer) in ORDER, (tid, vid)
 
 
-def test_the_split_reads_only_the_configuration():
-    from benchmark.v6.tracks import content
+def test_local_fallbacks_are_action_level():
+    """A few skills at the work spot: expose / separate before the pick, the lid off, the object on the book."""
+    cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
+    for tid, vid in (("T01_book_to_dining_table", "no_overhang"), ("T02_stack_blocks", "crowded"),
+                     ("T09_tomato_soup", "lid_on"), ("T01_book_to_dining_table", "x6_dr_block_on_book__block"),
+                     ("T15_book_face_up", "h_task_block_on_book")):
+        assert cat(tid, vid) == "action", (tid, vid)
+    # a search next to the local fallback: both
+    assert cat("T01_book_to_dining_table", "far_no_overhang") == "action_task"
+    # a substitute, never a local fallback: Task-Level
+    assert cat("T06_block_destination_occupied", "x6_cl_block_a_unholdable") == "task"
+
+
+def test_injected_only_variants_are_dropped():
     t = TASKS["T06_block_destination_occupied"]
-    assert content(t, "x6_m_grasp_block_a") == (False, True)                    # one transient grasp miss
-    assert content(t, "x6_cl_block_a_unholdable__b_island")[0]                 # the grasp fails every time
-    t5 = TASKS["T05_pen_or_pencil_to_desk"]
-    assert content(t5, "m_grasp_pencil") == (True, True)                         # no pen (substitute) + a slip
-
-
-def test_a_local_grasp_repair_is_action_level():
-    """pick! -> expose / separate -> pick of the same object: several policies, one action."""
-    for tid, fam in (("T01_book_to_dining_table", "no_overhang"), ("T02_stack_blocks", "crowded"),
-                     ("T14_shelve_the_book", "book_on_desk"), ("T17_hide_and_seek_block", "block_crowded")):
-        tr = TASKS[tid]["v6_tracks"]
-        assert tr["action"][fam]["sub"] == "AL-GRASP" and tr["action"][fam]["local_conditions"] in (["no_overhang"], ["crowded"])
-        assert fam not in tr["task"], (tid, fam)
-    # with task-level content next to it (a search, a lid), the family is in both tracks
-    for tid, fam in (("T01_book_to_dining_table", "far_no_overhang"), ("T17_hide_and_seek_block", "lid_on_crowded")):
-        tr = TASKS[tid]["v6_tracks"]
-        assert fam in tr["action"] and fam in tr["task"], (tid, fam)
-
-
-def test_projection_drops_only_transient_failures():
-    from benchmark.v6.tracks import transient
-    n = 0
+    assert t["v6_dropped"]["x6_m_grasp_block_a"] == "only injected action failures"
+    t = TASKS["T15_book_face_up"]
+    assert t["v6_dropped"]["h_mixed_block_on_book_ik"].startswith("same as h_task_block_on_book")
     for tid, t in TASKS.items():
-        for fam, x in t["v6_tracks"]["task"].items():
-            for v in x["layouts"]:
-                p = t["variants"][v].get("track_projection")
-                if not p:
-                    continue
-                n += 1
-                src = t["variants"][p["of"]]
-                assert [f for f in src["failures"] if not transient(f)] == (t["variants"][v].get("failures") or [])
-                assert set(p["dropped"]) == {f["id"] for f in src["failures"] if transient(f)}
-                steps = t["routes"][t["oracle"][v]]["steps"]
-                assert len(steps) < len(t["routes"][t["oracle"][p["of"]]]["steps"])
-    assert n > 0
+        for info in t["v6_variants"].values():
+            assert info["control"] is None or info["control"] in t["variants"], tid
 
 
-def test_track_batches_name_their_profile():
-    for name, track, profile in (("track_task_scripted", "task", "sticky_snap/gt"),
-                                 ("track_action_scripted", "action", "benchmark")):
-        jobs = json.loads((ROOT / f"benchmark/v6/batches/{name}.json").read_text())
-        assert jobs and all(j["eval_track"] == track and j["profile"] == profile for j in jobs)
-        assert "track" not in jobs[0]          # --track is the skill track of run_episode
-        assert len(jobs) == 10 * sum(len(t["v6_tracks"][track]) for t in TASKS.values())
+def test_category_batches_name_their_profile():
+    from benchmark.v6.tracks import CATEGORIES
+    for k, cfg in CATEGORIES.items():
+        jobs = json.loads((ROOT / f"benchmark/v6/batches/category_{k}.json").read_text())
+        assert jobs and all(j["category"] == k and j["profile"] == cfg["profile"] for j in jobs)
+        assert len(jobs) == 10 * sum(x["category"] == k for t in TASKS.values() for x in t["v6_tracks"].values())

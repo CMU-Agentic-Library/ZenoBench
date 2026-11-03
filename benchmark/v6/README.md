@@ -1,16 +1,16 @@
-# ZenoBench v6: Action-Level and Task-Level suite (design stage)
+# ZenoBench v6: task design in four categories (design stage)
 
-v6 is the task-design layer on top of v5. It reads `benchmark/v5/tasks.json` and never writes it: every v5
-variant, oracle route and episode hash is unchanged (FREEZE.json, 1,800 hashes checked by `validate_v6.py` and
-the tests). v6 adds 69 new variants on 17 of the 20 base tasks and splits all 249 variants into two tracks.
+v6 is the task-design layer on top of v5. It reads `benchmark/v5/tasks.json` and never writes it. v6 adds new
+variants on 17 of the 20 base tasks, removes the injected transient action failures from every variant, and
+puts each variant in one of four categories.
 
 | | |
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
-| variants | 249 = 180 v5 + 69 new; each runs seeds 10-19 (2,490 episodes) |
-| tracks | Action-Level 103 variants, Task-Level 163, controls 38 (`TRACKS.md`) |
-| static checks | 2,490 / 2,490 episodes |
-| physics | 51 variants PHYSICS_VALIDATED (v5 grid, 10/10); the rest STATIC_VALIDATED (`PHYSICS_TODO.md`) |
+| variants | 196; each runs seeds 10-19 (1,960 episodes) |
+| categories | control 38, Action-Level 23, Task-Level 116, Action + Task 19 (`TRACKS.md`) |
+| static checks | 1,960 / 1,960 episodes |
+| physics | 31 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
 
 ## Definitions
 
@@ -36,28 +36,29 @@ Earlier multi-case families whose cases differed in the design, not only in plac
 book, which failure mechanism, which subgoal the event undoes, how many places the instruction names), are
 one variant per case (`SPLIT` in `define_tasks_v6.py`).
 
-## Two tracks: Action-Level and Task-Level (`tracks.py`, `TRACKS.md`)
+## Four categories (`tracks.py`, `TRACKS.md`)
 
-The split reads only a variant's configuration (`tracks.content`):
+Each variant contains the fallback its category is about; the category reads only the configuration
+(`tracks.content`).
 
-| track | content | runs with | variants | episodes |
-|---|---|---|---|---|
-| **Action-Level** | a transient action failure (grasp miss, slip, placement miss, IK refusal: a retry or re-approach fixes it), or a blocked action fixed by a local repair of the same object, then the same call (`LOCAL_CONDITIONS`: a flat book pushed over the edge, a crowded block pulled apart) | scripted recovery route, physical skills, `benchmark` profile (no GT); the skill layer's score | 103 | 1,030 |
-| **Task-Level** | anything that makes the plan itself change: a task-level failure, a dynamic event, an action failure no retry fixes, any other scene condition (search, absent object, lid on, closed door, capacity ...), a changed goal | any task planner on GT skills (`sticky_snap/gt`); oracle route replayed for validation | 163 | 1,630 |
-| controls | neither: the nominal plan works | both tracks | 38 | |
+| category | the variant needs | variants | episodes |
+|---|---|---|---|
+| **Control** | nothing: the nominal plan works (the reference for the others) | 38 | 380 |
+| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge, move what stands in front of the target (`LOCAL_CONDITIONS`, `local_failure`) | 23 | 230 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an action that never succeeds (another object or procedure), a dynamic event | 116 | 1,160 |
+| **Action + Task** | both | 19 | 190 |
 
-Action-Level subcategories name the failure mechanism: AL-IK 57, AL-GRASP 31, AL-SLIP 5, AL-PLACE 1,
-AL-COMPOUND 9. Task-Level variants are listed per task, with timing (40 have a dynamic event, the rest act
-on the initial scene).
+**No injected action failures.** The injected transient failures (an IK refusal, a grasp miss, a slip, a
+placement miss that a retry fixes) are removed from every variant, and from its route each call they failed
+with its repair up to the retry (`tracks.strip_injected`). 32 variants had nothing else and are dropped; 21
+equal another variant without them and are merged into it (`v6_dropped` per task). Action-Level fallbacks come
+from the scene. Persistent failures (an action that never succeeds) stay: they are a Task-Level design.
 
-A variant with both kinds of content (65) is in both: the full variant in Action-Level, its **task
-projection** (`<vid>__tl`: the transient action failures removed, and in the route each call they failed with
-its local repair up to the successful retry) in Task-Level. 10 projections equal another variant's
-configuration and are merged into it. A repair that changes another object's or a container's state (move an
-obstacle, take a lid off, open a door) is Task-Level.
+A goal of a variant's own (close the door again, leave the block on the island) states how a fallback ends and
+does not by itself make a variant Task-Level.
 
-Status: the split is static (`validate_v6.py` checks every variant is in the tracks its content calls for and
-every projection on its seeds). Evaluation metrics are not defined yet.
+Status: static (`validate_v6.py` checks that no injected failure is left and every category matches its
+content). Evaluation metrics are not defined yet.
 
 ## New failure-injection features (failure_injection/)
 
@@ -71,7 +72,7 @@ destination (the substitute stays reachable), and a slip that falls back onto th
 python benchmark/v6/define_tasks_v6.py     # tasks.json (catalog + tracks); --check: up to date?
 python benchmark/v6/validate_v6.py         # STATIC.json: per-episode static checks, v5 hashes, manifests
 python benchmark/v6/report_v6.py           # variant_cards.json, ROUTES.md, SKILL_FIX_LIST.md, PHYSICS_TODO.md
-python benchmark/v6/tracks.py              # TRACKS.md, batches/track_task_scripted.json, track_action_scripted.json
+python benchmark/v6/tracks.py              # TRACKS.md, batches/category_*.json
 python -m pytest -q benchmark/v6/tests failure_injection
 $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
     --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval
@@ -79,7 +80,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 
 ## Files
 
-* `TRACKS.md` - the two tracks, counts per task, every variant's track.
+* `TRACKS.md` - the four categories, counts per task, every variant with its local fallback and longer-horizon change.
 * `variant_cards.json` - per concrete variant: instruction, initial conditions, failure triggers, goal, tracks,
   control, oracle route, challenge / rationale, success criteria.
 * `ROUTES.md` - every oracle reference route, by track. `SKILL_FIX_LIST.md` - for the skill owner.

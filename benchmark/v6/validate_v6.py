@@ -4,7 +4,8 @@
 
 Checks, per variant and per episode of its seed manifest (seed -> concrete variant):
 
-* **v5 preserved** - every v5 formal variant keeps the configuration hash FREEZE.json records for each seed;
+* **v5 preserved** - every v5 variant without injected action failures keeps the configuration hash FREEZE.json
+  records for each seed; one whose injected failures were removed is checked like a new variant;
 * **configuration / route / failures / geometry** - benchmark.v5.validate.check_variant on the episode's
   concrete variant and seed (goal predicates and objects present, every route call a known skill with known
   inputs and objects, failure specs valid against the scene and reached by the route, overlay and event poses
@@ -16,7 +17,8 @@ Checks, per variant and per episode of its seed manifest (seed -> concrete varia
 * **decision diversity** - the layouts of a multi-layout variant differ in their oracle route;
 * **distinct configurations** - no two variants of a task share a configuration at seed 10;
 * **spec card** - every new variant names its challenge, rationale and control;
-* **tracks** - every variant is in exactly the tracks its content calls for (``tracks.py``).
+* **categories** - no injected action failure is left, and every variant's category is the one its content
+  calls for (``tracks.py``).
 """
 from __future__ import annotations
 
@@ -64,37 +66,21 @@ def variant_problems(t, vid, contracts, assets, seeds):
     return [(s, p) for s, p in check_variant(t, None, vid, contracts, assets, seeds) if not p.startswith("tier ")]
 
 
-def track_problems(t, contracts, assets):
-    """Task-Level projections (``<vid>__tl``): the v5 per-variant rules on their seeds, persistent-failure
-    consistency, no transient action failure left; every variant in exactly the tracks its content calls for."""
-    from benchmark.v6.tracks import content, transient
+def track_problems(t):
+    """No injected action failure left; every variant's category is the one its content calls for."""
+    from benchmark.v6.tracks import category, content, injected
     out = []
-    tr = t["v6_tracks"]
-    for fam, x in tr["task"].items():
-        for v in x["layouts"]:
-            if any(transient(f) for f in t["variants"][v].get("failures") or []):
-                out.append({"family": fam, "seed": None, "problem": f"task track: {v} keeps a transient action failure"})
-            if not v.endswith("__tl"):
-                continue
-            seeds = sorted(int(s) for s, c in x["seeds"].items() if c == v)
-            out += [{"family": fam, "seed": s, "problem": f"task track {v}: {p}"}
-                    for s, p in variant_problems(t, v, contracts, assets, seeds)]
-            out += [{"family": fam, "seed": None, "problem": f"task track {v}: {p}"} for p in persistent_problems(t, v)]
-    for fam, x in tr["action"].items():
-        if not x["action_failures"] and not x["local_conditions"]:
-            out.append({"family": fam, "seed": None,
-                        "problem": "action track without a transient action failure or a local-repair condition"})
-    placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | \
-        {m for x in tr["task"].values() for m in x.get("merged", [])}
-    for fam, info in t["v6_variants"].items():
-        kinds = [content(t, v) for v in info["layouts"]]
-        want = {k for k, on in (("task", any(k[0] for k in kinds)), ("action", any(k[1] for k in kinds))) if on}
-        merged = any(fam in x.get("merged", []) for x in tr["task"].values())
-        have = {k for k in ("task", "action") if fam in tr[k]} | ({"task"} if merged else set())
-        if fam not in placed:
-            out.append({"family": fam, "seed": None, "problem": "in no track"})
-        elif have != want or (not want and fam not in tr["controls"]):
-            out.append({"family": fam, "seed": None, "problem": f"tracks {sorted(have)}, content {sorted(want)}"})
+    for vid, info in t["v6_variants"].items():
+        local, longer = set(), set()
+        for lid in info["layouts"]:
+            if any(injected(f) for f in t["variants"][lid].get("failures") or []):
+                out.append({"family": vid, "seed": None, "problem": f"{lid} keeps an injected action failure"})
+            a, b = content(t, lid)
+            local |= set(a)
+            longer |= set(b)
+        got = (t["v6_tracks"].get(vid) or {}).get("category")
+        if got != category(local, longer):
+            out.append({"family": vid, "seed": None, "problem": f"category {got}, content {category(local, longer)}"})
     return out
 
 
@@ -106,7 +92,7 @@ def main():
     assets = json.loads((ROOT / "annotations/assets.json").read_text())
     frozen = json.loads((ROOT / "benchmark/v5/FREEZE.json").read_text())["episodes"]
     out = {"variants": 0, "episodes": 0, "static_ok": 0, "problems": [], "per_task": {}, "v5_hashes_checked": 0,
-           "tracks": {}}
+           "categories": {}}
     for t in doc["tasks"]:
         tid = t["task_id"]
         n_ok = n_ep = 0
@@ -114,8 +100,12 @@ def main():
         for fam, info in t["v6_variants"].items():
             out["variants"] += 1
             probs = []
+            if info["origin"] == "v5" and "injected_removed" in t["variants"][fam]:
+                seeds = sorted(int(s) for s, x in info["seeds"].items() if x == fam)
+                probs += [(s, f"{fam}: {p}") for s, p in variant_problems(t, fam, contracts, assets, seeds)]
+                probs += [(None, f"{fam}: {p}") for p in persistent_problems(t, fam)]
             if info["origin"] == "v5":
-                for s in SEEDS:                  # the v5 variant itself: unchanged for every seed
+                for s in ([] if "injected_removed" in t["variants"][fam] else SEEDS):                  # the v5 variant itself: unchanged for every seed
                     h = episode_config(t, s, fam)["config_hash"]
                     out["v5_hashes_checked"] += 1
                     if frozen.get(f"{tid}/{fam}/{s}") != h:
@@ -159,13 +149,10 @@ def main():
         for h, fams in hashes.items():
             if len(fams) > 1:
                 out["problems"].append({"task": tid, "family": fams, "seed": 10, "problem": f"same configuration {h}"})
-        for p in track_problems(t, contracts, assets):
+        for p in track_problems(t):
             out["problems"].append({"task": tid, **p})
-        for k in ("action", "task"):
-            tr = out["tracks"].setdefault(k, {"variants": 0, "episodes": 0})
-            tr["variants"] += len(t["v6_tracks"][k])
-            tr["episodes"] += sum(len(x["seeds"]) for x in t["v6_tracks"][k].values())
-        out["tracks"].setdefault("controls", {"variants": 0})["variants"] += len(t["v6_tracks"]["controls"])
+        for x in t["v6_tracks"].values():
+            out["categories"][x["category"]] = out["categories"].get(x["category"], 0) + 1
         out["per_task"][tid] = {"episodes": n_ep, "static_ok": n_ok}
         out["episodes"] += n_ep
         out["static_ok"] += n_ok

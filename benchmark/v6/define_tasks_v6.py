@@ -147,7 +147,7 @@ def T01(t):
             rationale="matched control of x6_sr_two_hand_carry: the same slip, transient, so picking it again works",
             cases={"": dict(failures=[f_slip(B)], route=slip_once)}),
         "x6_dr_block_on_book": dict(
-            conditions=["multi_object_goal"], base="overhang_ready", control="overhang_ready",
+            base="overhang_ready", control="overhang_ready",
             factor="which object lies on the book (blocking relation)",
             challenge="a toy block (or the sponge) lies on top of the paperback",
             rationale="the book cannot be lifted with something on it: take that off (and leave it on the island) "
@@ -540,7 +540,7 @@ def T09(t):
             cases={"": dict(failures=[f_ik_where("collect", "ik_collect_persistent", container=POT),
                                       f_grasp(TOMATOES[0])], route=split)}),
         "x6_gd_tomato_elsewhere": dict(
-            conditions=["multi_object_goal"], base="lid_off", control="lid_off",
+            base="lid_off", control="lid_off",
             factor="where the second tomato was left",
             challenge="one cherry tomato is on the island, the other was left on the dining table or on the wall "
                       "cabinet",
@@ -613,7 +613,7 @@ def T10(t):
                                       {**f_ik_persist("pick", CAN), "until_moved": "juice_bottle"}],
                             route=behind_wall(on_tv, CAN, "juice_bottle", ("tv_stand_2/top", [7.7, 0.36])))}),
         "x6_gd_can_put_away": dict(
-            conditions=["item_put_away"], base="can_on_island", control="h_task_can_in_microwave",
+            base="can_on_island", control="h_task_can_in_microwave",
             factor="which closed place holds the item",
             instruction=instr, goal=goal, remove=["plate_inside_kitchen_cabinet"],
             challenge="the can was put away in one of two closed places (microwave or wall cabinet)",
@@ -683,7 +683,7 @@ def T12(t):
     moved = lambda region: base[:k] + recs(S("search", object=DUCK, region=region)) + base[k:]  # noqa: E731
     return {
         "x6_gd_bins_capacity": dict(
-            conditions=["multi_object_goal"], base="toys_out", control="toys_everywhere",
+            conditions=["joint_capacity"], base="toys_out", control="toys_everywhere",
             remove=[BASKET], move={DUCK: copy.deepcopy(ev["move"][DUCK])}, watch=[CAR, DUCK, names["left"], names["right"]],
             may_end_on_floor=[CAR],
             instruction="It is nearly bedtime. Put the kid's toy car and rubber duck away into the two small toy bins on "
@@ -787,7 +787,7 @@ def T13(t):
                                                      ("place", {"object": CUP}), fid="resource_spoon")],
                                     route=spoon_back([S("search", object=SPOON, region="living_room_0_0")]))}),
         "x6_gd_bowl_put_away": dict(
-            conditions=["item_put_away"], base="dishes_on_tv_stand", control="bowl_on_cabinet",
+            base="dishes_on_tv_stand", control="bowl_on_cabinet",
             factor="which closed place holds the item",
             instruction=put_away, goal=g, remove=["bowl_inside_kitchen_cabinet", "plate_inside_kitchen_cabinet"],
             challenge="no bowl is out: the clean bowl was put away in the wall cabinet or the microwave",
@@ -838,7 +838,7 @@ def T14(t):
     shelve = [nav("bookcase_2/top"), place(B, "bookcase_2/top")]
     return {
         "x6_gd_book_put_away": dict(
-            conditions=["item_put_away"], base="e1_book_ready", control="book_on_desk", goal=book_goal,
+            base="e1_book_ready", control="book_on_desk", goal=book_goal,
             remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
             instruction="The kid put the red book away in one of the low kitchen cabinets instead of the bookcase. Put it "
                         "back on the low bookcase in the bedroom, and close the cabinets again.",
@@ -927,7 +927,7 @@ def T18(t):
     in_mw = {"support": "kitchen_microwave/inside_floor", "xy": [4.5, 2.5], "yaw_deg": 0.0}
     return {
         "x6_gd_bowl_elsewhere": dict(
-            conditions=["item_put_away"], base="at_island", control="at_island",
+            base="at_island", control="at_island",
             move={"bowl_inside_kitchen_cabinet": in_mw},
             factor="how many candidate places (and an empty one) the instruction names",
             challenge="the plate is in the wall cabinet, the bowl was left in the microwave; in the second case the "
@@ -967,7 +967,7 @@ def T19(t):
     can_goal["all"] += [["is_closed", "kitchen_cabinet_6"], ["is_closed", "kitchen_cabinet_4"]]
     return {
         "x6_gd_can_put_away": dict(
-            conditions=["item_put_away"], base="bin_on_bookcase", control="m_can_in_dining_room", goal=can_goal,
+            base="bin_on_bookcase", control="m_can_in_dining_room", goal=can_goal,
             remove=["plate_inside_kitchen_cabinet"],
             instruction="Movie night is over. Someone put the empty soda can away in one of the low kitchen cabinets, and "
                         "the foam packing cube from the delivery lies on the living-room floor; take both to the wide "
@@ -1028,7 +1028,7 @@ def T20(t):
                                 failures=[f_initial("dependency", [["on", BW, "kitchen_cabinet_6/top"]], fid="dependency_in_front"),
                                           {**f_ik_persist("pick", J), "until_moved": BW}], route=behind(BW, on_cab4))}),
         "x6_gd_bottle_put_away": dict(
-            conditions=["item_put_away"], base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal,
+            base="bottle_on_cabinet", control="bottle_on_cabinet", instruction=instr, goal=goal,
             factor="which closed place holds the item",
             remove=["plate_inside_kitchen_cabinet"],
             challenge="the bottle was put away in one of the two low cabinets",
@@ -1306,7 +1306,8 @@ def build() -> dict:
            "note": "Source: python benchmark/v6/define_tasks_v6.py (reads benchmark/v5/tasks.json); tracks: "
                    "benchmark/v6/tracks.py.",
            "eval_seeds": SEEDS, "condition_registry": reg, "tasks": tasks}
-    from benchmark.v6.tracks import apply_tracks
+    from benchmark.v6.tracks import apply_tracks, strip_injected
+    strip_injected(out)
     apply_tracks(out)
     return out
 

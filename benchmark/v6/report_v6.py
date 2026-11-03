@@ -5,7 +5,7 @@
 Writes, in benchmark/v6/:
 
 * variant_cards.json - one spec card per concrete variant (instruction, initial conditions, failure triggers,
-  goal, tracks, oracle route, challenge / rationale, control);
+  goal, category, oracle route, challenge / rationale, control);
 * ROUTES.md         - every variant's oracle reference route(s), by track;
 * SKILL_FIX_LIST.md - skill / physics problems for the skill owner, from the v5 baseline and the v6 routes;
 * PHYSICS_TODO.md and batches/physics_v6_new.json, batches/physics_todo.json - what still needs simulation.
@@ -31,10 +31,8 @@ def short(tid):
     return tid[:3]
 
 
-def tracks_of(t, fam):
-    tr = t["v6_tracks"]
-    merged = any(fam in x.get("merged", []) for x in tr["task"].values())
-    return [k for k in ("action", "task") if fam in tr[k] or (k == "task" and merged)]
+def category_of(t, vid):
+    return t["v6_tracks"][vid]["category"]
 
 
 # ----------------------------------------------------------------- per-variant descriptors
@@ -100,7 +98,7 @@ def main():
             else:
                 status = "STATIC_VALIDATED"
             meta = v0.get("v6") or v0.get("v5") or {}
-            rows.append({"task": t["task_id"], "family": fam, "origin": info["origin"], "tracks": tracks_of(t, fam),
+            rows.append({"task": t["task_id"], "family": fam, "origin": info["origin"], "category": category_of(t, fam),
                          "mechanisms": sorted({m for v in info["layouts"] for m in mechanisms(t["variants"][v])}),
                          "layouts": info["layouts"], "factor": info.get("factor"), "control": info.get("control"),
                          "challenge": meta.get("challenge") or v0.get("note", ""),
@@ -114,7 +112,7 @@ def main():
 
 
 def cards(doc):
-    """One spec card per concrete variant: instruction, initial conditions, failure triggers, goal, tracks,
+    """One spec card per concrete variant: instruction, initial conditions, failure triggers, goal, category,
     oracle route, challenge / rationale, control, success criteria."""
     from episode.catalog import resolve_task
     out = {}
@@ -126,7 +124,7 @@ def cards(doc):
                 meta = v.get("v6") or v.get("v5") or {}
                 fails = v.get("failures", [])
                 out[f"{t['task_id']}/{vid}"] = {
-                    "family": fam, "tracks": tracks_of(t, fam),
+                    "variant": fam, "category": category_of(t, fam),
                     "seeds": sorted(int(s) for s, x in info["seeds"].items() if x == vid),
                     "instruction": rt["instruction"],
                     "initial_conditions": {"scene": t["scene"]["base"], "start": v.get("start"),
@@ -149,19 +147,18 @@ def cards(doc):
 
 
 def routes_md(doc):
-    md = ["# v6 oracle reference routes", "", "One line per concrete variant of each variant (`!` expected to "
-          "fail, `+` recovery step). Seeds: the variant's manifest in tasks.json.", ""]
+    from benchmark.v6.tracks import CATEGORIES, ORDER
+    md = ["# v6 oracle reference routes", "", "One line per layout of each variant (`!` expected to fail, `+` "
+          "recovery step). Seeds: the variant's manifest in tasks.json.", ""]
     for t in doc["tasks"]:
         md += [f"## {t['task_id']}", ""]
-        tr = t["v6_tracks"]
-        for title, fams in (("Controls", tr["controls"]), ("Action-Level", list(tr["action"])),
-                            ("Task-Level", list(tr["task"]))):
-            if not fams:
+        for k in ORDER:
+            vids = [vid for vid, x in t["v6_tracks"].items() if x["category"] == k]
+            if not vids:
                 continue
-            md += [f"### {title}", ""]
-            for fam in fams:
-                cases = tr["task"][fam]["layouts"] if title == "Task-Level" else t["v6_variants"][fam]["layouts"]
-                for v in cases:
+            md += [f"### {CATEGORIES[k]['title']}", ""]
+            for vid in vids:
+                for v in t["v6_variants"][vid]["layouts"]:
                     steps = t["routes"][t["oracle"][v]]["steps"]
                     txt = " ".join(("!" if s.get("expect") == "fail" else "") + ("+" if s.get("role") in ("recover", "recovery", "alternative") else "")
                                    + s["skill"] + "(" + ",".join(str(x) for x in s["args"].values()) + ")" for s in steps)
@@ -319,10 +316,10 @@ def physics_todo(doc, rows):
           "* Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the "
           "variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it "
           "passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.", "",
-          "| task | variant | tracks | physics now | depends on |", "|---|---|---|---|---|"]
+          "| task | variant | category | physics now | depends on |", "|---|---|---|---|---|"]
     for r in rows:
         if r["status"] != "PHYSICS_VALIDATED":
-            md.append(f"| {short(r['task'])} | {r['family']} | {', '.join(r['tracks']) or 'control'} | {r['physics']} | "
+            md.append(f"| {short(r['task'])} | {r['family']} | {r['category']} | {r['physics']} | "
                       f"{', '.join(r.get('depends_on', [])) or '-'}{' ; ' + r['rerun_needed'] if r['rerun_needed'] else ''} |")
     (V6 / "PHYSICS_TODO.md").write_text("\n".join(md) + "\n")
 
