@@ -162,3 +162,98 @@ def test_every_hard_family_has_a_control_in_the_task(tid):
     for fam, info in t["v6_families"].items():
         if info["origin"] == "v6":
             assert info["control"] in t["variants"], fam
+
+
+# ----------------------------------------------------------------- tracks (benchmark/v6/tracks.py)
+def test_every_family_is_placed_in_its_tracks():
+    from benchmark.v6.tracks import SUBCATEGORIES, transient
+    for tid, t in TASKS.items():
+        tr = t["v6_tracks"]
+        merged = {m for x in tr["task"].values() for m in x.get("merged", [])}
+        placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | merged
+        assert placed == set(t["v6_families"]), tid
+        for fam, x in tr["action"].items():
+            assert x["sub"] in SUBCATEGORIES["action"] and x["action_failures"], (tid, fam)
+        for fam, x in tr["task"].items():
+            assert x["sub"] in SUBCATEGORIES["task"], (tid, fam)
+            assert x["sub"] in x["subs"], (tid, fam)
+            for v in x["cases"]:
+                assert not any(transient(f) for f in t["variants"][v].get("failures") or []), (tid, fam, v)
+            assert (x["tier"] == "hard") == (x["sub"] in ("TL-DR", "TL-GD", "TL-SR", "TL-CL", "TL-PP")), (tid, fam)
+        for fam in tr["controls"]:
+            assert t["v6_families"][fam]["tier"] == "easy", (tid, fam)
+
+
+def test_projection_keeps_hard_and_drops_only_transient_failures():
+    from benchmark.v6.tracks import transient
+    n = 0
+    for tid, t in TASKS.items():
+        for fam, x in t["v6_tracks"]["task"].items():
+            if x["family_tier"] == "hard":
+                assert x["tier"] == "hard", (tid, fam)
+            for v in x["cases"]:
+                p = t["variants"][v].get("track_projection")
+                if not p:
+                    continue
+                n += 1
+                src = t["variants"][p["of"]]
+                assert [f for f in src["failures"] if not transient(f)] == (t["variants"][v].get("failures") or [])
+                assert set(p["dropped"]) == {f["id"] for f in src["failures"] if transient(f)}
+                steps = t["routes"][t["oracle"][v]]["steps"]
+                assert len(steps) < len(t["routes"][t["oracle"][p["of"]]]["steps"])
+    assert n > 0
+
+
+def test_track_batches_name_their_profile():
+    for name, track, profile in (("track_task_scripted", "task", "sticky_snap/gt"),
+                                 ("track_action_scripted", "action", "benchmark")):
+        jobs = json.loads((ROOT / f"benchmark/v6/batches/{name}.json").read_text())
+        assert jobs and all(j["eval_track"] == track and j["profile"] == profile for j in jobs)
+        assert "track" not in jobs[0]          # --track is the skill track of run_episode
+        assert len(jobs) == 10 * sum(len(t["v6_tracks"][track]) for t in TASKS.values())
+
+
+def _result(task, variant, calls, fi=None, profile="benchmark", **kw):
+    return {"task_id": task, "variant": variant, "seed": 10, "planner": "p", "profile": profile, "calls": calls,
+            "failure_injection": fi or {}, "dropped": [], **kw}
+
+
+def _call(i, skill, args, success, tick):
+    return {"index": i, "skill": skill, "args": args, "feedback": {"success": success}, "tick": tick}
+
+
+def test_action_metrics_count_a_recovered_failure():
+    from benchmark.v6.track_metrics import action_facts
+    t = TASKS["T07_heat_oatmeal"]
+    calls = [_call(0, "navigate", {"destination": "oatmeal"}, True, 10), _call(1, "pick", {"object": "oatmeal"}, False, 10),
+             _call(2, "approach", {"target": "oatmeal"}, True, 20), _call(3, "pick", {"object": "oatmeal"}, True, 30)]
+    fi = {"manifested": ["ik_pick_oatmeal"], "fired": ["ik_pick_oatmeal"],
+          "log": [{"id": "ik_pick_oatmeal", "kind": "ik", "verb": "pick", "tick": 10}]}
+    f = action_facts(_result("T07_heat_oatmeal", "m_ik_oatmeal", calls, fi, success=True), t)
+    assert f["valid"] and f["events"] == [{"kind": "ik", "recovered": True, "cost": 1}]
+    assert f["nominal_n"] == 3 and f["nominal_ok"] == 3
+
+
+def test_task_metrics_flag_a_futile_repeat_and_a_redo():
+    from benchmark.v6.track_metrics import task_facts
+    t = TASKS["T07_heat_oatmeal"]
+    fam = "x6_pp_door_opened_after_heat"
+    x = t["v6_tracks"]["task"][fam]
+    heat = {"food": "oatmeal", "appliance": "kitchen_microwave", "temp_c": 40}
+    calls = [_call(0, "heat", heat, True, 10), _call(1, "close", {"articulated": "kitchen_microwave"}, True, 20),
+             _call(2, "heat", heat, True, 30)]
+    fi = {"fired": ["dependency_kitchen_microwave"],
+          "log": [{"id": "dependency_kitchen_microwave", "kind": "dependency", "verb": "heat", "tick": 10}]}
+    f = task_facts(_result("T07_heat_oatmeal", fam, calls, fi, profile="sticky_snap/gt", task_success=True), t, fam, x)
+    assert f["success"] and f["reactive"] and f["pp"] is False          # heated again after the event
+    door = "x6_cl_microwave_door_stuck"
+    v = t["v6_tracks"]["task"][door]["cases"][0]
+    op = {"articulated": "kitchen_microwave"}
+    calls = [_call(0, "open", op, False, 10), _call(1, "open", op, False, 20), _call(2, "open", op, False, 30)]
+    fid = next(f["id"] for f in t["variants"][v]["failures"] if f.get("persist"))
+    fi = {"fired": [fid], "log": [{"id": fid, "kind": "grasp", "verb": "open", "tick": 10},
+                                  {"id": fid, "kind": "grasp", "verb": "open", "tick": 20},
+                                  {"id": fid, "kind": "grasp", "verb": "open", "tick": 30}]}
+    f = task_facts(_result("T07_heat_oatmeal", v, calls, fi, profile="sticky_snap/gt", task_success=False), t, door,
+                   t["v6_tracks"]["task"][door])
+    assert f["persistent_met"] and f["futile"] and not f["success"]
