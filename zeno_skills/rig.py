@@ -12,13 +12,16 @@ from dataclasses import replace
 
 import numpy as np
 
-from .clearance import BASE_DRIVE, FREE, HAND_LINKS, LEGACY, MONITOR_EVERY, Clearance
+from .clearance import BASE_DRIVE, FREE, FREE_ELSE_STRAIGHT, HAND_LINKS, LEGACY, MONITOR_EVERY, Clearance
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
 from .physics import ASSET, BASE_JOINTS
 
 BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
 CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
 RIM_VEL = 0.25            # rad/s: ...with a container hanging from a one-hand rim pinch (it pivots in the pads)
+LEAVE_GAP = 0.005         # m: closer to the world than this, the robot (and its load) still touches it
+LEAVE_MARGIN = 0.01       # m: a contact exit runs this far past where the robot (and its load) first comes clear
+LEAVE_MAX = 0.06          # m: ...and no further; still touching there, the rest is the logged straight fallback
 
 
 class SkillFailure(RuntimeError):
@@ -372,10 +375,17 @@ class Rig:
         ``allow`` (clearance.Allow): what the move may touch (_motion_path)."""
         self.sync_world()
         p = np.asarray(p, float)
-        qs, allow = self._motion_path(label, allow, self.kin, lambda: self._move_path(p, R, step, label, q_hint),
-                                      lambda: self._straight_move(p, R, step, label, q_hint))
-        self.clear.motion(label, allow)
-        (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
+        follow = lambda qs: (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
+        if self._exits_contact(allow, self.kin):
+            with self._lifting(self.kin, allow):
+                if self._leave_contact(label, allow, self.kin,
+                                       lambda: self._straight_move(p, R, step, label, q_hint), follow):
+                    return self.move_to(p, R, step, steps_per_wp, label, FREE_ELSE_STRAIGHT, q_hint, smooth)
+        else:
+            qs, allow = self._motion_path(label, allow, self.kin, lambda: self._move_path(p, R, step, label, q_hint),
+                                          lambda: self._straight_move(p, R, step, label, q_hint))
+            self.clear.motion(label, allow)
+            follow(qs)
         tcp, _ = self.kin.tcp(self.q())
         err = float(np.linalg.norm(tcp - p))
         qe = self.q() - self.q_cmd
@@ -417,7 +427,7 @@ class Rig:
         return qs, LEGACY
 
     @contextmanager
-    def _planning(self, kin, start):
+    def _planning(self, kin, start, keep_held=False):
         """Query state for planning one motion of ``kin``'s arm from ``start``: what that hand holds
         is in the collision model (Motion.scope).  Nested: the outer state stands."""
         motion = kin.motion
@@ -426,10 +436,73 @@ class Rig:
             return
         self._scope = True
         try:
-            with motion.scope(self, kin, start):
+            with motion.scope(self, kin, start, keep_held=keep_held):
                 yield
         finally:
             self._scope = False
+
+    @contextmanager
+    def _lifting(self, kin, allow):
+        """While a motion lifts an object the hand has closed on but that is not held yet
+        (``allow.lifts``: pick checks the lift before it records the hold), the object rides in
+        the hand's collision model like a held one (motion.load): no obstacle where it stood, and
+        the contact exit ends once it is clear of its support."""
+        if allow.lifts is None:
+            yield
+            return
+        self.lifting = {**getattr(self, "lifting", {}), kin.side: {"name": allow.lifts, "kind": "pinch"}}
+        try:
+            self.sync_world()
+            yield
+        finally:
+            self.lifting = {s: h for s, h in self.lifting.items() if s != kin.side}
+            self.sync_world()
+
+    @staticmethod
+    def _exits_contact(allow, kin):
+        """A from_contact motion (clearance.LEAVE_CONTACT) with a collision model to tell where
+        its contact ends (_leave_contact); without one it is the whole straight move."""
+        return allow.from_contact and kin.scene is not None and kin.motion is not None
+
+    def _leave_contact(self, label, allow, kin, straight, follow):
+        """The contact segment of a from_contact motion: its straight waypoints only up to
+        LEAVE_MARGIN past where the arm, its hand and what the hand holds first come LEAVE_GAP clear
+        of the world (none when they start that clear), at most LEAVE_MAX of TCP travel; run under the
+        from_contact Allow.  True when the target is still ahead: the caller moves on to it from
+        here as a free-space motion (planned; still touching at LEAVE_MAX, the logged straight)."""
+        start = self._start(kin)
+        qs = straight()
+        with self._planning(kin, start, keep_held=True):
+            n, clear = self._exit_length(kin, start, qs)
+        allow = self._from_contact(kin, allow)
+        p0, p1 = kin.tcp(start)[0], kin.tcp(qs[n - 1] if n else start)[0]
+        self.log("leave_contact_exit", target=label, exit_m=round(float(np.linalg.norm(p1 - p0)), 4),
+                 waypoints=n, of=len(qs), clear=clear)
+        if n:
+            self.clear.motion(label, allow)
+            follow(qs[:n])
+        return n < len(qs)
+
+    @staticmethod
+    def _exit_length(kin, start, qs):
+        """(how many of the straight waypoints ``qs`` the contact segment takes, whether it ends
+        clear): up to LEAVE_MARGIN of TCP travel past the first clear one -- clear all along that
+        margin -- or up to LEAVE_MAX, or all of them."""
+        if not kin.near(start, LEAVE_GAP):
+            return 0, True
+        p0 = kin.tcp(start)[0]
+        since = None                       # TCP travel where the current clear stretch began
+        for i, q in enumerate(qs):
+            d = float(np.linalg.norm(kin.tcp(q)[0] - p0))
+            if d > LEAVE_MAX:
+                return i, False
+            if kin.near(q, LEAVE_GAP):
+                since = None
+                continue
+            since = d if since is None else since
+            if d - since >= LEAVE_MARGIN:
+                return i + 1, True
+        return len(qs), since is not None
 
     def _from_contact(self, kin, allow):
         """A from_contact Allow (clearance.LEAVE_CONTACT) with what ``kin``'s hand and its load touch
@@ -625,10 +698,15 @@ class Rig:
         self.sync_world()
         self.world.left_active = True
         p = np.asarray(p, float)
-        qs, allow = self._motion_path(label, allow, self.left_kin, lambda: self._left_path(p, R, label, FREE),
-                                      lambda: self._left_path(p, R, label, LEGACY))
-        self.clear.motion(label, allow)
-        self.left_follow(qs)
+        if self._exits_contact(allow, self.left_kin):
+            if self._leave_contact(label, allow, self.left_kin, lambda: self._left_path(p, R, label, LEGACY),
+                                   self.left_follow):
+                return self.move_left_to(p, R, label=label, allow=FREE_ELSE_STRAIGHT)
+        else:
+            qs, allow = self._motion_path(label, allow, self.left_kin, lambda: self._left_path(p, R, label, FREE),
+                                          lambda: self._left_path(p, R, label, LEGACY))
+            self.clear.motion(label, allow)
+            self.left_follow(qs)
         tcp, _ = self.left_kin.tcp(self.left_q())
         err = float(np.linalg.norm(tcp-p))
         self.log("left_reach", target=label, tcp_err_m=round(err, 4))

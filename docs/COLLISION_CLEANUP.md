@@ -1,8 +1,8 @@
 # 运动代码删除清单（2026-11-01）
 
-配合 `COLLISION_PLAN.md` 使用：这里列的是代码里要删掉或改写的"特殊实现"，每条标了归哪一步。第 3 节的行号 2026-11-02 按 `67b377c` 刷新过；其余各节的行号仍以 `a0a9574` 加当时未提交改动的工作区为准，动代码之前先按函数名重新定位。
+配合 `COLLISION_PLAN.md` 使用：这里列的是代码里要删掉或改写的"特殊实现"，每条标了归哪一步。第 1、2 节只列还没动的条目，按函数名定位；第 3 节的行号 2026-11-02 按 `67b377c` 刷新过；第 4–7 节的行号仍以 `a0a9574` 加当时未提交改动的工作区为准，动代码之前先按函数名重新定位。
 
-**来源：** 逐个阅读 `zeno_skills/` 下 248 处运动调用（`move_to`、`move_left_to`、`joint_path`、`follow*`、`drive_base`、`tuck`、`_back_off`、`held_vertical_move`、`_carry_pose`、`_clear_for_tuck`）的上下文，加上 skill 内部的重试循环、变体列表和按家具分支。分类是读代码判断的，个别条目可能归错；第 9 节列的几条已经回到代码核实过。
+**来源：** 逐个阅读 `zeno_skills/` 下 248 处运动调用（`move_to`、`move_left_to`、`joint_path`、`follow*`、`drive_base`、`tuck`、`_back_off`、`held_vertical_move`、`_carry_pose`、`_clear_for_tuck`）的上下文，加上 skill 内部的重试循环、变体列表和按家具分支。分类是读代码判断的，个别条目可能归错；第 9 节的几条还没回到代码核实。
 
 ## 分类
 
@@ -20,77 +20,30 @@
 
 R 类不列。下面只列要动的。
 
-## 1. 入口层（`rig.py`、`planner.py`）
+## 1. 入口层（`rig.py`、`planner.py`，步骤 1）
 
-这一层不先收拾，后面删路点时退路的行为就不对。**放进步骤 1。**
-
-**状态（2026-11-01，步骤 1）：** L2 并进 `Motion.cart_path`；L4、L5 并进 `Motion.plan_to` 的关节目标一档（`q_hint` 重解为目标和种子，查碰撞）；退路改为 `_straight_move`（不查碰撞的直线，没有 IK 时关节插值，朝 `q_hint` 摆动 >1 rad 仍规划）；`_joint_path` 的倾斜检查改用 `kinematics.tips_over`，`joint_from_contact` 删除；`tuck` 改为直接规划 `q → rest`，候选列表和夹爪判断删除（夹爪判断移到 `_move_with_retry_impl`）；`follow` 的慢速、平滑按持物统一处理。`_left_path`、`follow_both`、`joint_path_via` 留给步骤 5；`planner.py` 三项暂不动，理由见 `COLLISION_PLAN.md` 步骤 1 实施记录。
-
-**`move_to` 现在的各级退路：**
-
-| 级 | 位置 | 内容 | 处理 |
-|---|---|---|---|
-| L0 | rig.py:350 | 起点在碰撞中就不规划，直接走退路 | 保留；步骤 1 用 `held_on` 处理后应很少触发 |
-| L1 | rig.py:371 | 直线 `cart_path` | 保留 |
-| L2 | rig.py:372-381 | 步长改 0.02 重算同一条直线，再加密 | 并进 `cart_path` |
-| L3 | rig.py:382-388 | `plan_to` 约束规划 | 保留，作为唯一的规划器 |
-| L4 | rig.py:389-396 | `joint_path(q_hint)`；摆动 >1 rad 时强制查碰撞 | `q_hint` 改成 L3 的种子或目标 |
-| L5 | rig.py:397-401 | `ik_global` 换分支后走关节空间 | 删；接触段在这里会变成不沿直线的关节插值 |
-| 退路 | rig.py:359 | `plan(LEGACY)`：把 L1–L5 整条链关掉检查再跑一遍 | **和计划原则 2 不符**，收敛成"不查碰撞的 L1" |
-
-**其他入口：**
+**状态（2026-11-01，步骤 1 已完成）：** `move_to` 的旧退路链 L2–L5 和"整条链关掉检查重跑"都已收敛进 `_motion_path`（直线 → `plan_to`，退路是不查碰撞的直线），`_joint_path` 的倾斜检查和 `joint_from_contact`、`tuck` 的候选列表和夹爪判断、`follow` 的慢速平滑都处理完了，现状见 `COLLISION_PLAN.md` 步骤 1。下面只列还没动的。
 
 | 位置 | 内容 | 类 | 处理 |
 |---|---|---|---|
-| rig.py:455-459 | `_joint_path`：直线无碰撞但持物倾斜超 `CARRY_TILT` 才改用 carry 规划 | K | 不倾斜写成规划约束 |
-| rig.py:461-465 | `_joint_path`：起点碰撞、终点不碰时直接关节插值，不查，也不记 `clearance_fallback` | F | 并进入口退路 |
-| rig.py:584-596 | `_left_path`：直线失败 → `ik_global` → 有时 cuRobo、有时直接插值；左臂没有 `plan_to`，也没有持物碰撞 | F | 步骤 5，左臂走同一套入口 |
-| rig.py:609-622 | `tuck`：`ignore_fingers`；4 种手写前置后撤（+0.15 z、后退再抬、+0.30 z）依次试 | W/F | 直接规划 `q → rest` |
-| rig.py:623 | `for target in (self.kin.rest,)`：只剩一个元素的候选列表 | X | 删 |
-| rig.py:635 | 夹爪闭着就不允许规划收臂 | X | 移到调用方 |
-| rig.py:519-557 | `follow_both`：双臂只有直线插值，按 `max(3, n//8)` 个样本稀疏检查 | X | 步骤 5，双臂要有规划或至少逐点检查 |
-| rig.py:282-320 | `follow`：0.6×URDF 速度上限，`smooth=` 由调用方开关 | K | 慢速和平滑交给规划器的时间参数化 |
-| rig.py:426 | `joint_path_via`：直接插值，不做任何检查 | X | 步骤 5，`follow` 只收检查过的路径 |
-| planner.py:27-37 | `_ik_sequence`：正向链失败就反向链（为了 IK 分支连续） | K | 改成种子 |
-| planner.py:48 | `_chain`：park 搜索用直线判可达，执行时还有 L3–L5，两边判据不一致 | X | 入口收敛后两边统一 |
-| planner.py:160-219 | `find_park`：`near` 是三元组时 cost=-1，跳过收臂姿态、展开、可达路径三项检查；skills.py:566 和 :1912 用它探测手写 park | X | 手写 park 删掉后这条路径一起删 |
+| rig.py `_left_path` | 直线失败 → `ik_global` → 有时 cuRobo、有时直接插值；左臂没有 `plan_to`，也没有持物碰撞 | F | 步骤 5，左臂走同一套入口 |
+| rig.py `follow_both` | 双臂只有直线插值，按 `max(3, n//8)` 个样本稀疏检查 | X | 步骤 5，双臂要有规划或至少逐点检查 |
+| rig.py `joint_path_via` | 直接插值，不做任何检查 | X | 步骤 5，`follow` 只收检查过的路径 |
+| rig.py `tuck` | `coll_kw = {"ignore_fingers": True}` | X | 步骤 5（第 7 节） |
+| planner.py `_ik_sequence` | 正向链失败就反向链（为了 IK 分支连续） | K | 改成种子；手写 park 删掉时再看（步骤 3） |
+| planner.py `_chain` | park 搜索用直线判可达，执行时直线不通还会规划，两边判据不一致 | X | 手写 park 删掉时一起看（步骤 3） |
+| planner.py `find_park` | `near` 是三元组时 cost=-1，跳过收臂姿态、展开、可达路径三项检查；`_move_articulated` 和 `place` 用它探测手写 park | X | 手写 park 删掉后这条路径一起删 |
 
 ## 2. 底盘（B 类，步骤 2）
 
-**状态（2026-11-02）：** 除 hand.py 的 flip 底盘推（接触动作，步骤 4）和 skills.py 的 `clear_microwave_door_sweep`（场景特例，步骤 3）外都已删掉或改成整机规划；`BackOffWithLoadPolicy` 保留为任务级原语，改成整机检查的直线后退。底盘规划器本身的几项（`relax`、`Grid` 只查底盘圆、`R_BASE`、开车时不查手臂、原地转身只查终点）由 `base_planner.py` 解决，见 `COLLISION_PLAN.md` 步骤 2 实施记录。
+**状态（2026-11-02，步骤 2 已完成）：** B 类和底盘规划器本身的问题（`relax`、`Grid` 只查底盘圆、`R_BASE`、开车时不查手臂、原地转身只查终点）都已删掉或改成整机规划，现状见 `COLLISION_PLAN.md` 步骤 2。`BackOffWithLoadPolicy` 保留为任务级原语，改成整机检查的直线后退。下面只列还没动的。
 
-| 位置 | 内容 |
-|---|---|
-| skills.py:160-186 | `_load_near_furniture` + `_back_off`：沿 −yaw 盲退，距离变体 `(dist, 0.2, 0.1)`，只查占地 |
-| skills.py:196-227 | `_clear_for_tuck`：手写底盘候选格（4 距离 × 8 方向 × 7 dyaw），临时 `set_base`，写死 0.06 m 穿透阈值 |
-| skills.py:295-310 | navigate：离打开的转动门 <0.75 m 先退 0.30 m（`navigate_back_from_door`） |
-| skills.py:311-319 | navigate：tuck → 失败退 0.35 m 再 tuck → 再 `_clear_for_tuck` 再 tuck（三层，同时是 F） |
-| skills.py:326-327 | navigate：持物在支撑面上方时先 `_back_off` |
-| skills.py:337-343 | navigate：`margin in (0.15, 0.10, 0.06)` 依次放宽，用加宽 margin 代替持物的碰撞模型（F） |
-| skills.py:1628-1638 | 微波炉放入：停到 park 后方 0.45 m，再直线慢速开进去 |
-| skills.py:1663 | 微波炉放入的退路里，底盘直接挪 <0.25 m |
-| skills.py:1736 | 微波炉撤出：`_back_off(0.35)` |
-| skills.py:1967, 1986 | 放餐桌：退 0.40 m，伸手、抬高，再开回原位 |
-| skills.py:2099-2104 | 放层板：退 0.40 m，预整形手臂，再开回去 |
-| skills.py:2694-2705 | `clear_microwave_door_sweep`：开到写死的 `(5.1, 1.6, 150)` 给门让路，再收臂 |
-| tooluse.py:38-39 | `stow_load`：每次 re-park 前都倒车 0.25 m 并收到搬运姿态（Drop、Hover、Wipe、Stir、Pour 都调用） |
-| posture.py:19-33 | `TuckArmPolicy`：tuck 失败 → 退 0.30 m → `_clear_for_tuck` |
-| posture.py:63-75 | 躯干/腰运动规划失败 → 退 0.35 m 或先收臂再退 |
-| bimanual.py:318-343 | 双手抓取：先停在 park 后方 0.35 m，降躯干、伸双臂，再带着伸出的手臂直线开进去 |
-| embedded.py:235 | 微波炉取物：直接 `drive_base` 到放入时记下的底盘位姿，不规划、不查占地 |
-| hand.py:411-453 | flip：手臂推不动时改用底盘推（同时是 F） |
-| navigation.py:80 | `BackOffWithLoadPolicy`：给上层直接调用的 `_back_off`，**要定去留** |
-
-**底盘规划器本身要解决的：**
-
-- planner.py:299-309：`relax`，起点和终点 0.4 m 内的检查放宽（T03 s11 碰倒 `juice_bottle` 来自这里）；
-- planner.py:250-281：`Grid` 只取 z<1.0 的盒子，只查底盘圆，门只在 z=0.4 采样；
-- rig.py:683-706：`drive_base` 每段边平移边插值 yaw，但 `R_BASE=0.28` 假设底盘朝路径方向；
-- rig.py:666：开车时 `BASE_DRIVE`，手臂和持物完全不查；
-- mobile.py:25-52：边走边做的 policy 绕过底盘规划器，直接用调用方给的路径点；
-- bimanual.py:442：`BimanualCarryPolicy` 自己调 `plan_path(margin=0.18)` + `drive_base`，不经 navigate；
-- base_motion.py:150-157、perceive.py:142-148：原地转身只查终点占地，不查转动弧和手臂；
-- skills.py:415-422 `_hang_while_driving`：只有在 rest 的手臂才下垂；`drive_raise` 失败只记日志，手臂一直垂着。
+| 位置 | 内容 | 处理 |
+|---|---|---|
+| policies/hand.py:411-453 | flip：手臂推不动时改用底盘推（`footprint_clear` + `drive_base`，同时是 F） | 步骤 4（接触动作）；换策略部分 3b 删 |
+| policies/tooluse.py:157 | wipe 的底盘推（擦拭行程） | 步骤 4 |
+| skills.py `clear_microwave_door_sweep` | 开到写死的 `(5.1, 1.6, 150)` 给门让路，再收臂 | 3c（场景特例） |
+| policies/mobile.py 三处 `drive_base` | 边走边伸手 / 抓 / 放：路径来自 `plan_drive`，但行驶中手臂在动，没有逐点整机检查 | 已停用（`mobile.DISABLED`，调用即 `SkillFailure`）；整机规划之前不恢复 |
 
 ## 3. 手臂：避障路点和自写退路（W、F 类，步骤 3）
 
@@ -256,7 +209,7 @@ R 类不列。下面只列要动的。
 
 | 位置 | 函数 | 内容 | 类 | 归哪一步 |
 |---|---|---|---|---|
-| skills.py:1983-1990 | `place` | `microwave_pre_lift`：先竖直抬到台面 +8 cm。死代码：1780 已把微波炉支撑面转给 `place_microwave`（第 9 节） | W | 直接删（3a） |
+| skills.py:1983-1990 | `place` | `microwave_pre_lift`：先竖直抬到台面 +8 cm。死代码：1780 已把微波炉支撑面转给 `place_microwave`，`"in:"` 支撑面拼出来的 `s` 又没有 `furniture` 字段，走不到这里 | W | 直接删（3a） |
 | skills.py:1846-1858，1915-1919，1962-1964 | `place` | 微波炉专用的 `search_near`、写死 park `(4.95, 2.18, 165)`、`min_bottom_z`。同样是死代码 | F/S | 直接删（3a） |
 | policies/tooluse.py:81-100 | `WipeSurfacePolicy.execute` | 擦拭带：每条边 × 2 档内缩 × 9 个偏移，以机器人当前位置为中心依次试 | F | 3a（按任务几何重新采样） |
 | policies/tooluse.py:123-134 | `WipeSurfacePolicy.execute` | 海绵 4 个 yaw 依次试 park | F | 3a（目标集合） |
@@ -272,28 +225,27 @@ R 类不列。下面只列要动的。
 
 ## 4. 约束伪装成路点（K 类，步骤 1）
 
-这些不能直接删，要先变成规划器认识的约束。
+**状态（2026-11-01，步骤 1）：** 持物不甩的慢速和平滑已由入口的时间参数化统一处理（`follow_smooth`、0.5 / 0.25 rad/s），持物不倾斜已在规划器里（`tilt_metric`、`kinematics.tips_over`），`q_hint` 已是规划目标和 IK 种子。下面是规划器到位后仍留在 skill 里的写法，随步骤 3 删到哪个 skill 删到哪。
 
-| 约束 | 现在的写法 | 位置 |
-|---|---|---|
-| 持物不甩（慢速、平滑） | 每处手传 `step`、`steps_per_wp`、`smooth`；按容器或左手负载降速 | skills.py:65-69, :102/:109, :258/:261, :352-359；rig.py:282-320, :667-674；hand.py:168-176；tooluse.py:520-524；orientation.py:158, :225；handle_grasp.py:57-60；perceive.py:377；bimanual.py:451 |
-| 持物不大幅换 IK 分支 | 关节变化 >1.2 / 1.0 / 3.5 / 0.8 rad 就拒 | skills.py:249/:254；orientation.py:116-146, :179 |
-| IK 分支连续 | 拆半程点、反向链、`q_hint` 种子、先 `joint_path` 到 park 解 | tooluse.py:468；orientation.py:160；planner.py:27-37；embedded.py:168-175；bimanual.py:633；skills.py:1411-1413 |
-| 持物不倾斜 | 事后检查直线是否超 `CARRY_TILT`；`R_fix` 下垂补偿 | rig.py:455-459；skills.py:2468-2479 |
-| 搬运高度下限 | 作为 `_goto_park` 参数传 `min_bottom_z`，各处取值不一致 | skills.py:1640, :1955-1958；tooluse.py:324 vs :423 |
-| 躯干、腰固定或限位 | 临时改 `kin.lo` / `kin.hi` | hand.py:255-267；bimanual.py:20-38；tooluse.py:179-181 |
-| 正对边缘 | 写成 park 打分 | skills.py:2442-2446 |
-| 转腕段 | `cart_path` + 直接 `follow`，没有 clearance 标签 | skills.py:2485-2490 |
+| 约束 | 还留着的写法 | 位置（行号以 `a0a9574` 为准） | 归哪一步 |
+|---|---|---|---|
+| 持物不甩（慢速、平滑） | 每处手传 `step`、`steps_per_wp`、`smooth`（只会更慢）；按容器或左手负载降速 | skills.py:65-69, :102/:109, :258/:261, :352-359；hand.py:168-176；tooluse.py:520-524；orientation.py:158, :225；handle_grasp.py:57-60；perceive.py:377；bimanual.py:451 | 3b |
+| 持物不大幅换 IK 分支 | 关节变化 >1.2 / 1.0 / 3.5 / 0.8 rad 就拒 | skills.py `held_vertical_move`；orientation.py:116-146, :179 | 3b |
+| IK 分支连续 | 拆半程点、反向链、先 `joint_path` 到 park 解 | tooluse.py:468；orientation.py:160；planner.py `_ik_sequence`；embedded.py:168-175；bimanual.py:633；skills.py:1411-1413 | 3b、3c |
+| 持物不倾斜 | `R_fix` 下垂补偿 | skills.py `place_flat`（`R_fix`） | 3c |
+| 搬运高度下限 | 作为 `_goto_park` 参数传 `min_bottom_z`，各处取值不一致 | skills.py:1640, :1955-1958；tooluse.py:324 vs :423 | 3a |
+| 躯干、腰固定或限位 | 临时改 `kin.lo` / `kin.hi` | hand.py:255-267；bimanual.py:20-38；tooluse.py:179-181 | 步骤 5 |
+| 正对边缘 | 写成 park 打分 | skills.py:2442-2446 | 3c |
+| 转腕段 | `cart_path` + 直接 `follow`，没有 clearance 标签 | skills.py:2485-2490 | 3c |
 
 ## 5. 接触段（C 类，步骤 4）的补充
 
-计划步骤 4 的预设表之外，这次发现：
+计划步骤 4 的预设表之外：
 
 - **`button_align` 不是接触段**（appliance_generic.py:71、skills.py:2618）：它是到按钮前 12 cm 的空中段，应改成中继位姿 + 规划。
 - **接近段被拆成两段**：`corner_pre` + `corner_grasp`（skills.py:1428-1429）、`edge_pre` + `edge_grasp`（:1527-1528）、`upright_top_in` + `upright_top_grasp`（orientation.py:311-312），合并成一段。
 - **`upright_top_pre` 是空中段却用 `LEGACY`**（orientation.py:311）。
-- **接触段可能不沿直线**：左臂的 `handover_left_contact` 走 `_left_path`，`move_to` 的 L5 也会把接触段变成关节插值。入口收敛（第 1 节）后解决。
-- **`pick_lift` 总是竖直抬**，不沿抓取方向；侧抓时和 C 的定义不一致，需要定（见第 8 节）。
+- **左臂的接触段不沿直线**：`handover_left_contact` 走 `_left_path`（步骤 5，左臂走同一套入口后解决）。
 - **门和推门的 `coll_kw` 逐段切换**（skills.py:532/590/621/623、:763/781/790/793；embedded.py:146-184 存进 `rig._handle_grasp` 跨 skill 生效）：换成 `handle` 预设。
 
 ## 6. 场景特例（S 类）
@@ -319,14 +271,13 @@ R 类不列。下面只列要动的。
 | skills.py:577 | `n_best`：冰箱 1、微波炉 3、其他 10 |
 | skills.py:1111-1143 | `"breakfast_fridge/"` → `(6.246, 2.337, 135)`；`"kitchen_microwave"` → `(4.8, 1.7, 150)`；按场景改 `max_tries`、`q_start`、`travel_q` |
 | skills.py:1586-1587 | 微波炉放入的 4 个写死世界坐标 park |
-| skills.py:1173 | 微波炉取物直接 `drive_base` 开到 park |
 | skills.py:1853-1868 | 门后层板：search_near +0.75 m、yaw+30° |
 | skills.py:2595 | 按键的写死 park 偏移 |
 | skills.py:2694-2698, :2727-2729 | 给门让路的写死位姿 `(5.1, 1.6, 150)` |
 | skills.py:2411-2417 | 书架：中段加分、短边 +0.4 |
 | skills.py:2257-2290 | `free_spots`：微波炉 −0.004、柜台内缩 4 cm、`"breakfast_fridge"` 的 margin |
 | skills.py:2361-2366 | `_behind_door_hint`：角点内缩 |
-| skills.py:78-79 | edge 抓法搬运时 +6 cm（书下垂，应进持物碰撞模型） |
+| skills.py:78-79 | edge 抓法搬运时 +6 cm（书下垂，应进持物碰撞模型；同 3.1） |
 | skills.py:1790-1791 | 深容器在沿口上方松手（用松手高度避开两壁） |
 | embedded.py:227-297 | 微波炉取物整套"把放入倒过来"的编排；只适用于开口朝 −y |
 
@@ -352,29 +303,24 @@ R 类不列。下面只列要动的。
 | `temp_obstacles`（空操作）仍在用 | skills.py:1072-1076, :1278, :2085-2092；contact.py:165 |
 | `world.left_active` 只写不读 | hand.py:253, :280 |
 | `LeftArmFoldPolicy` 直接插值收左臂；和 `skills._fold_left` 重复 | base_motion.py:204-208 |
-| 监视器的双重记录：L4 时内层 `joint_path` 和外层 `move_to` 各记一次动作 | rig.py |
 | `move_left_to` 误差 >0.03 抛错，`move_to` 只记日志 | rig.py |
 
-## 8. 要你定的
+## 8. 归类问题的结论（2026-11-02）
 
-1. **`regrasp_clear`、`release_back` 这类松手后沿放入方向退出的段**：按定义是 C（保留），计划之前把 `regrasp_clear` 列为要删。倾向：沿放入方向退几厘米是 C；退完之后再抬、再横移的才是 W。
-2. **`pick_lift` 竖直抬**：侧抓时不是沿抓取方向。改成沿抓取方向，还是承认"抓后竖直抬"也是 C？
-3. **`BackOffWithLoadPolicy`**：它是给上层规划直接调用的原语。删 `_back_off` 时一起删，还是保留为任务级动作？
-4. **push 按臂展分段、每段重新停车**（skills.py:1252-1256）：整机规划后是否还需要分段。
-5. **目标采样**（wipe 的擦拭带和朝向、knock/touch 的接触点和朝向、stir 的接近方向、pour 的腕角和 lip 偏移、upright 的转腕位置）：这些是在运动前挑中继位姿，不是失败后的退路，倾向保留；以后可以统一成"目标区域交给规划器"。
+1. 松手后沿放入方向退几厘米的段（`regrasp_clear`、`release_back`）是 C 类，步骤 1 已改成 `LEAVE_CONTACT`；退完之后再抬、再横移的才是 W。
+2. `pick_lift` 竖直抬，方向取支撑面法向，侧抓也一样；直线段缩短到刚离开支撑面，之后交给规划器。
+3. `BackOffWithLoadPolicy` 保留为任务级原语（步骤 2 已改成整机检查的直线后退）。
+4. push 不再固定分段，推到够不着为止再换停车点。
+5. 目标采样（wipe 的擦拭带和朝向、knock/touch 的接触点和朝向、stir 的接近方向、pour 的腕角和沿口偏移、upright 的转腕位置）保留，但采样范围由任务几何决定，不由站位决定。
 
-**结论（2026-11-02）：** 1 是 C 类（步骤 1 已改成 `LEAVE_CONTACT`）；2 竖直抬，方向取支撑面法向，直线段缩短到刚离开支撑面；3 保留为任务级原语（步骤 2）；4 不再固定分段，推到够不着为止再换停车点；5 保留，但采样范围由任务几何决定，不由站位决定。另外 F 类里的换策略全部删掉。细节见 `COLLISION_PLAN.md` 步骤 3。
+另外 F 类里的换策略全部删掉。细节见 `COLLISION_PLAN.md` 步骤 3。
 
 ## 9. 顺手发现的问题
-
-已经回到代码核实：
-
-- **`place()` 里微波炉的分支是死代码。** skills.py:1774 遇到微波炉支撑面已经 `return place_microwave(...)`，而 `"in:"` 支撑面拼出来的 `s` 没有 `furniture` 字段，所以 :1840-1852、:1909-1913、:1956-1957 的微波炉部分、:1988-1995 都走不到。可以直接删。
-- **`table_staging` 往世界 +x 伸手**（skills.py:1973-1974，`forward[0] += 0.20`），和机器人朝向无关。机器人不朝 +x 时方向是错的。这段整体属于第 2、3 节要删的餐桌编排。
-- **入口退路重跑整条链**（rig.py:359），见第 1 节。
 
 没核实，来自阅读：
 
 - `PickFromCavityPolicy` 的前方、撤出方向全部写死世界 −y（embedded.py:241-296），没用算好的 `axis` / `sign`。
 - `check_held` 在滑移 0.05–0.08 且指缝 >8 mm 时静默重锚（skills.py:147-151），等于把"滑了"当成没滑。
 - `stow_load` 的 `min_bottom_z` 在 pour 里前后不一致（tooluse.py:324 用 rim+0.03，:423 用 rim+0.12）。
+
+`place()` 里微波炉分支的死代码见 3.10。

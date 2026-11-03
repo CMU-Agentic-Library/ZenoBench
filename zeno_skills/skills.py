@@ -24,7 +24,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from .annotations import rz
-from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
+from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, lifting
 from .evaluator import quat_R
 from .kinematics import gripper_rot
 from .planner import find_park, joint_reachable, torque_ratio
@@ -1224,7 +1224,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
     rig.grip(0.0, 120, gradual=True)
     rig.caption = f"PICK {name}: lift"
     rig.move_to(g["p"] + np.array([0, 0, _lift_height(g)]), g["R"], step=0.002, steps_per_wp=6, label="pick_lift",
-                allow=LEAVE_CONTACT, smooth=True)
+                allow=lifting(name), smooth=True)
     rig.step(40)
     after, _ = rig.obj_pose(name)
     f = rig.fingers()
@@ -1464,7 +1464,7 @@ def _corner_pinch(rig, name):
     rig.caption = f"PICK {name}: close across the edge and the top face"
     rig.grip(0.0, 140)
     rig.caption = f"PICK {name}: lift"
-    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="corner_lift", allow=LEAVE_CONTACT)
+    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="corner_lift", allow=lifting(name))
     rig.step(40)
     st2 = rig.state()
     b2 = geo.bottom(name, st2)
@@ -1563,7 +1563,7 @@ def _edge_pinch_impl(rig, name, s, n, attempt=False):
     p0, q0 = rig.obj_pose(name)
     pinch_local = quat_R(q0).T @ (tcp - p0)
     rig.caption = f"PICK {name}: lift and pull out"
-    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="edge_lift", allow=LEAVE_CONTACT)
+    rig.move_to(lift, R, step=0.002, steps_per_wp=6, label="edge_lift", allow=lifting(name))
     rig.step(40)
     b2 = geo.bottom(name, rig.state())
     p1, q1 = rig.obj_pose(name)
@@ -1574,7 +1574,7 @@ def _edge_pinch_impl(rig, name, s, n, attempt=False):
             pinch_rise_m=round(rise, 4), fingers=f.round(4).tolist(), held=held)
     if not held:
         raise SkillFailure(f"edge pinch {name}: not held (pinched edge rose {rise:.3f} m)")
-    rig.move_to(pull, R, step=0.004, steps_per_wp=4, label="edge_pull", allow=LEAVE_CONTACT)
+    rig.move_to(pull, R, step=0.004, steps_per_wp=4, label="edge_pull", allow=lifting(name))
     rig.focus_z = None
     tcp_now, R_now = rig.kin.tcp(rig.q_cmd)
     body, _ = rig.obj_pose(name)

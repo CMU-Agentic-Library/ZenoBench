@@ -16,6 +16,17 @@ from .base import AtomicPolicy
 from ..kinematics import vel_limits
 from ..rig import SkillFailure
 
+# Switched off (2026-11-02, docs/COLLISION_PLAN.md section 2): the arm moves along a base path
+# planned for the posture it starts in, checked step by step only for the arm (the fingers not at
+# all), never against the whole robot.  No benchmark task asks for pass_by; the policies stay bound
+# (catalog, contracts) but refuse to run until moving manipulation is planned whole-body.
+DISABLED = "synchronized base and arm motion is switched off until it is planned whole-body"
+
+
+def _refuse(what):
+    if DISABLED:
+        raise SkillFailure(f"{what}: {DISABLED}")
+
 
 def _rotation(yaw_deg):
     return Rotation.from_euler("z", math.radians(yaw_deg)).as_matrix()
@@ -54,6 +65,7 @@ class ReachWhileMovingPolicy(AtomicPolicy):
     """Reach a world-frame TCP pose while the base follows a collision-free path."""
 
     def execute(self, position, rotation, base_path, *, speed=0.08, tolerance=0.04):
+        _refuse("reach while moving")
         rig = self.rig
         if rig.held is not None:
             raise SkillFailure("reach while moving: right hand must be empty")
@@ -130,6 +142,7 @@ class PickWhileMovingPolicy(AtomicPolicy):
     """Close on an annotated grasp and lift while the base is still driving."""
 
     def execute(self, name, base_path, *, speed=0.02):
+        _refuse("pick while moving")
         rig = self.rig
         if rig.held is not None or rig.left_held is not None:
             raise SkillFailure("pick while moving: both hands must be empty")
@@ -208,6 +221,7 @@ class PlaceWhileMovingPolicy(AtomicPolicy):
     """Lower and release a right-held item on a support during base travel."""
 
     def execute(self, name, support, base_path, *, xy=None, speed=0.02):
+        _refuse("place while moving")
         rig = self.rig
         held = rig.held
         if held is None or held["name"] != name or held["kind"] != "pinch":

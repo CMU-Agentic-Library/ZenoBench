@@ -24,7 +24,7 @@ only: it never fails a skill, and it leaves the planner's state exactly as it fo
 from __future__ import annotations
 
 from contextlib import contextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 import numpy as np
 
@@ -53,6 +53,8 @@ class Allow:
     checked: bool = True             # False: the motion is not collision-checked at all
     fallback: bool = False           # checked, but no collision-free path: the unchecked straight move
     from_contact: bool = False       # touch / held_on: what the hand and its load touch at the start
+    lifts: str | None = None         # from_contact: the object the closed hand lifts before it counts as
+                                     # held (pick checks the lift first); it rides in the hand's collision model
     reason: str = ""
 
     def __post_init__(self):
@@ -61,6 +63,8 @@ class Allow:
             raise ValueError("an Allow that permits contact needs a reason")
         if self.fallback and not self.checked:
             raise ValueError("fallback is for a checked motion")
+        if self.lifts is not None and not self.from_contact:
+            raise ValueError("lifts is for a motion out of a contact")
 
     def permits(self, link: str, entity: str) -> bool:
         """The monitor's test: link (e.g. right_gripper_link, or held:<object> for what a hand
@@ -101,6 +105,13 @@ FREE_ELSE_STRAIGHT = Allow(fallback=True, reason="free-space leg: collision-free
 LEAVE_CONTACT = Allow(checked=False, from_contact=True,
                       reason="contact segment out of the contact it starts in: the hand and its load may touch what "
                              "they touch at the start")
+
+
+def lifting(name: str) -> Allow:
+    """LEAVE_CONTACT for the lift right after closing the hand on ``name``, before it is held."""
+    return replace(LEAVE_CONTACT, lifts=name)
+
+
 BASE_DRIVE = unchecked("base drive: the arms are not checked along the base path yet")
 
 

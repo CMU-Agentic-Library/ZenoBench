@@ -118,6 +118,13 @@ def held_link(side):
     return f"{side}_held_object"
 
 
+def load(rig, side):
+    """What ``side``'s hand carries for the collision model: what it holds, else the object it
+    is lifting before that counts as held (Rig._lifting)."""
+    h = rig.held if side == "right" else getattr(rig, "left_held", None)
+    return h if h is not None else getattr(rig, "lifting", {}).get(side)
+
+
 def add_held_links(k):
     """Robot config (the ``kinematics`` dict) + one empty sphere link per arm at its TCP for
     the held object: HELD_SPHERES spheres switched off until attached, never in self collision."""
@@ -572,7 +579,7 @@ class Motion:
         # what a hand holds (and its contents) is not an obstacle to that arm; to the other arm
         # it is, unless that hand is at it too (a handover, a two-hand hold)
         self.held = {"right": set(), "left": set()}
-        for side, h in (("right", rig.held), ("left", getattr(rig, "left_held", None))):
+        for side, h in (("right", load(rig, "right")), ("left", load(rig, "left"))):
             if h is None or h.get("name") not in self.ann.objects:
                 continue
             owners = {f"object:{h['name']}"}
@@ -603,17 +610,18 @@ class Motion:
         self.cull_at = None
 
     @contextmanager
-    def scope(self, rig, kin, q):
+    def scope(self, rig, kin, q, keep_held=False):
         """One collision-checked rig motion of ``kin``'s arm from q (Rig._planning): what that hand
         holds is in the arm's collision model, its box as spheres on the held link (left out, and
-        logged, while it still touches something at q)."""
+        logged, while it still touches something at q -- unless ``keep_held``: the exit out of a
+        contact asks when the load comes clear too)."""
         side = kin.side
-        h = rig.held if side == "right" else getattr(rig, "left_held", None)
+        h = load(rig, side)
         q = np.asarray(q, float)
         try:
             with self._query(kin, kin._other_q(), kin.coll_kw) as arm:
                 name = self._attach_held(arm, kin, q, h)
-                if name is not None and held_link(side) in self._touching(arm, q):
+                if name is not None and not keep_held and held_link(side) in self._touching(arm, q):
                     # still on its support (or in a container): no collision-free start, left out
                     self._attach_held(arm, kin, q, None)
                     rig.log("held_collision", side=side, state=f"{name} (touching: off)")
@@ -883,9 +891,10 @@ class Motion:
         STATS["plan_to_ok"] = STATS.get("plan_to_ok", 0) + int(qs is not None)
         return (qs, how) if qs is not None else (None, status)
 
-    def _sphere_depths(self, arm, q):
+    def _sphere_depths(self, arm, q, gap=0.0):
         """(spheres (n, 4) world, penetration depth (n,), link of each) of the arm's robot model at q;
-        depth 0 for spheres clear of the world or switched off."""
+        depth 0 for spheres clear of the world or switched off.  ``gap`` > 0: each sphere grown by
+        it (cuRobo's activation distance), so > 0 means within ``gap`` of the world."""
         import torch
         from curobo.geom.sdf.world import CollisionQueryBuffer
         sph = arm.spheres(np.asarray(q, float))
@@ -894,15 +903,23 @@ class Motion:
         by_idx = {v: k for k, v in kc.link_name_to_idx_map.items()}
         q4 = sph.view(1, 1, -1, 4).contiguous()
         buf = CollisionQueryBuffer.initialize_from_shape(q4.shape, arm.mg.tensor_args, self.checker.collision_types)
-        d = self.checker.get_sphere_distance(q4, buf, torch.ones(1, device="cuda"), torch.zeros(1, device="cuda"),
+        d = self.checker.get_sphere_distance(q4, buf, torch.ones(1, device="cuda"),
+                                             torch.full((1,), float(gap), device="cuda"),
                                              sum_collisions=False).view(-1).cpu().numpy()
         s = sph.cpu().numpy()
         d = np.where(s[:, 3] > 0, np.maximum(d, 0.0), 0.0)
         return s, d, [by_idx.get(int(i), str(i)) for i in idx]
 
-    def _touching(self, arm, q):
-        """{link: depth} of the robot's links penetrating the world at q."""
-        _, d, links = self._sphere_depths(arm, q)
+    def near(self, kin, q, gap, other_q=None, coll_kw=None):
+        """Whether the arm's robot model at q (with what the hand carries, inside ``scope``) comes
+        within ``gap`` m of the world.  A held box rests on its support at depth 0: its spheres are
+        inscribed in the box, so a contact is told by a gap, not by penetration."""
+        with self._query(kin, other_q, coll_kw) as arm:
+            return bool(self._touching(arm, np.clip(np.asarray(q, float), arm.lo, arm.hi), gap))
+
+    def _touching(self, arm, q, gap=0.0):
+        """{link: depth} of the robot's links penetrating the world at q (grown by ``gap``)."""
+        _, d, links = self._sphere_depths(arm, q, gap)
         hits = {}
         for i in np.nonzero(d > 0)[0]:
             hits[links[i]] = max(hits.get(links[i], 0.0), float(d[i]))

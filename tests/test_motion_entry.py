@@ -6,7 +6,8 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 
-from zeno_skills.rig import BIG_SWING, CARRY_VEL, RIM_VEL, Rig, SkillFailure
+from zeno_skills.clearance import LEAVE_CONTACT
+from zeno_skills.rig import BIG_SWING, CARRY_VEL, LEAVE_MARGIN, LEAVE_MAX, RIM_VEL, Rig, SkillFailure
 
 
 class FakeKin:
@@ -112,3 +113,82 @@ def test_a_load_in_the_hand_caps_the_arm_speed_and_smooths_the_path():
     rig.follow_smooth = lambda qs, *a: smooth.append(len(qs))
     Rig.follow(rig, [np.zeros(9)])
     assert smooth == [1]
+
+
+class LiftKin:
+    """A TCP that rises with q[0]; ``touching(z)``: still in contact at that height."""
+
+    def __init__(self, touching):
+        self.scene, self.motion, self.side, self.touching = object(), None, "right", touching
+
+    def tcp(self, q):
+        return np.array([0.0, 0.0, float(q[0])]), np.eye(3)
+
+    def near(self, q, gap):
+        return self.touching(float(q[0]))
+
+
+def _lift(top, step=0.002):
+    return [np.full(9, z) for z in np.arange(step, top + 1e-9, step)]
+
+
+def test_a_contact_exit_ends_a_margin_past_where_the_robot_comes_clear():
+    kin = LiftKin(lambda z: z < 0.02)
+    n, clear = Rig._exit_length(kin, np.zeros(9), _lift(0.07))
+    assert clear and kin.tcp(_lift(0.07)[n - 1])[0][2] == pytest.approx(0.02 + LEAVE_MARGIN, abs=0.0021)
+
+
+def test_a_contact_exit_needs_the_whole_margin_clear():
+    kin = LiftKin(lambda z: z < 0.01 or 0.014 < z < 0.02)           # clear, touching again, clear
+    n, clear = Rig._exit_length(kin, np.zeros(9), _lift(0.07))
+    assert clear and kin.tcp(_lift(0.07)[n - 1])[0][2] == pytest.approx(0.02 + LEAVE_MARGIN, abs=0.0021)
+
+
+def test_a_clear_start_has_no_contact_segment():
+    assert Rig._exit_length(LiftKin(lambda z: False), np.zeros(9), _lift(0.07)) == (0, True)
+
+
+def test_a_contact_that_lasts_ends_the_segment_at_its_longest():
+    qs = _lift(0.10)
+    n, clear = Rig._exit_length(LiftKin(lambda z: True), np.zeros(9), qs)
+    assert not clear and float(qs[n - 1][0]) <= LEAVE_MAX < float(qs[n][0])
+
+
+def test_a_short_exit_is_all_contact_segment():
+    qs = _lift(0.03)
+    assert Rig._exit_length(LiftKin(lambda z: z < 0.025), np.zeros(9), qs) == (len(qs), True)
+    assert Rig._exit_length(LiftKin(lambda z: True), np.zeros(9), qs) == (len(qs), False)
+
+
+def test_leaving_a_contact_runs_the_segment_and_leaves_the_rest_to_the_caller():
+    kin = LiftKin(lambda z: z < 0.02)
+    rig = SimpleNamespace(kin=kin, q_cmd=np.zeros(9), held=None, logged=[], motions=[])
+    rig.log = lambda ev, **kw: rig.logged.append((ev, kw))
+    rig.clear = SimpleNamespace(motion=lambda label, allow: rig.motions.append((label, allow)))
+    for name in ("_start", "_planning", "_from_contact"):
+        setattr(rig, name, getattr(Rig, name).__get__(rig))
+    rig._exit_length = Rig._exit_length
+    ran = []
+    ahead = Rig._leave_contact(rig, "pick_lift", LEAVE_CONTACT, kin, lambda: _lift(0.07), ran.append)
+    assert ahead and len(ran) == 1 and float(ran[0][-1][0]) == pytest.approx(0.03, abs=0.0021)
+    assert rig.motions == [("pick_lift", LEAVE_CONTACT)]
+    ev, kw = rig.logged[-1]
+    assert ev == "leave_contact_exit" and kw["clear"] and kw["exit_m"] == pytest.approx(0.03, abs=0.0021)
+    ran.clear()
+    assert not Rig._leave_contact(rig, "release_back", LEAVE_CONTACT, kin, lambda: _lift(0.015), ran.append)
+    assert len(ran[0]) == len(_lift(0.015))                         # all of a short exit, nothing ahead
+
+
+def test_a_lift_carries_the_object_it_closed_on_until_the_lift_ends():
+    from zeno_skills.clearance import lifting
+    from zeno_skills.motion import load
+    synced = []
+    rig = SimpleNamespace(held=None, left_held=None, sync_world=lambda: synced.append(load(rig, "right")))
+    allow = lifting("book_red")
+    assert allow.from_contact and not allow.checked and allow.lifts == "book_red"
+    with Rig._lifting(rig, SimpleNamespace(side="right"), allow):
+        assert load(rig, "right")["name"] == "book_red" and load(rig, "left") is None
+    assert load(rig, "right") is None
+    assert [s and s["name"] for s in synced] == ["book_red", None]   # the world re-synced both ways
+    with Rig._lifting(rig, SimpleNamespace(side="right"), LEAVE_CONTACT):
+        assert load(rig, "right") is None                              # a plain exit carries nothing new

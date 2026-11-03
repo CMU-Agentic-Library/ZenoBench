@@ -125,7 +125,7 @@ def _fallback_rig(start_free=True, contacts=()):
     logged, scopes = [], []
 
     @contextmanager
-    def scope(rig, kin, q):
+    def scope(rig, kin, q, keep_held=False):
         scopes.append(True)
         yield
     kin = SimpleNamespace(free=lambda q: start_free if np.allclose(q, 0) else float(q[0]) < 0.5,
@@ -272,3 +272,8 @@ def test_monitor_logs_objects_pushed_away_unless_held_let_go_carried_or_allowed(
     objs = [o["object"] for ev, kw in logged if ev == "disturbed_object" for o in kw["objects"]]
     assert objs == ["juice_bottle", "spoon"]
     assert s["disturbances"][0]["objects"] == [{"object": "juice_bottle", "moved_m": 0.05, "tilt_deg": 0.0}]
+
+
+def test_lifts_is_only_for_a_motion_out_of_a_contact():
+    with pytest.raises(ValueError):
+        Allow(lifts="mug", reason="x")

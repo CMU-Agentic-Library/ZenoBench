@@ -49,3 +49,13 @@ def test_synchronized_motion_rejects_stationary_and_blocked_base_paths():
         _path(rig, [(0.01, 0.0, 0.0)])
     with pytest.raises(Exception, match="crosses an obstacle"):
         _path(rig, [(0.1, 0.0, 0.0)])
+
+
+@pytest.mark.parametrize("route, args", [("reach_while_moving", (np.zeros(3), np.eye(3), [(0, 0, 0)])),
+                                         ("pick_while_moving", ("mug", [(0, 0, 0)])),
+                                         ("place_while_moving", ("mug", "island", [(0, 0, 0)]))])
+def test_moving_manipulation_is_switched_off(route, args):
+    from zeno_skills.rig import SkillFailure
+    suite = PolicySuite(SimpleNamespace())
+    with pytest.raises(SkillFailure, match="switched off"):
+        getattr(suite, route).execute(*args)

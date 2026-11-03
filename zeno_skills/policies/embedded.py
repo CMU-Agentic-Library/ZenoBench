@@ -7,7 +7,7 @@ import numpy as np
 from .base import AtomicPolicy
 from .posture import LowerTorsoPolicy, SetWaistPitchPolicy
 from .. import skills
-from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
+from ..clearance import FREE_ELSE_STRAIGHT, LEGACY, lifting
 from ..kinematics import gripper_rot
 from ..rig import SkillFailure
 
@@ -266,7 +266,7 @@ class PickFromCavityPolicy(AtomicPolicy):
                 return result
             fingers = rig.grip(0.0, 120)
             rig.move_to(target+np.array([0, 0, 0.07]), R, step=0.003,
-                        steps_per_wp=5, label="cavity_pick_lift", allow=LEAVE_CONTACT)
+                        steps_per_wp=5, label="cavity_pick_lift", allow=lifting(name))
             rig.step(40)
             after, _ = rig.obj_pose(name)
             if after[2]-before[2] < 0.015 or fingers.min() < 0.003:
