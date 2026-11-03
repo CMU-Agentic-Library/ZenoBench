@@ -1,7 +1,7 @@
 # Physics validation to do
 
-* 25 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1030 episodes remain (340 of the 34 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 23 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
+* 1040 episodes remain (380 of the 38 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -18,16 +18,17 @@
 | T02 | far_crowded | action_task | 1/10 of 10 | - |
 | T02 | x6_gd_tower_with_event | action_task | 0/0 of 10 | - |
 | T03 | far_small_and_large | task | 2/10 of 10 | - |
-| T03 | three_containers | task | 9/10 of 10 | - |
 | T03 | h_dynamic_pin_taken | task | 2/5 of 10 | - |
+| T03 | mug_or_bedroom_bin | task | 0/0 of 10 | - |
+| T03 | three_containers_bedroom | task | 0/0 of 10 | - |
 | T04 | cup_available | control | 6/10 of 10 | - |
 | T04 | no_cup | task | 5/10 of 10 | - |
 | T04 | no_cup_mug_away | task | 4/5 of 10 | - |
 | T04 | h_task_spot_taken | task | 9/10 of 10 | - |
-| T04 | h_dynamic_cup_taken | task | 4/10 of 10 | - |
 | T04 | x6_gd_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T04 | x6_dr_spot_filled_dynamic__bowl | task | 0/0 of 10 | - |
 | T04 | x6_dr_spot_filled_dynamic__block | task | 0/0 of 10 | - |
+| T04 | cup_taken_mug_in_living_room | task | 0/0 of 10 | - |
 | T05 | h_task_pencil_in_cabinet | action_task | 0/10 of 10 | low cabinet doors |
 | T05 | h_dynamic_pencil_taken | action_task | 0/5 of 10 | low cabinet doors |
 | T05 | x6_gd_pencil_other_cabinet | task | 0/0 of 10 | low cabinet doors |
@@ -48,13 +49,13 @@
 | T08 | x6_pp_sponge_taken_after_wipe | task | 0/0 of 10 | wipe reach |
 | T09 | lid_on | action | 5/10 of 10 | - |
 | T09 | lid_on_spoon_away | action_task | 0/5 of 10 | - |
-| T09 | cookware_choice | task | 8/10 of 10 | - |
 | T09 | h_dynamic_spoon_taken | task | 5/5 of 10 | - |
 | T09 | x6_gd_tomato_elsewhere | task | 0/0 of 10 | - |
 | T09 | x6_pp_lid_taken_after_stir | task | 0/0 of 10 | search of the pot lid |
 | T09 | x6_pp_tomato_taken_out__tomato2 | action | 0/0 of 10 | - |
 | T09 | x6_pp_tomato_taken_out__tomato1 | action | 0/0 of 10 | - |
 | T09 | x6_pp_tomato_taken_out__tomato2_after_stir | action | 0/0 of 10 | - |
+| T09 | pot_in_dining_room | task | 0/0 of 10 | - |
 | T10 | can_on_island | control | 9/10 of 10 | - |
 | T10 | can_in_dining_room | task | 5/5 of 10 | - |
 | T10 | far_can_far | task | 5/5 of 10 | - |

@@ -732,6 +732,86 @@ FAMILIES = {"T01_book_to_dining_table": T01, "T02_stack_blocks": T02, "T04_cup_o
             "T08_wipe_island": T08, "T09_tomato_soup": T09, "T10_trash_the_can": T10, "T11_collect_fruits": T11, "T12_tidy_toys": T12,
             "T13_breakfast_setup": T13, "T14_shelve_the_book": T14, "T17_hide_and_seek_block": T17,
             "T18_check_cabinet_dishes": T18, "T19_recycling": T19, "T20_juice_back_to_table": T20}
+# ----------------------------------------------------------------- long-horizon versions of in-place choices
+# A Task-Level choice made where the robot already is (which container, which cookware, the substitute next to
+# it) is moved to a longer horizon: the right container / pot / substitute is in another room.  The variant it
+# replaces leaves v6 (``REPLACED``).
+BEDROOM_BIN = {"support": "bookcase_2/top", "xy": [1.0888, -0.4277], "yaw_deg": 0.0}
+
+
+def T03_long(t):
+    bin_, spoon, pin = "wide_storage_bin", "breakfast_spoon", "rolling_pin"
+    find_bins = [look("kitchen_island/top"), S("search", object=bin_, region="bedroom_0_1"),
+                 nav("bookcase_2/top"), look("bookcase_2/top")]
+    put_both = [nav(spoon), pick(spoon), nav(bin_), S("approach", target=bin_), S("drop", object=spoon, container=bin_),
+                nav(pin), pick(pin), nav(bin_), S("approach", target=bin_), place(pin, bin_)]
+    return {
+        "mug_or_bedroom_bin": dict(
+            base="small_and_large", control="large_only", conditions=["small_container_present", "not_in_view"],
+            move={bin_: copy.deepcopy(BEDROOM_BIN)},
+            challenge="a mug (8 cm opening) stands on the island next to the utensils; the wide storage bin is on the "
+                      "low bookcase in the bedroom",
+            rationale="the near mug cannot take the 22 cm rolling pin, so both utensils go to the bin in the bedroom",
+            cases={"": dict(route=find_bins + put_both)}),
+        "three_containers_bedroom": dict(
+            base="three_containers", control="large_only", conditions=["joint_capacity", "not_in_view"],
+            move={bin_: {"support": "bookcase_2/top", "xy": [0.885, -0.43], "yaw_deg": 0.0}},
+            add={"small_storage_bin": {"asset": "small_storage_bin", "support": "bookcase_2/top",
+                                       "xy": [1.195, -0.43], "yaw_deg": 90.0}},
+            challenge="the mug on the island next to the utensils; a small storage bin (22 x 17 cm) and the wide "
+                      "storage bin side by side on the low bookcase in the bedroom",
+            rationale="by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then "
+                      "carry both utensils there",
+            cases={"": dict(route=find_bins + [S("measure", object="mug"), S("measure", object="small_storage_bin"),
+                                                S("measure", object=pin)] + put_both)}),
+    }
+
+
+def T04_long(t):
+    M = "mug"
+    base = t["variants"]["h_dynamic_cup_taken"]
+    return {
+        "cup_taken_mug_in_living_room": dict(
+            base="h_dynamic_cup_taken", control="cup_available", conditions=["not_in_view"],
+            move={M: {"support": "tv_stand_2/top", "xy": [7.75, 0.36], "yaw_deg": 0.0}},
+            failures=copy.deepcopy(base["failures"]),
+            challenge="right after the robot looked, someone takes the cup away; the mug is on the TV stand in the "
+                      "living room, out of the first view",
+            rationale="the cup is gone, the allowed substitute is in another room: find the mug and set it out",
+            cases={"": dict(route=[look("kitchen_island/top"), S("search", object=M, region="living_room_0_0"),
+                                   nav(M), pick(M), nav("kitchen_cabinet_6/top"), place(M, "kitchen_cabinet_6/top")])}),
+    }
+
+
+def T09_long(t):
+    POT = "handled_cooking_pot"
+    tail = OR(t, "cookware_choice")
+    i = at(tail, "navigate", destination="cherry_tomato_1")
+    return {
+        "pot_in_dining_room": dict(
+            base="cookware_choice", control="lid_off", conditions=["cookware_choice", "not_in_view"],
+            move={POT: {"support": "dining_table_2/top", "xy": [3.55, 5.75], "yaw_deg": 0.0}},
+            challenge="a breakfast bowl and a mug stand by the tomatoes on the island; the pot is not on the stove but "
+                      "on the dining table in the next room, its lid on the stove",
+            rationale="the soup needs the pot, not the near bowl or mug: fetch the pot from the dining room to the "
+                      "burner, then cook",
+            cases={"": dict(route=tail[:2] + [S("search", object=POT, region="dining_room_0_1"), nav(POT), pick(POT),
+                                              nav("kitchen_stove/top"), place(POT, "kitchen_stove/top", [8.41, 1.725])]
+                            + tail[i:])}),
+    }
+
+
+LONG = {"T03_utensils_one_container": T03_long, "T04_cup_or_mug_to_cabinet": T04_long, "T09_tomato_soup": T09_long}
+# variant -> why it leaves v6
+REPLACED = {
+    ("T03_utensils_one_container", "small_and_large"): "replaced by mug_or_bedroom_bin (the bin in the bedroom)",
+    ("T03_utensils_one_container", "three_containers"): "replaced by three_containers_bedroom (the bins in the bedroom)",
+    ("T04_cup_or_mug_to_cabinet", "h_dynamic_cup_taken"): "replaced by cup_taken_mug_in_living_room",
+    ("T09_tomato_soup", "cookware_choice"): "replaced by pot_in_dining_room (the pot in the dining room)",
+    ("T05_pen_or_pencil_to_desk", "no_pen"): "removed: no_pen_pencil_away is the same choice over a longer horizon",
+}
+
+
 NEW_CONDITIONS = {
     "item_put_away": {"type": "location_disjunction", "decision": "decompose",
                       "meaning": "the item is in one of several closed places the instruction names"},
@@ -889,6 +969,8 @@ NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
 def build_task(t: dict) -> dict:
     t = copy.deepcopy(t)
     fams = FAMILIES[t["task_id"]](t) if t["task_id"] in FAMILIES else {}
+    if t["task_id"] in LONG:
+        fams.update(LONG[t["task_id"]](t))
     families = {}
     # every v5 formal variant is a one-case family of its own; its control is the task's first nominal variant
     easy = t["v5_formal"].get("easy") or []
@@ -926,6 +1008,7 @@ def build_task(t: dict) -> dict:
         families[fam] = {"origin": "v6", "control": spec["control"], "layouts": names, "factor": spec.get("factor"),
                          "seeds": seed_cases(t["task_id"], fam, names)}
     t["v6_variants"] = families
+    t["v6_replaced"] = {vid: why for (tid, vid), why in REPLACED.items() if tid == t["task_id"]}
     for (tid, vid), conds in NOT_A_CHALLENGE.items():
         if tid == t["task_id"]:
             v = t["variants"][vid]

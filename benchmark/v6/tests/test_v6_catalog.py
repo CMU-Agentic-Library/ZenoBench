@@ -143,6 +143,26 @@ def test_events_put_right_at_the_work_spot_are_action_level():
     assert cat("T12_tidy_toys", "x6_pp_duck_moved") == "task"
 
 
+def test_every_layout_has_its_route():
+    for tid, t in TASKS.items():
+        for info in t["v6_variants"].values():
+            for lid in info["layouts"]:
+                assert t["oracle"][lid] in t["routes"], (tid, lid)
+
+
+def test_in_place_choices_are_redesigned_at_a_longer_horizon():
+    """The substitute / container / pot is in another room; the in-place variant left v6."""
+    for tid, old, new in (("T03_utensils_one_container", "small_and_large", "mug_or_bedroom_bin"),
+                          ("T03_utensils_one_container", "three_containers", "three_containers_bedroom"),
+                          ("T04_cup_or_mug_to_cabinet", "h_dynamic_cup_taken", "cup_taken_mug_in_living_room"),
+                          ("T09_tomato_soup", "cookware_choice", "pot_in_dining_room")):
+        t = TASKS[tid]
+        assert old not in t["v6_variants"] and new in t["v6_variants"], (tid, old)
+        assert t["v6_tracks"][new]["category"] == "task"
+        assert any(s["skill"] == "search" for s in t["routes"][t["oracle"][new]]["steps"])
+    assert "no_pen" not in TASKS["T05_pen_or_pencil_to_desk"]["v6_variants"]
+
+
 def test_injected_only_variants_are_dropped():
     t = TASKS["T01_book_to_dining_table"]
     assert t["v6_dropped"]["m_ik_pick"] == "only injected action failures"

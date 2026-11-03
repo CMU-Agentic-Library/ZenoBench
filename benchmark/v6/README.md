@@ -7,10 +7,10 @@ puts each variant in one of four categories.
 | | |
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
-| variants | 128; each runs seeds 10-19 (1,280 episodes) |
-| categories | control 20 (one per task), Action-Level 28, Task-Level 65, Action + Task 15 (`TRACKS.md`) |
-| static checks | 1,280 / 1,280 episodes |
-| physics | 25 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
+| variants | 127; each runs seeds 10-19 (1,270 episodes) |
+| categories | control 20 (one per task), Action-Level 28, Task-Level 64, Action + Task 15 (`TRACKS.md`) |
+| static checks | 1,270 / 1,270 episodes |
+| physics | 23 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
 
 ## Definitions
 
@@ -45,7 +45,7 @@ Each variant contains the fallback its category is about; the category reads onl
 |---|---|---|---|
 | **Control** | nothing: the nominal plan works (the reference for the others) | 20 | 200 |
 | **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`) | 28 | 280 |
-| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 65 | 650 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 64 | 640 |
 | **Action + Task** | both | 15 | 150 |
 
 **No injected action failures, anywhere.** No IK refusal, grasp miss, slip or placement miss is forced on a
@@ -58,6 +58,12 @@ goal, instruction and the objects handled; not where things stand or where the r
 seed's part). `v6_dropped` per task says why each v5 variant left. The v6 design source has no such variants.
 An initial resource / destination / capacity failure next to a scene condition only restates that condition
 (`declares_condition`).
+
+**Task-Level choices happen over a longer horizon.** A choice the robot could make where it already is (which
+container, which cookware, the substitute next to it) is redesigned so the right one is in another room
+(`LONG` / `REPLACED` in `define_tasks_v6.py`: the bins on the bedroom bookcase, the mug in the living room, the
+pot on the dining table); the in-place variant leaves v6 (`v6_replaced`). T01 `table_set` (choose the reading
+spot on the set table) stays as it is.
 
 A goal of a variant's own (close the door again, leave the block on the island) states how a fallback ends and
 does not by itself make a variant Task-Level.

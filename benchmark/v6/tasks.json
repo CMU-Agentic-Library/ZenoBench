@@ -1674,6 +1674,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_dining_room": "same as overhang_ready but for the layout (object poses / start)",
     "m_ik_pick": "only injected action failures",
@@ -3260,6 +3261,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_wall_cabinet": "same as clear but for the layout (object poses / start)",
     "m_grasp_b": "only injected action failures",
@@ -3352,60 +3354,6 @@
     ]
    },
    "variants": {
-    "small_and_large": {
-     "note": "two open containers: a mug (8 cm opening) on the island and the wide storage bin (34 x 30 cm) on the TV stand",
-     "move": {
-      "mug": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.9501,
-        1.665
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "conditions": [
-      "small_container_present"
-     ],
-     "since": "v2",
-     "condition_types": [
-      "container_choice"
-     ],
-     "decisions": [
-      "alternative"
-     ],
-     "v5": {
-      "tier": "medium",
-      "challenge": "two open containers: a mug (8 cm opening) on the island and the wide storage bin (34 x 30 cm) on the TV stand",
-      "derived_from": "small_and_large",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "vary": {
-      "groups": [
-       {
-        "names": [
-         "mug"
-        ],
-        "step": 0.01,
-        "dx": [
-         -0.02,
-         0.02
-        ],
-        "dy": [
-         -0.02,
-         0.02
-        ]
-       }
-      ],
-      "start": {
-       "dx": 0.1,
-       "dyaw": 10,
-       "step": 0.05,
-       "step_deg": 5
-      }
-     }
-    },
     "large_only": {
      "note": "no mug: the storage bin on the TV stand is the only open container",
      "remove": [
@@ -3496,103 +3444,6 @@
        "step": 0.05,
        "step_deg": 5
       }
-     }
-    },
-    "three_containers": {
-     "note": "the mug on the island next to the utensils, a small storage bin (22 x 17 cm) and the wide storage bin side by side on the TV stand: the spoon fits the small bin, the 22 cm rolling pin only the wide one",
-     "difficulty": "hard",
-     "since": "v4",
-     "conditions": [
-      "joint_capacity"
-     ],
-     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
-     "instruction_zh": "烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
-     "goal": {
-      "any": [
-       [
-        [
-         "fully_inside",
-         "rolling_pin",
-         "wide_storage_bin"
-        ],
-        [
-         "fully_inside",
-         "breakfast_spoon",
-         "wide_storage_bin"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "rolling_pin",
-         "mug"
-        ],
-        [
-         "fully_inside",
-         "breakfast_spoon",
-         "mug"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "rolling_pin",
-         "small_storage_bin"
-        ],
-        [
-         "fully_inside",
-         "breakfast_spoon",
-         "small_storage_bin"
-        ]
-       ]
-      ],
-      "all": [
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "watch": [
-      "rolling_pin",
-      "breakfast_spoon",
-      "mug",
-      "wide_storage_bin",
-      "small_storage_bin"
-     ],
-     "add": {
-      "small_storage_bin": {
-       "asset": "small_storage_bin",
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.85,
-        0.4
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "move": {},
-     "condition_types": [
-      "container_capacity"
-     ],
-     "decisions": [
-      "decompose"
-     ],
-     "vary": {
-      "groups": [],
-      "start": {
-       "dx": 0.1,
-       "dyaw": 10,
-       "step": 0.05,
-       "step_deg": 5
-      }
-     },
-     "v5": {
-      "tier": "hard",
-      "challenge": "the mug on the island next to the utensils, a small storage bin (22 x 17 cm) and the wide storage bin side by side on the TV stand: the spoon fits the small bin, the 22 cm rolling pin only the wide one",
-      "derived_from": "three_containers",
-      "existing": true,
-      "hard_category": "task"
      }
     },
     "h_dynamic_pin_taken": {
@@ -3856,6 +3707,192 @@
       "seed_extension": true,
       "rationale": "seed extension of the v5 design: the rolling_pin ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
      }
+    },
+    "mug_or_bedroom_bin": {
+     "move": {
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      },
+      "wide_storage_bin": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0888,
+        -0.4277
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "small_container_present",
+      "not_in_view"
+     ],
+     "since": "v6",
+     "note": "a mug (8 cm opening) stands on the island next to the utensils; the wide storage bin is on the low bookcase in the bedroom",
+     "v6": {
+      "family": "mug_or_bedroom_bin",
+      "case": null,
+      "challenge": "a mug (8 cm opening) stands on the island next to the utensils; the wide storage bin is on the low bookcase in the bedroom",
+      "rationale": "the near mug cannot take the 22 cm rolling pin, so both utensils go to the bin in the bedroom",
+      "control": "large_only",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "small_and_large"
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
+    },
+    "three_containers_bedroom": {
+     "move": {
+      "wide_storage_bin": {
+       "support": "bookcase_2/top",
+       "xy": [
+        0.885,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.9501,
+        1.665
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "add": {
+      "small_storage_bin": {
+       "asset": "small_storage_bin",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.195,
+        -0.43
+       ],
+       "yaw_deg": 90.0
+      }
+     },
+     "conditions": [
+      "joint_capacity",
+      "not_in_view"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "wide_storage_bin"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "wide_storage_bin"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "mug"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "mug"
+        ]
+       ],
+       [
+        [
+         "fully_inside",
+         "rolling_pin",
+         "small_storage_bin"
+        ],
+        [
+         "fully_inside",
+         "breakfast_spoon",
+         "small_storage_bin"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
+     "instruction_zh": "烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
+     "watch": [
+      "rolling_pin",
+      "breakfast_spoon",
+      "mug",
+      "wide_storage_bin",
+      "small_storage_bin"
+     ],
+     "since": "v6",
+     "note": "the mug on the island next to the utensils; a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
+     "v6": {
+      "family": "three_containers_bedroom",
+      "case": null,
+      "challenge": "the mug on the island next to the utensils; a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
+      "rationale": "by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then carry both utensils there",
+      "control": "large_only",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "three_containers"
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
     }
    },
    "watch": [
@@ -3900,12 +3937,12 @@
    },
    "nominal": "nominal",
    "oracle": {
-    "small_and_large": "nominal",
     "large_only": "nominal",
     "far_small_and_large": "v5fix_far_small_and_large",
-    "three_containers": "hard_measure_then_wide_bin",
     "h_dynamic_pin_taken": "v5_h_dynamic_pin_taken",
-    "h_dynamic_pin_taken__alt_dining_table_2": "v6_h_dynamic_pin_taken__alt_dining_table_2"
+    "h_dynamic_pin_taken__alt_dining_table_2": "v6_h_dynamic_pin_taken__alt_dining_table_2",
+    "mug_or_bedroom_bin": "v6_mug_or_bedroom_bin",
+    "three_containers_bedroom": "v6_three_containers_bedroom"
    },
    "routes": {
     "nominal": {
@@ -3991,110 +4028,6 @@
       }
      ],
      "since": "v2"
-    },
-    "hard_measure_then_wide_bin": {
-     "kind": "alternative",
-     "variants": [
-      "three_containers"
-     ],
-     "recovery": "measure the containers: only the wide bin takes the 22 cm pin, so both go there",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "mug"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "small_storage_bin"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "rolling_pin"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "breakfast_spoon",
-        "container": "wide_storage_bin"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "rolling_pin"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "rolling_pin"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "wide_storage_bin"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "rolling_pin",
-        "receptacle": "wide_storage_bin"
-       },
-       "role": "alternative"
-      }
-     ],
-     "since": "v4"
     },
     "v5_h_dynamic_pin_taken": {
      "steps": [
@@ -4438,6 +4371,210 @@
      ],
      "kind": "v6_seed_extension",
      "variant": "h_dynamic_pin_taken__alt_dining_table_2"
+    },
+    "v6_mug_or_bedroom_bin": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wide_storage_bin",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "breakfast_spoon",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "wide_storage_bin"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "mug_or_bedroom_bin"
+    },
+    "v6_three_containers_bedroom": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wide_storage_bin",
+        "region": "bedroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "small_storage_bin"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "breakfast_spoon",
+        "container": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rolling_pin"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rolling_pin"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wide_storage_bin"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rolling_pin",
+        "receptacle": "wide_storage_bin"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "three_containers_bedroom"
     }
    },
    "benchmark_version": "v6",
@@ -4485,25 +4622,6 @@
       "19": "large_only"
      }
     },
-    "small_and_large": {
-     "origin": "v5",
-     "control": "large_only",
-     "layouts": [
-      "small_and_large"
-     ],
-     "seeds": {
-      "10": "small_and_large",
-      "11": "small_and_large",
-      "12": "small_and_large",
-      "13": "small_and_large",
-      "14": "small_and_large",
-      "15": "small_and_large",
-      "16": "small_and_large",
-      "17": "small_and_large",
-      "18": "small_and_large",
-      "19": "small_and_large"
-     }
-    },
     "far_small_and_large": {
      "origin": "v5",
      "control": "large_only",
@@ -4521,25 +4639,6 @@
       "17": "far_small_and_large",
       "18": "far_small_and_large",
       "19": "far_small_and_large"
-     }
-    },
-    "three_containers": {
-     "origin": "v5",
-     "control": "large_only",
-     "layouts": [
-      "three_containers"
-     ],
-     "seeds": {
-      "10": "three_containers",
-      "11": "three_containers",
-      "12": "three_containers",
-      "13": "three_containers",
-      "14": "three_containers",
-      "15": "three_containers",
-      "16": "three_containers",
-      "17": "three_containers",
-      "18": "three_containers",
-      "19": "three_containers"
      }
     },
     "h_dynamic_pin_taken": {
@@ -4562,26 +4661,65 @@
       "19": "h_dynamic_pin_taken"
      },
      "factor": "where the resource is to be found (seed extension)"
+    },
+    "mug_or_bedroom_bin": {
+     "origin": "v6",
+     "control": "large_only",
+     "layouts": [
+      "mug_or_bedroom_bin"
+     ],
+     "factor": null,
+     "seeds": {
+      "10": "mug_or_bedroom_bin",
+      "11": "mug_or_bedroom_bin",
+      "12": "mug_or_bedroom_bin",
+      "13": "mug_or_bedroom_bin",
+      "14": "mug_or_bedroom_bin",
+      "15": "mug_or_bedroom_bin",
+      "16": "mug_or_bedroom_bin",
+      "17": "mug_or_bedroom_bin",
+      "18": "mug_or_bedroom_bin",
+      "19": "mug_or_bedroom_bin"
+     }
+    },
+    "three_containers_bedroom": {
+     "origin": "v6",
+     "control": "large_only",
+     "layouts": [
+      "three_containers_bedroom"
+     ],
+     "factor": null,
+     "seeds": {
+      "10": "three_containers_bedroom",
+      "11": "three_containers_bedroom",
+      "12": "three_containers_bedroom",
+      "13": "three_containers_bedroom",
+      "14": "three_containers_bedroom",
+      "15": "three_containers_bedroom",
+      "16": "three_containers_bedroom",
+      "17": "three_containers_bedroom",
+      "18": "three_containers_bedroom",
+      "19": "three_containers_bedroom"
+     }
     }
+   },
+   "v6_replaced": {
+    "small_and_large": "replaced by mug_or_bedroom_bin (the bin in the bedroom)",
+    "three_containers": "replaced by three_containers_bedroom (the bins in the bedroom)"
    },
    "v6_dropped": {
     "e2_from_dining_room": "same as large_only but for the layout (object poses / start)",
     "m_grasp_spoon": "only injected action failures",
     "h_action_slip_and_miss": "same as three_containers without its injected action failures",
-    "h_mixed_three_containers_ik": "same as three_containers without its injected action failures"
+    "h_mixed_three_containers_ik": "same as three_containers without its injected action failures",
+    "small_and_large": "replaced by mug_or_bedroom_bin (the bin in the bedroom)",
+    "three_containers": "replaced by three_containers_bedroom (the bins in the bedroom)"
    },
    "v6_tracks": {
     "large_only": {
      "category": "control",
      "local": [],
      "longer": []
-    },
-    "small_and_large": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "small_container_present"
-     ]
     },
     "far_small_and_large": {
      "category": "task",
@@ -4591,19 +4729,28 @@
       "start_elsewhere"
      ]
     },
-    "three_containers": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "joint_capacity"
-     ]
-    },
     "h_dynamic_pin_taken": {
      "category": "task",
      "local": [],
      "longer": [
       "event: resource",
       "joint_capacity"
+     ]
+    },
+    "mug_or_bedroom_bin": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "not_in_view",
+      "small_container_present"
+     ]
+    },
+    "three_containers_bedroom": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "joint_capacity",
+      "not_in_view"
      ]
     }
    }
@@ -4924,66 +5071,6 @@
       "challenge": "the drinks spot is taken by the oatmeal bowl and the pot lid (no free spot for a cup): make room first (move the bowl), then set the cup",
       "derived_from": "cup_available",
       "hard_category": "task"
-     }
-    },
-    "h_dynamic_cup_taken": {
-     "move": {
-      "cup_counter_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.62,
-        1.64
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "remove": [
-      "juice_bottle"
-     ],
-     "failures": [
-      {
-       "id": "resource_cup_counter_b",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "look",
-        "args": {
-         "target": "kitchen_island/top"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "cup_counter_b",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.7,
-          6.3
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "vary": {
-      "groups": [],
-      "start": {
-       "dx": 0.1,
-       "dyaw": 10,
-       "step": 0.05,
-       "step_deg": 5
-      }
-     },
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "right after the robot looked, someone takes the cup away: the mug next to it is the allowed substitute (or search the cup)",
-     "v5": {
-      "tier": "hard",
-      "challenge": "right after the robot looked, someone takes the cup away: the mug next to it is the allowed substitute (or search the cup)",
-      "derived_from": "cup_available",
-      "hard_category": "dynamic"
      }
     },
     "no_cup_mug_away__alt_dining_table_2": {
@@ -5591,6 +5678,109 @@
        "step_deg": 5
       }
      }
+    },
+    "cup_taken_mug_in_living_room": {
+     "move": {
+      "cup_counter_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.64
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.75,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "juice_bottle"
+     ],
+     "conditions": [
+      "not_in_view"
+     ],
+     "failures": [
+      {
+       "id": "resource_cup_counter_b",
+       "kind": "resource",
+       "when": "dynamic",
+       "trigger": {
+        "skill": "look",
+        "args": {
+         "target": "kitchen_island/top"
+        },
+        "nth": 1,
+        "on": "success"
+       },
+       "event": {
+        "type": "move_object",
+        "object": "cup_counter_b",
+        "to": {
+         "support": "dining_table_2/top",
+         "xy": [
+          3.7,
+          6.3
+         ],
+         "yaw_deg": 0.0
+        }
+       }
+      }
+     ],
+     "since": "v6",
+     "note": "right after the robot looked, someone takes the cup away; the mug is on the TV stand in the living room, out of the first view",
+     "v6": {
+      "family": "cup_taken_mug_in_living_room",
+      "case": null,
+      "challenge": "right after the robot looked, someone takes the cup away; the mug is on the TV stand in the living room, out of the first view",
+      "rationale": "the cup is gone, the allowed substitute is in another room: find the mug and set it out",
+      "control": "cup_available",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "h_dynamic_cup_taken"
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "cup_counter_b"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       },
+       {
+        "names": [
+         "mug"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
     }
    },
    "watch": [
@@ -5640,12 +5830,12 @@
     "no_cup": "alternative_mug",
     "no_cup_mug_away": "hard_count_search_mug",
     "h_task_spot_taken": "v5_h_task_spot_taken",
-    "h_dynamic_cup_taken": "v5_h_dynamic_cup_taken",
     "no_cup_mug_away__alt_dining_table_2": "v6_no_cup_mug_away__alt_dining_table_2",
     "x6_gd_cup_in_cabinets__cup_in_4": "v6_x6_gd_cup_in_cabinets__cup_in_4",
     "x6_gd_cup_in_cabinets__cup_in_6": "v6_x6_gd_cup_in_cabinets__cup_in_6",
     "x6_dr_spot_filled_dynamic__bowl": "v6_x6_dr_spot_filled_dynamic__bowl",
-    "x6_dr_spot_filled_dynamic__block": "v6_x6_dr_spot_filled_dynamic__block"
+    "x6_dr_spot_filled_dynamic__block": "v6_x6_dr_spot_filled_dynamic__block",
+    "cup_taken_mug_in_living_room": "v6_cup_taken_mug_in_living_room"
    },
    "routes": {
     "nominal": {
@@ -5881,48 +6071,6 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_task_spot_taken"
-    },
-    "v5_h_dynamic_cup_taken": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "mug"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "mug"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_cabinet_6/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "mug",
-        "receptacle": "kitchen_cabinet_6/top"
-       },
-       "role": "recover"
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_cup_taken"
     },
     "v6_no_cup_mug_away__alt_dining_table_2": {
      "steps": [
@@ -6434,6 +6582,50 @@
      ],
      "kind": "v6_oracle",
      "variant": "x6_dr_spot_filled_dynamic__block"
+    },
+    "v6_cup_taken_mug_in_living_room": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "mug",
+        "region": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "mug",
+        "receptacle": "kitchen_cabinet_6/top"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "cup_taken_mug_in_living_room"
     }
    },
    "benchmark_version": "v6",
@@ -6536,25 +6728,6 @@
       "19": "h_task_spot_taken"
      }
     },
-    "h_dynamic_cup_taken": {
-     "origin": "v5",
-     "control": "cup_available",
-     "layouts": [
-      "h_dynamic_cup_taken"
-     ],
-     "seeds": {
-      "10": "h_dynamic_cup_taken",
-      "11": "h_dynamic_cup_taken",
-      "12": "h_dynamic_cup_taken",
-      "13": "h_dynamic_cup_taken",
-      "14": "h_dynamic_cup_taken",
-      "15": "h_dynamic_cup_taken",
-      "16": "h_dynamic_cup_taken",
-      "17": "h_dynamic_cup_taken",
-      "18": "h_dynamic_cup_taken",
-      "19": "h_dynamic_cup_taken"
-     }
-    },
     "x6_gd_cup_in_cabinets": {
      "origin": "v6",
      "control": "no_cup",
@@ -6613,13 +6786,37 @@
       "18": "x6_dr_spot_filled_dynamic__block",
       "19": "x6_dr_spot_filled_dynamic__block"
      }
+    },
+    "cup_taken_mug_in_living_room": {
+     "origin": "v6",
+     "control": "cup_available",
+     "layouts": [
+      "cup_taken_mug_in_living_room"
+     ],
+     "factor": null,
+     "seeds": {
+      "10": "cup_taken_mug_in_living_room",
+      "11": "cup_taken_mug_in_living_room",
+      "12": "cup_taken_mug_in_living_room",
+      "13": "cup_taken_mug_in_living_room",
+      "14": "cup_taken_mug_in_living_room",
+      "15": "cup_taken_mug_in_living_room",
+      "16": "cup_taken_mug_in_living_room",
+      "17": "cup_taken_mug_in_living_room",
+      "18": "cup_taken_mug_in_living_room",
+      "19": "cup_taken_mug_in_living_room"
+     }
     }
+   },
+   "v6_replaced": {
+    "h_dynamic_cup_taken": "replaced by cup_taken_mug_in_living_room"
    },
    "v6_dropped": {
     "h_action_ik_and_grasp": "built on an injected action failure that never goes away",
     "e2_from_dining_room": "same as cup_available but for the layout (object poses / start)",
     "m_ik_cup": "only injected action failures",
-    "h_mixed_spot_taken_ik": "same as h_task_spot_taken without its injected action failures"
+    "h_mixed_spot_taken_ik": "same as h_task_spot_taken without its injected action failures",
+    "h_dynamic_cup_taken": "replaced by cup_taken_mug_in_living_room"
    },
    "v6_tracks": {
     "cup_available": {
@@ -6649,13 +6846,6 @@
       "destination"
      ]
     },
-    "h_dynamic_cup_taken": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
-     ]
-    },
     "x6_gd_cup_in_cabinets": {
      "category": "task",
      "local": [],
@@ -6675,6 +6865,14 @@
      "local": [],
      "longer": [
       "event: destination"
+     ]
+    },
+    "cup_taken_mug_in_living_room": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "event: resource",
+      "not_in_view"
      ]
     }
    }
@@ -6711,39 +6909,6 @@
     ]
    },
    "variants": {
-    "no_pen": {
-     "note": "only the pencil lies on the low bookcase",
-     "remove": [
-      "pen"
-     ],
-     "conditions": [
-      "no_pen"
-     ],
-     "since": "v2",
-     "condition_types": [
-      "object_absent"
-     ],
-     "decisions": [
-      "alternative"
-     ],
-     "v5": {
-      "tier": "medium",
-      "challenge": "only the pencil lies on the low bookcase",
-      "derived_from": "no_pen",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "move": {},
-     "vary": {
-      "groups": [],
-      "start": {
-       "dx": 0.1,
-       "dyaw": 10,
-       "step": 0.05,
-       "step_deg": 5
-      }
-     }
-    },
     "no_pen_pencil_away": {
      "note": "no pen; the pencil lies on the dining table in another room",
      "conditions": [
@@ -7512,7 +7677,6 @@
    },
    "nominal": "nominal",
    "oracle": {
-    "no_pen": "alternative_pencil",
     "no_pen_pencil_away": "v5fix_hard_search_pencil",
     "e1_pencil_asked": "v5_e1_pencil_asked",
     "h_task_pencil_in_cabinet": "v5_h_task_pencil_in_cabinet",
@@ -7564,63 +7728,6 @@
        "skill": "place",
        "args": {
         "object": "pen",
-        "receptacle": "desk_1/top"
-       }
-      }
-     ],
-     "since": "v2"
-    },
-    "alternative_pencil": {
-     "kind": "alternative",
-     "variants": [
-      "no_pen"
-     ],
-     "recovery": "no pen is observed (navigate to it refused) -> the pencil",
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pen"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pencil"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pencil"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "desk_1/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "pencil",
         "receptacle": "desk_1/top"
        }
       }
@@ -8329,25 +8436,6 @@
       "19": "e1_pencil_asked"
      }
     },
-    "no_pen": {
-     "origin": "v5",
-     "control": "e1_pencil_asked",
-     "layouts": [
-      "no_pen"
-     ],
-     "seeds": {
-      "10": "no_pen",
-      "11": "no_pen",
-      "12": "no_pen",
-      "13": "no_pen",
-      "14": "no_pen",
-      "15": "no_pen",
-      "16": "no_pen",
-      "17": "no_pen",
-      "18": "no_pen",
-      "19": "no_pen"
-     }
-    },
     "no_pen_pencil_away": {
      "origin": "v5",
      "control": "e1_pencil_asked",
@@ -8449,24 +8537,21 @@
      }
     }
    },
+   "v6_replaced": {
+    "no_pen": "removed: no_pen_pencil_away is the same choice over a longer horizon"
+   },
    "v6_dropped": {
     "e2_pencil_asked_far": "same as e1_pencil_asked but for the layout (object poses / start)",
     "m_grasp_pencil": "same as no_pen without its injected action failures",
     "h_action_grasp_and_ik": "same as h_task_pencil_in_cabinet without its injected action failures",
-    "h_mixed_cabinet_ik": "same as h_task_pencil_in_cabinet without its injected action failures"
+    "h_mixed_cabinet_ik": "same as h_task_pencil_in_cabinet without its injected action failures",
+    "no_pen": "removed: no_pen_pencil_away is the same choice over a longer horizon"
    },
    "v6_tracks": {
     "e1_pencil_asked": {
      "category": "control",
      "local": [],
      "longer": []
-    },
-    "no_pen": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "no_pen"
-     ]
     },
     "no_pen_pencil_away": {
      "category": "task",
@@ -10127,6 +10212,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_dining_room": "same as free but for the layout (object poses / start)",
     "m_slip_block": "only injected action failures",
@@ -11589,6 +11675,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "h_action_ik_and_slip": "built on an injected action failure that never goes away",
     "e2_from_dining_room": "same as microwave_works but for the layout (object poses / start)",
@@ -13751,6 +13838,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_dining_room": "same as sponge_on_island but for the layout (object poses / start)",
     "m_grasp_sponge": "only injected action failures",
@@ -14045,73 +14133,6 @@
        "step": 0.05,
        "step_deg": 5
       }
-     }
-    },
-    "cookware_choice": {
-     "note": "a breakfast bowl and a mug stand by the tomatoes on the island; the pot is on the stove, its lid beside it",
-     "difficulty": "hard",
-     "since": "v4",
-     "conditions": [
-      "cookware_choice"
-     ],
-     "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
-     "instruction_zh": "请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。",
-     "watch": [
-      "cherry_tomato_1",
-      "cherry_tomato_2",
-      "handled_cooking_pot",
-      "pot_lid",
-      "breakfast_spoon",
-      "bowl_kitchen_cabinet",
-      "mug_counter"
-     ],
-     "move": {
-      "bowl_kitchen_cabinet": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.2,
-        1.8
-       ],
-       "yaw_deg": 0.0
-      },
-      "mug_counter": {
-       "support": "kitchen_island/top",
-       "xy": [
-        8.1,
-        1.8
-       ],
-       "yaw_deg": 0.0
-      },
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.715,
-        1.655
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "condition_types": [
-      "cookware_choice"
-     ],
-     "decisions": [
-      "replace"
-     ],
-     "vary": {
-      "groups": [],
-      "start": {
-       "dx": 0.1,
-       "dyaw": 10,
-       "step": 0.05,
-       "step_deg": 5
-      }
-     },
-     "v5": {
-      "tier": "hard",
-      "challenge": "a breakfast bowl and a mug stand by the tomatoes on the island; the pot is on the stove, its lid beside it",
-      "derived_from": "cookware_choice",
-      "existing": true,
-      "hard_category": "task"
      }
     },
     "h_dynamic_spoon_taken": {
@@ -14904,6 +14925,108 @@
        "step_deg": 5
       }
      }
+    },
+    "pot_in_dining_room": {
+     "move": {
+      "bowl_kitchen_cabinet": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.2,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_counter": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.55,
+        5.75
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "cookware_choice",
+      "not_in_view"
+     ],
+     "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
+     "instruction_zh": "请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。",
+     "watch": [
+      "cherry_tomato_1",
+      "cherry_tomato_2",
+      "handled_cooking_pot",
+      "pot_lid",
+      "breakfast_spoon",
+      "bowl_kitchen_cabinet",
+      "mug_counter"
+     ],
+     "since": "v6",
+     "note": "a breakfast bowl and a mug stand by the tomatoes on the island; the pot is not on the stove but on the dining table in the next room, its lid on the stove",
+     "v6": {
+      "family": "pot_in_dining_room",
+      "case": null,
+      "challenge": "a breakfast bowl and a mug stand by the tomatoes on the island; the pot is not on the stove but on the dining table in the next room, its lid on the stove",
+      "rationale": "the soup needs the pot, not the near bowl or mug: fetch the pot from the dining room to the burner, then cook",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": null,
+      "derived_from": "cookware_choice"
+     },
+     "vary": {
+      "groups": [
+       {
+        "names": [
+         "handled_cooking_pot"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       },
+       {
+        "names": [
+         "bowl_kitchen_cabinet",
+         "mug_counter"
+        ],
+        "step": 0.01,
+        "dx": [
+         -0.02,
+         0.02
+        ],
+        "dy": [
+         -0.02,
+         0.02
+        ]
+       }
+      ],
+      "start": {
+       "dx": 0.1,
+       "dyaw": 10,
+       "step": 0.05,
+       "step_deg": 5
+      }
+     }
     }
    },
    "watch": [
@@ -14962,7 +15085,6 @@
     "lid_on": "fallback_uncover",
     "lid_off": "nominal",
     "lid_on_spoon_away": "hard_uncover_search_spoon",
-    "cookware_choice": "v5x_cookware_choice",
     "h_dynamic_spoon_taken": "v5_h_dynamic_spoon_taken",
     "lid_on_spoon_away__alt_dining_table_2": "v6_lid_on_spoon_away__alt_dining_table_2",
     "h_dynamic_spoon_taken__alt_dining_table_2": "v6_h_dynamic_spoon_taken__alt_dining_table_2",
@@ -14972,7 +15094,8 @@
     "x6_pp_lid_taken_after_stir__dining": "v6_x6_pp_lid_taken_after_stir__dining",
     "x6_pp_tomato_taken_out__tomato2": "v6_x6_pp_tomato_taken_out__tomato2",
     "x6_pp_tomato_taken_out__tomato1": "v6_x6_pp_tomato_taken_out__tomato1",
-    "x6_pp_tomato_taken_out__tomato2_after_stir": "v6_x6_pp_tomato_taken_out__tomato2_after_stir"
+    "x6_pp_tomato_taken_out__tomato2_after_stir": "v6_x6_pp_tomato_taken_out__tomato2_after_stir",
+    "pot_in_dining_room": "v6_pot_in_dining_room"
    },
    "routes": {
     "nominal": {
@@ -15456,135 +15579,6 @@
      ],
      "kind": "v5_oracle",
      "variant": "h_dynamic_spoon_taken"
-    },
-    "v5x_cookware_choice": {
-     "kind": "v5_skill_coverage",
-     "variants": [
-      "cookware_choice"
-     ],
-     "recovery": "of the three vessels only the pot can be stirred in, lidded and heated on the stove",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cherry_tomato_1"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "sweep",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "radius_m": 0.12
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "stir",
-       "args": {
-        "container": "handled_cooking_pot",
-        "tool": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pot_lid"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "cover",
-       "args": {
-        "container": "handled_cooking_pot",
-        "lid": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "cherry_tomato_1",
-        "appliance": "kitchen_stove",
-        "temp_c": 60
-       }
-      }
-     ],
-     "since": "v4",
-     "edited_from": "hard_pot_not_bowl"
     },
     "v6_lid_on_spoon_away__alt_dining_table_2": {
      "steps": [
@@ -16736,6 +16730,166 @@
      ],
      "kind": "v6_oracle",
      "variant": "x6_pp_tomato_taken_out__tomato2_after_stir"
+    },
+    "v6_pot_in_dining_room": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "handled_cooking_pot",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "handled_cooking_pot",
+        "receptacle": "kitchen_stove/top",
+        "hint_xy": [
+         8.41,
+         1.725
+        ]
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cherry_tomato_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "sweep",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "radius_m": 0.12
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "pot_in_dining_room"
     }
    },
    "benchmark_version": "v6",
@@ -16829,25 +16983,6 @@
       "19": "lid_on_spoon_away"
      },
      "factor": "where the resource is to be found (seed extension)"
-    },
-    "cookware_choice": {
-     "origin": "v5",
-     "control": "lid_off",
-     "layouts": [
-      "cookware_choice"
-     ],
-     "seeds": {
-      "10": "cookware_choice",
-      "11": "cookware_choice",
-      "12": "cookware_choice",
-      "13": "cookware_choice",
-      "14": "cookware_choice",
-      "15": "cookware_choice",
-      "16": "cookware_choice",
-      "17": "cookware_choice",
-      "18": "cookware_choice",
-      "19": "cookware_choice"
-     }
     },
     "h_dynamic_spoon_taken": {
      "origin": "v5",
@@ -16968,13 +17103,37 @@
       "18": "x6_pp_tomato_taken_out__tomato2_after_stir",
       "19": "x6_pp_tomato_taken_out__tomato2_after_stir"
      }
+    },
+    "pot_in_dining_room": {
+     "origin": "v6",
+     "control": "lid_off",
+     "layouts": [
+      "pot_in_dining_room"
+     ],
+     "factor": null,
+     "seeds": {
+      "10": "pot_in_dining_room",
+      "11": "pot_in_dining_room",
+      "12": "pot_in_dining_room",
+      "13": "pot_in_dining_room",
+      "14": "pot_in_dining_room",
+      "15": "pot_in_dining_room",
+      "16": "pot_in_dining_room",
+      "17": "pot_in_dining_room",
+      "18": "pot_in_dining_room",
+      "19": "pot_in_dining_room"
+     }
     }
+   },
+   "v6_replaced": {
+    "cookware_choice": "replaced by pot_in_dining_room (the pot in the dining room)"
    },
    "v6_dropped": {
     "e2_from_dining_room": "same as lid_off but for the layout (object poses / start)",
     "m_grasp_spoon": "only injected action failures",
     "h_action_grasp_and_ik": "same as cookware_choice without its injected action failures",
-    "h_mixed_cookware_grasp": "same as cookware_choice without its injected action failures"
+    "h_mixed_cookware_grasp": "same as cookware_choice without its injected action failures",
+    "cookware_choice": "replaced by pot_in_dining_room (the pot in the dining room)"
    },
    "v6_tracks": {
     "lid_off": {
@@ -16996,13 +17155,6 @@
      ],
      "longer": [
       "not_in_view"
-     ]
-    },
-    "cookware_choice": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "cookware_choice"
      ]
     },
     "h_dynamic_spoon_taken": {
@@ -17047,6 +17199,14 @@
       "someone changed things at the work spot: put it right there"
      ],
      "longer": []
+    },
+    "pot_in_dining_room": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "cookware_choice",
+      "not_in_view"
+     ]
     }
    }
   },
@@ -18676,6 +18836,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_dining_room": "same as can_on_island but for the layout (object poses / start)",
     "m_ik_can": "only injected action failures",
@@ -19615,6 +19776,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "h_action_grasp_and_ik": "built on an injected action failure that never goes away",
     "e2_from_kitchen": "same as fruits_on_table but for the layout (object poses / start)",
@@ -22575,6 +22737,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_kitchen": "same as toys_out but for the layout (object poses / start)",
     "m_grasp_car": "only injected action failures",
@@ -26857,6 +27020,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "h_action_ik_and_grasp": "built on an injected action failure that never goes away",
     "e2_from_kitchen": "same as dishes_on_tv_stand but for the layout (object poses / start)",
@@ -27607,6 +27771,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_dining_room": "same as book_free but for the layout (object poses / start)",
     "m_start_dining_away": "same as book_out_of_view but for the layout (object poses / start)",
@@ -28288,6 +28453,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_dining_room": "same as pin_free but for the layout (object poses / start)",
     "m_start_dining_away": "same as pin_out_of_view but for the layout (object poses / start)",
@@ -30404,6 +30570,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_dining_room": "same as lid_off but for the layout (object poses / start)",
     "h_action_ik_twice": "same as h_task_lid_elsewhere without its injected action failures",
@@ -31541,6 +31708,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_dining_room": "same as at_island but for the layout (object poses / start)",
     "m_ik_open": "only injected action failures",
@@ -33638,6 +33806,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_kitchen": "same as bin_on_bookcase but for the layout (object poses / start)",
     "m_grasp_can": "only injected action failures",
@@ -35683,6 +35852,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_from_bedroom_hall": "same as bottle_on_cabinet but for the layout (object poses / start)",
     "m_ik_pick": "only injected action failures",
@@ -36915,6 +37085,7 @@
      }
     }
    },
+   "v6_replaced": {},
    "v6_dropped": {
     "e2_book_ready_far": "same as e1_book_ready but for the layout (object poses / start)",
     "m_ik_place": "same as book_on_desk without its injected action failures",

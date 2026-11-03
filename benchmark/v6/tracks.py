@@ -268,12 +268,15 @@ def strip_injected(doc):
                                                          else " but for the layout (object poses / start)")
                 continue
             seen[key] = vid
+        # a variant redesigned at a longer horizon leaves, with every variant merged into it
+        for vid, why in (t.get("v6_replaced") or {}).items():
+            dropped[vid] = why
         controls = [vid for vid in t["v6_variants"] if vid not in dropped and
                     all(not a and not b for a, b in (content(t, lid) for lid in t["v6_variants"][vid]["layouts"]))]
         for vid in dropped:
             for lid in t["v6_variants"].pop(vid)["layouts"]:
                 t["variants"].pop(lid, None)
-                t["routes"].pop(t["oracle"].pop(lid, None), None)
+                t["oracle"].pop(lid, None)          # routes no one uses go below (variants may share one)
         for vid, info in t["v6_variants"].items():
             c = info.get("control")
             while c in dropped and dropped[c].startswith("same as "):
