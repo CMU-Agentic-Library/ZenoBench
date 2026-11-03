@@ -8,15 +8,15 @@ Checks, per formal family and per episode of its seed manifest (seed -> concrete
 * **configuration / route / failures / geometry** - benchmark.v5.validate.check_variant on the episode's
   concrete variant and seed (goal predicates and objects present, every route call a known skill with known
   inputs and objects, failure specs valid against the scene and reached by the route, overlay and event poses
-  inside their support and clear of other objects, planner view free of hidden state); v5 variants were
-  checked by the v5 validator with their v5 tier and are re-checked here only for hashes;
+  inside their support and clear of other objects, planner view free of hidden state; v5's tier labels are not
+  checked); v5 variants were checked by the v5 validator and are re-checked here only for hashes;
 * **persistent failures** - every matching call the route makes while a persistent failure holds is marked to
   fail, every later one (``until_moved``: after the obstruction is moved) succeeds or is absent;
 * **seed manifest** - deterministic (recomputed), balanced, every case exercised;
 * **decision diversity** - the cases of a multi-case family differ in their oracle route;
 * **distinct configurations** - no two families of a task share a configuration at seed 10;
-* **spec card** - every family names instruction, initial conditions, goal, challenge, rationale, control,
-  oracle route and at least one verified capability for its tier.
+* **spec card** - every new family names its challenge, rationale and control;
+* **tracks** - every family is in exactly the tracks its content calls for (``tracks.py``).
 """
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def route_sig(steps):
 
 
 def persistent_problems(task, vid):
-    from benchmark.v6.hypotheses import MANIP, ok, trig_hits, vals
+    from benchmark.v6.routes import MANIP, ok, trig_hits, vals
     v = task["variants"][vid]
     steps = task["routes"][task["oracle"][vid]]["steps"]
     out = []
@@ -58,11 +58,16 @@ def persistent_problems(task, vid):
     return out
 
 
-def track_problems(t, contracts, assets, check_variant):
+def variant_problems(t, vid, contracts, assets, seeds):
+    """benchmark.v5.validate.check_variant without its tier-label rules (v6 has no tiers)."""
+    from benchmark.v5.validate import check_variant
+    return [(s, p) for s, p in check_variant(t, None, vid, contracts, assets, seeds) if not p.startswith("tier ")]
+
+
+def track_problems(t, contracts, assets):
     """Task-Level projections (``<vid>__tl``): the v5 per-variant rules on their seeds, persistent-failure
-    consistency, no transient action failure left, the projected tier no lower than the family's for Hard;
-    every family in exactly the tracks its content calls for."""
-    from benchmark.v6.tracks import transient
+    consistency, no transient action failure left; every family in exactly the tracks its content calls for."""
+    from benchmark.v6.tracks import content, transient
     out = []
     tr = t["v6_tracks"]
     for fam, x in tr["task"].items():
@@ -72,28 +77,29 @@ def track_problems(t, contracts, assets, check_variant):
             if not v.endswith("__tl"):
                 continue
             seeds = sorted(int(s) for s, c in x["seeds"].items() if c == v)
-            # the v5 labelling rules (difficulty label, v5 Hard category) describe the source variant, not
-            # its projection; its tier is the capability audit's (checked below)
             out += [{"family": fam, "seed": s, "problem": f"task track {v}: {p}"}
-                    for s, p in check_variant(t, x["family_tier"], v, contracts, assets, seeds)
-                    if not p.startswith(("tier ", "hard category "))]
+                    for s, p in variant_problems(t, v, contracts, assets, seeds)]
             out += [{"family": fam, "seed": None, "problem": f"task track {v}: {p}"} for p in persistent_problems(t, v)]
-        if x["family_tier"] == "hard" and x["tier"] != "hard":
-            out.append({"family": fam, "seed": None, "problem": f"task track tier {x['tier']} below Hard"})
     for fam, x in tr["action"].items():
         if not x["action_failures"] and not x["local_conditions"]:
             out.append({"family": fam, "seed": None,
                         "problem": "action track without a transient action failure or a local-repair condition"})
     placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | \
         {m for x in tr["task"].values() for m in x.get("merged", [])}
-    for fam in set(t["v6_families"]) - placed:
-        out.append({"family": fam, "seed": None, "problem": "in no track"})
+    for fam, info in t["v6_families"].items():
+        kinds = [content(t, v) for v in info["cases"]]
+        want = {k for k, on in (("task", any(k[0] for k in kinds)), ("action", any(k[1] for k in kinds))) if on}
+        merged = any(fam in x.get("merged", []) for x in tr["task"].values())
+        have = {k for k in ("task", "action") if fam in tr[k]} | ({"task"} if merged else set())
+        if fam not in placed:
+            out.append({"family": fam, "seed": None, "problem": "in no track"})
+        elif have != want or (not want and fam not in tr["controls"]):
+            out.append({"family": fam, "seed": None, "problem": f"tracks {sorted(have)}, content {sorted(want)}"})
     return out
 
 
 def main():
     from benchmark.scene import episode_config
-    from benchmark.v5.validate import check_variant
     from benchmark.v6.define_tasks_v6 import seed_cases
     doc = json.loads(TASKS.read_text())
     contracts = {c["verb"]: c for c in json.loads((ROOT / "contract_library/skill_contracts.json").read_text())["contracts"]}
@@ -108,7 +114,6 @@ def main():
         for fam, info in t["v6_families"].items():
             out["families"] += 1
             probs = []
-            tier = info["tier"]
             if info["origin"] == "v5":
                 for s in SEEDS:                  # the v5 variant itself: unchanged for every seed
                     h = episode_config(t, s, fam)["config_hash"]
@@ -117,11 +122,7 @@ def main():
                         probs.append((s, f"v5 configuration hash changed ({h})"))
                 for v in info["cases"][1:]:      # seed extension: a second case, checked like a new variant
                     seeds = sorted(int(s) for s, x in info["seeds"].items() if x == v)
-                    # the v5 per-variant rules with the v5 label (as the v5 variant was checked); the v6 tier below
-                    probs += [(s, f"{v}: {p}") for s, p in check_variant(t, info.get("v5_tier", tier), v, contracts,
-                                                                         assets, seeds)]
-                    if t["v6_audit"][v]["tier_rule"] != tier:
-                        probs.append((None, f"{v}: tier {t['v6_audit'][v]['tier_rule']} != family tier {tier}"))
+                    probs += [(s, f"{v}: {p}") for s, p in variant_problems(t, v, contracts, assets, seeds)]
                 if len(info["cases"]) > 1:
                     if {str(k): v for k, v in seed_cases(tid, fam, info["cases"]).items()} != \
                             {str(k): v for k, v in info["seeds"].items()}:
@@ -144,17 +145,10 @@ def main():
                     for k in ("challenge", "rationale", "control"):
                         if not meta.get(k):
                             probs.append((None, f"{v}: spec card lacks {k}"))
-                    aud = t["v6_audit"][v]
-                    if tier == "hard" and not aud["core"]:
-                        probs.append((None, f"{v}: a Hard variant without a verified core capability"))
-                    if tier == "hard" and aud["retry_solvable"]:
-                        probs.append((None, f"{v}: a Hard variant a retry of the control plan solves"))
                     for p in persistent_problems(t, v):
                         probs.append((None, f"{v}: {p}"))
                     seeds = sorted(int(s) for s, x in info["seeds"].items() if x == v)
-                    # the v5 per-variant rules with the v5 label (as the v5 variant was checked); the v6 tier below
-                    probs += [(s, f"{v}: {p}") for s, p in check_variant(t, info.get("v5_tier", tier), v, contracts,
-                                                                         assets, seeds)]
+                    probs += [(s, f"{v}: {p}") for s, p in variant_problems(t, v, contracts, assets, seeds)]
                 hashes[episode_config(t, 10, info["cases"][0])["config_hash"]].append(fam)
             n = len(info["seeds"])
             n_ep += n
@@ -165,7 +159,7 @@ def main():
         for h, fams in hashes.items():
             if len(fams) > 1:
                 out["problems"].append({"task": tid, "family": fams, "seed": 10, "problem": f"same configuration {h}"})
-        for p in track_problems(t, contracts, assets, check_variant):
+        for p in track_problems(t, contracts, assets):
             out["problems"].append({"task": tid, **p})
         for k in ("action", "task"):
             tr = out["tracks"].setdefault(k, {"families": 0, "episodes": 0})

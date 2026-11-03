@@ -4,7 +4,6 @@
 "seed": 10,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -12,7 +11,6 @@
 "seed": 11,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -20,7 +18,6 @@
 "seed": 12,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -28,7 +25,6 @@
 "seed": 13,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -36,7 +32,6 @@
 "seed": 14,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -44,7 +39,6 @@
 "seed": 15,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -52,7 +46,6 @@
 "seed": 16,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -60,7 +53,6 @@
 "seed": 17,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -68,7 +60,6 @@
 "seed": 18,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -76,7 +67,6 @@
 "seed": 19,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -84,7 +74,6 @@
 "seed": 10,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -92,7 +81,6 @@
 "seed": 11,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -100,7 +88,6 @@
 "seed": 12,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -108,7 +95,6 @@
 "seed": 13,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -116,7 +102,6 @@
 "seed": 14,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -124,7 +109,6 @@
 "seed": 15,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -132,7 +116,6 @@
 "seed": 16,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -140,7 +123,6 @@
 "seed": 17,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -148,7 +130,6 @@
 "seed": 18,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -156,7 +137,6 @@
 "seed": 19,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -164,7 +144,6 @@
 "seed": 10,
 "variant": "x6_dr_block_on_book__sponge",
 "route": "v6_x6_dr_block_on_book__sponge",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -172,7 +151,6 @@
 "seed": 11,
 "variant": "x6_dr_block_on_book__block",
 "route": "v6_x6_dr_block_on_book__block",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -180,7 +158,6 @@
 "seed": 12,
 "variant": "x6_dr_block_on_book__block",
 "route": "v6_x6_dr_block_on_book__block",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -188,7 +165,6 @@
 "seed": 13,
 "variant": "x6_dr_block_on_book__sponge",
 "route": "v6_x6_dr_block_on_book__sponge",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -196,7 +172,6 @@
 "seed": 14,
 "variant": "x6_dr_block_on_book__sponge",
 "route": "v6_x6_dr_block_on_book__sponge",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -204,7 +179,6 @@
 "seed": 15,
 "variant": "x6_dr_block_on_book__block",
 "route": "v6_x6_dr_block_on_book__block",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -212,7 +186,6 @@
 "seed": 16,
 "variant": "x6_dr_block_on_book__block",
 "route": "v6_x6_dr_block_on_book__block",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -220,7 +193,6 @@
 "seed": 17,
 "variant": "x6_dr_block_on_book__sponge",
 "route": "v6_x6_dr_block_on_book__sponge",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -228,7 +200,6 @@
 "seed": 18,
 "variant": "x6_dr_block_on_book__block",
 "route": "v6_x6_dr_block_on_book__block",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -236,7 +207,6 @@
 "seed": 19,
 "variant": "x6_dr_block_on_book__sponge",
 "route": "v6_x6_dr_block_on_book__sponge",
-"tier": "hard",
 "family": "x6_dr_block_on_book"
 },
 {
@@ -244,7 +214,6 @@
 "seed": 10,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -252,7 +221,6 @@
 "seed": 11,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -260,7 +228,6 @@
 "seed": 12,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -268,7 +235,6 @@
 "seed": 13,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -276,7 +242,6 @@
 "seed": 14,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -284,7 +249,6 @@
 "seed": 15,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -292,7 +256,6 @@
 "seed": 16,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -300,7 +263,6 @@
 "seed": 17,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -308,7 +270,6 @@
 "seed": 18,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -316,7 +277,6 @@
 "seed": 19,
 "variant": "x6_cl_base_a_unreachable",
 "route": "v6_x6_cl_base_a_unreachable",
-"tier": "hard",
 "family": "x6_cl_base_a_unreachable"
 },
 {
@@ -324,7 +284,6 @@
 "seed": 10,
 "variant": "x6_cl_block_b_unholdable__grasp",
 "route": "v6_x6_cl_block_b_unholdable__grasp",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -332,7 +291,6 @@
 "seed": 11,
 "variant": "x6_cl_block_b_unholdable__grasp",
 "route": "v6_x6_cl_block_b_unholdable__grasp",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -340,7 +298,6 @@
 "seed": 12,
 "variant": "x6_cl_block_b_unholdable__grasp",
 "route": "v6_x6_cl_block_b_unholdable__grasp",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -348,7 +305,6 @@
 "seed": 13,
 "variant": "x6_cl_block_b_unholdable__ik",
 "route": "v6_x6_cl_block_b_unholdable__ik",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -356,7 +312,6 @@
 "seed": 14,
 "variant": "x6_cl_block_b_unholdable__ik",
 "route": "v6_x6_cl_block_b_unholdable__ik",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -364,7 +319,6 @@
 "seed": 15,
 "variant": "x6_cl_block_b_unholdable__grasp",
 "route": "v6_x6_cl_block_b_unholdable__grasp",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -372,7 +326,6 @@
 "seed": 16,
 "variant": "x6_cl_block_b_unholdable__ik",
 "route": "v6_x6_cl_block_b_unholdable__ik",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -380,7 +333,6 @@
 "seed": 17,
 "variant": "x6_cl_block_b_unholdable__ik",
 "route": "v6_x6_cl_block_b_unholdable__ik",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -388,7 +340,6 @@
 "seed": 18,
 "variant": "x6_cl_block_b_unholdable__ik",
 "route": "v6_x6_cl_block_b_unholdable__ik",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -396,7 +347,6 @@
 "seed": 19,
 "variant": "x6_cl_block_b_unholdable__grasp",
 "route": "v6_x6_cl_block_b_unholdable__grasp",
-"tier": "hard",
 "family": "x6_cl_block_b_unholdable"
 },
 {
@@ -404,7 +354,6 @@
 "seed": 10,
 "variant": "x6_gd_tower_with_event__tv_stand",
 "route": "v6_x6_gd_tower_with_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -412,7 +361,6 @@
 "seed": 11,
 "variant": "x6_gd_tower_with_event__dining",
 "route": "v6_x6_gd_tower_with_event__dining",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -420,7 +368,6 @@
 "seed": 12,
 "variant": "x6_gd_tower_with_event__dining",
 "route": "v6_x6_gd_tower_with_event__dining",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -428,7 +375,6 @@
 "seed": 13,
 "variant": "x6_gd_tower_with_event__tv_stand",
 "route": "v6_x6_gd_tower_with_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -436,7 +382,6 @@
 "seed": 14,
 "variant": "x6_gd_tower_with_event__dining",
 "route": "v6_x6_gd_tower_with_event__dining",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -444,7 +389,6 @@
 "seed": 15,
 "variant": "x6_gd_tower_with_event__tv_stand",
 "route": "v6_x6_gd_tower_with_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -452,7 +396,6 @@
 "seed": 16,
 "variant": "x6_gd_tower_with_event__tv_stand",
 "route": "v6_x6_gd_tower_with_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -460,7 +403,6 @@
 "seed": 17,
 "variant": "x6_gd_tower_with_event__dining",
 "route": "v6_x6_gd_tower_with_event__dining",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -468,7 +410,6 @@
 "seed": 18,
 "variant": "x6_gd_tower_with_event__tv_stand",
 "route": "v6_x6_gd_tower_with_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -476,7 +417,6 @@
 "seed": 19,
 "variant": "x6_gd_tower_with_event__dining",
 "route": "v6_x6_gd_tower_with_event__dining",
-"tier": "hard",
 "family": "x6_gd_tower_with_event"
 },
 {
@@ -484,7 +424,6 @@
 "seed": 10,
 "variant": "x6_gd_cup_in_cabinets__cup_in_4",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -492,7 +431,6 @@
 "seed": 11,
 "variant": "x6_gd_cup_in_cabinets__cup_in_4",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -500,7 +438,6 @@
 "seed": 12,
 "variant": "x6_gd_cup_in_cabinets__cup_in_6",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -508,7 +445,6 @@
 "seed": 13,
 "variant": "x6_gd_cup_in_cabinets__cup_in_6",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -516,7 +452,6 @@
 "seed": 14,
 "variant": "x6_gd_cup_in_cabinets__cup_in_4",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -524,7 +459,6 @@
 "seed": 15,
 "variant": "x6_gd_cup_in_cabinets__cup_in_6",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -532,7 +466,6 @@
 "seed": 16,
 "variant": "x6_gd_cup_in_cabinets__cup_in_4",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -540,7 +473,6 @@
 "seed": 17,
 "variant": "x6_gd_cup_in_cabinets__cup_in_6",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -548,7 +480,6 @@
 "seed": 18,
 "variant": "x6_gd_cup_in_cabinets__cup_in_4",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_4",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -556,7 +487,6 @@
 "seed": 19,
 "variant": "x6_gd_cup_in_cabinets__cup_in_6",
 "route": "v6_x6_gd_cup_in_cabinets__cup_in_6",
-"tier": "hard",
 "family": "x6_gd_cup_in_cabinets"
 },
 {
@@ -564,7 +494,6 @@
 "seed": 10,
 "variant": "x6_cl_cup_unusable__slip",
 "route": "v6_x6_cl_cup_unusable__slip",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -572,7 +501,6 @@
 "seed": 11,
 "variant": "x6_cl_cup_unusable__ik_mug_away",
 "route": "v6_x6_cl_cup_unusable__ik_mug_away",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -580,7 +508,6 @@
 "seed": 12,
 "variant": "x6_cl_cup_unusable__ik_mug_away",
 "route": "v6_x6_cl_cup_unusable__ik_mug_away",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -588,7 +515,6 @@
 "seed": 13,
 "variant": "x6_cl_cup_unusable__slip",
 "route": "v6_x6_cl_cup_unusable__slip",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -596,7 +522,6 @@
 "seed": 14,
 "variant": "x6_cl_cup_unusable__ik_mug_away",
 "route": "v6_x6_cl_cup_unusable__ik_mug_away",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -604,7 +529,6 @@
 "seed": 15,
 "variant": "x6_cl_cup_unusable__slip",
 "route": "v6_x6_cl_cup_unusable__slip",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -612,7 +536,6 @@
 "seed": 16,
 "variant": "x6_cl_cup_unusable__slip",
 "route": "v6_x6_cl_cup_unusable__slip",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -620,7 +543,6 @@
 "seed": 17,
 "variant": "x6_cl_cup_unusable__ik_mug_away",
 "route": "v6_x6_cl_cup_unusable__ik_mug_away",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -628,7 +550,6 @@
 "seed": 18,
 "variant": "x6_cl_cup_unusable__ik_mug_away",
 "route": "v6_x6_cl_cup_unusable__ik_mug_away",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -636,7 +557,6 @@
 "seed": 19,
 "variant": "x6_cl_cup_unusable__slip",
 "route": "v6_x6_cl_cup_unusable__slip",
-"tier": "hard",
 "family": "x6_cl_cup_unusable"
 },
 {
@@ -644,7 +564,6 @@
 "seed": 10,
 "variant": "x6_dr_spot_filled_dynamic__bowl",
 "route": "v6_x6_dr_spot_filled_dynamic__bowl",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -652,7 +571,6 @@
 "seed": 11,
 "variant": "x6_dr_spot_filled_dynamic__block",
 "route": "v6_x6_dr_spot_filled_dynamic__block",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -660,7 +578,6 @@
 "seed": 12,
 "variant": "x6_dr_spot_filled_dynamic__block",
 "route": "v6_x6_dr_spot_filled_dynamic__block",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -668,7 +585,6 @@
 "seed": 13,
 "variant": "x6_dr_spot_filled_dynamic__block",
 "route": "v6_x6_dr_spot_filled_dynamic__block",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -676,7 +592,6 @@
 "seed": 14,
 "variant": "x6_dr_spot_filled_dynamic__bowl",
 "route": "v6_x6_dr_spot_filled_dynamic__bowl",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -684,7 +599,6 @@
 "seed": 15,
 "variant": "x6_dr_spot_filled_dynamic__bowl",
 "route": "v6_x6_dr_spot_filled_dynamic__bowl",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -692,7 +606,6 @@
 "seed": 16,
 "variant": "x6_dr_spot_filled_dynamic__bowl",
 "route": "v6_x6_dr_spot_filled_dynamic__bowl",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -700,7 +613,6 @@
 "seed": 17,
 "variant": "x6_dr_spot_filled_dynamic__block",
 "route": "v6_x6_dr_spot_filled_dynamic__block",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -708,7 +620,6 @@
 "seed": 18,
 "variant": "x6_dr_spot_filled_dynamic__bowl",
 "route": "v6_x6_dr_spot_filled_dynamic__bowl",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -716,7 +627,6 @@
 "seed": 19,
 "variant": "x6_dr_spot_filled_dynamic__block",
 "route": "v6_x6_dr_spot_filled_dynamic__block",
-"tier": "hard",
 "family": "x6_dr_spot_filled_dynamic"
 },
 {
@@ -724,7 +634,6 @@
 "seed": 10,
 "variant": "x6_cl_pen_unholdable__pencil_away",
 "route": "v6_x6_cl_pen_unholdable__pencil_away",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -732,7 +641,6 @@
 "seed": 11,
 "variant": "x6_cl_pen_unholdable__pencil_away",
 "route": "v6_x6_cl_pen_unholdable__pencil_away",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -740,7 +648,6 @@
 "seed": 12,
 "variant": "x6_cl_pen_unholdable__pencil_here",
 "route": "v6_x6_cl_pen_unholdable__pencil_here",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -748,7 +655,6 @@
 "seed": 13,
 "variant": "x6_cl_pen_unholdable__pencil_here",
 "route": "v6_x6_cl_pen_unholdable__pencil_here",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -756,7 +662,6 @@
 "seed": 14,
 "variant": "x6_cl_pen_unholdable__pencil_here",
 "route": "v6_x6_cl_pen_unholdable__pencil_here",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -764,7 +669,6 @@
 "seed": 15,
 "variant": "x6_cl_pen_unholdable__pencil_here",
 "route": "v6_x6_cl_pen_unholdable__pencil_here",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -772,7 +676,6 @@
 "seed": 16,
 "variant": "x6_cl_pen_unholdable__pencil_away",
 "route": "v6_x6_cl_pen_unholdable__pencil_away",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -780,7 +683,6 @@
 "seed": 17,
 "variant": "x6_cl_pen_unholdable__pencil_away",
 "route": "v6_x6_cl_pen_unholdable__pencil_away",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -788,7 +690,6 @@
 "seed": 18,
 "variant": "x6_cl_pen_unholdable__pencil_here",
 "route": "v6_x6_cl_pen_unholdable__pencil_here",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -796,7 +697,6 @@
 "seed": 19,
 "variant": "x6_cl_pen_unholdable__pencil_away",
 "route": "v6_x6_cl_pen_unholdable__pencil_away",
-"tier": "hard",
 "family": "x6_cl_pen_unholdable"
 },
 {
@@ -804,7 +704,6 @@
 "seed": 10,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -812,7 +711,6 @@
 "seed": 11,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -820,7 +718,6 @@
 "seed": 12,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -828,7 +725,6 @@
 "seed": 13,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -836,7 +732,6 @@
 "seed": 14,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -844,7 +739,6 @@
 "seed": 15,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -852,7 +746,6 @@
 "seed": 16,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -860,7 +753,6 @@
 "seed": 17,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -868,7 +760,6 @@
 "seed": 18,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -876,7 +767,6 @@
 "seed": 19,
 "variant": "x6_gd_pencil_other_cabinet",
 "route": "v6_x6_gd_pencil_other_cabinet",
-"tier": "hard",
 "family": "x6_gd_pencil_other_cabinet"
 },
 {
@@ -884,7 +774,6 @@
 "seed": 10,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -892,7 +781,6 @@
 "seed": 11,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -900,7 +788,6 @@
 "seed": 12,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -908,7 +795,6 @@
 "seed": 13,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -916,7 +802,6 @@
 "seed": 14,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -924,7 +809,6 @@
 "seed": 15,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -932,7 +816,6 @@
 "seed": 16,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -940,7 +823,6 @@
 "seed": 17,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -948,7 +830,6 @@
 "seed": 18,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_6",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_6",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -956,7 +837,6 @@
 "seed": 19,
 "variant": "x6_gd_pen_or_pencil_cabinets__pen_in_4",
 "route": "v6_x6_gd_pen_or_pencil_cabinets__pen_in_4",
-"tier": "hard",
 "family": "x6_gd_pen_or_pencil_cabinets"
 },
 {
@@ -964,7 +844,6 @@
 "seed": 10,
 "variant": "x6_cl_block_a_unholdable__b_island",
 "route": "v6_x6_cl_block_a_unholdable__b_island",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -972,7 +851,6 @@
 "seed": 11,
 "variant": "x6_cl_block_a_unholdable__b_island",
 "route": "v6_x6_cl_block_a_unholdable__b_island",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -980,7 +858,6 @@
 "seed": 12,
 "variant": "x6_cl_block_a_unholdable__b_dining",
 "route": "v6_x6_cl_block_a_unholdable__b_dining",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -988,7 +865,6 @@
 "seed": 13,
 "variant": "x6_cl_block_a_unholdable__b_dining",
 "route": "v6_x6_cl_block_a_unholdable__b_dining",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -996,7 +872,6 @@
 "seed": 14,
 "variant": "x6_cl_block_a_unholdable__b_dining",
 "route": "v6_x6_cl_block_a_unholdable__b_dining",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -1004,7 +879,6 @@
 "seed": 15,
 "variant": "x6_cl_block_a_unholdable__b_island",
 "route": "v6_x6_cl_block_a_unholdable__b_island",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -1012,7 +886,6 @@
 "seed": 16,
 "variant": "x6_cl_block_a_unholdable__b_dining",
 "route": "v6_x6_cl_block_a_unholdable__b_dining",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -1020,7 +893,6 @@
 "seed": 17,
 "variant": "x6_cl_block_a_unholdable__b_island",
 "route": "v6_x6_cl_block_a_unholdable__b_island",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -1028,7 +900,6 @@
 "seed": 18,
 "variant": "x6_cl_block_a_unholdable__b_dining",
 "route": "v6_x6_cl_block_a_unholdable__b_dining",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -1036,7 +907,6 @@
 "seed": 19,
 "variant": "x6_cl_block_a_unholdable__b_island",
 "route": "v6_x6_cl_block_a_unholdable__b_island",
-"tier": "hard",
 "family": "x6_cl_block_a_unholdable"
 },
 {
@@ -1044,7 +914,6 @@
 "seed": 10,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1052,7 +921,6 @@
 "seed": 11,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1060,7 +928,6 @@
 "seed": 12,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1068,7 +935,6 @@
 "seed": 13,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1076,7 +942,6 @@
 "seed": 14,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1084,7 +949,6 @@
 "seed": 15,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1092,7 +956,6 @@
 "seed": 16,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1100,7 +963,6 @@
 "seed": 17,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1108,7 +970,6 @@
 "seed": 18,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1116,7 +977,6 @@
 "seed": 19,
 "variant": "x6_m_grasp_block_a",
 "route": "v6_x6_m_grasp_block_a",
-"tier": "medium",
 "family": "x6_m_grasp_block_a"
 },
 {
@@ -1124,7 +984,6 @@
 "seed": 10,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1132,7 +991,6 @@
 "seed": 11,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1140,7 +998,6 @@
 "seed": 12,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1148,7 +1005,6 @@
 "seed": 13,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1156,7 +1012,6 @@
 "seed": 14,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1164,7 +1019,6 @@
 "seed": 15,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1172,7 +1026,6 @@
 "seed": 16,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1180,7 +1033,6 @@
 "seed": 17,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1188,7 +1040,6 @@
 "seed": 18,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1196,7 +1047,6 @@
 "seed": 19,
 "variant": "x6_cl_cabinet_unreachable",
 "route": "v6_x6_cl_cabinet_unreachable",
-"tier": "hard",
 "family": "x6_cl_cabinet_unreachable"
 },
 {
@@ -1204,7 +1054,6 @@
 "seed": 10,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1212,7 +1061,6 @@
 "seed": 11,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1220,7 +1068,6 @@
 "seed": 12,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1228,7 +1075,6 @@
 "seed": 13,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1236,7 +1082,6 @@
 "seed": 14,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1244,7 +1089,6 @@
 "seed": 15,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1252,7 +1096,6 @@
 "seed": 16,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1260,7 +1103,6 @@
 "seed": 17,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1268,7 +1110,6 @@
 "seed": 18,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1276,7 +1117,6 @@
 "seed": 19,
 "variant": "x6_m_ik_place_cabinet",
 "route": "v6_x6_m_ik_place_cabinet",
-"tier": "medium",
 "family": "x6_m_ik_place_cabinet"
 },
 {
@@ -1284,7 +1124,6 @@
 "seed": 10,
 "variant": "x6_gd_two_displays_event__dining",
 "route": "v6_x6_gd_two_displays_event__dining",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1292,7 +1131,6 @@
 "seed": 11,
 "variant": "x6_gd_two_displays_event__dining",
 "route": "v6_x6_gd_two_displays_event__dining",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1300,7 +1138,6 @@
 "seed": 12,
 "variant": "x6_gd_two_displays_event__cabinet4",
 "route": "v6_x6_gd_two_displays_event__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1308,7 +1145,6 @@
 "seed": 13,
 "variant": "x6_gd_two_displays_event__cabinet4",
 "route": "v6_x6_gd_two_displays_event__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1316,7 +1152,6 @@
 "seed": 14,
 "variant": "x6_gd_two_displays_event__dining",
 "route": "v6_x6_gd_two_displays_event__dining",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1324,7 +1159,6 @@
 "seed": 15,
 "variant": "x6_gd_two_displays_event__dining",
 "route": "v6_x6_gd_two_displays_event__dining",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1332,7 +1166,6 @@
 "seed": 16,
 "variant": "x6_gd_two_displays_event__cabinet4",
 "route": "v6_x6_gd_two_displays_event__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1340,7 +1173,6 @@
 "seed": 17,
 "variant": "x6_gd_two_displays_event__cabinet4",
 "route": "v6_x6_gd_two_displays_event__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1348,7 +1180,6 @@
 "seed": 18,
 "variant": "x6_gd_two_displays_event__dining",
 "route": "v6_x6_gd_two_displays_event__dining",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1356,7 +1187,6 @@
 "seed": 19,
 "variant": "x6_gd_two_displays_event__cabinet4",
 "route": "v6_x6_gd_two_displays_event__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_displays_event"
 },
 {
@@ -1364,7 +1194,6 @@
 "seed": 10,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_cabinet",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_cabinet",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1372,7 +1201,6 @@
 "seed": 11,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_cabinet",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_cabinet",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1380,7 +1208,6 @@
 "seed": 12,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_island",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_island",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1388,7 +1215,6 @@
 "seed": 13,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_cabinet",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_cabinet",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1396,7 +1222,6 @@
 "seed": 14,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_island",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_island",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1404,7 +1229,6 @@
 "seed": 15,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_cabinet",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_cabinet",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1412,7 +1236,6 @@
 "seed": 16,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_island",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_island",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1420,7 +1243,6 @@
 "seed": 17,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_island",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_island",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1428,7 +1250,6 @@
 "seed": 18,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_island",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_island",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1436,7 +1257,6 @@
 "seed": 19,
 "variant": "x6_cl_microwave_door_stuck__oatmeal_cabinet",
 "route": "v6_x6_cl_microwave_door_stuck__oatmeal_cabinet",
-"tier": "hard",
 "family": "x6_cl_microwave_door_stuck"
 },
 {
@@ -1444,7 +1264,6 @@
 "seed": 10,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1452,7 +1271,6 @@
 "seed": 11,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1460,7 +1278,6 @@
 "seed": 12,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1468,7 +1285,6 @@
 "seed": 13,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1476,7 +1292,6 @@
 "seed": 14,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1484,7 +1299,6 @@
 "seed": 15,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1492,7 +1306,6 @@
 "seed": 16,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1500,7 +1313,6 @@
 "seed": 17,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1508,7 +1320,6 @@
 "seed": 18,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1516,7 +1327,6 @@
 "seed": 19,
 "variant": "x6_m_ik_open_microwave",
 "route": "v6_x6_m_ik_open_microwave",
-"tier": "medium",
 "family": "x6_m_ik_open_microwave"
 },
 {
@@ -1524,7 +1334,6 @@
 "seed": 10,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1532,7 +1341,6 @@
 "seed": 11,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1540,7 +1348,6 @@
 "seed": 12,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1548,7 +1355,6 @@
 "seed": 13,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1556,7 +1362,6 @@
 "seed": 14,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1564,7 +1369,6 @@
 "seed": 15,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1572,7 +1376,6 @@
 "seed": 16,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1580,7 +1383,6 @@
 "seed": 17,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1588,7 +1390,6 @@
 "seed": 18,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1596,7 +1397,6 @@
 "seed": 19,
 "variant": "x6_sr_microwave_taken",
 "route": "v6_x6_sr_microwave_taken",
-"tier": "hard",
 "family": "x6_sr_microwave_taken"
 },
 {
@@ -1604,7 +1404,6 @@
 "seed": 10,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1612,7 +1411,6 @@
 "seed": 11,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1620,7 +1418,6 @@
 "seed": 12,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1628,7 +1425,6 @@
 "seed": 13,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1636,7 +1432,6 @@
 "seed": 14,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1644,7 +1439,6 @@
 "seed": 15,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1652,7 +1446,6 @@
 "seed": 16,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1660,7 +1453,6 @@
 "seed": 17,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1668,7 +1460,6 @@
 "seed": 18,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1676,7 +1467,6 @@
 "seed": 19,
 "variant": "x6_pp_door_opened_after_heat",
 "route": "v6_x6_pp_door_opened_after_heat",
-"tier": "hard",
 "family": "x6_pp_door_opened_after_heat"
 },
 {
@@ -1684,7 +1474,6 @@
 "seed": 10,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1692,7 +1481,6 @@
 "seed": 11,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1700,7 +1488,6 @@
 "seed": 12,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1708,7 +1495,6 @@
 "seed": 13,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1716,7 +1502,6 @@
 "seed": 14,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1724,7 +1509,6 @@
 "seed": 15,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1732,7 +1516,6 @@
 "seed": 16,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1740,7 +1523,6 @@
 "seed": 17,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1748,7 +1530,6 @@
 "seed": 18,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1756,7 +1537,6 @@
 "seed": 19,
 "variant": "x6_cl_sponge_behind_mug",
 "route": "v6_x6_cl_sponge_behind_mug",
-"tier": "hard",
 "family": "x6_cl_sponge_behind_mug"
 },
 {
@@ -1764,7 +1544,6 @@
 "seed": 10,
 "variant": "x6_pp_sponge_taken_after_wipe__tv_stand",
 "route": "v6_x6_pp_sponge_taken_after_wipe__tv_stand",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1772,7 +1551,6 @@
 "seed": 11,
 "variant": "x6_pp_sponge_taken_after_wipe__cabinet6",
 "route": "v6_x6_pp_sponge_taken_after_wipe__cabinet6",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1780,7 +1558,6 @@
 "seed": 12,
 "variant": "x6_pp_sponge_taken_after_wipe__tv_stand",
 "route": "v6_x6_pp_sponge_taken_after_wipe__tv_stand",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1788,7 +1565,6 @@
 "seed": 13,
 "variant": "x6_pp_sponge_taken_after_wipe__cabinet6",
 "route": "v6_x6_pp_sponge_taken_after_wipe__cabinet6",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1796,7 +1572,6 @@
 "seed": 14,
 "variant": "x6_pp_sponge_taken_after_wipe__tv_stand",
 "route": "v6_x6_pp_sponge_taken_after_wipe__tv_stand",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1804,7 +1579,6 @@
 "seed": 15,
 "variant": "x6_pp_sponge_taken_after_wipe__tv_stand",
 "route": "v6_x6_pp_sponge_taken_after_wipe__tv_stand",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1812,7 +1586,6 @@
 "seed": 16,
 "variant": "x6_pp_sponge_taken_after_wipe__cabinet6",
 "route": "v6_x6_pp_sponge_taken_after_wipe__cabinet6",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1820,7 +1593,6 @@
 "seed": 17,
 "variant": "x6_pp_sponge_taken_after_wipe__cabinet6",
 "route": "v6_x6_pp_sponge_taken_after_wipe__cabinet6",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1828,7 +1600,6 @@
 "seed": 18,
 "variant": "x6_pp_sponge_taken_after_wipe__tv_stand",
 "route": "v6_x6_pp_sponge_taken_after_wipe__tv_stand",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1836,7 +1607,6 @@
 "seed": 19,
 "variant": "x6_pp_sponge_taken_after_wipe__cabinet6",
 "route": "v6_x6_pp_sponge_taken_after_wipe__cabinet6",
-"tier": "hard",
 "family": "x6_pp_sponge_taken_after_wipe"
 },
 {
@@ -1844,7 +1614,6 @@
 "seed": 10,
 "variant": "x6_cl_spoon_unholdable__spoon_dining",
 "route": "v6_x6_cl_spoon_unholdable__spoon_dining",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1852,7 +1621,6 @@
 "seed": 11,
 "variant": "x6_cl_spoon_unholdable__spoon_cabinet",
 "route": "v6_x6_cl_spoon_unholdable__spoon_cabinet",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1860,7 +1628,6 @@
 "seed": 12,
 "variant": "x6_cl_spoon_unholdable__spoon_cabinet",
 "route": "v6_x6_cl_spoon_unholdable__spoon_cabinet",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1868,7 +1635,6 @@
 "seed": 13,
 "variant": "x6_cl_spoon_unholdable__spoon_dining",
 "route": "v6_x6_cl_spoon_unholdable__spoon_dining",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1876,7 +1642,6 @@
 "seed": 14,
 "variant": "x6_cl_spoon_unholdable__spoon_cabinet",
 "route": "v6_x6_cl_spoon_unholdable__spoon_cabinet",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1884,7 +1649,6 @@
 "seed": 15,
 "variant": "x6_cl_spoon_unholdable__spoon_cabinet",
 "route": "v6_x6_cl_spoon_unholdable__spoon_cabinet",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1892,7 +1656,6 @@
 "seed": 16,
 "variant": "x6_cl_spoon_unholdable__spoon_cabinet",
 "route": "v6_x6_cl_spoon_unholdable__spoon_cabinet",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1900,7 +1663,6 @@
 "seed": 17,
 "variant": "x6_cl_spoon_unholdable__spoon_dining",
 "route": "v6_x6_cl_spoon_unholdable__spoon_dining",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1908,7 +1670,6 @@
 "seed": 18,
 "variant": "x6_cl_spoon_unholdable__spoon_dining",
 "route": "v6_x6_cl_spoon_unholdable__spoon_dining",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1916,7 +1677,6 @@
 "seed": 19,
 "variant": "x6_cl_spoon_unholdable__spoon_dining",
 "route": "v6_x6_cl_spoon_unholdable__spoon_dining",
-"tier": "hard",
 "family": "x6_cl_spoon_unholdable"
 },
 {
@@ -1924,7 +1684,6 @@
 "seed": 10,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1932,7 +1691,6 @@
 "seed": 11,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1940,7 +1698,6 @@
 "seed": 12,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1948,7 +1705,6 @@
 "seed": 13,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1956,7 +1712,6 @@
 "seed": 14,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1964,7 +1719,6 @@
 "seed": 15,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1972,7 +1726,6 @@
 "seed": 16,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1980,7 +1733,6 @@
 "seed": 17,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1988,7 +1740,6 @@
 "seed": 18,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -1996,7 +1747,6 @@
 "seed": 19,
 "variant": "x6_sr_collect_refused",
 "route": "v6_x6_sr_collect_refused",
-"tier": "hard",
 "family": "x6_sr_collect_refused"
 },
 {
@@ -2004,7 +1754,6 @@
 "seed": 10,
 "variant": "x6_gd_tomato_elsewhere__dining",
 "route": "v6_x6_gd_tomato_elsewhere__dining",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2012,7 +1761,6 @@
 "seed": 11,
 "variant": "x6_gd_tomato_elsewhere__cabinet6",
 "route": "v6_x6_gd_tomato_elsewhere__cabinet6",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2020,7 +1768,6 @@
 "seed": 12,
 "variant": "x6_gd_tomato_elsewhere__dining",
 "route": "v6_x6_gd_tomato_elsewhere__dining",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2028,7 +1775,6 @@
 "seed": 13,
 "variant": "x6_gd_tomato_elsewhere__dining",
 "route": "v6_x6_gd_tomato_elsewhere__dining",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2036,7 +1782,6 @@
 "seed": 14,
 "variant": "x6_gd_tomato_elsewhere__cabinet6",
 "route": "v6_x6_gd_tomato_elsewhere__cabinet6",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2044,7 +1789,6 @@
 "seed": 15,
 "variant": "x6_gd_tomato_elsewhere__dining",
 "route": "v6_x6_gd_tomato_elsewhere__dining",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2052,7 +1796,6 @@
 "seed": 16,
 "variant": "x6_gd_tomato_elsewhere__cabinet6",
 "route": "v6_x6_gd_tomato_elsewhere__cabinet6",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2060,7 +1803,6 @@
 "seed": 17,
 "variant": "x6_gd_tomato_elsewhere__cabinet6",
 "route": "v6_x6_gd_tomato_elsewhere__cabinet6",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2068,7 +1810,6 @@
 "seed": 18,
 "variant": "x6_gd_tomato_elsewhere__cabinet6",
 "route": "v6_x6_gd_tomato_elsewhere__cabinet6",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2076,7 +1817,6 @@
 "seed": 19,
 "variant": "x6_gd_tomato_elsewhere__dining",
 "route": "v6_x6_gd_tomato_elsewhere__dining",
-"tier": "hard",
 "family": "x6_gd_tomato_elsewhere"
 },
 {
@@ -2084,7 +1824,6 @@
 "seed": 10,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2092,7 +1831,6 @@
 "seed": 11,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2100,7 +1838,6 @@
 "seed": 12,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2108,7 +1845,6 @@
 "seed": 13,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2116,7 +1852,6 @@
 "seed": 14,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2124,7 +1859,6 @@
 "seed": 15,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2132,7 +1866,6 @@
 "seed": 16,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2140,7 +1873,6 @@
 "seed": 17,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2148,7 +1880,6 @@
 "seed": 18,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2156,7 +1887,6 @@
 "seed": 19,
 "variant": "x6_m_ik_collect",
 "route": "v6_x6_m_ik_collect",
-"tier": "medium",
 "family": "x6_m_ik_collect"
 },
 {
@@ -2164,7 +1894,6 @@
 "seed": 10,
 "variant": "x6_pp_lid_taken_after_stir__cabinet4",
 "route": "v6_x6_pp_lid_taken_after_stir__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2172,7 +1901,6 @@
 "seed": 11,
 "variant": "x6_pp_lid_taken_after_stir__dining",
 "route": "v6_x6_pp_lid_taken_after_stir__dining",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2180,7 +1908,6 @@
 "seed": 12,
 "variant": "x6_pp_lid_taken_after_stir__dining",
 "route": "v6_x6_pp_lid_taken_after_stir__dining",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2188,7 +1915,6 @@
 "seed": 13,
 "variant": "x6_pp_lid_taken_after_stir__dining",
 "route": "v6_x6_pp_lid_taken_after_stir__dining",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2196,7 +1922,6 @@
 "seed": 14,
 "variant": "x6_pp_lid_taken_after_stir__cabinet4",
 "route": "v6_x6_pp_lid_taken_after_stir__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2204,7 +1929,6 @@
 "seed": 15,
 "variant": "x6_pp_lid_taken_after_stir__cabinet4",
 "route": "v6_x6_pp_lid_taken_after_stir__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2212,7 +1936,6 @@
 "seed": 16,
 "variant": "x6_pp_lid_taken_after_stir__dining",
 "route": "v6_x6_pp_lid_taken_after_stir__dining",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2220,7 +1943,6 @@
 "seed": 17,
 "variant": "x6_pp_lid_taken_after_stir__dining",
 "route": "v6_x6_pp_lid_taken_after_stir__dining",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2228,7 +1950,6 @@
 "seed": 18,
 "variant": "x6_pp_lid_taken_after_stir__cabinet4",
 "route": "v6_x6_pp_lid_taken_after_stir__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2236,7 +1957,6 @@
 "seed": 19,
 "variant": "x6_pp_lid_taken_after_stir__cabinet4",
 "route": "v6_x6_pp_lid_taken_after_stir__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_taken_after_stir"
 },
 {
@@ -2244,7 +1964,6 @@
 "seed": 10,
 "variant": "x6_pp_tomato_taken_out__tomato2_after_stir",
 "route": "v6_x6_pp_tomato_taken_out__tomato2_after_stir",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2252,7 +1971,6 @@
 "seed": 11,
 "variant": "x6_pp_tomato_taken_out__tomato2",
 "route": "v6_x6_pp_tomato_taken_out__tomato2",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2260,7 +1978,6 @@
 "seed": 12,
 "variant": "x6_pp_tomato_taken_out__tomato1",
 "route": "v6_x6_pp_tomato_taken_out__tomato1",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2268,7 +1985,6 @@
 "seed": 13,
 "variant": "x6_pp_tomato_taken_out__tomato2",
 "route": "v6_x6_pp_tomato_taken_out__tomato2",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2276,7 +1992,6 @@
 "seed": 14,
 "variant": "x6_pp_tomato_taken_out__tomato2_after_stir",
 "route": "v6_x6_pp_tomato_taken_out__tomato2_after_stir",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2284,7 +1999,6 @@
 "seed": 15,
 "variant": "x6_pp_tomato_taken_out__tomato2",
 "route": "v6_x6_pp_tomato_taken_out__tomato2",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2292,7 +2006,6 @@
 "seed": 16,
 "variant": "x6_pp_tomato_taken_out__tomato2_after_stir",
 "route": "v6_x6_pp_tomato_taken_out__tomato2_after_stir",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2300,7 +2013,6 @@
 "seed": 17,
 "variant": "x6_pp_tomato_taken_out__tomato1",
 "route": "v6_x6_pp_tomato_taken_out__tomato1",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2308,7 +2020,6 @@
 "seed": 18,
 "variant": "x6_pp_tomato_taken_out__tomato1",
 "route": "v6_x6_pp_tomato_taken_out__tomato1",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2316,7 +2027,6 @@
 "seed": 19,
 "variant": "x6_pp_tomato_taken_out__tomato2",
 "route": "v6_x6_pp_tomato_taken_out__tomato2",
-"tier": "hard",
 "family": "x6_pp_tomato_taken_out"
 },
 {
@@ -2324,7 +2034,6 @@
 "seed": 10,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2332,7 +2041,6 @@
 "seed": 11,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2340,7 +2048,6 @@
 "seed": 12,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2348,7 +2055,6 @@
 "seed": 13,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2356,7 +2062,6 @@
 "seed": 14,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2364,7 +2069,6 @@
 "seed": 15,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2372,7 +2076,6 @@
 "seed": 16,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2380,7 +2083,6 @@
 "seed": 17,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2388,7 +2090,6 @@
 "seed": 18,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2396,7 +2097,6 @@
 "seed": 19,
 "variant": "x6_cl_can_behind_bottle",
 "route": "v6_x6_cl_can_behind_bottle",
-"tier": "hard",
 "family": "x6_cl_can_behind_bottle"
 },
 {
@@ -2404,7 +2104,6 @@
 "seed": 10,
 "variant": "x6_gd_can_put_away__in_cabinet",
 "route": "v6_x6_gd_can_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2412,7 +2111,6 @@
 "seed": 11,
 "variant": "x6_gd_can_put_away__in_cabinet",
 "route": "v6_x6_gd_can_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2420,7 +2118,6 @@
 "seed": 12,
 "variant": "x6_gd_can_put_away__in_microwave",
 "route": "v6_x6_gd_can_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2428,7 +2125,6 @@
 "seed": 13,
 "variant": "x6_gd_can_put_away__in_microwave",
 "route": "v6_x6_gd_can_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2436,7 +2132,6 @@
 "seed": 14,
 "variant": "x6_gd_can_put_away__in_cabinet",
 "route": "v6_x6_gd_can_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2444,7 +2139,6 @@
 "seed": 15,
 "variant": "x6_gd_can_put_away__in_cabinet",
 "route": "v6_x6_gd_can_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2452,7 +2146,6 @@
 "seed": 16,
 "variant": "x6_gd_can_put_away__in_cabinet",
 "route": "v6_x6_gd_can_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2460,7 +2153,6 @@
 "seed": 17,
 "variant": "x6_gd_can_put_away__in_microwave",
 "route": "v6_x6_gd_can_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2468,7 +2160,6 @@
 "seed": 18,
 "variant": "x6_gd_can_put_away__in_microwave",
 "route": "v6_x6_gd_can_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2476,7 +2167,6 @@
 "seed": 19,
 "variant": "x6_gd_can_put_away__in_microwave",
 "route": "v6_x6_gd_can_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -2484,7 +2174,6 @@
 "seed": 10,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2492,7 +2181,6 @@
 "seed": 11,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2500,7 +2188,6 @@
 "seed": 12,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2508,7 +2195,6 @@
 "seed": 13,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2516,7 +2202,6 @@
 "seed": 14,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2524,7 +2209,6 @@
 "seed": 15,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2532,7 +2216,6 @@
 "seed": 16,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2540,7 +2223,6 @@
 "seed": 17,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2548,7 +2230,6 @@
 "seed": 18,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2556,7 +2237,6 @@
 "seed": 19,
 "variant": "x6_sr_drop_refused",
 "route": "v6_x6_sr_drop_refused",
-"tier": "hard",
 "family": "x6_sr_drop_refused"
 },
 {
@@ -2564,7 +2244,6 @@
 "seed": 10,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2572,7 +2251,6 @@
 "seed": 11,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2580,7 +2258,6 @@
 "seed": 12,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2588,7 +2265,6 @@
 "seed": 13,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2596,7 +2272,6 @@
 "seed": 14,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2604,7 +2279,6 @@
 "seed": 15,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2612,7 +2286,6 @@
 "seed": 16,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2620,7 +2293,6 @@
 "seed": 17,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2628,7 +2300,6 @@
 "seed": 18,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2636,7 +2307,6 @@
 "seed": 19,
 "variant": "x6_m_ik_drop",
 "route": "v6_x6_m_ik_drop",
-"tier": "medium",
 "family": "x6_m_ik_drop"
 },
 {
@@ -2644,7 +2314,6 @@
 "seed": 10,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2652,7 +2321,6 @@
 "seed": 11,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2660,7 +2328,6 @@
 "seed": 12,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2668,7 +2335,6 @@
 "seed": 13,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2676,7 +2342,6 @@
 "seed": 14,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2684,7 +2349,6 @@
 "seed": 15,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2692,7 +2356,6 @@
 "seed": 16,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2700,7 +2363,6 @@
 "seed": 17,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2708,7 +2370,6 @@
 "seed": 18,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2716,7 +2377,6 @@
 "seed": 19,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
-"tier": "hard",
 "family": "x6_gd_fruits_event"
 },
 {
@@ -2724,7 +2384,6 @@
 "seed": 10,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2732,7 +2391,6 @@
 "seed": 11,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2740,7 +2398,6 @@
 "seed": 12,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2748,7 +2405,6 @@
 "seed": 13,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2756,7 +2412,6 @@
 "seed": 14,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2764,7 +2419,6 @@
 "seed": 15,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2772,7 +2426,6 @@
 "seed": 16,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2780,7 +2433,6 @@
 "seed": 17,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2788,7 +2440,6 @@
 "seed": 18,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2796,7 +2447,6 @@
 "seed": 19,
 "variant": "x6_cl_apple_rolls_out",
 "route": "v6_x6_cl_apple_rolls_out",
-"tier": "hard",
 "family": "x6_cl_apple_rolls_out"
 },
 {
@@ -2804,7 +2454,6 @@
 "seed": 10,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2812,7 +2461,6 @@
 "seed": 11,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2820,7 +2468,6 @@
 "seed": 12,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2828,7 +2475,6 @@
 "seed": 13,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2836,7 +2482,6 @@
 "seed": 14,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2844,7 +2489,6 @@
 "seed": 15,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2852,7 +2496,6 @@
 "seed": 16,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2860,7 +2503,6 @@
 "seed": 17,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2868,7 +2510,6 @@
 "seed": 18,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2876,7 +2517,6 @@
 "seed": 19,
 "variant": "x6_m_apple_rolls_out_once",
 "route": "v6_x6_m_apple_rolls_out_once",
-"tier": "medium",
 "family": "x6_m_apple_rolls_out_once"
 },
 {
@@ -2884,7 +2524,6 @@
 "seed": 10,
 "variant": "x6_gd_bins_capacity__left_full",
 "route": "v6_x6_gd_bins_capacity__left_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2892,7 +2531,6 @@
 "seed": 11,
 "variant": "x6_gd_bins_capacity__left_full",
 "route": "v6_x6_gd_bins_capacity__left_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2900,7 +2538,6 @@
 "seed": 12,
 "variant": "x6_gd_bins_capacity__right_full",
 "route": "v6_x6_gd_bins_capacity__right_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2908,7 +2545,6 @@
 "seed": 13,
 "variant": "x6_gd_bins_capacity__right_full",
 "route": "v6_x6_gd_bins_capacity__right_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2916,7 +2552,6 @@
 "seed": 14,
 "variant": "x6_gd_bins_capacity__right_full",
 "route": "v6_x6_gd_bins_capacity__right_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2924,7 +2559,6 @@
 "seed": 15,
 "variant": "x6_gd_bins_capacity__right_full",
 "route": "v6_x6_gd_bins_capacity__right_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2932,7 +2566,6 @@
 "seed": 16,
 "variant": "x6_gd_bins_capacity__left_full",
 "route": "v6_x6_gd_bins_capacity__left_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2940,7 +2573,6 @@
 "seed": 17,
 "variant": "x6_gd_bins_capacity__left_full",
 "route": "v6_x6_gd_bins_capacity__left_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2948,7 +2580,6 @@
 "seed": 18,
 "variant": "x6_gd_bins_capacity__left_full",
 "route": "v6_x6_gd_bins_capacity__left_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2956,7 +2587,6 @@
 "seed": 19,
 "variant": "x6_gd_bins_capacity__right_full",
 "route": "v6_x6_gd_bins_capacity__right_full",
-"tier": "hard",
 "family": "x6_gd_bins_capacity"
 },
 {
@@ -2964,7 +2594,6 @@
 "seed": 10,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -2972,7 +2601,6 @@
 "seed": 11,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -2980,7 +2608,6 @@
 "seed": 12,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -2988,7 +2615,6 @@
 "seed": 13,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -2996,7 +2622,6 @@
 "seed": 14,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -3004,7 +2629,6 @@
 "seed": 15,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -3012,7 +2636,6 @@
 "seed": 16,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -3020,7 +2643,6 @@
 "seed": 17,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -3028,7 +2650,6 @@
 "seed": 18,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -3036,7 +2657,6 @@
 "seed": 19,
 "variant": "x6_cl_basket_unreachable",
 "route": "v6_x6_cl_basket_unreachable",
-"tier": "hard",
 "family": "x6_cl_basket_unreachable"
 },
 {
@@ -3044,7 +2664,6 @@
 "seed": 10,
 "variant": "x6_pp_duck_moved__dining",
 "route": "v6_x6_pp_duck_moved__dining",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3052,7 +2671,6 @@
 "seed": 11,
 "variant": "x6_pp_duck_moved__study",
 "route": "v6_x6_pp_duck_moved__study",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3060,7 +2678,6 @@
 "seed": 12,
 "variant": "x6_pp_duck_moved__dining",
 "route": "v6_x6_pp_duck_moved__dining",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3068,7 +2685,6 @@
 "seed": 13,
 "variant": "x6_pp_duck_moved__study",
 "route": "v6_x6_pp_duck_moved__study",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3076,7 +2692,6 @@
 "seed": 14,
 "variant": "x6_pp_duck_moved__dining",
 "route": "v6_x6_pp_duck_moved__dining",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3084,7 +2699,6 @@
 "seed": 15,
 "variant": "x6_pp_duck_moved__study",
 "route": "v6_x6_pp_duck_moved__study",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3092,7 +2706,6 @@
 "seed": 16,
 "variant": "x6_pp_duck_moved__study",
 "route": "v6_x6_pp_duck_moved__study",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3100,7 +2713,6 @@
 "seed": 17,
 "variant": "x6_pp_duck_moved__study",
 "route": "v6_x6_pp_duck_moved__study",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3108,7 +2720,6 @@
 "seed": 18,
 "variant": "x6_pp_duck_moved__dining",
 "route": "v6_x6_pp_duck_moved__dining",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3116,7 +2727,6 @@
 "seed": 19,
 "variant": "x6_pp_duck_moved__dining",
 "route": "v6_x6_pp_duck_moved__dining",
-"tier": "hard",
 "family": "x6_pp_duck_moved"
 },
 {
@@ -3124,7 +2734,6 @@
 "seed": 10,
 "variant": "x6_cl_cup_slips__mug_cabinet",
 "route": "v6_x6_cl_cup_slips__mug_cabinet",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3132,7 +2741,6 @@
 "seed": 11,
 "variant": "x6_cl_cup_slips__mug_bookcase",
 "route": "v6_x6_cl_cup_slips__mug_bookcase",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3140,7 +2748,6 @@
 "seed": 12,
 "variant": "x6_cl_cup_slips__mug_cabinet",
 "route": "v6_x6_cl_cup_slips__mug_cabinet",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3148,7 +2755,6 @@
 "seed": 13,
 "variant": "x6_cl_cup_slips__mug_cabinet",
 "route": "v6_x6_cl_cup_slips__mug_cabinet",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3156,7 +2762,6 @@
 "seed": 14,
 "variant": "x6_cl_cup_slips__mug_bookcase",
 "route": "v6_x6_cl_cup_slips__mug_bookcase",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3164,7 +2769,6 @@
 "seed": 15,
 "variant": "x6_cl_cup_slips__mug_bookcase",
 "route": "v6_x6_cl_cup_slips__mug_bookcase",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3172,7 +2776,6 @@
 "seed": 16,
 "variant": "x6_cl_cup_slips__mug_cabinet",
 "route": "v6_x6_cl_cup_slips__mug_cabinet",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3180,7 +2783,6 @@
 "seed": 17,
 "variant": "x6_cl_cup_slips__mug_cabinet",
 "route": "v6_x6_cl_cup_slips__mug_cabinet",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3188,7 +2790,6 @@
 "seed": 18,
 "variant": "x6_cl_cup_slips__mug_bookcase",
 "route": "v6_x6_cl_cup_slips__mug_bookcase",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3196,7 +2797,6 @@
 "seed": 19,
 "variant": "x6_cl_cup_slips__mug_bookcase",
 "route": "v6_x6_cl_cup_slips__mug_bookcase",
-"tier": "hard",
 "family": "x6_cl_cup_slips"
 },
 {
@@ -3204,7 +2804,6 @@
 "seed": 10,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3212,7 +2811,6 @@
 "seed": 11,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3220,7 +2818,6 @@
 "seed": 12,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3228,7 +2825,6 @@
 "seed": 13,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3236,7 +2832,6 @@
 "seed": 14,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3244,7 +2839,6 @@
 "seed": 15,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3252,7 +2846,6 @@
 "seed": 16,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3260,7 +2853,6 @@
 "seed": 17,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3268,7 +2860,6 @@
 "seed": 18,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3276,7 +2867,6 @@
 "seed": 19,
 "variant": "x6_m_slip_cup",
 "route": "v6_x6_m_slip_cup",
-"tier": "medium",
 "family": "x6_m_slip_cup"
 },
 {
@@ -3284,7 +2874,6 @@
 "seed": 10,
 "variant": "x6_pp_spoon_moved__table_end",
 "route": "v6_x6_pp_spoon_moved__table_end",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3292,7 +2881,6 @@
 "seed": 11,
 "variant": "x6_pp_spoon_moved__early",
 "route": "v6_x6_pp_spoon_moved__early",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3300,7 +2888,6 @@
 "seed": 12,
 "variant": "x6_pp_spoon_moved__tv_stand",
 "route": "v6_x6_pp_spoon_moved__tv_stand",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3308,7 +2895,6 @@
 "seed": 13,
 "variant": "x6_pp_spoon_moved__table_end",
 "route": "v6_x6_pp_spoon_moved__table_end",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3316,7 +2902,6 @@
 "seed": 14,
 "variant": "x6_pp_spoon_moved__table_end",
 "route": "v6_x6_pp_spoon_moved__table_end",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3324,7 +2909,6 @@
 "seed": 15,
 "variant": "x6_pp_spoon_moved__early",
 "route": "v6_x6_pp_spoon_moved__early",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3332,7 +2916,6 @@
 "seed": 16,
 "variant": "x6_pp_spoon_moved__early",
 "route": "v6_x6_pp_spoon_moved__early",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3340,7 +2923,6 @@
 "seed": 17,
 "variant": "x6_pp_spoon_moved__tv_stand",
 "route": "v6_x6_pp_spoon_moved__tv_stand",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3348,7 +2930,6 @@
 "seed": 18,
 "variant": "x6_pp_spoon_moved__early",
 "route": "v6_x6_pp_spoon_moved__early",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3356,7 +2937,6 @@
 "seed": 19,
 "variant": "x6_pp_spoon_moved__tv_stand",
 "route": "v6_x6_pp_spoon_moved__tv_stand",
-"tier": "hard",
 "family": "x6_pp_spoon_moved"
 },
 {
@@ -3364,7 +2944,6 @@
 "seed": 10,
 "variant": "x6_gd_bowl_put_away__in_microwave",
 "route": "v6_x6_gd_bowl_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3372,7 +2951,6 @@
 "seed": 11,
 "variant": "x6_gd_bowl_put_away__in_cabinet",
 "route": "v6_x6_gd_bowl_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3380,7 +2958,6 @@
 "seed": 12,
 "variant": "x6_gd_bowl_put_away__in_cabinet",
 "route": "v6_x6_gd_bowl_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3388,7 +2965,6 @@
 "seed": 13,
 "variant": "x6_gd_bowl_put_away__in_microwave",
 "route": "v6_x6_gd_bowl_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3396,7 +2972,6 @@
 "seed": 14,
 "variant": "x6_gd_bowl_put_away__in_microwave",
 "route": "v6_x6_gd_bowl_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3404,7 +2979,6 @@
 "seed": 15,
 "variant": "x6_gd_bowl_put_away__in_cabinet",
 "route": "v6_x6_gd_bowl_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3412,7 +2986,6 @@
 "seed": 16,
 "variant": "x6_gd_bowl_put_away__in_microwave",
 "route": "v6_x6_gd_bowl_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3420,7 +2993,6 @@
 "seed": 17,
 "variant": "x6_gd_bowl_put_away__in_cabinet",
 "route": "v6_x6_gd_bowl_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3428,7 +3000,6 @@
 "seed": 18,
 "variant": "x6_gd_bowl_put_away__in_microwave",
 "route": "v6_x6_gd_bowl_put_away__in_microwave",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3436,7 +3007,6 @@
 "seed": 19,
 "variant": "x6_gd_bowl_put_away__in_cabinet",
 "route": "v6_x6_gd_bowl_put_away__in_cabinet",
-"tier": "hard",
 "family": "x6_gd_bowl_put_away"
 },
 {
@@ -3444,7 +3014,6 @@
 "seed": 10,
 "variant": "x6_gd_two_settings__cabinet4",
 "route": "v6_x6_gd_two_settings__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3452,7 +3021,6 @@
 "seed": 11,
 "variant": "x6_gd_two_settings__cabinet4",
 "route": "v6_x6_gd_two_settings__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3460,7 +3028,6 @@
 "seed": 12,
 "variant": "x6_gd_two_settings__cabinet6",
 "route": "v6_x6_gd_two_settings__cabinet6",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3468,7 +3035,6 @@
 "seed": 13,
 "variant": "x6_gd_two_settings__cabinet4",
 "route": "v6_x6_gd_two_settings__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3476,7 +3042,6 @@
 "seed": 14,
 "variant": "x6_gd_two_settings__cabinet6",
 "route": "v6_x6_gd_two_settings__cabinet6",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3484,7 +3049,6 @@
 "seed": 15,
 "variant": "x6_gd_two_settings__cabinet4",
 "route": "v6_x6_gd_two_settings__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3492,7 +3056,6 @@
 "seed": 16,
 "variant": "x6_gd_two_settings__cabinet6",
 "route": "v6_x6_gd_two_settings__cabinet6",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3500,7 +3063,6 @@
 "seed": 17,
 "variant": "x6_gd_two_settings__cabinet4",
 "route": "v6_x6_gd_two_settings__cabinet4",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3508,7 +3070,6 @@
 "seed": 18,
 "variant": "x6_gd_two_settings__cabinet6",
 "route": "v6_x6_gd_two_settings__cabinet6",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3516,7 +3077,6 @@
 "seed": 19,
 "variant": "x6_gd_two_settings__cabinet6",
 "route": "v6_x6_gd_two_settings__cabinet6",
-"tier": "hard",
 "family": "x6_gd_two_settings"
 },
 {
@@ -3524,7 +3084,6 @@
 "seed": 10,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3532,7 +3091,6 @@
 "seed": 11,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3540,7 +3098,6 @@
 "seed": 12,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3548,7 +3105,6 @@
 "seed": 13,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3556,7 +3112,6 @@
 "seed": 14,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3564,7 +3119,6 @@
 "seed": 15,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3572,7 +3126,6 @@
 "seed": 16,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3580,7 +3133,6 @@
 "seed": 17,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3588,7 +3140,6 @@
 "seed": 18,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3596,7 +3147,6 @@
 "seed": 19,
 "variant": "x6_sr_hide_refused",
 "route": "v6_x6_sr_hide_refused",
-"tier": "hard",
 "family": "x6_sr_hide_refused"
 },
 {
@@ -3604,7 +3154,6 @@
 "seed": 10,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3612,7 +3161,6 @@
 "seed": 11,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3620,7 +3168,6 @@
 "seed": 12,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3628,7 +3175,6 @@
 "seed": 13,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3636,7 +3182,6 @@
 "seed": 14,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3644,7 +3189,6 @@
 "seed": 15,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3652,7 +3196,6 @@
 "seed": 16,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3660,7 +3203,6 @@
 "seed": 17,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3668,7 +3210,6 @@
 "seed": 18,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3676,7 +3217,6 @@
 "seed": 19,
 "variant": "x6_m_ik_hide",
 "route": "v6_x6_m_ik_hide",
-"tier": "medium",
 "family": "x6_m_ik_hide"
 },
 {
@@ -3684,7 +3224,6 @@
 "seed": 10,
 "variant": "x6_pp_lid_lifted__cabinet4",
 "route": "v6_x6_pp_lid_lifted__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3692,7 +3231,6 @@
 "seed": 11,
 "variant": "x6_pp_lid_lifted__cabinet4",
 "route": "v6_x6_pp_lid_lifted__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3700,7 +3238,6 @@
 "seed": 12,
 "variant": "x6_pp_lid_lifted__dining",
 "route": "v6_x6_pp_lid_lifted__dining",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3708,7 +3245,6 @@
 "seed": 13,
 "variant": "x6_pp_lid_lifted__dining",
 "route": "v6_x6_pp_lid_lifted__dining",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3716,7 +3252,6 @@
 "seed": 14,
 "variant": "x6_pp_lid_lifted__dining",
 "route": "v6_x6_pp_lid_lifted__dining",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3724,7 +3259,6 @@
 "seed": 15,
 "variant": "x6_pp_lid_lifted__cabinet4",
 "route": "v6_x6_pp_lid_lifted__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3732,7 +3266,6 @@
 "seed": 16,
 "variant": "x6_pp_lid_lifted__cabinet4",
 "route": "v6_x6_pp_lid_lifted__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3740,7 +3273,6 @@
 "seed": 17,
 "variant": "x6_pp_lid_lifted__dining",
 "route": "v6_x6_pp_lid_lifted__dining",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3748,7 +3280,6 @@
 "seed": 18,
 "variant": "x6_pp_lid_lifted__cabinet4",
 "route": "v6_x6_pp_lid_lifted__cabinet4",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3756,7 +3287,6 @@
 "seed": 19,
 "variant": "x6_pp_lid_lifted__dining",
 "route": "v6_x6_pp_lid_lifted__dining",
-"tier": "hard",
 "family": "x6_pp_lid_lifted"
 },
 {
@@ -3764,7 +3294,6 @@
 "seed": 10,
 "variant": "x6_gd_hide_both_event__dining",
 "route": "v6_x6_gd_hide_both_event__dining",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3772,7 +3301,6 @@
 "seed": 11,
 "variant": "x6_gd_hide_both_event__tv_stand",
 "route": "v6_x6_gd_hide_both_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3780,7 +3308,6 @@
 "seed": 12,
 "variant": "x6_gd_hide_both_event__dining",
 "route": "v6_x6_gd_hide_both_event__dining",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3788,7 +3315,6 @@
 "seed": 13,
 "variant": "x6_gd_hide_both_event__tv_stand",
 "route": "v6_x6_gd_hide_both_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3796,7 +3322,6 @@
 "seed": 14,
 "variant": "x6_gd_hide_both_event__dining",
 "route": "v6_x6_gd_hide_both_event__dining",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3804,7 +3329,6 @@
 "seed": 15,
 "variant": "x6_gd_hide_both_event__dining",
 "route": "v6_x6_gd_hide_both_event__dining",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3812,7 +3336,6 @@
 "seed": 16,
 "variant": "x6_gd_hide_both_event__dining",
 "route": "v6_x6_gd_hide_both_event__dining",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3820,7 +3343,6 @@
 "seed": 17,
 "variant": "x6_gd_hide_both_event__tv_stand",
 "route": "v6_x6_gd_hide_both_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3828,7 +3350,6 @@
 "seed": 18,
 "variant": "x6_gd_hide_both_event__tv_stand",
 "route": "v6_x6_gd_hide_both_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3836,7 +3357,6 @@
 "seed": 19,
 "variant": "x6_gd_hide_both_event__tv_stand",
 "route": "v6_x6_gd_hide_both_event__tv_stand",
-"tier": "hard",
 "family": "x6_gd_hide_both_event"
 },
 {
@@ -3844,7 +3364,6 @@
 "seed": 10,
 "variant": "x6_gd_bowl_elsewhere__two_places",
 "route": "v6_x6_gd_bowl_elsewhere__two_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3852,7 +3371,6 @@
 "seed": 11,
 "variant": "x6_gd_bowl_elsewhere__two_places",
 "route": "v6_x6_gd_bowl_elsewhere__two_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3860,7 +3378,6 @@
 "seed": 12,
 "variant": "x6_gd_bowl_elsewhere__three_places",
 "route": "v6_x6_gd_bowl_elsewhere__three_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3868,7 +3385,6 @@
 "seed": 13,
 "variant": "x6_gd_bowl_elsewhere__two_places",
 "route": "v6_x6_gd_bowl_elsewhere__two_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3876,7 +3392,6 @@
 "seed": 14,
 "variant": "x6_gd_bowl_elsewhere__three_places",
 "route": "v6_x6_gd_bowl_elsewhere__three_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3884,7 +3399,6 @@
 "seed": 15,
 "variant": "x6_gd_bowl_elsewhere__two_places",
 "route": "v6_x6_gd_bowl_elsewhere__two_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3892,7 +3406,6 @@
 "seed": 16,
 "variant": "x6_gd_bowl_elsewhere__three_places",
 "route": "v6_x6_gd_bowl_elsewhere__three_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3900,7 +3413,6 @@
 "seed": 17,
 "variant": "x6_gd_bowl_elsewhere__two_places",
 "route": "v6_x6_gd_bowl_elsewhere__two_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3908,7 +3420,6 @@
 "seed": 18,
 "variant": "x6_gd_bowl_elsewhere__three_places",
 "route": "v6_x6_gd_bowl_elsewhere__three_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3916,7 +3427,6 @@
 "seed": 19,
 "variant": "x6_gd_bowl_elsewhere__three_places",
 "route": "v6_x6_gd_bowl_elsewhere__three_places",
-"tier": "hard",
 "family": "x6_gd_bowl_elsewhere"
 },
 {
@@ -3924,7 +3434,6 @@
 "seed": 10,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3932,7 +3441,6 @@
 "seed": 11,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3940,7 +3448,6 @@
 "seed": 12,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3948,7 +3455,6 @@
 "seed": 13,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3956,7 +3462,6 @@
 "seed": 14,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3964,7 +3469,6 @@
 "seed": 15,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3972,7 +3476,6 @@
 "seed": 16,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3980,7 +3483,6 @@
 "seed": 17,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3988,7 +3490,6 @@
 "seed": 18,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -3996,7 +3497,6 @@
 "seed": 19,
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
-"tier": "hard",
 "family": "x6_pp_door_reopened"
 },
 {
@@ -4004,7 +3504,6 @@
 "seed": 10,
 "variant": "x6_gd_can_put_away__in_4",
 "route": "v6_x6_gd_can_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4012,7 +3511,6 @@
 "seed": 11,
 "variant": "x6_gd_can_put_away__in_6",
 "route": "v6_x6_gd_can_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4020,7 +3518,6 @@
 "seed": 12,
 "variant": "x6_gd_can_put_away__in_4",
 "route": "v6_x6_gd_can_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4028,7 +3525,6 @@
 "seed": 13,
 "variant": "x6_gd_can_put_away__in_4",
 "route": "v6_x6_gd_can_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4036,7 +3532,6 @@
 "seed": 14,
 "variant": "x6_gd_can_put_away__in_6",
 "route": "v6_x6_gd_can_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4044,7 +3539,6 @@
 "seed": 15,
 "variant": "x6_gd_can_put_away__in_6",
 "route": "v6_x6_gd_can_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4052,7 +3546,6 @@
 "seed": 16,
 "variant": "x6_gd_can_put_away__in_6",
 "route": "v6_x6_gd_can_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4060,7 +3553,6 @@
 "seed": 17,
 "variant": "x6_gd_can_put_away__in_4",
 "route": "v6_x6_gd_can_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4068,7 +3560,6 @@
 "seed": 18,
 "variant": "x6_gd_can_put_away__in_4",
 "route": "v6_x6_gd_can_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4076,7 +3567,6 @@
 "seed": 19,
 "variant": "x6_gd_can_put_away__in_6",
 "route": "v6_x6_gd_can_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_can_put_away"
 },
 {
@@ -4084,7 +3574,6 @@
 "seed": 10,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4092,7 +3581,6 @@
 "seed": 11,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4100,7 +3588,6 @@
 "seed": 12,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4108,7 +3595,6 @@
 "seed": 13,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4116,7 +3602,6 @@
 "seed": 14,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4124,7 +3609,6 @@
 "seed": 15,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4132,7 +3616,6 @@
 "seed": 16,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4140,7 +3623,6 @@
 "seed": 17,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4148,7 +3630,6 @@
 "seed": 18,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4156,7 +3637,6 @@
 "seed": 19,
 "variant": "x6_sr_cube_drop_refused",
 "route": "v6_x6_sr_cube_drop_refused",
-"tier": "hard",
 "family": "x6_sr_cube_drop_refused"
 },
 {
@@ -4164,7 +3644,6 @@
 "seed": 10,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4172,7 +3651,6 @@
 "seed": 11,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4180,7 +3658,6 @@
 "seed": 12,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4188,7 +3665,6 @@
 "seed": 13,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4196,7 +3672,6 @@
 "seed": 14,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4204,7 +3679,6 @@
 "seed": 15,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4212,7 +3686,6 @@
 "seed": 16,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4220,7 +3693,6 @@
 "seed": 17,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4228,7 +3700,6 @@
 "seed": 18,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4236,7 +3707,6 @@
 "seed": 19,
 "variant": "x6_m_ik_drop_cube",
 "route": "v6_x6_m_ik_drop_cube",
-"tier": "medium",
 "family": "x6_m_ik_drop_cube"
 },
 {
@@ -4244,7 +3714,6 @@
 "seed": 10,
 "variant": "x6_cl_bottle_behind_mug__bowl",
 "route": "v6_x6_cl_bottle_behind_mug__bowl",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4252,7 +3721,6 @@
 "seed": 11,
 "variant": "x6_cl_bottle_behind_mug__mug",
 "route": "v6_x6_cl_bottle_behind_mug__mug",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4260,7 +3728,6 @@
 "seed": 12,
 "variant": "x6_cl_bottle_behind_mug__mug",
 "route": "v6_x6_cl_bottle_behind_mug__mug",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4268,7 +3735,6 @@
 "seed": 13,
 "variant": "x6_cl_bottle_behind_mug__bowl",
 "route": "v6_x6_cl_bottle_behind_mug__bowl",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4276,7 +3742,6 @@
 "seed": 14,
 "variant": "x6_cl_bottle_behind_mug__bowl",
 "route": "v6_x6_cl_bottle_behind_mug__bowl",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4284,7 +3749,6 @@
 "seed": 15,
 "variant": "x6_cl_bottle_behind_mug__mug",
 "route": "v6_x6_cl_bottle_behind_mug__mug",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4292,7 +3756,6 @@
 "seed": 16,
 "variant": "x6_cl_bottle_behind_mug__bowl",
 "route": "v6_x6_cl_bottle_behind_mug__bowl",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4300,7 +3763,6 @@
 "seed": 17,
 "variant": "x6_cl_bottle_behind_mug__mug",
 "route": "v6_x6_cl_bottle_behind_mug__mug",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4308,7 +3770,6 @@
 "seed": 18,
 "variant": "x6_cl_bottle_behind_mug__bowl",
 "route": "v6_x6_cl_bottle_behind_mug__bowl",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4316,7 +3777,6 @@
 "seed": 19,
 "variant": "x6_cl_bottle_behind_mug__mug",
 "route": "v6_x6_cl_bottle_behind_mug__mug",
-"tier": "hard",
 "family": "x6_cl_bottle_behind_mug"
 },
 {
@@ -4324,7 +3784,6 @@
 "seed": 10,
 "variant": "x6_gd_bottle_put_away__in_cabinet_6",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4332,7 +3791,6 @@
 "seed": 11,
 "variant": "x6_gd_bottle_put_away__in_cabinet_4",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_4",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4340,7 +3798,6 @@
 "seed": 12,
 "variant": "x6_gd_bottle_put_away__in_cabinet_4",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_4",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4348,7 +3805,6 @@
 "seed": 13,
 "variant": "x6_gd_bottle_put_away__in_cabinet_4",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_4",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4356,7 +3812,6 @@
 "seed": 14,
 "variant": "x6_gd_bottle_put_away__in_cabinet_6",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4364,7 +3819,6 @@
 "seed": 15,
 "variant": "x6_gd_bottle_put_away__in_cabinet_6",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4372,7 +3826,6 @@
 "seed": 16,
 "variant": "x6_gd_bottle_put_away__in_cabinet_6",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4380,7 +3833,6 @@
 "seed": 17,
 "variant": "x6_gd_bottle_put_away__in_cabinet_4",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_4",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4388,7 +3840,6 @@
 "seed": 18,
 "variant": "x6_gd_bottle_put_away__in_cabinet_6",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_6",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4396,7 +3847,6 @@
 "seed": 19,
 "variant": "x6_gd_bottle_put_away__in_cabinet_4",
 "route": "v6_x6_gd_bottle_put_away__in_cabinet_4",
-"tier": "hard",
 "family": "x6_gd_bottle_put_away"
 },
 {
@@ -4404,7 +3854,6 @@
 "seed": 10,
 "variant": "x6_gd_book_put_away__in_4",
 "route": "v6_x6_gd_book_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4412,7 +3861,6 @@
 "seed": 11,
 "variant": "x6_gd_book_put_away__in_6",
 "route": "v6_x6_gd_book_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4420,7 +3868,6 @@
 "seed": 12,
 "variant": "x6_gd_book_put_away__in_6",
 "route": "v6_x6_gd_book_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4428,7 +3875,6 @@
 "seed": 13,
 "variant": "x6_gd_book_put_away__in_4",
 "route": "v6_x6_gd_book_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4436,7 +3882,6 @@
 "seed": 14,
 "variant": "x6_gd_book_put_away__in_4",
 "route": "v6_x6_gd_book_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4444,7 +3889,6 @@
 "seed": 15,
 "variant": "x6_gd_book_put_away__in_4",
 "route": "v6_x6_gd_book_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4452,7 +3896,6 @@
 "seed": 16,
 "variant": "x6_gd_book_put_away__in_4",
 "route": "v6_x6_gd_book_put_away__in_4",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4460,7 +3903,6 @@
 "seed": 17,
 "variant": "x6_gd_book_put_away__in_6",
 "route": "v6_x6_gd_book_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4468,7 +3910,6 @@
 "seed": 18,
 "variant": "x6_gd_book_put_away__in_6",
 "route": "v6_x6_gd_book_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4476,7 +3917,6 @@
 "seed": 19,
 "variant": "x6_gd_book_put_away__in_6",
 "route": "v6_x6_gd_book_put_away__in_6",
-"tier": "hard",
 "family": "x6_gd_book_put_away"
 },
 {
@@ -4484,7 +3924,6 @@
 "seed": 10,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4492,7 +3931,6 @@
 "seed": 11,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4500,7 +3938,6 @@
 "seed": 12,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4508,7 +3945,6 @@
 "seed": 13,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4516,7 +3952,6 @@
 "seed": 14,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4524,7 +3959,6 @@
 "seed": 15,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4532,7 +3966,6 @@
 "seed": 16,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4540,7 +3973,6 @@
 "seed": 17,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4548,7 +3980,6 @@
 "seed": 18,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4556,7 +3987,6 @@
 "seed": 19,
 "variant": "x6_sr_two_hand_carry",
 "route": "v6_x6_sr_two_hand_carry",
-"tier": "hard",
 "family": "x6_sr_two_hand_carry"
 },
 {
@@ -4564,7 +3994,6 @@
 "seed": 10,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4572,7 +4001,6 @@
 "seed": 11,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4580,7 +4008,6 @@
 "seed": 12,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4588,7 +4015,6 @@
 "seed": 13,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4596,7 +4022,6 @@
 "seed": 14,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4604,7 +4029,6 @@
 "seed": 15,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4612,7 +4036,6 @@
 "seed": 16,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4620,7 +4043,6 @@
 "seed": 17,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4628,7 +4050,6 @@
 "seed": 18,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 },
 {
@@ -4636,7 +4057,6 @@
 "seed": 19,
 "variant": "x6_m_slip_book",
 "route": "v6_x6_m_slip_book",
-"tier": "medium",
 "family": "x6_m_slip_book"
 }
 ]

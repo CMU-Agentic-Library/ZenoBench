@@ -3,7 +3,7 @@
     python benchmark/v6/track_metrics.py --runs benchmark/runs/v5_grid [--runs ...] [--md OUT.md] [--json OUT.json]
 
 Reads every ``result.json`` under the run directories (newest per planner / task / variant / seed / profile),
-assigns it to a track and computes that track's metrics, overall and per subcategory, tier and planner.
+assigns it to a track and computes that track's metrics, overall, per subcategory / timing and per planner.
 The track comes from the episode's profile: ``sticky_snap/*`` (GT skills) -> Task-Level; any other profile ->
 Action-Level when the variant belongs to an Action-Level family.  Episodes outside the v6 tracks are skipped.
 Rates carry a Wilson 95 % interval; a metric with nothing eligible is N/A, never 0.
@@ -26,7 +26,7 @@ Rates carry a Wilson 95 % interval; a metric with nothing eligible is N/A, never
 **Task-Level** (any planner on GT skills; the planner's score)
 
 * ``TSR``   task success: the goal holds (legal substitutes included: the goal checker decides) and nothing was
-            dropped.  Reported per subcategory (TL-DR ... TL-SEARCH), tier, timing (initial / dynamic).
+            dropped.  Also reported per timing (initial scene / dynamic event).
 * ``RRSR``  reactive recovery success: of the episodes in which a call failed or a dynamic event fired, the
             share that still succeed.
 * ``PAR``   proactive adaptation rate: of the episodes with a declared task-level failure that never fired
@@ -36,11 +36,10 @@ Rates carry a Wilson 95 % interval; a metric with nothing eligible is N/A, never
             failure, or a task-level condition) fails a third time with the same arguments, over the episodes
             that met such a failure.  One retry is allowed (it is how a planner learns that the failure
             persists; the reference routes do it too); lower is better.
-* ``PPR``   progress preservation, TL-PP families: episodes that do not redo the work the event did not
-            undo (the hypothesis' ``kept.by`` call after the event), over the PP episodes where the event fired.
 * ``PE``    plan efficiency, successful episodes: oracle-route successful calls / the episode's calls (<= 1 is
             longer than the reference; capped at 1).
-* ``GAP``   replanning gap per family: TSR of its control variant minus TSR of the family, same planner and
+* ``GAP``   replanning gap per family: TSR of its control (``v6_families[fam]["control"]``) minus TSR of the
+            family, same planner and
             same kind of profile (GT skills or not), when both were run; reported as the mean over families with both (paired on seeds when possible).
 * ``STOP``  stop reasons of failed episodes (planner_done with the goal unmet, budget, refused ...).
 """
@@ -188,7 +187,8 @@ def task_facts(r, task, fam, entry):
     persistent_idx = {c["index"] for e in fi.get("log", []) for c in [call_at(calls, e)]
                       if c and e["id"] in fspec and (fspec[e["id"]].get("persist") or not transient(fspec[e["id"]]))}
     persistent_keys = {_key(c) for c in calls if c["index"] in persistent_idx and not ok(c)}
-    if v.get("condition_types") and failed:     # a task-level condition refuses a call: treat its refusals alike
+    if any(c not in LOCAL_CONDITIONS for c in v.get("conditions") or []) and failed:
+        # a task-level condition refuses a call: treat its refusals alike
         persistent_keys |= {_key(c) for c in failed}
     n_failed, futile = Counter(), False
     for c in calls:
@@ -196,35 +196,24 @@ def task_facts(r, task, fam, entry):
         if k in persistent_keys and not ok(c):
             n_failed[k] += 1
             futile = futile or n_failed[k] >= 3
-    pp = None
-    ev = (task["v6_audit"][r["variant"]]["evidence"].get("PP") or {})
-    if entry["sub"] == "TL-PP" and ev.get("event") in fired:
-        ev_c = next((call_at(calls, e) for e in fi.get("log", []) if e["id"] == ev["event"]), None)
-        ev_idx = ev_c["index"] if ev_c else None
-        by = ev.get("kept", {}).get("by") or {}
-        redo = any(c["index"] > (ev_idx or -1) and ok(c) and c["skill"] == by.get("skill") and
-                   all(c["args"].get(a) == b for a, b in (by.get("args") or {}).items()) for c in calls)
-        pp = not redo
     ref = sum(1 for s in task["routes"][task["oracle"][r["variant"]]]["steps"] if s.get("expect") != "fail")
-    return {"success": success, "fam": fam, "sub": entry["sub"], "tier": entry["tier"], "timing": entry["timing"],
+    return {"success": success, "fam": fam, "timing": entry["timing"],
             "reactive": bool(failed) or dyn_fired, "proactive": bool(declared_task) and not (set(declared_task) & fired),
-            "persistent_met": bool(persistent_keys), "futile": futile, "pp": pp,
+            "persistent_met": bool(persistent_keys), "futile": futile,
             "pe": min(1.0, ref / len(calls)) if success and calls else None,
             "stop": r.get("stop_reason") or ("success" if success else "route_end"),
-            "control": task["v6_audit"][r["variant"]].get("control"), "seed": r.get("seed")}
+            "control": task["v6_families"][fam].get("control"), "seed": r.get("seed")}
 
 
 def task_summary(rows):
     re_ = [f for f in rows if f["reactive"]]
     pa = [f for f in rows if f["proactive"]]
     pm = [f for f in rows if f["persistent_met"]]
-    pp = [f for f in rows if f["pp"] is not None]
     return {"n": len(rows),
             "TSR": wilson(sum(f["success"] for f in rows), len(rows)),
             "RRSR": wilson(sum(f["success"] for f in re_), len(re_)),
             "PAR": wilson(sum(f["success"] for f in pa), len(pa)),
             "FRR": wilson(sum(f["futile"] for f in pm), len(pm)),
-            "PPR": wilson(sum(f["pp"] for f in pp), len(pp)),
             "PE": mean([f["pe"] for f in rows]),
             "STOP": dict(Counter(f["stop"] for f in rows if not f["success"]))}
 
@@ -261,8 +250,7 @@ def evaluate(dirs, doc=None):
         k = track_of(r, mem)
         if k == "action":
             fam, x = mem[(r["task_id"], r["variant"])]["action"]
-            rows["action"][planner].append(dict(action_facts(r, t), task=r["task_id"], fam=fam, sub=x["sub"],
-                                                tier=x["family_tier"]))
+            rows["action"][planner].append(dict(action_facts(r, t), task=r["task_id"], fam=fam, sub=x["sub"]))
         elif k == "task":
             fam, x = mem[(r["task_id"], r["variant"])]["task"]
             rows["task"][planner].append(dict(task_facts(r, t, fam, x), task=r["task_id"], variant=r["variant"]))
@@ -270,15 +258,9 @@ def evaluate(dirs, doc=None):
     for planner, rs in rows["action"].items():
         out["action"][planner] = {"all": action_summary(rs),
                                   "by_sub": {s: action_summary([f for f in rs if f["sub"] == s])
-                                             for s in sorted({f["sub"] for f in rs})},
-                                  "by_tier": {s: action_summary([f for f in rs if f["tier"] == s])
-                                              for s in sorted({f["tier"] for f in rs})}}
+                                             for s in sorted({f["sub"] for f in rs})}}
     for planner, rs in rows["task"].items():
         out["task"][planner] = {"all": dict(task_summary(rs), GAP=gap(rs, ctrl_rows[(planner, True)])),
-                                "by_sub": {s: task_summary([f for f in rs if f["sub"] == s])
-                                           for s in sorted({f["sub"] for f in rs})},
-                                "by_tier": {s: task_summary([f for f in rs if f["tier"] == s])
-                                            for s in sorted({f["tier"] for f in rs})},
                                 "by_timing": {s: task_summary([f for f in rs if f["timing"] == s])
                                               for s in sorted({f["timing"] for f in rs})}}
     return out
@@ -296,7 +278,7 @@ def markdown(res, dirs):
     md = ["# v6 track evaluation", "", f"`python benchmark/v6/track_metrics.py` over: {', '.join(map(str, dirs))}.",
           "Metric definitions: the module docstring of `benchmark/v6/track_metrics.py` and `TRACKS.md`.", ""]
     acols = ["ASR", "LRR", "RC", "NSR", "CDR", "FIV", "LRR_ik", "LRR_grasp", "LRR_slip", "LRR_placement"]
-    tcols = ["TSR", "RRSR", "PAR", "FRR", "PPR", "PE"]
+    tcols = ["TSR", "RRSR", "PAR", "FRR", "PE"]
     for k, cols in (("action", acols), ("task", tcols)):
         md += [f"## {'Action' if k == 'action' else 'Task'}-Level", ""]
         if not res[k]:
@@ -305,7 +287,7 @@ def markdown(res, dirs):
         for planner, s in res[k].items():
             md += [f"### planner `{planner}`", "", "| group | n | " + " | ".join(cols) + " |",
                    "|---|---|" + "---|" * len(cols)]
-            groups = [("all", s["all"])] + [(g, x) for part in ("by_tier", "by_sub", "by_timing")
+            groups = [("all", s["all"])] + [(g, x) for part in ("by_sub", "by_timing")
                                             for g, x in s.get(part, {}).items()]
             for g, x in groups:
                 md.append(f"| {g} | {x['n']} | " + " | ".join(_r(x.get(c)) for c in cols) + " |")
