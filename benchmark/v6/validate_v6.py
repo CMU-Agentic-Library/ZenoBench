@@ -100,12 +100,14 @@ def main():
         for fam, info in t["v6_variants"].items():
             out["variants"] += 1
             probs = []
-            if info["origin"] == "v5" and "injected_removed" in t["variants"][fam]:
+            v0 = t["variants"].get(fam, {})
+            edited = "injected_removed" in v0 or "conditions_ignored" in v0
+            if info["origin"] == "v5" and edited:
                 seeds = sorted(int(s) for s, x in info["seeds"].items() if x == fam)
                 probs += [(s, f"{fam}: {p}") for s, p in variant_problems(t, fam, contracts, assets, seeds)]
                 probs += [(None, f"{fam}: {p}") for p in persistent_problems(t, fam)]
             if info["origin"] == "v5":
-                for s in ([] if "injected_removed" in t["variants"][fam] else SEEDS):                  # the v5 variant itself: unchanged for every seed
+                for s in ([] if edited else SEEDS):                  # the v5 variant itself: unchanged for every seed
                     h = episode_config(t, s, fam)["config_hash"]
                     out["v5_hashes_checked"] += 1
                     if frozen.get(f"{tid}/{fam}/{s}") != h:

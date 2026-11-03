@@ -7,10 +7,10 @@ puts each variant in one of four categories.
 | | |
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
-| variants | 196; each runs seeds 10-19 (1,960 episodes) |
-| categories | control 38, Action-Level 23, Task-Level 116, Action + Task 19 (`TRACKS.md`) |
-| static checks | 1,960 / 1,960 episodes |
-| physics | 31 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
+| variants | 156; each runs seeds 10-19 (1,560 episodes) |
+| categories | control 20 (one per task), Action-Level 20, Task-Level 102, Action + Task 14 (`TRACKS.md`) |
+| static checks | 1,560 / 1,560 episodes |
+| physics | 25 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
 
 ## Definitions
 
@@ -43,15 +43,18 @@ Each variant contains the fallback its category is about; the category reads onl
 
 | category | the variant needs | variants | episodes |
 |---|---|---|---|
-| **Control** | nothing: the nominal plan works (the reference for the others) | 38 | 380 |
-| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge, move what stands in front of the target (`LOCAL_CONDITIONS`, `local_failure`) | 23 | 230 |
-| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an action that never succeeds (another object or procedure), a dynamic event | 116 | 1,160 |
-| **Action + Task** | both | 19 | 190 |
+| **Control** | nothing: the nominal plan works (the reference for the others) | 20 | 200 |
+| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge, move what stands in front of the target (`LOCAL_CONDITIONS`, `local_failure`) | 20 | 200 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an action that never succeeds (another object or procedure), a dynamic event | 102 | 1,020 |
+| **Action + Task** | both | 14 | 140 |
 
 **No injected action failures.** The injected transient failures (an IK refusal, a grasp miss, a slip, a
 placement miss that a retry fixes) are removed from every variant, and from its route each call they failed
-with its repair up to the retry (`tracks.strip_injected`). 32 variants had nothing else and are dropped; 21
-equal another variant without them and are merged into it (`v6_dropped` per task). Action-Level fallbacks come
+with its repair up to the retry (`tracks.strip_injected`). Variants left with nothing are dropped, and one
+variant is kept per design (`tracks.design_key`: conditions, failures, goal, instruction and the objects handled;
+not where things stand or where the robot starts, which is the seed's part): `v6_dropped` per task says which
+variant each removed one equals. An initial resource / destination / capacity failure next to a scene
+condition only restates that condition (`declares_condition`). Action-Level fallbacks come
 from the scene. Persistent failures (an action that never succeeds) stay: they are a Task-Level design.
 
 A goal of a variant's own (close the door again, leave the block on the island) states how a fallback ends and
@@ -80,6 +83,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 
 ## Files
 
+* `VARIANTS_zh.md` - every variant in plain Chinese: the situation, what the robot does, what the seed chooses.
 * `TRACKS.md` - the four categories, counts per task, every variant with its local fallback and longer-horizon change.
 * `variant_cards.json` - per concrete variant: instruction, initial conditions, failure triggers, goal, tracks,
   control, oracle route, challenge / rationale, success criteria.

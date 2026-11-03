@@ -34,6 +34,8 @@ def test_v5_configurations_and_routes_unchanged():
             if vid in t["v6_dropped"]:
                 assert vid not in t["variants"]
                 continue
+            if "conditions_ignored" in t["variants"][vid]:
+                continue
             if "injected_removed" in t["variants"][vid]:
                 old = v5[tid]["variants"][vid]
                 assert sorted(f["id"] for f in old.get("failures", []) if f["id"] not in

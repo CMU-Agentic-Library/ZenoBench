@@ -1,96 +1,96 @@
 {
- "variants": 196,
- "episodes": 1960,
- "static_ok": 1960,
+ "variants": 156,
+ "episodes": 1560,
+ "static_ok": 1560,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
-   "episodes": 100,
-   "static_ok": 100
+   "episodes": 80,
+   "static_ok": 80
   },
   "T02_stack_blocks": {
+   "episodes": 90,
+   "static_ok": 90
+  },
+  "T03_utensils_one_container": {
+   "episodes": 50,
+   "static_ok": 50
+  },
+  "T04_cup_or_mug_to_cabinet": {
    "episodes": 110,
    "static_ok": 110
   },
-  "T03_utensils_one_container": {
+  "T05_pen_or_pencil_to_desk": {
+   "episodes": 80,
+   "static_ok": 80
+  },
+  "T06_block_destination_occupied": {
+   "episodes": 80,
+   "static_ok": 80
+  },
+  "T07_heat_oatmeal": {
+   "episodes": 90,
+   "static_ok": 90
+  },
+  "T08_wipe_island": {
    "episodes": 70,
    "static_ok": 70
   },
-  "T04_cup_or_mug_to_cabinet": {
+  "T09_tomato_soup": {
    "episodes": 130,
    "static_ok": 130
   },
-  "T05_pen_or_pencil_to_desk": {
-   "episodes": 110,
-   "static_ok": 110
-  },
-  "T06_block_destination_occupied": {
-   "episodes": 100,
-   "static_ok": 100
-  },
-  "T07_heat_oatmeal": {
-   "episodes": 110,
-   "static_ok": 110
-  },
-  "T08_wipe_island": {
-   "episodes": 90,
-   "static_ok": 90
-  },
-  "T09_tomato_soup": {
-   "episodes": 150,
-   "static_ok": 150
-  },
   "T10_trash_the_can": {
-   "episodes": 100,
-   "static_ok": 100
+   "episodes": 80,
+   "static_ok": 80
   },
   "T11_collect_fruits": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 70,
+   "static_ok": 70
   },
   "T12_tidy_toys": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 70,
+   "static_ok": 70
   },
   "T13_breakfast_setup": {
-   "episodes": 150,
-   "static_ok": 150
+   "episodes": 130,
+   "static_ok": 130
   },
   "T15_book_face_up": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 40,
+   "static_ok": 40
   },
   "T16_rolling_pin_at_edge": {
+   "episodes": 40,
+   "static_ok": 40
+  },
+  "T17_hide_and_seek_block": {
+   "episodes": 90,
+   "static_ok": 90
+  },
+  "T18_check_cabinet_dishes": {
+   "episodes": 70,
+   "static_ok": 70
+  },
+  "T19_recycling": {
    "episodes": 60,
    "static_ok": 60
   },
-  "T17_hide_and_seek_block": {
-   "episodes": 100,
-   "static_ok": 100
-  },
-  "T18_check_cabinet_dishes": {
-   "episodes": 80,
-   "static_ok": 80
-  },
-  "T19_recycling": {
-   "episodes": 80,
-   "static_ok": 80
-  },
   "T20_juice_back_to_table": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 70,
+   "static_ok": 70
   },
   "T14_shelve_the_book": {
-   "episodes": 90,
-   "static_ok": 90
+   "episodes": 60,
+   "static_ok": 60
   }
  },
- "v5_hashes_checked": 1160,
+ "v5_hashes_checked": 930,
  "categories": {
-  "control": 38,
-  "action": 23,
-  "action_task": 19,
-  "task": 116
+  "control": 20,
+  "action": 20,
+  "action_task": 14,
+  "task": 102
  },
- "tasks_sha1": "8c75123dc0699739606a51627b693aba6889fffa"
+ "tasks_sha1": "9e2a38cabb7bcb40a0e6dd5182fdb33b92fadbb4"
 }

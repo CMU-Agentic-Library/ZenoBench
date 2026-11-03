@@ -42,7 +42,6 @@ CATEGORIES = {
                     "measures": "both a short fallback at the work spot and a longer-horizon change of plan"},
 }
 ORDER = ("control", "action", "task", "action_task")
-META = ("note", "v5", "v6", "since", "decisions", "vary", "move", "difficulty", "injected_removed")
 
 # scene conditions whose fallback is a few skills at the work spot -> what the robot does
 LOCAL_CONDITIONS = {
@@ -57,9 +56,24 @@ LOCAL_CONDITIONS = {
 }
 
 
+# designs the rules above cannot tell apart: (task, variant) -> the variant it is the same design as
+SAME_DESIGN = {
+    # its extra dependency only states that block A stands on the island, i.e. the unstable_base condition
+    ("T02_stack_blocks", "h_action_grasp_and_ik"): "edge_base",
+    ("T02_stack_blocks", "h_mixed_edge_base_grasp"): "edge_base",
+}
+
+
 def injected(f):
     """An injected transient action failure (a retry or re-approach fixes it)."""
     return f["kind"] in ACTION_KINDS and not f.get("persist")
+
+
+def declares_condition(v, f):
+    """An initial resource / destination / capacity failure next to a scene condition only states that condition
+    as checkable facts (the v5 Hards carry both): it is not a challenge of its own."""
+    return bool(v.get("conditions")) and f.get("when", "initial") == "initial" and \
+        f["kind"] in ("resource", "destination", "capacity")
 
 
 def local_failure(f):
@@ -77,7 +91,7 @@ def content(task, lid):
     v = task["variants"][lid]
     local, longer = [], []
     for f in v.get("failures") or []:
-        if injected(f):
+        if injected(f) or declares_condition(v, f):
             continue
         why = local_failure(f)
         if why:
@@ -117,8 +131,29 @@ def project_route(steps, drop):
     return out
 
 
-def _sig(v):
-    return json.dumps({k: x for k, x in v.items() if k not in META}, sort_keys=True)
+OBJECT_ARGS = ("object", "objects", "food", "tool", "lid")
+# calls that only polish or check a route (steady the pot, line things up, show, measure): not the design
+AUXILIARY = ("arrange", "brace", "release", "present", "square", "press", "wait", "lower", "lift", "hover", "crouch",
+             "stand", "nod", "wave", "point", "shake", "regrasp", "center", "measure", "count", "identify", "touch",
+             "rotate")
+
+
+def design_key(task, lid):
+    """What a layout asks of the robot, without where things stand or where it starts (the seed's part) and
+    without how a route words it: its conditions, failures (kind, timing, trigger, event), goal, instruction and
+    the objects the route handles (which object is cleared, which substitute is used)."""
+    v = task["variants"][lid]
+    fails = sorted(json.dumps({k: f.get(k) for k in ("kind", "persist", "until_moved", "when", "trigger", "event")},
+                              sort_keys=True) for f in v.get("failures") or [] if not declares_condition(v, f))
+    handled = set()
+    for s in task["routes"][task["oracle"][lid]]["steps"]:
+        if s.get("expect") == "fail" or s["skill"] in AUXILIARY:
+            continue
+        for k in OBJECT_ARGS:
+            x = s["args"].get(k)
+            handled |= set(x) if isinstance(x, list) else {x} if isinstance(x, str) else set()
+    return json.dumps([sorted(v.get("conditions") or []), fails, v.get("goal"), v.get("instruction"),
+                       sorted(handled)], sort_keys=True)
 
 
 def strip_injected(doc):
@@ -141,7 +176,7 @@ def strip_injected(doc):
                 else:
                     v.pop("failures")
                 v["injected_removed"] = [f["id"] for f in drop]
-        # unchanged variants first, so a stripped one merges into the original design
+        # one design, one variant: unchanged variants first, so a stripped one merges into the original design
         seen = {}
         for vid in sorted(t["v6_variants"], key=lambda x: x in changed):
             info = t["v6_variants"][vid]
@@ -149,9 +184,14 @@ def strip_injected(doc):
             if vid in changed and not any(a or b for a, b in kinds):
                 dropped[vid] = "only injected action failures"
                 continue
-            key = tuple(sorted(_sig(t["variants"][lid]) for lid in info["layouts"]))
+            same = SAME_DESIGN.get((t["task_id"], vid))
+            if same in t["v6_variants"]:
+                dropped[vid] = f"same as {same} (SAME_DESIGN)"
+                continue
+            key = tuple(sorted(design_key(t, lid) for lid in info["layouts"]))
             if key in seen:
-                dropped[vid] = f"same as {seen[key]} without its injected action failures"
+                dropped[vid] = f"same as {seen[key]}" + (" without its injected action failures" if vid in changed
+                                                         else " but for the layout (object poses / start)")
                 continue
             seen[key] = vid
         controls = [vid for vid in t["v6_variants"] if vid not in dropped and

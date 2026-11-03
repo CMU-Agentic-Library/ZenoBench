@@ -1252,6 +1252,11 @@ SPLIT = {("T01_book_to_dining_table", "x6_dr_block_on_book"), ("T02_stack_blocks
          ("T20_juice_back_to_table", "x6_cl_bottle_behind_mug")}
 
 
+# conditions that are no challenge for the variant's own instruction: it names the substitute itself
+NOT_A_CHALLENGE = {("T05_pen_or_pencil_to_desk", "e1_pencil_asked"): ["no_pen"],
+                   ("T05_pen_or_pencil_to_desk", "e2_pencil_asked_far"): ["no_pen"]}
+
+
 def build_task(t: dict) -> dict:
     t = copy.deepcopy(t)
     fams = FAMILIES[t["task_id"]](t) if t["task_id"] in FAMILIES else {}
@@ -1292,6 +1297,13 @@ def build_task(t: dict) -> dict:
         families[fam] = {"origin": "v6", "control": spec["control"], "layouts": names, "factor": spec.get("factor"),
                          "seeds": seed_cases(t["task_id"], fam, names)}
     t["v6_variants"] = families
+    for (tid, vid), conds in NOT_A_CHALLENGE.items():
+        if tid == t["task_id"]:
+            v = t["variants"][vid]
+            v["conditions"] = [c for c in v.get("conditions", []) if c not in conds]
+            if not v["conditions"]:
+                v.pop("conditions")
+            v["conditions_ignored"] = conds
     for k in ("v5_formal", "v5_study", "v5_supplementary"):       # v5's tier lists; v6 lists families instead
         t.pop(k, None)
     t["benchmark_version"] = "v6"
