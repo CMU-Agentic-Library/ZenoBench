@@ -25,27 +25,32 @@ def test_catalog_is_up_to_date():
     assert r.returncode == 0, r.stdout + r.stderr
 
 
-def test_v5_configurations_and_routes_unchanged():
-    """v5 variants keep their configuration, except the injected action failures removed (or the variant dropped)."""
+def test_v5_designs_unchanged():
+    """A v5 variant keeps its design (conditions, goal, instruction, failures other than the injected action ones);
+    where things stand and where the robot starts are the seed's (layout.py)."""
     v5 = {t["task_id"]: t for t in json.loads((ROOT / "benchmark/v5/tasks.json").read_text())["tasks"]}
-    frozen = json.loads((ROOT / "benchmark/v5/FREEZE.json").read_text())["episodes"]
     for tid, t in TASKS.items():
         for vid in [x for ids in v5[tid]["v5_formal"].values() for x in ids]:
             if vid in t["v6_dropped"]:
                 assert vid not in t["variants"]
                 continue
-            if "conditions_ignored" in t["variants"][vid]:
-                continue
-            if "injected_removed" in t["variants"][vid]:
-                old = v5[tid]["variants"][vid]
-                assert sorted(f["id"] for f in old.get("failures", []) if f["id"] not in
-                              t["variants"][vid]["injected_removed"]) == \
-                    sorted(f["id"] for f in t["variants"][vid].get("failures", []))
-                continue
-            assert t["variants"][vid] == v5[tid]["variants"][vid]
-            assert t["routes"][t["oracle"][vid]] == v5[tid]["routes"][v5[tid]["oracle"][vid]]
-            for s in (10, 15, 19):
-                assert episode_config(t, s, vid)["config_hash"] == frozen[f"{tid}/{vid}/{s}"]
+            old, new = v5[tid]["variants"][vid], t["variants"][vid]
+            assert old.get("goal") == new.get("goal") and old.get("instruction") == new.get("instruction"), vid
+            if "conditions_ignored" not in new:
+                assert old.get("conditions") == new.get("conditions"), vid
+            removed = set(new.get("injected_removed", []))
+            assert [f for f in old.get("failures", []) if f["id"] not in removed] == new.get("failures", []), vid
+
+
+def test_seeds_draw_different_layouts():
+    """Ten seeds of a variant put the robot and the movable objects in different places."""
+    from benchmark.scene import episode_config
+    for tid, vid in (("T01_book_to_dining_table", "overhang_ready"), ("T13_breakfast_setup", "dishes_on_tv_stand")):
+        t = TASKS[tid]
+        starts = {tuple(episode_config(t, s, vid)["start"]) for s in SEEDS}
+        poses = {json.dumps(episode_config(t, s, vid)["move"], sort_keys=True) for s in SEEDS}
+        assert len(starts) >= 8 and len(poses) >= 8, (tid, len(starts), len(poses))
+        assert all(episode_config(t, s, vid) == episode_config(t, s, vid) for s in (10, 15))
 
 
 def test_every_family_has_ten_reproducible_seeds():

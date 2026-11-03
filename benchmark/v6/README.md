@@ -10,7 +10,7 @@ puts each variant in one of four categories.
 | variants | 127; each runs seeds 10-19 (1,270 episodes) |
 | categories | control 20 (one per task), Action-Level 28, Task-Level 64, Action + Task 15 (`TRACKS.md`) |
 | static checks | 1,270 / 1,270 episodes |
-| physics | 23 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
+| physics | none yet: every layout is new (seed generator); all STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
 ## Definitions
 
@@ -21,8 +21,14 @@ An episode is **task + variant + seed**.
   in another room, the start room), which goal. Two variants differ in what the planner has to do.
   (`v6_variants[vid]` in `tasks.json`.)
 * **Seed** (10-19, ten per variant) = the layout of that design:
-  - where the objects stand and where the robot starts (a small seeded shift of the task objects on their
-    supports and of the start pose, `vary`), and which removable distractors are left out;
+  - where the objects stand and where the robot starts, drawn by the seed generator (`layout.py`, the variant's
+    `layout` block): every cluster of task objects is moved to a random free place on its own support (stacks
+    and crowded groups move together, an overhang stays, never deeper from the reachable edge than designed,
+    clear of route and event places; objects in closed furniture or on an appliance stay), and the robot starts
+    at a random free, reachable cell of the start room with a random yaw (a hidden item is not in the start
+    view; the first `look` target is not behind a wall). Over the 1,270 episodes a moved object shifts 0.25 m
+    (median, 90th percentile 0.92 m) and the start 3.8 m (90th percentile 8.4 m); which removable distractors
+    are left out is drawn too;
   - for a variant with several **layouts** (48 variants), which one: the same design with the resource,
     substitute or item in another place, or an event taking it elsewhere (e.g. the cup in cabinet 4 or in
     cabinet 6). The seeds are spread over the layouts by a fixed-RNG, balanced manifest
@@ -74,6 +80,7 @@ content). Evaluation metrics are not defined yet.
 ## Commands
 
 ```bash
+python benchmark/v6/layout.py              # start_cells.json (free, reachable start cells per room; ~2 min)
 python benchmark/v6/define_tasks_v6.py     # tasks.json (catalog + tracks); --check: up to date?
 python benchmark/v6/validate_v6.py         # STATIC.json: per-episode static checks, v5 hashes, manifests
 python benchmark/v6/report_v6.py           # variant_cards.json, ROUTES.md, SKILL_FIX_LIST.md, PHYSICS_TODO.md

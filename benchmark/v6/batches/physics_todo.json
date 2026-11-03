@@ -492,6 +492,76 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "clear",
+"route": "nominal",
+"family": "clear"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
 "variant": "crowded",
 "route": "v5fix_crowded",
 "family": "crowded"
@@ -632,6 +702,146 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "edge_base",
+"route": "hard_stack_on_open_block",
+"family": "edge_base"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "h_dynamic_base_moved_to_edge",
+"route": "v5_h_dynamic_base_moved_to_edge",
+"family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
 "variant": "x6_gd_tower_with_event__tv_stand",
 "route": "v6_x6_gd_tower_with_event__tv_stand",
 "family": "x6_gd_tower_with_event"
@@ -698,6 +908,76 @@
 "variant": "x6_gd_tower_with_event__dining",
 "route": "v6_x6_gd_tower_with_event__dining",
 "family": "x6_gd_tower_with_event"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 10,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 11,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 12,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 13,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 14,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 15,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 16,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 17,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 18,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
+},
+{
+"task": "T03_utensils_one_container",
+"seed": 19,
+"variant": "large_only",
+"route": "nominal",
+"family": "large_only"
 },
 {
 "task": "T03_utensils_one_container",
@@ -1542,6 +1822,146 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 10,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 11,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 12,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 13,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 14,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 15,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 16,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 17,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 18,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 19,
+"variant": "e1_pencil_asked",
+"route": "v5_e1_pencil_asked",
+"family": "e1_pencil_asked"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 11,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 12,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 13,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 14,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 15,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 16,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 17,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 18,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 19,
+"variant": "no_pen_pencil_away",
+"route": "v5fix_hard_search_pencil",
+"family": "no_pen_pencil_away"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
 "variant": "h_task_pencil_in_cabinet",
 "route": "v5_h_task_pencil_in_cabinet",
 "family": "h_task_pencil_in_cabinet"
@@ -2032,6 +2452,76 @@
 {
 "task": "T06_block_destination_occupied",
 "seed": 10,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 11,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 12,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 13,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 14,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 15,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 16,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 17,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 18,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 19,
+"variant": "display_hidden",
+"route": "hard_open_display",
+"family": "display_hidden"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 10,
 "variant": "h_dynamic_cabinet_filled",
 "route": "v5_h_dynamic_cabinet_filled",
 "family": "h_dynamic_cabinet_filled"
@@ -2172,6 +2662,146 @@
 {
 "task": "T07_heat_oatmeal",
 "seed": 10,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 11,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 12,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 13,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 14,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 15,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 16,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 17,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 18,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 19,
+"variant": "microwave_works",
+"route": "nominal",
+"family": "microwave_works"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 11,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 12,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 13,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 14,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 15,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 16,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 17,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 18,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 19,
+"variant": "microwave_broken",
+"route": "oracle_stove",
+"family": "microwave_broken"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
 "variant": "broken_oatmeal_away__alt_dining_table_2",
 "route": "v6_broken_oatmeal_away__alt_dining_table_2",
 "family": "broken_oatmeal_away"
@@ -2238,6 +2868,146 @@
 "variant": "broken_oatmeal_away",
 "route": "hard_search_stove",
 "family": "broken_oatmeal_away"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 11,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 12,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 13,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 14,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 15,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 16,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 17,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 18,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 19,
+"variant": "microwave_holds_pot",
+"route": "hard_stove_instead",
+"family": "microwave_holds_pot"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 10,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 11,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 12,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 13,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 14,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 15,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 16,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 17,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 18,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
+},
+{
+"task": "T07_heat_oatmeal",
+"seed": 19,
+"variant": "h_dynamic_door_opened",
+"route": "v5_h_dynamic_door_opened",
+"family": "h_dynamic_door_opened"
 },
 {
 "task": "T07_heat_oatmeal",
@@ -2798,6 +3568,76 @@
 "variant": "x6_pp_sponge_taken_after_wipe__cabinet6",
 "route": "v6_x6_pp_sponge_taken_after_wipe__cabinet6",
 "family": "x6_pp_sponge_taken_after_wipe"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 10,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 11,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 12,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 13,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 14,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 15,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 16,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 17,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 18,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
+},
+{
+"task": "T09_tomato_soup",
+"seed": 19,
+"variant": "lid_off",
+"route": "nominal",
+"family": "lid_off"
 },
 {
 "task": "T09_tomato_soup",
@@ -3852,6 +4692,286 @@
 {
 "task": "T11_collect_fruits",
 "seed": 10,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 11,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 12,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 13,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 14,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 15,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 16,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 17,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 18,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 19,
+"variant": "fruits_on_table",
+"route": "nominal",
+"family": "fruits_on_table"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 11,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 12,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 13,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 14,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 15,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 16,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 17,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 18,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 19,
+"variant": "basket_missing",
+"route": "alternative_tray",
+"family": "basket_missing"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 11,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 12,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 13,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 14,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 15,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 16,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 17,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 18,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 19,
+"variant": "basket_gone_bowl_there",
+"route": "v5x_basket_gone_bowl_there",
+"family": "basket_gone_bowl_there"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 11,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 12,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 13,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 14,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 15,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 16,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 17,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 18,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 19,
+"variant": "h_dynamic_basket_taken",
+"route": "v5_h_dynamic_basket_taken",
+"family": "h_dynamic_basket_taken"
+},
+{
+"task": "T11_collect_fruits",
+"seed": 10,
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
 "family": "x6_gd_fruits_event"
@@ -3918,6 +5038,76 @@
 "variant": "x6_gd_fruits_event",
 "route": "v6_x6_gd_fruits_event",
 "family": "x6_gd_fruits_event"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 10,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 11,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 12,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 13,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 14,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 15,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 16,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 17,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 18,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
+},
+{
+"task": "T12_tidy_toys",
+"seed": 19,
+"variant": "toys_out",
+"route": "v5x_toys_out",
+"family": "toys_out"
 },
 {
 "task": "T12_tidy_toys",
@@ -5322,6 +6512,216 @@
 {
 "task": "T16_rolling_pin_at_edge",
 "seed": 10,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 11,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 12,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 13,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 14,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 15,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 16,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 17,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 18,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 19,
+"variant": "pin_free",
+"route": "nominal",
+"family": "pin_free"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 11,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 12,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 13,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 14,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 15,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 16,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 17,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 18,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 19,
+"variant": "pin_out_of_view",
+"route": "explore_search_pin",
+"family": "pin_out_of_view"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 11,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 12,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 13,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 14,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 15,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 16,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 17,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 18,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 19,
+"variant": "h_task_bowl_behind",
+"route": "v5_h_task_bowl_behind",
+"family": "h_task_bowl_behind"
+},
+{
+"task": "T16_rolling_pin_at_edge",
+"seed": 10,
 "variant": "h_dynamic_bowl_put_behind",
 "route": "v5_h_dynamic_bowl_put_behind",
 "family": "h_dynamic_bowl_put_behind"
@@ -5388,6 +6788,76 @@
 "variant": "h_dynamic_bowl_put_behind",
 "route": "v5_h_dynamic_bowl_put_behind",
 "family": "h_dynamic_bowl_put_behind"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 10,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 11,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 12,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 13,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 14,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 15,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 16,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 17,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 18,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
+},
+{
+"task": "T17_hide_and_seek_block",
+"seed": 19,
+"variant": "lid_off",
+"route": "v5fix_lid_off",
+"family": "lid_off"
 },
 {
 "task": "T17_hide_and_seek_block",
@@ -5882,6 +7352,76 @@
 {
 "task": "T18_check_cabinet_dishes",
 "seed": 10,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 11,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 12,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 13,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 14,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 15,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 16,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 17,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 18,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 19,
+"variant": "at_island",
+"route": "nominal",
+"family": "at_island"
+},
+{
+"task": "T18_check_cabinet_dishes",
+"seed": 10,
 "variant": "m_door_left_open",
 "route": "v5_m_door_left_open",
 "family": "m_door_left_open"
@@ -6298,6 +7838,76 @@
 "variant": "x6_pp_door_reopened",
 "route": "v6_x6_pp_door_reopened",
 "family": "x6_pp_door_reopened"
+},
+{
+"task": "T19_recycling",
+"seed": 10,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 11,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 12,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 13,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 14,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 15,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 16,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 17,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 18,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
+},
+{
+"task": "T19_recycling",
+"seed": 19,
+"variant": "bin_on_bookcase",
+"route": "nominal",
+"family": "bin_on_bookcase"
 },
 {
 "task": "T19_recycling",

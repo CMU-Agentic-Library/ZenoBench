@@ -85,12 +85,11 @@
    "static_ok": 50
   }
  },
- "v5_hashes_checked": 880,
  "categories": {
   "control": 20,
   "action": 28,
   "action_task": 15,
   "task": 64
  },
- "tasks_sha1": "cea6e954ce3e941265b76e62fd89d4f1aa7864ad"
+ "tasks_sha1": "affcb75e10b7420965e852a73bfc3fee38003466"
 }

@@ -1030,8 +1030,16 @@ def build() -> dict:
            "note": "Source: python benchmark/v6/define_tasks_v6.py (reads benchmark/v5/tasks.json); tracks: "
                    "benchmark/v6/tracks.py.",
            "eval_seeds": SEEDS, "condition_registry": reg, "tasks": tasks}
+    from benchmark.v6.layout import layout_spec
     from benchmark.v6.tracks import apply_tracks, strip_injected
     strip_injected(out)
+    for t in out["tasks"]:                       # the seed draws the layout (benchmark/v6/layout.py)
+        for info in t["v6_variants"].values():
+            for lid in info["layouts"]:
+                v = t["variants"][lid]
+                v["move"], _ = seed_vary(t, v)   # task objects still at their base pose join the overlay
+                v.pop("vary", None)
+                v["layout"] = layout_spec(t, lid, reg)
     apply_tracks(out)
     return out
 

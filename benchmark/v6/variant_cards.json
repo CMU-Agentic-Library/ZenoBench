@@ -881,7 +881,10 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -1423,7 +1426,9 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "mug"
+   ],
    "added": [
     "small_storage_bin"
    ],
@@ -1543,7 +1548,9 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "mug"
+   ],
    "added": [
     "small_storage_bin"
    ],
@@ -2099,6 +2106,7 @@
    "start": null,
    "moved": [
     "cup_counter_b",
+    "mug",
     "oatmeal",
     "pot_lid"
    ],
@@ -3650,7 +3658,10 @@
    "moved": [
     "clutter_cereal_a",
     "clutter_cereal_b",
-    "juice_bottle"
+    "juice_bottle",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
    ],
    "added": [
     "clutter_cereal_c"
@@ -3778,7 +3789,10 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "oatmeal"
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
    ],
    "added": [],
    "removed": [],
@@ -5795,6 +5809,7 @@
    "start": null,
    "moved": [
     "bowl_kitchen_cabinet",
+    "handled_cooking_pot",
     "mug_counter",
     "pot_lid"
    ],
@@ -5912,6 +5927,7 @@
    "start": null,
    "moved": [
     "bowl_kitchen_cabinet",
+    "handled_cooking_pot",
     "mug_counter",
     "pot_lid"
    ],
@@ -9512,6 +9528,7 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
+    "bowl",
     "clutter_cereal_a",
     "clutter_cereal_b",
     "plate_counter_a",
@@ -9616,6 +9633,7 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
+    "bowl",
     "clutter_cereal_a",
     "clutter_cereal_b",
     "plate_counter_a",
@@ -9763,6 +9781,7 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
+    "bowl",
     "clutter_cereal_a",
     "clutter_cereal_b",
     "plate_counter_a",
@@ -11730,7 +11749,9 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "pot_lid"
+    "handled_cooking_pot",
+    "pot_lid",
+    "wooden_block_b"
    ],
    "added": [],
    "removed": [],
@@ -11797,7 +11818,9 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "pot_lid"
+    "handled_cooking_pot",
+    "pot_lid",
+    "wooden_block_b"
    ],
    "added": [],
    "removed": [],
@@ -12261,7 +12284,10 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
    "added": [],
    "removed": [],
    "conditions": [
@@ -12335,7 +12361,8 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "bowl_inside_kitchen_cabinet"
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
    ],
    "added": [],
    "removed": [],
@@ -12409,7 +12436,8 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "bowl_inside_kitchen_cabinet"
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
    ],
    "added": [],
    "removed": [],
@@ -12778,7 +12806,8 @@
    "scene": "tasks/recycle_and_store",
    "start": null,
    "moved": [
-    "soda_can"
+    "soda_can",
+    "wide_storage_bin"
    ],
    "added": [],
    "removed": [],
@@ -12827,7 +12856,8 @@
    "scene": "tasks/recycle_and_store",
    "start": null,
    "moved": [
-    "soda_can"
+    "soda_can",
+    "wide_storage_bin"
    ],
    "added": [],
    "removed": [],
@@ -12876,7 +12906,8 @@
    "scene": "tasks/recycle_and_store",
    "start": null,
    "moved": [
-    "soda_can"
+    "soda_can",
+    "wide_storage_bin"
    ],
    "added": [
     "toy_block_in_bin_1",
@@ -12931,7 +12962,8 @@
    "scene": "tasks/recycle_and_store",
    "start": null,
    "moved": [
-    "soda_can"
+    "soda_can",
+    "wide_storage_bin"
    ],
    "added": [
     "toy_block_in_bin_1",
@@ -12986,7 +13018,8 @@
    "scene": "tasks/recycle_and_store",
    "start": null,
    "moved": [
-    "soda_can"
+    "soda_can",
+    "wide_storage_bin"
    ],
    "added": [
     "toy_block_in_bin_1",
@@ -13084,7 +13117,8 @@
    "scene": "tasks/recycle_and_store",
    "start": null,
    "moved": [
-    "soda_can"
+    "soda_can",
+    "wide_storage_bin"
    ],
    "added": [
     "toy_block_in_bin_1",
@@ -14089,6 +14123,7 @@
    "scene": "tasks/shelve_books",
    "start": null,
    "moved": [
+    "book_red",
     "mug_shelf",
     "shelf_blocker"
    ],
@@ -14150,7 +14185,9 @@
   "initial_conditions": {
    "scene": "tasks/shelve_books",
    "start": null,
-   "moved": [],
+   "moved": [
+    "book_red"
+   ],
    "added": [],
    "removed": [],
    "conditions": [

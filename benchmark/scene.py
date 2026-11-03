@@ -78,9 +78,14 @@ def episode_config(task: dict, seed: int, variant: str | None = None, difficulty
         # v5 failure injection (failure_injection/): declared failures of this variant; only present when
         # used, so every earlier configuration and hash stays as it was
         cfg["failures"] = copy.deepcopy(v["failures"])
-    vary = v["vary"] if "vary" in v else scene.get("vary")
-    if vary:
-        apply_vary(cfg, vary, random.Random(f"{task['task_id']}:{variant}:{seed}:vary"))
+    if v.get("layout"):
+        # v6: the seed draws the layout (objects rearranged on their supports, the start in the start room)
+        from benchmark.v6.layout import apply_layout
+        apply_layout(cfg, v["layout"], random.Random(f"{task['task_id']}:{variant}:{seed}:layout"))
+    else:
+        vary = v["vary"] if "vary" in v else scene.get("vary")
+        if vary:
+            apply_vary(cfg, vary, random.Random(f"{task['task_id']}:{variant}:{seed}:vary"))
     cfg["config_hash"] = config_hash(cfg)
     return cfg
 
