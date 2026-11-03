@@ -29,7 +29,7 @@ An episode is **task + variant + seed**.
     view; the first `look` target is not behind a wall). Over the 1,270 episodes a moved object shifts 0.25 m
     (median, 90th percentile 0.92 m) and the start 3.8 m (90th percentile 8.4 m); which removable distractors
     are left out is drawn too;
-  - for a variant with several **layouts** (48 variants), which one: the same design with the resource,
+  - for a variant with several **layouts** (40 variants), which one: the same design with the resource,
     substitute or item in another place, or an event taking it elsewhere (e.g. the cup in cabinet 4 or in
     cabinet 6). The seeds are spread over the layouts by a fixed-RNG, balanced manifest
     (`v6_variants[vid]["seeds"]`); each layout has its own configuration and oracle route (`variants[<layout>]`).
