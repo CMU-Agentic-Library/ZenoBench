@@ -376,6 +376,33 @@ class _Arm:
                 out.append(q)
         return out, True
 
+    def ik_batch(self, P, Rs, q0, collision):
+        """Every IK solution of each TCP pose (P[i], Rs[i]), seeded with and regularised towards
+        q0, in batched calls (PATH_BATCH per call, padded: fixed CUDA graph shape); with
+        ``collision`` the world-aware solver.  (Q (n, N_RETURN, dof), ok (n, N_RETURN)), ok inside
+        the limits."""
+        from curobo.types.math import Pose
+        t = self.torch
+        n_dof = len(self.kin.names)
+        q0 = np.clip(np.asarray(q0, float), self.lo, self.hi)
+        solver = self.mg.ik_solver if collision else self.ik_path
+        Qs, oks = [], []
+        for c in range(0, len(P), PATH_BATCH):
+            Pc, Rc = list(P[c:c + PATH_BATCH]), list(Rs[c:c + PATH_BATCH])
+            k = len(Pc)
+            pos = np.array(Pc + [Pc[-1]] * (PATH_BATCH - k), np.float32)
+            quat = np.array([_quat_wxyz(R) for R in Rc + [Rc[-1]] * (PATH_BATCH - k)], np.float32)
+            seed = t.as_tensor(np.tile(q0.astype(np.float32), (PATH_BATCH, N_SEEDS, 1)), device="cuda")
+            retract = t.as_tensor(np.tile(q0.astype(np.float32), (PATH_BATCH, 1)), device="cuda")
+            r = solver.solve_batch(Pose(t.as_tensor(pos, device="cuda"), t.as_tensor(quat, device="cuda")),
+                                   retract_config=retract, seed_config=seed, return_seeds=N_RETURN)
+            Q = r.solution.view(PATH_BATCH, -1, n_dof).cpu().numpy().astype(float)[:k]
+            ok = r.success.view(PATH_BATCH, -1).cpu().numpy().astype(bool)[:k]
+            ok &= np.all((Q >= self.lo - 1e-4) & (Q <= self.hi + 1e-4), axis=2)
+            Qs.append(Q)
+            oks.append(ok)
+        return np.concatenate(Qs), np.concatenate(oks)
+
     def feasible(self, Q):
         """Per row of Q: inside the limits, no self or world collision."""
         # collision only: a measured posture may sit on a limit the solvers keep clear of
@@ -774,6 +801,35 @@ class Motion:
                               f"{self._explain(arm, qf)}", flush=True)
         STATS["ik_ok"] += int(ok)
         return q, ok
+
+    def ik_set(self, kin, P, Rs, q0, collision, other_q=None, coll_kw=None):
+        """Per TCP pose (P[i], Rs[i]) of a goal set: a solution near q0 (and clear of the joint
+        limits), collision-free with ``collision``, else None -- all of them at once: one batched
+        kinematic IK, one feasibility check of every solution, one batched world-aware IK for the
+        poses whose kinematic solutions all collide."""
+        STATS["ik"] += 1
+        q0 = np.asarray(q0, float)
+        with self._query(kin, other_q, coll_kw, list(P), collision) as arm:
+            Q, ok = arm.ik_batch(P, Rs, q0, False)
+            if collision and ok.any():
+                free = ok.copy()
+                free[ok] = arm.feasible(Q[ok])
+                blocked = [i for i in range(len(P)) if ok[i].any() and not free[i].any()]
+                if blocked:
+                    Qc, okc = arm.ik_batch(np.asarray(P)[blocked], [Rs[i] for i in blocked], q0, True)
+                    Q[blocked], free[blocked] = Qc, okc
+                ok = free
+            out = []
+            for Qi, oki in zip(Q, ok):
+                if not oki.any():
+                    out.append(None)
+                    continue
+                cand = Qi[oki]
+                margin = np.min(np.minimum(cand - arm.lo, arm.hi - cand)[:, 2:], axis=1)
+                score = np.max(np.abs(cand - q0), axis=1) + 10.0 * np.maximum(0.0, LIMIT_CLEAR - margin)
+                out.append(cand[int(np.argmin(score))])
+        STATS["ik_ok"] += sum(q is not None for q in out)
+        return out
 
     @_timed("cart_s")
     def cart_path(self, kin, q0, p_goal, R_goal, step, collision, other_q=None, coll_kw=None):

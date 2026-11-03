@@ -148,11 +148,25 @@ def rank_parks(found):
     return sorted(found, key=total), total
 
 
-def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
-              yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
-              score=None, n_best=None, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None,
-              check=None, carry=False):
-    """Return (x, y, yaw_deg, qs) or None.
+def find_park(kin, world, targets, **kw):
+    """Return (x, y, yaw_deg, qs) or None: _find_park for one target sequence."""
+    found = _find_park(kin, world, [targets], [0.0], **kw)
+    return None if found is None else found[0]
+
+
+def find_park_set(kin, world, target_sets, set_cost, **kw):
+    """A park for any one of the target sequences ``target_sets`` (a goal set: spots, wrist turns):
+    (park, index of the sequence) or None.  Every (park candidate, sequence) pair is one candidate
+    of the same search, its cost raised by ``set_cost[k]`` (m, like a candidate's distance), so
+    the sequences are weighed together rather than tried one after another."""
+    return _find_park(kin, world, target_sets, set_cost, **kw)
+
+
+def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.45, 1.0, 0.05),
+               yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
+               score=None, n_best=None, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None,
+               check=None, carry=False):
+    """Return ((x, y, yaw_deg, qs), k) or None, k the target sequence of target_sets it serves.
 
     Without ``score`` the first PARK_CANDIDATES feasible parks are ranked by park_quality
     (rank_parks) and the best is taken; with ``score`` (a skill's own criterion, lowest wins)
@@ -172,25 +186,27 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
     check:   optional callable(x, y, yaw_deg, qs) -> bool, a further test of the
              joint solutions at this park (the base is set to it).
     """
-    c = np.mean([np.asarray(p, float)[:2] for p, _ in targets], axis=0)
     cands = []
-    for r in radii:
-        for ang in np.radians(np.arange(0, 360, 15)):
-            x, y = c[0] + r * math.cos(ang), c[1] + r * math.sin(ang)
-            face = math.degrees(math.atan2(c[1] - y, c[0] - x))
-            for off in yaw_offsets:
-                # the right arm sits on the robot's -y side: face slightly left
-                cost = r + 0.002 * abs(off + 30)
-                if near is not None:
-                    cost += 0.15 * math.hypot(x - near[0], y - near[1])
-                cands.append((cost, x, y, face + off))
-    cands.sort()
+    for k, targets in enumerate(target_sets):
+        c = np.mean([np.asarray(p, float)[:2] for p, _ in targets], axis=0)
+        for r in radii:
+            for ang in np.radians(np.arange(0, 360, 15)):
+                x, y = c[0] + r * math.cos(ang), c[1] + r * math.sin(ang)
+                face = math.degrees(math.atan2(c[1] - y, c[0] - x))
+                for off in yaw_offsets:
+                    # the right arm sits on the robot's -y side: face slightly left
+                    cost = r + 0.002 * abs(off + 30) + float(set_cost[k])
+                    if near is not None:
+                        cost += 0.15 * math.hypot(x - near[0], y - near[1])
+                    cands.append((cost, x, y, face + off, k))
+    cands.sort(key=lambda t: t[0])
     if near is not None and len(near) == 3:
         # the current base pose first: no need to move if it already works
-        cands.insert(0, (-1.0, float(near[0]), float(near[1]), float(near[2])))
-    P = np.array([np.asarray(p, float) for p, _ in targets])
+        cands[:0] = sorted(((-1.0 + float(set_cost[k]) * 1e-3, float(near[0]), float(near[1]), float(near[2]), k)
+                            for k in range(len(target_sets))), key=lambda t: t[0])
+    Ps = [np.array([np.asarray(p, float) for p, _ in targets]) for targets in target_sets]
 
-    def reachable(x, y, yaw):
+    def reachable(x, y, yaw, P):
         """Cheap prefilter: right shoulder (base + R(0.09, -0.18)) within arm
         reach of every target, heights within the torso-lift range (down to
         the floor: torso fully lowered + waist pitched)."""
@@ -207,15 +223,19 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
     LAST_PARK_DIAG.clear()
     LAST_PARK_DIAG.update(diag)
     pool = []
-    for cost, x, y, yaw in cands:
-        if not reachable(x, y, yaw):
+    per_set = [0] * len(target_sets)       # max_tries is each sequence's own budget (cheapest first overall)
+    for cost, x, y, yaw, k in cands:
+        if per_set[k] >= max_tries:
+            continue
+        if not reachable(x, y, yaw, Ps[k]):
             LAST_PARK_DIAG["out_of_reach"] += 1
             continue
         if not world.footprint_clear(x, y, math.radians(yaw)):
             LAST_PARK_DIAG["footprint"] += 1
             continue
-        pool.append((cost, x, y, yaw))
-        if len(pool) >= max_tries:
+        pool.append((cost, x, y, yaw, k))
+        per_set[k] += 1
+        if min(per_set) >= max_tries:
             break
     body = _whole_body(kin, travel_q) if travel_q is not None else None
     if body is not None:
@@ -223,11 +243,12 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
         # (the footprint was checked above); one batched check for every candidate
         depths, sets, _ = body
         moving = [c for c in pool if c[0] >= 0]
-        d = depths(np.array([[x, y, math.radians(yaw)] for _, x, y, yaw in moving]), sets)[0] if moving else []
-        blocked = {c[1:] for c, dc in zip(moving, d) if dc > 1e-4}
+        d = depths(np.array([[x, y, math.radians(yaw)] for _, x, y, yaw, _ in moving]), sets)[0] if moving else []
+        blocked = {c[1:4] for c, dc in zip(moving, d) if dc > 1e-4}
         LAST_PARK_DIAG["travel_pose"] += len(blocked)
-        pool = [c for c in pool if c[1:] not in blocked]
-    for cost, x, y, yaw in pool:
+        pool = [c for c in pool if c[0] < 0 or c[1:4] not in blocked]
+    for cost, x, y, yaw, k in pool:
+        targets = target_sets[k]
         kin.set_base((x, y, 0.0), math.radians(yaw))
         if body is None and travel_q is not None and cost >= 0:
             kw, kin.coll_kw = kin.coll_kw, {"ignore_fingers": kin.coll_kw.get("ignore_fingers", False)}
@@ -257,26 +278,29 @@ def find_park(kin, world, targets, near=None, radii=np.arange(0.45, 1.0, 0.05),
             continue
         if cost < 0:
             if max_tries <= 1:
-                return x, y, yaw, qs
+                return (x, y, yaw, qs), k
+            if stay:
+                continue                # the current pose already serves a cheaper sequence
             stay = True                 # the current pose works: rank it against n_best others
-            cost = 0.0
+            cost = float(set_cost[k])
         if score is None:
-            found.append((cost, park_quality(kin, qs, targets), (x, y, yaw, qs)))
+            found.append((cost, park_quality(kin, qs, targets), ((x, y, yaw, qs), k)))
         else:
-            found.append((score(x, y, yaw, qs), (x, y, yaw, qs)))
+            found.append((score(x, y, yaw, qs), ((x, y, yaw, qs), k)))
         if len(found) >= n_best + stay:
             break
     if found and score is None:
         ranked, total = rank_parks(found)
-        LAST_PARK_DIAG["ranked"] = [{"park": [round(v, 3) for v in f[2][:3]], "score": round(total(f), 3),
-                                     **{k: round(v, 4) for k, v in f[1].items()}} for f in ranked]
+        LAST_PARK_DIAG["ranked"] = [{"park": [round(v, 3) for v in f[2][0][:3]], "set": f[2][1],
+                                     "score": round(total(f), 3), **{n: round(v, 4) for n, v in f[1].items()}}
+                                    for f in ranked]
         print("find_park: ranked", LAST_PARK_DIAG["ranked"], flush=True)
-        x, y, yaw, qs = ranked[0][2]
+        x, y, yaw, qs = ranked[0][2][0]
         kin.set_base((x, y, 0.0), math.radians(yaw))
         return ranked[0][2]
     if found:
         found.sort(key=lambda t: t[0])          # stable: on a tie the current pose (first found) stays
-        x, y, yaw, qs = found[0][1]
+        x, y, yaw, qs = found[0][1][0]
         kin.set_base((x, y, 0.0), math.radians(yaw))
         return found[0][1]
     print("find_park: no park", {k: v for k, v in LAST_PARK_DIAG.items() if v}, flush=True)

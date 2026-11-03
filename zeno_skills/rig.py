@@ -395,6 +395,34 @@ class Rig:
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
 
+    def move_to_any(self, goals, step=0.01, steps_per_wp=3, label=None, allow=FREE, smooth=False, cost=None):
+        """Move the TCP to the goal of the set ``goals`` [(p, R)] the arm gets to most cheaply: one
+        batched IK of all of them (collision-free solutions near the current posture, the held
+        object in the collision model: Kinematics.ik_set), the reachable goal of least joint
+        travel plus ``cost[i]`` (rad), then move_to it with its solution as the joint goal.  The
+        goals are not tried one after another: the choice is made before the arm moves, and
+        what happens after it is that one motion's (SkillFailure, or ``allow``'s fallback).
+        Returns the chosen index; SkillFailure when no goal has a solution."""
+        if not goals:
+            raise SkillFailure(f"{label}: empty goal set")
+        self.sync_world()
+        cost = np.zeros(len(goals)) if cost is None else np.asarray(cost, float)
+        with self._planning(self.kin, self.q_cmd):
+            qs = self.kin.ik_set(goals, self.q_cmd)
+        score = np.array([np.inf if q is None else float(np.max(np.abs(q - self.q_cmd))) + c
+                          for q, c in zip(qs, cost)])
+        i = int(np.argmin(score))
+        self.log("goal_set", target=label, goals=len(goals), reachable=int(np.isfinite(score).sum()),
+                 chosen=i if np.isfinite(score[i]) else None,
+                 score=[None if not np.isfinite(v) else round(float(v), 3) for v in score],
+                 q_start=np.round(self.q_cmd, 3).tolist(),
+                 q_goal=None if qs[i] is None else np.round(qs[i], 3).tolist())
+        if not np.isfinite(score[i]):
+            raise SkillFailure(f"{label}: no goal of {len(goals)} reachable")
+        p, R = goals[i]
+        self.move_to(p, R, step, steps_per_wp, label, allow, q_hint=qs[i], smooth=smooth)
+        return i
+
     def _start(self, kin):
         return self.q_cmd if kin is self.kin else np.r_[self.q_cmd[:2], self.left_q_cmd]
 
@@ -420,6 +448,7 @@ class Rig:
                     if not allow.fallback:
                         raise
                     why = str(exc)
+                    self.log("plan_failed", target=label, why=why)
         qs = straight()
         with self._planning(kin, start):
             hit = next((kin.explain(q) for q in list(qs[::5]) + list(qs[-1:]) if not kin.free(q)), None)

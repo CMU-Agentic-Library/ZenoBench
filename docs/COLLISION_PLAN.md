@@ -32,7 +32,7 @@
 | `ea47359`、`348d5c8` | 步骤 2 | 第 4 节步骤 2 |
 | main `91276e7`、`8cdd32d`、`b850b79`；`f15cb3d`、`e495350` | 步骤 2 补丁：底盘关节、yaw 目标范围、惰性边检查、下垂姿态按需绕行 | 第 4 节步骤 2 |
 | main `c583120` | 录像只留跟随相机、15 fps（`Rig.step` 每帧 7.4 → 3.9 ms） | 第 3 节 |
-| 步骤 1 补丁（11-02，未提交） | 离开接触段按碰撞模型定长、抓起时被抓物体跟手（`lifting`）；边走边伸手 / 抓 / 放停用 | 第 4 节步骤 1 |
+| 步骤 1 补丁 `9af5c0c` | 离开接触段按碰撞模型定长、抓起时被抓物体跟手（`lifting`）；边走边伸手 / 抓 / 放停用 | 第 4 节步骤 1 |
 
 **已知还没解决的问题：**
 
@@ -234,7 +234,7 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 | 子步 | 内容 | 回归 |
 |---|---|---|
 | **3a 搬运和放置** | 入口加目标集合；`_carry_pose`（`carry_stand_up`、最多 9 个变体、`carry_up` / `carry_in_via`、`_carry_bottom_z`、书本 edge +6 cm），连同经 `stow_load` 调它的 drop / hover / wipe / stir / pour；place 链（含 `place()` 里微波炉分支的死代码，直接删）；drop、hover；`NavigateToPlacePolicy` 的候选列表；wipe 选擦拭带和海绵朝向 | 针对性检查 + 全量 |
-| **3b 拿取、开关和持物动作** | pick（3.5）、open / close（3.6）、`held_vertical_move`、rotate、flip、stir、pour、wave、upright（3.7）；各处手传的 `step`、`steps_per_wp`、`smooth`（步骤 1 留下的）；push 改成推到够不着为止 | 针对性检查 |
+| **3b 拿取、开关和持物动作** | pick（3.5，含"选抓取姿态时连上搬运姿态"，见 3a 实施记录）、open / close（3.6）、`held_vertical_move`、rotate、flip、stir、pour、wave、upright（3.7）；各处手传的 `step`、`steps_per_wp`、`smooth`（步骤 1 留下的）；push 改成推到够不着为止 | 针对性检查 |
 | **3c 场景特例和其余** | 微波炉（3.8）、`place_flat` / 书架（3.3，T14 书下垂）、S 类写死的常数（清单第 6 节）、`clear_microwave_door_sweep`；双手、sticky、contact、perceive 等（3.9） | 针对性检查 + 全量（即步骤 3 完成） |
 
 `planner._chain` 的"park 搜索只认直线"（步骤 1 留下的）在手写 park 删掉时一起看，归它所在的子步。
@@ -244,6 +244,37 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 现在的入口一次只规划到一个目标（`Motion.plan` 用 `plan_single_js`，`Motion.plan_to` 用 `plan_single`）。F 类里的候选列表要变成"一次规划到集合里任一个可行的目标"，入口要支持目标集合：`move_to` 接受一组位姿（或 `joint_path` 接受一组关节目标），一次调用里选出能到的那个，返回选中的是哪一个。实现上首选 cuRobo 的 `plan_goalset`（`MotionGen.warmup` 要传 `n_goalset`，集合大小因此是固定上限）；如果它不合适，另一种实现是"整组批量 IK、按可行性和代价选一个、再规划到它"。两种都必须是一次调用里同时评估，不能逐个试。
 
 **完成标准（3a）：** 搬运、放置、drop、hover、wipe 选带里的 W、F 类条目清零；全量回归的倒退都能归类。
+
+#### 3a 实施记录（2026-11-03，进行中）
+
+**入口的目标集合（`Rig.move_to_any`）。** 没用 `plan_goalset`：它的集合大小要在 warmup 时固定，换目标类型会重录 CUDA graph；入口的约束（持物保持倾角、直线接近收尾）是按单个目标算的，套不进去。做法是第二种：
+1. `Motion.ik_set` 一次算完整组目标：批量运动学 IK（`_Arm.ik_batch`，按 `PATH_BATCH` 补齐，CUDA graph 形状固定）→ 一次检查全部解的碰撞（手里的物体在 `scope` 里）→ 解都碰的目标再做一次批量的带碰撞 IK。每个目标取离当前姿态最近、离关节限位够远的解。
+2. 按"最大关节移动量 + 调用方给的代价"选一个，只对它调 `move_to`（以它的 IK 解作关节目标）。选定之后的失败就是这一次运动的失败，不换下一个目标。
+3. 日志 `goal_set` 记每个目标的得分、起点和选中的关节解；`plan_failed` 记规划失败的原因（以前只剩退路的报错）。
+
+**`_carry_pose`。** 4 个搬运位置（机身系 (0.35, −0.10) 首选，其余按离它的距离加代价 `CARRY_SPOT_COST`）× 3 个高度（最低允许、当前、再高 `CARRY_RISE`）× 8 个绕竖直轴的手部朝向（`CARRY_YAWS`：竖着的物体朝哪边无所谓）= 96 个目标，一次 `move_to_any`。删掉：`carry_stand_up`、先竖直抬（`carry_up`）、`(FREE, LEGACY, +3cm LEGACY)`、9 个变体逐个试、`carry_in_via`、`carry_in_failed` 后继续。沿书边抓的书 +6 cm 暂时保留（书下垂，3c）。
+- **一个都到不了时，手臂留在原处开车**（`carry_pose_kept`，2026-11-03 定）：运动在规划阶段就失败、手臂还没动，开车时底盘规划器本来就做整机检查（手臂和手里的物体都算），伸着的手臂能不能过由它判断。这是搬运姿态的语义（"能收就收"），不是 skill 里的退路；留下的情况要在 3b 消掉，见下一条。
+- **根本原因在 pick**（T10 s10）：罐子在岛台上从上往下抓起后肩关节 j1 = 2.24 rad，从这个姿态到任何一个搬运目标都要翻到另一个 IK 分支（最小关节移动 2.05 rad，手部朝向放开之前是 2.30 rad），翻的过程中罐子保持不了竖直，规划失败。11-02 旧代码在同一处也失败（`carry_in_failed`），全量里共 12 次、6 个 episode。**3b 的目标：** pick 选停车点和抓取 IK 分支时，要保证能连到搬运姿态（相邻的中继位姿一起选）。
+- 检查：`benchmark/batches/carry_goal_set.json`（8 个，种子 10：P18 地上捡起、T10、T09 沿口抓、T11、T03、T04、P08、T14 沿书边抓）。
+  - 第一版（固定朝向、到不了就失败）5/8，`benchmark/runs/carry_goal_set/`：T10 如上；T14 删了书本 +6 cm，书下垂后底部低于要求、放的时候在夹爪里转了（已恢复）；T04 见下。
+  - 现在的版本 7/8，`benchmark/runs/carry_goal_set_b/`：T10 走 `carry_pose_kept`，手臂留在原处开车，成功。
+  - T04 cup_available 两次都失败：放置时 `place_above` 之后杯子在手里翻了（135–146°，`place_level_dropped`），几次 `place_retry` 都在同一个放置点附近、"hand blocked above support"。在不含 3a 改动的 `9af5c0c` 上同样翻了两次，第三次重试换了放置点才成功（`/data/zenobench/leave_contact_exit/t04_base/`）。归到放置链（3a 下一项）：翻转是放置链本来的问题，搬运改动只改变了重试走向哪个放置点。
+
+**放置链（`place`、`place_on`）。** 中继位姿只留三个：放置点上方（层板是开口外侧）、放下（接触段）、松手后离开（接触段，层板向外、其余向上）。
+- **目标集合在停车点搜索这一层**（`planner.find_park_set`）：空位（`free_spots` 的前 `tries` 个）× 物体姿态（摆正 / 按手里的倾斜，2026-11-03 定两种都允许，摆正优先）× 手腕绕竖直轴 8 个朝向，每组是一串目标位姿。每个"候选停车点 × 一组目标"是同一次搜索里的一个候选，代价加上这组的代价（`PLACE_SPOT_COST`、`PLACE_YAW_COST`、`PLACE_TILTED_COST`），一起排序、一起按 `park_quality` 比较，选出停车点和那一组。`max_tries` 是每组各自的名额（共享名额时离目标最近的一圈占满了名额，T20 一个停车点都没找到）。`find_park` 是单组的特例。
+- **删掉：** `place_on` 依次试 4 个空位（`place_retry`）、手腕 8 个朝向逐个找停车点、越过最高邻物的中间点（`place_over_neighbours`、`_tallest_near`、三档抬高）、找不到停车点就去掉越障点重来、重测失败改用旧目标、餐桌预抬（`table_pre_lift`）、贴边后退再升、层板预摆姿态（`place_preshape`）、深桶预抬（`container_pre_lift`）和放完回桶外（`container_exit`）、微波炉死代码、松手后的多方向退出。`place_lower_to_contact` 失败不再吞掉。
+- **保留：** 到达后重测物体在手里的姿态、重算目标（反馈）；`slots_blocked` 作为目标集合的筛选（手指不查碰撞，步骤 5 再删）；松手后退出失败只记 `retreat_short`（物体已经放好，手臂留给下一个 skill）。
+- 11-02 全量里这些分支的触发次数（139 次放置）：重试 16、按倾斜放 8、越障抬高 51、去掉越障点 33、朝向非 0° 22、`container_exit` 39；餐桌预抬、层板预摆、深桶预抬、贴边后退、重测回退都是 0。
+- `slots_blocked` 不把放置面所属的物体（`rim:<锅>` 的锅、`top:<方块>` 的方块）算成邻物：以前盖锅盖时 8 个朝向全被锅本身挡掉，旧代码是靠"去掉越障点重来"那条退路里不做这个筛选才成功的（T17）。容器里的东西（锅里的方块）仍会挡掉一些朝向，可以再收紧。
+- 门后层板放置（`shelf_front`）在 benchmark 里没有任务用到，没测到。
+- 检查：`benchmark/batches/place_goal_set.json`（9 个，种子 10：T04、T06、T11、T02 叠方块、T20 餐桌、T03 容器、T19 深桶、T09 灶台、T17 盖锅盖），`benchmark/runs/place_goal_set_b/`，最终 8/9：
+  - T04 一次放好（选了另一个停车位、手腕转 90°、先摆正），之前的翻杯和重试没有了。
+  - T20 第一版失败：共享停车点名额（见上），改成每组各自的名额后成功。
+  - T17 第一版失败：盖锅盖 0 个候选（见上），修后成功（`/data/zenobench/leave_contact_exit/t17_own/`）。
+  - T09 lid_off 失败在搅拌：放番茄时选的停车位不同，之后拿勺子的搬运姿态也不同，`stir` 自己找停车位时 39–52 个候选因"搬运姿态停在那里会碰"被拒，缩小半径重试也不行。归 3b（stir 的停车点搜索和缩半径退路）。之前搬运那批里同一个 episode 成功过两次。
+  - 松手后往上 6 cm 的退出点有时没有 IK（T06），记 `retreat_short`，物体已放好，不影响结果。
+
+**待定：** T10 的标准路线（`define_tasks.py` nominal）在开车前 `lift(soda_can, 0.95)`，是为高度和避障写的，按新规范由搬运姿态和底盘规划器负责；`search_first` 路线没有这一步也成功。改 benchmark 路线要先问。
 
 ### 步骤 4：接触动作
 
@@ -292,7 +323,7 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 
 | 问题 | 什么时候定 |
 |---|---|
-| 步骤 2 补丁之后、3a 之前要不要先跑一次全量。不跑的话，补丁和 3a 的倒退混在同一次全量里，新的 `disturbed`、`contacts` 基线里也含 3a 的改动 | 3a 动手前 |
+| ~~步骤 2 补丁之后、3a 之前要不要先跑一次全量~~ | 不跑（2026-11-02）：3a 之后的全量同时含补丁、`9af5c0c` 和 3a 的改动，倒退归类时要先排除前两者 |
 | 降低任务参数改成任务范围后，每个任务的下限（pour 最少倾斜多少、stir 最小半径） | 3b 改到它们时 |
 | 删掉换策略后 `auto_recovery` 只剩 expose，这个开关留不留 | 3b 结束时 |
 | `Allow` 的五个预设是否覆盖所有 skill | 步骤 4 迁移时 |

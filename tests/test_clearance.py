@@ -166,7 +166,7 @@ def test_free_else_straight_falls_back_to_the_straight_move_and_says_why():
     assert s["fallback"] == 1 and s["fallback_by_leg"] == {"place_above": 1}
     rec = s["fallbacks"][0]
     assert rec["skill"] == "place" and "no collision-free" in rec["why"] and rec["hit"] == "world right_arm_link_6 at 0.8"
-    assert logged[0][0] == "clearance_fallback"
+    assert [ev for ev, _ in logged] == ["plan_failed", "clearance_fallback"]
 
 
 def test_free_else_straight_does_not_plan_from_a_colliding_start():

@@ -1,0 +1,83 @@
+[
+ {
+  "task": "T04_cup_or_mug_to_cabinet",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "cup_available",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "free",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "fruits_on_table",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "clear",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T20_juice_back_to_table",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bottle_on_cabinet",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "small_and_large",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bin_on_bookcase",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "lid_off",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "hard_search_uncover",
+  "variant": "far_lid_on",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]

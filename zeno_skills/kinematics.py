@@ -224,6 +224,14 @@ class ArmKin:
         return self._motion().ik(self, np.asarray(p_t, float), R_t, [np.asarray(q0, float)], False,
                                  self._other_q(), self.coll_kw, local=True)
 
+    def ik_set(self, goals, q0):
+        """Per goal (p, R) of a goal set: an IK solution near q0, collision-free when there is a
+        scene, else None (Motion.ik_set: every goal in one batched call)."""
+        P = np.array([np.asarray(p, float) for p, _ in goals])
+        Rs = [np.asarray(R, float) for _, R in goals]
+        return self._motion().ik_set(self, P, Rs, np.asarray(q0, float), self.scene is not None,
+                                     self._other_q(), self.coll_kw)
+
     def free(self, q):
         if self.scene is None:
             return True

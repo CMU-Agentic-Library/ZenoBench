@@ -53,6 +53,8 @@ R 类不列。下面只列要动的。
 
 ### 3.1 `_carry_pose`（skills.py）
 
+**状态（2026-11-03，3a）：** 下表除 `_carry_bottom_z`（policies/plan_helpers.py）和书本 edge +6 cm（留到 3c）外都已删掉，`_carry_pose` 改成一个目标集合（`COLLISION_PLAN.md` 3a 实施记录）。行号是改动前的。
+
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|
 | skills.py:56-68 | `_carry_pose` | `carry_stand_up` 失败吞掉，继续 | F | 仍在 |
@@ -65,6 +67,8 @@ R 类不列。下面只列要动的。
 | policies/plan_helpers.py:43-82（台面物体部分 66-81） | `_carry_bottom_z` | 搬运高度抬到台面上已有物体之上，用来避免持物扫倒东西 | W | 仍在（调用处：plan_helpers.py:40，skills.py:1961-1964） |
 
 ### 3.2 place 链（skills.py）
+
+**状态（2026-11-03，3a）：** 下表除 `slots_blocked`（改成目标集合的筛选，步骤 5 删）和 `place_lower_to_contact`（保留下放，失败不再吞掉）外都已删掉；空位、朝向、放平 / 倾斜改成停车点搜索里的一个目标集合（`find_park_set`）。行号是改动前的。
 
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|

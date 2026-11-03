@@ -192,3 +192,33 @@ def test_a_lift_carries_the_object_it_closed_on_until_the_lift_ends():
     assert [s and s["name"] for s in synced] == ["book_red", None]   # the world re-synced both ways
     with Rig._lifting(rig, SimpleNamespace(side="right"), LEAVE_CONTACT):
         assert load(rig, "right") is None                              # a plain exit carries nothing new
+
+
+def _goal_rig(solutions):
+    from contextlib import nullcontext
+    kin = SimpleNamespace(ik_set=lambda goals, q0: list(solutions))
+    rig = SimpleNamespace(kin=kin, q_cmd=np.zeros(9), logged=[], moved=[])
+    rig.log = lambda ev, **kw: rig.logged.append((ev, kw))
+    rig.sync_world = lambda: None
+    rig._planning = lambda kin, q: nullcontext()
+    rig.move_to = lambda p, R, step, spw, label, allow, q_hint=None, smooth=False: rig.moved.append((p, q_hint))
+    return rig
+
+
+def test_a_goal_set_moves_once_to_the_cheapest_reachable_goal():
+    goals = [(np.full(3, float(i)), np.eye(3)) for i in range(4)]
+    rig = _goal_rig([None, np.full(9, 0.6), np.full(9, 0.2), np.full(9, 0.3)])
+    assert Rig.move_to_any(rig, goals, label="carry_in") == 2                 # least joint travel
+    assert len(rig.moved) == 1 and np.allclose(rig.moved[0][0], 2.0) and np.allclose(rig.moved[0][1], 0.2)
+    rig = _goal_rig([None, np.full(9, 0.6), np.full(9, 0.2), np.full(9, 0.3)])
+    assert Rig.move_to_any(rig, goals, label="carry_in", cost=[0, 0, 0.5, 0]) == 3   # the caller's cost counts
+    ev, kw = rig.logged[-1]
+    assert ev == "goal_set" and (kw["goals"], kw["reachable"], kw["chosen"]) == (4, 3, 3)
+    assert kw["score"][0] is None and np.allclose(kw["q_goal"], 0.3)
+
+
+def test_a_goal_set_with_no_reachable_goal_fails_without_moving():
+    rig = _goal_rig([None, None])
+    with pytest.raises(SkillFailure, match="no goal of 2 reachable"):
+        Rig.move_to_any(rig, [(np.zeros(3), np.eye(3))] * 2, label="carry_in")
+    assert rig.moved == []
