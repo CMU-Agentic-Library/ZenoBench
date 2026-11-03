@@ -230,7 +230,18 @@ def base_reachable(rig, poses):
               max(0, *[c[0] for c in cells]) + pad, max(0, *[c[1] for c in cells]) + pad)
     rig.sync_world()
     D, i0, j0 = bp.distance_field(rig.world.circles_clear, (x, y), (0, 0, 0), bounds, (0, 0, 0))
-    return [bool(np.isfinite(D[c[0] - i0, c[1] - j0])) for c in cells]
+    return reached_cells(D, i0, j0, cells)
+
+
+def reached_cells(D, i0, j0, cells):
+    """Per lattice cell: the field D reaches it or one of its 8 neighbours -- a goal cell counts as
+    passable, as base_planner.plan has it (the goal pose is checked on its own; a park beside
+    furniture may sit in a cell the inscribed circle does not clear)."""
+    out = []
+    for i, j in cells:
+        win = D[max(0, i - i0 - 1):i - i0 + 2, max(0, j - j0 - 1):j - j0 + 2]
+        out.append(bool(np.isfinite(win).any()))
+    return out
 
 
 def travel_postures(rig, rest, end):

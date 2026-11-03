@@ -49,7 +49,7 @@
 | 搬运姿态仍是手写路点（`_carry_pose`） | 5 个搬运姿态变体、`carry_in_via` | 3a |
 | wipe 只在机器人附近选擦拭带，依赖到达时站在哪一侧 | 11-02 全量里 T08 ×3 | 3a |
 | 书在夹爪里下垂 65–74°，带进碰撞模型后 `flat_pre` 压进书架 | T14 | 3c（`place_flat` / 书架） |
-| 11-02（`ea47359`）之后新出的两个确定性失败，`a323805` 上就有：P06 s10 `handover_present_across` 规划成功、左手却没有 IK（11-02 是规划失败退直线、碰巧接住）；T07 microwave_works s10 `microwave_button_pre` 换了 IK 分支，按键直线没有 IK（11-02 按键就差 2.4 cm） | 连跑 3 次结果相同，不是随机性 | 下一次全量时看是哪一个提交引入的（步骤 2 补丁或合并进来的 main） |
+| 11-02（`ea47359`）之后新出的两个确定性失败，`a323805` 上就有（3a 全量里 T07 仍失败，P06 这次成功）：P06 s10 `handover_present_across` 规划成功、左手却没有 IK（11-02 是规划失败退直线、碰巧接住）；T07 microwave_works s10 `microwave_button_pre` 换了 IK 分支，按键直线没有 IK（11-02 按键就差 2.4 cm） | 连跑 3 次结果相同，不是随机性 | 下一次全量时看是哪一个提交引入的（步骤 2 补丁或合并进来的 main） |
 | 11-02 全量的 6 个新失败没细查 | T13 no_cup ×2、no_cup_bowl_on_cabinet ×2、T14 shelf_taken s11、T02 far_crowded s11 | 下一次全量后归类 |
 
 ## 3. 回归方法
@@ -291,6 +291,33 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
   - T12 toys_everywhere（托盘在书架上）：规划器能力不够。手指进了碰撞模型后，规划器找不到把手送到托盘上方的路（`place_above` 对容器是 `FREE`，没有退路）。旧代码靠"先抬过最高邻物再竖直下降"。**下一步：** 给 `plan_to` 加"最后一段竖直下降到目标"的约束（和现在按直线接近收尾的 `approach_metric` 同一类），不加回路点。
   - T08 far_sponge_tv：pick 的 `pick_pre_far` 是一次直线关节插值，手腕转 2 rad，不查手指，手指扫进墙、手臂被卡住。停车位因为前面的步骤和 11-02 不同而不同。归 3b（pick）/ 步骤 5（`ignore_fingers`）。
   - T08 island_cluttered：易拉罐在擦拭行程里被碰倒（步骤 4，补丁时就记过），时好时坏。
+
+**3a 全量回归**（`0909b03`，`benchmark/runs/v3_sticky_gt_1103_3seeds/`，逐个对比在 `COMPARE.md`）。按三个种子启动，种子 10、11 跑完后停掉（2026-11-03 定：种子 12 不跑），所以和 11-02 是同样的 170 个：
+
+| | 11-02（`ea47359`） | 11-03（`0909b03`） |
+|---|---|---|
+| 成功 | 117/170 | 139/170（新成功 32，新失败 10） |
+| `contacts`（unexpected） | 1040 | 605 |
+| `disturbed` | 175 | 163 |
+| `fallbacks` | 5 | 6（`drop_above` 2、`handover_present_across` 2、`carry_in` 1、`place_retreat_up` 1） |
+| 规划出来的运动段（`planned`） | 324 | 1089 |
+| 合计耗时 | 16.7 h | 14.1 h |
+
+两轮之间还隔着步骤 2 补丁、`9af5c0c` 和单相机录像。新成功集中在 T01 ×4、T17 ×5、T13 ×4、T09 ×3、T14 ×3、T08 ×3、P05 ×2、P15 ×2、T02 ×2。
+
+10 个新失败的归类：
+
+| episode | 原因 | 归类 |
+|---|---|---|
+| T12 toys_everywhere ×2 | 托盘在书架上，手指进碰撞模型后 `place_above` 规划不出来 | 规划器能力不够：补竖直下降接近的约束 |
+| T08 far_sponge_tv s11 | `pick_pre_far` 直线关节插值不查手指，扫进墙 | 3b（pick）/ 步骤 5 |
+| T08 island_cluttered s11 | 易拉罐在擦拭行程里被碰倒 | 步骤 4（wipe 底盘推），时好时坏 |
+| T07 microwave_works s10 | 按键直线没有 IK | `a323805` 上就有（见第 2 节） |
+| T18 at_island ×2 | 开柜门的停车位和 11-02 不同（11-02 前一步导航停在 (3.125, 1.043)，这次 (3.26, 1.05)），门只开到 −1.18（目标 −1.40） | 3b（open）；导航为什么停得不同没查清 |
+| T15 book_out_of_view ×2 | 翻书走了"推到边再翻"（`edge_roll`），推的停车位找不到；11-02 走的是沿弧推（`flip_arc`） | 3b（flip / push）；路径为什么选得不同没查清 |
+| T09 cookware_choice s11 | 夹勺子没夹住（手指合拢到 0），勺子之前没被碰动 | 3b（pick） |
+
+**全量之后的修正：** `skills.base_reachable` 判断站位能否开到时，没像底盘规划器那样把终点格子算作可通行，站位紧贴家具时会被误判为开不到（全量里 124 次站位选择有 4 次少了候选）。改成终点格子或它的 8 个邻格能到就算（`reached_cells`），没有重跑全量。
 
 **待定：** T10 的标准路线（`define_tasks.py` nominal）在开车前 `lift(soda_can, 0.95)`，是为高度和避障写的，按新规范由搬运姿态和底盘规划器负责；`search_first` 路线没有这一步也成功。改 benchmark 路线要先问。
 

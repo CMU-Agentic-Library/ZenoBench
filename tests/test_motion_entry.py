@@ -222,3 +222,10 @@ def test_a_goal_set_with_no_reachable_goal_fails_without_moving():
     with pytest.raises(SkillFailure, match="no goal of 2 reachable"):
         Rig.move_to_any(rig, [(np.zeros(3), np.eye(3))] * 2, label="carry_in")
     assert rig.moved == []
+
+
+def test_a_stand_off_cell_counts_as_reached_through_a_neighbour():
+    from zeno_skills.skills import reached_cells
+    D = np.full((5, 5), np.inf)
+    D[0, 0] = D[1, 1] = 0.0                     # reachable up to (1, 1); (2, 2) itself blocked
+    assert reached_cells(D, -2, -2, [(-1, -1), (0, 0), (2, 2)]) == [True, True, False]
