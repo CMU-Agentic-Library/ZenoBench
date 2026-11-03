@@ -57,40 +57,40 @@ R 类不列。下面只列要动的。
 
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|
-| skills.py:56-68 | `_carry_pose` | `carry_stand_up` 失败吞掉，继续 | F | 仍在 |
-| skills.py:76-81 | `_carry_pose` | `for allow in (FREE, LEGACY, +3cm LEGACY)`：带检查不行就关检查，再不行只抬 3 cm 也不查 | F | 仍在（`LEGACY` 现在就是不查碰撞的直线） |
-| skills.py:75-78 | `_carry_pose` | `carry_up`：先竖直抬到高度再横移 | W | 仍在 |
-| skills.py:87-111 | `_carry_pose` / `bring_in` | 搬运姿态的变体（xy、z 组合），IK 或执行失败就换下一个 | F | 仍在（最多 9 个：2–3 个基础变体，加 2 档高度 × 3 个 xy） |
-| skills.py:114-125 | `_carry_pose` | `carry_in_via`：tcp+8 cm、半路点、半路点+8 cm | W | 仍在 |
-| skills.py:126 | `_carry_pose` | 收不回来只记 `carry_in_failed`，手伸在外面开车 | F | 仍在 |
-| skills.py:72-73 | `_carry_pose` | edge 抓法搬运时 `min_bottom_z` +6 cm（书下垂；清单第 6 节） | S | 仍在 |
-| policies/plan_helpers.py:43-82（台面物体部分 66-81） | `_carry_bottom_z` | 搬运高度抬到台面上已有物体之上，用来避免持物扫倒东西 | W | 仍在（调用处：plan_helpers.py:40，skills.py:1961-1964） |
+| skills.py:56-68 | `_carry_pose` | `carry_stand_up` 失败吞掉，继续 | F | 已删（3a） |
+| skills.py:76-81 | `_carry_pose` | `for allow in (FREE, LEGACY, +3cm LEGACY)`：带检查不行就关检查，再不行只抬 3 cm 也不查 | F | 已删（3a） |
+| skills.py:75-78 | `_carry_pose` | `carry_up`：先竖直抬到高度再横移 | W | 已删（3a） |
+| skills.py:87-111 | `_carry_pose` / `bring_in` | 搬运姿态的变体（xy、z 组合），IK 或执行失败就换下一个 | F | 已改（3a）：4 位置 × 3 高度 × 8 手腕朝向的目标集合（`move_to_any`） |
+| skills.py:114-125 | `_carry_pose` | `carry_in_via`：tcp+8 cm、半路点、半路点+8 cm | W | 已删（3a） |
+| skills.py:126 | `_carry_pose` | 收不回来只记 `carry_in_failed`，手伸在外面开车 | F | 已改（3a）：到不了时手臂不动开车（`carry_pose_kept`），底盘整机检查判断；根因在 pick，3b |
+| skills.py:72-73 | `_carry_pose` | edge 抓法搬运时 `min_bottom_z` +6 cm（书下垂；清单第 6 节） | S | 仍在：3a 删后 T14 失败又恢复，挪到 3c |
+| policies/plan_helpers.py:43-82（台面物体部分 66-81） | `_carry_bottom_z` | 搬运高度抬到台面上已有物体之上，用来避免持物扫倒东西 | W | 仍在：3a 漏做，挪到 3b 第一项 |
 
 ### 3.2 place 链（skills.py）
 
-**状态（2026-11-03，3a）：** 下表除 `slots_blocked`（改成目标集合的筛选，步骤 5 删）和 `place_lower_to_contact`（保留下放，失败不再吞掉）外都已删掉；空位、朝向、放平 / 倾斜改成停车点搜索里的一个目标集合（`find_park_set`）。行号是改动前的。
+**状态（2026-11-03，3a）：** 逐行见状态列。变体列表和越障中间点都已删掉，空位、朝向、放平 / 倾斜改成停车点搜索里的一个目标集合（`find_park_set`）。还在的：`slots_blocked`（目标集合的筛选，手指进碰撞模型后删）、上方 6 cm 的预备点和不查碰撞的 5 cm 下放、退到上方 6 cm 的终点和 `retreat_short` 吞异常（都在 3b 第一项）。行号是改动前的。
 
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|
-| skills.py:1821-1837；循环在 1896、1941-1946 | `place` | 先试"放平"关系，够不到回退到实测倾斜关系 | F | 仍在 |
-| skills.py:1880-1894（定义），1902-1905（使用） | `place` / `slots_blocked` | `slots_blocked`：手写指缝和邻物的碰撞过滤 | F | 仍在 |
-| skills.py:1898（1931 也有一份） | `place` | 手腕朝向 8 个变体 | F | 仍在 |
-| skills.py:1875-1876（`clear_z0`），1906-1910（park 搜索的腿），2074-2077（执行） | `place` | 越过最高邻物 +3 cm 的点（`place_over_neighbours`） | W | 仍在（分在三处） |
-| skills.py:1927-1940 | `place` | 没 park 就去掉越障点、8 个 yaw 重来（`place_clearance_dropped`） | F | 仍在 |
-| skills.py:1945-1946 | `place` | `place_level_dropped` | F | 仍在 |
-| skills.py:1952-1953 | `place` | 重测后丢掉越障腿重算 | W | 仍在 |
+| skills.py:1821-1837；循环在 1896、1941-1946 | `place` | 先试"放平"关系，够不到回退到实测倾斜关系 | F | 已改（3a）：两种都进停车点目标集合，放平优先 |
+| skills.py:1880-1894（定义），1902-1905（使用） | `place` / `slots_blocked` | `slots_blocked`：手写指缝和邻物的碰撞过滤 | F | 已改（3a）：改成目标集合的筛选，不算放置面所属的物体；手指进碰撞模型后删（步骤 5 / 3b 第一项） |
+| skills.py:1898（1931 也有一份） | `place` | 手腕朝向 8 个变体 | F | 已改（3a）：停车点目标集合（`find_park_set`） |
+| skills.py:1875-1876（`clear_z0`），1906-1910（park 搜索的腿），2074-2077（执行） | `place` | 越过最高邻物 +3 cm 的点（`place_over_neighbours`） | W | 已删（3a） |
+| skills.py:1927-1940 | `place` | 没 park 就去掉越障点、8 个 yaw 重来（`place_clearance_dropped`） | F | 已删（3a） |
+| skills.py:1945-1946 | `place` | `place_level_dropped` | F | 已删（3a） |
+| skills.py:1952-1953 | `place` | 重测后丢掉越障腿重算 | W | 已删（3a） |
 | skills.py:1966-1982 | `place` | 餐桌整段：退 0.40 m → `table_staging` → `table_pre_lift` → 开回 | B/W | 已改：步骤 2 换成一次 `relocate`，到达姿态是 `table_pre_lift`（IK 抬高 dz）；后撤、`table_staging`、开回都删了。`table_pre_lift` 这个手写抬高姿态还在 |
-| skills.py:2003-2011 | `place` | 越障点高度按 `k in (1.0, 0.7, 0.4)` 试 IK | W/F | 仍在 |
-| skills.py:2024-2041 | `place` | `container_pre_lift`，记下 `container_exit_pose` | W | 仍在 |
-| skills.py:2043-2067 | `place` | 贴边时选净空最大的一侧退出（`place_back_from_edge`），距离 `(need, 0.04)` + try/except | W/F | 仍在 |
-| skills.py:2068-2073 | `place` | `place_rise`：先竖直抬再平移 | W | 仍在 |
-| skills.py:2088-2100 | `place` | 层板：直线不通就换"倒车 → 预整形 → 开回"，再失败重新导航 | F/B | 已改：改成 `relocate` 带到达姿态 `place_preshape`；失败只记 `place_preshape_short`，不再重新导航 |
-| skills.py:2109-2120 | `place` | `place_remeasure_fallback`：失败改用重测前的目标 | F | 仍在 |
-| skills.py:2148-2154 | `place` | `place_lower_to_contact`：`held_vertical_move` 下放，失败只记日志 | F | 仍在（原表没有） |
-| skills.py:2173-2192（列表 2176-2178） | `place` | 松手后退出方向的变体（`retreat_back`、`retreat_base`） | F | 已改：每一段改成 `LEAVE_CONTACT`，变体列表还在 |
-| skills.py:2179-2183，2191-2192 | `place` | 层板退出 22 cm → 14 cm，全失败只记日志 | F | 已改：同上，全失败仍只记 `retreat_short` |
-| skills.py:2193-2202 | `place` | `container_exit`：回到桶外 staging 点 | W | 仍在 |
-| skills.py:2297-2317 | `place_on` | 放置点重试 4 次 | F | 仍在 |
+| skills.py:2003-2011 | `place` | 越障点高度按 `k in (1.0, 0.7, 0.4)` 试 IK | W/F | 已删（3a） |
+| skills.py:2024-2041 | `place` | `container_pre_lift`，记下 `container_exit_pose` | W | 已删（3a） |
+| skills.py:2043-2067 | `place` | 贴边时选净空最大的一侧退出（`place_back_from_edge`），距离 `(need, 0.04)` + try/except | W/F | 已删（3a） |
+| skills.py:2068-2073 | `place` | `place_rise`：先竖直抬再平移 | W | 已删（3a） |
+| skills.py:2088-2100 | `place` | 层板：直线不通就换"倒车 → 预整形 → 开回"，再失败重新导航 | F/B | 已删（3a）：`place_preshape` 也删了 |
+| skills.py:2109-2120 | `place` | `place_remeasure_fallback`：失败改用重测前的目标 | F | 已删（3a） |
+| skills.py:2148-2154 | `place` | `place_lower_to_contact`：`held_vertical_move` 下放，失败只记日志 | F | 已改（3a）：失败不再吞掉；下放本身是接触段（步骤 4），`held_vertical_move` 在 3b |
+| skills.py:2173-2192（列表 2176-2178） | `place` | 松手后退出方向的变体（`retreat_back`、`retreat_base`） | F | 已改（3a）：只留一个方向（层板向外，其余向上）；终点 6 cm 和 `retreat_short` 吞异常还在，3b 第一项 |
+| skills.py:2179-2183，2191-2192 | `place` | 层板退出 22 cm → 14 cm，全失败只记日志 | F | 已改（3a）：只留 22 cm 一档；全失败仍只记 `retreat_short`，3b 第一项 |
+| skills.py:2193-2202 | `place` | `container_exit`：回到桶外 staging 点 | W | 已删（3a） |
+| skills.py:2297-2317 | `place_on` | 放置点重试 4 次 | F | 已改（3a）：空位进停车点目标集合，不再重试 |
 
 ### 3.3 `place_flat`（skills.py）
 
@@ -108,10 +108,10 @@ R 类不列。下面只列要动的。
 
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|
-| policies/hand.py:99-104 | `DropIntoPolicy.execute` | `drop_prelift`：先抬到沿口上方再平移 | W | 仍在 |
-| policies/hand.py:91，106-107 | `DropIntoPolicy.execute` | `drop_above`：松手位姿上方再高 6 cm 的点 | W | 仍在 |
-| policies/extra.py:381-385 | `HoverOverPolicy.execute` | `hover_lift` | W | 仍在 |
-| policies/extra.py:376（park 搜索的腿），386-387 | `HoverOverPolicy.execute` | `hover_above`：悬停位姿上方 5 cm | W | 仍在 |
+| policies/hand.py:99-104 | `DropIntoPolicy.execute` | `drop_prelift`：先抬到沿口上方再平移 | W | 已删（3a） |
+| policies/hand.py:91，106-107 | `DropIntoPolicy.execute` | `drop_above`：松手位姿上方再高 6 cm 的点 | W | 已删（3a）：只留一个中继位姿（沿口上方 5 cm） |
+| policies/extra.py:381-385 | `HoverOverPolicy.execute` | `hover_lift` | W | 已删（3a） |
+| policies/extra.py:376（park 搜索的腿），386-387 | `HoverOverPolicy.execute` | `hover_above`：悬停位姿上方 5 cm | W | 已删（3a）：只留悬停位姿本身 |
 
 ### 3.5 pick（skills.py）
 
@@ -206,7 +206,7 @@ R 类不列。下面只列要动的。
 | policies/contact.py:71-79 | 拉取 policy（`PULL`） | drag 不动 → 改 push | F | 仍在 |
 | policies/contact.py:94-122 | `SeparateFromNeighbourPolicy.execute` | 最多 3 次 push × 7 个方向 | F | 仍在 |
 | policies/handle_grasp.py:42-43 | 杯柄抓取 policy | 无条件先 `tuck()` | W | 仍在（`tuck` 本身步骤 1 改成直接规划 q → rest） |
-| policies/base_motion.py:80-99 | `NavigateToPlacePolicy.execute` | 候选位姿逐个 navigate | F | 仍在 |
+| policies/base_motion.py:80-99 | `NavigateToPlacePolicy.execute` | 候选位姿逐个 navigate | F | 已改（3a）：一次可达性筛选（`base_reachable`），导航到最近的一个 |
 | policies/base_motion.py:165-190 | `RetreatFromPolicy.execute` | retreat 距离 2 档 | F | 已删：步骤 2 改成一次 `straight_base_move`（need + 0.03，整机检查），不通就失败 |
 | policies/perceive.py:343-351，374-382 | `PointAtPolicy.execute` / `PresentHeldPolicy.execute` | point、present：位姿 4 档 | F | 仍在 |
 | policies/perceive.py:135-148，247-260，301-305 | `ExploreRoomPolicy` / `ExploreFurniturePolicy` / `SearchObjectPolicy` | 视点不可达就跳到下一个 | F | 仍在（探索里转 180° 改成 `straight_base_move`，失败照样跳过） |
@@ -217,9 +217,9 @@ R 类不列。下面只列要动的。
 |---|---|---|---|---|
 | skills.py:1983-1990 | `place` | `microwave_pre_lift`：先竖直抬到台面 +8 cm。死代码：1780 已把微波炉支撑面转给 `place_microwave`，`"in:"` 支撑面拼出来的 `s` 又没有 `furniture` 字段，走不到这里 | W | 直接删（3a） |
 | skills.py:1846-1858，1915-1919，1962-1964 | `place` | 微波炉专用的 `search_near`、写死 park `(4.95, 2.18, 165)`、`min_bottom_z`。同样是死代码 | F/S | 直接删（3a） |
-| policies/tooluse.py:81-100 | `WipeSurfacePolicy.execute` | 擦拭带：每条边 × 2 档内缩 × 9 个偏移，以机器人当前位置为中心依次试 | F | 3a（按任务几何重新采样） |
-| policies/tooluse.py:123-134 | `WipeSurfacePolicy.execute` | 海绵 4 个 yaw 依次试 park | F | 3a（目标集合） |
-| policies/hand.py:83-84，extra.py:362-363，tooluse.py:105、202、327 | Drop / Hover / Wipe / Stir / Pour | 重新停车前先 `stow_load` → `_carry_pose`，把 3.1 的全部变体和退路一起带进来（倒车步骤 2 已删） | W/F | 3a（随 `_carry_pose` 一起） |
+| policies/tooluse.py:81-100 | `WipeSurfacePolicy.execute` | 擦拭带：每条边 × 2 档内缩 × 9 个偏移，以机器人当前位置为中心依次试 | F | 已改（3a）：沿整个支撑面四条边采样，最便宜的 8 条进停车点目标集合；预备点上方 6 cm、`wipe_lift` 8 cm（`LEGACY`）还在，3b / 步骤 4 |
+| policies/tooluse.py:123-134 | `WipeSurfacePolicy.execute` | 海绵 4 个 yaw 依次试 park | F | 已改（3a）：和擦拭带一起进停车点目标集合 |
+| policies/hand.py:83-84，extra.py:362-363，tooluse.py:105、202、327 | Drop / Hover / Wipe / Stir / Pour | 重新停车前先 `stow_load` → `_carry_pose`，把 3.1 的全部变体和退路一起带进来（倒车步骤 2 已删） | W/F | 已改（3a）：`_carry_pose` 的变体和退路随 3.1 删掉；`stow_load` 保留（选停车位前先摆好搬运姿态） |
 | policies/extra.py:159-171 | `KnockPanelPolicy.execute` | 敲击点 5 个位置 × 2 种合指方向 | F | 3b（目标采样，按任务几何） |
 | policies/extra.py:210-216 | `TouchObjectPolicy.execute` | 4 个腕部朝向依次试 park | F | 3b（目标集合） |
 | policies/orientation.py:76-150 | `_turn_in_air` | 手写 staging 点网格（手边 12 个 + 胸前 80 个，取最近 30 个）× 48 个 (phi, dyaw) 组合，外加 1.2 / 3.5 rad 阈值 | W/F | 3b |
