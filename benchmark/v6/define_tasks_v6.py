@@ -1039,7 +1039,9 @@ def build() -> dict:
                 v = t["variants"][lid]
                 v["move"], _ = seed_vary(t, v)   # task objects still at their base pose join the overlay
                 v.pop("vary", None)
-                v["layout"] = layout_spec(t, lid, reg)
+                c = info.get("control")
+                ctl = t["v6_variants"][c]["layouts"][0] if c in t["v6_variants"] else None
+                v["layout"] = layout_spec(t, lid, reg, ctl)
     apply_tracks(out)
     return out
 

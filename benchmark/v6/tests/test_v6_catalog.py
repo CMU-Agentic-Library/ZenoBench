@@ -42,6 +42,27 @@ def test_v5_designs_unchanged():
             assert [f for f in old.get("failures", []) if f["id"] not in removed] == new.get("failures", []), vid
 
 
+def test_seeds_keep_what_the_variant_tests():
+    """Objects a variant places for its challenge keep their relative positions on every seed (the bowl stays in
+    the pin's path, the crowd around block B stays tight), and a boxed-in or full place stays as designed."""
+    from benchmark.scene import episode_config
+
+    def rel(cfg, a, b):
+        return [round(cfg["move"][a]["xy"][k] - cfg["move"][b]["xy"][k], 3) for k in (0, 1)]
+    for tid, vid, a, b in (("T16_rolling_pin_at_edge", "h_task_bowl_behind", "oatmeal", "rolling_pin"),
+                           ("T02_stack_blocks", "crowded", "wooden_block_b", "oatmeal"),
+                           ("T01_book_to_dining_table", "x6_dr_block_on_book__block", "wooden_block_a",
+                            "paperback_book")):
+        t = TASKS[tid]
+        assert len({tuple(rel(episode_config(t, s, vid), a, b)) for s in SEEDS}) == 1, (tid, vid)
+    for tid, vid in (("T13_breakfast_setup", "no_cup_spoon_boxed_in"), ("T20_juice_back_to_table", "table_full")):
+        t = TASKS[tid]
+        design = {n: m for n, m in t["variants"][vid]["move"].items() if n not in ("bowl", "juice_bottle")}
+        for s in SEEDS:
+            cfg = episode_config(t, s, vid)
+            assert all(cfg["move"][n]["xy"] == m["xy"] for n, m in design.items()), (tid, s)
+
+
 def test_seeds_draw_different_layouts():
     """Ten seeds of a variant put the robot and the movable objects in different places."""
     from benchmark.scene import episode_config

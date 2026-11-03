@@ -39,6 +39,8 @@ VIEW_HALF_DEG = 45.0     # half the start view (head camera, head straight)
 VIEW_RANGE_M = 6.0
 FLOOR_CLEAR_M = 0.45     # no start this close to an object on the floor (bottom below FLOOR_Z_M), as v5 checks
 FLOOR_Z_M = 0.15
+DESIGN_NEAR_M = 0.15     # an object this close to a design object is the other side of its relation
+EVENT_NEAR_M = 0.3       # objects this close to where an event puts something stay (the event is about them)
 TRIES = 40
 SEARCH_TYPES = ("search_target", "search_tool")
 
@@ -184,8 +186,16 @@ def reserved(task, vid, steps):
     return out
 
 
-def layout_spec(task, vid, registry):
-    """The ``layout`` block of one concrete variant; ``registry``: the condition registry (condition -> type)."""
+def _same_pose(a, b):
+    return a.get("support") == b.get("support") and round(a.get("yaw_deg", 0.0)) == round(b.get("yaw_deg", 0.0)) \
+        and all(abs(x - y) < 0.01 for x, y in zip(a.get("xy") or [], b.get("xy") or []))
+
+
+def layout_spec(task, vid, registry, control=None):
+    """The ``layout`` block of one concrete variant; ``registry``: the condition registry (condition -> type);
+    ``control``: the layout of the variant's control.  Objects this variant places differently from its control
+    are its design (a crowd, a set table, a bowl in the rolling path): on one support they move as one group, and
+    stay where they are when any of them has to."""
     v = task["variants"][vid]
     scene, base = task["scene"], task["scene"]["base"]
     sups = _sups(base)
@@ -203,18 +213,42 @@ def layout_spec(task, vid, registry):
             below = [k for k, b in boxes.items() if k != n and placed[k].get("support") and _overlap(b, boxes[n])]
             if below:
                 under[n] = below[0]
-    movable = {}
+    ctl = {}
+    if control:
+        cv = task["variants"][control]
+        ctl = {**scene.get("move", {}), **cv.get("move", {}), **scene.get("add", {}), **cv.get("add", {})}
+    design = {n for n, m in placed.items() if n not in ctl or not _same_pose(m, ctl[n])} if control else set()
+    grow = True
+    while grow:                                        # the bowl in the pin's path brings the pin along
+        near = {n for n, m in placed.items() if n not in design and n in boxes and any(
+            k in boxes and placed[k].get("support") == m.get("support") and _overlap(boxes[n], boxes[k], DESIGN_NEAR_M)
+            for k in design)}
+        grow = bool(near)
+        design |= near
+    events = [(ev["to"]["support"], ev["to"]["xy"]) for f in v.get("failures") or []
+              for ev in [f.get("event") or {}] if isinstance(ev.get("to"), dict) and ev["to"].get("xy")]
+    fixed = set()
     for n, m in placed.items():
         sup = m.get("support")
         if n in under or n not in boxes:
             continue
+        cx, cy = (boxes[n][0] + boxes[n][2]) / 2, (boxes[n][1] + boxes[n][3]) / 2
         if sup not in sups or _fixed_support(base, sup) or \
-                any(_overlap(boxes[n], r) for r in keep_out.get(sup, [])):
+                any(_overlap(boxes[n], r) for r in keep_out.get(sup, [])) or \
+                any(es == sup and math.hypot(cx - ex[0], cy - ex[1]) < EVENT_NEAR_M for es, ex in events):
+            fixed.add(n)
+    movable = {}
+    for n, m in placed.items():
+        sup = m.get("support")
+        if n in under or n not in boxes or n in fixed:
             continue
+        if n in design and any(placed[k].get("support") == sup for k in design & fixed):
+            continue                                   # a design object on a support where the design is pinned
         movable.setdefault(sup, []).append(n)
     clusters = []
     for sup, names in sorted(movable.items()):
-        groups = [[n] for n in sorted(names)]
+        own = sorted(n for n in names if n in design)
+        groups = ([own] if own else []) + [[n] for n in sorted(names) if n not in design]
         merged = True
         while merged:
             merged = False

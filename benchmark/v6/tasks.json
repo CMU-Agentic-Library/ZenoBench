@@ -674,14 +674,21 @@
       "clusters": [
        {
         "names": [
-         "bowl_side_table"
+         "bowl_side_table",
+         "clutter_cereal_a",
+         "clutter_cereal_b",
+         "cup_side_table",
+         "mug_dining_cabinet",
+         "plate_counter_a",
+         "plate_counter_b",
+         "spoon_target_table"
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.611,
+         3.1475,
          5.5621,
          3.7891,
-         5.7379
+         7.9033
         ],
         "dx": [
          -0.1,
@@ -689,147 +696,7 @@
         ],
         "dy": [
          -0.05,
-         2.2
-        ]
-       },
-       {
-        "names": [
-         "clutter_cereal_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.6475,
-         7.3974,
-         3.7525,
-         7.5226
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -1.89,
-         0.42
-        ]
-       },
-       {
-        "names": [
-         "clutter_cereal_b"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.1475,
-         7.5373,
-         3.2525,
-         7.6626
-        ],
-        "dx": [
-         -0.34,
-         0.57
-        ],
-        "dy": [
-         0.0,
-         0.28
-        ]
-       },
-       {
-        "names": [
-         "cup_side_table"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.6462,
-         6.4472,
-         3.7538,
-         6.5568
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.94,
-         1.38
-        ]
-       },
-       {
-        "names": [
-         "mug_dining_cabinet"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.6537,
-         7.7767,
-         3.7463,
-         7.9033
-        ],
-        "dx": [
-         -0.85,
-         0.08
-        ],
-        "dy": [
-         -0.09,
          0.04
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.536,
-         5.9689,
-         3.784,
-         6.2171
-        ],
-        "dx": [
-         -0.09,
-         0.04
-        ],
-        "dy": [
-         -0.46,
-         1.72
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_b"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.536,
-         6.9169,
-         3.784,
-         7.1651
-        ],
-        "dx": [
-         -0.09,
-         0.04
-        ],
-        "dy": [
-         -1.41,
-         0.77
-        ]
-       },
-       {
-        "names": [
-         "spoon_target_table"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.2893,
-         7.0195,
-         3.4707,
-         7.0605
-        ],
-        "dx": [
-         0.0,
-         0.35
-        ],
-        "dy": [
-         -1.51,
-         0.88
         ]
        },
        {
@@ -1154,14 +1021,21 @@
       "clusters": [
        {
         "names": [
-         "bowl_side_table"
+         "bowl_side_table",
+         "clutter_cereal_a",
+         "clutter_cereal_b",
+         "cup_side_table",
+         "mug_dining_cabinet",
+         "plate_counter_a",
+         "plate_counter_b",
+         "spoon_target_table"
         ],
         "support": "dining_table_2/top",
         "box": [
-         3.611,
+         3.1475,
          5.5621,
          3.7891,
-         5.7379
+         7.9033
         ],
         "dx": [
          -0.1,
@@ -1169,147 +1043,7 @@
         ],
         "dy": [
          -0.05,
-         2.2
-        ]
-       },
-       {
-        "names": [
-         "clutter_cereal_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.6475,
-         7.3974,
-         3.7525,
-         7.5226
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -1.89,
-         0.42
-        ]
-       },
-       {
-        "names": [
-         "clutter_cereal_b"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.1475,
-         7.5373,
-         3.2525,
-         7.6626
-        ],
-        "dx": [
-         -0.34,
-         0.57
-        ],
-        "dy": [
-         0.0,
-         0.28
-        ]
-       },
-       {
-        "names": [
-         "cup_side_table"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.6462,
-         6.4472,
-         3.7538,
-         6.5568
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.94,
-         1.38
-        ]
-       },
-       {
-        "names": [
-         "mug_dining_cabinet"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.6537,
-         7.7767,
-         3.7463,
-         7.9033
-        ],
-        "dx": [
-         -0.85,
-         0.08
-        ],
-        "dy": [
-         -0.09,
          0.04
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.536,
-         5.9689,
-         3.784,
-         6.2171
-        ],
-        "dx": [
-         -0.09,
-         0.04
-        ],
-        "dy": [
-         -0.46,
-         1.72
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_b"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.536,
-         6.9169,
-         3.784,
-         7.1651
-        ],
-        "dx": [
-         -0.09,
-         0.04
-        ],
-        "dy": [
-         -1.41,
-         0.77
-        ]
-       },
-       {
-        "names": [
-         "spoon_target_table"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.2893,
-         7.0195,
-         3.4707,
-         7.0605
-        ],
-        "dx": [
-         0.0,
-         0.35
-        ],
-        "dy": [
-         -1.51,
-         0.88
         ]
        }
       ],
@@ -2617,42 +2351,23 @@
         "names": [
          "oatmeal",
          "rolling_pin",
+         "wooden_block_a",
          "wooden_block_b"
         ],
         "support": "kitchen_island/top",
         "box": [
          6.754,
          1.5669,
-         7.095,
+         7.245,
          1.8049
         ],
         "dx": [
          -0.2,
-         1.15
+         1.0
         ],
         "dy": [
          -0.04,
          0.09
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
-        ],
-        "dx": [
-         -0.64,
-         1.0
-        ],
-        "dy": [
-         -0.07,
-         0.06
         ]
        }
       ],
@@ -2768,42 +2483,23 @@
         "names": [
          "oatmeal",
          "rolling_pin",
+         "wooden_block_a",
          "wooden_block_b"
         ],
         "support": "kitchen_island/top",
         "box": [
          6.754,
          1.5669,
-         7.095,
+         7.245,
          1.8049
         ],
         "dx": [
          -0.2,
-         1.15
+         1.0
         ],
         "dy": [
          -0.04,
          0.09
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
-        ],
-        "dx": [
-         -0.64,
-         1.0
-        ],
-        "dy": [
-         -0.07,
-         0.06
         ]
        }
       ],
@@ -2934,38 +2630,19 @@
       "clusters": [
        {
         "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.275,
-         1.51,
-         7.325,
-         1.56
-        ],
-        "dx": [
-         -0.72,
-         0.92
-        ]
-       },
-       {
-        "names": [
+         "wooden_block_a",
          "wooden_block_b"
         ],
         "support": "kitchen_island/top",
         "box": [
          6.975,
-         1.635,
-         7.025,
+         1.51,
+         7.325,
          1.685
         ],
         "dx": [
          -0.42,
-         1.22
-        ],
-        "dy": [
-         -0.11,
-         0.02
+         0.92
         ]
        }
       ],
@@ -3080,106 +2757,8 @@
       "hard_category": "dynamic"
      },
      "layout": {
-      "clusters": [
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.195,
-         1.6,
-         7.245,
-         1.65
-        ],
-        "dx": [
-         -0.64,
-         1.0
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.045,
-         1.6,
-         7.095,
-         1.65
-        ],
-        "dx": [
-         -0.49,
-         1.15
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.6207,
-         1.631,
-         7.6789,
-         1.6912
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         7.8089,
-         1.7789,
-         7.9889,
-         1.899
-        ],
-        [
-         8.1464,
-         1.6119,
-         8.213,
-         1.678
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ],
-        [
-         6.975,
-         1.635,
-         7.025,
-         1.685
-        ],
-        [
-         7.275,
-         1.51,
-         7.325,
-         1.56
-        ]
-       ]
-      },
+      "clusters": [],
+      "static": {},
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -3367,18 +2946,19 @@
       "clusters": [
        {
         "names": [
-         "floor_block"
+         "floor_block",
+         "wooden_block_b"
         ],
         "support": "kitchen_island/top",
         "box": [
          6.925,
-         1.825,
-         6.975,
+         1.635,
+         7.025,
          1.875
         ],
         "dx": [
          -0.37,
-         1.27
+         1.22
         ],
         "dy": [
          -0.03,
@@ -3399,26 +2979,6 @@
         "dx": [
          -0.72,
          0.92
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.975,
-         1.635,
-         7.025,
-         1.685
-        ],
-        "dx": [
-         -0.42,
-         1.22
-        ],
-        "dy": [
-         -0.11,
-         0.02
         ]
        }
       ],
@@ -3655,18 +3215,19 @@
       "clusters": [
        {
         "names": [
-         "floor_block"
+         "floor_block",
+         "wooden_block_b"
         ],
         "support": "kitchen_island/top",
         "box": [
          6.925,
-         1.825,
-         6.975,
+         1.635,
+         7.025,
          1.875
         ],
         "dx": [
          -0.37,
-         1.27
+         1.22
         ],
         "dy": [
          -0.03,
@@ -3687,26 +3248,6 @@
         "dx": [
          -0.72,
          0.92
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.975,
-         1.635,
-         7.025,
-         1.685
-        ],
-        "dx": [
-         -0.42,
-         1.22
-        ],
-        "dy": [
-         -0.11,
-         0.02
         ]
        }
       ],
@@ -5440,22 +4981,6 @@
       "clusters": [
        {
         "names": [
-         "small_storage_bin"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         1.11,
-         -0.54,
-         1.28,
-         -0.32
-        ],
-        "dy": [
-         -0.06,
-         0.07
-        ]
-       },
-       {
-        "names": [
          "mug"
         ],
         "support": "kitchen_island/top",
@@ -5520,6 +5045,12 @@
          -0.58,
          1.055,
          -0.28
+        ],
+        [
+         1.11,
+         -0.54,
+         1.28,
+         -0.32
         ]
        ]
       },
@@ -6869,22 +6400,6 @@
       "clusters": [
        {
         "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_cabinet_6/top",
-        "box": [
-         3.611,
-         0.2722,
-         3.7891,
-         0.4478
-        ],
-        "dy": [
-         -0.06,
-         0.06
-        ]
-       },
-       {
-        "names": [
          "cup_counter_b"
         ],
         "support": "kitchen_island/top",
@@ -6975,6 +6490,12 @@
          0.235,
          3.46,
          0.485
+        ],
+        [
+         3.611,
+         0.2722,
+         3.7891,
+         0.4478
         ]
        ]
       },
@@ -7788,6 +7309,26 @@
       "clusters": [
        {
         "names": [
+         "wooden_block_a"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.175,
+         1.825,
+         7.225,
+         1.875
+        ],
+        "dx": [
+         -0.62,
+         1.02
+        ],
+        "dy": [
+         -0.03,
+         0.1
+        ]
+       },
+       {
+        "names": [
          "cup_counter_b"
         ],
         "support": "kitchen_island/top",
@@ -7824,26 +7365,6 @@
         "dy": [
          -0.07,
          0.06
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.175,
-         1.825,
-         7.225,
-         1.875
-        ],
-        "dx": [
-         -0.62,
-         1.02
-        ],
-        "dy": [
-         -0.03,
-         0.1
         ]
        }
       ],
@@ -11217,22 +10738,6 @@
       "clusters": [
        {
         "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_cabinet_6/top",
-        "box": [
-         3.611,
-         0.2722,
-         3.7891,
-         0.4478
-        ],
-        "dy": [
-         -0.06,
-         0.06
-        ]
-       },
-       {
-        "names": [
          "wooden_block_a"
         ],
         "support": "kitchen_island/top",
@@ -11323,6 +10828,12 @@
          0.235,
          3.46,
          0.485
+        ],
+        [
+         3.611,
+         0.2722,
+         3.7891,
+         0.4478
         ]
        ]
       },
@@ -11413,22 +10924,6 @@
         "dy": [
          -0.76,
          1.62
-        ]
-       },
-       {
-        "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_cabinet_6/top",
-        "box": [
-         3.611,
-         0.2722,
-         3.7891,
-         0.4478
-        ],
-        "dy": [
-         -0.06,
-         0.06
         ]
        },
        {
@@ -11529,6 +11024,12 @@
          0.235,
          3.46,
          0.485
+        ],
+        [
+         3.611,
+         0.2722,
+         3.7891,
+         0.4478
         ]
        ]
       },
@@ -11728,42 +11229,6 @@
       "clusters": [
        {
         "names": [
-         "clutter_cereal_c"
-        ],
-        "support": "kitchen_cabinet_6/top",
-        "box": [
-         3.5253,
-         0.3875,
-         3.6507,
-         0.4925
-        ],
-        "dx": [
-         -0.31,
-         0.13
-        ]
-       },
-       {
-        "names": [
-         "juice_bottle"
-        ],
-        "support": "kitchen_cabinet_6/top",
-        "box": [
-         3.681,
-         0.421,
-         3.739,
-         0.479
-        ],
-        "dx": [
-         -0.46,
-         0.04
-        ],
-        "dy": [
-         -0.1,
-         0.03
-        ]
-       },
-       {
-        "names": [
          "wooden_block_a"
         ],
         "support": "kitchen_island/top",
@@ -11859,6 +11324,18 @@
          3.37,
          0.3875,
          3.4954,
+         0.4925
+        ],
+        [
+         3.681,
+         0.421,
+         3.739,
+         0.479
+        ],
+        [
+         3.5253,
+         0.3875,
+         3.6507,
          0.4925
         ]
        ]
@@ -12151,22 +11628,6 @@
       "clusters": [
        {
         "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_cabinet_6/top",
-        "box": [
-         3.611,
-         0.2722,
-         3.7891,
-         0.4478
-        ],
-        "dy": [
-         -0.06,
-         0.06
-        ]
-       },
-       {
-        "names": [
          "wooden_block_b"
         ],
         "support": "kitchen_island/top",
@@ -12257,6 +11718,12 @@
          0.235,
          3.46,
          0.485
+        ],
+        [
+         3.611,
+         0.2722,
+         3.7891,
+         0.4478
         ]
        ]
       },
@@ -15429,162 +14896,6 @@
       "clusters": [
        {
         "names": [
-         "breakfast_spoon"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.5393,
-         1.8595,
-         7.7207,
-         1.9004
-        ],
-        "dx": [
-         -0.98,
-         0.52
-        ],
-        "dy": [
-         -0.06,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "juice_bottle"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.911,
-         1.851,
-         7.969,
-         1.909
-        ],
-        "dx": [
-         -1.36,
-         0.28
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         8.0537,
-         1.5567,
-         8.1463,
-         1.6833
-        ],
-        "dx": [
-         -1.5,
-         0.1
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
-       },
-       {
-        "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.8809,
-         1.7921,
-         7.0591,
-         1.9678
-        ],
-        "dx": [
-         -0.33,
-         1.19
-        ]
-       },
-       {
-        "names": [
-         "paperback_book"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.18,
-         1.82,
-         7.36,
-         1.94
-        ],
-        "dx": [
-         -0.62,
-         0.89
-        ],
-        "dy": [
-         -0.1,
-         0.03
-        ]
-       },
-       {
-        "names": [
-         "rolling_pin"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.64,
-         1.5969,
-         6.86,
-         1.6432
-        ],
-        "dx": [
-         -0.08,
-         1.38
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "soda_can"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.417,
-         1.587,
-         7.483,
-         1.653
-        ],
-        "dx": [
-         -0.86,
-         0.76
-        ],
-        "dy": [
-         -0.06,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.075,
-         1.595,
-         7.125,
-         1.645
-        ],
-        "dx": [
-         -0.52,
-         1.12
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
          "kitchen_sponge"
         ],
         "support": "tv_stand_2/top",
@@ -15605,20 +14916,6 @@
        }
       ],
       "static": {
-       "kitchen_island/top": [
-        [
-         7.775,
-         1.595,
-         7.825,
-         1.645
-        ],
-        [
-         7.775,
-         1.595,
-         7.825,
-         1.645
-        ]
-       ],
        "tv_stand_2/top": [
         [
          7.115,
@@ -15881,162 +15178,6 @@
       "clusters": [
        {
         "names": [
-         "breakfast_spoon"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.5393,
-         1.8595,
-         7.7207,
-         1.9004
-        ],
-        "dx": [
-         -0.98,
-         0.52
-        ],
-        "dy": [
-         -0.06,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "juice_bottle"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.911,
-         1.851,
-         7.969,
-         1.909
-        ],
-        "dx": [
-         -1.36,
-         0.28
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         8.0537,
-         1.5567,
-         8.1463,
-         1.6833
-        ],
-        "dx": [
-         -1.5,
-         0.1
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
-       },
-       {
-        "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.8809,
-         1.7921,
-         7.0591,
-         1.9678
-        ],
-        "dx": [
-         -0.33,
-         1.19
-        ]
-       },
-       {
-        "names": [
-         "paperback_book"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.18,
-         1.82,
-         7.36,
-         1.94
-        ],
-        "dx": [
-         -0.62,
-         0.89
-        ],
-        "dy": [
-         -0.1,
-         0.03
-        ]
-       },
-       {
-        "names": [
-         "rolling_pin"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.64,
-         1.5969,
-         6.86,
-         1.6432
-        ],
-        "dx": [
-         -0.08,
-         1.38
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "soda_can"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.417,
-         1.587,
-         7.483,
-         1.653
-        ],
-        "dx": [
-         -0.86,
-         0.76
-        ],
-        "dy": [
-         -0.06,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.075,
-         1.595,
-         7.125,
-         1.645
-        ],
-        "dx": [
-         -0.52,
-         1.12
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
          "kitchen_sponge"
         ],
         "support": "tv_stand_2/top",
@@ -16057,20 +15198,6 @@
        }
       ],
       "static": {
-       "kitchen_island/top": [
-        [
-         7.775,
-         1.595,
-         7.825,
-         1.645
-        ],
-        [
-         7.775,
-         1.595,
-         7.825,
-         1.645
-        ]
-       ],
        "tv_stand_2/top": [
         [
          7.115,
@@ -16438,162 +15565,6 @@
       "clusters": [
        {
         "names": [
-         "breakfast_spoon"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.5393,
-         1.8595,
-         7.7207,
-         1.9004
-        ],
-        "dx": [
-         -0.98,
-         0.52
-        ],
-        "dy": [
-         -0.06,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "juice_bottle"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.911,
-         1.851,
-         7.969,
-         1.909
-        ],
-        "dx": [
-         -1.36,
-         0.28
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         8.0537,
-         1.5567,
-         8.1463,
-         1.6833
-        ],
-        "dx": [
-         -1.5,
-         0.1
-        ],
-        "dy": [
-         -0.03,
-         0.1
-        ]
-       },
-       {
-        "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.8809,
-         1.7921,
-         7.0591,
-         1.9678
-        ],
-        "dx": [
-         -0.33,
-         1.19
-        ]
-       },
-       {
-        "names": [
-         "paperback_book"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.18,
-         1.82,
-         7.36,
-         1.94
-        ],
-        "dx": [
-         -0.62,
-         0.89
-        ],
-        "dy": [
-         -0.1,
-         0.03
-        ]
-       },
-       {
-        "names": [
-         "rolling_pin"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.64,
-         1.5969,
-         6.86,
-         1.6432
-        ],
-        "dx": [
-         -0.08,
-         1.38
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
-         "soda_can"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.417,
-         1.587,
-         7.483,
-         1.653
-        ],
-        "dx": [
-         -0.86,
-         0.76
-        ],
-        "dy": [
-         -0.06,
-         0.07
-        ]
-       },
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.075,
-         1.595,
-         7.125,
-         1.645
-        ],
-        "dx": [
-         -0.52,
-         1.12
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
-       {
-        "names": [
          "kitchen_sponge"
         ],
         "support": "tv_stand_2/top",
@@ -16614,20 +15585,6 @@
        }
       ],
       "static": {
-       "kitchen_island/top": [
-        [
-         7.775,
-         1.595,
-         7.825,
-         1.645
-        ],
-        [
-         7.775,
-         1.595,
-         7.825,
-         1.645
-        ]
-       ],
        "tv_stand_2/top": [
         [
          7.115,
@@ -18509,18 +17466,19 @@
       "clusters": [
        {
         "names": [
-         "bowl_kitchen_cabinet"
+         "bowl_kitchen_cabinet",
+         "mug_counter"
         ],
         "support": "kitchen_island/top",
         "box": [
          7.1109,
          1.7122,
-         7.2891,
+         8.1463,
          1.8879
         ],
         "dx": [
          -0.56,
-         0.96
+         0.1
         ],
         "dy": [
          -0.05,
@@ -18565,26 +17523,6 @@
         "dy": [
          -0.08,
          0.05
-        ]
-       },
-       {
-        "names": [
-         "mug_counter"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         8.0537,
-         1.7367,
-         8.1463,
-         1.8633
-        ],
-        "dx": [
-         -0.03,
-         0.1
-        ],
-        "dy": [
-         -0.21,
-         0.11
         ]
        }
       ],
@@ -18921,18 +17859,19 @@
       "clusters": [
        {
         "names": [
-         "bowl_kitchen_cabinet"
+         "bowl_kitchen_cabinet",
+         "mug_counter"
         ],
         "support": "kitchen_island/top",
         "box": [
          7.1109,
          1.7122,
-         7.2891,
+         8.1463,
          1.8879
         ],
         "dx": [
          -0.56,
-         0.96
+         0.1
         ],
         "dy": [
          -0.05,
@@ -18977,26 +17916,6 @@
         "dy": [
          -0.08,
          0.05
-        ]
-       },
-       {
-        "names": [
-         "mug_counter"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         8.0537,
-         1.7367,
-         8.1463,
-         1.8633
-        ],
-        "dx": [
-         -0.03,
-         0.1
-        ],
-        "dy": [
-         -0.21,
-         0.11
         ]
        }
       ],
@@ -19702,74 +18621,8 @@
       "derived_from": "lid_off"
      },
      "layout": {
-      "clusters": [
-       {
-        "names": [
-         "cherry_tomato_1"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        "dx": [
-         -1.06,
-         0.6
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ],
-        [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ],
-        [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ]
-       ]
-      },
+      "clusters": [],
+      "static": {},
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -19838,74 +18691,8 @@
       "derived_from": "lid_off"
      },
      "layout": {
-      "clusters": [
-       {
-        "names": [
-         "cherry_tomato_2"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ],
-        "dx": [
-         -1.23,
-         0.43
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ],
-        [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ]
-       ]
-      },
+      "clusters": [],
+      "static": {},
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -19974,74 +18761,8 @@
       "derived_from": "lid_off"
      },
      "layout": {
-      "clusters": [
-       {
-        "names": [
-         "cherry_tomato_1"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        "dx": [
-         -1.06,
-         0.6
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ],
-        [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ],
-        [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ]
-       ]
-      },
+      "clusters": [],
+      "static": {},
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -20137,18 +18858,19 @@
        },
        {
         "names": [
-         "bowl_kitchen_cabinet"
+         "bowl_kitchen_cabinet",
+         "mug_counter"
         ],
         "support": "kitchen_island/top",
         "box": [
          7.1109,
          1.7122,
-         7.2891,
+         8.1463,
          1.8879
         ],
         "dx": [
          -0.56,
-         0.96
+         0.1
         ],
         "dy": [
          -0.05,
@@ -20193,26 +18915,6 @@
         "dy": [
          -0.08,
          0.05
-        ]
-       },
-       {
-        "names": [
-         "mug_counter"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         8.0537,
-         1.7367,
-         8.1463,
-         1.8633
-        ],
-        "dx": [
-         -0.03,
-         0.1
-        ],
-        "dy": [
-         -0.21,
-         0.11
         ]
        }
       ],
@@ -25605,27 +24307,12 @@
          "stored_block_4",
          "stored_block_5",
          "stored_block_6",
-         "toy_bin_small"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.515,
-         0.95,
-         -0.345
-        ],
-        "dy": [
-         -0.09,
-         0.09
-        ]
-       },
-       {
-        "names": [
+         "toy_bin_small",
          "toy_tray"
         ],
         "support": "bookcase_2/top",
         "box": [
-         0.995,
+         0.73,
          -0.53,
          1.265,
          -0.33
@@ -25919,27 +24606,12 @@
          "stored_block_4",
          "stored_block_5",
          "stored_block_6",
-         "toy_bin_small"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.515,
-         0.95,
-         -0.345
-        ],
-        "dy": [
-         -0.09,
-         0.09
-        ]
-       },
-       {
-        "names": [
+         "toy_bin_small",
          "toy_tray"
         ],
         "support": "bookcase_2/top",
         "box": [
-         0.995,
+         0.73,
          -0.53,
          1.265,
          -0.33
@@ -26294,27 +24966,12 @@
          "stored_block_4",
          "stored_block_5",
          "stored_block_6",
-         "toy_bin_small"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.515,
-         0.95,
-         -0.345
-        ],
-        "dy": [
-         -0.09,
-         0.09
-        ]
-       },
-       {
-        "names": [
+         "toy_bin_small",
          "toy_tray"
         ],
         "support": "bookcase_2/top",
         "box": [
-         0.995,
+         0.73,
          -0.53,
          1.265,
          -0.33
@@ -26633,27 +25290,12 @@
          "stored_block_4",
          "stored_block_5",
          "stored_block_6",
-         "toy_bin_small"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.515,
-         0.95,
-         -0.345
-        ],
-        "dy": [
-         -0.09,
-         0.09
-        ]
-       },
-       {
-        "names": [
+         "toy_bin_small",
          "toy_tray"
         ],
         "support": "bookcase_2/top",
         "box": [
-         0.995,
+         0.73,
          -0.53,
          1.265,
          -0.33
@@ -26877,34 +25519,15 @@
          "stored_block_4",
          "stored_block_5",
          "stored_block_6",
-         "toy_bin_small"
+         "toy_bin_small",
+         "toy_bin_small_2"
         ],
         "support": "bookcase_2/top",
         "box": [
          0.73,
          -0.515,
-         0.95,
-         -0.345
-        ],
-        "dy": [
-         -0.09,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "toy_bin_small_2"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         1.02,
-         -0.515,
          1.24,
          -0.345
-        ],
-        "dx": [
-         -0.09,
-         0.04
         ],
         "dy": [
          -0.09,
@@ -27119,40 +25742,21 @@
       "clusters": [
        {
         "names": [
-         "toy_bin_small"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         0.73,
-         -0.515,
-         0.95,
-         -0.345
-        ],
-        "dy": [
-         -0.09,
-         0.09
-        ]
-       },
-       {
-        "names": [
          "stored_block_1",
          "stored_block_2",
          "stored_block_3",
          "stored_block_4",
          "stored_block_5",
          "stored_block_6",
+         "toy_bin_small",
          "toy_bin_small_2"
         ],
         "support": "bookcase_2/top",
         "box": [
-         1.02,
+         0.73,
          -0.515,
          1.24,
          -0.345
-        ],
-        "dx": [
-         -0.09,
-         0.04
         ],
         "dy": [
          -0.09,
@@ -29090,75 +27694,6 @@
       "clusters": [
        {
         "names": [
-         "clutter_cereal_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8075,
-         7.1574,
-         2.9125,
-         7.2826
-        ],
-        "dy": [
-         -1.65,
-         0.66
-        ]
-       },
-       {
-        "names": [
-         "clutter_cereal_b"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8075,
-         7.6374,
-         2.9125,
-         7.7626
-        ],
-        "dy": [
-         -2.13,
-         0.18
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.096,
-         7.1159,
-         3.344,
-         7.3641
-        ],
-        "dx": [
-         -0.29,
-         0.0
-        ],
-        "dy": [
-         -1.61,
-         0.58
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_b",
-         "plate_dining_cabinet"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.976,
-         7.496,
-         3.344,
-         8.004
-        ],
-        "dx": [
-         -0.17,
-         0.48
-        ]
-       },
-       {
-        "names": [
          "bowl"
         ],
         "support": "tv_stand_2/top",
@@ -29191,6 +27726,36 @@
          7.3799,
          3.0585,
          7.5374
+        ],
+        [
+         2.8075,
+         7.1574,
+         2.9125,
+         7.2826
+        ],
+        [
+         2.8075,
+         7.6374,
+         2.9125,
+         7.7626
+        ],
+        [
+         3.096,
+         7.1159,
+         3.344,
+         7.3641
+        ],
+        [
+         3.096,
+         7.496,
+         3.344,
+         7.744
+        ],
+        [
+         2.976,
+         7.756,
+         3.224,
+         8.004
         ],
         [
          2.9293,
@@ -29408,75 +27973,6 @@
       "clusters": [
        {
         "names": [
-         "clutter_cereal_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8075,
-         7.1574,
-         2.9125,
-         7.2826
-        ],
-        "dy": [
-         -1.65,
-         0.66
-        ]
-       },
-       {
-        "names": [
-         "clutter_cereal_b"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8075,
-         7.6374,
-         2.9125,
-         7.7626
-        ],
-        "dy": [
-         -2.13,
-         0.18
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.096,
-         7.1159,
-         3.344,
-         7.3641
-        ],
-        "dx": [
-         -0.29,
-         0.0
-        ],
-        "dy": [
-         -1.61,
-         0.58
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_b",
-         "plate_dining_cabinet"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.976,
-         7.496,
-         3.344,
-         8.004
-        ],
-        "dx": [
-         -0.17,
-         0.48
-        ]
-       },
-       {
-        "names": [
          "bowl"
         ],
         "support": "tv_stand_2/top",
@@ -29509,6 +28005,36 @@
          7.3799,
          3.0585,
          7.5374
+        ],
+        [
+         2.8075,
+         7.1574,
+         2.9125,
+         7.2826
+        ],
+        [
+         2.8075,
+         7.6374,
+         2.9125,
+         7.7626
+        ],
+        [
+         3.096,
+         7.1159,
+         3.344,
+         7.3641
+        ],
+        [
+         3.096,
+         7.496,
+         3.344,
+         7.744
+        ],
+        [
+         2.976,
+         7.756,
+         3.224,
+         8.004
         ],
         [
          2.9293,
@@ -29950,75 +28476,6 @@
       "clusters": [
        {
         "names": [
-         "clutter_cereal_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8075,
-         7.1574,
-         2.9125,
-         7.2826
-        ],
-        "dy": [
-         -1.65,
-         0.66
-        ]
-       },
-       {
-        "names": [
-         "clutter_cereal_b"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8075,
-         7.6374,
-         2.9125,
-         7.7626
-        ],
-        "dy": [
-         -2.13,
-         0.18
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.096,
-         7.1159,
-         3.344,
-         7.3641
-        ],
-        "dx": [
-         -0.29,
-         0.0
-        ],
-        "dy": [
-         -1.61,
-         0.58
-        ]
-       },
-       {
-        "names": [
-         "plate_counter_b",
-         "plate_dining_cabinet"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.976,
-         7.496,
-         3.344,
-         8.004
-        ],
-        "dx": [
-         -0.17,
-         0.48
-        ]
-       },
-       {
-        "names": [
          "bowl"
         ],
         "support": "tv_stand_2/top",
@@ -30051,6 +28508,36 @@
          7.3799,
          3.0585,
          7.5374
+        ],
+        [
+         2.8075,
+         7.1574,
+         2.9125,
+         7.2826
+        ],
+        [
+         2.8075,
+         7.6374,
+         2.9125,
+         7.7626
+        ],
+        [
+         3.096,
+         7.1159,
+         3.344,
+         7.3641
+        ],
+        [
+         3.096,
+         7.496,
+         3.344,
+         7.744
+        ],
+        [
+         2.976,
+         7.756,
+         3.224,
+         8.004
         ],
         [
          2.9293,
@@ -30832,26 +29319,6 @@
       "clusters": [
        {
         "names": [
-         "bowl"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.9413,
-         0.253,
-         8.1195,
-         0.4287
-        ],
-        "dx": [
-         -1.28,
-         0.24
-        ],
-        "dy": [
-         -0.03,
-         0.07
-        ]
-       },
-       {
-        "names": [
          "bowl_kitchen_cabinet"
         ],
         "support": "tv_stand_2/top",
@@ -30868,6 +29335,26 @@
         "dy": [
          -0.05,
          0.05
+        ]
+       },
+       {
+        "names": [
+         "bowl"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.9413,
+         0.253,
+         8.1195,
+         0.4287
+        ],
+        "dx": [
+         -1.28,
+         0.24
+        ],
+        "dy": [
+         -0.03,
+         0.07
         ]
        }
       ],
@@ -31109,26 +29596,6 @@
       "clusters": [
        {
         "names": [
-         "bowl"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.9413,
-         0.253,
-         8.1195,
-         0.4287
-        ],
-        "dx": [
-         -1.28,
-         0.24
-        ],
-        "dy": [
-         -0.03,
-         0.07
-        ]
-       },
-       {
-        "names": [
          "bowl_kitchen_cabinet"
         ],
         "support": "tv_stand_2/top",
@@ -31145,6 +29612,26 @@
         "dy": [
          -0.05,
          0.05
+        ]
+       },
+       {
+        "names": [
+         "bowl"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.9413,
+         0.253,
+         8.1195,
+         0.4287
+        ],
+        "dx": [
+         -1.28,
+         0.24
+        ],
+        "dy": [
+         -0.03,
+         0.07
         ]
        }
       ],
@@ -34843,37 +33330,18 @@
       "clusters": [
        {
         "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.601,
-         1.6121,
-         6.7791,
-         1.7878
-        ],
-        "dx": [
-         -0.05,
-         0.08
-        ],
-        "dy": [
-         -0.08,
-         0.18
-        ]
-       },
-       {
-        "names": [
+         "oatmeal",
          "rolling_pin"
         ],
         "support": "kitchen_island/top",
         "box": [
-         6.64,
+         6.601,
          1.5178,
          6.86,
-         1.5641
+         1.7878
         ],
         "dx": [
-         -0.08,
+         -0.05,
          1.38
         ]
        }
@@ -35008,76 +33476,8 @@
       "hard_category": "dynamic"
      },
      "layout": {
-      "clusters": [
-       {
-        "names": [
-         "rolling_pin"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.64,
-         1.5178,
-         6.86,
-         1.5641
-        ],
-        "dx": [
-         -0.08,
-         1.38
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         7.8089,
-         1.7789,
-         7.9889,
-         1.899
-        ],
-        [
-         6.601,
-         1.7422,
-         6.7791,
-         1.9179
-        ],
-        [
-         7.2109,
-         1.7622,
-         7.3891,
-         1.9379
-        ],
-        [
-         6.601,
-         1.6121,
-         6.7791,
-         1.7878
-        ]
-       ]
-      },
+      "clusters": [],
+      "static": {},
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -42045,306 +40445,6 @@
       "clusters": [
        {
         "names": [
-         "buffet_tray_1"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         5.5968,
-         3.278,
-         5.9551
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.09,
-         1.98
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_11"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         7.2168,
-         3.278,
-         7.5751
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -1.71,
-         0.36
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_12"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         7.2168,
-         3.768,
-         7.5751
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -1.71,
-         0.36
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_2"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         5.5968,
-         3.768,
-         5.9551
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.09,
-         1.98
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_6"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         6.4069,
-         3.278,
-         6.7652
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.9,
-         1.17
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_7"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         6.4069,
-         3.768,
-         6.7652
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.9,
-         1.17
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_2"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.1019,
-         7.6771,
-         3.28,
-         7.8529
-        ],
-        "dx": [
-         -0.3,
-         0.54
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_3"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.3479,
-         7.6771,
-         3.526,
-         7.8529
-        ],
-        "dx": [
-         -0.54,
-         0.3
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_4"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5939,
-         7.6771,
-         3.772,
-         7.8529
-        ],
-        "dx": [
-         -0.08,
-         0.05
-        ],
-        "dy": [
-         -2.17,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_plate_10"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5135,
-         6.8669,
-         3.7615,
-         7.1151
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
-         "party_plate_3"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8645,
-         6.057,
-         3.1125,
-         6.305
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_4"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.189,
-         6.057,
-         3.437,
-         6.305
-        ],
-        "dx": [
-         -0.39,
-         0.0
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_5"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5135,
-         6.057,
-         3.7615,
-         6.305
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_8"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8645,
-         6.8669,
-         3.1125,
-         7.1151
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
-         "party_plate_9"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.189,
-         6.8669,
-         3.437,
-         7.1151
-        ],
-        "dx": [
-         -0.39,
-         0.0
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
          "juice_bottle"
         ],
         "support": "kitchen_cabinet_6/top",
@@ -42371,20 +40471,6 @@
          0.3164,
          3.5926,
          0.4018
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         2.8559,
-         7.6771,
-         3.034,
-         7.8529
-        ],
-        [
-         2.916,
-         7.736,
-         2.974,
-         7.794
         ]
        ]
       },
@@ -42728,306 +40814,6 @@
       "clusters": [
        {
         "names": [
-         "buffet_tray_1"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         5.5968,
-         3.278,
-         5.9551
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.09,
-         1.98
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_11"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         7.2168,
-         3.278,
-         7.5751
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -1.71,
-         0.36
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_12"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         7.2168,
-         3.768,
-         7.5751
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -1.71,
-         0.36
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_2"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         5.5968,
-         3.768,
-         5.9551
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.09,
-         1.98
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_6"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         6.4069,
-         3.278,
-         6.7652
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.9,
-         1.17
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_7"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         6.4069,
-         3.768,
-         6.7652
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.9,
-         1.17
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_2"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.1019,
-         7.6771,
-         3.28,
-         7.8529
-        ],
-        "dx": [
-         -0.3,
-         0.54
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_3"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.3479,
-         7.6771,
-         3.526,
-         7.8529
-        ],
-        "dx": [
-         -0.54,
-         0.3
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_4"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5939,
-         7.6771,
-         3.772,
-         7.8529
-        ],
-        "dx": [
-         -0.08,
-         0.05
-        ],
-        "dy": [
-         -2.17,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_plate_10"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5135,
-         6.8669,
-         3.7615,
-         7.1151
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
-         "party_plate_3"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8645,
-         6.057,
-         3.1125,
-         6.305
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_4"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.189,
-         6.057,
-         3.437,
-         6.305
-        ],
-        "dx": [
-         -0.39,
-         0.0
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_5"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5135,
-         6.057,
-         3.7615,
-         6.305
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_8"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8645,
-         6.8669,
-         3.1125,
-         7.1151
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
-         "party_plate_9"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.189,
-         6.8669,
-         3.437,
-         7.1151
-        ],
-        "dx": [
-         -0.39,
-         0.0
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
          "juice_bottle"
         ],
         "support": "kitchen_cabinet_6/top",
@@ -43054,20 +40840,6 @@
          0.3164,
          3.5926,
          0.4018
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         2.8559,
-         7.6771,
-         3.034,
-         7.8529
-        ],
-        [
-         2.916,
-         7.736,
-         2.974,
-         7.794
         ]
        ]
       },
@@ -43447,306 +41219,6 @@
       "clusters": [
        {
         "names": [
-         "buffet_tray_1"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         5.5968,
-         3.278,
-         5.9551
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.09,
-         1.98
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_11"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         7.2168,
-         3.278,
-         7.5751
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -1.71,
-         0.36
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_12"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         7.2168,
-         3.768,
-         7.5751
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -1.71,
-         0.36
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_2"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         5.5968,
-         3.768,
-         5.9551
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.09,
-         1.98
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_6"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.858,
-         6.4069,
-         3.278,
-         6.7652
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.9,
-         1.17
-        ]
-       },
-       {
-        "names": [
-         "buffet_tray_7"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.348,
-         6.4069,
-         3.768,
-         6.7652
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.9,
-         1.17
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_2"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.1019,
-         7.6771,
-         3.28,
-         7.8529
-        ],
-        "dx": [
-         -0.3,
-         0.54
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_3"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.3479,
-         7.6771,
-         3.526,
-         7.8529
-        ],
-        "dx": [
-         -0.54,
-         0.3
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_bowl_4"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5939,
-         7.6771,
-         3.772,
-         7.8529
-        ],
-        "dx": [
-         -0.08,
-         0.05
-        ],
-        "dy": [
-         -2.17,
-         0.09
-        ]
-       },
-       {
-        "names": [
-         "party_plate_10"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5135,
-         6.8669,
-         3.7615,
-         7.1151
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
-         "party_plate_3"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8645,
-         6.057,
-         3.1125,
-         6.305
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_4"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.189,
-         6.057,
-         3.437,
-         6.305
-        ],
-        "dx": [
-         -0.39,
-         0.0
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_5"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.5135,
-         6.057,
-         3.7615,
-         6.305
-        ],
-        "dx": [
-         -0.07,
-         0.06
-        ],
-        "dy": [
-         -0.55,
-         1.63
-        ]
-       },
-       {
-        "names": [
-         "party_plate_8"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         2.8645,
-         6.8669,
-         3.1125,
-         7.1151
-        ],
-        "dx": [
-         -0.06,
-         0.07
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
-         "party_plate_9"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.189,
-         6.8669,
-         3.437,
-         7.1151
-        ],
-        "dx": [
-         -0.39,
-         0.0
-        ],
-        "dy": [
-         -1.36,
-         0.82
-        ]
-       },
-       {
-        "names": [
          "juice_bottle"
         ],
         "support": "kitchen_cabinet_6/top",
@@ -43773,20 +41245,6 @@
          0.3164,
          3.5926,
          0.4018
-        ]
-       ],
-       "dining_table_2/top": [
-        [
-         2.8559,
-         7.6771,
-         3.034,
-         7.8529
-        ],
-        [
-         2.916,
-         7.736,
-         2.974,
-         7.794
         ]
        ]
       },
@@ -45003,38 +42461,19 @@
       "clusters": [
        {
         "names": [
-         "mug_shelf"
+         "mug_shelf",
+         "shelf_blocker"
         ],
         "support": "bookcase_2/top",
         "box": [
          0.8137,
          -0.5933,
-         0.9063,
-         -0.4667
-        ],
-        "dx": [
-         -0.09,
-         0.37
-        ]
-       },
-       {
-        "names": [
-         "shelf_blocker"
-        ],
-        "support": "bookcase_2/top",
-        "box": [
-         1.0971,
-         -0.475,
          1.1629,
          -0.385
         ],
         "dx": [
-         -0.01,
+         -0.09,
          0.12
-        ],
-        "dy": [
-         -0.13,
-         0.13
         ]
        },
        {

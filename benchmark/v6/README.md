@@ -24,10 +24,13 @@ An episode is **task + variant + seed**.
   - where the objects stand and where the robot starts, drawn by the seed generator (`layout.py`, the variant's
     `layout` block): every cluster of task objects is moved to a random free place on its own support (stacks
     and crowded groups move together, an overhang stays, never deeper from the reachable edge than designed,
-    clear of route and event places; objects in closed furniture or on an appliance stay), and the robot starts
+    clear of route and event places; objects in closed furniture or on an appliance stay). What the variant
+    places differently from its control is its design - together with what stands within 15 cm of it, it moves
+    as one group, or stays when any part has to (a full table, a boxed-in spoon, the bowl in the pin's path),
+    so the seed never changes what the variant tests, and the robot starts
     at a random free, reachable cell of the start room with a random yaw (a hidden item is not in the start
-    view; the first `look` target is not behind a wall). Over the 1,270 episodes a moved object shifts 0.25 m
-    (median, 90th percentile 0.92 m) and the start 3.8 m (90th percentile 8.4 m); which removable distractors
+    view; the first `look` target is not behind a wall). Over the 1,270 episodes a moved object shifts 0.21 m
+    (median, 90th percentile 0.86 m) and the start 3.8 m (90th percentile 8.4 m); which removable distractors
     are left out is drawn too;
   - for a variant with several **layouts** (40 variants), which one: the same design with the resource,
     substitute or item in another place, or an event taking it elsewhere (e.g. the cup in cabinet 4 or in
