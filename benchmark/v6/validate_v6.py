@@ -2,7 +2,7 @@
 
     python benchmark/v6/validate_v6.py            # writes benchmark/v6/STATIC.json, exit 1 on any problem
 
-Checks, per formal family and per episode of its seed manifest (seed -> concrete variant):
+Checks, per variant and per episode of its seed manifest (seed -> concrete variant):
 
 * **v5 preserved** - every v5 formal variant keeps the configuration hash FREEZE.json records for each seed;
 * **configuration / route / failures / geometry** - benchmark.v5.validate.check_variant on the episode's
@@ -13,10 +13,10 @@ Checks, per formal family and per episode of its seed manifest (seed -> concrete
 * **persistent failures** - every matching call the route makes while a persistent failure holds is marked to
   fail, every later one (``until_moved``: after the obstruction is moved) succeeds or is absent;
 * **seed manifest** - deterministic (recomputed), balanced, every case exercised;
-* **decision diversity** - the cases of a multi-case family differ in their oracle route;
-* **distinct configurations** - no two families of a task share a configuration at seed 10;
-* **spec card** - every new family names its challenge, rationale and control;
-* **tracks** - every family is in exactly the tracks its content calls for (``tracks.py``).
+* **decision diversity** - the layouts of a multi-layout variant differ in their oracle route;
+* **distinct configurations** - no two variants of a task share a configuration at seed 10;
+* **spec card** - every new variant names its challenge, rationale and control;
+* **tracks** - every variant is in exactly the tracks its content calls for (``tracks.py``).
 """
 from __future__ import annotations
 
@@ -66,12 +66,12 @@ def variant_problems(t, vid, contracts, assets, seeds):
 
 def track_problems(t, contracts, assets):
     """Task-Level projections (``<vid>__tl``): the v5 per-variant rules on their seeds, persistent-failure
-    consistency, no transient action failure left; every family in exactly the tracks its content calls for."""
+    consistency, no transient action failure left; every variant in exactly the tracks its content calls for."""
     from benchmark.v6.tracks import content, transient
     out = []
     tr = t["v6_tracks"]
     for fam, x in tr["task"].items():
-        for v in x["cases"]:
+        for v in x["layouts"]:
             if any(transient(f) for f in t["variants"][v].get("failures") or []):
                 out.append({"family": fam, "seed": None, "problem": f"task track: {v} keeps a transient action failure"})
             if not v.endswith("__tl"):
@@ -86,8 +86,8 @@ def track_problems(t, contracts, assets):
                         "problem": "action track without a transient action failure or a local-repair condition"})
     placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | \
         {m for x in tr["task"].values() for m in x.get("merged", [])}
-    for fam, info in t["v6_families"].items():
-        kinds = [content(t, v) for v in info["cases"]]
+    for fam, info in t["v6_variants"].items():
+        kinds = [content(t, v) for v in info["layouts"]]
         want = {k for k, on in (("task", any(k[0] for k in kinds)), ("action", any(k[1] for k in kinds))) if on}
         merged = any(fam in x.get("merged", []) for x in tr["task"].values())
         have = {k for k in ("task", "action") if fam in tr[k]} | ({"task"} if merged else set())
@@ -105,14 +105,14 @@ def main():
     contracts = {c["verb"]: c for c in json.loads((ROOT / "contract_library/skill_contracts.json").read_text())["contracts"]}
     assets = json.loads((ROOT / "annotations/assets.json").read_text())
     frozen = json.loads((ROOT / "benchmark/v5/FREEZE.json").read_text())["episodes"]
-    out = {"families": 0, "episodes": 0, "static_ok": 0, "problems": [], "per_task": {}, "v5_hashes_checked": 0,
+    out = {"variants": 0, "episodes": 0, "static_ok": 0, "problems": [], "per_task": {}, "v5_hashes_checked": 0,
            "tracks": {}}
     for t in doc["tasks"]:
         tid = t["task_id"]
         n_ok = n_ep = 0
         hashes = defaultdict(list)
-        for fam, info in t["v6_families"].items():
-            out["families"] += 1
+        for fam, info in t["v6_variants"].items():
+            out["variants"] += 1
             probs = []
             if info["origin"] == "v5":
                 for s in SEEDS:                  # the v5 variant itself: unchanged for every seed
@@ -120,27 +120,27 @@ def main():
                     out["v5_hashes_checked"] += 1
                     if frozen.get(f"{tid}/{fam}/{s}") != h:
                         probs.append((s, f"v5 configuration hash changed ({h})"))
-                for v in info["cases"][1:]:      # seed extension: a second case, checked like a new variant
+                for v in info["layouts"][1:]:      # seed extension: a second case, checked like a new variant
                     seeds = sorted(int(s) for s, x in info["seeds"].items() if x == v)
                     probs += [(s, f"{v}: {p}") for s, p in variant_problems(t, v, contracts, assets, seeds)]
-                if len(info["cases"]) > 1:
-                    if {str(k): v for k, v in seed_cases(tid, fam, info["cases"]).items()} != \
+                if len(info["layouts"]) > 1:
+                    if {str(k): v for k, v in seed_cases(tid, fam, info["layouts"]).items()} != \
                             {str(k): v for k, v in info["seeds"].items()}:
                         probs.append((None, "seed manifest is not the deterministic assignment"))
-                    if len({route_sig(t["routes"][t["oracle"][v]]["steps"]) for v in info["cases"]}) < len(info["cases"]):
-                        probs.append((None, "two cases share one oracle route"))
+                    if len({route_sig(t["routes"][t["oracle"][v]]["steps"]) for v in info["layouts"]}) < len(info["layouts"]):
+                        probs.append((None, "two layouts share one oracle route"))
                 hashes[episode_config(t, 10, fam)["config_hash"]].append(fam)
             else:
-                if {str(k): v for k, v in seed_cases(tid, fam, info["cases"]).items()} != \
+                if {str(k): v for k, v in seed_cases(tid, fam, info["layouts"]).items()} != \
                         {str(k): v for k, v in info["seeds"].items()}:
                     probs.append((None, "seed manifest is not the deterministic assignment"))
                 cnt = Counter(info["seeds"].values())
-                if set(cnt) != set(info["cases"]) or max(cnt.values()) - min(cnt.values()) > 1:
+                if set(cnt) != set(info["layouts"]) or max(cnt.values()) - min(cnt.values()) > 1:
                     probs.append((None, f"unbalanced seed manifest {dict(cnt)}"))
-                sigs = {route_sig(t["routes"][t["oracle"][v]]["steps"]) for v in info["cases"]}
-                if len(info["cases"]) > 1 and len(sigs) < len(info["cases"]):
-                    probs.append((None, "two cases share one oracle route (no decision difference)"))
-                for v in info["cases"]:
+                sigs = {route_sig(t["routes"][t["oracle"][v]]["steps"]) for v in info["layouts"]}
+                if len(info["layouts"]) > 1 and len(sigs) < len(info["layouts"]):
+                    probs.append((None, "two layouts share one oracle route (no decision difference)"))
+                for v in info["layouts"]:
                     meta = t["variants"][v].get("v6") or {}
                     for k in ("challenge", "rationale", "control"):
                         if not meta.get(k):
@@ -149,7 +149,7 @@ def main():
                         probs.append((None, f"{v}: {p}"))
                     seeds = sorted(int(s) for s, x in info["seeds"].items() if x == v)
                     probs += [(s, f"{v}: {p}") for s, p in variant_problems(t, v, contracts, assets, seeds)]
-                hashes[episode_config(t, 10, info["cases"][0])["config_hash"]].append(fam)
+                hashes[episode_config(t, 10, info["layouts"][0])["config_hash"]].append(fam)
             n = len(info["seeds"])
             n_ep += n
             bad = {s for s, _ in probs}
@@ -162,16 +162,16 @@ def main():
         for p in track_problems(t, contracts, assets):
             out["problems"].append({"task": tid, **p})
         for k in ("action", "task"):
-            tr = out["tracks"].setdefault(k, {"families": 0, "episodes": 0})
-            tr["families"] += len(t["v6_tracks"][k])
+            tr = out["tracks"].setdefault(k, {"variants": 0, "episodes": 0})
+            tr["variants"] += len(t["v6_tracks"][k])
             tr["episodes"] += sum(len(x["seeds"]) for x in t["v6_tracks"][k].values())
-        out["tracks"].setdefault("controls", {"families": 0})["families"] += len(t["v6_tracks"]["controls"])
+        out["tracks"].setdefault("controls", {"variants": 0})["variants"] += len(t["v6_tracks"]["controls"])
         out["per_task"][tid] = {"episodes": n_ep, "static_ok": n_ok}
         out["episodes"] += n_ep
         out["static_ok"] += n_ok
     out["tasks_sha1"] = hashlib.sha1(TASKS.read_bytes()).hexdigest()
     OUT.write_text(json.dumps(out, indent=1))
-    print(f"static: {out['families']} families, {out['episodes']} episodes, {out['static_ok']} statically ok, "
+    print(f"static: {out['variants']} variants, {out['episodes']} episodes, {out['static_ok']} statically ok, "
           f"{len(out['problems'])} problems; v5 hashes checked {out['v5_hashes_checked']}")
     for p in out["problems"][:60]:
         print("  ", p)

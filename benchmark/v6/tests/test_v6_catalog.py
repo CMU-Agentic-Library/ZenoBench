@@ -38,23 +38,23 @@ def test_v5_configurations_and_routes_unchanged():
 
 def test_every_family_has_ten_reproducible_seeds():
     for tid, t in TASKS.items():
-        for fam, info in t["v6_families"].items():
+        for fam, info in t["v6_variants"].items():
             seeds = {int(k): v for k, v in info["seeds"].items()}
             assert sorted(seeds) == SEEDS
-            if info["origin"] == "v6" or len(info["cases"]) > 1:
-                assert seeds == seed_cases(tid, fam, info["cases"])
+            if info["origin"] == "v6" or len(info["layouts"]) > 1:
+                assert seeds == seed_cases(tid, fam, info["layouts"])
                 c = Counter(seeds.values())
-                assert set(c) == set(info["cases"]) and max(c.values()) - min(c.values()) <= 1
+                assert set(c) == set(info["layouts"]) and max(c.values()) - min(c.values()) <= 1
             for s, v in list(seeds.items())[:2]:
                 assert episode_config(t, s, v)["config_hash"] == episode_config(t, s, v)["config_hash"]
 
 
 def test_cases_differ_in_decision():
     for t in TASKS.values():
-        for fam, info in t["v6_families"].items():
-            if len(info["cases"]) > 1:
-                routes = {json.dumps(t["routes"][t["oracle"][v]]["steps"], sort_keys=True) for v in info["cases"]}
-                assert len(routes) == len(info["cases"]), fam
+        for fam, info in t["v6_variants"].items():
+            if len(info["layouts"]) > 1:
+                routes = {json.dumps(t["routes"][t["oracle"][v]]["steps"], sort_keys=True) for v in info["layouts"]}
+                assert len(routes) == len(info["layouts"]), fam
                 assert info.get("factor"), fam
 
 
@@ -70,13 +70,13 @@ def test_static_report_is_current_and_clean():
     import hashlib
     st = json.loads((ROOT / "benchmark/v6/STATIC.json").read_text())
     assert st["tasks_sha1"] == hashlib.sha1((ROOT / "benchmark/v6/tasks.json").read_bytes()).hexdigest()
-    assert st["problems"] == [] and st["static_ok"] == st["episodes"] == 10 * st["families"]
+    assert st["problems"] == [] and st["static_ok"] == st["episodes"] == 10 * st["variants"]
 
 
 @pytest.mark.parametrize("tid", sorted(TASKS))
 def test_every_new_family_has_a_control_in_the_task(tid):
     t = TASKS[tid]
-    for fam, info in t["v6_families"].items():
+    for fam, info in t["v6_variants"].items():
         if info["origin"] == "v6":
             assert info["control"] in t["variants"], fam
 
@@ -88,16 +88,16 @@ def test_every_family_is_placed_in_its_tracks():
         tr = t["v6_tracks"]
         merged = {m for x in tr["task"].values() for m in x.get("merged", [])}
         placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | merged
-        assert placed == set(t["v6_families"]), tid
+        assert placed == set(t["v6_variants"]), tid
         assert not set(tr["controls"]) & (set(tr["task"]) | set(tr["action"])), tid
         for fam, x in tr["action"].items():
             assert x["sub"] in SUBCATEGORIES, (tid, fam)
             assert x["action_failures"] or x["local_conditions"], (tid, fam)
         for fam, x in tr["task"].items():
-            for v in x["cases"]:
+            for v in x["layouts"]:
                 assert not any(transient(f) for f in t["variants"][v].get("failures") or []), (tid, fam, v)
         for fam in tr["controls"]:
-            for v in t["v6_families"][fam]["cases"]:
+            for v in t["v6_variants"][fam]["layouts"]:
                 assert content(t, v) == (False, False), (tid, fam, v)
                 assert not t["variants"][v].get("failures"), (tid, fam, v)
 
@@ -129,7 +129,7 @@ def test_projection_drops_only_transient_failures():
     n = 0
     for tid, t in TASKS.items():
         for fam, x in t["v6_tracks"]["task"].items():
-            for v in x["cases"]:
+            for v in x["layouts"]:
                 p = t["variants"][v].get("track_projection")
                 if not p:
                     continue

@@ -4,14 +4,15 @@
     python benchmark/v6/define_tasks_v6.py --check    # fails if tasks.json is not up to date
 
 v5 (benchmark/v5/tasks.json) is copied as it is: every v5 variant keeps its configuration, so every v5 episode
-hash stays valid (tests/test_v6_catalog.py checks it).  v6 adds **families** of new variants.  A family is one
-design (one challenge); its **cases** are decision instances: each case changes a
-decision-relevant fact (which substitute exists and where, which container holds the item, which object the
-event takes away) and therefore its oracle route.  Seeds 10-19 are assigned to the cases of a family
-deterministically and balanced (``v6_families[fam]["seeds"]``); a case is a concrete variant
-``<family>__<case>`` with its own configuration and route.  A family with one case is a plain variant.
+hash stays valid (tests/test_v6_catalog.py checks it).  v6 adds new **variants** (``v6_variants``).  A
+variant is one task design (failures, conditions, substitutes, goal); its seeds 10-19 set the layout: the
+seeded shift of objects and start (``vary``) and, for a variant with several **layouts** (the resource,
+substitute or item in another place), which layout (``v6_variants[vid]["seeds"]``, deterministic and
+balanced).  A layout is a concrete configuration ``<variant>__<layout>`` with its own oracle route.  Design
+input below still lists them as ``cases``; a family in ``SPLIT`` (cases that differ in the design) becomes
+one variant per case.
 
-Every new family states, besides its overlay / failures / route:
+Every new design states, besides its overlay / failures / route:
 
 * ``challenge``  - what the planner meets; ``rationale`` - why a plan has to change and why it stays solvable;
 * ``control``    - the existing variant it differs from in one factor (isolation pairs for the analysis).
@@ -1240,6 +1241,17 @@ def make_variant(t, fam, spec, case, cspec):
     return v
 
 
+# Families whose cases differ in the design (which object blocks, which failure, which subgoal the event undoes,
+# how many places are named), not only in where things are: each case is a variant of its own.  The other
+# multi-case families keep one variant whose seeds choose among layouts (where the resource / substitute /
+# item is, where an event takes it, which bin is full).
+SPLIT = {("T01_book_to_dining_table", "x6_dr_block_on_book"), ("T02_stack_blocks", "x6_cl_block_b_unholdable"),
+         ("T04_cup_or_mug_to_cabinet", "x6_cl_cup_unusable"), ("T04_cup_or_mug_to_cabinet", "x6_dr_spot_filled_dynamic"),
+         ("T09_tomato_soup", "x6_cl_spoon_unholdable"), ("T09_tomato_soup", "x6_pp_tomato_taken_out"),
+         ("T13_breakfast_setup", "x6_pp_spoon_moved"), ("T18_check_cabinet_dishes", "x6_gd_bowl_elsewhere"),
+         ("T20_juice_back_to_table", "x6_cl_bottle_behind_mug")}
+
+
 def build_task(t: dict) -> dict:
     t = copy.deepcopy(t)
     fams = FAMILIES[t["task_id"]](t) if t["task_id"] in FAMILIES else {}
@@ -1248,7 +1260,7 @@ def build_task(t: dict) -> dict:
     easy = t["v5_formal"].get("easy") or []
     for ids in t["v5_formal"].values():
         for vid in ids:
-            families[vid] = {"origin": "v5", "control": easy[0] if easy and easy[0] != vid else None, "cases": [vid],
+            families[vid] = {"origin": "v5", "control": easy[0] if easy and easy[0] != vid else None, "layouts": [vid],
                              "seeds": {s: vid for s in SEEDS}}
             k = SEED_EXT.get((t["task_id"], vid))
             if k is not None:
@@ -1257,8 +1269,8 @@ def build_task(t: dict) -> dict:
                 t["routes"][f"v6_{alt}"] = {"steps": steps, "kind": "v6_seed_extension", "variant": alt}
                 t["oracle"][alt] = f"v6_{alt}"
                 fam = families[vid]
-                fam["cases"] = [vid, alt]
-                fam["seeds"] = seed_cases(t["task_id"], vid, fam["cases"])
+                fam["layouts"] = [vid, alt]
+                fam["seeds"] = seed_cases(t["task_id"], vid, fam["layouts"])
                 fam["factor"] = "where the resource is to be found (seed extension)"
     for fam, spec in fams.items():
         if fam in t["variants"]:
@@ -1272,9 +1284,14 @@ def build_task(t: dict) -> dict:
             t["oracle"][vid] = rname
             t["variants"][vid] = v
             names.append(vid)
-        families[fam] = {"origin": "v6", "control": spec["control"], "cases": names, "factor": spec.get("factor"),
+        if (t["task_id"], fam) in SPLIT:
+            for vid in names:                    # different designs: one variant each, every seed on it
+                families[vid] = {"origin": "v6", "control": spec["control"], "layouts": [vid],
+                                 "seeds": {s: vid for s in SEEDS}}
+            continue
+        families[fam] = {"origin": "v6", "control": spec["control"], "layouts": names, "factor": spec.get("factor"),
                          "seeds": seed_cases(t["task_id"], fam, names)}
-    t["v6_families"] = families
+    t["v6_variants"] = families
     for k in ("v5_formal", "v5_study", "v5_supplementary"):       # v5's tier lists; v6 lists families instead
         t.pop(k, None)
     t["benchmark_version"] = "v6"
@@ -1306,9 +1323,9 @@ def main():
         print("up to date")
         return
     OUT.write_text(text)
-    n_fam = sum(len(t["v6_families"]) for t in doc["tasks"])
-    n_new = sum(1 for t in doc["tasks"] for f in t["v6_families"].values() if f["origin"] == "v6")
-    print(f"wrote {OUT.relative_to(ROOT)}: {len(doc['tasks'])} tasks, {n_fam} families ({n_new} new)")
+    n_fam = sum(len(t["v6_variants"]) for t in doc["tasks"])
+    n_new = sum(1 for t in doc["tasks"] for f in t["v6_variants"].values() if f["origin"] == "v6")
+    print(f"wrote {OUT.relative_to(ROOT)}: {len(doc['tasks'])} tasks, {n_fam} variants ({n_new} new)")
 
 
 if __name__ == "__main__":

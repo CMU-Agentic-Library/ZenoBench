@@ -1,6 +1,6 @@
 # v6 oracle reference routes
 
-One line per concrete variant of each family (`!` expected to fail, `+` recovery step). Seeds: the family's manifest in tasks.json.
+One line per concrete variant of each variant (`!` expected to fail, `+` recovery step). Seeds: the variant's manifest in tasks.json.
 
 ## T01_book_to_dining_table
 

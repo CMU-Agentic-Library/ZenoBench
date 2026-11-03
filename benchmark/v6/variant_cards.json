@@ -1111,16 +1111,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/x6_dr_block_on_book__block": {
-  "family": "x6_dr_block_on_book",
+  "family": "x6_dr_block_on_book__block",
   "tracks": [
    "task"
   ],
   "seeds": [
+   10,
    11,
    12,
+   13,
+   14,
    15,
    16,
-   18
+   17,
+   18,
+   19
   ],
   "instruction": "Someone left their paperback on the kitchen island. Bring it to the dining table so they can read over breakfast.",
   "initial_conditions": {
@@ -1174,15 +1179,20 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/x6_dr_block_on_book__sponge": {
-  "family": "x6_dr_block_on_book",
+  "family": "x6_dr_block_on_book__sponge",
   "tracks": [
    "task"
   ],
   "seeds": [
    10,
+   11,
+   12,
    13,
    14,
+   15,
+   16,
    17,
+   18,
    19
   ],
   "instruction": "Someone left their paperback on the kitchen island. Bring it to the dining table so they can read over breakfast.",
@@ -2043,7 +2053,7 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/x6_cl_block_b_unholdable__grasp": {
-  "family": "x6_cl_block_b_unholdable",
+  "family": "x6_cl_block_b_unholdable__grasp",
   "tracks": [
    "action",
    "task"
@@ -2052,7 +2062,12 @@
    10,
    11,
    12,
+   13,
+   14,
    15,
+   16,
+   17,
+   18,
    19
   ],
   "instruction": "Tidy the toy blocks left on the kitchen island: stack one wooden block on top of the other.",
@@ -2131,17 +2146,22 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/x6_cl_block_b_unholdable__ik": {
-  "family": "x6_cl_block_b_unholdable",
+  "family": "x6_cl_block_b_unholdable__ik",
   "tracks": [
    "action",
    "task"
   ],
   "seeds": [
+   10,
+   11,
+   12,
    13,
    14,
+   15,
    16,
    17,
-   18
+   18,
+   19
   ],
   "instruction": "Tidy the toy blocks left on the kitchen island: stack one wooden block on top of the other.",
   "initial_conditions": {
@@ -4519,16 +4539,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/x6_cl_cup_unusable__slip": {
-  "family": "x6_cl_cup_unusable",
+  "family": "x6_cl_cup_unusable__slip",
   "tracks": [
    "action",
    "task"
   ],
   "seeds": [
    10,
+   11,
+   12,
    13,
+   14,
    15,
    16,
+   17,
+   18,
    19
   ],
   "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
@@ -4615,17 +4640,22 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/x6_cl_cup_unusable__ik_mug_away": {
-  "family": "x6_cl_cup_unusable",
+  "family": "x6_cl_cup_unusable__ik_mug_away",
   "tracks": [
    "action",
    "task"
   ],
   "seeds": [
+   10,
    11,
    12,
+   13,
    14,
+   15,
+   16,
    17,
-   18
+   18,
+   19
   ],
   "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
   "initial_conditions": {
@@ -4713,16 +4743,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/x6_dr_spot_filled_dynamic__bowl": {
-  "family": "x6_dr_spot_filled_dynamic",
+  "family": "x6_dr_spot_filled_dynamic__bowl",
   "tracks": [
    "task"
   ],
   "seeds": [
    10,
+   11,
+   12,
+   13,
    14,
    15,
    16,
-   18
+   17,
+   18,
+   19
   ],
   "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
   "initial_conditions": {
@@ -4842,15 +4877,20 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/x6_dr_spot_filled_dynamic__block": {
-  "family": "x6_dr_spot_filled_dynamic",
+  "family": "x6_dr_spot_filled_dynamic__block",
   "tracks": [
    "task"
   ],
   "seeds": [
+   10,
    11,
    12,
    13,
+   14,
+   15,
+   16,
    17,
+   18,
    19
   ],
   "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
@@ -11564,17 +11604,22 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/x6_cl_spoon_unholdable__spoon_cabinet": {
-  "family": "x6_cl_spoon_unholdable",
+  "family": "x6_cl_spoon_unholdable__spoon_cabinet",
   "tracks": [
    "action",
    "task"
   ],
   "seeds": [
+   10,
    11,
    12,
+   13,
    14,
    15,
-   16
+   16,
+   17,
+   18,
+   19
   ],
   "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
@@ -11669,14 +11714,19 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/x6_cl_spoon_unholdable__spoon_dining": {
-  "family": "x6_cl_spoon_unholdable",
+  "family": "x6_cl_spoon_unholdable__spoon_dining",
   "tracks": [
    "action",
    "task"
   ],
   "seeds": [
    10,
+   11,
+   12,
    13,
+   14,
+   15,
+   16,
    17,
    18,
    19
@@ -12366,14 +12416,20 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/x6_pp_tomato_taken_out__tomato2": {
-  "family": "x6_pp_tomato_taken_out",
+  "family": "x6_pp_tomato_taken_out__tomato2",
   "tracks": [
    "task"
   ],
   "seeds": [
+   10,
    11,
+   12,
    13,
+   14,
    15,
+   16,
+   17,
+   18,
    19
   ],
   "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
@@ -12466,14 +12522,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/x6_pp_tomato_taken_out__tomato1": {
-  "family": "x6_pp_tomato_taken_out",
+  "family": "x6_pp_tomato_taken_out__tomato1",
   "tracks": [
    "task"
   ],
   "seeds": [
+   10,
+   11,
    12,
+   13,
+   14,
+   15,
+   16,
    17,
-   18
+   18,
+   19
   ],
   "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
@@ -12565,14 +12628,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/x6_pp_tomato_taken_out__tomato2_after_stir": {
-  "family": "x6_pp_tomato_taken_out",
+  "family": "x6_pp_tomato_taken_out__tomato2_after_stir",
   "tracks": [
    "task"
   ],
   "seeds": [
    10,
+   11,
+   12,
+   13,
    14,
-   16
+   15,
+   16,
+   17,
+   18,
+   19
   ],
   "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
@@ -18691,15 +18761,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T13_breakfast_setup/x6_pp_spoon_moved__early": {
-  "family": "x6_pp_spoon_moved",
+  "family": "x6_pp_spoon_moved__early",
   "tracks": [
    "task"
   ],
   "seeds": [
+   10,
    11,
+   12,
+   13,
+   14,
    15,
    16,
-   18
+   17,
+   18,
+   19
   ],
   "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
   "initial_conditions": {
@@ -18810,14 +18886,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T13_breakfast_setup/x6_pp_spoon_moved__table_end": {
-  "family": "x6_pp_spoon_moved",
+  "family": "x6_pp_spoon_moved__table_end",
   "tracks": [
    "task"
   ],
   "seeds": [
    10,
+   11,
+   12,
    13,
-   14
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
   ],
   "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
   "initial_conditions": {
@@ -18928,13 +19011,20 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T13_breakfast_setup/x6_pp_spoon_moved__tv_stand": {
-  "family": "x6_pp_spoon_moved",
+  "family": "x6_pp_spoon_moved__tv_stand",
   "tracks": [
    "task"
   ],
   "seeds": [
+   10,
+   11,
    12,
+   13,
+   14,
+   15,
+   16,
    17,
+   18,
    19
   ],
   "instruction": "Set the dining table for breakfast. The spoon is already there; bring a bowl and a cup and put them next to it. A mug is fine if there is no cup.",
@@ -22899,16 +22989,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T18_check_cabinet_dishes/x6_gd_bowl_elsewhere__two_places": {
-  "family": "x6_gd_bowl_elsewhere",
+  "family": "x6_gd_bowl_elsewhere__two_places",
   "tracks": [
    "task"
   ],
   "seeds": [
    10,
    11,
+   12,
    13,
+   14,
    15,
-   17
+   16,
+   17,
+   18,
+   19
   ],
   "instruction": "Grandma wants to know whether there is still a clean plate and bowl for dinner, in the low wall cabinet or the microwave. Have a look and close every door properly afterwards.",
   "initial_conditions": {
@@ -22973,14 +23068,19 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T18_check_cabinet_dishes/x6_gd_bowl_elsewhere__three_places": {
-  "family": "x6_gd_bowl_elsewhere",
+  "family": "x6_gd_bowl_elsewhere__three_places",
   "tracks": [
    "task"
   ],
   "seeds": [
+   10,
+   11,
    12,
+   13,
    14,
+   15,
    16,
+   17,
    18,
    19
   ],
@@ -25479,15 +25579,20 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T20_juice_back_to_table/x6_cl_bottle_behind_mug__mug": {
-  "family": "x6_cl_bottle_behind_mug",
+  "family": "x6_cl_bottle_behind_mug__mug",
   "tracks": [
    "task"
   ],
   "seeds": [
+   10,
    11,
    12,
+   13,
+   14,
    15,
+   16,
    17,
+   18,
    19
   ],
   "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
@@ -25559,16 +25664,21 @@
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T20_juice_back_to_table/x6_cl_bottle_behind_mug__bowl": {
-  "family": "x6_cl_bottle_behind_mug",
+  "family": "x6_cl_bottle_behind_mug__bowl",
   "tracks": [
    "task"
   ],
   "seeds": [
    10,
+   11,
+   12,
    13,
    14,
+   15,
    16,
-   18
+   17,
+   18,
+   19
   ],
   "instruction": "Someone took the juice bottle off the breakfast table and left it somewhere. Put it back on the dining table, standing up.",
   "initial_conditions": {

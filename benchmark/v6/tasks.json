@@ -3884,11 +3884,11 @@
     "spoon_target_table",
     "clutter_cereal_b"
    ],
-   "v6_families": {
+   "v6_variants": {
     "overhang_ready": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "overhang_ready"
      ],
      "seeds": {
@@ -3907,7 +3907,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -3926,7 +3926,7 @@
     "no_overhang": {
      "origin": "v5",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "no_overhang"
      ],
      "seeds": {
@@ -3945,7 +3945,7 @@
     "far_no_overhang": {
      "origin": "v5",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "far_no_overhang"
      ],
      "seeds": {
@@ -3964,7 +3964,7 @@
     "m_ik_pick": {
      "origin": "v5",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "m_ik_pick"
      ],
      "seeds": {
@@ -3983,7 +3983,7 @@
     "table_set": {
      "origin": "v5",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "table_set"
      ],
      "seeds": {
@@ -4002,7 +4002,7 @@
     "h_action_ik_pick_and_place": {
      "origin": "v5",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "h_action_ik_pick_and_place"
      ],
      "seeds": {
@@ -4021,7 +4021,7 @@
     "h_mixed_table_set_ik": {
      "origin": "v5",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "h_mixed_table_set_ik"
      ],
      "seeds": {
@@ -4040,7 +4040,7 @@
     "h_dynamic_pushed_back": {
      "origin": "v5",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "h_dynamic_pushed_back"
      ],
      "seeds": {
@@ -4059,7 +4059,7 @@
     "x6_sr_two_hand_carry": {
      "origin": "v6",
      "control": "x6_m_slip_book",
-     "cases": [
+     "layouts": [
       "x6_sr_two_hand_carry"
      ],
      "factor": null,
@@ -4079,7 +4079,7 @@
     "x6_m_slip_book": {
      "origin": "v6",
      "control": "overhang_ready",
-     "cases": [
+     "layouts": [
       "x6_m_slip_book"
      ],
      "factor": null,
@@ -4096,24 +4096,41 @@
       "19": "x6_m_slip_book"
      }
     },
-    "x6_dr_block_on_book": {
+    "x6_dr_block_on_book__block": {
      "origin": "v6",
      "control": "overhang_ready",
-     "cases": [
-      "x6_dr_block_on_book__block",
-      "x6_dr_block_on_book__sponge"
+     "layouts": [
+      "x6_dr_block_on_book__block"
      ],
-     "factor": "which object lies on the book (blocking relation)",
      "seeds": {
-      "10": "x6_dr_block_on_book__sponge",
+      "10": "x6_dr_block_on_book__block",
       "11": "x6_dr_block_on_book__block",
       "12": "x6_dr_block_on_book__block",
-      "13": "x6_dr_block_on_book__sponge",
-      "14": "x6_dr_block_on_book__sponge",
+      "13": "x6_dr_block_on_book__block",
+      "14": "x6_dr_block_on_book__block",
       "15": "x6_dr_block_on_book__block",
       "16": "x6_dr_block_on_book__block",
-      "17": "x6_dr_block_on_book__sponge",
+      "17": "x6_dr_block_on_book__block",
       "18": "x6_dr_block_on_book__block",
+      "19": "x6_dr_block_on_book__block"
+     }
+    },
+    "x6_dr_block_on_book__sponge": {
+     "origin": "v6",
+     "control": "overhang_ready",
+     "layouts": [
+      "x6_dr_block_on_book__sponge"
+     ],
+     "seeds": {
+      "10": "x6_dr_block_on_book__sponge",
+      "11": "x6_dr_block_on_book__sponge",
+      "12": "x6_dr_block_on_book__sponge",
+      "13": "x6_dr_block_on_book__sponge",
+      "14": "x6_dr_block_on_book__sponge",
+      "15": "x6_dr_block_on_book__sponge",
+      "16": "x6_dr_block_on_book__sponge",
+      "17": "x6_dr_block_on_book__sponge",
+      "18": "x6_dr_block_on_book__sponge",
       "19": "x6_dr_block_on_book__sponge"
      }
     }
@@ -4126,7 +4143,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "no_overhang"
       ],
       "seeds": {
@@ -4152,7 +4169,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "far_no_overhang"
       ],
       "seeds": {
@@ -4178,7 +4195,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_pick"
       ],
       "seeds": {
@@ -4204,7 +4221,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_pick_and_place"
       ],
       "seeds": {
@@ -4231,7 +4248,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_table_set_ik"
       ],
       "seeds": {
@@ -4257,7 +4274,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_sr_two_hand_carry"
       ],
       "seeds": {
@@ -4283,7 +4300,7 @@
        "slip"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_slip_book"
       ],
       "seeds": {
@@ -4307,7 +4324,7 @@
     "task": {
      "far_no_overhang": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "far_no_overhang"
       ],
       "seeds": {
@@ -4326,7 +4343,7 @@
      },
      "table_set": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "table_set"
       ],
       "seeds": {
@@ -4345,7 +4362,7 @@
      },
      "h_action_ik_pick_and_place": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_ik_pick_and_place__tl"
       ],
       "seeds": {
@@ -4364,7 +4381,7 @@
      },
      "h_mixed_table_set_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_table_set_ik__tl"
       ],
       "seeds": {
@@ -4383,7 +4400,7 @@
      },
      "h_dynamic_pushed_back": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_pushed_back"
       ],
       "seeds": {
@@ -4402,7 +4419,7 @@
      },
      "x6_sr_two_hand_carry": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_sr_two_hand_carry__tl"
       ],
       "seeds": {
@@ -4419,22 +4436,40 @@
       },
       "projected": true
      },
-     "x6_dr_block_on_book": {
+     "x6_dr_block_on_book__block": {
       "timing": "initial",
-      "cases": [
-       "x6_dr_block_on_book__block",
+      "layouts": [
+       "x6_dr_block_on_book__block"
+      ],
+      "seeds": {
+       "10": "x6_dr_block_on_book__block",
+       "11": "x6_dr_block_on_book__block",
+       "12": "x6_dr_block_on_book__block",
+       "13": "x6_dr_block_on_book__block",
+       "14": "x6_dr_block_on_book__block",
+       "15": "x6_dr_block_on_book__block",
+       "16": "x6_dr_block_on_book__block",
+       "17": "x6_dr_block_on_book__block",
+       "18": "x6_dr_block_on_book__block",
+       "19": "x6_dr_block_on_book__block"
+      },
+      "projected": false
+     },
+     "x6_dr_block_on_book__sponge": {
+      "timing": "initial",
+      "layouts": [
        "x6_dr_block_on_book__sponge"
       ],
       "seeds": {
        "10": "x6_dr_block_on_book__sponge",
-       "11": "x6_dr_block_on_book__block",
-       "12": "x6_dr_block_on_book__block",
+       "11": "x6_dr_block_on_book__sponge",
+       "12": "x6_dr_block_on_book__sponge",
        "13": "x6_dr_block_on_book__sponge",
        "14": "x6_dr_block_on_book__sponge",
-       "15": "x6_dr_block_on_book__block",
-       "16": "x6_dr_block_on_book__block",
+       "15": "x6_dr_block_on_book__sponge",
+       "16": "x6_dr_block_on_book__sponge",
        "17": "x6_dr_block_on_book__sponge",
-       "18": "x6_dr_block_on_book__block",
+       "18": "x6_dr_block_on_book__sponge",
        "19": "x6_dr_block_on_book__sponge"
       },
       "projected": false
@@ -8083,11 +8118,11 @@
     "kitchen_island/top",
     "tv_stand_2/top"
    ],
-   "v6_families": {
+   "v6_variants": {
     "clear": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "clear"
      ],
      "seeds": {
@@ -8106,7 +8141,7 @@
     "e2_from_wall_cabinet": {
      "origin": "v5",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "e2_from_wall_cabinet"
      ],
      "seeds": {
@@ -8125,7 +8160,7 @@
     "crowded": {
      "origin": "v5",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "crowded"
      ],
      "seeds": {
@@ -8144,7 +8179,7 @@
     "far_crowded": {
      "origin": "v5",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "far_crowded"
      ],
      "seeds": {
@@ -8163,7 +8198,7 @@
     "m_grasp_b": {
      "origin": "v5",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "m_grasp_b"
      ],
      "seeds": {
@@ -8182,7 +8217,7 @@
     "edge_base": {
      "origin": "v5",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "edge_base"
      ],
      "seeds": {
@@ -8201,7 +8236,7 @@
     "h_action_grasp_and_ik": {
      "origin": "v5",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "h_action_grasp_and_ik"
      ],
      "seeds": {
@@ -8220,7 +8255,7 @@
     "h_mixed_edge_base_grasp": {
      "origin": "v5",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "h_mixed_edge_base_grasp"
      ],
      "seeds": {
@@ -8239,7 +8274,7 @@
     "h_dynamic_base_moved_to_edge": {
      "origin": "v5",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "h_dynamic_base_moved_to_edge"
      ],
      "seeds": {
@@ -8258,7 +8293,7 @@
     "x6_cl_base_a_unreachable": {
      "origin": "v6",
      "control": "clear",
-     "cases": [
+     "layouts": [
       "x6_cl_base_a_unreachable"
      ],
      "factor": null,
@@ -8275,31 +8310,48 @@
       "19": "x6_cl_base_a_unreachable"
      }
     },
-    "x6_cl_block_b_unholdable": {
+    "x6_cl_block_b_unholdable__grasp": {
      "origin": "v6",
      "control": "m_grasp_b",
-     "cases": [
-      "x6_cl_block_b_unholdable__grasp",
-      "x6_cl_block_b_unholdable__ik"
+     "layouts": [
+      "x6_cl_block_b_unholdable__grasp"
      ],
-     "factor": "failure mechanism (grasp slip vs reach)",
      "seeds": {
       "10": "x6_cl_block_b_unholdable__grasp",
       "11": "x6_cl_block_b_unholdable__grasp",
       "12": "x6_cl_block_b_unholdable__grasp",
+      "13": "x6_cl_block_b_unholdable__grasp",
+      "14": "x6_cl_block_b_unholdable__grasp",
+      "15": "x6_cl_block_b_unholdable__grasp",
+      "16": "x6_cl_block_b_unholdable__grasp",
+      "17": "x6_cl_block_b_unholdable__grasp",
+      "18": "x6_cl_block_b_unholdable__grasp",
+      "19": "x6_cl_block_b_unholdable__grasp"
+     }
+    },
+    "x6_cl_block_b_unholdable__ik": {
+     "origin": "v6",
+     "control": "m_grasp_b",
+     "layouts": [
+      "x6_cl_block_b_unholdable__ik"
+     ],
+     "seeds": {
+      "10": "x6_cl_block_b_unholdable__ik",
+      "11": "x6_cl_block_b_unholdable__ik",
+      "12": "x6_cl_block_b_unholdable__ik",
       "13": "x6_cl_block_b_unholdable__ik",
       "14": "x6_cl_block_b_unholdable__ik",
-      "15": "x6_cl_block_b_unholdable__grasp",
+      "15": "x6_cl_block_b_unholdable__ik",
       "16": "x6_cl_block_b_unholdable__ik",
       "17": "x6_cl_block_b_unholdable__ik",
       "18": "x6_cl_block_b_unholdable__ik",
-      "19": "x6_cl_block_b_unholdable__grasp"
+      "19": "x6_cl_block_b_unholdable__ik"
      }
     },
     "x6_gd_tower_with_event": {
      "origin": "v6",
      "control": "edge_base",
-     "cases": [
+     "layouts": [
       "x6_gd_tower_with_event__tv_stand",
       "x6_gd_tower_with_event__dining"
      ],
@@ -8326,7 +8378,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "crowded"
       ],
       "seeds": {
@@ -8352,7 +8404,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "far_crowded"
       ],
       "seeds": {
@@ -8378,7 +8430,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_grasp_b"
       ],
       "seeds": {
@@ -8404,7 +8456,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik"
       ],
       "seeds": {
@@ -8431,7 +8483,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_edge_base_grasp"
       ],
       "seeds": {
@@ -8457,7 +8509,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_cl_base_a_unreachable"
       ],
       "seeds": {
@@ -8477,27 +8529,52 @@
       ],
       "local_conditions": []
      },
-     "x6_cl_block_b_unholdable": {
+     "x6_cl_block_b_unholdable__grasp": {
       "sub": "AL-IK",
       "mechanisms": [
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
-       "x6_cl_block_b_unholdable__grasp",
-       "x6_cl_block_b_unholdable__ik"
+      "layouts": [
+       "x6_cl_block_b_unholdable__grasp"
       ],
       "seeds": {
        "10": "x6_cl_block_b_unholdable__grasp",
        "11": "x6_cl_block_b_unholdable__grasp",
        "12": "x6_cl_block_b_unholdable__grasp",
+       "13": "x6_cl_block_b_unholdable__grasp",
+       "14": "x6_cl_block_b_unholdable__grasp",
+       "15": "x6_cl_block_b_unholdable__grasp",
+       "16": "x6_cl_block_b_unholdable__grasp",
+       "17": "x6_cl_block_b_unholdable__grasp",
+       "18": "x6_cl_block_b_unholdable__grasp",
+       "19": "x6_cl_block_b_unholdable__grasp"
+      },
+      "action_failures": [
+       "ik_stack_wooden_block_a"
+      ],
+      "local_conditions": []
+     },
+     "x6_cl_block_b_unholdable__ik": {
+      "sub": "AL-IK",
+      "mechanisms": [
+       "ik"
+      ],
+      "with_task_content": true,
+      "layouts": [
+       "x6_cl_block_b_unholdable__ik"
+      ],
+      "seeds": {
+       "10": "x6_cl_block_b_unholdable__ik",
+       "11": "x6_cl_block_b_unholdable__ik",
+       "12": "x6_cl_block_b_unholdable__ik",
        "13": "x6_cl_block_b_unholdable__ik",
        "14": "x6_cl_block_b_unholdable__ik",
-       "15": "x6_cl_block_b_unholdable__grasp",
+       "15": "x6_cl_block_b_unholdable__ik",
        "16": "x6_cl_block_b_unholdable__ik",
        "17": "x6_cl_block_b_unholdable__ik",
        "18": "x6_cl_block_b_unholdable__ik",
-       "19": "x6_cl_block_b_unholdable__grasp"
+       "19": "x6_cl_block_b_unholdable__ik"
       },
       "action_failures": [
        "ik_stack_wooden_block_a"
@@ -8508,7 +8585,7 @@
     "task": {
      "far_crowded": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "far_crowded"
       ],
       "seeds": {
@@ -8527,7 +8604,7 @@
      },
      "edge_base": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "edge_base"
       ],
       "seeds": {
@@ -8546,7 +8623,7 @@
      },
      "h_action_grasp_and_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik__tl"
       ],
       "seeds": {
@@ -8565,7 +8642,7 @@
      },
      "h_mixed_edge_base_grasp": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_edge_base_grasp__tl"
       ],
       "seeds": {
@@ -8584,7 +8661,7 @@
      },
      "h_dynamic_base_moved_to_edge": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_base_moved_to_edge"
       ],
       "seeds": {
@@ -8603,7 +8680,7 @@
      },
      "x6_cl_base_a_unreachable": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_base_a_unreachable__tl"
       ],
       "seeds": {
@@ -8620,29 +8697,47 @@
       },
       "projected": true
      },
-     "x6_cl_block_b_unholdable": {
+     "x6_cl_block_b_unholdable__grasp": {
       "timing": "initial",
-      "cases": [
-       "x6_cl_block_b_unholdable__grasp__tl",
-       "x6_cl_block_b_unholdable__ik__tl"
+      "layouts": [
+       "x6_cl_block_b_unholdable__grasp__tl"
       ],
       "seeds": {
        "10": "x6_cl_block_b_unholdable__grasp__tl",
        "11": "x6_cl_block_b_unholdable__grasp__tl",
        "12": "x6_cl_block_b_unholdable__grasp__tl",
+       "13": "x6_cl_block_b_unholdable__grasp__tl",
+       "14": "x6_cl_block_b_unholdable__grasp__tl",
+       "15": "x6_cl_block_b_unholdable__grasp__tl",
+       "16": "x6_cl_block_b_unholdable__grasp__tl",
+       "17": "x6_cl_block_b_unholdable__grasp__tl",
+       "18": "x6_cl_block_b_unholdable__grasp__tl",
+       "19": "x6_cl_block_b_unholdable__grasp__tl"
+      },
+      "projected": true
+     },
+     "x6_cl_block_b_unholdable__ik": {
+      "timing": "initial",
+      "layouts": [
+       "x6_cl_block_b_unholdable__ik__tl"
+      ],
+      "seeds": {
+       "10": "x6_cl_block_b_unholdable__ik__tl",
+       "11": "x6_cl_block_b_unholdable__ik__tl",
+       "12": "x6_cl_block_b_unholdable__ik__tl",
        "13": "x6_cl_block_b_unholdable__ik__tl",
        "14": "x6_cl_block_b_unholdable__ik__tl",
-       "15": "x6_cl_block_b_unholdable__grasp__tl",
+       "15": "x6_cl_block_b_unholdable__ik__tl",
        "16": "x6_cl_block_b_unholdable__ik__tl",
        "17": "x6_cl_block_b_unholdable__ik__tl",
        "18": "x6_cl_block_b_unholdable__ik__tl",
-       "19": "x6_cl_block_b_unholdable__grasp__tl"
+       "19": "x6_cl_block_b_unholdable__ik__tl"
       },
       "projected": true
      },
      "x6_gd_tower_with_event": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_gd_tower_with_event__tv_stand",
        "x6_gd_tower_with_event__dining"
       ],
@@ -11362,11 +11457,11 @@
     "kitchen_island",
     "small_storage_bin"
    ],
-   "v6_families": {
+   "v6_variants": {
     "large_only": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "large_only"
      ],
      "seeds": {
@@ -11385,7 +11480,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "large_only",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -11404,7 +11499,7 @@
     "small_and_large": {
      "origin": "v5",
      "control": "large_only",
-     "cases": [
+     "layouts": [
       "small_and_large"
      ],
      "seeds": {
@@ -11423,7 +11518,7 @@
     "far_small_and_large": {
      "origin": "v5",
      "control": "large_only",
-     "cases": [
+     "layouts": [
       "far_small_and_large"
      ],
      "seeds": {
@@ -11442,7 +11537,7 @@
     "m_grasp_spoon": {
      "origin": "v5",
      "control": "large_only",
-     "cases": [
+     "layouts": [
       "m_grasp_spoon"
      ],
      "seeds": {
@@ -11461,7 +11556,7 @@
     "three_containers": {
      "origin": "v5",
      "control": "large_only",
-     "cases": [
+     "layouts": [
       "three_containers"
      ],
      "seeds": {
@@ -11480,7 +11575,7 @@
     "h_action_slip_and_miss": {
      "origin": "v5",
      "control": "large_only",
-     "cases": [
+     "layouts": [
       "h_action_slip_and_miss"
      ],
      "seeds": {
@@ -11499,7 +11594,7 @@
     "h_mixed_three_containers_ik": {
      "origin": "v5",
      "control": "large_only",
-     "cases": [
+     "layouts": [
       "h_mixed_three_containers_ik"
      ],
      "seeds": {
@@ -11518,7 +11613,7 @@
     "h_dynamic_pin_taken": {
      "origin": "v5",
      "control": "large_only",
-     "cases": [
+     "layouts": [
       "h_dynamic_pin_taken",
       "h_dynamic_pin_taken__alt_dining_table_2"
      ],
@@ -11545,7 +11640,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_grasp_spoon"
       ],
       "seeds": {
@@ -11572,7 +11667,7 @@
        "slip"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_slip_and_miss"
       ],
       "seeds": {
@@ -11599,7 +11694,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_three_containers_ik"
       ],
       "seeds": {
@@ -11623,7 +11718,7 @@
     "task": {
      "small_and_large": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "small_and_large"
       ],
       "seeds": {
@@ -11642,7 +11737,7 @@
      },
      "far_small_and_large": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "far_small_and_large"
       ],
       "seeds": {
@@ -11661,7 +11756,7 @@
      },
      "three_containers": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "three_containers"
       ],
       "seeds": {
@@ -11680,7 +11775,7 @@
      },
      "h_action_slip_and_miss": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_slip_and_miss__tl"
       ],
       "seeds": {
@@ -11699,7 +11794,7 @@
      },
      "h_mixed_three_containers_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_three_containers_ik__tl"
       ],
       "seeds": {
@@ -11718,7 +11813,7 @@
      },
      "h_dynamic_pin_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_pin_taken",
        "h_dynamic_pin_taken__alt_dining_table_2"
       ],
@@ -15407,11 +15502,11 @@
     "kitchen_cabinet_6/top",
     "kitchen_island/top"
    ],
-   "v6_families": {
+   "v6_variants": {
     "cup_available": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "cup_available"
      ],
      "seeds": {
@@ -15430,7 +15525,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "cup_available",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -15449,7 +15544,7 @@
     "no_cup": {
      "origin": "v5",
      "control": "cup_available",
-     "cases": [
+     "layouts": [
       "no_cup"
      ],
      "seeds": {
@@ -15468,7 +15563,7 @@
     "no_cup_mug_away": {
      "origin": "v5",
      "control": "cup_available",
-     "cases": [
+     "layouts": [
       "no_cup_mug_away",
       "no_cup_mug_away__alt_dining_table_2"
      ],
@@ -15489,7 +15584,7 @@
     "m_ik_cup": {
      "origin": "v5",
      "control": "cup_available",
-     "cases": [
+     "layouts": [
       "m_ik_cup"
      ],
      "seeds": {
@@ -15508,7 +15603,7 @@
     "h_task_spot_taken": {
      "origin": "v5",
      "control": "cup_available",
-     "cases": [
+     "layouts": [
       "h_task_spot_taken"
      ],
      "seeds": {
@@ -15527,7 +15622,7 @@
     "h_action_ik_and_grasp": {
      "origin": "v5",
      "control": "cup_available",
-     "cases": [
+     "layouts": [
       "h_action_ik_and_grasp"
      ],
      "seeds": {
@@ -15546,7 +15641,7 @@
     "h_mixed_spot_taken_ik": {
      "origin": "v5",
      "control": "cup_available",
-     "cases": [
+     "layouts": [
       "h_mixed_spot_taken_ik"
      ],
      "seeds": {
@@ -15565,7 +15660,7 @@
     "h_dynamic_cup_taken": {
      "origin": "v5",
      "control": "cup_available",
-     "cases": [
+     "layouts": [
       "h_dynamic_cup_taken"
      ],
      "seeds": {
@@ -15584,7 +15679,7 @@
     "x6_gd_cup_in_cabinets": {
      "origin": "v6",
      "control": "no_cup",
-     "cases": [
+     "layouts": [
       "x6_gd_cup_in_cabinets__cup_in_4",
       "x6_gd_cup_in_cabinets__cup_in_6"
      ],
@@ -15602,45 +15697,79 @@
       "19": "x6_gd_cup_in_cabinets__cup_in_6"
      }
     },
-    "x6_cl_cup_unusable": {
+    "x6_cl_cup_unusable__slip": {
      "origin": "v6",
      "control": "m_ik_cup",
-     "cases": [
-      "x6_cl_cup_unusable__slip",
-      "x6_cl_cup_unusable__ik_mug_away"
+     "layouts": [
+      "x6_cl_cup_unusable__slip"
      ],
-     "factor": "failure mechanism and where the substitute is",
      "seeds": {
       "10": "x6_cl_cup_unusable__slip",
-      "11": "x6_cl_cup_unusable__ik_mug_away",
-      "12": "x6_cl_cup_unusable__ik_mug_away",
+      "11": "x6_cl_cup_unusable__slip",
+      "12": "x6_cl_cup_unusable__slip",
       "13": "x6_cl_cup_unusable__slip",
-      "14": "x6_cl_cup_unusable__ik_mug_away",
+      "14": "x6_cl_cup_unusable__slip",
       "15": "x6_cl_cup_unusable__slip",
       "16": "x6_cl_cup_unusable__slip",
-      "17": "x6_cl_cup_unusable__ik_mug_away",
-      "18": "x6_cl_cup_unusable__ik_mug_away",
+      "17": "x6_cl_cup_unusable__slip",
+      "18": "x6_cl_cup_unusable__slip",
       "19": "x6_cl_cup_unusable__slip"
      }
     },
-    "x6_dr_spot_filled_dynamic": {
+    "x6_cl_cup_unusable__ik_mug_away": {
+     "origin": "v6",
+     "control": "m_ik_cup",
+     "layouts": [
+      "x6_cl_cup_unusable__ik_mug_away"
+     ],
+     "seeds": {
+      "10": "x6_cl_cup_unusable__ik_mug_away",
+      "11": "x6_cl_cup_unusable__ik_mug_away",
+      "12": "x6_cl_cup_unusable__ik_mug_away",
+      "13": "x6_cl_cup_unusable__ik_mug_away",
+      "14": "x6_cl_cup_unusable__ik_mug_away",
+      "15": "x6_cl_cup_unusable__ik_mug_away",
+      "16": "x6_cl_cup_unusable__ik_mug_away",
+      "17": "x6_cl_cup_unusable__ik_mug_away",
+      "18": "x6_cl_cup_unusable__ik_mug_away",
+      "19": "x6_cl_cup_unusable__ik_mug_away"
+     }
+    },
+    "x6_dr_spot_filled_dynamic__bowl": {
      "origin": "v6",
      "control": "cup_available",
-     "cases": [
-      "x6_dr_spot_filled_dynamic__bowl",
-      "x6_dr_spot_filled_dynamic__block"
+     "layouts": [
+      "x6_dr_spot_filled_dynamic__bowl"
      ],
-     "factor": "what occupies the destination (occupancy)",
      "seeds": {
       "10": "x6_dr_spot_filled_dynamic__bowl",
-      "11": "x6_dr_spot_filled_dynamic__block",
-      "12": "x6_dr_spot_filled_dynamic__block",
-      "13": "x6_dr_spot_filled_dynamic__block",
+      "11": "x6_dr_spot_filled_dynamic__bowl",
+      "12": "x6_dr_spot_filled_dynamic__bowl",
+      "13": "x6_dr_spot_filled_dynamic__bowl",
       "14": "x6_dr_spot_filled_dynamic__bowl",
       "15": "x6_dr_spot_filled_dynamic__bowl",
       "16": "x6_dr_spot_filled_dynamic__bowl",
-      "17": "x6_dr_spot_filled_dynamic__block",
+      "17": "x6_dr_spot_filled_dynamic__bowl",
       "18": "x6_dr_spot_filled_dynamic__bowl",
+      "19": "x6_dr_spot_filled_dynamic__bowl"
+     }
+    },
+    "x6_dr_spot_filled_dynamic__block": {
+     "origin": "v6",
+     "control": "cup_available",
+     "layouts": [
+      "x6_dr_spot_filled_dynamic__block"
+     ],
+     "seeds": {
+      "10": "x6_dr_spot_filled_dynamic__block",
+      "11": "x6_dr_spot_filled_dynamic__block",
+      "12": "x6_dr_spot_filled_dynamic__block",
+      "13": "x6_dr_spot_filled_dynamic__block",
+      "14": "x6_dr_spot_filled_dynamic__block",
+      "15": "x6_dr_spot_filled_dynamic__block",
+      "16": "x6_dr_spot_filled_dynamic__block",
+      "17": "x6_dr_spot_filled_dynamic__block",
+      "18": "x6_dr_spot_filled_dynamic__block",
       "19": "x6_dr_spot_filled_dynamic__block"
      }
     }
@@ -15653,7 +15782,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_cup"
       ],
       "seeds": {
@@ -15679,7 +15808,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_and_grasp"
       ],
       "seeds": {
@@ -15705,7 +15834,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_spot_taken_ik"
       ],
       "seeds": {
@@ -15725,32 +15854,55 @@
       ],
       "local_conditions": []
      },
-     "x6_cl_cup_unusable": {
-      "sub": "AL-COMPOUND",
+     "x6_cl_cup_unusable__slip": {
+      "sub": "AL-IK",
       "mechanisms": [
-       "grasp",
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
-       "x6_cl_cup_unusable__slip",
-       "x6_cl_cup_unusable__ik_mug_away"
+      "layouts": [
+       "x6_cl_cup_unusable__slip"
       ],
       "seeds": {
        "10": "x6_cl_cup_unusable__slip",
-       "11": "x6_cl_cup_unusable__ik_mug_away",
-       "12": "x6_cl_cup_unusable__ik_mug_away",
+       "11": "x6_cl_cup_unusable__slip",
+       "12": "x6_cl_cup_unusable__slip",
        "13": "x6_cl_cup_unusable__slip",
-       "14": "x6_cl_cup_unusable__ik_mug_away",
+       "14": "x6_cl_cup_unusable__slip",
        "15": "x6_cl_cup_unusable__slip",
        "16": "x6_cl_cup_unusable__slip",
-       "17": "x6_cl_cup_unusable__ik_mug_away",
-       "18": "x6_cl_cup_unusable__ik_mug_away",
+       "17": "x6_cl_cup_unusable__slip",
+       "18": "x6_cl_cup_unusable__slip",
        "19": "x6_cl_cup_unusable__slip"
       },
       "action_failures": [
-       "grasp_mug",
        "ik_pick_mug"
+      ],
+      "local_conditions": []
+     },
+     "x6_cl_cup_unusable__ik_mug_away": {
+      "sub": "AL-GRASP",
+      "mechanisms": [
+       "grasp"
+      ],
+      "with_task_content": true,
+      "layouts": [
+       "x6_cl_cup_unusable__ik_mug_away"
+      ],
+      "seeds": {
+       "10": "x6_cl_cup_unusable__ik_mug_away",
+       "11": "x6_cl_cup_unusable__ik_mug_away",
+       "12": "x6_cl_cup_unusable__ik_mug_away",
+       "13": "x6_cl_cup_unusable__ik_mug_away",
+       "14": "x6_cl_cup_unusable__ik_mug_away",
+       "15": "x6_cl_cup_unusable__ik_mug_away",
+       "16": "x6_cl_cup_unusable__ik_mug_away",
+       "17": "x6_cl_cup_unusable__ik_mug_away",
+       "18": "x6_cl_cup_unusable__ik_mug_away",
+       "19": "x6_cl_cup_unusable__ik_mug_away"
+      },
+      "action_failures": [
+       "grasp_mug"
       ],
       "local_conditions": []
      }
@@ -15758,7 +15910,7 @@
     "task": {
      "no_cup": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "no_cup"
       ],
       "seeds": {
@@ -15777,7 +15929,7 @@
      },
      "no_cup_mug_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "no_cup_mug_away",
        "no_cup_mug_away__alt_dining_table_2"
       ],
@@ -15797,7 +15949,7 @@
      },
      "h_task_spot_taken": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_task_spot_taken"
       ],
       "seeds": {
@@ -15816,7 +15968,7 @@
      },
      "h_action_ik_and_grasp": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_ik_and_grasp__tl"
       ],
       "seeds": {
@@ -15835,7 +15987,7 @@
      },
      "h_mixed_spot_taken_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_spot_taken_ik__tl"
       ],
       "seeds": {
@@ -15854,7 +16006,7 @@
      },
      "h_dynamic_cup_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_cup_taken"
       ],
       "seeds": {
@@ -15873,7 +16025,7 @@
      },
      "x6_gd_cup_in_cabinets": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_cup_in_cabinets__cup_in_4",
        "x6_gd_cup_in_cabinets__cup_in_6"
       ],
@@ -15891,42 +16043,78 @@
       },
       "projected": false
      },
-     "x6_cl_cup_unusable": {
+     "x6_cl_cup_unusable__slip": {
       "timing": "initial",
-      "cases": [
-       "x6_cl_cup_unusable__slip__tl",
-       "x6_cl_cup_unusable__ik_mug_away__tl"
+      "layouts": [
+       "x6_cl_cup_unusable__slip__tl"
       ],
       "seeds": {
        "10": "x6_cl_cup_unusable__slip__tl",
-       "11": "x6_cl_cup_unusable__ik_mug_away__tl",
-       "12": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "11": "x6_cl_cup_unusable__slip__tl",
+       "12": "x6_cl_cup_unusable__slip__tl",
        "13": "x6_cl_cup_unusable__slip__tl",
-       "14": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "14": "x6_cl_cup_unusable__slip__tl",
        "15": "x6_cl_cup_unusable__slip__tl",
        "16": "x6_cl_cup_unusable__slip__tl",
-       "17": "x6_cl_cup_unusable__ik_mug_away__tl",
-       "18": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "17": "x6_cl_cup_unusable__slip__tl",
+       "18": "x6_cl_cup_unusable__slip__tl",
        "19": "x6_cl_cup_unusable__slip__tl"
       },
       "projected": true
      },
-     "x6_dr_spot_filled_dynamic": {
+     "x6_cl_cup_unusable__ik_mug_away": {
+      "timing": "initial",
+      "layouts": [
+       "x6_cl_cup_unusable__ik_mug_away__tl"
+      ],
+      "seeds": {
+       "10": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "11": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "12": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "13": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "14": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "15": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "16": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "17": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "18": "x6_cl_cup_unusable__ik_mug_away__tl",
+       "19": "x6_cl_cup_unusable__ik_mug_away__tl"
+      },
+      "projected": true
+     },
+     "x6_dr_spot_filled_dynamic__bowl": {
       "timing": "dynamic",
-      "cases": [
-       "x6_dr_spot_filled_dynamic__bowl",
-       "x6_dr_spot_filled_dynamic__block"
+      "layouts": [
+       "x6_dr_spot_filled_dynamic__bowl"
       ],
       "seeds": {
        "10": "x6_dr_spot_filled_dynamic__bowl",
-       "11": "x6_dr_spot_filled_dynamic__block",
-       "12": "x6_dr_spot_filled_dynamic__block",
-       "13": "x6_dr_spot_filled_dynamic__block",
+       "11": "x6_dr_spot_filled_dynamic__bowl",
+       "12": "x6_dr_spot_filled_dynamic__bowl",
+       "13": "x6_dr_spot_filled_dynamic__bowl",
        "14": "x6_dr_spot_filled_dynamic__bowl",
        "15": "x6_dr_spot_filled_dynamic__bowl",
        "16": "x6_dr_spot_filled_dynamic__bowl",
-       "17": "x6_dr_spot_filled_dynamic__block",
+       "17": "x6_dr_spot_filled_dynamic__bowl",
        "18": "x6_dr_spot_filled_dynamic__bowl",
+       "19": "x6_dr_spot_filled_dynamic__bowl"
+      },
+      "projected": false
+     },
+     "x6_dr_spot_filled_dynamic__block": {
+      "timing": "dynamic",
+      "layouts": [
+       "x6_dr_spot_filled_dynamic__block"
+      ],
+      "seeds": {
+       "10": "x6_dr_spot_filled_dynamic__block",
+       "11": "x6_dr_spot_filled_dynamic__block",
+       "12": "x6_dr_spot_filled_dynamic__block",
+       "13": "x6_dr_spot_filled_dynamic__block",
+       "14": "x6_dr_spot_filled_dynamic__block",
+       "15": "x6_dr_spot_filled_dynamic__block",
+       "16": "x6_dr_spot_filled_dynamic__block",
+       "17": "x6_dr_spot_filled_dynamic__block",
+       "18": "x6_dr_spot_filled_dynamic__block",
        "19": "x6_dr_spot_filled_dynamic__block"
       },
       "projected": false
@@ -19079,11 +19267,11 @@
     "desk_1/top",
     "bookcase_2/top"
    ],
-   "v6_families": {
+   "v6_variants": {
     "e1_pencil_asked": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "e1_pencil_asked"
      ],
      "seeds": {
@@ -19102,7 +19290,7 @@
     "e2_pencil_asked_far": {
      "origin": "v5",
      "control": "e1_pencil_asked",
-     "cases": [
+     "layouts": [
       "e2_pencil_asked_far"
      ],
      "seeds": {
@@ -19121,7 +19309,7 @@
     "no_pen": {
      "origin": "v5",
      "control": "e1_pencil_asked",
-     "cases": [
+     "layouts": [
       "no_pen"
      ],
      "seeds": {
@@ -19140,7 +19328,7 @@
     "no_pen_pencil_away": {
      "origin": "v5",
      "control": "e1_pencil_asked",
-     "cases": [
+     "layouts": [
       "no_pen_pencil_away"
      ],
      "seeds": {
@@ -19159,7 +19347,7 @@
     "m_grasp_pencil": {
      "origin": "v5",
      "control": "e1_pencil_asked",
-     "cases": [
+     "layouts": [
       "m_grasp_pencil"
      ],
      "seeds": {
@@ -19178,7 +19366,7 @@
     "h_task_pencil_in_cabinet": {
      "origin": "v5",
      "control": "e1_pencil_asked",
-     "cases": [
+     "layouts": [
       "h_task_pencil_in_cabinet"
      ],
      "seeds": {
@@ -19197,7 +19385,7 @@
     "h_action_grasp_and_ik": {
      "origin": "v5",
      "control": "e1_pencil_asked",
-     "cases": [
+     "layouts": [
       "h_action_grasp_and_ik"
      ],
      "seeds": {
@@ -19216,7 +19404,7 @@
     "h_mixed_cabinet_ik": {
      "origin": "v5",
      "control": "e1_pencil_asked",
-     "cases": [
+     "layouts": [
       "h_mixed_cabinet_ik"
      ],
      "seeds": {
@@ -19235,7 +19423,7 @@
     "h_dynamic_pencil_taken": {
      "origin": "v5",
      "control": "e1_pencil_asked",
-     "cases": [
+     "layouts": [
       "h_dynamic_pencil_taken",
       "h_dynamic_pencil_taken__alt_tv_stand_2"
      ],
@@ -19256,7 +19444,7 @@
     "x6_cl_pen_unholdable": {
      "origin": "v6",
      "control": "pen_available",
-     "cases": [
+     "layouts": [
       "x6_cl_pen_unholdable__pencil_here",
       "x6_cl_pen_unholdable__pencil_away"
      ],
@@ -19277,7 +19465,7 @@
     "x6_gd_pencil_other_cabinet": {
      "origin": "v6",
      "control": "h_task_pencil_in_cabinet",
-     "cases": [
+     "layouts": [
       "x6_gd_pencil_other_cabinet"
      ],
      "factor": null,
@@ -19297,7 +19485,7 @@
     "x6_gd_pen_or_pencil_cabinets": {
      "origin": "v6",
      "control": "h_task_pencil_in_cabinet",
-     "cases": [
+     "layouts": [
       "x6_gd_pen_or_pencil_cabinets__pen_in_4",
       "x6_gd_pen_or_pencil_cabinets__pen_in_6"
      ],
@@ -19324,7 +19512,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "m_grasp_pencil"
       ],
       "seeds": {
@@ -19351,7 +19539,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik"
       ],
       "seeds": {
@@ -19378,7 +19566,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_cabinet_ik"
       ],
       "seeds": {
@@ -19404,7 +19592,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_cl_pen_unholdable__pencil_here",
        "x6_cl_pen_unholdable__pencil_away"
       ],
@@ -19429,7 +19617,7 @@
     "task": {
      "e1_pencil_asked": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "e1_pencil_asked"
       ],
       "seeds": {
@@ -19448,7 +19636,7 @@
      },
      "e2_pencil_asked_far": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "e2_pencil_asked_far"
       ],
       "seeds": {
@@ -19467,7 +19655,7 @@
      },
      "no_pen": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "no_pen"
       ],
       "seeds": {
@@ -19486,7 +19674,7 @@
      },
      "no_pen_pencil_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "no_pen_pencil_away"
       ],
       "seeds": {
@@ -19505,7 +19693,7 @@
      },
      "m_grasp_pencil": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "m_grasp_pencil__tl"
       ],
       "seeds": {
@@ -19524,7 +19712,7 @@
      },
      "h_task_pencil_in_cabinet": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_task_pencil_in_cabinet"
       ],
       "seeds": {
@@ -19546,7 +19734,7 @@
      },
      "h_mixed_cabinet_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_cabinet_ik__tl"
       ],
       "seeds": {
@@ -19565,7 +19753,7 @@
      },
      "h_dynamic_pencil_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_pencil_taken",
        "h_dynamic_pencil_taken__alt_tv_stand_2"
       ],
@@ -19585,7 +19773,7 @@
      },
      "x6_cl_pen_unholdable": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_pen_unholdable__pencil_here__tl",
        "x6_cl_pen_unholdable__pencil_away__tl"
       ],
@@ -19605,7 +19793,7 @@
      },
      "x6_gd_pencil_other_cabinet": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_pencil_other_cabinet"
       ],
       "seeds": {
@@ -19624,7 +19812,7 @@
      },
      "x6_gd_pen_or_pencil_cabinets": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_pen_or_pencil_cabinets__pen_in_4",
        "x6_gd_pen_or_pencil_cabinets__pen_in_6"
       ],
@@ -23945,11 +24133,11 @@
     "juice_bottle",
     "clutter_cereal_c"
    ],
-   "v6_families": {
+   "v6_variants": {
     "free": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "free"
      ],
      "seeds": {
@@ -23968,7 +24156,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "free",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -23987,7 +24175,7 @@
     "occupied": {
      "origin": "v5",
      "control": "free",
-     "cases": [
+     "layouts": [
       "occupied"
      ],
      "seeds": {
@@ -24006,7 +24194,7 @@
     "occupied_block_away": {
      "origin": "v5",
      "control": "free",
-     "cases": [
+     "layouts": [
       "occupied_block_away",
       "occupied_block_away__alt_tv_stand_2"
      ],
@@ -24027,7 +24215,7 @@
     "m_slip_block": {
      "origin": "v5",
      "control": "free",
-     "cases": [
+     "layouts": [
       "m_slip_block"
      ],
      "seeds": {
@@ -24046,7 +24234,7 @@
     "display_hidden": {
      "origin": "v5",
      "control": "free",
-     "cases": [
+     "layouts": [
       "display_hidden"
      ],
      "seeds": {
@@ -24065,7 +24253,7 @@
     "h_action_slip_and_ik": {
      "origin": "v5",
      "control": "free",
-     "cases": [
+     "layouts": [
       "h_action_slip_and_ik"
      ],
      "seeds": {
@@ -24084,7 +24272,7 @@
     "h_mixed_hidden_grasp": {
      "origin": "v5",
      "control": "free",
-     "cases": [
+     "layouts": [
       "h_mixed_hidden_grasp"
      ],
      "seeds": {
@@ -24103,7 +24291,7 @@
     "h_dynamic_cabinet_filled": {
      "origin": "v5",
      "control": "free",
-     "cases": [
+     "layouts": [
       "h_dynamic_cabinet_filled"
      ],
      "seeds": {
@@ -24122,7 +24310,7 @@
     "x6_cl_block_a_unholdable": {
      "origin": "v6",
      "control": "x6_m_grasp_block_a",
-     "cases": [
+     "layouts": [
       "x6_cl_block_a_unholdable__b_island",
       "x6_cl_block_a_unholdable__b_dining"
      ],
@@ -24143,7 +24331,7 @@
     "x6_m_grasp_block_a": {
      "origin": "v6",
      "control": "free",
-     "cases": [
+     "layouts": [
       "x6_m_grasp_block_a"
      ],
      "factor": null,
@@ -24163,7 +24351,7 @@
     "x6_cl_cabinet_unreachable": {
      "origin": "v6",
      "control": "x6_m_ik_place_cabinet",
-     "cases": [
+     "layouts": [
       "x6_cl_cabinet_unreachable"
      ],
      "factor": null,
@@ -24183,7 +24371,7 @@
     "x6_m_ik_place_cabinet": {
      "origin": "v6",
      "control": "free",
-     "cases": [
+     "layouts": [
       "x6_m_ik_place_cabinet"
      ],
      "factor": null,
@@ -24203,7 +24391,7 @@
     "x6_gd_two_displays_event": {
      "origin": "v6",
      "control": "free",
-     "cases": [
+     "layouts": [
       "x6_gd_two_displays_event__dining",
       "x6_gd_two_displays_event__cabinet4"
      ],
@@ -24230,7 +24418,7 @@
        "slip"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_slip_block"
       ],
       "seeds": {
@@ -24257,7 +24445,7 @@
        "slip"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_slip_and_ik"
       ],
       "seeds": {
@@ -24284,7 +24472,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_hidden_grasp"
       ],
       "seeds": {
@@ -24310,7 +24498,7 @@
        "slip"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_cl_block_a_unholdable__b_island",
        "x6_cl_block_a_unholdable__b_dining"
       ],
@@ -24337,7 +24525,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_grasp_block_a"
       ],
       "seeds": {
@@ -24363,7 +24551,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_cl_cabinet_unreachable"
       ],
       "seeds": {
@@ -24389,7 +24577,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_ik_place_cabinet"
       ],
       "seeds": {
@@ -24413,7 +24601,7 @@
     "task": {
      "occupied": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "occupied"
       ],
       "seeds": {
@@ -24432,7 +24620,7 @@
      },
      "occupied_block_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "occupied_block_away",
        "occupied_block_away__alt_tv_stand_2"
       ],
@@ -24452,7 +24640,7 @@
      },
      "display_hidden": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "display_hidden"
       ],
       "seeds": {
@@ -24471,7 +24659,7 @@
      },
      "h_action_slip_and_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_slip_and_ik__tl"
       ],
       "seeds": {
@@ -24490,7 +24678,7 @@
      },
      "h_mixed_hidden_grasp": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_hidden_grasp__tl"
       ],
       "seeds": {
@@ -24509,7 +24697,7 @@
      },
      "h_dynamic_cabinet_filled": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_cabinet_filled"
       ],
       "seeds": {
@@ -24528,7 +24716,7 @@
      },
      "x6_cl_block_a_unholdable": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_block_a_unholdable__b_island__tl",
        "x6_cl_block_a_unholdable__b_dining__tl"
       ],
@@ -24548,7 +24736,7 @@
      },
      "x6_cl_cabinet_unreachable": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_cabinet_unreachable__tl"
       ],
       "seeds": {
@@ -24567,7 +24755,7 @@
      },
      "x6_gd_two_displays_event": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_gd_two_displays_event__dining",
        "x6_gd_two_displays_event__cabinet4"
       ],
@@ -27734,11 +27922,11 @@
     "handled_cooking_pot",
     "pot_lid"
    ],
-   "v6_families": {
+   "v6_variants": {
     "microwave_works": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "microwave_works"
      ],
      "seeds": {
@@ -27757,7 +27945,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -27776,7 +27964,7 @@
     "microwave_broken": {
      "origin": "v5",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "microwave_broken"
      ],
      "seeds": {
@@ -27795,7 +27983,7 @@
     "broken_oatmeal_away": {
      "origin": "v5",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "broken_oatmeal_away",
       "broken_oatmeal_away__alt_dining_table_2"
      ],
@@ -27816,7 +28004,7 @@
     "m_ik_oatmeal": {
      "origin": "v5",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "m_ik_oatmeal"
      ],
      "seeds": {
@@ -27835,7 +28023,7 @@
     "microwave_holds_pot": {
      "origin": "v5",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "microwave_holds_pot"
      ],
      "seeds": {
@@ -27854,7 +28042,7 @@
     "h_action_ik_and_slip": {
      "origin": "v5",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "h_action_ik_and_slip"
      ],
      "seeds": {
@@ -27873,7 +28061,7 @@
     "h_mixed_pot_inside_grasp": {
      "origin": "v5",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "h_mixed_pot_inside_grasp"
      ],
      "seeds": {
@@ -27892,7 +28080,7 @@
     "h_dynamic_door_opened": {
      "origin": "v5",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "h_dynamic_door_opened"
      ],
      "seeds": {
@@ -27911,7 +28099,7 @@
     "x6_cl_microwave_door_stuck": {
      "origin": "v6",
      "control": "x6_m_ik_open_microwave",
-     "cases": [
+     "layouts": [
       "x6_cl_microwave_door_stuck__oatmeal_island",
       "x6_cl_microwave_door_stuck__oatmeal_cabinet"
      ],
@@ -27932,7 +28120,7 @@
     "x6_m_ik_open_microwave": {
      "origin": "v6",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "x6_m_ik_open_microwave"
      ],
      "factor": null,
@@ -27952,7 +28140,7 @@
     "x6_sr_microwave_taken": {
      "origin": "v6",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "x6_sr_microwave_taken"
      ],
      "factor": null,
@@ -27972,7 +28160,7 @@
     "x6_pp_door_opened_after_heat": {
      "origin": "v6",
      "control": "microwave_works",
-     "cases": [
+     "layouts": [
       "x6_pp_door_opened_after_heat"
      ],
      "factor": null,
@@ -27998,7 +28186,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_oatmeal"
       ],
       "seeds": {
@@ -28024,7 +28212,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_and_slip"
       ],
       "seeds": {
@@ -28050,7 +28238,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_pot_inside_grasp"
       ],
       "seeds": {
@@ -28076,7 +28264,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_cl_microwave_door_stuck__oatmeal_island",
        "x6_cl_microwave_door_stuck__oatmeal_cabinet"
       ],
@@ -28103,7 +28291,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_ik_open_microwave"
       ],
       "seeds": {
@@ -28127,7 +28315,7 @@
     "task": {
      "microwave_broken": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "microwave_broken"
       ],
       "seeds": {
@@ -28146,7 +28334,7 @@
      },
      "broken_oatmeal_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "broken_oatmeal_away",
        "broken_oatmeal_away__alt_dining_table_2"
       ],
@@ -28166,7 +28354,7 @@
      },
      "microwave_holds_pot": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "microwave_holds_pot"
       ],
       "seeds": {
@@ -28185,7 +28373,7 @@
      },
      "h_action_ik_and_slip": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_ik_and_slip__tl"
       ],
       "seeds": {
@@ -28204,7 +28392,7 @@
      },
      "h_mixed_pot_inside_grasp": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_pot_inside_grasp__tl"
       ],
       "seeds": {
@@ -28223,7 +28411,7 @@
      },
      "h_dynamic_door_opened": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_door_opened"
       ],
       "seeds": {
@@ -28242,7 +28430,7 @@
      },
      "x6_cl_microwave_door_stuck": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_microwave_door_stuck__oatmeal_island__tl",
        "x6_cl_microwave_door_stuck__oatmeal_cabinet__tl"
       ],
@@ -28262,7 +28450,7 @@
      },
      "x6_sr_microwave_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_sr_microwave_taken"
       ],
       "seeds": {
@@ -28281,7 +28469,7 @@
      },
      "x6_pp_door_opened_after_heat": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_pp_door_opened_after_heat"
       ],
       "seeds": {
@@ -32227,11 +32415,11 @@
     "breakfast_spoon",
     "juice_bottle"
    ],
-   "v6_families": {
+   "v6_variants": {
     "sponge_on_island": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "sponge_on_island"
      ],
      "seeds": {
@@ -32250,7 +32438,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -32269,7 +32457,7 @@
     "sponge_on_tv_stand": {
      "origin": "v5",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "sponge_on_tv_stand"
      ],
      "seeds": {
@@ -32288,7 +32476,7 @@
     "far_sponge_tv": {
      "origin": "v5",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "far_sponge_tv",
       "far_sponge_tv__alt_dining_table_2"
      ],
@@ -32309,7 +32497,7 @@
     "m_grasp_sponge": {
      "origin": "v5",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "m_grasp_sponge"
      ],
      "seeds": {
@@ -32328,7 +32516,7 @@
     "island_cluttered": {
      "origin": "v5",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "island_cluttered"
      ],
      "seeds": {
@@ -32347,7 +32535,7 @@
     "h_action_grasp_and_ik": {
      "origin": "v5",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "h_action_grasp_and_ik"
      ],
      "seeds": {
@@ -32366,7 +32554,7 @@
     "h_mixed_cluttered_grasp": {
      "origin": "v5",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "h_mixed_cluttered_grasp"
      ],
      "seeds": {
@@ -32385,7 +32573,7 @@
     "h_dynamic_sponge_taken": {
      "origin": "v5",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "h_dynamic_sponge_taken",
       "h_dynamic_sponge_taken__alt_dining_table_2"
      ],
@@ -32406,7 +32594,7 @@
     "x6_cl_sponge_behind_mug": {
      "origin": "v6",
      "control": "m_grasp_sponge",
-     "cases": [
+     "layouts": [
       "x6_cl_sponge_behind_mug"
      ],
      "factor": null,
@@ -32426,7 +32614,7 @@
     "x6_pp_sponge_taken_after_wipe": {
      "origin": "v6",
      "control": "sponge_on_island",
-     "cases": [
+     "layouts": [
       "x6_pp_sponge_taken_after_wipe__tv_stand",
       "x6_pp_sponge_taken_after_wipe__cabinet6"
      ],
@@ -32453,7 +32641,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_grasp_sponge"
       ],
       "seeds": {
@@ -32480,7 +32668,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik"
       ],
       "seeds": {
@@ -32507,7 +32695,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_cluttered_grasp"
       ],
       "seeds": {
@@ -32531,7 +32719,7 @@
     "task": {
      "sponge_on_tv_stand": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "sponge_on_tv_stand"
       ],
       "seeds": {
@@ -32550,7 +32738,7 @@
      },
      "far_sponge_tv": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "far_sponge_tv",
        "far_sponge_tv__alt_dining_table_2"
       ],
@@ -32570,7 +32758,7 @@
      },
      "island_cluttered": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "island_cluttered"
       ],
       "seeds": {
@@ -32589,7 +32777,7 @@
      },
      "h_action_grasp_and_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik__tl"
       ],
       "seeds": {
@@ -32608,7 +32796,7 @@
      },
      "h_mixed_cluttered_grasp": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_cluttered_grasp__tl"
       ],
       "seeds": {
@@ -32627,7 +32815,7 @@
      },
      "h_dynamic_sponge_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_sponge_taken",
        "h_dynamic_sponge_taken__alt_dining_table_2"
       ],
@@ -32647,7 +32835,7 @@
      },
      "x6_cl_sponge_behind_mug": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_sponge_behind_mug"
       ],
       "seeds": {
@@ -32666,7 +32854,7 @@
      },
      "x6_pp_sponge_taken_after_wipe": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_pp_sponge_taken_after_wipe__tv_stand",
        "x6_pp_sponge_taken_after_wipe__cabinet6"
       ],
@@ -38996,11 +39184,11 @@
     "bowl_kitchen_cabinet",
     "mug_counter"
    ],
-   "v6_families": {
+   "v6_variants": {
     "lid_off": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "lid_off"
      ],
      "seeds": {
@@ -39019,7 +39207,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -39038,7 +39226,7 @@
     "lid_on": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "lid_on"
      ],
      "seeds": {
@@ -39057,7 +39245,7 @@
     "lid_on_spoon_away": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "lid_on_spoon_away",
       "lid_on_spoon_away__alt_dining_table_2"
      ],
@@ -39078,7 +39266,7 @@
     "m_grasp_spoon": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "m_grasp_spoon"
      ],
      "seeds": {
@@ -39097,7 +39285,7 @@
     "cookware_choice": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "cookware_choice"
      ],
      "seeds": {
@@ -39116,7 +39304,7 @@
     "h_action_grasp_and_ik": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "h_action_grasp_and_ik"
      ],
      "seeds": {
@@ -39135,7 +39323,7 @@
     "h_mixed_cookware_grasp": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "h_mixed_cookware_grasp"
      ],
      "seeds": {
@@ -39154,7 +39342,7 @@
     "h_dynamic_spoon_taken": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "h_dynamic_spoon_taken",
       "h_dynamic_spoon_taken__alt_dining_table_2"
      ],
@@ -39172,22 +39360,39 @@
      },
      "factor": "where the resource is to be found (seed extension)"
     },
-    "x6_cl_spoon_unholdable": {
+    "x6_cl_spoon_unholdable__spoon_cabinet": {
      "origin": "v6",
      "control": "m_grasp_spoon",
-     "cases": [
-      "x6_cl_spoon_unholdable__spoon_cabinet",
-      "x6_cl_spoon_unholdable__spoon_dining"
+     "layouts": [
+      "x6_cl_spoon_unholdable__spoon_cabinet"
      ],
-     "factor": "which substitute exists and where",
      "seeds": {
-      "10": "x6_cl_spoon_unholdable__spoon_dining",
+      "10": "x6_cl_spoon_unholdable__spoon_cabinet",
       "11": "x6_cl_spoon_unholdable__spoon_cabinet",
       "12": "x6_cl_spoon_unholdable__spoon_cabinet",
-      "13": "x6_cl_spoon_unholdable__spoon_dining",
+      "13": "x6_cl_spoon_unholdable__spoon_cabinet",
       "14": "x6_cl_spoon_unholdable__spoon_cabinet",
       "15": "x6_cl_spoon_unholdable__spoon_cabinet",
       "16": "x6_cl_spoon_unholdable__spoon_cabinet",
+      "17": "x6_cl_spoon_unholdable__spoon_cabinet",
+      "18": "x6_cl_spoon_unholdable__spoon_cabinet",
+      "19": "x6_cl_spoon_unholdable__spoon_cabinet"
+     }
+    },
+    "x6_cl_spoon_unholdable__spoon_dining": {
+     "origin": "v6",
+     "control": "m_grasp_spoon",
+     "layouts": [
+      "x6_cl_spoon_unholdable__spoon_dining"
+     ],
+     "seeds": {
+      "10": "x6_cl_spoon_unholdable__spoon_dining",
+      "11": "x6_cl_spoon_unholdable__spoon_dining",
+      "12": "x6_cl_spoon_unholdable__spoon_dining",
+      "13": "x6_cl_spoon_unholdable__spoon_dining",
+      "14": "x6_cl_spoon_unholdable__spoon_dining",
+      "15": "x6_cl_spoon_unholdable__spoon_dining",
+      "16": "x6_cl_spoon_unholdable__spoon_dining",
       "17": "x6_cl_spoon_unholdable__spoon_dining",
       "18": "x6_cl_spoon_unholdable__spoon_dining",
       "19": "x6_cl_spoon_unholdable__spoon_dining"
@@ -39196,7 +39401,7 @@
     "x6_sr_collect_refused": {
      "origin": "v6",
      "control": "x6_m_ik_collect",
-     "cases": [
+     "layouts": [
       "x6_sr_collect_refused"
      ],
      "factor": null,
@@ -39216,7 +39421,7 @@
     "x6_gd_tomato_elsewhere": {
      "origin": "v6",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "x6_gd_tomato_elsewhere__dining",
       "x6_gd_tomato_elsewhere__cabinet6"
      ],
@@ -39237,7 +39442,7 @@
     "x6_m_ik_collect": {
      "origin": "v6",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "x6_m_ik_collect"
      ],
      "factor": null,
@@ -39257,7 +39462,7 @@
     "x6_pp_lid_taken_after_stir": {
      "origin": "v6",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "x6_pp_lid_taken_after_stir__cabinet4",
       "x6_pp_lid_taken_after_stir__dining"
      ],
@@ -39275,26 +39480,61 @@
       "19": "x6_pp_lid_taken_after_stir__cabinet4"
      }
     },
-    "x6_pp_tomato_taken_out": {
+    "x6_pp_tomato_taken_out__tomato2": {
      "origin": "v6",
      "control": "lid_off",
-     "cases": [
-      "x6_pp_tomato_taken_out__tomato2",
-      "x6_pp_tomato_taken_out__tomato1",
-      "x6_pp_tomato_taken_out__tomato2_after_stir"
+     "layouts": [
+      "x6_pp_tomato_taken_out__tomato2"
      ],
-     "factor": "which subgoal the event undoes, and when (failure timing)",
      "seeds": {
-      "10": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "10": "x6_pp_tomato_taken_out__tomato2",
       "11": "x6_pp_tomato_taken_out__tomato2",
-      "12": "x6_pp_tomato_taken_out__tomato1",
+      "12": "x6_pp_tomato_taken_out__tomato2",
       "13": "x6_pp_tomato_taken_out__tomato2",
-      "14": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "14": "x6_pp_tomato_taken_out__tomato2",
       "15": "x6_pp_tomato_taken_out__tomato2",
-      "16": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "16": "x6_pp_tomato_taken_out__tomato2",
+      "17": "x6_pp_tomato_taken_out__tomato2",
+      "18": "x6_pp_tomato_taken_out__tomato2",
+      "19": "x6_pp_tomato_taken_out__tomato2"
+     }
+    },
+    "x6_pp_tomato_taken_out__tomato1": {
+     "origin": "v6",
+     "control": "lid_off",
+     "layouts": [
+      "x6_pp_tomato_taken_out__tomato1"
+     ],
+     "seeds": {
+      "10": "x6_pp_tomato_taken_out__tomato1",
+      "11": "x6_pp_tomato_taken_out__tomato1",
+      "12": "x6_pp_tomato_taken_out__tomato1",
+      "13": "x6_pp_tomato_taken_out__tomato1",
+      "14": "x6_pp_tomato_taken_out__tomato1",
+      "15": "x6_pp_tomato_taken_out__tomato1",
+      "16": "x6_pp_tomato_taken_out__tomato1",
       "17": "x6_pp_tomato_taken_out__tomato1",
       "18": "x6_pp_tomato_taken_out__tomato1",
-      "19": "x6_pp_tomato_taken_out__tomato2"
+      "19": "x6_pp_tomato_taken_out__tomato1"
+     }
+    },
+    "x6_pp_tomato_taken_out__tomato2_after_stir": {
+     "origin": "v6",
+     "control": "lid_off",
+     "layouts": [
+      "x6_pp_tomato_taken_out__tomato2_after_stir"
+     ],
+     "seeds": {
+      "10": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "11": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "12": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "13": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "14": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "15": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "16": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "17": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "18": "x6_pp_tomato_taken_out__tomato2_after_stir",
+      "19": "x6_pp_tomato_taken_out__tomato2_after_stir"
      }
     }
    },
@@ -39306,7 +39546,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_grasp_spoon"
       ],
       "seeds": {
@@ -39333,7 +39573,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik"
       ],
       "seeds": {
@@ -39360,7 +39600,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_cookware_grasp"
       ],
       "seeds": {
@@ -39380,24 +39620,49 @@
       ],
       "local_conditions": []
      },
-     "x6_cl_spoon_unholdable": {
+     "x6_cl_spoon_unholdable__spoon_cabinet": {
       "sub": "AL-IK",
       "mechanisms": [
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
-       "x6_cl_spoon_unholdable__spoon_cabinet",
+      "layouts": [
+       "x6_cl_spoon_unholdable__spoon_cabinet"
+      ],
+      "seeds": {
+       "10": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "11": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "12": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "13": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "14": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "15": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "16": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "17": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "18": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "19": "x6_cl_spoon_unholdable__spoon_cabinet"
+      },
+      "action_failures": [
+       "ik_pick_pot_lid"
+      ],
+      "local_conditions": []
+     },
+     "x6_cl_spoon_unholdable__spoon_dining": {
+      "sub": "AL-IK",
+      "mechanisms": [
+       "ik"
+      ],
+      "with_task_content": true,
+      "layouts": [
        "x6_cl_spoon_unholdable__spoon_dining"
       ],
       "seeds": {
        "10": "x6_cl_spoon_unholdable__spoon_dining",
-       "11": "x6_cl_spoon_unholdable__spoon_cabinet",
-       "12": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "11": "x6_cl_spoon_unholdable__spoon_dining",
+       "12": "x6_cl_spoon_unholdable__spoon_dining",
        "13": "x6_cl_spoon_unholdable__spoon_dining",
-       "14": "x6_cl_spoon_unholdable__spoon_cabinet",
-       "15": "x6_cl_spoon_unholdable__spoon_cabinet",
-       "16": "x6_cl_spoon_unholdable__spoon_cabinet",
+       "14": "x6_cl_spoon_unholdable__spoon_dining",
+       "15": "x6_cl_spoon_unholdable__spoon_dining",
+       "16": "x6_cl_spoon_unholdable__spoon_dining",
        "17": "x6_cl_spoon_unholdable__spoon_dining",
        "18": "x6_cl_spoon_unholdable__spoon_dining",
        "19": "x6_cl_spoon_unholdable__spoon_dining"
@@ -39413,7 +39678,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_sr_collect_refused"
       ],
       "seeds": {
@@ -39439,7 +39704,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_ik_collect"
       ],
       "seeds": {
@@ -39463,7 +39728,7 @@
     "task": {
      "lid_on": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "lid_on"
       ],
       "seeds": {
@@ -39482,7 +39747,7 @@
      },
      "lid_on_spoon_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "lid_on_spoon_away",
        "lid_on_spoon_away__alt_dining_table_2"
       ],
@@ -39502,7 +39767,7 @@
      },
      "cookware_choice": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "cookware_choice"
       ],
       "seeds": {
@@ -39521,7 +39786,7 @@
      },
      "h_action_grasp_and_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik__tl"
       ],
       "seeds": {
@@ -39540,7 +39805,7 @@
      },
      "h_mixed_cookware_grasp": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_cookware_grasp__tl"
       ],
       "seeds": {
@@ -39559,7 +39824,7 @@
      },
      "h_dynamic_spoon_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_spoon_taken",
        "h_dynamic_spoon_taken__alt_dining_table_2"
       ],
@@ -39577,20 +39842,38 @@
       },
       "projected": false
      },
-     "x6_cl_spoon_unholdable": {
+     "x6_cl_spoon_unholdable__spoon_cabinet": {
       "timing": "initial",
-      "cases": [
-       "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+      "layouts": [
+       "x6_cl_spoon_unholdable__spoon_cabinet__tl"
+      ],
+      "seeds": {
+       "10": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "11": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "12": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "13": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "14": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "15": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "16": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "17": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "18": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "19": "x6_cl_spoon_unholdable__spoon_cabinet__tl"
+      },
+      "projected": true
+     },
+     "x6_cl_spoon_unholdable__spoon_dining": {
+      "timing": "initial",
+      "layouts": [
        "x6_cl_spoon_unholdable__spoon_dining__tl"
       ],
       "seeds": {
        "10": "x6_cl_spoon_unholdable__spoon_dining__tl",
-       "11": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
-       "12": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "11": "x6_cl_spoon_unholdable__spoon_dining__tl",
+       "12": "x6_cl_spoon_unholdable__spoon_dining__tl",
        "13": "x6_cl_spoon_unholdable__spoon_dining__tl",
-       "14": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
-       "15": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
-       "16": "x6_cl_spoon_unholdable__spoon_cabinet__tl",
+       "14": "x6_cl_spoon_unholdable__spoon_dining__tl",
+       "15": "x6_cl_spoon_unholdable__spoon_dining__tl",
+       "16": "x6_cl_spoon_unholdable__spoon_dining__tl",
        "17": "x6_cl_spoon_unholdable__spoon_dining__tl",
        "18": "x6_cl_spoon_unholdable__spoon_dining__tl",
        "19": "x6_cl_spoon_unholdable__spoon_dining__tl"
@@ -39599,7 +39882,7 @@
      },
      "x6_sr_collect_refused": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_sr_collect_refused__tl"
       ],
       "seeds": {
@@ -39618,7 +39901,7 @@
      },
      "x6_gd_tomato_elsewhere": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_tomato_elsewhere__dining",
        "x6_gd_tomato_elsewhere__cabinet6"
       ],
@@ -39638,7 +39921,7 @@
      },
      "x6_pp_lid_taken_after_stir": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_pp_lid_taken_after_stir__cabinet4",
        "x6_pp_lid_taken_after_stir__dining"
       ],
@@ -39656,24 +39939,60 @@
       },
       "projected": false
      },
-     "x6_pp_tomato_taken_out": {
+     "x6_pp_tomato_taken_out__tomato2": {
       "timing": "dynamic",
-      "cases": [
-       "x6_pp_tomato_taken_out__tomato2",
-       "x6_pp_tomato_taken_out__tomato1",
+      "layouts": [
+       "x6_pp_tomato_taken_out__tomato2"
+      ],
+      "seeds": {
+       "10": "x6_pp_tomato_taken_out__tomato2",
+       "11": "x6_pp_tomato_taken_out__tomato2",
+       "12": "x6_pp_tomato_taken_out__tomato2",
+       "13": "x6_pp_tomato_taken_out__tomato2",
+       "14": "x6_pp_tomato_taken_out__tomato2",
+       "15": "x6_pp_tomato_taken_out__tomato2",
+       "16": "x6_pp_tomato_taken_out__tomato2",
+       "17": "x6_pp_tomato_taken_out__tomato2",
+       "18": "x6_pp_tomato_taken_out__tomato2",
+       "19": "x6_pp_tomato_taken_out__tomato2"
+      },
+      "projected": false
+     },
+     "x6_pp_tomato_taken_out__tomato1": {
+      "timing": "dynamic",
+      "layouts": [
+       "x6_pp_tomato_taken_out__tomato1"
+      ],
+      "seeds": {
+       "10": "x6_pp_tomato_taken_out__tomato1",
+       "11": "x6_pp_tomato_taken_out__tomato1",
+       "12": "x6_pp_tomato_taken_out__tomato1",
+       "13": "x6_pp_tomato_taken_out__tomato1",
+       "14": "x6_pp_tomato_taken_out__tomato1",
+       "15": "x6_pp_tomato_taken_out__tomato1",
+       "16": "x6_pp_tomato_taken_out__tomato1",
+       "17": "x6_pp_tomato_taken_out__tomato1",
+       "18": "x6_pp_tomato_taken_out__tomato1",
+       "19": "x6_pp_tomato_taken_out__tomato1"
+      },
+      "projected": false
+     },
+     "x6_pp_tomato_taken_out__tomato2_after_stir": {
+      "timing": "dynamic",
+      "layouts": [
        "x6_pp_tomato_taken_out__tomato2_after_stir"
       ],
       "seeds": {
        "10": "x6_pp_tomato_taken_out__tomato2_after_stir",
-       "11": "x6_pp_tomato_taken_out__tomato2",
-       "12": "x6_pp_tomato_taken_out__tomato1",
-       "13": "x6_pp_tomato_taken_out__tomato2",
+       "11": "x6_pp_tomato_taken_out__tomato2_after_stir",
+       "12": "x6_pp_tomato_taken_out__tomato2_after_stir",
+       "13": "x6_pp_tomato_taken_out__tomato2_after_stir",
        "14": "x6_pp_tomato_taken_out__tomato2_after_stir",
-       "15": "x6_pp_tomato_taken_out__tomato2",
+       "15": "x6_pp_tomato_taken_out__tomato2_after_stir",
        "16": "x6_pp_tomato_taken_out__tomato2_after_stir",
-       "17": "x6_pp_tomato_taken_out__tomato1",
-       "18": "x6_pp_tomato_taken_out__tomato1",
-       "19": "x6_pp_tomato_taken_out__tomato2"
+       "17": "x6_pp_tomato_taken_out__tomato2_after_stir",
+       "18": "x6_pp_tomato_taken_out__tomato2_after_stir",
+       "19": "x6_pp_tomato_taken_out__tomato2_after_stir"
       },
       "projected": false
      }
@@ -42574,11 +42893,11 @@
     "trash_can",
     "kitchen_island/top"
    ],
-   "v6_families": {
+   "v6_variants": {
     "can_on_island": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "can_on_island"
      ],
      "seeds": {
@@ -42597,7 +42916,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -42616,7 +42935,7 @@
     "can_in_dining_room": {
      "origin": "v5",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "can_in_dining_room",
       "can_in_dining_room__alt_tv_stand_2"
      ],
@@ -42637,7 +42956,7 @@
     "far_can_far": {
      "origin": "v5",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "far_can_far",
       "far_can_far__alt_dining_table_2"
      ],
@@ -42658,7 +42977,7 @@
     "m_ik_can": {
      "origin": "v5",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "m_ik_can"
      ],
      "seeds": {
@@ -42677,7 +42996,7 @@
     "h_task_can_in_microwave": {
      "origin": "v5",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "h_task_can_in_microwave"
      ],
      "seeds": {
@@ -42696,7 +43015,7 @@
     "h_action_ik_pick_and_drop": {
      "origin": "v5",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "h_action_ik_pick_and_drop"
      ],
      "seeds": {
@@ -42715,7 +43034,7 @@
     "h_mixed_microwave_ik": {
      "origin": "v5",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "h_mixed_microwave_ik"
      ],
      "seeds": {
@@ -42734,7 +43053,7 @@
     "h_dynamic_can_moved": {
      "origin": "v5",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "h_dynamic_can_moved",
       "h_dynamic_can_moved__alt_tv_stand_2"
      ],
@@ -42755,7 +43074,7 @@
     "x6_cl_can_behind_bottle": {
      "origin": "v6",
      "control": "m_ik_can",
-     "cases": [
+     "layouts": [
       "x6_cl_can_behind_bottle"
      ],
      "factor": null,
@@ -42775,7 +43094,7 @@
     "x6_gd_can_put_away": {
      "origin": "v6",
      "control": "h_task_can_in_microwave",
-     "cases": [
+     "layouts": [
       "x6_gd_can_put_away__in_cabinet",
       "x6_gd_can_put_away__in_microwave"
      ],
@@ -42796,7 +43115,7 @@
     "x6_sr_drop_refused": {
      "origin": "v6",
      "control": "x6_m_ik_drop",
-     "cases": [
+     "layouts": [
       "x6_sr_drop_refused"
      ],
      "factor": null,
@@ -42816,7 +43135,7 @@
     "x6_m_ik_drop": {
      "origin": "v6",
      "control": "can_on_island",
-     "cases": [
+     "layouts": [
       "x6_m_ik_drop"
      ],
      "factor": null,
@@ -42842,7 +43161,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_can"
       ],
       "seeds": {
@@ -42868,7 +43187,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_pick_and_drop"
       ],
       "seeds": {
@@ -42895,7 +43214,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_microwave_ik"
       ],
       "seeds": {
@@ -42921,7 +43240,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_sr_drop_refused"
       ],
       "seeds": {
@@ -42947,7 +43266,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_ik_drop"
       ],
       "seeds": {
@@ -42971,7 +43290,7 @@
     "task": {
      "can_in_dining_room": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "can_in_dining_room",
        "can_in_dining_room__alt_tv_stand_2"
       ],
@@ -42991,7 +43310,7 @@
      },
      "far_can_far": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "far_can_far",
        "far_can_far__alt_dining_table_2"
       ],
@@ -43011,7 +43330,7 @@
      },
      "h_task_can_in_microwave": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_task_can_in_microwave"
       ],
       "seeds": {
@@ -43033,7 +43352,7 @@
      },
      "h_mixed_microwave_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_microwave_ik__tl"
       ],
       "seeds": {
@@ -43052,7 +43371,7 @@
      },
      "h_dynamic_can_moved": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_can_moved",
        "h_dynamic_can_moved__alt_tv_stand_2"
       ],
@@ -43072,7 +43391,7 @@
      },
      "x6_cl_can_behind_bottle": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_can_behind_bottle"
       ],
       "seeds": {
@@ -43091,7 +43410,7 @@
      },
      "x6_gd_can_put_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_can_put_away__in_cabinet",
        "x6_gd_can_put_away__in_microwave"
       ],
@@ -43111,7 +43430,7 @@
      },
      "x6_sr_drop_refused": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_sr_drop_refused__tl"
       ],
       "seeds": {
@@ -45453,11 +45772,11 @@
     "desk_1/top",
     "bowl_kitchen_cabinet"
    ],
-   "v6_families": {
+   "v6_variants": {
     "fruits_on_table": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "fruits_on_table"
      ],
      "seeds": {
@@ -45476,7 +45795,7 @@
     "e2_from_kitchen": {
      "origin": "v5",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "e2_from_kitchen"
      ],
      "seeds": {
@@ -45495,7 +45814,7 @@
     "basket_missing": {
      "origin": "v5",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "basket_missing"
      ],
      "seeds": {
@@ -45514,7 +45833,7 @@
     "m_grasp_apple": {
      "origin": "v5",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "m_grasp_apple"
      ],
      "seeds": {
@@ -45533,7 +45852,7 @@
     "m_ik_basket": {
      "origin": "v5",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "m_ik_basket"
      ],
      "seeds": {
@@ -45552,7 +45871,7 @@
     "basket_gone_bowl_there": {
      "origin": "v5",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "basket_gone_bowl_there"
      ],
      "seeds": {
@@ -45571,7 +45890,7 @@
     "h_action_grasp_and_ik": {
      "origin": "v5",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "h_action_grasp_and_ik"
      ],
      "seeds": {
@@ -45590,7 +45909,7 @@
     "h_mixed_bowl_there_grasp": {
      "origin": "v5",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "h_mixed_bowl_there_grasp"
      ],
      "seeds": {
@@ -45609,7 +45928,7 @@
     "h_dynamic_basket_taken": {
      "origin": "v5",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "h_dynamic_basket_taken"
      ],
      "seeds": {
@@ -45628,7 +45947,7 @@
     "x6_gd_fruits_event": {
      "origin": "v6",
      "control": "basket_missing",
-     "cases": [
+     "layouts": [
       "x6_gd_fruits_event"
      ],
      "factor": null,
@@ -45648,7 +45967,7 @@
     "x6_cl_apple_rolls_out": {
      "origin": "v6",
      "control": "x6_m_apple_rolls_out_once",
-     "cases": [
+     "layouts": [
       "x6_cl_apple_rolls_out"
      ],
      "factor": null,
@@ -45668,7 +45987,7 @@
     "x6_m_apple_rolls_out_once": {
      "origin": "v6",
      "control": "fruits_on_table",
-     "cases": [
+     "layouts": [
       "x6_m_apple_rolls_out_once"
      ],
      "factor": null,
@@ -45694,7 +46013,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_grasp_apple"
       ],
       "seeds": {
@@ -45720,7 +46039,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_basket"
       ],
       "seeds": {
@@ -45746,7 +46065,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik"
       ],
       "seeds": {
@@ -45772,7 +46091,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_bowl_there_grasp"
       ],
       "seeds": {
@@ -45798,7 +46117,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_cl_apple_rolls_out"
       ],
       "seeds": {
@@ -45824,7 +46143,7 @@
        "placement"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_apple_rolls_out_once"
       ],
       "seeds": {
@@ -45848,7 +46167,7 @@
     "task": {
      "basket_missing": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "basket_missing"
       ],
       "seeds": {
@@ -45867,7 +46186,7 @@
      },
      "basket_gone_bowl_there": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "basket_gone_bowl_there"
       ],
       "seeds": {
@@ -45886,7 +46205,7 @@
      },
      "h_action_grasp_and_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik__tl"
       ],
       "seeds": {
@@ -45905,7 +46224,7 @@
      },
      "h_mixed_bowl_there_grasp": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_bowl_there_grasp__tl"
       ],
       "seeds": {
@@ -45924,7 +46243,7 @@
      },
      "h_dynamic_basket_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_basket_taken"
       ],
       "seeds": {
@@ -45943,7 +46262,7 @@
      },
      "x6_gd_fruits_event": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_gd_fruits_event"
       ],
       "seeds": {
@@ -45962,7 +46281,7 @@
      },
      "x6_cl_apple_rolls_out": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_apple_rolls_out__tl"
       ],
       "seeds": {
@@ -52890,11 +53209,11 @@
     "stored_block_5",
     "stored_block_6"
    ],
-   "v6_families": {
+   "v6_variants": {
     "toys_out": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "toys_out"
      ],
      "seeds": {
@@ -52913,7 +53232,7 @@
     "e2_from_kitchen": {
      "origin": "v5",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "e2_from_kitchen"
      ],
      "seeds": {
@@ -52932,7 +53251,7 @@
     "duck_in_study": {
      "origin": "v5",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "duck_in_study",
       "duck_in_study__alt_dining_table_2"
      ],
@@ -52953,7 +53272,7 @@
     "m_grasp_car": {
      "origin": "v5",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "m_grasp_car"
      ],
      "seeds": {
@@ -52972,7 +53291,7 @@
     "m_ik_duck_place": {
      "origin": "v5",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "m_ik_duck_place"
      ],
      "seeds": {
@@ -52991,7 +53310,7 @@
     "toys_everywhere": {
      "origin": "v5",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "toys_everywhere",
       "toys_everywhere__alt_dining_table_2"
      ],
@@ -53012,7 +53331,7 @@
     "h_action_grasp_and_ik": {
      "origin": "v5",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "h_action_grasp_and_ik",
       "h_action_grasp_and_ik__alt_dining_table_2"
      ],
@@ -53033,7 +53352,7 @@
     "h_mixed_everywhere_ik": {
      "origin": "v5",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "h_mixed_everywhere_ik",
       "h_mixed_everywhere_ik__alt_dining_table_2"
      ],
@@ -53054,7 +53373,7 @@
     "h_dynamic_duck_taken": {
      "origin": "v5",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "h_dynamic_duck_taken",
       "h_dynamic_duck_taken__alt_tv_stand_2"
      ],
@@ -53075,7 +53394,7 @@
     "x6_gd_bins_capacity": {
      "origin": "v6",
      "control": "toys_everywhere",
-     "cases": [
+     "layouts": [
       "x6_gd_bins_capacity__left_full",
       "x6_gd_bins_capacity__right_full"
      ],
@@ -53096,7 +53415,7 @@
     "x6_cl_basket_unreachable": {
      "origin": "v6",
      "control": "m_ik_duck_place",
-     "cases": [
+     "layouts": [
       "x6_cl_basket_unreachable"
      ],
      "factor": null,
@@ -53116,7 +53435,7 @@
     "x6_pp_duck_moved": {
      "origin": "v6",
      "control": "toys_out",
-     "cases": [
+     "layouts": [
       "x6_pp_duck_moved__dining",
       "x6_pp_duck_moved__study"
      ],
@@ -53143,7 +53462,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_grasp_car"
       ],
       "seeds": {
@@ -53169,7 +53488,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_duck_place"
       ],
       "seeds": {
@@ -53196,7 +53515,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik",
        "h_action_grasp_and_ik__alt_dining_table_2"
       ],
@@ -53224,7 +53543,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_everywhere_ik",
        "h_mixed_everywhere_ik__alt_dining_table_2"
       ],
@@ -53251,7 +53570,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_cl_basket_unreachable"
       ],
       "seeds": {
@@ -53275,7 +53594,7 @@
     "task": {
      "duck_in_study": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "duck_in_study",
        "duck_in_study__alt_dining_table_2"
       ],
@@ -53295,7 +53614,7 @@
      },
      "toys_everywhere": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "toys_everywhere",
        "toys_everywhere__alt_dining_table_2"
       ],
@@ -53315,7 +53634,7 @@
      },
      "h_action_grasp_and_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_ik__tl",
        "h_action_grasp_and_ik__alt_dining_table_2__tl"
       ],
@@ -53335,7 +53654,7 @@
      },
      "h_mixed_everywhere_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_everywhere_ik__tl",
        "h_mixed_everywhere_ik__alt_dining_table_2__tl"
       ],
@@ -53355,7 +53674,7 @@
      },
      "h_dynamic_duck_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_duck_taken",
        "h_dynamic_duck_taken__alt_tv_stand_2"
       ],
@@ -53375,7 +53694,7 @@
      },
      "x6_gd_bins_capacity": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_bins_capacity__left_full",
        "x6_gd_bins_capacity__right_full"
       ],
@@ -53395,7 +53714,7 @@
      },
      "x6_cl_basket_unreachable": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_basket_unreachable__tl"
       ],
       "seeds": {
@@ -53414,7 +53733,7 @@
      },
      "x6_pp_duck_moved": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_pp_duck_moved__dining",
        "x6_pp_duck_moved__study"
       ],
@@ -60164,11 +60483,11 @@
     "plate_counter_b",
     "plate_dining_cabinet"
    ],
-   "v6_families": {
+   "v6_variants": {
     "dishes_on_tv_stand": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "dishes_on_tv_stand"
      ],
      "seeds": {
@@ -60187,7 +60506,7 @@
     "e2_from_kitchen": {
      "origin": "v5",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "e2_from_kitchen"
      ],
      "seeds": {
@@ -60206,7 +60525,7 @@
     "no_cup": {
      "origin": "v5",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "no_cup"
      ],
      "seeds": {
@@ -60225,7 +60544,7 @@
     "bowl_on_cabinet": {
      "origin": "v5",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "bowl_on_cabinet",
       "bowl_on_cabinet__alt_dining_table_2"
      ],
@@ -60246,7 +60565,7 @@
     "no_cup_bowl_on_cabinet": {
      "origin": "v5",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "no_cup_bowl_on_cabinet",
       "no_cup_bowl_on_cabinet__alt_dining_table_2"
      ],
@@ -60267,7 +60586,7 @@
     "no_cup_spoon_boxed_in": {
      "origin": "v5",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "no_cup_spoon_boxed_in"
      ],
      "seeds": {
@@ -60286,7 +60605,7 @@
     "h_action_ik_and_grasp": {
      "origin": "v5",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "h_action_ik_and_grasp"
      ],
      "seeds": {
@@ -60305,7 +60624,7 @@
     "h_mixed_boxed_in_ik": {
      "origin": "v5",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "h_mixed_boxed_in_ik"
      ],
      "seeds": {
@@ -60324,7 +60643,7 @@
     "h_dynamic_mug_taken": {
      "origin": "v5",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "h_dynamic_mug_taken",
       "h_dynamic_mug_taken__alt_dining_table_2"
      ],
@@ -60345,7 +60664,7 @@
     "x6_cl_cup_slips": {
      "origin": "v6",
      "control": "x6_m_slip_cup",
-     "cases": [
+     "layouts": [
       "x6_cl_cup_slips__mug_bookcase",
       "x6_cl_cup_slips__mug_cabinet"
      ],
@@ -60366,7 +60685,7 @@
     "x6_m_slip_cup": {
      "origin": "v6",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "x6_m_slip_cup"
      ],
      "factor": null,
@@ -60383,32 +60702,67 @@
       "19": "x6_m_slip_cup"
      }
     },
-    "x6_pp_spoon_moved": {
+    "x6_pp_spoon_moved__early": {
      "origin": "v6",
      "control": "dishes_on_tv_stand",
-     "cases": [
-      "x6_pp_spoon_moved__early",
-      "x6_pp_spoon_moved__table_end",
-      "x6_pp_spoon_moved__tv_stand"
+     "layouts": [
+      "x6_pp_spoon_moved__early"
      ],
-     "factor": "where the event takes the resource, and when (failure timing)",
      "seeds": {
-      "10": "x6_pp_spoon_moved__table_end",
+      "10": "x6_pp_spoon_moved__early",
       "11": "x6_pp_spoon_moved__early",
-      "12": "x6_pp_spoon_moved__tv_stand",
-      "13": "x6_pp_spoon_moved__table_end",
-      "14": "x6_pp_spoon_moved__table_end",
+      "12": "x6_pp_spoon_moved__early",
+      "13": "x6_pp_spoon_moved__early",
+      "14": "x6_pp_spoon_moved__early",
       "15": "x6_pp_spoon_moved__early",
       "16": "x6_pp_spoon_moved__early",
-      "17": "x6_pp_spoon_moved__tv_stand",
+      "17": "x6_pp_spoon_moved__early",
       "18": "x6_pp_spoon_moved__early",
+      "19": "x6_pp_spoon_moved__early"
+     }
+    },
+    "x6_pp_spoon_moved__table_end": {
+     "origin": "v6",
+     "control": "dishes_on_tv_stand",
+     "layouts": [
+      "x6_pp_spoon_moved__table_end"
+     ],
+     "seeds": {
+      "10": "x6_pp_spoon_moved__table_end",
+      "11": "x6_pp_spoon_moved__table_end",
+      "12": "x6_pp_spoon_moved__table_end",
+      "13": "x6_pp_spoon_moved__table_end",
+      "14": "x6_pp_spoon_moved__table_end",
+      "15": "x6_pp_spoon_moved__table_end",
+      "16": "x6_pp_spoon_moved__table_end",
+      "17": "x6_pp_spoon_moved__table_end",
+      "18": "x6_pp_spoon_moved__table_end",
+      "19": "x6_pp_spoon_moved__table_end"
+     }
+    },
+    "x6_pp_spoon_moved__tv_stand": {
+     "origin": "v6",
+     "control": "dishes_on_tv_stand",
+     "layouts": [
+      "x6_pp_spoon_moved__tv_stand"
+     ],
+     "seeds": {
+      "10": "x6_pp_spoon_moved__tv_stand",
+      "11": "x6_pp_spoon_moved__tv_stand",
+      "12": "x6_pp_spoon_moved__tv_stand",
+      "13": "x6_pp_spoon_moved__tv_stand",
+      "14": "x6_pp_spoon_moved__tv_stand",
+      "15": "x6_pp_spoon_moved__tv_stand",
+      "16": "x6_pp_spoon_moved__tv_stand",
+      "17": "x6_pp_spoon_moved__tv_stand",
+      "18": "x6_pp_spoon_moved__tv_stand",
       "19": "x6_pp_spoon_moved__tv_stand"
      }
     },
     "x6_gd_bowl_put_away": {
      "origin": "v6",
      "control": "bowl_on_cabinet",
-     "cases": [
+     "layouts": [
       "x6_gd_bowl_put_away__in_cabinet",
       "x6_gd_bowl_put_away__in_microwave"
      ],
@@ -60429,7 +60783,7 @@
     "x6_gd_two_settings": {
      "origin": "v6",
      "control": "dishes_on_tv_stand",
-     "cases": [
+     "layouts": [
       "x6_gd_two_settings__cabinet6",
       "x6_gd_two_settings__cabinet4"
      ],
@@ -60456,7 +60810,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_and_grasp"
       ],
       "seeds": {
@@ -60482,7 +60836,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_boxed_in_ik"
       ],
       "seeds": {
@@ -60508,7 +60862,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_cl_cup_slips__mug_bookcase",
        "x6_cl_cup_slips__mug_cabinet"
       ],
@@ -60535,7 +60889,7 @@
        "slip"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_slip_cup"
       ],
       "seeds": {
@@ -60559,7 +60913,7 @@
     "task": {
      "no_cup": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "no_cup"
       ],
       "seeds": {
@@ -60578,7 +60932,7 @@
      },
      "bowl_on_cabinet": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "bowl_on_cabinet",
        "bowl_on_cabinet__alt_dining_table_2"
       ],
@@ -60598,7 +60952,7 @@
      },
      "no_cup_bowl_on_cabinet": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "no_cup_bowl_on_cabinet",
        "no_cup_bowl_on_cabinet__alt_dining_table_2"
       ],
@@ -60618,7 +60972,7 @@
      },
      "no_cup_spoon_boxed_in": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "no_cup_spoon_boxed_in"
       ],
       "seeds": {
@@ -60637,7 +60991,7 @@
      },
      "h_action_ik_and_grasp": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_ik_and_grasp__tl"
       ],
       "seeds": {
@@ -60656,7 +61010,7 @@
      },
      "h_mixed_boxed_in_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_boxed_in_ik__tl"
       ],
       "seeds": {
@@ -60675,7 +61029,7 @@
      },
      "h_dynamic_mug_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_mug_taken",
        "h_dynamic_mug_taken__alt_dining_table_2"
       ],
@@ -60695,7 +61049,7 @@
      },
      "x6_cl_cup_slips": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_cl_cup_slips__mug_bookcase__tl",
        "x6_cl_cup_slips__mug_cabinet__tl"
       ],
@@ -60713,30 +61067,66 @@
       },
       "projected": true
      },
-     "x6_pp_spoon_moved": {
+     "x6_pp_spoon_moved__early": {
       "timing": "dynamic",
-      "cases": [
-       "x6_pp_spoon_moved__early",
-       "x6_pp_spoon_moved__table_end",
-       "x6_pp_spoon_moved__tv_stand"
+      "layouts": [
+       "x6_pp_spoon_moved__early"
+      ],
+      "seeds": {
+       "10": "x6_pp_spoon_moved__early",
+       "11": "x6_pp_spoon_moved__early",
+       "12": "x6_pp_spoon_moved__early",
+       "13": "x6_pp_spoon_moved__early",
+       "14": "x6_pp_spoon_moved__early",
+       "15": "x6_pp_spoon_moved__early",
+       "16": "x6_pp_spoon_moved__early",
+       "17": "x6_pp_spoon_moved__early",
+       "18": "x6_pp_spoon_moved__early",
+       "19": "x6_pp_spoon_moved__early"
+      },
+      "projected": false
+     },
+     "x6_pp_spoon_moved__table_end": {
+      "timing": "dynamic",
+      "layouts": [
+       "x6_pp_spoon_moved__table_end"
       ],
       "seeds": {
        "10": "x6_pp_spoon_moved__table_end",
-       "11": "x6_pp_spoon_moved__early",
-       "12": "x6_pp_spoon_moved__tv_stand",
+       "11": "x6_pp_spoon_moved__table_end",
+       "12": "x6_pp_spoon_moved__table_end",
        "13": "x6_pp_spoon_moved__table_end",
        "14": "x6_pp_spoon_moved__table_end",
-       "15": "x6_pp_spoon_moved__early",
-       "16": "x6_pp_spoon_moved__early",
+       "15": "x6_pp_spoon_moved__table_end",
+       "16": "x6_pp_spoon_moved__table_end",
+       "17": "x6_pp_spoon_moved__table_end",
+       "18": "x6_pp_spoon_moved__table_end",
+       "19": "x6_pp_spoon_moved__table_end"
+      },
+      "projected": false
+     },
+     "x6_pp_spoon_moved__tv_stand": {
+      "timing": "dynamic",
+      "layouts": [
+       "x6_pp_spoon_moved__tv_stand"
+      ],
+      "seeds": {
+       "10": "x6_pp_spoon_moved__tv_stand",
+       "11": "x6_pp_spoon_moved__tv_stand",
+       "12": "x6_pp_spoon_moved__tv_stand",
+       "13": "x6_pp_spoon_moved__tv_stand",
+       "14": "x6_pp_spoon_moved__tv_stand",
+       "15": "x6_pp_spoon_moved__tv_stand",
+       "16": "x6_pp_spoon_moved__tv_stand",
        "17": "x6_pp_spoon_moved__tv_stand",
-       "18": "x6_pp_spoon_moved__early",
+       "18": "x6_pp_spoon_moved__tv_stand",
        "19": "x6_pp_spoon_moved__tv_stand"
       },
       "projected": false
      },
      "x6_gd_bowl_put_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_bowl_put_away__in_cabinet",
        "x6_gd_bowl_put_away__in_microwave"
       ],
@@ -60756,7 +61146,7 @@
      },
      "x6_gd_two_settings": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_gd_two_settings__cabinet6",
        "x6_gd_two_settings__cabinet4"
       ],
@@ -61912,11 +62302,11 @@
     "paperback_book",
     "kitchen_island/top"
    ],
-   "v6_families": {
+   "v6_variants": {
     "book_free": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "book_free"
      ],
      "seeds": {
@@ -61935,7 +62325,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "book_free",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -61954,7 +62344,7 @@
     "book_out_of_view": {
      "origin": "v5",
      "control": "book_free",
-     "cases": [
+     "layouts": [
       "book_out_of_view"
      ],
      "seeds": {
@@ -61973,7 +62363,7 @@
     "m_ik_flip": {
      "origin": "v5",
      "control": "book_free",
-     "cases": [
+     "layouts": [
       "m_ik_flip"
      ],
      "seeds": {
@@ -61992,7 +62382,7 @@
     "m_start_dining_away": {
      "origin": "v5",
      "control": "book_free",
-     "cases": [
+     "layouts": [
       "m_start_dining_away"
      ],
      "seeds": {
@@ -62011,7 +62401,7 @@
     "h_task_block_on_book": {
      "origin": "v5",
      "control": "book_free",
-     "cases": [
+     "layouts": [
       "h_task_block_on_book"
      ],
      "seeds": {
@@ -62030,7 +62420,7 @@
     "h_action_ik_twice": {
      "origin": "v5",
      "control": "book_free",
-     "cases": [
+     "layouts": [
       "h_action_ik_twice"
      ],
      "seeds": {
@@ -62049,7 +62439,7 @@
     "h_mixed_block_on_book_ik": {
      "origin": "v5",
      "control": "book_free",
-     "cases": [
+     "layouts": [
       "h_mixed_block_on_book_ik"
      ],
      "seeds": {
@@ -62068,7 +62458,7 @@
     "h_dynamic_book_moved": {
      "origin": "v5",
      "control": "book_free",
-     "cases": [
+     "layouts": [
       "h_dynamic_book_moved"
      ],
      "seeds": {
@@ -62093,7 +62483,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_flip"
       ],
       "seeds": {
@@ -62119,7 +62509,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_twice"
       ],
       "seeds": {
@@ -62146,7 +62536,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_block_on_book_ik"
       ],
       "seeds": {
@@ -62170,7 +62560,7 @@
     "task": {
      "book_out_of_view": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "book_out_of_view"
       ],
       "seeds": {
@@ -62189,7 +62579,7 @@
      },
      "m_start_dining_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "m_start_dining_away"
       ],
       "seeds": {
@@ -62208,7 +62598,7 @@
      },
      "h_task_block_on_book": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_task_block_on_book"
       ],
       "seeds": {
@@ -62231,7 +62621,7 @@
      },
      "h_dynamic_book_moved": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_book_moved"
       ],
       "seeds": {
@@ -63409,11 +63799,11 @@
     "rolling_pin",
     "kitchen_island/top"
    ],
-   "v6_families": {
+   "v6_variants": {
     "pin_free": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "pin_free"
      ],
      "seeds": {
@@ -63432,7 +63822,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "pin_free",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -63451,7 +63841,7 @@
     "pin_out_of_view": {
      "origin": "v5",
      "control": "pin_free",
-     "cases": [
+     "layouts": [
       "pin_out_of_view"
      ],
      "seeds": {
@@ -63470,7 +63860,7 @@
     "m_ik_roll": {
      "origin": "v5",
      "control": "pin_free",
-     "cases": [
+     "layouts": [
       "m_ik_roll"
      ],
      "seeds": {
@@ -63489,7 +63879,7 @@
     "m_start_dining_away": {
      "origin": "v5",
      "control": "pin_free",
-     "cases": [
+     "layouts": [
       "m_start_dining_away"
      ],
      "seeds": {
@@ -63508,7 +63898,7 @@
     "h_task_bowl_behind": {
      "origin": "v5",
      "control": "pin_free",
-     "cases": [
+     "layouts": [
       "h_task_bowl_behind"
      ],
      "seeds": {
@@ -63527,7 +63917,7 @@
     "h_action_ik_twice": {
      "origin": "v5",
      "control": "pin_free",
-     "cases": [
+     "layouts": [
       "h_action_ik_twice"
      ],
      "seeds": {
@@ -63546,7 +63936,7 @@
     "h_mixed_bowl_behind_ik": {
      "origin": "v5",
      "control": "pin_free",
-     "cases": [
+     "layouts": [
       "h_mixed_bowl_behind_ik"
      ],
      "seeds": {
@@ -63565,7 +63955,7 @@
     "h_dynamic_bowl_put_behind": {
      "origin": "v5",
      "control": "pin_free",
-     "cases": [
+     "layouts": [
       "h_dynamic_bowl_put_behind"
      ],
      "seeds": {
@@ -63590,7 +63980,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_roll"
       ],
       "seeds": {
@@ -63616,7 +64006,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_twice"
       ],
       "seeds": {
@@ -63643,7 +64033,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_bowl_behind_ik"
       ],
       "seeds": {
@@ -63667,7 +64057,7 @@
     "task": {
      "pin_out_of_view": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "pin_out_of_view"
       ],
       "seeds": {
@@ -63686,7 +64076,7 @@
      },
      "m_start_dining_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "m_start_dining_away"
       ],
       "seeds": {
@@ -63705,7 +64095,7 @@
      },
      "h_task_bowl_behind": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_task_bowl_behind"
       ],
       "seeds": {
@@ -63728,7 +64118,7 @@
      },
      "h_dynamic_bowl_put_behind": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_bowl_put_behind"
       ],
       "seeds": {
@@ -67001,11 +67391,11 @@
     "kitchen_stove/top",
     "kitchen_island/top"
    ],
-   "v6_families": {
+   "v6_variants": {
     "lid_off": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "lid_off"
      ],
      "seeds": {
@@ -67024,7 +67414,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -67043,7 +67433,7 @@
     "lid_on": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "lid_on"
      ],
      "seeds": {
@@ -67062,7 +67452,7 @@
     "block_crowded": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "block_crowded"
      ],
      "seeds": {
@@ -67081,7 +67471,7 @@
     "lid_on_crowded": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "lid_on_crowded"
      ],
      "seeds": {
@@ -67100,7 +67490,7 @@
     "h_task_lid_elsewhere": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "h_task_lid_elsewhere"
      ],
      "seeds": {
@@ -67119,7 +67509,7 @@
     "h_action_ik_twice": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "h_action_ik_twice"
      ],
      "seeds": {
@@ -67138,7 +67528,7 @@
     "h_mixed_lid_elsewhere_ik": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "h_mixed_lid_elsewhere_ik"
      ],
      "seeds": {
@@ -67157,7 +67547,7 @@
     "h_dynamic_lid_put_on": {
      "origin": "v5",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "h_dynamic_lid_put_on"
      ],
      "seeds": {
@@ -67176,7 +67566,7 @@
     "x6_sr_hide_refused": {
      "origin": "v6",
      "control": "x6_m_ik_hide",
-     "cases": [
+     "layouts": [
       "x6_sr_hide_refused"
      ],
      "factor": null,
@@ -67196,7 +67586,7 @@
     "x6_m_ik_hide": {
      "origin": "v6",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "x6_m_ik_hide"
      ],
      "factor": null,
@@ -67216,7 +67606,7 @@
     "x6_pp_lid_lifted": {
      "origin": "v6",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "x6_pp_lid_lifted__cabinet4",
       "x6_pp_lid_lifted__dining"
      ],
@@ -67237,7 +67627,7 @@
     "x6_gd_hide_both_event": {
      "origin": "v6",
      "control": "lid_off",
-     "cases": [
+     "layouts": [
       "x6_gd_hide_both_event__tv_stand",
       "x6_gd_hide_both_event__dining"
      ],
@@ -67264,7 +67654,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "block_crowded"
       ],
       "seeds": {
@@ -67290,7 +67680,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "lid_on_crowded"
       ],
       "seeds": {
@@ -67316,7 +67706,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_twice"
       ],
       "seeds": {
@@ -67343,7 +67733,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_lid_elsewhere_ik"
       ],
       "seeds": {
@@ -67369,7 +67759,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_sr_hide_refused"
       ],
       "seeds": {
@@ -67395,7 +67785,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_ik_hide"
       ],
       "seeds": {
@@ -67419,7 +67809,7 @@
     "task": {
      "lid_on": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "lid_on"
       ],
       "seeds": {
@@ -67438,7 +67828,7 @@
      },
      "lid_on_crowded": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "lid_on_crowded"
       ],
       "seeds": {
@@ -67457,7 +67847,7 @@
      },
      "h_task_lid_elsewhere": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_task_lid_elsewhere"
       ],
       "seeds": {
@@ -67480,7 +67870,7 @@
      },
      "h_dynamic_lid_put_on": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_lid_put_on"
       ],
       "seeds": {
@@ -67499,7 +67889,7 @@
      },
      "x6_sr_hide_refused": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_sr_hide_refused__tl"
       ],
       "seeds": {
@@ -67518,7 +67908,7 @@
      },
      "x6_pp_lid_lifted": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_pp_lid_lifted__cabinet4",
        "x6_pp_lid_lifted__dining"
       ],
@@ -67538,7 +67928,7 @@
      },
      "x6_gd_hide_both_event": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_gd_hide_both_event__tv_stand",
        "x6_gd_hide_both_event__dining"
       ],
@@ -69084,11 +69474,11 @@
     "bowl_inside_kitchen_cabinet",
     "kitchen_cabinet_6"
    ],
-   "v6_families": {
+   "v6_variants": {
     "at_island": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "at_island"
      ],
      "seeds": {
@@ -69107,7 +69497,7 @@
     "e2_from_dining_room": {
      "origin": "v5",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "e2_from_dining_room"
      ],
      "seeds": {
@@ -69126,7 +69516,7 @@
     "m_ik_open": {
      "origin": "v5",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "m_ik_open"
      ],
      "seeds": {
@@ -69145,7 +69535,7 @@
     "m_ik_close": {
      "origin": "v5",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "m_ik_close"
      ],
      "seeds": {
@@ -69164,7 +69554,7 @@
     "m_door_left_open": {
      "origin": "v5",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "m_door_left_open"
      ],
      "seeds": {
@@ -69183,7 +69573,7 @@
     "h_task_two_cabinets": {
      "origin": "v5",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "h_task_two_cabinets"
      ],
      "seeds": {
@@ -69202,7 +69592,7 @@
     "h_action_ik_open_and_close": {
      "origin": "v5",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "h_action_ik_open_and_close"
      ],
      "seeds": {
@@ -69221,7 +69611,7 @@
     "h_mixed_two_cabinets_ik": {
      "origin": "v5",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "h_mixed_two_cabinets_ik"
      ],
      "seeds": {
@@ -69240,7 +69630,7 @@
     "h_dynamic_door_closed": {
      "origin": "v5",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "h_dynamic_door_closed"
      ],
      "seeds": {
@@ -69256,23 +69646,40 @@
       "19": "h_dynamic_door_closed"
      }
     },
-    "x6_gd_bowl_elsewhere": {
+    "x6_gd_bowl_elsewhere__two_places": {
      "origin": "v6",
      "control": "at_island",
-     "cases": [
-      "x6_gd_bowl_elsewhere__two_places",
-      "x6_gd_bowl_elsewhere__three_places"
+     "layouts": [
+      "x6_gd_bowl_elsewhere__two_places"
      ],
-     "factor": "how many candidate places (and an empty one) the instruction names",
      "seeds": {
       "10": "x6_gd_bowl_elsewhere__two_places",
       "11": "x6_gd_bowl_elsewhere__two_places",
-      "12": "x6_gd_bowl_elsewhere__three_places",
+      "12": "x6_gd_bowl_elsewhere__two_places",
       "13": "x6_gd_bowl_elsewhere__two_places",
-      "14": "x6_gd_bowl_elsewhere__three_places",
+      "14": "x6_gd_bowl_elsewhere__two_places",
       "15": "x6_gd_bowl_elsewhere__two_places",
-      "16": "x6_gd_bowl_elsewhere__three_places",
+      "16": "x6_gd_bowl_elsewhere__two_places",
       "17": "x6_gd_bowl_elsewhere__two_places",
+      "18": "x6_gd_bowl_elsewhere__two_places",
+      "19": "x6_gd_bowl_elsewhere__two_places"
+     }
+    },
+    "x6_gd_bowl_elsewhere__three_places": {
+     "origin": "v6",
+     "control": "at_island",
+     "layouts": [
+      "x6_gd_bowl_elsewhere__three_places"
+     ],
+     "seeds": {
+      "10": "x6_gd_bowl_elsewhere__three_places",
+      "11": "x6_gd_bowl_elsewhere__three_places",
+      "12": "x6_gd_bowl_elsewhere__three_places",
+      "13": "x6_gd_bowl_elsewhere__three_places",
+      "14": "x6_gd_bowl_elsewhere__three_places",
+      "15": "x6_gd_bowl_elsewhere__three_places",
+      "16": "x6_gd_bowl_elsewhere__three_places",
+      "17": "x6_gd_bowl_elsewhere__three_places",
       "18": "x6_gd_bowl_elsewhere__three_places",
       "19": "x6_gd_bowl_elsewhere__three_places"
      }
@@ -69280,7 +69687,7 @@
     "x6_pp_door_reopened": {
      "origin": "v6",
      "control": "at_island",
-     "cases": [
+     "layouts": [
       "x6_pp_door_reopened"
      ],
      "factor": null,
@@ -69306,7 +69713,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_open"
       ],
       "seeds": {
@@ -69332,7 +69739,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_close"
       ],
       "seeds": {
@@ -69358,7 +69765,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_open_and_close"
       ],
       "seeds": {
@@ -69385,7 +69792,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_two_cabinets_ik"
       ],
       "seeds": {
@@ -69409,7 +69816,7 @@
     "task": {
      "m_door_left_open": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "m_door_left_open"
       ],
       "seeds": {
@@ -69428,7 +69835,7 @@
      },
      "h_task_two_cabinets": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_task_two_cabinets"
       ],
       "seeds": {
@@ -69451,7 +69858,7 @@
      },
      "h_dynamic_door_closed": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_door_closed"
       ],
       "seeds": {
@@ -69468,21 +69875,39 @@
       },
       "projected": false
      },
-     "x6_gd_bowl_elsewhere": {
+     "x6_gd_bowl_elsewhere__two_places": {
       "timing": "initial",
-      "cases": [
-       "x6_gd_bowl_elsewhere__two_places",
-       "x6_gd_bowl_elsewhere__three_places"
+      "layouts": [
+       "x6_gd_bowl_elsewhere__two_places"
       ],
       "seeds": {
        "10": "x6_gd_bowl_elsewhere__two_places",
        "11": "x6_gd_bowl_elsewhere__two_places",
-       "12": "x6_gd_bowl_elsewhere__three_places",
+       "12": "x6_gd_bowl_elsewhere__two_places",
        "13": "x6_gd_bowl_elsewhere__two_places",
-       "14": "x6_gd_bowl_elsewhere__three_places",
+       "14": "x6_gd_bowl_elsewhere__two_places",
        "15": "x6_gd_bowl_elsewhere__two_places",
-       "16": "x6_gd_bowl_elsewhere__three_places",
+       "16": "x6_gd_bowl_elsewhere__two_places",
        "17": "x6_gd_bowl_elsewhere__two_places",
+       "18": "x6_gd_bowl_elsewhere__two_places",
+       "19": "x6_gd_bowl_elsewhere__two_places"
+      },
+      "projected": false
+     },
+     "x6_gd_bowl_elsewhere__three_places": {
+      "timing": "initial",
+      "layouts": [
+       "x6_gd_bowl_elsewhere__three_places"
+      ],
+      "seeds": {
+       "10": "x6_gd_bowl_elsewhere__three_places",
+       "11": "x6_gd_bowl_elsewhere__three_places",
+       "12": "x6_gd_bowl_elsewhere__three_places",
+       "13": "x6_gd_bowl_elsewhere__three_places",
+       "14": "x6_gd_bowl_elsewhere__three_places",
+       "15": "x6_gd_bowl_elsewhere__three_places",
+       "16": "x6_gd_bowl_elsewhere__three_places",
+       "17": "x6_gd_bowl_elsewhere__three_places",
        "18": "x6_gd_bowl_elsewhere__three_places",
        "19": "x6_gd_bowl_elsewhere__three_places"
       },
@@ -69490,7 +69915,7 @@
      },
      "x6_pp_door_reopened": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "x6_pp_door_reopened"
       ],
       "seeds": {
@@ -75024,11 +75449,11 @@
     "bookcase_2/top",
     "toy_storage_bin"
    ],
-   "v6_families": {
+   "v6_variants": {
     "bin_on_bookcase": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "bin_on_bookcase"
      ],
      "seeds": {
@@ -75047,7 +75472,7 @@
     "e2_from_kitchen": {
      "origin": "v5",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "e2_from_kitchen"
      ],
      "seeds": {
@@ -75066,7 +75491,7 @@
     "m_can_in_dining_room": {
      "origin": "v5",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "m_can_in_dining_room",
       "m_can_in_dining_room__alt_tv_stand_2"
      ],
@@ -75087,7 +75512,7 @@
     "m_grasp_can": {
      "origin": "v5",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "m_grasp_can"
      ],
      "seeds": {
@@ -75106,7 +75531,7 @@
     "m_ik_cube": {
      "origin": "v5",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "m_ik_cube"
      ],
      "seeds": {
@@ -75125,7 +75550,7 @@
     "lookalike_bin": {
      "origin": "v5",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "lookalike_bin",
       "lookalike_bin__alt_tv_stand_2"
      ],
@@ -75146,7 +75571,7 @@
     "h_action_grasp_and_miss": {
      "origin": "v5",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "h_action_grasp_and_miss",
       "h_action_grasp_and_miss__alt_tv_stand_2"
      ],
@@ -75167,7 +75592,7 @@
     "h_mixed_lookalike_ik": {
      "origin": "v5",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "h_mixed_lookalike_ik",
       "h_mixed_lookalike_ik__alt_tv_stand_2"
      ],
@@ -75188,7 +75613,7 @@
     "h_dynamic_cube_moved": {
      "origin": "v5",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "h_dynamic_cube_moved",
       "h_dynamic_cube_moved__alt_kitchen_cabinet_6"
      ],
@@ -75209,7 +75634,7 @@
     "x6_gd_can_put_away": {
      "origin": "v6",
      "control": "m_can_in_dining_room",
-     "cases": [
+     "layouts": [
       "x6_gd_can_put_away__in_4",
       "x6_gd_can_put_away__in_6"
      ],
@@ -75230,7 +75655,7 @@
     "x6_sr_cube_drop_refused": {
      "origin": "v6",
      "control": "x6_m_ik_drop_cube",
-     "cases": [
+     "layouts": [
       "x6_sr_cube_drop_refused"
      ],
      "factor": null,
@@ -75250,7 +75675,7 @@
     "x6_m_ik_drop_cube": {
      "origin": "v6",
      "control": "bin_on_bookcase",
-     "cases": [
+     "layouts": [
       "x6_m_ik_drop_cube"
      ],
      "factor": null,
@@ -75276,7 +75701,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_grasp_can"
       ],
       "seeds": {
@@ -75302,7 +75727,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_cube"
       ],
       "seeds": {
@@ -75329,7 +75754,7 @@
        "placement"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_miss",
        "h_action_grasp_and_miss__alt_tv_stand_2"
       ],
@@ -75357,7 +75782,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_lookalike_ik",
        "h_mixed_lookalike_ik__alt_tv_stand_2"
       ],
@@ -75384,7 +75809,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_sr_cube_drop_refused"
       ],
       "seeds": {
@@ -75410,7 +75835,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_ik_drop_cube"
       ],
       "seeds": {
@@ -75434,7 +75859,7 @@
     "task": {
      "m_can_in_dining_room": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "m_can_in_dining_room",
        "m_can_in_dining_room__alt_tv_stand_2"
       ],
@@ -75454,7 +75879,7 @@
      },
      "lookalike_bin": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "lookalike_bin",
        "lookalike_bin__alt_tv_stand_2"
       ],
@@ -75474,7 +75899,7 @@
      },
      "h_action_grasp_and_miss": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_grasp_and_miss__tl",
        "h_action_grasp_and_miss__alt_tv_stand_2__tl"
       ],
@@ -75494,7 +75919,7 @@
      },
      "h_mixed_lookalike_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_lookalike_ik__tl",
        "h_mixed_lookalike_ik__alt_tv_stand_2__tl"
       ],
@@ -75514,7 +75939,7 @@
      },
      "h_dynamic_cube_moved": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_cube_moved",
        "h_dynamic_cube_moved__alt_kitchen_cabinet_6"
       ],
@@ -75534,7 +75959,7 @@
      },
      "x6_gd_can_put_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_can_put_away__in_4",
        "x6_gd_can_put_away__in_6"
       ],
@@ -75554,7 +75979,7 @@
      },
      "x6_sr_cube_drop_refused": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_sr_cube_drop_refused__tl"
       ],
       "seeds": {
@@ -79856,11 +80281,11 @@
     "party_bowl_3",
     "party_bowl_4"
    ],
-   "v6_families": {
+   "v6_variants": {
     "bottle_on_cabinet": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "bottle_on_cabinet"
      ],
      "seeds": {
@@ -79879,7 +80304,7 @@
     "e2_from_bedroom_hall": {
      "origin": "v5",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "e2_from_bedroom_hall"
      ],
      "seeds": {
@@ -79898,7 +80323,7 @@
     "m_ik_pick": {
      "origin": "v5",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "m_ik_pick"
      ],
      "seeds": {
@@ -79917,7 +80342,7 @@
     "m_ik_place": {
      "origin": "v5",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "m_ik_place"
      ],
      "seeds": {
@@ -79936,7 +80361,7 @@
     "m_bottle_on_tv_stand": {
      "origin": "v5",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "m_bottle_on_tv_stand",
       "m_bottle_on_tv_stand__alt_dining_table_2"
      ],
@@ -79957,7 +80382,7 @@
     "table_full": {
      "origin": "v5",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "table_full"
      ],
      "seeds": {
@@ -79976,7 +80401,7 @@
     "h_action_ik_pick_and_place": {
      "origin": "v5",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "h_action_ik_pick_and_place"
      ],
      "seeds": {
@@ -79995,7 +80420,7 @@
     "h_mixed_table_full_ik": {
      "origin": "v5",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "h_mixed_table_full_ik"
      ],
      "seeds": {
@@ -80014,7 +80439,7 @@
     "h_dynamic_bottle_taken": {
      "origin": "v5",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "h_dynamic_bottle_taken",
       "h_dynamic_bottle_taken__alt_kitchen_cabinet_4"
      ],
@@ -80032,31 +80457,48 @@
      },
      "factor": "where the resource is to be found (seed extension)"
     },
-    "x6_cl_bottle_behind_mug": {
+    "x6_cl_bottle_behind_mug__mug": {
      "origin": "v6",
      "control": "m_ik_pick",
-     "cases": [
-      "x6_cl_bottle_behind_mug__mug",
-      "x6_cl_bottle_behind_mug__bowl"
+     "layouts": [
+      "x6_cl_bottle_behind_mug__mug"
      ],
-     "factor": "which object blocks the reach (blocking relation)",
      "seeds": {
-      "10": "x6_cl_bottle_behind_mug__bowl",
+      "10": "x6_cl_bottle_behind_mug__mug",
       "11": "x6_cl_bottle_behind_mug__mug",
       "12": "x6_cl_bottle_behind_mug__mug",
+      "13": "x6_cl_bottle_behind_mug__mug",
+      "14": "x6_cl_bottle_behind_mug__mug",
+      "15": "x6_cl_bottle_behind_mug__mug",
+      "16": "x6_cl_bottle_behind_mug__mug",
+      "17": "x6_cl_bottle_behind_mug__mug",
+      "18": "x6_cl_bottle_behind_mug__mug",
+      "19": "x6_cl_bottle_behind_mug__mug"
+     }
+    },
+    "x6_cl_bottle_behind_mug__bowl": {
+     "origin": "v6",
+     "control": "m_ik_pick",
+     "layouts": [
+      "x6_cl_bottle_behind_mug__bowl"
+     ],
+     "seeds": {
+      "10": "x6_cl_bottle_behind_mug__bowl",
+      "11": "x6_cl_bottle_behind_mug__bowl",
+      "12": "x6_cl_bottle_behind_mug__bowl",
       "13": "x6_cl_bottle_behind_mug__bowl",
       "14": "x6_cl_bottle_behind_mug__bowl",
-      "15": "x6_cl_bottle_behind_mug__mug",
+      "15": "x6_cl_bottle_behind_mug__bowl",
       "16": "x6_cl_bottle_behind_mug__bowl",
-      "17": "x6_cl_bottle_behind_mug__mug",
+      "17": "x6_cl_bottle_behind_mug__bowl",
       "18": "x6_cl_bottle_behind_mug__bowl",
-      "19": "x6_cl_bottle_behind_mug__mug"
+      "19": "x6_cl_bottle_behind_mug__bowl"
      }
     },
     "x6_gd_bottle_put_away": {
      "origin": "v6",
      "control": "bottle_on_cabinet",
-     "cases": [
+     "layouts": [
       "x6_gd_bottle_put_away__in_cabinet_4",
       "x6_gd_bottle_put_away__in_cabinet_6"
      ],
@@ -80083,7 +80525,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_pick"
       ],
       "seeds": {
@@ -80109,7 +80551,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_place"
       ],
       "seeds": {
@@ -80135,7 +80577,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_pick_and_place"
       ],
       "seeds": {
@@ -80162,7 +80604,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_table_full_ik"
       ],
       "seeds": {
@@ -80186,7 +80628,7 @@
     "task": {
      "m_bottle_on_tv_stand": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "m_bottle_on_tv_stand",
        "m_bottle_on_tv_stand__alt_dining_table_2"
       ],
@@ -80206,7 +80648,7 @@
      },
      "table_full": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "table_full"
       ],
       "seeds": {
@@ -80225,7 +80667,7 @@
      },
      "h_action_ik_pick_and_place": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_ik_pick_and_place__tl"
       ],
       "seeds": {
@@ -80244,7 +80686,7 @@
      },
      "h_mixed_table_full_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_table_full_ik__tl"
       ],
       "seeds": {
@@ -80263,7 +80705,7 @@
      },
      "h_dynamic_bottle_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_bottle_taken",
        "h_dynamic_bottle_taken__alt_kitchen_cabinet_4"
       ],
@@ -80281,29 +80723,47 @@
       },
       "projected": false
      },
-     "x6_cl_bottle_behind_mug": {
+     "x6_cl_bottle_behind_mug__mug": {
       "timing": "initial",
-      "cases": [
-       "x6_cl_bottle_behind_mug__mug",
+      "layouts": [
+       "x6_cl_bottle_behind_mug__mug"
+      ],
+      "seeds": {
+       "10": "x6_cl_bottle_behind_mug__mug",
+       "11": "x6_cl_bottle_behind_mug__mug",
+       "12": "x6_cl_bottle_behind_mug__mug",
+       "13": "x6_cl_bottle_behind_mug__mug",
+       "14": "x6_cl_bottle_behind_mug__mug",
+       "15": "x6_cl_bottle_behind_mug__mug",
+       "16": "x6_cl_bottle_behind_mug__mug",
+       "17": "x6_cl_bottle_behind_mug__mug",
+       "18": "x6_cl_bottle_behind_mug__mug",
+       "19": "x6_cl_bottle_behind_mug__mug"
+      },
+      "projected": false
+     },
+     "x6_cl_bottle_behind_mug__bowl": {
+      "timing": "initial",
+      "layouts": [
        "x6_cl_bottle_behind_mug__bowl"
       ],
       "seeds": {
        "10": "x6_cl_bottle_behind_mug__bowl",
-       "11": "x6_cl_bottle_behind_mug__mug",
-       "12": "x6_cl_bottle_behind_mug__mug",
+       "11": "x6_cl_bottle_behind_mug__bowl",
+       "12": "x6_cl_bottle_behind_mug__bowl",
        "13": "x6_cl_bottle_behind_mug__bowl",
        "14": "x6_cl_bottle_behind_mug__bowl",
-       "15": "x6_cl_bottle_behind_mug__mug",
+       "15": "x6_cl_bottle_behind_mug__bowl",
        "16": "x6_cl_bottle_behind_mug__bowl",
-       "17": "x6_cl_bottle_behind_mug__mug",
+       "17": "x6_cl_bottle_behind_mug__bowl",
        "18": "x6_cl_bottle_behind_mug__bowl",
-       "19": "x6_cl_bottle_behind_mug__mug"
+       "19": "x6_cl_bottle_behind_mug__bowl"
       },
       "projected": false
      },
      "x6_gd_bottle_put_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_bottle_put_away__in_cabinet_4",
        "x6_gd_bottle_put_away__in_cabinet_6"
       ],
@@ -83623,11 +84083,11 @@
     "bookcase_3/top",
     "shelf_blocker"
    ],
-   "v6_families": {
+   "v6_variants": {
     "e1_book_ready": {
      "origin": "v5",
      "control": null,
-     "cases": [
+     "layouts": [
       "e1_book_ready"
      ],
      "seeds": {
@@ -83646,7 +84106,7 @@
     "e2_book_ready_far": {
      "origin": "v5",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "e2_book_ready_far"
      ],
      "seeds": {
@@ -83665,7 +84125,7 @@
     "book_on_desk": {
      "origin": "v5",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "book_on_desk"
      ],
      "seeds": {
@@ -83684,7 +84144,7 @@
     "m_ik_place": {
      "origin": "v5",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "m_ik_place"
      ],
      "seeds": {
@@ -83703,7 +84163,7 @@
     "m_ik_pick": {
      "origin": "v5",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "m_ik_pick"
      ],
      "seeds": {
@@ -83722,7 +84182,7 @@
     "shelf_taken": {
      "origin": "v5",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "shelf_taken"
      ],
      "seeds": {
@@ -83741,7 +84201,7 @@
     "h_action_ik_pick_and_place": {
      "origin": "v5",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "h_action_ik_pick_and_place"
      ],
      "seeds": {
@@ -83760,7 +84220,7 @@
     "h_mixed_shelf_taken_ik": {
      "origin": "v5",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "h_mixed_shelf_taken_ik"
      ],
      "seeds": {
@@ -83779,7 +84239,7 @@
     "h_dynamic_shelf_taken": {
      "origin": "v5",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "h_dynamic_shelf_taken"
      ],
      "seeds": {
@@ -83798,7 +84258,7 @@
     "x6_gd_book_put_away": {
      "origin": "v6",
      "control": "book_on_desk",
-     "cases": [
+     "layouts": [
       "x6_gd_book_put_away__in_4",
       "x6_gd_book_put_away__in_6"
      ],
@@ -83819,7 +84279,7 @@
     "x6_sr_two_hand_carry": {
      "origin": "v6",
      "control": "x6_m_slip_book",
-     "cases": [
+     "layouts": [
       "x6_sr_two_hand_carry"
      ],
      "factor": null,
@@ -83839,7 +84299,7 @@
     "x6_m_slip_book": {
      "origin": "v6",
      "control": "e1_book_ready",
-     "cases": [
+     "layouts": [
       "x6_m_slip_book"
      ],
      "factor": null,
@@ -83865,7 +84325,7 @@
        "grasp"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "book_on_desk"
       ],
       "seeds": {
@@ -83892,7 +84352,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_place"
       ],
       "seeds": {
@@ -83921,7 +84381,7 @@
        "ik"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "m_ik_pick"
       ],
       "seeds": {
@@ -83949,7 +84409,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_action_ik_pick_and_place"
       ],
       "seeds": {
@@ -83976,7 +84436,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_mixed_shelf_taken_ik"
       ],
       "seeds": {
@@ -84002,7 +84462,7 @@
        "grasp"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "h_dynamic_shelf_taken"
       ],
       "seeds": {
@@ -84028,7 +84488,7 @@
        "ik"
       ],
       "with_task_content": true,
-      "cases": [
+      "layouts": [
        "x6_sr_two_hand_carry"
       ],
       "seeds": {
@@ -84054,7 +84514,7 @@
        "slip"
       ],
       "with_task_content": false,
-      "cases": [
+      "layouts": [
        "x6_m_slip_book"
       ],
       "seeds": {
@@ -84078,7 +84538,7 @@
     "task": {
      "shelf_taken": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "shelf_taken"
       ],
       "seeds": {
@@ -84097,7 +84557,7 @@
      },
      "h_action_ik_pick_and_place": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_action_ik_pick_and_place__tl"
       ],
       "seeds": {
@@ -84116,7 +84576,7 @@
      },
      "h_mixed_shelf_taken_ik": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "h_mixed_shelf_taken_ik__tl"
       ],
       "seeds": {
@@ -84135,7 +84595,7 @@
      },
      "h_dynamic_shelf_taken": {
       "timing": "dynamic",
-      "cases": [
+      "layouts": [
        "h_dynamic_shelf_taken"
       ],
       "seeds": {
@@ -84154,7 +84614,7 @@
      },
      "x6_gd_book_put_away": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_gd_book_put_away__in_4",
        "x6_gd_book_put_away__in_6"
       ],
@@ -84174,7 +84634,7 @@
      },
      "x6_sr_two_hand_carry": {
       "timing": "initial",
-      "cases": [
+      "layouts": [
        "x6_sr_two_hand_carry__tl"
       ],
       "seeds": {

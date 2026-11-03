@@ -1,24 +1,24 @@
 {
- "families": 238,
- "episodes": 2380,
- "static_ok": 2380,
+ "variants": 249,
+ "episodes": 2490,
+ "static_ok": 2490,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
-   "episodes": 120,
-   "static_ok": 120
+   "episodes": 130,
+   "static_ok": 130
   },
   "T02_stack_blocks": {
-   "episodes": 120,
-   "static_ok": 120
+   "episodes": 130,
+   "static_ok": 130
   },
   "T03_utensils_one_container": {
    "episodes": 90,
    "static_ok": 90
   },
   "T04_cup_or_mug_to_cabinet": {
-   "episodes": 120,
-   "static_ok": 120
+   "episodes": 140,
+   "static_ok": 140
   },
   "T05_pen_or_pencil_to_desk": {
    "episodes": 120,
@@ -37,8 +37,8 @@
    "static_ok": 110
   },
   "T09_tomato_soup": {
-   "episodes": 150,
-   "static_ok": 150
+   "episodes": 180,
+   "static_ok": 180
   },
   "T10_trash_the_can": {
    "episodes": 130,
@@ -53,8 +53,8 @@
    "static_ok": 120
   },
   "T13_breakfast_setup": {
-   "episodes": 140,
-   "static_ok": 140
+   "episodes": 160,
+   "static_ok": 160
   },
   "T15_book_face_up": {
    "episodes": 90,
@@ -69,16 +69,16 @@
    "static_ok": 130
   },
   "T18_check_cabinet_dishes": {
-   "episodes": 110,
-   "static_ok": 110
+   "episodes": 120,
+   "static_ok": 120
   },
   "T19_recycling": {
    "episodes": 120,
    "static_ok": 120
   },
   "T20_juice_back_to_table": {
-   "episodes": 110,
-   "static_ok": 110
+   "episodes": 120,
+   "static_ok": 120
   },
   "T14_shelve_the_book": {
    "episodes": 120,
@@ -88,16 +88,16 @@
  "v5_hashes_checked": 1800,
  "tracks": {
   "action": {
-   "families": 100,
-   "episodes": 1000
+   "variants": 103,
+   "episodes": 1030
   },
   "task": {
-   "families": 152,
-   "episodes": 1520
+   "variants": 163,
+   "episodes": 1630
   },
   "controls": {
-   "families": 38
+   "variants": 38
   }
  },
- "tasks_sha1": "0bb67b40c7fcc659a4731728f871cbb5be11384f"
+ "tasks_sha1": "4fdc35b2af469fe6ed6adbe28ba30fd57460fcea"
 }

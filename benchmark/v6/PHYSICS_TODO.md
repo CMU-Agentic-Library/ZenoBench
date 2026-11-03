@@ -1,11 +1,11 @@
 # Physics validation to do
 
-* 51 families are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1870 episodes remain (580 of the 58 new families): `batches/physics_todo.json`; the new families alone: `batches/physics_v6_new.json`.
+* 51 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
+* 1980 episodes remain (690 of the 69 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
-* Order: (1) new families without a skill dependency (`depends on` -), (2) after each skill fix the families that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 families below 10/10 after each skill fix.
+* Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
-| task | family | tracks | physics now | depends on |
+| task | variant | tracks | physics now | depends on |
 |---|---|---|---|---|
 | T01 | overhang_ready | control | 1/10 of 10 | - |
 | T01 | e2_from_dining_room | control | 3/10 of 10 | - |
@@ -18,12 +18,14 @@
 | T01 | h_dynamic_pushed_back | task | 8/10 of 10 | - |
 | T01 | x6_sr_two_hand_carry | action, task | 0/0 of 10 | bimanual flat pick (long side along an overhanging edge) |
 | T01 | x6_m_slip_book | action | 0/0 of 10 | - |
-| T01 | x6_dr_block_on_book | task | 0/0 of 10 | - |
+| T01 | x6_dr_block_on_book__block | task | 0/0 of 10 | - |
+| T01 | x6_dr_block_on_book__sponge | task | 0/0 of 10 | - |
 | T02 | e2_from_wall_cabinet | control | 2/10 of 10 | - |
 | T02 | crowded | action | 4/10 of 10 | - |
 | T02 | far_crowded | action, task | 1/10 of 10 | - |
 | T02 | x6_cl_base_a_unreachable | action, task | 0/0 of 10 | - |
-| T02 | x6_cl_block_b_unholdable | action, task | 0/0 of 10 | - |
+| T02 | x6_cl_block_b_unholdable__grasp | action, task | 0/0 of 10 | - |
+| T02 | x6_cl_block_b_unholdable__ik | action, task | 0/0 of 10 | - |
 | T02 | x6_gd_tower_with_event | task | 0/0 of 10 | - |
 | T03 | far_small_and_large | task | 2/10 of 10 | - |
 | T03 | three_containers | task | 9/10 of 10 | - |
@@ -39,8 +41,10 @@
 | T04 | h_mixed_spot_taken_ik | action, task | 6/10 of 10 | - |
 | T04 | h_dynamic_cup_taken | task | 4/10 of 10 | - |
 | T04 | x6_gd_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
-| T04 | x6_cl_cup_unusable | action, task | 0/0 of 10 | - |
-| T04 | x6_dr_spot_filled_dynamic | task | 0/0 of 10 | - |
+| T04 | x6_cl_cup_unusable__slip | action, task | 0/0 of 10 | - |
+| T04 | x6_cl_cup_unusable__ik_mug_away | action, task | 0/0 of 10 | - |
+| T04 | x6_dr_spot_filled_dynamic__bowl | task | 0/0 of 10 | - |
+| T04 | x6_dr_spot_filled_dynamic__block | task | 0/0 of 10 | - |
 | T05 | h_task_pencil_in_cabinet | task | 0/10 of 10 | low cabinet doors |
 | T05 | h_action_grasp_and_ik | action, task | 0/10 of 10 | low cabinet doors |
 | T05 | h_mixed_cabinet_ik | action, task | 0/10 of 10 | low cabinet doors |
@@ -84,12 +88,15 @@
 | T09 | h_action_grasp_and_ik | action, task | 9/10 of 10 | - |
 | T09 | h_mixed_cookware_grasp | action, task | 8/10 of 10 | - |
 | T09 | h_dynamic_spoon_taken | task | 5/5 of 10 | - |
-| T09 | x6_cl_spoon_unholdable | action, task | 0/0 of 10 | - |
+| T09 | x6_cl_spoon_unholdable__spoon_cabinet | action, task | 0/0 of 10 | - |
+| T09 | x6_cl_spoon_unholdable__spoon_dining | action, task | 0/0 of 10 | - |
 | T09 | x6_sr_collect_refused | action, task | 0/0 of 10 | - |
 | T09 | x6_gd_tomato_elsewhere | task | 0/0 of 10 | - |
 | T09 | x6_m_ik_collect | action | 0/0 of 10 | - |
 | T09 | x6_pp_lid_taken_after_stir | task | 0/0 of 10 | search of the pot lid |
-| T09 | x6_pp_tomato_taken_out | task | 0/0 of 10 | - |
+| T09 | x6_pp_tomato_taken_out__tomato2 | task | 0/0 of 10 | - |
+| T09 | x6_pp_tomato_taken_out__tomato1 | task | 0/0 of 10 | - |
+| T09 | x6_pp_tomato_taken_out__tomato2_after_stir | task | 0/0 of 10 | - |
 | T10 | can_on_island | control | 9/10 of 10 | - |
 | T10 | e2_from_dining_room | control | 8/10 of 10 | - |
 | T10 | can_in_dining_room | task | 5/5 of 10 | - |
@@ -128,7 +135,9 @@
 | T13 | h_dynamic_mug_taken | task | 2/5 of 10 | - |
 | T13 | x6_cl_cup_slips | action, task | 0/0 of 10 | - |
 | T13 | x6_m_slip_cup | action | 0/0 of 10 | - |
-| T13 | x6_pp_spoon_moved | task | 0/0 of 10 | - |
+| T13 | x6_pp_spoon_moved__early | task | 0/0 of 10 | - |
+| T13 | x6_pp_spoon_moved__table_end | task | 0/0 of 10 | - |
+| T13 | x6_pp_spoon_moved__tv_stand | task | 0/0 of 10 | - |
 | T13 | x6_gd_bowl_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
 | T13 | x6_gd_two_settings | task | 0/0 of 10 | - |
 | T15 | book_free | control | 9/10 of 10 | - |
@@ -161,7 +170,8 @@
 | T18 | h_action_ik_open_and_close | action, task | 0/10 of 10 | low cabinet doors |
 | T18 | h_mixed_two_cabinets_ik | action, task | 0/10 of 10 | low cabinet doors |
 | T18 | h_dynamic_door_closed | task | 0/10 of 10 | low cabinet doors |
-| T18 | x6_gd_bowl_elsewhere | task | 0/0 of 10 | low cabinet doors |
+| T18 | x6_gd_bowl_elsewhere__two_places | task | 0/0 of 10 | low cabinet doors |
+| T18 | x6_gd_bowl_elsewhere__three_places | task | 0/0 of 10 | low cabinet doors |
 | T18 | x6_pp_door_reopened | task | 0/0 of 10 | low cabinet doors |
 | T19 | m_can_in_dining_room | task | 5/5 of 10 | - |
 | T19 | lookalike_bin | task | 5/5 of 10 | - |
@@ -180,7 +190,8 @@
 | T20 | h_action_ik_pick_and_place | action, task | 0/10 of 10 | juice bottle grasp |
 | T20 | h_mixed_table_full_ik | action, task | 1/10 of 10 | juice bottle grasp |
 | T20 | h_dynamic_bottle_taken | task | 5/5 of 10 | juice bottle grasp |
-| T20 | x6_cl_bottle_behind_mug | task | 0/0 of 10 | juice bottle grasp |
+| T20 | x6_cl_bottle_behind_mug__mug | task | 0/0 of 10 | juice bottle grasp |
+| T20 | x6_cl_bottle_behind_mug__bowl | task | 0/0 of 10 | juice bottle grasp |
 | T20 | x6_gd_bottle_put_away | task | 0/0 of 10 | juice bottle grasp, low cabinet doors |
 | T14 | e1_book_ready | control | 0/10 of 10 | - |
 | T14 | e2_book_ready_far | control | 0/10 of 10 | - |

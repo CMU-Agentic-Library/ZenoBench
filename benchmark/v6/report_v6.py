@@ -6,7 +6,7 @@ Writes, in benchmark/v6/:
 
 * variant_cards.json - one spec card per concrete variant (instruction, initial conditions, failure triggers,
   goal, tracks, oracle route, challenge / rationale, control);
-* ROUTES.md         - every family's oracle reference route(s), by track;
+* ROUTES.md         - every variant's oracle reference route(s), by track;
 * SKILL_FIX_LIST.md - skill / physics problems for the skill owner, from the v5 baseline and the v6 routes;
 * PHYSICS_TODO.md and batches/physics_v6_new.json, batches/physics_todo.json - what still needs simulation.
 
@@ -55,7 +55,7 @@ def mechanisms(v):
 
 
 def physics_status(doc):
-    """(task, family) -> (passed, run, declared) over the manifest episodes, from benchmark/v5/PHYSICS.json
+    """(task, variant) -> (passed, run, declared) over the manifest episodes, from benchmark/v5/PHYSICS.json
     (only results whose configuration hash and route match the current catalog)."""
     p = ROOT / "benchmark/v5/PHYSICS.json"
     rows = json.loads(p.read_text())["rows"] if p.exists() else []
@@ -64,7 +64,7 @@ def physics_status(doc):
     by = {(r["task"], r["variant"], r["seed"]): r for r in rows}
     out = {}
     for t in doc["tasks"]:
-        for fam, info in t["v6_families"].items():
+        for fam, info in t["v6_variants"].items():
             ok = run = 0
             for s, vid in info["seeds"].items():
                 r = by.get((t["task_id"], vid, int(s)))
@@ -90,8 +90,8 @@ def main():
     fixes_rerun = {("T11_collect_fruits", "h_action_grasp_and_ik"): "failure-injection fix 019e517 (pinned IK block)"}
     rows = []
     for t in doc["tasks"]:
-        for fam, info in t["v6_families"].items():
-            v0 = t["variants"][info["cases"][0]]
+        for fam, info in t["v6_variants"].items():
+            v0 = t["variants"][info["layouts"][0]]
             ok, run, dec = phys[(t["task_id"], fam)]
             if (t["task_id"], fam) in bad_static:
                 status = "DESIGN_COMPLETE"
@@ -101,8 +101,8 @@ def main():
                 status = "STATIC_VALIDATED"
             meta = v0.get("v6") or v0.get("v5") or {}
             rows.append({"task": t["task_id"], "family": fam, "origin": info["origin"], "tracks": tracks_of(t, fam),
-                         "mechanisms": sorted({m for v in info["cases"] for m in mechanisms(t["variants"][v])}),
-                         "cases": info["cases"], "factor": info.get("factor"), "control": info.get("control"),
+                         "mechanisms": sorted({m for v in info["layouts"] for m in mechanisms(t["variants"][v])}),
+                         "layouts": info["layouts"], "factor": info.get("factor"), "control": info.get("control"),
                          "challenge": meta.get("challenge") or v0.get("note", ""),
                          "physics": f"{ok}/{run} of {dec}", "status": status,
                          "rerun_needed": fixes_rerun.get((t["task_id"], fam))})
@@ -110,7 +110,7 @@ def main():
     (V6 / "ROUTES.md").write_text(routes_md(doc))
     skill_fix(doc, rows)
     physics_todo(doc, rows)
-    print(f"{len(rows)} families, {10 * len(rows)} episodes; status {dict(Counter(r['status'] for r in rows))}")
+    print(f"{len(rows)} variants, {10 * len(rows)} episodes; status {dict(Counter(r['status'] for r in rows))}")
 
 
 def cards(doc):
@@ -119,8 +119,8 @@ def cards(doc):
     from episode.catalog import resolve_task
     out = {}
     for t in doc["tasks"]:
-        for fam, info in t["v6_families"].items():
-            for vid in info["cases"]:
+        for fam, info in t["v6_variants"].items():
+            for vid in info["layouts"]:
                 v = t["variants"][vid]
                 rt = resolve_task(t, vid)
                 meta = v.get("v6") or v.get("v5") or {}
@@ -149,8 +149,8 @@ def cards(doc):
 
 
 def routes_md(doc):
-    md = ["# v6 oracle reference routes", "", "One line per concrete variant of each family (`!` expected to "
-          "fail, `+` recovery step). Seeds: the family's manifest in tasks.json.", ""]
+    md = ["# v6 oracle reference routes", "", "One line per concrete variant of each variant (`!` expected to "
+          "fail, `+` recovery step). Seeds: the variant's manifest in tasks.json.", ""]
     for t in doc["tasks"]:
         md += [f"## {t['task_id']}", ""]
         tr = t["v6_tracks"]
@@ -160,7 +160,7 @@ def routes_md(doc):
                 continue
             md += [f"### {title}", ""]
             for fam in fams:
-                cases = tr["task"][fam]["cases"] if title == "Task-Level" else t["v6_families"][fam]["cases"]
+                cases = tr["task"][fam]["layouts"] if title == "Task-Level" else t["v6_variants"][fam]["layouts"]
                 for v in cases:
                     steps = t["routes"][t["oracle"][v]]["steps"]
                     txt = " ".join(("!" if s.get("expect") == "fail" else "") + ("+" if s.get("role") in ("recover", "recovery", "alternative") else "")
@@ -209,13 +209,13 @@ def skill_fix(doc, rows):
                 stats[k]["tasks"].add(r["task"][:3])
                 if len(stats[k]["examples"]) < 2:
                     stats[k]["examples"].append((c["feedback"].get("error") or "")[:140])
-    # exposure of the new families
+    # exposure of the new variants
     need = defaultdict(set)
     for t in doc["tasks"]:
-        for fam, info in t["v6_families"].items():
+        for fam, info in t["v6_variants"].items():
             if info["origin"] != "v6":
                 continue
-            for v in info["cases"]:
+            for v in info["layouts"]:
                 for s in t["routes"][t["oracle"][v]]["steps"]:
                     if s.get("expect") == "fail":
                         continue
@@ -230,7 +230,7 @@ def skill_fix(doc, rows):
           "required: every v6 route uses existing contracts. Counts are calls in oracle episodes that were expected "
           "to succeed.", "",
           "## 1. Failing skill uses in the v5 baseline (>= 3 failures)", "",
-          "| skill | object | ok | failed | fail rate | main causes | tasks | v6 families also using it | example |",
+          "| skill | object | ok | failed | fail rate | main causes | tasks | v6 variants also using it | example |",
           "|---|---|---|---|---|---|---|---|---|"]
     for (sk, obj), v in top:
         n = v["ok"] + v["fail"]
@@ -241,12 +241,12 @@ def skill_fix(doc, rows):
     never = sorted((k, v) for k, v in need.items() if k not in stats and k[0] not in ("look", "navigate", "search",
                                                                                          "bend", "straighten", "nod"))
     md += ["", "## 2. Skill uses the v6 routes need that the v5 baseline never ran", "",
-           "| skill | object | families |", "|---|---|---|"]
+           "| skill | object | variants |", "|---|---|---|"]
     for (sk, obj), fams in never:
         md.append(f"| {sk} | {obj} | {', '.join(sorted(fams))} |")
     md += ["", "## 3. Priorities", "",
            "1. **Low cabinet doors** (`open` / `close` / `explore_furniture` on kitchen_cabinet_4 and _6): every v5 "
-           "cabinet Hard was 0/10; v6 inspection families (T04, T05, T10, T13, T18, T20) depend on them.",
+           "cabinet Hard was 0/10; v6 inspection variants (T04, T05, T10, T13, T18, T20) depend on them.",
            "2. **Grasp of tall / round / rimmed objects**: juice bottle (side pinch knocks it over), mug and bowl rim "
            "pinches (T13, T20), cup carry.",
            "3. **Book carry**: one-handed slip of paperback / red book (T01, T14); v6 adds the two-handed carry "
@@ -262,7 +262,7 @@ def skill_fix(doc, rows):
            "re-orientation the route can call.",
            "7. **Apple pick from the bookcase top** after it rolled out of the basket (T11 `x6_cl_apple_rolls_out`, "
            "smoke: `not held`).",
-           "8. **From the oracle smoke of the 40 new families without a known blocker** (benchmark/runs/v6_smoke_free, "
+           "8. **From the oracle smoke of the 40 new variants without a known blocker** (benchmark/runs/v6_smoke_free, "
            "one episode each; 18 pass end to end after two route fixes): `search` misses the object (floor block, "
            "wooden block, rubber duck, mug: 5), grasp `not held` (apple on the bookcase, orange, oatmeal bowl, pot "
            "lid: 5), carry slips of the paperback / mug (4), `look` / `face` blocked or the object out of the "
@@ -292,11 +292,11 @@ def physics_todo(doc, rows):
             return "wipe reach"
         return None
     for t in doc["tasks"]:
-        for fam, info in t["v6_families"].items():
+        for fam, info in t["v6_variants"].items():
             r = next(x for x in rows if x["task"] == t["task_id"] and x["family"] == fam)
             if r["status"] == "PHYSICS_VALIDATED":
                 continue
-            deps = sorted({d for v in info["cases"] for s in t["routes"][t["oracle"][v]]["steps"]
+            deps = sorted({d for v in info["layouts"] for s in t["routes"][t["oracle"][v]]["steps"]
                            if s.get("expect") != "fail" for d in [deps_of(t, v, s)] if d})
             for s, vid in sorted(info["seeds"].items()):
                 job = {"task": t["task_id"], "seed": int(s), "variant": vid, "route": t["oracle"][vid], "family": fam}
@@ -309,17 +309,17 @@ def physics_todo(doc, rows):
     (V6 / "batches/physics_todo.json").write_text(json.dumps(todo, indent=0))
     by_status = Counter(r["status"] for r in rows)
     md = ["# Physics validation to do", "",
-          f"* {by_status.get('PHYSICS_VALIDATED', 0)} families are PHYSICS_VALIDATED (10/10 seeds passed in the v5 "
+          f"* {by_status.get('PHYSICS_VALIDATED', 0)} variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 "
           "grid with the current hash and route).",
           f"* {len(todo)} episodes remain ({len(new_jobs)} of the {sum(1 for r in rows if r['origin'] == 'v6')} new "
-          "families): `batches/physics_todo.json`; the new families alone: `batches/physics_v6_new.json`.",
+          "variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.",
           "* Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch "
           "benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` "
           "(~43 episodes / hour with 2 simulators).",
-          "* Order: (1) new families without a skill dependency (`depends on` -), (2) after each skill fix the "
-          "families that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it "
-          "passed in the smoke run), (4) the v5 families below 10/10 after each skill fix.", "",
-          "| task | family | tracks | physics now | depends on |", "|---|---|---|---|---|"]
+          "* Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the "
+          "variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it "
+          "passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.", "",
+          "| task | variant | tracks | physics now | depends on |", "|---|---|---|---|---|"]
     for r in rows:
         if r["status"] != "PHYSICS_VALIDATED":
             md.append(f"| {short(r['task'])} | {r['family']} | {', '.join(r['tracks']) or 'control'} | {r['physics']} | "
