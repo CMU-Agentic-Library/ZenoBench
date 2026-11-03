@@ -1,22 +1,22 @@
 # ZenoBench v6: task design in four categories (design stage)
 
 v6 is the task-design layer on top of v5. It reads `benchmark/v5/tasks.json` and never writes it. v6 adds new
-variants on 17 of the 20 base tasks, removes the injected transient action failures from every variant, and
+variants on 17 of the 20 base tasks, removes every injected action failure, and
 puts each variant in one of four categories.
 
 | | |
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
-| variants | 196; each runs seeds 10-19 (1,960 episodes) |
-| categories | control 38, Action-Level 23, Task-Level 116, Action + Task 19 (`TRACKS.md`) |
-| static checks | 1,960 / 1,960 episodes |
-| physics | 31 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
+| variants | 128; each runs seeds 10-19 (1,280 episodes) |
+| categories | control 20 (one per task), Action-Level 17, Task-Level 78, Action + Task 13 (`TRACKS.md`) |
+| static checks | 1,280 / 1,280 episodes |
+| physics | 25 variants PHYSICS_VALIDATED (v5 grid, 10/10, unchanged configuration); the rest STATIC_VALIDATED |
 
 ## Definitions
 
 An episode is **task + variant + seed**.
 
-* **Variant** = the task design: which failures and events are injected, which scene conditions hold (an
+* **Variant** = the task design: which dynamic events happen, which scene conditions hold (an
   absent object and its substitute, a lid on the pot, a book with something on it, a taken destination, an item
   in another room, the start room), which goal. Two variants differ in what the planner has to do.
   (`v6_variants[vid]` in `tasks.json`.)
@@ -43,28 +43,27 @@ Each variant contains the fallback its category is about; the category reads onl
 
 | category | the variant needs | variants | episodes |
 |---|---|---|---|
-| **Control** | nothing: the nominal plan works (the reference for the others) | 38 | 380 |
-| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge, move what stands in front of the target (`LOCAL_CONDITIONS`, `local_failure`) | 23 | 230 |
-| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an action that never succeeds (another object or procedure), a dynamic event | 116 | 1,160 |
-| **Action + Task** | both | 19 | 190 |
+| **Control** | nothing: the nominal plan works (the reference for the others) | 20 | 200 |
+| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`) | 17 | 170 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, a dynamic event | 78 | 780 |
+| **Action + Task** | both | 13 | 130 |
 
-**No injected action failures.** The injected transient failures (an IK refusal, a grasp miss, a slip, a
-placement miss that a retry fixes) are removed from every variant, and from its route each call they failed
-with its repair up to the retry (`tracks.strip_injected`). 32 variants had nothing else and are dropped; 21
-equal another variant without them and are merged into it (`v6_dropped` per task). Action-Level fallbacks come
-from the scene. Persistent failures (an action that never succeeds) stay: they are a Task-Level design.
+**No injected action failures, anywhere.** No IK refusal, grasp miss, slip or placement miss is forced on a
+call, once or every time. Every challenge comes from the scene (an absent or hidden object, a lid on, a closed
+door, a full destination, a book flat on the table ...) or from a dynamic event (someone moves an object).
+`tracks.strip_injected` removes the v5 ones from every inherited variant and its route; a variant built on a
+failure that never goes away (another object or procedure because an action never succeeds) is dropped, one
+left with nothing is dropped, and one variant is kept per design (`tracks.design_key`: conditions, failures,
+goal, instruction and the objects handled; not where things stand or where the robot starts, which is the
+seed's part). `v6_dropped` per task says why each v5 variant left. The v6 design source has no such variants.
+An initial resource / destination / capacity failure next to a scene condition only restates that condition
+(`declares_condition`).
 
 A goal of a variant's own (close the door again, leave the block on the island) states how a fallback ends and
 does not by itself make a variant Task-Level.
 
 Status: static (`validate_v6.py` checks that no injected failure is left and every category matches its
 content). Evaluation metrics are not defined yet.
-
-## New failure-injection features (failure_injection/)
-
-Persistent grasp / slip / placement / IK failures (a retry cannot help), `until_moved` (an IK / grasp refusal that
-ends when a named obstruction is moved), one-handed slips (a two-handed carry is spared), IK refusals pinned to a
-destination (the substitute stays reachable), and a slip that falls back onto the support it was picked from.
 
 ## Commands
 
@@ -80,6 +79,7 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 
 ## Files
 
+* `VARIANTS_zh.md` - every variant in plain Chinese: the situation, what the robot does, what the seed chooses.
 * `TRACKS.md` - the four categories, counts per task, every variant with its local fallback and longer-horizon change.
 * `variant_cards.json` - per concrete variant: instruction, initial conditions, failure triggers, goal, tracks,
   control, oracle route, challenge / rationale, success criteria.

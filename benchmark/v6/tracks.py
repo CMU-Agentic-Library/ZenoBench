@@ -3,18 +3,19 @@
 * **Action-Level** (``action``): a short fallback at the work spot - a few skills combined, then the task goes
   on as planned.  The scene makes it necessary (``LOCAL_CONDITIONS`` / ``local_failure``): a flat book pushed
   over the edge before the pick, a crowded block pulled apart, the pot lid taken off, an object lying on the
-  target or a closed door opened first, clutter moved aside before wiping, a full destination cleared, an object
-  in front of the target moved away.  No injected action failure.
+  target or a closed door opened first, clutter moved aside before wiping, a full destination cleared.  No
+  injected action failure.
 * **Task-Level** (``task``): the plan itself changes over a longer horizon - an absent object and its substitute,
-  a search in another place or room, a capacity split, another destination / appliance / cookware, an action
-  that never succeeds (another object or procedure), any dynamic event.
+  a search in another place or room, a capacity split, another destination / appliance / cookware, any dynamic
+  event.
 * **Action + Task** (``action_task``): both in one variant.
 * **Control** (``control``): neither; the nominal plan works.
 
-Injected transient action failures (an IK refusal, a grasp miss, a slip or a placement miss that a retry fixes)
-are not part of the design: ``strip_injected`` removes them from every layout and, in its route, each call they
-failed with the repair up to the successful retry.  A variant left with nothing is dropped, one left equal to
-another variant is merged into it (``v6_dropped`` per task says which and why).
+Injected action failures (an IK refusal, a grasp miss, a slip or a placement miss forced on a call, once or every
+time) are not part of the design anywhere: ``strip_injected`` removes them from every layout and, in its route,
+each call they failed with the repair up to the successful retry.  A variant built on a failure that never goes
+away is dropped, one left with nothing is dropped, one left equal to another variant is merged into it
+(``v6_dropped`` per task says which and why).
 
     python benchmark/v6/tracks.py          # TRACKS.md and one batch per category (tasks.json must be current)
 """
@@ -42,7 +43,6 @@ CATEGORIES = {
                     "measures": "both a short fallback at the work spot and a longer-horizon change of plan"},
 }
 ORDER = ("control", "action", "task", "action_task")
-META = ("note", "v5", "v6", "since", "decisions", "vary", "move", "difficulty", "injected_removed")
 
 # scene conditions whose fallback is a few skills at the work spot -> what the robot does
 LOCAL_CONDITIONS = {
@@ -57,9 +57,25 @@ LOCAL_CONDITIONS = {
 }
 
 
+# designs the rules above cannot tell apart: (task, variant) -> the variant it is the same design as
+SAME_DESIGN = {
+    # its extra dependency only states that block A stands on the island, i.e. the unstable_base condition
+    ("T02_stack_blocks", "h_action_grasp_and_ik"): "edge_base",
+    ("T02_stack_blocks", "h_mixed_edge_base_grasp"): "edge_base",
+}
+
+
 def injected(f):
-    """An injected transient action failure (a retry or re-approach fixes it)."""
-    return f["kind"] in ACTION_KINDS and not f.get("persist")
+    """An injected action failure: an IK refusal, a grasp miss, a slip or a placement miss forced on a call, once
+    or every time (``persist``, ``until_moved``).  None is part of the design."""
+    return f["kind"] in ACTION_KINDS
+
+
+def declares_condition(v, f):
+    """An initial resource / destination / capacity failure next to a scene condition only states that condition
+    as checkable facts (the v5 Hards carry both): it is not a challenge of its own."""
+    return bool(v.get("conditions")) and f.get("when", "initial") == "initial" and \
+        f["kind"] in ("resource", "destination", "capacity")
 
 
 def local_failure(f):
@@ -67,8 +83,6 @@ def local_failure(f):
     the start, or a reach blocked until an object in front is moved."""
     if f["kind"] == "dependency" and f.get("when", "initial") == "initial":
         return "clear the object on the target / open the door first"
-    if f["kind"] in ACTION_KINDS and f.get("persist") and f.get("until_moved"):
-        return f"move {f['until_moved']} out of the way first"
     return None
 
 
@@ -77,15 +91,13 @@ def content(task, lid):
     v = task["variants"][lid]
     local, longer = [], []
     for f in v.get("failures") or []:
-        if injected(f):
+        if injected(f) or declares_condition(v, f):
             continue
         why = local_failure(f)
         if why:
             local.append(why)
         elif f.get("when") == "dynamic":
             longer.append(f"event: {f['kind']}")
-        elif f["kind"] in ACTION_KINDS:
-            longer.append(f"{f['kind']} never succeeds")
         else:
             longer.append(f"{f['kind']}")
     for c in v.get("conditions") or []:
@@ -117,8 +129,29 @@ def project_route(steps, drop):
     return out
 
 
-def _sig(v):
-    return json.dumps({k: x for k, x in v.items() if k not in META}, sort_keys=True)
+OBJECT_ARGS = ("object", "objects", "food", "tool", "lid")
+# calls that only polish or check a route (steady the pot, line things up, show, measure): not the design
+AUXILIARY = ("arrange", "brace", "release", "present", "square", "press", "wait", "lower", "lift", "hover", "crouch",
+             "stand", "nod", "wave", "point", "shake", "regrasp", "center", "measure", "count", "identify", "touch",
+             "rotate")
+
+
+def design_key(task, lid):
+    """What a layout asks of the robot, without where things stand or where it starts (the seed's part) and
+    without how a route words it: its conditions, failures (kind, timing, trigger, event), goal, instruction and
+    the objects the route handles (which object is cleared, which substitute is used)."""
+    v = task["variants"][lid]
+    fails = sorted(json.dumps({k: f.get(k) for k in ("kind", "persist", "until_moved", "when", "trigger", "event")},
+                              sort_keys=True) for f in v.get("failures") or [] if not declares_condition(v, f))
+    handled = set()
+    for s in task["routes"][task["oracle"][lid]]["steps"]:
+        if s.get("expect") == "fail" or s["skill"] in AUXILIARY:
+            continue
+        for k in OBJECT_ARGS:
+            x = s["args"].get(k)
+            handled |= set(x) if isinstance(x, list) else {x} if isinstance(x, str) else set()
+    return json.dumps([sorted(v.get("conditions") or []), fails, v.get("goal"), v.get("instruction"),
+                       sorted(handled)], sort_keys=True)
 
 
 def strip_injected(doc):
@@ -132,6 +165,10 @@ def strip_injected(doc):
                 if not drop:
                     continue
                 changed.add(vid)
+                if any(f.get("persist") for f in drop):
+                    # the route works around a failure that never goes away (another object, procedure or
+                    # place); without it the design has no reason to exist
+                    dropped[vid] = "built on an injected action failure that never goes away"
                 rname = t["oracle"][lid]
                 t["routes"][rname] = dict(t["routes"][rname],
                                           steps=project_route(t["routes"][rname]["steps"], drop))
@@ -141,17 +178,24 @@ def strip_injected(doc):
                 else:
                     v.pop("failures")
                 v["injected_removed"] = [f["id"] for f in drop]
-        # unchanged variants first, so a stripped one merges into the original design
+        # one design, one variant: unchanged variants first, so a stripped one merges into the original design
         seen = {}
         for vid in sorted(t["v6_variants"], key=lambda x: x in changed):
+            if vid in dropped:
+                continue
             info = t["v6_variants"][vid]
             kinds = [content(t, lid) for lid in info["layouts"]]
             if vid in changed and not any(a or b for a, b in kinds):
                 dropped[vid] = "only injected action failures"
                 continue
-            key = tuple(sorted(_sig(t["variants"][lid]) for lid in info["layouts"]))
+            same = SAME_DESIGN.get((t["task_id"], vid))
+            if same in t["v6_variants"]:
+                dropped[vid] = f"same as {same} (SAME_DESIGN)"
+                continue
+            key = tuple(sorted(design_key(t, lid) for lid in info["layouts"]))
             if key in seen:
-                dropped[vid] = f"same as {seen[key]} without its injected action failures"
+                dropped[vid] = f"same as {seen[key]}" + (" without its injected action failures" if vid in changed
+                                                         else " but for the layout (object poses / start)")
                 continue
             seen[key] = vid
         controls = [vid for vid in t["v6_variants"] if vid not in dropped and
@@ -168,6 +212,14 @@ def strip_injected(doc):
                 c = controls[0] if controls and controls[0] != vid else None
             info["control"] = c
         t["v6_dropped"] = dropped
+        # configurations no variant uses (v5's study / supplementary ones) are not part of v6
+        used = {lid for info in t["v6_variants"].values() for lid in info["layouts"]}
+        for lid in [x for x in t["variants"] if x not in used]:
+            t["variants"].pop(lid)
+            t["oracle"].pop(lid, None)
+        keep = set(t["oracle"].values()) | {t.get("nominal")}
+        for r in [r for r in t["routes"] if r not in keep]:
+            t["routes"].pop(r)
     return doc
 
 

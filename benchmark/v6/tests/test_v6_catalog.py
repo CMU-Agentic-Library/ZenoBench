@@ -34,6 +34,8 @@ def test_v5_configurations_and_routes_unchanged():
             if vid in t["v6_dropped"]:
                 assert vid not in t["variants"]
                 continue
+            if "conditions_ignored" in t["variants"][vid]:
+                continue
             if "injected_removed" in t["variants"][vid]:
                 old = v5[tid]["variants"][vid]
                 assert sorted(f["id"] for f in old.get("failures", []) if f["id"] not in
@@ -116,12 +118,23 @@ def test_local_fallbacks_are_action_level():
     # a search next to the local fallback: both
     assert cat("T01_book_to_dining_table", "far_no_overhang") == "action_task"
     # a substitute, never a local fallback: Task-Level
-    assert cat("T06_block_destination_occupied", "x6_cl_block_a_unholdable") == "task"
+    assert cat("T04_cup_or_mug_to_cabinet", "no_cup") == "task"
+
+
+def test_no_injected_action_failure_anywhere():
+    """No IK refusal, grasp miss, slip or placement miss is forced on any call, once or every time."""
+    for tid, t in TASKS.items():
+        for vid, v in t["variants"].items():
+            assert not [f for f in v.get("failures") or [] if f["kind"] in ("ik", "grasp", "slip", "placement")], \
+                (tid, vid)
+    src = (ROOT / "benchmark/v6/define_tasks_v6.py").read_text()
+    for helper in ("f_ik(", "f_grasp(", "f_slip(", "with_ik(", "with_grasp(", "with_slip(", "persist"):
+        assert helper not in src, helper
 
 
 def test_injected_only_variants_are_dropped():
-    t = TASKS["T06_block_destination_occupied"]
-    assert t["v6_dropped"]["x6_m_grasp_block_a"] == "only injected action failures"
+    t = TASKS["T01_book_to_dining_table"]
+    assert t["v6_dropped"]["m_ik_pick"] == "only injected action failures"
     t = TASKS["T15_book_face_up"]
     assert t["v6_dropped"]["h_mixed_block_on_book_ik"].startswith("same as h_task_block_on_book")
     for tid, t in TASKS.items():
