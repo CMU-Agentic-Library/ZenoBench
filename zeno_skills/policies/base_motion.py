@@ -83,22 +83,22 @@ class NavigateToPlacePolicy(AtomicPolicy):
     def execute(self, place, *, max_tries=6):
         rig = self.rig
         entity_kind(rig.ann, place)                     # KeyError for an unknown noun
-        poses = standoff_poses(rig, place)
+        poses = standoff_poses(rig, place)[:max_tries]
         if not poses:
             raise SkillFailure(f"navigate to {place}: no free stand-off pose")
-        last = None
-        for pose in poses[:max_tries]:
-            try:
-                rig.caption = f"NAVIGATE to {place}"
-                skills.navigate(rig, pose, label=f"navigate_{place}")
-                rig.log("navigate_place", place=place, pose=[round(v, 3) for v in pose])
-                return tuple(rig.base_pose())
-            except SkillFailure as exc:
-                last = exc
-                if "slipped" in str(exc):
-                    raise
-                rig.log("navigate_place_retry", place=place, reason=str(exc))
-        raise last
+        # the stand-off poses are one goal set: the nearest one the base can get to from here (one
+        # field over all of them, skills.base_reachable), then one navigate -- not tried in turn
+        ok = skills.base_reachable(rig, poses)
+        reach = [p for p, o in zip(poses, ok) if o]
+        rig.log("navigate_place_goals", place=place, goals=len(poses), reachable=len(reach))
+        if not reach:
+            raise SkillFailure(f"navigate to {place}: no base path to any of {len(poses)} stand-off poses "
+                               "(even the column's inscribed circle cannot get there)")
+        pose = reach[0]
+        rig.caption = f"NAVIGATE to {place}"
+        skills.navigate(rig, pose, label=f"navigate_{place}")
+        rig.log("navigate_place", place=place, pose=[round(v, 3) for v in pose])
+        return tuple(rig.base_pose())
 
 
 class ApproachTargetPolicy(AtomicPolicy):

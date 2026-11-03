@@ -47,6 +47,7 @@ CARRY_SPOTS = ((0.35, -0.10), (0.40, -0.25), (0.45, -0.15), (0.45, -0.30))   # b
 CARRY_SPOT_COST = 2.0         # rad of joint travel a carry spot 1 m off the first (the body's centre line) costs
 CARRY_RISE = 0.15             # m: carry heights from the lowest allowed up to this much higher
 CARRY_YAWS = 8                # hand turns about the world vertical tried at each carry spot (the load stays level)
+CARRY_BODY_W = 3.0            # torso and waist off upright count this many times an arm joint's travel
 
 
 def _carry_pose(rig, min_bottom_z=None):
@@ -76,11 +77,19 @@ def _carry_pose(rig, min_bottom_z=None):
             for Rk in turns:
                 goals.append((np.array([x + c * lx - s * ly, y + s * lx + c * ly, z]), Rk))
                 cost.append(CARRY_SPOT_COST * math.hypot(lx - CARRY_SPOTS[0][0], ly - CARRY_SPOTS[0][1]))
+    if any(np.linalg.norm(p - tcp) < 0.01 and
+           np.linalg.norm(Rotation.from_matrix(Rg @ R.T).as_rotvec()) < 0.05 for p, Rg in goals):
+        return                # already at a carry spot (a skill brought it there before its park search)
     rim = bool(rig.ann.asset_of(rig.ann.objects[rig.held["name"]]).get("container"))
+    # carried with the body upright: torso up, waist straight (a pick leaves them where it reached
+    # from; bent forward, the carry posture blocked every park beside the counter)
+    upright = rig.q_cmd.copy()
+    upright[0], upright[1] = float(rig.kin.hi[0]), 0.0
     try:
         # a rim-pinched bowl swings out of the pads on a fast sweep
         rig.move_to_any(goals, step=0.005 if rim else 0.01, steps_per_wp=6 if rim else 4, label="carry_in",
-                        allow=FREE_ELSE_STRAIGHT, smooth=rim, cost=cost)
+                        allow=FREE_ELSE_STRAIGHT, smooth=rim, cost=cost, prefer=upright,
+                        weights=np.r_[CARRY_BODY_W, CARRY_BODY_W, np.ones(len(upright) - 2)])
     except Dropped:
         raise
     except SkillFailure as exc:
@@ -207,6 +216,21 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
         check_held(rig, "carry")
     if rig.left_held is not None:
         check_left_held(rig, "left_carry")
+
+
+def base_reachable(rig, poses):
+    """Per base pose (x, y, yaw_deg): whether the column's inscribed circle can drive there from
+    where the robot stands -- one field over all of them (base_planner.distance_field rooted at the
+    robot; it is symmetric), the cheap test that base_planner.plan makes first, for a goal set."""
+    from . import base_planner as bp
+    x, y, _ = rig.base_pose()
+    cells = [(int(round((p[0] - x) / bp.RES)), int(round((p[1] - y) / bp.RES))) for p in poses]
+    pad = int(math.ceil(bp.MARGIN / bp.RES))
+    bounds = (min(0, *[c[0] for c in cells]) - pad, min(0, *[c[1] for c in cells]) - pad,
+              max(0, *[c[0] for c in cells]) + pad, max(0, *[c[1] for c in cells]) + pad)
+    rig.sync_world()
+    D, i0, j0 = bp.distance_field(rig.world.circles_clear, (x, y), (0, 0, 0), bounds, (0, 0, 0))
+    return [bool(np.isfinite(D[c[0] - i0, c[1] - j0])) for c in cells]
 
 
 def travel_postures(rig, rest, end):
@@ -1743,6 +1767,38 @@ PLACE_SPOT_COST = 0.05        # ... per rank of the free spot (free_spots order)
 PLACE_TILTED_COST = 0.10      # ... for putting the object down as tilted as it hangs (not levelled)
 
 
+@contextmanager
+def fingers_checked(rig):
+    """The fingers in the arm's collision model for a free-space leg to a pose above a target
+    (place, drop, hover): left out (ignore_fingers), an approach planned low from the side swept
+    the open fingers through a tray and the blocks in it.  Steps 4-5 drop ignore_fingers."""
+    kw, rig.kin.coll_kw = rig.kin.coll_kw, {k: v for k, v in rig.kin.coll_kw.items() if k != "ignore_fingers"}
+    try:
+        yield
+    finally:
+        rig.kin.coll_kw = kw
+
+
+def park_over(rig, label, anchor, off, R, max_tries=150):
+    """A park and TCP goal holding the load with its reference point at ``anchor`` (a drop above a
+    rim, a hover above a target): the hand turned about the vertical through that point in
+    PLACE_YAWS steps is one goal set (find_park_set).  ``off``: TCP minus the reference point
+    now (world frame), ``R``: the TCP rotation now.  (park, p, R_goal) or None."""
+    goals = [(np.asarray(anchor, float) + rz(math.radians(d)) @ off, rz(math.radians(d)) @ R, d)
+             for d in PLACE_YAWS]
+    rig.sync_world()
+    rig.kin.coll_kw = {"ignore_fingers": True}
+    found = find_park_set(rig.kin, rig.world, [[(p, Rg)] for p, Rg, _ in goals],
+                          [PLACE_YAW_COST * abs(d) / 45.0 for _, _, d in goals], near=rig.base_pose(),
+                          max_tries=max_tries, q_start=rig.q_cmd, travel_q=_travel_q(rig))
+    if found is None:
+        return None
+    park, k = found
+    p, Rg, d = goals[k]
+    rig.log(f"{label}_park", park=[round(v, 3) for v in park[:3]], yaw_deg=d)
+    return park, p, Rg
+
+
 def place(rig, name, support, xy=None, spots=None):
     """Put the held object down.  support = "in:<container>" (dropped from
     just above the rim of deep containers), or a support surface at xy, or at any of
@@ -1812,6 +1868,11 @@ def place(rig, name, support, xy=None, spots=None):
             R_rest = rest_R(q_obj)
             relations.insert(0, (R_rest @ (R_obj.T @ (np.asarray(tcp_now, float) - np.asarray(p_obj, float))),
                                  R_rest @ (R_obj.T @ R_tcp), round(over, 1)))
+    # the carry posture the drive to the park will use, before the park search checks it there
+    from .policies.plan_helpers import _carry_bottom_z
+    clear_z = None if container else _carry_bottom_z(rig, support)
+    carry_bottom_z = max(s["z"] + 0.03, clear_z or 0.0) if not container else None
+    _carry_pose(rig, min_bottom_z=carry_bottom_z)
     rig.sync_world()
     rig.kin.coll_kw = {"ignore_fingers": True}
     search_near, q_start, travel_q = rig.base_pose(), rig.q_cmd, _travel_q(rig)
@@ -1898,10 +1959,8 @@ def place(rig, name, support, xy=None, spots=None):
     # arrive with the load above the target surface: carried lower, it reached
     # the stove's front edge below the hob and scraped on the way up
     # (and above the loose objects already on it: a bowl carried 3 cm over the
-    # island top dragged a rolling pin along its edge)
-    from .policies.plan_helpers import _carry_bottom_z
-    clear_z = None if container else _carry_bottom_z(rig, support)
-    _goto_park(rig, park, min_bottom_z=max(s["z"] + 0.03, clear_z or 0.0) if not container else None)
+    # island top dragged a rolling pin along its edge); the carry pose was taken above
+    _goto_park(rig, park, min_bottom_z=carry_bottom_z)
     rig.kin.coll_kw = {"ignore_fingers": True}
     # the object may have turned in the pinch on the way (bowls held at the
     # rim, spoons): re-measure how it hangs now and aim its body at xy with its
@@ -1928,7 +1987,7 @@ def place(rig, name, support, xy=None, spots=None):
         cz = float(geo.bottom(container, cst)[2])
         guard = rig.world.temp_obstacles([[cfp[0], cfp[1], cz, cfp[2], cfp[3],
                                            cz + float(ca["container"]["rim_height"])]])
-    with guard:
+    with guard, fingers_checked(rig):
         # into a container the hand travels down past furniture (a floor bin
         # beside the stove): check the arm against the scene on the way
         err = rig.move_to(legs[0][0], R, step=0.004, steps_per_wp=8, label="place_above", smooth=True,

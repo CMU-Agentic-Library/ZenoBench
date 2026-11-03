@@ -19,7 +19,7 @@ from .base import AtomicPolicy
 from .. import skills
 from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
 from ..evaluator import quat_R
-from ..planner import find_park
+from ..planner import find_park, find_park_set
 from ..predicates import memory, objects_inside
 from ..rig import Dropped, SkillFailure
 
@@ -51,8 +51,15 @@ def _tcp_for_body(R_goal, body_goal, body_in_tcp):
     return body_goal - R_goal @ body_in_tcp
 
 
+WIPE_INSETS = (0.08, 0.045)   # m in from a support edge a wipe strip runs (the second when objects line the first)
+WIPE_STEP = 0.10              # m between strip centres sampled along an edge
+WIPE_STRIPS = 8               # cheapest free strips in the park goal set (x 4 sponge yaws)
+WIPE_DIST_COST = 0.3          # park cost per m from the robot to a strip's centre
+WIPE_INSET_COST = 0.05        # park cost of the closer-to-the-edge inset
+
+
 class WipeSurfacePolicy(AtomicPolicy):
-    """Wipe a 30 cm strip of a support next to the robot with a held sponge.
+    """Wipe a free 30 cm strip along an edge of a support with a held sponge.
 
     The arm presses the sponge and holds still while the holonomic base
     translates along the strip. The sponge bottom is pressed 1 mm below the surface; coverage is the
@@ -65,75 +72,72 @@ class WipeSurfacePolicy(AtomicPolicy):
             raise SkillFailure(f"wipe: {tool} is not right-held")
         s = rig.ann.support(support)
         st = rig.state()
-        x, y, yaw = rig.base_pose()
+        x, y, _ = rig.base_pose()
         x0, y0, x1, y1 = s["aabb_xy"]
-        # the strip runs along the robot-side edge, 8 cm in: fingers-down
-        # reach at counter height ends ~10 cm past the edge
-        # the edge nearest the robot sets the inward direction (not the
-        # offset to the centre: from behind a long counter that pointed along it)
-        edges = [(abs(x - x0), np.array([1.0, 0.0])), (abs(x1 - x), np.array([-1.0, 0.0])),
-                 (abs(y - y0), np.array([0.0, 1.0])), (abs(y1 - y), np.array([0.0, -1.0]))]
         size = np.asarray(rig.ann.asset_of(rig.ann.objects[tool])["size"], float)
         width = float(min(size[:2]))
-        best = None
-        # 8 cm in; when objects stand along that line, a strip closer to the edge (4.5 cm in); when the
-        # nearest edge is lined with objects, the next nearest edge (the base re-parks for the strip below)
-        for _, inward, inset, shift in [(d, e, i, sh) for d, e in sorted(edges, key=lambda e: e[0])
-                                        for i in (0.08, 0.045) for sh in np.linspace(-0.4, 0.4, 9)]:
-            if best is not None and (inset != best[3] or inward is not best[4]):
-                break
+        # the strips are sampled over the whole support, along each edge (fingers-down reach at
+        # counter height ends ~10 cm past an edge): 8 cm in, or 4.5 cm when objects stand on that
+        # line; the cheapest free ones (nearest the robot) go into the goal set
+        strips = []
+        for inward in (np.array([1.0, 0.0]), np.array([-1.0, 0.0]), np.array([0.0, 1.0]), np.array([0.0, -1.0])):
             along = np.array([-inward[1], inward[0]])
-            near = np.array([min(max(x, x0 + inset), x1 - inset), min(max(y, y0 + inset), y1 - inset)])
-            k = 0 if inward[0] else 1                                   # onto this edge's line
-            near[k] = (x0, y0)[k] + inset if inward[k] > 0 else (x1, y1)[k] - inset
-            c = near + along * shift
-            a, b = c - along * length / 2, c + along * length / 2
-            if not all(x0 + 0.03 <= p[0] <= x1 - 0.03 and y0 + 0.03 <= p[1] <= y1 - 0.03 for p in (a, b)):
-                continue
-            lo = np.minimum(a, b) - width / 2
-            hi = np.maximum(a, b) + width / 2
-            box = [lo[0], lo[1], hi[0], hi[1], s["z"], s["z"] + 0.2]       # _overlaps_objects order
-            if skills._overlaps_objects(rig, box, {tool}, st, margin=0.02):
-                continue
-            score = abs(shift)
-            if best is None or score < best[0]:
-                best = (score, a, b, inset, inward)
-        if best is None:
-            raise SkillFailure(f"wipe {support}: no free strip near the robot")
-        _, a, b, _, inward = best
-        along = np.array([-inward[1], inward[0]])
+            k = 0 if inward[0] else 1                       # the edge's line is x (k = 0) or y = const
+            lo, hi = ((y0, y1) if k == 0 else (x0, x1))
+            for inset in WIPE_INSETS:
+                line = (x0, y0)[k] + inset if inward[k] > 0 else (x1, y1)[k] - inset
+                for t in np.arange(lo + 0.03 + length / 2, hi - 0.03 - length / 2 + 1e-6, WIPE_STEP):
+                    c = np.array([line, t]) if k == 0 else np.array([t, line])
+                    a, b = c - along * length / 2, c + along * length / 2
+                    box_lo = np.minimum(a, b) - width / 2
+                    box_hi = np.maximum(a, b) + width / 2
+                    box = [box_lo[0], box_lo[1], box_hi[0], box_hi[1], s["z"], s["z"] + 0.2]   # _overlaps_objects order
+                    if skills._overlaps_objects(rig, box, {tool}, st, margin=0.02):
+                        continue
+                    cost = WIPE_DIST_COST * math.hypot(c[0] - x, c[1] - y) + (WIPE_INSET_COST if inset != WIPE_INSETS[0] else 0.0)
+                    strips.append((cost, a, b))
+        strips.sort(key=lambda t: t[0])
+        strips = strips[:WIPE_STRIPS]
+        if not strips:
+            raise SkillFailure(f"wipe {support}: no free strip")
         stow_load(rig)
         tcp, R, body_in_tcp, _ = _held_frame(rig, tool)
         body, _ = rig.obj_pose(tool)
         st = rig.state()                     # after stow_load lifted it
         hang = float(body[2] - skills._lowest_z(rig, tool, st))
         z_body = s["z"] - 0.001 + hang      # light press: a 3 mm press dragged the sponge out of the pinch
-        pts = [a + (b - a) * u for u in np.linspace(0, 1, 7)]
-        lane = [pts if k % 2 == 0 else pts[::-1] for k in range(passes)]
         rig.sync_world()
         rig.kin.coll_kw = {"ignore_fingers": True}
         # A long fingers-down stroke at counter height has almost no IK; the
         # base is holonomic, so the arm holds the pressed pose and the base
         # translates along the strip (one IK solution, a straight stroke).
+        # Strip x sponge yaw (it does not matter) is one goal set of the park search.
+        goals, leg_sets, cost = [], [], []
+        for c_strip, a, b in strips:
+            for psi in (0.0, math.pi / 2, -math.pi / 2, math.pi):
+                Rk = Rotation.from_euler("z", psi).as_matrix() @ R
+                goals.append((a, b, Rk))
+                leg_sets.append([(_tcp_for_body(Rk, np.r_[a, z_body + 0.06], body_in_tcp), Rk),
+                                 (_tcp_for_body(Rk, np.r_[a, z_body], body_in_tcp), Rk)])
+                cost.append(c_strip)
+
+        def stroke_clear(k, x, y, yaw, q_last):
+            stroke = goals[k][1] - goals[k][0]
+            return all(rig.world.footprint_clear(x + stroke[0] * u, y + stroke[1] * u, math.radians(yaw))
+                       for u in np.linspace(0, 1, 7))
+        found = find_park_set(rig.kin, rig.world, leg_sets, cost, near=rig.base_pose(), max_tries=80,
+                              q_start=rig.q_cmd, travel_q=skills._travel_q(rig), ride_set=stroke_clear)
+        if found is None:
+            raise SkillFailure(f"wipe {support}: no base pose reaches any of {len(strips)} free strips "
+                               f"{[np.round((a_ + b_) / 2, 2).tolist() for _, a_, b_ in strips]} "
+                               f"(rejected: {_park_diag()})")
+        park, k = found
+        a, b, R = goals[k]
+        legs = leg_sets[k]
         stroke = b - a
         rig.log("wipe_plan", strip=[np.round(a, 3).tolist(), np.round(b, 3).tolist()], z_body=round(float(z_body), 4),
                 body_in_tcp=np.round(body_in_tcp, 4).tolist(), tcp_R=np.round(R, 3).tolist(),
-                base=[round(v, 3) for v in rig.base_pose()])
-        park, R0 = None, R
-        for psi in (0.0, math.pi / 2, -math.pi / 2, math.pi):     # sponge yaw does not matter
-            R = Rotation.from_euler("z", psi).as_matrix() @ R0
-            legs = [(_tcp_for_body(R, np.r_[a, z_body + 0.06], body_in_tcp), R),
-                    (_tcp_for_body(R, np.r_[a, z_body], body_in_tcp), R)]
-
-            def stroke_clear(x, y, yaw, q_last):
-                return all(rig.world.footprint_clear(x + stroke[0] * u, y + stroke[1] * u, math.radians(yaw))
-                           for u in np.linspace(0, 1, 7))
-            park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=80, q_start=rig.q_cmd,
-                             travel_q=skills._travel_q(rig), ride=stroke_clear)
-            if park is not None:
-                break
-        if park is None:
-            raise SkillFailure(f"wipe {support}: no base pose reaches the strip (rejected: {_park_diag()})")
+                base=[round(v, 3) for v in rig.base_pose()], strips=len(strips), goals=len(leg_sets), chosen=k)
         skills._goto_park(rig, park)
         rig.caption = f"WIPE {support} with {tool}"
         rig.move_to(*legs[0], step=0.01, label="wipe_above", allow=FREE_ELSE_STRAIGHT, smooth=True)

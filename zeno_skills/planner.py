@@ -165,8 +165,9 @@ def find_park_set(kin, world, target_sets, set_cost, **kw):
 def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.45, 1.0, 0.05),
                yaw_offsets=(-60, -45, -30, -15, 0, 15, 30, -75, -90, 45, 60, 75, 90), ride=None, max_tries=400,
                score=None, n_best=None, q_start=None, travel_q=None, shoulder=(0.09, -0.18), path_from=None,
-               check=None, carry=False):
+               check=None, carry=False, ride_set=None):
     """Return ((x, y, yaw_deg, qs), k) or None, k the target sequence of target_sets it serves.
+    ``ride_set``: as ``ride``, for the sequence k: callable(k, x, y, yaw_deg, q_last) -> bool.
 
     Without ``score`` the first PARK_CANDIDATES feasible parks are ranked by park_quality
     (rank_parks) and the best is taken; with ``score`` (a skill's own criterion, lowest wins)
@@ -267,7 +268,8 @@ def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.4
         if travel_q is not None and cost >= 0 and not joint_reachable(kin, travel_q, qs[0], carry=carry):
             LAST_PARK_DIAG["unfold"] += 1
             continue                    # the arm cannot unfold to the first target here
-        if ride is not None and not ride(x, y, yaw, qs[-1]):
+        if (ride is not None and not ride(x, y, yaw, qs[-1])) or \
+                (ride_set is not None and not ride_set(k, x, y, yaw, qs[-1])):
             LAST_PARK_DIAG["ride"] += 1
             continue
         origin = path_from if path_from is not None else (near if near is not None and len(near) == 3 else None)

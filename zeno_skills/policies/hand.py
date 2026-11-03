@@ -87,24 +87,18 @@ class DropIntoPolicy(AtomicPolicy):
         body, _ = rig.obj_pose(name)
         hang = float(body[2] - skills._lowest_z(rig, name, st))
         off = tcp - body
+        # one relay pose, the load centred clearance_m above the rim; the planner takes it there
+        # (the container is an obstacle and the load is in the collision model)
         body_goal = np.array([cb[0], cb[1], rim_z + clearance_m + hang])
-        legs = [(body_goal + off + np.array([0, 0, 0.06]), R), (body_goal + off, R)]
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park = find_park(rig.kin, rig.world, legs, near=rig.base_pose(), max_tries=150, q_start=rig.q_cmd,
-                         travel_q=skills._travel_q(rig))
-        if park is None:
+        found = skills.park_over(rig, "drop", body_goal, off, R)
+        if found is None:
             raise SkillFailure(f"drop {name}: no base pose above {container} (rejected: {_park_diag()})")
+        park, p, Rg = found
         skills._goto_park(rig, park)
-        # rise first so the load never sweeps through the rim
-        low = float(rig.geo.bottom(name, rig.state())[2])
-        if low < rim_z + clearance_m:
-            t, R1 = rig.kin.tcp(rig.q_cmd)
-            rig.move_to(t + np.array([0, 0, rim_z + clearance_m + 0.04 - low]), R1, step=0.005,
-                        label="drop_prelift", allow=FREE_ELSE_STRAIGHT)
         rig.caption = f"DROP {name} into {container}"
-        for p, Rg in legs:
-            rig.move_to(p, Rg, step=0.005, steps_per_wp=5, label="drop_above", allow=FREE_ELSE_STRAIGHT, smooth=True)
+        with skills.fingers_checked(rig):
+            rig.move_to(p, Rg, step=0.005, steps_per_wp=5, label="drop_above", allow=FREE_ELSE_STRAIGHT,
+                        smooth=True, q_hint=park[3][0])
         skills.check_held(rig, "drop_above")
         return self._release(name, container)
 

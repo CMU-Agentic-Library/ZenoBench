@@ -370,22 +370,16 @@ class HoverOverPolicy(AtomicPolicy):
         hang = float(body[2] - skills._lowest_z(rig, name, st))
         b_now = rig.geo.bottom(name, st)
         off = tcp - np.r_[b_now[:2], b_now[2]]
-        goal = np.r_[c, top + clearance_m] + off
-        rig.sync_world()
-        rig.kin.coll_kw = {"ignore_fingers": True}
-        park = find_park(rig.kin, rig.world, [(goal + np.array([0, 0, 0.05]), R), (goal, R)], near=rig.base_pose(),
-                         max_tries=150, q_start=rig.q_cmd, travel_q=skills._travel_q(rig))
-        if park is None:
+        # one relay pose, the load's bottom centred clearance_m above the target; the planner takes
+        # it there
+        found = skills.park_over(rig, "hover", np.r_[c, top + clearance_m], off, R)
+        if found is None:
             raise SkillFailure(f"hover {name}: no base pose above {target} (rejected: {_park_diag()})")
+        park, goal, Rg = found
         skills._goto_park(rig, park)
-        low = float(rig.geo.bottom(name, rig.state())[2])
-        if low < top + clearance_m:
-            t0, R0 = rig.kin.tcp(rig.q_cmd)
-            rig.move_to(t0 + np.array([0, 0, top + clearance_m + 0.05 - low]), R0, step=0.005, label="hover_lift",
-                        allow=FREE_ELSE_STRAIGHT)
-        rig.move_to(goal + np.array([0, 0, 0.05]), R, step=0.005, label="hover_above",
-                    allow=FREE_ELSE_STRAIGHT, smooth=True)
-        rig.move_to(goal, R, step=0.004, label="hover_settle", allow=FREE_ELSE_STRAIGHT, smooth=True)
+        with skills.fingers_checked(rig):
+            rig.move_to(goal, Rg, step=0.004, label="hover_above", allow=FREE_ELSE_STRAIGHT, smooth=True,
+                        q_hint=park[3][0])
         skills.check_held(rig, "hover")
         rig.step(30)
         return {"bottom_above_target_m": float(rig.geo.bottom(name, rig.state())[2] - top), "hang_m": hang}

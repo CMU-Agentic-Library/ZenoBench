@@ -802,13 +802,15 @@ class Motion:
         STATS["ik_ok"] += int(ok)
         return q, ok
 
-    def ik_set(self, kin, P, Rs, q0, collision, other_q=None, coll_kw=None):
-        """Per TCP pose (P[i], Rs[i]) of a goal set: a solution near q0 (and clear of the joint
-        limits), collision-free with ``collision``, else None -- all of them at once: one batched
+    def ik_set(self, kin, P, Rs, q0, collision, other_q=None, coll_kw=None, weights=None):
+        """Per TCP pose (P[i], Rs[i]) of a goal set: a solution near q0 (``weights``: per joint, on
+        the distance; and clear of the joint limits), collision-free with ``collision``, else None
+        -- all of them at once: one batched
         kinematic IK, one feasibility check of every solution, one batched world-aware IK for the
         poses whose kinematic solutions all collide."""
         STATS["ik"] += 1
         q0 = np.asarray(q0, float)
+        w = np.ones(len(q0)) if weights is None else np.asarray(weights, float)
         with self._query(kin, other_q, coll_kw, list(P), collision) as arm:
             Q, ok = arm.ik_batch(P, Rs, q0, False)
             if collision and ok.any():
@@ -826,7 +828,7 @@ class Motion:
                     continue
                 cand = Qi[oki]
                 margin = np.min(np.minimum(cand - arm.lo, arm.hi - cand)[:, 2:], axis=1)
-                score = np.max(np.abs(cand - q0), axis=1) + 10.0 * np.maximum(0.0, LIMIT_CLEAR - margin)
+                score = np.max(np.abs(cand - q0) * w, axis=1) + 10.0 * np.maximum(0.0, LIMIT_CLEAR - margin)
                 out.append(cand[int(np.argmin(score))])
         STATS["ik_ok"] += sum(q is not None for q in out)
         return out

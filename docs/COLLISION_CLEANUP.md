@@ -104,6 +104,8 @@ R 类不列。下面只列要动的。
 
 ### 3.4 drop、hover（policies/hand.py、extra.py）
 
+**状态（2026-11-03，3a）：** 下表都已删掉：drop、hover 各只留一个中继位姿（物体在目标正上方），手腕朝向是停车点的目标集合（`skills.park_over`）。另外 3.9 的 `NavigateToPlacePolicy` 候选列表、3.10 的 wipe 擦拭带和海绵朝向、`stow_load` 带进来的搬运变体也在 3a 改完（`COLLISION_PLAN.md` 3a 实施记录）。
+
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|
 | policies/hand.py:99-104 | `DropIntoPolicy.execute` | `drop_prelift`：先抬到沿口上方再平移 | W | 仍在 |

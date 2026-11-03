@@ -58,6 +58,8 @@
 
 **全量（T、P 全部任务的所有 variation，种子 10、11，共 170 个 episode）：** 批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像）。只在这几个节点跑：步骤 2 完成后（已跑）、3a 完成后、3c 完成后（即步骤 3 完成）、步骤 5 完成后。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`。
 
+**3a 之后的全量**（2026-11-03）用三个种子：`benchmark/batches/v3_sticky_gt_3seeds_video.json`（255 个，种子 10、11、12），输出 `benchmark/runs/v3_sticky_gt_1103_3seeds/`，驱动脚本 `/data/zenobench/bench_1103/drive.sh`（`COMPARE.md` 里种子 10、11 和 11-02 逐个对比，种子 12 只计成功数）。
+
 **下一次全量的对照**是 11-02 那一轮（`benchmark/runs/v3_sticky_gt_1102_2seeds/`，`ea47359`，117/170）。注意三点：
 
 - 中间隔着步骤 2 补丁（底盘关节、惰性边检查、下垂按需绕行）。11-02 那一轮开车时的扰动大部分来自腰被拖弯，`disturbed`、`contacts` 以下一次为新基线。
@@ -273,6 +275,22 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
   - T17 第一版失败：盖锅盖 0 个候选（见上），修后成功（`/data/zenobench/leave_contact_exit/t17_own/`）。
   - T09 lid_off 失败在搅拌：放番茄时选的停车位不同，之后拿勺子的搬运姿态也不同，`stir` 自己找停车位时 39–52 个候选因"搬运姿态停在那里会碰"被拒，缩小半径重试也不行。归 3b（stir 的停车点搜索和缩半径退路）。之前搬运那批里同一个 episode 成功过两次。
   - 松手后往上 6 cm 的退出点有时没有 IK（T06），记 `retreat_short`，物体已放好，不影响结果。
+
+**drop、hover（`DropIntoPolicy`、`HoverOverPolicy`）。** 都只有一个中继位姿：物体在目标正上方（drop：沿口上方 5 cm、居中；hover：目标顶面上方 6 cm）。手腕绕竖直轴 8 个朝向（经过物体参考点）是停车点搜索的一个目标集合（`skills.park_over` → `find_park_set`），到停车点后直接规划到这个位姿。删掉：到了先竖直抬（`drop_prelift`、`hover_lift`）、先到上方 5–6 cm 的点再降下来（`drop_above` 的两段、`hover_above` + `hover_settle`）。容器在规划里是障碍物：drop 的目标点比沿口高出 5 cm 以上，在目标物体豁免（`TARGET_PAD` 3 cm）之外。
+
+**`NavigateToPlacePolicy`。** 依次导航到 `standoff_poses` 的前 6 个站位，改成一个目标集合：先用一个从机器人出发的距离场（`skills.base_reachable`，`base_planner.distance_field`，无向图，一次 Dijkstra）把底盘内切圆到不了的站位全部去掉，再导航到最近的那个，失败就是失败。11-02 全量 112 次里换站位 4 次，原因全是"内切圆到不了"，正是这个距离场判的。底盘规划器本身没有做多终点搜索：它的其他失败原因没有在换站位时出现过。
+
+**wipe 选擦拭带（`WipeSurfacePolicy`）。** 以前只在机器人附近 ±0.4 m、最近的那条边上找空带（11-02 全量 T08 ×3：站到了岛台另一侧）。现在按支撑面几何采样：四条边 × 两档内缩（`WIPE_INSETS` 8 / 4.5 cm）× 每 `WIPE_STEP`（10 cm）一条，去掉被物体占着的，按离机器人的距离（`WIPE_DIST_COST`）和内缩档排序，最便宜的 `WIPE_STRIPS`（8）条 × 海绵 4 个朝向 = 最多 32 组，作为停车点的目标集合；底盘推的那段行程按组检查（`find_park_set` 的 `ride_set`）。只取 8 条是为了控制最坏情况的计算量（每组 80 个名额）。
+
+**同一晚的后续修改（检查中发现）：**
+- **搬运时身体直立**：目标集合按"躯干抬到最高、腰伸直、手臂不动"这个参考姿态找 IK 解、算距离，躯干和腰的偏差权重 `CARRY_BODY_W`（3）。以前按当前姿态找，拿完东西弯着腰（腰 0.7 rad，几乎到限位）就弯着腰搬，岛台边的停车位全被"搬运姿态停在那里会碰"拒掉（T08 sponge_on_island）。现在腰多在 0.15–0.4 rad，比较低的搬运位置不弯一点够不着。
+- **选停车位前先摆好搬运姿态**：`place` 在停车点搜索之前按开车时要用的高度调 `_carry_pose`，`_carry_pose` 在手已经处于某个搬运目标时直接返回。以前停车点按当时的姿态检查，`navigate` 出发前又换了一个搬运姿态，到了停车位撞书架（T12）。drop、hover、wipe 本来就是先 `stow_load` 再找停车位。
+- **"上方"那段运动检查手指**（`skills.fingers_checked`）：`place_above`、`drop_above`、`hover_above` 不再 `ignore_fingers`。从侧面低低地规划过去时，张开的手指扫过了托盘和里面的积木（T12）；旧代码的"越过最高邻物"中间点其实是在替代这个检查。下放、松手这些贴着支撑面的段仍不查手指（步骤 4、5）。
+- 检查：`benchmark/batches/drop_wipe_goal_set.json`（8 个）5/8，T08 cluttered、sponge_on_tv_stand 这两个 11-02 因"只在附近找带"失败的都成功了；`benchmark/batches/3a_recheck.json`（8 个，以上修改之后）6/8，`benchmark/runs/3a_recheck/`。
+- **剩下的失败归类：**
+  - T12 toys_everywhere（托盘在书架上）：规划器能力不够。手指进了碰撞模型后，规划器找不到把手送到托盘上方的路（`place_above` 对容器是 `FREE`，没有退路）。旧代码靠"先抬过最高邻物再竖直下降"。**下一步：** 给 `plan_to` 加"最后一段竖直下降到目标"的约束（和现在按直线接近收尾的 `approach_metric` 同一类），不加回路点。
+  - T08 far_sponge_tv：pick 的 `pick_pre_far` 是一次直线关节插值，手腕转 2 rad，不查手指，手指扫进墙、手臂被卡住。停车位因为前面的步骤和 11-02 不同而不同。归 3b（pick）/ 步骤 5（`ignore_fingers`）。
+  - T08 island_cluttered：易拉罐在擦拭行程里被碰倒（步骤 4，补丁时就记过），时好时坏。
 
 **待定：** T10 的标准路线（`define_tasks.py` nominal）在开车前 `lift(soda_can, 0.95)`，是为高度和避障写的，按新规范由搬运姿态和底盘规划器负责；`search_first` 路线没有这一步也成功。改 benchmark 路线要先问。
 

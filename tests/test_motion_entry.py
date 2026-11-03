@@ -196,7 +196,7 @@ def test_a_lift_carries_the_object_it_closed_on_until_the_lift_ends():
 
 def _goal_rig(solutions):
     from contextlib import nullcontext
-    kin = SimpleNamespace(ik_set=lambda goals, q0: list(solutions))
+    kin = SimpleNamespace(ik_set=lambda goals, q0, weights=None: list(solutions))
     rig = SimpleNamespace(kin=kin, q_cmd=np.zeros(9), logged=[], moved=[])
     rig.log = lambda ev, **kw: rig.logged.append((ev, kw))
     rig.sync_world = lambda: None

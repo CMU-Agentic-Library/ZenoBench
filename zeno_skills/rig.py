@@ -395,21 +395,26 @@ class Rig:
         self.log("reach", target=label, tcp_err_m=round(err, 4), q_err=round(float(np.max(np.abs(qe))), 4), **extra)
         return err
 
-    def move_to_any(self, goals, step=0.01, steps_per_wp=3, label=None, allow=FREE, smooth=False, cost=None):
+    def move_to_any(self, goals, step=0.01, steps_per_wp=3, label=None, allow=FREE, smooth=False, cost=None,
+                    prefer=None, weights=None):
         """Move the TCP to the goal of the set ``goals`` [(p, R)] the arm gets to most cheaply: one
         batched IK of all of them (collision-free solutions near the current posture, the held
         object in the collision model: Kinematics.ik_set), the reachable goal of least joint
         travel plus ``cost[i]`` (rad), then move_to it with its solution as the joint goal.  The
         goals are not tried one after another: the choice is made before the arm moves, and
         what happens after it is that one motion's (SkillFailure, or ``allow``'s fallback).
-        Returns the chosen index; SkillFailure when no goal has a solution."""
+        ``prefer``: the posture the IK solutions are sought near and the travel is measured from
+        (default the current one; a carry pose stands the body up), ``weights`` per joint on that
+        distance.  Returns the chosen index; SkillFailure when no goal has a solution."""
         if not goals:
             raise SkillFailure(f"{label}: empty goal set")
         self.sync_world()
         cost = np.zeros(len(goals)) if cost is None else np.asarray(cost, float)
+        ref = self.q_cmd if prefer is None else np.asarray(prefer, float)
+        w = np.ones(len(ref)) if weights is None else np.asarray(weights, float)
         with self._planning(self.kin, self.q_cmd):
-            qs = self.kin.ik_set(goals, self.q_cmd)
-        score = np.array([np.inf if q is None else float(np.max(np.abs(q - self.q_cmd))) + c
+            qs = self.kin.ik_set(goals, ref, weights=w)
+        score = np.array([np.inf if q is None else float(np.max(np.abs(q - ref) * w)) + c
                           for q, c in zip(qs, cost)])
         i = int(np.argmin(score))
         self.log("goal_set", target=label, goals=len(goals), reachable=int(np.isfinite(score).sum()),
