@@ -1471,7 +1471,9 @@ def build() -> dict:
                        "and not solvable by retrying the nominal plan"},
            "hard_categories": ["task", "action", "mixed", "dynamic"], "tasks": tasks}
     from benchmark.v6.hypotheses import apply_audit
+    from benchmark.v6.tracks import apply_tracks
     apply_audit(out)
+    apply_tracks(out)
     return out
 
 

@@ -58,6 +58,38 @@ def persistent_problems(task, vid):
     return out
 
 
+def track_problems(t, contracts, assets, check_variant):
+    """Task-Level projections (``<vid>__tl``): the v5 per-variant rules on their seeds, persistent-failure
+    consistency, no transient action failure left, the projected tier no lower than the family's for Hard;
+    every family in exactly the tracks its content calls for."""
+    from benchmark.v6.tracks import transient
+    out = []
+    tr = t["v6_tracks"]
+    for fam, x in tr["task"].items():
+        for v in x["cases"]:
+            if any(transient(f) for f in t["variants"][v].get("failures") or []):
+                out.append({"family": fam, "seed": None, "problem": f"task track: {v} keeps a transient action failure"})
+            if not v.endswith("__tl"):
+                continue
+            seeds = sorted(int(s) for s, c in x["seeds"].items() if c == v)
+            # the v5 labelling rules (difficulty label, v5 Hard category) describe the source variant, not
+            # its projection; its tier is the capability audit's (checked below)
+            out += [{"family": fam, "seed": s, "problem": f"task track {v}: {p}"}
+                    for s, p in check_variant(t, x["family_tier"], v, contracts, assets, seeds)
+                    if not p.startswith(("tier ", "hard category "))]
+            out += [{"family": fam, "seed": None, "problem": f"task track {v}: {p}"} for p in persistent_problems(t, v)]
+        if x["family_tier"] == "hard" and x["tier"] != "hard":
+            out.append({"family": fam, "seed": None, "problem": f"task track tier {x['tier']} below Hard"})
+    for fam, x in tr["action"].items():
+        if not x["action_failures"]:
+            out.append({"family": fam, "seed": None, "problem": "action track without a transient action failure"})
+    placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | \
+        {m for x in tr["task"].values() for m in x.get("merged", [])}
+    for fam in set(t["v6_families"]) - placed:
+        out.append({"family": fam, "seed": None, "problem": "in no track"})
+    return out
+
+
 def main():
     from benchmark.scene import episode_config
     from benchmark.v5.validate import check_variant
@@ -66,7 +98,8 @@ def main():
     contracts = {c["verb"]: c for c in json.loads((ROOT / "contract_library/skill_contracts.json").read_text())["contracts"]}
     assets = json.loads((ROOT / "annotations/assets.json").read_text())
     frozen = json.loads((ROOT / "benchmark/v5/FREEZE.json").read_text())["episodes"]
-    out = {"families": 0, "episodes": 0, "static_ok": 0, "problems": [], "per_task": {}, "v5_hashes_checked": 0}
+    out = {"families": 0, "episodes": 0, "static_ok": 0, "problems": [], "per_task": {}, "v5_hashes_checked": 0,
+           "tracks": {}}
     for t in doc["tasks"]:
         tid = t["task_id"]
         n_ok = n_ep = 0
@@ -131,6 +164,13 @@ def main():
         for h, fams in hashes.items():
             if len(fams) > 1:
                 out["problems"].append({"task": tid, "family": fams, "seed": 10, "problem": f"same configuration {h}"})
+        for p in track_problems(t, contracts, assets, check_variant):
+            out["problems"].append({"task": tid, **p})
+        for k in ("action", "task"):
+            tr = out["tracks"].setdefault(k, {"families": 0, "episodes": 0})
+            tr["families"] += len(t["v6_tracks"][k])
+            tr["episodes"] += sum(len(x["seeds"]) for x in t["v6_tracks"][k].values())
+        out["tracks"].setdefault("controls", {"families": 0})["families"] += len(t["v6_tracks"]["controls"])
         out["per_task"][tid] = {"episodes": n_ep, "static_ok": n_ok}
         out["episodes"] += n_ep
         out["static_ok"] += n_ok
