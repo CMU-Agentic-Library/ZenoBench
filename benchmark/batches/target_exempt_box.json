@@ -1,0 +1,92 @@
+[
+ {
+  "task": "T12_tidy_toys",
+  "seed": 10,
+  "route": "hard_allocate_by_size",
+  "variant": "toys_everywhere",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T19_recycling",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "bin_on_bookcase",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T17_hide_and_seek_block",
+  "seed": 10,
+  "route": "hard_uncover_separate",
+  "variant": "lid_on_crowded",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T09_tomato_soup",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "lid_off",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T07_heat_oatmeal",
+  "seed": 10,
+  "route": "hard_stove_instead",
+  "variant": "microwave_holds_pot",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T03_utensils_one_container",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "small_and_large",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T06_block_destination_occupied",
+  "seed": 10,
+  "route": "alternative_tv_stand",
+  "variant": "occupied",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T11_collect_fruits",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "fruits_on_table",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "P18_floor_pick",
+  "seed": 10,
+  "route": "nominal",
+  "variant": "default",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ },
+ {
+  "task": "T02_stack_blocks",
+  "seed": 10,
+  "route": "fallback_separate",
+  "variant": "crowded",
+  "planner": "scripted",
+  "profile": "sticky/gt",
+  "video": true
+ }
+]

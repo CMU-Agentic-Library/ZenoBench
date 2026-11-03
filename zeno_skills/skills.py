@@ -221,14 +221,18 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
 def base_reachable(rig, poses):
     """Per base pose (x, y, yaw_deg): whether the column's inscribed circle can drive there from
     where the robot stands -- one field over all of them (base_planner.distance_field rooted at the
-    robot; it is symmetric), the cheap test that base_planner.plan makes first, for a goal set."""
+    robot; it is symmetric), the cheap test that base_planner.plan makes first, for a goal set.
+    Over the whole scene, as plan has it (relocate's area): a route may leave the box around the
+    start and the poses (T12 s11: bookcase to desk_1 through the doorway)."""
     from . import base_planner as bp
     x, y, _ = rig.base_pose()
     cells = [(int(round((p[0] - x) / bp.RES)), int(round((p[1] - y) / bp.RES))) for p in poses]
-    pad = int(math.ceil(bp.MARGIN / bp.RES))
-    bounds = (min(0, *[c[0] for c in cells]) - pad, min(0, *[c[1] for c in cells]) - pad,
-              max(0, *[c[0] for c in cells]) + pad, max(0, *[c[1] for c in cells]) + pad)
     rig.sync_world()
+    a = scene_area(rig.world)
+    bounds = (min(int(math.floor((a[0] - x) / bp.RES)), 0, *[c[0] for c in cells]),
+              min(int(math.floor((a[1] - y) / bp.RES)), 0, *[c[1] for c in cells]),
+              max(int(math.ceil((a[2] - x) / bp.RES)), 0, *[c[0] for c in cells]),
+              max(int(math.ceil((a[3] - y) / bp.RES)), 0, *[c[1] for c in cells]))
     D, i0, j0 = bp.distance_field(rig.world.circles_clear, (x, y), (0, 0, 0), bounds, (0, 0, 0))
     return reached_cells(D, i0, j0, cells)
 

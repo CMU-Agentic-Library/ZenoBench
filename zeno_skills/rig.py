@@ -561,12 +561,14 @@ class Rig:
         pose under constraints, else the joint goal of _goal)."""
         qs, ok = self.kin.cart_path(self.q_cmd, p, R, step=step)
         if ok:
+            self.log("straight_leg", target=label, exempt=getattr(self.kin.motion, "exempt", None))
             return qs
         carry = self._carrying()
         qs, how = self.kin.plan_to(self.q_cmd, p, R, carry=carry, q_goal=self._goal(p, R, q_hint))
         if qs is None:
             raise SkillFailure(f"no collision-free path to {label or p}: {how}")
-        self.log("planned_leg", target=label, how=how, waypoints=len(qs), carry=carry)
+        self.log("planned_leg", target=label, how=how, waypoints=len(qs), carry=carry,
+                 exempt=getattr(self.kin.motion, "exempt", None))
         return self.joint_path_via(qs)
 
     def _goal(self, p, R, q_hint):

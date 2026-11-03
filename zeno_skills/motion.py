@@ -505,6 +505,7 @@ class Motion:
         self.part_of = {a["name"]: a for a in ann.articulated}
         self.body_pose = {b: T.copy() for b, T in self.body0.items()}
         self._extent = {}
+        self._corners = {c.name: self.box_corners(c) for c in self.cols.items}
         for c in self.cols.items:
             if c.kind == "cuboid":
                 h = 0.5 * np.abs(c.local[:3, :3]) @ np.asarray(c.dims, float)
@@ -519,6 +520,7 @@ class Motion:
         self._held_box = {}              # object name -> (frame collider, lo, hi): its box in that collider's frame
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
+        self.exempt = []                 # objects the last query left out as targets (_targets_allow)
         self._sync_n = 0
         self._base_scope = None
         self.by_owner = {}
@@ -735,13 +737,24 @@ class Motion:
         finally:
             place(saved)
 
+    @staticmethod
+    def box_corners(c):
+        """The 8 corners of collider ``c``'s box in its own frame (G.world_pose places them)."""
+        signs = np.array(np.meshgrid([-1, 1], [-1, 1], [-1, 1])).reshape(3, -1).T
+        if c.kind == "cuboid":
+            return 0.5 * np.asarray(c.dims, float) * signs
+        lo, hi = c.vertices.min(0), c.vertices.max(0)
+        return (lo + hi) / 2 + (hi - lo) / 2 * signs
+
     def _owner_box(self, owner):
+        """World AABB of ``owner``'s colliders at their synced poses: their corners, not their
+        bounding spheres (a flat tray's sphere box is 0.34 m tall, and a TCP target above it
+        made the tray a target: no obstacle to place_above, T12)."""
         P = []
         for c in self.by_owner.get(owner, []):
-            ctr = self._centre(c)
-            r = self._extent[c.name][1]
-            P += [ctr - r, ctr + r]
-        P = np.array(P) if P else np.zeros((2, 3))
+            T = G.world_pose(c, self.body_pose.get)
+            P.append(self._corners[c.name] @ T[:3, :3].T + T[:3, 3])
+        P = np.vstack(P) if P else np.zeros((2, 3))
         return P.min(0), P.max(0)
 
     @staticmethod
@@ -773,8 +786,9 @@ class Motion:
         arm = self.arms[kin.side]
         arm.prepare(kin, other_q, links)
         if collision:
-            self._apply(kin.base_p[:2], allow=self._targets_allow([np.asarray(p, float) for p in targets]),
-                        side=kin.side)
+            allow = self._targets_allow([np.asarray(p, float) for p in targets])
+            self.exempt = sorted(o.split(":", 1)[1] for o in allow)
+            self._apply(kin.base_p[:2], allow=allow, side=kin.side)
         try:
             yield arm
         finally:
