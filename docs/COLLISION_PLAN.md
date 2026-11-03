@@ -46,11 +46,13 @@
 | 左臂收起姿态的手指伸出底盘，靠近台面的停车点被整机检查拒掉 | 11-02 全量里 P19 ×2、T09 lid_on 抓锅盖停得太远 | 步骤 5 |
 | 左臂收臂直接插值，不经过任何检查 | `LeftArmFoldPolicy` 的 `link_7` 压进岛台 46 mm；P07 s11 碰倒杯子 | 步骤 5 |
 | `ignore_fingers` 让带检查的动作不查手指 | `pick_grasp`、`pick_pre_far`、`tuck` 的手指压进台面 | 步骤 4、5 |
-| 搬运姿态仍是手写路点（`_carry_pose`） | 5 个搬运姿态变体、`carry_in_via` | 3a |
-| wipe 只在机器人附近选擦拭带，依赖到达时站在哪一侧 | 11-02 全量里 T08 ×3 | 3a |
+| pick 和 place 仍是"写死的预备点 + 直线进去 / 直线出来 + 写死的终点"：pick 后退 8 cm 抬 4 cm、前 4 cm、抬 7 cm；place 上方 6 cm、不查碰撞的 5 cm 竖直下放、退到上方 6 cm | T12 s11：规划去"上方 6 cm"时托盘被推开 19 cm，下放时撞歪托盘里的积木 | 3b 第一项（见步骤 3） |
+| 规划出来的 `place_above` 推走了托盘（手指和手里的物体都在碰撞模型里），说明规划时托盘不可见或模型对不上；没核实是目标物体豁免（`TARGET_PAD`）还是手里物体的内切碰撞球漏了角 | T12 s11 | 3b 第一项之前先查：给规划运动记被豁免的物体，重跑 T12 s11 |
+| 搬运姿态到不了时手臂留在原处开车（`carry_pose_kept`）：pick 把手臂留在了另一个 IK 分支上 | T10 s10 | 3b（pick 选抓取姿态时连上搬运姿态） |
 | 书在夹爪里下垂 65–74°，带进碰撞模型后 `flat_pre` 压进书架 | T14 | 3c（`place_flat` / 书架） |
 | 11-02（`ea47359`）之后新出的两个确定性失败，`a323805` 上就有（3a 全量里 T07 仍失败，P06 这次成功）：P06 s10 `handover_present_across` 规划成功、左手却没有 IK（11-02 是规划失败退直线、碰巧接住）；T07 microwave_works s10 `microwave_button_pre` 换了 IK 分支，按键直线没有 IK（11-02 按键就差 2.4 cm） | 连跑 3 次结果相同，不是随机性 | 下一次全量时看是哪一个提交引入的（步骤 2 补丁或合并进来的 main） |
-| 11-02 全量的 6 个新失败没细查 | T13 no_cup ×2、no_cup_bowl_on_cabinet ×2、T14 shelf_taken s11、T02 far_crowded s11 | 下一次全量后归类 |
+| 11-02 全量的 6 个新失败没细查 | T13 no_cup ×2、no_cup_bowl_on_cabinet ×2、T14 shelf_taken s11、T02 far_crowded s11 | 3a 全量里都成功了，不再查 |
+| 3a 全量里没查清的分叉：T18 开柜门前导航停的位置、T15 翻书选的路径都和 11-02 不同 | T18 at_island ×2、T15 book_out_of_view ×2 | 3b（open、flip）时一起看 |
 
 ## 3. 回归方法
 
@@ -236,10 +238,26 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 | 子步 | 内容 | 回归 |
 |---|---|---|
 | **3a 搬运和放置** | 入口加目标集合；`_carry_pose`（`carry_stand_up`、最多 9 个变体、`carry_up` / `carry_in_via`、`_carry_bottom_z`、书本 edge +6 cm），连同经 `stow_load` 调它的 drop / hover / wipe / stir / pour；place 链（含 `place()` 里微波炉分支的死代码，直接删）；drop、hover；`NavigateToPlacePolicy` 的候选列表；wipe 选擦拭带和海绵朝向 | 针对性检查 + 全量 |
-| **3b 拿取、开关和持物动作** | pick（3.5，含"选抓取姿态时连上搬运姿态"，见 3a 实施记录）、open / close（3.6）、`held_vertical_move`、rotate、flip、stir、pour、wave、upright（3.7）；各处手传的 `step`、`steps_per_wp`、`smooth`（步骤 1 留下的）；push 改成推到够不着为止 | 针对性检查 |
+| **3b 拿取、开关和持物动作** | **第一项：pick 和 place 的接近与离开**（见下面"3b 第一项"）；pick（3.5，含"选抓取姿态时连上搬运姿态"，见 3a 实施记录）、open / close（3.6）、`held_vertical_move`、rotate、flip、stir、pour、wave、upright（3.7）；各处手传的 `step`、`steps_per_wp`、`smooth`（步骤 1 留下的）；push 改成推到够不着为止 | 针对性检查 |
 | **3c 场景特例和其余** | 微波炉（3.8）、`place_flat` / 书架（3.3，T14 书下垂）、S 类写死的常数（清单第 6 节）、`clear_microwave_door_sweep`；双手、sticky、contact、perceive 等（3.9） | 针对性检查 + 全量（即步骤 3 完成） |
 
 `planner._chain` 的"park 搜索只认直线"（步骤 1 留下的）在手写 park 删掉时一起看，归它所在的子步。
+
+#### 3b 第一项：pick 和 place 的接近与离开（2026-11-03 定）
+
+3a 之后 pick 和 place 还是旧结构："写死的预备点 + 直线进去"和"直线出来 + 写死的终点"，而且这些几厘米的短段只要直线不撞就走直线，规划器很少出手：
+
+| | 预备点 / 进去 | 出来 / 终点 |
+|---|---|---|
+| pick（`_grasp_legs`、`_lift_height`） | `pick_pre_far` 后退 8 cm 抬 4 cm → `pick_pre` 前 4 cm → `pick_grasp`（不查手指，目标物体豁免） → 误差大时 `pick_grasp_fix`（不查碰撞） | `pick_lift`：离开支撑面那段直线，剩下规划到上方 7 cm（高处 4.5 cm） |
+| place | `place_above` 上方 6 cm → `place_lower` 竖直 5 cm，不查碰撞 → `place_lower_to_contact` | `place_retreat_up`：离开接触那段直线，剩下规划到上方 6 cm |
+
+按"只留中继位姿"，pick 的中继位姿是抓取位姿，place 的是物体放在支撑面上的位姿，其余的距离都是路点。**改法：**
+1. **接近：** 从当前姿态直接规划到中继位姿，约束最后一段沿接近方向（pick 沿夹爪方向，place 竖直向下）走直线。入口的 `plan_to` 已有这种约束（`approach_metric`，最后一段沿目标的某个轴走直线），只是现在的调用方式是先到预备点再直线进去。要补的是：接近方向和最后一段的长度由调用方给，而不是按起点到终点的方向猜；以及最后贴近那一两厘米（手指合上前、物体碰到支撑面前后）作为接触段（步骤 4 的 `grasp` / `set_down` 预设）。
+2. **离开：** 离开接触后直接规划到下一个中继位姿（见上面"离开接触之后"那条），不再去写死的 7 cm / 6 cm 终点。
+3. 先查 T12 s11 托盘为什么对规划器不可见（第 2 节），否则换成规划约束后照样会推走托盘。
+
+drop、hover 的"上方 5–6 cm"是任务本身（在上方松手、悬停），保留。
 
 #### 3a 第一项：入口的目标集合
 
@@ -247,7 +265,9 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 
 **完成标准（3a）：** 搬运、放置、drop、hover、wipe 选带里的 W、F 类条目清零；全量回归的倒退都能归类。
 
-#### 3a 实施记录（2026-11-03，进行中）
+#### 3a 实施记录（2026-11-03，已完成：`f5779ab`、`0909b03`、`9b1ce93`）
+
+**一句话：** 3a 消掉的是 F 类（逐个试、换路径、吞异常）和一部分 W 类（越障中间点、预抬、预摆、回桶外）；中继位姿本身怎么定义、接近和离开怎么走还是旧的写死方式，见"3b 第一项"。
 
 **入口的目标集合（`Rig.move_to_any`）。** 没用 `plan_goalset`：它的集合大小要在 warmup 时固定，换目标类型会重录 CUDA graph；入口的约束（持物保持倾角、直线接近收尾）是按单个目标算的，套不进去。做法是第二种：
 1. `Motion.ik_set` 一次算完整组目标：批量运动学 IK（`_Arm.ik_batch`，按 `PATH_BATCH` 补齐，CUDA graph 形状固定）→ 一次检查全部解的碰撞（手里的物体在 `scope` 里）→ 解都碰的目标再做一次批量的带碰撞 IK。每个目标取离当前姿态最近、离关节限位够远的解。
@@ -288,7 +308,7 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 - **"上方"那段运动检查手指**（`skills.fingers_checked`）：`place_above`、`drop_above`、`hover_above` 不再 `ignore_fingers`。从侧面低低地规划过去时，张开的手指扫过了托盘和里面的积木（T12）；旧代码的"越过最高邻物"中间点其实是在替代这个检查。下放、松手这些贴着支撑面的段仍不查手指（步骤 4、5）。
 - 检查：`benchmark/batches/drop_wipe_goal_set.json`（8 个）5/8，T08 cluttered、sponge_on_tv_stand 这两个 11-02 因"只在附近找带"失败的都成功了；`benchmark/batches/3a_recheck.json`（8 个，以上修改之后）6/8，`benchmark/runs/3a_recheck/`。
 - **剩下的失败归类：**
-  - T12 toys_everywhere（托盘在书架上）：规划器能力不够。手指进了碰撞模型后，规划器找不到把手送到托盘上方的路（`place_above` 对容器是 `FREE`，没有退路）。旧代码靠"先抬过最高邻物再竖直下降"。**下一步：** 给 `plan_to` 加"最后一段竖直下降到目标"的约束（和现在按直线接近收尾的 `approach_metric` 同一类），不加回路点。
+  - T12 toys_everywhere（托盘在书架上）：见全量回归里的更正。
   - T08 far_sponge_tv：pick 的 `pick_pre_far` 是一次直线关节插值，手腕转 2 rad，不查手指，手指扫进墙、手臂被卡住。停车位因为前面的步骤和 11-02 不同而不同。归 3b（pick）/ 步骤 5（`ignore_fingers`）。
   - T08 island_cluttered：易拉罐在擦拭行程里被碰倒（步骤 4，补丁时就记过），时好时坏。
 
@@ -309,7 +329,7 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 
 | episode | 原因 | 归类 |
 |---|---|---|
-| T12 toys_everywhere ×2 | 托盘在书架上，手指进碰撞模型后 `place_above` 规划不出来 | 规划器能力不够：补竖直下降接近的约束 |
+| T12 toys_everywhere ×2 | s10：`place_above` 规划失败。s11：`place_above` 规划成功，但走完时托盘已被推开 19 cm、抬高 2 cm，接着不查碰撞的 `place_lower` 撞歪了积木。最初归成"规划器能力不够"是错的：规划出来的路径推走了托盘，说明规划时托盘不可见或模型对不上（目标物体豁免，或手里物体的内切碰撞球漏了角，没核实） | 碰撞模型问题 + 写死的"上方 6 cm + 不查碰撞的下放"结构：3b 第一项 |
 | T08 far_sponge_tv s11 | `pick_pre_far` 直线关节插值不查手指，扫进墙 | 3b（pick）/ 步骤 5 |
 | T08 island_cluttered s11 | 易拉罐在擦拭行程里被碰倒 | 步骤 4（wipe 底盘推），时好时坏 |
 | T07 microwave_works s10 | 按键直线没有 IK | `a323805` 上就有（见第 2 节） |
