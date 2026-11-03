@@ -4636,6 +4636,60 @@
    "v6_design_problems": [],
    "v6_tracks": {
     "action": {
+     "no_overhang": {
+      "sub": "AL-GRASP",
+      "mechanisms": [
+       "grasp"
+      ],
+      "with_task_content": false,
+      "cases": [
+       "no_overhang"
+      ],
+      "seeds": {
+       "10": "no_overhang",
+       "11": "no_overhang",
+       "12": "no_overhang",
+       "13": "no_overhang",
+       "14": "no_overhang",
+       "15": "no_overhang",
+       "16": "no_overhang",
+       "17": "no_overhang",
+       "18": "no_overhang",
+       "19": "no_overhang"
+      },
+      "family_tier": "medium",
+      "action_failures": [],
+      "local_conditions": [
+       "grasp_blocked"
+      ]
+     },
+     "far_no_overhang": {
+      "sub": "AL-GRASP",
+      "mechanisms": [
+       "grasp"
+      ],
+      "with_task_content": true,
+      "cases": [
+       "far_no_overhang"
+      ],
+      "seeds": {
+       "10": "far_no_overhang",
+       "11": "far_no_overhang",
+       "12": "far_no_overhang",
+       "13": "far_no_overhang",
+       "14": "far_no_overhang",
+       "15": "far_no_overhang",
+       "16": "far_no_overhang",
+       "17": "far_no_overhang",
+       "18": "far_no_overhang",
+       "19": "far_no_overhang"
+      },
+      "family_tier": "medium",
+      "action_failures": [],
+      "local_conditions": [
+       "grasp_blocked"
+      ]
+     },
      "m_ik_pick": {
       "sub": "AL-IK",
       "mechanisms": [
@@ -4660,7 +4714,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_paperback_book"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_pick_and_place": {
       "sub": "AL-IK",
@@ -4687,7 +4742,8 @@
       "action_failures": [
        "ik_pick_paperback_book",
        "ik_place_book"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_table_set_ik": {
       "sub": "AL-IK",
@@ -4713,7 +4769,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_paperback_book"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_sr_two_hand_carry": {
       "sub": "AL-IK",
@@ -4739,7 +4796,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_place_paperback_book"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_slip_book": {
       "sub": "AL-SLIP",
@@ -4765,39 +4823,14 @@
       "family_tier": "medium",
       "action_failures": [
        "slip_paperback_book"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
-     "no_overhang": {
-      "sub": "TL-PRE",
-      "subs": [
-       "TL-PRE"
-      ],
-      "timing": "initial",
-      "cases": [
-       "no_overhang"
-      ],
-      "seeds": {
-       "10": "no_overhang",
-       "11": "no_overhang",
-       "12": "no_overhang",
-       "13": "no_overhang",
-       "14": "no_overhang",
-       "15": "no_overhang",
-       "16": "no_overhang",
-       "17": "no_overhang",
-       "18": "no_overhang",
-       "19": "no_overhang"
-      },
-      "tier": "medium",
-      "family_tier": "medium",
-      "projected": false
-     },
      "far_no_overhang": {
-      "sub": "TL-PRE",
+      "sub": "TL-SEARCH",
       "subs": [
-       "TL-PRE",
        "TL-SEARCH"
       ],
       "timing": "initial",
@@ -9881,6 +9914,60 @@
    "v6_design_problems": [],
    "v6_tracks": {
     "action": {
+     "crowded": {
+      "sub": "AL-GRASP",
+      "mechanisms": [
+       "grasp"
+      ],
+      "with_task_content": false,
+      "cases": [
+       "crowded"
+      ],
+      "seeds": {
+       "10": "crowded",
+       "11": "crowded",
+       "12": "crowded",
+       "13": "crowded",
+       "14": "crowded",
+       "15": "crowded",
+       "16": "crowded",
+       "17": "crowded",
+       "18": "crowded",
+       "19": "crowded"
+      },
+      "family_tier": "medium",
+      "action_failures": [],
+      "local_conditions": [
+       "grasp_blocked"
+      ]
+     },
+     "far_crowded": {
+      "sub": "AL-GRASP",
+      "mechanisms": [
+       "grasp"
+      ],
+      "with_task_content": true,
+      "cases": [
+       "far_crowded"
+      ],
+      "seeds": {
+       "10": "far_crowded",
+       "11": "far_crowded",
+       "12": "far_crowded",
+       "13": "far_crowded",
+       "14": "far_crowded",
+       "15": "far_crowded",
+       "16": "far_crowded",
+       "17": "far_crowded",
+       "18": "far_crowded",
+       "19": "far_crowded"
+      },
+      "family_tier": "medium",
+      "action_failures": [],
+      "local_conditions": [
+       "grasp_blocked"
+      ]
+     },
      "m_grasp_b": {
       "sub": "AL-GRASP",
       "mechanisms": [
@@ -9905,7 +9992,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_wooden_block_b"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_grasp_and_ik": {
       "sub": "AL-IK",
@@ -9932,7 +10020,8 @@
       "action_failures": [
        "ik_pick_wooden_block_a",
        "ik_stack_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_edge_base_grasp": {
       "sub": "AL-GRASP",
@@ -9958,7 +10047,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_base_a_unreachable": {
       "sub": "AL-GRASP",
@@ -9984,7 +10074,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_block_b_unholdable": {
       "sub": "AL-IK",
@@ -10011,39 +10102,14 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_stack_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
-     "crowded": {
-      "sub": "TL-PRE",
-      "subs": [
-       "TL-PRE"
-      ],
-      "timing": "initial",
-      "cases": [
-       "crowded"
-      ],
-      "seeds": {
-       "10": "crowded",
-       "11": "crowded",
-       "12": "crowded",
-       "13": "crowded",
-       "14": "crowded",
-       "15": "crowded",
-       "16": "crowded",
-       "17": "crowded",
-       "18": "crowded",
-       "19": "crowded"
-      },
-      "tier": "medium",
-      "family_tier": "medium",
-      "projected": false
-     },
      "far_crowded": {
-      "sub": "TL-PRE",
+      "sub": "TL-SEARCH",
       "subs": [
-       "TL-PRE",
        "TL-SEARCH"
       ],
       "timing": "initial",
@@ -13453,7 +13519,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_breakfast_spoon"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_slip_and_miss": {
       "sub": "AL-COMPOUND",
@@ -13481,7 +13548,8 @@
       "action_failures": [
        "place_rolling_pin",
        "slip_rolling_pin"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_three_containers_ik": {
       "sub": "AL-IK",
@@ -13507,7 +13575,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_rolling_pin"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -18310,7 +18379,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_cup_counter_b"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_and_grasp": {
       "sub": "AL-IK",
@@ -18336,7 +18406,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_oatmeal"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_spot_taken_ik": {
       "sub": "AL-IK",
@@ -18362,7 +18433,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_oatmeal"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_cup_unusable": {
       "sub": "AL-COMPOUND",
@@ -18391,7 +18463,8 @@
       "action_failures": [
        "grasp_mug",
        "ik_pick_mug"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -22636,7 +22709,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_pencil"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_grasp_and_ik": {
       "sub": "AL-COMPOUND",
@@ -22664,7 +22738,8 @@
       "action_failures": [
        "grasp_pencil",
        "ik_place_pencil"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_cabinet_ik": {
       "sub": "AL-IK",
@@ -22690,7 +22765,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_open_kitchen_cabinet_6"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_pen_unholdable": {
       "sub": "AL-IK",
@@ -22717,7 +22793,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_place_pencil"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -28416,7 +28493,8 @@
       "family_tier": "medium",
       "action_failures": [
        "slip_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_slip_and_ik": {
       "sub": "AL-COMPOUND",
@@ -28444,7 +28522,8 @@
       "action_failures": [
        "ik_place_wooden_block_a",
        "slip_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_hidden_grasp": {
       "sub": "AL-GRASP",
@@ -28470,7 +28549,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_block_a_unholdable": {
       "sub": "AL-SLIP",
@@ -28497,7 +28577,8 @@
       "family_tier": "hard",
       "action_failures": [
        "slip_wooden_block_b"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_grasp_block_a": {
       "sub": "AL-GRASP",
@@ -28523,7 +28604,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_cabinet_unreachable": {
       "sub": "AL-GRASP",
@@ -28549,7 +28631,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_ik_place_cabinet": {
       "sub": "AL-IK",
@@ -28575,7 +28658,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_place_wooden_block_a"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -33177,7 +33261,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_oatmeal"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_and_slip": {
       "sub": "AL-IK",
@@ -33203,7 +33288,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_oatmeal"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_pot_inside_grasp": {
       "sub": "AL-IK",
@@ -33229,7 +33315,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_oatmeal"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_microwave_door_stuck": {
       "sub": "AL-IK",
@@ -33256,7 +33343,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_oatmeal"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_ik_open_microwave": {
       "sub": "AL-IK",
@@ -33282,7 +33370,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_open_kitchen_microwave"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -38272,7 +38361,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_kitchen_sponge"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_grasp_and_ik": {
       "sub": "AL-COMPOUND",
@@ -38300,7 +38390,8 @@
       "action_failures": [
        "grasp_kitchen_sponge",
        "ik_wipe_kitchen_island/top"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_cluttered_grasp": {
       "sub": "AL-GRASP",
@@ -38326,7 +38417,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_kitchen_sponge"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -46514,7 +46606,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_breakfast_spoon"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_grasp_and_ik": {
       "sub": "AL-COMPOUND",
@@ -46542,7 +46635,8 @@
       "action_failures": [
        "grasp_breakfast_spoon",
        "ik_pick_lid"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_cookware_grasp": {
       "sub": "AL-GRASP",
@@ -46568,7 +46662,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_breakfast_spoon"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_spoon_unholdable": {
       "sub": "AL-IK",
@@ -46595,7 +46690,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_pot_lid"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_sr_collect_refused": {
       "sub": "AL-GRASP",
@@ -46621,7 +46717,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_cherry_tomato_1"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_ik_collect": {
       "sub": "AL-IK",
@@ -46647,7 +46744,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_collect_once"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -50842,7 +50940,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_soda_can"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_pick_and_drop": {
       "sub": "AL-IK",
@@ -50869,7 +50968,8 @@
       "action_failures": [
        "ik_drop_can",
        "ik_pick_soda_can"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_microwave_ik": {
       "sub": "AL-IK",
@@ -50895,7 +50995,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_soda_can"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_sr_drop_refused": {
       "sub": "AL-IK",
@@ -50921,7 +51022,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_soda_can"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_ik_drop": {
       "sub": "AL-IK",
@@ -50947,7 +51049,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_drop_soda_can"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -54266,7 +54369,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_apple"
-      ]
+      ],
+      "local_conditions": []
      },
      "m_ik_basket": {
       "sub": "AL-IK",
@@ -54292,7 +54396,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_place_apple"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_grasp_and_ik": {
       "sub": "AL-GRASP",
@@ -54318,7 +54423,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_apple"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_bowl_there_grasp": {
       "sub": "AL-GRASP",
@@ -54344,7 +54450,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_apple"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_apple_rolls_out": {
       "sub": "AL-GRASP",
@@ -54370,7 +54477,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_apple"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_apple_rolls_out_once": {
       "sub": "AL-PLACE",
@@ -54396,7 +54504,8 @@
       "family_tier": "medium",
       "action_failures": [
        "placement_apple_basket"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -63036,7 +63145,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_toy_car"
-      ]
+      ],
+      "local_conditions": []
      },
      "m_ik_duck_place": {
       "sub": "AL-IK",
@@ -63062,7 +63172,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_place_rubber_duck"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_grasp_and_ik": {
       "sub": "AL-COMPOUND",
@@ -63091,7 +63202,8 @@
       "action_failures": [
        "grasp_toy_car",
        "ik_drop_rubber_duck"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_everywhere_ik": {
       "sub": "AL-IK",
@@ -63118,7 +63230,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_toy_car"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_basket_unreachable": {
       "sub": "AL-GRASP",
@@ -63144,7 +63257,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_toy_car"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -71717,7 +71831,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_bowl"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_boxed_in_ik": {
       "sub": "AL-IK",
@@ -71743,7 +71858,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_spoon"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_cl_cup_slips": {
       "sub": "AL-IK",
@@ -71770,7 +71886,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_bowl"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_slip_cup": {
       "sub": "AL-SLIP",
@@ -71796,7 +71913,8 @@
       "family_tier": "medium",
       "action_failures": [
        "slip_cup"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -73709,7 +73827,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_flip_paperback_book"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_twice": {
       "sub": "AL-IK",
@@ -73736,7 +73855,8 @@
       "action_failures": [
        "ik_flip_paperback_book",
        "ik_flip_paperback_book_again"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_block_on_book_ik": {
       "sub": "AL-IK",
@@ -73762,7 +73882,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_flip_paperback_book"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -75452,7 +75573,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_roll_rolling_pin"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_twice": {
       "sub": "AL-IK",
@@ -75479,7 +75601,8 @@
       "action_failures": [
        "ik_roll_rolling_pin",
        "ik_roll_rolling_pin_again"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_bowl_behind_ik": {
       "sub": "AL-IK",
@@ -75505,7 +75628,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_oatmeal"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -79860,6 +79984,60 @@
    "v6_design_problems": [],
    "v6_tracks": {
     "action": {
+     "block_crowded": {
+      "sub": "AL-GRASP",
+      "mechanisms": [
+       "grasp"
+      ],
+      "with_task_content": false,
+      "cases": [
+       "block_crowded"
+      ],
+      "seeds": {
+       "10": "block_crowded",
+       "11": "block_crowded",
+       "12": "block_crowded",
+       "13": "block_crowded",
+       "14": "block_crowded",
+       "15": "block_crowded",
+       "16": "block_crowded",
+       "17": "block_crowded",
+       "18": "block_crowded",
+       "19": "block_crowded"
+      },
+      "family_tier": "medium",
+      "action_failures": [],
+      "local_conditions": [
+       "grasp_blocked"
+      ]
+     },
+     "lid_on_crowded": {
+      "sub": "AL-GRASP",
+      "mechanisms": [
+       "grasp"
+      ],
+      "with_task_content": true,
+      "cases": [
+       "lid_on_crowded"
+      ],
+      "seeds": {
+       "10": "lid_on_crowded",
+       "11": "lid_on_crowded",
+       "12": "lid_on_crowded",
+       "13": "lid_on_crowded",
+       "14": "lid_on_crowded",
+       "15": "lid_on_crowded",
+       "16": "lid_on_crowded",
+       "17": "lid_on_crowded",
+       "18": "lid_on_crowded",
+       "19": "lid_on_crowded"
+      },
+      "family_tier": "medium",
+      "action_failures": [],
+      "local_conditions": [
+       "grasp_blocked"
+      ]
+     },
      "h_action_ik_twice": {
       "sub": "AL-IK",
       "mechanisms": [
@@ -79885,7 +80063,8 @@
       "action_failures": [
        "ik_hide_wooden_block_b",
        "ik_hide_wooden_block_b_again"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_lid_elsewhere_ik": {
       "sub": "AL-IK",
@@ -79911,7 +80090,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_pot_lid"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_sr_hide_refused": {
       "sub": "AL-GRASP",
@@ -79937,7 +80117,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_wooden_block_b"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_ik_hide": {
       "sub": "AL-IK",
@@ -79963,7 +80144,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_hide_wooden_block_b"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -79987,31 +80169,6 @@
        "17": "lid_on",
        "18": "lid_on",
        "19": "lid_on"
-      },
-      "tier": "medium",
-      "family_tier": "medium",
-      "projected": false
-     },
-     "block_crowded": {
-      "sub": "TL-PRE",
-      "subs": [
-       "TL-PRE"
-      ],
-      "timing": "initial",
-      "cases": [
-       "block_crowded"
-      ],
-      "seeds": {
-       "10": "block_crowded",
-       "11": "block_crowded",
-       "12": "block_crowded",
-       "13": "block_crowded",
-       "14": "block_crowded",
-       "15": "block_crowded",
-       "16": "block_crowded",
-       "17": "block_crowded",
-       "18": "block_crowded",
-       "19": "block_crowded"
       },
       "tier": "medium",
       "family_tier": "medium",
@@ -82374,7 +82531,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_open_kitchen_cabinet_6"
-      ]
+      ],
+      "local_conditions": []
      },
      "m_ik_close": {
       "sub": "AL-IK",
@@ -82400,7 +82558,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_close_kitchen_cabinet_6"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_open_and_close": {
       "sub": "AL-IK",
@@ -82427,7 +82586,8 @@
       "action_failures": [
        "ik_close_kitchen_cabinet_6",
        "ik_open_kitchen_cabinet_6"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_two_cabinets_ik": {
       "sub": "AL-IK",
@@ -82453,7 +82613,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_open_kitchen_cabinet_4"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -89196,7 +89357,8 @@
       "family_tier": "medium",
       "action_failures": [
        "grasp_soda_can"
-      ]
+      ],
+      "local_conditions": []
      },
      "m_ik_cube": {
       "sub": "AL-IK",
@@ -89222,7 +89384,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_foam_cube"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_grasp_and_miss": {
       "sub": "AL-COMPOUND",
@@ -89251,7 +89414,8 @@
       "action_failures": [
        "grasp_foam_cube",
        "place_soda_can"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_lookalike_ik": {
       "sub": "AL-IK",
@@ -89278,7 +89442,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_foam_cube"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_sr_cube_drop_refused": {
       "sub": "AL-GRASP",
@@ -89304,7 +89469,8 @@
       "family_tier": "hard",
       "action_failures": [
        "grasp_foam_cube"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_ik_drop_cube": {
       "sub": "AL-IK",
@@ -89330,7 +89496,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_drop_foam_cube"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -94665,7 +94832,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_pick_juice_bottle"
-      ]
+      ],
+      "local_conditions": []
      },
      "m_ik_place": {
       "sub": "AL-IK",
@@ -94691,7 +94859,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_place_juice_bottle"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_pick_and_place": {
       "sub": "AL-IK",
@@ -94718,7 +94887,8 @@
       "action_failures": [
        "ik_pick_juice_bottle",
        "ik_place_bottle"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_table_full_ik": {
       "sub": "AL-IK",
@@ -94744,7 +94914,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_party_bowl_1"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
@@ -99115,6 +99286,33 @@
    "v6_design_problems": [],
    "v6_tracks": {
     "action": {
+     "book_on_desk": {
+      "sub": "AL-GRASP",
+      "mechanisms": [
+       "grasp"
+      ],
+      "with_task_content": false,
+      "cases": [
+       "book_on_desk"
+      ],
+      "seeds": {
+       "10": "book_on_desk",
+       "11": "book_on_desk",
+       "12": "book_on_desk",
+       "13": "book_on_desk",
+       "14": "book_on_desk",
+       "15": "book_on_desk",
+       "16": "book_on_desk",
+       "17": "book_on_desk",
+       "18": "book_on_desk",
+       "19": "book_on_desk"
+      },
+      "family_tier": "medium",
+      "action_failures": [],
+      "local_conditions": [
+       "grasp_blocked"
+      ]
+     },
      "m_ik_place": {
       "sub": "AL-IK",
       "mechanisms": [
@@ -99139,7 +99337,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_place_book_red"
-      ]
+      ],
+      "local_conditions": []
      },
      "m_ik_pick": {
       "sub": "AL-IK",
@@ -99165,7 +99364,8 @@
       "family_tier": "medium",
       "action_failures": [
        "ik_expose_book_red"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_action_ik_pick_and_place": {
       "sub": "AL-IK",
@@ -99192,7 +99392,8 @@
       "action_failures": [
        "ik_expose_book_red",
        "ik_place_book"
-      ]
+      ],
+      "local_conditions": []
      },
      "h_mixed_shelf_taken_ik": {
       "sub": "AL-IK",
@@ -99218,7 +99419,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_pick_mug_shelf"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_sr_two_hand_carry": {
       "sub": "AL-IK",
@@ -99244,7 +99446,8 @@
       "family_tier": "hard",
       "action_failures": [
        "ik_place_book_red"
-      ]
+      ],
+      "local_conditions": []
      },
      "x6_m_slip_book": {
       "sub": "AL-SLIP",
@@ -99270,35 +99473,11 @@
       "family_tier": "medium",
       "action_failures": [
        "slip_book_red"
-      ]
+      ],
+      "local_conditions": []
      }
     },
     "task": {
-     "book_on_desk": {
-      "sub": "TL-PRE",
-      "subs": [
-       "TL-PRE"
-      ],
-      "timing": "initial",
-      "cases": [
-       "book_on_desk"
-      ],
-      "seeds": {
-       "10": "book_on_desk",
-       "11": "book_on_desk",
-       "12": "book_on_desk",
-       "13": "book_on_desk",
-       "14": "book_on_desk",
-       "15": "book_on_desk",
-       "16": "book_on_desk",
-       "17": "book_on_desk",
-       "18": "book_on_desk",
-       "19": "book_on_desk"
-      },
-      "tier": "medium",
-      "family_tier": "medium",
-      "projected": false
-     },
      "shelf_taken": {
       "sub": "TL-DR",
       "subs": [
@@ -99465,11 +99644,11 @@
    "title": "Action-Level",
    "planner": "scripted",
    "profile": "benchmark",
-   "measures": "local recovery from transient action failures (retry, re-approach, expose / separate, re-grasp) with physical skills and limited observation",
+   "measures": "local recovery from transient action failures and blocked actions (retry, re-approach, expose / separate, re-grasp, then the same call) with physical skills and limited observation",
    "owner": "skill layer (scripted recovery routes); not scored for task planners",
    "subcategories": {
     "AL-IK": "IK / reach refusal: re-approach or change the base pose, then retry",
-    "AL-GRASP": "grasp miss: retry, or expose / separate the object first",
+    "AL-GRASP": "grasp miss or a blocked grasp: retry, or expose / separate the object first, then pick it",
     "AL-SLIP": "the object slips while carried: pick it up again and continue",
     "AL-PLACE": "placement miss: pick the object up and place it again",
     "AL-COMPOUND": "two or more of these mechanisms in one episode"
@@ -99488,7 +99667,7 @@
     "TL-CL": "cross-level recovery: an action failure no retry fixes, solved by changing object, destination, appliance or procedure",
     "TL-PP": "partial-progress preservation: an event undoes or blocks part of the work; repair only that part and keep the rest",
     "TL-SUB": "substitution (Medium): the preferred object, container, destination or tool is absent, taken or unsuitable; use one the goal allows",
-    "TL-PRE": "precondition / constraint (Medium): one enabling step or a constraint to respect (lid on, grasp blocked, door state, destination rule, capacity)",
+    "TL-PRE": "precondition / constraint (Medium): one enabling step or a constraint to respect (lid on, door state, destination rule, capacity)",
     "TL-SEARCH": "search (Medium): the object, tool or destination is out of view or in another room"
    }
   }

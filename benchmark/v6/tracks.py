@@ -1,7 +1,9 @@
 """Two evaluation tracks over the v6 families: Action-Level and Task-Level.
 
 * **Action-Level** (``action``): recovering from transient action failures (grasp miss, slip, placement
-  miss, IK refusal) with local repairs (retry, re-approach, expose / separate, re-grasp).  Physical skills,
+  miss, IK refusal) with local repairs (retry, re-approach, expose / separate, re-grasp), and from scene
+  conditions that block one action until a local repair of the same object (a flat book pushed over the edge,
+  a crowded block pulled apart: several policies, but the same call follows).  Physical skills,
   observation-limited profile, no GT state; the recovery is the scripted route of the variant (planner
   ``scripted``), not a task planner.  It measures the skill layer and is owned by the skill side.
 * **Task-Level** (``task``): replanning at the task level (DR, GD, SR, CL, PP, task-level alternatives).  GT
@@ -12,9 +14,9 @@
 
 A family goes to the tracks its cases call for:
 
-* transient action failures only -> Action-Level;
-* task-level content only (a core capability, a task-level alternative, a scene condition, a task-level
-  failure, a persistent action failure, or a search / stated-substitute adaptation) -> Task-Level;
+* transient action failures or local-repair conditions (``LOCAL_CONDITIONS``) only -> Action-Level;
+* task-level content only (a core capability, a task-level alternative, any other scene condition, a
+  task-level failure, a persistent action failure, or a search / stated-substitute adaptation) -> Task-Level;
 * both (the v5 Action / Mixed Hards, x6 families with an extra transient failure) -> both: the full variant
   in Action-Level, its **task projection** in Task-Level.  The projection drops the transient action failures
   and, in the route, each call they failed together with the local repair up to its successful retry; it is
@@ -42,8 +44,8 @@ TRACKS = {
         "title": "Action-Level",
         "planner": "scripted",
         "profile": "benchmark",
-        "measures": "local recovery from transient action failures (retry, re-approach, expose / separate, "
-                    "re-grasp) with physical skills and limited observation",
+        "measures": "local recovery from transient action failures and blocked actions (retry, re-approach, "
+                    "expose / separate, re-grasp, then the same call) with physical skills and limited observation",
         "owner": "skill layer (scripted recovery routes); not scored for task planners",
     },
     "task": {
@@ -62,7 +64,7 @@ META = ("note", "v5", "v6", "since", "decisions", "vary", "move")
 SUBCATEGORIES = {
     "action": {
         "AL-IK": "IK / reach refusal: re-approach or change the base pose, then retry",
-        "AL-GRASP": "grasp miss: retry, or expose / separate the object first",
+        "AL-GRASP": "grasp miss or a blocked grasp: retry, or expose / separate the object first, then pick it",
         "AL-SLIP": "the object slips while carried: pick it up again and continue",
         "AL-PLACE": "placement miss: pick the object up and place it again",
         "AL-COMPOUND": "two or more of these mechanisms in one episode",
@@ -80,7 +82,7 @@ SUBCATEGORIES = {
         "TL-SUB": "substitution (Medium): the preferred object, container, destination or tool is absent, "
                   "taken or unsuitable; use one the goal allows",
         "TL-PRE": "precondition / constraint (Medium): one enabling step or a constraint to respect (lid on, "
-                  "grasp blocked, door state, destination rule, capacity)",
+                  "door state, destination rule, capacity)",
         "TL-SEARCH": "search (Medium): the object, tool or destination is out of view or in another room",
     },
 }
@@ -89,24 +91,36 @@ SUB_COND = {
     "search_target": "TL-SEARCH", "search_tool": "TL-SEARCH",
     "object_absent": "TL-SUB", "container_choice": "TL-SUB", "cookware_choice": "TL-SUB",
     "destination_identity": "TL-SUB", "destination_occupied": "TL-SUB", "anchor_relocation": "TL-SUB",
-    "grasp_blocked": "TL-PRE", "state_precondition": "TL-PRE", "destination_constraint": "TL-PRE",
+    "state_precondition": "TL-PRE", "destination_constraint": "TL-PRE",
     "container_capacity": "TL-PRE",
 }
 SUB_FAIL = {"resource": "TL-SUB", "destination": "TL-SUB", "capacity": "TL-PRE", "dependency": "TL-PRE"}
 MEDIUM_ORDER = ("TL-SUB", "TL-PRE", "TL-SEARCH")
 ACTION_SUB = {"ik": "AL-IK", "grasp": "AL-GRASP", "slip": "AL-SLIP", "placement": "AL-PLACE"}
+# scene conditions that block one action until a local repair of the same object, after which the same call
+# succeeds (pick! -> expose / separate -> pick): several policies, one action, so Action-Level.  Value: the
+# mechanism.
+LOCAL_CONDITIONS = {"grasp_blocked": "grasp"}
 
 
 def transient(f):
     return f["kind"] in ACTION_KINDS and not f.get("persist")
 
 
+def local_conditions(v):
+    return [c for c in v.get("condition_types") or [] if c in LOCAL_CONDITIONS]
+
+
 def content(task, vid):
     """``(task_level, action_level)`` of one variant."""
     v, a = task["variants"][vid], task["v6_audit"][vid]
     fs = v.get("failures") or []
-    act = any(transient(f) for f in fs)
-    tl = bool(a["core"] or (a["evidence"].get("AF") or {}).get("level") == "task" or v.get("condition_types")
+    local = local_conditions(v)
+    other = [c for c in v.get("condition_types") or [] if c not in LOCAL_CONDITIONS]
+    act = any(transient(f) for f in fs) or bool(local)
+    if local and not (a["core"] or other or any(not transient(f) for f in fs)):
+        return False, True                          # only a local repair: its task-level alternative is the repair
+    tl = bool(a["core"] or (a["evidence"].get("AF") or {}).get("level") == "task" or other
               or any(not transient(f) for f in fs) or (a["tier_rule"] != "easy" and not act))
     return tl, act
 
@@ -129,7 +143,8 @@ def project_route(steps, drop):
 
 
 def action_sub(task, cases):
-    kinds = sorted({f["kind"] for v in cases for f in task["variants"][v].get("failures") or [] if transient(f)})
+    kinds = sorted({f["kind"] for v in cases for f in task["variants"][v].get("failures") or [] if transient(f)}
+                   | {LOCAL_CONDITIONS[c] for v in cases for c in local_conditions(task["variants"][v])})
     return ("AL-COMPOUND" if len(kinds) > 1 else ACTION_SUB[kinds[0]]), kinds
 
 
@@ -204,7 +219,8 @@ def apply_tracks(doc):
                     "sub": sub, "mechanisms": kinds, "with_task_content": tl,
                     "cases": info["cases"], "seeds": info["seeds"], "family_tier": info["tier"],
                     "action_failures": sorted({f["id"] for v in info["cases"]
-                                               for f in t["variants"][v].get("failures") or [] if transient(f)})}
+                                               for f in t["variants"][v].get("failures") or [] if transient(f)}),
+                    "local_conditions": sorted({c for v in info["cases"] for c in local_conditions(t["variants"][v])})}
             if not tl:
                 continue
             cmap, same = {}, {}

@@ -2,122 +2,12 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 10,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 11,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 12,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 13,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 14,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 15,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 16,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 17,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 18,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 19,
-"variant": "no_overhang",
-"route": "v5fix_no_overhang",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 10,
 "variant": "far_no_overhang",
 "route": "v5fix_far_no_overhang",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -128,7 +18,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -139,7 +29,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -150,7 +40,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -161,7 +51,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -172,7 +62,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -183,7 +73,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -194,7 +84,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -205,7 +95,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -216,7 +106,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_no_overhang"
 },
 {
@@ -882,122 +772,12 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 11,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 12,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 13,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 14,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 15,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 16,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 17,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 18,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 19,
-"variant": "crowded",
-"route": "v5fix_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 10,
 "variant": "far_crowded",
 "route": "v5fix_far_crowded",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1008,7 +788,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1019,7 +799,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1030,7 +810,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1041,7 +821,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1052,7 +832,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1063,7 +843,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1074,7 +854,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1085,7 +865,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -1096,7 +876,7 @@
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "eval_track": "task",
-"sub": "TL-PRE",
+"sub": "TL-SEARCH",
 "family": "far_crowded"
 },
 {
@@ -13422,116 +13202,6 @@
 {
 "task": "T17_hide_and_seek_block",
 "seed": 10,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 11,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 12,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 13,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 14,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 15,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 16,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 17,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 18,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 19,
-"variant": "block_crowded",
-"route": "v5fix_block_crowded",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "block_crowded"
-},
-{
-"task": "T17_hide_and_seek_block",
-"seed": 10,
 "variant": "lid_on_crowded",
 "route": "v5fix_lid_on_crowded",
 "planner": "scripted",
@@ -16278,116 +15948,6 @@
 "eval_track": "task",
 "sub": "TL-GD",
 "family": "x6_gd_bottle_put_away"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 10,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 11,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 12,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 13,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 14,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 15,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 16,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 17,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 18,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
-},
-{
-"task": "T14_shelve_the_book",
-"seed": 19,
-"variant": "book_on_desk",
-"route": "v5fix_book_on_desk",
-"planner": "scripted",
-"profile": "sticky_snap/gt",
-"eval_track": "task",
-"sub": "TL-PRE",
-"family": "book_on_desk"
 },
 {
 "task": "T14_shelve_the_book",

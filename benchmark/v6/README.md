@@ -46,20 +46,27 @@ Every family is placed by what its episodes test (`v6_tracks` per task in `tasks
 
 | track | tests | runs with | families | episodes | subcategories |
 |---|---|---|---|---|---|
-| **Action-Level** | local recovery from transient action failures | scripted recovery route, physical skills, `benchmark` profile (no GT); the skill layer's score, not a task planner's | 92 | 920 | AL-IK 56, AL-GRASP 22, AL-SLIP 5, AL-PLACE 1, AL-COMPOUND 8 |
-| **Task-Level** | goal-preserving task-level replanning | any task planner on GT skills (`sticky_snap/gt`); oracle route replayed for validation | 155 (Hard 92, Medium 63) | 1,550 | Hard: TL-DR 27, TL-GD 18, TL-SR 20, TL-CL 13, TL-PP 14; Medium: TL-SUB 31, TL-PRE 18, TL-SEARCH 14 |
+| **Action-Level** | local recovery from transient action failures and blocked actions (a local repair of the same object, then the same call) | scripted recovery route, physical skills, `benchmark` profile (no GT); the skill layer's score, not a task planner's | 99 | 990 | AL-IK 56, AL-GRASP 29, AL-SLIP 5, AL-PLACE 1, AL-COMPOUND 8 |
+| **Task-Level** | goal-preserving task-level replanning | any task planner on GT skills (`sticky_snap/gt`); oracle route replayed for validation | 151 (Hard 92, Medium 59) | 1,510 | Hard: TL-DR 27, TL-GD 18, TL-SR 20, TL-CL 13, TL-PP 14; Medium: TL-SUB 31, TL-PRE 12, TL-SEARCH 16 |
 | controls | the nominal plan works | both tracks | 38 Easy | | |
 
 A family with both kinds of content (the v5 Action / Mixed Hards, x6 families with an extra transient
-failure; 57) is in both: the full variant in Action-Level, its **task projection** (`<vid>__tl`: the transient
+failure, a blocked grasp next to a search or another precondition; 60) is in both: the full variant in Action-Level, its **task projection** (`<vid>__tl`: the transient
 action failures removed, and in the route each call they failed with its local repair up to the successful
 retry) in Task-Level, re-audited by the same checker. All 41 Hard projections stay Hard; 10 projections equal
 another family's configuration and are merged into it. Persistent action failures stay in Task-Level: no
 retry fixes them, so they are task-level facts (TL-CL).
 
+A blocked action whose repair works on the same object and ends in the same call is Action-Level even when it
+takes several policies: a flat book pushed over the edge (`expose`) and picked, a crowded block pulled apart
+(`separate`) and picked (`LOCAL_CONDITIONS` in `tracks.py`: `grasp_blocked`). Its LRR event is the blocked call
+the route expects to fail. A repair that changes another object's or a container's state (move an obstacle, take
+a lid off, open a door) stays Task-Level.
+
 Per-track metrics (`track_metrics.py`, definitions in its docstring):
 
-* **Action-Level**: ASR (route success), LRR (local recovery rate per injected failure, also per mechanism),
+* **Action-Level**: ASR (route success), LRR (local recovery rate per injected failure or blocked call, also
+  per mechanism),
   RC (repair calls), NSR (success of the calls no failure targeted), CDR (collateral drops), FIV (failure
   injection validity).
 * **Task-Level**: TSR (goal success, also per subcategory / tier / timing), RRSR (success after a failure or
