@@ -21,7 +21,7 @@ the tests). v6 adds **58 new families** on 17 of the 20 base tasks and splits al
   (`v6_families[fam]["seeds"]`). A v5 variant is a one-case family; 27 v5 families whose plan must find a
   resource get a **seed-extension** case (the resource in another place, the search and route change).
 * **Control**: the variant a family differs from in one factor (`v6_families[fam]["control"]`; for a v5 family
-  the task's first nominal variant). Used for GAP.
+  the task's first nominal variant).
 * **Status**: PHYSICS_VALIDATED (every manifest episode passed in simulation with the current hash and route),
   STATIC_VALIDATED (all static checks pass), DESIGN_COMPLETE (specified, static not passing).
 
@@ -45,18 +45,8 @@ its local repair up to the successful retry) in Task-Level. 10 projections equal
 configuration and are merged into it. A repair that changes another object's or a container's state (move an
 obstacle, take a lid off, open a door) is Task-Level.
 
-Per-track metrics (`track_metrics.py`, definitions in its docstring):
-
-* **Action-Level**: ASR (route success), LRR (local recovery rate per injected failure or blocked call, also
-  per mechanism), RC (repair calls), NSR (success of the calls no failure targeted), CDR (collateral drops),
-  FIV (failure injection validity).
-* **Task-Level**: TSR (goal success, also per timing), RRSR (success after a failure or event), PAR (success
-  when the planner avoided a declared failure), FRR (futile repeats of a call that fails for a persistent
-  reason), PE (plan efficiency), GAP (control TSR minus family TSR), stop reasons.
-
 Status: the split is static (`validate_v6.py` checks every family is in the tracks its content calls for and
-every projection on its seeds). Action-Level metrics were dry-run on the v5 physics grid
-(`EVALUATION_TRACKS.md`); Task-Level on a GT-skill smoke run.
+every projection on its seeds). Evaluation metrics are not defined yet.
 
 ## New failure-injection features (failure_injection/)
 
@@ -71,7 +61,6 @@ python benchmark/v6/define_tasks_v6.py     # tasks.json (catalog + tracks); --ch
 python benchmark/v6/validate_v6.py         # STATIC.json: per-episode static checks, v5 hashes, manifests
 python benchmark/v6/report_v6.py           # variant_cards.json, ROUTES.md, SKILL_FIX_LIST.md, PHYSICS_TODO.md
 python benchmark/v6/tracks.py              # TRACKS.md, batches/track_task_scripted.json, track_action_scripted.json
-python benchmark/v6/track_metrics.py --runs <run dir> --md benchmark/v6/EVALUATION_TRACKS.md
 python -m pytest -q benchmark/v6/tests failure_injection
 $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
     --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval

@@ -1,4 +1,4 @@
-"""v6 catalog: generation, v5 preservation, seed manifests, Action-Level / Task-Level tracks, track metrics."""
+"""v6 catalog: generation, v5 preservation, seed manifests, Action-Level / Task-Level tracks."""
 from __future__ import annotations
 
 import json
@@ -149,49 +149,3 @@ def test_track_batches_name_their_profile():
         assert jobs and all(j["eval_track"] == track and j["profile"] == profile for j in jobs)
         assert "track" not in jobs[0]          # --track is the skill track of run_episode
         assert len(jobs) == 10 * sum(len(t["v6_tracks"][track]) for t in TASKS.values())
-
-
-def _result(task, variant, calls, fi=None, profile="benchmark", **kw):
-    return {"task_id": task, "variant": variant, "seed": 10, "planner": "p", "profile": profile, "calls": calls,
-            "failure_injection": fi or {}, "dropped": [], **kw}
-
-
-def _call(i, skill, args, success, tick):
-    return {"index": i, "skill": skill, "args": args, "feedback": {"success": success}, "tick": tick}
-
-
-def test_action_metrics_count_a_recovered_failure():
-    from benchmark.v6.track_metrics import action_facts
-    t = TASKS["T07_heat_oatmeal"]
-    calls = [_call(0, "navigate", {"destination": "oatmeal"}, True, 10), _call(1, "pick", {"object": "oatmeal"}, False, 10),
-             _call(2, "approach", {"target": "oatmeal"}, True, 20), _call(3, "pick", {"object": "oatmeal"}, True, 30)]
-    fi = {"manifested": ["ik_pick_oatmeal"], "fired": ["ik_pick_oatmeal"],
-          "log": [{"id": "ik_pick_oatmeal", "kind": "ik", "verb": "pick", "tick": 10}]}
-    f = action_facts(_result("T07_heat_oatmeal", "m_ik_oatmeal", calls, fi, success=True), t)
-    assert f["valid"] and f["events"] == [{"kind": "ik", "recovered": True, "cost": 1}]
-    assert f["nominal_n"] == 3 and f["nominal_ok"] == 3
-
-
-def test_task_metrics_flag_a_futile_repeat():
-    from benchmark.v6.track_metrics import task_facts
-    t = TASKS["T07_heat_oatmeal"]
-    fam = "x6_pp_door_opened_after_heat"
-    x = t["v6_tracks"]["task"][fam]
-    heat = {"food": "oatmeal", "appliance": "kitchen_microwave", "temp_c": 40}
-    calls = [_call(0, "heat", heat, True, 10), _call(1, "close", {"articulated": "kitchen_microwave"}, True, 20),
-             _call(2, "heat", heat, True, 30)]
-    fi = {"fired": ["dependency_kitchen_microwave"],
-          "log": [{"id": "dependency_kitchen_microwave", "kind": "dependency", "verb": "heat", "tick": 10}]}
-    f = task_facts(_result("T07_heat_oatmeal", fam, calls, fi, profile="sticky_snap/gt", task_success=True), t, fam, x)
-    assert f["success"] and f["reactive"]
-    door = "x6_cl_microwave_door_stuck"
-    v = t["v6_tracks"]["task"][door]["cases"][0]
-    op = {"articulated": "kitchen_microwave"}
-    calls = [_call(0, "open", op, False, 10), _call(1, "open", op, False, 20), _call(2, "open", op, False, 30)]
-    fid = next(f["id"] for f in t["variants"][v]["failures"] if f.get("persist"))
-    fi = {"fired": [fid], "log": [{"id": fid, "kind": "grasp", "verb": "open", "tick": 10},
-                                  {"id": fid, "kind": "grasp", "verb": "open", "tick": 20},
-                                  {"id": fid, "kind": "grasp", "verb": "open", "tick": 30}]}
-    f = task_facts(_result("T07_heat_oatmeal", v, calls, fi, profile="sticky_snap/gt", task_success=False), t, door,
-                   t["v6_tracks"]["task"][door])
-    assert f["persistent_met"] and f["futile"] and not f["success"]
