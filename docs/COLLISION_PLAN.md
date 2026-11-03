@@ -32,9 +32,10 @@
 | 步骤 2 完成：`ea47359`、`348d5c8` | 整机底盘规划器（`base_planner.py`）、B 类删除、第一次全量回归 117/170 | 第 4 节步骤 2 实施记录 |
 | main：`91276e7`、`8cdd32d`、`b850b79`（合并 `4b0cf14`、`59cbbc4`、`b35e970`） | 底盘改成关节结构里的 x、y、yaw 关节，修掉开车时腰被拖到限位；yaw 目标保持在 PhysX 接受的范围内 | 第 4 节步骤 2 补丁 |
 | 步骤 2 补丁：`f15cb3d`、`e495350` | 惰性边检查（每 2 cm 检查一次）；下垂姿态改成按需绕行；去掉姿态权重 | 第 4 节步骤 2 补丁 |
+| main：`c583120`（合并 `67b377c`） | 录像只留跟随相机、15 fps：`Rig.step` 每帧 7.4 → 3.9 ms（以前渲染两个相机占 `step` 的约 70%） | 第 3 节 |
 | 已删除 | 原阶段 4 第一版：`Motion.sweep` / `Rig.drive_clear`、navigate 的手写备选路径、按方向挑选的 `_back_off` | 审计 8.4 |
 
-以上都在分支 `remove-handcoded-motion` 上；11-02 推送到 `59cbbc4`，之后的提交没有推送。
+以上都在分支 `remove-handcoded-motion` 上，11-02 推送到 `67b377c`。
 
 **已知还没解决的问题：**
 
@@ -57,7 +58,7 @@
 
 **每一步：** 单元测试、`build_skill_library --check`，加上这一步动到的 skill 对应的几个 episode。
 
-**全量（T、P 全部任务的所有 variation，种子 10、11，共 170 个 episode）：** 批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像）。只在这几个节点跑：步骤 2 完成后（已跑）、3a 完成后、3c 完成后（即步骤 3 完成）、步骤 5 完成后。下一次全量是底盘关节修复后的第一次，`disturbed` 和 `contacts` 以它为新的基线（11-02 那一轮里开车时的扰动大部分来自腰被拖弯）。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`。第一次的对照是 11-01 那一轮（`benchmark/runs/v3_sticky_gt_1101_2seeds/`，`a0a9574`，108/170；138/170 是 10-31 的数），它不含收起姿态修复。
+**全量（T、P 全部任务的所有 variation，种子 10、11，共 170 个 episode）：** 批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像）。只在这几个节点跑：步骤 2 完成后（已跑）、3a 完成后、3c 完成后（即步骤 3 完成）、步骤 5 完成后。下一次全量是底盘关节修复后的第一次，`disturbed` 和 `contacts` 以它为新的基线（11-02 那一轮里开车时的扰动大部分来自腰被拖弯）。它也是录像改成单相机、15 fps 之后的第一次，耗时不能直接和 11-02 比（单 episode 估计快 20–25%）。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`。第一次的对照是 11-01 那一轮（`benchmark/runs/v3_sticky_gt_1101_2seeds/`，`a0a9574`，108/170；138/170 是 10-31 的数），它不含收起姿态修复。
 
 **倒退怎么处理：** 不要求每一步都不倒退。每个新失败看日志和录像，归到下面三类之一：
 
@@ -247,7 +248,7 @@ shake、wave、倾倒、搅拌画圈这类路点本身就是任务动作（T 类
 
 | 子步 | 内容 | 回归 |
 |---|---|---|
-| **3a 搬运和放置** | 先刷新删除清单第 3 节（行号是 `a0a9574` 的，步骤 2 已经删了一部分，按函数名重新定位，标出已经不在的条目）。然后：入口加目标集合；`_carry_pose`（`carry_stand_up`、5 个变体、`carry_up` / `carry_in_via`、`_carry_bottom_z`、书本 edge +6 cm）；place 链；drop、hover；`NavigateToPlacePolicy` 的候选列表；wipe 选擦拭带 | 针对性检查 + 全量 |
+| **3a 搬运和放置** | ~~刷新删除清单第 3 节~~（2026-11-02 已刷新到 `67b377c`：106 条里仍在 94、已改 11、已删 1，另补了 3.10 原表没有的 13 条）。入口加目标集合；`_carry_pose`（`carry_stand_up`、最多 9 个变体、`carry_up` / `carry_in_via`、`_carry_bottom_z`、书本 edge +6 cm），连同经 `stow_load` 调它的 drop / hover / wipe / stir / pour；place 链（含 `place()` 里微波炉分支的死代码，直接删）；drop、hover；`NavigateToPlacePolicy` 的候选列表；wipe 选擦拭带和海绵朝向 | 针对性检查 + 全量 |
 | **3b 拿取、开关和持物动作** | pick（3.5）、open / close（3.6）、`held_vertical_move`、rotate、flip、stir、pour、wave、upright（3.7）；各处手传的 `step`、`steps_per_wp`、`smooth`（步骤 1 留下的）；push 改成推到够不着为止 | 针对性检查 |
 | **3c 场景特例和其余** | 微波炉（3.8）、`place_flat` / 书架（3.3，T14 书下垂）、S 类写死的常数（清单第 6 节）、`clear_microwave_door_sweep`；双手、sticky、contact、perceive 等（3.9） | 针对性检查 + 全量（即步骤 3 完成） |
 
