@@ -173,7 +173,8 @@ def test_every_family_is_placed_in_its_tracks():
         placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | merged
         assert placed == set(t["v6_families"]), tid
         for fam, x in tr["action"].items():
-            assert x["sub"] in SUBCATEGORIES["action"] and x["action_failures"], (tid, fam)
+            assert x["sub"] in SUBCATEGORIES["action"], (tid, fam)
+            assert x["action_failures"] or x["local_conditions"], (tid, fam)
         for fam, x in tr["task"].items():
             assert x["sub"] in SUBCATEGORIES["task"], (tid, fam)
             assert x["sub"] in x["subs"], (tid, fam)
@@ -182,6 +183,19 @@ def test_every_family_is_placed_in_its_tracks():
             assert (x["tier"] == "hard") == (x["sub"] in ("TL-DR", "TL-GD", "TL-SR", "TL-CL", "TL-PP")), (tid, fam)
         for fam in tr["controls"]:
             assert t["v6_families"][fam]["tier"] == "easy", (tid, fam)
+
+
+def test_a_local_grasp_repair_is_action_level():
+    """pick! -> expose / separate -> pick of the same object: several policies, one action."""
+    for tid, fam in (("T01_book_to_dining_table", "no_overhang"), ("T02_stack_blocks", "crowded"),
+                     ("T14_shelve_the_book", "book_on_desk"), ("T17_hide_and_seek_block", "block_crowded")):
+        tr = TASKS[tid]["v6_tracks"]
+        assert tr["action"][fam]["sub"] == "AL-GRASP" and tr["action"][fam]["local_conditions"] == ["grasp_blocked"]
+        assert fam not in tr["task"], (tid, fam)
+    # with task-level content next to it (a search, a lid), the family is in both tracks
+    for tid, fam in (("T01_book_to_dining_table", "far_no_overhang"), ("T17_hide_and_seek_block", "lid_on_crowded")):
+        tr = TASKS[tid]["v6_tracks"]
+        assert fam in tr["action"] and fam in tr["task"], (tid, fam)
 
 
 def test_projection_keeps_hard_and_drops_only_transient_failures():

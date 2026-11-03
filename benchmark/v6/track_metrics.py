@@ -12,8 +12,10 @@ Rates carry a Wilson 95 % interval; a metric with nothing eligible is N/A, never
 
 * ``ASR``   action-track success: the route ran to its end, every expected failure failed, every declared
             failure fired and manifested, the goal holds, nothing dropped (``result.success``).
-* ``LRR``   local recovery rate, per injected transient failure that fired: the same call (skill + arguments,
-            ``hint*`` ignored) succeeds later in the episode.  Also per mechanism (IK, grasp, slip, placement).
+* ``LRR``   local recovery rate, per injected transient failure that fired and per call a local-repair condition
+            blocks (``tracks.LOCAL_CONDITIONS``, e.g. the pick of a flat book before expose): the same call
+            (skill + arguments, ``hint*`` ignored) succeeds later in the episode.  Also per mechanism (IK, grasp,
+            slip, placement).
 * ``RC``    repair cost: calls between a recovered failure and its successful retry (mean).
 * ``NSR``   nominal skill reliability: success rate of the calls that no injected failure targeted and the
             route expects to succeed (physical execution quality, independent of the injected failures).
@@ -54,7 +56,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from benchmark.v6.tracks import transient  # noqa: E402
+from benchmark.v6.tracks import LOCAL_CONDITIONS, local_conditions, transient  # noqa: E402
 
 TASKS = ROOT / "benchmark/v6/tasks.json"
 
@@ -143,6 +145,14 @@ def action_facts(r, task):
         events.append({"kind": e["kind"], "recovered": bool(later),
                        "cost": (later[0]["index"] - c["index"] - 1) if later else None})
     hit = {c["index"] for e in fi.get("log", []) for c in [call_at(calls, e)] if c}
+    for cond in local_conditions(v):                # the blocked call the route expects to fail, then repairs
+        for c in calls:
+            if c["index"] in hit or c.get("expect") != "fail" or ok(c):
+                continue
+            later = [d for d in calls if d["index"] > c["index"] and _key(d) == _key(c) and ok(d)]
+            events.append({"kind": LOCAL_CONDITIONS[cond], "recovered": bool(later),
+                           "cost": (later[0]["index"] - c["index"] - 1) if later else None})
+            hit.add(c["index"])
     nominal = [c for c in calls if c["index"] not in hit and c.get("expect", "ok") != "fail"]
     return {"success": bool(r.get("success")), "valid": valid, "events": events,
             "nominal_ok": sum(ok(c) for c in nominal), "nominal_n": len(nominal), "dropped": bool(r.get("dropped"))}

@@ -81,8 +81,9 @@ def track_problems(t, contracts, assets, check_variant):
         if x["family_tier"] == "hard" and x["tier"] != "hard":
             out.append({"family": fam, "seed": None, "problem": f"task track tier {x['tier']} below Hard"})
     for fam, x in tr["action"].items():
-        if not x["action_failures"]:
-            out.append({"family": fam, "seed": None, "problem": "action track without a transient action failure"})
+        if not x["action_failures"] and not x["local_conditions"]:
+            out.append({"family": fam, "seed": None,
+                        "problem": "action track without a transient action failure or a local-repair condition"})
     placed = set(tr["task"]) | set(tr["action"]) | set(tr["controls"]) | \
         {m for x in tr["task"].values() for m in x.get("merged", [])}
     for fam in set(t["v6_families"]) - placed:
