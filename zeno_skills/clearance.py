@@ -55,16 +55,20 @@ class Allow:
     from_contact: bool = False       # touch / held_on: what the hand and its load touch at the start
     lifts: str | None = None         # from_contact: the object the closed hand lifts before it counts as
                                      # held (pick checks the lift first); it rides in the hand's collision model
+    to_contact: bool = False         # the straight move into the contact a motion ends in (Rig.move_to's
+                                     # approach): its hand may touch ``touch``, its load ``held_on``
     reason: str = ""
 
     def __post_init__(self):
-        if (not self.checked or self.fallback or self.from_contact or self.touch or self.held_on) and \
-                not self.reason:
+        if (not self.checked or self.fallback or self.from_contact or self.to_contact or self.touch or
+                self.held_on) and not self.reason:
             raise ValueError("an Allow that permits contact needs a reason")
         if self.fallback and not self.checked:
             raise ValueError("fallback is for a checked motion")
         if self.lifts is not None and not self.from_contact:
             raise ValueError("lifts is for a motion out of a contact")
+        if self.to_contact and (self.checked or self.from_contact):
+            raise ValueError("to_contact is the unchecked segment into a contact")
 
     def permits(self, link: str, entity: str) -> bool:
         """The monitor's test: link (e.g. right_gripper_link, or held:<object> for what a hand
@@ -105,6 +109,16 @@ FREE_ELSE_STRAIGHT = Allow(fallback=True, reason="free-space leg: collision-free
 LEAVE_CONTACT = Allow(checked=False, from_contact=True,
                       reason="contact segment out of the contact it starts in: the hand and its load may touch what "
                              "they touch at the start")
+
+
+def into_contact(touch=(), held_on=()) -> Allow:
+    """The contact segment a move_to with an approach ends with (a grasp closing in, a load set
+    down): straight along the approach, unchecked, as long as the collision model says the robot
+    touches the world there; the hand may touch ``touch`` (the object it grasps), its load
+    ``held_on`` (where it is set down).  The approach before it is planned with the fingers."""
+    return Allow(checked=False, to_contact=True, touch=tuple(touch), held_on=tuple(held_on),
+                 reason="contact segment into the contact the motion ends in: its length from the collision "
+                        "model, the approach before it planned")
 
 
 def lifting(name: str) -> Allow:

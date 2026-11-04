@@ -786,7 +786,12 @@ class Motion:
         arm = self.arms[kin.side]
         arm.prepare(kin, other_q, links)
         if collision:
-            allow = self._targets_allow([np.asarray(p, float) for p in targets])
+            # with a load the hand goes where the load goes, not to touch what is there: a tray it
+            # is put into stays an obstacle (T12); nor on the free part of an approach (coll_kw
+            # exempt_targets False): only its contact segment touches the target (T20 knocked
+            # the bottle it was reaching for)
+            allow = set() if self.held.get(kin.side) or not coll_kw.get("exempt_targets", True) else \
+                self._targets_allow([np.asarray(p, float) for p in targets])
             self.exempt = sorted(o.split(":", 1)[1] for o in allow)
             self._apply(kin.base_p[:2], allow=allow, side=kin.side)
         try:

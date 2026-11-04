@@ -83,6 +83,10 @@ class NavigateToPlacePolicy(AtomicPolicy):
     def execute(self, place, *, max_tries=6):
         rig = self.rig
         entity_kind(rig.ann, place)                     # KeyError for an unknown noun
+        if rig.held is not None:
+            # the carry posture the drive will use, before the stand-offs are checked in it
+            # (navigate re-takes it; a pick that ended short of it changed it there, P15)
+            skills._carry_pose(rig)
         poses = standoff_poses(rig, place)[:max_tries]
         if not poses:
             raise SkillFailure(f"navigate to {place}: no free stand-off pose")

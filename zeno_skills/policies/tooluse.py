@@ -17,11 +17,11 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from .. import skills
-from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
+from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, into_contact
 from ..evaluator import quat_R
 from ..planner import find_park, find_park_set
 from ..predicates import memory, objects_inside
-from ..rig import Dropped, SkillFailure
+from ..rig import FINGERS_KW, Dropped, SkillFailure
 
 
 def _park_diag():
@@ -117,8 +117,9 @@ class WipeSurfacePolicy(AtomicPolicy):
             for psi in (0.0, math.pi / 2, -math.pi / 2, math.pi):
                 Rk = Rotation.from_euler("z", psi).as_matrix() @ R
                 goals.append((a, b, Rk))
-                leg_sets.append([(_tcp_for_body(Rk, np.r_[a, z_body + 0.06], body_in_tcp), Rk),
-                                 (_tcp_for_body(Rk, np.r_[a, z_body], body_in_tcp), Rk)])
+                press = _tcp_for_body(Rk, np.r_[a, z_body], body_in_tcp)
+                # the press and the start of its straight approach down (fingers checked)
+                leg_sets.append([(press + np.array([0, 0, skills.PLACE_APPROACH]), Rk, FINGERS_KW), (press, Rk)])
                 cost.append(c_strip)
 
         def stroke_clear(k, x, y, yaw, q_last):
@@ -140,8 +141,11 @@ class WipeSurfacePolicy(AtomicPolicy):
                 base=[round(v, 3) for v in rig.base_pose()], strips=len(strips), goals=len(leg_sets), chosen=k)
         skills._goto_park(rig, park)
         rig.caption = f"WIPE {support} with {tool}"
-        rig.move_to(*legs[0], step=0.01, label="wipe_above", allow=FREE_ELSE_STRAIGHT, smooth=True)
-        rig.move_to(*legs[1], step=0.003, steps_per_wp=5, label="wipe_press", allow=LEGACY)
+        # one motion onto the strip: planned with the fingers, straight down at its end, the sponge
+        # pressed on (its contact segment by the collision model)
+        rig.move_to(*legs[1], step=0.003, steps_per_wp=5, label="wipe_press", smooth=True, q_hint=park[3][1],
+                    approach=(np.array([0.0, 0.0, -1.0]), skills.PLACE_APPROACH, park[3][0]),
+                    allow=into_contact(held_on=(support.split("/")[0],)))
         n_cells = max(1, int(round(length / 0.02)))
         covered = np.zeros(n_cells, bool)
         px, py, pyaw = rig.base_pose()

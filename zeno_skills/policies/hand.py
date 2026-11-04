@@ -106,11 +106,9 @@ class DropIntoPolicy(AtomicPolicy):
         rig = self.rig
         rig.grip(rig.held.get("pre_open", 0.04), 40)
         rig.held = None
-        t, R1 = rig.kin.tcp(rig.q_cmd)
-        try:
-            rig.move_to(t + np.array([0, 0, 0.06]), R1, step=0.01, label="drop_retreat", allow=LEAVE_CONTACT)
-        except SkillFailure as exc:
-            rig.log("drop_retreat_short", reason=str(exc))
+        # let go above the opening: up out of whatever the hand still touches (the collision model
+        # decides how far); the next skill plans on from there
+        rig.leave([0, 0, 1], "drop_retreat", LEAVE_CONTACT, step=0.01)
         rig.step(120)
         ok, why = rig.geo.inside(name, container, rig.state())
         rig.log("drop_result", obj=name, container=container, inside=bool(ok), detail=why)

@@ -41,19 +41,39 @@ def _ik_sequence(kin, targets, q0=None):
 
 
 def _chain(kin, targets, q):
+    """targets: (p, R) or (p, R, coll_kw): that target (and the line into it) checked with this
+    coll_kw instead of kin's (the fingers checked on a free approach, not on the contact after it)."""
     qs = []
-    for p, R in targets:
-        if q is None:
-            q, ok = kin.ik_global(np.asarray(p, float), R)
-            if not ok:
-                return None
-        else:
-            path, ok = kin.cart_path(q, np.asarray(p, float), R, 0.02)
-            if not ok:
-                return None
-            q = path[-1]
-        qs.append(q)
+    base = kin.coll_kw
+    try:
+        for t in targets:
+            p, R = t[0], t[1]
+            kin.coll_kw = t[2] if len(t) > 2 else base
+            if q is None:
+                q, ok = kin.ik_global(np.asarray(p, float), R)
+                if not ok:
+                    return None
+            else:
+                path, ok = kin.cart_path(q, np.asarray(p, float), R, 0.02)
+                if not ok:
+                    return None
+                q = path[-1]
+            qs.append(q)
+    finally:
+        kin.coll_kw = base
     return qs
+
+
+def _unfolds(kin, travel_q, q, target, carry):
+    """joint_reachable from the travel posture to the first target's solution q, checked with that
+    target's own coll_kw when it has one (the free approach of a grasp: the fingers too), as the
+    motion there will be."""
+    base = kin.coll_kw
+    kin.coll_kw = target[2] if len(target) > 2 else base
+    try:
+        return joint_reachable(kin, travel_q, q, carry=carry)
+    finally:
+        kin.coll_kw = base
 
 
 def _segment_free(kin, qa, qb):
@@ -129,7 +149,7 @@ def park_quality(kin, qs, targets):
     Q = np.array([np.asarray(q, float) for q in qs])
     margin = float(np.min(np.minimum(Q - kin.lo, kin.hi - Q)[:, 2:]))
     manip = min(manipulability(kin, q) for q in Q)
-    clear = float(np.min(kin.clearance(Q, [p for p, _ in targets])))
+    clear = float(np.min(kin.clearance(Q, [t[0] for t in targets])))
     return {"margin": margin, "manip": manip, "clear": clear}
 
 
@@ -189,7 +209,7 @@ def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.4
     """
     cands = []
     for k, targets in enumerate(target_sets):
-        c = np.mean([np.asarray(p, float)[:2] for p, _ in targets], axis=0)
+        c = np.mean([np.asarray(t[0], float)[:2] for t in targets], axis=0)
         for r in radii:
             for ang in np.radians(np.arange(0, 360, 15)):
                 x, y = c[0] + r * math.cos(ang), c[1] + r * math.sin(ang)
@@ -205,7 +225,7 @@ def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.4
         # the current base pose first: no need to move if it already works
         cands[:0] = sorted(((-1.0 + float(set_cost[k]) * 1e-3, float(near[0]), float(near[1]), float(near[2]), k)
                             for k in range(len(target_sets))), key=lambda t: t[0])
-    Ps = [np.array([np.asarray(p, float) for p, _ in targets]) for targets in target_sets]
+    Ps = [np.array([np.asarray(t[0], float) for t in targets]) for targets in target_sets]
 
     def reachable(x, y, yaw, P):
         """Cheap prefilter: right shoulder (base + R(0.09, -0.18)) within arm
@@ -265,7 +285,7 @@ def _find_park(kin, world, target_sets, set_cost, near=None, radii=np.arange(0.4
         if check is not None and not check(x, y, yaw, qs):
             LAST_PARK_DIAG["check"] = LAST_PARK_DIAG.get("check", 0) + 1
             continue
-        if travel_q is not None and cost >= 0 and not joint_reachable(kin, travel_q, qs[0], carry=carry):
+        if travel_q is not None and cost >= 0 and not _unfolds(kin, travel_q, qs[0], targets[0], carry):
             LAST_PARK_DIAG["unfold"] += 1
             continue                    # the arm cannot unfold to the first target here
         if (ride is not None and not ride(x, y, yaw, qs[-1])) or \
