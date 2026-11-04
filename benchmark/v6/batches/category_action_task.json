@@ -202,102 +202,102 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 11,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 12,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 13,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 14,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 15,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 16,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 17,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 18,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",
 "seed": 19,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_crowded"
+"v6_variant": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",

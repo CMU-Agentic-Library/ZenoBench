@@ -1566,74 +1566,6 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T02_stack_blocks/far_crowded": {
-  "variant": "far_crowded",
-  "category": "action_task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Tidy the toy blocks left on the kitchen island: stack one wooden block on top of the other.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": [
-    4.764,
-    0.699,
-    195.0
-   ],
-   "moved": [
-    "oatmeal",
-    "rolling_pin",
-    "wooden_block_a",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "start_elsewhere",
-    "crowded"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on_top_of",
-      "wooden_block_b",
-      "wooden_block_a"
-     ]
-    ],
-    [
-     [
-      "on_top_of",
-      "wooden_block_a",
-      "wooden_block_b"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "clear",
-  "oracle_route": "v5fix_far_crowded",
-  "challenge": "the robot starts at the wall cabinet facing away; block B is boxed in",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T02_stack_blocks/edge_base": {
   "variant": "edge_base",
   "category": "action",
@@ -1790,6 +1722,1080 @@
   "oracle_route": "v5_h_dynamic_base_moved_to_edge",
   "challenge": "after block B is picked, someone shoves block A to the island edge: stacking on it would topple, so B goes down in the open and A is stacked on B",
   "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/third_toy_elsewhere__duck": {
+  "variant": "third_toy_elsewhere",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   14,
+   16,
+   19
+  ],
+  "instruction": "Build the kid a three-level tower out of their toys on the kitchen island.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "rubber_duck"
+   ],
+   "removed": [
+    "floor_block"
+   ],
+   "conditions": [
+    "missing_piece",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "rubber_duck",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "rubber_duck",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_third_toy_elsewhere__duck",
+  "challenge": "only two toy blocks are in the house, both on the island; the block-sized sponge next to them is no toy; another of the kid's toys (the rubber duck or a toy block of another make) is in another room, out of view",
+  "rationale": "the tower needs three toys and there is no third block: do not stop at two and do not use the sponge; any toy of the kid's does as the third level, so find one in another room and put it on top (the duck has no flat top: it can only be the top level)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/third_toy_elsewhere__toy_block": {
+  "variant": "third_toy_elsewhere",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   15,
+   17,
+   18
+  ],
+  "instruction": "Build the kid a three-level tower out of their toys on the kitchen island.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "toy_block"
+   ],
+   "removed": [
+    "floor_block"
+   ],
+   "conditions": [
+    "missing_piece",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "toy_block",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "toy_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "toy_block"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "toy_block",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "toy_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "toy_block"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "toy_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "toy_block",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "toy_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "toy_block",
+      "kitchen_island/top"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_third_toy_elsewhere__toy_block",
+  "challenge": "only two toy blocks are in the house, both on the island; the block-sized sponge next to them is no toy; another of the kid's toys (the rubber duck or a toy block of another make) is in another room, out of view",
+  "rationale": "the tower needs three toys and there is no third block: do not stop at two and do not use the sponge; any toy of the kid's does as the third level, so find one in another room and put it on top (the duck has no flat top: it can only be the top level)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/tower_for_kid__counter": {
+  "variant": "tower_for_kid",
+  "category": "task",
+  "seeds": [
+   11,
+   12,
+   13,
+   14,
+   15
+  ],
+  "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "floor_block",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "item_out_of_view",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_a",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_a",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_b",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_b",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "floor_block",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
+     ],
+     [
+      "clear_of",
+      "floor_block",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "floor_block",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
+     ],
+     [
+      "clear_of",
+      "floor_block",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_tower_for_kid__counter",
+  "challenge": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
+  "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/tower_for_kid__study": {
+  "variant": "tower_for_kid",
+  "category": "task",
+  "seeds": [
+   10,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "floor_block",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "item_out_of_view",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_a",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_a",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_b",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_b",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "floor_block",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
+     ],
+     [
+      "clear_of",
+      "floor_block",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "floor_block",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
+     ],
+     [
+      "clear_of",
+      "floor_block",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_tower_for_kid__study",
+  "challenge": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
+  "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/block_put_away__in_4": {
+  "variant": "block_put_away",
+  "category": "action_task",
+  "seeds": [
+   10,
+   12,
+   13,
+   15,
+   18
+  ],
+  "instruction": "Stack the three toy blocks into one tower on the kitchen island. The third one was put away in one of the low kitchen cabinets; close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "floor_block",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "unstable_base",
+    "not_in_view"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "floor_block",
+     "kitchen_cabinet_4/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_block_in_cabinet",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
+     ],
+     [
+      "on",
+      "floor_block",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
+     ],
+     [
+      "on",
+      "floor_block",
+      "kitchen_island/top"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ]
+   ]
+  },
+  "control": "edge_base",
+  "oracle_route": "v6_block_put_away__in_4",
+  "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
+  "rationale": "at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the block is found, close each again, and put the block on top (Task)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/block_put_away__in_6": {
+  "variant": "block_put_away",
+  "category": "action_task",
+  "seeds": [
+   11,
+   14,
+   16,
+   17,
+   19
+  ],
+  "instruction": "Stack the three toy blocks into one tower on the kitchen island. The third one was put away in one of the low kitchen cabinets; close the cabinets again.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "floor_block",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "unstable_base",
+    "not_in_view"
+   ],
+   "initial_checks": [
+    [
+     "on",
+     "floor_block",
+     "kitchen_cabinet_6/inside_shelf"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "resource_block_in_cabinet",
+    "kind": "resource",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_a"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "floor_block",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
+     ],
+     [
+      "on",
+      "floor_block",
+      "kitchen_island/top"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "away_from_edge",
+      "floor_block",
+      0.05
+     ],
+     [
+      "on",
+      "floor_block",
+      "kitchen_island/top"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ]
+   ]
+  },
+  "control": "edge_base",
+  "oracle_route": "v6_block_put_away__in_6",
+  "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
+  "rationale": "at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the block is found, close each again, and put the block on top (Task)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/x6_gd_tower_with_event__tv_stand": {

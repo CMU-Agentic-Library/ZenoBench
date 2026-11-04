@@ -632,76 +632,6 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 11,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 12,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 13,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 14,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 15,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 16,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 17,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 18,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 19,
-"variant": "far_crowded",
-"route": "v5fix_far_crowded",
-"family": "far_crowded"
-},
-{
-"task": "T02_stack_blocks",
-"seed": 10,
 "variant": "edge_base",
 "route": "hard_stack_on_open_block",
 "family": "edge_base"
@@ -838,6 +768,216 @@
 "variant": "h_dynamic_base_moved_to_edge",
 "route": "v5_h_dynamic_base_moved_to_edge",
 "family": "h_dynamic_base_moved_to_edge"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"family": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"family": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "block_put_away__in_4",
+"route": "v6_block_put_away__in_4",
+"family": "block_put_away"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "block_put_away__in_6",
+"route": "v6_block_put_away__in_6",
+"family": "block_put_away"
 },
 {
 "task": "T02_stack_blocks",

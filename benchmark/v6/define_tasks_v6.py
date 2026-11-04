@@ -285,7 +285,98 @@ def T02(t):
                                                    S("stack", object=A, base=B)) \
             + recs(S("search", object=F, region=region), nav(F), pick(F), nav(B), S("approach", target=B),
                    S("stack", object=F, base=A))
+    # third_toy_elsewhere: a three-level tower of the kid's toys; two blocks are on the island, there is no third
+    # block in the house; another toy of the kid's (the rubber duck or a toy block of another make) is in another
+    # room and does as the third level.  The block-sized sponge next to the blocks is no toy.
+    sponge = {"kitchen_sponge": P("kitchen_island/top", 6.95, 1.85)}       # moved: never left out by the seed
+    def toy_tower(x):
+        """A, B and the substitute x; the duck has no flat top, so it can only be the top level."""
+        trio = (A, B) if x == "rubber_duck" else (A, B, x)
+        return {"any": [[["on_top_of", m, b], ["on_top_of", top, m], ["on", b, "kitchen_island/top"]]
+                        for b in trio for m in (A, B, x) for top in (A, B, x)
+                        if len({b, m, top}) == 3 and (x != "rubber_duck" or top == x)],
+                "all": [["hand_empty", "right"]]}
+    # tower_for_kid: the three blocks are spread over the house; the tower goes on the dining table, whose bin,
+    # cereal boxes and spoon stay where they are, the base 5 cm from the edge and clear of them
+    table_ware = ["wide_storage_bin", "clutter_cereal_a", "clutter_cereal_b", "spoon_target_table"]
+    table_tower = {"any": [[["on_top_of", m, b], ["on_top_of", top, m], ["on", b, DINING],
+                            ["away_from_edge", b, 0.05], ["clear_of", b, table_ware, 0.05]]
+                           for b in (A, B, F) for m in (A, B, F) for top in (A, B, F) if len({b, m, top}) == 3],
+                   "all": [*[["near_start", n, 0.03] for n in table_ware], ["hand_empty", "right"]]}
+    base_xy = [3.70, 6.60]                       # 14 cm in from the east edge, clear of the bin and the cereal boxes
+    def table_route(second, r2, third, r3):
+        """Block A from the island as the base on the dining table, then the other two in turn."""
+        return [look("kitchen_island/top"), nav(A), pick(A), nav(DINING), look(DINING), place(A, DINING, base_xy),
+                S("search", object=second, region=r2), nav(second), pick(second), nav(A), S("approach", target=A),
+                S("stack", object=second, base=A),
+                S("search", object=third, region=r3), nav(third), pick(third), nav(A), S("approach", target=A),
+                S("stack", object=third, base=second)]
+    TV, COUNTER, DESK = P("tv_stand_2/top", 7.6, 0.36), P("kitchen_counter_2/top", -0.1, 7.3), P("desk_1/top", -0.7, -6.0)
+    # block_put_away: as edge_base (A at the edge, B in the open), the third block put away in a closed low cabinet
+    in_cab = {"kitchen_cabinet_4": {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 0.0},
+              "kitchen_cabinet_6": {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.5, 0.36], "yaw_deg": 0.0}}
+    put_away_goal = copy.deepcopy(tower_goal)
+    put_away_goal["all"] += [["is_closed", "kitchen_cabinet_4"], ["is_closed", "kitchen_cabinet_6"]]
+    edge_two = OR(t, "edge_base")                # look, nav A, pick A, nav B, approach B, stack A on B
     return {
+        "third_toy_elsewhere": dict(
+            base="clear", control="clear", conditions=["missing_piece", "not_in_view"],
+            instruction="Build the kid a three-level tower out of their toys on the kitchen island.",
+            instruction_zh="用孩子的玩具在岛台上搭一座三层的小塔。",
+            remove=[F], move=sponge,
+            factor="which toy stands in for the third block and where (seed: the rubber duck on the dining table or "
+                   "a toy block on the kitchen counter)",
+            challenge="only two toy blocks are in the house, both on the island; the block-sized sponge next to them "
+                      "is no toy; another of the kid's toys (the rubber duck or a toy block of another make) is in "
+                      "another room, out of view",
+            rationale="the tower needs three toys and there is no third block: do not stop at two and do not use the "
+                      "sponge; any toy of the kid's does as the third level, so find one in another room and put it "
+                      "on top (the duck has no flat top: it can only be the top level)",
+            cases={c: dict(add={x: {"asset": x, "support": sup, "xy": list(xy), "yaw_deg": 0.0}},
+                           goal=toy_tower(x), watch=[A, B, x, "kitchen_sponge"],
+                           route=OR(t, "clear") + recs(S("search", object=x, region=region), nav(x), pick(x), nav(A),
+                                                       S("approach", target=A), S("stack", object=x, base=B)))
+                   for c, x, sup, xy, region in (("duck", "rubber_duck", "dining_table_2/top", (3.7, 6.3),
+                                                  "dining_room_0_1"),
+                                                 ("toy_block", "toy_block", "kitchen_counter_2/top", (-0.1, 7.3),
+                                                  "kitchen_0_1"))}),
+        "tower_for_kid": dict(
+            base="clear", control="clear", conditions=["item_out_of_view", "spot_quality"],
+            instruction="The kid wants to look at a block tower on the dining table. Find all three toy blocks in the "
+                        "house and stack them into one tower on the dining table.",
+            instruction_zh="孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+            goal=table_tower, watch=[A, B, F, *table_ware], keep_design=[DINING],
+            factor="where the other two blocks are (seed: the TV stand and the kitchen counter, or the TV stand and "
+                   "the study desk)",
+            challenge="the three blocks are spread over the house: one on the island, one on the TV stand, one on a "
+                      "table in another room (out of view); the dining table holds the storage bin, two cereal "
+                      "boxes and a spoon",
+            rationale="find all three (one is out of view), carry them one at a time with one hand and order the "
+                      "trips; the first block is the base: put it on a free spot of the dining table away from the "
+                      "edge and clear of the bin and the boxes, then stack the other two on it; the table's things "
+                      "stay where they are",
+            cases={"counter": dict(move={A: P("kitchen_island/top", 7.22, 1.625), B: TV, F: COUNTER},
+                                   route=table_route(B, "living_room_0_0", F, "kitchen_0_1")),
+                   "study": dict(move={A: P("kitchen_island/top", 7.22, 1.625), F: TV, B: DESK},
+                                 route=table_route(F, "living_room_0_0", B, "living_room_0_1"))}),
+        "block_put_away": dict(
+            base="edge_base", control="edge_base", conditions=["unstable_base", "not_in_view"],
+            instruction="Stack the three toy blocks into one tower on the kitchen island. The third one was put "
+                        "away in one of the low kitchen cabinets; close the cabinets again.",
+            instruction_zh="把三块积木在岛台上叠成一座塔。第三块被收进了厨房的一个矮柜里，用完把柜门关好。",
+            goal=put_away_goal, watch=[A, B, F], remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
+            factor="which closed low cabinet holds the third block (seed: cabinet 4 or 6)",
+            challenge="two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the "
+                      "third block was put away in one of the two closed low kitchen cabinets",
+            rationale="at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the "
+                      "block is found, close each again, and put the block on top (Task)",
+            cases={f"in_{cab[-1]}": dict(
+                move={F: in_cab[cab]},
+                failures=[f_initial("resource", [["on", F, f"{cab}/inside_shelf"]], fid="resource_block_in_cabinet")],
+                route=edge_two + open_explore(other) + [S("close", articulated=other)] + open_explore(cab)
+                + [nav(F), pick(F), S("retreat", obstacle=cab, distance_m=0.3), S("close", articulated=cab),
+                   nav(A), S("approach", target=A), S("stack", object=F, base=A)])
+                for cab, other in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4"))}),
         "x6_gd_tower_with_event": dict(
             base="edge_base", control="edge_base",
             move={F: P("kitchen_island/top", 6.95, 1.85)},
@@ -978,11 +1069,18 @@ REPLACED = {
     ("T03_utensils_one_container", "three_containers"): "replaced by three_containers_bedroom (the bins in the bedroom)",
     ("T04_cup_or_mug_to_cabinet", "h_dynamic_cup_taken"): "replaced by cup_taken_mug_in_living_room",
     ("T09_tomato_soup", "cookware_choice"): "replaced by pot_in_dining_room (the pot in the dining room)",
+    ("T02_stack_blocks", "far_crowded"): "replaced by tower_for_kid (the search was one turn to the island; now "
+                                         "three blocks are spread over the house and the tower goes on the dining "
+                                         "table)",
     ("T05_pen_or_pencil_to_desk", "no_pen"): "removed: no_pen_pencil_away is the same choice over a longer horizon",
 }
 
 
 NEW_CONDITIONS = {
+    "missing_piece": {"type": "object_absent", "decision": "alternative",
+                      "meaning": "the goal needs one more piece than the house has (no third block); another item of "
+                                 "the kind the instruction names (another toy) stands in, in another room; a look-alike "
+                                 "of another kind nearby (the sponge) does not count"},
     "destination_unnamed": {"type": "destination_identity", "decision": "explore",
                             "meaning": "several places fit the instruction's words; which one is meant (the table "
                                        "the guests eat at) shows only on looking, possibly in another room"},

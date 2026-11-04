@@ -100,6 +100,206 @@
 "v6_variant": "table_seats"
 },
 {
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "third_toy_elsewhere__toy_block",
+"route": "v6_third_toy_elsewhere__toy_block",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "third_toy_elsewhere__duck",
+"route": "v6_third_toy_elsewhere__duck",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "third_toy_elsewhere"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "tower_for_kid__counter",
+"route": "v6_tower_for_kid__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "tower_for_kid__study",
+"route": "v6_tower_for_kid__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid"
+},
+{
 "task": "T03_utensils_one_container",
 "seed": 10,
 "variant": "far_small_and_large",

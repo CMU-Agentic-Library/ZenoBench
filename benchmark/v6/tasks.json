@@ -131,6 +131,11 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "missing_piece": {
+   "type": "object_absent",
+   "decision": "alternative",
+   "meaning": "the goal needs one more piece than the house has (no third block); another item of the kind the instruction names (another toy) stands in, in another room; a look-alike of another kind nearby (the sponge) does not count"
+  },
   "destination_unnamed": {
    "type": "destination_identity",
    "decision": "explore",
@@ -4535,138 +4540,6 @@
       }
      }
     },
-    "far_crowded": {
-     "note": "the robot starts at the wall cabinet facing away; block B is boxed in",
-     "conditions": [
-      "start_elsewhere",
-      "crowded"
-     ],
-     "start": [
-      4.764,
-      0.699,
-      195.0
-     ],
-     "move": {
-      "oatmeal": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.0,
-        1.717
-       ],
-       "yaw_deg": 0.0
-      },
-      "rolling_pin": {
-       "support": "kitchen_island/top",
-       "xy": [
-        6.864,
-        1.59
-       ],
-       "yaw_deg": 0
-      },
-      "wooden_block_a": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.22,
-        1.625
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.07,
-        1.625
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "since": "v2",
-     "condition_types": [
-      "search_target",
-      "grasp_blocked"
-     ],
-     "decisions": [
-      "explore",
-      "fallback"
-     ],
-     "difficulty": "medium",
-     "v3_difficulty": "hard",
-     "v5": {
-      "tier": "medium",
-      "challenge": "the robot starts at the wall cabinet facing away; block B is boxed in",
-      "derived_from": "far_crowded",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "oatmeal",
-         "rolling_pin",
-         "wooden_block_a",
-         "wooden_block_b"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.754,
-         1.5669,
-         7.245,
-         1.8049
-        ],
-        "dx": [
-         -0.2,
-         1.0
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.6207,
-         1.631,
-         7.6789,
-         1.6912
-        ],
-        [
-         7.8089,
-         1.7789,
-         7.9889,
-         1.899
-        ],
-        [
-         8.1464,
-         1.6119,
-         8.213,
-         1.678
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [
-        "wooden_block_a"
-       ],
-       "look": []
-      }
-     }
-    },
     "edge_base": {
      "note": "block A sits at the island's front edge (5 mm over it), block B in the open",
      "difficulty": "hard",
@@ -4880,6 +4753,1986 @@
      "layout": {
       "clusters": [],
       "static": {},
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "third_toy_elsewhere__duck": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "kitchen_sponge": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.95,
+        1.85
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "floor_block"
+     ],
+     "conditions": [
+      "missing_piece",
+      "not_in_view"
+     ],
+     "instruction": "Build the kid a three-level tower out of their toys on the kitchen island.",
+     "instruction_zh": "用孩子的玩具在岛台上搭一座三层的小塔。",
+     "add": {
+      "rubber_duck": {
+       "asset": "rubber_duck",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "any": [
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "on_top_of",
+         "rubber_duck",
+         "wooden_block_b"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "rubber_duck",
+         "wooden_block_a"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "rubber_duck",
+      "kitchen_sponge"
+     ],
+     "since": "v6",
+     "note": "only two toy blocks are in the house, both on the island; the block-sized sponge next to them is no toy; another of the kid's toys (the rubber duck or a toy block of another make) is in another room, out of view",
+     "v6": {
+      "family": "third_toy_elsewhere",
+      "case": "duck",
+      "challenge": "only two toy blocks are in the house, both on the island; the block-sized sponge next to them is no toy; another of the kid's toys (the rubber duck or a toy block of another make) is in another room, out of view",
+      "rationale": "the tower needs three toys and there is no third block: do not stop at two and do not use the sponge; any toy of the kid's does as the third level, so find one in another room and put it on top (the duck has no flat top: it can only be the top level)",
+      "control": "clear",
+      "contrast": null,
+      "factor": "which toy stands in for the third block and where (seed: the rubber duck on the dining table or a toy block on the kitchen counter)",
+      "derived_from": "clear"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "rubber_duck"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.655,
+         6.2671,
+         3.745,
+         6.3329
+        ],
+        "dx": [
+         -0.05,
+         0.08
+        ],
+        "dy": [
+         -0.76,
+         1.61
+        ]
+       },
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.905,
+         1.82,
+         6.995,
+         1.88
+        ],
+        "dx": [
+         -0.35,
+         1.25
+        ],
+        "dy": [
+         -0.04,
+         0.09
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.195,
+         1.6,
+         7.245,
+         1.65
+        ],
+        "dx": [
+         -0.64,
+         1.0
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.045,
+         1.6,
+         7.095,
+         1.65
+        ],
+        "dx": [
+         -0.49,
+         1.15
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ],
+        [
+         2.835,
+         6.405,
+         3.135,
+         6.795
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "rubber_duck"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "third_toy_elsewhere__toy_block": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.07,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "kitchen_sponge": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.95,
+        1.85
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "remove": [
+      "floor_block"
+     ],
+     "conditions": [
+      "missing_piece",
+      "not_in_view"
+     ],
+     "instruction": "Build the kid a three-level tower out of their toys on the kitchen island.",
+     "instruction_zh": "用孩子的玩具在岛台上搭一座三层的小塔。",
+     "add": {
+      "toy_block": {
+       "asset": "toy_block",
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.1,
+        7.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "any": [
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "on_top_of",
+         "toy_block",
+         "wooden_block_b"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "toy_block",
+         "wooden_block_a"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "toy_block"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "toy_block",
+         "wooden_block_a"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "toy_block",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "toy_block"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "toy_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "on",
+         "toy_block",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "toy_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on",
+         "toy_block",
+         "kitchen_island/top"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "toy_block",
+      "kitchen_sponge"
+     ],
+     "since": "v6",
+     "note": "only two toy blocks are in the house, both on the island; the block-sized sponge next to them is no toy; another of the kid's toys (the rubber duck or a toy block of another make) is in another room, out of view",
+     "v6": {
+      "family": "third_toy_elsewhere",
+      "case": "toy_block",
+      "challenge": "only two toy blocks are in the house, both on the island; the block-sized sponge next to them is no toy; another of the kid's toys (the rubber duck or a toy block of another make) is in another room, out of view",
+      "rationale": "the tower needs three toys and there is no third block: do not stop at two and do not use the sponge; any toy of the kid's does as the third level, so find one in another room and put it on top (the duck has no flat top: it can only be the top level)",
+      "control": "clear",
+      "contrast": null,
+      "factor": "which toy stands in for the third block and where (seed: the rubber duck on the dining table or a toy block on the kitchen counter)",
+      "derived_from": "clear"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "toy_block"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.1214,
+         7.2751,
+         -0.0786,
+         7.3249
+        ],
+        "dx": [
+         -0.39,
+         0.31
+        ],
+        "dy": [
+         -0.29,
+         0.0
+        ]
+       },
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.905,
+         1.82,
+         6.995,
+         1.88
+        ],
+        "dx": [
+         -0.35,
+         1.25
+        ],
+        "dy": [
+         -0.04,
+         0.09
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.195,
+         1.6,
+         7.245,
+         1.65
+        ],
+        "dx": [
+         -0.64,
+         1.0
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.045,
+         1.6,
+         7.095,
+         1.65
+        ],
+        "dx": [
+         -0.49,
+         1.15
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "toy_block"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "tower_for_kid__counter": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "floor_block": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.1,
+        7.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "item_out_of_view",
+      "spot_quality"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_b"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.05
+        ],
+        [
+         "clear_of",
+         "wooden_block_a",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "floor_block"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.05
+        ],
+        [
+         "clear_of",
+         "wooden_block_a",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "clear_of",
+         "wooden_block_b",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "clear_of",
+         "wooden_block_b",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "on",
+         "floor_block",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "clear_of",
+         "floor_block",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on",
+         "floor_block",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "clear_of",
+         "floor_block",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "near_start",
+        "wide_storage_bin",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
+     "instruction_zh": "孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "floor_block",
+      "wide_storage_bin",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
+     "v6": {
+      "family": "tower_for_kid",
+      "case": "counter",
+      "challenge": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
+      "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
+      "control": "clear",
+      "contrast": null,
+      "factor": "where the other two blocks are (seed: the TV stand and the kitchen counter, or the TV stand and the study desk)",
+      "derived_from": "clear"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "floor_block"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.125,
+         7.275,
+         -0.075,
+         7.325
+        ],
+        "dx": [
+         -0.38,
+         0.31
+        ],
+        "dy": [
+         -0.29,
+         0.0
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.195,
+         1.6,
+         7.245,
+         1.65
+        ],
+        "dx": [
+         -0.64,
+         1.0
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.575,
+         0.335,
+         7.625,
+         0.385
+        ],
+        "dx": [
+         -0.92,
+         0.74
+        ],
+        "dy": [
+         -0.11,
+         0.02
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "floor_block",
+        "wooden_block_b"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "tower_for_kid__study": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.22,
+        1.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -6.0
+       ],
+       "yaw_deg": 0.0
+      },
+      "floor_block": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "item_out_of_view",
+      "spot_quality"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_b"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.05
+        ],
+        [
+         "clear_of",
+         "wooden_block_a",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "floor_block"
+        ],
+        [
+         "on",
+         "wooden_block_a",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_a",
+         0.05
+        ],
+        [
+         "clear_of",
+         "wooden_block_a",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "clear_of",
+         "wooden_block_b",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "clear_of",
+         "wooden_block_b",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "on",
+         "floor_block",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "clear_of",
+         "floor_block",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on",
+         "floor_block",
+         "dining_table_2/top"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "clear_of",
+         "floor_block",
+         [
+          "wide_storage_bin",
+          "clutter_cereal_a",
+          "clutter_cereal_b",
+          "spoon_target_table"
+         ],
+         0.05
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "near_start",
+        "wide_storage_bin",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "The kid wants to look at a block tower on the dining table. Find all three toy blocks in the house and stack them into one tower on the dining table.",
+     "instruction_zh": "孩子想在餐桌上看积木塔。把家里三块积木都找到，在餐桌上叠成一座塔。",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "floor_block",
+      "wide_storage_bin",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
+     "v6": {
+      "family": "tower_for_kid",
+      "case": "study",
+      "challenge": "the three blocks are spread over the house: one on the island, one on the TV stand, one on a table in another room (out of view); the dining table holds the storage bin, two cereal boxes and a spoon",
+      "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
+      "control": "clear",
+      "contrast": null,
+      "factor": "where the other two blocks are (seed: the TV stand and the kitchen counter, or the TV stand and the study desk)",
+      "derived_from": "clear"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.725,
+         -6.025,
+         -0.675,
+         -5.975
+        ],
+        "dx": [
+         -0.67,
+         0.63
+        ],
+        "dy": [
+         0.0,
+         0.25
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.195,
+         1.6,
+         7.245,
+         1.65
+        ],
+        "dx": [
+         -0.64,
+         1.0
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       },
+       {
+        "names": [
+         "floor_block"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.575,
+         0.335,
+         7.625,
+         0.385
+        ],
+        "dx": [
+         -0.92,
+         0.74
+        ],
+        "dy": [
+         -0.11,
+         0.02
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "floor_block",
+        "wooden_block_b"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "block_put_away__in_4": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.535
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.66
+       ],
+       "yaw_deg": 0.0
+      },
+      "floor_block": {
+       "support": "kitchen_cabinet_4/inside_shelf",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "unstable_base",
+      "not_in_view"
+     ],
+     "remove": [
+      "bowl_inside_kitchen_cabinet",
+      "plate_inside_kitchen_cabinet"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "on",
+         "floor_block",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "on",
+         "floor_block",
+         "kitchen_island/top"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ]
+      ]
+     },
+     "instruction": "Stack the three toy blocks into one tower on the kitchen island. The third one was put away in one of the low kitchen cabinets; close the cabinets again.",
+     "instruction_zh": "把三块积木在岛台上叠成一座塔。第三块被收进了厨房的一个矮柜里，用完把柜门关好。",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     "failures": [
+      {
+       "id": "resource_block_in_cabinet",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "floor_block",
+         "kitchen_cabinet_4/inside_shelf"
+        ]
+       ]
+      }
+     ],
+     "since": "v6",
+     "note": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
+     "v6": {
+      "family": "block_put_away",
+      "case": "in_4",
+      "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
+      "rationale": "at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the block is found, close each again, and put the block on top (Task)",
+      "control": "edge_base",
+      "contrast": null,
+      "factor": "which closed low cabinet holds the third block (seed: cabinet 4 or 6)",
+      "derived_from": "edge_base"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.275,
+         1.51,
+         7.325,
+         1.56
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.975,
+         1.635,
+         7.025,
+         1.685
+        ],
+        "dx": [
+         -0.42,
+         1.22
+        ],
+        "dy": [
+         -0.11,
+         0.02
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "block_put_away__in_6": {
+     "move": {
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.535
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.0,
+        1.66
+       ],
+       "yaw_deg": 0.0
+      },
+      "floor_block": {
+       "support": "kitchen_cabinet_6/inside_shelf",
+       "xy": [
+        3.5,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "unstable_base",
+      "not_in_view"
+     ],
+     "remove": [
+      "bowl_inside_kitchen_cabinet",
+      "plate_inside_kitchen_cabinet"
+     ],
+     "goal": {
+      "any": [
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "floor_block",
+         "wooden_block_b"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "away_from_edge",
+         "wooden_block_b",
+         0.05
+        ],
+        [
+         "on",
+         "wooden_block_b",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "wooden_block_a"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "on",
+         "floor_block",
+         "kitchen_island/top"
+        ]
+       ],
+       [
+        [
+         "on_top_of",
+         "wooden_block_b",
+         "floor_block"
+        ],
+        [
+         "on_top_of",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        [
+         "away_from_edge",
+         "floor_block",
+         0.05
+        ],
+        [
+         "on",
+         "floor_block",
+         "kitchen_island/top"
+        ]
+       ]
+      ],
+      "all": [
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_4"
+       ],
+       [
+        "is_closed",
+        "kitchen_cabinet_6"
+       ]
+      ]
+     },
+     "instruction": "Stack the three toy blocks into one tower on the kitchen island. The third one was put away in one of the low kitchen cabinets; close the cabinets again.",
+     "instruction_zh": "把三块积木在岛台上叠成一座塔。第三块被收进了厨房的一个矮柜里，用完把柜门关好。",
+     "watch": [
+      "wooden_block_a",
+      "wooden_block_b",
+      "floor_block"
+     ],
+     "failures": [
+      {
+       "id": "resource_block_in_cabinet",
+       "kind": "resource",
+       "when": "initial",
+       "check": [
+        [
+         "on",
+         "floor_block",
+         "kitchen_cabinet_6/inside_shelf"
+        ]
+       ]
+      }
+     ],
+     "since": "v6",
+     "note": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
+     "v6": {
+      "family": "block_put_away",
+      "case": "in_6",
+      "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
+      "rationale": "at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the block is found, close each again, and put the block on top (Task)",
+      "control": "edge_base",
+      "contrast": null,
+      "factor": "which closed low cabinet holds the third block (seed: cabinet 4 or 6)",
+      "derived_from": "edge_base"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.275,
+         1.51,
+         7.325,
+         1.56
+        ],
+        "dx": [
+         -0.72,
+         0.92
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.975,
+         1.635,
+         7.025,
+         1.685
+        ],
+        "dx": [
+         -0.42,
+         1.22
+        ],
+        "dy": [
+         -0.11,
+         0.02
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -5467,9 +7320,14 @@
    "oracle": {
     "clear": "nominal",
     "crowded": "v5fix_crowded",
-    "far_crowded": "v5fix_far_crowded",
     "edge_base": "hard_stack_on_open_block",
     "h_dynamic_base_moved_to_edge": "v5_h_dynamic_base_moved_to_edge",
+    "third_toy_elsewhere__duck": "v6_third_toy_elsewhere__duck",
+    "third_toy_elsewhere__toy_block": "v6_third_toy_elsewhere__toy_block",
+    "tower_for_kid__counter": "v6_tower_for_kid__counter",
+    "tower_for_kid__study": "v6_tower_for_kid__study",
+    "block_put_away__in_4": "v6_block_put_away__in_4",
+    "block_put_away__in_6": "v6_block_put_away__in_6",
     "x6_gd_tower_with_event__tv_stand": "v6_x6_gd_tower_with_event__tv_stand",
     "x6_gd_tower_with_event__dining": "v6_x6_gd_tower_with_event__dining"
    },
@@ -5727,27 +7585,8 @@
      "since": "v2",
      "fixes": "fallback_separate"
     },
-    "v5fix_far_crowded": {
-     "kind": "v5_route_fix",
-     "variants": [
-      "far_crowded"
-     ],
-     "recovery": "search the blocks -> Pick fails -> Separate -> Pick",
+    "v6_third_toy_elsewhere__duck": {
      "steps": [
-      {
-       "skill": "search",
-       "args": {
-        "object": "wooden_block_a",
-        "region": "living_room_0_0"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
       {
        "skill": "look",
        "args": {
@@ -5764,36 +7603,224 @@
        "skill": "pick",
        "args": {
         "object": "wooden_block_b"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "separate",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "wooden_block_b"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "role": "retry_after_recovery"
+       }
       },
       {
        "skill": "rotate",
        "args": {
         "object": "wooden_block_b",
         "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "rubber_duck",
+        "region": "dining_room_0_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "rubber_duck",
+        "base": "wooden_block_b"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "third_toy_elsewhere__duck"
+    },
+    "v6_third_toy_elsewhere__toy_block": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "rotate",
+       "args": {
+        "object": "wooden_block_b",
+        "degrees": 30
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "toy_block",
+        "region": "kitchen_0_1"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_block"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "toy_block"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "toy_block",
+        "base": "wooden_block_b"
+       },
+       "role": "recover"
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "third_toy_elsewhere__toy_block"
+    },
+    "v6_tower_for_kid__counter": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.7,
+         6.6
+        ]
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_b",
+        "region": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
        }
       },
       {
@@ -5814,10 +7841,465 @@
         "object": "wooden_block_b",
         "base": "wooden_block_a"
        }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "floor_block",
+        "region": "kitchen_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "floor_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "floor_block"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "floor_block",
+        "base": "wooden_block_b"
+       }
       }
      ],
-     "since": "v2",
-     "fixes": "hard_search_separate"
+     "kind": "v6_oracle",
+     "variant": "tower_for_kid__counter"
+    },
+    "v6_tower_for_kid__study": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.7,
+         6.6
+        ]
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "floor_block",
+        "region": "living_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "floor_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "floor_block"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "floor_block",
+        "base": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "wooden_block_b",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_b",
+        "base": "floor_block"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "tower_for_kid__study"
+    },
+    "v6_block_put_away__in_4": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_a",
+        "base": "wooden_block_b"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "floor_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "floor_block"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_4",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "floor_block",
+        "base": "wooden_block_a"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "block_put_away__in_4"
+    },
+    "v6_block_put_away__in_6": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_b"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "wooden_block_a",
+        "base": "wooden_block_b"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_4"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "floor_block"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "floor_block"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "kitchen_cabinet_6",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_cabinet_6"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "stack",
+       "args": {
+        "object": "floor_block",
+        "base": "wooden_block_a"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "block_put_away__in_6"
     },
     "v6_x6_gd_tower_with_event__tv_stand": {
      "steps": [
@@ -6066,25 +8548,6 @@
       "19": "crowded"
      }
     },
-    "far_crowded": {
-     "origin": "v5",
-     "control": "clear",
-     "layouts": [
-      "far_crowded"
-     ],
-     "seeds": {
-      "10": "far_crowded",
-      "11": "far_crowded",
-      "12": "far_crowded",
-      "13": "far_crowded",
-      "14": "far_crowded",
-      "15": "far_crowded",
-      "16": "far_crowded",
-      "17": "far_crowded",
-      "18": "far_crowded",
-      "19": "far_crowded"
-     }
-    },
     "edge_base": {
      "origin": "v5",
      "control": "clear",
@@ -6123,6 +8586,69 @@
       "19": "h_dynamic_base_moved_to_edge"
      }
     },
+    "third_toy_elsewhere": {
+     "origin": "v6",
+     "control": "clear",
+     "layouts": [
+      "third_toy_elsewhere__duck",
+      "third_toy_elsewhere__toy_block"
+     ],
+     "factor": "which toy stands in for the third block and where (seed: the rubber duck on the dining table or a toy block on the kitchen counter)",
+     "seeds": {
+      "10": "third_toy_elsewhere__toy_block",
+      "11": "third_toy_elsewhere__toy_block",
+      "12": "third_toy_elsewhere__duck",
+      "13": "third_toy_elsewhere__duck",
+      "14": "third_toy_elsewhere__duck",
+      "15": "third_toy_elsewhere__toy_block",
+      "16": "third_toy_elsewhere__duck",
+      "17": "third_toy_elsewhere__toy_block",
+      "18": "third_toy_elsewhere__toy_block",
+      "19": "third_toy_elsewhere__duck"
+     }
+    },
+    "tower_for_kid": {
+     "origin": "v6",
+     "control": "clear",
+     "layouts": [
+      "tower_for_kid__counter",
+      "tower_for_kid__study"
+     ],
+     "factor": "where the other two blocks are (seed: the TV stand and the kitchen counter, or the TV stand and the study desk)",
+     "seeds": {
+      "10": "tower_for_kid__study",
+      "11": "tower_for_kid__counter",
+      "12": "tower_for_kid__counter",
+      "13": "tower_for_kid__counter",
+      "14": "tower_for_kid__counter",
+      "15": "tower_for_kid__counter",
+      "16": "tower_for_kid__study",
+      "17": "tower_for_kid__study",
+      "18": "tower_for_kid__study",
+      "19": "tower_for_kid__study"
+     }
+    },
+    "block_put_away": {
+     "origin": "v6",
+     "control": "edge_base",
+     "layouts": [
+      "block_put_away__in_4",
+      "block_put_away__in_6"
+     ],
+     "factor": "which closed low cabinet holds the third block (seed: cabinet 4 or 6)",
+     "seeds": {
+      "10": "block_put_away__in_4",
+      "11": "block_put_away__in_6",
+      "12": "block_put_away__in_4",
+      "13": "block_put_away__in_4",
+      "14": "block_put_away__in_6",
+      "15": "block_put_away__in_4",
+      "16": "block_put_away__in_6",
+      "17": "block_put_away__in_6",
+      "18": "block_put_away__in_4",
+      "19": "block_put_away__in_6"
+     }
+    },
     "x6_gd_tower_with_event": {
      "origin": "v6",
      "control": "edge_base",
@@ -6145,12 +8671,15 @@
      }
     }
    },
-   "v6_replaced": {},
+   "v6_replaced": {
+    "far_crowded": "replaced by tower_for_kid (the search was one turn to the island; now three blocks are spread over the house and the tower goes on the dining table)"
+   },
    "v6_dropped": {
     "e2_from_wall_cabinet": "same as clear but for the layout (object poses / start)",
     "m_grasp_b": "only injected action failures",
     "h_action_grasp_and_ik": "same as edge_base (SAME_DESIGN)",
-    "h_mixed_edge_base_grasp": "same as edge_base (SAME_DESIGN)"
+    "h_mixed_edge_base_grasp": "same as edge_base (SAME_DESIGN)",
+    "far_crowded": "replaced by tower_for_kid (the search was one turn to the island; now three blocks are spread over the house and the tower goes on the dining table)"
    },
    "v6_tracks": {
     "clear": {
@@ -6165,15 +8694,6 @@
      ],
      "longer": []
     },
-    "far_crowded": {
-     "category": "action_task",
-     "local": [
-      "separate the crowded object, then pick it"
-     ],
-     "longer": [
-      "start_elsewhere"
-     ]
-    },
     "edge_base": {
      "category": "action",
      "local": [
@@ -6187,6 +8707,31 @@
       "someone changed things at the work spot: put it right there"
      ],
      "longer": []
+    },
+    "third_toy_elsewhere": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "missing_piece",
+      "not_in_view"
+     ]
+    },
+    "tower_for_kid": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "item_out_of_view",
+      "spot_quality"
+     ]
+    },
+    "block_put_away": {
+     "category": "action_task",
+     "local": [
+      "move the base in from the edge (or stack on the other one)"
+     ],
+     "longer": [
+      "not_in_view"
+     ]
     },
     "x6_gd_tower_with_event": {
      "category": "action_task",
