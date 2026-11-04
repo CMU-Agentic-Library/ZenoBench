@@ -53,7 +53,7 @@ R 类不列。下面只列要动的。
 
 ### 3.1 `_carry_pose`（skills.py）
 
-**状态（2026-11-03，3a）：** 下表除 `_carry_bottom_z`（policies/plan_helpers.py）和书本 edge +6 cm（留到 3c）外都已删掉，`_carry_pose` 改成一个目标集合（`COLLISION_PLAN.md` 3a 实施记录）。行号是改动前的。
+**状态（2026-11-03，3a）：** 下表除 `_carry_bottom_z`（policies/plan_helpers.py）和书本 edge +6 cm（留到 3c）外都已删掉，`_carry_pose` 改成一个目标集合（`COLLISION_PLAN.md` 第 4 节的 3a 提交）。行号是改动前的。
 
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|
@@ -64,7 +64,7 @@ R 类不列。下面只列要动的。
 | skills.py:114-125 | `_carry_pose` | `carry_in_via`：tcp+8 cm、半路点、半路点+8 cm | W | 已删（3a） |
 | skills.py:126 | `_carry_pose` | 收不回来只记 `carry_in_failed`，手伸在外面开车 | F | 已改（3a）：到不了时手臂不动开车（`carry_pose_kept`），底盘整机检查判断；根因在 pick，3b |
 | skills.py:72-73 | `_carry_pose` | edge 抓法搬运时 `min_bottom_z` +6 cm（书下垂；清单第 6 节） | S | 仍在：3a 删后 T14 失败又恢复，挪到 3c |
-| policies/plan_helpers.py:43-82（台面物体部分 66-81） | `_carry_bottom_z` | 搬运高度抬到台面上已有物体之上，用来避免持物扫倒东西 | W | 仍在：3b 第一项删过又恢复。删掉后搬运高度低 12 cm，T13 bowl_on_cabinet s10 带着杯子开往餐桌时底盘规划搜到上限（20 万次扩展）也没找到路，保留时 5.9 万次找到。底盘规划器拿着东西时只有当前一个搬运姿态，不会自己选高度；要先给它加这个能力再删（见 `COLLISION_PLAN.md` 3b 实施记录） |
+| policies/plan_helpers.py:43-82（台面物体部分 66-81） | `_carry_bottom_z` | 搬运高度抬到台面上已有物体之上，用来避免持物扫倒东西 | W | 仍在：3b 第一项删过又恢复。删掉后搬运高度低 12 cm，T13 bowl_on_cabinet s10 带着杯子开往餐桌时底盘规划搜到上限（20 万次扩展）也没找到路，保留时 5.9 万次找到。底盘规划器拿着东西时只有当前一个搬运姿态，不会自己选高度；要先给它加这个能力再删（见 `COLLISION_PLAN.md` 第 4 节的 3b 提交） |
 
 ### 3.2 place 链（skills.py）
 
@@ -104,7 +104,7 @@ R 类不列。下面只列要动的。
 
 ### 3.4 drop、hover（policies/hand.py、extra.py）
 
-**状态（2026-11-03，3a）：** 下表都已删掉：drop、hover 各只留一个中继位姿（物体在目标正上方），手腕朝向是停车点的目标集合（`skills.park_over`）。另外 3.9 的 `NavigateToPlacePolicy` 候选列表、3.10 的 wipe 擦拭带和海绵朝向、`stow_load` 带进来的搬运变体也在 3a 改完（`COLLISION_PLAN.md` 3a 实施记录）。
+**状态（2026-11-03，3a）：** 下表都已删掉：drop、hover 各只留一个中继位姿（物体在目标正上方），手腕朝向是停车点的目标集合（`skills.park_over`）。另外 3.9 的 `NavigateToPlacePolicy` 候选列表、3.10 的 wipe 擦拭带和海绵朝向、`stow_load` 带进来的搬运变体也在 3a 改完（`COLLISION_PLAN.md` 第 4 节的 3a 提交）。
 
 | 位置 | 函数 | 内容 | 类 | 状态 |
 |---|---|---|---|---|
