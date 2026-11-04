@@ -122,6 +122,20 @@ T01_LAYOUTS = {   # name: (row, index of the suitable gap, plate the spoon lies 
 T01_BLOCKED = [0.30, "clutter_cereal_a", 0.05, "bowl_side_table", 0.04, "cup_side_table", NARROW, "plate_counter_a",
                0.04, "cup_counter_b", (WIDE - 0.125) / 2, "clutter_cereal_b", (WIDE - 0.125) / 2, "plate_counter_b",
                0.04, "mug_dining_cabinet"]
+# which_table: the other dining table (the west dining room, 16 m from the island); its east edge faces the room
+FAR_DINING = "dining_table_1/top"
+T01_TABLES = {DINING: (T01_TABLE_Y0, T01_TABLE_Y1, 3.839), FAR_DINING: (6.89, 8.83, -7.488)}   # y0, y1, east edge x
+T01_FAR_LAYOUTS = {   # the shorter table: one cereal box; narrow between seats 1 and 2, wide between 2 and 3
+    "far_a": ([0.05, "clutter_cereal_a", 0.05, "plate_counter_a", 0.04, "cup_counter_b", NARROW, "bowl_side_table",
+               0.04, "cup_side_table", WIDE, "plate_counter_b", 0.04, "mug_dining_cabinet"], 5, "plate_counter_b"),
+    # wide between seats 1 and 2, narrow between 2 and 3
+    "far_b": ([0.05, "plate_counter_a", 0.04, "cup_counter_b", WIDE, "bowl_side_table", 0.04, "cup_side_table", NARROW,
+               "plate_counter_b", 0.04, "mug_dining_cabinet", 0.05, "clutter_cereal_a"], 2, "plate_counter_a"),
+}
+# the table nobody eats at: the kid's toys and the storage bin, east-edge slots free, no tableware
+T01_IDLE = {DINING: {"wide_storage_bin": [2.985, 6.6], "clutter_cereal_b": [3.70, 6.0],
+                     "wooden_block_a": [3.75, 6.9], "wooden_block_b": [3.62, 7.3]},
+            FAR_DINING: {"wide_storage_bin": [-8.0, 7.9], "wooden_block_a": [-7.6, 7.2], "wooden_block_b": [-7.72, 7.6]}}
 
 
 def T01(t):
@@ -132,25 +146,31 @@ def T01(t):
     def clear_book(x):
         return [look("kitchen_island/top")] + recs(nav(x), pick(x), place(x, "kitchen_island/top", [7.2, 1.85])) + base[1:]
 
-    def table(seq):
-        """One row of tableware along the east edge of the dining table, south to north: an object name or a gap in
+    def table(seq, sup=DINING):
+        """One row of tableware along the east edge of a dining table, south to north: an object name or a gap in
         metres.  Returns the poses and the centre y of every gap."""
-        y, poses, gaps = T01_TABLE_Y0, {}, []
+        (y, y1, edge), poses, gaps = T01_TABLES[sup], {}, []
+        dx = edge - T01_TABLES[DINING][2]                # the rows are given for the east edge of DINING
         for x in seq:
             if isinstance(x, float):
                 gaps.append(round(y + x / 2, 3))
                 y += x
                 continue
-            poses[x] = {"support": DINING, "xy": [T01_ROW_X.get(T01_KIND[x], 3.70), round(y + T01_LEN[x] / 2, 3)],
-                        "yaw_deg": 0.0}
+            poses[x] = {"support": sup, "xy": [round(T01_ROW_X.get(T01_KIND[x], 3.70) + dx, 3),
+                                               round(y + T01_LEN[x] / 2, 3)], "yaw_deg": 0.0}
             y += T01_LEN[x]
-        if y > T01_TABLE_Y1:
+        if y > y1:
             raise ValueError(f"T01 table row too long: {y:.3f}")
         return poses, gaps
 
     def seats(poses, spoon_by):
-        poses["spoon_target_table"] = {"support": DINING, "xy": [3.40, poses[spoon_by]["xy"][1]], "yaw_deg": 0.0}
+        sup = poses[spoon_by]["support"]
+        poses["spoon_target_table"] = {"support": sup, "xy": [round(3.40 + T01_TABLES[sup][2] - T01_TABLES[DINING][2], 3),
+                                                              poses[spoon_by]["xy"][1]], "yaw_deg": 0.0}
         return poses
+
+    def book_at(sup, y):
+        return [round(3.72 + T01_TABLES[sup][2] - T01_TABLES[DINING][2], 3), y]
 
     carry = base[:5] + [nav(DINING), look(DINING)]
     cases, blocked = {}, None
@@ -166,11 +186,31 @@ def T01(t):
                                           *recs(pick(box), place(box, DINING, [3.40, poses[box]["xy"][1]]),
                                                 S("approach", target=B), pick(B)),
                                           place(B, DINING, [3.72, poses[box]["xy"][1]])])
-    seat_goal = lambda moved=(): {"all": [  # noqa: E731
-        ["on", B, DINING], ["clear_of", B, T01_WARE6, 0.05], ["near_any", B, T01_PLATES, 0.15],
-        *[["near_start", n, 0.03] for n in T01_WARE6 if n not in moved],
-        *[["on", n, DINING] for n in moved],
-        *[["upright", n] for n in T01_UPRIGHT], ["hand_empty", "right"]]}
+    seat_goal = lambda moved=(), sup=DINING, ware=T01_WARE6, still=(): {"all": [  # noqa: E731
+        ["on", B, sup], ["clear_of", B, list(ware), 0.05], ["near_any", B, T01_PLATES, 0.15],
+        *[["near_start", n, 0.03] for n in [*ware, *still] if n not in moved],
+        *[["on", n, sup] for n in moved],
+        *[["upright", n] for n in T01_UPRIGHT if n in ware], ["hand_empty", "right"]]}
+
+    # which_table: the book lies flat on the island (push it over the edge first); breakfast is set on one of the two
+    # dining tables, the other holds toys and the bin.  The robot carries the book to the near table and looks; at
+    # the far setting it goes on to the west dining room.
+    flat = OR(t, "no_overhang")
+    flat = flat[:at(flat, "navigate", destination=DINING)]          # look, nav, pick, expose, look, pick
+    which = {}
+    for name, seq, valid, spoon_by, sup in [("near_a", *T01_LAYOUTS["seats_a"], DINING),
+                                            ("near_b", *T01_LAYOUTS["seats_b"], DINING),
+                                            ("far_a", *T01_FAR_LAYOUTS["far_a"], FAR_DINING),
+                                            ("far_b", *T01_FAR_LAYOUTS["far_b"], FAR_DINING)]:
+        poses, gaps = table(seq, sup)
+        idle = DINING if sup == FAR_DINING else FAR_DINING
+        toys = {n: {"support": idle, "xy": xy, "yaw_deg": 0.0} for n, xy in T01_IDLE[idle].items()}
+        ware = [n for n in T01_WARE6 if n in poses or n == "spoon_target_table"]
+        route = flat + [nav(DINING), look(DINING)] + ([nav(FAR_DINING), look(FAR_DINING)] if sup == FAR_DINING else [])
+        which[name] = dict(move={B: copy.deepcopy(t["variants"]["no_overhang"]["move"][B]), **seats(poses, spoon_by),
+                                 **toys},
+                           goal=seat_goal(sup=sup, ware=ware, still=[n for n in toys if n not in ware]),
+                           route=route + [place(B, sup, book_at(sup, gaps[valid]))])
     # where the book goes is said (beside a guest's place, clear of the tableware); which free slot that is, and
     # whether the book fits there, the robot judges from what it sees
     suitable = dict(instruction="Breakfast is set on the dining table for the guests. Bring the paperback from the "
@@ -201,6 +241,25 @@ def T01(t):
             rationale="make the suitable place: set the book down at the free end, move the cereal box back from "
                       "the edge (it is not tableware of a seat), then put the book in the slot by the seat",
             cases={"": blocked}),
+        "which_table": dict(
+            base="no_overhang", control="no_overhang",
+            conditions=["no_overhang", "destination_unnamed", "spot_quality"], keep_design=[DINING, FAR_DINING],
+            remove=["spoon_side_table"], watch=[B, *T01_WARE6, "wide_storage_bin", "wooden_block_a", "wooden_block_b"],
+            instruction="The guests are having breakfast. Bring the paperback from the kitchen island to the table "
+                        "where they are eating and put it beside one of the guests' places, so they can read while "
+                        "they eat; leave some space between the book and the tableware, do not put it right against "
+                        "it.",
+            instruction_zh="客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；"
+                           "书和餐具之间要留出空隙，不要挨着。",
+            factor="which of the two dining tables the guests eat at, and its setting (seed: one of four)",
+            challenge="the book lies flat on the island (no overhang); the house has two dining tables, the near one "
+                      "(6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the "
+                      "other holds the kid's toys and the storage bin and has free edge slots too; the instruction "
+                      "does not say which table",
+            rationale="push the book over the edge to pick it (in place); then find the table the guests eat at: "
+                      "look at the near table, and if no places are set there go on to the other dining room; there "
+                      "judge the slots as in table_seats.  Putting the book on the idle table fails",
+            cases=which),
         "x6_dr_block_on_book": dict(
             base="overhang_ready", control="overhang_ready",
             factor="which object lies on the book (blocking relation)",
@@ -913,6 +972,8 @@ REPLACED = {
     ("T01_book_to_dining_table", "h_dynamic_pushed_back"): "removed: two unrelated challenges (no_overhang mid-way "
                                                            "and table_set); seat_slot_blocked is the Action + Task "
                                                            "variant of T01",
+    ("T01_book_to_dining_table", "far_no_overhang"): "replaced by which_table (the search was one turn to the island; "
+                                                     "now the table the guests eat at is to be found)",
     ("T03_utensils_one_container", "small_and_large"): "replaced by mug_or_bedroom_bin (the bin in the bedroom)",
     ("T03_utensils_one_container", "three_containers"): "replaced by three_containers_bedroom (the bins in the bedroom)",
     ("T04_cup_or_mug_to_cabinet", "h_dynamic_cup_taken"): "replaced by cup_taken_mug_in_living_room",
@@ -922,6 +983,9 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "destination_unnamed": {"type": "destination_identity", "decision": "explore",
+                            "meaning": "several places fit the instruction's words; which one is meant (the table "
+                                       "the guests eat at) shows only on looking, possibly in another room"},
     "item_put_away": {"type": "location_disjunction", "decision": "decompose",
                       "meaning": "the item is in one of several closed places the instruction names"},
     "multi_object_goal": {"type": "goal_structure", "decision": "decompose",

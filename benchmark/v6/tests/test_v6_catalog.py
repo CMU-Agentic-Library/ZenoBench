@@ -141,8 +141,8 @@ def test_local_fallbacks_are_action_level():
                      ("T09_tomato_soup", "lid_on"), ("T01_book_to_dining_table", "x6_dr_block_on_book__block"),
                      ("T15_book_face_up", "h_task_block_on_book")):
         assert cat(tid, vid) == "action", (tid, vid)
-    # a search next to the local fallback: both
-    assert cat("T01_book_to_dining_table", "far_no_overhang") == "action_task"
+    # finding the table the guests eat at next to the local fallback: both
+    assert cat("T01_book_to_dining_table", "which_table") == "action_task"
     # a substitute, never a local fallback: Task-Level
     assert cat("T04_cup_or_mug_to_cabinet", "no_cup") == "task"
 
@@ -207,25 +207,26 @@ def test_category_batches_name_their_profile():
         assert len(jobs) == 10 * sum(x["category"] == k for t in TASKS.values() for x in t["v6_tracks"].values())
 
 
-def _t01_suitable(cfg):
-    """Centres y (1 cm steps) along the east edge of the dining table where a book (12 x 18 cm, either way along
+def _t01_suitable(cfg, sup="dining_table_2/top"):
+    """Centres y (1 cm steps) along the east edge of a dining table where a book (12 x 18 cm, either way along
     the edge) is clear of the tableware by 5 cm and within 15 cm of a plate or bowl (the table_seats goal)."""
     import math
     from benchmark.v6 import layout as L
     boxes = {n: L._box(L._asset_of(cfg["base"], n, {}), m) for n, m in cfg["move"].items()
-             if m.get("support") == "dining_table_2/top"}
+             if m.get("support") == sup}
+    y0, y1, edge = {"dining_table_2/top": (5.495, 7.955, 3.859), "dining_table_1/top": (6.869, 8.853, -7.468)}[sup]
 
     def gap(a, b):
         return math.hypot(max(0, max(a[0], b[0]) - min(a[2], b[2])), max(0, max(a[1], b[1]) - min(a[3], b[3])))
     ok = set()
     for along, across in ((0.12, 0.18), (0.18, 0.12)):
         for i in range(250):
-            y = 5.495 + along / 2 + i * 0.01
-            if y + along / 2 > 7.955:
+            y = y0 + along / 2 + i * 0.01
+            if y + along / 2 > y1:
                 break
-            bk = [3.859 - across, y - along / 2, 3.859, y + along / 2]
-            if min(gap(bk, b) for b in boxes.values()) >= 0.05 and \
-                    min(gap(bk, boxes[n]) for n in ("bowl_side_table", "plate_counter_a", "plate_counter_b")) <= 0.15:
+            bk = [edge - across, y - along / 2, edge, y + along / 2]
+            seats = [boxes[n] for n in ("bowl_side_table", "plate_counter_a", "plate_counter_b") if n in boxes]
+            if min(gap(bk, b) for b in boxes.values()) >= 0.05 and seats and min(gap(bk, b) for b in seats) <= 0.15:
                 ok.add(round(y, 2))
     return ok
 
@@ -244,3 +245,22 @@ def test_t01_one_suitable_slot_per_setting():
     assert len(set(slots.values())) == 3
     for s in SEEDS:
         assert not _t01_suitable(episode_config(t, s, "seat_slot_blocked"))
+
+
+def test_t01_which_table():
+    """T01 which_table: breakfast is set on one table (one suitable slot there, the route's), the other table has
+    no seat and free edge slots; both tables occur among the seeds."""
+    t = TASKS["T01_book_to_dining_table"]
+    tables = set()
+    for s, lid in t["v6_variants"]["which_table"]["seeds"].items():
+        cfg = episode_config(t, int(s), lid)
+        last = [x for x in t["routes"][t["oracle"][lid]]["steps"] if x["skill"] == "place"][-1]["args"]
+        sup, idle = last["receptacle"], ({"dining_table_1/top", "dining_table_2/top"} - {last["receptacle"]}).pop()
+        ok = _t01_suitable(cfg, sup)
+        assert ok and max(ok) - min(ok) < 0.2, (lid, s, sorted(ok))
+        assert min(ok) - 0.02 <= last["hint_xy"][1] <= max(ok) + 0.02, (lid, s, last)
+        assert not _t01_suitable(cfg, idle)
+        assert not any(m.get("support") == idle for n, m in cfg["move"].items()
+                       if n.split("_")[0] in ("plate", "bowl", "cup", "mug", "spoon"))
+        tables.add(sup)
+    assert len(tables) == 2

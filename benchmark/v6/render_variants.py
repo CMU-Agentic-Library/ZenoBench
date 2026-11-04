@@ -7,7 +7,8 @@ One Isaac process per picture set (task, variant, layout; the layout's first see
 
 * ``first_person`` - the robot's head camera at the start (what the planner sees first);
 * ``<object>``     - a close-up of each object the reference route picks up, where it starts;
-* ``<support>``    - an overhead view of each support the route places things on.
+* ``<support>``    - an overhead view of each support the route places things on, and of a large one that holds
+  watched objects but is no place target (e.g. the table nobody eats at).
 
 Only the start scene is rendered (no skill runs); a variant with several layouts gets one set per layout.
 """
@@ -149,7 +150,15 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     st = rig.state()
     views = [("first_person", None, rig.get_first_person_image(), "机器人开局第一视角")]
     place_sups = {n for k, n in plan_views(task, lid) if k == "support"}
-    for kind, name in plan_views(task, lid):
+    picked = {cfg["move"].get(n, {}).get("support") for k, n in plan_views(task, lid) if k == "object"}
+    other = []                  # a table with watched objects that is no place target (the table nobody eats at)
+    for n in rtask.get("watch") or []:
+        sup = cfg["move"].get(n, {}).get("support")
+        if sup and sup not in place_sups | picked | set(other):
+            b = rig.ann.support(sup)["aabb_xy"]
+            if max(b[2] - b[0], b[3] - b[1]) > 0.9:
+                other.append(sup)
+    for kind, name in plan_views(task, lid) + [("other", s) for s in other]:
         if kind == "object":
             if name not in st["objects"] or (cfg["move"].get(name, {}).get("support") in place_sups and
                                               not any(k == "object" and n == name for k, n in plan_views(task, lid)[:1])
@@ -172,7 +181,8 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             hints = [h for h in place_hints(task, lid) if h[0] == name]
             marks = [(project([h[1][0], h[1][1], s["z"] + 0.03]), h[2]) for h in hints]
             print(f"[marks] {name} {marks}", flush=True)
-            views.append((name.replace("/", "_"), marks, img, f"放置处 {name}（俯视）"
+            views.append((name.replace("/", "_"), marks, img, (f"放置处 {name}（俯视）" if kind == "support" else
+                                                               f"{name}（俯视）：上面有相关物体，但不是放置处")
                           + ("，★ 参考路线的放置点（按顺序）" if marks else "")))
     out_dir.mkdir(parents=True, exist_ok=True)
     lay = f" · 摆法 {lid.split('__', 1)[1]}" if lid != vid else ""

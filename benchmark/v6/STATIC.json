@@ -88,8 +88,8 @@
  "categories": {
   "control": 20,
   "action": 28,
-  "action_task": 15,
-  "task": 64
+  "task": 64,
+  "action_task": 15
  },
- "tasks_sha1": "235170b61be40dcb39d40b2230c1188bd938d0b8"
+ "tasks_sha1": "b19b01cc5c405009077b252fae88192ecaa20e43"
 }

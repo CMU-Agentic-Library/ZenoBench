@@ -2,202 +2,202 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 10,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 11,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 12,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 13,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 14,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 15,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 16,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 17,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 18,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 19,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "far_no_overhang"
+"v6_variant": "seat_slot_blocked"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 10,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__far_a",
+"route": "v6_which_table__far_a",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 11,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__near_b",
+"route": "v6_which_table__near_b",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 12,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__far_a",
+"route": "v6_which_table__far_a",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 13,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__far_b",
+"route": "v6_which_table__far_b",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 14,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__near_a",
+"route": "v6_which_table__near_a",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 15,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__near_b",
+"route": "v6_which_table__near_b",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 16,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__near_a",
+"route": "v6_which_table__near_a",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 17,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__near_b",
+"route": "v6_which_table__near_b",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 18,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__far_b",
+"route": "v6_which_table__far_b",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 19,
-"variant": "seat_slot_blocked",
-"route": "v6_seat_slot_blocked",
+"variant": "which_table__near_a",
+"route": "v6_which_table__near_a",
 "planner": "scripted",
 "profile": "benchmark",
 "category": "action_task",
-"v6_variant": "seat_slot_blocked"
+"v6_variant": "which_table"
 },
 {
 "task": "T02_stack_blocks",

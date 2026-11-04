@@ -39,19 +39,6 @@
 
 1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)`（补救） → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
 
-### far_no_overhang（Action + Task）
-
-**情况**：机器人背对岛台出发、看不到书，书也没探出边缘 → 先找书，再推出来抓
-
-**成功条件**：
-
-- `paperback_book` 在 `dining_table_2/top` 上
-- 手里空着
-
-**参考调用顺序**：
-
-1. `search(object=paperback_book, region=living_room_0_0)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)`（补救） → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.5])`
-
 ### table_seats（Task）
 
 **情况**：指令要求把书放在某位客人吃饭的位置旁边、和餐具留出空隙，但没说是哪个空位。餐桌东侧摆了三人份早餐（每个座位一个盘子或碗加一个杯子，另有两盒麦片），桌边有好几个空位：两套餐具之间的窄缝（放得下但会挨着餐具）、两盒麦片之间或桌子尽头的大空地（离座位远），还有一个座位旁边够宽的空位 → 看清桌面，自己判断哪个空位既在客人座位旁边、又放得下、和餐具留得出空隙，放在那里
@@ -92,6 +79,36 @@
 **参考调用顺序**：
 
 1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `approach(target=paperback_book)` → 4. `look(target=paperback_book)`（补救） → 5. `pick(object=paperback_book)` → 6. `navigate(destination=dining_table_2/top)` → 7. `look(target=dining_table_2/top)` → 8. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 5.67])` → 9. `pick(object=clutter_cereal_b)`（补救） → 10. `place(object=clutter_cereal_b, receptacle=dining_table_2/top, hint_xy=[3.4, 7.059])`（补救） → 11. `approach(target=paperback_book)`（补救） → 12. `look(target=paperback_book)`（补救） → 13. `pick(object=paperback_book)`（补救） → 14. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
+
+### which_table（Action + Task）
+
+**情况**：书平放在岛台上没探出边缘；家里有两张餐桌（近的在隔壁餐厅约 6 m，远的在西边另一间餐厅约 16 m），早餐只摆在其中一张上（三人份，和 table_seats 一样只有一个座位旁的合适空位），另一张上是孩子的积木和储物箱，桌边也有空位；指令只说放到客人吃饭的那张桌子上 → 原地把书推出边缘抓起，先到近桌看，没摆早餐就改去另一间餐厅，在摆了早餐的桌子上选座位旁的空位放下；放到另一张桌子上算失败
+
+**指令**：客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。
+
+**成功条件**：
+
+- 摆法 `far_a`、`far_b`：
+  - `paperback_book` 在 `dining_table_1/top` 上
+  - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`
+  - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`spoon_target_table`、`wide_storage_bin`、`clutter_cereal_b`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a` 立着
+  - 手里空着
+- 摆法 `near_a`、`near_b`：
+  - `paperback_book` 在 `dining_table_2/top` 上
+  - `paperback_book` 离这些东西都至少 5 cm：`plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+  - `paperback_book` 离其中至少一个不超过 15 cm：`bowl_side_table`、`plate_counter_a`、`plate_counter_b`
+  - `plate_counter_a`、`plate_counter_b`、`bowl_side_table`、`cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`、`wide_storage_bin`、`wooden_block_a`、`wooden_block_b` 没被挪动（离开局位置不超过 3 cm）
+  - `cup_side_table`、`cup_counter_b`、`mug_dining_cabinet`、`clutter_cereal_a`、`clutter_cereal_b` 立着
+  - 手里空着
+
+**参考调用顺序**：
+
+- 摆法 `near_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)`（补救） → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 7.059])`
+- 摆法 `near_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)`（补救） → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `place(object=paperback_book, receptacle=dining_table_2/top, hint_xy=[3.72, 6.138])`
+- 摆法 `far_a`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)`（补救） → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `navigate(destination=dining_table_1/top)` → 10. `look(target=dining_table_1/top)` → 11. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 8.179])`
+- 摆法 `far_b`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=paperback_book)` → 3. `pick(object=paperback_book)` → 4. `expose(object=paperback_book)` → 5. `look(target=paperback_book)`（补救） → 6. `pick(object=paperback_book)` → 7. `navigate(destination=dining_table_2/top)` → 8. `look(target=dining_table_2/top)` → 9. `navigate(destination=dining_table_1/top)` → 10. `look(target=dining_table_1/top)` → 11. `place(object=paperback_book, receptacle=dining_table_1/top, hint_xy=[-7.607, 7.508])`
 
 ### x6_dr_block_on_book__block（Action）
 
@@ -1527,7 +1544,7 @@
 
 **成功条件**：
 
-- 摆法不同，条件也不同：
+- 摆法 `left_full`：
   - `stored_block_1` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `stored_block_2` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `stored_block_3` 完全在 `toy_bin_small` 里（没有露出边沿）
@@ -1538,7 +1555,7 @@
   - `rubber_duck` 完全在 `toy_bin_small` 里（没有露出边沿）
   - `toy_bin_small`、`toy_bin_small_2` 立着
   - 手里空着
-- 摆法不同，条件也不同：
+- 摆法 `right_full`：
   - `stored_block_1` 完全在 `toy_bin_small_2` 里（没有露出边沿）
   - `stored_block_2` 完全在 `toy_bin_small_2` 里（没有露出边沿）
   - `stored_block_3` 完全在 `toy_bin_small_2` 里（没有露出边沿）

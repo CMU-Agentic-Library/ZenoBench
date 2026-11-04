@@ -32,7 +32,7 @@ An episode is **task + variant + seed**.
     view; the first `look` target is not behind a wall). Over the 1,270 episodes a moved object shifts 0.21 m
     (median, 90th percentile 0.86 m) and the start 3.8 m (90th percentile 8.4 m); which removable distractors
     are left out is drawn too;
-  - for a variant with several **layouts** (41 variants), which one: the same design with the resource,
+  - for a variant with several **layouts** (42 variants), which one: the same design with the resource,
     substitute or item in another place, or an event taking it elsewhere (e.g. the cup in cabinet 4 or in
     cabinet 6). The seeds are spread over the layouts by a fixed-RNG, balanced manifest
     (`v6_variants[vid]["seeds"]`); each layout has its own configuration and oracle route (`variants[<layout>]`).
@@ -74,7 +74,10 @@ container, which cookware, the substitute next to it) is redesigned so the right
 pot on the dining table); the in-place variant leaves v6 (`v6_replaced`). T01 `table_seats` stays a choice at
 the table: the instruction asks for a place beside a guest's setting, clear of the tableware, not which slot; the edge of the set table has several free slots (too
 narrow, away from every seat, one beside a seat) and the seed picks one of three settings, so the suitable slot is
-judged from what is seen, not remembered (`keep_design`: the seed leaves the setting as it is).
+judged from what is seen, not remembered (`keep_design`: the seed leaves the setting as it is). T01 `which_table`
+(it replaces `far_no_overhang`) adds the table itself: breakfast is set on one of the two dining tables (the near
+one or the one in the west dining room, 16 m from the island), the other holds toys; the robot looks at the near
+table and goes on when nobody eats there.
 
 A goal of a variant's own (close the door again, leave the block on the island) states how a fallback ends and
 does not by itself make a variant Task-Level.

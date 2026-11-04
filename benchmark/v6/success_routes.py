@@ -125,11 +125,13 @@ def main():
             instr = v0.get("instruction_zh") or v0.get("instruction")
             if instr and instr != (t.get("instruction_zh") or t["instruction"]) and instr != t["instruction"]:
                 lines += [f"**指令**：{instr}", ""]
-            goals = {json.dumps(t["variants"][lid].get("goal") or t["goal"]) for lid in info["layouts"]}
+            goals = {}                                # goal -> the layouts that have it
+            for lid in info["layouts"]:
+                goals.setdefault(json.dumps(t["variants"][lid].get("goal") or t["goal"]), []).append(lid)
             lines += ["**成功条件**：", ""]
-            for g in sorted(goals):
+            for g, lids in sorted(goals.items()):
                 if len(goals) > 1:
-                    lines.append("- 摆法不同，条件也不同：")
+                    lines.append("- 摆法 " + "、".join(f"`{x.split('__', 1)[-1]}`" for x in lids) + "：")
                 lines += goal_lines(json.loads(g), 1 if len(goals) > 1 else 0)
             lines += ["", "**参考调用顺序**：", ""]
             for lid in info["layouts"]:

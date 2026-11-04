@@ -142,76 +142,6 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 10,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 11,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 12,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 13,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 14,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 15,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 16,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 17,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 18,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 19,
-"variant": "far_no_overhang",
-"route": "v5fix_far_no_overhang",
-"family": "far_no_overhang"
-},
-{
-"task": "T01_book_to_dining_table",
-"seed": 10,
 "variant": "table_seats__seats_c",
 "route": "v6_table_seats__seats_c",
 "family": "table_seats"
@@ -348,6 +278,76 @@
 "variant": "seat_slot_blocked",
 "route": "v6_seat_slot_blocked",
 "family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "which_table__far_a",
+"route": "v6_which_table__far_a",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 11,
+"variant": "which_table__near_b",
+"route": "v6_which_table__near_b",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 12,
+"variant": "which_table__far_a",
+"route": "v6_which_table__far_a",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 13,
+"variant": "which_table__far_b",
+"route": "v6_which_table__far_b",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 14,
+"variant": "which_table__near_a",
+"route": "v6_which_table__near_a",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 15,
+"variant": "which_table__near_b",
+"route": "v6_which_table__near_b",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 16,
+"variant": "which_table__near_a",
+"route": "v6_which_table__near_a",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 17,
+"variant": "which_table__near_b",
+"route": "v6_which_table__near_b",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 18,
+"variant": "which_table__far_b",
+"route": "v6_which_table__far_b",
+"family": "which_table"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 19,
+"variant": "which_table__near_a",
+"route": "v6_which_table__near_a",
+"family": "which_table"
 },
 {
 "task": "T01_book_to_dining_table",

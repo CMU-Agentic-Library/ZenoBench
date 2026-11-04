@@ -95,60 +95,6 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T01_book_to_dining_table/far_no_overhang": {
-  "variant": "far_no_overhang",
-  "category": "action_task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Someone left their paperback on the kitchen island. Bring it to the dining table so they can read over breakfast.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": [
-    4.764,
-    0.699,
-    195.0
-   ],
-   "moved": [
-    "paperback_book"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "start_elsewhere",
-    "no_overhang"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "paperback_book",
-     "dining_table_2/top"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "overhang_ready",
-  "oracle_route": "v5fix_far_no_overhang",
-  "challenge": "the robot starts at the wall cabinet facing away; the book on the island does not overhang enough",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T01_book_to_dining_table/table_seats__seats_a": {
   "variant": "table_seats",
   "category": "task",
@@ -724,6 +670,650 @@
   "oracle_route": "v6_seat_slot_blocked",
   "challenge": "the table is set as in table_seats, but the second cereal box stands in the middle of the one wide slot beside a seat: no free slot is both beside a seat and clear of the tableware",
   "rationale": "make the suitable place: set the book down at the free end, move the cereal box back from the edge (it is not tableware of a seat), then put the book in the slot by the seat",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T01_book_to_dining_table/which_table__near_a": {
+  "variant": "which_table",
+  "category": "action_task",
+  "seeds": [
+   14,
+   16,
+   19
+  ],
+  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "bowl_side_table",
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "cup_counter_b",
+    "cup_side_table",
+    "mug_dining_cabinet",
+    "paperback_book",
+    "plate_counter_a",
+    "plate_counter_b",
+    "spoon_target_table",
+    "wide_storage_bin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "no_overhang",
+    "destination_unnamed",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "paperback_book",
+     "dining_table_2/top"
+    ],
+    [
+     "clear_of",
+     "paperback_book",
+     [
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     0.05
+    ],
+    [
+     "near_any",
+     "paperback_book",
+     [
+      "bowl_side_table",
+      "plate_counter_a",
+      "plate_counter_b"
+     ],
+     0.15
+    ],
+    [
+     "near_start",
+     "plate_counter_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "plate_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "mug_dining_cabinet",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_b",
+     0.03
+    ],
+    [
+     "upright",
+     "cup_side_table"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "upright",
+     "mug_dining_cabinet"
+    ],
+    [
+     "upright",
+     "clutter_cereal_a"
+    ],
+    [
+     "upright",
+     "clutter_cereal_b"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "no_overhang",
+  "oracle_route": "v6_which_table__near_a",
+  "challenge": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+  "rationale": "push the book over the edge to pick it (in place); then find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T01_book_to_dining_table/which_table__near_b": {
+  "variant": "which_table",
+  "category": "action_task",
+  "seeds": [
+   11,
+   15,
+   17
+  ],
+  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "bowl_side_table",
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "cup_counter_b",
+    "cup_side_table",
+    "mug_dining_cabinet",
+    "paperback_book",
+    "plate_counter_a",
+    "plate_counter_b",
+    "spoon_target_table",
+    "wide_storage_bin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "no_overhang",
+    "destination_unnamed",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "paperback_book",
+     "dining_table_2/top"
+    ],
+    [
+     "clear_of",
+     "paperback_book",
+     [
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     0.05
+    ],
+    [
+     "near_any",
+     "paperback_book",
+     [
+      "bowl_side_table",
+      "plate_counter_a",
+      "plate_counter_b"
+     ],
+     0.15
+    ],
+    [
+     "near_start",
+     "plate_counter_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "plate_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "mug_dining_cabinet",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_b",
+     0.03
+    ],
+    [
+     "upright",
+     "cup_side_table"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "upright",
+     "mug_dining_cabinet"
+    ],
+    [
+     "upright",
+     "clutter_cereal_a"
+    ],
+    [
+     "upright",
+     "clutter_cereal_b"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "no_overhang",
+  "oracle_route": "v6_which_table__near_b",
+  "challenge": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+  "rationale": "push the book over the edge to pick it (in place); then find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T01_book_to_dining_table/which_table__far_a": {
+  "variant": "which_table",
+  "category": "action_task",
+  "seeds": [
+   10,
+   12
+  ],
+  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "bowl_side_table",
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "cup_counter_b",
+    "cup_side_table",
+    "mug_dining_cabinet",
+    "paperback_book",
+    "plate_counter_a",
+    "plate_counter_b",
+    "spoon_target_table",
+    "wide_storage_bin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "no_overhang",
+    "destination_unnamed",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "paperback_book",
+     "dining_table_1/top"
+    ],
+    [
+     "clear_of",
+     "paperback_book",
+     [
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "spoon_target_table"
+     ],
+     0.05
+    ],
+    [
+     "near_any",
+     "paperback_book",
+     [
+      "bowl_side_table",
+      "plate_counter_a",
+      "plate_counter_b"
+     ],
+     0.15
+    ],
+    [
+     "near_start",
+     "plate_counter_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "plate_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "mug_dining_cabinet",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_b",
+     0.03
+    ],
+    [
+     "upright",
+     "cup_side_table"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "upright",
+     "mug_dining_cabinet"
+    ],
+    [
+     "upright",
+     "clutter_cereal_a"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "no_overhang",
+  "oracle_route": "v6_which_table__far_a",
+  "challenge": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+  "rationale": "push the book over the edge to pick it (in place); then find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T01_book_to_dining_table/which_table__far_b": {
+  "variant": "which_table",
+  "category": "action_task",
+  "seeds": [
+   13,
+   18
+  ],
+  "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "bowl_side_table",
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "cup_counter_b",
+    "cup_side_table",
+    "mug_dining_cabinet",
+    "paperback_book",
+    "plate_counter_a",
+    "plate_counter_b",
+    "spoon_target_table",
+    "wide_storage_bin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "no_overhang",
+    "destination_unnamed",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "paperback_book",
+     "dining_table_1/top"
+    ],
+    [
+     "clear_of",
+     "paperback_book",
+     [
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "spoon_target_table"
+     ],
+     0.05
+    ],
+    [
+     "near_any",
+     "paperback_book",
+     [
+      "bowl_side_table",
+      "plate_counter_a",
+      "plate_counter_b"
+     ],
+     0.15
+    ],
+    [
+     "near_start",
+     "plate_counter_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "plate_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "bowl_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_side_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "cup_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "mug_dining_cabinet",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "wooden_block_b",
+     0.03
+    ],
+    [
+     "upright",
+     "cup_side_table"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "upright",
+     "mug_dining_cabinet"
+    ],
+    [
+     "upright",
+     "clutter_cereal_a"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "no_overhang",
+  "oracle_route": "v6_which_table__far_b",
+  "challenge": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+  "rationale": "push the book over the edge to pick it (in place); then find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T01_book_to_dining_table/x6_dr_block_on_book__block": {
