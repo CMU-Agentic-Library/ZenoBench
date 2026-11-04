@@ -912,6 +912,76 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"family": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
 "variant": "block_put_away__in_4",
 "route": "v6_block_put_away__in_4",
 "family": "block_put_away"

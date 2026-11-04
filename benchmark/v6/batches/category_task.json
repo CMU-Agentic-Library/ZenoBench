@@ -300,6 +300,106 @@
 "v6_variant": "tower_for_kid"
 },
 {
+"task": "T02_stack_blocks",
+"seed": 10,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "tower_for_kid_duck__counter",
+"route": "v6_tower_for_kid_duck__counter",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "tower_for_kid_duck__study",
+"route": "v6_tower_for_kid_duck__study",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "tower_for_kid_duck"
+},
+{
 "task": "T03_utensils_one_container",
 "seed": 10,
 "variant": "far_small_and_large",

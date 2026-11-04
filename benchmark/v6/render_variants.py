@@ -165,6 +165,14 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
                                               and name != (task.get("watch") or [None])[0]):
                 continue                         # seen in the overhead view of its support
             p = [float(v) for v in st["objects"][name]["pos"]]
+            sup = cfg["move"].get(name, {}).get("support") or ""
+            if sup.endswith("/inside_shelf"):    # in closed furniture: the furniture from the room, the item starred
+                b = rig.ann.support(sup)["aabb_xy"]
+                c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, p[2]]
+                img = shot(around(c, 1.6, 0.7), c)
+                views.append((name, [(project(p), f"{name} 在里面")], img,
+                              f"要拿的 {name} 在关着的 {sup.split('/')[0]} 里（从外面看，★ 是它的位置）"))
+                continue
             views.append((name, None, shot(around(p, 0.75, 0.55), p), f"要拿的 {name}（开局位置）"))
         else:
             s = rig.ann.support(name)

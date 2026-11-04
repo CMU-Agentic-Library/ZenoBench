@@ -303,6 +303,11 @@ def T02(t):
                             ["away_from_edge", b, 0.05], ["clear_of", b, table_ware, 0.05]]
                            for b in (A, B, F) for m in (A, B, F) for top in (A, B, F) if len({b, m, top}) == 3],
                    "all": [*[["near_start", n, 0.03] for n in table_ware], ["hand_empty", "right"]]}
+    # tower_for_kid_duck: no third block; the rubber duck tops the two blocks
+    duck_table_tower = {"any": [[["on_top_of", m, b], ["on_top_of", "rubber_duck", m], ["on", b, DINING],
+                                 ["away_from_edge", b, 0.05], ["clear_of", b, table_ware, 0.05]]
+                                for b, m in ((A, B), (B, A))],
+                        "all": copy.deepcopy(table_tower["all"])}
     base_xy = [3.70, 6.60]                       # 14 cm in from the east edge, clear of the bin and the cereal boxes
     def table_route(second, r2, third, r3):
         """Block A from the island as the base on the dining table, then the other two in turn."""
@@ -359,11 +364,36 @@ def T02(t):
                                    route=table_route(B, "living_room_0_0", F, "kitchen_0_1")),
                    "study": dict(move={A: P("kitchen_island/top", 7.22, 1.625), F: TV, B: DESK},
                                  route=table_route(F, "living_room_0_0", B, "living_room_0_1"))}),
+        "tower_for_kid_duck": dict(
+            base="clear", control="tower_for_kid", conditions=["missing_piece", "item_out_of_view", "spot_quality"],
+            instruction="The kid wants to look at a three-level tower on the dining table. Find the toy blocks in the "
+                        "house and stack them into a tower on the dining table; if there are not enough blocks, use "
+                        "another of the kid's toys for the missing level.",
+            instruction_zh="孩子想在餐桌上看一座三层的塔。把家里的积木找来，在餐桌上叠成塔；积木不够的话，用孩子别的"
+                           "玩具补上缺的那一层。",
+            remove=[F], goal=duck_table_tower, watch=[A, B, "rubber_duck", *table_ware], keep_design=[DINING],
+            factor="where the second block and the duck are (seed: block on the TV stand and duck on the kitchen "
+                   "counter, or block on the study desk and duck on the TV stand)",
+            challenge="only two toy blocks are in the house: one on the island, one on the TV stand or the study "
+                      "desk; the rubber duck is on the kitchen counter or the TV stand; the dining table holds the "
+                      "storage bin, two cereal boxes and a spoon",
+            rationale="as tower_for_kid, but after finding two blocks the robot must notice there is no third and "
+                      "bring the duck instead; the duck has no flat top, so it is the top level, and it is fetched "
+                      "last",
+            cases={"counter": dict(move={A: P("kitchen_island/top", 7.22, 1.625), B: TV},
+                                   add={"rubber_duck": {"asset": "rubber_duck", **COUNTER}},
+                                   route=table_route(B, "living_room_0_0", "rubber_duck", "kitchen_0_1")),
+                   "study": dict(move={A: P("kitchen_island/top", 7.22, 1.625), B: DESK},
+                                 add={"rubber_duck": {"asset": "rubber_duck", **TV}},
+                                 route=table_route(B, "living_room_0_1", "rubber_duck", "living_room_0_0"))}),
         "block_put_away": dict(
             base="edge_base", control="edge_base", conditions=["unstable_base", "not_in_view"],
-            instruction="Stack the three toy blocks into one tower on the kitchen island. The third one was put "
-                        "away in one of the low kitchen cabinets; close the cabinets again.",
-            instruction_zh="把三块积木在岛台上叠成一座塔。第三块被收进了厨房的一个矮柜里，用完把柜门关好。",
+            instruction="Stack the three toy blocks into one tower on the kitchen island. Two are on the island; I "
+                        "put the third one away in one of the two low cabinets with doors along the living-room wall: "
+                        "the one nearer the island, or the next one along the wall, further from the island. "
+                        "Close the cabinet doors again afterwards.",
+            instruction_zh="把三块积木在岛台上叠成一座塔。两块在岛台上；第三块我收进了客厅靠墙的两个带门矮柜之一："
+                           "离岛台近的那个，或者沿墙再往外、离岛台远的那个。找完把柜门关好。",
             goal=put_away_goal, watch=[A, B, F], remove=["plate_inside_kitchen_cabinet", "bowl_inside_kitchen_cabinet"],
             factor="which closed low cabinet holds the third block (seed: cabinet 4 or 6)",
             challenge="two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the "

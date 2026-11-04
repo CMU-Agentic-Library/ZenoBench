@@ -2480,6 +2480,274 @@
   "rationale": "find all three (one is out of view), carry them one at a time with one hand and order the trips; the first block is the base: put it on a free spot of the dining table away from the edge and clear of the bin and the boxes, then stack the other two on it; the table's things stay where they are",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T02_stack_blocks/tower_for_kid_duck__counter": {
+  "variant": "tower_for_kid_duck",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   15,
+   17,
+   18
+  ],
+  "instruction": "The kid wants to look at a three-level tower on the dining table. Find the toy blocks in the house and stack them into a tower on the dining table; if there are not enough blocks, use another of the kid's toys for the missing level.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "rubber_duck"
+   ],
+   "removed": [
+    "floor_block"
+   ],
+   "conditions": [
+    "missing_piece",
+    "item_out_of_view",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "rubber_duck",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_a",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "rubber_duck",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_b",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_tower_for_kid_duck__counter",
+  "challenge": "only two toy blocks are in the house: one on the island, one on the TV stand or the study desk; the rubber duck is on the kitchen counter or the TV stand; the dining table holds the storage bin, two cereal boxes and a spoon",
+  "rationale": "as tower_for_kid, but after finding two blocks the robot must notice there is no third and bring the duck instead; the duck has no flat top, so it is the top level, and it is fetched last",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/tower_for_kid_duck__study": {
+  "variant": "tower_for_kid_duck",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   14,
+   16,
+   19
+  ],
+  "instruction": "The kid wants to look at a three-level tower on the dining table. Find the toy blocks in the house and stack them into a tower on the dining table; if there are not enough blocks, use another of the kid's toys for the missing level.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "rubber_duck"
+   ],
+   "removed": [
+    "floor_block"
+   ],
+   "conditions": [
+    "missing_piece",
+    "item_out_of_view",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ],
+     [
+      "on_top_of",
+      "rubber_duck",
+      "wooden_block_b"
+     ],
+     [
+      "on",
+      "wooden_block_a",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_a",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_a",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     [
+      "on_top_of",
+      "rubber_duck",
+      "wooden_block_a"
+     ],
+     [
+      "on",
+      "wooden_block_b",
+      "dining_table_2/top"
+     ],
+     [
+      "away_from_edge",
+      "wooden_block_b",
+      0.05
+     ],
+     [
+      "clear_of",
+      "wooden_block_b",
+      [
+       "wide_storage_bin",
+       "clutter_cereal_a",
+       "clutter_cereal_b",
+       "spoon_target_table"
+      ],
+      0.05
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "wide_storage_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "spoon_target_table",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_tower_for_kid_duck__study",
+  "challenge": "only two toy blocks are in the house: one on the island, one on the TV stand or the study desk; the rubber duck is on the kitchen counter or the TV stand; the dining table holds the storage bin, two cereal boxes and a spoon",
+  "rationale": "as tower_for_kid, but after finding two blocks the robot must notice there is no third and bring the duck instead; the duck has no flat top, so it is the top level, and it is fetched last",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T02_stack_blocks/block_put_away__in_4": {
   "variant": "block_put_away",
   "category": "action_task",
@@ -2490,7 +2758,7 @@
    15,
    18
   ],
-  "instruction": "Stack the three toy blocks into one tower on the kitchen island. The third one was put away in one of the low kitchen cabinets; close the cabinets again.",
+  "instruction": "Stack the three toy blocks into one tower on the kitchen island. Two are on the island; I put the third one away in one of the two low cabinets with doors along the living-room wall: the one nearer the island, or the next one along the wall, further from the island. Close the cabinet doors again afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -2649,7 +2917,7 @@
    17,
    19
   ],
-  "instruction": "Stack the three toy blocks into one tower on the kitchen island. The third one was put away in one of the low kitchen cabinets; close the cabinets again.",
+  "instruction": "Stack the three toy blocks into one tower on the kitchen island. Two are on the island; I put the third one away in one of the two low cabinets with doors along the living-room wall: the one nearer the island, or the next one along the wall, further from the island. Close the cabinet doors again afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,

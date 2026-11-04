@@ -319,11 +319,40 @@
 - 摆法 `counter`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 7. `search(object=wooden_block_b, region=living_room_0_0)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=wooden_block_a)` → 11. `approach(target=wooden_block_a)` → 12. `stack(object=wooden_block_b, base=wooden_block_a)` → 13. `search(object=floor_block, region=kitchen_0_1)` → 14. `navigate(destination=floor_block)` → 15. `pick(object=floor_block)` → 16. `navigate(destination=wooden_block_a)` → 17. `approach(target=wooden_block_a)` → 18. `stack(object=floor_block, base=wooden_block_b)`
 - 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 7. `search(object=floor_block, region=living_room_0_0)` → 8. `navigate(destination=floor_block)` → 9. `pick(object=floor_block)` → 10. `navigate(destination=wooden_block_a)` → 11. `approach(target=wooden_block_a)` → 12. `stack(object=floor_block, base=wooden_block_a)` → 13. `search(object=wooden_block_b, region=living_room_0_1)` → 14. `navigate(destination=wooden_block_b)` → 15. `pick(object=wooden_block_b)` → 16. `navigate(destination=wooden_block_a)` → 17. `approach(target=wooden_block_a)` → 18. `stack(object=wooden_block_b, base=floor_block)`
 
+### tower_for_kid_duck（Task）
+
+**情况**：和 tower_for_kid 一样在餐桌上搭三层塔，但家里只有两块积木（岛台一块，电视柜或书房书桌一块）；指令说积木不够就用孩子别的玩具补 → 找到两块后发现没有第三块，去拿小黄鸭补上；鸭子没有平顶，只能放最上面，所以最后拿；底座和桌上东西的要求同 tower_for_kid
+
+**指令**：孩子想在餐桌上看一座三层的塔。把家里的积木找来，在餐桌上叠成塔；积木不够的话，用孩子别的玩具补上缺的那一层。
+
+**成功条件**：
+
+- `wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table` 没被挪动（离开局位置不超过 3 cm）
+- 手里空着
+- 满足下面任意一组：
+  - 第 1 组：
+    - `wooden_block_b` 叠在 `wooden_block_a` 上
+    - `rubber_duck` 叠在 `wooden_block_b` 上
+    - `wooden_block_a` 在 `dining_table_2/top` 上
+    - `wooden_block_a` 离台面边缘至少 5 cm
+    - `wooden_block_a` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+  - 第 2 组：
+    - `wooden_block_a` 叠在 `wooden_block_b` 上
+    - `rubber_duck` 叠在 `wooden_block_a` 上
+    - `wooden_block_b` 在 `dining_table_2/top` 上
+    - `wooden_block_b` 离台面边缘至少 5 cm
+    - `wooden_block_b` 离这些东西都至少 5 cm：`wide_storage_bin`、`clutter_cereal_a`、`clutter_cereal_b`、`spoon_target_table`
+
+**参考调用顺序**：
+
+- 摆法 `counter`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 7. `search(object=wooden_block_b, region=living_room_0_0)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=wooden_block_a)` → 11. `approach(target=wooden_block_a)` → 12. `stack(object=wooden_block_b, base=wooden_block_a)` → 13. `search(object=rubber_duck, region=kitchen_0_1)` → 14. `navigate(destination=rubber_duck)` → 15. `pick(object=rubber_duck)` → 16. `navigate(destination=wooden_block_a)` → 17. `approach(target=wooden_block_a)` → 18. `stack(object=rubber_duck, base=wooden_block_b)`
+- 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `place(object=wooden_block_a, receptacle=dining_table_2/top, hint_xy=[3.7, 6.6])` → 7. `search(object=wooden_block_b, region=living_room_0_1)` → 8. `navigate(destination=wooden_block_b)` → 9. `pick(object=wooden_block_b)` → 10. `navigate(destination=wooden_block_a)` → 11. `approach(target=wooden_block_a)` → 12. `stack(object=wooden_block_b, base=wooden_block_a)` → 13. `search(object=rubber_duck, region=living_room_0_0)` → 14. `navigate(destination=rubber_duck)` → 15. `pick(object=rubber_duck)` → 16. `navigate(destination=wooden_block_a)` → 17. `approach(target=wooden_block_a)` → 18. `stack(object=rubber_duck, base=wooden_block_b)`
+
 ### block_put_away（Action + Task）
 
-**情况**：三块积木在岛台上叠塔；岛台上两块，一块在边上不能当底座；第三块被收进两个关着的矮柜之一 → 原地把边上那块叠到另一块上（Action），再逐个打开矮柜找第三块，找到后关好柜门，叠到最上面（Task）；两个柜子最后都关着
+**情况**：三块积木在岛台上叠塔；岛台上两块，一块在边上不能当底座；第三块被收进客厅靠墙两个关着的矮柜之一（指令点明：离岛台近的那个，或沿墙离岛台远的那个） → 原地把边上那块叠到另一块上（Action），再逐个打开矮柜找第三块，找到后关好柜门，叠到最上面（Task）；两个柜子最后都关着
 
-**指令**：把三块积木在岛台上叠成一座塔。第三块被收进了厨房的一个矮柜里，用完把柜门关好。
+**指令**：把三块积木在岛台上叠成一座塔。两块在岛台上；第三块我收进了客厅靠墙的两个带门矮柜之一：离岛台近的那个，或者沿墙再往外、离岛台远的那个。找完把柜门关好。
 
 **成功条件**：
 
