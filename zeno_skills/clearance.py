@@ -129,6 +129,25 @@ def lifting(name: str) -> Allow:
 BASE_DRIVE = unchecked("base drive: the arms are not checked along the base path yet")
 
 
+def allow_kind(allow, fell_back=False):
+    """The motion record's name for the rule a motion runs under (tools/motion_signature.py)."""
+    if fell_back:
+        return "fallback"
+    if allow == LEGACY:
+        return "legacy"
+    if allow == BASE_DRIVE:
+        return "base_drive"
+    if allow.to_contact:
+        return "into_contact"
+    if allow.from_contact:
+        return "lifting" if allow.lifts else "leave_contact"
+    if not allow.checked:
+        return "unchecked: " + allow.reason.split(":")[0][:40]
+    if allow.fallback:
+        return "planned"
+    return "free"
+
+
 class Clearance:
     """``rig.clear``: skill scope, the motion being executed, and the contact monitor."""
 
@@ -146,6 +165,9 @@ class Clearance:
                        "fallback": 0, "planned": 0, "fallback_by_leg": {},
                        "disturbed": 0, "disturbed_by_skill": {}, "disturbed_by_leg": {}}
         self.disturbances = []
+        self.segments = []               # the motion record: one row per motion (motion, executing)
+        self._declared = False           # a motion was declared and its waypoints not followed yet
+        self._fell_back = False          # the motion being declared is a FREE_ELSE_STRAIGHT leg's fallback
         self._ref = {}                   # object -> (pos, quat wxyz) where it last stood
         self._held = set()               # objects held at the last check
         self._let_go = {}                # object -> tick it was let go
@@ -170,11 +192,38 @@ class Clearance:
             for k, kw in zip(kins, saved):
                 k.coll_kw = kw
 
-    def motion(self, label, allow):
+    def motion(self, label, allow, side="right", follows=True):
         """A motion starts (move_to, move_left_to, joint_path, drive_base): the monitor
-        judges contacts against it until the next one."""
+        judges contacts against it until the next one, and the motion record gets its row.
+        ``side``: the arm that moves ("right", "left", "both"; "base" for a drive);
+        ``follows``: its waypoints go through follow / follow_smooth / left_follow next (a swing
+        or a drive runs its own loop)."""
         self.leg = label
         self.allow = allow
+        self._record(label, allow_kind(allow, self._fell_back), side)
+        self._fell_back = False
+        self._declared = follows
+
+    def executing(self):
+        """follow / follow_smooth / left_follow start: waypoints with no motion declared since
+        the last ones (a raw follow, docs/COLLISION_AUDIT.md) get a row of their own."""
+        if not self._declared:
+            self._record(self.leg, "raw", "right")
+        self._declared = False
+
+    def _record(self, label, kind, side):
+        """One row of the motion record (result.json ``contacts.segments``, read by
+        tools/motion_signature.py): the skills running, the motion's label and arm, the rule it
+        runs under, whether that arm holds something, and what the collision queries made for it
+        left out (Motion.take_relaxed)."""
+        rig = self.rig
+        take = getattr(getattr(rig.kin, "motion", None), "take_relaxed", None)
+        sides = ("right", "left") if side in ("both", "base") else (side,)
+        relaxed = set().union(*(take(s) for s in sides)) if take else set()
+        holding = any(getattr(rig, "held" if s == "right" else "left_held", None) is not None for s in sides)
+        self.segments.append({"tick": getattr(rig, "tick", None), "skill": "/".join(self.skills) or None,
+                              "leg": label, "side": side, "allow": kind, "holding": holding,
+                              "relaxed": sorted(relaxed)})
 
     def planned(self, label):
         """A FREE_ELSE_STRAIGHT leg got a collision-free path."""
@@ -184,6 +233,7 @@ class Clearance:
         """A FREE_ELSE_STRAIGHT leg had no collision-free path and makes the straight move:
         ``why`` the planner's refusal, ``hit`` what the straight path runs into."""
         skill = self.skills[-1] if self.skills else None
+        self._fell_back = True
         self.counts["fallback"] += 1
         key = label or "-"
         self.counts["fallback_by_leg"][key] = self.counts["fallback_by_leg"].get(key, 0) + 1
@@ -307,4 +357,4 @@ class Clearance:
         """result.json ``contacts``."""
         self._confirm_disturbances(final=True)
         return {**self.counts, "records": self.records, "fallbacks": self.fallbacks,
-                "disturbances": self.disturbances}
+                "disturbances": self.disturbances, "segments": self.segments}

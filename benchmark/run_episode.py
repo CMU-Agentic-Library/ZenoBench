@@ -87,9 +87,25 @@ PLANNER_PROFILES = {"scripted": "benchmark", "fixed": "benchmark", "retry": "ben
                     "oracle": "oracle"}
 
 
+def start_coverage(out_root):
+    """ZB_COVERAGE=1: line coverage of zeno_skills/ for this episode, one data file per process
+    under <out_root>/coverage/ (tools/skill_coverage.py combines them).  Saved by the caller before
+    os._exit, which skips atexit."""
+    if not os.environ.get("ZB_COVERAGE"):
+        return None
+    import coverage
+    d = Path(out_root) / "coverage"
+    d.mkdir(parents=True, exist_ok=True)
+    cov = coverage.Coverage(data_file=str(d / ".coverage"), data_suffix=True, branch=True,
+                            source=[str(ROOT / "zeno_skills")])
+    cov.start()
+    return cov
+
+
 def run_episode(task, seed, route=None, planner="scripted", variant=None, out_root=OUT, video=False,
                 images=True, policy=None, difficulty=None, max_calls=None, tasks_file=TASKS, profile=None,
                 track="fixed", skill_dirs=()):
+    cov = start_coverage(out_root)
     from benchmark.scene import episode_config
     from episode.catalog import resolve_task
     from episode.episode import Episode, state_summary
@@ -262,6 +278,9 @@ def run_episode(task, seed, route=None, planner="scripted", variant=None, out_ro
         (out / "result.json").write_text(json.dumps(report, indent=1, default=float))
         print("RESULT", task["task_id"], seed, label, "SUCCESS" if report.get("success") else "FAILED", flush=True)
         sys.stdout.flush()
+        if cov is not None:
+            cov.stop()
+            cov.save()
         os._exit(0 if report.get("success") else 3)
 
 

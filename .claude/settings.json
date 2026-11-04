@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && python3 tools/stop_check.py",
+            "timeout": 60,
+            "statusMessage": "stop_check: collision audit"
+          }
+        ]
+      }
+    ]
+  }
+}

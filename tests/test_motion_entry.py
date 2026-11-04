@@ -164,7 +164,8 @@ def test_leaving_a_contact_runs_the_segment_and_leaves_the_rest_to_the_caller():
     kin = LiftKin(lambda z: z < 0.02)
     rig = SimpleNamespace(kin=kin, q_cmd=np.zeros(9), held=None, logged=[], motions=[])
     rig.log = lambda ev, **kw: rig.logged.append((ev, kw))
-    rig.clear = SimpleNamespace(motion=lambda label, allow: rig.motions.append((label, allow)))
+    rig.clear = SimpleNamespace(motion=lambda label, allow, **kw: rig.motions.append((label, allow)),
+                                executing=lambda: None)
     for name in ("_start", "_planning", "_from_contact"):
         setattr(rig, name, getattr(Rig, name).__get__(rig))
     rig._exit_length = Rig._exit_length

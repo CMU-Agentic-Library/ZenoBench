@@ -339,6 +339,7 @@ class Rig:
         Time scaling only changes progress along the existing joint segments;
         it never rounds a corner into a configuration outside that path.
         """
+        self.clear.executing()
         points = [self.q_cmd.copy()] + [np.asarray(q, float) for q in qs]
         if len(points) == 1:
             return
@@ -374,6 +375,7 @@ class Rig:
         follow_smooth's gentle start and stop (a jerk shakes it out of the pinch)."""
         if self._carrying():
             return self.follow_smooth(qs, steps_per_wp, settle, tol)
+        self.clear.executing()
         vmax = self._vmax()
         for q in qs:
             need = int(math.ceil(np.max(np.abs(q - self.q_cmd) / vmax) * PHYSICS_HZ))
@@ -693,7 +695,7 @@ class Rig:
         self.log("leave_contact_exit", target=label, exit_m=round(float(np.linalg.norm(p1 - p0)), 4),
                  waypoints=n, of=len(qs), clear=clear)
         if n:
-            self.clear.motion(label, allow)
+            self.clear.motion(label, allow, side=kin.side)
             follow(qs[:n])
         return n < len(qs)
 
@@ -858,6 +860,7 @@ class Rig:
 
     def left_follow(self, qs, steps_per_wp=3, settle=150, tol=0.02):
         """Drive left arm and shared torso joints through IK waypoints."""
+        self.clear.executing()
         vmax = 0.6 * vel_limits(self.left_kin.names)
         for q in qs:
             q = np.asarray(q, float)
@@ -873,7 +876,7 @@ class Rig:
 
     def follow_both(self, right_goal, left_goal, *, label="bimanual", steps=None):
         """Drive both arms at once while checking each sampled paired posture."""
-        self.clear.motion(label, FREE)
+        self.clear.motion(label, FREE, side="both", follows=False)
         self.sync_world()
         self.world.left_active = True
         qr0 = self.q_cmd.copy()
@@ -923,7 +926,7 @@ class Rig:
         else:
             qs, allow = self._motion_path(label, allow, self.left_kin, lambda: self._left_path(p, R, label, FREE),
                                           lambda: self._left_path(p, R, label, LEGACY))
-            self.clear.motion(label, allow)
+            self.clear.motion(label, allow, side="left")
             self.left_follow(qs)
         tcp, _ = self.left_kin.tcp(self.left_q())
         err = float(np.linalg.norm(tcp-p))
@@ -1000,7 +1003,7 @@ class Rig:
         """Both arms (and the shared torso and waist) straight in joint space to (q_right: torso,
         waist, 7 right-arm joints; q_left: 7 left-arm joints) with a gentle start and stop: a
         posture switch the caller checked (the base planner's, Motion.base_depths)."""
-        self.clear.motion(label, allow)
+        self.clear.motion(label, allow, side="both", follows=False)
         r0, l0 = self.q_cmd.copy(), self.left_q_cmd.copy()
         r1, l1 = np.asarray(q_right, float), np.asarray(q_left, float)[-len(l0):]
         vr = self._vmax()
@@ -1028,7 +1031,7 @@ class Rig:
         ``speed``, ``turn``, ``ramp``: at most the cap of what the hands hold (_drive_cap), the ramp
         at least its least one.  ``allow``: BASE_DRIVE (the arms not checked along the path) unless
         the path is a whole-body plan (base_planner)."""
-        self.clear.motion("drive_base", allow)
+        self.clear.motion("drive_base", allow, side="base", follows=False)
         cap_v, cap_w, least_ramp = self._drive_cap()
         speed = cap_v if speed is None else min(speed, cap_v)
         turn = cap_w if turn is None else min(turn, cap_w)

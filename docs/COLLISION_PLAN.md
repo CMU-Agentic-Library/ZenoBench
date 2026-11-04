@@ -116,6 +116,12 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 
 **每一步**：单元测试、`build_skill_library --check`，加上这一步动到的技能对应的几个 episode（只单独重跑相关的，不整批反复跑）。第 1 节清单能静态数的部分由 `tests/test_collision_audit.py` 卡住：`tools/audit_collision.py` 按文件统计 `LEGACY` / `unchecked`、目标豁免、`ignore_fingers`、目标里的字面量偏移、`except` 和吞异常、遍历备选的重试循环等，任何一项比 `tests/fixtures/collision_audit_baseline.json` 高就失败（`--sites --kind <类>` 看具体位置）；降下来了就用 `--update-baseline` 把基线一起降下来提交。
 
+静态计数清零只是必要条件（`while` 换点、用返回值换策略、按几何拼的避障点数不出来），所以还有三样：
+
+- **运动记录和快照。** 每段运动在入口（`Clearance.motion`）记一行，写进 `result.json` 的 `contacts.segments`：技能、段名、哪只手臂、碰撞规则（free / planned / fallback / leave_contact / into_contact / lifting / legacy / unchecked / base_drive；`follow` 前没声明运动的记 raw）、手里有没有东西、这段之前的碰撞查询放宽了什么（`exempt` 目标豁免、`fingers` / `hand` 不查这只手）。`tools/motion_signature.py RUN --compare <快照>` 列出新出现、消失的行：每一行要么是这一步想要的，要么是漏改的。fallback 次数受规划随机性影响，只显示，不算差异。快照在 `tests/fixtures/motion_signature_*.json`，按针对性批次各存一份（`--save`），这一步想要的变化确认后再存新的。只记这只手自己的放宽，"另一只手的手指一律不查"是常开的，不记（步骤 5 删）。
+- **覆盖率。** `ZB_COVERAGE=1` 跑针对性 episode，`tools/skill_coverage.py RUN --file zeno_skills/skills.py` 列出这批 episode 一次都没进去的函数：没跑到的路径，回归通过也说明不了它对，要么补 episode，要么在完成标准里写明没验证。
+- **Stop 钩子**（`.claude/settings.json` → `tools/stop_check.py`）：Claude 每轮结束前，`zeno_skills/`、`tools/`、`tests/` 有改动时检查改过的 Python 能编译、审计计数没超基线，不过就不让结束；没改动直接放行。单元测试要在容器里跑两分多钟，不放进钩子。
+
 **全量**（T、P 全部 variation，种子 10、11，170 个）：批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像），驱动脚本参考 `/data/zenobench/bench_1104/drive.sh`。只在这些节点跑：3b 完成后、3c 完成后、步骤 5 完成后。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`，逐个对比写在 `COMPARE.md`。
 
 **基线**：3a（`0909b03`）139/170，`benchmark/runs/v3_sticky_gt_1103_3seeds/`；3b 第 2 项（`0c7eb90`）119/170，`benchmark/runs/v3_sticky_gt_1104_2seeds/`。下一次全量要先排除导航常数提交（第 4 节最后一行）的影响。

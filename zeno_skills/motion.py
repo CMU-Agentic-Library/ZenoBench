@@ -521,6 +521,8 @@ class Motion:
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
         self.exempt = []                 # objects the last query left out as targets (_targets_allow)
+        self.relaxed = {}                # side -> what its collision queries left out since the motion
+                                         # record last took it (take_relaxed): "exempt", "fingers", "hand"
         self._sync_n = 0
         self._base_scope = None
         self.by_owner = {}
@@ -762,6 +764,11 @@ class Motion:
         ca = (a[0] + a[1]) / 2
         return bool(np.all(ca > b[0] - pad) and np.all(ca < b[1] + pad))
 
+    def take_relaxed(self, side):
+        """What ``side``'s collision queries left out since the last call (the motion record's
+        ``relaxed``, Clearance.motion), and start over."""
+        return self.relaxed.pop(side, set())
+
     def _targets_allow(self, points):
         """Objects whose box (+TARGET_PAD) contains one of the TCP targets."""
         out = set()
@@ -793,6 +800,11 @@ class Motion:
             allow = set() if self.held.get(kin.side) or not coll_kw.get("exempt_targets", True) else \
                 self._targets_allow([np.asarray(p, float) for p in targets])
             self.exempt = sorted(o.split(":", 1)[1] for o in allow)
+            rel = self.relaxed.setdefault(kin.side, set())
+            if own:
+                rel.add("hand" if own is HAND_LINKS else "fingers")
+            if self.exempt:
+                rel.add("exempt")
             self._apply(kin.base_p[:2], allow=allow, side=kin.side)
         try:
             yield arm

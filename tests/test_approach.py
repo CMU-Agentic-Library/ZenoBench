@@ -49,7 +49,8 @@ class LineKin:
 def _rig(kin, z=0.3, held=None):
     rig = SimpleNamespace(kin=kin, q_cmd=np.full(9, z), held=held, logged=[], motions=[], ran=[])
     rig.log = lambda ev, **kw: rig.logged.append((ev, kw))
-    rig.clear = SimpleNamespace(motion=lambda label, allow: rig.motions.append((label, allow)),
+    rig.clear = SimpleNamespace(motion=lambda label, allow, **kw: rig.motions.append((label, allow)),
+                                executing=lambda: None,
                                 planned=lambda label: None, fallback=lambda *a: None)
     rig._planning = lambda kin, start, keep_held=False: nullcontext()
     rig.sync_world = lambda: None

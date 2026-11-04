@@ -443,7 +443,7 @@ def _swing_arm(rig, side, arm_q, label):
     goal = np.r_[start[:2], np.asarray(arm_q, float)[2:]]
     if np.max(np.abs(goal - start)) < SAME_POSTURE:
         return True
-    rig.clear.motion(label, FREE)
+    rig.clear.motion(label, FREE, side=side)
     if kin.segment_free(start, goal):
         vias = [goal]
     else:

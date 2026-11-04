@@ -16,6 +16,7 @@ class FakeRig:
         self.kin = SimpleNamespace(names=ArmKin().names)
         self.q_cmd = np.zeros(len(self.kin.names))
         self.grip_cmd = 0.04
+        self.clear = SimpleNamespace(executing=lambda: None)
         self.commands = []
         self.grip_commands = []
 
