@@ -15,9 +15,6 @@ Paired SkillNode: `skill_004` (`retreat-obstacle`).
 ## Policy paths
 
 - `microwave_door_sweep` when obstacle.instance == 'kitchen_microwave': `policy_030($obstacle)`
-- `bimanual_or_left_load` when robot.left_held: `policy_067($obstacle, $distance_m)`
-- `loaded` when robot.right_held: `policy_035($distance_m)`
-- `empty` when robot.base_ready: `policy_100($obstacle, $distance_m) as plan` -> `policy_037(#plan.forward_m)`
-- `untucked` when always: `policy_067($obstacle, $distance_m)`
+- `away` when always: `policy_067($obstacle, $distance_m)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

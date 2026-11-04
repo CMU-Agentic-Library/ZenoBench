@@ -50,9 +50,7 @@
     "class": "CarryNavigatePolicy"
   },
   "availability": "verified",
-  "skill_contract_paths": [
-    "contract_009:navigate/carry"
-  ],
+  "skill_contract_paths": [],
   "legacy_family_contracts": [
     "contract_001"
   ],

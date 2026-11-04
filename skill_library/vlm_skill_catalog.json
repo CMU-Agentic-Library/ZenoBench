@@ -1193,38 +1193,19 @@
      "note": "An object held by both grippers moves at the slow bimanual carry speed."
     },
     {
-     "path_id": "carry",
-     "when": [
-      "robot.right_held"
-     ],
-     "extra_preconditions": [],
-     "extra_postconditions": [],
-     "chain": [
-      "policy_097($destination) as plan",
-      "policy_002(#plan.pose, name=@robot.right_object, min_bottom_z=#plan.carry_bottom_z)"
-     ],
-     "policies": [
-      "policy_002",
-      "policy_097"
-     ],
-     "note": "Back off, lift the load to carry height, plan with extra clearance, drive slowly."
-    },
-    {
-     "path_id": "empty",
+     "path_id": "drive",
      "when": [
       "always (default path)"
      ],
      "extra_preconditions": [],
      "extra_postconditions": [],
      "chain": [
-      "policy_097($destination) as plan",
-      "policy_001(#plan.pose)"
+      "policy_092($destination)"
      ],
      "policies": [
-      "policy_001",
-      "policy_097"
+      "policy_092"
      ],
-     "note": ""
+     "note": "The nearest reachable stand-off; a load is carried in the carry pose (raised clear of the destination surface) and the base drives slower."
     }
    ],
    "relations": {
@@ -1511,27 +1492,7 @@
      "note": "The heading error is already under 2 deg: nothing moves."
     },
     {
-     "path_id": "rotate_empty",
-     "when": [
-      "not robot.right_held",
-      "not robot.left_held",
-      "robot.base_ready",
-      "target.bearing_abs_deg <= 88"
-     ],
-     "extra_preconditions": [],
-     "extra_postconditions": [],
-     "chain": [
-      "policy_099($target) as heading",
-      "policy_036(#heading.delta_yaw_deg)"
-     ],
-     "policies": [
-      "policy_036",
-      "policy_099"
-     ],
-     "note": "Fully tucked (arm, torso and waist at rest), empty, target within 88 deg: the measured in-place rotation primitive."
-    },
-    {
-     "path_id": "rotate_loaded",
+     "path_id": "rotate",
      "when": [
       "always (default path)"
      ],
@@ -1543,7 +1504,7 @@
      "policies": [
       "policy_066"
      ],
-     "note": "With a load, a target further round, or an untucked posture: an empty arm is tucked first (which also raises the torso and straightens the waist), a load turns slower."
+     "note": "An empty arm is tucked first (which also raises the torso and straightens the waist); the turn is checked over the whole robot and a load turns slower."
     }
    ],
    "relations": {
@@ -1730,54 +1691,7 @@
      "note": "The microwave's measured hinge-clearance pose (also when loaded)."
     },
     {
-     "path_id": "bimanual_or_left_load",
-     "when": [
-      "robot.left_held"
-     ],
-     "extra_preconditions": [],
-     "extra_postconditions": [],
-     "chain": [
-      "policy_067($obstacle, $distance_m)"
-     ],
-     "policies": [
-      "policy_067"
-     ],
-     "note": ""
-    },
-    {
-     "path_id": "loaded",
-     "when": [
-      "robot.right_held"
-     ],
-     "extra_preconditions": [],
-     "extra_postconditions": [],
-     "chain": [
-      "policy_035($distance_m)"
-     ],
-     "policies": [
-      "policy_035"
-     ],
-     "note": "Straight reverse with the right-hand load."
-    },
-    {
-     "path_id": "empty",
-     "when": [
-      "robot.base_ready"
-     ],
-     "extra_preconditions": [],
-     "extra_postconditions": [],
-     "chain": [
-      "policy_100($obstacle, $distance_m) as plan",
-      "policy_037(#plan.forward_m)"
-     ],
-     "policies": [
-      "policy_037",
-      "policy_100"
-     ],
-     "note": "Fully tucked and empty: reverse along the heading, at most 0.5 m; refuses when the obstacle is behind the robot (face away from it, or it is already behind you)."
-    },
-    {
-     "path_id": "untucked",
+     "path_id": "away",
      "when": [
       "always (default path)"
      ],
@@ -1789,7 +1703,7 @@
      "policies": [
       "policy_067"
      ],
-     "note": "Arm, torso or waist away from rest: back straight away from the obstacle footprint."
+     "note": "Straight away from the obstacle footprint, checked over the whole robot; a load stays held and the base drives slower."
     }
    ],
    "relations": {
@@ -15235,26 +15149,7 @@
    ],
    "policy_paths": [
     {
-     "path_id": "empty_tucked",
-     "when": [
-      "not robot.right_held",
-      "not robot.left_held",
-      "robot.base_ready",
-      "args.distance_m >= -0.5",
-      "args.distance_m <= 0.5"
-     ],
-     "extra_preconditions": [],
-     "extra_postconditions": [],
-     "chain": [
-      "policy_037(0.0, $distance_m)"
-     ],
-     "policies": [
-      "policy_037"
-     ],
-     "note": ""
-    },
-    {
-     "path_id": "loaded",
+     "path_id": "sideways",
      "when": [
       "always (default path)"
      ],
@@ -15266,7 +15161,7 @@
      "policies": [
       "policy_114"
      ],
-     "note": ""
+     "note": "Checked over the whole robot; a load stays held and the base drives slower."
     }
    ],
    "relations": {

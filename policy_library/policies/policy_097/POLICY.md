@@ -21,7 +21,7 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).plan_standoff.execute(...)`
 - Class: `PlanStandoffPolicy`
 - Availability: `callable`
-- Skill Contract paths: contract_009:navigate/two_hand_carry, contract_009:navigate/carry, contract_009:navigate/empty
+- Skill Contract paths: contract_009:navigate/two_hand_carry
 
 ## Recorded evidence
 

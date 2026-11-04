@@ -46,13 +46,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 ## Policy paths (first match on the bound nouns)
 
-### `empty_tucked` — when not robot.right_held and not robot.left_held and robot.base_ready and args.distance_m >= -0.5 and args.distance_m <= 0.5
-
-1. `policy_037(0.0, $distance_m)`
-
-### `loaded` — when always (default path)
+### `sideways` — when always (default path)
 
 1. `policy_114($distance_m)`
+- Checked over the whole robot; a load stays held and the base drives slower.
 
 ## Relations
 

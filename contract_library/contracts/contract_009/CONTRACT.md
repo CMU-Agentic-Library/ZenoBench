@@ -15,7 +15,6 @@ Paired SkillNode: `skill_001` (`navigate-place`).
 ## Policy paths
 
 - `two_hand_carry` when robot.both_hold_same: `policy_097($destination) as plan` -> `policy_058(@robot.right_object, #plan.pose)`
-- `carry` when robot.right_held: `policy_097($destination) as plan` -> `policy_002(#plan.pose, name=@robot.right_object, min_bottom_z=#plan.carry_bottom_z)`
-- `empty` when always: `policy_097($destination) as plan` -> `policy_001(#plan.pose)`
+- `drive` when always: `policy_092($destination)`
 
 Runtime: `zeno_skills.skill_runtime.SkillContractRunner`.

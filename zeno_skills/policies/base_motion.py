@@ -100,10 +100,15 @@ class NavigateToPlacePolicy(AtomicPolicy):
     def execute(self, place):
         rig = self.rig
         entity_kind(rig.ann, place)                     # KeyError for an unknown noun
+        min_bottom_z = None
         if rig.held is not None:
+            # the load's bottom clear of the destination surface (W: plan_helpers._carry_bottom_z,
+            # until the base planner changes the carry height itself, docs/COLLISION_PLAN.md §7)
+            from .plan_helpers import _carry_bottom_z
+            min_bottom_z = _carry_bottom_z(rig, place)
             # the carry posture the drive will use, before the stand-offs are checked in it
             # (navigate re-takes it; a pick that ended short of it changed it there, P15)
-            skills._carry_pose(rig)
+            skills._carry_pose(rig, min_bottom_z=min_bottom_z)
         poses = standoff_poses(rig, place)
         if not poses:
             raise SkillFailure(f"navigate to {place}: no free stand-off pose")
@@ -117,7 +122,7 @@ class NavigateToPlacePolicy(AtomicPolicy):
                                "(even the column's inscribed circle cannot get there)")
         pose = reach[0]
         rig.caption = f"NAVIGATE to {place}"
-        skills.navigate(rig, pose, label=f"navigate_{place}")
+        skills.navigate(rig, pose, label=f"navigate_{place}", min_bottom_z=min_bottom_z)
         rig.log("navigate_place", place=place, pose=[round(v, 3) for v in pose])
         return tuple(rig.base_pose())
 

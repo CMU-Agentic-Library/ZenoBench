@@ -23,7 +23,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 - Legacy alias: `PolicySuite(rig).carry_navigate.execute(...)`
 - Class: `CarryNavigatePolicy`
 - Availability: `verified`
-- Skill Contract paths: contract_009:navigate/carry
 - Legacy family Contracts: contract_001
 
 ## Recorded evidence

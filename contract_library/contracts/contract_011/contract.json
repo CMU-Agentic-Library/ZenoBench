@@ -88,56 +88,7 @@
     "note": "The heading error is already under 2 deg: nothing moves."
    },
    {
-    "path_id": "rotate_empty",
-    "when": [
-     {
-      "noun": "robot",
-      "field": "right_held",
-      "op": "falsy",
-      "value": true
-     },
-     {
-      "noun": "robot",
-      "field": "left_held",
-      "op": "falsy",
-      "value": true
-     },
-     {
-      "noun": "robot",
-      "field": "base_ready",
-      "op": "truthy",
-      "value": true
-     },
-     {
-      "noun": "target",
-      "field": "bearing_abs_deg",
-      "op": "lte",
-      "value": 88
-     }
-    ],
-    "steps": [
-     {
-      "policy": "policy_099",
-      "args": [
-       "$target"
-      ],
-      "kwargs": {},
-      "as": "heading"
-     },
-     {
-      "policy": "policy_036",
-      "args": [
-       "#heading.delta_yaw_deg"
-      ],
-      "kwargs": {}
-     }
-    ],
-    "requires": [],
-    "ensures": [],
-    "note": "Fully tucked (arm, torso and waist at rest), empty, target within 88 deg: the measured in-place rotation primitive."
-   },
-   {
-    "path_id": "rotate_loaded",
+    "path_id": "rotate",
     "when": [],
     "steps": [
      {
@@ -150,7 +101,7 @@
     ],
     "requires": [],
     "ensures": [],
-    "note": "With a load, a target further round, or an untucked posture: an empty arm is tucked first (which also raises the torso and straightens the waist), a load turns slower."
+    "note": "An empty arm is tucked first (which also raises the torso and straightens the waist); the turn is checked over the whole robot and a load turns slower."
    }
   ]
  },

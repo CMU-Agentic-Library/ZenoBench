@@ -74,21 +74,28 @@ EMPTY_READY = {"right_held": False, "left_held": False, "base_ready": True}
 
 @pytest.mark.parametrize("bearing, robot, want", [
     (1.0, EMPTY_READY, "already_facing"),
-    (60.0, EMPTY_READY, "rotate_empty"),
-    (150.0, EMPTY_READY, "rotate_loaded"),                 # beyond the in-place primitive's 90 deg
-    (60.0, dict(EMPTY_READY, base_ready=False), "rotate_loaded"),   # crouched, bent or arm out
+    (60.0, EMPTY_READY, "rotate"),
+    (150.0, EMPTY_READY, "rotate"),
+    (60.0, dict(EMPTY_READY, base_ready=False), "rotate"),          # crouched, bent or arm out
+    (60.0, dict(EMPTY_READY, right_held=True, base_ready=False), "rotate"),
 ])
-def test_face_routes_what_the_rotation_primitive_refuses(bearing, robot, want):
+def test_face_has_one_turn_whatever_the_arms_hold(bearing, robot, want):
     assert _path("face", {"target": {"bearing_abs_deg": bearing}, "robot": robot}) == want
 
 
-@pytest.mark.parametrize("distance, ready, want", [
-    (0.3, True, "empty_tucked"), (-0.4, True, "empty_tucked"),
-    (0.8, True, "loaded"), (0.3, False, "loaded"),
-])
-def test_sidestep_routes_long_or_untucked_moves_to_the_general_policy(distance, ready, want):
+@pytest.mark.parametrize("distance, ready", [(0.3, True), (-0.4, True), (0.8, True), (0.3, False)])
+def test_sidestep_has_one_path_whatever_the_arms_hold(distance, ready):
     robot = dict(EMPTY_READY, base_ready=ready)
-    assert _path("sidestep", {"args": {"distance_m": distance}, "robot": robot}) == want
+    assert _path("sidestep", {"args": {"distance_m": distance}, "robot": robot}) == "sideways"
+
+
+@pytest.mark.parametrize("robot, want", [
+    (EMPTY_READY, "away"), (dict(EMPTY_READY, right_held=True, base_ready=False), "away"),
+    (dict(EMPTY_READY, left_held=True), "away"),
+])
+def test_retreat_has_one_path_whatever_the_arms_hold(robot, want):
+    nouns = {"obstacle": {"instance": "dining_table_2"}, "robot": robot, "args": {"distance_m": 0.4}}
+    assert _path("retreat", nouns) == want
 
 
 def test_policy_value_error_is_a_policy_failure(monkeypatch):

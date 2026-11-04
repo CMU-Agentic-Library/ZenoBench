@@ -45,9 +45,7 @@
     "class": "BackOffWithLoadPolicy"
   },
   "availability": "verified",
-  "skill_contract_paths": [
-    "contract_012:retreat/loaded"
-  ],
+  "skill_contract_paths": [],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_001"

@@ -26,7 +26,7 @@ temperature uses a separate task-level model. Success is measured from simulator
 ## SkillNode / Contract / Policy
 
 <!-- library:start -->
-**70 个动词 SkillNode**，一一对应 70 个 Contract，共 120 条按名词选择的 policy 路径，覆盖 113/116 个底层 policy（退役 3 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 72 个 GT 谓词；关系图有 96 条上一步/下一步、40 条 fallback、46 条 alternative。
+**70 个动词 SkillNode**，一一对应 70 个 Contract，共 114 条按名词选择的 policy 路径，覆盖 106/116 个底层 policy（退役 10 个，见 [POLICY_COVERAGE.md](policy_library/POLICY_COVERAGE.md)）；前后条件来自 72 个 GT 谓词；关系图有 96 条上一步/下一步、40 条 fallback、46 条 alternative。
 
 | 类别 | 动词 |
 |---|---|

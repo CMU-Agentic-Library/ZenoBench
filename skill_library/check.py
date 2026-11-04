@@ -114,6 +114,17 @@ RETIRED_POLICIES = {
                   "was removed (every manipulation skill chooses its own base park).",
     "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every "
                   "manipulation skill chooses its own base park).",
+    "policy_001": "Empty-hand navigate to a pose: navigate's empty and carry paths are one (policy_092), the drive "
+                  "speed capped by what the hands hold in Rig.drive_base (2026-11-04).",
+    "policy_002": "Carry navigate to a pose: merged into navigate's one path (policy_092, see policy_001).",
+    "policy_035": "Back off with a load along the heading: retreat's paths are one (policy_067, away from the "
+                  "obstacle, whole-robot checked, load kept) since 2026-11-04.",
+    "policy_036": "Rotate the tucked, empty base in place: face's paths are one (policy_066), the turn checked over "
+                  "the whole robot whatever the arms hold (2026-11-04).",
+    "policy_037": "Translate the tucked, empty base: retreat (policy_067) and sidestep (policy_114) have one path "
+                  "each, checked over the whole robot whatever the arms hold (2026-11-04).",
+    "policy_099": "Heading for policy_036: only face's tucked-empty path used it (merged, 2026-11-04).",
+    "policy_100": "Reverse distance for policy_037: only retreat's tucked-empty path used it (merged, 2026-11-04).",
 }
 
 NOUN_FIELDS = {

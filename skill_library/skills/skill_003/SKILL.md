@@ -53,16 +53,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 
 - The heading error is already under 2 deg: nothing moves.
 
-### `rotate_empty` — when not robot.right_held and not robot.left_held and robot.base_ready and target.bearing_abs_deg <= 88
-
-1. `policy_099($target) as heading`
-2. `policy_036(#heading.delta_yaw_deg)`
-- Fully tucked (arm, torso and waist at rest), empty, target within 88 deg: the measured in-place rotation primitive.
-
-### `rotate_loaded` — when always (default path)
+### `rotate` — when always (default path)
 
 1. `policy_066($target)`
-- With a load, a target further round, or an untucked posture: an empty arm is tucked first (which also raises the torso and straightens the waist), a load turns slower.
+- An empty arm is tucked first (which also raises the torso and straightens the waist); the turn is checked over the whole robot and a load turns slower.
 
 ## Relations
 

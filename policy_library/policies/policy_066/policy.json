@@ -45,7 +45,7 @@
   },
   "availability": "callable",
   "skill_contract_paths": [
-    "contract_011:face/rotate_loaded",
+    "contract_011:face/rotate",
     "contract_019:look/turn_then_head"
   ],
   "legacy_family_contracts": [],

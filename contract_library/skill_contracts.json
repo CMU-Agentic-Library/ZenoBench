@@ -113,62 +113,20 @@
       "note": "An object held by both grippers moves at the slow bimanual carry speed."
      },
      {
-      "path_id": "carry",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "right_held",
-        "op": "truthy",
-        "value": true
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_097",
-        "args": [
-         "$destination"
-        ],
-        "kwargs": {},
-        "as": "plan"
-       },
-       {
-        "policy": "policy_002",
-        "args": [
-         "#plan.pose"
-        ],
-        "kwargs": {
-         "name": "@robot.right_object",
-         "min_bottom_z": "#plan.carry_bottom_z"
-        }
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": "Back off, lift the load to carry height, plan with extra clearance, drive slowly."
-     },
-     {
-      "path_id": "empty",
+      "path_id": "drive",
       "when": [],
       "steps": [
        {
-        "policy": "policy_097",
+        "policy": "policy_092",
         "args": [
          "$destination"
-        ],
-        "kwargs": {},
-        "as": "plan"
-       },
-       {
-        "policy": "policy_001",
-        "args": [
-         "#plan.pose"
         ],
         "kwargs": {}
        }
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
+      "note": "The nearest reachable stand-off; a load is carried in the carry pose (raised clear of the destination surface) and the base drives slower."
      }
     ]
    },
@@ -331,56 +289,7 @@
       "note": "The heading error is already under 2 deg: nothing moves."
      },
      {
-      "path_id": "rotate_empty",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "right_held",
-        "op": "falsy",
-        "value": true
-       },
-       {
-        "noun": "robot",
-        "field": "left_held",
-        "op": "falsy",
-        "value": true
-       },
-       {
-        "noun": "robot",
-        "field": "base_ready",
-        "op": "truthy",
-        "value": true
-       },
-       {
-        "noun": "target",
-        "field": "bearing_abs_deg",
-        "op": "lte",
-        "value": 88
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_099",
-        "args": [
-         "$target"
-        ],
-        "kwargs": {},
-        "as": "heading"
-       },
-       {
-        "policy": "policy_036",
-        "args": [
-         "#heading.delta_yaw_deg"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": "Fully tucked (arm, torso and waist at rest), empty, target within 88 deg: the measured in-place rotation primitive."
-     },
-     {
-      "path_id": "rotate_loaded",
+      "path_id": "rotate",
       "when": [],
       "steps": [
        {
@@ -393,7 +302,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": "With a load, a target further round, or an untucked posture: an empty arm is tucked first (which also raises the torso and straightens the waist), a load turns slower."
+      "note": "An empty arm is tucked first (which also raises the torso and straightens the waist); the turn is checked over the whole robot and a load turns slower."
      }
     ]
    },
@@ -548,86 +457,7 @@
       "note": "The microwave's measured hinge-clearance pose (also when loaded)."
      },
      {
-      "path_id": "bimanual_or_left_load",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "left_held",
-        "op": "truthy",
-        "value": true
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_067",
-        "args": [
-         "$obstacle",
-         "$distance_m"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": ""
-     },
-     {
-      "path_id": "loaded",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "right_held",
-        "op": "truthy",
-        "value": true
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_035",
-        "args": [
-         "$distance_m"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": "Straight reverse with the right-hand load."
-     },
-     {
-      "path_id": "empty",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "base_ready",
-        "op": "truthy",
-        "value": true
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_100",
-        "args": [
-         "$obstacle",
-         "$distance_m"
-        ],
-        "kwargs": {},
-        "as": "plan"
-       },
-       {
-        "policy": "policy_037",
-        "args": [
-         "#plan.forward_m"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": "Fully tucked and empty: reverse along the heading, at most 0.5 m; refuses when the obstacle is behind the robot (face away from it, or it is already behind you)."
-     },
-     {
-      "path_id": "untucked",
+      "path_id": "away",
       "when": [],
       "steps": [
        {
@@ -641,7 +471,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": "Arm, torso or waist away from rest: back straight away from the obstacle footprint."
+      "note": "Straight away from the obstacle footprint, checked over the whole robot; a load stays held and the base drives slower."
      }
     ]
    },
@@ -12475,55 +12305,7 @@
     "on_no_match": "NO_PATH: the Contract refuses without moving",
     "paths": [
      {
-      "path_id": "empty_tucked",
-      "when": [
-       {
-        "noun": "robot",
-        "field": "right_held",
-        "op": "falsy",
-        "value": true
-       },
-       {
-        "noun": "robot",
-        "field": "left_held",
-        "op": "falsy",
-        "value": true
-       },
-       {
-        "noun": "robot",
-        "field": "base_ready",
-        "op": "truthy",
-        "value": true
-       },
-       {
-        "noun": "args",
-        "field": "distance_m",
-        "op": "gte",
-        "value": -0.5
-       },
-       {
-        "noun": "args",
-        "field": "distance_m",
-        "op": "lte",
-        "value": 0.5
-       }
-      ],
-      "steps": [
-       {
-        "policy": "policy_037",
-        "args": [
-         0.0,
-         "$distance_m"
-        ],
-        "kwargs": {}
-       }
-      ],
-      "requires": [],
-      "ensures": [],
-      "note": ""
-     },
-     {
-      "path_id": "loaded",
+      "path_id": "sideways",
       "when": [],
       "steps": [
        {
@@ -12536,7 +12318,7 @@
       ],
       "requires": [],
       "ensures": [],
-      "note": ""
+      "note": "Checked over the whole robot; a load stays held and the base drives slower."
      }
     ]
    },
@@ -15309,6 +15091,13 @@
  "retired_policies": {
   "policy_014": "Floor corner pinch: with parallel jaws the closing axis across a 2.9 cm flat object lying on the floor runs nearly horizontally over its top face, so the upper pad never presses the top and the lower pad would have to sit below the floor; it held nothing in any of 11 Isaac Sim attempts (notebook, books, toy car). Flat objects on the floor have no pick path.",
   "policy_051": "Reach toward a target while driving past it: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park).",
-  "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park)."
+  "policy_098": "Reach pose of a target: only the approach SkillNode used it, and approach was removed (every manipulation skill chooses its own base park).",
+  "policy_001": "Empty-hand navigate to a pose: navigate's empty and carry paths are one (policy_092), the drive speed capped by what the hands hold in Rig.drive_base (2026-11-04).",
+  "policy_002": "Carry navigate to a pose: merged into navigate's one path (policy_092, see policy_001).",
+  "policy_035": "Back off with a load along the heading: retreat's paths are one (policy_067, away from the obstacle, whole-robot checked, load kept) since 2026-11-04.",
+  "policy_036": "Rotate the tucked, empty base in place: face's paths are one (policy_066), the turn checked over the whole robot whatever the arms hold (2026-11-04).",
+  "policy_037": "Translate the tucked, empty base: retreat (policy_067) and sidestep (policy_114) have one path each, checked over the whole robot whatever the arms hold (2026-11-04).",
+  "policy_099": "Heading for policy_036: only face's tucked-empty path used it (merged, 2026-11-04).",
+  "policy_100": "Reverse distance for policy_037: only retreat's tucked-empty path used it (merged, 2026-11-04)."
  }
 }

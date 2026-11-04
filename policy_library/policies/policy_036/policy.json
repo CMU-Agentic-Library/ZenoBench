@@ -44,9 +44,7 @@
     "class": "BaseRotateInPlacePolicy"
   },
   "availability": "verified",
-  "skill_contract_paths": [
-    "contract_011:face/rotate_empty"
-  ],
+  "skill_contract_paths": [],
   "legacy_family_contracts": [],
   "supporting_family_contracts": [
     "contract_001"

@@ -108,38 +108,19 @@
    "note": "An object held by both grippers moves at the slow bimanual carry speed."
   },
   {
-   "path_id": "carry",
-   "when": [
-    "robot.right_held"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_097($destination) as plan",
-    "policy_002(#plan.pose, name=@robot.right_object, min_bottom_z=#plan.carry_bottom_z)"
-   ],
-   "policies": [
-    "policy_002",
-    "policy_097"
-   ],
-   "note": "Back off, lift the load to carry height, plan with extra clearance, drive slowly."
-  },
-  {
-   "path_id": "empty",
+   "path_id": "drive",
    "when": [
     "always (default path)"
    ],
    "extra_preconditions": [],
    "extra_postconditions": [],
    "chain": [
-    "policy_097($destination) as plan",
-    "policy_001(#plan.pose)"
+    "policy_092($destination)"
    ],
    "policies": [
-    "policy_001",
-    "policy_097"
+    "policy_092"
    ],
-   "note": ""
+   "note": "The nearest reachable stand-off; a load is carried in the carry pose (raised clear of the destination surface) and the base drives slower."
   }
  ],
  "relations": {

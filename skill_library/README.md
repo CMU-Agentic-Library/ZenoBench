@@ -1,7 +1,7 @@
 # ZenoBench 动词 SkillNode 库（schema 2）
 
 <!-- counts:start -->
-**70 个 SkillNode**（`skill_001`–`skill_071`，`skill_002` 已退役不再使用，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_079`），共 **120 条按名词选择的 policy 路径**，覆盖 **113/116 个底层 policy**（3 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、47 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
+**70 个 SkillNode**（`skill_001`–`skill_071`，`skill_002` 已退役不再使用，70 个不同动词）一一对应 **70 个 Contract**（`contract_009`–`contract_079`），共 **114 条按名词选择的 policy 路径**，覆盖 **106/116 个底层 policy**（10 个退役，原因见 [POLICY_COVERAGE.md](../policy_library/POLICY_COVERAGE.md)）；前后条件来自 **72 个 GT 谓词**。关系图有 49 条 enables、47 条 then、40 条 fallback （repair 13、recover 25、substitute 2）和 46 条 alternative。[tasks.json](tasks.json) 列出 35 个任务。
 <!-- counts:end -->
 
 ## 设计
@@ -86,9 +86,9 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 
 | SkillNode | Verb + noun | Signature | Paths (noun-selected) | Postconditions |
 |---|---|---|---|---|
-| `skill_001` | **navigate** place | `navigate(destination)` | two_hand_carry, carry, empty | `base_near` |
-| `skill_003` | **face** target | `face(target)` | already_facing, rotate_empty, rotate_loaded | `facing` |
-| `skill_004` | **retreat** obstacle | `retreat(obstacle, distance_m)` | microwave_door_sweep, bimanual_or_left_load, loaded, empty, untucked | `base_clear_of` |
+| `skill_001` | **navigate** place | `navigate(destination)` | two_hand_carry, drive | `base_near` |
+| `skill_003` | **face** target | `face(target)` | already_facing, rotate | `facing` |
+| `skill_004` | **retreat** obstacle | `retreat(obstacle, distance_m)` | microwave_door_sweep, away | `base_clear_of` |
 | `skill_005` | **crouch** torso | `crouch(height_m?)` | to_height, lowest | `torso_raised` + `torso_at`, `torso_lowered` |
 | `skill_006` | **stand** torso | `stand()` | highest | `torso_raised` |
 | `skill_007` | **bend** waist | `bend(pitch_rad?)` | to_pitch, full | `waist_straight` + `waist_bent` |
@@ -139,7 +139,7 @@ $ISAACLAB_PYTHON tools/verify_skills.py --all --jobs 3   # 物理验证
 | `skill_052` | **arrange** objects | `arrange(objects, support, max_dist_m)` | place_near_common_spot | `grouped` |
 | `skill_053` | **restore** object | `restore(object)` | dispatch_pick_place | `at_initial_place`, `hand_empty` |
 | `skill_054` | **swap** objects | `swap(a, b)` | via_buffer | `positions_swapped`, `hand_empty` |
-| `skill_055` | **sidestep** base | `sidestep(distance_m)` | empty_tucked, loaded | `sidestepped` |
+| `skill_055` | **sidestep** base | `sidestep(distance_m)` | sideways | `sidestepped` |
 | `skill_056` | **wait** duration | `wait(seconds)` | idle | `waited` |
 | `skill_057` | **identify** object | `identify(object)` | look_and_label | `identified`, `in_view` |
 | `skill_058` | **measure** object | `measure(object)` | look_and_size | `measured`, `in_view` |

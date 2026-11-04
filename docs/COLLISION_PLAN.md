@@ -227,7 +227,8 @@ open / close、`held_vertical_move`（含 `place_lower_to_contact`）、rotate�
 | 离开接触段上方有东西时会直接顶上去（不查碰撞，最多 6 cm） | 柜子里、层板下面抓取 | 第 10 节 |
 | 边走边伸手 / 抓 / 放（`mobile.py`）已停用：底盘路径按出发姿态规划，没有整机检查 | 没有任务用到 | 整机规划之前不恢复 |
 | 占地检查只在 0.15、0.6 m 两个高度取点（`COLUMN_Z`），0.6–1.05 m 之间的台面边漏查（餐桌面约 0.75 m） | — | 待定 |
-| face、retreat、sidestep 按"收好、空手"和"其他"分成两条路径（`skill_library/definitions.py`）：空手走 `policy_036` / `policy_037`（要求 `base_ready`，转身最多 88°、平移最多 0.5 m），其他走 `policy_066` / `policy_067` / `policy_114`。整机检查和按手里东西限速（`drive_base`）之后两边做的是同一件事：一次 `straight_base_move` | — | 待定：合成一条路径，要改技能库和导出 |
+| T10 can_on_island s10 在导航常数提交之后确定性失败（11-04 成功）：开往易拉罐的站位从 `[7.546, 1.011, 45°]` 变成 `[7.281, 1.126, 30°]`（30 个站位都可达，变化来自站位占地余量 5 → 3 cm，`99d02f1`），之后抓取姿态、垃圾桶旁的悬停停车点都不同，`hover_above` 带倾角规划失败。`5df416b` 上同样失败（`benchmark/runs/t10_at_5df416b`），和路径合并无关 | T10 can_on_island s10 | 规划器能力不够（同 6.1 E 类）；下一次全量时看还有哪些受站位变化影响 |
+| ~~face、retreat、sidestep、navigate 按"收好、空手"和"其他"分成几条路径~~ | — | 已合并（2026-11-04）：每个技能一条路径（navigate → `policy_092`，face → `policy_066`，retreat → `policy_067`，sidestep → `policy_114`；双手搬运、微波炉门的 retreat 保留），`policy_001`、`002`、`035`、`036`、`037`、`099`、`100` 退役（`skill_library/check.py`） |
 
 ## 8. 常数登记（不满足原则 5 的）
 

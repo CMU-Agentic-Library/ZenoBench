@@ -82,26 +82,7 @@
  ],
  "policy_paths": [
   {
-   "path_id": "empty_tucked",
-   "when": [
-    "not robot.right_held",
-    "not robot.left_held",
-    "robot.base_ready",
-    "args.distance_m >= -0.5",
-    "args.distance_m <= 0.5"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_037(0.0, $distance_m)"
-   ],
-   "policies": [
-    "policy_037"
-   ],
-   "note": ""
-  },
-  {
-   "path_id": "loaded",
+   "path_id": "sideways",
    "when": [
     "always (default path)"
    ],
@@ -113,7 +94,7 @@
    "policies": [
     "policy_114"
    ],
-   "note": ""
+   "note": "Checked over the whole robot; a load stays held and the base drives slower."
   }
  ],
  "relations": {

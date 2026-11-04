@@ -39,6 +39,7 @@
   },
   "availability": "callable",
   "skill_contract_paths": [
+    "contract_009:navigate/drive",
     "contract_059:empty/pick_each_inside",
     "contract_061:restore/dispatch_pick_place"
   ],

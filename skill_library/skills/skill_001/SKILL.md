@@ -55,16 +55,10 @@ after the policy chain, every listed predicate is evaluated on ground-truth simu
 2. `policy_058(@robot.right_object, #plan.pose)`
 - An object held by both grippers moves at the slow bimanual carry speed.
 
-### `carry` — when robot.right_held
+### `drive` — when always (default path)
 
-1. `policy_097($destination) as plan`
-2. `policy_002(#plan.pose, name=@robot.right_object, min_bottom_z=#plan.carry_bottom_z)`
-- Back off, lift the load to carry height, plan with extra clearance, drive slowly.
-
-### `empty` — when always (default path)
-
-1. `policy_097($destination) as plan`
-2. `policy_001(#plan.pose)`
+1. `policy_092($destination)`
+- The nearest reachable stand-off; a load is carried in the carry pose (raised clear of the destination surface) and the base drives slower.
 
 ## Relations
 

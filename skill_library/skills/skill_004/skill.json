@@ -113,54 +113,7 @@
    "note": "The microwave's measured hinge-clearance pose (also when loaded)."
   },
   {
-   "path_id": "bimanual_or_left_load",
-   "when": [
-    "robot.left_held"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_067($obstacle, $distance_m)"
-   ],
-   "policies": [
-    "policy_067"
-   ],
-   "note": ""
-  },
-  {
-   "path_id": "loaded",
-   "when": [
-    "robot.right_held"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_035($distance_m)"
-   ],
-   "policies": [
-    "policy_035"
-   ],
-   "note": "Straight reverse with the right-hand load."
-  },
-  {
-   "path_id": "empty",
-   "when": [
-    "robot.base_ready"
-   ],
-   "extra_preconditions": [],
-   "extra_postconditions": [],
-   "chain": [
-    "policy_100($obstacle, $distance_m) as plan",
-    "policy_037(#plan.forward_m)"
-   ],
-   "policies": [
-    "policy_037",
-    "policy_100"
-   ],
-   "note": "Fully tucked and empty: reverse along the heading, at most 0.5 m; refuses when the obstacle is behind the robot (face away from it, or it is already behind you)."
-  },
-  {
-   "path_id": "untucked",
+   "path_id": "away",
    "when": [
     "always (default path)"
    ],
@@ -172,7 +125,7 @@
    "policies": [
     "policy_067"
    ],
-   "note": "Arm, torso or waist away from rest: back straight away from the obstacle footprint."
+   "note": "Straight away from the obstacle footprint, checked over the whole robot; a load stays held and the base drives slower."
   }
  ],
  "relations": {
