@@ -233,7 +233,7 @@ def layout_spec(task, vid, registry, control=None):
         if n in under or n not in boxes:
             continue
         cx, cy = (boxes[n][0] + boxes[n][2]) / 2, (boxes[n][1] + boxes[n][3]) / 2
-        if sup not in sups or _fixed_support(base, sup) or \
+        if sup not in sups or _fixed_support(base, sup) or (n in design and sup in v.get("keep_design", [])) or \
                 any(_overlap(boxes[n], r) for r in keep_out.get(sup, [])) or \
                 any(es == sup and math.hypot(cx - ex[0], cy - ex[1]) < EVENT_NEAR_M for es, ex in events):
             fixed.add(n)

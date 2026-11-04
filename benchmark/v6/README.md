@@ -32,7 +32,7 @@ An episode is **task + variant + seed**.
     view; the first `look` target is not behind a wall). Over the 1,270 episodes a moved object shifts 0.21 m
     (median, 90th percentile 0.86 m) and the start 3.8 m (90th percentile 8.4 m); which removable distractors
     are left out is drawn too;
-  - for a variant with several **layouts** (40 variants), which one: the same design with the resource,
+  - for a variant with several **layouts** (41 variants), which one: the same design with the resource,
     substitute or item in another place, or an event taking it elsewhere (e.g. the cup in cabinet 4 or in
     cabinet 6). The seeds are spread over the layouts by a fixed-RNG, balanced manifest
     (`v6_variants[vid]["seeds"]`); each layout has its own configuration and oracle route (`variants[<layout>]`).
@@ -71,8 +71,10 @@ An initial resource / destination / capacity failure next to a scene condition o
 **Task-Level choices happen over a longer horizon.** A choice the robot could make where it already is (which
 container, which cookware, the substitute next to it) is redesigned so the right one is in another room
 (`LONG` / `REPLACED` in `define_tasks_v6.py`: the bins on the bedroom bookcase, the mug in the living room, the
-pot on the dining table); the in-place variant leaves v6 (`v6_replaced`). T01 `table_set` (choose the reading
-spot on the set table) stays as it is.
+pot on the dining table); the in-place variant leaves v6 (`v6_replaced`). T01 `table_seats` stays a choice at
+the table: the instruction says only "a suitable place", the edge of the set table has several free slots (too
+narrow, away from every seat, one beside a seat) and the seed picks one of three settings, so the suitable slot is
+judged from what is seen, not remembered (`keep_design`: the seed leaves the setting as it is).
 
 A goal of a variant's own (close the door again, leave the block on the island) states how a fallback ends and
 does not by itself make a variant Task-Level.
@@ -88,6 +90,8 @@ python benchmark/v6/define_tasks_v6.py     # tasks.json (catalog + tracks); --ch
 python benchmark/v6/validate_v6.py         # STATIC.json: per-episode static checks, v5 hashes, manifests
 python benchmark/v6/report_v6.py           # variant_cards.json, ROUTES.md, SKILL_FIX_LIST.md, PHYSICS_TODO.md
 python benchmark/v6/tracks.py              # TRACKS.md, batches/category_*.json
+python benchmark/v6/success_routes.py      # SUCCESS_ROUTES_zh.md (after VARIANTS_zh.md)
+$ISAACLAB_PYTHON benchmark/v6/render_variants.py --task T01   # Isaac Sim start-scene pictures -> ~/Pictures/<task>/<variant>/
 python -m pytest -q benchmark/v6/tests failure_injection
 $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
     --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval
@@ -96,6 +100,8 @@ $ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json \
 ## Files
 
 * `VARIANTS_zh.md` - every variant in plain Chinese: the situation, what the robot does, what the seed chooses.
+* `SUCCESS_ROUTES_zh.md` - every variant's success conditions (goal atoms, in Chinese) and reference skill call
+  order (oracle route, one per layout).
 * `TRACKS.md` - the four categories, counts per task, every variant with its local fallback and longer-horizon change.
 * `variant_cards.json` - per concrete variant: instruction, initial conditions, failure triggers, goal, tracks,
   control, oracle route, challenge / rationale, success criteria.

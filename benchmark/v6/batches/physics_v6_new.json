@@ -2,6 +2,146 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 10,
+"variant": "table_seats__seats_c",
+"route": "v6_table_seats__seats_c",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 11,
+"variant": "table_seats__seats_a",
+"route": "v6_table_seats__seats_a",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 12,
+"variant": "table_seats__seats_a",
+"route": "v6_table_seats__seats_a",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 13,
+"variant": "table_seats__seats_b",
+"route": "v6_table_seats__seats_b",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 14,
+"variant": "table_seats__seats_a",
+"route": "v6_table_seats__seats_a",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 15,
+"variant": "table_seats__seats_a",
+"route": "v6_table_seats__seats_a",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 16,
+"variant": "table_seats__seats_c",
+"route": "v6_table_seats__seats_c",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 17,
+"variant": "table_seats__seats_b",
+"route": "v6_table_seats__seats_b",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 18,
+"variant": "table_seats__seats_b",
+"route": "v6_table_seats__seats_b",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 19,
+"variant": "table_seats__seats_c",
+"route": "v6_table_seats__seats_c",
+"family": "table_seats"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 11,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 12,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 13,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 14,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 15,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 16,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 17,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 18,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 19,
+"variant": "seat_slot_blocked",
+"route": "v6_seat_slot_blocked",
+"family": "seat_slot_blocked"
+},
+{
+"task": "T01_book_to_dining_table",
+"seed": 10,
 "variant": "x6_dr_block_on_book__block",
 "route": "v6_x6_dr_block_on_book__block",
 "family": "x6_dr_block_on_book__block"

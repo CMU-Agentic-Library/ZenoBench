@@ -205,3 +205,42 @@ def test_category_batches_name_their_profile():
         jobs = json.loads((ROOT / f"benchmark/v6/batches/category_{k}.json").read_text())
         assert jobs and all(j["category"] == k and j["profile"] == cfg["profile"] for j in jobs)
         assert len(jobs) == 10 * sum(x["category"] == k for t in TASKS.values() for x in t["v6_tracks"].values())
+
+
+def _t01_suitable(cfg):
+    """Centres y (1 cm steps) along the east edge of the dining table where a book (12 x 18 cm, either way along
+    the edge) is clear of the tableware by 5 cm and within 15 cm of a plate or bowl (the table_seats goal)."""
+    import math
+    from benchmark.v6 import layout as L
+    boxes = {n: L._box(L._asset_of(cfg["base"], n, {}), m) for n, m in cfg["move"].items()
+             if m.get("support") == "dining_table_2/top"}
+
+    def gap(a, b):
+        return math.hypot(max(0, max(a[0], b[0]) - min(a[2], b[2])), max(0, max(a[1], b[1]) - min(a[3], b[3])))
+    ok = set()
+    for along, across in ((0.12, 0.18), (0.18, 0.12)):
+        for i in range(250):
+            y = 5.495 + along / 2 + i * 0.01
+            if y + along / 2 > 7.955:
+                break
+            bk = [3.859 - across, y - along / 2, 3.859, y + along / 2]
+            if min(gap(bk, b) for b in boxes.values()) >= 0.05 and \
+                    min(gap(bk, boxes[n]) for n in ("bowl_side_table", "plate_counter_a", "plate_counter_b")) <= 0.15:
+                ok.add(round(y, 2))
+    return ok
+
+
+def test_t01_one_suitable_slot_per_setting():
+    """T01 table_seats: in every setting and seed the edge has one suitable slot (the route's), and it differs
+    between the settings; seat_slot_blocked has none until the cereal box is moved."""
+    t = TASKS["T01_book_to_dining_table"]
+    slots = {}
+    for s, lid in t["v6_variants"]["table_seats"]["seeds"].items():
+        ok = _t01_suitable(episode_config(t, int(s), lid))
+        hint = [x for x in t["routes"][t["oracle"][lid]]["steps"] if x["skill"] == "place"][-1]["args"]["hint_xy"]
+        assert ok and max(ok) - min(ok) < 0.2, (lid, s, sorted(ok))        # one slot, not several
+        assert min(ok) - 0.02 <= hint[1] <= max(ok) + 0.02, (lid, s, hint)
+        slots[lid] = round(hint[1], 2)
+    assert len(set(slots.values())) == 3
+    for s in SEEDS:
+        assert not _t01_suitable(episode_config(t, s, "seat_slot_blocked"))

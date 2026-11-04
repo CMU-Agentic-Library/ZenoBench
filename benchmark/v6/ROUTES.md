@@ -16,12 +16,14 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 ### Task-Level
 
-* `table_set` (v5fix_table_set, 8 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) +place(paperback_book,dining_table_2/top,[3.72, 6.8])
+* `table_seats__seats_a` (v6_table_seats__seats_a, 8 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) place(paperback_book,dining_table_2/top,[3.72, 7.059])
+* `table_seats__seats_b` (v6_table_seats__seats_b, 8 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) place(paperback_book,dining_table_2/top,[3.72, 6.138])
+* `table_seats__seats_c` (v6_table_seats__seats_c, 8 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) place(paperback_book,dining_table_2/top,[3.72, 7.779])
 
 ### Action + Task
 
 * `far_no_overhang` (v5fix_far_no_overhang, 8 steps): +search(paperback_book,living_room_0_0) navigate(paperback_book) !pick(paperback_book) +expose(paperback_book) +look(paperback_book) pick(paperback_book) navigate(dining_table_2/top) place(paperback_book,dining_table_2/top,[3.72, 6.5])
-* `h_dynamic_pushed_back` (v5_h_dynamic_pushed_back, 11 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) !pick(paperback_book) +expose(paperback_book) +look(paperback_book) +pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) +place(paperback_book,dining_table_2/top,[3.72, 6.8])
+* `seat_slot_blocked` (v6_seat_slot_blocked, 14 steps): look(kitchen_island/top) navigate(paperback_book) approach(paperback_book) +look(paperback_book) pick(paperback_book) navigate(dining_table_2/top) look(dining_table_2/top) place(paperback_book,dining_table_2/top,[3.72, 5.67]) +pick(clutter_cereal_b) +place(clutter_cereal_b,dining_table_2/top,[3.4, 7.059]) +approach(paperback_book) +look(paperback_book) +pick(paperback_book) place(paperback_book,dining_table_2/top,[3.72, 7.059])
 
 ## T02_stack_blocks
 

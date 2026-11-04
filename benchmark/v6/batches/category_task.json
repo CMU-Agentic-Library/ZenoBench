@@ -2,102 +2,102 @@
 {
 "task": "T01_book_to_dining_table",
 "seed": 10,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_c",
+"route": "v6_table_seats__seats_c",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 11,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_a",
+"route": "v6_table_seats__seats_a",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 12,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_a",
+"route": "v6_table_seats__seats_a",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 13,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_b",
+"route": "v6_table_seats__seats_b",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 14,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_a",
+"route": "v6_table_seats__seats_a",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 15,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_a",
+"route": "v6_table_seats__seats_a",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 16,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_c",
+"route": "v6_table_seats__seats_c",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 17,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_b",
+"route": "v6_table_seats__seats_b",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 18,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_b",
+"route": "v6_table_seats__seats_b",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T01_book_to_dining_table",
 "seed": 19,
-"variant": "table_set",
-"route": "v5fix_table_set",
+"variant": "table_seats__seats_c",
+"route": "v6_table_seats__seats_c",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "table_set"
+"v6_variant": "table_seats"
 },
 {
 "task": "T03_utensils_one_container",

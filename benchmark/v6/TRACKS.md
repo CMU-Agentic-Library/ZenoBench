@@ -18,7 +18,7 @@ Variants per task:
 | Task-Level | 1 |  | 4 | 7 | 3 | 5 | 4 | 3 | 4 | 3 | 4 | 5 | 6 | 1 | 1 | 3 | 3 | 4 | 2 | 1 |
 | Action + Task | 2 | 2 |  |  | 2 |  | 1 | 1 | 1 | 1 |  |  | 2 |  |  | 1 | 1 |  | 1 |  |
 
-Removed with the injected action failures: 91 variants (21 had nothing else, 61 equal another variant without them; `v6_dropped` per task).
+Removed with the injected action failures: 93 variants (21 had nothing else, 61 equal another variant without them; `v6_dropped` per task).
 
 ## Variants
 
@@ -28,9 +28,9 @@ Removed with the injected action failures: 91 variants (21 had nothing else, 61 
 | T01 | no_overhang | Action-Level | expose the flat object over the edge, then pick it | - | 1 |
 | T01 | x6_dr_block_on_book__block | Action-Level | clear the object on the target / open the door first | - | 1 |
 | T01 | x6_dr_block_on_book__sponge | Action-Level | clear the object on the target / open the door first | - | 1 |
-| T01 | table_set | Task-Level | - | spot_quality | 1 |
+| T01 | table_seats | Task-Level | - | spot_quality | 3 |
 | T01 | far_no_overhang | Action + Task | expose the flat object over the edge, then pick it | start_elsewhere | 1 |
-| T01 | h_dynamic_pushed_back | Action + Task | someone changed things at the work spot: put it right there | spot_quality | 1 |
+| T01 | seat_slot_blocked | Action + Task | move what fills the destination to a legal place, then place | spot_quality | 1 |
 | T02 | clear | Control | - | - | 1 |
 | T02 | crowded | Action-Level | separate the crowded object, then pick it | - | 1 |
 | T02 | edge_base | Action-Level | move the base in from the edge (or stack on the other one) | - | 1 |

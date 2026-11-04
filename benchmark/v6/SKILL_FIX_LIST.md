@@ -7,7 +7,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | skill | object | ok | failed | fail rate | main causes | tasks | v6 variants also using it | example |
 |---|---|---|---|---|---|---|---|---|
 | pick | juice_bottle | 24 | 62 | 72% | grasp miss 58, articulation (door does not move) 3, IK / reach / base pose 1 | T20 | 1 | pick juice_bottle: not held (lift -0.001 m) |
-| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 9 | carry: paperback_book slipped out of the hand while carrying it |
+| navigate | dining_table_2/top | 407 | 51 | 11% | carry slip 51 | T01 T13 T20 | 11 | carry: paperback_book slipped out of the hand while carrying it |
 | navigate | bookcase_2/top | 377 | 49 | 12% | carry slip 49 | T11 T14 | 6 | carry: apple slipped out of the hand while carrying it |
 | wipe | kitchen_island/top | 21 | 44 | 68% | IK / reach / base pose 23, carry slip 17, other 4 | T08 | 1 | wipe kitchen_island/top: no base pose reaches the strip (rejected: {'candidates': 3433, 'footprint': 197, 'travel_pose': 30, 'ik': 47, 'ride |
 | pick | mug | 56 | 40 | 42% | grasp miss 40 | T04 T13 | 2 | pick mug: not held (lift 0.000 m) |
@@ -66,11 +66,13 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
 | pick | cherry_tomato_1 | T09/x6_pp_tomato_taken_out__tomato1 |
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere, T09/x6_pp_tomato_taken_out__tomato2, T09/x6_pp_tomato_taken_out__tomato2_after_stir |
+| pick | clutter_cereal_b | T01/seat_slot_blocked |
 | pick | floor_block | T02/x6_gd_tower_with_event |
 | pick | handled_cooking_pot | T09/pot_in_dining_room |
 | pick | orange_2 | T11/x6_gd_fruits_event |
 | pick | pen | T05/x6_gd_pen_or_pencil_cabinets |
 | place | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
+| place | clutter_cereal_b | T01/seat_slot_blocked |
 | place | handled_cooking_pot | T09/pot_in_dining_room |
 | place | orange_2 | T11/x6_gd_fruits_event |
 | place | pen | T05/x6_gd_pen_or_pencil_cabinets |
