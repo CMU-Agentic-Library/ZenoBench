@@ -659,8 +659,8 @@
        ]
       ]
      },
-     "instruction": "Bring the paperback from the island to the dining table and put it in a suitable place.",
-     "instruction_zh": "请把岛台上的书拿到餐桌上，放在合适的位置。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -946,8 +946,8 @@
        ]
       ]
      },
-     "instruction": "Bring the paperback from the island to the dining table and put it in a suitable place.",
-     "instruction_zh": "请把岛台上的书拿到餐桌上，放在合适的位置。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -1233,8 +1233,8 @@
        ]
       ]
      },
-     "instruction": "Bring the paperback from the island to the dining table and put it in a suitable place.",
-     "instruction_zh": "请把岛台上的书拿到餐桌上，放在合适的位置。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
      "watch": [
       "paperback_book",
       "plate_counter_a",
@@ -1521,8 +1521,8 @@
        ]
       ]
      },
-     "instruction": "Bring the paperback from the island to the dining table and put it in a suitable place.",
-     "instruction_zh": "请把岛台上的书拿到餐桌上，放在合适的位置。",
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
      "watch": [
       "paperback_book",
       "plate_counter_a",

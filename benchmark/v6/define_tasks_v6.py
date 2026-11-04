@@ -171,9 +171,14 @@ def T01(t):
         *[["near_start", n, 0.03] for n in T01_WARE6 if n not in moved],
         *[["on", n, DINING] for n in moved],
         *[["upright", n] for n in T01_UPRIGHT], ["hand_empty", "right"]]}
-    suitable = dict(instruction="Bring the paperback from the island to the dining table and put it in a suitable "
-                                "place.",
-                    instruction_zh="请把岛台上的书拿到餐桌上，放在合适的位置。")
+    # where the book goes is said (beside a guest's place, clear of the tableware); which free slot that is, and
+    # whether the book fits there, the robot judges from what it sees
+    suitable = dict(instruction="Breakfast is set on the dining table for the guests. Bring the paperback from the "
+                                "island and put it beside one of the guests' places, so they can read while they "
+                                "eat; leave some space between the book and the tableware, do not put it right "
+                                "against it.",
+                    instruction_zh="餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，"
+                                   "方便边吃边看；书和餐具之间要留出空隙，不要挨着。")
     return {
         "table_seats": dict(
             base="table_set", control="overhang_ready", conditions=["spot_quality"], **suitable, keep_design=[DINING],

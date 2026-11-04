@@ -72,7 +72,7 @@ An initial resource / destination / capacity failure next to a scene condition o
 container, which cookware, the substitute next to it) is redesigned so the right one is in another room
 (`LONG` / `REPLACED` in `define_tasks_v6.py`: the bins on the bedroom bookcase, the mug in the living room, the
 pot on the dining table); the in-place variant leaves v6 (`v6_replaced`). T01 `table_seats` stays a choice at
-the table: the instruction says only "a suitable place", the edge of the set table has several free slots (too
+the table: the instruction asks for a place beside a guest's setting, clear of the tableware, not which slot; the edge of the set table has several free slots (too
 narrow, away from every seat, one beside a seat) and the seed picks one of three settings, so the suitable slot is
 judged from what is seen, not remembered (`keep_design`: the seed leaves the setting as it is).
 
