@@ -963,11 +963,10 @@ class Rig:
         hand right above the load (3b: no retreat past the contact exit), where the fold may not
         fit (T12 s11: the tray on the bookcase) and a base plan cannot start with the arm
         reaching in.  ``hang`` False: the fold only.  False, the arm left where it is, when there
-        is none."""
+        is none.  Free space, the fingers in the collision model (_fingers_checked): an open hand
+        folded away over a load just let go knocked it over (T04)."""
         self.sync_world()
-        kw = self.kin.coll_kw
-        self.kin.coll_kw = {"ignore_fingers": True}
-        try:
+        with self._fingers_checked(self.kin):
             rest = self.kin.rest
             try:
                 goal = next((q for q in ((rest, self.kin.drive) if hang else (rest,)) if self.kin.free(q)), None)
@@ -981,8 +980,6 @@ class Rig:
                 return False
             self.follow(qs)
             return True
-        finally:
-            self.kin.coll_kw = kw
 
     # ------------------------------------------------------------ base
     def set_base(self, x, y, yaw_deg):

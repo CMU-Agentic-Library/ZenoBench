@@ -29,7 +29,7 @@ R 类不列。下面只列要动的。
 | rig.py `_left_path` | 直线失败 → `ik_global` → 有时 cuRobo、有时直接插值；左臂没有 `plan_to`，也没有持物碰撞 | F | 步骤 5，左臂走同一套入口 |
 | rig.py `follow_both` | 双臂只有直线插值，按 `max(3, n//8)` 个样本稀疏检查 | X | 步骤 5，双臂要有规划或至少逐点检查 |
 | rig.py `joint_path_via` | 直接插值，不做任何检查 | X | 步骤 5，`follow` 只收检查过的路径 |
-| rig.py `tuck` | `coll_kw = {"ignore_fingers": True}` | X | 步骤 5（第 7 节） |
+| rig.py `tuck` | `coll_kw = {"ignore_fingers": True}` | X | 已改（11-04，提前做）：查手指（`_fingers_checked`） |
 | planner.py `_ik_sequence` | 正向链失败就反向链（为了 IK 分支连续） | K | 改成种子；手写 park 删掉时再看（步骤 3） |
 | planner.py `_chain` | park 搜索用直线判可达，执行时直线不通还会规划，两边判据不一致 | X | 手写 park 删掉时一起看（步骤 3） |
 | planner.py `find_park` | `near` 是三元组时 cost=-1，跳过收臂姿态、展开、可达路径三项检查；`_move_articulated` 和 `place` 用它探测手写 park | X | 手写 park 删掉后这条路径一起删 |

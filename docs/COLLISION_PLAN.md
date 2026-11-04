@@ -144,7 +144,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 
 | 类 | episode | 原因 | 处理 |
 |---|---|---|---|
-| A 代码写错 | T04 no_cup_mug_away ×2（确认）；T02 edge_base ×2（待查） | place 松手后的收臂不查手指，手停在刚放下的物体正上方，把它带倒（杯子掉到地上） | 放完后的收臂查手指，刚放下的物体是障碍物 |
+| A 代码写错 | T04 no_cup_mug_away ×2（确认）；T02 edge_base ×2（待查） | place 松手后的收臂不查手指，手停在刚放下的物体正上方，把它带倒（杯子掉到地上） | 已修（11-04）：`Rig.tuck` 查手指；T04 ×2、T02 edge_base s10 重跑成功，P12 s10 不变（`benchmark/runs/tuck_fingers_1104`） |
 | D 代码写错 | T13 no_cup ×2、T09 lid_on_spoon_away | pick 把"sticky 焊住"放在手指检查之前，手指读数 [0, 0] 也判成拿住 | 焊住也要手指没合到底 |
 | B 步骤 5 被暴露 | T20 table_full、T13 no_cup_bowl_on_cabinet、T09 cookware_choice、T04 no_cup ×2 | 竖直下放时躯干下降，收在身侧的左臂压到桌面，手被顶住；`place_down` 的 41 次 fallback 里大多是左臂 | 待定：左臂收起姿态是否提前到 3b 做（第 10 节） |
 | G 步骤 5 被暴露 | P07 ×2 | 停车位置变了，左臂收臂（直接插值、不查碰撞）卡在岛台上 | 步骤 5 |
@@ -209,7 +209,7 @@ open / close、`held_vertical_move`（含 `place_lower_to_contact`）、rotate�
 - 左臂收起姿态不伸出底盘轮廓（停车点被拒、放东西时压到桌面，见 6.1 B 类）。
 - `LeftArmFoldPolicy` 和所有左臂运动走同一套规划，不再直接插值（6.1 G 类）。
 - `follow` / `left_follow` 只接受检查过的路径。
-- 删掉：`ignore_fingers`（收臂 `tuck` 也还不查手指）、"另一只手的手指一律不查"、`other_touching` 的永久排除、`world.active`、`world.left_active`、`WorldModel.temp_obstacles`（空操作）。两只手都碰物体时（handover）在 `allow` 里显式声明。
+- 删掉：`ignore_fingers`、"另一只手的手指一律不查"、`other_touching` 的永久排除、`world.active`、`world.left_active`、`WorldModel.temp_obstacles`（空操作）。两只手都碰物体时（handover）在 `allow` 里显式声明。
 - `kin.set_base`、`kin.lo` / `kin.hi` 的临时改写换成上下文管理器。
 
 **针对性检查：** P06、P07、handover 相关任务。**完成标准：** `tools/audit_collision.py` 里 `coll_kw` 直接写入和原始 `follow` 调用为 0；清单全部清零。做完跑全量。
