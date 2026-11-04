@@ -15,7 +15,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 
 - `name`: positional_or_keyword; required
 - `region`: positional_or_keyword; optional
-- `max_places`: keyword_only; optional
 
 ## Binding and status
 

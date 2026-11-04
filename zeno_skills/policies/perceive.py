@@ -273,11 +273,10 @@ class ExploreFurniturePolicy(AtomicPolicy):
 
 class SearchObjectPolicy(AtomicPolicy):
     """Look for an object at candidate places in order of distance until it is
-    seen.  Candidates are the supports and container interiors of the region
-    (a room, or the robot's room).  Closed cabinets are opened, inspected and
-    closed again."""
+    seen.  Candidates are the supports of the region (a room, or the robot's room), grouped by
+    furniture; at each the head is aimed at every support, highest first."""
 
-    def execute(self, name, region=None, *, max_places=8):
+    def execute(self, name, region=None):
         rig = self.rig
         from ..evaluator import room_of
         from .base_motion import NavigateToPlacePolicy
@@ -295,11 +294,11 @@ class SearchObjectPolicy(AtomicPolicy):
             math.hypot((s["aabb_xy"][0] + s["aabb_xy"][2]) / 2 - x, (s["aabb_xy"][1] + s["aabb_xy"][3]) / 2 - y)
             for s in furniture[f]))
         visited = []
-        for f in order[:max_places]:
+        for f in order:
             visited.append(f)
             try:
                 NavigateToPlacePolicy(rig).execute(f if f in {s.get("furniture") for s in rig.ann.supports}
-                                                   else furniture[f][0]["name"], max_tries=3)
+                                                   else furniture[f][0]["name"])
             except SkillFailure as exc:
                 rig.log("search_skip", place=f, reason=str(exc))
                 continue

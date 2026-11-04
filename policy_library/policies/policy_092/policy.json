@@ -16,12 +16,6 @@
       "name": "place",
       "kind": "positional_or_keyword",
       "required": true
-    },
-    {
-      "name": "max_tries",
-      "kind": "keyword_only",
-      "required": false,
-      "default": 6
     }
   ],
   "requires": [

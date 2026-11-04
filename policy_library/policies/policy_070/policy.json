@@ -22,12 +22,6 @@
       "kind": "positional_or_keyword",
       "required": false,
       "default": null
-    },
-    {
-      "name": "max_places",
-      "kind": "keyword_only",
-      "required": false,
-      "default": 8
     }
   ],
   "requires": [

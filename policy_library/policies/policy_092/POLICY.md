@@ -14,7 +14,6 @@ Policy-specific checks remain inside the controller and are not all normalized i
 ## Execute inputs
 
 - `place`: positional_or_keyword; required
-- `max_tries`: keyword_only; optional
 
 ## Binding and status
 
