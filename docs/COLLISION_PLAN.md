@@ -151,7 +151,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 | 类 | episode | 原因 | 处理 |
 |---|---|---|---|
 | A 代码写错 | T04 no_cup_mug_away ×2（确认）；T02 edge_base ×2（待查） | place 松手后的收臂不查手指，手停在刚放下的物体正上方，把它带倒（杯子掉到地上） | 已修（11-04）：`Rig.tuck` 查手指；T04 ×2、T02 edge_base s10 重跑成功，P12 s10 不变（`benchmark/runs/tuck_fingers_1104`） |
-| D 代码写错 | T13 no_cup ×2、T09 lid_on_spoon_away | pick 把"sticky 焊住"放在手指检查之前，手指读数 [0, 0] 也判成拿住 | 焊住也要手指没合到底 |
+| D 代码写错 | T13 no_cup ×2、T09 lid_on_spoon_away | pick 把"sticky 焊住"放在手指检查之前，手指读数 [0, 0] 也判成拿住 | 已修（11-04）：焊住也要手指没合到底，和 `holding` 一致。三个都还会失败（pick 自己报没拿住），根因是合爪时没捏稳：杯子是 C 类（接近推开 3 cm，一指 3.6 mm、一指 32 mm），勺子合在 22 mm 后滑出 |
 | B 步骤 5 被暴露 | T20 table_full、T13 no_cup_bowl_on_cabinet、T09 cookware_choice、T04 no_cup ×2 | 竖直下放时躯干下降，收在身侧的左臂压到桌面，手被顶住；`place_down` 的 41 次 fallback 里大多是左臂 | 待定：左臂收起姿态是否提前到 3b 做（第 10 节） |
 | G 步骤 5 被暴露 | P07 ×2 | 停车位置变了，左臂收臂（直接插值、不查碰撞）卡在岛台上 | 步骤 5 |
 | C 接近 | P14 ×2、T13 no_cup ×2 | 接近途中把要抓的物体推开 3–4 cm，手停在离抓取点约 4 cm 处；可能和目标豁免有关，没确认 | pick 两段式（6.2）后复查 |

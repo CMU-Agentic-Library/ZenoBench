@@ -1279,10 +1279,11 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
     tcp, _ = rig.kin.tcp(rig.q())
     rise, lift = float(tcp[2] - tcp0[2]), float(after[2] - pos[2])
     f = rig.fingers()
-    # it came along: a sticky-hands weld holds it (as check_held has it), else the fingers on it
-    # and the object up with the hand (a carry pose kept where the arm stood checks the contact
-    # exit's few cm)
-    held = welded(rig, "right", name) or (bool(f.min() > 0.003) and (rise < 0.01 or lift > 0.5 * rise))
+    # it came along: the fingers not shut, and a sticky-hands weld holds it (as check_held has it)
+    # or the object up with the hand (a carry pose kept where the arm stood checks the contact
+    # exit's few cm).  A weld alone is not held: it carries what slid out of the pads (fingers
+    # [0, 0], T13 no_cup mug, T09 spoon), and `holding` judges the fingers
+    held = bool(f.min() > 0.003) and (welded(rig, "right", name) or rise < 0.01 or lift > 0.5 * rise)
     rig.log("pick_result", obj=name, kind=g["kind"], lift_m=round(lift, 4), hand_rise_m=round(rise, 4),
             fingers=f.round(4).tolist(), held=held)
     rig.focus_z = None
