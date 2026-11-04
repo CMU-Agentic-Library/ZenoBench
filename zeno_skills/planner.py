@@ -18,7 +18,6 @@ import math
 
 import numpy as np
 
-from .collision import BASE_HALF
 from .kinematics import manipulability, tips_over
 
 # The base drives facing along the path (drive_base yaws to the segment

@@ -15,9 +15,11 @@ from contextlib import contextmanager
 
 import numpy as np
 
-BASE_HALF = 0.26   # base column half size (0.244) + margin
-FOOTPRINT_MARGIN = 0.03   # m the base column keeps from the boxes and moving parts, on top of BASE_HALF's
-                          # (two margins stacked: inherited, 3ccd5e99; docs/COLLISION_PLAN.md §2)
+BASE_HALF = 0.2442        # m: half size of the base column's square (base_link.STL's bounding box: +-0.2442 m,
+COLUMN_TOP = 1.05         # z 0.027-1.053 m); the column's height (boxes starting below it are in its way)
+FOOTPRINT_MARGIN = 0.046  # m the column keeps from the boxes and moving parts: the one margin (it was 1.6 cm
+                          # inside BASE_HALF plus 3 cm on top, both inherited from 3ccd5e99; the sum is kept,
+                          # unmeasured: docs/COLLISION_PLAN.md §2)
 FOOTPRINT_GRID = 6        # points per side the column's square is sampled at
 COLUMN_Z = (0.15, 0.6)    # m: heights the column is sampled at (inherited, 3ccd5e99, unmeasured)
 CIRCLE_RES = 0.025  # m: grid of circles_clear against the static boxes (half the base planner's lattice step)
@@ -98,7 +100,8 @@ class WorldModel:
         return self._near
 
     def circles_clear(self, xy, r=BASE_HALF):
-        """(N,) bool: a vertical cylinder of radius r (the column's inscribed one) at each xy is clear
+        """(N,) bool: a vertical cylinder of radius r (the bare column's inscribed one, without
+        FOOTPRINT_MARGIN) at each xy is clear
         of the boxes up to the column's height and of the moving parts: a relaxation of
         footprints_clear at every heading.  The static boxes come from a grid computed once
         (CIRCLE_RES; the cell nearest each xy), the loose objects and moving parts per call."""
@@ -115,7 +118,7 @@ class WorldModel:
         """xy -> bool lookup of circles_clear against the static boxes, rasterised once."""
         cache = self.__dict__.setdefault("_circle_grids", {})
         if r not in cache:
-            B = self.B[(self.B[:, 2] > -0.5) & (self.B[:, 2] < 1.05)]
+            B = self.B[(self.B[:, 2] > -0.5) & (self.B[:, 2] < COLUMN_TOP)]
             lo, hi = B[:, :2].min(0) - 1.0, B[:, 3:5].max(0) + 1.0
             n = np.ceil((hi - lo) / CIRCLE_RES).astype(int) + 1
             free = np.ones(n, bool)
@@ -173,7 +176,8 @@ class WorldModel:
         return ok
 
     def footprint_clear(self, x, y, yaw, margin=FOOTPRINT_MARGIN):
-        """Base column (0.52 m square, 1.05 m tall) vs static boxes and parts."""
+        """Base column (2 BASE_HALF square, COLUMN_TOP tall, sampled at COLUMN_Z) vs static boxes and parts,
+        FOOTPRINT_MARGIN apart."""
         c, s = np.cos(yaw), np.sin(yaw)
         g = np.linspace(-BASE_HALF, BASE_HALF, FOOTPRINT_GRID)
         pts = np.array([[x + c * u - s * v, y + s * u + c * v, z]
