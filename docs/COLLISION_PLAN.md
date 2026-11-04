@@ -227,6 +227,7 @@ open / close、`held_vertical_move`（含 `place_lower_to_contact`）、rotate�
 | 离开接触段上方有东西时会直接顶上去（不查碰撞，最多 6 cm） | 柜子里、层板下面抓取 | 第 10 节 |
 | 边走边伸手 / 抓 / 放（`mobile.py`）已停用：底盘路径按出发姿态规划，没有整机检查 | 没有任务用到 | 整机规划之前不恢复 |
 | 占地检查只在 0.15、0.6 m 两个高度取点（`COLUMN_Z`），0.6–1.05 m 之间的台面边漏查（餐桌面约 0.75 m） | — | 待定 |
+| face、retreat、sidestep 按"收好、空手"和"其他"分成两条路径（`skill_library/definitions.py`）：空手走 `policy_036` / `policy_037`（要求 `base_ready`，转身最多 88°、平移最多 0.5 m），其他走 `policy_066` / `policy_067` / `policy_114`。整机检查和按手里东西限速（`drive_base`）之后两边做的是同一件事：一次 `straight_base_move` | — | 待定：合成一条路径，要改技能库和导出 |
 
 ## 8. 常数登记（不满足原则 5 的）
 
@@ -242,8 +243,9 @@ open / close、`held_vertical_move`（含 `place_lower_to_contact`）、rotate�
 | pick 候选排序的 `0.3 × along_rank` | 拍定 | 同上 |
 | `CARRY_SPOTS`（4 个位置）、`CARRY_RISE`、`CARRY_BODY_W`、`CARRY_SPOT_COST`；`PLACE_*_COST`；`WIPE_*` | 3a 拍定 | 3b 改到所在技能时 |
 | `DRIVE_EMPTY` / `DRIVE_LOADED` / `DRIVE_SWINGING` | 继承的，没测过 | 测一次拿着容器开车、转身时物体的晃动 |
-| `STANDOFF_*`、`ROOM_SPOT_*`、`SAME_POSTURE`、`AT_PARK_*`、`FACE_ERR_DEG`、`RETREAT_*`、`BACK_OFF_SLACK`、`DEPTH_TOL`、`PHYSICS_HZ` 相关的"等一秒" | 有名字，没出处 | 改到所在技能时 |
-| `FOOTPRINT_MARGIN` 4.6 cm（原来两层余量之和）、`FOOTPRINT_GRID`、`COLUMN_Z` | 值没测过；`COLUMN_Z` 漏查（第 7 节） | 待定，改了要针对性检查站位和路径 |
+| `STANDOFF_*`、`ROOM_SPOT_*`、`SAME_POSTURE`、`AT_PARK_*`、`FACE_ERR_DEG`、`RETREAT_*`、`BACK_OFF_SLACK`、`DEPTH_TOL`、`PHYSICS_HZ` 相关的"等一秒"、`REST_TOL` / `STOWED_TOL`、`HELD_CHECK_EVERY`、`BLOCKED_PROBE_M` | 有名字，没出处 | 改到所在技能时 |
+| 探索的 `COVER_*`、`VIEW_TURNS`、`SWEEP_*`、`VIEW_TRIES`，以及 `max_views` / `min_spacing` 的默认值（`perceive.py`） | 继承的，没测过 | 3c（和清单 3.9 的"视点不可达就跳过"一起） |
+| `FOOTPRINT_MARGIN` 4.6 cm（原来两层余量之和）、`FOOTPRINT_GRID`、`COLUMN_Z` | 值没测过（已知的一项：11-04 全量 2409 次开车，终点误差都在 7 mm 以内，即日志的厘米舍入；开车途中的跟踪误差没记）；`COLUMN_Z` 漏查（第 7 节） | 待定，改了要针对性检查站位和路径 |
 | `base_planner` 的 `TURN_COST`、`SWITCH_COST`、`GREEDY`、`MAX_EXPAND` | 偏好和预算，没有数据 | 底盘规划提速时 |
 | 停车点搜索次数（pick 120、push 60、`ApproachTargetPolicy` 160） | 各处不同 | 改到所在技能时 |
 | `planner.Grid` / `plan_path` 的 `R_BASE` 0.28 m | 没有 cuRobo 时的旧规划，回归不走 | 步骤 5 清理 |

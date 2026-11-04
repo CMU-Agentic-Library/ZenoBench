@@ -8,6 +8,7 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
+from ..kinematics import REST_TOL
 from ..rig import SkillFailure
 
 BACK_OFF_SLACK = 0.01       # m a back-off may fall short of min_distance (inherited, 32a2d66c; unmeasured)
@@ -97,7 +98,7 @@ class BackOffWithLoadPolicy(AtomicPolicy):
 def _require_tucked_empty_base(rig, action):
     if rig.held is not None:
         raise SkillFailure(f"{action}: release the held object first")
-    if np.max(np.abs(rig.q() - rig.kin.rest)) > 0.05:
+    if np.max(np.abs(rig.q() - rig.kin.rest)) > REST_TOL:
         raise SkillFailure(f"{action}: tuck the arm before direct base motion")
 
 
@@ -114,7 +115,7 @@ class BaseRotateInPlacePolicy(AtomicPolicy):
         skills.straight_base_move(self.rig, (x, y, target), "base rotate")
         bx, by, actual = self.rig.base_pose()
         angle_error = abs((actual - target + 180) % 360 - 180)
-        if math.hypot(bx - x, by - y) > 0.02 or angle_error > tolerance_deg:
+        if math.hypot(bx - x, by - y) > skills.AT_PARK_M or angle_error > tolerance_deg:
             raise SkillFailure("base rotate: measured base pose missed target")
         return actual
 
@@ -134,7 +135,7 @@ class BaseTranslateLocalPolicy(AtomicPolicy):
         skills.straight_base_move(self.rig, (x + dx, y + dy, yaw), "base translate")
         bx, by, actual_yaw = self.rig.base_pose()
         error = math.hypot(bx - x - dx, by - y - dy)
-        if error > tolerance_m or abs((actual_yaw - yaw + 180) % 360 - 180) > 2:
+        if error > tolerance_m or abs((actual_yaw - yaw + 180) % 360 - 180) > skills.AT_PARK_DEG:
             raise SkillFailure("base translate: measured base pose missed target")
         return (bx, by, actual_yaw)
 

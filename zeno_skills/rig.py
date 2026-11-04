@@ -43,6 +43,7 @@ BASE_VMAX = np.array([1.0, 1.0, 2.0])     # m/s, m/s, rad/s: base velocity targe
 DRIVE_EMPTY = (0.35, 0.8, 0.0)
 DRIVE_LOADED = (0.25, 0.5, 0.0)      # an object in the right hand
 DRIVE_SWINGING = (0.17, 0.30, 1.8)   # a container on a one-hand rim pinch, or a load in the left hand alone: it pivots
+HELD_CHECK_EVERY = PHYSICS_HZ // 2      # ticks between check_held calls along a drive (inherited, unmeasured)
 DRIVE_RAMP = 0.8                     # s: acceleration ramp of a drive that asks for none
 
 
@@ -1068,7 +1069,7 @@ class Rig:
                 if on_step is not None:
                     on_step(float(u / T), (float(q[0]), float(q[1]), float(q[2])))
                 self.step(1)
-                if i % 60 == 0:
+                if i % HELD_CHECK_EVERY == 0:
                     from .skills import check_held, check_left_held
                     if self.held is not None:
                         check_held(self, "carry")

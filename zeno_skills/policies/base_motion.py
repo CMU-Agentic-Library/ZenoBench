@@ -219,8 +219,7 @@ class LeftArmFoldPolicy(AtomicPolicy):
         rig.left_grip(0.04, 30)
         goal = np.r_[rig.q_cmd[:2], rig.left_kin.rest[2:]]
         start = np.r_[rig.q_cmd[:2], rig.left_q_cmd]
-        n = max(2, int(np.max(np.abs(goal - start)) / 0.01))
-        rig.left_follow([start + (goal - start) * u for u in np.linspace(0, 1, n)[1:]])
+        rig.left_follow(rig._dense(start, goal))
         err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
         if err > 0.08:
             rig.step(PHYSICS_HZ)          # let the slow wrist joints settle

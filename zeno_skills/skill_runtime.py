@@ -31,6 +31,7 @@ import numpy as np
 
 from .predicates import (REGISTRY, atom_text, before_snapshot, entity_kind, entity_point, held_name,
                          lid_on, lids, lying_state, objects_inside, objects_on_support, tilt_deg, type_satisfies)
+from .kinematics import REST_TOL, STOWED_TOL
 from .rig import SkillFailure
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -289,9 +290,9 @@ def appliance_attrs(rig, name, st, values=None):
 def robot_attrs(rig):
     r = held_name(rig, "right")
     l = held_name(rig, "left")
-    stowed = float(np.max(np.abs(rig.q()[2:] - rig.kin.rest[2:]))) < 0.10
+    stowed = float(np.max(np.abs(rig.q()[2:] - rig.kin.rest[2:]))) < STOWED_TOL
     # what the direct base primitives (policy_036 / policy_037) require: empty, and arm, torso and waist at rest
-    ready = rig.held is None and float(np.max(np.abs(rig.q() - rig.kin.rest))) <= 0.05
+    ready = rig.held is None and float(np.max(np.abs(rig.q() - rig.kin.rest))) <= REST_TOL
     return {"right_held": r is not None, "left_held": l is not None, "right_object": r, "left_object": l,
             "right_kind": rig.held.get("kind") if rig.held else None, "both_hold_same": r is not None and r == l,
             "right_arm_stowed": stowed, "base_ready": ready}

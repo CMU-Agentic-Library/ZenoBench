@@ -52,6 +52,7 @@ SAME_POSTURE = 0.02           # rad: postures no joint of which differs by more 
                               # inherited from the base plan's posture chain (ea47359), unmeasured
 AT_PARK_M = 0.02              # m and deg: a base this close to a park is at it (no drive); inherited, unmeasured
 AT_PARK_DEG = 2.0
+BLOCKED_PROBE_M = 0.4         # m toward the goal a blocked base plan is probed at, per posture (diagnostic only)
 CARRY_SPOTS = ((0.35, -0.10), (0.40, -0.25), (0.45, -0.15), (0.45, -0.30))   # base-frame TCP xy, m
 CARRY_SPOT_COST = 2.0         # rad of joint travel a carry spot 1 m off the first (the body's centre line) costs
 CARRY_RISE = 0.15             # m: carry heights from the lowest allowed up to this much higher
@@ -351,7 +352,7 @@ def _base_plan(rig, goal, postures, label):
         if goal is not None:
             x, y, yaw = rig.base_pose()
             d = np.array(goal[:2]) - [x, y]
-            p_ = np.array([x, y]) + d / max(np.linalg.norm(d), 1e-9) * 0.4
+            p_ = np.array([x, y]) + d / max(np.linalg.norm(d), 1e-9) * BLOCKED_PROBE_M
             for m, (name, _) in enumerate(chain):
                 rig.log("base_plan_probe", target=label, posture=name,
                         hit=motion.base_explain(rig, (p_[0], p_[1], math.radians(yaw)), sets[m]),

@@ -42,6 +42,8 @@ LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_jo
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
 # -0.12985, pads span -0.14..-0.09 on the finger links).
 TCP_DEPTH = 0.12
+REST_TOL = 0.05             # rad: measured torso, waist and arm joints this close to the rest posture are at rest
+STOWED_TOL = 0.10           # rad: ...and arm joints alone this close, the arm is stowed (both inherited, unmeasured)
 CARRY_TILT = 0.15           # rad: largest tilt of a held object from its start orientation on a planned move
 
 
