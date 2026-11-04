@@ -38,7 +38,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 * `crowded` (v5fix_crowded, 10 steps): look(kitchen_island/top) navigate(wooden_block_b) !pick(wooden_block_b) +separate(wooden_block_b) +look(wooden_block_b) pick(wooden_block_b) rotate(wooden_block_b,30) navigate(wooden_block_a) approach(wooden_block_a) stack(wooden_block_b,wooden_block_a)
 * `edge_base` (hard_stack_on_open_block, 6 steps): look(kitchen_island/top) navigate(wooden_block_a) +pick(wooden_block_a) navigate(wooden_block_b) approach(wooden_block_b) +stack(wooden_block_a,wooden_block_b)
-* `h_dynamic_base_moved_to_edge` (v5_h_dynamic_base_moved_to_edge, 10 steps): look(kitchen_island/top) navigate(wooden_block_b) pick(wooden_block_b) +navigate(wooden_block_a) +place(wooden_block_b,kitchen_island/top,[7.0, 1.66]) +navigate(wooden_block_a) +pick(wooden_block_a) +navigate(wooden_block_b) +approach(wooden_block_b) +stack(wooden_block_a,wooden_block_b)
 
 ### Task-Level
 
@@ -53,8 +52,6 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 * `block_put_away__in_4` (v6_block_put_away__in_4, 24 steps): look(kitchen_island/top) navigate(wooden_block_a) +pick(wooden_block_a) navigate(wooden_block_b) approach(wooden_block_b) +stack(wooden_block_a,wooden_block_b) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(floor_block) pick(floor_block) retreat(kitchen_cabinet_4,0.3) close(kitchen_cabinet_4) navigate(wooden_block_a) approach(wooden_block_a) stack(floor_block,wooden_block_a)
 * `block_put_away__in_6` (v6_block_put_away__in_6, 24 steps): look(kitchen_island/top) navigate(wooden_block_a) +pick(wooden_block_a) navigate(wooden_block_b) approach(wooden_block_b) +stack(wooden_block_a,wooden_block_b) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() close(kitchen_cabinet_4) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() navigate(floor_block) pick(floor_block) retreat(kitchen_cabinet_6,0.3) close(kitchen_cabinet_6) navigate(wooden_block_a) approach(wooden_block_a) stack(floor_block,wooden_block_a)
-* `x6_gd_tower_with_event__tv_stand` (v6_x6_gd_tower_with_event__tv_stand, 12 steps): look(kitchen_island/top) +navigate(wooden_block_a) +pick(wooden_block_a) +navigate(wooden_block_b) +approach(wooden_block_b) +stack(wooden_block_a,wooden_block_b) +search(floor_block,living_room_0_0) +navigate(floor_block) +pick(floor_block) +navigate(wooden_block_b) +approach(wooden_block_b) +stack(floor_block,wooden_block_a)
-* `x6_gd_tower_with_event__dining` (v6_x6_gd_tower_with_event__dining, 12 steps): look(kitchen_island/top) +navigate(wooden_block_a) +pick(wooden_block_a) +navigate(wooden_block_b) +approach(wooden_block_b) +stack(wooden_block_a,wooden_block_b) +search(floor_block,dining_room_0_1) +navigate(floor_block) +pick(floor_block) +navigate(wooden_block_b) +approach(wooden_block_b) +stack(floor_block,wooden_block_a)
 
 ## T03_utensils_one_container
 

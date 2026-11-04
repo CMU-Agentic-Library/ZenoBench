@@ -7,9 +7,9 @@ puts each variant in one of four categories.
 | | |
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
-| variants | 130; each runs seeds 10-19 (1,300 episodes) |
-| categories | control 20 (one per task), Action-Level 28, Task-Level 67, Action + Task 15 (`TRACKS.md`) |
-| static checks | 1,300 / 1,300 episodes |
+| variants | 128; each runs seeds 10-19 (1,280 episodes) |
+| categories | control 20 (one per task), Action-Level 27, Task-Level 67, Action + Task 14 (`TRACKS.md`) |
+| static checks | 1,280 / 1,280 episodes |
 | physics | none yet: every layout is new (seed generator); all STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
 ## Definitions
@@ -32,7 +32,7 @@ An episode is **task + variant + seed**.
     view; the first `look` target is not behind a wall). Over the 1,270 episodes a moved object shifts 0.21 m
     (median, 90th percentile 0.86 m) and the start 3.8 m (90th percentile 8.4 m); which removable distractors
     are left out is drawn too;
-  - for a variant with several **layouts** (46 variants), which one: the same design with the resource,
+  - for a variant with several **layouts** (45 variants), which one: the same design with the resource,
     substitute or item in another place, or an event taking it elsewhere (e.g. the cup in cabinet 4 or in
     cabinet 6). The seeds are spread over the layouts by a fixed-RNG, balanced manifest
     (`v6_variants[vid]["seeds"]`); each layout has its own configuration and oracle route (`variants[<layout>]`).
@@ -53,9 +53,9 @@ Each variant contains the fallback its category is about; the category reads onl
 | category | the variant needs | variants | episodes |
 |---|---|---|---|
 | **Control** | nothing: the nominal plan works (the reference for the others) | 20 | 200 |
-| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`) | 28 | 280 |
+| **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`) | 27 | 270 |
 | **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 67 | 670 |
-| **Action + Task** | both | 15 | 150 |
+| **Action + Task** | both | 14 | 140 |
 
 **No injected action failures, anywhere.** No IK refusal, grasp miss, slip or placement miss is forced on a
 call, once or every time. Every challenge comes from the scene (an absent or hidden object, a lid on, a closed

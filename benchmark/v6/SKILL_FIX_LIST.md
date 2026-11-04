@@ -67,7 +67,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | cherry_tomato_1 | T09/x6_pp_tomato_taken_out__tomato1 |
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere, T09/x6_pp_tomato_taken_out__tomato2, T09/x6_pp_tomato_taken_out__tomato2_after_stir |
 | pick | clutter_cereal_b | T01/seat_slot_blocked |
-| pick | floor_block | T02/block_put_away, T02/tower_for_kid, T02/x6_gd_tower_with_event |
+| pick | floor_block | T02/block_put_away, T02/tower_for_kid |
 | pick | handled_cooking_pot | T09/pot_in_dining_room |
 | pick | orange_2 | T11/x6_gd_fruits_event |
 | pick | pen | T05/x6_gd_pen_or_pencil_cabinets |
@@ -77,7 +77,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | handled_cooking_pot | T09/pot_in_dining_room |
 | place | orange_2 | T11/x6_gd_fruits_event |
 | place | pen | T05/x6_gd_pen_or_pencil_cabinets |
-| stack | floor_block | T02/block_put_away, T02/tower_for_kid, T02/x6_gd_tower_with_event |
+| stack | floor_block | T02/block_put_away, T02/tower_for_kid |
 | stack | rubber_duck | T02/third_toy_elsewhere, T02/tower_for_kid_duck |
 | stack | toy_block | T02/third_toy_elsewhere |
 

@@ -280,11 +280,6 @@ def T02(t):
                            ["on", b, "kitchen_island/top"]]
                           for b in (B, F) for m in (A, B, F) for top in (A, B, F) if len({b, m, top}) == 3],
                   "all": [["hand_empty", "right"]]}
-    def tower(region):
-        return [look("kitchen_island/top")] + recs(nav(A), pick(A), nav(B), S("approach", target=B),
-                                                   S("stack", object=A, base=B)) \
-            + recs(S("search", object=F, region=region), nav(F), pick(F), nav(B), S("approach", target=B),
-                   S("stack", object=F, base=A))
     # third_toy_elsewhere: a three-level tower of the kid's toys; two blocks are on the island, there is no third
     # block in the house; another toy of the kid's (the rubber duck or a toy block of another make) is in another
     # room and does as the third level.  The block-sized sponge next to the blocks is no toy.
@@ -407,22 +402,6 @@ def T02(t):
                 + [nav(F), pick(F), S("retreat", obstacle=cab, distance_m=0.3), S("close", articulated=cab),
                    nav(A), S("approach", target=A), S("stack", object=F, base=A)])
                 for cab, other in (("kitchen_cabinet_4", "kitchen_cabinet_6"), ("kitchen_cabinet_6", "kitchen_cabinet_4"))}),
-        "x6_gd_tower_with_event": dict(
-            base="edge_base", control="edge_base",
-            move={F: P("kitchen_island/top", 6.95, 1.85)},
-            instruction="Tidy the toy blocks on the kitchen island: stack all three wooden blocks steadily into one "
-                        "tower on the island.",
-            goal=tower_goal, watch=[A, B, F],
-            challenge="three blocks, one at the island edge (it must not be the base); once the first two are "
-                      "stacked, the kid takes the third block to the TV stand",
-            rationale="the tower decomposes into two ordered stack subgoals with a base constraint (the edge block "
-                      "goes on top of the middle, never at the bottom); the event removes a resource after the first "
-                      "subgoal: keep the two-block stack and fetch the third",
-            factor="where the event takes the resource",
-            cases={c: dict(failures=[f_move("resource", F, to, ("stack", {"object": A, "base": B}), fid="resource_floor_block")],
-                           route=tower(region))
-                   for c, to, region in (("tv_stand", P("tv_stand_2/top", 7.0, 0.36), "living_room_0_0"),
-                                         ("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"))}),
     }
 
 
@@ -1099,6 +1078,8 @@ REPLACED = {
     ("T03_utensils_one_container", "three_containers"): "replaced by three_containers_bedroom (the bins in the bedroom)",
     ("T04_cup_or_mug_to_cabinet", "h_dynamic_cup_taken"): "replaced by cup_taken_mug_in_living_room",
     ("T09_tomato_soup", "cookware_choice"): "replaced by pot_in_dining_room (the pot in the dining room)",
+    ("T02_stack_blocks", "h_dynamic_base_moved_to_edge"): "removed: no dynamic events in T02 (someone pushes the "
+                                                          "base to the edge)",
     ("T02_stack_blocks", "far_crowded"): "replaced by tower_for_kid (the search was one turn to the island; now "
                                          "three blocks are spread over the house and the tower goes on the dining "
                                          "table)",

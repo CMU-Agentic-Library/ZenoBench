@@ -197,23 +197,6 @@
 
 1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)`（换做法） → 4. `navigate(destination=wooden_block_b)` → 5. `approach(target=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法）
 
-### h_dynamic_base_moved_to_edge（Action）
-
-**情况**：拿起 B 后有人把 A 推到岛台边 → 先把 B 放在空处，再把 A 叠到 B 上
-
-**成功条件**：
-
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_b` 叠在 `wooden_block_a` 上
-  - 第 2 组：
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
-
-**参考调用顺序**：
-
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `pick(object=wooden_block_b)` → 4. `navigate(destination=wooden_block_a)`（补救） → 5. `place(object=wooden_block_b, receptacle=kitchen_island/top, hint_xy=[7.0, 1.66])`（补救） → 6. `navigate(destination=wooden_block_a)`（补救） → 7. `pick(object=wooden_block_a)`（补救） → 8. `navigate(destination=wooden_block_b)`（补救） → 9. `approach(target=wooden_block_b)`（补救） → 10. `stack(object=wooden_block_a, base=wooden_block_b)`（补救）
-
 ### third_toy_elsewhere（Task）
 
 **情况**：指令只说用孩子的玩具在岛台上搭一座三层的小塔；家里只有两块积木（都在岛台上），旁边的海绵大小像积木但不是玩具；孩子别的玩具在别的房间、开局看不到 → 不能只叠两块就停，也不能拿海绵凑数：先叠好两块，去别的房间找一个玩具当第三层（鸭子没有平顶，只能放最上面）
@@ -385,42 +368,6 @@
 
 - 摆法 `in_4`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)`（换做法） → 4. `navigate(destination=wooden_block_b)` → 5. `approach(target=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 7. `navigate(destination=kitchen_cabinet_6)` → 8. `open(articulated=kitchen_cabinet_6)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_6)` → 11. `straighten()` → 12. `close(articulated=kitchen_cabinet_6)` → 13. `navigate(destination=kitchen_cabinet_4)` → 14. `open(articulated=kitchen_cabinet_4)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_4)` → 17. `straighten()` → 18. `navigate(destination=floor_block)` → 19. `pick(object=floor_block)` → 20. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 21. `close(articulated=kitchen_cabinet_4)` → 22. `navigate(destination=wooden_block_a)` → 23. `approach(target=wooden_block_a)` → 24. `stack(object=floor_block, base=wooden_block_a)`
 - 摆法 `in_6`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)`（换做法） → 4. `navigate(destination=wooden_block_b)` → 5. `approach(target=wooden_block_b)` → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（换做法） → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `close(articulated=kitchen_cabinet_4)` → 13. `navigate(destination=kitchen_cabinet_6)` → 14. `open(articulated=kitchen_cabinet_6)` → 15. `bend()` → 16. `explore_furniture(furniture=kitchen_cabinet_6)` → 17. `straighten()` → 18. `navigate(destination=floor_block)` → 19. `pick(object=floor_block)` → 20. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 21. `close(articulated=kitchen_cabinet_6)` → 22. `navigate(destination=wooden_block_a)` → 23. `approach(target=wooden_block_a)` → 24. `stack(object=floor_block, base=wooden_block_a)`
-
-### x6_gd_tower_with_event（Action + Task）
-
-**情况**：三块积木搭成一座塔，其中一块在岛台边上（不能当底座）；叠好两块后孩子把第三块拿走 → 找回第三块接着叠
-
-**指令**：Tidy the toy blocks on the kitchen island: stack all three wooden blocks steadily into one tower on the island.
-
-**成功条件**：
-
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
-    - `floor_block` 叠在 `wooden_block_a` 上
-    - `wooden_block_b` 离台面边缘至少 5 cm
-    - `wooden_block_b` 在 `kitchen_island/top` 上
-  - 第 2 组：
-    - `floor_block` 叠在 `wooden_block_b` 上
-    - `wooden_block_a` 叠在 `floor_block` 上
-    - `wooden_block_b` 离台面边缘至少 5 cm
-    - `wooden_block_b` 在 `kitchen_island/top` 上
-  - 第 3 组：
-    - `wooden_block_a` 叠在 `floor_block` 上
-    - `wooden_block_b` 叠在 `wooden_block_a` 上
-    - `floor_block` 离台面边缘至少 5 cm
-    - `floor_block` 在 `kitchen_island/top` 上
-  - 第 4 组：
-    - `wooden_block_b` 叠在 `floor_block` 上
-    - `wooden_block_a` 叠在 `wooden_block_b` 上
-    - `floor_block` 离台面边缘至少 5 cm
-    - `floor_block` 在 `kitchen_island/top` 上
-
-**参考调用顺序**：
-
-- 摆法 `tv_stand`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)`（补救） → 3. `pick(object=wooden_block_a)`（补救） → 4. `navigate(destination=wooden_block_b)`（补救） → 5. `approach(target=wooden_block_b)`（补救） → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（补救） → 7. `search(object=floor_block, region=living_room_0_0)`（补救） → 8. `navigate(destination=floor_block)`（补救） → 9. `pick(object=floor_block)`（补救） → 10. `navigate(destination=wooden_block_b)`（补救） → 11. `approach(target=wooden_block_b)`（补救） → 12. `stack(object=floor_block, base=wooden_block_a)`（补救）
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)`（补救） → 3. `pick(object=wooden_block_a)`（补救） → 4. `navigate(destination=wooden_block_b)`（补救） → 5. `approach(target=wooden_block_b)`（补救） → 6. `stack(object=wooden_block_a, base=wooden_block_b)`（补救） → 7. `search(object=floor_block, region=dining_room_0_1)`（补救） → 8. `navigate(destination=floor_block)`（补救） → 9. `pick(object=floor_block)`（补救） → 10. `navigate(destination=wooden_block_b)`（补救） → 11. `approach(target=wooden_block_b)`（补救） → 12. `stack(object=floor_block, base=wooden_block_a)`（补救）
 
 ---
 
