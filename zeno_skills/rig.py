@@ -37,6 +37,13 @@ class Dropped(SkillFailure):
 
 
 BASE_VMAX = np.array([1.0, 1.0, 2.0])     # m/s, m/s, rad/s: base velocity targets beyond are clipped
+# Base drive speed caps (m/s, rad/s, the least ramp in s) by what the hands hold, kept in this one place:
+# drive_base takes the cap of the load, a caller may only ask for slower.  Inherited (the navigate
+# speeds from 32a2d66c, the one-hand cap from d705872b), never measured: docs/COLLISION_PLAN.md §2.
+DRIVE_EMPTY = (0.35, 0.8, 0.0)
+DRIVE_LOADED = (0.25, 0.5, 0.0)      # an object in the right hand
+DRIVE_SWINGING = (0.17, 0.30, 1.8)   # a container on a one-hand rim pinch, or a load in the left hand alone: it pivots
+DRIVE_RAMP = 0.8                     # s: acceleration ramp of a drive that asks for none
 
 
 class Rig:
@@ -307,6 +314,14 @@ class Rig:
         if h is None or h.get("kind") == "bimanual" or h.get("name") not in self.ann.objects:
             return False
         return bool(self.ann.asset_of(self.ann.objects[h["name"]]).get("container"))
+
+    def _drive_cap(self):
+        """drive_base's speed cap for what the hands hold: a container hanging off a thin wall in a
+        one-hand rim pinch pivots under base accelerations, and so does a load in the left hand
+        alone (after a handover: a full-speed drive shook a rolling pin out)."""
+        if self._held_container() or (getattr(self, "left_held", None) is not None and self.held is None):
+            return DRIVE_SWINGING
+        return DRIVE_LOADED if self.held is not None else DRIVE_EMPTY
 
     def _vmax(self):
         """Joint speeds paths are executed at: 60% of the URDF limits (torso lift is 0.117 m/s;
@@ -1006,23 +1021,20 @@ class Rig:
             self.step(2)
         self.log("swing", target=label, q_err=round(float(np.max(np.abs(self.q() - self.q_cmd))), 4))
 
-    def drive_base(self, path, speed=0.35, turn=0.8, ramp=0.8, on_step=None, allow=BASE_DRIVE):
+    def drive_base(self, path, speed=None, turn=None, ramp=None, on_step=None, allow=BASE_DRIVE):
         """Follow a list of (x, y, yaw_deg) waypoints with one smooth time
         scaling over the whole path (accelerate over ``ramp`` s, cruise,
         decelerate) instead of stopping at every waypoint: the stop-and-go
         jerks shook pinched objects out of the hand.
 
-        A container held by a one-hand rim pinch hangs off a thin wall and
-        pivots under base accelerations: it is driven at half speed with a
-        longer ramp.  ``allow``: BASE_DRIVE (the arms not checked along the path) unless the path
-        is a whole-body plan (base_planner)."""
+        ``speed``, ``turn``, ``ramp``: at most the cap of what the hands hold (_drive_cap), the ramp
+        at least its least one.  ``allow``: BASE_DRIVE (the arms not checked along the path) unless
+        the path is a whole-body plan (base_planner)."""
         self.clear.motion("drive_base", allow)
-        if self._held_container():
-            speed, turn, ramp = min(speed, 0.18), min(turn, 0.35), max(ramp, 1.8)
-        if getattr(self, "left_held", None) is not None and self.held is None:
-            # a load in the left hand alone (after a handover) hangs from one
-            # pinch: drive gently (a full-speed drive shook a rolling pin out)
-            speed, turn, ramp = min(speed, 0.18), min(turn, 0.35), max(ramp, 1.8)
+        cap_v, cap_w, least_ramp = self._drive_cap()
+        speed = cap_v if speed is None else min(speed, cap_v)
+        turn = cap_w if turn is None else min(turn, cap_w)
+        ramp = max(DRIVE_RAMP if ramp is None else ramp, least_ramp)
         x0, y0, yaw0 = self.base_pose()
         # the arm posture this drive carries (actual joints, TCP and lowest joint)
         qa = self.q()

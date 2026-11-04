@@ -81,10 +81,9 @@ class BackOffWithLoadPolicy(AtomicPolicy):
         x, y, yaw = rig.base_pose()
         c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
         try:
-            skills.straight_base_move(rig, (x - c * distance, y - s * distance, yaw), "back_off_with_load", speed=0.2)
+            skills.straight_base_move(rig, (x - c * distance, y - s * distance, yaw), "back_off_with_load")
         except SkillFailure:
-            skills.straight_base_move(rig, (x - c * min_distance, y - s * min_distance, yaw), "back_off_with_load",
-                                      speed=0.2)
+            skills.straight_base_move(rig, (x - c * min_distance, y - s * min_distance, yaw), "back_off_with_load")
         bx, by, _ = rig.base_pose()
         moved = max(0.0, (x - bx) * c + (y - by) * s)
         skills.check_held(rig, "back_off_with_load")

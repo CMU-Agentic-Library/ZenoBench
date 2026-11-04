@@ -48,7 +48,7 @@ DENSE = 0.02                # m: the farthest any point of the robot moves betwe
 LAZY_ROUNDS = 40            # searches a plan may take, each cutting the edges the last path failed on
 MARGIN = 2.0                # m the search may stray beyond the start / goal box
 REGION_RADIUS = 1.0         # m around the start searched for a goal region
-MAX_EXPAND = 200000
+MAX_EXPAND = 200000          # lattice states one search may expand before it gives up (a budget, unmeasured)
 GREEDY = 2.5                # weighted A*: the heuristic counts this much (a path at most this much costlier
                             # than the cheapest, for far fewer expansions over a 4-D lattice)
 NBRS = [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (1, 1, 0), (1, -1, 0), (-1, 1, 0), (-1, -1, 0),

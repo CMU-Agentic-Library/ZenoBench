@@ -47,6 +47,10 @@ SHELF_APPROACH = 0.16
 
 
 # ---------------------------------------------------------------- navigation
+SAME_POSTURE = 0.02           # rad: postures no joint of which differs by more are one (no swing, no chain step);
+                              # inherited from the base plan's posture chain (ea47359), unmeasured
+AT_PARK_M = 0.02              # m and deg: a base this close to a park is at it (no drive); inherited, unmeasured
+AT_PARK_DEG = 2.0
 CARRY_SPOTS = ((0.35, -0.10), (0.40, -0.25), (0.45, -0.15), (0.45, -0.30))   # base-frame TCP xy, m
 CARRY_SPOT_COST = 2.0         # rad of joint travel a carry spot 1 m off the first (the body's centre line) costs
 CARRY_RISE = 0.15             # m: carry heights from the lowest allowed up to this much higher
@@ -205,7 +209,8 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
     where it stands when the arm planner finds a way (else where the base plan finds room) and
     drives folded, hanging both arms at the side only along the stretches the fold does not fit
     (the planner's choice, travel_postures); with a load in a hand it is brought into the carry
-    pose first, the arms stay as they are and the base drives slower.  ``arrive``: the arm posture to arrive in instead of the
+    pose first, the arms stay as they are and the base drives slower (Rig.drive_base caps the speed by
+    what the hands hold).  ``arrive``: the arm posture to arrive in instead of the
     fold (right-arm joints, or (right, left))."""
     if rig.held is None:
         rig.tuck()              # where the arm planner cannot fold it here, the base plan does (relocate)
@@ -223,13 +228,7 @@ def navigate(rig, pose, label="navigate", min_bottom_z=None, arrive=None):
         end = (np.asarray(arrive[0], float), np.asarray(arrive[1], float)[-7:])
     else:
         end = (np.asarray(arrive, float), rest[1])
-    if rig.held is not None:
-        speed = dict(speed=0.17, turn=0.30, ramp=1.2) if rig._held_container() else dict(speed=0.25, turn=0.5)
-    elif rig.left_held is not None:
-        speed = dict(speed=0.17, turn=0.30, ramp=1.2)
-    else:
-        speed = {}
-    relocate(rig, pose, travel_postures(rig, rest, end), label=label, **speed)
+    relocate(rig, pose, travel_postures(rig, rest, end), label=label)
     if rig.held is not None:
         check_held(rig, "carry")
     if rig.left_held is not None:
@@ -324,7 +323,7 @@ def _base_plan(rig, goal, postures, label):
     chain = [("start", (rig.q_cmd.copy(), rig.left_q_cmd.copy()))]
     for name, (qr, ql) in postures:
         qr, ql = np.asarray(qr, float), np.asarray(ql, float)[-7:]
-        if np.max(np.abs(qr - chain[-1][1][0])) < 0.02 and np.max(np.abs(ql - chain[-1][1][1])) < 0.02:
+        if np.max(np.abs(qr - chain[-1][1][0])) < SAME_POSTURE and np.max(np.abs(ql - chain[-1][1][1])) < SAME_POSTURE:
             continue
         chain.append((name, (qr, ql)))
     sets, switches, dense = posture_sets(rig, [c[1] for c in chain])
@@ -426,8 +425,7 @@ def fold_where_possible(rig, label="fold"):
     if rig.tuck(hang=False):
         return True
     try:
-        relocate(rig, None, [("fold", (rig.kin.rest, rig.left_q_cmd.copy()))], label=label,
-                 speed=0.15, turn=0.4)
+        relocate(rig, None, [("fold", (rig.kin.rest, rig.left_q_cmd.copy()))], label=label)
     except SkillFailure as exc:
         rig.log("fold_blocked", reason=str(exc)[:200])
         return False
@@ -440,7 +438,7 @@ def _swing_arm(rig, side, arm_q, label):
     kin = rig.kin if side == "right" else rig.left_kin
     start = rig.q_cmd.copy() if side == "right" else np.r_[rig.q_cmd[:2], rig.left_q_cmd]
     goal = np.r_[start[:2], np.asarray(arm_q, float)[2:]]
-    if np.max(np.abs(goal - start)) < 0.05:
+    if np.max(np.abs(goal - start)) < SAME_POSTURE:
         return True
     rig.clear.motion(label, FREE)
     if kin.segment_free(start, goal):
@@ -455,8 +453,7 @@ def _swing_arm(rig, side, arm_q, label):
     else:
         qs, qa = [], start
         for qb in vias:
-            n = max(2, int(np.max(np.abs(qb - qa)) / 0.01))
-            qs += [qa + (qb - qa) * u for u in np.linspace(0, 1, n)[1:]]
+            qs += rig._dense(qa, np.asarray(qb, float))
             qa = qb
         rig.left_follow(qs)
     rig.log(label, side=side)
@@ -481,7 +478,7 @@ def _travel_q(rig):
 def _goto_park(rig, park, min_bottom_z=None):
     x, y, yaw, _ = park
     bx, by, byaw = rig.base_pose()
-    if math.hypot(x - bx, y - by) > 0.02 or abs((yaw - byaw + 180) % 360 - 180) > 2:
+    if math.hypot(x - bx, y - by) > AT_PARK_M or abs((yaw - byaw + 180) % 360 - 180) > AT_PARK_DEG:
         navigate(rig, (x, y, yaw), min_bottom_z=min_bottom_z)
 
 
@@ -635,9 +632,7 @@ def _move_articulated(rig, name, goal, verb):
     rig.log(f"{verb}_park", park=[round(x, 3), round(y, 3), round(yaw, 1)], hook_side="far" if flip else "near",
             tilt_deg=round(math.degrees(tilt)), grasp=grasp)
     rig.caption = f"{verb.upper()} {a['category']}: go to handle"
-    bx, by, byaw = rig.base_pose()
-    if math.hypot(x - bx, y - by) > 0.02 or abs((yaw - byaw + 180) % 360 - 180) > 2:
-        navigate(rig, (x, y, yaw))
+    _goto_park(rig, park)
     rig.kin.coll_kw = {"hand_touches_part": True}
     q_now = rig.joint(name)
     rig.log(f"{verb}_at_park", q_before=q0, q_now=q_now)
@@ -646,7 +641,7 @@ def _move_articulated(rig, name, goal, verb):
         rig.sync_world()
         p, R, appr, targets = _handle_targets(rig, a, q0, flip, tilt, grasp)
         bx, by, byaw = rig.base_pose()
-        if abs(q_now - q_prev) < 0.05 and math.hypot(x - bx, y - by) <= 0.02:
+        if abs(q_now - q_prev) < 0.05 and math.hypot(x - bx, y - by) <= AT_PARK_M:
             # Only a brush of the base nudged it: stay, and solve the handle
             # IK afresh from the real base pose instead of reusing stale hints.
             park_qs = (None, None, None)

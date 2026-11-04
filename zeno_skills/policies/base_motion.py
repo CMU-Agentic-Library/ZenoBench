@@ -21,6 +21,18 @@ from ..predicates import (NEAR_M, entity_footprint, entity_kind, entity_point, i
 from ..rig import SkillFailure
 
 
+# Stand-off poses around a place (standoff_poses).  Inherited (32a2d66c), never measured:
+# docs/COLLISION_PLAN.md §2.  The base column is checked as the base planner checks it (the
+# footprint's default margin), the whole robot by skills.poses_clear.
+STANDOFF_RING = (0.45, 0.55, 0.70, 0.85, 1.0)   # m out from the place's footprint
+STANDOFF_DEG = 15.0                             # deg between stand-offs on a ring
+STANDOFF_RING_W = 0.3                           # m of drive one m further out on the ring costs in the ranking
+STANDOFF_NEAR_SLACK = 0.05                      # m inside NEAR_M every stand-off stays (base_near holds there)
+ROOM_SPOT_STEP = 0.25                           # m between rings around a room's centroid...
+ROOM_SPOT_MAX = 3.0                             # ...out to this far
+ROOM_SPOT_DEG = 30.0                            # deg between spots on a ring
+
+
 def _park_diag():
     from ..planner import LAST_PARK_DIAG
     return {k: v for k, v in LAST_PARK_DIAG.items() if v}
@@ -32,7 +44,7 @@ def _box_dist(box, xy):
     return math.hypot(dx, dy)
 
 
-def standoff_poses(rig, place, ring=(0.45, 0.55, 0.70, 0.85, 1.0)):
+def standoff_poses(rig, place, ring=STANDOFF_RING):
     """Free base poses around a place's footprint, facing it, nearest first: the base column clear
     of the annotated furniture, then the whole robot in its travel posture clear of the world
     (skills.poses_clear)."""
@@ -47,20 +59,20 @@ def standoff_poses(rig, place, ring=(0.45, 0.55, 0.70, 0.85, 1.0)):
         areas = 0.5 * np.abs(np.cross(tris[:, 1] - tris[:, 0], tris[:, 2] - tris[:, 0]))
         c = (cents * areas[:, None]).sum(0) / max(areas.sum(), 1e-9)
         from ..evaluator import room_of
-        for r in np.arange(0.0, 3.0, 0.25):
-            for ang in np.radians(np.arange(0, 360, 30)):
+        for r in np.arange(0.0, ROOM_SPOT_MAX, ROOM_SPOT_STEP):
+            for ang in np.radians(np.arange(0, 360, ROOM_SPOT_DEG)):
                 x, y = c[0] + r * math.cos(ang), c[1] + r * math.sin(ang)
                 if room_of(rig.ann.rooms, (x, y)) != place:
                     continue
                 yaw = math.degrees(math.atan2(y - y0, x - x0))
-                if world.footprint_clear(x, y, math.radians(yaw), margin=0.08):
+                if world.footprint_clear(x, y, math.radians(yaw)):
                     out.append((r, x, y, yaw))
         out.sort()
         return skills.poses_clear(rig, [(x, y, yaw) for _, x, y, yaw in out])
     box = entity_footprint(rig, place)
     cx, cy = (box[0] + box[2]) / 2, (box[1] + box[3]) / 2
     for d in ring:
-        for ang in np.radians(np.arange(0, 360, 15)):
+        for ang in np.radians(np.arange(0, 360, STANDOFF_DEG)):
             ux, uy = math.cos(ang), math.sin(ang)
             # point on the box boundary in this direction, then d further out
             tx = (box[2] - cx) / ux if ux > 1e-9 else (box[0] - cx) / ux if ux < -1e-9 else math.inf
@@ -68,11 +80,11 @@ def standoff_poses(rig, place, ring=(0.45, 0.55, 0.70, 0.85, 1.0)):
             t = min(abs(tx), abs(ty))
             x, y = cx + ux * (t + d), cy + uy * (t + d)
             yaw = math.degrees(math.atan2(cy - y, cx - x))
-            if not world.footprint_clear(x, y, math.radians(yaw), margin=0.05):
+            if not world.footprint_clear(x, y, math.radians(yaw)):
                 continue
-            if _box_dist(box, (x, y)) > NEAR_M - 0.05:
+            if _box_dist(box, (x, y)) > NEAR_M - STANDOFF_NEAR_SLACK:
                 continue
-            out.append((math.hypot(x - x0, y - y0) + 0.3 * d, x, y, yaw))
+            out.append((math.hypot(x - x0, y - y0) + STANDOFF_RING_W * d, x, y, yaw))
     out.sort()
     return skills.poses_clear(rig, [(x, y, yaw) for _, x, y, yaw in out])
 
@@ -80,7 +92,7 @@ def standoff_poses(rig, place, ring=(0.45, 0.55, 0.70, 0.85, 1.0)):
 class NavigateToPlacePolicy(AtomicPolicy):
     """Drive to a collision-free stand-off pose near a room, furniture, support or object."""
 
-    def execute(self, place, *, max_tries=6):
+    def execute(self, place, *, max_tries=None):
         rig = self.rig
         entity_kind(rig.ann, place)                     # KeyError for an unknown noun
         if rig.held is not None:
@@ -155,9 +167,7 @@ class FaceTargetPolicy(AtomicPolicy):
         if rig.held is None and rig.left_held is None:
             if not rig.tuck():
                 raise SkillFailure(f"face {target}: cannot fold the arm before turning")
-            skills.straight_base_move(rig, (x, y, bearing), f"face {target}")
-        else:
-            skills.straight_base_move(rig, (x, y, bearing), f"face {target}", speed=0.15, turn=0.35, ramp=1.0)
+        skills.straight_base_move(rig, (x, y, bearing), f"face {target}")
         x2, y2, yaw2 = rig.base_pose()
         err = abs((bearing - yaw2 + 180) % 360 - 180)
         rig.log("face_result", target=target, yaw_deg=round(yaw2, 1), error_deg=round(err, 1))
@@ -185,11 +195,10 @@ class RetreatFromPolicy(AtomicPolicy):
         end = np.array([x, y]) + away * (need + 0.03)
         if rig.held is not None:
             skills.check_held(rig, "retreat_start")
-            skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}", speed=0.15, turn=0.3,
-                                      ramp=1.0)
+            skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}")
             skills.check_held(rig, "retreat_end")
         else:
-            skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}", speed=0.2)
+            skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}")
         moved = float(np.linalg.norm(np.asarray(rig.base_pose()[:2]) - np.array([x, y])))
         rig.log("retreat_result", place=place, moved_m=round(moved, 3))
         return moved

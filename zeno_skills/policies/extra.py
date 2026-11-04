@@ -339,10 +339,10 @@ class SidestepPolicy(AtomicPolicy):
         tx, ty = x - math.sin(math.radians(yaw)) * d, y + math.cos(math.radians(yaw)) * d
         if rig.held is not None:
             skills.check_held(rig, "sidestep_start")
-            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep", speed=0.12, turn=0.3, ramp=1.0)
+            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep")
             skills.check_held(rig, "sidestep_end")
         else:
-            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep", speed=0.2)
+            skills.straight_base_move(rig, (tx, ty, yaw), "sidestep")
         return {"base_pose": list(rig.base_pose())}
 
 
