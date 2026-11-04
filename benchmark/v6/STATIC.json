@@ -1,7 +1,7 @@
 {
- "variants": 128,
- "episodes": 1280,
- "static_ok": 1280,
+ "variants": 127,
+ "episodes": 1270,
+ "static_ok": 1270,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -21,8 +21,8 @@
    "static_ok": 80
   },
   "T05_pen_or_pencil_to_desk": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T06_block_destination_occupied": {
    "episodes": 60,
@@ -85,12 +85,11 @@
    "static_ok": 50
   }
  },
- "v5_hashes_checked": 930,
  "categories": {
   "control": 20,
-  "action": 17,
-  "action_task": 13,
-  "task": 78
+  "action": 28,
+  "task": 64,
+  "action_task": 15
  },
- "tasks_sha1": "91eec3aee2311257b955a0d5d4b1e9203afef07f"
+ "tasks_sha1": "b19b01cc5c405009077b252fae88192ecaa20e43"
 }

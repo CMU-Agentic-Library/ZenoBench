@@ -4,8 +4,8 @@
 
 Checks, per variant and per episode of its seed manifest (seed -> concrete variant):
 
-* **v5 preserved** - every v5 variant without injected action failures keeps the configuration hash FREEZE.json
-  records for each seed; one whose injected failures were removed is checked like a new variant;
+* **layouts** - every episode's drawn layout (``layout.py``: objects rearranged on their supports, the start in
+  its room) passes the per-variant checks below on its own seed;
 * **configuration / route / failures / geometry** - benchmark.v5.validate.check_variant on the episode's
   concrete variant and seed (goal predicates and objects present, every route call a known skill with known
   inputs and objects, failure specs valid against the scene and reached by the route, overlay and event poses
@@ -90,8 +90,7 @@ def main():
     doc = json.loads(TASKS.read_text())
     contracts = {c["verb"]: c for c in json.loads((ROOT / "contract_library/skill_contracts.json").read_text())["contracts"]}
     assets = json.loads((ROOT / "annotations/assets.json").read_text())
-    frozen = json.loads((ROOT / "benchmark/v5/FREEZE.json").read_text())["episodes"]
-    out = {"variants": 0, "episodes": 0, "static_ok": 0, "problems": [], "per_task": {}, "v5_hashes_checked": 0,
+    out = {"variants": 0, "episodes": 0, "static_ok": 0, "problems": [], "per_task": {},
            "categories": {}}
     for t in doc["tasks"]:
         tid = t["task_id"]
@@ -100,21 +99,13 @@ def main():
         for fam, info in t["v6_variants"].items():
             out["variants"] += 1
             probs = []
-            v0 = t["variants"].get(fam, {})
-            edited = "injected_removed" in v0 or "conditions_ignored" in v0
-            if info["origin"] == "v5" and edited:
-                seeds = sorted(int(s) for s, x in info["seeds"].items() if x == fam)
-                probs += [(s, f"{fam}: {p}") for s, p in variant_problems(t, fam, contracts, assets, seeds)]
-                probs += [(None, f"{fam}: {p}") for p in persistent_problems(t, fam)]
             if info["origin"] == "v5":
-                for s in ([] if edited else SEEDS):                  # the v5 variant itself: unchanged for every seed
-                    h = episode_config(t, s, fam)["config_hash"]
-                    out["v5_hashes_checked"] += 1
-                    if frozen.get(f"{tid}/{fam}/{s}") != h:
-                        probs.append((s, f"v5 configuration hash changed ({h})"))
-                for v in info["layouts"][1:]:      # seed extension: a second case, checked like a new variant
+                # the seed draws a new layout, so no v5 configuration hash holds: every layout on its seeds is
+                # checked like a new variant
+                for v in info["layouts"]:
                     seeds = sorted(int(s) for s, x in info["seeds"].items() if x == v)
                     probs += [(s, f"{v}: {p}") for s, p in variant_problems(t, v, contracts, assets, seeds)]
+                    probs += [(None, f"{v}: {p}") for p in persistent_problems(t, v)]
                 if len(info["layouts"]) > 1:
                     if {str(k): v for k, v in seed_cases(tid, fam, info["layouts"]).items()} != \
                             {str(k): v for k, v in info["seeds"].items()}:
@@ -161,7 +152,7 @@ def main():
     out["tasks_sha1"] = hashlib.sha1(TASKS.read_bytes()).hexdigest()
     OUT.write_text(json.dumps(out, indent=1))
     print(f"static: {out['variants']} variants, {out['episodes']} episodes, {out['static_ok']} statically ok, "
-          f"{len(out['problems'])} problems; v5 hashes checked {out['v5_hashes_checked']}")
+          f"{len(out['problems'])} problems")
     for p in out["problems"][:60]:
         print("  ", p)
     return 1 if out["problems"] else 0
