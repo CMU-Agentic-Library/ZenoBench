@@ -23,6 +23,7 @@ from .base import AtomicPolicy
 from .. import skills
 from ..annotations import rz
 from ..clearance import FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY
+from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import lid_on, tilt_deg
 from ..rig import SkillFailure
@@ -109,7 +110,7 @@ class DropIntoPolicy(AtomicPolicy):
         # let go above the opening: up out of whatever the hand still touches (the collision model
         # decides how far); the next skill plans on from there
         rig.leave([0, 0, 1], "drop_retreat", LEAVE_CONTACT, step=0.01)
-        rig.step(120)
+        rig.step(PHYSICS_HZ)
         ok, why = rig.geo.inside(name, container, rig.state())
         rig.log("drop_result", obj=name, container=container, inside=bool(ok), detail=why)
         if not ok:
@@ -411,7 +412,7 @@ class FlipFlatPolicy(AtomicPolicy):
                             rig.log("flip_push_base", d=d)
                             pushed = 100.0
                             break
-                rig.step(120)
+                rig.step(PHYSICS_HZ)
                 up = quat_R(rig.obj_pose(name)[1])[:, 2]
                 pushed = pushed if up[2] < -0.5 else min(pushed, PAST_VERTICAL_DEG - 1.0)
             rig.log("flip_push", released_deg=reached, pushed_deg=pushed)

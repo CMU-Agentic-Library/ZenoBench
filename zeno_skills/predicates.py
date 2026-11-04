@@ -29,6 +29,8 @@ from typing import Callable
 
 import numpy as np
 
+from .physics import PHYSICS_HZ
+
 HANDS = ("right", "left")
 
 # --------------------------------------------------------------------- types
@@ -1060,7 +1062,7 @@ def _shaken(rig, ctx, object):
 @predicate("waited", [("seconds", "positive_number")], "relative",
            "At least the given simulated time passed during the Contract.")
 def _waited(rig, ctx, seconds):
-    dt = (rig.tick - ctx["before"].get("tick", rig.tick)) / 120.0
+    dt = (rig.tick - ctx["before"].get("tick", rig.tick)) / PHYSICS_HZ
     return dt >= float(seconds) - 0.05, f"{dt:.2f} s elapsed"
 
 

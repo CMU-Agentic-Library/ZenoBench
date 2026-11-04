@@ -27,6 +27,7 @@ from .annotations import rz
 from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, into_contact, lifting
 from .evaluator import quat_R
 from .kinematics import gripper_rot
+from .physics import PHYSICS_HZ
 from .planner import find_park, find_park_set, joint_reachable, torque_ratio
 from .rig import FINGERS_KW, FREE_SPACE_KW, Dropped, SkillFailure
 from .sticky import note_grasp, rest_R, welded
@@ -555,7 +556,7 @@ def _ride(rig, a, goal, lead=0.03, rate=0.25):
             rig.log("ride_done", q=q)
             return True
         target = q + sign * lead if sign * (goal - (q + sign * lead)) > 0 else goal + sign * 0.02
-        cmd += float(np.clip(target - cmd, -rate / 120, rate / 120))
+        cmd += float(np.clip(target - cmd, -rate / PHYSICS_HZ, rate / PHYSICS_HZ))
         M = ann.motion(a, cmd) @ Minv0
         p = M[:3, :3] @ np.array([x0, y0, 0.0]) + M[:3, 3]
         rig.set_base(p[0], p[1], yaw0 + math.degrees(math.atan2(M[1, 0], M[0, 0])))
@@ -668,7 +669,7 @@ def _move_articulated(rig, name, goal, verb):
         rig.kin.coll_kw = {"hand_touches_part": True} if lab == "handle" else APPROACH_KW
         rig.move_to(tp, tR, step=st, steps_per_wp=4 if lab == "handle" else 3, label=f"{verb}_{lab}", q_hint=qh)
     rig.kin.coll_kw = {"hand_touches_part": True}
-    f = rig.grip(0.0, 120)
+    f = rig.grip(0.0, PHYSICS_HZ)
     # closed on the bar: both fingers stopped by it (thin arched pulls: ~5 mm)
     if not (f.min() > min(0.004, 0.3 * t) and max(0.6 * t, t - 0.007) < f.sum() < t + 0.03):
         raise SkillFailure(f"{verb} {name}: handle not grasped, fingers {f.round(4).tolist()}")
@@ -1241,7 +1242,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
     if err > 0.008:                     # round objects pop out of an off-centre pinch
         rig.move_to(g["p"], g["R"], step=0.002, steps_per_wp=6, label="pick_grasp_fix", allow=LEGACY, smooth=True)
     rig.caption = f"PICK {name}: close gripper"
-    rig.grip(0.0, 120, gradual=True)
+    rig.grip(0.0, PHYSICS_HZ, gradual=True)
     f = rig.fingers()
     if f.min() <= 0.003:
         # closed on nothing: leave the failed grasp with an open hand clear of the neighbours
@@ -1588,7 +1589,7 @@ def _edge_pinch_impl(rig, name, s, n, attempt=False):
     rig.move_to(*legs[1], step=0.005, steps_per_wp=3, label="edge_pre", allow=LEGACY)
     rig.move_to(*legs[2], step=0.003, steps_per_wp=4, label="edge_grasp", allow=LEGACY)
     rig.caption = f"PICK {name}: pinch the overhang"
-    rig.grip(0.0, 120)
+    rig.grip(0.0, PHYSICS_HZ)
     # the pinched point in the object's frame: a flat object held at its
     # overhang pivots on the support edge, so its bottom centre rises far less
     # than the hand does (book_red: 15 mm of a 40 mm lift, right at the old
@@ -2582,7 +2583,7 @@ def _set_microwave_hinge(rig, name, target, caption):
             motor.apply_action(ArticulationAction(joint_positions=rig.torch.tensor([q], dtype=rig.torch.float32),
                                                   joint_indices=rig.torch.tensor([rig._dof[name]])))
             rig.step(1)
-        rig.step(120)
+        rig.step(PHYSICS_HZ)
         actual = rig.joint(name)
         rig.log("microwave_door_motion", target=round(target, 3), actual=round(actual, 3))
         if abs(actual - target) > 0.10:

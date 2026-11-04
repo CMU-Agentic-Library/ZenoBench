@@ -15,6 +15,7 @@ from .base import AtomicPolicy
 from .. import skills
 from ..clearance import LEGACY
 from ..kinematics import gripper_rot
+from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import entity_kind
 from ..rig import SkillFailure
@@ -98,7 +99,7 @@ class WaitHeatPolicy(AtomicPolicy):
                 break
             if not th.on.get(appliance):
                 raise SkillFailure(f"wait heat: {appliance} switched off before the target")
-            rig.step(120)
+            rig.step(PHYSICS_HZ)
         t = float(th.temperatures_c[name])
         if t < float(min_temp_c):
             raise SkillFailure(f"wait heat: {t:.1f} C below {min_temp_c} C")
@@ -126,7 +127,7 @@ class WaitCoolPolicy(AtomicPolicy):
                 break
             if abs(rig.joint(appliance) - a["closed_q"]) > 0.10:
                 raise SkillFailure(f"wait cool: {appliance} door is open")
-            rig.step(120)
+            rig.step(PHYSICS_HZ)
         t = float(th.temperatures_c[name])
         rig.log("cool_done", food=name, appliance=appliance, temp_c=round(t, 1))
         if t > float(max_temp_c):

@@ -14,6 +14,7 @@ from scipy.spatial.transform import Rotation
 
 from .base import AtomicPolicy
 from ..kinematics import vel_limits
+from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
 
 # Switched off (2026-11-02, docs/COLLISION_PLAN.md section 2): the arm moves along a base path
@@ -87,7 +88,7 @@ class ReachWhileMovingPolicy(AtomicPolicy):
             nonlocal last_update, arm_travel, updates
             if rig.tick-last_update < 12 and progress < 0.999:
                 return
-            dt = max(1, rig.tick-last_update)/120.0
+            dt = max(1, rig.tick-last_update) / PHYSICS_HZ
             last_update = rig.tick
             x, y, a = pose
             R_base = _rotation(a)
@@ -183,7 +184,7 @@ class PickWhileMovingPolicy(AtomicPolicy):
             else:
                 target = contact+np.array([0, 0, 0.07*min(1.0, (progress-0.65)/0.3)])
             if rig.tick-state["last"] >= 6 or progress >= 0.999:
-                dt = max(1, rig.tick-state["last"])/120.0
+                dt = max(1, rig.tick-state["last"]) / PHYSICS_HZ
                 state["last"] = rig.tick
                 _track_tcp(rig, target, R, dt)
                 state["arm_updates"] += 1
@@ -256,7 +257,7 @@ class PlaceWhileMovingPolicy(AtomicPolicy):
             else:
                 target_now = target+np.array([0, 0, 0.10*min(1.0, (progress-0.7)/0.25)])
             if rig.tick-state["last"] >= 6 or progress >= 0.999:
-                dt = max(1, rig.tick-state["last"])/120.0
+                dt = max(1, rig.tick-state["last"]) / PHYSICS_HZ
                 state["last"] = rig.tick
                 _track_tcp(rig, target_now, R, dt)
                 state["arm_updates"] += 1

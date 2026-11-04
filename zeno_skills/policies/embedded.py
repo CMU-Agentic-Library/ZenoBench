@@ -9,6 +9,7 @@ from .posture import LowerTorsoPolicy, SetWaistPitchPolicy
 from .. import skills
 from ..clearance import FREE_ELSE_STRAIGHT, LEGACY, lifting
 from ..kinematics import gripper_rot
+from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
 
 
@@ -176,7 +177,7 @@ class GraspArticulatedHandlePolicy(AtomicPolicy):
                 except SkillFailure as exc:
                     rig.log("handle_pre_branch_short", reason=str(exc))
             rig.move_to(*target, label=label, q_hint=hint)
-        fingers = rig.grip(0.0, 120)
+        fingers = rig.grip(0.0, PHYSICS_HZ)
         if fingers.min() <= min(0.004, 0.3*thickness):
             rig.kin.coll_kw = old_coll_kw
             raise SkillFailure(f"grasp handle {name}: no finger contact")
@@ -264,7 +265,7 @@ class PickFromCavityPolicy(AtomicPolicy):
                     raise SkillFailure(f"pick from cavity {name}: fallback did not withdraw through the front")
                 skills.check_held(rig, "pick_from_cavity_replan")
                 return result
-            fingers = rig.grip(0.0, 120)
+            fingers = rig.grip(0.0, PHYSICS_HZ)
             rig.move_to(target+np.array([0, 0, 0.07]), R, step=0.003,
                         steps_per_wp=5, label="cavity_pick_lift", allow=lifting(name))
             rig.step(40)

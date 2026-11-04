@@ -15,6 +15,7 @@ import numpy as np
 
 from .base import AtomicPolicy
 from .. import skills
+from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import (NEAR_M, entity_footprint, entity_kind, entity_point, ik_reachable,
                           reach_targets)
@@ -222,7 +223,7 @@ class LeftArmFoldPolicy(AtomicPolicy):
         rig.left_follow([start + (goal - start) * u for u in np.linspace(0, 1, n)[1:]])
         err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
         if err > 0.08:
-            rig.step(120)                 # let the slow wrist joints settle
+            rig.step(PHYSICS_HZ)          # let the slow wrist joints settle
             err = float(np.max(np.abs(rig.left_q()[2:] - rig.left_kin.rest[2:])))
         rig.log("left_fold", error_rad=round(err, 4))
         if err > 0.15:

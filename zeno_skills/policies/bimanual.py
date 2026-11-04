@@ -13,6 +13,7 @@ from .embedded import SlideToEdgePolicy
 from .. import skills
 from ..clearance import FREE, FREE_ELSE_STRAIGHT
 from ..kinematics import gripper_rot
+from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure, Dropped
 
 
@@ -336,7 +337,7 @@ def _grasp_both(rig, name, pairs, label):
     p0, _ = rig.obj_pose(name)
     rig.log("bimanual_grasp_targets", obj=name, body=p0.round(4).tolist(),
             right=right["p"].round(4).tolist(), left=left["p"].round(4).tolist())
-    right_open = rig.grip(right["pre_open"], 120)
+    right_open = rig.grip(right["pre_open"], PHYSICS_HZ)
     rig.log("bimanual_right_open", obj=name, fingers=right_open.round(4).tolist(),
             tcp=rig.kin.tcp(rig.q())[0].round(4).tolist())
     if right_open.min() < right["pre_open"]-0.008:
@@ -376,12 +377,12 @@ def _grasp_both(rig, name, pairs, label):
                 right_tcp=rig.kin.tcp(rig.q())[0].round(4).tolist(),
                 left_tcp=rig.left_kin.tcp(rig.left_q())[0].round(4).tolist())
         rig.grip_cmd = rig.left_grip_cmd = 0.0
-        rig.step(120)
+        rig.step(PHYSICS_HZ)
         rig.log("bimanual_contact_posture", torso=rig.q_cmd[:2].round(4).tolist(),
                 right_q=rig.q_cmd.round(3).tolist(),
                 left_q=np.r_[rig.q_cmd[:2], rig.left_q_cmd].round(3).tolist())
         _lift_together(rig, right["p"], right["R"], left["p"], left["R"], 0.04)
-    rig.step(120)  # prove both fingers keep contact after the object has settled
+    rig.step(PHYSICS_HZ)  # prove both fingers keep contact after the object has settled
     p1, _ = rig.obj_pose(name)
     rf, lf = rig.fingers(), rig.left_fingers()
     rig.log("bimanual_lift_check", obj=name, lift_m=round(float(p1[2]-p0[2]), 4),
@@ -530,7 +531,7 @@ class HandoverRightToLeftPolicy(AtomicPolicy):
         rig.left_grip(g["pre_open"], 30)
         rig.move_left_to(pre, g["R"], label="handover_left_pre")
         rig.move_left_to(g["p"], g["R"], label="handover_left_contact")
-        fingers = rig.left_grip(0.0, 120)
+        fingers = rig.left_grip(0.0, PHYSICS_HZ)
         if float(fingers.sum()) < 0.005:
             raise SkillFailure("handover: left fingers did not contact object")
         before, _ = rig.obj_pose(name)

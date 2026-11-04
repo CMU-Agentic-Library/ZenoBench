@@ -11,6 +11,7 @@ from .base import AtomicPolicy
 from .. import skills
 from ..clearance import LEGACY
 from ..evaluator import quat_R
+from ..physics import PHYSICS_HZ
 from ..rig import SkillFailure
 
 
@@ -310,7 +311,7 @@ class UprightObjectPolicy(AtomicPolicy):
         rig.grip(min(0.04, radius + 0.015), 40)
         for (tp, tR), lab in zip(legs, ("upright_top_pre", "upright_top_in", "upright_top_grasp")):
             rig.move_to(tp, tR, step=0.004, steps_per_wp=4, label=lab, allow=LEGACY, smooth=True)
-        rig.grip(0.0, 120, gradual=True)
+        rig.grip(0.0, PHYSICS_HZ, gradual=True)
         f_full = rig.fingers().copy()
         # pivot on the base end: the hand (firm grip) travels on an arc around
         # the base end with the wrist turning along, so the bottle rotates up
@@ -344,7 +345,7 @@ class UprightObjectPolicy(AtomicPolicy):
                     break
                 except SkillFailure:
                     continue
-            rig.step(120)
+            rig.step(PHYSICS_HZ)
             tilt = math.degrees(math.acos(np.clip(quat_R(rig.obj_pose(name)[1])[2, 2], -1.0, 1.0)))
             rig.log("upright_pivot_result", obj=name, arc_deg=reached, tilt_deg=round(tilt, 2))
             if tilt > max_tilt_deg:

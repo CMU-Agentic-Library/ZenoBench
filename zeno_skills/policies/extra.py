@@ -28,6 +28,7 @@ from ..clearance import FREE_ELSE_STRAIGHT, LEGACY
 from ..evaluator import quat_R
 from ..kinematics import gripper_rot
 from ..perception import project_to_head_camera
+from ..physics import PHYSICS_HZ
 from ..planner import find_park
 from ..predicates import entity_kind, entity_point, memory
 from ..rig import SkillFailure
@@ -81,7 +82,7 @@ class WaitPolicy(AtomicPolicy):
         if not math.isfinite(s) or s <= 0 or s > 600:
             raise ValueError("wait: seconds must be in (0, 600]")
         self.rig.caption = f"WAIT {s:.0f} s"
-        self.rig.step(int(round(s * 120)))
+        self.rig.step(int(round(s * PHYSICS_HZ)))
         return {"elapsed_s": s}
 
 

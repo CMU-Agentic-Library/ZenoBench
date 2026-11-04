@@ -452,4 +452,4 @@ def scene_settings(stage):
     api.CreateSolverTypeAttr().Set("TGS")
     api.CreateEnableCCDAttr().Set(True)
     api.CreateMinPositionIterationCountAttr().Set(16)
-    api.CreateTimeStepsPerSecondAttr().Set(120)
+    api.CreateTimeStepsPerSecondAttr().Set(PHYSICS_HZ)
