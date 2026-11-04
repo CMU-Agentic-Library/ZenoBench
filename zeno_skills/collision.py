@@ -10,11 +10,16 @@ keeps locked.
 
 from __future__ import annotations
 
+import math
 from contextlib import contextmanager
 
 import numpy as np
 
 BASE_HALF = 0.26   # base column half size (0.244) + margin
+FOOTPRINT_MARGIN = 0.03   # m the base column keeps from the boxes and moving parts, on top of BASE_HALF's
+                          # (two margins stacked: inherited, 3ccd5e99; docs/COLLISION_PLAN.md §2)
+FOOTPRINT_GRID = 6        # points per side the column's square is sampled at
+COLUMN_Z = (0.15, 0.6)    # m: heights the column is sampled at (inherited, 3ccd5e99, unmeasured)
 CIRCLE_RES = 0.025  # m: grid of circles_clear against the static boxes (half the base planner's lattice step)
 
 
@@ -102,7 +107,7 @@ class WorldModel:
         if len(self.base_only):
             ok &= self._circles_clear_boxes(xy, self.base_only, r)
         if self.ann.articulated:
-            for z in (0.15, 0.6):
+            for z in COLUMN_Z:
                 ok[ok] &= self.moving_part_dist(np.c_[xy[ok], np.full(int(ok.sum()), z)]) > r
         return ok
 
@@ -143,11 +148,11 @@ class WorldModel:
             ok &= np.all(np.hypot(dx, dy) > r, axis=1)
         return ok
 
-    def footprints_clear(self, poses, margin=0.03):
+    def footprints_clear(self, poses, margin=FOOTPRINT_MARGIN):
         """footprint_clear for many base poses ((N, 3): x, y, yaw rad) at once: (N,) bool."""
         poses = np.atleast_2d(np.asarray(poses, float))
-        g = np.linspace(-BASE_HALF, BASE_HALF, 6)
-        u, v, z = (a.ravel() for a in np.meshgrid(g, g, (0.15, 0.6), indexing="ij"))
+        g = np.linspace(-BASE_HALF, BASE_HALF, FOOTPRINT_GRID)
+        u, v, z = (a.ravel() for a in np.meshgrid(g, g, COLUMN_Z, indexing="ij"))
         c, s = np.cos(poses[:, 2])[:, None], np.sin(poses[:, 2])[:, None]
         P = np.stack([poses[:, :1] + c * u - s * v, poses[:, 1:2] + s * u + c * v,
                       np.broadcast_to(z, (len(poses), len(z)))], -1)            # (N, 72, 3)
@@ -155,7 +160,7 @@ class WorldModel:
         B = self.B[self.B[:, 2] > -0.5]                    # not the floor
         if len(self.base_only):
             B = np.vstack([B, self.base_only])
-        r = BASE_HALF * 1.5 + margin
+        r = BASE_HALF * math.sqrt(2) + margin           # the column's half diagonal: boxes beyond cannot touch
         B = B[(B[:, 3] > lo[0] - r) & (B[:, 0] < hi[0] + r) & (B[:, 4] > lo[1] - r) & (B[:, 1] < hi[1] + r)]
         ok = np.ones(len(poses), bool)
         for k in range(0, len(B), 64):
@@ -167,12 +172,12 @@ class WorldModel:
             ok &= (self.moving_part_dist(P.reshape(-1, 3)) > margin).reshape(len(poses), -1).all(axis=1)
         return ok
 
-    def footprint_clear(self, x, y, yaw, margin=0.03):
+    def footprint_clear(self, x, y, yaw, margin=FOOTPRINT_MARGIN):
         """Base column (0.52 m square, 1.05 m tall) vs static boxes and parts."""
         c, s = np.cos(yaw), np.sin(yaw)
-        g = np.linspace(-BASE_HALF, BASE_HALF, 6)
+        g = np.linspace(-BASE_HALF, BASE_HALF, FOOTPRINT_GRID)
         pts = np.array([[x + c * u - s * v, y + s * u + c * v, z]
-                        for u in g for v in g for z in (0.15, 0.6)])
+                        for u in g for v in g for z in COLUMN_Z])
         B = self.near_boxes((x, y))
         B = B[B[:, 2] > -0.5]                    # not the floor
         if len(self.base_only):

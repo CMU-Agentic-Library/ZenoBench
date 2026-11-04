@@ -10,6 +10,8 @@ from .base import AtomicPolicy
 from .. import skills
 from ..rig import SkillFailure
 
+BACK_OFF_SLACK = 0.01       # m a back-off may fall short of min_distance (inherited, 32a2d66c; unmeasured)
+
 
 class NavigatePolicy(AtomicPolicy):
     """Move to a base pose; select empty-hand or carry behavior from rig state."""
@@ -87,7 +89,7 @@ class BackOffWithLoadPolicy(AtomicPolicy):
         bx, by, _ = rig.base_pose()
         moved = max(0.0, (x - bx) * c + (y - by) * s)
         skills.check_held(rig, "back_off_with_load")
-        if moved < min_distance - 0.01:
+        if moved < min_distance - BACK_OFF_SLACK:
             raise SkillFailure(f"back off with load: reversed only {moved:.3f} m")
         return moved
 

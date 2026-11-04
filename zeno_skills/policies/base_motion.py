@@ -31,6 +31,10 @@ STANDOFF_NEAR_SLACK = 0.05                      # m inside NEAR_M every stand-of
 ROOM_SPOT_STEP = 0.25                           # m between rings around a room's centroid...
 ROOM_SPOT_MAX = 3.0                             # ...out to this far
 ROOM_SPOT_DEG = 30.0                            # deg between spots on a ring
+# Base turns and moves on request (inherited, 32a2d66c; unmeasured).
+FACE_ERR_DEG = 5.0          # deg of heading a turn in place may still miss by before face fails
+RETREAT_PAST = 0.03         # m a retreat goes past the distance asked for
+RETREAT_MIN = 0.01          # m: a retreat shorter than this is not driven
 
 
 def _park_diag():
@@ -171,7 +175,7 @@ class FaceTargetPolicy(AtomicPolicy):
         x2, y2, yaw2 = rig.base_pose()
         err = abs((bearing - yaw2 + 180) % 360 - 180)
         rig.log("face_result", target=target, yaw_deg=round(yaw2, 1), error_deg=round(err, 1))
-        if err > max(tolerance_deg, 5.0):
+        if err > max(tolerance_deg, FACE_ERR_DEG):
             raise SkillFailure(f"face {target}: heading error {err:.1f} deg")
         return yaw2
 
@@ -190,9 +194,9 @@ class RetreatFromPolicy(AtomicPolicy):
             away = -np.array([math.cos(math.radians(yaw)), math.sin(math.radians(yaw))])
         away /= np.linalg.norm(away)
         need = max(0.0, float(distance_m) - _box_dist(box, (x, y)))
-        if need < 0.01:
+        if need < RETREAT_MIN:
             return 0.0
-        end = np.array([x, y]) + away * (need + 0.03)
+        end = np.array([x, y]) + away * (need + RETREAT_PAST)
         if rig.held is not None:
             skills.check_held(rig, "retreat_start")
             skills.straight_base_move(rig, (end[0], end[1], yaw), f"retreat from {place}")

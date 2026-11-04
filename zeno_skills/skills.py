@@ -364,13 +364,14 @@ def poses_clear(rig, poses):
     """The base poses [(x, y, yaw_deg)] where the arms and what the hands hold stand clear of the
     world in the posture navigate arrives in (each empty arm folded, a loaded one as it is): goals
     the base planner accepts (the caller checks the footprint).  All of them without cuRobo."""
+    from . import base_planner
     motion = rig.kin.motion
     if motion is None or not poses:
         return list(poses)
     rig.sync_world()
     d = motion.base_depths(rig, np.array([[x, y, math.radians(yaw)] for x, y, yaw in poses]),
                            motion.body_spheres(rig, [_rest_posture(rig)]))[0]
-    return [p for p, dp in zip(poses, d) if dp <= 1e-4]
+    return [p for p, dp in zip(poses, d) if dp <= base_planner.DEPTH_TOL]
 
 
 def scene_area(world):
@@ -405,12 +406,12 @@ def straight_base_move(rig, target, label, **drive):
         us = np.linspace(0, 1, len(poses))
         d = motion.base_depths(rig, poses, sph)[0]
         low = rig.world.footprints_clear(poses)
-        bad = (d > d[0] + 1e-4) | ~low
+        bad = (d > d[0] + base_planner.DEPTH_TOL) | ~low
         bad[0] = False
         if bad.any():
             k = int(np.argmax(bad))
             raise SkillFailure(f"{label}: blocked {us[k] * 100:.0f}% of the way (" +
-                               (f"{d[k] * 1000:.0f} mm into the world)" if d[k] > d[0] + 1e-4 else "base footprint)"))
+                               (f"{d[k] * 1000:.0f} mm into the world)" if d[k] > d[0] + base_planner.DEPTH_TOL else "base footprint)"))
     rig.drive_base([(tx, ty, tyaw)], allow=FREE, **drive)
 
 

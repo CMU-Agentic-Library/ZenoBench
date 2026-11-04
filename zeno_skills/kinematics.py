@@ -36,7 +36,8 @@ COMPACT_TUCK = [0.0, 0.0, 1.05, 0.46, 0.42, 2.04, -0.06, -0.26, 0.42]
 # posture for the stretches the tuck does not fit (the dining room, T13/T19/T20 on 2026-11-02),
 # the tuck being the arrival posture it passes to without a swing elsewhere.
 DRIVE_Q = [0.0, 0.0, 0.0, 0.03, 0.0, 0.03, 0.0, 0.0, 0.0]
-# default left-arm travel posture; Rig can command all seven left joints
+# default left-arm travel posture; Rig can command all seven left joints.  Inherited (3ccd5e99), no
+# record of how it was chosen; its fingers stick out of the base column (docs/COLLISION_PLAN.md §2, step 5)
 LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_joint_4": 2.3}
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
 # -0.12985, pads span -0.14..-0.09 on the finger links).

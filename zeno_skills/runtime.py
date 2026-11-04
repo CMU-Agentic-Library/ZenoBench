@@ -81,7 +81,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=No
     if prepare is not None:
         prepare(stage)
     P.base_joints(stage)                # after prepare: it may move the robot's start
-    sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=1 / 120, device="cpu",
+    sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=1 / P.PHYSICS_HZ, device="cpu",
                                                               physics_prim_path="/World/PhysicsScene"))
     cams = {}
     if video:

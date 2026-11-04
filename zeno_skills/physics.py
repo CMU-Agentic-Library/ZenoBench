@@ -15,6 +15,7 @@ ASSET = ROBOT + "/Asset"
 ANCHOR = ROBOT + "/base_anchor"
 GRIP_MATERIAL = "/World/PhysicsMaterials/rubber_pad"
 OBJECT_MATERIAL = "/World/PhysicsMaterials/household"
+PHYSICS_HZ = 120            # physics steps per simulated second (CPU PhysX; sticky.py was checked at this rate)
 
 
 def deinstance(stage, root_path):

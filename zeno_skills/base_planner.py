@@ -48,6 +48,8 @@ DENSE = 0.02                # m: the farthest any point of the robot moves betwe
 LAZY_ROUNDS = 40            # searches a plan may take, each cutting the edges the last path failed on
 MARGIN = 2.0                # m the search may stray beyond the start / goal box
 REGION_RADIUS = 1.0         # m around the start searched for a goal region
+DEPTH_TOL = 1e-4            # m: a penetration this shallow is clear (numerical slack of the sphere queries,
+                            # not a margin); every whole-body base check compares against it
 MAX_EXPAND = 200000          # lattice states one search may expand before it gives up (a budget, unmeasured)
 GREEDY = 2.5                # weighted A*: the heuristic counts this much (a path at most this much costlier
                             # than the cheapest, for far fewer expansions over a 4-D lattice)
@@ -115,11 +117,11 @@ class Lattice:
                 return self.blocks[key]
             low = self._block(bi, bj, ("low", 0)).ravel()
             if kind == "mode":
-                ok = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + 1e-4
+                ok = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + DEPTH_TOL
             else:
                 d = self.depths(poses, self.switches[m])
                 # along the switch the first mode's tolerance holds, its end posture is strict
-                ok = np.all(d[:-1] <= self._tol(m) + 1e-4, axis=0) & (d[-1] <= self._tol(m + 1) + 1e-4)
+                ok = np.all(d[:-1] <= self._tol(m) + DEPTH_TOL, axis=0) & (d[-1] <= self._tol(m + 1) + DEPTH_TOL)
             self.evaluated += len(poses)
             self.blocks[key] = (ok & low).reshape(BLOCK, BLOCK, N_YAW)
         return self.blocks[key]
@@ -128,7 +130,7 @@ class Lattice:
         i, j, k = n[:3]
         if m == 0 and tuple(n[:3]) == self.start:
             return bool(self._block(i // BLOCK, j // BLOCK, ("mode", 0))[i % BLOCK, j % BLOCK, k % N_YAW] or
-                        self.depths(np.array([self.pose(n)]), self.modes[0][None])[0, 0] <= self.tol0 + 1e-4)
+                        self.depths(np.array([self.pose(n)]), self.modes[0][None])[0, 0] <= self.tol0 + DEPTH_TOL)
         return bool(self._block(i // BLOCK, j // BLOCK, ("mode", self.canon[m]))[i % BLOCK, j % BLOCK, k % N_YAW])
 
     def reaches(self, n, goal_pose):
@@ -147,7 +149,7 @@ class Lattice:
         runs = [segment(a, b, self.reach[m]) for a, b in segs]
         cuts = np.cumsum([len(r) for r in runs])[:-1]
         poses = np.vstack(runs)
-        ok = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + 1e-4
+        ok = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + DEPTH_TOL
         self.evaluated += len(poses)
         out = []
         lows = np.split(self.footprint(poses), cuts) if self.footprint is not None else None
@@ -187,7 +189,7 @@ class Lattice:
         if k > 1:
             us = np.arange(1, k) / k
             poses = (base[:, None, :] + us[None, :, None] * step).reshape(-1, 3)
-            good = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + 1e-4
+            good = self.depths(poses, self.modes[m][None])[0] <= self._tol(m) + DEPTH_TOL
             if self.footprint is not None:
                 good &= self.footprint(poses) | np.repeat(at_start, len(us))
             ok = good.reshape(len(base), len(us)).all(axis=1)
@@ -198,7 +200,7 @@ class Lattice:
         """The switch m -> m+1 at node n, checked at every posture of its dense sampling."""
         d = self.depths(np.array([self.pose(n)]), self.dense_switches[m])[:, 0]
         self.evaluated += len(d)
-        return bool(np.all(d[:-1] <= self._tol(m) + 1e-4) and d[-1] <= self._tol(m + 1) + 1e-4)
+        return bool(np.all(d[:-1] <= self._tol(m) + DEPTH_TOL) and d[-1] <= self._tol(m + 1) + DEPTH_TOL)
 
     def can_switch(self, n, m):
         i, j, k = n[:3]
@@ -424,7 +426,7 @@ def plan(depths, start, goal, modes, switches, area=None, footprint=None, passab
         lat.why, lat.expanded, lat.limit = "the turn to the start's lattice heading is blocked", 0, False
         return None, lat
     gp = np.array([[goal[0], goal[1], math.radians(goal[2])]]) if goal is not None else None
-    if goal is not None and (depths(gp, modes[-1][None])[0, 0] > 1e-4 or
+    if goal is not None and (depths(gp, modes[-1][None])[0, 0] > DEPTH_TOL or
                              (footprint is not None and not footprint(gp)[0])):
         lat.why = "the goal pose collides in the arrival posture"
         return None, lat

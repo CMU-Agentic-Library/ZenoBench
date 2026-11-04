@@ -14,7 +14,7 @@ import numpy as np
 
 from .clearance import BASE_DRIVE, FREE, FREE_ELSE_STRAIGHT, HAND_LINKS, LEGACY, MONITOR_EVERY, Clearance
 from .kinematics import ArmKin, FINGERS, LEFT_ARM_FOLD, tips_over, vel_limits, yaw_quat_wxyz
-from .physics import ASSET, BASE_JOINTS
+from .physics import ASSET, BASE_JOINTS, PHYSICS_HZ
 
 BIG_SWING = 1.0           # rad: an unchecked joint move swinging further is planned (a 2 rad swing put the forearm through a trash can)
 CARRY_VEL = 0.5           # rad/s: arm joint speed cap with an object in the hand (it must not be flung)
@@ -229,7 +229,7 @@ class Rig:
         return x0 < sx0 - 0.01 or y0 < sy0 - 0.01 or x1 > sx1 + 0.01 or y1 > sy1 + 0.01
 
     def log(self, label, **kw):
-        ev = {"tick": self.tick, "t": round(self.tick / 120, 3), "label": label, **kw}
+        ev = {"tick": self.tick, "t": round(self.tick / PHYSICS_HZ, 3), "label": label, **kw}
         self.events.append(ev)
         self._log("EVENT " + json.dumps(ev, default=float))
 
@@ -304,7 +304,7 @@ class Rig:
             if render:
                 imgs = []
                 for cam in self.cams.values():
-                    cam.update(1 / 120)
+                    cam.update(1 / PHYSICS_HZ)
                     imgs.append(cam.data.output["rgb"][0, ..., :3].cpu().numpy())
                 self.frames.append(self._compose(imgs, self.caption))
 
@@ -342,14 +342,14 @@ class Rig:
         if len(points) == 1:
             return
         vmax = self._vmax()
-        segment_times = [max(steps_per_wp / 120,
+        segment_times = [max(steps_per_wp / PHYSICS_HZ,
                              float(np.max(np.abs(b - a) / vmax)))
                          for a, b in zip(points[:-1], points[1:])]
         times = np.r_[0.0, np.cumsum(segment_times)]
         path_time = float(times[-1])
         ramp = min(0.8, path_time / 2)
         duration = path_time + ramp
-        ticks = max(2, int(math.ceil(duration * 120)))
+        ticks = max(2, int(math.ceil(duration * PHYSICS_HZ)))
         for i in range(1, ticks + 1):
             t = duration * i / ticks
             if t < ramp:
@@ -375,7 +375,7 @@ class Rig:
             return self.follow_smooth(qs, steps_per_wp, settle, tol)
         vmax = self._vmax()
         for q in qs:
-            need = int(math.ceil(np.max(np.abs(q - self.q_cmd) / vmax) * 120))
+            need = int(math.ceil(np.max(np.abs(q - self.q_cmd) / vmax) * PHYSICS_HZ))
             self.q_cmd = q
             self.step(max(steps_per_wp, need))
         for _ in range(settle):
@@ -861,7 +861,7 @@ class Rig:
         for q in qs:
             q = np.asarray(q, float)
             current = np.r_[self.q_cmd[:2], self.left_q_cmd]
-            need = int(math.ceil(np.max(np.abs(q-current) / vmax) * 120))
+            need = int(math.ceil(np.max(np.abs(q-current) / vmax) * PHYSICS_HZ))
             self.q_cmd[:2] = q[:2]
             self.left_q_cmd = q[2:].copy()
             self.step(max(steps_per_wp, need))
@@ -885,7 +885,7 @@ class Rig:
             raise SkillFailure("bimanual: arms request conflicting torso/waist positions")
         vmax = np.minimum(vel_limits(self.kin.names), vel_limits(self.left_kin.names))
         duration = max(np.max(np.abs(qr1-qr0)/vmax), np.max(np.abs(ql1-ql0)/vmax))/0.5
-        n = max(steps or 0, 20, int(math.ceil(duration*120)))
+        n = max(steps or 0, 20, int(math.ceil(duration * PHYSICS_HZ)))
         saved_right, saved_left = self.world.right_q, self.world.left_q
         try:
             for u in np.linspace(0, 1, max(3, n//8)):
@@ -1008,7 +1008,7 @@ class Rig:
         vr = self._vmax()
         vl = np.minimum(0.6 * vel_limits(self.left_kin.names[2:]), vr[2:].max())
         T = max(float(np.max(np.abs(r1 - r0) / vr)), float(np.max(np.abs(l1 - l0) / vl)), 0.05) * 1.5
-        n = max(2, int(math.ceil(T * 120)))
+        n = max(2, int(math.ceil(T * PHYSICS_HZ)))
         for i in range(1, n + 1):
             u = i / n
             u = u * u * (3 - 2 * u)
@@ -1055,7 +1055,7 @@ class Rig:
         if T > 1e-6:
             r = min(ramp, T / 2)
             total = T + r                      # time with trapezoidal ramps
-            n = max(20, int(total * 120))
+            n = max(20, int(total * PHYSICS_HZ))
             for i in range(1, n + 1):
                 t = total * i / n
                 if t < r:
@@ -1097,12 +1097,12 @@ class Rig:
         return buf
 
     def write_video(self, path, fps=None):
-        """The frames as an MP4 at real time (a frame every ``stride`` ticks of 120 Hz) unless ``fps``."""
+        """The frames as an MP4 at real time (a frame every ``stride`` physics ticks) unless ``fps``."""
         import cv2
         import imageio.v2 as imageio
         if not self.frames:
             return None
-        w = imageio.get_writer(path, fps=fps or 120 / self.stride, macro_block_size=1, quality=8)
+        w = imageio.get_writer(path, fps=fps or PHYSICS_HZ / self.stride, macro_block_size=1, quality=8)
         for buf in self.frames:
             w.append_data(cv2.imdecode(buf, cv2.IMREAD_COLOR)[..., ::-1])
         w.close()
