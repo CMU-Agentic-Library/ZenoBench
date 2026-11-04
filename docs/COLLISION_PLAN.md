@@ -114,7 +114,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 
 ## 5. 回归方法
 
-**每一步**：单元测试、`build_skill_library --check`，加上这一步动到的技能对应的几个 episode（只单独重跑相关的，不整批反复跑）。
+**每一步**：单元测试、`build_skill_library --check`，加上这一步动到的技能对应的几个 episode（只单独重跑相关的，不整批反复跑）。第 1 节清单能静态数的部分由 `tests/test_collision_audit.py` 卡住：`tools/audit_collision.py` 按文件统计 `LEGACY` / `unchecked`、目标豁免、`ignore_fingers`、目标里的字面量偏移、`except` 和吞异常、遍历备选的重试循环等，任何一项比 `tests/fixtures/collision_audit_baseline.json` 高就失败（`--sites --kind <类>` 看具体位置）；降下来了就用 `--update-baseline` 把基线一起降下来提交。
 
 **全量**（T、P 全部 variation，种子 10、11，170 个）：批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像），驱动脚本参考 `/data/zenobench/bench_1104/drive.sh`。只在这些节点跑：3b 完成后、3c 完成后、步骤 5 完成后。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`，逐个对比写在 `COMPARE.md`。
 
