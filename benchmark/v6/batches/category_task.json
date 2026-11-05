@@ -502,6 +502,106 @@
 {
 "task": "T02_stack_blocks",
 "seed": 10,
+"variant": "crowded_use_another__tight_tv",
+"route": "v6_crowded_use_another__tight_tv",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 11,
+"variant": "crowded_use_another__tight_tv",
+"route": "v6_crowded_use_another__tight_tv",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 12,
+"variant": "crowded_use_another__loose",
+"route": "v6_crowded_use_another__loose",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 13,
+"variant": "crowded_use_another__loose",
+"route": "v6_crowded_use_another__loose",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 14,
+"variant": "crowded_use_another__loose",
+"route": "v6_crowded_use_another__loose",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 15,
+"variant": "crowded_use_another__tight_tv",
+"route": "v6_crowded_use_another__tight_tv",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 16,
+"variant": "crowded_use_another__tight_dining",
+"route": "v6_crowded_use_another__tight_dining",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 17,
+"variant": "crowded_use_another__tight_tv",
+"route": "v6_crowded_use_another__tight_tv",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 18,
+"variant": "crowded_use_another__tight_dining",
+"route": "v6_crowded_use_another__tight_dining",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 19,
+"variant": "crowded_use_another__tight_dining",
+"route": "v6_crowded_use_another__tight_dining",
+"planner": "scripted",
+"profile": "sticky_snap/gt",
+"category": "task",
+"v6_variant": "crowded_use_another"
+},
+{
+"task": "T02_stack_blocks",
+"seed": 10,
 "variant": "third_toy_elsewhere__toy_block",
 "route": "v6_third_toy_elsewhere__toy_block",
 "planner": "scripted",
@@ -2802,202 +2902,202 @@
 {
 "task": "T06_block_destination_occupied",
 "seed": 10,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__spread",
+"route": "v6_display_row__spread",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 11,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__island_floor",
+"route": "v6_display_row__island_floor",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 12,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__spread",
+"route": "v6_display_row__spread",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 13,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__spread",
+"route": "v6_display_row__spread",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 14,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__island_floor",
+"route": "v6_display_row__island_floor",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 15,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__spread",
+"route": "v6_display_row__spread",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 16,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__spread",
+"route": "v6_display_row__spread",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 17,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__island_floor",
+"route": "v6_display_row__island_floor",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 18,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__island_floor",
+"route": "v6_display_row__island_floor",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 19,
-"variant": "display_hidden",
-"route": "hard_open_display",
+"variant": "display_row__island_floor",
+"route": "v6_display_row__island_floor",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_hidden"
+"v6_variant": "display_row"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 10,
-"variant": "display_row__spread",
-"route": "v6_display_row__spread",
+"variant": "display_spot_or_tv__front_taken",
+"route": "v6_display_spot_or_tv__front_taken",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 11,
-"variant": "display_row__island_floor",
-"route": "v6_display_row__island_floor",
+"variant": "display_spot_or_tv__front_taken",
+"route": "v6_display_spot_or_tv__front_taken",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 12,
-"variant": "display_row__spread",
-"route": "v6_display_row__spread",
+"variant": "display_spot_or_tv__front_taken",
+"route": "v6_display_spot_or_tv__front_taken",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 13,
-"variant": "display_row__spread",
-"route": "v6_display_row__spread",
+"variant": "display_spot_or_tv__front_free",
+"route": "v6_display_spot_or_tv__front_free",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 14,
-"variant": "display_row__island_floor",
-"route": "v6_display_row__island_floor",
+"variant": "display_spot_or_tv__front_free",
+"route": "v6_display_spot_or_tv__front_free",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 15,
-"variant": "display_row__spread",
-"route": "v6_display_row__spread",
+"variant": "display_spot_or_tv__front_free",
+"route": "v6_display_spot_or_tv__front_free",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 16,
-"variant": "display_row__spread",
-"route": "v6_display_row__spread",
+"variant": "display_spot_or_tv__front_taken",
+"route": "v6_display_spot_or_tv__front_taken",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 17,
-"variant": "display_row__island_floor",
-"route": "v6_display_row__island_floor",
+"variant": "display_spot_or_tv__front_free",
+"route": "v6_display_spot_or_tv__front_free",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 18,
-"variant": "display_row__island_floor",
-"route": "v6_display_row__island_floor",
+"variant": "display_spot_or_tv__front_taken",
+"route": "v6_display_spot_or_tv__front_taken",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",
 "seed": 19,
-"variant": "display_row__island_floor",
-"route": "v6_display_row__island_floor",
+"variant": "display_spot_or_tv__front_free",
+"route": "v6_display_spot_or_tv__front_free",
 "planner": "scripted",
 "profile": "sticky_snap/gt",
 "category": "task",
-"v6_variant": "display_row"
+"v6_variant": "display_spot_or_tv"
 },
 {
 "task": "T06_block_destination_occupied",

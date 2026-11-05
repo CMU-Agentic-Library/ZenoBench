@@ -50,7 +50,7 @@ def test_seeds_keep_what_the_variant_tests():
     def rel(cfg, a, b):
         return [round(cfg["move"][a]["xy"][k] - cfg["move"][b]["xy"][k], 3) for k in (0, 1)]
     for tid, vid, a, b in (("T16_rolling_pin_at_edge", "h_task_bowl_behind", "oatmeal", "rolling_pin"),
-                           ("T02_stack_blocks", "crowded", "wooden_block_b", "oatmeal")):
+                           ("T02_stack_blocks", "crowded_use_another__tight_tv", "wooden_block_b", "oatmeal")):
         t = TASKS[tid]
         assert len({tuple(rel(episode_config(t, s, vid), a, b)) for s in SEEDS}) == 1, (tid, vid)
     for tid, vid in (("T13_breakfast_setup", "no_cup_spoon_boxed_in"), ("T20_juice_back_to_table", "table_full")):
@@ -136,12 +136,17 @@ def test_every_variant_has_its_category():
 def test_local_fallbacks_are_action_level():
     """A few skills at the work spot: expose / separate before the pick, the lid off, the object on the book."""
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
-    for tid, vid in (("T02_stack_blocks", "crowded"), ("T09_tomato_soup", "lid_on"),
+    for tid, vid in (("T09_tomato_soup", "lid_on"),
                      ("T15_book_face_up", "h_task_block_on_book")):
         assert cat(tid, vid) == "action", (tid, vid)
     # T01 has no Action-Level variant left: what it tests is which table, which seat, which book, or the fallback
     t01 = TASKS["T01_book_to_dining_table"]["v6_tracks"]
     assert {x["category"] for x in t01.values()} == {"control", "task"}
+    # T01-T07 keep no pure Action-Level variant (TAMPAgent covers clearing a blocker; the fix is ruled out by a
+    # constraint and a fallback named instead, or the step sits inside an Action + Task variant)
+    for tid, t in TASKS.items():
+        if tid[:3] in ("T01", "T02", "T03", "T04", "T05", "T06", "T07"):
+            assert "action" not in {x["category"] for x in t["v6_tracks"].values()}, tid
     # a substitute, never a local fallback: Task-Level
     assert cat("T04_cup_or_mug_to_cabinet", "no_cup") == "task"
 

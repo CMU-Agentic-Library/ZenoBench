@@ -2148,26 +2148,21 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T02_stack_blocks/crowded": {
-  "variant": "crowded",
-  "category": "action",
+ "T02_stack_blocks/crowded_use_another__tight_tv": {
+  "variant": "crowded_use_another",
+  "category": "task",
   "seeds": [
    10,
    11,
-   12,
-   13,
-   14,
    15,
-   16,
-   17,
-   18,
-   19
+   17
   ],
-  "instruction": "Tidy the toy blocks left on the kitchen island: stack one wooden block on top of the other.",
+  "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "floor_block",
     "oatmeal",
     "rolling_pin",
     "wooden_block_a",
@@ -2176,7 +2171,8 @@
    "added": [],
    "removed": [],
    "conditions": [
-    "crowded"
+    "infeasible_fallback",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -2186,19 +2182,38 @@
     [
      [
       "on_top_of",
-      "wooden_block_b",
-      "wooden_block_a"
+      "wooden_block_a",
+      "floor_block"
      ]
     ],
     [
      [
       "on_top_of",
-      "wooden_block_a",
-      "wooden_block_b"
+      "floor_block",
+      "wooden_block_a"
      ]
     ]
    ],
    "all": [
+    [
+     "near_start",
+     "wooden_block_b",
+     0.02
+    ],
+    [
+     "near_start",
+     "oatmeal",
+     0.02
+    ],
+    [
+     "near_start",
+     "rolling_pin",
+     0.02
+    ],
+    [
+     "upright",
+     "oatmeal"
+    ],
     [
      "hand_empty",
      "right"
@@ -2206,31 +2221,25 @@
    ]
   },
   "control": "clear",
-  "oracle_route": "v5fix_crowded",
-  "challenge": "block B is boxed in: the oatmeal bowl right behind it and the end of the rolling pin right beside it (3 mm gaps), so both pinch axes of B have a finger slot taken",
-  "rationale": "",
+  "oracle_route": "v6_crowded_use_another__tight_tv",
+  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+  "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T02_stack_blocks/edge_base": {
-  "variant": "edge_base",
-  "category": "action",
+ "T02_stack_blocks/crowded_use_another__tight_dining": {
+  "variant": "crowded_use_another",
+  "category": "task",
   "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
    16,
-   17,
    18,
    19
   ],
-  "instruction": "Stack the two wooden blocks steadily somewhere suitable on the island, without knocking anything over.",
+  "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "floor_block",
     "oatmeal",
     "rolling_pin",
     "wooden_block_a",
@@ -2239,7 +2248,8 @@
    "added": [],
    "removed": [],
    "conditions": [
-    "unstable_base"
+    "infeasible_fallback",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -2249,29 +2259,38 @@
     [
      [
       "on_top_of",
-      "wooden_block_b",
-      "wooden_block_a"
-     ],
-     [
-      "away_from_edge",
       "wooden_block_a",
-      0.05
+      "floor_block"
      ]
     ],
     [
      [
       "on_top_of",
-      "wooden_block_a",
-      "wooden_block_b"
-     ],
-     [
-      "away_from_edge",
-      "wooden_block_b",
-      0.05
+      "floor_block",
+      "wooden_block_a"
      ]
     ]
    ],
    "all": [
+    [
+     "near_start",
+     "wooden_block_b",
+     0.02
+    ],
+    [
+     "near_start",
+     "oatmeal",
+     0.02
+    ],
+    [
+     "near_start",
+     "rolling_pin",
+     0.02
+    ],
+    [
+     "upright",
+     "oatmeal"
+    ],
     [
      "hand_empty",
      "right"
@@ -2279,9 +2298,86 @@
    ]
   },
   "control": "clear",
-  "oracle_route": "hard_stack_on_open_block",
-  "challenge": "block A sits at the island's front edge (5 mm over it), block B in the open",
-  "rationale": "",
+  "oracle_route": "v6_crowded_use_another__tight_dining",
+  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+  "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T02_stack_blocks/crowded_use_another__loose": {
+  "variant": "crowded_use_another",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   14
+  ],
+  "instruction": "Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the house, use that one instead.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "floor_block",
+    "oatmeal",
+    "rolling_pin",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "infeasible_fallback",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on_top_of",
+      "wooden_block_a",
+      "wooden_block_b"
+     ]
+    ],
+    [
+     [
+      "on_top_of",
+      "wooden_block_b",
+      "wooden_block_a"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "floor_block",
+     0.02
+    ],
+    [
+     "near_start",
+     "oatmeal",
+     0.02
+    ],
+    [
+     "near_start",
+     "rolling_pin",
+     0.02
+    ],
+    [
+     "upright",
+     "oatmeal"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "clear",
+  "oracle_route": "v6_crowded_use_another__loose",
+  "challenge": "block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids prying a wedged block out and says another block is elsewhere in the house",
+  "rationale": "look at B first: wedged, the local fix (separate) is ruled out, so find the other block and stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks and leave the other block where it is",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T02_stack_blocks/third_toy_elsewhere__duck": {
@@ -3479,7 +3575,7 @@
     ]
    ]
   },
-  "control": "edge_base",
+  "control": "clear",
   "oracle_route": "v6_block_put_away__in_4",
   "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
   "rationale": "at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the block is found, close each again, and put the block on top (Task)",
@@ -3640,7 +3736,7 @@
     ]
    ]
   },
-  "control": "edge_base",
+  "control": "clear",
   "oracle_route": "v6_block_put_away__in_6",
   "challenge": "two blocks on the island, block A at the edge (5 mm over it, it must not be the base); the third block was put away in one of the two closed low kitchen cabinets",
   "rationale": "at the island: stack A on B, not B on A (Action); then open the cabinets one by one until the block is found, close each again, and put the block on top (Task)",
@@ -5159,79 +5255,6 @@
   "oracle_route": "v6_hot_tea_mug__study",
   "challenge": "the cup on the island is in plain view but has no handle; the mug (with a handle) is in another room, out of view",
   "rationale": "hot tea wants a handle: the cup in view does not fit the request, the mug does; find it in another room",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T04_cup_or_mug_to_cabinet/cup_in_cabinet_below": {
-  "variant": "cup_in_cabinet_below",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept in that cabinet, right under the drinks spot. Close the cabinet door again.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "cup_counter_b",
-    "mug"
-   ],
-   "added": [],
-   "removed": [
-    "juice_bottle"
-   ],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "dependency_door_closed",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "cup_counter_b",
-     "kitchen_cabinet_6/top"
-    ],
-    [
-     "upright",
-     "cup_counter_b"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "cup_available",
-  "oracle_route": "v6_cup_in_cabinet_below",
-  "challenge": "no cup on the island; the cup is in the closed cabinet right under the drinks spot",
-  "rationale": "at the drinks spot: open the door below, take the cup, close the door, set the cup on top",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__cup_in_4": {
@@ -7050,140 +7073,6 @@
   "rationale": "seed extension of the v5 design: the wooden_block_a ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/display_hidden": {
-  "variant": "display_hidden",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Put the toy block on display on the low wall cabinet or the TV stand, in a spot where it can be seen clearly and stands steadily.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "clutter_cereal_a",
-    "clutter_cereal_b",
-    "juice_bottle",
-    "oatmeal",
-    "pot_lid",
-    "wooden_block_a",
-    "wooden_block_b"
-   ],
-   "added": [
-    "clutter_cereal_c"
-   ],
-   "removed": [],
-   "conditions": [
-    "spot_quality"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "wooden_block_a",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "front_visible",
-      "wooden_block_a"
-     ],
-     [
-      "away_from_edge",
-      "wooden_block_a",
-      0.02
-     ]
-    ],
-    [
-     [
-      "on",
-      "wooden_block_a",
-      "tv_stand_2/top"
-     ],
-     [
-      "front_visible",
-      "wooden_block_a"
-     ],
-     [
-      "away_from_edge",
-      "wooden_block_a",
-      0.02
-     ]
-    ],
-    [
-     [
-      "on",
-      "wooden_block_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "front_visible",
-      "wooden_block_b"
-     ],
-     [
-      "away_from_edge",
-      "wooden_block_b",
-      0.02
-     ]
-    ],
-    [
-     [
-      "on",
-      "wooden_block_b",
-      "tv_stand_2/top"
-     ],
-     [
-      "front_visible",
-      "wooden_block_b"
-     ],
-     [
-      "away_from_edge",
-      "wooden_block_b",
-      0.02
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "upright",
-     "clutter_cereal_a"
-    ],
-    [
-     "upright",
-     "clutter_cereal_b"
-    ],
-    [
-     "upright",
-     "juice_bottle"
-    ],
-    [
-     "upright",
-     "clutter_cereal_c"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "free",
-  "oracle_route": "hard_open_display",
-  "challenge": "three cereal boxes and the juice bottle stand along the wall cabinet's front; the free space behind them is hidden from the room, the TV stand is open",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T06_block_destination_occupied/display_row__island_floor": {
   "variant": "display_row",
   "category": "task",
@@ -7401,22 +7290,17 @@
   "rationale": "fetch the blocks one by one and compose the row: each placement has to leave room and spacing for the next, squared and at the front",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/clear_front_row": {
-  "variant": "clear_front_row",
-  "category": "action",
+ "T06_block_destination_occupied/display_spot_or_tv__front_taken": {
+  "variant": "display_spot_or_tv",
+  "category": "task",
   "seeds": [
    10,
    11,
    12,
-   13,
-   14,
-   15,
    16,
-   17,
-   18,
-   19
+   18
   ],
-  "instruction": "Put the toy block on display on top of the low wall cabinet, where it can be seen from the room.",
+  "instruction": "Put the toy block on display on top of the low wall cabinet, where it can be seen from the room. Leave the boxes and the bottle on the cabinet where they are; if they leave no place where the block can be seen, put it on the TV stand instead.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -7434,7 +7318,106 @@
    ],
    "removed": [],
    "conditions": [
-    "destination_full"
+    "infeasible_fallback",
+    "spot_quality"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "tv_stand_2/top"
+    ],
+    [
+     "front_visible",
+     "wooden_block_a"
+    ],
+    [
+     "away_from_edge",
+     "wooden_block_a",
+     0.02
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.02
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.02
+    ],
+    [
+     "near_start",
+     "juice_bottle",
+     0.02
+    ],
+    [
+     "near_start",
+     "clutter_cereal_c",
+     0.02
+    ],
+    [
+     "upright",
+     "clutter_cereal_a"
+    ],
+    [
+     "upright",
+     "clutter_cereal_b"
+    ],
+    [
+     "upright",
+     "juice_bottle"
+    ],
+    [
+     "upright",
+     "clutter_cereal_c"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "free",
+  "oracle_route": "v6_display_spot_or_tv__front_taken",
+  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names the TV stand as the fallback",
+  "rationale": "judge the cabinet top from the room: if the front is free, put the block there (the TV stand then fails); if the boxes fill the front row, moving one back is ruled out, so take the TV stand",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T06_block_destination_occupied/display_spot_or_tv__front_free": {
+  "variant": "display_spot_or_tv",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   15,
+   17,
+   19
+  ],
+  "instruction": "Put the toy block on display on top of the low wall cabinet, where it can be seen from the room. Leave the boxes and the bottle on the cabinet where they are; if they leave no place where the block can be seen, put it on the TV stand instead.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "juice_bottle",
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "clutter_cereal_c"
+   ],
+   "removed": [],
+   "conditions": [
+    "infeasible_fallback",
+    "spot_quality"
    ],
    "initial_checks": []
   },
@@ -7456,19 +7439,24 @@
      0.02
     ],
     [
-     "on",
+     "near_start",
      "clutter_cereal_a",
-     "kitchen_cabinet_6/top"
+     0.02
     ],
     [
-     "on",
+     "near_start",
      "clutter_cereal_b",
-     "kitchen_cabinet_6/top"
+     0.02
     ],
     [
-     "on",
+     "near_start",
      "juice_bottle",
-     "kitchen_cabinet_6/top"
+     0.02
+    ],
+    [
+     "near_start",
+     "clutter_cereal_c",
+     0.02
     ],
     [
      "upright",
@@ -7483,15 +7471,19 @@
      "juice_bottle"
     ],
     [
+     "upright",
+     "clutter_cereal_c"
+    ],
+    [
      "hand_empty",
      "right"
     ]
    ]
   },
   "control": "free",
-  "oracle_route": "v6_clear_front_row",
-  "challenge": "the front row of the cabinet top is taken by two cereal boxes and a juice bottle; the free space behind them cannot be seen from the room; only this cabinet is allowed",
-  "rationale": "make a visible place at the work spot: move a cereal box to the back, then put the block in the front gap; the boxes and the bottle stay upright on the cabinet",
+  "oracle_route": "v6_display_spot_or_tv__front_free",
+  "challenge": "three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the free space behind them cannot be seen from the room) or along the back (the front is free); the instruction forbids moving them and names the TV stand as the fallback",
+  "rationale": "judge the cabinet top from the room: if the front is free, put the block there (the TV stand then fails); if the boxes fill the front row, moving one back is ruled out, so take the TV stand",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T06_block_destination_occupied/seen_from_bed__boxes_middle": {

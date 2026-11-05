@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1310 episodes remain (530 of the 53 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1280 episodes remain (530 of the 53 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -14,8 +14,7 @@
 | T01 | reader_seat | task | 0/0 of 10 | - |
 | T01 | which_book | task | 0/0 of 10 | - |
 | T02 | clear | control | 0/0 of 10 | - |
-| T02 | crowded | action | 0/0 of 10 | - |
-| T02 | edge_base | action | 0/0 of 10 | - |
+| T02 | crowded_use_another | task | 0/0 of 10 | - |
 | T02 | third_toy_elsewhere | task | 0/0 of 10 | - |
 | T02 | tower_for_kid | task | 0/0 of 10 | - |
 | T02 | tower_for_kid_duck | task | 0/0 of 10 | - |
@@ -32,7 +31,6 @@
 | T04 | h_task_spot_taken | task | 0/0 of 10 | - |
 | T04 | two_guests | task | 0/0 of 10 | - |
 | T04 | hot_tea_mug | task | 0/0 of 10 | - |
-| T04 | cup_in_cabinet_below | action | 0/0 of 10 | low cabinet doors |
 | T04 | x6_gd_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T05 | e1_pencil_asked | control | 0/0 of 10 | - |
 | T05 | no_pen_pencil_away | task | 0/0 of 10 | - |
@@ -46,9 +44,8 @@
 | T06 | free | control | 0/0 of 10 | - |
 | T06 | occupied | task | 0/0 of 10 | - |
 | T06 | occupied_block_away | task | 0/0 of 10 | - |
-| T06 | display_hidden | task | 0/0 of 10 | - |
 | T06 | display_row | task | 0/0 of 10 | - |
-| T06 | clear_front_row | action | 0/0 of 10 | - |
+| T06 | display_spot_or_tv | task | 0/0 of 10 | - |
 | T06 | seen_from_bed | task | 0/0 of 10 | - |
 | T07 | microwave_works | control | 0/0 of 10 | - |
 | T07 | microwave_broken | task | 0/0 of 10 | - |

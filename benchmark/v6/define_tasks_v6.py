@@ -387,7 +387,45 @@ def T02(t):
     put_away_goal = copy.deepcopy(tower_goal)
     put_away_goal["all"] += [["is_closed", "kitchen_cabinet_4"], ["is_closed", "kitchen_cabinet_6"]]
     edge_two = OR(t, "edge_base")                # look, nav A, pick A, nav B, approach B, stack A on B
+    # crowded_use_another: block B is wedged between the full oatmeal bowl and the rolling pin; the instruction
+    # forbids prying it out (the oatmeal would spill) and points to another block in the house.  In the loose
+    # layout B stands clear of them and the two island blocks are stacked; the other block stays.
+    crowd = copy.deepcopy(t["variants"]["crowded"]["move"])          # oatmeal, rolling pin, A, B (3 mm gaps)
+    keep = ["oatmeal", "rolling_pin"]
+    pair = lambda x, y: {"any": [[["on_top_of", x, y]], [["on_top_of", y, x]]]}  # noqa: E731
+    crowd_cases = {}
+    for c, (pose, region) in {"tight_tv": (TV, "living_room_0_0"),
+                              "tight_dining": (P(DINING, 3.7, 6.3), "dining_room_0_1")}.items():
+        crowd_cases[c] = dict(
+            move={**crowd, F: pose},
+            goal={**pair(A, F), "all": [*[["near_start", n, 0.02] for n in (B, *keep)], ["upright", "oatmeal"],
+                                        ["hand_empty", "right"]]},
+            route=[look("kitchen_island/top"), nav(B), look(B), S("search", object=F, region=region), nav(F), pick(F),
+                   nav(A), S("approach", target=A), S("stack", object=F, base=A)])
+    crowd_cases["loose"] = dict(
+        move={**crowd, B: P("kitchen_island/top", 7.45, 1.80), F: TV},
+        goal={**pair(A, B), "all": [*[["near_start", n, 0.02] for n in (F, *keep)], ["upright", "oatmeal"],
+                                    ["hand_empty", "right"]]},
+        route=[look("kitchen_island/top"), nav(B), pick(B), S("rotate", object=B, degrees=30), nav(A),
+               S("approach", target=A), S("stack", object=B, base=A)])
     return {
+        "crowded_use_another": dict(
+            base="crowded", control="clear", conditions=["infeasible_fallback", "not_in_view"],
+            instruction="Stack two of the kid's wooden blocks on top of each other. The oatmeal bowl on the island is "
+                        "full: if a block is wedged tight between the bowl and the rolling pin, leave it there, do not "
+                        "pry it out, or the oatmeal will spill; there is another wooden block somewhere else in the "
+                        "house, use that one instead.",
+            instruction_zh="把孩子的两块木积木叠起来。岛台上的燕麦碗是满的：要是有积木被碗和擀面杖夹得很紧，就别去拨它，"
+                           "免得把燕麦碰洒；家里别处还有一块木积木，用那块。",
+            watch=[A, B, F, *keep],
+            factor="whether block B is wedged in (seed: tight with the other block on the TV stand or the dining "
+                   "table, or loose)",
+            challenge="block B lies 3 mm from the full oatmeal bowl and the rolling pin; the instruction forbids "
+                      "prying a wedged block out and says another block is elsewhere in the house",
+            rationale="look at B first: wedged, the local fix (separate) is ruled out, so find the other block and "
+                      "stack it with A; B, the bowl and the pin stay.  When B is loose, stack the two island blocks "
+                      "and leave the other block where it is",
+            cases=crowd_cases),
         "third_toy_elsewhere": dict(
             base="clear", control="clear", conditions=["missing_piece", "not_in_view"],
             instruction="Build the kid a three-level tower out of their toys on the kitchen island.",
@@ -451,7 +489,7 @@ def T02(t):
                                  add={"rubber_duck": {"asset": "rubber_duck", **TV}},
                                  route=table_route(B, "living_room_0_1", "rubber_duck", "living_room_0_0"))}),
         "block_put_away": dict(
-            base="edge_base", control="edge_base", conditions=["unstable_base", "not_in_view"],
+            base="edge_base", control="clear", conditions=["unstable_base", "not_in_view"],
             instruction="Stack the three toy blocks into one tower on the kitchen island. Two are on the island; I "
                         "put the third one away in one of the two low cabinets with doors along the living-room wall: "
                         "the one nearer the island, or the next one along the wall, further from the island. "
@@ -510,11 +548,6 @@ def T04(t):
                          route=[look("kitchen_island/top"), S("search", object="mug", region=region), nav("mug"),
                                 pick("mug"), nav(SPOT), place("mug", SPOT)])
                  for c, (pose, region) in away.items()}
-    # cup_in_cabinet_below: the cup is in the cabinet right under the drinks spot (door closed), no cup on the island
-    below_goal = {"all": [["on", C, SPOT], ["upright", C], ["is_closed", "kitchen_cabinet_6"], ["hand_empty", "right"]]}
-    below_route = [look("kitchen_island/top")] + open_explore("kitchen_cabinet_6") \
-        + [nav(C), pick(C), S("retreat", obstacle="kitchen_cabinet_6", distance_m=0.3),
-           S("close", articulated="kitchen_cabinet_6"), nav(SPOT), place(C, SPOT)]
     return {
         "two_guests": dict(
             base="cup_available", control="cup_available", conditions=["missing_piece", "not_in_view"],
@@ -540,17 +573,6 @@ def T04(t):
             rationale="hot tea wants a handle: the cup in view does not fit the request, the mug does; find it in "
                       "another room",
             cases=tea_cases),
-        "cup_in_cabinet_below": dict(
-            base="cup_available", control="cup_available",
-            move={C: shelf["kitchen_cabinet_6"]},
-            failures=[f_initial("dependency", [["is_closed", "kitchen_cabinet_6"]], fid="dependency_door_closed")],
-            instruction="A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept "
-                        "in that cabinet, right under the drinks spot. Close the cabinet door again.",
-            instruction_zh="有客人要来。在靠墙矮柜上的饮品角摆一个杯子；杯子就收在饮品角下面这个柜子里，拿完把柜门关好。",
-            goal=below_goal, watch=[C, "mug"],
-            challenge="no cup on the island; the cup is in the closed cabinet right under the drinks spot",
-            rationale="at the drinks spot: open the door below, take the cup, close the door, set the cup on top",
-            cases={"": dict(route=below_route)}),
         "x6_gd_cup_in_cabinets": dict(
             base="no_cup", control="no_cup",
             factor="which cabinet holds the preferred item",
@@ -775,13 +797,21 @@ def T06(t):
     row_cases = {"island_floor": dict(route=row_route([(A, None), (B, None), (F, "living_room_0_0")])),
                  "spread": dict(move={B: P("dining_table_2/top", 3.7, 6.3), F: P("kitchen_counter_2/top", -0.1, 7.3)},
                                 route=row_route([(A, None), (B, "dining_room_0_1"), (F, "kitchen_0_1")]))}
-    # clear_front_row: display_hidden with only the cabinet allowed: move a cereal box back, block in front
-    front_goal = {"all": [["on", A, CAB], ["front_visible", A], ["away_from_edge", A, 0.02],
-                          *[["on", x, CAB] for x in ("clutter_cereal_a", "clutter_cereal_b", "juice_bottle")],
-                          *[["upright", x] for x in ("clutter_cereal_a", "clutter_cereal_b", "juice_bottle")],
-                          ["hand_empty", "right"]]}
-    front_route = [look(ISL), nav(CAB), look(CAB), pick("clutter_cereal_b"), place("clutter_cereal_b", CAB, [3.43, 0.28]),
-                   nav(A), pick(A), nav(CAB), place(A, CAB, [3.433, 0.465])]
+    # display_spot_or_tv: the cabinet top holds the family's cereal boxes and juice, not to be moved; the block goes
+    # on the cabinet where it can be seen, or, if the boxes leave no visible place there, on the TV stand.  Seed:
+    # the boxes stand in the front row (display_hidden's layout: the TV stand) or along the back (the cabinet).
+    hidden = copy.deepcopy(t["variants"]["display_hidden"])
+    on_cab = [*hidden["move"], *hidden["add"]]                           # cereal a, b, c and the juice bottle
+    shown = lambda sup: [["on", A, sup], ["front_visible", A], ["away_from_edge", A, 0.02]]  # noqa: E731
+    stay = [*[["near_start", n, 0.02] for n in on_cab], *[["upright", n] for n in on_cab], ["hand_empty", "right"]]
+    back = {n: {**m, "xy": [m["xy"][0], 0.28]} for n, m in hidden["move"].items()}
+    back_add = {n: {**m, "xy": [m["xy"][0], 0.28]} for n, m in hidden["add"].items()}
+    spot_cases = {
+        "front_taken": dict(move=hidden["move"], add=hidden["add"], goal={"all": shown("tv_stand_2/top") + stay},
+                            route=[look(ISL), look(CAB), nav(A), pick(A), nav("tv_stand_2/top"),
+                                   place(A, "tv_stand_2/top")]),
+        "front_free": dict(move=back, add=back_add, goal={"all": shown(CAB) + stay},
+                           route=[look(ISL), look(CAB), nav(A), pick(A), nav(CAB), place(A, CAB, [3.433, 0.465])])}
     # seen_from_bed: the kid wants to see the block from bed.  The bedside bookcase is the surface in view of the
     # pillow (farther, lower furniture is hidden by the bed itself); the kid's cereal boxes stand on it, and the
     # part of the top behind them cannot be seen from the pillow.  Which part that is depends on where the boxes
@@ -813,17 +843,22 @@ def T06(t):
             rationale="fetch the blocks one by one and compose the row: each placement has to leave room and spacing "
                       "for the next, squared and at the front",
             cases=row_cases),
-        "clear_front_row": dict(
-            base="display_hidden", control="free", conditions=["destination_full"],
+        "display_spot_or_tv": dict(
+            base="display_hidden", control="free", conditions=["infeasible_fallback", "spot_quality"],
             instruction="Put the toy block on display on top of the low wall cabinet, where it can be seen from the "
-                        "room.",
-            instruction_zh="把积木摆到靠墙矮柜顶上展示，要从房间里看得见。",
-            goal=front_goal, watch=[A, B, "clutter_cereal_a", "clutter_cereal_b", "juice_bottle"],
-            challenge="the front row of the cabinet top is taken by two cereal boxes and a juice bottle; the free "
-                      "space behind them cannot be seen from the room; only this cabinet is allowed",
-            rationale="make a visible place at the work spot: move a cereal box to the back, then put the block in "
-                      "the front gap; the boxes and the bottle stay upright on the cabinet",
-            cases={"": dict(route=front_route)}),
+                        "room. Leave the boxes and the bottle on the cabinet where they are; if they leave no place "
+                        "where the block can be seen, put it on the TV stand instead.",
+            instruction_zh="把积木摆到靠墙矮柜顶上展示，要从房间里看得见。柜顶上的盒子和瓶子都别挪；要是它们挡得没有看得见"
+                           "的位置，就摆到电视柜上。",
+            watch=[A, B, *on_cab],
+            factor="where the boxes and the bottle stand on the cabinet top (seed: the front row, or along the back)",
+            challenge="three cereal boxes and a juice bottle stand on the cabinet top, either in the front row (the "
+                      "free space behind them cannot be seen from the room) or along the back (the front is free); "
+                      "the instruction forbids moving them and names the TV stand as the fallback",
+            rationale="judge the cabinet top from the room: if the front is free, put the block there (the TV stand "
+                      "then fails); if the boxes fill the front row, moving one back is ruled out, so take the TV "
+                      "stand",
+            cases=spot_cases),
         "seen_from_bed": dict(
             base="free", control="free", conditions=["viewer_place", "not_in_view"],
             instruction="The kid wants to look at the toy block while lying in bed tonight. Put it on display "
@@ -1564,6 +1599,12 @@ def _broken_tried(t):
 ROUTE_FIX = {"T07_heat_oatmeal": {"microwave_broken": _broken_tried}}
 # variant -> why it leaves v6
 REPLACED = {
+    ("T02_stack_blocks", "crowded"): "replaced by crowded_use_another (prying the wedged block out is ruled out; "
+                                     "another block in the house instead)",
+    ("T02_stack_blocks", "edge_base"): "removed: choosing the other block as the base is a local step (Action); it "
+                                       "lives on inside block_put_away (Action + Task)",
+    ("T06_block_destination_occupied", "display_hidden"): "replaced by display_spot_or_tv (the same scene, plus a "
+                                                          "layout with the front free)",
     ("T01_book_to_dining_table", "table_set"): "replaced by table_seats (several free slots, the suitable one changes "
                                                "with the setting)",
     ("T01_book_to_dining_table", "h_dynamic_pushed_back"): "removed: two unrelated challenges (no_overhang mid-way "

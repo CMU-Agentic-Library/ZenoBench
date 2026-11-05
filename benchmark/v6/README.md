@@ -7,9 +7,9 @@ puts each variant in one of four categories.
 | | |
 |---|---|
 | base tasks | 20 (one house, 10 rooms, existing assets only) |
-| variants | 131; each runs seeds 10-19 (1,310 episodes) |
-| categories | control 20 (one per task), Action-Level 25, Task-Level 76, Action + Task 10 (`TRACKS.md`) |
-| static checks | 1,310 / 1,310 episodes |
+| variants | 128; each runs seeds 10-19 (1,280 episodes) |
+| categories | control 20 (one per task), Action-Level 21, Task-Level 77, Action + Task 10 (`TRACKS.md`) |
+| static checks | 1,280 / 1,280 episodes |
 | physics | none yet: every layout is new (seed generator); all STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
 ## Definitions
