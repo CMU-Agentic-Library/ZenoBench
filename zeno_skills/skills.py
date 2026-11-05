@@ -1240,6 +1240,11 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
     # the last of it (where the fingers touch, by the collision model) the contact segment
     err = rig.move_to(g["p"], g["R"], step=0.003, steps_per_wp=4, label="pick_grasp", q_hint=park_qs[1],
                       smooth=True, approach=(*_grasp_approach(g), park_qs[0]), allow=into_contact(touch=(name,)))
+    if rig.kin.motion is not None:
+        # measuring for the two-phase pick (plan 6.2): what the open hand at the commanded grasp
+        # pose penetrates in the full model, against the world the approach was planned in
+        rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
+                hits=rig.kin.motion.contacts_by_owner(rig.kin, rig.q_cmd, rig.kin._other_q()))
     if err > 0.008:                     # round objects pop out of an off-centre pinch
         rig.move_to(g["p"], g["R"], step=0.002, steps_per_wp=6, label="pick_grasp_fix", allow=LEGACY, smooth=True)
     rig.caption = f"PICK {name}: close gripper"

@@ -1014,6 +1014,38 @@ class Motion:
             hits[links[i]] = max(hits.get(links[i], 0.0), float(d[i]))
         return hits
 
+    def contacts_by_owner(self, kin, q, other_q=None, reach=0.5):
+        """{owner: {link: depth m}}: what each obstacle within ``reach`` of the TCP is penetrated by
+        at q, every link of the arm checked (fingers too) and no target exempt -- the full model,
+        not the one a motion ran under.  One query per owner with only its colliders on; for
+        measuring (6.2: what the open hand at a grasp pose touches), not for planning."""
+        with self._query(kin, other_q, {"exempt_targets": False}) as arm:
+            q = np.clip(np.asarray(q, float), arm.lo, arm.hi)
+            if not self._touching(arm, q):
+                return {}
+            tcp = kin.tcp(q)[0]
+            on = [c for c in self.cols.items if self.enabled[c.name]]
+            owners = {}
+            for c in on:
+                if np.linalg.norm(self._centre(c) - tcp) - self._extent[c.name][1] < reach:
+                    owners.setdefault(c.owner, []).append(c)
+            out = {}
+            try:
+                for c in on:
+                    self._set_enabled(c, False)
+                for owner, cs in owners.items():
+                    for c in cs:
+                        self._set_enabled(c, True)
+                    hits = self._touching(arm, q)
+                    if hits:
+                        out[owner] = {l: round(v, 4) for l, v in sorted(hits.items(), key=lambda t: -t[1])}
+                    for c in cs:
+                        self._set_enabled(c, False)
+            finally:
+                for c in on:
+                    self._set_enabled(c, True)
+            return out
+
     def explain(self, kin, q, other_q=None, coll_kw=None):
         """Which links of q penetrate the world (deepest first), else self collision / limits."""
         with self._query(kin, other_q, coll_kw) as arm:
