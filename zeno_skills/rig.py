@@ -557,9 +557,15 @@ class Rig:
         if not ok:
             scene, kin.scene = kin.scene, None
             try:
-                why = "it collides" if kin.cart_path(first[-1], p_c, R, step=step)[1] else "no IK along it"
+                line, free_ik = kin.cart_path(first[-1], p_c, R, step=step)
+                why = "it collides" if free_ik else "no IK along it"
             finally:
                 kin.scene = scene
+            at = next((i for i, q in enumerate(line) if not kin.free(q)), None) if free_ik else None
+            if at is not None and hasattr(kin.motion, "contacts_by_owner"):
+                # where along the line and into what (by owner, every link checked)
+                self.log("approach_line_hit", target=label, at=round(at / max(len(line) - 1, 1), 2),
+                         by_owner=kin.motion.contacts_by_owner(kin, line[at], kin._other_q()))
             raise SkillFailure(f"{label}: no collision-free straight approach from its start ({why}: "
                                f"{kin.explain(first[-1]) if not kin.free(first[-1]) else 'start clear'})")
         self.log("planned_leg", target=label, how="line_start", waypoints=len(first) + len(rest),
@@ -633,7 +639,12 @@ class Rig:
                     self.log("plan_failed", target=label, why=why)
         qs = straight()
         with self._planning(kin, start):
-            hit = next((kin.explain(q) for q in list(qs[::5]) + list(qs[-1:]) if not kin.free(q)), None)
+            at = next((i for i in list(range(0, len(qs), 5)) + [len(qs) - 1] if not kin.free(qs[i])), None)
+            hit = None if at is None else kin.explain(qs[at])
+            if at is not None and hasattr(kin.motion, "contacts_by_owner"):
+                # where along the straight path and into what (by owner, every link checked)
+                self.log("fallback_hit", target=label, at=round(at / max(len(qs) - 1, 1), 2),
+                         by_owner=kin.motion.contacts_by_owner(kin, qs[at], kin._other_q()))
         self.clear.fallback(label, why, hit)
         return qs, LEGACY
 
