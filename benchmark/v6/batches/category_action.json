@@ -500,6 +500,106 @@
 "v6_variant": "edge_base"
 },
 {
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 10,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 11,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 12,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 13,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 14,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 15,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 16,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 17,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 18,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
+"task": "T04_cup_or_mug_to_cabinet",
+"seed": 19,
+"variant": "cup_in_cabinet_below",
+"route": "v6_cup_in_cabinet_below",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "cup_in_cabinet_below"
+},
+{
 "task": "T07_heat_oatmeal",
 "seed": 10,
 "variant": "x6_pp_door_opened_after_heat",

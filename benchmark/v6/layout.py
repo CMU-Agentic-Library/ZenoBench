@@ -79,9 +79,9 @@ def _fixed_support(base, name):
 
 def _box(asset, m):
     a = _assets()[asset]
-    hx, hy = a["size"][0] / 2, a["size"][1] / 2
-    if abs(math.sin(math.radians(m.get("yaw_deg", 0.0)))) > 0.7:
-        hx, hy = hy, hx
+    sx, sy = a["size"][0] / 2, a["size"][1] / 2
+    c, s = abs(math.cos(math.radians(m.get("yaw_deg", 0.0)))), abs(math.sin(math.radians(m.get("yaw_deg", 0.0))))
+    hx, hy = sx * c + sy * s, sx * s + sy * c         # the box of the yawed footprint (any yaw)
     return [m["xy"][0] - hx, m["xy"][1] - hy, m["xy"][0] + hx, m["xy"][1] + hy]
 
 

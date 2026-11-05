@@ -1464,6 +1464,8 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "oatmeal",
+    "rolling_pin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -1586,6 +1588,8 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "oatmeal",
+    "rolling_pin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -1653,6 +1657,8 @@
    "start": null,
    "moved": [
     "kitchen_sponge",
+    "oatmeal",
+    "rolling_pin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -1735,6 +1741,8 @@
    "start": null,
    "moved": [
     "kitchen_sponge",
+    "oatmeal",
+    "rolling_pin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -1885,6 +1893,9 @@
    "start": null,
    "moved": [
     "floor_block",
+    "oatmeal",
+    "rolling_pin",
+    "wide_storage_bin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -2147,6 +2158,9 @@
    "start": null,
    "moved": [
     "floor_block",
+    "oatmeal",
+    "rolling_pin",
+    "wide_storage_bin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -2408,6 +2422,9 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "oatmeal",
+    "rolling_pin",
+    "wide_storage_bin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -2542,6 +2559,9 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "oatmeal",
+    "rolling_pin",
+    "wide_storage_bin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -2677,6 +2697,8 @@
    "start": null,
    "moved": [
     "floor_block",
+    "oatmeal",
+    "rolling_pin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -2836,6 +2858,8 @@
    "start": null,
    "moved": [
     "floor_block",
+    "oatmeal",
+    "rolling_pin",
     "wooden_block_a",
     "wooden_block_b"
    ],
@@ -2998,7 +3022,10 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "breakfast_spoon",
+    "rolling_pin"
+   ],
    "added": [],
    "removed": [
     "mug"
@@ -3047,325 +3074,6 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T03_utensils_one_container/far_small_and_large": {
-  "variant": "far_small_and_large",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": [
-    4.764,
-    0.699,
-    195.0
-   ],
-   "moved": [
-    "mug"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "start_elsewhere",
-    "small_container_present"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "inside",
-      "rolling_pin",
-      "wide_storage_bin"
-     ],
-     [
-      "inside",
-      "breakfast_spoon",
-      "wide_storage_bin"
-     ]
-    ],
-    [
-     [
-      "inside",
-      "rolling_pin",
-      "mug"
-     ],
-     [
-      "inside",
-      "breakfast_spoon",
-      "mug"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "large_only",
-  "oracle_route": "v5fix_far_small_and_large",
-  "challenge": "the robot starts at the wall cabinet facing away; a mug on the island, the storage bin on the TV stand",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T03_utensils_one_container/h_dynamic_pin_taken": {
-  "variant": "h_dynamic_pin_taken",
-  "category": "task",
-  "seeds": [
-   12,
-   13,
-   14,
-   17,
-   19
-  ],
-  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "mug"
-   ],
-   "added": [
-    "small_storage_bin"
-   ],
-   "removed": [],
-   "conditions": [
-    "joint_capacity"
-   ],
-   "initial_checks": [
-    [
-     "on",
-     "small_storage_bin",
-     "tv_stand_2/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "capacity_v4_three_containers",
-    "kind": "capacity",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_rolling_pin",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "drop",
-     "args": {
-      "object": "breakfast_spoon"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "rolling_pin",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.5,
-       0.45
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "fully_inside",
-      "rolling_pin",
-      "wide_storage_bin"
-     ],
-     [
-      "fully_inside",
-      "breakfast_spoon",
-      "wide_storage_bin"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "rolling_pin",
-      "mug"
-     ],
-     [
-      "fully_inside",
-      "breakfast_spoon",
-      "mug"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "rolling_pin",
-      "small_storage_bin"
-     ],
-     [
-      "fully_inside",
-      "breakfast_spoon",
-      "small_storage_bin"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "large_only",
-  "oracle_route": "v5_h_dynamic_pin_taken",
-  "challenge": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone takes the pin to the wall cabinet: keep the spoon where it is, find the pin",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T03_utensils_one_container/h_dynamic_pin_taken__alt_dining_table_2": {
-  "variant": "h_dynamic_pin_taken",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   15,
-   16,
-   18
-  ],
-  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "mug"
-   ],
-   "added": [
-    "small_storage_bin"
-   ],
-   "removed": [],
-   "conditions": [
-    "joint_capacity"
-   ],
-   "initial_checks": [
-    [
-     "on",
-     "small_storage_bin",
-     "tv_stand_2/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "capacity_v4_three_containers",
-    "kind": "capacity",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_rolling_pin",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "drop",
-     "args": {
-      "object": "breakfast_spoon"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "rolling_pin",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "fully_inside",
-      "rolling_pin",
-      "wide_storage_bin"
-     ],
-     [
-      "fully_inside",
-      "breakfast_spoon",
-      "wide_storage_bin"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "rolling_pin",
-      "mug"
-     ],
-     [
-      "fully_inside",
-      "breakfast_spoon",
-      "mug"
-     ]
-    ],
-    [
-     [
-      "fully_inside",
-      "rolling_pin",
-      "small_storage_bin"
-     ],
-     [
-      "fully_inside",
-      "breakfast_spoon",
-      "small_storage_bin"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "large_only",
-  "oracle_route": "v6_h_dynamic_pin_taken__alt_dining_table_2",
-  "challenge": "allocate by size (the pin only fits the wide bin); once the spoon is in the bin, someone takes the pin to the wall cabinet: keep the spoon where it is, find the pin (here the rolling_pin is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the rolling_pin ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T03_utensils_one_container/mug_or_bedroom_bin": {
   "variant": "mug_or_bedroom_bin",
   "category": "task",
@@ -3386,7 +3094,9 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "mug",
+    "rolling_pin",
     "wide_storage_bin"
    ],
    "added": [],
@@ -3458,7 +3168,9 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "mug",
+    "rolling_pin",
     "wide_storage_bin"
    ],
    "added": [
@@ -3522,6 +3234,418 @@
   "oracle_route": "v6_three_containers_bedroom",
   "challenge": "the mug on the island next to the utensils; a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
   "rationale": "by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then carry both utensils there",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/which_bin_by_contents__toys_near": {
+  "variant": "which_bin_by_contents",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   14,
+   18,
+   19
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in the bin where the kitchen utensils are kept.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "rolling_pin",
+    "spoon_counter",
+    "spoon_side_table",
+    "wide_storage_bin"
+   ],
+   "added": [
+    "toy_bin_block_1",
+    "toy_bin_block_2",
+    "toy_storage_bin"
+   ],
+   "removed": [
+    "mug"
+   ],
+   "conditions": [
+    "decoy_destination",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "toy_bin_block_1",
+     "toy_storage_bin"
+    ],
+    [
+     "inside",
+     "toy_bin_block_2",
+     "toy_storage_bin"
+    ],
+    [
+     "inside",
+     "spoon_counter",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "spoon_side_table",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_which_bin_by_contents__toys_near",
+  "challenge": "two wide bins of one make, one on the TV stand and one on the low bookcase in the bedroom; the toy bin holds the kid's two blocks, the kitchen bin holds two spoons",
+  "rationale": "the bins look the same from outside: look into the near one; if it holds toys, the utensils go to the other one in the bedroom; leave the toys and the spoons where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/which_bin_by_contents__tools_near": {
+  "variant": "which_bin_by_contents",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   15,
+   16,
+   17
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in the bin where the kitchen utensils are kept.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "rolling_pin",
+    "spoon_counter",
+    "spoon_side_table",
+    "wide_storage_bin"
+   ],
+   "added": [
+    "toy_bin_block_1",
+    "toy_bin_block_2",
+    "toy_storage_bin"
+   ],
+   "removed": [
+    "mug"
+   ],
+   "conditions": [
+    "decoy_destination",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "toy_bin_block_1",
+     "toy_storage_bin"
+    ],
+    [
+     "inside",
+     "toy_bin_block_2",
+     "toy_storage_bin"
+    ],
+    [
+     "inside",
+     "spoon_counter",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "spoon_side_table",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_which_bin_by_contents__tools_near",
+  "challenge": "two wide bins of one make, one on the TV stand and one on the low bookcase in the bedroom; the toy bin holds the kid's two blocks, the kitchen bin holds two spoons",
+  "rationale": "the bins look the same from outside: look into the near one; if it holds toys, the utensils go to the other one in the bedroom; leave the toys and the spoons where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/no_bin_substitute__basket": {
+  "variant": "no_bin_substitute",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   14,
+   18
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in the storage bin; if there is none, use something else that holds both.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "mug",
+    "rolling_pin"
+   ],
+   "added": [
+    "apple",
+    "fruit_basket",
+    "orange",
+    "small_storage_bin",
+    "storage_basket"
+   ],
+   "removed": [
+    "wide_storage_bin"
+   ],
+   "conditions": [
+    "container_absent",
+    "small_container_present",
+    "decoy_destination",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "storage_basket"
+    ],
+    [
+     "inside",
+     "apple",
+     "fruit_basket"
+    ],
+    [
+     "inside",
+     "orange",
+     "fruit_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_no_bin_substitute__basket",
+  "challenge": "no storage bin in the house; the mug on the island (8 cm opening) and a small bin on the TV stand (22 x 17 cm) are too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+  "rationale": "the named bin is absent: measure the near containers, rule them out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/no_bin_substitute__tray": {
+  "variant": "no_bin_substitute",
+  "category": "task",
+  "seeds": [
+   11,
+   15,
+   16,
+   17,
+   19
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in the storage bin; if there is none, use something else that holds both.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "mug",
+    "rolling_pin"
+   ],
+   "added": [
+    "apple",
+    "fruit_basket",
+    "orange",
+    "serving_tray",
+    "small_storage_bin"
+   ],
+   "removed": [
+    "wide_storage_bin"
+   ],
+   "conditions": [
+    "container_absent",
+    "small_container_present",
+    "decoy_destination",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "serving_tray"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "serving_tray"
+    ],
+    [
+     "inside",
+     "apple",
+     "fruit_basket"
+    ],
+    [
+     "inside",
+     "orange",
+     "fruit_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_no_bin_substitute__tray",
+  "challenge": "no storage bin in the house; the mug on the island (8 cm opening) and a small bin on the TV stand (22 x 17 cm) are too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+  "rationale": "the named bin is absent: measure the near containers, rule them out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/utensils_apart__dining": {
+  "variant": "utensils_apart",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   16,
+   18,
+   19
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "rolling_pin",
+    "wide_storage_bin"
+   ],
+   "added": [],
+   "removed": [
+    "mug"
+   ],
+   "conditions": [
+    "item_out_of_view",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_utensils_apart__dining",
+  "challenge": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
+  "rationale": "only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a time (the pin first, then the spoon)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T03_utensils_one_container/utensils_apart__counter": {
+  "variant": "utensils_apart",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   14,
+   15,
+   17
+  ],
+  "instruction": "Baking is done. Put the rolling pin and the spoon away together in one container.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "rolling_pin",
+    "wide_storage_bin"
+   ],
+   "added": [],
+   "removed": [
+    "mug"
+   ],
+   "conditions": [
+    "item_out_of_view",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "rolling_pin",
+     "wide_storage_bin"
+    ],
+    [
+     "inside",
+     "breakfast_spoon",
+     "wide_storage_bin"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "large_only",
+  "oracle_route": "v6_utensils_apart__counter",
+  "challenge": "the rolling pin is on the island, the spoon was left in another room (out of view), the bin is on the low bookcase in the bedroom",
+  "rationale": "only one utensil is in view: find the bin and the spoon, one hand, so carry them one at a time (the pin first, then the spoon)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T04_cup_or_mug_to_cabinet/cup_available": {
@@ -3895,6 +4019,569 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
+ "T04_cup_or_mug_to_cabinet/two_guests__dining": {
+  "variant": "two_guests",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   14,
+   15,
+   18
+  ],
+  "instruction": "Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other; if there are not enough cups, a mug will do for one.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug"
+   ],
+   "added": [],
+   "removed": [
+    "juice_bottle"
+   ],
+   "conditions": [
+    "missing_piece",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ],
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "clear_of",
+      "cup_counter_b",
+      [
+       "mug"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ],
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ],
+     [
+      "clear_of",
+      "cup_counter_b",
+      [
+       "mug_dining_cabinet"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ],
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ],
+     [
+      "clear_of",
+      "cup_counter_b",
+      [
+       "mug_shelf"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ],
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ],
+     [
+      "clear_of",
+      "cup_counter_b",
+      [
+       "mug_counter"
+      ],
+      0.03
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_available",
+  "oracle_route": "v6_two_guests__dining",
+  "challenge": "two drinks are needed and the house has one cup (on the island); the mug is in another room, out of view",
+  "rationale": "set out the cup, notice there is no second cup, and fetch a mug from another room for the second place; the two stand apart on the spot",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/two_guests__study": {
+  "variant": "two_guests",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   16,
+   17,
+   19
+  ],
+  "instruction": "Two guests are coming. Set out two cups at the drinks spot on the low wall cabinet, not touching each other; if there are not enough cups, a mug will do for one.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug"
+   ],
+   "added": [],
+   "removed": [
+    "juice_bottle"
+   ],
+   "conditions": [
+    "missing_piece",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ],
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ],
+     [
+      "clear_of",
+      "cup_counter_b",
+      [
+       "mug"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ],
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ],
+     [
+      "clear_of",
+      "cup_counter_b",
+      [
+       "mug_dining_cabinet"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ],
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ],
+     [
+      "clear_of",
+      "cup_counter_b",
+      [
+       "mug_shelf"
+      ],
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ],
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ],
+     [
+      "clear_of",
+      "cup_counter_b",
+      [
+       "mug_counter"
+      ],
+      0.03
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_available",
+  "oracle_route": "v6_two_guests__study",
+  "challenge": "two drinks are needed and the house has one cup (on the island); the mug is in another room, out of view",
+  "rationale": "set out the cup, notice there is no second cup, and fetch a mug from another room for the second place; the two stand apart on the spot",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/hot_tea_mug__dining": {
+  "variant": "hot_tea_mug",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   17,
+   19
+  ],
+  "instruction": "A guest would like hot tea. Set out a cup with a handle at the drinks spot on the low wall cabinet.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug"
+   ],
+   "added": [],
+   "removed": [
+    "juice_bottle"
+   ],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_available",
+  "oracle_route": "v6_hot_tea_mug__dining",
+  "challenge": "the cup on the island is in plain view but has no handle; the mug (with a handle) is in another room, out of view",
+  "rationale": "hot tea wants a handle: the cup in view does not fit the request, the mug does; find it in another room",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/hot_tea_mug__study": {
+  "variant": "hot_tea_mug",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   15,
+   16,
+   18
+  ],
+  "instruction": "A guest would like hot tea. Set out a cup with a handle at the drinks spot on the low wall cabinet.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug"
+   ],
+   "added": [],
+   "removed": [
+    "juice_bottle"
+   ],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "mug",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_dining_cabinet",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_dining_cabinet"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_shelf",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_shelf"
+     ]
+    ],
+    [
+     [
+      "on",
+      "mug_counter",
+      "kitchen_cabinet_6/top"
+     ],
+     [
+      "upright",
+      "mug_counter"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_available",
+  "oracle_route": "v6_hot_tea_mug__study",
+  "challenge": "the cup on the island is in plain view but has no handle; the mug (with a handle) is in another room, out of view",
+  "rationale": "hot tea wants a handle: the cup in view does not fit the request, the mug does; find it in another room",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T04_cup_or_mug_to_cabinet/cup_in_cabinet_below": {
+  "variant": "cup_in_cabinet_below",
+  "category": "action",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; the cups are kept in that cabinet, right under the drinks spot. Close the cabinet door again.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "cup_counter_b",
+    "mug"
+   ],
+   "added": [],
+   "removed": [
+    "juice_bottle"
+   ],
+   "conditions": [],
+   "initial_checks": [
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ]
+   ]
+  },
+  "failure_triggers": [
+   {
+    "id": "dependency_door_closed",
+    "kind": "dependency",
+    "persist": false,
+    "until_moved": null,
+    "trigger": null,
+    "event": null,
+    "when": "initial"
+   }
+  ],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cup_counter_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "cup_counter_b"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_available",
+  "oracle_route": "v6_cup_in_cabinet_below",
+  "challenge": "no cup on the island; the cup is in the closed cabinet right under the drinks spot",
+  "rationale": "at the drinks spot: open the door below, take the cup, close the door, set the cup on top",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
  "T04_cup_or_mug_to_cabinet/x6_gd_cup_in_cabinets__cup_in_4": {
   "variant": "x6_gd_cup_in_cabinets",
   "category": "task",
@@ -4041,370 +4728,6 @@
   "rationale": "the visible substitute must not end the search: the cabinets are inspected until the cup is found (reference route: the worse order, the cup is in the second cabinet)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T04_cup_or_mug_to_cabinet/x6_dr_spot_filled_dynamic__bowl": {
-  "variant": "x6_dr_spot_filled_dynamic__bowl",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "cup_counter_b",
-    "mug"
-   ],
-   "added": [],
-   "removed": [
-    "juice_bottle"
-   ],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "destination_lid",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "pick",
-     "args": {
-      "object": "cup_counter_b"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.335,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   },
-   {
-    "id": "destination_oatmeal",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "pick",
-     "args": {
-      "object": "cup_counter_b"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "oatmeal",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.7,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "upright",
-     "oatmeal"
-    ],
-    [
-     "upright",
-     "pot_lid"
-    ]
-   ]
-  },
-  "control": "cup_available",
-  "oracle_route": "v6_x6_dr_spot_filled_dynamic__bowl",
-  "challenge": "right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy block) on the drinks spot",
-  "rationale": "the destination is now full for any drink: set the cup down, move what stands in the way (the bowl, or the toy block next to the lid) to the other low cabinet, then set the cup; neither is a goal object",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T04_cup_or_mug_to_cabinet/x6_dr_spot_filled_dynamic__block": {
-  "variant": "x6_dr_spot_filled_dynamic__block",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "cup_counter_b",
-    "mug",
-    "wooden_block_a"
-   ],
-   "added": [],
-   "removed": [
-    "juice_bottle"
-   ],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "destination_lid",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "pick",
-     "args": {
-      "object": "cup_counter_b"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.335,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   },
-   {
-    "id": "destination_block",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "pick",
-     "args": {
-      "object": "cup_counter_b"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "wooden_block_a",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.62,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "upright",
-     "oatmeal"
-    ],
-    [
-     "upright",
-     "pot_lid"
-    ]
-   ]
-  },
-  "control": "cup_available",
-  "oracle_route": "v6_x6_dr_spot_filled_dynamic__block",
-  "challenge": "right after the robot picks the cup, someone puts the pot lid and the oatmeal bowl (or a toy block) on the drinks spot",
-  "rationale": "the destination is now full for any drink: set the cup down, move what stands in the way (the bowl, or the toy block next to the lid) to the other low cabinet, then set the cup; neither is a goal object",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T04_cup_or_mug_to_cabinet/cup_taken_mug_in_living_room": {
-  "variant": "cup_taken_mug_in_living_room",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "A guest is coming. Set out a cup at the drinks spot on the low wall cabinet; if there is no cup, a mug will do.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "cup_counter_b",
-    "mug"
-   ],
-   "added": [],
-   "removed": [
-    "juice_bottle"
-   ],
-   "conditions": [
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_cup_counter_b",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_island/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "cup_counter_b",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "cup_counter_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "cup_counter_b"
-     ]
-    ],
-    [
-     [
-      "on",
-      "mug",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "upright",
-      "mug"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "cup_available",
-  "oracle_route": "v6_cup_taken_mug_in_living_room",
-  "challenge": "right after the robot looked, someone takes the cup away; the mug is on the TV stand in the living room, out of the first view",
-  "rationale": "the cup is gone, the allowed substitute is in another room: find the mug and set it out",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T05_pen_or_pencil_to_desk/e1_pencil_asked": {
   "variant": "e1_pencil_asked",
   "category": "control",
@@ -4424,7 +4747,9 @@
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
-   "moved": [],
+   "moved": [
+    "pencil"
+   ],
    "added": [],
    "removed": [
     "pen"
@@ -5069,6 +5394,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "oatmeal",
     "pot_lid",
     "wooden_block_a",
     "wooden_block_b"
@@ -5369,6 +5695,7 @@
     "clutter_cereal_a",
     "clutter_cereal_b",
     "juice_bottle",
+    "oatmeal",
     "pot_lid",
     "wooden_block_a",
     "wooden_block_b"
@@ -5624,6 +5951,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "oatmeal",
     "pot_lid",
     "wooden_block_a",
     "wooden_block_b"
@@ -5717,6 +6045,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "oatmeal",
     "pot_lid",
     "wooden_block_a",
     "wooden_block_b"
@@ -5814,7 +6143,9 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "oatmeal"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -5867,7 +6198,9 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "oatmeal"
+   ],
    "added": [],
    "removed": [],
    "conditions": [
@@ -6030,6 +6363,7 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid"
    ],
    "added": [],
@@ -6092,6 +6426,7 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid"
    ],
    "added": [],
@@ -6187,7 +6522,9 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "oatmeal"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -6300,7 +6637,9 @@
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [],
+   "moved": [
+    "oatmeal"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -7215,6 +7554,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "handled_cooking_pot",
     "pot_lid"
    ],
@@ -7291,6 +7631,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "handled_cooking_pot",
     "pot_lid"
    ],
@@ -7519,6 +7860,7 @@
    "start": null,
    "moved": [
     "bowl_kitchen_cabinet",
+    "breakfast_spoon",
     "handled_cooking_pot",
     "mug_counter",
     "pot_lid"
@@ -7637,6 +7979,7 @@
    "start": null,
    "moved": [
     "bowl_kitchen_cabinet",
+    "breakfast_spoon",
     "handled_cooking_pot",
     "mug_counter",
     "pot_lid"
@@ -7754,6 +8097,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "cherry_tomato_2",
     "handled_cooking_pot",
     "pot_lid"
@@ -7842,6 +8186,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "cherry_tomato_2",
     "handled_cooking_pot",
     "pot_lid"
@@ -7930,6 +8275,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "handled_cooking_pot",
     "pot_lid"
    ],
@@ -8029,6 +8375,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "handled_cooking_pot",
     "pot_lid"
    ],
@@ -8133,6 +8480,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "handled_cooking_pot",
     "pot_lid"
    ],
@@ -8237,6 +8585,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "handled_cooking_pot",
     "pot_lid"
    ],
@@ -8341,6 +8690,7 @@
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "breakfast_spoon",
     "handled_cooking_pot",
     "pot_lid"
    ],
@@ -8446,6 +8796,7 @@
    "start": null,
    "moved": [
     "bowl_kitchen_cabinet",
+    "breakfast_spoon",
     "handled_cooking_pot",
     "mug_counter",
     "pot_lid"
@@ -9151,7 +9502,11 @@
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
-   "moved": [],
+   "moved": [
+    "apple",
+    "fruit_basket",
+    "serving_tray"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -9207,7 +9562,10 @@
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
-   "moved": [],
+   "moved": [
+    "apple",
+    "serving_tray"
+   ],
    "added": [],
    "removed": [
     "fruit_basket"
@@ -9268,7 +9626,9 @@
    "scene": "tasks/collect_fruits",
    "start": null,
    "moved": [
-    "bowl_kitchen_cabinet"
+    "apple",
+    "bowl_kitchen_cabinet",
+    "serving_tray"
    ],
    "added": [],
    "removed": [
@@ -9329,7 +9689,11 @@
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
-   "moved": [],
+   "moved": [
+    "apple",
+    "fruit_basket",
+    "serving_tray"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -9413,7 +9777,10 @@
   "initial_conditions": {
    "scene": "tasks/collect_fruits",
    "start": null,
-   "moved": [],
+   "moved": [
+    "apple",
+    "serving_tray"
+   ],
    "added": [
     "orange_2"
    ],
@@ -9537,7 +9904,9 @@
   "initial_conditions": {
    "scene": "tasks/tidy_toys",
    "start": null,
-   "moved": [],
+   "moved": [
+    "rubber_duck"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -10510,7 +10879,9 @@
   "initial_conditions": {
    "scene": "tasks/tidy_toys",
    "start": null,
-   "moved": [],
+   "moved": [
+    "rubber_duck"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -10587,7 +10958,9 @@
   "initial_conditions": {
    "scene": "tasks/tidy_toys",
    "start": null,
-   "moved": [],
+   "moved": [
+    "rubber_duck"
+   ],
    "added": [],
    "removed": [],
    "conditions": [],
@@ -10670,7 +11043,10 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [],
@@ -10765,7 +11141,9 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [
@@ -10859,7 +11237,10 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [],
@@ -10951,7 +11332,10 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [],
@@ -11043,7 +11427,9 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [
@@ -11138,7 +11524,9 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [
@@ -11241,9 +11629,11 @@
     "bowl",
     "clutter_cereal_a",
     "clutter_cereal_b",
+    "mug",
     "plate_counter_a",
     "plate_counter_b",
-    "plate_dining_cabinet"
+    "plate_dining_cabinet",
+    "spoon"
    ],
    "added": [],
    "removed": [
@@ -11346,9 +11736,11 @@
     "bowl",
     "clutter_cereal_a",
     "clutter_cereal_b",
+    "mug",
     "plate_counter_a",
     "plate_counter_b",
-    "plate_dining_cabinet"
+    "plate_dining_cabinet",
+    "spoon"
    ],
    "added": [],
    "removed": [
@@ -11494,9 +11886,11 @@
     "bowl",
     "clutter_cereal_a",
     "clutter_cereal_b",
+    "mug",
     "plate_counter_a",
     "plate_counter_b",
-    "plate_dining_cabinet"
+    "plate_dining_cabinet",
+    "spoon"
    ],
    "added": [],
    "removed": [
@@ -11644,7 +12038,10 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [],
@@ -11767,7 +12164,10 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [],
@@ -11890,7 +12290,10 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [],
@@ -12008,7 +12411,10 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [
@@ -12125,7 +12531,10 @@
    "scene": "tasks/breakfast_setup",
    "start": null,
    "moved": [
-    "bowl"
+    "bowl",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [
@@ -12243,7 +12652,10 @@
    "start": null,
    "moved": [
     "bowl",
-    "bowl_kitchen_cabinet"
+    "bowl_kitchen_cabinet",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [],
@@ -12449,7 +12861,10 @@
    "start": null,
    "moved": [
     "bowl",
-    "bowl_kitchen_cabinet"
+    "bowl_kitchen_cabinet",
+    "cup",
+    "mug",
+    "spoon"
    ],
    "added": [],
    "removed": [],
@@ -13237,7 +13652,9 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid",
+    "rolling_pin",
     "wooden_block_b"
    ],
    "added": [],
@@ -13290,7 +13707,9 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid",
+    "rolling_pin",
     "wooden_block_b"
    ],
    "added": [],
@@ -13460,7 +13879,9 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid",
+    "rolling_pin",
     "wooden_block_b"
    ],
    "added": [],
@@ -13529,7 +13950,9 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid",
+    "rolling_pin",
     "wooden_block_b"
    ],
    "added": [],
@@ -13622,7 +14045,9 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid",
+    "rolling_pin",
     "wooden_block_b"
    ],
    "added": [],
@@ -13698,7 +14123,9 @@
    "start": null,
    "moved": [
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid",
+    "rolling_pin",
     "wooden_block_b"
    ],
    "added": [],
@@ -13775,7 +14202,9 @@
    "moved": [
     "floor_block",
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid",
+    "rolling_pin",
     "wooden_block_b"
    ],
    "added": [],
@@ -13856,7 +14285,9 @@
    "moved": [
     "floor_block",
     "handled_cooking_pot",
+    "oatmeal",
     "pot_lid",
+    "rolling_pin",
     "wooden_block_b"
    ],
    "added": [],
@@ -14469,6 +14900,7 @@
    "scene": "tasks/recycle_and_store",
    "start": null,
    "moved": [
+    "soda_can",
     "wide_storage_bin"
    ],
    "added": [],

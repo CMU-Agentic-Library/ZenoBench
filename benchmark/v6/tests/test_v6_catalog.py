@@ -57,7 +57,8 @@ def test_seeds_keep_what_the_variant_tests():
         assert len({tuple(rel(episode_config(t, s, vid), a, b)) for s in SEEDS}) == 1, (tid, vid)
     for tid, vid in (("T13_breakfast_setup", "no_cup_spoon_boxed_in"), ("T20_juice_back_to_table", "table_full")):
         t = TASKS[tid]
-        design = {n: m for n, m in t["variants"][vid]["move"].items() if n not in ("bowl", "juice_bottle")}
+        # what moves is away from the boxed-in / full place: the bowl and the mug elsewhere, the bottle to fetch
+        design = {n: m for n, m in t["variants"][vid]["move"].items() if n not in ("bowl", "mug", "juice_bottle")}
         for s in SEEDS:
             cfg = episode_config(t, s, vid)
             assert all(cfg["move"][n]["xy"] == m["xy"] for n, m in design.items()), (tid, s)
@@ -180,13 +181,16 @@ def test_in_place_choices_are_redesigned_at_a_longer_horizon():
     """The substitute / container / pot is in another room; the in-place variant left v6."""
     for tid, old, new in (("T03_utensils_one_container", "small_and_large", "mug_or_bedroom_bin"),
                           ("T03_utensils_one_container", "three_containers", "three_containers_bedroom"),
-                          ("T04_cup_or_mug_to_cabinet", "h_dynamic_cup_taken", "cup_taken_mug_in_living_room"),
                           ("T09_tomato_soup", "cookware_choice", "pot_in_dining_room")):
         t = TASKS[tid]
         assert old not in t["v6_variants"] and new in t["v6_variants"], (tid, old)
         assert t["v6_tracks"][new]["category"] == "task"
         assert any(s["skill"] == "search" for s in t["routes"][t["oracle"][new]]["steps"])
     assert "no_pen" not in TASKS["T05_pen_or_pencil_to_desk"]["v6_variants"]
+    # T04 has no dynamic events (user ruling): the cup taken away, the drinks spot filled after the pick
+    for vid in ("h_dynamic_cup_taken", "cup_taken_mug_in_living_room", "x6_dr_spot_filled_dynamic__bowl",
+                "x6_dr_spot_filled_dynamic__block"):
+        assert vid not in TASKS["T04_cup_or_mug_to_cabinet"]["v6_variants"], vid
 
 
 def test_injected_only_variants_are_dropped():

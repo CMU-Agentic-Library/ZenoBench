@@ -158,6 +158,14 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             b = rig.ann.support(sup)["aabb_xy"]
             if max(b[2] - b[0], b[3] - b[1]) > 0.9:
                 other.append(sup)
+    # a watched container the route neither picks nor fills (the toy bin next to the kitchen bin, the fruit basket)
+    assets = json.loads((ROOT / "annotations/assets.json").read_text())
+    used = {n for _, n in plan_views(task, lid)}
+    for n in rtask.get("watch") or []:
+        o = rig.ann.objects.get(n)
+        if o and n not in used and n in st["objects"] and assets.get(o.get("asset"), {}).get("container") \
+                and not (cfg["move"].get(n, {}).get("support") or "").endswith("/inside_shelf"):
+            other.append(n)
     for kind, name in plan_views(task, lid) + [("other", s) for s in other]:
         if kind == "object":
             if name not in st["objects"] or (cfg["move"].get(name, {}).get("support") in place_sups and
@@ -174,6 +182,11 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
                               f"要拿的 {name} 在关着的 {sup.split('/')[0]} 里（从外面看，★ 是它的位置）"))
                 continue
             views.append((name, None, shot(around(p, 0.75, 0.55), p), f"要拿的 {name}（开局位置）"))
+        elif name in st["objects"]:              # a container object (a bin, a basket, a tray): from above at an angle
+            p = [float(v) for v in st["objects"][name]["pos"]]
+            img = shot(around(p, 0.7, 0.8), p)
+            views.append((name, None, img, f"放进 {name}（开局位置）" if kind == "support" else
+                          f"{name}（开局位置）：相关的容器，但不是放置处"))
         else:
             s = rig.ann.support(name)
             b = s["aabb_xy"]
@@ -219,7 +232,14 @@ def main():
     sit = situations()
     if a.one:
         tid, vid, lid, seed = a.one
-        render_one(tid, vid, lid, int(seed), Path(a.out) / tid / vid, sit.get((tid.split("_")[0], vid), ""))
+        try:
+            render_one(tid, vid, lid, int(seed), Path(a.out) / tid / vid, sit.get((tid.split("_")[0], vid), ""))
+        except BaseException:
+            import traceback
+            traceback.print_exc()
+            sys.stdout.flush()
+            sys.stderr.flush()
+            os._exit(1)                          # Isaac Sim would hang on a normal exit after an error
         return
     py = os.environ.get("ISAACLAB_PYTHON", sys.executable)
     for t in _doc()["tasks"]:
@@ -231,7 +251,11 @@ def main():
             for lid in info["layouts"]:
                 seed = min(int(s) for s, x in info["seeds"].items() if x == lid)
                 cmd = [py, __file__, "--out", a.out, "--one", t["task_id"], vid, lid, str(seed)]
-                r = subprocess.run(cmd, capture_output=True, text=True)
+                try:
+                    r = subprocess.run(cmd, capture_output=True, text=True, timeout=900)
+                except subprocess.TimeoutExpired:
+                    print(f"{t['task_id']} {lid} s{seed}: TIMEOUT", flush=True)
+                    continue
                 done = [x for x in r.stdout.splitlines() if x.startswith("[render]")]
                 print("\n".join(x for x in r.stdout.splitlines() if x.startswith("[marks]")), flush=True)
                 print(f"{t['task_id']} {lid} s{seed}: {len(done)} pictures" +

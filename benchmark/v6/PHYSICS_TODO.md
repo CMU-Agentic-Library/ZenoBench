@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1280 episodes remain (440 of the 44 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1290 episodes remain (470 of the 47 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -22,18 +22,19 @@
 | T02 | tower_for_kid_duck | task | 0/0 of 10 | - |
 | T02 | block_put_away | action_task | 0/0 of 10 | low cabinet doors |
 | T03 | large_only | control | 0/0 of 10 | - |
-| T03 | far_small_and_large | task | 0/0 of 10 | - |
-| T03 | h_dynamic_pin_taken | task | 0/0 of 10 | - |
 | T03 | mug_or_bedroom_bin | task | 0/0 of 10 | - |
 | T03 | three_containers_bedroom | task | 0/0 of 10 | - |
+| T03 | which_bin_by_contents | task | 0/0 of 10 | - |
+| T03 | no_bin_substitute | task | 0/0 of 10 | - |
+| T03 | utensils_apart | task | 0/0 of 10 | - |
 | T04 | cup_available | control | 0/0 of 10 | - |
 | T04 | no_cup | task | 0/0 of 10 | - |
 | T04 | no_cup_mug_away | task | 0/0 of 10 | - |
 | T04 | h_task_spot_taken | task | 0/0 of 10 | - |
+| T04 | two_guests | task | 0/0 of 10 | - |
+| T04 | hot_tea_mug | task | 0/0 of 10 | - |
+| T04 | cup_in_cabinet_below | action | 0/0 of 10 | low cabinet doors |
 | T04 | x6_gd_cup_in_cabinets | task | 0/0 of 10 | low cabinet doors |
-| T04 | x6_dr_spot_filled_dynamic__bowl | task | 0/0 of 10 | - |
-| T04 | x6_dr_spot_filled_dynamic__block | task | 0/0 of 10 | - |
-| T04 | cup_taken_mug_in_living_room | task | 0/0 of 10 | - |
 | T05 | e1_pencil_asked | control | 0/0 of 10 | - |
 | T05 | no_pen_pencil_away | task | 0/0 of 10 | - |
 | T05 | h_task_pencil_in_cabinet | action_task | 0/0 of 10 | low cabinet doors |
