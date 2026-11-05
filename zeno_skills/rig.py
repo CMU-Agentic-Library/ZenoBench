@@ -396,14 +396,16 @@ class Rig:
         ``q_hint``: a joint solution of the target (find_park's), the planner's joint goal.
         ``allow`` (clearance.Allow): what the move may touch (_motion_path).
         ``approach`` (u, L[, q_line]): the move ends with the straight line of length L along the
-        unit direction u into the contact at (p, R) -- a grasp, a load set down -- and ``allow`` is
-        the into_contact Allow of that contact's own segment (_approach); ``free`` the Allow of the
-        planned part before it; ``q_line`` a joint solution of the line's start (find_park's,
-        which checked the unfold to it with the tilt held)."""
+        unit direction u to (p, R) -- a grasp, a load set down -- and ``allow`` is either the
+        into_contact Allow of the contact segment it ends in, or a checked Allow: then (p, R) must be
+        clear of the world and the whole approach is checked (an open hand around what it will pinch);
+        (_approach); ``free`` the Allow of the planned part before it; ``q_line`` a joint solution
+        of the line's start (find_park's, which checked the unfold to it with the tilt held)."""
         self.sync_world()
         p = np.asarray(p, float)
         follow = lambda qs: (self.follow_smooth if smooth else self.follow)(qs, steps_per_wp)
-        if approach is not None and allow.to_contact and self.kin.scene is not None and self.kin.motion is not None:
+        if approach is not None and (allow.to_contact or allow.checked) and self.kin.scene is not None \
+                and self.kin.motion is not None:
             self._approach(p, R, approach, step, label, q_hint, allow, free, follow)
         elif self._exits_contact(allow, self.kin):
             with self._lifting(self.kin, allow):
@@ -497,7 +499,8 @@ class Rig:
         along u (_exit_length on that line, at most LEAVE_MAX), unchecked under ``allow`` -- and
         before it the free motion to where that segment starts, planned with the fingers in the
         collision model to end with the straight line of length L along u (_approach_path;
-        ``free`` its Allow: no path -> its fallback, or SkillFailure)."""
+        ``free`` its Allow: no path -> its fallback, or SkillFailure).  A checked ``allow`` (no
+        contact segment): (p, R) itself clear by the caller's coll_kw, else SkillFailure."""
         kin = self.kin
         u = np.asarray(approach[0], float) / np.linalg.norm(approach[0])
         L = float(approach[1])
@@ -510,6 +513,8 @@ class Rig:
         with self._planning(kin, self.q_cmd, keep_held=True):
             q_p, ok = kin.ik_global(p, R, seeds=seeds + [self.q_cmd])
         if not ok:
+            if not allow.to_contact:
+                raise SkillFailure(f"{label}: no collision-free IK at the end pose")
             q_p = self._ik_unchecked(p, R, q_hint, label)
         with self._fingers_checked(kin):
             back = self._line_unchecked(q_p, p - LEAVE_MAX * u, R, step)
@@ -520,6 +525,10 @@ class Rig:
             p_c = kin.tcp(q_c)[0]
             entry_m = float(np.linalg.norm(p_c - p))
             self.log("contact_entry", target=label, entry_m=round(entry_m, 4), clear=clear)
+            if entry and not allow.to_contact:
+                with self._planning(kin, self.q_cmd, keep_held=True):
+                    why = kin.explain(q_p)
+                raise SkillFailure(f"{label}: the end pose touches the world ({why})")
 
             def plan():
                 if not clear:

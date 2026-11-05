@@ -42,6 +42,12 @@ LEFT_ARM_FOLD = {"left_arm_joint_1": 0.2, "left_arm_joint_2": 0.35, "left_arm_jo
 # right_gripper_link origin -> pad centre along the link's -Z (finger joints at
 # -0.12985, pads span -0.14..-0.09 on the finger links).
 TCP_DEPTH = 0.12
+# a finger's collider is its pad box alone (physics.py fix_robot: x +-0.014, y 0..0.012 outward from
+# the finger joint, z -0.010..0.045 on the finger link, the finger joints 0.12985 below the gripper
+# link): half its width across the closing plane, its thickness, and its tip below the TCP
+PAD_HALF_WIDTH = 0.014
+PAD_THICKNESS = 0.012
+PAD_TIP = 0.12985 + 0.010 - TCP_DEPTH
 REST_TOL = 0.05             # rad: measured torso, waist and arm joints this close to the rest posture are at rest
 STOWED_TOL = 0.10           # rad: ...and arm joints alone this close, the arm is stowed (both inherited, unmeasured)
 CARRY_TILT = 0.15           # rad: largest tilt of a held object from its start orientation on a planned move

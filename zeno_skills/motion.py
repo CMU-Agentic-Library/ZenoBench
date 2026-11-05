@@ -523,6 +523,7 @@ class Motion:
         self.other_touching = {}     # side -> links of the other arm in contact with the world (sync)
         self.cull_at = None
         self.exempt = []                 # objects the last query left out as targets (_targets_allow)
+        self.hand_width = {}             # side -> finger opening the queries take (hand_open), else the robot's
         self.relaxed = {}                # side -> what its collision queries left out since the motion
                                          # record last took it (take_relaxed): "exempt", "fingers", "hand"
         self._sync_n = 0
@@ -656,10 +657,23 @@ class Motion:
         if hasattr(rig, "head_q"):
             vals.update(rig.head_q())
         for side, read in (("right", "fingers"), ("left", "left_fingers")):
-            if hasattr(rig, read):
+            if side in self.hand_width:
+                vals[f"{side}_gripper_left_finger_axis"] = self.hand_width[side]
+            elif hasattr(rig, read):
                 f = np.asarray(getattr(rig, read)(), float)[:2]
                 vals[f"{side}_gripper_left_finger_axis"] = float(np.clip(f.max(), 0.0, FINGER_OPEN))
         return vals
+
+    @contextmanager
+    def hand_open(self, side, width):
+        """Queries inside take ``side``'s fingers at ``width`` (m per finger) instead of where they
+        stand: a park search for a grasp checks the hand opened as it will approach."""
+        saved = dict(self.hand_width)
+        self.hand_width[side] = float(width)
+        try:
+            yield
+        finally:
+            self.hand_width = saved
 
     @contextmanager
     def scope(self, rig, kin, q, keep_held=False):

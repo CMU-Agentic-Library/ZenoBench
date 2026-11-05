@@ -126,6 +126,13 @@ def lifting(name: str) -> Allow:
     return replace(LEAVE_CONTACT, lifts=name)
 
 
+def closing(name: str, hand: str = "right") -> Allow:
+    """The fingers of ``hand`` closing on ``name`` where the hand already stands (the pinch's second
+    step): the arm does not move; those fingers may touch ``name``."""
+    return Allow(checked=False, hand=hand, touch=(name,),
+                 reason="closing: the fingers close on the object they pinch, the arm stands still")
+
+
 BASE_DRIVE = unchecked("base drive: the arms are not checked along the base path yet")
 
 

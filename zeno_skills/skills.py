@@ -24,9 +24,9 @@ import numpy as np
 from scipy.spatial.transform import Rotation
 
 from .annotations import rz
-from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, into_contact, lifting
+from .clearance import FREE, FREE_ELSE_STRAIGHT, LEAVE_CONTACT, LEGACY, closing, into_contact, lifting
 from .evaluator import quat_R
-from .kinematics import gripper_rot
+from .kinematics import PAD_HALF_WIDTH, PAD_THICKNESS, PAD_TIP, gripper_rot
 from .physics import PHYSICS_HZ
 from .planner import find_park, find_park_set, joint_reachable, torque_ratio
 from .rig import FINGERS_KW, FREE_SPACE_KW, Dropped, SkillFailure
@@ -43,6 +43,9 @@ PUSH_SEG = 0.25               # longest single push; the base re-parks between p
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
 PICK_APPROACH = 0.04          # m: a pinch closes in straight along the gripper axis for this long
 PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search checks (the contact exit takes <= 3 cm)
+# m: the lowest pad corner of a top pinch stays this far above the object's bottom (the vertical
+# pinch's former TCP rule of 2.2 cm above it, less PAD_TIP: 2.15 mm)
+PAD_FLOOR_GAP = 0.022 - PAD_TIP
 PLACE_APPROACH = 0.05         # m: a load is set down straight down for this long (into a shelf: SHELF_APPROACH across)
 SHELF_APPROACH = 0.16
 
@@ -984,11 +987,36 @@ def _grasp_approach(g):
 
 
 def _grasp_targets(g):
-    """find_park's targets of a pinch: the start of its straight approach (the fingers checked), the
-    grasp, the lift out of it (contact: the fingers are not)."""
+    """find_park's targets of a pinch: the start of its straight approach and the grasp, both free
+    space (the open fingers checked, the object an obstacle: the hand closes where it already
+    stands), and the lift out of it (the object then in the hand: the fingers and it are not)."""
     u, L = _grasp_approach(g)
-    return [(g["p"] - L * u, g["R"], FINGERS_KW), (g["p"], g["R"]),
+    return [(g["p"] - L * u, g["R"], FREE_SPACE_KW), (g["p"], g["R"], FREE_SPACE_KW),
             (g["p"] + np.array([0, 0, PICK_LEAVE_CHECK]), g["R"])]
+
+
+def _pads_clear_of(g, floor_z):
+    """A top pinch's TCP raised, where needed, so the lowest corner of its open pads (PAD_*, opened
+    to g["pre_open"] per finger, in the pinch's orientation: a tilted one dips a corner) stays
+    PAD_FLOOR_GAP above floor_z."""
+    w = float(g["pre_open"])
+    corners = np.array([[sx * PAD_HALF_WIDTH, sy * (w + t), -PAD_TIP]
+                        for sx in (-1, 1) for sy in (-1, 1) for t in (0.0, PAD_THICKNESS)])
+    low = float((corners @ np.asarray(g["R"], float).T)[:, 2].min())
+    p = np.asarray(g["p"], float).copy()
+    p[2] = max(p[2], floor_z + PAD_FLOOR_GAP - low)
+    return p
+
+
+@contextmanager
+def _hand_opened(rig, width):
+    """Collision queries inside see the right hand opened to ``width`` (Motion.hand_open)."""
+    motion = getattr(rig.kin, "motion", None)
+    if motion is None or not hasattr(motion, "hand_open"):
+        yield
+        return
+    with motion.hand_open("right", width):
+        yield
 
 
 def pick(rig, name, max_candidates=12):
@@ -1151,8 +1179,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
         rig.log("pick_free_slots_skipped", reason=str(exc)) if hasattr(rig, "log") else None
     for g in cands:              # pads must not dig into the surface below
         if g["kind"] == "top_pinch":
-            g["p"] = g["p"].copy()
-            g["p"][2] = max(g["p"][2], floor_z + 0.022)
+            g["p"] = _pads_clear_of(g, floor_z)
     rig.sync_world()
     rig.kin.coll_kw = {"ignore_fingers": True}
     rig.focus_z = float(pos[2])
@@ -1187,11 +1214,12 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
         cands.sort(key=lambda g: np.linalg.norm(g["p"][:2] - np.array([bx, by])) + 0.3 * g.get("along_rank", 0))
     park, g = None, None
     for g in cands[:max_candidates]:
-        park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near,
-                         max_tries=1 if in_microwave and retrieval_q is not None else 60 if in_microwave else 120,
-                         q_start=retrieval_q if in_microwave and retrieval_q is not None else
-                                 None if in_microwave or fridge_shelf else rig.q_cmd,
-                         travel_q=None if in_microwave and retrieval_q is not None else _travel_q(rig))
+        with _hand_opened(rig, g["pre_open"]):
+            park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near,
+                             max_tries=1 if in_microwave and retrieval_q is not None else 60 if in_microwave else 120,
+                             q_start=retrieval_q if in_microwave and retrieval_q is not None else
+                                     None if in_microwave or fridge_shelf else rig.q_cmd,
+                             travel_q=None if in_microwave and retrieval_q is not None else _travel_q(rig))
         if park:
             break
     if park is None and "top_pinch" in kinds and hasattr(rig.ann, "asset_of"):
@@ -1200,10 +1228,10 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
                  if not any(np.allclose(c["R"], c0["R"], atol=1e-3) and np.allclose(c["p"], c0["p"], atol=1e-3)
                             for c0 in cands)]
         for g in extra:
-            g["p"] = g["p"].copy()
-            g["p"][2] = max(g["p"][2], floor_z + 0.022)
-            park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near, max_tries=120,
-                             q_start=rig.q_cmd, travel_q=_travel_q(rig))
+            g["p"] = _pads_clear_of(g, floor_z)
+            with _hand_opened(rig, g["pre_open"]):
+                park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near, max_tries=120,
+                                 q_start=rig.q_cmd, travel_q=_travel_q(rig))
             if park:
                 rig.log("pick_rotated_pinch", obj=name)
                 break
@@ -1223,7 +1251,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
         rig.sync_world()
     else:
         _goto_park(rig, park)
-    rig.kin.coll_kw = {"ignore_fingers": True}
+    rig.kin.coll_kw = {"ignore_fingers": True}      # the fingers on the object once closed (lift: lifting)
     pos, quat = rig.obj_pose(name)          # re-read after driving
     g2 = [c for c in rig.ann.grasp_poses(obj, pos, quat) if c["kind"] == g["kind"]
           and np.linalg.norm(c["p"] - g["p"]) < 0.03 and np.allclose(c["R"], g["R"], atol=1e-3)]
@@ -1236,18 +1264,19 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
             kind=g["kind"], azimuth=g.get("azimuth"), tilt=g.get("tilt"))
     note_grasp(rig, name, g["p"], g["R"], "pinch", g["pre_open"])
     rig.grip(g["pre_open"], 40)
-    # one motion into the grasp: planned with the fingers to end straight along the gripper axis,
-    # the last of it (where the fingers touch, by the collision model) the contact segment
-    err = rig.move_to(g["p"], g["R"], step=0.003, steps_per_wp=4, label="pick_grasp", q_hint=park_qs[1],
-                      smooth=True, approach=(*_grasp_approach(g), park_qs[0]), allow=into_contact(touch=(name,)))
+    # two steps.  1: the open hand to the grasp pose, free space all the way -- the fingers and the
+    # object in the collision model, nothing exempt; planned to end straight along the gripper
+    # axis, no fallback: a hand that cannot get there open without touching is a grasp (or a park)
+    # that does not work.  2: the fingers close where the hand stands.
+    with rig._fingers_checked(rig.kin):
+        err = rig.move_to(g["p"], g["R"], step=0.003, steps_per_wp=4, label="pick_grasp", q_hint=park_qs[1],
+                          smooth=True, approach=(*_grasp_approach(g), park_qs[0]), allow=FREE, free=FREE)
     if rig.kin.motion is not None:
-        # measuring for the two-phase pick (plan 6.2): what the open hand at the commanded grasp
-        # pose penetrates in the full model, against the world the approach was planned in
+        # what the open hand at the commanded grasp pose penetrates in the full model (plan 6.2)
         rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
                 hits=rig.kin.motion.contacts_by_owner(rig.kin, rig.q_cmd, rig.kin._other_q()))
-    if err > 0.008:                     # round objects pop out of an off-centre pinch
-        rig.move_to(g["p"], g["R"], step=0.002, steps_per_wp=6, label="pick_grasp_fix", allow=LEGACY, smooth=True)
     rig.caption = f"PICK {name}: close gripper"
+    rig.clear.motion("pick_close", closing(name), follows=False)
     rig.grip(0.0, PHYSICS_HZ, gradual=True)
     f = rig.fingers()
     if f.min() <= 0.003:
