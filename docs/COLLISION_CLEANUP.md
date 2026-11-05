@@ -49,7 +49,7 @@ R 类不列。下面只列要动的。
 
 **刷新于 2026-11-02（`67b377c`）：** 行号、函数名按现在的代码重新定位；"状态"一列说明步骤 1、2 之后这条还在不在。106 条里仍在 94、已改 11、已删 1。已改的主要是松手、离开接触的那一段改成了 `LEAVE_CONTACT`，以及餐桌、层板、微波炉取物的"退出去再开回"改成了 `relocate`；这些条目里的变体列表和吞异常大多还在，步骤 3 照样要删。3.10 是这次刷新新发现、原表里没有的。
 
-按计划里的子步排：3.1–3.4 和 wipe 选带属于 3a，3.5–3.7 属于 3b，3.3、3.8、3.9 属于 3c（`COLLISION_PLAN.md` 步骤 3）。
+按计划里的子步排：3.1–3.4 和 wipe 选带属于 3a；3b 剩下的按 11-05 定的顺序：3.5 pick（push 那行除外）先做（计划 6.3），然后 place 系（3.2 剩下的、3.3 `place_flat`、3.4、sticky 的 place，计划 6.4），再是 3.6、3.7、3.10（计划 6.5）；3.8、3.9 其余属于 3c（`COLLISION_PLAN.md` 步骤 3）。
 
 ### 3.1 `_carry_pose`（skills.py）
 
@@ -121,7 +121,7 @@ R 类不列。下面只列要动的。
 | skills.py:978-986 | `pick` | pinch 失败 → `pick_flat` | F | 仍在 |
 | skills.py:1002-1019 | `_pick_pinch` | 失败 → 放开腰限重试 → 关掉邻居障碍重试 | F | 仍在 |
 | skills.py:1175-1188 | `_pick_pinch_core` | 找不到 park 后追加旋转的 top pinch | F | 仍在 |
-| skills.py:1221-1222 | `_pick_pinch_core` | 误差 >8 mm 就 `pick_grasp_fix`，同一目标不查再走一次 | F | 仍在 |
+| skills.py:1221-1222 | `_pick_pinch_core` | 误差 >8 mm 就 `pick_grasp_fix`，同一目标不查再走一次 | F | 已删（11-05，`6466347`，pick 两段式） |
 | skills.py:1235-1244 | `_pick_pinch_core` | `pick_fail_clear`：抓空后抬 8 cm，失败吞掉 | W | 已删（3b 第一项）：只走离开接触段，不吞异常 |
 | skills.py:1430/1455（corner），1538/1554（edge） | `_corner_pinch` / `_edge_pinch_impl` | corner、edge 的 `pre_far` 额外 +3 cm | W | 仍在 |
 | skills.py:1459-1461 | `_corner_pinch` | `corner_grasp_retry` | F | 仍在 |
