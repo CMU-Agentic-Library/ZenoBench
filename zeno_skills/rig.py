@@ -23,6 +23,8 @@ LEAVE_GAP = 0.005         # m: closer to the world than this, the robot (and its
 LEAVE_MARGIN = 0.01       # m: a contact exit runs this far past where the robot (and its load) first comes clear
 LEAVE_MAX = 0.06          # m: ...and no further; still touching there, the rest is the logged straight fallback
 ON_LINE = 0.005           # m: a TCP this close to an approach line (and on it before its end) goes straight along it
+HINT_REACH = 0.001        # m: a q_hint whose TCP is this close to a planned leg's goal is its joint goal as it is
+HINT_TURN = 0.01          # rad: ...and turned this little from it (a base off its park by more is re-solved)
 FREE_SPACE_KW = {"exempt_targets": False}   # coll_kw of free space: the fingers checked, no target exempted
 FINGERS_KW = {}           # coll_kw of a park search's approach target: the fingers checked, the object at it exempted
                           # (where the approach's contact segment begins is the collision model's call at the time)
@@ -778,18 +780,24 @@ class Rig:
         return self.joint_path_via(qs)
 
     def _goal(self, p, R, q_hint):
-        """Joint goal for a planned leg to (p, R): ``q_hint`` re-solved at the actual base on its
-        branch, else a collision-free IK solution near q_hint / the current posture, else q_hint
-        itself (solved where find_park put the base); None when there is none."""
-        seeds = [np.asarray(q_hint, float)] if q_hint is not None else []
-        if seeds:
-            q, ok = self.kin.ik(p, R, seeds[0])
-            if ok and self.kin.free(q):
-                return q
-        q, ok = self.kin.ik_global(p, R, seeds=seeds + [self.q_cmd])
-        if ok:
-            return q
-        return seeds[0] if seeds and self.kin.free(seeds[0]) else None
+        """Joint goal for a planned leg to (p, R).  With ``q_hint`` (the solution a park search
+        validated, the arm's branch to keep): q_hint itself while it still reaches (p, R) within
+        HINT_REACH / HINT_TURN and is collision-free (the base stopped where the search put it:
+        the goal the search planned to), else q_hint re-solved at the actual base on its branch,
+        else None -- no solution on another branch.  Without one: a collision-free IK solution
+        near the current posture.  Not re-solved needlessly: a re-solve 0.6 mrad off the hint, its
+        waist 1 mrad inside the limit, planned 1 time in 4 where the hint planned 4 in 4 (T04
+        no_cup mug; the planner's weakness near a joint limit, plan section 7)."""
+        if q_hint is None:
+            q, ok = self.kin.ik_global(p, R, seeds=[self.q_cmd])
+            return q if ok else None
+        q_hint = np.asarray(q_hint, float)
+        ph, Rh = self.kin.tcp(q_hint)
+        turn = math.acos(np.clip((np.trace(np.asarray(Rh).T @ np.asarray(R)) - 1) / 2, -1.0, 1.0))
+        if np.linalg.norm(ph - np.asarray(p, float)) <= HINT_REACH and turn <= HINT_TURN and self.kin.free(q_hint):
+            return q_hint
+        q, ok = self.kin.ik(p, R, q_hint)
+        return q if ok and self.kin.free(q) else None
 
     def _straight_move(self, p, R, step, label, q_hint):
         """move_to's unchecked waypoints: the straight TCP line, else (no IK along it) the straight

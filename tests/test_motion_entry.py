@@ -33,6 +33,9 @@ class FakeKin:
     def free(self, q):
         return True
 
+    def tcp(self, q):
+        return np.full(3, float(np.asarray(q)[0])), np.eye(3)        # reaches p = ones(3) at q = 1
+
     def plan_to(self, q0, p, R, carry=False, q_goal=None):
         self.calls.append(("plan_to", None if q_goal is None else tuple(np.round(q_goal, 3))))
         return self.plan_result
@@ -61,6 +64,20 @@ def test_a_blocked_line_is_planned_to_the_hint_re_solved_at_the_actual_base():
     assert ("ik", tuple(np.round(hint, 3))) in kin.calls            # seeded on the hint's branch
     assert kin.calls[-1] == ("plan_to", tuple(np.round(hint + 0.002, 3)))
     assert np.allclose(qs[-1], 0.302) and "planned_leg" in rig.logged
+
+
+def test_a_hint_that_still_reaches_the_pose_is_the_goal_itself():
+    hint = np.full(9, 1.0)
+    kin = FakeKin(line=False, plan=([hint], "joint"))
+    Rig._move_path(_rig(kin), np.ones(3), np.eye(3), 0.01, "pick_grasp", hint)
+    assert not any(c[0] in ("ik", "ik_global") for c in kin.calls)  # not re-solved
+    assert kin.calls[-1] == ("plan_to", tuple(np.round(hint, 3)))
+
+
+def test_no_solution_on_the_hints_branch_is_no_goal_not_another_branch():
+    kin = FakeKin(line=False, ik_local=False, goal=np.full(9, 2.0))
+    assert Rig._goal(_rig(kin), np.ones(3), np.eye(3), np.full(9, 0.3)) is None
+    assert not any(c[0] == "ik_global" for c in kin.calls)
 
 
 def test_no_path_fails_the_checked_leg():
