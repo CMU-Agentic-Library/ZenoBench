@@ -8405,59 +8405,6 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T08_wipe_island/sponge_on_tv_stand": {
-  "variant": "sponge_on_tv_stand",
-  "category": "task",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "kitchen_sponge"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "tool_away_from_surface"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "wiped",
-     "kitchen_island/top"
-    ],
-    [
-     "on",
-     "kitchen_sponge",
-     "kitchen_island/top"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "sponge_on_island",
-  "oracle_route": "nominal_from_tv_stand",
-  "challenge": "the sponge lies on the TV stand behind the island",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
  "T08_wipe_island/far_sponge_tv": {
   "variant": "far_sponge_tv",
   "category": "task",
@@ -8564,22 +8511,17 @@
   "rationale": "seed extension of the v5 design: the kitchen_sponge ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T08_wipe_island/island_cluttered": {
-  "variant": "island_cluttered",
-  "category": "action",
+ "T08_wipe_island/wipe_and_sort__blocks": {
+  "variant": "wipe_and_sort",
+  "category": "task",
   "seeds": [
    10,
    11,
-   12,
-   13,
    14,
    15,
-   16,
-   17,
-   18,
    19
   ],
-  "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
+  "instruction": "Wipe the kitchen island with the sponge. The kid's toys lying on it go into the kid's toy box in the living room; the kitchen things stay on the island. Leave the sponge on the island.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -8595,10 +8537,13 @@
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "toy_box"
+   ],
    "removed": [],
    "conditions": [
-    "surface_cluttered"
+    "category_rule",
+    "not_in_view"
    ],
    "initial_checks": []
   },
@@ -8612,11 +8557,21 @@
     [
      "on",
      "kitchen_sponge",
-     "tv_stand_2/top"
+     "kitchen_island/top"
     ],
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "inside",
+     "wooden_block_a",
+     "toy_box"
+    ],
+    [
+     "inside",
+     "wooden_block_b",
+     "toy_box"
     ],
     [
      "near_start",
@@ -8626,19 +8581,7 @@
     ],
     [
      "near_start",
-     "wooden_block_a",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
      "soda_can",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "wooden_block_b",
      0.12,
      0.03
     ],
@@ -8691,22 +8634,22 @@
    ]
   },
   "control": "sponge_on_island",
-  "oracle_route": "hard_proactive",
-  "challenge": "after cooking the island is cluttered along both long strips (pin, two blocks, can and mug in front; bowl, book, spoon and bottle behind, staggered); the sponge dries on the TV stand",
-  "rationale": "",
+  "oracle_route": "v6_wipe_and_sort__blocks",
+  "challenge": "the island holds two rows of things: kitchen things (rolling pin, can, mug, oatmeal, book, spoon, juice) and the kid's toys among them; the toy box (with a toy in it) is on the TV stand; the sponge is on the TV stand too",
+  "rationale": "sort by kind: each toy goes into the toy box for good, the kitchen things stay where they are; with the toys gone the front strip is free to wipe; then the sponge goes on the island",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T08_wipe_island/h_dynamic_sponge_taken": {
-  "variant": "h_dynamic_sponge_taken",
-  "category": "action_task",
+ "T08_wipe_island/wipe_and_sort__duck": {
+  "variant": "wipe_and_sort",
+  "category": "task",
   "seeds": [
    12,
-   14,
-   15,
+   13,
    16,
+   17,
    18
   ],
-  "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
+  "instruction": "Wipe the kitchen island with the sponge. The kid's toys lying on it go into the kid's toy box in the living room; the kitchen things stay on the island. Leave the sponge on the island.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -8722,62 +8665,20 @@
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "surface_cluttered"
+   "added": [
+    "rubber_duck",
+    "toy_box"
    ],
-   "initial_checks": [
-    [
-     "on",
-     "soda_can",
-     "kitchen_island/top"
-    ],
-    [
-     "on",
-     "wooden_block_a",
-     "kitchen_island/top"
-    ]
-   ]
+   "removed": [
+    "wooden_block_b"
+   ],
+   "conditions": [
+    "category_rule",
+    "not_in_view"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "destination_v4_island_cluttered",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_kitchen_sponge",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_island/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "kitchen_sponge",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.7,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -8787,11 +8688,21 @@
     [
      "on",
      "kitchen_sponge",
-     "tv_stand_2/top"
+     "kitchen_island/top"
     ],
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "inside",
+     "wooden_block_a",
+     "toy_box"
+    ],
+    [
+     "inside",
+     "rubber_duck",
+     "toy_box"
     ],
     [
      "near_start",
@@ -8801,19 +8712,7 @@
     ],
     [
      "near_start",
-     "wooden_block_a",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
      "soda_can",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "wooden_block_b",
      0.12,
      0.03
     ],
@@ -8866,242 +8765,214 @@
    ]
   },
   "control": "sponge_on_island",
-  "oracle_route": "v5_h_dynamic_sponge_taken",
-  "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it",
-  "rationale": "",
+  "oracle_route": "v6_wipe_and_sort__duck",
+  "challenge": "the island holds two rows of things: kitchen things (rolling pin, can, mug, oatmeal, book, spoon, juice) and the kid's toys among them; the toy box (with a toy in it) is on the TV stand; the sponge is on the TV stand too",
+  "rationale": "sort by kind: each toy goes into the toy box for good, the kitchen things stay where they are; with the toys gone the front strip is free to wipe; then the sponge goes on the island",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T08_wipe_island/h_dynamic_sponge_taken__alt_dining_table_2": {
-  "variant": "h_dynamic_sponge_taken",
-  "category": "action_task",
+ "T08_wipe_island/return_sponge_home__dining": {
+  "variant": "return_sponge_home",
+  "category": "task",
+  "seeds": [
+   11,
+   12,
+   14,
+   15
+  ],
+  "instruction": "Someone used the sponge and left it lying on a table somewhere. Wipe down the kitchen island with it, then put the sponge away where it is normally kept.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge"
+   ],
+   "added": [
+    "spare_sponge",
+    "sponge_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "wiped",
+     "kitchen_island/top"
+    ],
+    [
+     "inside",
+     "kitchen_sponge",
+     "sponge_tray"
+    ],
+    [
+     "inside",
+     "spare_sponge",
+     "sponge_tray"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "sponge_on_island",
+  "oracle_route": "v6_return_sponge_home__dining",
+  "challenge": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+  "rationale": "find the sponge and wipe; then put it away, not back on the table it was found on and not left on the island: the tray with the other sponge is where sponges are kept",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T08_wipe_island/return_sponge_home__study": {
+  "variant": "return_sponge_home",
+  "category": "task",
+  "seeds": [
+   10,
+   16,
+   19
+  ],
+  "instruction": "Someone used the sponge and left it lying on a table somewhere. Wipe down the kitchen island with it, then put the sponge away where it is normally kept.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge"
+   ],
+   "added": [
+    "spare_sponge",
+    "sponge_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "wiped",
+     "kitchen_island/top"
+    ],
+    [
+     "inside",
+     "kitchen_sponge",
+     "sponge_tray"
+    ],
+    [
+     "inside",
+     "spare_sponge",
+     "sponge_tray"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "sponge_on_island",
+  "oracle_route": "v6_return_sponge_home__study",
+  "challenge": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+  "rationale": "find the sponge and wipe; then put it away, not back on the table it was found on and not left on the island: the tray with the other sponge is where sponges are kept",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T08_wipe_island/return_sponge_home__far_dining": {
+  "variant": "return_sponge_home",
+  "category": "task",
+  "seeds": [
+   13,
+   17,
+   18
+  ],
+  "instruction": "Someone used the sponge and left it lying on a table somewhere. Wipe down the kitchen island with it, then put the sponge away where it is normally kept.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge"
+   ],
+   "added": [
+    "spare_sponge",
+    "sponge_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "wiped",
+     "kitchen_island/top"
+    ],
+    [
+     "inside",
+     "kitchen_sponge",
+     "sponge_tray"
+    ],
+    [
+     "inside",
+     "spare_sponge",
+     "sponge_tray"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "sponge_on_island",
+  "oracle_route": "v6_return_sponge_home__far_dining",
+  "challenge": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+  "rationale": "find the sponge and wipe; then put it away, not back on the table it was found on and not left on the island: the tray with the other sponge is where sponges are kept",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T08_wipe_island/which_surface__island": {
+  "variant": "which_surface",
+  "category": "task",
   "seeds": [
    10,
    11,
-   13,
-   17,
-   19
+   14,
+   16,
+   18
   ],
-  "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
+  "instruction": "Breakfast was eaten either at the kitchen island or at the dining table. Wipe the one that was used with the sponge; the other one is clean, leave it. Leave the sponge on the island.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
     "breakfast_spoon",
-    "juice_bottle",
     "kitchen_sponge",
-    "mug",
     "oatmeal",
-    "paperback_book",
-    "rolling_pin",
-    "soda_can",
-    "wooden_block_a",
-    "wooden_block_b"
+    "rolling_pin"
    ],
    "added": [],
    "removed": [],
    "conditions": [
-    "surface_cluttered"
+    "referent_clue"
    ],
-   "initial_checks": [
-    [
-     "on",
-     "soda_can",
-     "kitchen_island/top"
-    ],
-    [
-     "on",
-     "wooden_block_a",
-     "kitchen_island/top"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "destination_v4_island_cluttered",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_kitchen_sponge",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_island/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "kitchen_sponge",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "wiped",
-     "kitchen_island/top"
-    ],
-    [
-     "on",
-     "kitchen_sponge",
-     "tv_stand_2/top"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "near_start",
-     "rolling_pin",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "wooden_block_a",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "soda_can",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "wooden_block_b",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "mug",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "oatmeal",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "paperback_book",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "breakfast_spoon",
-     0.12,
-     0.03
-    ],
-    [
-     "near_start",
-     "juice_bottle",
-     0.12,
-     0.03
-    ],
-    [
-     "upright",
-     "soda_can"
-    ],
-    [
-     "upright",
-     "mug"
-    ],
-    [
-     "upright",
-     "juice_bottle"
-    ],
-    [
-     "upright",
-     "oatmeal"
-    ]
-   ]
-  },
-  "control": "sponge_on_island",
-  "oracle_route": "v6_h_dynamic_sponge_taken__alt_dining_table_2",
-  "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it (here the kitchen_sponge is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the kitchen_sponge ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T08_wipe_island/x6_pp_sponge_taken_after_wipe__tv_stand": {
-  "variant": "x6_pp_sponge_taken_after_wipe",
-  "category": "task",
-  "seeds": [
-   10,
-   12,
-   14,
-   15,
-   18
-  ],
-  "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "kitchen_sponge"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_sponge",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "kitchen_sponge"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "kitchen_sponge",
-     "to": {
-      "support": "tv_stand_2/top",
-      "xy": [
-       7.6,
-       0.38
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
      "wiped",
      "kitchen_island/top"
+    ],
+    [
+     "not wiped",
+     "dining_table_2/top"
     ],
     [
      "on",
@@ -9115,66 +8986,47 @@
    ]
   },
   "control": "sponge_on_island",
-  "oracle_route": "v6_x6_pp_sponge_taken_after_wipe__tv_stand",
-  "challenge": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
-  "rationale": "the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without wiping again",
+  "oracle_route": "v6_which_surface__island",
+  "challenge": "one of the two surfaces has the used bowl of oatmeal, the spoon and the rolling pin on it, the other has no dishes; the instruction names both and not which",
+  "rationale": "tell the used surface from the things left on it and wipe only that one (wiping the clean one too fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T08_wipe_island/x6_pp_sponge_taken_after_wipe__cabinet6": {
-  "variant": "x6_pp_sponge_taken_after_wipe",
+ "T08_wipe_island/which_surface__dining": {
+  "variant": "which_surface",
   "category": "task",
   "seeds": [
-   11,
+   12,
    13,
-   16,
+   15,
    17,
    19
   ],
-  "instruction": "Wipe down the kitchen island with the sponge after cooking, then leave the sponge on the island.",
+  "instruction": "Breakfast was eaten either at the kitchen island or at the dining table. Wipe the one that was used with the sponge; the other one is clean, leave it. Leave the sponge on the island.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "kitchen_sponge"
+    "breakfast_spoon",
+    "kitchen_sponge",
+    "oatmeal",
+    "rolling_pin"
    ],
    "added": [],
    "removed": [],
-   "conditions": [],
+   "conditions": [
+    "referent_clue"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_sponge",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "kitchen_sponge"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "kitchen_sponge",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.7,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
      "wiped",
+     "dining_table_2/top"
+    ],
+    [
+     "not wiped",
      "kitchen_island/top"
     ],
     [
@@ -9189,9 +9041,9 @@
    ]
   },
   "control": "sponge_on_island",
-  "oracle_route": "v6_x6_pp_sponge_taken_after_wipe__cabinet6",
-  "challenge": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
-  "rationale": "the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without wiping again",
+  "oracle_route": "v6_which_surface__dining",
+  "challenge": "one of the two surfaces has the used bowl of oatmeal, the spoon and the rolling pin on it, the other has no dishes; the instruction names both and not which",
+  "rationale": "tell the used surface from the things left on it and wipe only that one (wiping the clean one too fails)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/lid_off": {
@@ -9268,85 +9120,6 @@
   "control": null,
   "oracle_route": "nominal",
   "challenge": "the lid lies on the stove beside the pot (where uncover sets it aside)",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T09_tomato_soup/lid_on": {
-  "variant": "lid_on",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "breakfast_spoon",
-    "handled_cooking_pot",
-    "pot_lid"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "lid_on"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "cherry_tomato_1",
-     "handled_cooking_pot"
-    ],
-    [
-     "inside",
-     "cherry_tomato_2",
-     "handled_cooking_pot"
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_1",
-     60
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_2",
-     60
-    ],
-    [
-     "stirred",
-     "handled_cooking_pot"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "not heating",
-     "kitchen_stove"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "fallback_uncover",
-  "challenge": "the lid is on the pot",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -9504,78 +9277,36 @@
   "rationale": "seed extension of the v5 design: the breakfast_spoon ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T09_tomato_soup/h_dynamic_spoon_taken": {
-  "variant": "h_dynamic_spoon_taken",
+ "T09_tomato_soup/pot_in_use__in_use": {
+  "variant": "pot_in_use",
   "category": "task",
   "seeds": [
+   10,
    11,
-   14,
-   15,
+   13,
    18,
    19
   ],
-  "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "bowl_kitchen_cabinet",
     "breakfast_spoon",
     "handled_cooking_pot",
-    "mug_counter",
     "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "soup_pot"
+   ],
    "removed": [],
    "conditions": [
-    "cookware_choice"
+    "resource_in_use",
+    "not_in_view"
    ],
-   "initial_checks": [
-    [
-     "on",
-     "bowl_kitchen_cabinet",
-     "kitchen_island/top"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_v4_cookware_choice",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_breakfast_spoon",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "collect",
-     "args": {
-      "container": "handled_cooking_pot"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "breakfast_spoon",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.7,
-       0.36
-      ],
-      "yaw_deg": 90
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -9614,87 +9345,160 @@
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "near_start",
+     "soup_pot",
+     0.03
+    ],
+    [
+     "upright",
+     "soup_pot"
+    ],
+    [
+     "not inside",
+     "cherry_tomato_1",
+     "soup_pot"
+    ],
+    [
+     "not inside",
+     "cherry_tomato_2",
+     "soup_pot"
     ]
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v5_h_dynamic_spoon_taken",
-  "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
-  "rationale": "",
+  "oracle_route": "v6_pot_in_use__in_use",
+  "challenge": "a pot full of yesterday's tomato soup may stand on the stove's left burner; the empty cooking pot is then on the dining table next door; the instruction only says 'the pot on the stove'",
+  "rationale": "look into the pot first: one already full of other soup is in use, the tomatoes must not go in it and it stays where it is; fetch the empty pot to the free right burner and cook there. When the pot on the stove is the empty one, use it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T09_tomato_soup/h_dynamic_spoon_taken__alt_dining_table_2": {
-  "variant": "h_dynamic_spoon_taken",
+ "T09_tomato_soup/pot_in_use__free": {
+  "variant": "pot_in_use",
+  "category": "task",
+  "seeds": [
+   12,
+   14,
+   15,
+   16,
+   17
+  ],
+  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "handled_cooking_pot",
+    "pot_lid"
+   ],
+   "added": [
+    "soup_pot"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_in_use",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "cherry_tomato_1",
+     "handled_cooking_pot"
+    ],
+    [
+     "inside",
+     "cherry_tomato_2",
+     "handled_cooking_pot"
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_1",
+     60
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_2",
+     60
+    ],
+    [
+     "stirred",
+     "handled_cooking_pot"
+    ],
+    [
+     "covered",
+     "handled_cooking_pot",
+     "pot_lid"
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "near_start",
+     "soup_pot",
+     0.03
+    ],
+    [
+     "upright",
+     "soup_pot"
+    ],
+    [
+     "not inside",
+     "cherry_tomato_1",
+     "soup_pot"
+    ],
+    [
+     "not inside",
+     "cherry_tomato_2",
+     "soup_pot"
+    ]
+   ]
+  },
+  "control": "lid_off",
+  "oracle_route": "v6_pot_in_use__free",
+  "challenge": "a pot full of yesterday's tomato soup may stand on the stove's left burner; the empty cooking pot is then on the dining table next door; the instruction only says 'the pot on the stove'",
+  "rationale": "look into the pot first: one already full of other soup is in use, the tomatoes must not go in it and it stays where it is; fetch the empty pot to the free right burner and cook there. When the pot on the stove is the empty one, use it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T09_tomato_soup/tomato_in_fridge__in_fridge": {
+  "variant": "tomato_in_fridge",
   "category": "task",
   "seeds": [
    10,
    12,
    13,
    16,
-   17
+   19
   ],
-  "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
+  "instruction": "Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "bowl_kitchen_cabinet",
     "breakfast_spoon",
     "handled_cooking_pot",
-    "mug_counter",
     "pot_lid"
    ],
-   "added": [],
+   "added": [
+    "fridge_tomato"
+   ],
    "removed": [],
    "conditions": [
-    "cookware_choice"
+    "storage_place",
+    "not_in_view"
    ],
-   "initial_checks": [
-    [
-     "on",
-     "bowl_kitchen_cabinet",
-     "kitchen_island/top"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_v4_cookware_choice",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_breakfast_spoon",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "collect",
-     "args": {
-      "container": "handled_cooking_pot"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "breakfast_spoon",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -9733,13 +9537,118 @@
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "inside",
+     "fridge_tomato",
+     "handled_cooking_pot"
+    ],
+    [
+     "temperature_at_least",
+     "fridge_tomato",
+     60
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
     ]
    ]
   },
   "control": "lid_off",
-  "oracle_route": "v6_h_dynamic_spoon_taken__alt_dining_table_2",
-  "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet (here the breakfast_spoon is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the breakfast_spoon ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_tomato_in_fridge__in_fridge",
+  "challenge": "the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge (the instruction does not say where it is)",
+  "rationale": "count: two are not enough; food is kept in the fridge, so look there (open it, take the tomato, close it again: Action) rather than search the house (Task); when all three are on the island, opening the fridge is a needless trip",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T09_tomato_soup/tomato_in_fridge__on_island": {
+  "variant": "tomato_in_fridge",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   15,
+   17,
+   18
+  ],
+  "instruction": "Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "breakfast_spoon",
+    "handled_cooking_pot",
+    "pot_lid"
+   ],
+   "added": [
+    "fridge_tomato"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "cherry_tomato_1",
+     "handled_cooking_pot"
+    ],
+    [
+     "inside",
+     "cherry_tomato_2",
+     "handled_cooking_pot"
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_1",
+     60
+    ],
+    [
+     "temperature_at_least",
+     "cherry_tomato_2",
+     60
+    ],
+    [
+     "stirred",
+     "handled_cooking_pot"
+    ],
+    [
+     "covered",
+     "handled_cooking_pot",
+     "pot_lid"
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "inside",
+     "fridge_tomato",
+     "handled_cooking_pot"
+    ],
+    [
+     "temperature_at_least",
+     "fridge_tomato",
+     60
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ]
+   ]
+  },
+  "control": "lid_off",
+  "oracle_route": "v6_tomato_in_fridge__on_island",
+  "challenge": "the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge (the instruction does not say where it is)",
+  "rationale": "count: two are not enough; food is kept in the fridge, so look there (open it, take the tomato, close it again: Action) rather than search the house (Task); when all three are on the island, opening the fridge is a needless trip",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/x6_gd_tomato_elsewhere__dining": {
@@ -9918,521 +9827,6 @@
   "oracle_route": "v6_x6_gd_tomato_elsewhere__cabinet6",
   "challenge": "one cherry tomato is on the island, the other was left on the dining table or on the wall cabinet",
   "rationale": "collecting both at once only works for tomatoes on one surface: split the batch, collect the near one, fetch the other on its own",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T09_tomato_soup/x6_pp_lid_taken_after_stir__cabinet4": {
-  "variant": "x6_pp_lid_taken_after_stir",
-  "category": "task",
-  "seeds": [
-   10,
-   14,
-   15,
-   18,
-   19
-  ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "breakfast_spoon",
-    "handled_cooking_pot",
-    "pot_lid"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_lid",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "stir",
-     "args": {
-      "container": "handled_cooking_pot"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": "kitchen_cabinet_4/top",
-      "xy": [
-       1.4,
-       0.42
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "cherry_tomato_1",
-     "handled_cooking_pot"
-    ],
-    [
-     "inside",
-     "cherry_tomato_2",
-     "handled_cooking_pot"
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_1",
-     60
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_2",
-     60
-    ],
-    [
-     "stirred",
-     "handled_cooking_pot"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "not heating",
-     "kitchen_stove"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_x6_pp_lid_taken_after_stir__cabinet4",
-  "challenge": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
-  "rationale": "tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T09_tomato_soup/x6_pp_lid_taken_after_stir__dining": {
-  "variant": "x6_pp_lid_taken_after_stir",
-  "category": "task",
-  "seeds": [
-   11,
-   12,
-   13,
-   16,
-   17
-  ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "breakfast_spoon",
-    "handled_cooking_pot",
-    "pot_lid"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_lid",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "stir",
-     "args": {
-      "container": "handled_cooking_pot"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "cherry_tomato_1",
-     "handled_cooking_pot"
-    ],
-    [
-     "inside",
-     "cherry_tomato_2",
-     "handled_cooking_pot"
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_1",
-     60
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_2",
-     60
-    ],
-    [
-     "stirred",
-     "handled_cooking_pot"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "not heating",
-     "kitchen_stove"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_x6_pp_lid_taken_after_stir__dining",
-  "challenge": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
-  "rationale": "tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T09_tomato_soup/x6_pp_tomato_taken_out__tomato2": {
-  "variant": "x6_pp_tomato_taken_out__tomato2",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "breakfast_spoon",
-    "handled_cooking_pot",
-    "pot_lid"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_tomato",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "collect",
-     "args": {
-      "container": "handled_cooking_pot"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "cherry_tomato_2",
-     "to": {
-      "support": "kitchen_island/top",
-      "xy": [
-       7.8,
-       1.62
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "cherry_tomato_1",
-     "handled_cooking_pot"
-    ],
-    [
-     "inside",
-     "cherry_tomato_2",
-     "handled_cooking_pot"
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_1",
-     60
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_2",
-     60
-    ],
-    [
-     "stirred",
-     "handled_cooking_pot"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "not heating",
-     "kitchen_stove"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_x6_pp_tomato_taken_out__tomato2",
-  "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-  "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T09_tomato_soup/x6_pp_tomato_taken_out__tomato1": {
-  "variant": "x6_pp_tomato_taken_out__tomato1",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "breakfast_spoon",
-    "handled_cooking_pot",
-    "pot_lid"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_tomato",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "collect",
-     "args": {
-      "container": "handled_cooking_pot"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "cherry_tomato_1",
-     "to": {
-      "support": "kitchen_island/top",
-      "xy": [
-       7.63,
-       1.62
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "cherry_tomato_1",
-     "handled_cooking_pot"
-    ],
-    [
-     "inside",
-     "cherry_tomato_2",
-     "handled_cooking_pot"
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_1",
-     60
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_2",
-     60
-    ],
-    [
-     "stirred",
-     "handled_cooking_pot"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "not heating",
-     "kitchen_stove"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_x6_pp_tomato_taken_out__tomato1",
-  "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-  "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T09_tomato_soup/x6_pp_tomato_taken_out__tomato2_after_stir": {
-  "variant": "x6_pp_tomato_taken_out__tomato2_after_stir",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Make tomato soup for lunch: put the cherry tomatoes into the pot on the stove, stir them, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "breakfast_spoon",
-    "handled_cooking_pot",
-    "pot_lid"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_tomato",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "stir",
-     "args": {
-      "container": "handled_cooking_pot"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "cherry_tomato_2",
-     "to": {
-      "support": "kitchen_island/top",
-      "xy": [
-       7.8,
-       1.62
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "cherry_tomato_1",
-     "handled_cooking_pot"
-    ],
-    [
-     "inside",
-     "cherry_tomato_2",
-     "handled_cooking_pot"
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_1",
-     60
-    ],
-    [
-     "temperature_at_least",
-     "cherry_tomato_2",
-     60
-    ],
-    [
-     "stirred",
-     "handled_cooking_pot"
-    ],
-    [
-     "covered",
-     "handled_cooking_pot",
-     "pot_lid"
-    ],
-    [
-     "not heating",
-     "kitchen_stove"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "lid_off",
-  "oracle_route": "v6_x6_pp_tomato_taken_out__tomato2_after_stir",
-  "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-  "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T09_tomato_soup/pot_in_dining_room": {

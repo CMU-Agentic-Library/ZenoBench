@@ -1,7 +1,7 @@
 {
- "variants": 128,
- "episodes": 1280,
- "static_ok": 1280,
+ "variants": 123,
+ "episodes": 1230,
+ "static_ok": 1230,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -33,12 +33,12 @@
    "static_ok": 60
   },
   "T08_wipe_island": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 50,
+   "static_ok": 50
   },
   "T09_tomato_soup": {
-   "episodes": 100,
-   "static_ok": 100
+   "episodes": 60,
+   "static_ok": 60
   },
   "T10_trash_the_can": {
    "episodes": 60,
@@ -87,9 +87,9 @@
  },
  "categories": {
   "control": 20,
-  "task": 77,
-  "action_task": 10,
-  "action": 21
+  "task": 78,
+  "action_task": 9,
+  "action": 16
  },
- "tasks_sha1": "54b1718bb0c79f99357184911b0f0d7fc4e22b3e"
+ "tasks_sha1": "e7c3258ddeea43318db64009c2632215e79d5c4a"
 }

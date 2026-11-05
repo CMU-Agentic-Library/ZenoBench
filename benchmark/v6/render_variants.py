@@ -2,13 +2,15 @@
 
     $ISAACLAB_PYTHON benchmark/v6/render_variants.py --task T01 [--out ~/Pictures]
 
-One Isaac process per picture set (task, variant, layout; the layout's first seed).  Views, written to
-<out>/<task_id>/<variant>/<n>_<view>.png with a caption bar (variant, category, view, situation):
+One Isaac process per variant (its first layout and seed; ``--all-layouts`` for every layout), at most three
+pictures: what is taken, where it goes, and what the variant turns on.  Only what the task is
+about is shown - every asset the reference route or the goal names - each starred with its role, written to
+<out>/<task_id>/<variant>/<n>_<asset>.png with a caption bar (variant, category, view, situation):
 
-* ``first_person`` - the robot's head camera at the start (what the planner sees first);
-* ``<object>``     - a close-up of each object the reference route picks up, where it starts;
-* ``<support>``    - an overhead view of each support the route places things on, and of a large one that holds
-  watched objects but is no place target (e.g. the table nobody eats at).
+* what the robot takes (or stacks on): a close-up where it starts (in closed furniture: the furniture, starred);
+* where things go: the support or container, the route's place points starred, what must stay there named;
+* furniture to open and appliances to run;
+* a support with things that must stay or with look-alikes the challenge is built on, each starred.
 
 Only the start scene is rendered (no skill runs); a variant with several layouts gets one set per layout.
 """
@@ -78,16 +80,22 @@ def star(img, marks):
     from PIL import ImageDraw, ImageFont
     d = ImageDraw.Draw(img)
     font = ImageFont.truetype(FONT, 24)
-    for uv, label in marks:
-        if uv is None or not (0 <= uv[0] < img.width and 0 <= uv[1] < img.height):
-            continue
-        u, v = uv
+    marks = [m for m in marks if m[0] is not None and 0 <= m[0][0] < img.width and 0 <= m[0][1] < img.height]
+    for (u, v), _ in marks:
         pts = [(u + (18 if k % 2 == 0 else 8) * math.sin(k * math.pi / 5),
                 v - (18 if k % 2 == 0 else 8) * math.cos(k * math.pi / 5)) for k in range(10)]
         d.polygon(pts, fill=(255, 205, 40), outline=(90, 60, 0))
+    boxes = []                                   # labels already drawn: a new one moves down until it is free
+    for (u, v), label in marks:
         w = d.textlength(label, font=font)
         x = u + 20 if u + 20 + w < img.width - 8 else u - 20 - w      # left of the star near the right edge
-        d.text((x, v - 30), label, font=font, fill=(255, 225, 80), stroke_width=3, stroke_fill=(0, 0, 0))
+        y = v - 30
+        while any(x < b[2] and b[0] < x + w and y < b[3] and b[1] < y + 30 for b in boxes):
+            y += 32
+        if y > v - 10:                           # moved off its star: a thin leader line back to it
+            d.line([(u, v), (x if x > u else x + w, y + 15)], fill=(255, 225, 80), width=2)
+        boxes.append((x, y, x + w, y + 30))
+        d.text((x, y), label, font=font, fill=(255, 225, 80), stroke_width=3, stroke_fill=(0, 0, 0))
 
 
 def render_one(tid, vid, lid, seed, out_dir, situation):
@@ -136,89 +144,205 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         K = cam.data.intrinsic_matrices[0].cpu().numpy()
         return float(K[0, 0] * x / z + K[0, 2]), float(K[1, 1] * y / z + K[1, 2])
 
+    def robot_clear(eye, tgt):
+        """The line of sight does not pass through the robot's body (a column 0.45 m round its base, 1.7 m high)."""
+        bx, by, _ = rig.base_pose()
+        e, t = np.asarray(eye, float), np.asarray(tgt, float)
+        for u in np.linspace(0.0, 1.0, 40):
+            q = e + (t - e) * u
+            if q[2] < 1.7 and math.hypot(q[0] - bx, q[1] - by) < 0.45:
+                return False
+        return True
+
     def around(tgt, dist, height):
-        """A clear eye on a circle around the target, the robot's side first."""
+        """A clear eye on a circle around the target (no furniture and not the robot in between); the side the
+        robot comes from first, else any side, else straight above."""
         bx, by, _ = rig.base_pose()
         a0 = math.atan2(by - tgt[1], bx - tgt[0])
         for k in (0, 1, -1, 2, -2, 3, -3, 4):
             a = a0 + k * math.pi / 4
             eye = [tgt[0] + dist * math.cos(a), tgt[1] + dist * math.sin(a), tgt[2] + height]
-            if _clear(rig.world, eye, tgt):
+            if _clear(rig.world, eye, tgt) and robot_clear(eye, tgt):
                 return eye
         return [tgt[0] + 0.05, tgt[1], tgt[2] + dist + height]
 
     st = rig.state()
-    views = [("first_person", None, rig.get_first_person_image(), "机器人开局第一视角")]
-    place_sups = {n for k, n in plan_views(task, lid) if k == "support"}
-    picked = {cfg["move"].get(n, {}).get("support") for k, n in plan_views(task, lid) if k == "object"}
-    other = []                  # a table with watched objects that is no place target (the table nobody eats at)
-    for n in rtask.get("watch") or []:
-        sup = cfg["move"].get(n, {}).get("support")
-        if sup and sup not in place_sups | picked | set(other):
-            b = rig.ann.support(sup)["aabb_xy"]
-            if max(b[2] - b[0], b[3] - b[1]) > 0.9:
-                other.append(sup)
-    # a watched container the route neither picks nor fills (the toy bin next to the kitchen bin, the fruit basket)
-    assets = json.loads((ROOT / "annotations/assets.json").read_text())
-    used = {n for _, n in plan_views(task, lid)}
-    for n in rtask.get("watch") or []:
-        o = rig.ann.objects.get(n)
-        if o and n not in used and n in st["objects"] and assets.get(o.get("asset"), {}).get("container") \
-                and not (cfg["move"].get(n, {}).get("support") or "").endswith("/inside_shelf"):
-            other.append(n)
-    # a watched object the route never touches, on a support no view shows (a look-alike book on the island or in
-    # another room, the boxes that fill the cabinet top): its support from above
-    for n in rtask.get("watch") or []:
-        sup = ((cfg.get("move") or {}).get(n) or (cfg.get("add") or {}).get(n) or {}).get("support")
-        if n in used or n not in st["objects"] or not sup or sup.endswith("/inside_shelf") \
-                or sup in place_sups | picked | set(other) or n in other:
-            continue
-        other.append(sup)
-    for kind, name in plan_views(task, lid) + [("other", s) for s in other]:
-        if kind == "object":
-            if name not in st["objects"] or (cfg["move"].get(name, {}).get("support") in place_sups and
-                                              not any(k == "object" and n == name for k, n in plan_views(task, lid)[:1])
-                                              and name != (task.get("watch") or [None])[0]):
-                continue                         # seen in the overhead view of its support
-            p = [float(v) for v in st["objects"][name]["pos"]]
-            sup = cfg["move"].get(name, {}).get("support") or ""
-            if sup.endswith("/inside_shelf"):    # in closed furniture: the furniture from the room, the item starred
-                b = rig.ann.support(sup)["aabb_xy"]
-                c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, p[2]]
-                img = shot(around(c, 1.6, 0.7), c)
-                views.append((name, [(project(p), f"{name} 在里面")], img,
-                              f"要拿的 {name} 在关着的 {sup.split('/')[0]} 里（从外面看，★ 是它的位置）"))
-                continue
-            views.append((name, None, shot(around(p, 0.75, 0.55), p), f"要拿的 {name}（开局位置）"))
-        elif name in st["objects"]:              # a container object (a bin, a basket, a tray): from above at an angle
-            p = [float(v) for v in st["objects"][name]["pos"]]
-            img = shot(around(p, 0.7, 0.8), p)
-            views.append((name, None, img, f"放进 {name}（开局位置）" if kind == "support" else
-                          f"{name}（开局位置）：相关的容器，但不是放置处"))
+    objs = st["objects"]
+    adds = cfg.get("add") or {}
+
+    def sup_of(n):
+        return ((cfg.get("move") or {}).get(n) or adds.get(n) or {}).get("support") or \
+            (rig.ann.objects.get(n) or {}).get("support") or ""
+
+    def pos(n):
+        return [float(v) for v in objs[n]["pos"]]
+
+    def furniture_box(name):
+        """[x0, y0, z0, x1, y1, z1] of a piece of furniture or an appliance (its body parts)."""
+        boxes = [o["aabb"] for o in rig.ann.obstacles if o["name"] == name or o["name"].startswith(name + "/")]
+        boxes += [a["body_aabb"] for a in rig.ann.appliances if a["name"] == name]
+        if not boxes:
+            return None
+        return [min(b[k] for b in boxes) for k in range(3)] + [max(b[k] for b in boxes) for k in range(3, 6)]
+
+    def support_eye(name):
+        sp = rig.ann.support(name)
+        b = sp["aabb_xy"]
+        c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, sp["z"]]
+        span = max(b[2] - b[0], b[3] - b[1])
+        if min(b[2] - b[0], b[3] - b[1]) < 0.5:   # a narrow top along a wall: from its room side at an angle
+            from benchmark.v6.layout import room_of
+            ax = (0, 1) if b[2] - b[0] > b[3] - b[1] else (1, 0)
+            room = room_of(cfg["base"], c)
+            along = (1 - ax[0], 1 - ax[1])
+            eyes = [[c[0] + k * 1.2 * ax[0] + m * along[0], c[1] + k * 1.2 * ax[1] + m * along[1], c[2] + 0.8]
+                    for m in (0.0, 0.6, -0.6) for k in (1, -1)]
+            ok = [e for e in eyes if room_of(cfg["base"], e) == room]
+            return next((e for e in ok if robot_clear(e, c)), ok[0] if ok else eyes[0]), c
+        if span > 0.9:                           # a long table from above, slightly tilted
+            eye = [c[0] + 0.25, c[1] - 0.05, c[2] + 0.75 * span + 0.3]
+            return (eye if _clear(rig.world, eye, c) and robot_clear(eye, c) else around(c, 0.8, 0.75 * span)), c
+        return around(c, 0.9, 0.8), c
+
+    # ---- what the task is about: every asset the reference route or the goal names, with its role
+    steps = task["routes"][task["oracle"][lid]]["steps"]
+    role = {}                                    # asset -> role, in first-mention order
+
+    def mark(n, r):
+        if n and n not in role:
+            role[n] = r
+    for stp in steps:
+        a, k = stp["args"], stp["skill"]
+        if k == "pick":
+            mark(a["object"], "take")
+        elif k in ("place", "drop", "hide"):
+            mark(a.get("receptacle") or a.get("container"), "place")
+        elif k == "stack":
+            mark(a["base"], "base")
+        elif k in ("cover", "uncover", "stir"):
+            mark(a["container"], "use")
+            mark(a.get("lid") or a.get("tool"), "take")
+        elif k == "wipe":
+            mark(a["surface"], "place")
+        elif k in ("open", "close", "explore_furniture"):
+            mark(a.get("articulated") or a.get("furniture"), "open")
+        elif k in ("heat", "stop"):
+            mark(a["appliance"], "appliance")
+        elif k == "press":
+            mark(a["button"].split("/")[0], "appliance")
+    goal = rtask.get("goal") or task.get("goal") or {}
+
+    def atoms(g):
+        if isinstance(g, dict):
+            for x in g.get("all", []):
+                yield from atoms(x)
+            for grp in g.get("any", []):
+                for x in grp:
+                    yield from atoms(x)
         else:
-            s = rig.ann.support(name)
-            b = s["aabb_xy"]
-            c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, s["z"]]
-            span = max(b[2] - b[0], b[3] - b[1])
-            if min(b[2] - b[0], b[3] - b[1]) < 0.5:   # a narrow top along a wall: from its room side at an angle
-                from benchmark.v6.layout import room_of
-                ax = (0, 1) if b[2] - b[0] > b[3] - b[1] else (1, 0)     # across the long side
-                room = room_of(cfg["base"], c)
-                eyes = [[c[0] + k * 1.2 * ax[0], c[1] + k * 1.2 * ax[1], c[2] + 0.8] for k in (1, -1)]
-                eye = next((e for e in eyes if room_of(cfg["base"], e) == room), eyes[0])
-            elif span > 0.9:                     # a long table from above, slightly tilted
-                eye = [c[0] + 0.25, c[1] - 0.05, c[2] + 0.75 * span + 0.3]
-                if not _clear(rig.world, eye, c):
-                    eye = around(c, 0.8, 0.75 * span)
-            else:
-                eye = around(c, 0.9, 0.8)
-            img = shot(eye, c)
-            hints = [h for h in place_hints(task, lid) if h[0] == name]
-            marks = [(project([h[1][0], h[1][1], s["z"] + 0.03]), h[2]) for h in hints]
-            print(f"[marks] {name} {marks}", flush=True)
-            views.append((name.replace("/", "_"), marks, img, (f"放置处 {name}（俯视）" if kind == "support" else
-                                                               f"{name}（俯视）：上面有相关物体，但不是放置处")
-                          + ("，★ 参考路线的放置点（按顺序）" if marks else "")))
+            yield g
+    PUT = ("on", "inside", "fully_inside", "on_top_of", "temperature_at_least", "covered")
+    names = lambda x: [x] if isinstance(x, str) else list(x)  # noqa: E731
+    for at in atoms(goal):                       # the goal allows it, the route uses another (another mug)
+        if at[0] in PUT:
+            for n in names(at[1]):
+                if n in objs and n not in role:
+                    role[n] = "alt"
+    for at in atoms(goal):                       # what the place is judged against (the coffee drinker's mug)
+        if at[0] == "near_any":
+            for n in at[2]:
+                if n in objs and n not in role:
+                    role[n] = "ref"
+    keep = set()
+    for at in atoms(goal):
+        if at[0] in ("near_start", "upright", "count_on_at_least"):
+            keep.update(names(at[1]))
+        elif at[0] in ("clear_of", "not near_any"):
+            keep.update(at[2])
+    for n in sorted(keep):
+        if n in objs and n not in role:
+            role[n] = "keep"
+    for n in rtask.get("watch") or []:          # watched, never used: the look-alikes the challenge is built on
+        if n in objs and n not in role:
+            role[n] = "other"
+    LABEL = {"take": "要拿", "base": "叠在它上面", "keep": "别动", "other": "干扰，不用它", "use": "要用",
+             "alt": "也可以用", "ref": "参照"}
+    views, shown = [], set()
+
+    def stars(names):
+        return [(project(pos(n)), f"{LABEL[role[n]]}：{n}") for n in names if n in objs]
+
+    kind = []                                   # per view: take / place / point (what the variant is about)
+    # 1) what the robot takes (or stacks on): a close-up; in closed furniture, the furniture with the item starred
+    for n, r in role.items():
+        if r not in ("take", "base", "use") or n not in objs or n in shown:
+            continue
+        sp = sup_of(n)
+        if sp.endswith("/inside_shelf"):
+            b = rig.ann.support(sp)["aabb_xy"]
+            c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, pos(n)[2]]
+            img = shot(around(c, 1.6, 0.7), c)
+            views.append((n, [(project(pos(n)), f"{LABEL[r]}：{n}（在柜子里）")], img,
+                          f"{LABEL[r]}的 {n}：在关着的 {sp.split('/')[0]} 里（从外面看，★ 是它的位置）"))
+        else:
+            img = shot(around(pos(n), 0.75, 0.55), pos(n))
+            views.append((n, stars([n]), img, f"{LABEL[r]}的 {n}（开局位置）"))
+        shown.add(n)
+    kind += ["take"] * (len(views) - len(kind))
+    # 2) where things go: the support or container, the route's place points starred, what must stay listed
+    for n, r in role.items():
+        if r != "place" or n in shown:
+            continue
+        if n in objs:                            # a container object (a bin, a basket, a pot): from above
+            img = shot(around(pos(n), 0.7, 0.8), pos(n))
+            views.append((n, None, img, f"放进 {n}（开局位置）"))
+            shown.add(n)
+            continue
+        eye, c = support_eye(n)
+        img = shot(eye, c)
+        z = rig.ann.support(n)["z"]
+        marks = [(project([h[1][0], h[1][1], z + 0.03]), h[2]) for h in place_hints(task, lid) if h[0] == n]
+        stay = [x for x, rr in role.items() if rr in ("keep", "other", "ref", "alt") and sup_of(x) == n]
+        marks += stars([x for x in stay if role[x] in ("other", "ref", "alt")])
+        kept = [x for x in stay if role[x] == "keep"]
+        shown.update([n, *stay])
+        views.append((n.replace("/", "_"), marks, img, f"放置处 {n}" + ("，★ 参考路线的放置点" if any(
+            h[0] == n for h in place_hints(task, lid)) else "") + (
+            "" if not kept else f"；上面其余 {len(kept)} 件东西都别动" if len(kept) > 3 else f"；{'、'.join(kept)} 别动")))
+    kind += ["place"] * (len(views) - len(kind))
+    # 3) furniture to open and appliances to run
+    for n, r in role.items():
+        if r not in ("open", "appliance") or n in shown:
+            continue
+        box = furniture_box(n)
+        if not box:
+            continue
+        c = [(box[0] + box[3]) / 2, (box[1] + box[4]) / 2, (box[2] + box[5]) / 2]
+        img = shot(around(c, 1.4, 0.6), c)
+        views.append((n, [(project([c[0], c[1], box[5]]), n)], img,
+                      ("要打开再关好的 " if r == "open" else "要用的电器 ") + n))
+        shown.add(n)
+    kind += ["point"] * (len(views) - len(kind))
+    # 4) supports with things that must stay or look-alikes, not shown yet: the support, each thing starred
+    by_sup = {}
+    for n, r in role.items():
+        if r in ("keep", "other", "alt", "ref") and n not in shown and n in objs \
+                and not sup_of(n).endswith("/inside_shelf"):
+            by_sup.setdefault(sup_of(n), []).append(n)
+    for sp, names in by_sup.items():
+        if not sp:
+            continue
+        try:
+            eye, c = support_eye(sp)
+        except Exception:
+            p0 = pos(names[0])
+            eye, c = around(p0, 0.8, 0.6), p0
+        img = shot(eye, c)
+        kinds = sorted({LABEL[role[n]] for n in names})
+        views.append((sp.replace("/", "_"), stars(names), img,
+                      f"{sp} 上的{'、'.join(kinds)}的东西：{'、'.join(names)}"))
+        shown.update(names)
+    kind += ["point"] * (len(views) - len(kind))
     viewer = (task["variants"][lid].get("v6") or {}).get("viewer")
     if viewer:                                   # what a person sees from where they are (e.g. lying in bed)
         for sup in viewer["targets"]:
@@ -227,6 +351,15 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             views.append((f"view_{sup.replace('/', '_')}", None,
                           shot(viewer["eye"], [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, s["z"] + 0.05]),
                           f"{viewer['label']}：看向 {sup}"))
+    kind += ["view"] * (len(views) - len(kind))
+    # a few pictures that show the variant: what is taken, where it goes, and what the variant turns on (a person's
+    # view, a look-alike, the thing that must stay, the furniture to open); at most three
+    pick = []
+    for want in (("take",), ("place",), ("view", "point")):
+        i = next((i for k in want for i, x in enumerate(kind) if x == k and i not in pick), None)
+        if i is not None:
+            pick.append(i)
+    views = [views[i] for i in sorted(pick)]
     out_dir.mkdir(parents=True, exist_ok=True)
     lay = f" · 摆法 {lid.split('__', 1)[1]}" if lid != vid else ""
     for i, (tag, marks, img, label) in enumerate(views, 1):
@@ -248,6 +381,7 @@ def main():
     ap.add_argument("--task", help="task id prefix, e.g. T01")
     ap.add_argument("--variant", help="only this variant")
     ap.add_argument("--out", default=str(Path.home() / "Pictures"))
+    ap.add_argument("--all-layouts", action="store_true", help="one picture set per layout (default: the first)")
     ap.add_argument("--one", nargs=4, metavar=("TASK", "VARIANT", "LAYOUT", "SEED"), help=argparse.SUPPRESS)
     a = ap.parse_args()
     from benchmark.v6.success_routes import situations
@@ -270,7 +404,7 @@ def main():
         for vid, info in t["v6_variants"].items():
             if a.variant and vid != a.variant:
                 continue
-            for lid in info["layouts"]:
+            for lid in info["layouts"][:1] if not a.all_layouts else info["layouts"]:
                 seed = min(int(s) for s, x in info["seeds"].items() if x == lid)
                 cmd = [py, __file__, "--out", a.out, "--one", t["task_id"], vid, lid, str(seed)]
                 try:

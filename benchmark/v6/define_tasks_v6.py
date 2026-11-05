@@ -966,21 +966,106 @@ def T07(t):
 
 
 def T08(t):
-    X = "kitchen_sponge"
-    base = OR(t, "sponge_on_island")
-    back = base + recs(look("kitchen_island/top"), S("search", object=X), nav(X), pick(X),
-                       nav("kitchen_island/top"), place(X, "kitchen_island/top"))
+    X, ISL = "kitchen_sponge", "kitchen_island/top"
+    TV_SPONGE = P("tv_stand_2/top", 7.6, 0.38)
+    # wipe_and_sort: island_cluttered's island (two rows of things), but the kid's toys among them go to the toy box
+    # on the TV stand for good; the kitchen things stay (the wiping strip is free once the toys are gone)
+    clutter = copy.deepcopy(t["variants"]["island_cluttered"]["move"])
+    kitchen = ["rolling_pin", "soda_can", "mug", "oatmeal", "paperback_book", "breakfast_spoon", "juice_bottle"]
+    TOY = "toy_box"
+    toy_box = {TOY: {"asset": "toy_box", "support": None, "z": 0.001, "xy": [5.70, 0.80], "yaw_deg": 0.0}}
+
+    def to_box(x):
+        return [nav(x), pick(x), nav(TOY), S("approach", target=TOY), place(x, TOY)]
+    sponge_wipe = [look("tv_stand_2/top"), nav(X), pick(X), S("approach", target=ISL),
+                   S("wipe", surface=ISL, tool=X), place(X, ISL)]
+    sort_cases = {}
+    for case, toys in (("blocks", ["wooden_block_a", "wooden_block_b"]), ("duck", ["wooden_block_a", "rubber_duck"])):
+        mv = {k: v for k, v in clutter.items() if k in kitchen or k in toys or k == X}
+        add = dict(toy_box)
+        if case == "duck":
+            add["rubber_duck"] = {"asset": "rubber_duck", **clutter["wooden_block_b"]}
+        sort_cases[case] = dict(
+            move=mv, add=add, remove=["wooden_block_b"] if case == "duck" else [],
+            goal={"all": [["wiped", ISL], ["on", X, ISL], ["hand_empty", "right"],
+                          *[["inside", x, TOY] for x in toys],
+                          *[["near_start", x, 0.12, 0.03] for x in kitchen],
+                          *[["upright", x] for x in ("soda_can", "mug", "juice_bottle", "oatmeal")]]},
+            watch=[X, TOY, *toys, *kitchen],
+            route=[look(ISL)] + [st for x in toys for st in to_box(x)] + sponge_wipe)
+    # return_sponge_home: someone left the sponge on a table; after wiping it goes back to where sponges are kept:
+    # the shallow tray on the low wall cabinet with the spare sponge in it (the instruction does not say where)
+    TRAY = "sponge_tray"
+    tray = {TRAY: {"asset": "shallow_sorting_tray", "support": "kitchen_cabinet_4/top", "xy": [1.40, 0.42],
+                   "yaw_deg": 0.0},
+            "spare_sponge": {"asset": "kitchen_sponge", "support": None, "z": 0.645, "xy": [1.45, 0.42],
+                             "yaw_deg": 0.0}}
+    left = {"dining": (P(DINING, 3.7, 6.3), "dining_room_0_1"),
+            "study": (P("desk_1/top", -0.7, -6.0), "living_room_0_1"),
+            "far_dining": (P(FAR_DINING, -7.8, 7.6), "dining_room_0_0")}
+    home_cases = {c: dict(
+        move={X: pose}, add=tray,
+        route=[look(ISL), S("search", object=X, region=region), nav(X), pick(X), nav(ISL), S("approach", target=ISL),
+               S("wipe", surface=ISL, tool=X), nav(TRAY), S("approach", target=TRAY), place(X, TRAY)])
+        for c, (pose, region) in left.items()}
+    # which_surface: breakfast was eaten at the island or at the dining table; the used one has the bowl of oatmeal,
+    # the spoon and the rolling pin on it, the other is clean; only the used one is to be wiped
+    dishes = {ISL: {"oatmeal": P(ISL, 6.97, 1.88), "breakfast_spoon": P(ISL, 7.63, 1.88),
+                    "rolling_pin": P(ISL, 7.30, 1.88)},
+              DINING: {"oatmeal": P(DINING, 3.25, 6.2), "breakfast_spoon": P(DINING, 3.25, 6.5),
+                       "rolling_pin": P(DINING, 3.30, 7.0)}}
+    sponge_isl = copy.deepcopy(t["variants"]["sponge_on_island"]["move"][X])
+    surf_cases = {}
+    for case, used, other in (("island", ISL, DINING), ("dining", DINING, ISL)):
+        surf_cases[case] = dict(
+            move={X: sponge_isl, **dishes[used]},
+            goal={"all": [["wiped", used], ["not wiped", other], ["on", X, ISL], ["hand_empty", "right"]]},
+            watch=[X, "oatmeal", "breakfast_spoon", "rolling_pin"],
+            route=[look(ISL), nav(X), pick(X)]
+            + ([S("wipe", surface=ISL, tool=X), place(X, ISL)] if used == ISL else
+               [nav(DINING), look(DINING), S("approach", target=DINING), S("wipe", surface=DINING, tool=X),
+                nav(ISL), place(X, ISL)]))
     return {
-        "x6_pp_sponge_taken_after_wipe": dict(
-            base="sponge_on_island", control="sponge_on_island",
-            challenge="right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
-            rationale="the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without "
-                      "wiping again",
-            factor="where the event takes the resource",
-            cases={c: dict(failures=[f_move("resource", X, to, ("place", {"object": X}), fid="resource_sponge")],
-                           route=back[:-4] + recs(look(where)) + back[-4:])
-                   for c, to, where in (("tv_stand", P("tv_stand_2/top", 7.6, 0.38), "tv_stand_2/top"),
-                                        ("cabinet6", P("kitchen_cabinet_6/top", 3.7, 0.36), "kitchen_cabinet_6/top"))}),
+        "wipe_and_sort": dict(
+            base="island_cluttered", control="sponge_on_island", conditions=["category_rule", "not_in_view"],
+            instruction="Wipe the kitchen island with the sponge. The kid's toys lying on it go into the kid's toy box "
+                        "in the living room; the kitchen things stay on the island. Leave the sponge on the island.",
+            instruction_zh="用海绵把厨房岛台擦一下。岛台上孩子的玩具收进客厅里孩子的玩具箱，厨房的东西留在岛台上。"
+                           "擦完把海绵留在岛台上。",
+            factor="which toys lie among the kitchen things (seed: two blocks, or a block and the rubber duck)",
+            challenge="the island holds two rows of things: kitchen things (rolling pin, can, mug, oatmeal, book, "
+                      "spoon, juice) and the kid's toys among them; the toy box (with a toy in it) is on the TV "
+                      "stand; the sponge is on the TV stand too",
+            rationale="sort by kind: each toy goes into the toy box for good, the kitchen things stay where they "
+                      "are; with the toys gone the front strip is free to wipe; then the sponge goes on the island",
+            cases=sort_cases),
+        "return_sponge_home": dict(
+            base="sponge_on_island", control="sponge_on_island", conditions=["storage_place", "not_in_view"],
+            instruction="Someone used the sponge and left it lying on a table somewhere. Wipe down the kitchen island "
+                        "with it, then put the sponge away where it is normally kept.",
+            instruction_zh="有人用完海绵随手放在了某张桌子上。用它把厨房岛台擦一下，擦完把海绵收回平时放海绵的地方。",
+            goal={"all": [["wiped", ISL], ["inside", X, TRAY], ["inside", "spare_sponge", TRAY],
+                          ["hand_empty", "right"]]},
+            watch=[X, TRAY, "spare_sponge"],
+            factor="which table the sponge was left on (seed: the dining table next door, the study desk, or the "
+                   "dining table in the west dining room)",
+            challenge="the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray "
+                      "on the low wall cabinet holds the spare sponge",
+            rationale="find the sponge and wipe; then put it away, not back on the table it was found on and not "
+                      "left on the island: the tray with the other sponge is where sponges are kept",
+            cases=home_cases),
+        "which_surface": dict(
+            base="sponge_on_island", control="sponge_on_island", conditions=["referent_clue"],
+            instruction="Breakfast was eaten either at the kitchen island or at the dining table. Wipe the one that "
+                        "was used with the sponge; the other one is clean, leave it. Leave the sponge on the island.",
+            instruction_zh="早饭是在岛台或者餐桌上吃的。用海绵把吃过饭的那个擦一下；另一个是干净的，别擦。"
+                           "擦完把海绵留在岛台上。",
+            factor="where breakfast was eaten (seed: the island or the dining table)",
+            challenge="one of the two surfaces has the used bowl of oatmeal, the spoon and the rolling pin on it, the "
+                      "other has no dishes; the instruction names both and not which",
+            rationale="tell the used surface from the things left on it and wipe only that one (wiping the clean "
+                      "one too fails)",
+            cases=surf_cases),
     }
 
 
@@ -989,16 +1074,67 @@ def T09(t):
     base = OR(t, "lid_off")        # look, collect, nav spoon, pick spoon, nav pot, stir, nav island, place spoon,
     #                                nav lid, pick lid, nav pot, cover, nav stove, heat
 
-    j_lid = at(base, "navigate", destination=LID)
-    lid_taken = lambda *sr: base[:j_lid] + recs(look("kitchen_stove/top"), S("search", object=LID, **dict(sr))) + base[j_lid:]  # noqa: E731
-    tomato_out = lambda x: base[:2] + recs(look("kitchen_island/top"), nav(x), pick(x), nav(POT),  # noqa: E731
-                                           S("drop", object=x, container=POT)) + base[2:]
+    STOVE, ISL = "kitchen_stove/top", "kitchen_island/top"
+    goal = copy.deepcopy(t["goal"])
+    # pot_in_use: yesterday's soup (the soup pot, full) is on the left burner; the empty pot is in the dining room.
+    # The tomatoes must not go into the full pot: fetch the empty one to the free burner.  Seed: the full pot on the
+    # stove (in use) or on the dining table with the empty pot on the stove (the nominal plan works).
+    SOUP = "soup_pot"
+    lid_isl = P(ISL, 7.25, 1.85)                          # the lid by the tomatoes: the right burner stays free
+    use_goal = {"all": [*goal["all"], ["near_start", SOUP, 0.03], ["upright", SOUP],
+                        *[["not inside", x, SOUP] for x in TOMATOES]]}
+    in_use = dict(
+        move={POT: P(DINING, 3.55, 5.75), LID: lid_isl}, add={SOUP: {"asset": SOUP, **P(STOVE, 8.41, 1.725)}},
+        goal=use_goal,
+        route=[look(ISL), look(STOVE), S("search", object=POT, region="dining_room_0_1"), nav(POT), pick(POT),
+               nav(STOVE), place(POT, STOVE, [8.70, 1.725])] + base[1:])
+    free = dict(
+        add={SOUP: {"asset": SOUP, **P(DINING, 3.35, 6.75)}}, goal=use_goal,
+        route=[look(ISL), look(STOVE)] + base[1:])
+    # tomato_in_fridge: three tomatoes for the soup; two are on the island, the third is kept in the fridge (food is
+    # kept there; the instruction does not say so).  Seed: the third in the fridge, or on the island with the others.
+    F3, FRIDGE = "fridge_tomato", "breakfast_fridge"
+    cold = {F3: {"initial_c": 4.0, "stove_rate_c_per_s": 3.0, "cooling_rate_c_per_s": 1.5, "heating_rate_c_per_s": 4.0}}
+    three_goal = {"all": [*goal["all"], ["inside", F3, POT], ["temperature_at_least", F3, 60],
+                          ["is_closed", FRIDGE]]}
+    fridge = dict(
+        add={F3: {"asset": "cherry_tomato", "support": f"{FRIDGE}/inside_shelf", "xy": [5.90, 3.30], "yaw_deg": 0.0}},
+        route=base[:2] + open_explore(FRIDGE) + [nav(F3), pick(F3), S("retreat", obstacle=FRIDGE, distance_m=0.3),
+                                                 S("close", articulated=FRIDGE), nav(POT),
+                                                 S("drop", object=F3, container=POT)] + base[2:])
+    on_island = dict(
+        add={F3: {"asset": "cherry_tomato", **P(ISL, 7.715, 1.70)}},
+        route=[base[0], S("collect", objects=[*TOMATOES, F3], container=POT)] + base[2:])
 
     def apart(region):
         return base[:1] + recs(S("collect", objects=[TOMATOES[0]], container=POT),
                                S("search", object=TOMATOES[1], region=region), nav(TOMATOES[1]), pick(TOMATOES[1]),
                                nav(POT), S("drop", object=TOMATOES[1], container=POT)) + base[2:]
     return {
+        "pot_in_use": dict(
+            base="lid_off", control="lid_off", conditions=["resource_in_use", "not_in_view"],
+            watch=[POT, SOUP, LID, *TOMATOES],
+            factor="whether the pot on the stove is full (seed: yesterday's soup on the left burner and the empty pot "
+                   "in the dining room, or the full pot on the dining table and the empty one on the stove)",
+            challenge="a pot full of yesterday's tomato soup may stand on the stove's left burner; the empty cooking "
+                      "pot is then on the dining table next door; the instruction only says 'the pot on the stove'",
+            rationale="look into the pot first: one already full of other soup is in use, the tomatoes must not go "
+                      "in it and it stays where it is; fetch the empty pot to the free right burner and cook there. "
+                      "When the pot on the stove is the empty one, use it",
+            cases={"in_use": in_use, "free": free}),
+        "tomato_in_fridge": dict(
+            base="lid_off", control="lid_off", conditions=["storage_place", "not_in_view"],
+            instruction="Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, "
+                        "stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+            instruction_zh="午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。",
+            goal=three_goal, thermal_override=cold, watch=[POT, LID, F3, *TOMATOES],
+            factor="where the third tomato is (seed: in the fridge, or on the island with the other two)",
+            challenge="the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge "
+                      "(the instruction does not say where it is)",
+            rationale="count: two are not enough; food is kept in the fridge, so look there (open it, take the "
+                      "tomato, close it again: Action) rather than search the house (Task); when all three are on "
+                      "the island, opening the fridge is a needless trip",
+            cases={"in_fridge": fridge, "on_island": on_island}),
         "x6_gd_tomato_elsewhere": dict(
             base="lid_off", control="lid_off",
             factor="where the second tomato was left",
@@ -1011,32 +1147,6 @@ def T09(t):
                            route=apart(region))
                    for c, to, region in (("dining", P("dining_table_2/top", 3.7, 6.3), "dining_room_0_1"),
                                          ("cabinet6", P("kitchen_cabinet_6/top", 3.7, 0.36), "living_room_0_0"))}),
-        "x6_pp_lid_taken_after_stir": dict(
-            base="lid_off", control="lid_off",
-            challenge="right after the robot stirs, someone takes the pot lid to the other low cabinet",
-            rationale="tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
-            factor="where the event takes the resource",
-            cases={"cabinet4": dict(failures=[f_move("resource", LID, P("kitchen_cabinet_4/top", 1.4, 0.42),
-                                                     ("stir", {"container": POT}), fid="resource_lid")], route=lid_taken()),
-                   "dining": dict(failures=[f_move("resource", LID, P("dining_table_2/top", 3.7, 6.3),
-                                                   ("stir", {"container": POT}), fid="resource_lid")],
-                                  route=lid_taken(("region", "dining_room_0_1")))}),
-        "x6_pp_tomato_taken_out": dict(
-            base="lid_off", control="lid_off",
-            challenge="right after the tomatoes go into the pot, the kid takes one back out onto the island",
-            rationale="one subgoal is undone, the other still holds: put back only the missing tomato",
-            factor="which subgoal the event undoes, and when (failure timing)",
-            cases={**{f"tomato{x[-1]}": dict(
-                failures=[f_move("resource", x, P("kitchen_island/top", 7.8 if x == TOMATOES[1] else 7.63, 1.62),
-                                 ("collect", {"container": POT}), fid="resource_tomato")], route=tomato_out(x))
-                for x, y in ((TOMATOES[1], TOMATOES[0]), (TOMATOES[0], TOMATOES[1]))},
-                "tomato2_after_stir": dict(
-                    failures=[f_move("resource", TOMATOES[1], P("kitchen_island/top", 7.8, 1.62),
-                                     ("stir", {"container": POT}), fid="resource_tomato")],
-                    route=base[:at(base, "place", object=SP) + 1] + recs(look("kitchen_island/top"), nav(TOMATOES[1]),
-                                                                          pick(TOMATOES[1]), nav(POT),
-                                                                          S("drop", object=TOMATOES[1], container=POT))
-                    + base[at(base, "place", object=SP) + 1:])}),
     }
 
 
@@ -1599,6 +1709,13 @@ def _broken_tried(t):
 ROUTE_FIX = {"T07_heat_oatmeal": {"microwave_broken": _broken_tried}}
 # variant -> why it leaves v6
 REPLACED = {
+    ("T09_tomato_soup", "lid_on"): "removed: taking the lid off first is a local precondition (Action); it lives on "
+                                   "inside lid_on_spoon_away (Action + Task)",
+    ("T09_tomato_soup", "h_dynamic_spoon_taken"): "removed: no dynamic events in T09 (someone takes the spoon)",
+    ("T08_wipe_island", "island_cluttered"): "replaced by wipe_and_sort (moving the clutter aside and back is a "
+                                              "local step; the toys among it go to the toy box by kind)",
+    ("T08_wipe_island", "h_dynamic_sponge_taken"): "removed: no dynamic events in T08 (someone takes the sponge)",
+    ("T08_wipe_island", "sponge_on_tv_stand"): "removed: far_sponge_tv is the same search over a longer way",
     ("T02_stack_blocks", "crowded"): "replaced by crowded_use_another (prying the wedged block out is ruled out; "
                                      "another block in the house instead)",
     ("T02_stack_blocks", "edge_base"): "removed: choosing the other block as the base is a local step (Action); it "
@@ -1639,6 +1756,15 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "resource_in_use": {"type": "resource_state", "decision": "alternative",
+                        "meaning": "the resource the instruction names is there but already in use (a pot full of "
+                                   "other soup): it is not to be used or disturbed; another one is fetched"},
+    "category_rule": {"type": "goal_inference", "decision": "decompose",
+                      "meaning": "the instruction gives a rule by kind (the kid's toys away, the kitchen things stay); "
+                                 "what happens to each object follows from what it is"},
+    "storage_place": {"type": "destination_identity", "decision": "explore",
+                      "meaning": "the item is to go back where it is normally kept; that place is not named and "
+                                 "follows from the scene (where items of its kind are kept)"},
     "referent_clue": {"type": "referent_identity", "decision": "explore",
                       "meaning": "the instruction names the object or place by a clue (whose it is, where it was "
                                  "used), not by its name; the nearest look-alike is not the one meant"},
@@ -1814,7 +1940,7 @@ def make_variant(t, fam, spec, case, cspec):
 # how many places are named), not only in where things are: each case is a variant of its own.  The other
 # multi-case families keep one variant whose seeds choose among layouts (where the resource / substitute /
 # item is, where an event takes it, which bin is full).
-SPLIT = {("T09_tomato_soup", "x6_pp_tomato_taken_out"), ("T13_breakfast_setup", "x6_pp_spoon_moved"),
+SPLIT = {("T13_breakfast_setup", "x6_pp_spoon_moved"),
          ("T18_check_cabinet_dishes", "x6_gd_bowl_elsewhere")}
 
 

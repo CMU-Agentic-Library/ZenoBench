@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1280 episodes remain (530 of the 53 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1230 episodes remain (530 of the 53 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -54,20 +54,15 @@
 | T07 | vessel_decides_appliance | task | 0/0 of 10 | - |
 | T07 | two_portions | task | 0/0 of 10 | - |
 | T08 | sponge_on_island | control | 0/0 of 10 | wipe reach |
-| T08 | sponge_on_tv_stand | task | 0/0 of 10 | wipe reach |
 | T08 | far_sponge_tv | task | 0/0 of 10 | wipe reach |
-| T08 | island_cluttered | action | 0/0 of 10 | wipe reach |
-| T08 | h_dynamic_sponge_taken | action_task | 0/0 of 10 | wipe reach |
-| T08 | x6_pp_sponge_taken_after_wipe | task | 0/0 of 10 | wipe reach |
+| T08 | wipe_and_sort | task | 0/0 of 10 | wipe reach |
+| T08 | return_sponge_home | task | 0/0 of 10 | wipe reach |
+| T08 | which_surface | task | 0/0 of 10 | wipe reach |
 | T09 | lid_off | control | 0/0 of 10 | - |
-| T09 | lid_on | action | 0/0 of 10 | - |
 | T09 | lid_on_spoon_away | action_task | 0/0 of 10 | - |
-| T09 | h_dynamic_spoon_taken | task | 0/0 of 10 | - |
+| T09 | pot_in_use | task | 0/0 of 10 | - |
+| T09 | tomato_in_fridge | task | 0/0 of 10 | - |
 | T09 | x6_gd_tomato_elsewhere | task | 0/0 of 10 | - |
-| T09 | x6_pp_lid_taken_after_stir | task | 0/0 of 10 | search of the pot lid |
-| T09 | x6_pp_tomato_taken_out__tomato2 | action | 0/0 of 10 | - |
-| T09 | x6_pp_tomato_taken_out__tomato1 | action | 0/0 of 10 | - |
-| T09 | x6_pp_tomato_taken_out__tomato2_after_stir | action | 0/0 of 10 | - |
 | T09 | pot_in_dining_room | task | 0/0 of 10 | - |
 | T10 | can_on_island | control | 0/0 of 10 | - |
 | T10 | can_in_dining_room | task | 0/0 of 10 | - |

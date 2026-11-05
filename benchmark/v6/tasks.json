@@ -131,6 +131,21 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "resource_in_use": {
+   "type": "resource_state",
+   "decision": "alternative",
+   "meaning": "the resource the instruction names is there but already in use (a pot full of other soup): it is not to be used or disturbed; another one is fetched"
+  },
+  "category_rule": {
+   "type": "goal_inference",
+   "decision": "decompose",
+   "meaning": "the instruction gives a rule by kind (the kid's toys away, the kitchen things stay); what happens to each object follows from what it is"
+  },
+  "storage_place": {
+   "type": "destination_identity",
+   "decision": "explore",
+   "meaning": "the item is to go back where it is normally kept; that place is not named and follows from the scene (where items of its kind are kept)"
+  },
   "referent_clue": {
    "type": "referent_identity",
    "decision": "explore",
@@ -28769,68 +28784,6 @@
       }
      }
     },
-    "sponge_on_tv_stand": {
-     "note": "the sponge lies on the TV stand behind the island",
-     "move": {
-      "kitchen_sponge": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.6,
-        0.38
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "conditions": [
-      "tool_away_from_surface"
-     ],
-     "since": "v2",
-     "condition_types": [
-      "search_tool"
-     ],
-     "decisions": [
-      "explore"
-     ],
-     "v5": {
-      "tier": "medium",
-      "challenge": "the sponge lies on the TV stand behind the island",
-      "derived_from": "sponge_on_tv_stand",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "kitchen_sponge"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.555,
-         0.35,
-         7.645,
-         0.41
-        ],
-        "dx": [
-         -0.9,
-         0.72
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       }
-      ],
-      "static": {},
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
     "far_sponge_tv": {
      "note": "the robot starts in the dining room; the sponge is on the TV stand",
      "conditions": [
@@ -28899,533 +28852,6 @@
         "kitchen_sponge"
        ],
        "look": []
-      }
-     }
-    },
-    "island_cluttered": {
-     "note": "after cooking the island is cluttered along both long strips (pin, two blocks, can and mug in front; bowl, book, spoon and bottle behind, staggered); the sponge dries on the TV stand",
-     "difficulty": "hard",
-     "since": "v4",
-     "conditions": [
-      "surface_cluttered"
-     ],
-     "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
-     "instruction_zh": "用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵放回原处。",
-     "goal": {
-      "all": [
-       [
-        "wiped",
-        "kitchen_island/top"
-       ],
-       [
-        "on",
-        "kitchen_sponge",
-        "tv_stand_2/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "near_start",
-        "rolling_pin",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "wooden_block_a",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "soda_can",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "wooden_block_b",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "mug",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "oatmeal",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "paperback_book",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "breakfast_spoon",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "juice_bottle",
-        0.12,
-        0.03
-       ],
-       [
-        "upright",
-        "soda_can"
-       ],
-       [
-        "upright",
-        "mug"
-       ],
-       [
-        "upright",
-        "juice_bottle"
-       ],
-       [
-        "upright",
-        "oatmeal"
-       ]
-      ]
-     },
-     "watch": [
-      "kitchen_sponge",
-      "rolling_pin",
-      "wooden_block_a",
-      "soda_can",
-      "wooden_block_b",
-      "mug",
-      "oatmeal",
-      "paperback_book",
-      "breakfast_spoon",
-      "juice_bottle"
-     ],
-     "move": {
-      "rolling_pin": {
-       "support": "kitchen_island/top",
-       "xy": [
-        6.75,
-        1.62
-       ],
-       "yaw_deg": 0
-      },
-      "wooden_block_a": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.1,
-        1.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "soda_can": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.45,
-        1.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.8,
-        1.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "mug": {
-       "support": "kitchen_island/top",
-       "xy": [
-        8.1,
-        1.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "oatmeal": {
-       "support": "kitchen_island/top",
-       "xy": [
-        6.97,
-        1.88
-       ],
-       "yaw_deg": 0.0
-      },
-      "paperback_book": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.27,
-        1.88
-       ],
-       "yaw_deg": 0
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.63,
-        1.88
-       ],
-       "yaw_deg": 0
-      },
-      "juice_bottle": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.94,
-        1.88
-       ],
-       "yaw_deg": 0.0
-      },
-      "kitchen_sponge": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.6,
-        0.38
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "condition_types": [
-      "occupied_workspace"
-     ],
-     "decisions": [
-      "insert"
-     ],
-     "v5": {
-      "tier": "hard",
-      "challenge": "after cooking the island is cluttered along both long strips (pin, two blocks, can and mug in front; bowl, book, spoon and bottle behind, staggered); the sponge dries on the TV stand",
-      "derived_from": "island_cluttered",
-      "existing": true,
-      "hard_category": "task"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "kitchen_sponge"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.555,
-         0.35,
-         7.645,
-         0.41
-        ],
-        "dx": [
-         -0.9,
-         0.72
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       }
-      ],
-      "static": {
-       "tv_stand_2/top": [
-        [
-         7.115,
-         0.415,
-         7.165,
-         0.465
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "h_dynamic_sponge_taken": {
-     "move": {
-      "rolling_pin": {
-       "support": "kitchen_island/top",
-       "xy": [
-        6.75,
-        1.62
-       ],
-       "yaw_deg": 0
-      },
-      "wooden_block_a": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.1,
-        1.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "soda_can": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.45,
-        1.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "wooden_block_b": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.8,
-        1.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "mug": {
-       "support": "kitchen_island/top",
-       "xy": [
-        8.1,
-        1.62
-       ],
-       "yaw_deg": 0.0
-      },
-      "oatmeal": {
-       "support": "kitchen_island/top",
-       "xy": [
-        6.97,
-        1.88
-       ],
-       "yaw_deg": 0.0
-      },
-      "paperback_book": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.27,
-        1.88
-       ],
-       "yaw_deg": 0
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.63,
-        1.88
-       ],
-       "yaw_deg": 0
-      },
-      "juice_bottle": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.94,
-        1.88
-       ],
-       "yaw_deg": 0.0
-      },
-      "kitchen_sponge": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.6,
-        0.38
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "conditions": [
-      "surface_cluttered"
-     ],
-     "failures": [
-      {
-       "id": "destination_v4_island_cluttered",
-       "kind": "destination",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "soda_can",
-         "kitchen_island/top"
-        ],
-        [
-         "on",
-         "wooden_block_a",
-         "kitchen_island/top"
-        ]
-       ]
-      },
-      {
-       "id": "resource_kitchen_sponge",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "look",
-        "args": {
-         "target": "kitchen_island/top"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "kitchen_sponge",
-        "to": {
-         "support": "kitchen_cabinet_6/top",
-         "xy": [
-          3.7,
-          0.36
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "goal": {
-      "all": [
-       [
-        "wiped",
-        "kitchen_island/top"
-       ],
-       [
-        "on",
-        "kitchen_sponge",
-        "tv_stand_2/top"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "near_start",
-        "rolling_pin",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "wooden_block_a",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "soda_can",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "wooden_block_b",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "mug",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "oatmeal",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "paperback_book",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "breakfast_spoon",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "juice_bottle",
-        0.12,
-        0.03
-       ],
-       [
-        "upright",
-        "soda_can"
-       ],
-       [
-        "upright",
-        "mug"
-       ],
-       [
-        "upright",
-        "juice_bottle"
-       ],
-       [
-        "upright",
-        "oatmeal"
-       ]
-      ]
-     },
-     "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
-     "instruction_zh": "用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵放回原处。",
-     "watch": [
-      "kitchen_sponge",
-      "rolling_pin",
-      "wooden_block_a",
-      "soda_can",
-      "wooden_block_b",
-      "mug",
-      "oatmeal",
-      "paperback_book",
-      "breakfast_spoon",
-      "juice_bottle"
-     ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it",
-     "v5": {
-      "tier": "hard",
-      "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it",
-      "derived_from": "island_cluttered",
-      "hard_category": "dynamic"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "kitchen_sponge"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.555,
-         0.35,
-         7.645,
-         0.41
-        ],
-        "dx": [
-         -0.9,
-         0.72
-        ],
-        "dy": [
-         -0.04,
-         0.09
-        ]
-       }
-      ],
-      "static": {
-       "tv_stand_2/top": [
-        [
-         7.115,
-         0.415,
-         7.165,
-         0.465
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
       }
      }
     },
@@ -29530,7 +28956,7 @@
       }
      }
     },
-    "h_dynamic_sponge_taken__alt_dining_table_2": {
+    "wipe_and_sort__blocks": {
      "move": {
       "rolling_pin": {
        "support": "kitchen_island/top",
@@ -29614,52 +29040,24 @@
       }
      },
      "conditions": [
-      "surface_cluttered"
+      "category_rule",
+      "not_in_view"
      ],
-     "failures": [
-      {
-       "id": "destination_v4_island_cluttered",
-       "kind": "destination",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "soda_can",
-         "kitchen_island/top"
-        ],
-        [
-         "on",
-         "wooden_block_a",
-         "kitchen_island/top"
-        ]
-       ]
-      },
-      {
-       "id": "resource_kitchen_sponge",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "look",
-        "args": {
-         "target": "kitchen_island/top"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "kitchen_sponge",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.7,
-          6.3
-         ],
-         "yaw_deg": 0.0
-        }
-       }
+     "instruction": "Wipe the kitchen island with the sponge. The kid's toys lying on it go into the kid's toy box in the living room; the kitchen things stay on the island. Leave the sponge on the island.",
+     "instruction_zh": "用海绵把厨房岛台擦一下。岛台上孩子的玩具收进客厅里孩子的玩具箱，厨房的东西留在岛台上。擦完把海绵留在岛台上。",
+     "remove": [],
+     "add": {
+      "toy_box": {
+       "asset": "toy_box",
+       "support": null,
+       "z": 0.001,
+       "xy": [
+        5.7,
+        0.8
+       ],
+       "yaw_deg": 0.0
       }
-     ],
+     },
      "goal": {
       "all": [
        [
@@ -29669,11 +29067,21 @@
        [
         "on",
         "kitchen_sponge",
-        "tv_stand_2/top"
+        "kitchen_island/top"
        ],
        [
         "hand_empty",
         "right"
+       ],
+       [
+        "inside",
+        "wooden_block_a",
+        "toy_box"
+       ],
+       [
+        "inside",
+        "wooden_block_b",
+        "toy_box"
        ],
        [
         "near_start",
@@ -29683,19 +29091,7 @@
        ],
        [
         "near_start",
-        "wooden_block_a",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
         "soda_can",
-        0.12,
-        0.03
-       ],
-       [
-        "near_start",
-        "wooden_block_b",
         0.12,
         0.03
        ],
@@ -29747,35 +29143,57 @@
        ]
       ]
      },
-     "instruction": "Wipe the kitchen island clean with the sponge. Deal with the things standing on it properly and put them back as they were, and put the sponge back where you found it.",
-     "instruction_zh": "用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵放回原处。",
      "watch": [
       "kitchen_sponge",
-      "rolling_pin",
+      "toy_box",
       "wooden_block_a",
-      "soda_can",
       "wooden_block_b",
+      "rolling_pin",
+      "soda_can",
       "mug",
       "oatmeal",
       "paperback_book",
       "breakfast_spoon",
       "juice_bottle"
      ],
-     "difficulty": "hard",
      "since": "v6",
-     "note": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it (here the kitchen_sponge is on dining_table_2/top)",
+     "note": "the island holds two rows of things: kitchen things (rolling pin, can, mug, oatmeal, book, spoon, juice) and the kid's toys among them; the toy box (with a toy in it) is on the TV stand; the sponge is on the TV stand too",
      "v6": {
-      "family": "h_dynamic_sponge_taken",
-      "case": "alt_dining_table_2",
-      "tier": "hard",
-      "hard_category": "dynamic",
-      "challenge": "the island is cluttered (clear the strip, wipe, put things back), and someone takes the sponge to the wall cabinet: search it (here the kitchen_sponge is on dining_table_2/top)",
-      "derived_from": "h_dynamic_sponge_taken",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the kitchen_sponge ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
+      "family": "wipe_and_sort",
+      "case": "blocks",
+      "challenge": "the island holds two rows of things: kitchen things (rolling pin, can, mug, oatmeal, book, spoon, juice) and the kid's toys among them; the toy box (with a toy in it) is on the TV stand; the sponge is on the TV stand too",
+      "rationale": "sort by kind: each toy goes into the toy box for good, the kitchen things stay where they are; with the toys gone the front strip is free to wipe; then the sponge goes on the island",
+      "control": "sponge_on_island",
+      "contrast": null,
+      "factor": "which toys lie among the kitchen things (seed: two blocks, or a block and the rubber duck)",
+      "derived_from": "island_cluttered"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "breakfast_spoon",
+         "juice_bottle",
+         "mug",
+         "oatmeal",
+         "paperback_book",
+         "rolling_pin",
+         "soda_can",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.64,
+         1.5567,
+         8.1463,
+         1.9678
+        ],
+        "dx": [
+         -0.08,
+         0.1
+        ]
+       },
        {
         "names": [
          "kitchen_sponge"
@@ -29797,16 +29215,7 @@
         ]
        }
       ],
-      "static": {
-       "tv_stand_2/top": [
-        [
-         7.115,
-         0.415,
-         7.165,
-         0.465
-        ]
-       ]
-      },
+      "static": {},
       "start": {
        "room": "living_room_0_0",
        "hide": [],
@@ -29816,7 +29225,735 @@
       }
      }
     },
-    "x6_pp_sponge_taken_after_wipe__tv_stand": {
+    "wipe_and_sort__duck": {
+     "move": {
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.75,
+        1.62
+       ],
+       "yaw_deg": 0
+      },
+      "wooden_block_a": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.1,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "soda_can": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.45,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_b": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.8,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.97,
+        1.88
+       ],
+       "yaw_deg": 0.0
+      },
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.27,
+        1.88
+       ],
+       "yaw_deg": 0
+      },
+      "breakfast_spoon": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.63,
+        1.88
+       ],
+       "yaw_deg": 0
+      },
+      "juice_bottle": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.94,
+        1.88
+       ],
+       "yaw_deg": 0.0
+      },
+      "kitchen_sponge": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.38
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "category_rule",
+      "not_in_view"
+     ],
+     "instruction": "Wipe the kitchen island with the sponge. The kid's toys lying on it go into the kid's toy box in the living room; the kitchen things stay on the island. Leave the sponge on the island.",
+     "instruction_zh": "用海绵把厨房岛台擦一下。岛台上孩子的玩具收进客厅里孩子的玩具箱，厨房的东西留在岛台上。擦完把海绵留在岛台上。",
+     "remove": [
+      "wooden_block_b"
+     ],
+     "add": {
+      "toy_box": {
+       "asset": "toy_box",
+       "support": null,
+       "z": 0.001,
+       "xy": [
+        5.7,
+        0.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "rubber_duck": {
+       "asset": "rubber_duck",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.8,
+        1.62
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "on",
+        "kitchen_sponge",
+        "kitchen_island/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "inside",
+        "wooden_block_a",
+        "toy_box"
+       ],
+       [
+        "inside",
+        "rubber_duck",
+        "toy_box"
+       ],
+       [
+        "near_start",
+        "rolling_pin",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "soda_can",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "mug",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "oatmeal",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "paperback_book",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "breakfast_spoon",
+        0.12,
+        0.03
+       ],
+       [
+        "near_start",
+        "juice_bottle",
+        0.12,
+        0.03
+       ],
+       [
+        "upright",
+        "soda_can"
+       ],
+       [
+        "upright",
+        "mug"
+       ],
+       [
+        "upright",
+        "juice_bottle"
+       ],
+       [
+        "upright",
+        "oatmeal"
+       ]
+      ]
+     },
+     "watch": [
+      "kitchen_sponge",
+      "toy_box",
+      "wooden_block_a",
+      "rubber_duck",
+      "rolling_pin",
+      "soda_can",
+      "mug",
+      "oatmeal",
+      "paperback_book",
+      "breakfast_spoon",
+      "juice_bottle"
+     ],
+     "since": "v6",
+     "note": "the island holds two rows of things: kitchen things (rolling pin, can, mug, oatmeal, book, spoon, juice) and the kid's toys among them; the toy box (with a toy in it) is on the TV stand; the sponge is on the TV stand too",
+     "v6": {
+      "family": "wipe_and_sort",
+      "case": "duck",
+      "challenge": "the island holds two rows of things: kitchen things (rolling pin, can, mug, oatmeal, book, spoon, juice) and the kid's toys among them; the toy box (with a toy in it) is on the TV stand; the sponge is on the TV stand too",
+      "rationale": "sort by kind: each toy goes into the toy box for good, the kitchen things stay where they are; with the toys gone the front strip is free to wipe; then the sponge goes on the island",
+      "control": "sponge_on_island",
+      "contrast": null,
+      "factor": "which toys lie among the kitchen things (seed: two blocks, or a block and the rubber duck)",
+      "derived_from": "island_cluttered"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "breakfast_spoon",
+         "juice_bottle",
+         "mug",
+         "oatmeal",
+         "paperback_book",
+         "rolling_pin",
+         "rubber_duck",
+         "soda_can",
+         "wooden_block_a",
+         "wooden_block_b"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.64,
+         1.5567,
+         8.1463,
+         1.9678
+        ],
+        "dx": [
+         -0.08,
+         0.1
+        ]
+       },
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.555,
+         0.35,
+         7.645,
+         0.41
+        ],
+        "dx": [
+         -0.9,
+         0.72
+        ],
+        "dy": [
+         -0.04,
+         0.09
+        ]
+       }
+      ],
+      "static": {},
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "return_sponge_home__dining": {
+     "move": {
+      "kitchen_sponge": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "storage_place",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "inside",
+        "kitchen_sponge",
+        "sponge_tray"
+       ],
+       [
+        "inside",
+        "spare_sponge",
+        "sponge_tray"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Someone used the sponge and left it lying on a table somewhere. Wipe down the kitchen island with it, then put the sponge away where it is normally kept.",
+     "instruction_zh": "有人用完海绵随手放在了某张桌子上。用它把厨房岛台擦一下，擦完把海绵收回平时放海绵的地方。",
+     "watch": [
+      "kitchen_sponge",
+      "sponge_tray",
+      "spare_sponge"
+     ],
+     "add": {
+      "sponge_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_sponge": {
+       "asset": "kitchen_sponge",
+       "support": null,
+       "z": 0.645,
+       "xy": [
+        1.45,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+     "v6": {
+      "family": "return_sponge_home",
+      "case": "dining",
+      "challenge": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+      "rationale": "find the sponge and wipe; then put it away, not back on the table it was found on and not left on the island: the tray with the other sponge is where sponges are kept",
+      "control": "sponge_on_island",
+      "contrast": null,
+      "factor": "which table the sponge was left on (seed: the dining table next door, the study desk, or the dining table in the west dining room)",
+      "derived_from": "sponge_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.655,
+         6.27,
+         3.745,
+         6.33
+        ],
+        "dx": [
+         -0.05,
+         0.08
+        ],
+        "dy": [
+         -0.76,
+         1.61
+        ]
+       },
+       {
+        "names": [
+         "spare_sponge",
+         "sponge_tray"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.265,
+         0.32,
+         1.535,
+         0.52
+        ],
+        "dx": [
+         -0.22,
+         0.22
+        ],
+        "dy": [
+         -0.04,
+         0.04
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ],
+        [
+         2.835,
+         6.405,
+         3.135,
+         6.795
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "kitchen_sponge"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "return_sponge_home__study": {
+     "move": {
+      "kitchen_sponge": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.7,
+        -6.0
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "storage_place",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "inside",
+        "kitchen_sponge",
+        "sponge_tray"
+       ],
+       [
+        "inside",
+        "spare_sponge",
+        "sponge_tray"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Someone used the sponge and left it lying on a table somewhere. Wipe down the kitchen island with it, then put the sponge away where it is normally kept.",
+     "instruction_zh": "有人用完海绵随手放在了某张桌子上。用它把厨房岛台擦一下，擦完把海绵收回平时放海绵的地方。",
+     "watch": [
+      "kitchen_sponge",
+      "sponge_tray",
+      "spare_sponge"
+     ],
+     "add": {
+      "sponge_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_sponge": {
+       "asset": "kitchen_sponge",
+       "support": null,
+       "z": 0.645,
+       "xy": [
+        1.45,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+     "v6": {
+      "family": "return_sponge_home",
+      "case": "study",
+      "challenge": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+      "rationale": "find the sponge and wipe; then put it away, not back on the table it was found on and not left on the island: the tray with the other sponge is where sponges are kept",
+      "control": "sponge_on_island",
+      "contrast": null,
+      "factor": "which table the sponge was left on (seed: the dining table next door, the study desk, or the dining table in the west dining room)",
+      "derived_from": "sponge_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.745,
+         -6.03,
+         -0.655,
+         -5.97
+        ],
+        "dx": [
+         -0.65,
+         0.61
+        ],
+        "dy": [
+         0.0,
+         0.25
+        ]
+       },
+       {
+        "names": [
+         "spare_sponge",
+         "sponge_tray"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.265,
+         0.32,
+         1.535,
+         0.52
+        ],
+        "dx": [
+         -0.22,
+         0.22
+        ],
+        "dy": [
+         -0.04,
+         0.04
+        ]
+       }
+      ],
+      "static": {},
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "kitchen_sponge"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "return_sponge_home__far_dining": {
+     "move": {
+      "kitchen_sponge": {
+       "support": "dining_table_1/top",
+       "xy": [
+        -7.8,
+        7.6
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "storage_place",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "inside",
+        "kitchen_sponge",
+        "sponge_tray"
+       ],
+       [
+        "inside",
+        "spare_sponge",
+        "sponge_tray"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Someone used the sponge and left it lying on a table somewhere. Wipe down the kitchen island with it, then put the sponge away where it is normally kept.",
+     "instruction_zh": "有人用完海绵随手放在了某张桌子上。用它把厨房岛台擦一下，擦完把海绵收回平时放海绵的地方。",
+     "watch": [
+      "kitchen_sponge",
+      "sponge_tray",
+      "spare_sponge"
+     ],
+     "add": {
+      "sponge_tray": {
+       "asset": "shallow_sorting_tray",
+       "support": "kitchen_cabinet_4/top",
+       "xy": [
+        1.4,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      },
+      "spare_sponge": {
+       "asset": "kitchen_sponge",
+       "support": null,
+       "z": 0.645,
+       "xy": [
+        1.45,
+        0.42
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+     "v6": {
+      "family": "return_sponge_home",
+      "case": "far_dining",
+      "challenge": "the sponge lies on a table, out of view; where sponges are kept is not said: a shallow tray on the low wall cabinet holds the spare sponge",
+      "rationale": "find the sponge and wipe; then put it away, not back on the table it was found on and not left on the island: the tray with the other sponge is where sponges are kept",
+      "control": "sponge_on_island",
+      "contrast": null,
+      "factor": "which table the sponge was left on (seed: the dining table next door, the study desk, or the dining table in the west dining room)",
+      "derived_from": "sponge_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "kitchen_sponge"
+        ],
+        "support": "dining_table_1/top",
+        "box": [
+         -7.845,
+         7.57,
+         -7.755,
+         7.63
+        ],
+        "dx": [
+         0.0,
+         0.25
+        ],
+        "dy": [
+         -0.69,
+         1.21
+        ]
+       },
+       {
+        "names": [
+         "spare_sponge",
+         "sponge_tray"
+        ],
+        "support": "kitchen_cabinet_4/top",
+        "box": [
+         1.265,
+         0.32,
+         1.535,
+         0.52
+        ],
+        "dx": [
+         -0.22,
+         0.22
+        ],
+        "dy": [
+         -0.04,
+         0.04
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_1/top": [
+        [
+         -8.2047,
+         7.3463,
+         -7.9953,
+         7.5539
+        ],
+        [
+         -7.8993,
+         8.1799,
+         -7.7606,
+         8.3197
+        ],
+        [
+         -8.3347,
+         8.0461,
+         -8.1681,
+         8.1947
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "kitchen_sponge"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "which_surface__island": {
      "move": {
       "kitchen_sponge": {
        "support": "kitchen_island/top",
@@ -29825,49 +29962,96 @@
         1.8184
        ],
        "yaw_deg": 180.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.97,
+        1.88
+       ],
+       "yaw_deg": 0.0
+      },
+      "breakfast_spoon": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.63,
+        1.88
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.88
+       ],
+       "yaw_deg": 0.0
       }
      },
-     "failures": [
-      {
-       "id": "resource_sponge",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "kitchen_sponge"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "kitchen_sponge",
-        "to": {
-         "support": "tv_stand_2/top",
-         "xy": [
-          7.6,
-          0.38
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
+     "conditions": [
+      "referent_clue"
+     ],
+     "instruction": "Breakfast was eaten either at the kitchen island or at the dining table. Wipe the one that was used with the sponge; the other one is clean, leave it. Leave the sponge on the island.",
+     "instruction_zh": "早饭是在岛台或者餐桌上吃的。用海绵把吃过饭的那个擦一下；另一个是干净的，别擦。擦完把海绵留在岛台上。",
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "not wiped",
+        "dining_table_2/top"
+       ],
+       [
+        "on",
+        "kitchen_sponge",
+        "kitchen_island/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "kitchen_sponge",
+      "oatmeal",
+      "breakfast_spoon",
+      "rolling_pin"
      ],
      "since": "v6",
-     "note": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
+     "note": "one of the two surfaces has the used bowl of oatmeal, the spoon and the rolling pin on it, the other has no dishes; the instruction names both and not which",
      "v6": {
-      "family": "x6_pp_sponge_taken_after_wipe",
-      "case": "tv_stand",
-      "challenge": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
-      "rationale": "the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without wiping again",
+      "family": "which_surface",
+      "case": "island",
+      "challenge": "one of the two surfaces has the used bowl of oatmeal, the spoon and the rolling pin on it, the other has no dishes; the instruction names both and not which",
+      "rationale": "tell the used surface from the things left on it and wipe only that one (wiping the clean one too fails)",
       "control": "sponge_on_island",
       "contrast": null,
-      "factor": "where the event takes the resource",
+      "factor": "where breakfast was eaten (seed: the island or the dining table)",
       "derived_from": "sponge_on_island"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "breakfast_spoon",
+         "oatmeal",
+         "rolling_pin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.8809,
+         1.7921,
+         7.7207,
+         1.9678
+        ],
+        "dx": [
+         -0.33,
+         0.52
+        ]
+       },
        {
         "names": [
          "kitchen_sponge"
@@ -29898,12 +30082,6 @@
          1.7283
         ],
         [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
          7.195,
          1.6,
          7.245,
@@ -29922,12 +30100,6 @@
          1.6912
         ],
         [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
          7.8089,
          1.7789,
          7.9889,
@@ -29938,12 +30110,6 @@
          1.6119,
          8.213,
          1.678
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
         ]
        ]
       },
@@ -29956,7 +30122,7 @@
       }
      }
     },
-    "x6_pp_sponge_taken_after_wipe__cabinet6": {
+    "which_surface__dining": {
      "move": {
       "kitchen_sponge": {
        "support": "kitchen_island/top",
@@ -29965,49 +30131,100 @@
         1.8184
        ],
        "yaw_deg": 180.0
+      },
+      "oatmeal": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.25,
+        6.2
+       ],
+       "yaw_deg": 0.0
+      },
+      "breakfast_spoon": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.25,
+        6.5
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.3,
+        7.0
+       ],
+       "yaw_deg": 0.0
       }
      },
-     "failures": [
-      {
-       "id": "resource_sponge",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "place",
-        "args": {
-         "object": "kitchen_sponge"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "kitchen_sponge",
-        "to": {
-         "support": "kitchen_cabinet_6/top",
-         "xy": [
-          3.7,
-          0.36
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
+     "conditions": [
+      "referent_clue"
+     ],
+     "instruction": "Breakfast was eaten either at the kitchen island or at the dining table. Wipe the one that was used with the sponge; the other one is clean, leave it. Leave the sponge on the island.",
+     "instruction_zh": "早饭是在岛台或者餐桌上吃的。用海绵把吃过饭的那个擦一下；另一个是干净的，别擦。擦完把海绵留在岛台上。",
+     "goal": {
+      "all": [
+       [
+        "wiped",
+        "dining_table_2/top"
+       ],
+       [
+        "not wiped",
+        "kitchen_island/top"
+       ],
+       [
+        "on",
+        "kitchen_sponge",
+        "kitchen_island/top"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "kitchen_sponge",
+      "oatmeal",
+      "breakfast_spoon",
+      "rolling_pin"
      ],
      "since": "v6",
-     "note": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
+     "note": "one of the two surfaces has the used bowl of oatmeal, the spoon and the rolling pin on it, the other has no dishes; the instruction names both and not which",
      "v6": {
-      "family": "x6_pp_sponge_taken_after_wipe",
-      "case": "cabinet6",
-      "challenge": "right after the robot puts the sponge down on the wiped island, someone takes it to the TV stand",
-      "rationale": "the island is already wiped; only the sponge subgoal is undone: fetch the sponge back without wiping again",
+      "family": "which_surface",
+      "case": "dining",
+      "challenge": "one of the two surfaces has the used bowl of oatmeal, the spoon and the rolling pin on it, the other has no dishes; the instruction names both and not which",
+      "rationale": "tell the used surface from the things left on it and wipe only that one (wiping the clean one too fails)",
       "control": "sponge_on_island",
       "contrast": null,
-      "factor": "where the event takes the resource",
+      "factor": "where breakfast was eaten (seed: the island or the dining table)",
       "derived_from": "sponge_on_island"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "breakfast_spoon",
+         "oatmeal",
+         "rolling_pin"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.1593,
+         6.1121,
+         3.41,
+         7.0232
+        ],
+        "dx": [
+         -0.36,
+         0.0
+        ],
+        "dy": [
+         -0.6,
+         0.92
+        ]
+       },
        {
         "names": [
          "kitchen_sponge"
@@ -30030,18 +30247,38 @@
        }
       ],
       "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ],
+        [
+         2.835,
+         6.405,
+         3.135,
+         6.795
+        ]
+       ],
        "kitchen_island/top": [
         [
          7.9038,
          1.6017,
          7.9963,
          1.7283
-        ],
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
         ],
         [
          7.195,
@@ -30062,12 +30299,6 @@
          1.6912
         ],
         [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
          7.8089,
          1.7789,
          7.9889,
@@ -30078,12 +30309,6 @@
          1.6119,
          8.213,
          1.678
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
         ]
        ]
       },
@@ -30123,14 +30348,15 @@
    "nominal": "nominal",
    "oracle": {
     "sponge_on_island": "nominal",
-    "sponge_on_tv_stand": "nominal_from_tv_stand",
     "far_sponge_tv": "hard_search_approach",
-    "island_cluttered": "hard_proactive",
-    "h_dynamic_sponge_taken": "v5_h_dynamic_sponge_taken",
     "far_sponge_tv__alt_dining_table_2": "v6_far_sponge_tv__alt_dining_table_2",
-    "h_dynamic_sponge_taken__alt_dining_table_2": "v6_h_dynamic_sponge_taken__alt_dining_table_2",
-    "x6_pp_sponge_taken_after_wipe__tv_stand": "v6_x6_pp_sponge_taken_after_wipe__tv_stand",
-    "x6_pp_sponge_taken_after_wipe__cabinet6": "v6_x6_pp_sponge_taken_after_wipe__cabinet6"
+    "wipe_and_sort__blocks": "v6_wipe_and_sort__blocks",
+    "wipe_and_sort__duck": "v6_wipe_and_sort__duck",
+    "return_sponge_home__dining": "v6_return_sponge_home__dining",
+    "return_sponge_home__study": "v6_return_sponge_home__study",
+    "return_sponge_home__far_dining": "v6_return_sponge_home__far_dining",
+    "which_surface__island": "v6_which_surface__island",
+    "which_surface__dining": "v6_which_surface__dining"
    },
    "routes": {
     "nominal": {
@@ -30161,60 +30387,6 @@
        "skill": "pick",
        "args": {
         "object": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "wipe",
-       "args": {
-        "surface": "kitchen_island/top",
-        "tool": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top"
-       }
-      }
-     ],
-     "since": "v2"
-    },
-    "nominal_from_tv_stand": {
-     "kind": "explore",
-     "variants": [
-      "sponge_on_tv_stand"
-     ],
-     "note": "approach the island before wiping; the fallback 'wipe fails -> approach -> wipe' is not used: after the failed wipe the approach parked but its IK check failed (2/2), and navigating to the stove instead did not help (1/1)",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
        }
       },
       {
@@ -30284,269 +30456,6 @@
      ],
      "since": "v2"
     },
-    "hard_proactive": {
-     "kind": "alternative",
-     "variants": [
-      "island_cluttered"
-     ],
-     "recovery": "block B stands in the strip the robot wipes: move it to the TV stand, wipe, put it back",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_b"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_b",
-        "receptacle": "tv_stand_2/top",
-        "hint_xy": [
-         7.14,
-         0.44
-        ]
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "wipe",
-       "args": {
-        "surface": "kitchen_island/top",
-        "tool": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_b"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_b",
-        "receptacle": "kitchen_island/top",
-        "hint_xy": [
-         7.8,
-         1.62
-        ]
-       },
-       "role": "restore"
-      }
-     ],
-     "since": "v4"
-    },
-    "v5_h_dynamic_sponge_taken": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_b"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_b",
-        "receptacle": "tv_stand_2/top",
-        "hint_xy": [
-         7.14,
-         0.44
-        ]
-       },
-       "role": "insert"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "kitchen_sponge",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "wipe",
-       "args": {
-        "surface": "kitchen_island/top",
-        "tool": "kitchen_sponge"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "tv_stand_2/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_b"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_b",
-        "receptacle": "kitchen_island/top",
-        "hint_xy": [
-         7.8,
-         1.62
-        ]
-       },
-       "role": "restore"
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_sponge_taken"
-    },
     "v6_far_sponge_tv__alt_dining_table_2": {
      "steps": [
       {
@@ -30593,7 +30502,7 @@
      "kind": "v6_seed_extension",
      "variant": "far_sponge_tv__alt_dining_table_2"
     },
-    "v6_h_dynamic_sponge_taken__alt_dining_table_2": {
+    "v6_wipe_and_sort__blocks": {
      "steps": [
       {
        "skill": "look",
@@ -30604,35 +30513,64 @@
       {
        "skill": "navigate",
        "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_box"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "toy_box"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "toy_box"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
         "destination": "wooden_block_b"
-       },
-       "role": "insert"
+       }
       },
       {
        "skill": "pick",
        "args": {
         "object": "wooden_block_b"
-       },
-       "role": "insert"
+       }
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/top"
-       },
-       "role": "insert"
+        "destination": "toy_box"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "toy_box"
+       }
       },
       {
        "skill": "place",
        "args": {
         "object": "wooden_block_b",
-        "receptacle": "tv_stand_2/top",
-        "hint_xy": [
-         7.14,
-         0.44
-        ]
-       },
-       "role": "insert"
+        "receptacle": "toy_box"
+       }
       },
       {
        "skill": "look",
@@ -30641,12 +30579,167 @@
        }
       },
       {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "wipe_and_sort__blocks"
+    },
+    "v6_wipe_and_sort__duck": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_box"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "toy_box"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "toy_box"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "rubber_duck"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "rubber_duck"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_box"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "toy_box"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "rubber_duck",
+        "receptacle": "toy_box"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "kitchen_island/top"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "wipe_and_sort__duck"
+    },
+    "v6_return_sponge_home__dining": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
        "skill": "search",
        "args": {
         "object": "kitchen_sponge",
         "region": "dining_room_0_1"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "navigate",
@@ -30664,8 +30757,7 @@
        "skill": "navigate",
        "args": {
         "destination": "kitchen_island/top"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "approach",
@@ -30683,54 +30775,27 @@
       {
        "skill": "navigate",
        "args": {
-        "destination": "tv_stand_2/top"
+        "destination": "sponge_tray"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "sponge_tray"
        }
       },
       {
        "skill": "place",
        "args": {
         "object": "kitchen_sponge",
-        "receptacle": "tv_stand_2/top"
+        "receptacle": "sponge_tray"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_b"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_b"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       },
-       "role": "restore"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_b",
-        "receptacle": "kitchen_island/top",
-        "hint_xy": [
-         7.8,
-         1.62
-        ]
-       },
-       "role": "restore"
       }
      ],
-     "kind": "v6_seed_extension",
-     "variant": "h_dynamic_sponge_taken__alt_dining_table_2"
+     "kind": "v6_oracle",
+     "variant": "return_sponge_home__dining"
     },
-    "v6_x6_pp_sponge_taken_after_wipe__tv_stand": {
+    "v6_return_sponge_home__study": {
      "steps": [
       {
        "skill": "look",
@@ -30739,9 +30804,141 @@
        }
       },
       {
+       "skill": "search",
+       "args": {
+        "object": "kitchen_sponge",
+        "region": "living_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "sponge_tray"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "sponge_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "sponge_tray"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "return_sponge_home__study"
+    },
+    "v6_return_sponge_home__far_dining": {
+     "steps": [
+      {
        "skill": "look",
        "args": {
-        "target": "tv_stand_2/top"
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "kitchen_sponge",
+        "region": "dining_room_0_0"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "wipe",
+       "args": {
+        "surface": "kitchen_island/top",
+        "tool": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "sponge_tray"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "sponge_tray"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "kitchen_sponge",
+        "receptacle": "sponge_tray"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "return_sponge_home__far_dining"
+    },
+    "v6_which_surface__island": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
        }
       },
       {
@@ -30769,62 +30966,12 @@
         "object": "kitchen_sponge",
         "receptacle": "kitchen_island/top"
        }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "kitchen_sponge"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_sponge"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kitchen_sponge"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top"
-       },
-       "role": "recover"
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_sponge_taken_after_wipe__tv_stand"
+     "variant": "which_surface__island"
     },
-    "v6_x6_pp_sponge_taken_after_wipe__cabinet6": {
+    "v6_which_surface__dining": {
      "steps": [
       {
        "skill": "look",
@@ -30833,12 +30980,6 @@
        }
       },
       {
-       "skill": "look",
-       "args": {
-        "target": "tv_stand_2/top"
-       }
-      },
-      {
        "skill": "navigate",
        "args": {
         "destination": "kitchen_sponge"
@@ -30848,75 +30989,49 @@
        "skill": "pick",
        "args": {
         "object": "kitchen_sponge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "dining_table_2/top"
        }
       },
       {
        "skill": "wipe",
        "args": {
-        "surface": "kitchen_island/top",
+        "surface": "dining_table_2/top",
         "tool": "kitchen_sponge"
        }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "kitchen_sponge"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_cabinet_6/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_sponge"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kitchen_sponge"
-       },
-       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "kitchen_island/top"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "place",
        "args": {
         "object": "kitchen_sponge",
         "receptacle": "kitchen_island/top"
-       },
-       "role": "recover"
+       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_sponge_taken_after_wipe__cabinet6"
+     "variant": "which_surface__dining"
     }
    },
    "benchmark_version": "v6",
@@ -30973,25 +31088,6 @@
       "19": "sponge_on_island"
      }
     },
-    "sponge_on_tv_stand": {
-     "origin": "v5",
-     "control": "sponge_on_island",
-     "layouts": [
-      "sponge_on_tv_stand"
-     ],
-     "seeds": {
-      "10": "sponge_on_tv_stand",
-      "11": "sponge_on_tv_stand",
-      "12": "sponge_on_tv_stand",
-      "13": "sponge_on_tv_stand",
-      "14": "sponge_on_tv_stand",
-      "15": "sponge_on_tv_stand",
-      "16": "sponge_on_tv_stand",
-      "17": "sponge_on_tv_stand",
-      "18": "sponge_on_tv_stand",
-      "19": "sponge_on_tv_stand"
-     }
-    },
     "far_sponge_tv": {
      "origin": "v5",
      "control": "sponge_on_island",
@@ -31013,87 +31109,90 @@
      },
      "factor": "where the resource is to be found (seed extension)"
     },
-    "island_cluttered": {
-     "origin": "v5",
-     "control": "sponge_on_island",
-     "layouts": [
-      "island_cluttered"
-     ],
-     "seeds": {
-      "10": "island_cluttered",
-      "11": "island_cluttered",
-      "12": "island_cluttered",
-      "13": "island_cluttered",
-      "14": "island_cluttered",
-      "15": "island_cluttered",
-      "16": "island_cluttered",
-      "17": "island_cluttered",
-      "18": "island_cluttered",
-      "19": "island_cluttered"
-     }
-    },
-    "h_dynamic_sponge_taken": {
-     "origin": "v5",
-     "control": "sponge_on_island",
-     "layouts": [
-      "h_dynamic_sponge_taken",
-      "h_dynamic_sponge_taken__alt_dining_table_2"
-     ],
-     "seeds": {
-      "10": "h_dynamic_sponge_taken__alt_dining_table_2",
-      "11": "h_dynamic_sponge_taken__alt_dining_table_2",
-      "12": "h_dynamic_sponge_taken",
-      "13": "h_dynamic_sponge_taken__alt_dining_table_2",
-      "14": "h_dynamic_sponge_taken",
-      "15": "h_dynamic_sponge_taken",
-      "16": "h_dynamic_sponge_taken",
-      "17": "h_dynamic_sponge_taken__alt_dining_table_2",
-      "18": "h_dynamic_sponge_taken",
-      "19": "h_dynamic_sponge_taken__alt_dining_table_2"
-     },
-     "factor": "where the resource is to be found (seed extension)"
-    },
-    "x6_pp_sponge_taken_after_wipe": {
+    "wipe_and_sort": {
      "origin": "v6",
      "control": "sponge_on_island",
      "layouts": [
-      "x6_pp_sponge_taken_after_wipe__tv_stand",
-      "x6_pp_sponge_taken_after_wipe__cabinet6"
+      "wipe_and_sort__blocks",
+      "wipe_and_sort__duck"
      ],
-     "factor": "where the event takes the resource",
+     "factor": "which toys lie among the kitchen things (seed: two blocks, or a block and the rubber duck)",
      "seeds": {
-      "10": "x6_pp_sponge_taken_after_wipe__tv_stand",
-      "11": "x6_pp_sponge_taken_after_wipe__cabinet6",
-      "12": "x6_pp_sponge_taken_after_wipe__tv_stand",
-      "13": "x6_pp_sponge_taken_after_wipe__cabinet6",
-      "14": "x6_pp_sponge_taken_after_wipe__tv_stand",
-      "15": "x6_pp_sponge_taken_after_wipe__tv_stand",
-      "16": "x6_pp_sponge_taken_after_wipe__cabinet6",
-      "17": "x6_pp_sponge_taken_after_wipe__cabinet6",
-      "18": "x6_pp_sponge_taken_after_wipe__tv_stand",
-      "19": "x6_pp_sponge_taken_after_wipe__cabinet6"
+      "10": "wipe_and_sort__blocks",
+      "11": "wipe_and_sort__blocks",
+      "12": "wipe_and_sort__duck",
+      "13": "wipe_and_sort__duck",
+      "14": "wipe_and_sort__blocks",
+      "15": "wipe_and_sort__blocks",
+      "16": "wipe_and_sort__duck",
+      "17": "wipe_and_sort__duck",
+      "18": "wipe_and_sort__duck",
+      "19": "wipe_and_sort__blocks"
+     }
+    },
+    "return_sponge_home": {
+     "origin": "v6",
+     "control": "sponge_on_island",
+     "layouts": [
+      "return_sponge_home__dining",
+      "return_sponge_home__study",
+      "return_sponge_home__far_dining"
+     ],
+     "factor": "which table the sponge was left on (seed: the dining table next door, the study desk, or the dining table in the west dining room)",
+     "seeds": {
+      "10": "return_sponge_home__study",
+      "11": "return_sponge_home__dining",
+      "12": "return_sponge_home__dining",
+      "13": "return_sponge_home__far_dining",
+      "14": "return_sponge_home__dining",
+      "15": "return_sponge_home__dining",
+      "16": "return_sponge_home__study",
+      "17": "return_sponge_home__far_dining",
+      "18": "return_sponge_home__far_dining",
+      "19": "return_sponge_home__study"
+     }
+    },
+    "which_surface": {
+     "origin": "v6",
+     "control": "sponge_on_island",
+     "layouts": [
+      "which_surface__island",
+      "which_surface__dining"
+     ],
+     "factor": "where breakfast was eaten (seed: the island or the dining table)",
+     "seeds": {
+      "10": "which_surface__island",
+      "11": "which_surface__island",
+      "12": "which_surface__dining",
+      "13": "which_surface__dining",
+      "14": "which_surface__island",
+      "15": "which_surface__dining",
+      "16": "which_surface__island",
+      "17": "which_surface__dining",
+      "18": "which_surface__island",
+      "19": "which_surface__dining"
      }
     }
    },
-   "v6_replaced": {},
+   "v6_replaced": {
+    "island_cluttered": "replaced by wipe_and_sort (moving the clutter aside and back is a local step; the toys among it go to the toy box by kind)",
+    "h_dynamic_sponge_taken": "removed: no dynamic events in T08 (someone takes the sponge)",
+    "sponge_on_tv_stand": "removed: far_sponge_tv is the same search over a longer way"
+   },
    "v6_dropped": {
     "e2_from_dining_room": "same as sponge_on_island but for the layout (object poses / start)",
     "m_grasp_sponge": "only injected action failures",
     "h_action_grasp_and_ik": "same as island_cluttered without its injected action failures",
-    "h_mixed_cluttered_grasp": "same as island_cluttered without its injected action failures"
+    "h_mixed_cluttered_grasp": "same as island_cluttered without its injected action failures",
+    "island_cluttered": "replaced by wipe_and_sort (moving the clutter aside and back is a local step; the toys among it go to the toy box by kind)",
+    "h_dynamic_sponge_taken": "removed: no dynamic events in T08 (someone takes the sponge)",
+    "sponge_on_tv_stand": "removed: far_sponge_tv is the same search over a longer way"
    },
    "v6_tracks": {
     "sponge_on_island": {
      "category": "control",
      "local": [],
      "longer": []
-    },
-    "sponge_on_tv_stand": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "tool_away_from_surface"
-     ]
     },
     "far_sponge_tv": {
      "category": "task",
@@ -31103,27 +31202,27 @@
       "tool_away_from_surface"
      ]
     },
-    "island_cluttered": {
-     "category": "action",
-     "local": [
-      "move the objects off the work strip, work, put them back"
-     ],
-     "longer": []
-    },
-    "h_dynamic_sponge_taken": {
-     "category": "action_task",
-     "local": [
-      "move the objects off the work strip, work, put them back"
-     ],
-     "longer": [
-      "event: resource"
-     ]
-    },
-    "x6_pp_sponge_taken_after_wipe": {
+    "wipe_and_sort": {
      "category": "task",
      "local": [],
      "longer": [
-      "event: resource"
+      "category_rule",
+      "not_in_view"
+     ]
+    },
+    "return_sponge_home": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "not_in_view",
+      "storage_place"
+     ]
+    },
+    "which_surface": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "referent_clue"
      ]
     }
    }
@@ -31174,155 +31273,6 @@
     ]
    },
    "variants": {
-    "lid_on": {
-     "note": "the lid is on the pot",
-     "move": {
-      "handled_cooking_pot": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4097,
-        1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4096,
-        1.725
-       ],
-       "yaw_deg": 0.0,
-       "z": 0.8591
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.4635,
-        1.6967
-       ],
-       "yaw_deg": 130.74
-      }
-     },
-     "conditions": [
-      "lid_on"
-     ],
-     "since": "v2",
-     "condition_types": [
-      "state_precondition"
-     ],
-     "decisions": [
-      "fallback"
-     ],
-     "v5": {
-      "tier": "medium",
-      "challenge": "the lid is on the pot",
-      "derived_from": "lid_on",
-      "existing": true,
-      "seed_vary_added": true,
-      "spawn_fix": [
-       "pot_lid"
-      ]
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "breakfast_spoon"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.3888,
-         1.6146,
-         7.5382,
-         1.7788
-        ],
-        "dx": [
-         -0.83,
-         0.71
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_1"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        "dx": [
-         -1.06,
-         0.6
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_2"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ],
-        "dx": [
-         -1.23,
-         0.43
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
     "lid_off": {
      "note": "the lid lies on the stove beside the pot (where uncover sets it aside)",
      "move": {
@@ -31622,175 +31572,6 @@
       }
      }
     },
-    "h_dynamic_spoon_taken": {
-     "move": {
-      "bowl_kitchen_cabinet": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.2,
-        1.8
-       ],
-       "yaw_deg": 0.0
-      },
-      "mug_counter": {
-       "support": "kitchen_island/top",
-       "xy": [
-        8.1,
-        1.8
-       ],
-       "yaw_deg": 0.0
-      },
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.715,
-        1.655
-       ],
-       "yaw_deg": 0.0
-      },
-      "handled_cooking_pot": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.41,
-        1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.4635,
-        1.6967
-       ],
-       "yaw_deg": 130.74
-      }
-     },
-     "conditions": [
-      "cookware_choice"
-     ],
-     "failures": [
-      {
-       "id": "resource_v4_cookware_choice",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "kitchen_island/top"
-        ]
-       ]
-      },
-      {
-       "id": "resource_breakfast_spoon",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "collect",
-        "args": {
-         "container": "handled_cooking_pot"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "breakfast_spoon",
-        "to": {
-         "support": "kitchen_cabinet_6/top",
-         "xy": [
-          3.7,
-          0.36
-         ],
-         "yaw_deg": 90
-        }
-       }
-      }
-     ],
-     "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
-     "instruction_zh": "请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。",
-     "watch": [
-      "cherry_tomato_1",
-      "cherry_tomato_2",
-      "handled_cooking_pot",
-      "pot_lid",
-      "breakfast_spoon",
-      "bowl_kitchen_cabinet",
-      "mug_counter"
-     ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
-     "v5": {
-      "tier": "hard",
-      "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet",
-      "derived_from": "cookware_choice",
-      "hard_category": "dynamic"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "bowl_kitchen_cabinet",
-         "breakfast_spoon",
-         "cherry_tomato_1",
-         "cherry_tomato_2",
-         "mug_counter"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.1109,
-         1.606,
-         8.1463,
-         1.8879
-        ],
-        "dx": [
-         -0.56,
-         0.1
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
     "lid_on_spoon_away__alt_dining_table_2": {
      "note": "the lid is on the pot and the spoon was left on the low wall cabinet (here the breakfast_spoon is on dining_table_2/top)",
      "conditions": [
@@ -31976,24 +31757,236 @@
       }
      }
     },
-    "h_dynamic_spoon_taken__alt_dining_table_2": {
+    "pot_in_use__in_use": {
      "move": {
-      "bowl_kitchen_cabinet": {
+      "pot_lid": {
        "support": "kitchen_island/top",
        "xy": [
-        7.2,
-        1.8
+        7.25,
+        1.85
        ],
        "yaw_deg": 0.0
       },
-      "mug_counter": {
-       "support": "kitchen_island/top",
+      "handled_cooking_pot": {
+       "support": "dining_table_2/top",
        "xy": [
-        8.1,
-        1.8
+        3.55,
+        5.75
        ],
        "yaw_deg": 0.0
       },
+      "breakfast_spoon": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.4635,
+        1.6967
+       ],
+       "yaw_deg": 130.74
+      }
+     },
+     "conditions": [
+      "resource_in_use",
+      "not_in_view"
+     ],
+     "watch": [
+      "handled_cooking_pot",
+      "soup_pot",
+      "pot_lid",
+      "cherry_tomato_1",
+      "cherry_tomato_2"
+     ],
+     "add": {
+      "soup_pot": {
+       "asset": "soup_pot",
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.41,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "cherry_tomato_1",
+        "handled_cooking_pot"
+       ],
+       [
+        "inside",
+        "cherry_tomato_2",
+        "handled_cooking_pot"
+       ],
+       [
+        "temperature_at_least",
+        "cherry_tomato_1",
+        60
+       ],
+       [
+        "temperature_at_least",
+        "cherry_tomato_2",
+        60
+       ],
+       [
+        "stirred",
+        "handled_cooking_pot"
+       ],
+       [
+        "covered",
+        "handled_cooking_pot",
+        "pot_lid"
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "near_start",
+        "soup_pot",
+        0.03
+       ],
+       [
+        "upright",
+        "soup_pot"
+       ],
+       [
+        "not inside",
+        "cherry_tomato_1",
+        "soup_pot"
+       ],
+       [
+        "not inside",
+        "cherry_tomato_2",
+        "soup_pot"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "a pot full of yesterday's tomato soup may stand on the stove's left burner; the empty cooking pot is then on the dining table next door; the instruction only says 'the pot on the stove'",
+     "v6": {
+      "family": "pot_in_use",
+      "case": "in_use",
+      "challenge": "a pot full of yesterday's tomato soup may stand on the stove's left burner; the empty cooking pot is then on the dining table next door; the instruction only says 'the pot on the stove'",
+      "rationale": "look into the pot first: one already full of other soup is in use, the tomatoes must not go in it and it stays where it is; fetch the empty pot to the free right burner and cook there. When the pot on the stove is the empty one, use it",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "whether the pot on the stove is full (seed: yesterday's soup on the left burner and the empty pot in the dining room, or the full pot on the dining table and the empty one on the stove)",
+      "derived_from": "lid_off"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "handled_cooking_pot"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.42,
+         5.6,
+         3.68,
+         5.9
+        ],
+        "dx": [
+         -0.62,
+         0.14
+        ],
+        "dy": [
+         -0.09,
+         0.04
+        ]
+       },
+       {
+        "names": [
+         "breakfast_spoon",
+         "cherry_tomato_1",
+         "cherry_tomato_2",
+         "pot_lid"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.125,
+         1.606,
+         7.814,
+         1.975
+        ],
+        "dx": [
+         -0.57,
+         0.43
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ],
+        [
+         2.835,
+         6.405,
+         3.135,
+         6.795
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "handled_cooking_pot"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "pot_in_use__free": {
+     "move": {
       "pot_lid": {
        "support": "kitchen_stove/top",
        "xy": [
@@ -32005,7 +31998,7 @@
       "handled_cooking_pot": {
        "support": "kitchen_stove/top",
        "xy": [
-        8.41,
+        8.4097,
         1.725
        ],
        "yaw_deg": 0.0
@@ -32020,91 +32013,616 @@
       }
      },
      "conditions": [
-      "cookware_choice"
+      "resource_in_use",
+      "not_in_view"
      ],
-     "failures": [
-      {
-       "id": "resource_v4_cookware_choice",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "on",
-         "bowl_kitchen_cabinet",
-         "kitchen_island/top"
-        ]
-       ]
-      },
-      {
-       "id": "resource_breakfast_spoon",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "collect",
-        "args": {
-         "container": "handled_cooking_pot"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "breakfast_spoon",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.7,
-          6.3
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "instruction": "Make tomato soup for lunch in a suitable pot: put the cherry tomatoes in, stir them, cover the pot and heat the soup to 60 C, then turn the stove off.",
-     "instruction_zh": "请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。",
      "watch": [
-      "cherry_tomato_1",
-      "cherry_tomato_2",
       "handled_cooking_pot",
+      "soup_pot",
       "pot_lid",
-      "breakfast_spoon",
-      "bowl_kitchen_cabinet",
-      "mug_counter"
+      "cherry_tomato_1",
+      "cherry_tomato_2"
      ],
-     "difficulty": "hard",
+     "add": {
+      "soup_pot": {
+       "asset": "soup_pot",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.35,
+        6.75
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "cherry_tomato_1",
+        "handled_cooking_pot"
+       ],
+       [
+        "inside",
+        "cherry_tomato_2",
+        "handled_cooking_pot"
+       ],
+       [
+        "temperature_at_least",
+        "cherry_tomato_1",
+        60
+       ],
+       [
+        "temperature_at_least",
+        "cherry_tomato_2",
+        60
+       ],
+       [
+        "stirred",
+        "handled_cooking_pot"
+       ],
+       [
+        "covered",
+        "handled_cooking_pot",
+        "pot_lid"
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "near_start",
+        "soup_pot",
+        0.03
+       ],
+       [
+        "upright",
+        "soup_pot"
+       ],
+       [
+        "not inside",
+        "cherry_tomato_1",
+        "soup_pot"
+       ],
+       [
+        "not inside",
+        "cherry_tomato_2",
+        "soup_pot"
+       ]
+      ]
+     },
      "since": "v6",
-     "note": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet (here the breakfast_spoon is on dining_table_2/top)",
+     "note": "a pot full of yesterday's tomato soup may stand on the stove's left burner; the empty cooking pot is then on the dining table next door; the instruction only says 'the pot on the stove'",
      "v6": {
-      "family": "h_dynamic_spoon_taken",
-      "case": "alt_dining_table_2",
-      "tier": "hard",
-      "hard_category": "dynamic",
-      "challenge": "choose the pot over the nearer bowl and mug; and while the tomatoes go into the pot, someone takes the spoon to the wall cabinet (here the breakfast_spoon is on dining_table_2/top)",
-      "derived_from": "h_dynamic_spoon_taken",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the breakfast_spoon ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
+      "family": "pot_in_use",
+      "case": "free",
+      "challenge": "a pot full of yesterday's tomato soup may stand on the stove's left burner; the empty cooking pot is then on the dining table next door; the instruction only says 'the pot on the stove'",
+      "rationale": "look into the pot first: one already full of other soup is in use, the tomatoes must not go in it and it stays where it is; fetch the empty pot to the free right burner and cook there. When the pot on the stove is the empty one, use it",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "whether the pot on the stove is full (seed: yesterday's soup on the left burner and the empty pot in the dining room, or the full pot on the dining table and the empty one on the stove)",
+      "derived_from": "lid_off"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "bowl_kitchen_cabinet",
-         "breakfast_spoon",
-         "cherry_tomato_1",
-         "cherry_tomato_2",
-         "mug_counter"
+         "soup_pot"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.22,
+         6.6,
+         3.48,
+         6.9
+        ],
+        "dx": [
+         0.0,
+         0.34
+        ],
+        "dy": [
+         -1.09,
+         1.04
+        ]
+       },
+       {
+        "names": [
+         "breakfast_spoon"
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.1109,
-         1.606,
-         8.1463,
-         1.8879
+         7.3888,
+         1.6146,
+         7.5382,
+         1.7788
         ],
         "dx": [
-         -0.56,
-         0.1
+         -0.83,
+         0.71
+        ],
+        "dy": [
+         -0.08,
+         0.05
+        ]
+       },
+       {
+        "names": [
+         "cherry_tomato_1"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.616,
+         1.606,
+         7.644,
+         1.634
+        ],
+        "dx": [
+         -1.06,
+         0.6
+        ],
+        "dy": [
+         -0.08,
+         0.05
+        ]
+       },
+       {
+        "names": [
+         "cherry_tomato_2"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.786,
+         1.606,
+         7.814,
+         1.634
+        ],
+        "dx": [
+         -1.23,
+         0.43
+        ],
+        "dy": [
+         -0.08,
+         0.05
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ],
+        [
+         2.835,
+         6.405,
+         3.135,
+         6.795
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "tomato_in_fridge__in_fridge": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "breakfast_spoon": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.4635,
+        1.6967
+       ],
+       "yaw_deg": 130.74
+      }
+     },
+     "thermal_override": {
+      "fridge_tomato": {
+       "initial_c": 4.0,
+       "stove_rate_c_per_s": 3.0,
+       "cooling_rate_c_per_s": 1.5,
+       "heating_rate_c_per_s": 4.0
+      }
+     },
+     "conditions": [
+      "storage_place",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "cherry_tomato_1",
+        "handled_cooking_pot"
+       ],
+       [
+        "inside",
+        "cherry_tomato_2",
+        "handled_cooking_pot"
+       ],
+       [
+        "temperature_at_least",
+        "cherry_tomato_1",
+        60
+       ],
+       [
+        "temperature_at_least",
+        "cherry_tomato_2",
+        60
+       ],
+       [
+        "stirred",
+        "handled_cooking_pot"
+       ],
+       [
+        "covered",
+        "handled_cooking_pot",
+        "pot_lid"
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "inside",
+        "fridge_tomato",
+        "handled_cooking_pot"
+       ],
+       [
+        "temperature_at_least",
+        "fridge_tomato",
+        60
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ]
+      ]
+     },
+     "instruction": "Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+     "instruction_zh": "午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。",
+     "watch": [
+      "handled_cooking_pot",
+      "pot_lid",
+      "fridge_tomato",
+      "cherry_tomato_1",
+      "cherry_tomato_2"
+     ],
+     "add": {
+      "fridge_tomato": {
+       "asset": "cherry_tomato",
+       "support": "breakfast_fridge/inside_shelf",
+       "xy": [
+        5.9,
+        3.3
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge (the instruction does not say where it is)",
+     "v6": {
+      "family": "tomato_in_fridge",
+      "case": "in_fridge",
+      "challenge": "the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge (the instruction does not say where it is)",
+      "rationale": "count: two are not enough; food is kept in the fridge, so look there (open it, take the tomato, close it again: Action) rather than search the house (Task); when all three are on the island, opening the fridge is a needless trip",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "where the third tomato is (seed: in the fridge, or on the island with the other two)",
+      "derived_from": "lid_off"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "breakfast_spoon"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.3888,
+         1.6146,
+         7.5382,
+         1.7788
+        ],
+        "dx": [
+         -0.83,
+         0.71
+        ],
+        "dy": [
+         -0.08,
+         0.05
+        ]
+       },
+       {
+        "names": [
+         "cherry_tomato_1"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.616,
+         1.606,
+         7.644,
+         1.634
+        ],
+        "dx": [
+         -1.06,
+         0.6
+        ],
+        "dy": [
+         -0.08,
+         0.05
+        ]
+       },
+       {
+        "names": [
+         "cherry_tomato_2"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.786,
+         1.606,
+         7.814,
+         1.634
+        ],
+        "dx": [
+         -1.23,
+         0.43
+        ],
+        "dy": [
+         -0.08,
+         0.05
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "tomato_in_fridge__on_island": {
+     "move": {
+      "pot_lid": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.715,
+        1.655
+       ],
+       "yaw_deg": 0.0
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.4097,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      },
+      "breakfast_spoon": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.4635,
+        1.6967
+       ],
+       "yaw_deg": 130.74
+      }
+     },
+     "thermal_override": {
+      "fridge_tomato": {
+       "initial_c": 4.0,
+       "stove_rate_c_per_s": 3.0,
+       "cooling_rate_c_per_s": 1.5,
+       "heating_rate_c_per_s": 4.0
+      }
+     },
+     "conditions": [
+      "storage_place",
+      "not_in_view"
+     ],
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "cherry_tomato_1",
+        "handled_cooking_pot"
+       ],
+       [
+        "inside",
+        "cherry_tomato_2",
+        "handled_cooking_pot"
+       ],
+       [
+        "temperature_at_least",
+        "cherry_tomato_1",
+        60
+       ],
+       [
+        "temperature_at_least",
+        "cherry_tomato_2",
+        60
+       ],
+       [
+        "stirred",
+        "handled_cooking_pot"
+       ],
+       [
+        "covered",
+        "handled_cooking_pot",
+        "pot_lid"
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "inside",
+        "fridge_tomato",
+        "handled_cooking_pot"
+       ],
+       [
+        "temperature_at_least",
+        "fridge_tomato",
+        60
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ]
+      ]
+     },
+     "instruction": "Make tomato soup for lunch with three cherry tomatoes: put them into the pot on the stove, stir, cover the pot and heat the soup to 60 C. Turn the stove off afterwards.",
+     "instruction_zh": "午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。",
+     "watch": [
+      "handled_cooking_pot",
+      "pot_lid",
+      "fridge_tomato",
+      "cherry_tomato_1",
+      "cherry_tomato_2"
+     ],
+     "add": {
+      "fridge_tomato": {
+       "asset": "cherry_tomato",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.715,
+        1.7
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "since": "v6",
+     "note": "the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge (the instruction does not say where it is)",
+     "v6": {
+      "family": "tomato_in_fridge",
+      "case": "on_island",
+      "challenge": "the soup needs three tomatoes; two are on the island; the third is kept in the closed fridge (the instruction does not say where it is)",
+      "rationale": "count: two are not enough; food is kept in the fridge, so look there (open it, take the tomato, close it again: Action) rather than search the house (Task); when all three are on the island, opening the fridge is a needless trip",
+      "control": "lid_off",
+      "contrast": null,
+      "factor": "where the third tomato is (seed: in the fridge, or on the island with the other two)",
+      "derived_from": "lid_off"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "breakfast_spoon",
+         "cherry_tomato_1",
+         "cherry_tomato_2",
+         "fridge_tomato"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.3888,
+         1.606,
+         7.814,
+         1.7788
+        ],
+        "dx": [
+         -0.83,
+         0.43
         ],
         "dy": [
          -0.08,
@@ -32505,704 +33023,6 @@
       }
      }
     },
-    "x6_pp_lid_taken_after_stir__cabinet4": {
-     "move": {
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.715,
-        1.655
-       ],
-       "yaw_deg": 0.0
-      },
-      "handled_cooking_pot": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4097,
-        1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.4635,
-        1.6967
-       ],
-       "yaw_deg": 130.74
-      }
-     },
-     "failures": [
-      {
-       "id": "resource_lid",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "stir",
-        "args": {
-         "container": "handled_cooking_pot"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "pot_lid",
-        "to": {
-         "support": "kitchen_cabinet_4/top",
-         "xy": [
-          1.4,
-          0.42
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "since": "v6",
-     "note": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
-     "v6": {
-      "family": "x6_pp_lid_taken_after_stir",
-      "case": "cabinet4",
-      "challenge": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
-      "rationale": "tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
-      "control": "lid_off",
-      "contrast": null,
-      "factor": "where the event takes the resource",
-      "derived_from": "lid_off"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "breakfast_spoon"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.3888,
-         1.6146,
-         7.5382,
-         1.7788
-        ],
-        "dx": [
-         -0.83,
-         0.71
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_1"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        "dx": [
-         -1.06,
-         0.6
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_2"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ],
-        "dx": [
-         -1.23,
-         0.43
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "x6_pp_lid_taken_after_stir__dining": {
-     "move": {
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.715,
-        1.655
-       ],
-       "yaw_deg": 0.0
-      },
-      "handled_cooking_pot": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4097,
-        1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.4635,
-        1.6967
-       ],
-       "yaw_deg": 130.74
-      }
-     },
-     "failures": [
-      {
-       "id": "resource_lid",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "stir",
-        "args": {
-         "container": "handled_cooking_pot"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "pot_lid",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.7,
-          6.3
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "since": "v6",
-     "note": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
-     "v6": {
-      "family": "x6_pp_lid_taken_after_stir",
-      "case": "dining",
-      "challenge": "right after the robot stirs, someone takes the pot lid to the other low cabinet",
-      "rationale": "tomatoes in and stirred already hold: find the lid and cover; do not collect or stir again",
-      "control": "lid_off",
-      "contrast": null,
-      "factor": "where the event takes the resource",
-      "derived_from": "lid_off"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "breakfast_spoon"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.3888,
-         1.6146,
-         7.5382,
-         1.7788
-        ],
-        "dx": [
-         -0.83,
-         0.71
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_1"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        "dx": [
-         -1.06,
-         0.6
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       },
-       {
-        "names": [
-         "cherry_tomato_2"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ],
-        "dx": [
-         -1.23,
-         0.43
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "x6_pp_tomato_taken_out__tomato2": {
-     "move": {
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.715,
-        1.655
-       ],
-       "yaw_deg": 0.0
-      },
-      "handled_cooking_pot": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4097,
-        1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.4635,
-        1.6967
-       ],
-       "yaw_deg": 130.74
-      }
-     },
-     "failures": [
-      {
-       "id": "resource_tomato",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "collect",
-        "args": {
-         "container": "handled_cooking_pot"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "cherry_tomato_2",
-        "to": {
-         "support": "kitchen_island/top",
-         "xy": [
-          7.8,
-          1.62
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "since": "v6",
-     "note": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-     "v6": {
-      "family": "x6_pp_tomato_taken_out",
-      "case": "tomato2",
-      "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-      "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
-      "control": "lid_off",
-      "contrast": null,
-      "factor": "which subgoal the event undoes, and when (failure timing)",
-      "derived_from": "lid_off"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "breakfast_spoon"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.3888,
-         1.6146,
-         7.5382,
-         1.7788
-        ],
-        "dx": [
-         -0.83,
-         0.71
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ],
-        [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ],
-        [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "x6_pp_tomato_taken_out__tomato1": {
-     "move": {
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.715,
-        1.655
-       ],
-       "yaw_deg": 0.0
-      },
-      "handled_cooking_pot": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4097,
-        1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.4635,
-        1.6967
-       ],
-       "yaw_deg": 130.74
-      }
-     },
-     "failures": [
-      {
-       "id": "resource_tomato",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "collect",
-        "args": {
-         "container": "handled_cooking_pot"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "cherry_tomato_1",
-        "to": {
-         "support": "kitchen_island/top",
-         "xy": [
-          7.63,
-          1.62
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "since": "v6",
-     "note": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-     "v6": {
-      "family": "x6_pp_tomato_taken_out",
-      "case": "tomato1",
-      "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-      "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
-      "control": "lid_off",
-      "contrast": null,
-      "factor": "which subgoal the event undoes, and when (failure timing)",
-      "derived_from": "lid_off"
-     },
-     "layout": {
-      "clusters": [],
-      "static": {},
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "x6_pp_tomato_taken_out__tomato2_after_stir": {
-     "move": {
-      "pot_lid": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.715,
-        1.655
-       ],
-       "yaw_deg": 0.0
-      },
-      "handled_cooking_pot": {
-       "support": "kitchen_stove/top",
-       "xy": [
-        8.4097,
-        1.725
-       ],
-       "yaw_deg": 0.0
-      },
-      "breakfast_spoon": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.4635,
-        1.6967
-       ],
-       "yaw_deg": 130.74
-      }
-     },
-     "failures": [
-      {
-       "id": "resource_tomato",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "stir",
-        "args": {
-         "container": "handled_cooking_pot"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "cherry_tomato_2",
-        "to": {
-         "support": "kitchen_island/top",
-         "xy": [
-          7.8,
-          1.62
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "since": "v6",
-     "note": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-     "v6": {
-      "family": "x6_pp_tomato_taken_out",
-      "case": "tomato2_after_stir",
-      "challenge": "right after the tomatoes go into the pot, the kid takes one back out onto the island",
-      "rationale": "one subgoal is undone, the other still holds: put back only the missing tomato",
-      "control": "lid_off",
-      "contrast": null,
-      "factor": "which subgoal the event undoes, and when (failure timing)",
-      "derived_from": "lid_off"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "breakfast_spoon"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.3888,
-         1.6146,
-         7.5382,
-         1.7788
-        ],
-        "dx": [
-         -0.83,
-         0.71
-        ],
-        "dy": [
-         -0.08,
-         0.05
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ],
-        [
-         7.616,
-         1.606,
-         7.644,
-         1.634
-        ],
-        [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ],
-        [
-         7.786,
-         1.606,
-         7.814,
-         1.634
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
     "pot_in_dining_room": {
      "move": {
       "bowl_kitchen_cabinet": {
@@ -33439,19 +33259,15 @@
    },
    "nominal": "nominal",
    "oracle": {
-    "lid_on": "fallback_uncover",
     "lid_off": "nominal",
     "lid_on_spoon_away": "hard_uncover_search_spoon",
-    "h_dynamic_spoon_taken": "v5_h_dynamic_spoon_taken",
     "lid_on_spoon_away__alt_dining_table_2": "v6_lid_on_spoon_away__alt_dining_table_2",
-    "h_dynamic_spoon_taken__alt_dining_table_2": "v6_h_dynamic_spoon_taken__alt_dining_table_2",
+    "pot_in_use__in_use": "v6_pot_in_use__in_use",
+    "pot_in_use__free": "v6_pot_in_use__free",
+    "tomato_in_fridge__in_fridge": "v6_tomato_in_fridge__in_fridge",
+    "tomato_in_fridge__on_island": "v6_tomato_in_fridge__on_island",
     "x6_gd_tomato_elsewhere__dining": "v6_x6_gd_tomato_elsewhere__dining",
     "x6_gd_tomato_elsewhere__cabinet6": "v6_x6_gd_tomato_elsewhere__cabinet6",
-    "x6_pp_lid_taken_after_stir__cabinet4": "v6_x6_pp_lid_taken_after_stir__cabinet4",
-    "x6_pp_lid_taken_after_stir__dining": "v6_x6_pp_lid_taken_after_stir__dining",
-    "x6_pp_tomato_taken_out__tomato2": "v6_x6_pp_tomato_taken_out__tomato2",
-    "x6_pp_tomato_taken_out__tomato1": "v6_x6_pp_tomato_taken_out__tomato1",
-    "x6_pp_tomato_taken_out__tomato2_after_stir": "v6_x6_pp_tomato_taken_out__tomato2_after_stir",
     "pot_in_dining_room": "v6_pot_in_dining_room"
    },
    "routes": {
@@ -33476,135 +33292,6 @@
         ],
         "container": "handled_cooking_pot"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "stir",
-       "args": {
-        "container": "handled_cooking_pot",
-        "tool": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pot_lid"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "cover",
-       "args": {
-        "container": "handled_cooking_pot",
-        "lid": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "cherry_tomato_1",
-        "appliance": "kitchen_stove",
-        "temp_c": 60
-       }
-      }
-     ],
-     "since": "v2"
-    },
-    "fallback_uncover": {
-     "kind": "fallback",
-     "variants": [
-      "lid_on"
-     ],
-     "recovery": "Collect into the pot -> refused (lid on) -> Uncover -> Collect",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "uncover",
-       "args": {
-        "container": "handled_cooking_pot"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       },
-       "role": "retry_after_recovery"
       },
       {
        "skill": "navigate",
@@ -33823,120 +33510,6 @@
      ],
      "since": "v2"
     },
-    "v5_h_dynamic_spoon_taken": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "breakfast_spoon",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "stir",
-       "args": {
-        "container": "handled_cooking_pot",
-        "tool": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pot_lid"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "cover",
-       "args": {
-        "container": "handled_cooking_pot",
-        "lid": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "cherry_tomato_1",
-        "appliance": "kitchen_stove",
-        "temp_c": 60
-       }
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_spoon_taken"
-    },
     "v6_lid_on_spoon_away__alt_dining_table_2": {
      "steps": [
       {
@@ -34070,7 +33643,7 @@
      "kind": "v6_seed_extension",
      "variant": "lid_on_spoon_away__alt_dining_table_2"
     },
-    "v6_h_dynamic_spoon_taken__alt_dining_table_2": {
+    "v6_pot_in_use__in_use": {
      "steps": [
       {
        "skill": "look",
@@ -34085,6 +33658,42 @@
        }
       },
       {
+       "skill": "search",
+       "args": {
+        "object": "handled_cooking_pot",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "handled_cooking_pot",
+        "receptacle": "kitchen_stove/top",
+        "hint_xy": [
+         8.7,
+         1.725
+        ]
+       }
+      },
+      {
        "skill": "collect",
        "args": {
         "objects": [
@@ -34092,16 +33701,7 @@
          "cherry_tomato_2"
         ],
         "container": "handled_cooking_pot"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "breakfast_spoon",
-        "region": "dining_room_0_1"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "navigate",
@@ -34181,8 +33781,376 @@
        }
       }
      ],
-     "kind": "v6_seed_extension",
-     "variant": "h_dynamic_spoon_taken__alt_dining_table_2"
+     "kind": "v6_oracle",
+     "variant": "pot_in_use__in_use"
+    },
+    "v6_pot_in_use__free": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "pot_in_use__free"
+    },
+    "v6_tomato_in_fridge__in_fridge": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "bend",
+       "args": {}
+      },
+      {
+       "skill": "explore_furniture",
+       "args": {
+        "furniture": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "straighten",
+       "args": {}
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "fridge_tomato"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "fridge_tomato"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "breakfast_fridge",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "fridge_tomato",
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "tomato_in_fridge__in_fridge"
+    },
+    "v6_tomato_in_fridge__on_island": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "collect",
+       "args": {
+        "objects": [
+         "cherry_tomato_1",
+         "cherry_tomato_2",
+         "fridge_tomato"
+        ],
+        "container": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "stir",
+       "args": {
+        "container": "handled_cooking_pot",
+        "tool": "breakfast_spoon"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "breakfast_spoon",
+        "receptacle": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "pot_lid"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "cover",
+       "args": {
+        "container": "handled_cooking_pot",
+        "lid": "pot_lid"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "cherry_tomato_1",
+        "appliance": "kitchen_stove",
+        "temp_c": 60
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "tomato_in_fridge__on_island"
     },
     "v6_x6_gd_tomato_elsewhere__dining": {
      "steps": [
@@ -34456,638 +34424,6 @@
      "kind": "v6_oracle",
      "variant": "x6_gd_tomato_elsewhere__cabinet6"
     },
-    "v6_x6_pp_lid_taken_after_stir__cabinet4": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "stir",
-       "args": {
-        "container": "handled_cooking_pot",
-        "tool": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_stove/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pot_lid"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pot_lid"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "cover",
-       "args": {
-        "container": "handled_cooking_pot",
-        "lid": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "cherry_tomato_1",
-        "appliance": "kitchen_stove",
-        "temp_c": 60
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_pp_lid_taken_after_stir__cabinet4"
-    },
-    "v6_x6_pp_lid_taken_after_stir__dining": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "stir",
-       "args": {
-        "container": "handled_cooking_pot",
-        "tool": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_stove/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "pot_lid",
-        "region": "dining_room_0_1"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pot_lid"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "cover",
-       "args": {
-        "container": "handled_cooking_pot",
-        "lid": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "cherry_tomato_1",
-        "appliance": "kitchen_stove",
-        "temp_c": 60
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_pp_lid_taken_after_stir__dining"
-    },
-    "v6_x6_pp_tomato_taken_out__tomato2": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cherry_tomato_2"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cherry_tomato_2"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "cherry_tomato_2",
-        "container": "handled_cooking_pot"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "stir",
-       "args": {
-        "container": "handled_cooking_pot",
-        "tool": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pot_lid"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "cover",
-       "args": {
-        "container": "handled_cooking_pot",
-        "lid": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "cherry_tomato_1",
-        "appliance": "kitchen_stove",
-        "temp_c": 60
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_pp_tomato_taken_out__tomato2"
-    },
-    "v6_x6_pp_tomato_taken_out__tomato1": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cherry_tomato_1"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cherry_tomato_1"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "cherry_tomato_1",
-        "container": "handled_cooking_pot"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "stir",
-       "args": {
-        "container": "handled_cooking_pot",
-        "tool": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pot_lid"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "cover",
-       "args": {
-        "container": "handled_cooking_pot",
-        "lid": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "cherry_tomato_1",
-        "appliance": "kitchen_stove",
-        "temp_c": 60
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_pp_tomato_taken_out__tomato1"
-    },
-    "v6_x6_pp_tomato_taken_out__tomato2_after_stir": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "collect",
-       "args": {
-        "objects": [
-         "cherry_tomato_1",
-         "cherry_tomato_2"
-        ],
-        "container": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "stir",
-       "args": {
-        "container": "handled_cooking_pot",
-        "tool": "breakfast_spoon"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "breakfast_spoon",
-        "receptacle": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "cherry_tomato_2"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "cherry_tomato_2"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "cherry_tomato_2",
-        "container": "handled_cooking_pot"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "pot_lid"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "handled_cooking_pot"
-       }
-      },
-      {
-       "skill": "cover",
-       "args": {
-        "container": "handled_cooking_pot",
-        "lid": "pot_lid"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "cherry_tomato_1",
-        "appliance": "kitchen_stove",
-        "temp_c": 60
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "x6_pp_tomato_taken_out__tomato2_after_stir"
-    },
     "v6_pot_in_dining_room": {
      "steps": [
       {
@@ -35301,25 +34637,6 @@
       "19": "lid_off"
      }
     },
-    "lid_on": {
-     "origin": "v5",
-     "control": "lid_off",
-     "layouts": [
-      "lid_on"
-     ],
-     "seeds": {
-      "10": "lid_on",
-      "11": "lid_on",
-      "12": "lid_on",
-      "13": "lid_on",
-      "14": "lid_on",
-      "15": "lid_on",
-      "16": "lid_on",
-      "17": "lid_on",
-      "18": "lid_on",
-      "19": "lid_on"
-     }
-    },
     "lid_on_spoon_away": {
      "origin": "v5",
      "control": "lid_off",
@@ -35341,26 +34658,47 @@
      },
      "factor": "where the resource is to be found (seed extension)"
     },
-    "h_dynamic_spoon_taken": {
-     "origin": "v5",
+    "pot_in_use": {
+     "origin": "v6",
      "control": "lid_off",
      "layouts": [
-      "h_dynamic_spoon_taken",
-      "h_dynamic_spoon_taken__alt_dining_table_2"
+      "pot_in_use__in_use",
+      "pot_in_use__free"
      ],
+     "factor": "whether the pot on the stove is full (seed: yesterday's soup on the left burner and the empty pot in the dining room, or the full pot on the dining table and the empty one on the stove)",
      "seeds": {
-      "10": "h_dynamic_spoon_taken__alt_dining_table_2",
-      "11": "h_dynamic_spoon_taken",
-      "12": "h_dynamic_spoon_taken__alt_dining_table_2",
-      "13": "h_dynamic_spoon_taken__alt_dining_table_2",
-      "14": "h_dynamic_spoon_taken",
-      "15": "h_dynamic_spoon_taken",
-      "16": "h_dynamic_spoon_taken__alt_dining_table_2",
-      "17": "h_dynamic_spoon_taken__alt_dining_table_2",
-      "18": "h_dynamic_spoon_taken",
-      "19": "h_dynamic_spoon_taken"
-     },
-     "factor": "where the resource is to be found (seed extension)"
+      "10": "pot_in_use__in_use",
+      "11": "pot_in_use__in_use",
+      "12": "pot_in_use__free",
+      "13": "pot_in_use__in_use",
+      "14": "pot_in_use__free",
+      "15": "pot_in_use__free",
+      "16": "pot_in_use__free",
+      "17": "pot_in_use__free",
+      "18": "pot_in_use__in_use",
+      "19": "pot_in_use__in_use"
+     }
+    },
+    "tomato_in_fridge": {
+     "origin": "v6",
+     "control": "lid_off",
+     "layouts": [
+      "tomato_in_fridge__in_fridge",
+      "tomato_in_fridge__on_island"
+     ],
+     "factor": "where the third tomato is (seed: in the fridge, or on the island with the other two)",
+     "seeds": {
+      "10": "tomato_in_fridge__in_fridge",
+      "11": "tomato_in_fridge__on_island",
+      "12": "tomato_in_fridge__in_fridge",
+      "13": "tomato_in_fridge__in_fridge",
+      "14": "tomato_in_fridge__on_island",
+      "15": "tomato_in_fridge__on_island",
+      "16": "tomato_in_fridge__in_fridge",
+      "17": "tomato_in_fridge__on_island",
+      "18": "tomato_in_fridge__on_island",
+      "19": "tomato_in_fridge__in_fridge"
+     }
     },
     "x6_gd_tomato_elsewhere": {
      "origin": "v6",
@@ -35381,84 +34719,6 @@
       "17": "x6_gd_tomato_elsewhere__cabinet6",
       "18": "x6_gd_tomato_elsewhere__cabinet6",
       "19": "x6_gd_tomato_elsewhere__dining"
-     }
-    },
-    "x6_pp_lid_taken_after_stir": {
-     "origin": "v6",
-     "control": "lid_off",
-     "layouts": [
-      "x6_pp_lid_taken_after_stir__cabinet4",
-      "x6_pp_lid_taken_after_stir__dining"
-     ],
-     "factor": "where the event takes the resource",
-     "seeds": {
-      "10": "x6_pp_lid_taken_after_stir__cabinet4",
-      "11": "x6_pp_lid_taken_after_stir__dining",
-      "12": "x6_pp_lid_taken_after_stir__dining",
-      "13": "x6_pp_lid_taken_after_stir__dining",
-      "14": "x6_pp_lid_taken_after_stir__cabinet4",
-      "15": "x6_pp_lid_taken_after_stir__cabinet4",
-      "16": "x6_pp_lid_taken_after_stir__dining",
-      "17": "x6_pp_lid_taken_after_stir__dining",
-      "18": "x6_pp_lid_taken_after_stir__cabinet4",
-      "19": "x6_pp_lid_taken_after_stir__cabinet4"
-     }
-    },
-    "x6_pp_tomato_taken_out__tomato2": {
-     "origin": "v6",
-     "control": "lid_off",
-     "layouts": [
-      "x6_pp_tomato_taken_out__tomato2"
-     ],
-     "seeds": {
-      "10": "x6_pp_tomato_taken_out__tomato2",
-      "11": "x6_pp_tomato_taken_out__tomato2",
-      "12": "x6_pp_tomato_taken_out__tomato2",
-      "13": "x6_pp_tomato_taken_out__tomato2",
-      "14": "x6_pp_tomato_taken_out__tomato2",
-      "15": "x6_pp_tomato_taken_out__tomato2",
-      "16": "x6_pp_tomato_taken_out__tomato2",
-      "17": "x6_pp_tomato_taken_out__tomato2",
-      "18": "x6_pp_tomato_taken_out__tomato2",
-      "19": "x6_pp_tomato_taken_out__tomato2"
-     }
-    },
-    "x6_pp_tomato_taken_out__tomato1": {
-     "origin": "v6",
-     "control": "lid_off",
-     "layouts": [
-      "x6_pp_tomato_taken_out__tomato1"
-     ],
-     "seeds": {
-      "10": "x6_pp_tomato_taken_out__tomato1",
-      "11": "x6_pp_tomato_taken_out__tomato1",
-      "12": "x6_pp_tomato_taken_out__tomato1",
-      "13": "x6_pp_tomato_taken_out__tomato1",
-      "14": "x6_pp_tomato_taken_out__tomato1",
-      "15": "x6_pp_tomato_taken_out__tomato1",
-      "16": "x6_pp_tomato_taken_out__tomato1",
-      "17": "x6_pp_tomato_taken_out__tomato1",
-      "18": "x6_pp_tomato_taken_out__tomato1",
-      "19": "x6_pp_tomato_taken_out__tomato1"
-     }
-    },
-    "x6_pp_tomato_taken_out__tomato2_after_stir": {
-     "origin": "v6",
-     "control": "lid_off",
-     "layouts": [
-      "x6_pp_tomato_taken_out__tomato2_after_stir"
-     ],
-     "seeds": {
-      "10": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "11": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "12": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "13": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "14": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "15": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "16": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "17": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "18": "x6_pp_tomato_taken_out__tomato2_after_stir",
-      "19": "x6_pp_tomato_taken_out__tomato2_after_stir"
      }
     },
     "pot_in_dining_room": {
@@ -35483,6 +34743,8 @@
     }
    },
    "v6_replaced": {
+    "lid_on": "removed: taking the lid off first is a local precondition (Action); it lives on inside lid_on_spoon_away (Action + Task)",
+    "h_dynamic_spoon_taken": "removed: no dynamic events in T09 (someone takes the spoon)",
     "cookware_choice": "replaced by pot_in_dining_room (the pot in the dining room)"
    },
    "v6_dropped": {
@@ -35490,19 +34752,14 @@
     "m_grasp_spoon": "only injected action failures",
     "h_action_grasp_and_ik": "same as cookware_choice without its injected action failures",
     "h_mixed_cookware_grasp": "same as cookware_choice without its injected action failures",
+    "lid_on": "removed: taking the lid off first is a local precondition (Action); it lives on inside lid_on_spoon_away (Action + Task)",
+    "h_dynamic_spoon_taken": "removed: no dynamic events in T09 (someone takes the spoon)",
     "cookware_choice": "replaced by pot_in_dining_room (the pot in the dining room)"
    },
    "v6_tracks": {
     "lid_off": {
      "category": "control",
      "local": [],
-     "longer": []
-    },
-    "lid_on": {
-     "category": "action",
-     "local": [
-      "take the lid off, then put in"
-     ],
      "longer": []
     },
     "lid_on_spoon_away": {
@@ -35514,12 +34771,20 @@
       "not_in_view"
      ]
     },
-    "h_dynamic_spoon_taken": {
+    "pot_in_use": {
      "category": "task",
      "local": [],
      "longer": [
-      "cookware_choice",
-      "event: resource"
+      "not_in_view",
+      "resource_in_use"
+     ]
+    },
+    "tomato_in_fridge": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "not_in_view",
+      "storage_place"
      ]
     },
     "x6_gd_tomato_elsewhere": {
@@ -35528,34 +34793,6 @@
      "longer": [
       "resource"
      ]
-    },
-    "x6_pp_lid_taken_after_stir": {
-     "category": "task",
-     "local": [],
-     "longer": [
-      "event: resource"
-     ]
-    },
-    "x6_pp_tomato_taken_out__tomato2": {
-     "category": "action",
-     "local": [
-      "someone changed things at the work spot: put it right there"
-     ],
-     "longer": []
-    },
-    "x6_pp_tomato_taken_out__tomato1": {
-     "category": "action",
-     "local": [
-      "someone changed things at the work spot: put it right there"
-     ],
-     "longer": []
-    },
-    "x6_pp_tomato_taken_out__tomato2_after_stir": {
-     "category": "action",
-     "local": [
-      "someone changed things at the work spot: put it right there"
-     ],
-     "longer": []
     },
     "pot_in_dining_room": {
      "category": "task",

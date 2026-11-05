@@ -1264,20 +1264,6 @@
 
 1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 
-### sponge_on_tv_stand（Task）
-
-**情况**：海绵在岛台后面的电视柜上 → 去那里拿
-
-**成功条件**：
-
-- `kitchen_island/top` 擦过
-- `kitchen_sponge` 在 `kitchen_island/top` 上
-- 手里空着
-
-**参考调用顺序**：
-
-1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `approach(target=kitchen_island/top)` → 6. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 7. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
-
 ### far_sponge_tv（Task）
 
 **情况**：从餐厅出发，海绵不在岛台 → 先找海绵
@@ -1293,57 +1279,78 @@
 - 摆法 `far_sponge_tv`：1. `search(object=kitchen_sponge, region=living_room_0_0)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `approach(target=kitchen_island/top)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 - 摆法 `alt_dining_table_2`：1. `search(object=kitchen_sponge, region=dining_room_0_1)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `approach(target=kitchen_island/top)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 
-### island_cluttered（Action）
+### wipe_and_sort（Task）
 
-**情况**：岛台前后两排摆满杂物 → 把要擦那一条上的东西挪开，擦完放回
+**情况**：岛台上两排东西：厨房用品（擀面杖、汽水罐、马克杯、燕麦碗、书、勺子、果汁）中间混着孩子的玩具；客厅地上有玩具箱，海绵在电视柜上；指令说玩具收进玩具箱，厨房的东西留在岛台上 → 按类别分：玩具送进玩具箱不再拿回，厨房的东西不动；玩具拿走后前排空出一条，擦完海绵留在岛台上
 
-**指令**：用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵放回原处。
+**指令**：用海绵把厨房岛台擦一下。岛台上孩子的玩具收进客厅里孩子的玩具箱，厨房的东西留在岛台上。擦完把海绵留在岛台上。
+
+**成功条件**：
+
+- 摆法 `duck`：
+  - `kitchen_island/top` 擦过
+  - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 手里空着
+  - `wooden_block_a` 在 `toy_box` 里
+  - `rubber_duck` 在 `toy_box` 里
+  - `rolling_pin`、`soda_can`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
+  - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+- 摆法 `blocks`：
+  - `kitchen_island/top` 擦过
+  - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 手里空着
+  - `wooden_block_a` 在 `toy_box` 里
+  - `wooden_block_b` 在 `toy_box` 里
+  - `rolling_pin`、`soda_can`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
+  - `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+
+**参考调用顺序**：
+
+- 摆法 `blocks`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=toy_box)` → 5. `approach(target=toy_box)` → 6. `place(object=wooden_block_a, receptacle=toy_box)` → 7. `navigate(destination=wooden_block_b)` → 8. `pick(object=wooden_block_b)` → 9. `navigate(destination=toy_box)` → 10. `approach(target=toy_box)` → 11. `place(object=wooden_block_b, receptacle=toy_box)` → 12. `look(target=tv_stand_2/top)` → 13. `navigate(destination=kitchen_sponge)` → 14. `pick(object=kitchen_sponge)` → 15. `approach(target=kitchen_island/top)` → 16. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 17. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `duck`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=toy_box)` → 5. `approach(target=toy_box)` → 6. `place(object=wooden_block_a, receptacle=toy_box)` → 7. `navigate(destination=rubber_duck)` → 8. `pick(object=rubber_duck)` → 9. `navigate(destination=toy_box)` → 10. `approach(target=toy_box)` → 11. `place(object=rubber_duck, receptacle=toy_box)` → 12. `look(target=tv_stand_2/top)` → 13. `navigate(destination=kitchen_sponge)` → 14. `pick(object=kitchen_sponge)` → 15. `approach(target=kitchen_island/top)` → 16. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 17. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+
+### return_sponge_home（Task）
+
+**情况**：有人用完海绵随手放在某张桌子上；指令说擦完把海绵收回平时放海绵的地方，但没说是哪里；客厅靠墙矮柜顶上有个浅托盘，里面放着一块备用海绵 → 找到海绵擦岛台，再把它放进那个托盘（放回原来的桌子或留在岛台上都算失败）
+
+**指令**：有人用完海绵随手放在了某张桌子上。用它把厨房岛台擦一下，擦完把海绵收回平时放海绵的地方。
 
 **成功条件**：
 
 - `kitchen_island/top` 擦过
-- `kitchen_sponge` 在 `tv_stand_2/top` 上
+- `kitchen_sponge` 在 `sponge_tray` 里
+- `spare_sponge` 在 `sponge_tray` 里
 - 手里空着
-- `rolling_pin`、`wooden_block_a`、`soda_can`、`wooden_block_b`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
-- `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `pick(object=wooden_block_b)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `place(object=wooden_block_b, receptacle=tv_stand_2/top, hint_xy=[7.14, 0.44])` → 6. `look(target=tv_stand_2/top)` → 7. `navigate(destination=kitchen_sponge)` → 8. `pick(object=kitchen_sponge)` → 9. `approach(target=kitchen_island/top)` → 10. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 11. `navigate(destination=tv_stand_2/top)` → 12. `place(object=kitchen_sponge, receptacle=tv_stand_2/top)` → 13. `navigate(destination=wooden_block_b)` → 14. `pick(object=wooden_block_b)` → 15. `navigate(destination=kitchen_island/top)` → 16. `place(object=wooden_block_b, receptacle=kitchen_island/top, hint_xy=[7.8, 1.62])`
+- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `search(object=kitchen_sponge, region=dining_room_0_1)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `navigate(destination=kitchen_island/top)` → 6. `approach(target=kitchen_island/top)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `navigate(destination=sponge_tray)` → 9. `approach(target=sponge_tray)` → 10. `place(object=kitchen_sponge, receptacle=sponge_tray)`
+- 摆法 `study`：1. `look(target=kitchen_island/top)` → 2. `search(object=kitchen_sponge, region=living_room_0_1)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `navigate(destination=kitchen_island/top)` → 6. `approach(target=kitchen_island/top)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `navigate(destination=sponge_tray)` → 9. `approach(target=sponge_tray)` → 10. `place(object=kitchen_sponge, receptacle=sponge_tray)`
+- 摆法 `far_dining`：1. `look(target=kitchen_island/top)` → 2. `search(object=kitchen_sponge, region=dining_room_0_0)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `navigate(destination=kitchen_island/top)` → 6. `approach(target=kitchen_island/top)` → 7. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 8. `navigate(destination=sponge_tray)` → 9. `approach(target=sponge_tray)` → 10. `place(object=kitchen_sponge, receptacle=sponge_tray)`
 
-### h_dynamic_sponge_taken（Action + Task）
+### which_surface（Task）
 
-**情况**：岛台杂乱要先挪开；有人把海绵拿走 → 找海绵
+**情况**：早饭在岛台或餐桌上吃的：吃过的那边留着燕麦碗、勺子和擀面杖，另一边是干净的；指令只擦用过的那个 → 看哪边留着用过的东西，只擦那一个（两个都擦算失败），海绵留在岛台上
 
-**指令**：用海绵擦净厨房岛台，妥善处理并恢复台面物品，最后把海绵放回原处。
+**指令**：早饭是在岛台或者餐桌上吃的。用海绵把吃过饭的那个擦一下；另一个是干净的，别擦。擦完把海绵留在岛台上。
 
 **成功条件**：
 
-- `kitchen_island/top` 擦过
-- `kitchen_sponge` 在 `tv_stand_2/top` 上
-- 手里空着
-- `rolling_pin`、`wooden_block_a`、`soda_can`、`wooden_block_b`、`mug`、`oatmeal`、`paperback_book`、`breakfast_spoon`、`juice_bottle` 没被挪动（离开局位置不超过 12 cm）
-- `soda_can`、`mug`、`juice_bottle`、`oatmeal` 立着
+- 摆法 `dining`：
+  - `dining_table_2/top` 擦过
+  - `kitchen_island/top` 没擦过
+  - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 手里空着
+- 摆法 `island`：
+  - `kitchen_island/top` 擦过
+  - `dining_table_2/top` 没擦过
+  - `kitchen_sponge` 在 `kitchen_island/top` 上
+  - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `h_dynamic_sponge_taken`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `pick(object=wooden_block_b)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `place(object=wooden_block_b, receptacle=tv_stand_2/top, hint_xy=[7.14, 0.44])` → 6. `look(target=tv_stand_2/top)` → 7. `search(object=kitchen_sponge, region=living_room_0_0)`（补救） → 8. `navigate(destination=kitchen_sponge)` → 9. `pick(object=kitchen_sponge)` → 10. `navigate(destination=kitchen_island/top)`（补救） → 11. `approach(target=kitchen_island/top)` → 12. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=kitchen_sponge, receptacle=tv_stand_2/top)` → 15. `navigate(destination=wooden_block_b)` → 16. `pick(object=wooden_block_b)` → 17. `navigate(destination=kitchen_island/top)` → 18. `place(object=wooden_block_b, receptacle=kitchen_island/top, hint_xy=[7.8, 1.62])`
-- 摆法 `alt_dining_table_2`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_b)` → 3. `pick(object=wooden_block_b)` → 4. `navigate(destination=tv_stand_2/top)` → 5. `place(object=wooden_block_b, receptacle=tv_stand_2/top, hint_xy=[7.14, 0.44])` → 6. `look(target=tv_stand_2/top)` → 7. `search(object=kitchen_sponge, region=dining_room_0_1)`（补救） → 8. `navigate(destination=kitchen_sponge)` → 9. `pick(object=kitchen_sponge)` → 10. `navigate(destination=kitchen_island/top)`（补救） → 11. `approach(target=kitchen_island/top)` → 12. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 13. `navigate(destination=tv_stand_2/top)` → 14. `place(object=kitchen_sponge, receptacle=tv_stand_2/top)` → 15. `navigate(destination=wooden_block_b)` → 16. `pick(object=wooden_block_b)` → 17. `navigate(destination=kitchen_island/top)` → 18. `place(object=wooden_block_b, receptacle=kitchen_island/top, hint_xy=[7.8, 1.62])`
-
-### x6_pp_sponge_taken_after_wipe（Task）
-
-**情况**：擦完放回海绵后有人把它拿走 → 不用重擦，找回海绵放回岛台
-
-**成功条件**：
-
-- `kitchen_island/top` 擦过
-- `kitchen_sponge` 在 `kitchen_island/top` 上
-- 手里空着
-
-**参考调用顺序**：
-
-- 摆法 `tv_stand`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)` → 7. `look(target=kitchen_island/top)`（补救） → 8. `search(object=kitchen_sponge)`（补救） → 9. `look(target=tv_stand_2/top)`（补救） → 10. `navigate(destination=kitchen_sponge)`（补救） → 11. `pick(object=kitchen_sponge)`（补救） → 12. `navigate(destination=kitchen_island/top)`（补救） → 13. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`（补救）
-- 摆法 `cabinet6`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=kitchen_sponge)` → 4. `pick(object=kitchen_sponge)` → 5. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 6. `place(object=kitchen_sponge, receptacle=kitchen_island/top)` → 7. `look(target=kitchen_island/top)`（补救） → 8. `search(object=kitchen_sponge)`（补救） → 9. `look(target=kitchen_cabinet_6/top)`（补救） → 10. `navigate(destination=kitchen_sponge)`（补救） → 11. `pick(object=kitchen_sponge)`（补救） → 12. `navigate(destination=kitchen_island/top)`（补救） → 13. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`（补救）
+- 摆法 `island`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `wipe(surface=kitchen_island/top, tool=kitchen_sponge)` → 5. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
+- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_sponge)` → 3. `pick(object=kitchen_sponge)` → 4. `navigate(destination=dining_table_2/top)` → 5. `look(target=dining_table_2/top)` → 6. `approach(target=dining_table_2/top)` → 7. `wipe(surface=dining_table_2/top, tool=kitchen_sponge)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=kitchen_sponge, receptacle=kitchen_island/top)`
 
 ---
 
@@ -1370,25 +1377,6 @@
 
 1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=handled_cooking_pot)` → 6. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 9. `navigate(destination=pot_lid)` → 10. `pick(object=pot_lid)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `cover(container=handled_cooking_pot, lid=pot_lid)` → 13. `navigate(destination=kitchen_stove)` → 14. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
-### lid_on（Action）
-
-**情况**：锅盖盖着 → 先揭盖再放番茄
-
-**成功条件**：
-
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
-
-**参考调用顺序**：
-
-1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=handled_cooking_pot)` → 4. `uncover(container=handled_cooking_pot)` → 5. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 6. `navigate(destination=breakfast_spoon)` → 7. `pick(object=breakfast_spoon)` → 8. `navigate(destination=handled_cooking_pot)` → 9. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 10. `navigate(destination=kitchen_island/top)` → 11. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 12. `navigate(destination=pot_lid)` → 13. `pick(object=pot_lid)` → 14. `navigate(destination=handled_cooking_pot)` → 15. `cover(container=handled_cooking_pot, lid=pot_lid)` → 16. `navigate(destination=kitchen_stove)` → 17. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-
 ### lid_on_spoon_away（Action + Task）
 
 **情况**：锅盖盖着，勺子也不在 → 揭盖；找勺子
@@ -1409,11 +1397,9 @@
 - 摆法 `lid_on_spoon_away`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=handled_cooking_pot)` → 4. `uncover(container=handled_cooking_pot)` → 5. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 6. `search(object=breakfast_spoon, region=living_room_0_0)` → 7. `navigate(destination=breakfast_spoon)` → 8. `pick(object=breakfast_spoon)` → 9. `navigate(destination=handled_cooking_pot)` → 10. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 11. `navigate(destination=kitchen_island/top)` → 12. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 13. `navigate(destination=pot_lid)` → 14. `pick(object=pot_lid)` → 15. `navigate(destination=handled_cooking_pot)` → 16. `cover(container=handled_cooking_pot, lid=pot_lid)` → 17. `navigate(destination=kitchen_stove)` → 18. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 - 摆法 `alt_dining_table_2`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=handled_cooking_pot)` → 4. `uncover(container=handled_cooking_pot)` → 5. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 6. `search(object=breakfast_spoon, region=dining_room_0_1)` → 7. `navigate(destination=breakfast_spoon)` → 8. `pick(object=breakfast_spoon)` → 9. `navigate(destination=handled_cooking_pot)` → 10. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 11. `navigate(destination=kitchen_island/top)` → 12. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 13. `navigate(destination=pot_lid)` → 14. `pick(object=pot_lid)` → 15. `navigate(destination=handled_cooking_pot)` → 16. `cover(container=handled_cooking_pot, lid=pot_lid)` → 17. `navigate(destination=kitchen_stove)` → 18. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
-### h_dynamic_spoon_taken（Task）
+### pot_in_use（Task）
 
-**情况**：放番茄时有人把勺子拿走 → 找勺子
-
-**指令**：请用合适锅具完成番茄入锅、搅拌、盖锅、加热至60°C和关火。
+**情况**：灶上左边炉眼可能放着一锅昨天剩的番茄汤（满的），平时用的空锅在隔壁餐厅的餐桌上；指令只说"灶上的锅" → 先看锅里：已经装满别的汤的锅在用，番茄不能倒进去，那锅也别动；去餐厅把空锅拿到右边空炉眼上再做。灶上是空锅时就直接用
 
 **成功条件**：
 
@@ -1425,11 +1411,40 @@
 - `handled_cooking_pot` 盖着 `pot_lid`
 - `kitchen_stove` 已经停止加热
 - 手里空着
+- `soup_pot` 没被挪动（离开局位置不超过 3 cm）
+- `soup_pot` 立着
+- `cherry_tomato_1` 不在 `soup_pot` 里
+- `cherry_tomato_2` 不在 `soup_pot` 里
 
 **参考调用顺序**：
 
-- 摆法 `h_dynamic_spoon_taken`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)`（换做法） → 4. `search(object=breakfast_spoon, region=living_room_0_0)`（补救） → 5. `navigate(destination=breakfast_spoon)` → 6. `pick(object=breakfast_spoon)` → 7. `navigate(destination=handled_cooking_pot)` → 8. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 9. `navigate(destination=kitchen_island/top)` → 10. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 11. `navigate(destination=pot_lid)` → 12. `pick(object=pot_lid)` → 13. `navigate(destination=handled_cooking_pot)` → 14. `cover(container=handled_cooking_pot, lid=pot_lid)` → 15. `navigate(destination=kitchen_stove)` → 16. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `alt_dining_table_2`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)`（换做法） → 4. `search(object=breakfast_spoon, region=dining_room_0_1)`（补救） → 5. `navigate(destination=breakfast_spoon)` → 6. `pick(object=breakfast_spoon)` → 7. `navigate(destination=handled_cooking_pot)` → 8. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 9. `navigate(destination=kitchen_island/top)` → 10. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 11. `navigate(destination=pot_lid)` → 12. `pick(object=pot_lid)` → 13. `navigate(destination=handled_cooking_pot)` → 14. `cover(container=handled_cooking_pot, lid=pot_lid)` → 15. `navigate(destination=kitchen_stove)` → 16. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `in_use`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 4. `navigate(destination=handled_cooking_pot)` → 5. `pick(object=handled_cooking_pot)` → 6. `navigate(destination=kitchen_stove/top)` → 7. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.7, 1.725])` → 8. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 13. `navigate(destination=kitchen_island/top)` → 14. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 15. `navigate(destination=pot_lid)` → 16. `pick(object=pot_lid)` → 17. `navigate(destination=handled_cooking_pot)` → 18. `cover(container=handled_cooking_pot, lid=pot_lid)` → 19. `navigate(destination=kitchen_stove)` → 20. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `free`：1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_stove/top)` → 3. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 4. `navigate(destination=breakfast_spoon)` → 5. `pick(object=breakfast_spoon)` → 6. `navigate(destination=handled_cooking_pot)` → 7. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 8. `navigate(destination=kitchen_island/top)` → 9. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 10. `navigate(destination=pot_lid)` → 11. `pick(object=pot_lid)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `cover(container=handled_cooking_pot, lid=pot_lid)` → 14. `navigate(destination=kitchen_stove)` → 15. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+
+### tomato_in_fridge（Task）
+
+**情况**：汤要用三颗小番茄；岛台上只有两颗，第三颗收在关着的冰箱里（指令没说在哪） → 数一数不够，想到食材放在冰箱，开冰箱拿出来再关好（Action），而不是满屋找（Task）；三颗都在岛台上时去开冰箱是白跑
+
+**指令**：午饭用三颗小番茄做番茄汤：放进灶上的锅里，搅一搅，盖上锅盖，加热到 60 度，然后关火。
+
+**成功条件**：
+
+- `cherry_tomato_1` 在 `handled_cooking_pot` 里
+- `cherry_tomato_2` 在 `handled_cooking_pot` 里
+- `cherry_tomato_1` 温度至少 60 °C
+- `cherry_tomato_2` 温度至少 60 °C
+- `handled_cooking_pot` 搅拌过
+- `handled_cooking_pot` 盖着 `pot_lid`
+- `kitchen_stove` 已经停止加热
+- 手里空着
+- `fridge_tomato` 在 `handled_cooking_pot` 里
+- `fridge_tomato` 温度至少 60 °C
+- `breakfast_fridge` 关着
+
+**参考调用顺序**：
+
+- 摆法 `in_fridge`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_fridge)` → 4. `open(articulated=breakfast_fridge)` → 5. `bend()` → 6. `explore_furniture(furniture=breakfast_fridge)` → 7. `straighten()` → 8. `navigate(destination=fridge_tomato)` → 9. `pick(object=fridge_tomato)` → 10. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 11. `close(articulated=breakfast_fridge)` → 12. `navigate(destination=handled_cooking_pot)` → 13. `drop(object=fridge_tomato, container=handled_cooking_pot)` → 14. `navigate(destination=breakfast_spoon)` → 15. `pick(object=breakfast_spoon)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 18. `navigate(destination=kitchen_island/top)` → 19. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 20. `navigate(destination=pot_lid)` → 21. `pick(object=pot_lid)` → 22. `navigate(destination=handled_cooking_pot)` → 23. `cover(container=handled_cooking_pot, lid=pot_lid)` → 24. `navigate(destination=kitchen_stove)` → 25. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
+- 摆法 `on_island`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2, fridge_tomato], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=handled_cooking_pot)` → 6. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 9. `navigate(destination=pot_lid)` → 10. `pick(object=pot_lid)` → 11. `navigate(destination=handled_cooking_pot)` → 12. `cover(container=handled_cooking_pot, lid=pot_lid)` → 13. `navigate(destination=kitchen_stove)` → 14. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### x6_gd_tomato_elsewhere（Task）
 
@@ -1450,83 +1465,6 @@
 
 - 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 3. `search(object=cherry_tomato_2, region=dining_room_0_1)`（补救） → 4. `navigate(destination=cherry_tomato_2)`（补救） → 5. `pick(object=cherry_tomato_2)`（补救） → 6. `navigate(destination=handled_cooking_pot)`（补救） → 7. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 - 摆法 `cabinet6`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1], container=handled_cooking_pot)`（补救） → 3. `search(object=cherry_tomato_2, region=living_room_0_0)`（补救） → 4. `navigate(destination=cherry_tomato_2)`（补救） → 5. `pick(object=cherry_tomato_2)`（补救） → 6. `navigate(destination=handled_cooking_pot)`（补救） → 7. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-
-### x6_pp_lid_taken_after_stir（Task）
-
-**情况**：搅完后有人把锅盖拿走 → 找回锅盖盖上，前面的步骤不用重做
-
-**成功条件**：
-
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
-
-**参考调用顺序**：
-
-- 摆法 `cabinet4`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=handled_cooking_pot)` → 6. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 9. `look(target=kitchen_stove/top)`（补救） → 10. `search(object=pot_lid)`（补救） → 11. `navigate(destination=pot_lid)` → 12. `pick(object=pot_lid)` → 13. `navigate(destination=handled_cooking_pot)` → 14. `cover(container=handled_cooking_pot, lid=pot_lid)` → 15. `navigate(destination=kitchen_stove)` → 16. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=handled_cooking_pot)` → 6. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 9. `look(target=kitchen_stove/top)`（补救） → 10. `search(object=pot_lid, region=dining_room_0_1)`（补救） → 11. `navigate(destination=pot_lid)` → 12. `pick(object=pot_lid)` → 13. `navigate(destination=handled_cooking_pot)` → 14. `cover(container=handled_cooking_pot, lid=pot_lid)` → 15. `navigate(destination=kitchen_stove)` → 16. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-
-### x6_pp_tomato_taken_out__tomato2（Action）
-
-**情况**：番茄放进锅后孩子拿出 2 号放回岛台 → 只把这一颗放回去
-
-**成功条件**：
-
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
-
-**参考调用顺序**：
-
-1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `look(target=kitchen_island/top)`（补救） → 4. `navigate(destination=cherry_tomato_2)`（补救） → 5. `pick(object=cherry_tomato_2)`（补救） → 6. `navigate(destination=handled_cooking_pot)`（补救） → 7. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-
-### x6_pp_tomato_taken_out__tomato1（Action）
-
-**情况**：同上，拿出的是 1 号
-
-**成功条件**：
-
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
-
-**参考调用顺序**：
-
-1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `look(target=kitchen_island/top)`（补救） → 4. `navigate(destination=cherry_tomato_1)`（补救） → 5. `pick(object=cherry_tomato_1)`（补救） → 6. `navigate(destination=handled_cooking_pot)`（补救） → 7. `drop(object=cherry_tomato_1, container=handled_cooking_pot)`（补救） → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=handled_cooking_pot)` → 11. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 12. `navigate(destination=kitchen_island/top)` → 13. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
-
-### x6_pp_tomato_taken_out__tomato2_after_stir（Action）
-
-**情况**：搅完之后孩子才拿出 2 号 → 放回去，接着做
-
-**成功条件**：
-
-- `cherry_tomato_1` 在 `handled_cooking_pot` 里
-- `cherry_tomato_2` 在 `handled_cooking_pot` 里
-- `cherry_tomato_1` 温度至少 60 °C
-- `cherry_tomato_2` 温度至少 60 °C
-- `handled_cooking_pot` 搅拌过
-- `handled_cooking_pot` 盖着 `pot_lid`
-- `kitchen_stove` 已经停止加热
-- 手里空着
-
-**参考调用顺序**：
-
-1. `look(target=kitchen_island/top)` → 2. `collect(objects=[cherry_tomato_1, cherry_tomato_2], container=handled_cooking_pot)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=handled_cooking_pot)` → 6. `stir(container=handled_cooking_pot, tool=breakfast_spoon)` → 7. `navigate(destination=kitchen_island/top)` → 8. `place(object=breakfast_spoon, receptacle=kitchen_island/top)` → 9. `look(target=kitchen_island/top)`（补救） → 10. `navigate(destination=cherry_tomato_2)`（补救） → 11. `pick(object=cherry_tomato_2)`（补救） → 12. `navigate(destination=handled_cooking_pot)`（补救） → 13. `drop(object=cherry_tomato_2, container=handled_cooking_pot)`（补救） → 14. `navigate(destination=pot_lid)` → 15. `pick(object=pot_lid)` → 16. `navigate(destination=handled_cooking_pot)` → 17. `cover(container=handled_cooking_pot, lid=pot_lid)` → 18. `navigate(destination=kitchen_stove)` → 19. `heat(food=cherry_tomato_1, appliance=kitchen_stove, temp_c=60)`
 
 ### pot_in_dining_room（Task）
 

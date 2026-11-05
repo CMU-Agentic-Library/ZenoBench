@@ -136,7 +136,7 @@ def test_every_variant_has_its_category():
 def test_local_fallbacks_are_action_level():
     """A few skills at the work spot: expose / separate before the pick, the lid off, the object on the book."""
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
-    for tid, vid in (("T09_tomato_soup", "lid_on"),
+    for tid, vid in (("T17_hide_and_seek_block", "lid_on"),
                      ("T15_book_face_up", "h_task_block_on_book")):
         assert cat(tid, vid) == "action", (tid, vid)
     # T01 has no Action-Level variant left: what it tests is which table, which seat, which book, or the fallback
@@ -145,7 +145,7 @@ def test_local_fallbacks_are_action_level():
     # T01-T07 keep no pure Action-Level variant (TAMPAgent covers clearing a blocker; the fix is ruled out by a
     # constraint and a fallback named instead, or the step sits inside an Action + Task variant)
     for tid, t in TASKS.items():
-        if tid[:3] in ("T01", "T02", "T03", "T04", "T05", "T06", "T07"):
+        if tid[:3] in ("T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09"):
             assert "action" not in {x["category"] for x in t["v6_tracks"].values()}, tid
     # a substitute, never a local fallback: Task-Level
     assert cat("T04_cup_or_mug_to_cabinet", "no_cup") == "task"
@@ -164,7 +164,7 @@ def test_no_injected_action_failure_anywhere():
 
 def test_events_put_right_at_the_work_spot_are_action_level():
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
-    for tid, vid in (("T09_tomato_soup", "x6_pp_tomato_taken_out__tomato1"), ("T16_rolling_pin_at_edge",
+    for tid, vid in (("T16_rolling_pin_at_edge",
                      "h_dynamic_bowl_put_behind"), ("T18_check_cabinet_dishes", "x6_pp_door_reopened"),
                      ("T13_breakfast_setup", "x6_pp_spoon_moved__table_end")):
         assert cat(tid, vid) == "action", (tid, vid)
