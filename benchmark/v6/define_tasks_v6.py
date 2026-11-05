@@ -713,14 +713,24 @@ def T06(t):
                           ["hand_empty", "right"]]}
     front_route = [look(ISL), nav(CAB), look(CAB), pick("clutter_cereal_b"), place("clutter_cereal_b", CAB, [3.43, 0.28]),
                    nav(A), pick(A), nav(CAB), place(A, CAB, [3.433, 0.465])]
-    # display_by_bed: the bedside bookcase next to the kid's bed (bedroom), not the cabinet or the TV stand
+    # seen_from_bed: the kid wants to see the block from bed.  The bedside bookcase is the surface in view of the
+    # pillow (farther, lower furniture is hidden by the bed itself); the kid's cereal boxes stand on it, and the
+    # part of the top behind them cannot be seen from the pillow.  Which part that is depends on where the boxes
+    # stand (seed).  visible_from checks the line of sight from the kid's eye at the end.
     BED = "bookcase_3/top"
-    bed_goal = {"all": [["on", A, BED], ["front_visible", A], ["hand_empty", "right"]]}
-    bed_route = lambda pre: [look(ISL)] + pre + [nav(A), pick(A), S("explore_room", room="bedroom_0_1"),  # noqa: E731
-                                                  nav(BED), look(BED), place(A, BED)]
-    bed_cases = {"island": dict(route=bed_route([])),
-                 "dining": dict(move={A: P("dining_table_2/top", 3.7, 6.3)},
-                                route=bed_route([S("search", object=A, region="dining_room_0_1")]))}
+    EYE = [0.0, -4.6, 1.2]                               # the kid's eye, head on the pillow
+    BOX_ROWS = {"boxes_middle": ([(2.10, -5.0145), (2.10, -4.8895), (2.10, -4.7645)], [1.88, -4.88]),
+                "boxes_corner": ([(1.85, -5.0145), (1.85, -4.8895)], [2.15, -4.74])}
+    bed_cases = {}
+    for case, (row, spot) in BOX_ROWS.items():
+        names = [f"bedside_box_{i + 1}" for i in range(len(row))]
+        bed_cases[case] = dict(
+            add={n: {"asset": "cereal_box", "support": BED, "xy": list(xy), "yaw_deg": 0.0} for n, xy in zip(names, row)},
+            goal={"all": [["on", A, BED], ["visible_from", A, EYE, 0.5], *[["near_start", n, 0.05] for n in names],
+                          *[["upright", n] for n in names], ["hand_empty", "right"]]},
+            watch=[A, B, *names],
+            route=[look(ISL), nav(A), pick(A), S("explore_room", room="bedroom_0_1"), nav(BED), look(BED),
+                   place(A, BED, spot)])
     return {
         "display_row": dict(
             base="free", control="free", conditions=["arrangement"],
@@ -745,17 +755,21 @@ def T06(t):
             rationale="make a visible place at the work spot: move a cereal box to the back, then put the block in "
                       "the front gap; the boxes and the bottle stay upright on the cabinet",
             cases={"": dict(route=front_route)}),
-        "display_by_bed": dict(
+        "seen_from_bed": dict(
             base="free", control="free", conditions=["viewer_place", "not_in_view"],
-            instruction="The kid wants to see the toy block from bed tonight. Put it on display by the kid's bed, "
-                        "where they can see it lying down.",
-            instruction_zh="孩子晚上想躺在床上看着积木。把积木摆到孩子床边、躺着就能看到的地方。",
-            goal=bed_goal, watch=[A, B],
-            factor="where the block is (seed: the island or the dining table)",
-            challenge="the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside "
-                      "it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
-            rationale="work out where the kid lies and what is in view from there: explore the bedroom, find the bed "
-                      "and put the block on the bedside bookcase, at the front",
+            instruction="The kid wants to look at the toy block while lying in bed tonight. Put it on display "
+                        "somewhere the kid can see from the bed.",
+            instruction_zh="孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。",
+            keep_design=[BED],
+            viewer={"eye": EYE, "label": "躺在床上看", "targets": [BED]},
+            factor="where the kid's boxes stand on the bedside bookcase (seed: in the middle of the top, or in the "
+                   "corner on the bed side)",
+            challenge="the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the "
+                      "pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from "
+                      "the pillow) is out of sight",
+            rationale="judge from where the kid lies: put the block on the part of the bedside top that faces the "
+                      "pillow, not behind the boxes; which part that is changes with where the boxes stand; the "
+                      "boxes stay",
             cases=bed_cases),
     }
 
@@ -1605,7 +1619,7 @@ def make_variant(t, fam, spec, case, cspec):
     v["note"] = spec["challenge"]
     v["v6"] = {"family": fam, "case": case or None, "challenge": spec["challenge"], "rationale": spec["rationale"], "control": spec["control"],
                "contrast": spec.get("contrast"), "factor": spec.get("factor"),
-               "derived_from": spec["base"]}
+               "derived_from": spec["base"], **({"viewer": spec["viewer"]} if spec.get("viewer") else {})}
     v["move"], v["vary"] = seed_vary(t, v)
     return v
 

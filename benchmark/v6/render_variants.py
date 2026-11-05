@@ -205,6 +205,14 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             views.append((name.replace("/", "_"), marks, img, (f"放置处 {name}（俯视）" if kind == "support" else
                                                                f"{name}（俯视）：上面有相关物体，但不是放置处")
                           + ("，★ 参考路线的放置点（按顺序）" if marks else "")))
+    viewer = (task["variants"][lid].get("v6") or {}).get("viewer")
+    if viewer:                                   # what a person sees from where they are (e.g. lying in bed)
+        for sup in viewer["targets"]:
+            s = rig.ann.support(sup)
+            b = s["aabb_xy"]
+            views.append((f"view_{sup.replace('/', '_')}", None,
+                          shot(viewer["eye"], [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, s["z"] + 0.05]),
+                          f"{viewer['label']}：看向 {sup}"))
     out_dir.mkdir(parents=True, exist_ok=True)
     lay = f" · 摆法 {lid.split('__', 1)[1]}" if lid != vid else ""
     for i, (tag, marks, img, label) in enumerate(views, 1):

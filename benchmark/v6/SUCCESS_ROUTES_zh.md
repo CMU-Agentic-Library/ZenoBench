@@ -1104,22 +1104,31 @@
 
 1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_cabinet_6/top)` → 3. `look(target=kitchen_cabinet_6/top)` → 4. `pick(object=clutter_cereal_b)` → 5. `place(object=clutter_cereal_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.43, 0.28])` → 6. `navigate(destination=wooden_block_a)` → 7. `pick(object=wooden_block_a)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.433, 0.465])`
 
-### display_by_bed（Task）
+### seen_from_bed（Task）
 
-**情况**：孩子晚上想躺在床上看着积木；指令只说"床边、躺着能看到"，不说放哪 → 去卧室找到床，放到床边那个矮书架上，放前面
+**情况**：孩子今晚想躺在床上看着积木；指令只说"躺在床上能看到的地方"。从枕头上看，只有床头边的矮书架在视线里（远处低矮的家具被床本身挡住），书架顶上立着孩子的几个盒子，盒子后面那块从床上看不到 → 设想孩子躺着的视线，把积木放在书架顶朝着枕头、没被盒子挡住的那一侧；盒子不动。判定从孩子眼睛的位置算视线
 
-**指令**：孩子晚上想躺在床上看着积木。把积木摆到孩子床边、躺着就能看到的地方。
+**指令**：孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。
 
 **成功条件**：
 
-- `wooden_block_a` 在 `bookcase_3/top` 上
-- `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
-- 手里空着
+- 摆法 `boxes_middle`：
+  - `wooden_block_a` 在 `bookcase_3/top` 上
+  - `["visible_from", "wooden_block_a", [0.0, -4.6, 1.2], 0.5]`
+  - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
+  - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 立着
+  - 手里空着
+- 摆法 `boxes_corner`：
+  - `wooden_block_a` 在 `bookcase_3/top` 上
+  - `["visible_from", "wooden_block_a", [0.0, -4.6, 1.2], 0.5]`
+  - `bedside_box_1`、`bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
+  - `bedside_box_1`、`bedside_box_2` 立着
+  - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `island`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `explore_room(room=bedroom_0_1)` → 5. `navigate(destination=bookcase_3/top)` → 6. `look(target=bookcase_3/top)` → 7. `place(object=wooden_block_a, receptacle=bookcase_3/top)`
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=dining_room_0_1)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/top)`
+- 摆法 `boxes_middle`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `explore_room(room=bedroom_0_1)` → 5. `navigate(destination=bookcase_3/top)` → 6. `look(target=bookcase_3/top)` → 7. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[1.88, -4.88])`
+- 摆法 `boxes_corner`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `explore_room(room=bedroom_0_1)` → 5. `navigate(destination=bookcase_3/top)` → 6. `look(target=bookcase_3/top)` → 7. `place(object=wooden_block_a, receptacle=bookcase_3/top, hint_xy=[2.15, -4.74])`
 
 ---
 

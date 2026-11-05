@@ -6851,69 +6851,106 @@
   "rationale": "make a visible place at the work spot: move a cereal box to the back, then put the block in the front gap; the boxes and the bottle stay upright on the cabinet",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/display_by_bed__island": {
-  "variant": "display_by_bed",
+ "T06_block_destination_occupied/seen_from_bed__boxes_middle": {
+  "variant": "seen_from_bed",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   14,
+   17,
+   18
+  ],
+  "instruction": "The kid wants to look at the toy block while lying in bed tonight. Put it on display somewhere the kid can see from the bed.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [
+    "bedside_box_1",
+    "bedside_box_2",
+    "bedside_box_3"
+   ],
+   "removed": [],
+   "conditions": [
+    "viewer_place",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "bookcase_3/top"
+    ],
+    [
+     "visible_from",
+     "wooden_block_a",
+     [
+      0.0,
+      -4.6,
+      1.2
+     ],
+     0.5
+    ],
+    [
+     "near_start",
+     "bedside_box_1",
+     0.05
+    ],
+    [
+     "near_start",
+     "bedside_box_2",
+     0.05
+    ],
+    [
+     "near_start",
+     "bedside_box_3",
+     0.05
+    ],
+    [
+     "upright",
+     "bedside_box_1"
+    ],
+    [
+     "upright",
+     "bedside_box_2"
+    ],
+    [
+     "upright",
+     "bedside_box_3"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "free",
+  "oracle_route": "v6_seen_from_bed__boxes_middle",
+  "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from the pillow) is out of sight",
+  "rationale": "judge from where the kid lies: put the block on the part of the bedside top that faces the pillow, not behind the boxes; which part that is changes with where the boxes stand; the boxes stay",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T06_block_destination_occupied/seen_from_bed__boxes_corner": {
+  "variant": "seen_from_bed",
   "category": "task",
   "seeds": [
    10,
    12,
-   13,
-   17,
-   18
-  ],
-  "instruction": "The kid wants to see the toy block from bed tonight. Put it on display by the kid's bed, where they can see it lying down.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "oatmeal",
-    "pot_lid",
-    "wooden_block_a",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [
-    "viewer_place",
-    "not_in_view"
-   ],
-   "initial_checks": []
-  },
-  "failure_triggers": [],
-  "goal_constraints": {
-   "all": [
-    [
-     "on",
-     "wooden_block_a",
-     "bookcase_3/top"
-    ],
-    [
-     "front_visible",
-     "wooden_block_a"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "free",
-  "oracle_route": "v6_display_by_bed__island",
-  "challenge": "the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
-  "rationale": "work out where the kid lies and what is in view from there: explore the bedroom, find the bed and put the block on the bedside bookcase, at the front",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T06_block_destination_occupied/display_by_bed__dining": {
-  "variant": "display_by_bed",
-  "category": "task",
-  "seeds": [
-   11,
-   14,
    15,
    16,
    19
   ],
-  "instruction": "The kid wants to see the toy block from bed tonight. Put it on display by the kid's bed, where they can see it lying down.",
+  "instruction": "The kid wants to look at the toy block while lying in bed tonight. Put it on display somewhere the kid can see from the bed.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6923,7 +6960,10 @@
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "bedside_box_1",
+    "bedside_box_2"
+   ],
    "removed": [],
    "conditions": [
     "viewer_place",
@@ -6940,8 +6980,32 @@
      "bookcase_3/top"
     ],
     [
-     "front_visible",
-     "wooden_block_a"
+     "visible_from",
+     "wooden_block_a",
+     [
+      0.0,
+      -4.6,
+      1.2
+     ],
+     0.5
+    ],
+    [
+     "near_start",
+     "bedside_box_1",
+     0.05
+    ],
+    [
+     "near_start",
+     "bedside_box_2",
+     0.05
+    ],
+    [
+     "upright",
+     "bedside_box_1"
+    ],
+    [
+     "upright",
+     "bedside_box_2"
     ],
     [
      "hand_empty",
@@ -6950,9 +7014,9 @@
    ]
   },
   "control": "free",
-  "oracle_route": "v6_display_by_bed__dining",
-  "challenge": "the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
-  "rationale": "work out where the kid lies and what is in view from there: explore the bedroom, find the bed and put the block on the bedside bookcase, at the front",
+  "oracle_route": "v6_seen_from_bed__boxes_corner",
+  "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from the pillow) is out of sight",
+  "rationale": "judge from where the kid lies: put the block on the part of the bedside top that faces the pillow, not behind the boxes; which part that is changes with where the boxes stand; the boxes stay",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T07_heat_oatmeal/microwave_works": {

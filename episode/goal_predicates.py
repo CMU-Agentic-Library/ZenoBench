@@ -18,7 +18,10 @@ looks a goal atom up here first, then in the skill registry.
 * ``fully_inside(object, container)``: inside and not sticking out over the rim (a container's real
   capacity, T12);
 * ``near_any(object, others, max_dist_m)``: next to at least one of the listed objects (a book by a
-  place setting, T01).
+  place setting, T01);
+* ``visible_from(object, eye, min_fraction)``: seen from a person's eye point: at least ``min_fraction`` of
+  sample points on the object's top have a line of sight to the eye that no other object blocks (a toy seen
+  from the bed, T06).
 """
 from __future__ import annotations
 
@@ -170,3 +173,42 @@ def _near_any(rig, ctx, object, others, max_dist_m):
     d = min((_gap(fp, rig.geo.footprint(o, st)) for o in others if o in st["objects"] and o != object),
             default=math.inf)
     return d <= float(max_dist_m), f"nearest at {d:.3f} m"
+
+
+def _segment_hits_box(p0, p1, box, t_max=0.97):
+    """Does the segment p0 -> p1 (up to t_max of its length) pass through the 3D box [x0, y0, z0, x1, y1, z1]?"""
+    d = p1 - p0
+    t0, t1 = 0.0, t_max
+    for i in range(3):
+        if abs(d[i]) < 1e-9:
+            if p0[i] < box[i] or p0[i] > box[i + 3]:
+                return False
+            continue
+        a, b = (box[i] - p0[i]) / d[i], (box[i + 3] - p0[i]) / d[i]
+        if a > b:
+            a, b = b, a
+        t0, t1 = max(t0, a), min(t1, b)
+        if t0 > t1:
+            return False
+    return True
+
+
+@goal_predicate("visible_from", ["object", "eye", "min_fraction"],
+                "At least min_fraction of nine points on the object's top have a line of sight to the eye point "
+                "that no other object's box blocks (the person's own bed and the walls are not checked).")
+def _visible_from(rig, ctx, object, eye, min_fraction=0.5):
+    st = _state(rig, ctx)
+    eye = np.asarray(eye, float)
+
+    def box3(o):
+        fp = rig.geo.footprint(o, st)
+        z0 = float(rig.geo.bottom(o, st)[2])
+        return np.array([fp[0], fp[1], z0, fp[2], fp[3], z0 + float(rig.ann.asset_of(rig.ann.objects[o])["size"][2])])
+    b = box3(object)
+    z = b[5] - 0.005
+    pts = [np.array([x, y, z]) for x in np.linspace(b[0] + 0.01, b[3] - 0.01, 3)
+           for y in np.linspace(b[1] + 0.01, b[4] - 0.01, 3)]
+    others = [box3(o) for o in st["objects"] if o != object and o in rig.ann.objects]
+    seen = [not any(_segment_hits_box(eye, p, ob) for ob in others) for p in pts]
+    frac = sum(seen) / len(seen)
+    return frac >= float(min_fraction), f"{frac:.2f} of the top in view"

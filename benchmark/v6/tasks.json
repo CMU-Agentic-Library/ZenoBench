@@ -22419,7 +22419,7 @@
       }
      }
     },
-    "display_by_bed__island": {
+    "seen_from_bed__boxes_middle": {
      "move": {
       "wooden_block_a": {
        "support": "kitchen_island/top",
@@ -22459,6 +22459,37 @@
       "viewer_place",
       "not_in_view"
      ],
+     "instruction": "The kid wants to look at the toy block while lying in bed tonight. Put it on display somewhere the kid can see from the bed.",
+     "instruction_zh": "孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。",
+     "add": {
+      "bedside_box_1": {
+       "asset": "cereal_box",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.1,
+        -5.0145
+       ],
+       "yaw_deg": 0.0
+      },
+      "bedside_box_2": {
+       "asset": "cereal_box",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.1,
+        -4.8895
+       ],
+       "yaw_deg": 0.0
+      },
+      "bedside_box_3": {
+       "asset": "cereal_box",
+       "support": "bookcase_3/top",
+       "xy": [
+        2.1,
+        -4.7645
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "goal": {
       "all": [
        [
@@ -22467,8 +22498,41 @@
         "bookcase_3/top"
        ],
        [
-        "front_visible",
-        "wooden_block_a"
+        "visible_from",
+        "wooden_block_a",
+        [
+         0.0,
+         -4.6,
+         1.2
+        ],
+        0.5
+       ],
+       [
+        "near_start",
+        "bedside_box_1",
+        0.05
+       ],
+       [
+        "near_start",
+        "bedside_box_2",
+        0.05
+       ],
+       [
+        "near_start",
+        "bedside_box_3",
+        0.05
+       ],
+       [
+        "upright",
+        "bedside_box_1"
+       ],
+       [
+        "upright",
+        "bedside_box_2"
+       ],
+       [
+        "upright",
+        "bedside_box_3"
        ],
        [
         "hand_empty",
@@ -22476,23 +22540,38 @@
        ]
       ]
      },
-     "instruction": "The kid wants to see the toy block from bed tonight. Put it on display by the kid's bed, where they can see it lying down.",
-     "instruction_zh": "孩子晚上想躺在床上看着积木。把积木摆到孩子床边、躺着就能看到的地方。",
      "watch": [
       "wooden_block_a",
-      "wooden_block_b"
+      "wooden_block_b",
+      "bedside_box_1",
+      "bedside_box_2",
+      "bedside_box_3"
      ],
      "since": "v6",
-     "note": "the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
+     "keep_design": [
+      "bookcase_3/top"
+     ],
+     "note": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from the pillow) is out of sight",
      "v6": {
-      "family": "display_by_bed",
-      "case": "island",
-      "challenge": "the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
-      "rationale": "work out where the kid lies and what is in view from there: explore the bedroom, find the bed and put the block on the bedside bookcase, at the front",
+      "family": "seen_from_bed",
+      "case": "boxes_middle",
+      "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from the pillow) is out of sight",
+      "rationale": "judge from where the kid lies: put the block on the part of the bedside top that faces the pillow, not behind the boxes; which part that is changes with where the boxes stand; the boxes stay",
       "control": "free",
       "contrast": null,
-      "factor": "where the block is (seed: the island or the dining table)",
-      "derived_from": "free"
+      "factor": "where the kid's boxes stand on the bedside bookcase (seed: in the middle of the top, or in the corner on the bed side)",
+      "derived_from": "free",
+      "viewer": {
+       "eye": [
+        0.0,
+        -4.6,
+        1.2
+       ],
+       "label": "躺在床上看",
+       "targets": [
+        "bookcase_3/top"
+       ]
+      }
      },
      "layout": {
       "clusters": [
@@ -22612,13 +22691,13 @@
       }
      }
     },
-    "display_by_bed__dining": {
+    "seen_from_bed__boxes_corner": {
      "move": {
       "wooden_block_a": {
-       "support": "dining_table_2/top",
+       "support": "kitchen_island/top",
        "xy": [
-        3.7,
-        6.3
+        7.22,
+        1.625
        ],
        "yaw_deg": 0.0
       },
@@ -22652,6 +22731,28 @@
       "viewer_place",
       "not_in_view"
      ],
+     "instruction": "The kid wants to look at the toy block while lying in bed tonight. Put it on display somewhere the kid can see from the bed.",
+     "instruction_zh": "孩子今晚想躺在床上看着积木。把积木摆在孩子躺在床上能看到的地方。",
+     "add": {
+      "bedside_box_1": {
+       "asset": "cereal_box",
+       "support": "bookcase_3/top",
+       "xy": [
+        1.85,
+        -5.0145
+       ],
+       "yaw_deg": 0.0
+      },
+      "bedside_box_2": {
+       "asset": "cereal_box",
+       "support": "bookcase_3/top",
+       "xy": [
+        1.85,
+        -4.8895
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "goal": {
       "all": [
        [
@@ -22660,8 +22761,32 @@
         "bookcase_3/top"
        ],
        [
-        "front_visible",
-        "wooden_block_a"
+        "visible_from",
+        "wooden_block_a",
+        [
+         0.0,
+         -4.6,
+         1.2
+        ],
+        0.5
+       ],
+       [
+        "near_start",
+        "bedside_box_1",
+        0.05
+       ],
+       [
+        "near_start",
+        "bedside_box_2",
+        0.05
+       ],
+       [
+        "upright",
+        "bedside_box_1"
+       ],
+       [
+        "upright",
+        "bedside_box_2"
        ],
        [
         "hand_empty",
@@ -22669,46 +22794,40 @@
        ]
       ]
      },
-     "instruction": "The kid wants to see the toy block from bed tonight. Put it on display by the kid's bed, where they can see it lying down.",
-     "instruction_zh": "孩子晚上想躺在床上看着积木。把积木摆到孩子床边、躺着就能看到的地方。",
      "watch": [
       "wooden_block_a",
-      "wooden_block_b"
+      "wooden_block_b",
+      "bedside_box_1",
+      "bedside_box_2"
      ],
      "since": "v6",
-     "note": "the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
+     "keep_design": [
+      "bookcase_3/top"
+     ],
+     "note": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from the pillow) is out of sight",
      "v6": {
-      "family": "display_by_bed",
-      "case": "dining",
-      "challenge": "the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
-      "rationale": "work out where the kid lies and what is in view from there: explore the bedroom, find the bed and put the block on the bedside bookcase, at the front",
+      "family": "seen_from_bed",
+      "case": "boxes_corner",
+      "challenge": "the bed is in the bedroom; the bookcase beside its head is the surface the kid sees from the pillow; the kid's cereal boxes stand on it, and the part of the top behind them (as seen from the pillow) is out of sight",
+      "rationale": "judge from where the kid lies: put the block on the part of the bedside top that faces the pillow, not behind the boxes; which part that is changes with where the boxes stand; the boxes stay",
       "control": "free",
       "contrast": null,
-      "factor": "where the block is (seed: the island or the dining table)",
-      "derived_from": "free"
+      "factor": "where the kid's boxes stand on the bedside bookcase (seed: in the middle of the top, or in the corner on the bed side)",
+      "derived_from": "free",
+      "viewer": {
+       "eye": [
+        0.0,
+        -4.6,
+        1.2
+       ],
+       "label": "躺在床上看",
+       "targets": [
+        "bookcase_3/top"
+       ]
+      }
      },
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "wooden_block_a"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.675,
-         6.275,
-         3.725,
-         6.325
-        ],
-        "dx": [
-         -0.03,
-         0.1
-        ],
-        "dy": [
-         -0.76,
-         1.62
-        ]
-       },
        {
         "names": [
          "oatmeal"
@@ -22727,6 +22846,26 @@
         "dy": [
          -0.2,
          0.04
+        ]
+       },
+       {
+        "names": [
+         "wooden_block_a"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.195,
+         1.6,
+         7.245,
+         1.65
+        ],
+        "dx": [
+         -0.64,
+         1.0
+        ],
+        "dy": [
+         -0.07,
+         0.06
         ]
        },
        {
@@ -22751,32 +22890,6 @@
        }
       ],
       "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.835,
-         6.405,
-         3.135,
-         6.795
-        ]
-       ],
        "kitchen_island/top": [
         [
          7.9038,
@@ -22824,9 +22937,7 @@
       },
       "start": {
        "room": "living_room_0_0",
-       "hide": [
-        "wooden_block_a"
-       ],
+       "hide": [],
        "look": [
         "kitchen_island/top"
        ]
@@ -22891,8 +23002,8 @@
     "display_row__island_floor": "v6_display_row__island_floor",
     "display_row__spread": "v6_display_row__spread",
     "clear_front_row": "v6_clear_front_row",
-    "display_by_bed__island": "v6_display_by_bed__island",
-    "display_by_bed__dining": "v6_display_by_bed__dining"
+    "seen_from_bed__boxes_middle": "v6_seen_from_bed__boxes_middle",
+    "seen_from_bed__boxes_corner": "v6_seen_from_bed__boxes_corner"
    },
    "routes": {
     "nominal": {
@@ -23424,7 +23535,7 @@
      "kind": "v6_oracle",
      "variant": "clear_front_row"
     },
-    "v6_display_by_bed__island": {
+    "v6_seen_from_bed__boxes_middle": {
      "steps": [
       {
        "skill": "look",
@@ -23466,26 +23577,23 @@
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "bookcase_3/top"
+        "receptacle": "bookcase_3/top",
+        "hint_xy": [
+         1.88,
+         -4.88
+        ]
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "display_by_bed__island"
+     "variant": "seen_from_bed__boxes_middle"
     },
-    "v6_display_by_bed__dining": {
+    "v6_seen_from_bed__boxes_corner": {
      "steps": [
       {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "wooden_block_a",
-        "region": "dining_room_0_1"
        }
       },
       {
@@ -23522,12 +23630,16 @@
        "skill": "place",
        "args": {
         "object": "wooden_block_a",
-        "receptacle": "bookcase_3/top"
+        "receptacle": "bookcase_3/top",
+        "hint_xy": [
+         2.15,
+         -4.74
+        ]
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "display_by_bed__dining"
+     "variant": "seen_from_bed__boxes_corner"
     }
    },
    "benchmark_version": "v6",
@@ -23679,25 +23791,25 @@
       "19": "clear_front_row"
      }
     },
-    "display_by_bed": {
+    "seen_from_bed": {
      "origin": "v6",
      "control": "free",
      "layouts": [
-      "display_by_bed__island",
-      "display_by_bed__dining"
+      "seen_from_bed__boxes_middle",
+      "seen_from_bed__boxes_corner"
      ],
-     "factor": "where the block is (seed: the island or the dining table)",
+     "factor": "where the kid's boxes stand on the bedside bookcase (seed: in the middle of the top, or in the corner on the bed side)",
      "seeds": {
-      "10": "display_by_bed__island",
-      "11": "display_by_bed__dining",
-      "12": "display_by_bed__island",
-      "13": "display_by_bed__island",
-      "14": "display_by_bed__dining",
-      "15": "display_by_bed__dining",
-      "16": "display_by_bed__dining",
-      "17": "display_by_bed__island",
-      "18": "display_by_bed__island",
-      "19": "display_by_bed__dining"
+      "10": "seen_from_bed__boxes_corner",
+      "11": "seen_from_bed__boxes_middle",
+      "12": "seen_from_bed__boxes_corner",
+      "13": "seen_from_bed__boxes_middle",
+      "14": "seen_from_bed__boxes_middle",
+      "15": "seen_from_bed__boxes_corner",
+      "16": "seen_from_bed__boxes_corner",
+      "17": "seen_from_bed__boxes_middle",
+      "18": "seen_from_bed__boxes_middle",
+      "19": "seen_from_bed__boxes_corner"
      }
     }
    },
@@ -23753,7 +23865,7 @@
      ],
      "longer": []
     },
-    "display_by_bed": {
+    "seen_from_bed": {
      "category": "task",
      "local": [],
      "longer": [

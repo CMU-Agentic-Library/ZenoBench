@@ -50,7 +50,7 @@
 | T06 | display_hidden | task | 0/0 of 10 | - |
 | T06 | display_row | task | 0/0 of 10 | - |
 | T06 | clear_front_row | action | 0/0 of 10 | - |
-| T06 | display_by_bed | task | 0/0 of 10 | - |
+| T06 | seen_from_bed | task | 0/0 of 10 | - |
 | T07 | microwave_works | control | 0/0 of 10 | - |
 | T07 | microwave_broken | task | 0/0 of 10 | - |
 | T07 | broken_oatmeal_away | task | 0/0 of 10 | - |
