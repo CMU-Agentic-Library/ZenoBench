@@ -267,13 +267,15 @@ class _Arm:
         self.path_ik([p] * 2, [R] * 2, self.kin.posture)
 
     # ------------------------------------------------------------- state
-    def prepare(self, kin, other_q, links_off):
-        """Locks (base pose, other arm), joint limits (kin.lo / kin.hi: skills cap the
-        waist or pin the torso) and switched-off links for the next query."""
+    def prepare(self, kin, other_q, links_off, live=None):
+        """Locks (base pose, other arm; ``live``: the head and finger joints where the robot has
+        them), joint limits (kin.lo / kin.hi: skills cap the waist or pin the torso) and
+        switched-off links for the next query."""
         yaw = math.atan2(kin.base_R[1, 0], kin.base_R[0, 0])
         vals = {"base_x": kin.base_p[0], "base_y": kin.base_p[1], "base_yaw": yaw}
         if other_q is not None:
             vals.update(zip(self.other_names, np.asarray(other_q, float)[-len(self.other_names):]))
+        vals.update(live or {})
         self.locks.set(vals)
         # a pinned joint (lo == hi: skills hold the torso where it is) gets a +-PIN band: cuRobo's
         # bound cost and projection do not solve with a zero-width range
@@ -633,12 +635,31 @@ class Motion:
         for side, kin, q, other_q in (("right", rig.kin, rig.q_cmd, np.r_[rig.q_cmd[:2], rig.left_q_cmd]),
                                       ("left", rig.left_kin, np.r_[rig.q_cmd[:2], rig.left_q_cmd], rig.q_cmd)):
             arm = self.arms[side]
-            arm.prepare(kin, other_q, {f"{side}_{l}" for l in FINGER_LINKS})
+            arm.prepare(kin, other_q, {f"{side}_{l}" for l in FINGER_LINKS}, self.live_locks())
             self._apply(base, side=side)
             hits = self._touching(arm, q)
             touching[side] = {l for l in hits if l.startswith(side + "_") and l != held_link(side)}
         self.other_touching = {"right": touching["left"], "left": touching["right"]}
         self.cull_at = None
+
+    def live_locks(self):
+        """{locked joint: value} of the head and the fingers as the robot has them now: a hand
+        closed on a load is not the open hand of the robot config (the planner had the fingers
+        at FINGER_OPEN, 2.5 cm wider each side than a pinched spoon, and the tilt-held carry of
+        T03 ran that phantom finger into the island).  The second finger mimics the first; the
+        wider of the two is taken."""
+        from .kinematics import FINGER_OPEN
+        rig = getattr(self, "rig", None)
+        vals = {}
+        if rig is None:
+            return vals
+        if hasattr(rig, "head_q"):
+            vals.update(rig.head_q())
+        for side, read in (("right", "fingers"), ("left", "left_fingers")):
+            if hasattr(rig, read):
+                f = np.asarray(getattr(rig, read)(), float)[:2]
+                vals[f"{side}_gripper_left_finger_axis"] = float(np.clip(f.max(), 0.0, FINGER_OPEN))
+        return vals
 
     @contextmanager
     def scope(self, rig, kin, q, keep_held=False):
@@ -791,7 +812,7 @@ class Motion:
         links = {f"{kin.side}_{l}" for l in own} | {f"{other}_{l}" for l in FINGER_LINKS} | \
             self.other_touching.get(kin.side, set())
         arm = self.arms[kin.side]
-        arm.prepare(kin, other_q, links)
+        arm.prepare(kin, other_q, links, self.live_locks())
         if collision:
             # with a load the hand goes where the load goes, not to touch what is there: a tray it
             # is put into stays an obstacle (T12); nor on the free part of an approach (coll_kw
