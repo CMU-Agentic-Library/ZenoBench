@@ -43,6 +43,10 @@ ATOMS = {
     "flipped": lambda o: f"{_names(o)} 翻过面",
     "object_rolled": lambda o: f"{_names(o)} 滚过",
     "count_on_at_least": lambda objs, s, k: f"这 {len(objs)} 件中至少 {k} 件还在 `{s}` 上：{_names(objs)}",
+    "squared": lambda o: f"{_names(o)} 摆正（和台面边平行，偏差不超过 5°）",
+    "visible_from": lambda o, eye, frac=0.5: (f"{_names(o)} 从 ({eye[0]}, {eye[1]}, 高 {eye[2]} m) 这个位置看得见"
+                                             f"（顶面至少 {round(frac * 100)}% 不被别的东西挡住）"),
+    "identified": lambda o: f"认出了 {_names(o)}",
     "hand_empty": lambda h: "手里空着",
 }
 

@@ -1067,9 +1067,9 @@
 - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
 - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
 - `floor_block` 在 `kitchen_cabinet_6/top` 上
-- `["squared", "wooden_block_a"]`
-- `["squared", "wooden_block_b"]`
-- `["squared", "floor_block"]`
+- `wooden_block_a` 摆正（和台面边平行，偏差不超过 5°）
+- `wooden_block_b` 摆正（和台面边平行，偏差不超过 5°）
+- `floor_block` 摆正（和台面边平行，偏差不超过 5°）
 - `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
 - `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
 - `floor_block` 从房间里看得见（前面没有更高的东西挡着）
@@ -1114,13 +1114,13 @@
 
 - 摆法 `boxes_middle`：
   - `wooden_block_a` 在 `bookcase_3/top` 上
-  - `["visible_from", "wooden_block_a", [0.0, -4.6, 1.2], 0.5]`
+  - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
   - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 没被挪动（离开局位置不超过 5 cm）
   - `bedside_box_1`、`bedside_box_2`、`bedside_box_3` 立着
   - 手里空着
 - 摆法 `boxes_corner`：
   - `wooden_block_a` 在 `bookcase_3/top` 上
-  - `["visible_from", "wooden_block_a", [0.0, -4.6, 1.2], 0.5]`
+  - `wooden_block_a` 从 (0.0, -4.6, 高 1.2 m) 这个位置看得见（顶面至少 50% 不被别的东西挡住）
   - `bedside_box_1`、`bedside_box_2` 没被挪动（离开局位置不超过 5 cm）
   - `bedside_box_1`、`bedside_box_2` 立着
   - 手里空着
