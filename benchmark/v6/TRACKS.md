@@ -39,7 +39,7 @@ Removed with the injected action failures: 99 variants (21 had nothing else, 61 
 | T02 | tower_for_kid_duck | Task-Level | - | item_out_of_view; missing_piece; spot_quality | 2 |
 | T02 | block_put_away | Action + Task | move the base in from the edge (or stack on the other one) | not_in_view | 2 |
 | T03 | large_only | Control | - | - | 1 |
-| T03 | mug_or_bedroom_bin | Task-Level | - | not_in_view; small_container_present | 1 |
+| T03 | small_bin_or_bedroom_bin | Task-Level | - | not_in_view; small_container_present | 1 |
 | T03 | three_containers_bedroom | Task-Level | - | joint_capacity; not_in_view | 1 |
 | T03 | which_bin_by_contents | Task-Level | - | decoy_destination; not_in_view | 2 |
 | T03 | no_bin_substitute | Task-Level | - | container_absent; decoy_destination; not_in_view; small_container_present | 2 |

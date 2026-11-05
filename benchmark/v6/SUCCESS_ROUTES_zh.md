@@ -394,48 +394,35 @@
 
 1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=breakfast_spoon)` → 4. `pick(object=breakfast_spoon)` → 5. `navigate(destination=wide_storage_bin)` → 6. `approach(target=wide_storage_bin)` → 7. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 8. `navigate(destination=rolling_pin)` → 9. `pick(object=rolling_pin)` → 10. `navigate(destination=wide_storage_bin)` → 11. `approach(target=wide_storage_bin)` → 12. `place(object=rolling_pin, receptacle=wide_storage_bin)`
 
-### mug_or_bedroom_bin（Task）
+### small_bin_or_bedroom_bin（Task）
 
-**情况**：岛台上有个马克杯（口 8 cm），宽储物箱在卧室矮书架上 → 判断擀面杖放不进杯子，去卧室找到储物箱，把两样都拿过去
+**情况**：岛台上餐具旁边有个小储物箱（22 × 17 cm），勺子放得下，但 22 cm 的擀面杖和箱子外沿一样长，放不进去；宽储物箱在卧室矮书架上 → 量一下判断放不下，两样要放同一个容器，所以都拿去卧室的宽箱
 
 **成功条件**：
 
+- `rolling_pin` 在 `wide_storage_bin` 里
+- `breakfast_spoon` 在 `wide_storage_bin` 里
 - 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `rolling_pin` 在 `wide_storage_bin` 里
-    - `breakfast_spoon` 在 `wide_storage_bin` 里
-  - 第 2 组：
-    - `rolling_pin` 在 `mug` 里
-    - `breakfast_spoon` 在 `mug` 里
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `search(object=wide_storage_bin, region=bedroom_0_1)` → 3. `navigate(destination=bookcase_2/top)` → 4. `look(target=bookcase_2/top)` → 5. `navigate(destination=breakfast_spoon)` → 6. `pick(object=breakfast_spoon)` → 7. `navigate(destination=wide_storage_bin)` → 8. `approach(target=wide_storage_bin)` → 9. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 10. `navigate(destination=rolling_pin)` → 11. `pick(object=rolling_pin)` → 12. `navigate(destination=wide_storage_bin)` → 13. `approach(target=wide_storage_bin)` → 14. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+1. `look(target=kitchen_island/top)` → 2. `measure(object=small_storage_bin)` → 3. `measure(object=rolling_pin)` → 4. `search(object=wide_storage_bin, region=bedroom_0_1)` → 5. `navigate(destination=bookcase_2/top)` → 6. `look(target=bookcase_2/top)` → 7. `navigate(destination=breakfast_spoon)` → 8. `pick(object=breakfast_spoon)` → 9. `navigate(destination=wide_storage_bin)` → 10. `approach(target=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `approach(target=wide_storage_bin)` → 16. `place(object=rolling_pin, receptacle=wide_storage_bin)`
 
 ### three_containers_bedroom（Task）
 
-**情况**：马克杯在岛台；小储物箱和宽储物箱并排放在卧室矮书架上 → 去卧室量尺寸，22 cm 的擀面杖只能放宽箱，把两样都拿过去
+**情况**：卧室矮书架上并排放着小储物箱和宽储物箱 → 量尺寸，22 cm 的擀面杖只能放宽箱，把两样都拿过去
 
 **指令**：烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。
 
 **成功条件**：
 
+- `rolling_pin` 在 `wide_storage_bin` 里
+- `breakfast_spoon` 在 `wide_storage_bin` 里
 - 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `rolling_pin` 完全在 `wide_storage_bin` 里（没有露出边沿）
-    - `breakfast_spoon` 完全在 `wide_storage_bin` 里（没有露出边沿）
-  - 第 2 组：
-    - `rolling_pin` 完全在 `mug` 里（没有露出边沿）
-    - `breakfast_spoon` 完全在 `mug` 里（没有露出边沿）
-  - 第 3 组：
-    - `rolling_pin` 完全在 `small_storage_bin` 里（没有露出边沿）
-    - `breakfast_spoon` 完全在 `small_storage_bin` 里（没有露出边沿）
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `search(object=wide_storage_bin, region=bedroom_0_1)` → 3. `navigate(destination=bookcase_2/top)` → 4. `look(target=bookcase_2/top)` → 5. `measure(object=mug)` → 6. `measure(object=small_storage_bin)` → 7. `measure(object=rolling_pin)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=wide_storage_bin)` → 11. `approach(target=wide_storage_bin)` → 12. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 13. `navigate(destination=rolling_pin)` → 14. `pick(object=rolling_pin)` → 15. `navigate(destination=wide_storage_bin)` → 16. `approach(target=wide_storage_bin)` → 17. `place(object=rolling_pin, receptacle=wide_storage_bin)`
+1. `look(target=kitchen_island/top)` → 2. `search(object=wide_storage_bin, region=bedroom_0_1)` → 3. `navigate(destination=bookcase_2/top)` → 4. `look(target=bookcase_2/top)` → 5. `measure(object=small_storage_bin)` → 6. `measure(object=rolling_pin)` → 7. `navigate(destination=breakfast_spoon)` → 8. `pick(object=breakfast_spoon)` → 9. `navigate(destination=wide_storage_bin)` → 10. `approach(target=wide_storage_bin)` → 11. `drop(object=breakfast_spoon, container=wide_storage_bin)` → 12. `navigate(destination=rolling_pin)` → 13. `pick(object=rolling_pin)` → 14. `navigate(destination=wide_storage_bin)` → 15. `approach(target=wide_storage_bin)` → 16. `place(object=rolling_pin, receptacle=wide_storage_bin)`
 
 ### which_bin_by_contents（Task）
 
@@ -460,7 +447,7 @@
 
 ### no_bin_substitute（Task）
 
-**情况**：家里没有储物箱；岛台上的马克杯（口 8 cm）和电视柜上的小箱（22 × 17 cm）都放不下 22 cm 的擀面杖；餐桌上的果篮够大但装着苹果和橙子；指令说没有储物箱就找能装下两样的东西代替 → 量尺寸排除近处的两个，不用果篮，去别的房间找替代品，两样都放进去
+**情况**：家里没有储物箱；电视柜上的小箱（22 × 17 cm）放不下 22 cm 的擀面杖；餐桌上的果篮够大但装着苹果和橙子；指令说没有储物箱就找能装下两样的东西代替 → 量尺寸排除小箱，不用果篮，去别的房间找替代品，两样都放进去
 
 **指令**：烘焙结束了，把擀面杖和勺子一起收进储物箱；没有的话，找个能把两样一起装下的东西代替。
 
@@ -481,8 +468,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `basket`：1. `look(target=kitchen_island/top)` → 2. `measure(object=mug)` → 3. `measure(object=rolling_pin)` → 4. `look(target=tv_stand_2/top)` → 5. `measure(object=small_storage_bin)` → 6. `search(object=storage_basket, region=bedroom_0_1)` → 7. `navigate(destination=storage_basket)` → 8. `look(target=storage_basket)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=storage_basket)` → 12. `approach(target=storage_basket)` → 13. `drop(object=breakfast_spoon, container=storage_basket)` → 14. `navigate(destination=rolling_pin)` → 15. `pick(object=rolling_pin)` → 16. `navigate(destination=storage_basket)` → 17. `approach(target=storage_basket)` → 18. `place(object=rolling_pin, receptacle=storage_basket)`
-- 摆法 `tray`：1. `look(target=kitchen_island/top)` → 2. `measure(object=mug)` → 3. `measure(object=rolling_pin)` → 4. `look(target=tv_stand_2/top)` → 5. `measure(object=small_storage_bin)` → 6. `search(object=serving_tray, region=living_room_0_1)` → 7. `navigate(destination=serving_tray)` → 8. `look(target=serving_tray)` → 9. `navigate(destination=breakfast_spoon)` → 10. `pick(object=breakfast_spoon)` → 11. `navigate(destination=serving_tray)` → 12. `approach(target=serving_tray)` → 13. `place(object=breakfast_spoon, receptacle=serving_tray)` → 14. `navigate(destination=rolling_pin)` → 15. `pick(object=rolling_pin)` → 16. `navigate(destination=serving_tray)` → 17. `approach(target=serving_tray)` → 18. `place(object=rolling_pin, receptacle=serving_tray)`
+- 摆法 `basket`：1. `look(target=kitchen_island/top)` → 2. `measure(object=rolling_pin)` → 3. `look(target=tv_stand_2/top)` → 4. `measure(object=small_storage_bin)` → 5. `search(object=storage_basket, region=bedroom_0_1)` → 6. `navigate(destination=storage_basket)` → 7. `look(target=storage_basket)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=storage_basket)` → 11. `approach(target=storage_basket)` → 12. `drop(object=breakfast_spoon, container=storage_basket)` → 13. `navigate(destination=rolling_pin)` → 14. `pick(object=rolling_pin)` → 15. `navigate(destination=storage_basket)` → 16. `approach(target=storage_basket)` → 17. `place(object=rolling_pin, receptacle=storage_basket)`
+- 摆法 `tray`：1. `look(target=kitchen_island/top)` → 2. `measure(object=rolling_pin)` → 3. `look(target=tv_stand_2/top)` → 4. `measure(object=small_storage_bin)` → 5. `search(object=serving_tray, region=living_room_0_1)` → 6. `navigate(destination=serving_tray)` → 7. `look(target=serving_tray)` → 8. `navigate(destination=breakfast_spoon)` → 9. `pick(object=breakfast_spoon)` → 10. `navigate(destination=serving_tray)` → 11. `approach(target=serving_tray)` → 12. `place(object=breakfast_spoon, receptacle=serving_tray)` → 13. `navigate(destination=rolling_pin)` → 14. `pick(object=rolling_pin)` → 15. `navigate(destination=serving_tray)` → 16. `approach(target=serving_tray)` → 17. `place(object=rolling_pin, receptacle=serving_tray)`
 
 ### utensils_apart（Task）
 

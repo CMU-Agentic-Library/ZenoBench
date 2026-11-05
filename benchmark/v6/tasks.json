@@ -9276,7 +9276,7 @@
       }
      }
     },
-    "mug_or_bedroom_bin": {
+    "small_bin_or_bedroom_bin": {
      "move": {
       "mug": {
        "support": "kitchen_island/top",
@@ -9315,13 +9315,51 @@
       "small_container_present",
       "not_in_view"
      ],
+     "remove": [
+      "mug"
+     ],
+     "add": {
+      "small_storage_bin": {
+       "asset": "small_storage_bin",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.1,
+        1.75
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "rolling_pin",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "breakfast_spoon",
+        "wide_storage_bin"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "rolling_pin",
+      "breakfast_spoon",
+      "wide_storage_bin",
+      "small_storage_bin"
+     ],
      "since": "v6",
-     "note": "a mug (8 cm opening) stands on the island next to the utensils; the wide storage bin is on the low bookcase in the bedroom",
+     "note": "a small storage bin (22 x 17 cm) stands on the island next to the utensils: the spoon would fit, the 22 cm rolling pin is as long as the bin's outside and does not; the wide storage bin is on the low bookcase in the bedroom",
      "v6": {
-      "family": "mug_or_bedroom_bin",
+      "family": "small_bin_or_bedroom_bin",
       "case": null,
-      "challenge": "a mug (8 cm opening) stands on the island next to the utensils; the wide storage bin is on the low bookcase in the bedroom",
-      "rationale": "the near mug cannot take the 22 cm rolling pin, so both utensils go to the bin in the bedroom",
+      "challenge": "a small storage bin (22 x 17 cm) stands on the island next to the utensils: the spoon would fit, the 22 cm rolling pin is as long as the bin's outside and does not; the wide storage bin is on the low bookcase in the bedroom",
+      "rationale": "measure: the near bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom",
       "control": "large_only",
       "contrast": null,
       "factor": null,
@@ -9331,17 +9369,18 @@
       "clusters": [
        {
         "names": [
-         "mug"
+         "mug",
+         "small_storage_bin"
         ],
         "support": "kitchen_island/top",
         "box": [
-         7.9038,
+         6.99,
          1.6017,
          7.9964,
-         1.7283
+         1.835
         ],
         "dx": [
-         -1.35,
+         -0.43,
          0.25
         ],
         "dy": [
@@ -9447,14 +9486,6 @@
        ],
        "yaw_deg": 0.0
       },
-      "mug": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.9501,
-        1.665
-       ],
-       "yaw_deg": 0.0
-      },
       "rolling_pin": {
        "support": "kitchen_island/top",
        "xy": [
@@ -9487,67 +9518,41 @@
       "joint_capacity",
       "not_in_view"
      ],
+     "remove": [
+      "mug"
+     ],
      "goal": {
-      "any": [
-       [
-        [
-         "fully_inside",
-         "rolling_pin",
-         "wide_storage_bin"
-        ],
-        [
-         "fully_inside",
-         "breakfast_spoon",
-         "wide_storage_bin"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "rolling_pin",
-         "mug"
-        ],
-        [
-         "fully_inside",
-         "breakfast_spoon",
-         "mug"
-        ]
-       ],
-       [
-        [
-         "fully_inside",
-         "rolling_pin",
-         "small_storage_bin"
-        ],
-        [
-         "fully_inside",
-         "breakfast_spoon",
-         "small_storage_bin"
-        ]
-       ]
-      ],
       "all": [
+       [
+        "inside",
+        "rolling_pin",
+        "wide_storage_bin"
+       ],
+       [
+        "inside",
+        "breakfast_spoon",
+        "wide_storage_bin"
+       ],
        [
         "hand_empty",
         "right"
        ]
       ]
      },
-     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
-     "instruction_zh": "烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
      "watch": [
       "rolling_pin",
       "breakfast_spoon",
-      "mug",
       "wide_storage_bin",
       "small_storage_bin"
      ],
+     "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
+     "instruction_zh": "烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
      "since": "v6",
-     "note": "the mug on the island next to the utensils; a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
+     "note": "a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
      "v6": {
       "family": "three_containers_bedroom",
       "case": null,
-      "challenge": "the mug on the island next to the utensils; a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
+      "challenge": "a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
       "rationale": "by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then carry both utensils there",
       "control": "large_only",
       "contrast": null,
@@ -9556,26 +9561,6 @@
      },
      "layout": {
       "clusters": [
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.9038,
-         1.6017,
-         7.9964,
-         1.7283
-        ],
-        "dx": [
-         -1.35,
-         0.25
-        ],
-        "dy": [
-         -0.07,
-         0.06
-        ]
-       },
        {
         "names": [
          "breakfast_spoon"
@@ -10200,14 +10185,6 @@
     },
     "no_bin_substitute__basket": {
      "move": {
-      "mug": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.9501,
-        1.665
-       ],
-       "yaw_deg": 0.0
-      },
       "rolling_pin": {
        "support": "kitchen_island/top",
        "xy": [
@@ -10226,6 +10203,7 @@
       }
      },
      "remove": [
+      "mug",
       "wide_storage_bin"
      ],
      "conditions": [
@@ -10317,7 +10295,6 @@
      "watch": [
       "rolling_pin",
       "breakfast_spoon",
-      "mug",
       "small_storage_bin",
       "storage_basket",
       "fruit_basket",
@@ -10325,12 +10302,12 @@
       "orange"
      ],
      "since": "v6",
-     "note": "no storage bin in the house; the mug on the island (8 cm opening) and a small bin on the TV stand (22 x 17 cm) are too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+     "note": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
      "v6": {
       "family": "no_bin_substitute",
       "case": "basket",
-      "challenge": "no storage bin in the house; the mug on the island (8 cm opening) and a small bin on the TV stand (22 x 17 cm) are too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
-      "rationale": "the named bin is absent: measure the near containers, rule them out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
+      "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+      "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
       "control": "large_only",
       "contrast": null,
       "factor": "which substitute and where (seed: the storage basket on the bedroom floor or the serving tray on the study desk)",
@@ -10358,26 +10335,6 @@
         "dy": [
          0.0,
          0.21
-        ]
-       },
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.9038,
-         1.6017,
-         7.9964,
-         1.7283
-        ],
-        "dx": [
-         -1.35,
-         0.25
-        ],
-        "dy": [
-         -0.07,
-         0.06
         ]
        },
        {
@@ -10499,14 +10456,6 @@
     },
     "no_bin_substitute__tray": {
      "move": {
-      "mug": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.9501,
-        1.665
-       ],
-       "yaw_deg": 0.0
-      },
       "rolling_pin": {
        "support": "kitchen_island/top",
        "xy": [
@@ -10525,6 +10474,7 @@
       }
      },
      "remove": [
+      "mug",
       "wide_storage_bin"
      ],
      "conditions": [
@@ -10615,7 +10565,6 @@
      "watch": [
       "rolling_pin",
       "breakfast_spoon",
-      "mug",
       "small_storage_bin",
       "serving_tray",
       "fruit_basket",
@@ -10623,12 +10572,12 @@
       "orange"
      ],
      "since": "v6",
-     "note": "no storage bin in the house; the mug on the island (8 cm opening) and a small bin on the TV stand (22 x 17 cm) are too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+     "note": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
      "v6": {
       "family": "no_bin_substitute",
       "case": "tray",
-      "challenge": "no storage bin in the house; the mug on the island (8 cm opening) and a small bin on the TV stand (22 x 17 cm) are too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
-      "rationale": "the named bin is absent: measure the near containers, rule them out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
+      "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+      "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
       "control": "large_only",
       "contrast": null,
       "factor": "which substitute and where (seed: the storage basket on the bedroom floor or the serving tray on the study desk)",
@@ -10676,26 +10625,6 @@
         "dy": [
          0.0,
          0.21
-        ]
-       },
-       {
-        "names": [
-         "mug"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.9038,
-         1.6017,
-         7.9964,
-         1.7283
-        ],
-        "dx": [
-         -1.35,
-         0.25
-        ],
-        "dy": [
-         -0.07,
-         0.06
         ]
        },
        {
@@ -11225,7 +11154,7 @@
    "nominal": "nominal",
    "oracle": {
     "large_only": "nominal",
-    "mug_or_bedroom_bin": "v6_mug_or_bedroom_bin",
+    "small_bin_or_bedroom_bin": "v6_small_bin_or_bedroom_bin",
     "three_containers_bedroom": "v6_three_containers_bedroom",
     "which_bin_by_contents__toys_near": "v6_which_bin_by_contents__toys_near",
     "which_bin_by_contents__tools_near": "v6_which_bin_by_contents__tools_near",
@@ -11319,12 +11248,24 @@
      ],
      "since": "v2"
     },
-    "v6_mug_or_bedroom_bin": {
+    "v6_small_bin_or_bedroom_bin": {
      "steps": [
       {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "small_storage_bin"
+       }
+      },
+      {
+       "skill": "measure",
+       "args": {
+        "object": "rolling_pin"
        }
       },
       {
@@ -11410,7 +11351,7 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "mug_or_bedroom_bin"
+     "variant": "small_bin_or_bedroom_bin"
     },
     "v6_three_containers_bedroom": {
      "steps": [
@@ -11437,12 +11378,6 @@
        "skill": "look",
        "args": {
         "target": "bookcase_2/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "mug"
        }
       },
       {
@@ -11713,12 +11648,6 @@
       {
        "skill": "measure",
        "args": {
-        "object": "mug"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
         "object": "rolling_pin"
        }
       },
@@ -11825,12 +11754,6 @@
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "measure",
-       "args": {
-        "object": "mug"
        }
       },
       {
@@ -12182,24 +12105,24 @@
       "19": "large_only"
      }
     },
-    "mug_or_bedroom_bin": {
+    "small_bin_or_bedroom_bin": {
      "origin": "v6",
      "control": "large_only",
      "layouts": [
-      "mug_or_bedroom_bin"
+      "small_bin_or_bedroom_bin"
      ],
      "factor": null,
      "seeds": {
-      "10": "mug_or_bedroom_bin",
-      "11": "mug_or_bedroom_bin",
-      "12": "mug_or_bedroom_bin",
-      "13": "mug_or_bedroom_bin",
-      "14": "mug_or_bedroom_bin",
-      "15": "mug_or_bedroom_bin",
-      "16": "mug_or_bedroom_bin",
-      "17": "mug_or_bedroom_bin",
-      "18": "mug_or_bedroom_bin",
-      "19": "mug_or_bedroom_bin"
+      "10": "small_bin_or_bedroom_bin",
+      "11": "small_bin_or_bedroom_bin",
+      "12": "small_bin_or_bedroom_bin",
+      "13": "small_bin_or_bedroom_bin",
+      "14": "small_bin_or_bedroom_bin",
+      "15": "small_bin_or_bedroom_bin",
+      "16": "small_bin_or_bedroom_bin",
+      "17": "small_bin_or_bedroom_bin",
+      "18": "small_bin_or_bedroom_bin",
+      "19": "small_bin_or_bedroom_bin"
      }
     },
     "three_containers_bedroom": {
@@ -12287,9 +12210,9 @@
     }
    },
    "v6_replaced": {
-    "small_and_large": "replaced by mug_or_bedroom_bin (the bin in the bedroom)",
+    "small_and_large": "replaced by small_bin_or_bedroom_bin (a small bin near, the wide bin in the bedroom; a mug is no candidate for a rolling pin)",
     "h_dynamic_pin_taken": "removed: no dynamic events in T03 (someone takes the rolling pin away)",
-    "far_small_and_large": "removed: the bin on the TV stand is the in-place choice mug_or_bedroom_bin replaced, and its route tried the rolling pin in the mug first",
+    "far_small_and_large": "removed: the bin on the TV stand is the in-place choice small_bin_or_bedroom_bin replaced, and its route tried the rolling pin in the mug first",
     "three_containers": "replaced by three_containers_bedroom (the bins in the bedroom)"
    },
    "v6_dropped": {
@@ -12297,9 +12220,9 @@
     "m_grasp_spoon": "only injected action failures",
     "h_action_slip_and_miss": "same as three_containers without its injected action failures",
     "h_mixed_three_containers_ik": "same as three_containers without its injected action failures",
-    "small_and_large": "replaced by mug_or_bedroom_bin (the bin in the bedroom)",
+    "small_and_large": "replaced by small_bin_or_bedroom_bin (a small bin near, the wide bin in the bedroom; a mug is no candidate for a rolling pin)",
     "h_dynamic_pin_taken": "removed: no dynamic events in T03 (someone takes the rolling pin away)",
-    "far_small_and_large": "removed: the bin on the TV stand is the in-place choice mug_or_bedroom_bin replaced, and its route tried the rolling pin in the mug first",
+    "far_small_and_large": "removed: the bin on the TV stand is the in-place choice small_bin_or_bedroom_bin replaced, and its route tried the rolling pin in the mug first",
     "three_containers": "replaced by three_containers_bedroom (the bins in the bedroom)"
    },
    "v6_tracks": {
@@ -12308,7 +12231,7 @@
      "local": [],
      "longer": []
     },
-    "mug_or_bedroom_bin": {
+    "small_bin_or_bedroom_bin": {
      "category": "task",
      "local": [],
      "longer": [

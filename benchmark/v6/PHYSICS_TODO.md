@@ -22,7 +22,7 @@
 | T02 | tower_for_kid_duck | task | 0/0 of 10 | - |
 | T02 | block_put_away | action_task | 0/0 of 10 | low cabinet doors |
 | T03 | large_only | control | 0/0 of 10 | - |
-| T03 | mug_or_bedroom_bin | task | 0/0 of 10 | - |
+| T03 | small_bin_or_bedroom_bin | task | 0/0 of 10 | - |
 | T03 | three_containers_bedroom | task | 0/0 of 10 | - |
 | T03 | which_bin_by_contents | task | 0/0 of 10 | - |
 | T03 | no_bin_substitute | task | 0/0 of 10 | - |

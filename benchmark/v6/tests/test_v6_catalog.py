@@ -179,7 +179,7 @@ def test_every_layout_has_its_route():
 
 def test_in_place_choices_are_redesigned_at_a_longer_horizon():
     """The substitute / container / pot is in another room; the in-place variant left v6."""
-    for tid, old, new in (("T03_utensils_one_container", "small_and_large", "mug_or_bedroom_bin"),
+    for tid, old, new in (("T03_utensils_one_container", "small_and_large", "small_bin_or_bedroom_bin"),
                           ("T03_utensils_one_container", "three_containers", "three_containers_bedroom"),
                           ("T09_tomato_soup", "cookware_choice", "pot_in_dining_room")):
         t = TASKS[tid]

@@ -1052,72 +1052,72 @@
 {
 "task": "T03_utensils_one_container",
 "seed": 10,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 11,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 12,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 13,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 14,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 15,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 16,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 17,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 18,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",
 "seed": 19,
-"variant": "mug_or_bedroom_bin",
-"route": "v6_mug_or_bedroom_bin",
-"family": "mug_or_bedroom_bin"
+"variant": "small_bin_or_bedroom_bin",
+"route": "v6_small_bin_or_bedroom_bin",
+"family": "small_bin_or_bedroom_bin"
 },
 {
 "task": "T03_utensils_one_container",

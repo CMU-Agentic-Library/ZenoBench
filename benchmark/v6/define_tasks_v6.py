@@ -1186,24 +1186,32 @@ def T03_long(t):
                  nav("bookcase_2/top"), look("bookcase_2/top")]
     put_both = [nav(spoon), pick(spoon), nav(bin_), S("approach", target=bin_), S("drop", object=spoon, container=bin_),
                 nav(pin), pick(pin), nav(bin_), S("approach", target=bin_), place(pin, bin_)]
+    bin_goal = {"all": [["inside", pin, bin_], ["inside", spoon, bin_], ["hand_empty", "right"]]}   # no mug option
     return {
-        "mug_or_bedroom_bin": dict(
+        "small_bin_or_bedroom_bin": dict(
             base="small_and_large", control="large_only", conditions=["small_container_present", "not_in_view"],
-            move={bin_: copy.deepcopy(BEDROOM_BIN)},
-            challenge="a mug (8 cm opening) stands on the island next to the utensils; the wide storage bin is on the "
-                      "low bookcase in the bedroom",
-            rationale="the near mug cannot take the 22 cm rolling pin, so both utensils go to the bin in the bedroom",
-            cases={"": dict(route=find_bins + put_both)}),
+            move={bin_: copy.deepcopy(BEDROOM_BIN)}, remove=["mug"],
+            add={"small_storage_bin": {"asset": "small_storage_bin", "support": "kitchen_island/top", "xy": [7.1, 1.75],
+                                       "yaw_deg": 0.0}},
+            goal=bin_goal, watch=[pin, spoon, bin_, "small_storage_bin"],
+            challenge="a small storage bin (22 x 17 cm) stands on the island next to the utensils: the spoon would fit, "
+                      "the 22 cm rolling pin is as long as the bin's outside and does not; the wide storage bin is on "
+                      "the low bookcase in the bedroom",
+            rationale="measure: the near bin cannot take the rolling pin, and both go into one container, so both "
+                      "utensils go to the wide bin in the bedroom",
+            cases={"": dict(route=[look("kitchen_island/top"), S("measure", object="small_storage_bin"),
+                                   S("measure", object=pin)] + find_bins[1:] + put_both)}),
         "three_containers_bedroom": dict(
             base="three_containers", control="large_only", conditions=["joint_capacity", "not_in_view"],
-            move={bin_: {"support": "bookcase_2/top", "xy": [0.885, -0.43], "yaw_deg": 0.0}},
+            move={bin_: {"support": "bookcase_2/top", "xy": [0.885, -0.43], "yaw_deg": 0.0}}, remove=["mug"],
             add={"small_storage_bin": {"asset": "small_storage_bin", "support": "bookcase_2/top",
                                        "xy": [1.195, -0.43], "yaw_deg": 90.0}},
-            challenge="the mug on the island next to the utensils; a small storage bin (22 x 17 cm) and the wide "
-                      "storage bin side by side on the low bookcase in the bedroom",
+            goal=bin_goal, watch=[pin, spoon, bin_, "small_storage_bin"],
+            challenge="a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in "
+                      "the bedroom",
             rationale="by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then "
                       "carry both utensils there",
-            cases={"": dict(route=find_bins + [S("measure", object="mug"), S("measure", object="small_storage_bin"),
+            cases={"": dict(route=find_bins + [S("measure", object="small_storage_bin"),
                                                 S("measure", object=pin)] + put_both)}),
     }
 
@@ -1211,7 +1219,7 @@ def T03_long(t):
 def T03_more(t):
     """Task-Level designs of T03 beyond the container size: which bin by its contents, a substitute container, the
     spoon in another room."""
-    bin_, spoon, pin, mug = "wide_storage_bin", "breakfast_spoon", "rolling_pin", "mug"
+    bin_, spoon, pin = "wide_storage_bin", "breakfast_spoon", "rolling_pin"
     TV_BIN = {"support": "tv_stand_2/top", "xy": [7.3, 0.4], "yaw_deg": 0.0}
     sup_z = {"tv_stand_2/top": 0.484, "bookcase_2/top": 0.709}
 
@@ -1245,7 +1253,7 @@ def T03_more(t):
                           *[["inside", n, TOY] for n, *_ in toys], *[["inside", n, bin_] for n, *_ in tools],
                           ["hand_empty", "right"]]}
 
-    # no_bin_substitute: no wide bin; the mug (island) and a small bin (TV stand) are too small; the substitute (the
+    # no_bin_substitute: no wide bin; the small bin (TV stand) is too small; the substitute (the
     # storage basket on the bedroom floor or the serving tray on the study desk) is in another room; the fruit
     # basket on the dining table is big enough but holds fruit
     subs = {"basket": ("storage_basket", {"support": None, "z": 0.001, "xy": [0.894, -1.931], "yaw_deg": 0.0},
@@ -1263,8 +1271,8 @@ def T03_more(t):
             add={**small, **fruit, x: {"asset": x, **pose}},
             goal={"all": [["inside", pin, x], ["inside", spoon, x], ["inside", "apple", "fruit_basket"],
                           ["inside", "orange", "fruit_basket"], ["hand_empty", "right"]]},
-            watch=[pin, spoon, mug, "small_storage_bin", x, "fruit_basket", "apple", "orange"],
-            route=[look("kitchen_island/top"), S("measure", object=mug), S("measure", object=pin),
+            watch=[pin, spoon, "small_storage_bin", x, "fruit_basket", "apple", "orange"],
+            route=[look("kitchen_island/top"), S("measure", object=pin),
                    look("tv_stand_2/top"), S("measure", object="small_storage_bin"),
                    S("search", object=x, region=region), nav(x), look(x)] + put_both(x, drop_spoon=(x != "serving_tray")))
 
@@ -1296,17 +1304,16 @@ def T03_more(t):
         "no_bin_substitute": dict(
             base="large_only", control="large_only", conditions=["container_absent", "small_container_present",
                                                                  "decoy_destination", "not_in_view"],
-            remove=[bin_], move={mug: {"support": "kitchen_island/top", "xy": [7.9501, 1.665], "yaw_deg": 0.0}},
+            remove=[bin_],
             instruction="Baking is done. Put the rolling pin and the spoon away together in the storage bin; if there "
                         "is none, use something else that holds both.",
             instruction_zh="烘焙结束了，把擀面杖和勺子一起收进储物箱；没有的话，找个能把两样一起装下的东西代替。",
             factor="which substitute and where (seed: the storage basket on the bedroom floor or the serving tray "
                    "on the study desk)",
-            challenge="no storage bin in the house; the mug on the island (8 cm opening) and a small bin on the TV "
-                      "stand (22 x 17 cm) are too small for the 22 cm rolling pin; the fruit basket on the dining "
-                      "table is big enough but holds an apple and an orange; a basket or a tray in another room holds "
-                      "both",
-            rationale="the named bin is absent: measure the near containers, rule them out by size, do not use the "
+            challenge="no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the "
+                      "22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an "
+                      "orange; a basket or a tray in another room holds both",
+            rationale="the named bin is absent: measure the near bin, rule it out by size, do not use the "
                       "fruit basket (food), find the substitute in another room and put both utensils in it",
             cases=sub_cases),
         "utensils_apart": dict(
@@ -1349,11 +1356,12 @@ REPLACED = {
                                                            "variant of T01",
     ("T01_book_to_dining_table", "far_no_overhang"): "replaced by which_table (the search was one turn to the island; "
                                                      "now the table the guests eat at is to be found)",
-    ("T03_utensils_one_container", "small_and_large"): "replaced by mug_or_bedroom_bin (the bin in the bedroom)",
+    ("T03_utensils_one_container", "small_and_large"): "replaced by small_bin_or_bedroom_bin (a small bin near, the wide "
+                                                       "bin in the bedroom; a mug is no candidate for a rolling pin)",
     ("T03_utensils_one_container", "h_dynamic_pin_taken"): "removed: no dynamic events in T03 (someone takes the "
                                                            "rolling pin away)",
     ("T03_utensils_one_container", "far_small_and_large"): "removed: the bin on the TV stand is the in-place choice "
-                                                           "mug_or_bedroom_bin replaced, and its route tried the "
+                                                           "small_bin_or_bedroom_bin replaced, and its route tried the "
                                                            "rolling pin in the mug first",
     ("T03_utensils_one_container", "three_containers"): "replaced by three_containers_bedroom (the bins in the bedroom)",
     ("T04_cup_or_mug_to_cabinet", "h_dynamic_cup_taken"): "removed: no dynamic events in T04 (someone takes the cup away)",
