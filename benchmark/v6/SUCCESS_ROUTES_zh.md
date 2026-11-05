@@ -983,7 +983,7 @@
 
 ### occupied（Task）
 
-**情况**：矮柜顶被锅盖和燕麦碗占着，中间的缝太窄 → 改放电视柜
+**情况**：矮柜顶被锅盖和燕麦碗占着，中间的缝太窄 → 看一眼柜顶，发现满了就改放电视柜（不先往满的柜顶上放）
 
 **成功条件**：
 
@@ -1000,7 +1000,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)` → 6. `navigate(destination=tv_stand_2/top)`（换做法） → 7. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
+1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `look(target=kitchen_cabinet_6/top)` → 5. `navigate(destination=tv_stand_2/top)`（换做法） → 6. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
 
 ### occupied_block_away（Task）
 
@@ -1021,8 +1021,8 @@
 
 **参考调用顺序**：
 
-- 摆法 `occupied_block_away`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=dining_room_0_1)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)` → 7. `navigate(destination=tv_stand_2/top)`（换做法） → 8. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
-- 摆法 `alt_tv_stand_2`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=living_room_0_0)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=kitchen_cabinet_6/top)` → 6. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)` → 7. `navigate(destination=tv_stand_2/top)`（换做法） → 8. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
+- 摆法 `occupied_block_away`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=dining_room_0_1)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `look(target=kitchen_cabinet_6/top)` → 6. `navigate(destination=tv_stand_2/top)`（换做法） → 7. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
+- 摆法 `alt_tv_stand_2`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=living_room_0_0)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `look(target=kitchen_cabinet_6/top)` → 6. `navigate(destination=tv_stand_2/top)`（换做法） → 7. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
 
 ### display_hidden（Task）
 
@@ -1056,48 +1056,70 @@
 
 1. `look(target=kitchen_island/top)` → 2. `look(target=kitchen_cabinet_6/top)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `navigate(destination=tv_stand_2/top)`（换做法） → 6. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
 
-### h_dynamic_cabinet_filled（Task）
+### display_row（Task）
 
-**情况**：拿起积木后有人把锅盖和燕麦碗放到柜顶 → 改放电视柜
+**情况**：三块积木要在靠墙矮柜顶排成一排展示：摆正、放在前面看得见的地方、彼此别挨着；积木散在不同地方 → 一块块拿来，每放一块都要给下一块留位置
 
-**成功条件**：
-
-- 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-  - 第 2 组：
-    - `wooden_block_a` 在 `tv_stand_2/top` 上
-  - 第 3 组：
-    - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
-  - 第 4 组：
-    - `wooden_block_b` 在 `tv_stand_2/top` 上
-
-**参考调用顺序**：
-
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)` → 6. `navigate(destination=tv_stand_2/top)`（换做法） → 7. `place(object=wooden_block_a, receptacle=tv_stand_2/top)`（换做法）
-
-### x6_gd_two_displays_event（Task）
-
-**情况**：两块积木分别放矮柜和电视柜；第一块放好后孩子把另一块拿走 → 找回来放到电视柜
-
-**指令**：Put both toy blocks on display: one on the low wall cabinet and one on the TV stand, so they can be seen from both rooms.
+**指令**：把三块积木在靠墙矮柜顶上排成一排展示：摆正（和柜子边平行），放在前面看得见的地方，彼此别挨着。
 
 **成功条件**：
 
+- `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+- `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
+- `floor_block` 在 `kitchen_cabinet_6/top` 上
+- `["squared", "wooden_block_a"]`
+- `["squared", "wooden_block_b"]`
+- `["squared", "floor_block"]`
+- `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+- `wooden_block_b` 从房间里看得见（前面没有更高的东西挡着）
+- `floor_block` 从房间里看得见（前面没有更高的东西挡着）
+- `wooden_block_a` 离这些东西都至少 3 cm：`wooden_block_b`、`floor_block`
+- `wooden_block_b` 离这些东西都至少 3 cm：`wooden_block_a`、`floor_block`
+- `floor_block` 离这些东西都至少 3 cm：`wooden_block_a`、`wooden_block_b`
 - 手里空着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
-    - `wooden_block_b` 在 `tv_stand_2/top` 上
-  - 第 2 组：
-    - `wooden_block_b` 在 `kitchen_cabinet_6/top` 上
-    - `wooden_block_a` 在 `tv_stand_2/top` 上
 
 **参考调用顺序**：
 
-- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)` → 6. `search(object=wooden_block_b, region=dining_room_0_1)`（补救） → 7. `navigate(destination=wooden_block_b)`（补救） → 8. `pick(object=wooden_block_b)`（补救） → 9. `navigate(destination=tv_stand_2/top)`（补救） → 10. `place(object=wooden_block_b, receptacle=tv_stand_2/top)`（补救）
-- 摆法 `cabinet4`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top)` → 6. `search(object=wooden_block_b)`（补救） → 7. `navigate(destination=wooden_block_b)`（补救） → 8. `pick(object=wooden_block_b)`（补救） → 9. `navigate(destination=tv_stand_2/top)`（补救） → 10. `place(object=wooden_block_b, receptacle=tv_stand_2/top)`（补救）
+- 摆法 `island_floor`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 6. `navigate(destination=wooden_block_b)` → 7. `pick(object=wooden_block_b)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 10. `search(object=floor_block, region=living_room_0_0)` → 11. `navigate(destination=floor_block)` → 12. `pick(object=floor_block)` → 13. `navigate(destination=kitchen_cabinet_6/top)` → 14. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])`
+- 摆法 `spread`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `navigate(destination=kitchen_cabinet_6/top)` → 5. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.32, 0.45])` → 6. `search(object=wooden_block_b, region=dining_room_0_1)` → 7. `navigate(destination=wooden_block_b)` → 8. `pick(object=wooden_block_b)` → 9. `navigate(destination=kitchen_cabinet_6/top)` → 10. `place(object=wooden_block_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.5, 0.45])` → 11. `search(object=floor_block, region=kitchen_0_1)` → 12. `navigate(destination=floor_block)` → 13. `pick(object=floor_block)` → 14. `navigate(destination=kitchen_cabinet_6/top)` → 15. `place(object=floor_block, receptacle=kitchen_cabinet_6/top, hint_xy=[3.68, 0.45])`
+
+### clear_front_row（Action）
+
+**情况**：矮柜顶前排立着两盒麦片和果汁，后面的空位从房间里看不到；这次只能放矮柜 → 在柜顶原地把一盒麦片挪到后面，空出前排，再放积木；麦片和果汁都还立在柜顶上
+
+**指令**：把积木摆到靠墙矮柜顶上展示，要从房间里看得见。
+
+**成功条件**：
+
+- `wooden_block_a` 在 `kitchen_cabinet_6/top` 上
+- `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+- `wooden_block_a` 离台面边缘至少 2 cm
+- `clutter_cereal_a` 在 `kitchen_cabinet_6/top` 上
+- `clutter_cereal_b` 在 `kitchen_cabinet_6/top` 上
+- `juice_bottle` 在 `kitchen_cabinet_6/top` 上
+- `clutter_cereal_a`、`clutter_cereal_b`、`juice_bottle` 立着
+- 手里空着
+
+**参考调用顺序**：
+
+1. `look(target=kitchen_island/top)` → 2. `navigate(destination=kitchen_cabinet_6/top)` → 3. `look(target=kitchen_cabinet_6/top)` → 4. `pick(object=clutter_cereal_b)` → 5. `place(object=clutter_cereal_b, receptacle=kitchen_cabinet_6/top, hint_xy=[3.43, 0.28])` → 6. `navigate(destination=wooden_block_a)` → 7. `pick(object=wooden_block_a)` → 8. `navigate(destination=kitchen_cabinet_6/top)` → 9. `place(object=wooden_block_a, receptacle=kitchen_cabinet_6/top, hint_xy=[3.433, 0.465])`
+
+### display_by_bed（Task）
+
+**情况**：孩子晚上想躺在床上看着积木；指令只说"床边、躺着能看到"，不说放哪 → 去卧室找到床，放到床边那个矮书架上，放前面
+
+**指令**：孩子晚上想躺在床上看着积木。把积木摆到孩子床边、躺着就能看到的地方。
+
+**成功条件**：
+
+- `wooden_block_a` 在 `bookcase_3/top` 上
+- `wooden_block_a` 从房间里看得见（前面没有更高的东西挡着）
+- 手里空着
+
+**参考调用顺序**：
+
+- 摆法 `island`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=wooden_block_a)` → 3. `pick(object=wooden_block_a)` → 4. `explore_room(room=bedroom_0_1)` → 5. `navigate(destination=bookcase_3/top)` → 6. `look(target=bookcase_3/top)` → 7. `place(object=wooden_block_a, receptacle=bookcase_3/top)`
+- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `search(object=wooden_block_a, region=dining_room_0_1)` → 3. `navigate(destination=wooden_block_a)` → 4. `pick(object=wooden_block_a)` → 5. `explore_room(room=bedroom_0_1)` → 6. `navigate(destination=bookcase_3/top)` → 7. `look(target=bookcase_3/top)` → 8. `place(object=wooden_block_a, receptacle=bookcase_3/top)`
 
 ---
 

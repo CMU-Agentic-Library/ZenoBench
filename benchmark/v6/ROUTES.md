@@ -127,15 +127,20 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 
 * `free` (nominal, 5 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) place(wooden_block_a,kitchen_cabinet_6/top)
 
+### Action-Level
+
+* `clear_front_row` (v6_clear_front_row, 9 steps): look(kitchen_island/top) navigate(kitchen_cabinet_6/top) look(kitchen_cabinet_6/top) pick(clutter_cereal_b) place(clutter_cereal_b,kitchen_cabinet_6/top,[3.43, 0.28]) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) place(wooden_block_a,kitchen_cabinet_6/top,[3.433, 0.465])
+
 ### Task-Level
 
-* `occupied` (alternative_tv_stand, 7 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) !place(wooden_block_a,kitchen_cabinet_6/top) +navigate(tv_stand_2/top) +place(wooden_block_a,tv_stand_2/top)
-* `occupied_block_away` (hard_search_alt_support, 8 steps): look(kitchen_island/top) +search(wooden_block_a,dining_room_0_1) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) !place(wooden_block_a,kitchen_cabinet_6/top) +navigate(tv_stand_2/top) +place(wooden_block_a,tv_stand_2/top)
-* `occupied_block_away__alt_tv_stand_2` (v6_occupied_block_away__alt_tv_stand_2, 8 steps): look(kitchen_island/top) +search(wooden_block_a,living_room_0_0) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) !place(wooden_block_a,kitchen_cabinet_6/top) +navigate(tv_stand_2/top) +place(wooden_block_a,tv_stand_2/top)
+* `occupied` (v6_occupied, 6 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) look(kitchen_cabinet_6/top) +navigate(tv_stand_2/top) +place(wooden_block_a,tv_stand_2/top)
+* `occupied_block_away` (v6_occupied_block_away, 7 steps): look(kitchen_island/top) +search(wooden_block_a,dining_room_0_1) navigate(wooden_block_a) pick(wooden_block_a) look(kitchen_cabinet_6/top) +navigate(tv_stand_2/top) +place(wooden_block_a,tv_stand_2/top)
+* `occupied_block_away__alt_tv_stand_2` (v6_occupied_block_away__alt_tv_stand_2, 7 steps): look(kitchen_island/top) +search(wooden_block_a,living_room_0_0) navigate(wooden_block_a) pick(wooden_block_a) look(kitchen_cabinet_6/top) +navigate(tv_stand_2/top) +place(wooden_block_a,tv_stand_2/top)
 * `display_hidden` (hard_open_display, 6 steps): look(kitchen_island/top) look(kitchen_cabinet_6/top) navigate(wooden_block_a) pick(wooden_block_a) +navigate(tv_stand_2/top) +place(wooden_block_a,tv_stand_2/top)
-* `h_dynamic_cabinet_filled` (v5_h_dynamic_cabinet_filled, 7 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) !place(wooden_block_a,kitchen_cabinet_6/top) +navigate(tv_stand_2/top) +place(wooden_block_a,tv_stand_2/top)
-* `x6_gd_two_displays_event__dining` (v6_x6_gd_two_displays_event__dining, 10 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) place(wooden_block_a,kitchen_cabinet_6/top) +search(wooden_block_b,dining_room_0_1) +navigate(wooden_block_b) +pick(wooden_block_b) +navigate(tv_stand_2/top) +place(wooden_block_b,tv_stand_2/top)
-* `x6_gd_two_displays_event__cabinet4` (v6_x6_gd_two_displays_event__cabinet4, 10 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) place(wooden_block_a,kitchen_cabinet_6/top) +search(wooden_block_b) +navigate(wooden_block_b) +pick(wooden_block_b) +navigate(tv_stand_2/top) +place(wooden_block_b,tv_stand_2/top)
+* `display_row__island_floor` (v6_display_row__island_floor, 14 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) place(wooden_block_a,kitchen_cabinet_6/top,[3.32, 0.45]) navigate(wooden_block_b) pick(wooden_block_b) navigate(kitchen_cabinet_6/top) place(wooden_block_b,kitchen_cabinet_6/top,[3.5, 0.45]) search(floor_block,living_room_0_0) navigate(floor_block) pick(floor_block) navigate(kitchen_cabinet_6/top) place(floor_block,kitchen_cabinet_6/top,[3.68, 0.45])
+* `display_row__spread` (v6_display_row__spread, 15 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) navigate(kitchen_cabinet_6/top) place(wooden_block_a,kitchen_cabinet_6/top,[3.32, 0.45]) search(wooden_block_b,dining_room_0_1) navigate(wooden_block_b) pick(wooden_block_b) navigate(kitchen_cabinet_6/top) place(wooden_block_b,kitchen_cabinet_6/top,[3.5, 0.45]) search(floor_block,kitchen_0_1) navigate(floor_block) pick(floor_block) navigate(kitchen_cabinet_6/top) place(floor_block,kitchen_cabinet_6/top,[3.68, 0.45])
+* `display_by_bed__island` (v6_display_by_bed__island, 7 steps): look(kitchen_island/top) navigate(wooden_block_a) pick(wooden_block_a) explore_room(bedroom_0_1) navigate(bookcase_3/top) look(bookcase_3/top) place(wooden_block_a,bookcase_3/top)
+* `display_by_bed__dining` (v6_display_by_bed__dining, 8 steps): look(kitchen_island/top) search(wooden_block_a,dining_room_0_1) navigate(wooden_block_a) pick(wooden_block_a) explore_room(bedroom_0_1) navigate(bookcase_3/top) look(bookcase_3/top) place(wooden_block_a,bookcase_3/top)
 
 ## T07_heat_oatmeal
 

@@ -600,6 +600,106 @@
 "v6_variant": "cup_in_cabinet_below"
 },
 {
+"task": "T06_block_destination_occupied",
+"seed": 10,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 11,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 12,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 13,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 14,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 15,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 16,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 17,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 18,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
+"task": "T06_block_destination_occupied",
+"seed": 19,
+"variant": "clear_front_row",
+"route": "v6_clear_front_row",
+"planner": "scripted",
+"profile": "benchmark",
+"category": "action",
+"v6_variant": "clear_front_row"
+},
+{
 "task": "T07_heat_oatmeal",
 "seed": 10,
 "variant": "x6_pp_door_opened_after_heat",

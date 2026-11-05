@@ -6256,7 +6256,7 @@
    ]
   },
   "control": "free",
-  "oracle_route": "alternative_tv_stand",
+  "oracle_route": "v6_occupied",
   "challenge": "the pot lid and the oatmeal bowl take up the cabinet top: the 15 cm gap between them is too narrow for a block",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -6329,7 +6329,7 @@
    ]
   },
   "control": "free",
-  "oracle_route": "hard_search_alt_support",
+  "oracle_route": "v6_occupied_block_away",
   "challenge": "the cabinet top is full and the block was left on the dining table",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -6541,9 +6541,226 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/h_dynamic_cabinet_filled": {
-  "variant": "h_dynamic_cabinet_filled",
+ "T06_block_destination_occupied/display_row__island_floor": {
+  "variant": "display_row",
   "category": "task",
+  "seeds": [
+   11,
+   14,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Put the three toy blocks on display in a row on top of the low wall cabinet: squared to its edge, at the front where they can be seen, not touching each other.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "arrangement"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "on",
+     "wooden_block_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "on",
+     "floor_block",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "squared",
+     "wooden_block_a"
+    ],
+    [
+     "squared",
+     "wooden_block_b"
+    ],
+    [
+     "squared",
+     "floor_block"
+    ],
+    [
+     "front_visible",
+     "wooden_block_a"
+    ],
+    [
+     "front_visible",
+     "wooden_block_b"
+    ],
+    [
+     "front_visible",
+     "floor_block"
+    ],
+    [
+     "clear_of",
+     "wooden_block_a",
+     [
+      "wooden_block_b",
+      "floor_block"
+     ],
+     0.03
+    ],
+    [
+     "clear_of",
+     "wooden_block_b",
+     [
+      "wooden_block_a",
+      "floor_block"
+     ],
+     0.03
+    ],
+    [
+     "clear_of",
+     "floor_block",
+     [
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "free",
+  "oracle_route": "v6_display_row__island_floor",
+  "challenge": "three blocks, some out of view, to be arranged together on one small cabinet top (60 x 32 cm)",
+  "rationale": "fetch the blocks one by one and compose the row: each placement has to leave room and spacing for the next, squared and at the front",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T06_block_destination_occupied/display_row__spread": {
+  "variant": "display_row",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   15,
+   16
+  ],
+  "instruction": "Put the three toy blocks on display in a row on top of the low wall cabinet: squared to its edge, at the front where they can be seen, not touching each other.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "floor_block",
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "arrangement"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "on",
+     "wooden_block_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "on",
+     "floor_block",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "squared",
+     "wooden_block_a"
+    ],
+    [
+     "squared",
+     "wooden_block_b"
+    ],
+    [
+     "squared",
+     "floor_block"
+    ],
+    [
+     "front_visible",
+     "wooden_block_a"
+    ],
+    [
+     "front_visible",
+     "wooden_block_b"
+    ],
+    [
+     "front_visible",
+     "floor_block"
+    ],
+    [
+     "clear_of",
+     "wooden_block_a",
+     [
+      "wooden_block_b",
+      "floor_block"
+     ],
+     0.03
+    ],
+    [
+     "clear_of",
+     "wooden_block_b",
+     [
+      "wooden_block_a",
+      "floor_block"
+     ],
+     0.03
+    ],
+    [
+     "clear_of",
+     "floor_block",
+     [
+      "wooden_block_a",
+      "wooden_block_b"
+     ],
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "free",
+  "oracle_route": "v6_display_row__spread",
+  "challenge": "three blocks, some out of view, to be arranged together on one small cabinet top (60 x 32 cm)",
+  "rationale": "fetch the blocks one by one and compose the row: each placement has to leave room and spacing for the next, squared and at the front",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T06_block_destination_occupied/clear_front_row": {
+  "variant": "clear_front_row",
+  "category": "action",
   "seeds": [
    10,
    11,
@@ -6556,109 +6773,72 @@
    18,
    19
   ],
-  "instruction": "Put a toy block on display, either on the low wall cabinet or on the TV stand.",
+  "instruction": "Put the toy block on display on top of the low wall cabinet, where it can be seen from the room.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "clutter_cereal_a",
+    "clutter_cereal_b",
+    "juice_bottle",
     "oatmeal",
     "pot_lid",
     "wooden_block_a",
     "wooden_block_b"
    ],
-   "added": [],
+   "added": [
+    "clutter_cereal_c"
+   ],
    "removed": [],
-   "conditions": [],
+   "conditions": [
+    "destination_full"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "destination_lid",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "pick",
-     "args": {
-      "object": "wooden_block_a"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.335,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   },
-   {
-    "id": "destination_oatmeal",
-    "kind": "destination",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "pick",
-     "args": {
-      "object": "wooden_block_a"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "oatmeal",
-     "to": {
-      "support": "kitchen_cabinet_6/top",
-      "xy": [
-       3.7,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "wooden_block_a",
-      "kitchen_cabinet_6/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "wooden_block_a",
-      "tv_stand_2/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "wooden_block_b",
-      "kitchen_cabinet_6/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "wooden_block_b",
-      "tv_stand_2/top"
-     ]
-    ]
-   ],
    "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "front_visible",
+     "wooden_block_a"
+    ],
+    [
+     "away_from_edge",
+     "wooden_block_a",
+     0.02
+    ],
+    [
+     "on",
+     "clutter_cereal_a",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "on",
+     "clutter_cereal_b",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "on",
+     "juice_bottle",
+     "kitchen_cabinet_6/top"
+    ],
+    [
+     "upright",
+     "clutter_cereal_a"
+    ],
+    [
+     "upright",
+     "clutter_cereal_b"
+    ],
+    [
+     "upright",
+     "juice_bottle"
+    ],
     [
      "hand_empty",
      "right"
@@ -6666,116 +6846,74 @@
    ]
   },
   "control": "free",
-  "oracle_route": "v5_h_dynamic_cabinet_filled",
-  "challenge": "after the block is picked, someone puts the pot lid and the oatmeal on the cabinet top: no room left, the TV stand is the other allowed display",
-  "rationale": "",
+  "oracle_route": "v6_clear_front_row",
+  "challenge": "the front row of the cabinet top is taken by two cereal boxes and a juice bottle; the free space behind them cannot be seen from the room; only this cabinet is allowed",
+  "rationale": "make a visible place at the work spot: move a cereal box to the back, then put the block in the front gap; the boxes and the bottle stay upright on the cabinet",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T06_block_destination_occupied/x6_gd_two_displays_event__dining": {
-  "variant": "x6_gd_two_displays_event",
+ "T06_block_destination_occupied/display_by_bed__island": {
+  "variant": "display_by_bed",
   "category": "task",
   "seeds": [
    10,
+   12,
+   13,
+   17,
+   18
+  ],
+  "instruction": "The kid wants to see the toy block from bed tonight. Put it on display by the kid's bed, where they can see it lying down.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "oatmeal",
+    "pot_lid",
+    "wooden_block_a",
+    "wooden_block_b"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "viewer_place",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "bookcase_3/top"
+    ],
+    [
+     "front_visible",
+     "wooden_block_a"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "free",
+  "oracle_route": "v6_display_by_bed__island",
+  "challenge": "the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
+  "rationale": "work out where the kid lies and what is in view from there: explore the bedroom, find the bed and put the block on the bedside bookcase, at the front",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T06_block_destination_occupied/display_by_bed__dining": {
+  "variant": "display_by_bed",
+  "category": "task",
+  "seeds": [
    11,
    14,
    15,
-   18
-  ],
-  "instruction": "Put both toy blocks on display: one on the low wall cabinet and one on the TV stand, so they can be seen from both rooms.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "oatmeal",
-    "pot_lid",
-    "wooden_block_a",
-    "wooden_block_b"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "resource_block_b",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "wooden_block_a"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "wooden_block_b",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ]
-   ],
-   "any": [
-    [
-     [
-      "on",
-      "wooden_block_a",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "on",
-      "wooden_block_b",
-      "tv_stand_2/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "wooden_block_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "on",
-      "wooden_block_a",
-      "tv_stand_2/top"
-     ]
-    ]
-   ]
-  },
-  "control": "free",
-  "oracle_route": "v6_x6_gd_two_displays_event__dining",
-  "challenge": "two blocks to two displays; once the first block is on the cabinet, the kid carries the other block to the dining table",
-  "rationale": "the goal decomposes into one placement per display; the event moves the second resource after the first subgoal holds: keep block A where it is, find block B",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T06_block_destination_occupied/x6_gd_two_displays_event__cabinet4": {
-  "variant": "x6_gd_two_displays_event",
-  "category": "task",
-  "seeds": [
-   12,
-   13,
    16,
-   17,
    19
   ],
-  "instruction": "Put both toy blocks on display: one on the low wall cabinet and one on the TV stand, so they can be seen from both rooms.",
+  "instruction": "The kid wants to see the toy block from bed tonight. Put it on display by the kid's bed, where they can see it lying down.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
@@ -6787,76 +6925,34 @@
    ],
    "added": [],
    "removed": [],
-   "conditions": [],
+   "conditions": [
+    "viewer_place",
+    "not_in_view"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_block_b",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "place",
-     "args": {
-      "object": "wooden_block_a"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "wooden_block_b",
-     "to": {
-      "support": "kitchen_cabinet_4/top",
-      "xy": [
-       1.4,
-       0.42
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
+    [
+     "on",
+     "wooden_block_a",
+     "bookcase_3/top"
+    ],
+    [
+     "front_visible",
+     "wooden_block_a"
+    ],
     [
      "hand_empty",
      "right"
     ]
-   ],
-   "any": [
-    [
-     [
-      "on",
-      "wooden_block_a",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "on",
-      "wooden_block_b",
-      "tv_stand_2/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "wooden_block_b",
-      "kitchen_cabinet_6/top"
-     ],
-     [
-      "on",
-      "wooden_block_a",
-      "tv_stand_2/top"
-     ]
-    ]
    ]
   },
   "control": "free",
-  "oracle_route": "v6_x6_gd_two_displays_event__cabinet4",
-  "challenge": "two blocks to two displays; once the first block is on the cabinet, the kid carries the other block to the dining table",
-  "rationale": "the goal decomposes into one placement per display; the event moves the second resource after the first subgoal holds: keep block A where it is, find block B",
+  "oracle_route": "v6_display_by_bed__dining",
+  "challenge": "the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
+  "rationale": "work out where the kid lies and what is in view from there: explore the bedroom, find the bed and put the block on the bedside bookcase, at the front",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T07_heat_oatmeal/microwave_works": {

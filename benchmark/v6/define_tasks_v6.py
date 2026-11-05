@@ -689,25 +689,74 @@ def T05(t):
 def T06(t):
     A, B = "wooden_block_a", "wooden_block_b"
     base = OR(t, "free")                                 # look, nav A, pick A, nav cab6, place A cab6
-    displays = {"all": [["hand_empty", "right"]],
-                "any": [[["on", x, "kitchen_cabinet_6/top"], ["on", y, "tv_stand_2/top"]] for x, y in ((A, B), (B, A))]}
-    two = lambda *sr: base[:5] + recs(S("search", object=B, **dict(sr)), nav(B), pick(B), nav("tv_stand_2/top"),  # noqa: E731
-                                      place(B, "tv_stand_2/top"))
+    F, CAB, ISL = "floor_block", "kitchen_cabinet_6/top", "kitchen_island/top"
+    # display_row: three blocks squared in a row at the front of the cabinet top, apart
+    row_goal = {"all": [*[["on", x, CAB] for x in (A, B, F)], *[["squared", x] for x in (A, B, F)],
+                        *[["front_visible", x] for x in (A, B, F)],
+                        ["clear_of", A, [B, F], 0.03], ["clear_of", B, [A, F], 0.03], ["clear_of", F, [A, B], 0.03],
+                        ["hand_empty", "right"]]}
+    row_xy = {A: [3.32, 0.45], B: [3.50, 0.45], F: [3.68, 0.45]}
+
+    def row_route(where):
+        out = [look(ISL)]
+        for x, region in where:
+            out += ([S("search", object=x, region=region)] if region else []) + [nav(x), pick(x), nav(CAB),
+                                                                                place(x, CAB, row_xy[x])]
+        return out
+    row_cases = {"island_floor": dict(route=row_route([(A, None), (B, None), (F, "living_room_0_0")])),
+                 "spread": dict(move={B: P("dining_table_2/top", 3.7, 6.3), F: P("kitchen_counter_2/top", -0.1, 7.3)},
+                                route=row_route([(A, None), (B, "dining_room_0_1"), (F, "kitchen_0_1")]))}
+    # clear_front_row: display_hidden with only the cabinet allowed: move a cereal box back, block in front
+    front_goal = {"all": [["on", A, CAB], ["front_visible", A], ["away_from_edge", A, 0.02],
+                          *[["on", x, CAB] for x in ("clutter_cereal_a", "clutter_cereal_b", "juice_bottle")],
+                          *[["upright", x] for x in ("clutter_cereal_a", "clutter_cereal_b", "juice_bottle")],
+                          ["hand_empty", "right"]]}
+    front_route = [look(ISL), nav(CAB), look(CAB), pick("clutter_cereal_b"), place("clutter_cereal_b", CAB, [3.43, 0.28]),
+                   nav(A), pick(A), nav(CAB), place(A, CAB, [3.433, 0.465])]
+    # display_by_bed: the bedside bookcase next to the kid's bed (bedroom), not the cabinet or the TV stand
+    BED = "bookcase_3/top"
+    bed_goal = {"all": [["on", A, BED], ["front_visible", A], ["hand_empty", "right"]]}
+    bed_route = lambda pre: [look(ISL)] + pre + [nav(A), pick(A), S("explore_room", room="bedroom_0_1"),  # noqa: E731
+                                                  nav(BED), look(BED), place(A, BED)]
+    bed_cases = {"island": dict(route=bed_route([])),
+                 "dining": dict(move={A: P("dining_table_2/top", 3.7, 6.3)},
+                                route=bed_route([S("search", object=A, region="dining_room_0_1")]))}
     return {
-        "x6_gd_two_displays_event": dict(
-            base="free", control="free", goal=displays,
-            instruction="Put both toy blocks on display: one on the low wall cabinet and one on the TV stand, so they "
-                        "can be seen from both rooms.",
-            challenge="two blocks to two displays; once the first block is on the cabinet, the kid carries the other "
-                      "block to the dining table",
-            rationale="the goal decomposes into one placement per display; the event moves the second resource after "
-                      "the first subgoal holds: keep block A where it is, find block B",
-            factor="where the event takes the resource",
-            cases={"dining": dict(failures=[f_move("resource", B, P("dining_table_2/top", 3.7, 6.3),
-                                                   ("place", {"object": A}), fid="resource_block_b")],
-                                  route=two(("region", "dining_room_0_1"))),
-                   "cabinet4": dict(failures=[f_move("resource", B, P("kitchen_cabinet_4/top", 1.4, 0.42),
-                                                     ("place", {"object": A}), fid="resource_block_b")], route=two())}),
+        "display_row": dict(
+            base="free", control="free", conditions=["arrangement"],
+            instruction="Put the three toy blocks on display in a row on top of the low wall cabinet: squared to its "
+                        "edge, at the front where they can be seen, not touching each other.",
+            instruction_zh="把三块积木在靠墙矮柜顶上排成一排展示：摆正（和柜子边平行），放在前面看得见的地方，彼此别挨着。",
+            goal=row_goal, watch=[A, B, F],
+            factor="where the blocks are (seed: two on the island and one on the living-room floor, or spread over "
+                   "the island, the dining table and the kitchen counter)",
+            challenge="three blocks, some out of view, to be arranged together on one small cabinet top (60 x 32 cm)",
+            rationale="fetch the blocks one by one and compose the row: each placement has to leave room and spacing "
+                      "for the next, squared and at the front",
+            cases=row_cases),
+        "clear_front_row": dict(
+            base="display_hidden", control="free", conditions=["destination_full"],
+            instruction="Put the toy block on display on top of the low wall cabinet, where it can be seen from the "
+                        "room.",
+            instruction_zh="把积木摆到靠墙矮柜顶上展示，要从房间里看得见。",
+            goal=front_goal, watch=[A, B, "clutter_cereal_a", "clutter_cereal_b", "juice_bottle"],
+            challenge="the front row of the cabinet top is taken by two cereal boxes and a juice bottle; the free "
+                      "space behind them cannot be seen from the room; only this cabinet is allowed",
+            rationale="make a visible place at the work spot: move a cereal box to the back, then put the block in "
+                      "the front gap; the boxes and the bottle stay upright on the cabinet",
+            cases={"": dict(route=front_route)}),
+        "display_by_bed": dict(
+            base="free", control="free", conditions=["viewer_place", "not_in_view"],
+            instruction="The kid wants to see the toy block from bed tonight. Put it on display by the kid's bed, "
+                        "where they can see it lying down.",
+            instruction_zh="孩子晚上想躺在床上看着积木。把积木摆到孩子床边、躺着就能看到的地方。",
+            goal=bed_goal, watch=[A, B],
+            factor="where the block is (seed: the island or the dining table)",
+            challenge="the instruction names a viewer, not a place: the bed is in the bedroom, the only surface beside "
+                      "it is the low bookcase next to the bed (the other shelves and the desk are metres away)",
+            rationale="work out where the kid lies and what is in view from there: explore the bedroom, find the bed "
+                      "and put the block on the bedside bookcase, at the front",
+            cases=bed_cases),
     }
 
 
@@ -1363,6 +1412,9 @@ def T09_long(t):
 
 
 LONG = {"T03_utensils_one_container": lambda t: {**T03_long(t), **T03_more(t)}, "T09_tomato_soup": T09_long}
+# v5 routes that tried the destination they could see was full (a place that fails) before the other one: look at
+# it instead and go on
+LOOK_FIRST = {"T06_block_destination_occupied": ("occupied", "occupied_block_away")}
 # variant -> why it leaves v6
 REPLACED = {
     ("T01_book_to_dining_table", "table_set"): "replaced by table_seats (several free slots, the suitable one changes "
@@ -1387,6 +1439,8 @@ REPLACED = {
     ("T02_stack_blocks", "far_crowded"): "replaced by tower_for_kid (the search was one turn to the island; now "
                                          "three blocks are spread over the house and the tower goes on the dining "
                                          "table)",
+    ("T06_block_destination_occupied", "h_dynamic_cabinet_filled"): "removed: no dynamic events in T06 (someone "
+                                                                     "fills the cabinet top)",
     ("T05_pen_or_pencil_to_desk", "h_dynamic_pencil_taken"): "removed: no dynamic events in T05 (someone takes the "
                                                              "pencil away)",
     ("T05_pen_or_pencil_to_desk", "no_pen"): "removed: no_pen_pencil_away is the same choice over a longer horizon",
@@ -1394,6 +1448,12 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "arrangement": {"type": "spatial_arrangement", "decision": "decompose",
+                    "meaning": "several objects make one layout (a row, spacing, squared): each placement leaves room "
+                               "for the next"},
+    "viewer_place": {"type": "destination_identity", "decision": "explore",
+                     "meaning": "the instruction names who is to see it, not where: the place follows from where the "
+                                "viewer is"},
     "goal_already_met": {"type": "goal_state", "decision": "verify",
                          "meaning": "what the instruction asks for already holds: check, and do not fetch again"},
     "unknown_count": {"type": "resource_count", "decision": "explore",
@@ -1586,6 +1646,19 @@ def build_task(t: dict) -> dict:
                 fam["layouts"] = [vid, alt]
                 fam["seeds"] = seed_cases(t["task_id"], vid, fam["layouts"])
                 fam["factor"] = "where the resource is to be found (seed extension)"
+    for vid in LOOK_FIRST.get(t["task_id"], ()):
+        for lid in families[vid]["layouts"]:
+            steps, out = t["routes"][t["oracle"][lid]]["steps"], []
+            for i, st in enumerate(steps):
+                nxt = steps[i + 1] if i + 1 < len(steps) else {}
+                if st["skill"] == "navigate" and nxt.get("skill") == "place" and nxt.get("expect") == "fail":
+                    continue                            # the trip to the full destination ...
+                if st["skill"] == "place" and st.get("expect") == "fail":
+                    out.append(look(st["args"]["receptacle"]))     # ... becomes a look at it
+                    continue
+                out.append(st)
+            t["routes"][f"v6_{lid}"] = {"steps": out, "kind": "v6_look_first", "variant": lid}
+            t["oracle"][lid] = f"v6_{lid}"
     for fam, spec in fams.items():
         if fam in t["variants"]:
             raise ValueError(f"{t['task_id']}: {fam} exists in v5")

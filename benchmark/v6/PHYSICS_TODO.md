@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1320 episodes remain (510 of the 51 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1330 episodes remain (530 of the 53 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -48,8 +48,9 @@
 | T06 | occupied | task | 0/0 of 10 | - |
 | T06 | occupied_block_away | task | 0/0 of 10 | - |
 | T06 | display_hidden | task | 0/0 of 10 | - |
-| T06 | h_dynamic_cabinet_filled | task | 0/0 of 10 | - |
-| T06 | x6_gd_two_displays_event | task | 0/0 of 10 | - |
+| T06 | display_row | task | 0/0 of 10 | - |
+| T06 | clear_front_row | action | 0/0 of 10 | - |
+| T06 | display_by_bed | task | 0/0 of 10 | - |
 | T07 | microwave_works | control | 0/0 of 10 | - |
 | T07 | microwave_broken | task | 0/0 of 10 | - |
 | T07 | broken_oatmeal_away | task | 0/0 of 10 | - |

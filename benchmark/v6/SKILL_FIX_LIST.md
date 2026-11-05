@@ -26,12 +26,12 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | breakfast_spoon | 146 | 12 | 8% | grasp miss 12 | T03 T09 | 11 | pick breakfast_spoon: not held (lift -0.001 m) |
 | hide | wooden_block_b | 35 | 12 | 26% | carry slip 6, placement result 3, grasp miss 2 | T17 | 2 | SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): p |
 | pick | wooden_block_b | 80 | 11 | 12% | grasp miss 10, IK / reach / base pose 1 | T02 T08 | 4 | pick wooden_block_b: not held (lift 0.000 m) |
-| place | wooden_block_a | 127 | 10 | 7% | carry slip 10 | T06 T15 | 4 | carry_stand_up: wooden_block_a slipped out of the hand while carrying it |
+| place | wooden_block_a | 127 | 10 | 7% | carry slip 10 | T06 T15 | 6 | carry_stand_up: wooden_block_a slipped out of the hand while carrying it |
 | search | pot_lid | 0 | 10 | 100% | perception / search 10 | T17 | 2 | search pot_lid: not seen at ['kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'tv_stand_2', 'kitchen_microwave', 'kitchen_cabinet_6',  |
 | inspect |  | 78 | 10 | 11% | other 10 | T18 | 3 | inspect kitchen_cabinet_6: line of sight blocked (h 0, v -12 deg) |
 | drop | foam_cube | 73 | 10 | 12% | IK / reach / base pose 10 | T19 | 1 | drop foam_cube: no base pose above wide_storage_bin (rejected: {'candidates': 3433, 'out_of_reach': 89, 'footprint': 990, 'travel_pose': 30, |
 | regrasp | book_red | 0 | 10 | 100% | grasp miss 10 | T14 | 0 | edge pinch book_red: overhang only -0.026 m |
-| navigate | kitchen_cabinet_6/top | 284 | 8 | 3% | carry slip 8 | T04 | 5 | carry: cup_counter_b slipped out of the hand while carrying it |
+| navigate | kitchen_cabinet_6/top | 284 | 8 | 3% | carry slip 8 | T04 | 6 | carry: cup_counter_b slipped out of the hand while carrying it |
 | pick | kitchen_sponge | 82 | 8 | 9% | grasp miss 8 | T08 | 2 | pick kitchen_sponge: not held (lift 0.000 m) |
 | place | apple | 73 | 8 | 10% | IK / reach / base pose 8 | T11 | 1 | place_pre: no IK solution reaches apple from this base pose |
 | look | desk_1/top | 150 | 8 | 5% | IK / reach / base pose 8 | T14 | 2 | face desk_1/top: turning in place would hit furniture |
@@ -71,8 +71,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
 | pick | cherry_tomato_1 | T09/x6_pp_tomato_taken_out__tomato1 |
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere, T09/x6_pp_tomato_taken_out__tomato2, T09/x6_pp_tomato_taken_out__tomato2_after_stir |
-| pick | clutter_cereal_b | T01/seat_slot_blocked |
-| pick | floor_block | T02/block_put_away, T02/tower_for_kid |
+| pick | clutter_cereal_b | T01/seat_slot_blocked, T06/clear_front_row |
+| pick | floor_block | T02/block_put_away, T02/tower_for_kid, T06/display_row |
 | pick | handled_cooking_pot | T09/pot_in_dining_room |
 | pick | notebook_1 | T05/homework_ready |
 | pick | notebook_2 | T05/homework_ready |
@@ -83,7 +83,8 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | toy_block | T02/third_toy_elsewhere |
 | pick | used_mug | T05/errand_combined |
 | place | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
-| place | clutter_cereal_b | T01/seat_slot_blocked |
+| place | clutter_cereal_b | T01/seat_slot_blocked, T06/clear_front_row |
+| place | floor_block | T06/display_row |
 | place | handled_cooking_pot | T09/pot_in_dining_room |
 | place | notebook_1 | T05/homework_ready |
 | place | notebook_2 | T05/homework_ready |
