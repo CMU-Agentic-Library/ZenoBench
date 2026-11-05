@@ -189,14 +189,23 @@ def parent_ignore(links):
     return ignore
 
 
-def assemble(spheres):
-    from zeno_skills.kinematics import FINGER_OPEN, LEFT_ARM_FOLD, TCP_DEPTH, URDF, ArmKin
+def default_posture():
+    """(joint names, the default posture): the right arm's posture, the left arm folded
+    (LEFT_ARM_FOLD), the base at the origin -- cuRobo's retract config, and the posture the
+    self-collision sampling ignores the touching pairs of."""
+    from zeno_skills.kinematics import LEFT_ARM_FOLD, ArmKin
     right, left = ArmKin(side="right"), ArmKin(side="left")
     names = list(right.names) + list(left.names[2:]) + list(BASE_JOINTS)
-    urdf = mobile_urdf()
     default = dict(zip(right.names, right.posture))
     default.update({n: LEFT_ARM_FOLD.get(n, 0.0) for n in left.names[2:]})
     default.update({n: 0.0 for n in BASE_JOINTS})
+    return names, [float(default[n]) for n in names]
+
+
+def assemble(spheres):
+    from zeno_skills.kinematics import FINGER_OPEN, TCP_DEPTH, URDF
+    names, retract = default_posture()
+    urdf = mobile_urdf()
     links = [l for l in LINKS if l in spheres]
     ignore = parent_ignore(links)
     tcp = {f"{s}_tcp": {"parent_link_name": f"{s}_gripper_link", "link_name": f"{s}_tcp",
@@ -222,7 +231,7 @@ def assemble(spheres):
         "use_global_cumul": True,
         "cspace": {
             "joint_names": names,
-            "retract_config": [float(default[n]) for n in names],
+            "retract_config": retract,
             "null_space_weight": [1.0] * len(names),
             "cspace_distance_weight": [1.0] * len(names),
             "max_acceleration": 15.0,
@@ -305,8 +314,9 @@ def self_collision_ignore(cfg, samples=40000, always=0.5):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--scene", default="tasks/collect_fruits/scene.usd")
-    ap.add_argument("--links", nargs="+", default=None,
-                    help="refit only these links and keep the rest of the existing config")
+    ap.add_argument("--links", nargs="*", default=None,
+                    help="refit only these links (none: just the default posture and the self-collision pairs) "
+                         "and keep the rest of the existing config")
     ap.add_argument("--out", default=None, help="config path (default robot_sources/curobo/zeno_malo.yml)")
     args = ap.parse_args()
     from isaaclab.app import AppLauncher
@@ -320,16 +330,18 @@ def main():
     stage = omni.usd.get_context().get_stage()
     P.patch_left_gripper(stage)
     hulls = link_hulls(stage)
-    if args.links:
+    if args.links is not None:
         hulls = {l: m for l, m in hulls.items() if l in args.links}
     spheres, report = fit_spheres(hulls)
     for link, n, outside, worst, far, tip in report:
         print(f"  {link:34s} {n:3d} spheres  surface >5 mm outside: {outside * 100:5.1f}%  worst {worst * 1000:5.1f} mm"
               f"  spheres reach {far * 1000:5.1f} mm past the hull, {tip * 1000:4.1f} mm below its -z end", flush=True)
-    if args.links:
+    if args.links is not None:
         cfg = yaml.safe_load((OUT / "zeno_malo.yml").read_text())
         k = cfg["robot_cfg"]["kinematics"]
         k["collision_spheres"].update(spheres)
+        assert k["cspace"]["joint_names"] == default_posture()[0]
+        k["cspace"]["retract_config"] = default_posture()[1]
         # the sampled pairs were sampled on the old spheres: sample them again
         k["self_collision_ignore"] = {l: sorted(v) for l, v in parent_ignore(k["collision_link_names"]).items() if v}
     else:

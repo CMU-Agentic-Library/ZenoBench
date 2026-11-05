@@ -60,6 +60,6 @@
 ## 已知问题
 
 - ~~**收臂碰倒刚放好的物体**（第 15 步）~~：已修（11-04）。收臂以前不查手指，手又停在物体正上方：全量里 T04 no_cup_mug_away ×2 把杯子带到地上，T02 edge_base ×2 叠上去的方块翻了，P14 ×2 碰动了锅盖和海绵。现在收臂查手指，刚放下的物体是障碍物；T04 ×2、T02 edge_base s10 重跑成功，P14 没重跑。
-- **竖直下放时左臂压到桌面**（第 10 步）：放低处时躯干下降，收在身侧的左臂（`left_arm_link_5`）碰到桌沿，查碰撞的直线走不通，落到 fallback。全量里 `place_down` 的 fallback 41 次，能看出碰到什么的大多是左臂；T13 no_cup_bowl_on_cabinet、T20 table_full、T09 cookware_choice、T04 no_cup ×2 被顶住失败。归步骤 5（左臂收起姿态）。
+- **竖直下放时左臂压到桌面**（第 10 步）：放低处时躯干下降，收在身侧的左臂（`left_arm_link_5`）碰到桌沿，查碰撞的直线走不通，落到 fallback。全量里 `place_down` 的 fallback 41 次，能看出碰到什么的大多是左臂；T13 no_cup_bowl_on_cabinet、T20 table_full、T09 cookware_choice、T04 no_cup ×2 被顶住失败。归步骤 5（左臂收起姿态）。 11-05 起左臂收起姿态在底盘柱子以内，T20 table_full s10 验证通过；其余没重跑。
 - **竖着吊放的勺子**倒下后离目标 9–12 cm，容差 10 cm（T09 lid_off）。
 - **放进托盘时规划到直线起点失败**（T12 toys_everywhere），容器不给 fallback。

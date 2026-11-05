@@ -115,6 +115,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 | `39bca85`、`dccf75c` | 6.2 测量（`grasp_contacts`）；top_pinch 的高度按掌心碰撞球推导（易拉罐等 5 个物体） |
 | `a3b8aa6`、`e8925a1`、`32f445b` | 手指碰撞球改成指垫方块上的三排；躯干、头少几个球（守住 cuRobo 快速自碰撞内核）；规划器的头和手指按仿真里的实际值锁定（以前手指永远全开、头永远朝前）；退回直线、接近直线碰撞时记下位置和对象 |
 | `6466347`、`f5081e9` | 6.2 pick 两段式；顶部捏取的指垫高度按夹爪朝向和支撑面推导 |
+| （本提交） | 6.1 B：左臂收起姿态 `LEFT_ARM_FOLD` 改到底盘柱子以内；`build_curobo_robot.py --links`（不带参数）只更新默认姿态和自碰撞对 |
 
 ## 5. 回归方法
 
@@ -128,7 +129,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 
 **全量**（T、P 全部 variation，种子 10、11，170 个）：批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像），驱动脚本参考 `/data/zenobench/bench_1104/drive.sh`。只在这些节点跑：3b 完成后、3c 完成后、步骤 5 完成后。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`，逐个对比写在 `COMPARE.md`。
 
-**基线**：3a（`0909b03`）139/170，`benchmark/runs/v3_sticky_gt_1103_3seeds/`；3b 第 2 项（`0c7eb90`）119/170，`benchmark/runs/v3_sticky_gt_1104_2seeds/`。下一次全量要先排除导航常数提交、标注高度（`dccf75c`）、碰撞模型（`a3b8aa6`、`e8925a1`）和 pick 两段式（`6466347`、`f5081e9`）的影响：它们都会改变停车点、IK 解、目标选择，暴露出原有的弱点。针对性批次 approach_leave 在 `e8925a1` 上 11/14（`benchmark/runs/approach_leave_e8925a1`；旧碰撞球 `palm_height_1104` 12/14）：P18 变成功，T10、T20 变失败，T12 换了失败点，见第 7 节。
+**基线**：3a（`0909b03`）139/170，`benchmark/runs/v3_sticky_gt_1103_3seeds/`；3b 第 2 项（`0c7eb90`）119/170，`benchmark/runs/v3_sticky_gt_1104_2seeds/`。下一次全量要先排除导航常数提交、标注高度（`dccf75c`）、碰撞模型（`a3b8aa6`、`e8925a1`）、pick 两段式（`6466347`、`f5081e9`）和左臂收起姿态的影响：它们都会改变停车点、IK 解、目标选择，暴露出原有的弱点。针对性批次 approach_leave 在 `e8925a1` 上 11/14（`benchmark/runs/approach_leave_e8925a1`；旧碰撞球 `palm_height_1104` 12/14）：P18 变成功，T10、T20 变失败，T12 换了失败点，见第 7 节。
 
 **倒退怎么处理**：每个新失败看日志和录像，归到三类之一：
 
@@ -150,7 +151,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 3a ✓ ──► 3b 第 1、2 项 ✓ ──► 11-04 倒退（A、C、D ✓） ──► pick 两段式 ✓ ──► 3b 其余 ──► 3c
 ```
 
-**现在在哪（2026-11-05）**：pick 两段式已实现（`6466347`，6.2）。下一步先在 T03、T09 上验证勺子的高度规则（`f5081e9`，没在仿真里跑过），然后进 3b 其余（6.3）。6.1 还开着的是 B（左臂收起姿态，等第 10 节的决定）、F（T05 拿笔开车）和"其他"几条。下一次全量前要考虑第 5 节列的几组会改变基线的提交。
+**现在在哪（2026-11-05）**：pick 两段式已实现（`6466347`，6.2）。下一步先在 T03、T09 上验证勺子的高度规则（`f5081e9`，没在仿真里跑过），然后进 3b 其余（6.3）。6.1 B（左臂收起姿态）11-05 提前改了，但 P06 的双手交接从新收起姿态规划失败，要先查；还开着 F（T05 拿笔开车）和"其他"几条。下一次全量前要考虑第 5 节列的几组会改变基线的提交。
 
 ### 6.1 11-04 全量的倒退（119/170，24 个新失败）
 
@@ -158,7 +159,7 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 |---|---|---|---|
 | A 代码写错 | T04 no_cup_mug_away ×2（确认）；T02 edge_base ×2（待查） | place 松手后的收臂不查手指，手停在刚放下的物体正上方，把它带倒（杯子掉到地上） | 已修（11-04）：`Rig.tuck` 查手指；T04 ×2、T02 edge_base s10 重跑成功，P12 s10 不变（`benchmark/runs/tuck_fingers_1104`） |
 | D 代码写错 | T13 no_cup ×2、T09 lid_on_spoon_away | pick 把"sticky 焊住"放在手指检查之前，手指读数 [0, 0] 也判成拿住 | 已修（11-04）：焊住也要手指没合到底，和 `holding` 一致。三个都还会失败（pick 自己报没拿住），根因是合爪时没捏稳：杯子是 C 类（接近推开 3 cm，一指 3.6 mm、一指 32 mm），勺子合在 22 mm 后滑出 |
-| B 步骤 5 被暴露 | T20 table_full、T13 no_cup_bowl_on_cabinet、T09 cookware_choice、T04 no_cup ×2；`e8925a1` 上 approach_leave 的 T20 s10（放果汁瓶时左臂第 5 节被躯干带着压进桌面 2.4 mm，`approach_line_hit`） | 竖直下放时躯干下降，收在身侧的左臂压到桌面，手被顶住；`place_down` 的 41 次 fallback 里大多是左臂 | 待定：左臂收起姿态是否提前到 3b 做（第 10 节） |
+| B 步骤 5 被暴露 | T20 table_full、T13 no_cup_bowl_on_cabinet、T09 cookware_choice、T04 no_cup ×2；`e8925a1` 上 approach_leave 的 T20 s10（放果汁瓶时左臂第 5 节被躯干带着压进桌面 2.4 mm，`approach_line_hit`） | 竖直下放时躯干下降，收在身侧的左臂压到桌面，手被顶住；`place_down` 的 41 次 fallback 里大多是左臂 | 已改（11-05，提前做，`LEFT_ARM_FOLD`）：新的左臂收起姿态在底盘柱子以内（腰竖直和前倾 0.2 rad 都缩进 8 mm）。验证只跑了 4 个 s10（`benchmark/runs/left_fold_1105`）：T20 table_full、P07 成功；T04 no_cup 失败在两段式 pick 的接近规划（`TRAJOPT_FAIL`，看起来和左臂无关）；**P06 变失败**：左臂从新的收起姿态规划到 `handover_left_pre` 出 `GRAPH_FAIL`（之前右手递擀面杖的 `handover_present_across` 也规划失败、退回直线），旧姿态下 11-04 成功，没细查 |
 | G 步骤 5 被暴露 | P07 ×2 | 停车位置变了，左臂收臂（直接插值、不查碰撞）卡在岛台上 | 步骤 5 |
 | C 接近 | P14 ×2、T13 no_cup ×2 | 接近途中把要抓的物体推开 3–4 cm，手停在离抓取点约 4 cm 处；可能和目标豁免有关，没确认 | 两段式后复查（11-05，`twophase_1105`，只跑了 s10）：P14、T13 no_cup 都成功，抓取没推动物体（T13 这次换了个方位角捏杯子）。s11 没跑 |
 | E 3b 第 1 项 | T19 bin_on_bookcase ×2 | 桶不再被豁免，`drop_above` 带倾角规划不出来（以前 fallback 从看不见的桶中间穿过去） | 规划器能力不够，记下 |
@@ -238,7 +239,7 @@ open / close、`held_vertical_move`（含 `place_lower_to_contact`）、rotate�
 
 ### 6.6 步骤 5：左臂和清理
 
-- 左臂收起姿态不伸出底盘轮廓（停车点被拒、放东西时压到桌面，见 6.1 B 类）。
+- ~~左臂收起姿态不伸出底盘轮廓（停车点被拒、放东西时压到桌面，见 6.1 B 类）~~：提前做了（11-05），见 6.1 B 类；P06 的交接要查。
 - `LeftArmFoldPolicy` 和所有左臂运动走同一套规划，不再直接插值（6.1 G 类）。
 - `follow` / `left_follow` 只接受检查过的路径。
 - 删掉：`ignore_fingers`、"另一只手的手指一律不查"、`other_touching` 的永久排除、`world.active`、`world.left_active`、`WorldModel.temp_obstacles`（空操作）。两只手都碰物体时（handover）在 `allow` 里显式声明。
@@ -307,7 +308,7 @@ open / close、`held_vertical_move`（含 `place_lower_to_contact`）、rotate�
 
 | 问题 | 什么时候定 |
 |---|---|
-| 左臂收起姿态不伸出底盘（6.6 第一条）要不要提前到 3b 做：它是 11-04 全量里最大的倒退来源（6.1 B 类 5 个，`place_down` fallback 大多是它） | 修完 6.1 A、D 类之后 |
+| ~~左臂收起姿态不伸出底盘要不要提前到 3b 做~~ | 定了（11-05）：提前做，已改，见 6.1 B 类 |
 | ~~pick 两段式的第一段，最后几厘米要不要仍沿夹爪轴走直线~~ | 定了（11-05）：保留，最后 4 cm 沿夹爪轴直线，查碰撞 |
 | 离开接触段要不要在逐点检查时，碰到"一开始就在碰的东西"以外的任何东西就提前停下，交给后面的规划 | pick 两段式时 |
 | 降低任务参数改成任务范围后，每个任务的下限（pour 最少倾斜多少、stir 最小半径） | 3b 改到它们时 |
