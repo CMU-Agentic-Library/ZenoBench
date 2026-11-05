@@ -1892,142 +1892,142 @@
 {
 "task": "T07_heat_oatmeal",
 "seed": 10,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_bowl",
+"route": "v6_vessel_decides_appliance__in_bowl",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 11,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_pot",
+"route": "v6_vessel_decides_appliance__in_pot",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 12,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_bowl",
+"route": "v6_vessel_decides_appliance__in_bowl",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 13,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_pot",
+"route": "v6_vessel_decides_appliance__in_pot",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 14,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_pot",
+"route": "v6_vessel_decides_appliance__in_pot",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 15,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_bowl",
+"route": "v6_vessel_decides_appliance__in_bowl",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 16,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_pot",
+"route": "v6_vessel_decides_appliance__in_pot",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 17,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_pot",
+"route": "v6_vessel_decides_appliance__in_pot",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 18,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_bowl",
+"route": "v6_vessel_decides_appliance__in_bowl",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 19,
-"variant": "x6_sr_microwave_taken",
-"route": "v6_x6_sr_microwave_taken",
-"family": "x6_sr_microwave_taken"
+"variant": "vessel_decides_appliance__in_bowl",
+"route": "v6_vessel_decides_appliance__in_bowl",
+"family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 10,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__counter",
+"route": "v6_two_portions__counter",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 11,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__dining",
+"route": "v6_two_portions__dining",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 12,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__dining",
+"route": "v6_two_portions__dining",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 13,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__counter",
+"route": "v6_two_portions__counter",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 14,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__dining",
+"route": "v6_two_portions__dining",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 15,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__counter",
+"route": "v6_two_portions__counter",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 16,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__dining",
+"route": "v6_two_portions__dining",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 17,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__counter",
+"route": "v6_two_portions__counter",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 18,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__counter",
+"route": "v6_two_portions__counter",
+"family": "two_portions"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 19,
-"variant": "x6_pp_door_opened_after_heat",
-"route": "v6_x6_pp_door_opened_after_heat",
-"family": "x6_pp_door_opened_after_heat"
+"variant": "two_portions__dining",
+"route": "v6_two_portions__dining",
+"family": "two_portions"
 },
 {
 "task": "T08_wipe_island",

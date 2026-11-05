@@ -73,7 +73,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere, T09/x6_pp_tomato_taken_out__tomato2, T09/x6_pp_tomato_taken_out__tomato2_after_stir |
 | pick | clutter_cereal_b | T01/seat_slot_blocked, T06/clear_front_row |
 | pick | floor_block | T02/block_put_away, T02/tower_for_kid, T06/display_row |
-| pick | handled_cooking_pot | T09/pot_in_dining_room |
+| pick | handled_cooking_pot | T07/two_portions, T07/vessel_decides_appliance, T09/pot_in_dining_room |
 | pick | notebook_1 | T05/homework_ready |
 | pick | notebook_2 | T05/homework_ready |
 | pick | orange_2 | T11/x6_gd_fruits_event |
@@ -85,7 +85,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
 | place | clutter_cereal_b | T01/seat_slot_blocked, T06/clear_front_row |
 | place | floor_block | T06/display_row |
-| place | handled_cooking_pot | T09/pot_in_dining_room |
+| place | handled_cooking_pot | T07/two_portions, T07/vessel_decides_appliance, T09/pot_in_dining_room |
 | place | notebook_1 | T05/homework_ready |
 | place | notebook_2 | T05/homework_ready |
 | place | orange_2 | T11/x6_gd_fruits_event |

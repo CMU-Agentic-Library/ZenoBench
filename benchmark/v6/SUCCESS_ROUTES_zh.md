@@ -1153,7 +1153,7 @@
 
 ### microwave_broken（Task）
 
-**情况**：微波炉转但不热 → 改用灶台
+**情况**：微波炉转但不热，指令里没说 → 先放进微波炉热，发现热不起来，再改用灶台
 
 **成功条件**：
 
@@ -1164,7 +1164,7 @@
 
 **参考调用顺序**：
 
-1. `look(target=kitchen_island/top)` → 2. `navigate(destination=oatmeal)` → 3. `pick(object=oatmeal)` → 4. `navigate(destination=kitchen_stove/top)` → 5. `place(object=oatmeal, receptacle=kitchen_stove/top)` → 6. `heat(food=oatmeal, appliance=kitchen_stove, temp_c=40)`
+1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `navigate(destination=oatmeal)` → 4. `pick(object=oatmeal)` → 5. `navigate(destination=kitchen_microwave/inside_floor)` → 6. `place(object=oatmeal, receptacle=kitchen_microwave/inside_floor)` → 7. `close(articulated=kitchen_microwave)` → 8. `heat(food=oatmeal, appliance=kitchen_microwave, temp_c=40)` → 9. `stop(appliance=kitchen_microwave)`（换做法） → 10. `pick(object=oatmeal)`（换做法） → 11. `navigate(destination=kitchen_stove/top)`（换做法） → 12. `place(object=oatmeal, receptacle=kitchen_stove/top)`（换做法） → 13. `heat(food=oatmeal, appliance=kitchen_stove, temp_c=40)`（换做法） → 14. `navigate(destination=kitchen_microwave)` → 15. `close(articulated=kitchen_microwave)`
 
 ### broken_oatmeal_away（Task）
 
@@ -1200,54 +1200,51 @@
 
 1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `close(articulated=kitchen_microwave)` → 5. `look(target=kitchen_island/top)` → 6. `navigate(destination=oatmeal)` → 7. `pick(object=oatmeal)` → 8. `navigate(destination=kitchen_stove/top)`（换做法） → 9. `place(object=oatmeal, receptacle=kitchen_stove/top)`（换做法） → 10. `heat(food=oatmeal, appliance=kitchen_stove, temp_c=40)`（换做法）
 
-### h_dynamic_door_opened（Action + Task）
+### vessel_decides_appliance（Task）
 
-**情况**：微波炉被锅占着，要用灶台；关上微波炉后有人又打开了门 → 最后再关一次
+**情况**：两个电器都正常；剩粥装在瓷碗里（不能放灶上）或者还在金属锅里（不能进微波炉）；指令轻提示"注意容器适不适合进微波炉或放到灶上" → 按容器选电器：碗进微波炉，锅上灶台；用错了热不起来
 
-**指令**：请用合适方式把燕麦粥加热到至少 40°C，完成后关火并关好微波炉门。
+**指令**：把剩下的燕麦粥热一下当早饭（至少 40 度），注意装粥的容器适不适合进微波炉或放到灶上。做完后灶台要关火，微波炉门要关好。
 
 **成功条件**：
 
-- `oatmeal` 温度至少 40 °C
-- `kitchen_stove` 已经停止加热
-- `kitchen_microwave` 关着
-- `handled_cooking_pot` 不在地上
-- 手里空着
+- 摆法 `in_pot`：
+  - `handled_cooking_pot` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - `kitchen_microwave` 已经停止加热
+  - `kitchen_microwave` 关着
+  - 手里空着
+- 摆法 `in_bowl`：
+  - `oatmeal` 温度至少 40 °C
+  - `kitchen_stove` 已经停止加热
+  - `kitchen_microwave` 已经停止加热
+  - `kitchen_microwave` 关着
+  - 手里空着
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `close(articulated=kitchen_microwave)` → 5. `look(target=kitchen_island/top)` → 6. `navigate(destination=oatmeal)` → 7. `pick(object=oatmeal)` → 8. `navigate(destination=kitchen_stove/top)`（换做法） → 9. `place(object=oatmeal, receptacle=kitchen_stove/top)`（换做法） → 10. `heat(food=oatmeal, appliance=kitchen_stove, temp_c=40)`（换做法） → 11. `navigate(destination=kitchen_microwave)`（补救） → 12. `close(articulated=kitchen_microwave)`（补救）
+- 摆法 `in_bowl`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_island/top)` → 4. `navigate(destination=oatmeal)` → 5. `pick(object=oatmeal)` → 6. `navigate(destination=kitchen_microwave/inside_floor)` → 7. `place(object=oatmeal, receptacle=kitchen_microwave/inside_floor)` → 8. `close(articulated=kitchen_microwave)` → 9. `heat(food=oatmeal, appliance=kitchen_microwave, temp_c=40)`
+- 摆法 `in_pot`：1. `look(target=kitchen_island/top)` → 2. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 3. `navigate(destination=handled_cooking_pot)` → 4. `pick(object=handled_cooking_pot)` → 5. `navigate(destination=kitchen_stove/top)` → 6. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 7. `heat(food=handled_cooking_pot, appliance=kitchen_stove, temp_c=40)`
 
-### x6_sr_microwave_taken（Task）
+### two_portions（Task）
 
-**情况**：机器人去拿碗时，有人把汤锅放进了开着的微波炉 → 关上门，改用灶台
+**情况**：早饭要热两样：碗里的燕麦粥（只能微波炉）和锅里的剩汤（只能灶台），都要至少 40 度；放着会变凉 → 两个电器同时开：锅上灶开火、碗进微波炉按启动，等一会儿再都关掉；一样一样热完，先热的那样会凉掉
 
-**成功条件**：
-
-- `oatmeal` 温度至少 40 °C
-- `kitchen_stove` 已经停止加热
-- `kitchen_microwave` 关着
-- `handled_cooking_pot` 不在地上
-- 手里空着
-
-**参考调用顺序**：
-
-1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_island/top)` → 4. `navigate(destination=oatmeal)` → 5. `pick(object=oatmeal)` → 6. `navigate(destination=kitchen_microwave/inside_floor)` → 7. `look(target=kitchen_microwave/inside_floor)`（补救） → 8. `close(articulated=kitchen_microwave)`（补救） → 9. `navigate(destination=kitchen_stove/top)`（补救） → 10. `place(object=oatmeal, receptacle=kitchen_stove/top)`（补救） → 11. `heat(food=oatmeal, appliance=kitchen_stove, temp_c=40)`（补救）
-
-### x6_pp_door_opened_after_heat（Action）
-
-**情况**：粥刚热好，有人打开微波炉门看 → 粥不用重热，只要再把门关上
+**指令**：早饭要热两样：碗里剩的燕麦粥和锅里剩的汤，都要热到至少 40 度。做完后灶台要关火，微波炉门要关好。
 
 **成功条件**：
 
 - `oatmeal` 温度至少 40 °C
+- `handled_cooking_pot` 温度至少 40 °C
 - `kitchen_stove` 已经停止加热
+- `kitchen_microwave` 已经停止加热
 - `kitchen_microwave` 关着
 - 手里空着
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_island/top)` → 4. `navigate(destination=oatmeal)` → 5. `pick(object=oatmeal)` → 6. `navigate(destination=kitchen_microwave/inside_floor)` → 7. `place(object=oatmeal, receptacle=kitchen_microwave/inside_floor)` → 8. `close(articulated=kitchen_microwave)` → 9. `heat(food=oatmeal, appliance=kitchen_microwave, temp_c=40)` → 10. `close(articulated=kitchen_microwave)`（补救）
+- 摆法 `dining`：1. `search(object=handled_cooking_pot, region=dining_room_0_1)` → 2. `navigate(destination=handled_cooking_pot)` → 3. `pick(object=handled_cooking_pot)` → 4. `navigate(destination=kitchen_stove/top)` → 5. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 6. `press(button=kitchen_stove/power_button)` → 7. `navigate(destination=kitchen_microwave)` → 8. `open(articulated=kitchen_microwave)` → 9. `look(target=kitchen_island/top)` → 10. `navigate(destination=oatmeal)` → 11. `pick(object=oatmeal)` → 12. `navigate(destination=kitchen_microwave/inside_floor)` → 13. `place(object=oatmeal, receptacle=kitchen_microwave/inside_floor)` → 14. `close(articulated=kitchen_microwave)` → 15. `approach(target=kitchen_microwave/start_button)` → 16. `press(button=kitchen_microwave/start_button)` → 17. `wait(seconds=25)` → 18. `stop(appliance=kitchen_microwave)` → 19. `close(articulated=kitchen_microwave)` → 20. `navigate(destination=kitchen_stove)` → 21. `stop(appliance=kitchen_stove)`
+- 摆法 `counter`：1. `search(object=handled_cooking_pot, region=kitchen_0_1)` → 2. `navigate(destination=handled_cooking_pot)` → 3. `pick(object=handled_cooking_pot)` → 4. `navigate(destination=kitchen_stove/top)` → 5. `place(object=handled_cooking_pot, receptacle=kitchen_stove/top, hint_xy=[8.41, 1.725])` → 6. `press(button=kitchen_stove/power_button)` → 7. `navigate(destination=kitchen_microwave)` → 8. `open(articulated=kitchen_microwave)` → 9. `look(target=kitchen_island/top)` → 10. `navigate(destination=oatmeal)` → 11. `pick(object=oatmeal)` → 12. `navigate(destination=kitchen_microwave/inside_floor)` → 13. `place(object=oatmeal, receptacle=kitchen_microwave/inside_floor)` → 14. `close(articulated=kitchen_microwave)` → 15. `approach(target=kitchen_microwave/start_button)` → 16. `press(button=kitchen_microwave/start_button)` → 17. `wait(seconds=25)` → 18. `stop(appliance=kitchen_microwave)` → 19. `close(articulated=kitchen_microwave)` → 20. `navigate(destination=kitchen_stove)` → 21. `stop(appliance=kitchen_stove)`
 
 ---
 

@@ -7126,7 +7126,7 @@
    ]
   },
   "control": "microwave_works",
-  "oracle_route": "oracle_stove",
+  "oracle_route": "v6_microwave_broken",
   "challenge": "the microwave runs its cycle but does not heat: the heat call fails on the measured temperature",
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
@@ -7300,73 +7300,32 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T07_heat_oatmeal/h_dynamic_door_opened": {
-  "variant": "h_dynamic_door_opened",
-  "category": "action_task",
+ "T07_heat_oatmeal/vessel_decides_appliance__in_bowl": {
+  "variant": "vessel_decides_appliance",
+  "category": "task",
   "seeds": [
    10,
-   11,
    12,
-   13,
-   14,
    15,
-   16,
-   17,
    18,
    19
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast to at least 40 C in a way that works. When you are done, the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C); mind whether its container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
     "handled_cooking_pot",
-    "oatmeal",
-    "pot_lid"
+    "oatmeal"
    ],
    "added": [],
    "removed": [],
    "conditions": [
-    "appliance_occupied"
+    "appliance_compatibility"
    ],
-   "initial_checks": [
-    [
-     "in_appliance",
-     "handled_cooking_pot",
-     "kitchen_microwave"
-    ]
-   ]
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_v4_microwave_holds_pot",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "dependency_kitchen_microwave",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "close",
-     "args": {
-      "articulated": "kitchen_microwave"
-     },
-     "nth": 1
-    },
-    "event": {
-     "type": "set_joint",
-     "articulated": "kitchen_microwave",
-     "value": "open"
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -7379,12 +7338,12 @@
      "kitchen_stove"
     ],
     [
-     "is_closed",
+     "not heating",
      "kitchen_microwave"
     ],
     [
-     "not on_floor",
-     "handled_cooking_pot"
+     "is_closed",
+     "kitchen_microwave"
     ],
     [
      "hand_empty",
@@ -7393,95 +7352,164 @@
    ]
   },
   "control": "microwave_works",
-  "oracle_route": "v5_h_dynamic_door_opened",
-  "challenge": "the microwave holds the soup pot: heat on the stove; and just after the robot closes the microwave, someone opens the door again: heating needs it closed",
-  "rationale": "",
+  "oracle_route": "v6_vessel_decides_appliance__in_bowl",
+  "challenge": "both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or still in the metal cooking pot (not for the microwave)",
+  "rationale": "choose the appliance by the container: the bowl goes in the microwave, the pot onto the stove; the wrong one does not heat it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T07_heat_oatmeal/x6_sr_microwave_taken": {
-  "variant": "x6_sr_microwave_taken",
+ "T07_heat_oatmeal/vessel_decides_appliance__in_pot": {
+  "variant": "vessel_decides_appliance",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   14,
+   16,
+   17
+  ],
+  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C); mind whether its container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "handled_cooking_pot"
+   ],
+   "added": [],
+   "removed": [
+    "oatmeal",
+    "pot_lid"
+   ],
+   "conditions": [
+    "appliance_compatibility"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "temperature_at_least",
+     "handled_cooking_pot",
+     40
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "not heating",
+     "kitchen_microwave"
+    ],
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "microwave_works",
+  "oracle_route": "v6_vessel_decides_appliance__in_pot",
+  "challenge": "both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or still in the metal cooking pot (not for the microwave)",
+  "rationale": "choose the appliance by the container: the bowl goes in the microwave, the pot onto the stove; the wrong one does not heat it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T07_heat_oatmeal/two_portions__dining": {
+  "variant": "two_portions",
+  "category": "task",
+  "seeds": [
+   11,
+   12,
+   14,
+   16,
+   19
+  ],
+  "instruction": "Breakfast needs two things warmed up: the leftover oatmeal in its bowl and the leftover soup in the cooking pot, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "handled_cooking_pot",
+    "oatmeal"
+   ],
+   "added": [],
+   "removed": [
+    "pot_lid"
+   ],
+   "conditions": [
+    "appliance_compatibility",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "temperature_at_least",
+     "oatmeal",
+     40
+    ],
+    [
+     "temperature_at_least",
+     "handled_cooking_pot",
+     40
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "not heating",
+     "kitchen_microwave"
+    ],
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "microwave_works",
+  "oracle_route": "v6_two_portions__dining",
+  "challenge": "two foods wanted warm together: the oatmeal in a ceramic bowl (microwave only) and the soup in the metal pot (stove only); food cools while it waits",
+  "rationale": "each food to its own appliance, and run them at the same time: start the stove and the microwave (press), wait, switch both off; heating one after the other lets the first go cold",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T07_heat_oatmeal/two_portions__counter": {
+  "variant": "two_portions",
   "category": "task",
   "seeds": [
    10,
-   11,
-   12,
    13,
-   14,
    15,
-   16,
    17,
-   18,
-   19
+   18
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
+  "instruction": "Breakfast needs two things warmed up: the leftover oatmeal in its bowl and the leftover soup in the cooking pot, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "handled_cooking_pot",
     "oatmeal"
    ],
    "added": [],
-   "removed": [],
-   "conditions": [],
+   "removed": [
+    "pot_lid"
+   ],
+   "conditions": [
+    "appliance_compatibility",
+    "multi_object_goal"
+   ],
    "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "resource_microwave_taken",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_island/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "handled_cooking_pot",
-     "to": {
-      "support": "kitchen_microwave/inside_floor",
-      "xy": [
-       4.5,
-       2.5
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   },
-   {
-    "id": "resource_microwave_lid",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "look",
-     "args": {
-      "target": "kitchen_island/top"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pot_lid",
-     "to": {
-      "support": null,
-      "z": 0.88,
-      "xy": [
-       4.5,
-       2.5
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -7490,88 +7518,17 @@
      40
     ],
     [
+     "temperature_at_least",
+     "handled_cooking_pot",
+     40
+    ],
+    [
      "not heating",
      "kitchen_stove"
     ],
     [
-     "is_closed",
+     "not heating",
      "kitchen_microwave"
-    ],
-    [
-     "not on_floor",
-     "handled_cooking_pot"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ]
-   ]
-  },
-  "control": "microwave_works",
-  "oracle_route": "v6_x6_sr_microwave_taken",
-  "challenge": "while the robot fetches the bowl, someone puts the covered soup pot into the open microwave",
-  "rationale": "the appliance is occupied after the plan was made: the robot sees it on arrival, closes the door and heats on the stove (now free) instead; the pot must not be taken out onto the floor",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T07_heat_oatmeal/x6_pp_door_opened_after_heat": {
-  "variant": "x6_pp_door_opened_after_heat",
-  "category": "action",
-  "seeds": [
-   10,
-   11,
-   12,
-   13,
-   14,
-   15,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C). When you are done, the stove must be off and the microwave door closed.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "oatmeal"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": []
-  },
-  "failure_triggers": [
-   {
-    "id": "dependency_kitchen_microwave",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "heat",
-     "args": {
-      "food": "oatmeal",
-      "appliance": "kitchen_microwave"
-     },
-     "nth": 1
-    },
-    "event": {
-     "type": "set_joint",
-     "articulated": "kitchen_microwave",
-     "value": "open"
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "temperature_at_least",
-     "oatmeal",
-     40
-    ],
-    [
-     "not heating",
-     "kitchen_stove"
     ],
     [
      "is_closed",
@@ -7584,9 +7541,9 @@
    ]
   },
   "control": "microwave_works",
-  "oracle_route": "v6_x6_pp_door_opened_after_heat",
-  "challenge": "right after the oatmeal is warm, someone opens the microwave door to look",
-  "rationale": "the heating subgoal already holds; only the door subgoal is undone: close it again without re-heating (re-running the plan would heat again)",
+  "oracle_route": "v6_two_portions__counter",
+  "challenge": "two foods wanted warm together: the oatmeal in a ceramic bowl (microwave only) and the soup in the metal pot (stove only); food cools while it waits",
+  "rationale": "each food to its own appliance, and run them at the same time: start the stove and the microwave (press), wait, switch both off; heating one after the other lets the first go cold",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T08_wipe_island/sponge_on_island": {

@@ -1,7 +1,7 @@
 {
- "variants": 133,
- "episodes": 1330,
- "static_ok": 1330,
+ "variants": 132,
+ "episodes": 1320,
+ "static_ok": 1320,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -29,8 +29,8 @@
    "static_ok": 70
   },
   "T07_heat_oatmeal": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T08_wipe_island": {
    "episodes": 60,
@@ -87,9 +87,9 @@
  },
  "categories": {
   "control": 20,
-  "action": 29,
-  "task": 71,
-  "action_task": 13
+  "action": 28,
+  "task": 72,
+  "action_task": 12
  },
- "tasks_sha1": "3c0d76228d035019f182300d0c706f02685d22c9"
+ "tasks_sha1": "c1e6cef3bf51f998f5f197672524c2e1c20e0b1c"
 }

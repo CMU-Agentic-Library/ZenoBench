@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1330 episodes remain (530 of the 53 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1320 episodes remain (530 of the 53 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -55,9 +55,8 @@
 | T07 | microwave_broken | task | 0/0 of 10 | - |
 | T07 | broken_oatmeal_away | task | 0/0 of 10 | - |
 | T07 | microwave_holds_pot | task | 0/0 of 10 | - |
-| T07 | h_dynamic_door_opened | action_task | 0/0 of 10 | - |
-| T07 | x6_sr_microwave_taken | task | 0/0 of 10 | - |
-| T07 | x6_pp_door_opened_after_heat | action | 0/0 of 10 | - |
+| T07 | vessel_decides_appliance | task | 0/0 of 10 | - |
+| T07 | two_portions | task | 0/0 of 10 | - |
 | T08 | sponge_on_island | control | 0/0 of 10 | wipe reach |
 | T08 | sponge_on_tv_stand | task | 0/0 of 10 | wipe reach |
 | T08 | far_sponge_tv | task | 0/0 of 10 | wipe reach |

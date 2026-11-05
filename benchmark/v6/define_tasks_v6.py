@@ -775,32 +775,72 @@ def T06(t):
 
 
 def T07(t):
-    X, MW = "oatmeal", "kitchen_microwave"
+    X, POT, LID, MW, ST = "oatmeal", "handled_cooking_pot", "pot_lid", "kitchen_microwave", "kitchen_stove"
     base = OR(t, "microwave_works")      # nav mw, open, look island, nav oat, pick, nav mw floor, place, close, heat
-    stove = [nav("kitchen_stove/top"), place(X, "kitchen_stove/top"), S("heat", food=X, appliance="kitchen_stove", temp_c=40)]
-    holds = t["variants"]["microwave_holds_pot"]
-    pot_in = [f_move("resource", "handled_cooking_pot", P("kitchen_microwave/inside_floor", 4.5, 2.5),
-                     ("look", {"target": "kitchen_island/top"}), fid="resource_microwave_taken"),
-              {**f_move("resource", "pot_lid", {"support": None, "z": 0.88, "xy": [4.5, 2.5], "yaw_deg": 0.0},
-                        ("look", {"target": "kitchen_island/top"}), fid="resource_microwave_lid"),
-               "after_fired": "resource_microwave_taken"}]
-    taken = base[:6] + recs(look("kitchen_microwave/inside_floor"), S("close", articulated=MW), *stove)
-    reopened = base + recs(S("close", articulated=MW))
+    POT_AT = {"dining": (P("dining_table_2/top", 3.35, 6.75), "dining_room_0_1"),
+              "counter": (P("kitchen_counter_2/top", -0.13, 7.3), "kitchen_0_1")}
+    # a metal pot does not heat in the microwave; a ceramic bowl is not put on the burner
+    POT_FOOD = {"initial_c": 4.0, "heating_rate_c_per_s": 0.0, "stove_rate_c_per_s": 2.0, "cooling_rate_c_per_s": 1.0}
+    done = [["not heating", ST], ["not heating", MW], ["is_closed", MW], ["hand_empty", "right"]]
+
+    def pot_to_stove(region=None, temp=40):
+        return ([S("search", object=POT, region=region)] if region else []) + [
+            nav(POT), pick(POT), nav("kitchen_stove/top"), place(POT, "kitchen_stove/top", [8.41, 1.725]),
+            S("heat", food=POT, appliance=ST, temp_c=temp)]
+    # vessel_decides_appliance: the leftover oatmeal is in a ceramic bowl (microwave) or in the metal pot (stove)
+    vessel_cases = {
+        "in_bowl": dict(thermal_override={X: {"stove_rate_c_per_s": 0.0}},
+                        goal={"all": [["temperature_at_least", X, 40], *done]}, route=base),
+        "in_pot": dict(remove=[X, LID], move={POT: POT_AT["dining"][0]},
+                       thermal_override={POT: dict(POT_FOOD)},
+                       goal={"all": [["temperature_at_least", POT, 40], *done]},
+                       route=[look("kitchen_island/top")] + pot_to_stove(POT_AT["dining"][1]))}
+    # two_portions: the oatmeal in a bowl (microwave) and the leftover soup in the pot (stove).  Both are wanted warm
+    # at the same time and food cools (0.2 C/s), so heating one after the other with heat (which waits for its
+    # target and switches off) leaves the first one cold: start both appliances (press), wait, then switch both off
+    slow = {X: {"stove_rate_c_per_s": 0.0, "cooling_rate_c_per_s": 0.2},
+            POT: dict(POT_FOOD, cooling_rate_c_per_s=0.2)}
+
+    def both_at_once(region):
+        return ([S("search", object=POT, region=region)] + [nav(POT), pick(POT), nav("kitchen_stove/top"),
+                                                             place(POT, "kitchen_stove/top", [8.41, 1.725]),
+                                                             S("press", button="kitchen_stove/power_button")]
+                + base[:-1]                                        # the bowl into the microwave, door closed
+                + [S("approach", target="kitchen_microwave/start_button"),
+                   S("press", button="kitchen_microwave/start_button"), S("wait", seconds=25),
+                   S("stop", appliance=MW), S("close", articulated=MW), nav("kitchen_stove"), S("stop", appliance=ST)])
+    two_cases = {c: dict(move={POT: pose}, route=both_at_once(region)) for c, (pose, region) in POT_AT.items()}
+    hint = dict(instruction="Warm up the leftover oatmeal for breakfast (at least 40 C); mind whether its container "
+                            "can go in the microwave or on the burner. Afterwards the stove must be off and the "
+                            "microwave door closed.",
+                instruction_zh="把剩下的燕麦粥热一下当早饭（至少 40 度），注意装粥的容器适不适合进微波炉或放到灶上。"
+                               "做完后灶台要关火，微波炉门要关好。")
     return {
-        "x6_sr_microwave_taken": dict(
+        "vessel_decides_appliance": dict(
+            base="microwave_works", control="microwave_works", conditions=["appliance_compatibility"], **hint,
+            watch=[X, POT, LID],
+            factor="what the oatmeal is in (seed: a ceramic bowl on the island, or the metal pot on the dining table)",
+            challenge="both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or "
+                      "still in the metal cooking pot (not for the microwave)",
+            rationale="choose the appliance by the container: the bowl goes in the microwave, the pot onto the stove; "
+                      "the wrong one does not heat it",
+            cases=vessel_cases),
+        "two_portions": dict(
             base="microwave_works", control="microwave_works",
-            goal=copy.deepcopy(holds["goal"]),
-            challenge="while the robot fetches the bowl, someone puts the covered soup pot into the open microwave",
-            rationale="the appliance is occupied after the plan was made: the robot sees it on arrival, closes the "
-                      "door and heats on the stove (now free) instead; the pot must not be taken out onto the floor",
-            cases={"": dict(failures=pot_in, route=taken)}),
-        "x6_pp_door_opened_after_heat": dict(
-            base="microwave_works", control="microwave_works",
-            challenge="right after the oatmeal is warm, someone opens the microwave door to look",
-            rationale="the heating subgoal already holds; only the door subgoal is undone: close it again without "
-                      "re-heating (re-running the plan would heat again)",
-            cases={"": dict(failures=[f_joint("dependency", MW, "open", ("heat", {"food": X, "appliance": MW}))],
-                            route=reopened)}),
+            conditions=["appliance_compatibility", "multi_object_goal"],
+            thermal_override=slow, remove=[LID],
+            instruction="Breakfast needs two things warmed up: the leftover oatmeal in its bowl and the leftover soup "
+                        "in the cooking pot, both to at least 40 C. Afterwards the stove must be off and the microwave "
+                        "door closed.",
+            instruction_zh="早饭要热两样：碗里剩的燕麦粥和锅里剩的汤，都要热到至少 40 度。做完后灶台要关火，微波炉门要关好。",
+            goal={"all": [["temperature_at_least", X, 40], ["temperature_at_least", POT, 40], *done]},
+            watch=[X, POT, LID],
+            factor="where the pot of soup is (seed: the dining table or the kitchen counter)",
+            challenge="two foods wanted warm together: the oatmeal in a ceramic bowl (microwave only) and the soup in "
+                      "the metal pot (stove only); food cools while it waits",
+            rationale="each food to its own appliance, and run them at the same time: start the stove and the "
+                      "microwave (press), wait, switch both off; heating one after the other lets the first go cold",
+            cases=two_cases),
     }
 
 
@@ -1429,6 +1469,13 @@ LONG = {"T03_utensils_one_container": lambda t: {**T03_long(t), **T03_more(t)}, 
 # v5 routes that tried the destination they could see was full (a place that fails) before the other one: look at
 # it instead and go on
 LOOK_FIRST = {"T06_block_destination_occupied": ("occupied", "occupied_block_away")}
+def _broken_tried(t):
+    """microwave_broken: nothing tells the robot the microwave does not heat; it puts the bowl in, the heat cycle
+    fails (the scene fact), then it goes to the stove (the broken_oatmeal_away route without its search)."""
+    return [st for st in RT(t, t["oracle"]["broken_oatmeal_away"]) if st["skill"] != "search"]
+
+
+ROUTE_FIX = {"T07_heat_oatmeal": {"microwave_broken": _broken_tried}}
 # variant -> why it leaves v6
 REPLACED = {
     ("T01_book_to_dining_table", "table_set"): "replaced by table_seats (several free slots, the suitable one changes "
@@ -1453,6 +1500,8 @@ REPLACED = {
     ("T02_stack_blocks", "far_crowded"): "replaced by tower_for_kid (the search was one turn to the island; now "
                                          "three blocks are spread over the house and the tower goes on the dining "
                                          "table)",
+    ("T07_heat_oatmeal", "h_dynamic_door_opened"): "removed: no dynamic events in T07 (someone opens the microwave "
+                                                   "door again)",
     ("T06_block_destination_occupied", "h_dynamic_cabinet_filled"): "removed: no dynamic events in T06 (someone "
                                                                      "fills the cabinet top)",
     ("T05_pen_or_pencil_to_desk", "h_dynamic_pencil_taken"): "removed: no dynamic events in T05 (someone takes the "
@@ -1462,6 +1511,9 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "appliance_compatibility": {"type": "appliance_choice", "decision": "replace",
+                                "meaning": "which appliance can heat an item follows from its container (metal "
+                                           "not in the microwave, a ceramic bowl not on the burner)"},
     "arrangement": {"type": "spatial_arrangement", "decision": "decompose",
                     "meaning": "several objects make one layout (a row, spacing, squared): each placement leaves room "
                                "for the next"},
@@ -1660,6 +1712,10 @@ def build_task(t: dict) -> dict:
                 fam["layouts"] = [vid, alt]
                 fam["seeds"] = seed_cases(t["task_id"], vid, fam["layouts"])
                 fam["factor"] = "where the resource is to be found (seed extension)"
+    for vid, fix in ROUTE_FIX.get(t["task_id"], {}).items():
+        for lid in families[vid]["layouts"]:
+            t["routes"][f"v6_{lid}"] = {"steps": fix(t), "kind": "v6_route_fix", "variant": lid}
+            t["oracle"][lid] = f"v6_{lid}"
     for vid in LOOK_FIRST.get(t["task_id"], ()):
         for lid in families[vid]["layouts"]:
             steps, out = t["routes"][t["oracle"][lid]]["steps"], []

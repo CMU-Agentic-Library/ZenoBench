@@ -131,6 +131,11 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "appliance_compatibility": {
+   "type": "appliance_choice",
+   "decision": "replace",
+   "meaning": "which appliance can heat an item follows from its container (metal not in the microwave, a ceramic bowl not on the burner)"
+  },
   "arrangement": {
    "type": "spatial_arrangement",
    "decision": "decompose",
@@ -24132,9 +24137,7 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
+       "look": []
       }
      }
     },
@@ -24382,197 +24385,6 @@
       }
      }
     },
-    "h_dynamic_door_opened": {
-     "move": {
-      "handled_cooking_pot": {
-       "support": "kitchen_microwave/inside_floor",
-       "xy": [
-        4.5,
-        2.5
-       ],
-       "yaw_deg": 0
-      },
-      "pot_lid": {
-       "support": null,
-       "z": 0.88,
-       "xy": [
-        4.5,
-        2.5
-       ],
-       "yaw_deg": 0
-      },
-      "oatmeal": {
-       "support": "kitchen_island/top",
-       "xy": [
-        6.69,
-        1.83
-       ],
-       "yaw_deg": 168.5
-      }
-     },
-     "conditions": [
-      "appliance_occupied"
-     ],
-     "failures": [
-      {
-       "id": "resource_v4_microwave_holds_pot",
-       "kind": "resource",
-       "when": "initial",
-       "check": [
-        [
-         "in_appliance",
-         "handled_cooking_pot",
-         "kitchen_microwave"
-        ]
-       ]
-      },
-      {
-       "id": "dependency_kitchen_microwave",
-       "kind": "dependency",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "close",
-        "args": {
-         "articulated": "kitchen_microwave"
-        },
-        "nth": 1
-       },
-       "event": {
-        "type": "set_joint",
-        "articulated": "kitchen_microwave",
-        "value": "open"
-       }
-      }
-     ],
-     "goal": {
-      "all": [
-       [
-        "temperature_at_least",
-        "oatmeal",
-        40
-       ],
-       [
-        "not heating",
-        "kitchen_stove"
-       ],
-       [
-        "is_closed",
-        "kitchen_microwave"
-       ],
-       [
-        "not on_floor",
-        "handled_cooking_pot"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "instruction": "Warm up the leftover oatmeal for breakfast to at least 40 C in a way that works. When you are done, the stove must be off and the microwave door closed.",
-     "instruction_zh": "请用合适方式把燕麦粥加热到至少 40°C，完成后关火并关好微波炉门。",
-     "watch": [
-      "oatmeal",
-      "handled_cooking_pot",
-      "pot_lid"
-     ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "the microwave holds the soup pot: heat on the stove; and just after the robot closes the microwave, someone opens the door again: heating needs it closed",
-     "v5": {
-      "tier": "hard",
-      "challenge": "the microwave holds the soup pot: heat on the stove; and just after the robot closes the microwave, someone opens the door again: heating needs it closed",
-      "derived_from": "microwave_holds_pot",
-      "hard_category": "dynamic"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "oatmeal"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         6.5852,
-         1.7262,
-         6.7948,
-         1.9338
-        ],
-        "dx": [
-         -0.03,
-         0.1
-        ],
-        "dy": [
-         -0.2,
-         0.04
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.9038,
-         1.6017,
-         7.9963,
-         1.7283
-        ],
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         7.6207,
-         1.631,
-         7.6789,
-         1.6912
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         7.8089,
-         1.7789,
-         7.9889,
-         1.899
-        ],
-        [
-         8.1464,
-         1.6119,
-         8.213,
-         1.678
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
     "broken_oatmeal_away__alt_dining_table_2": {
      "note": "the microwave does not heat and the oatmeal was left on the wall cabinet (carried from the dining table it slipped out of the rim pinch, 2/2) (here the oatmeal is on dining_table_2/top)",
      "conditions": [
@@ -24675,7 +24487,7 @@
       }
      }
     },
-    "x6_sr_microwave_taken": {
+    "vessel_decides_appliance__in_bowl": {
      "move": {
       "oatmeal": {
        "support": "kitchen_island/top",
@@ -24684,6 +24496,29 @@
         1.83
        ],
        "yaw_deg": 168.5
+      },
+      "handled_cooking_pot": {
+       "support": "kitchen_stove/top",
+       "xy": [
+        8.41,
+        1.725
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "appliance_compatibility"
+     ],
+     "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C); mind whether its container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+     "instruction_zh": "把剩下的燕麦粥热一下当早饭（至少 40 度），注意装粥的容器适不适合进微波炉或放到灶上。做完后灶台要关火，微波炉门要关好。",
+     "watch": [
+      "oatmeal",
+      "handled_cooking_pot",
+      "pot_lid"
+     ],
+     "thermal_override": {
+      "oatmeal": {
+       "stove_rate_c_per_s": 0.0
       }
      },
      "goal": {
@@ -24698,12 +24533,12 @@
         "kitchen_stove"
        ],
        [
-        "is_closed",
+        "not heating",
         "kitchen_microwave"
        ],
        [
-        "not on_floor",
-        "handled_cooking_pot"
+        "is_closed",
+        "kitchen_microwave"
        ],
        [
         "hand_empty",
@@ -24711,70 +24546,16 @@
        ]
       ]
      },
-     "failures": [
-      {
-       "id": "resource_microwave_taken",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "look",
-        "args": {
-         "target": "kitchen_island/top"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "handled_cooking_pot",
-        "to": {
-         "support": "kitchen_microwave/inside_floor",
-         "xy": [
-          4.5,
-          2.5
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      },
-      {
-       "id": "resource_microwave_lid",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "look",
-        "args": {
-         "target": "kitchen_island/top"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "pot_lid",
-        "to": {
-         "support": null,
-         "z": 0.88,
-         "xy": [
-          4.5,
-          2.5
-         ],
-         "yaw_deg": 0.0
-        }
-       },
-       "after_fired": "resource_microwave_taken"
-      }
-     ],
      "since": "v6",
-     "note": "while the robot fetches the bowl, someone puts the covered soup pot into the open microwave",
+     "note": "both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or still in the metal cooking pot (not for the microwave)",
      "v6": {
-      "family": "x6_sr_microwave_taken",
-      "case": null,
-      "challenge": "while the robot fetches the bowl, someone puts the covered soup pot into the open microwave",
-      "rationale": "the appliance is occupied after the plan was made: the robot sees it on arrival, closes the door and heats on the stove (now free) instead; the pot must not be taken out onto the floor",
+      "family": "vessel_decides_appliance",
+      "case": "in_bowl",
+      "challenge": "both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or still in the metal cooking pot (not for the microwave)",
+      "rationale": "choose the appliance by the container: the bowl goes in the microwave, the pot onto the stove; the wrong one does not heat it",
       "control": "microwave_works",
       "contrast": null,
-      "factor": null,
+      "factor": "what the oatmeal is in (seed: a ceramic bowl on the island, or the metal pot on the dining table)",
       "derived_from": "microwave_works"
      },
      "layout": {
@@ -24865,8 +24646,146 @@
       }
      }
     },
-    "x6_pp_door_opened_after_heat": {
+    "vessel_decides_appliance__in_pot": {
      "move": {
+      "handled_cooking_pot": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.35,
+        6.75
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "appliance_compatibility"
+     ],
+     "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C); mind whether its container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+     "instruction_zh": "把剩下的燕麦粥热一下当早饭（至少 40 度），注意装粥的容器适不适合进微波炉或放到灶上。做完后灶台要关火，微波炉门要关好。",
+     "watch": [
+      "oatmeal",
+      "handled_cooking_pot",
+      "pot_lid"
+     ],
+     "remove": [
+      "oatmeal",
+      "pot_lid"
+     ],
+     "thermal_override": {
+      "handled_cooking_pot": {
+       "initial_c": 4.0,
+       "heating_rate_c_per_s": 0.0,
+       "stove_rate_c_per_s": 2.0,
+       "cooling_rate_c_per_s": 1.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "temperature_at_least",
+        "handled_cooking_pot",
+        40
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "not heating",
+        "kitchen_microwave"
+       ],
+       [
+        "is_closed",
+        "kitchen_microwave"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or still in the metal cooking pot (not for the microwave)",
+     "v6": {
+      "family": "vessel_decides_appliance",
+      "case": "in_pot",
+      "challenge": "both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or still in the metal cooking pot (not for the microwave)",
+      "rationale": "choose the appliance by the container: the bowl goes in the microwave, the pot onto the stove; the wrong one does not heat it",
+      "control": "microwave_works",
+      "contrast": null,
+      "factor": "what the oatmeal is in (seed: a ceramic bowl on the island, or the metal pot on the dining table)",
+      "derived_from": "microwave_works"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "handled_cooking_pot"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.22,
+         6.6,
+         3.48,
+         6.9
+        ],
+        "dx": [
+         0.0,
+         0.34
+        ],
+        "dy": [
+         -1.09,
+         1.04
+        ]
+       }
+      ],
+      "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ],
+        [
+         2.835,
+         6.405,
+         3.135,
+         6.795
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "two_portions__dining": {
+     "move": {
+      "handled_cooking_pot": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.35,
+        6.75
+       ],
+       "yaw_deg": 0.0
+      },
       "oatmeal": {
        "support": "kitchen_island/top",
        "xy": [
@@ -24876,40 +24795,96 @@
        "yaw_deg": 168.5
       }
      },
-     "failures": [
-      {
-       "id": "dependency_kitchen_microwave",
-       "kind": "dependency",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "heat",
-        "args": {
-         "food": "oatmeal",
-         "appliance": "kitchen_microwave"
-        },
-        "nth": 1
-       },
-       "event": {
-        "type": "set_joint",
-        "articulated": "kitchen_microwave",
-        "value": "open"
-       }
+     "remove": [
+      "pot_lid"
+     ],
+     "thermal_override": {
+      "oatmeal": {
+       "stove_rate_c_per_s": 0.0,
+       "cooling_rate_c_per_s": 0.2
+      },
+      "handled_cooking_pot": {
+       "initial_c": 4.0,
+       "heating_rate_c_per_s": 0.0,
+       "stove_rate_c_per_s": 2.0,
+       "cooling_rate_c_per_s": 0.2
       }
+     },
+     "conditions": [
+      "appliance_compatibility",
+      "multi_object_goal"
+     ],
+     "goal": {
+      "all": [
+       [
+        "temperature_at_least",
+        "oatmeal",
+        40
+       ],
+       [
+        "temperature_at_least",
+        "handled_cooking_pot",
+        40
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "not heating",
+        "kitchen_microwave"
+       ],
+       [
+        "is_closed",
+        "kitchen_microwave"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Breakfast needs two things warmed up: the leftover oatmeal in its bowl and the leftover soup in the cooking pot, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
+     "instruction_zh": "早饭要热两样：碗里剩的燕麦粥和锅里剩的汤，都要热到至少 40 度。做完后灶台要关火，微波炉门要关好。",
+     "watch": [
+      "oatmeal",
+      "handled_cooking_pot",
+      "pot_lid"
      ],
      "since": "v6",
-     "note": "right after the oatmeal is warm, someone opens the microwave door to look",
+     "note": "two foods wanted warm together: the oatmeal in a ceramic bowl (microwave only) and the soup in the metal pot (stove only); food cools while it waits",
      "v6": {
-      "family": "x6_pp_door_opened_after_heat",
-      "case": null,
-      "challenge": "right after the oatmeal is warm, someone opens the microwave door to look",
-      "rationale": "the heating subgoal already holds; only the door subgoal is undone: close it again without re-heating (re-running the plan would heat again)",
+      "family": "two_portions",
+      "case": "dining",
+      "challenge": "two foods wanted warm together: the oatmeal in a ceramic bowl (microwave only) and the soup in the metal pot (stove only); food cools while it waits",
+      "rationale": "each food to its own appliance, and run them at the same time: start the stove and the microwave (press), wait, switch both off; heating one after the other lets the first go cold",
       "control": "microwave_works",
       "contrast": null,
-      "factor": null,
+      "factor": "where the pot of soup is (seed: the dining table or the kitchen counter)",
       "derived_from": "microwave_works"
      },
      "layout": {
       "clusters": [
+       {
+        "names": [
+         "handled_cooking_pot"
+        ],
+        "support": "dining_table_2/top",
+        "box": [
+         3.22,
+         6.6,
+         3.48,
+         6.9
+        ],
+        "dx": [
+         0.0,
+         0.34
+        ],
+        "dy": [
+         -1.09,
+         1.04
+        ]
+       },
        {
         "names": [
          "oatmeal"
@@ -24932,6 +24907,253 @@
        }
       ],
       "static": {
+       "dining_table_2/top": [
+        [
+         3.5863,
+         7.3282,
+         3.7719,
+         7.4299
+        ],
+        [
+         3.0905,
+         6.0312,
+         3.2083,
+         6.1672
+        ],
+        [
+         3.4108,
+         7.0744,
+         3.5475,
+         7.2247
+        ],
+        [
+         2.835,
+         6.405,
+         3.135,
+         6.795
+        ]
+       ],
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         8.1464,
+         1.6119,
+         8.213,
+         1.678
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": []
+      }
+     }
+    },
+    "two_portions__counter": {
+     "move": {
+      "handled_cooking_pot": {
+       "support": "kitchen_counter_2/top",
+       "xy": [
+        -0.13,
+        7.3
+       ],
+       "yaw_deg": 0.0
+      },
+      "oatmeal": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.69,
+        1.83
+       ],
+       "yaw_deg": 168.5
+      }
+     },
+     "remove": [
+      "pot_lid"
+     ],
+     "thermal_override": {
+      "oatmeal": {
+       "stove_rate_c_per_s": 0.0,
+       "cooling_rate_c_per_s": 0.2
+      },
+      "handled_cooking_pot": {
+       "initial_c": 4.0,
+       "heating_rate_c_per_s": 0.0,
+       "stove_rate_c_per_s": 2.0,
+       "cooling_rate_c_per_s": 0.2
+      }
+     },
+     "conditions": [
+      "appliance_compatibility",
+      "multi_object_goal"
+     ],
+     "goal": {
+      "all": [
+       [
+        "temperature_at_least",
+        "oatmeal",
+        40
+       ],
+       [
+        "temperature_at_least",
+        "handled_cooking_pot",
+        40
+       ],
+       [
+        "not heating",
+        "kitchen_stove"
+       ],
+       [
+        "not heating",
+        "kitchen_microwave"
+       ],
+       [
+        "is_closed",
+        "kitchen_microwave"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Breakfast needs two things warmed up: the leftover oatmeal in its bowl and the leftover soup in the cooking pot, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
+     "instruction_zh": "早饭要热两样：碗里剩的燕麦粥和锅里剩的汤，都要热到至少 40 度。做完后灶台要关火，微波炉门要关好。",
+     "watch": [
+      "oatmeal",
+      "handled_cooking_pot",
+      "pot_lid"
+     ],
+     "since": "v6",
+     "note": "two foods wanted warm together: the oatmeal in a ceramic bowl (microwave only) and the soup in the metal pot (stove only); food cools while it waits",
+     "v6": {
+      "family": "two_portions",
+      "case": "counter",
+      "challenge": "two foods wanted warm together: the oatmeal in a ceramic bowl (microwave only) and the soup in the metal pot (stove only); food cools while it waits",
+      "rationale": "each food to its own appliance, and run them at the same time: start the stove and the microwave (press), wait, switch both off; heating one after the other lets the first go cold",
+      "control": "microwave_works",
+      "contrast": null,
+      "factor": "where the pot of soup is (seed: the dining table or the kitchen counter)",
+      "derived_from": "microwave_works"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "handled_cooking_pot"
+        ],
+        "support": "kitchen_counter_2/top",
+        "box": [
+         -0.26,
+         7.15,
+         0.0,
+         7.45
+        ],
+        "dx": [
+         -0.25,
+         0.24
+        ],
+        "dy": [
+         -0.17,
+         0.0
+        ]
+       },
+       {
+        "names": [
+         "oatmeal"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.5852,
+         1.7262,
+         6.7948,
+         1.9338
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.2,
+         0.04
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_counter_2/top": [
+        [
+         -0.1452,
+         8.2954,
+         0.1035,
+         8.5437
+        ],
+        [
+         -0.1165,
+         7.8786,
+         0.2138,
+         8.2089
+        ],
+        [
+         -0.4036,
+         8.1356,
+         -0.2763,
+         8.2644
+        ],
+        [
+         -0.0723,
+         7.8765,
+         0.0735,
+         8.0449
+        ]
+       ],
        "kitchen_island/top": [
         [
          7.9038,
@@ -25027,13 +25249,14 @@
    "nominal": "nominal",
    "oracle": {
     "microwave_works": "nominal",
-    "microwave_broken": "oracle_stove",
+    "microwave_broken": "v6_microwave_broken",
     "broken_oatmeal_away": "hard_search_stove",
     "microwave_holds_pot": "hard_stove_instead",
-    "h_dynamic_door_opened": "v5_h_dynamic_door_opened",
     "broken_oatmeal_away__alt_dining_table_2": "v6_broken_oatmeal_away__alt_dining_table_2",
-    "x6_sr_microwave_taken": "v6_x6_sr_microwave_taken",
-    "x6_pp_door_opened_after_heat": "v6_x6_pp_door_opened_after_heat"
+    "vessel_decides_appliance__in_bowl": "v6_vessel_decides_appliance__in_bowl",
+    "vessel_decides_appliance__in_pot": "v6_vessel_decides_appliance__in_pot",
+    "two_portions__dining": "v6_two_portions__dining",
+    "two_portions__counter": "v6_two_portions__counter"
    },
    "routes": {
     "nominal": {
@@ -25096,54 +25319,6 @@
        "args": {
         "food": "oatmeal",
         "appliance": "kitchen_microwave",
-        "temp_c": 40
-       }
-      }
-     ],
-     "since": "v2"
-    },
-    "oracle_stove": {
-     "kind": "alternative",
-     "variants": [
-      "microwave_broken"
-     ],
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "oatmeal"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "oatmeal"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "oatmeal",
-        "receptacle": "kitchen_stove/top"
-       }
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "oatmeal",
-        "appliance": "kitchen_stove",
         "temp_c": 40
        }
       }
@@ -25347,92 +25522,6 @@
      ],
      "since": "v4"
     },
-    "v5_h_dynamic_door_opened": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "oatmeal"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "oatmeal"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_stove/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "oatmeal",
-        "receptacle": "kitchen_stove/top"
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "heat",
-       "args": {
-        "food": "oatmeal",
-        "appliance": "kitchen_stove",
-        "temp_c": 40
-       },
-       "role": "alternative"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       },
-       "role": "recover"
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_door_opened"
-    },
     "v6_broken_oatmeal_away__alt_dining_table_2": {
      "steps": [
       {
@@ -25550,7 +25639,7 @@
      "kind": "v6_seed_extension",
      "variant": "broken_oatmeal_away__alt_dining_table_2"
     },
-    "v6_x6_sr_microwave_taken": {
+    "v6_microwave_broken": {
      "steps": [
       {
        "skill": "navigate",
@@ -25562,12 +25651,6 @@
        "skill": "open",
        "args": {
         "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
        }
       },
       {
@@ -25589,25 +25672,48 @@
        }
       },
       {
-       "skill": "look",
+       "skill": "place",
        "args": {
-        "target": "kitchen_microwave/inside_floor"
-       },
-       "role": "recover"
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
       },
       {
        "skill": "close",
        "args": {
         "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "oatmeal",
+        "appliance": "kitchen_microwave",
+        "temp_c": 40
        },
-       "role": "recover"
+       "expect": "fail",
+       "role": "failure"
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_microwave"
+       },
+       "role": "alternative"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       },
+       "role": "alternative"
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "kitchen_stove/top"
        },
-       "role": "recover"
+       "role": "alternative"
       },
       {
        "skill": "place",
@@ -25615,7 +25721,7 @@
         "object": "oatmeal",
         "receptacle": "kitchen_stove/top"
        },
-       "role": "recover"
+       "role": "alternative"
       },
       {
        "skill": "heat",
@@ -25624,13 +25730,25 @@
         "appliance": "kitchen_stove",
         "temp_c": 40
        },
-       "role": "recover"
+       "role": "alternative"
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
       }
      ],
-     "kind": "v6_oracle",
-     "variant": "x6_sr_microwave_taken"
+     "kind": "v6_route_fix",
+     "variant": "microwave_broken"
     },
-    "v6_x6_pp_door_opened_after_heat": {
+    "v6_vessel_decides_appliance__in_bowl": {
      "steps": [
       {
        "skill": "navigate",
@@ -25688,17 +25806,344 @@
         "appliance": "kitchen_microwave",
         "temp_c": 40
        }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "vessel_decides_appliance__in_bowl"
+    },
+    "v6_vessel_decides_appliance__in_pot": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "handled_cooking_pot",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "handled_cooking_pot",
+        "receptacle": "kitchen_stove/top",
+        "hint_xy": [
+         8.41,
+         1.725
+        ]
+       }
+      },
+      {
+       "skill": "heat",
+       "args": {
+        "food": "handled_cooking_pot",
+        "appliance": "kitchen_stove",
+        "temp_c": 40
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "vessel_decides_appliance__in_pot"
+    },
+    "v6_two_portions__dining": {
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "handled_cooking_pot",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "handled_cooking_pot",
+        "receptacle": "kitchen_stove/top",
+        "hint_xy": [
+         8.41,
+         1.725
+        ]
+       }
+      },
+      {
+       "skill": "press",
+       "args": {
+        "button": "kitchen_stove/power_button"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
       },
       {
        "skill": "close",
        "args": {
         "articulated": "kitchen_microwave"
-       },
-       "role": "recover"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_microwave/start_button"
+       }
+      },
+      {
+       "skill": "press",
+       "args": {
+        "button": "kitchen_microwave/start_button"
+       }
+      },
+      {
+       "skill": "wait",
+       "args": {
+        "seconds": 25
+       }
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_stove"
+       }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_pp_door_opened_after_heat"
+     "variant": "two_portions__dining"
+    },
+    "v6_two_portions__counter": {
+     "steps": [
+      {
+       "skill": "search",
+       "args": {
+        "object": "handled_cooking_pot",
+        "region": "kitchen_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "handled_cooking_pot"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "handled_cooking_pot",
+        "receptacle": "kitchen_stove/top",
+        "hint_xy": [
+         8.41,
+         1.725
+        ]
+       }
+      },
+      {
+       "skill": "press",
+       "args": {
+        "button": "kitchen_stove/power_button"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "oatmeal"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "oatmeal"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "oatmeal",
+        "receptacle": "kitchen_microwave/inside_floor"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "kitchen_microwave/start_button"
+       }
+      },
+      {
+       "skill": "press",
+       "args": {
+        "button": "kitchen_microwave/start_button"
+       }
+      },
+      {
+       "skill": "wait",
+       "args": {
+        "seconds": 25
+       }
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "kitchen_microwave"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_stove"
+       }
+      },
+      {
+       "skill": "stop",
+       "args": {
+        "appliance": "kitchen_stove"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "two_portions__counter"
     }
    },
    "benchmark_version": "v6",
@@ -25805,72 +26250,58 @@
       "19": "microwave_holds_pot"
      }
     },
-    "h_dynamic_door_opened": {
-     "origin": "v5",
-     "control": "microwave_works",
-     "layouts": [
-      "h_dynamic_door_opened"
-     ],
-     "seeds": {
-      "10": "h_dynamic_door_opened",
-      "11": "h_dynamic_door_opened",
-      "12": "h_dynamic_door_opened",
-      "13": "h_dynamic_door_opened",
-      "14": "h_dynamic_door_opened",
-      "15": "h_dynamic_door_opened",
-      "16": "h_dynamic_door_opened",
-      "17": "h_dynamic_door_opened",
-      "18": "h_dynamic_door_opened",
-      "19": "h_dynamic_door_opened"
-     }
-    },
-    "x6_sr_microwave_taken": {
+    "vessel_decides_appliance": {
      "origin": "v6",
      "control": "microwave_works",
      "layouts": [
-      "x6_sr_microwave_taken"
+      "vessel_decides_appliance__in_bowl",
+      "vessel_decides_appliance__in_pot"
      ],
-     "factor": null,
+     "factor": "what the oatmeal is in (seed: a ceramic bowl on the island, or the metal pot on the dining table)",
      "seeds": {
-      "10": "x6_sr_microwave_taken",
-      "11": "x6_sr_microwave_taken",
-      "12": "x6_sr_microwave_taken",
-      "13": "x6_sr_microwave_taken",
-      "14": "x6_sr_microwave_taken",
-      "15": "x6_sr_microwave_taken",
-      "16": "x6_sr_microwave_taken",
-      "17": "x6_sr_microwave_taken",
-      "18": "x6_sr_microwave_taken",
-      "19": "x6_sr_microwave_taken"
+      "10": "vessel_decides_appliance__in_bowl",
+      "11": "vessel_decides_appliance__in_pot",
+      "12": "vessel_decides_appliance__in_bowl",
+      "13": "vessel_decides_appliance__in_pot",
+      "14": "vessel_decides_appliance__in_pot",
+      "15": "vessel_decides_appliance__in_bowl",
+      "16": "vessel_decides_appliance__in_pot",
+      "17": "vessel_decides_appliance__in_pot",
+      "18": "vessel_decides_appliance__in_bowl",
+      "19": "vessel_decides_appliance__in_bowl"
      }
     },
-    "x6_pp_door_opened_after_heat": {
+    "two_portions": {
      "origin": "v6",
      "control": "microwave_works",
      "layouts": [
-      "x6_pp_door_opened_after_heat"
+      "two_portions__dining",
+      "two_portions__counter"
      ],
-     "factor": null,
+     "factor": "where the pot of soup is (seed: the dining table or the kitchen counter)",
      "seeds": {
-      "10": "x6_pp_door_opened_after_heat",
-      "11": "x6_pp_door_opened_after_heat",
-      "12": "x6_pp_door_opened_after_heat",
-      "13": "x6_pp_door_opened_after_heat",
-      "14": "x6_pp_door_opened_after_heat",
-      "15": "x6_pp_door_opened_after_heat",
-      "16": "x6_pp_door_opened_after_heat",
-      "17": "x6_pp_door_opened_after_heat",
-      "18": "x6_pp_door_opened_after_heat",
-      "19": "x6_pp_door_opened_after_heat"
+      "10": "two_portions__counter",
+      "11": "two_portions__dining",
+      "12": "two_portions__dining",
+      "13": "two_portions__counter",
+      "14": "two_portions__dining",
+      "15": "two_portions__counter",
+      "16": "two_portions__dining",
+      "17": "two_portions__counter",
+      "18": "two_portions__counter",
+      "19": "two_portions__dining"
      }
     }
    },
-   "v6_replaced": {},
+   "v6_replaced": {
+    "h_dynamic_door_opened": "removed: no dynamic events in T07 (someone opens the microwave door again)"
+   },
    "v6_dropped": {
     "h_action_ik_and_slip": "built on an injected action failure that never goes away",
     "e2_from_dining_room": "same as microwave_works but for the layout (object poses / start)",
     "m_ik_oatmeal": "only injected action failures",
-    "h_mixed_pot_inside_grasp": "same as microwave_holds_pot without its injected action failures"
+    "h_mixed_pot_inside_grasp": "same as microwave_holds_pot without its injected action failures",
+    "h_dynamic_door_opened": "removed: no dynamic events in T07 (someone opens the microwave door again)"
    },
    "v6_tracks": {
     "microwave_works": {
@@ -25900,28 +26331,20 @@
       "appliance_occupied"
      ]
     },
-    "h_dynamic_door_opened": {
-     "category": "action_task",
-     "local": [
-      "someone changed things at the work spot: put it right there"
-     ],
-     "longer": [
-      "appliance_occupied"
-     ]
-    },
-    "x6_sr_microwave_taken": {
+    "vessel_decides_appliance": {
      "category": "task",
      "local": [],
      "longer": [
-      "event: resource"
+      "appliance_compatibility"
      ]
     },
-    "x6_pp_door_opened_after_heat": {
-     "category": "action",
-     "local": [
-      "someone changed things at the work spot: put it right there"
-     ],
-     "longer": []
+    "two_portions": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "appliance_compatibility",
+      "multi_object_goal"
+     ]
     }
    }
   },
