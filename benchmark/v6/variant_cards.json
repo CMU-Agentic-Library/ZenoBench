@@ -10046,31 +10046,164 @@
   "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T10_trash_the_can/far_can_far": {
-  "variant": "far_can_far",
+ "T10_trash_the_can/keep_kids_can__kid_desk": {
+  "variant": "keep_kids_can",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   14,
+   19
+  ],
+  "instruction": "Throw the empty soda can into the trash can. The kid is keeping one can for a craft project; leave that one.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "craft_notebook",
+    "craft_pencil",
+    "kids_can"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "near_start",
+     "kids_can",
+     0.03
+    ],
+    [
+     "near_start",
+     "craft_notebook",
+     0.03
+    ],
+    [
+     "near_start",
+     "craft_pencil",
+     0.03
+    ],
+    [
+     "upright",
+     "kids_can"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_keep_kids_can__kid_desk",
+  "challenge": "two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
+  "rationale": "the instruction excludes one can by a clue: tell the kid's can from what stands around it and throw out only the other one (throwing the kid's out fails)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/keep_kids_can__kid_island": {
+  "variant": "keep_kids_can",
   "category": "task",
   "seeds": [
    11,
+   15,
+   16,
+   17,
+   18
+  ],
+  "instruction": "Throw the empty soda can into the trash can. The kid is keeping one can for a craft project; leave that one.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "craft_notebook",
+    "craft_pencil",
+    "kids_can"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ],
+    [
+     "near_start",
+     "kids_can",
+     0.03
+    ],
+    [
+     "near_start",
+     "craft_notebook",
+     0.03
+    ],
+    [
+     "near_start",
+     "craft_pencil",
+     0.03
+    ],
+    [
+     "upright",
+     "kids_can"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_keep_kids_can__kid_island",
+  "challenge": "two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
+  "rationale": "the instruction excludes one can by a clue: tell the kid's can from what stands around it and throw out only the other one (throwing the kid's out fails)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/trash_moved__dining": {
+  "variant": "trash_moved",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
    12,
-   13,
    15,
    19
   ],
   "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
-   "start": [
-    4.24,
-    5.12,
-    120.0
-   ],
+   "start": null,
    "moved": [
-    "soda_can"
+    "soda_can",
+    "trash_can"
    ],
    "added": [],
    "removed": [],
    "conditions": [
-    "start_elsewhere",
+    "destination_unnamed",
     "not_in_view"
    ],
    "initial_checks": []
@@ -10090,16 +10223,16 @@
    ]
   },
   "control": "can_on_island",
-  "oracle_route": "hard_explore_search",
-  "challenge": "the robot starts in the dining room, the can is on the TV stand",
-  "rationale": "",
+  "oracle_route": "v6_trash_moved__dining",
+  "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
+  "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T10_trash_the_can/far_can_far__alt_dining_table_2": {
-  "variant": "far_can_far",
+ "T10_trash_the_can/trash_moved__bathroom": {
+  "variant": "trash_moved",
   "category": "task",
   "seeds": [
-   10,
+   13,
    14,
    16,
    17,
@@ -10108,18 +10241,15 @@
   "instruction": "Someone left an empty soda can lying around. Throw it into the trash can.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
-   "start": [
-    4.24,
-    5.12,
-    120.0
-   ],
+   "start": null,
    "moved": [
-    "soda_can"
+    "soda_can",
+    "trash_can"
    ],
    "added": [],
    "removed": [],
    "conditions": [
-    "start_elsewhere",
+    "destination_unnamed",
     "not_in_view"
    ],
    "initial_checks": []
@@ -10139,59 +10269,329 @@
    ]
   },
   "control": "can_on_island",
-  "oracle_route": "v6_far_can_far__alt_dining_table_2",
-  "challenge": "the robot starts in the dining room, the can is on the TV stand (here the soda_can is on dining_table_2/top)",
-  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_trash_moved__bathroom",
+  "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
+  "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T10_trash_the_can/h_task_can_in_microwave": {
-  "variant": "h_task_can_in_microwave",
-  "category": "action",
+ "T10_trash_the_can/after_dinner_clear__rubbish_leftovers": {
+  "variant": "after_dinner_clear",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   17,
+   18
+  ],
+  "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "leftovers",
+    "takeout_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "disposal_by_state",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "inside",
+     "takeout_tray",
+     "trash_can"
+    ],
+    [
+     "on",
+     "leftovers",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_after_dinner_clear__rubbish_leftovers",
+  "challenge": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+  "rationale": "decide for each object what it is in its state: the empty can and the empty disposable tray are rubbish, the glass box with rice is leftovers (fridge), the mug is a used cup (counter); the cereal stays.  One hand: open the fridge before picking up the leftovers, close it after",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/after_dinner_clear__leftovers_mug": {
+  "variant": "after_dinner_clear",
+  "category": "task",
+  "seeds": [
+   14,
+   15,
+   16
+  ],
+  "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "leftovers",
+    "used_mug"
+   ],
+   "removed": [],
+   "conditions": [
+    "disposal_by_state",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "on",
+     "leftovers",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "on",
+     "used_mug",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "upright",
+     "used_mug"
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_after_dinner_clear__leftovers_mug",
+  "challenge": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+  "rationale": "decide for each object what it is in its state: the empty can and the empty disposable tray are rubbish, the glass box with rice is leftovers (fridge), the mug is a used cup (counter); the cereal stays.  One hand: open the fridge before picking up the leftovers, close it after",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/after_dinner_clear__rubbish_mug": {
+  "variant": "after_dinner_clear",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   19
+  ],
+  "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "soda_can"
+   ],
+   "added": [
+    "takeout_tray",
+    "used_mug"
+   ],
+   "removed": [],
+   "conditions": [
+    "disposal_by_state",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "inside",
+     "takeout_tray",
+     "trash_can"
+    ],
+    [
+     "on",
+     "used_mug",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "upright",
+     "used_mug"
+    ],
+    [
+     "near_start",
+     "clutter_cereal_a",
+     0.03
+    ],
+    [
+     "near_start",
+     "clutter_cereal_b",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_after_dinner_clear__rubbish_mug",
+  "challenge": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+  "rationale": "decide for each object what it is in its state: the empty can and the empty disposable tray are rubbish, the glass box with rice is leftovers (fridge), the mug is a used cup (counter); the cereal stays.  One hand: open the fridge before picking up the leftovers, close it after",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/guests_coming__can_mug_block": {
+  "variant": "guests_coming",
+  "category": "task",
   "seeds": [
    10,
    11,
    12,
-   13,
-   14,
+   14
+  ],
+  "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [
+    "kitchen_sponge",
+    "rolling_pin",
+    "soda_can",
+    "wooden_block_a"
+   ],
+   "added": [
+    "toy_box",
+    "used_mug"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "soda_can",
+     "trash_can"
+    ],
+    [
+     "on",
+     "used_mug",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "upright",
+     "used_mug"
+    ],
+    [
+     "inside",
+     "wooden_block_a",
+     "toy_box"
+    ],
+    [
+     "near_start",
+     "rolling_pin",
+     0.03
+    ],
+    [
+     "near_start",
+     "kitchen_sponge",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "can_on_island",
+  "oracle_route": "v6_guests_coming__can_mug_block",
+  "challenge": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+  "rationale": "find what is out of place in the room and send each to its own place (trash, counter, toy box); leave what belongs (the island's things)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T10_trash_the_can/guests_coming__can_block": {
+  "variant": "guests_coming",
+  "category": "task",
+  "seeds": [
    15,
-   16,
-   17,
    18,
    19
   ],
-  "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
+  "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
-    "soda_can"
+    "kitchen_sponge",
+    "rolling_pin",
+    "soda_can",
+    "wooden_block_a"
    ],
-   "added": [],
+   "added": [
+    "toy_box"
+   ],
    "removed": [],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ],
-    [
-     "in_appliance",
-     "soda_can",
-     "kitchen_microwave"
-    ]
-   ]
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -10200,184 +10600,61 @@
      "trash_can"
     ],
     [
-     "hand_empty",
-     "right"
+     "inside",
+     "wooden_block_a",
+     "toy_box"
     ],
     [
-     "is_closed",
-     "kitchen_microwave"
+     "near_start",
+     "rolling_pin",
+     0.03
+    ],
+    [
+     "near_start",
+     "kitchen_sponge",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "can_on_island",
-  "oracle_route": "v5_h_task_can_in_microwave",
-  "challenge": "the can is inside the closed microwave: open it, take the can, close it, then trash it",
-  "rationale": "",
+  "oracle_route": "v6_guests_coming__can_block",
+  "challenge": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+  "rationale": "find what is out of place in the room and send each to its own place (trash, counter, toy box); leave what belongs (the island's things)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T10_trash_the_can/h_dynamic_can_moved": {
-  "variant": "h_dynamic_can_moved",
-  "category": "action_task",
+ "T10_trash_the_can/guests_coming__can_mug": {
+  "variant": "guests_coming",
+  "category": "task",
   "seeds": [
-   11,
    13,
-   14,
-   17,
-   18
-  ],
-  "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
-  "initial_conditions": {
-   "scene": "tasks/kitchen_skills",
-   "start": null,
-   "moved": [
-    "soda_can"
-   ],
-   "added": [],
-   "removed": [],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ],
-    [
-     "in_appliance",
-     "soda_can",
-     "kitchen_microwave"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_soda_can",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "open",
-     "args": {
-      "articulated": "kitchen_microwave"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "soda_can",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "all": [
-    [
-     "inside",
-     "soda_can",
-     "trash_can"
-    ],
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ]
-   ]
-  },
-  "control": "can_on_island",
-  "oracle_route": "v5_h_dynamic_can_moved",
-  "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T10_trash_the_can/h_dynamic_can_moved__alt_tv_stand_2": {
-  "variant": "h_dynamic_can_moved",
-  "category": "action_task",
-  "seeds": [
-   10,
-   12,
-   15,
    16,
-   19
+   17
   ],
-  "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
+  "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
    "moved": [
+    "kitchen_sponge",
+    "rolling_pin",
     "soda_can"
    ],
-   "added": [],
+   "added": [
+    "toy_box",
+    "used_mug"
+   ],
    "removed": [],
-   "conditions": [],
-   "initial_checks": [
-    [
-     "is_closed",
-     "kitchen_microwave"
-    ],
-    [
-     "in_appliance",
-     "soda_can",
-     "kitchen_microwave"
-    ]
-   ]
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
   },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_soda_can",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "open",
-     "args": {
-      "articulated": "kitchen_microwave"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "soda_can",
-     "to": {
-      "support": "tv_stand_2/top",
-      "xy": [
-       7.0,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
+  "failure_triggers": [],
   "goal_constraints": {
    "all": [
     [
@@ -10386,19 +10663,34 @@
      "trash_can"
     ],
     [
-     "hand_empty",
-     "right"
+     "on",
+     "used_mug",
+     "kitchen_counter_2/top"
     ],
     [
-     "is_closed",
-     "kitchen_microwave"
+     "upright",
+     "used_mug"
+    ],
+    [
+     "near_start",
+     "rolling_pin",
+     0.03
+    ],
+    [
+     "near_start",
+     "kitchen_sponge",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
   "control": "can_on_island",
-  "oracle_route": "v6_h_dynamic_can_moved__alt_tv_stand_2",
-  "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can (here the soda_can is on tv_stand_2/top)",
-  "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_guests_coming__can_mug",
+  "challenge": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+  "rationale": "find what is out of place in the room and send each to its own place (trash, counter, toy box); leave what belongs (the island's things)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T10_trash_the_can/x6_gd_can_put_away__in_cabinet": {
@@ -10463,7 +10755,7 @@
     ]
    ]
   },
-  "control": "h_task_can_in_microwave",
+  "control": "can_on_island",
   "oracle_route": "v6_x6_gd_can_put_away__in_cabinet",
   "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
   "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
@@ -10531,7 +10823,7 @@
     ]
    ]
   },
-  "control": "h_task_can_in_microwave",
+  "control": "can_on_island",
   "oracle_route": "v6_x6_gd_can_put_away__in_microwave",
   "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
   "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",

@@ -4132,212 +4132,282 @@
 {
 "task": "T10_trash_the_can",
 "seed": 10,
-"variant": "far_can_far__alt_dining_table_2",
-"route": "v6_far_can_far__alt_dining_table_2",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_desk",
+"route": "v6_keep_kids_can__kid_desk",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 11,
-"variant": "far_can_far",
-"route": "hard_explore_search",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_island",
+"route": "v6_keep_kids_can__kid_island",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 12,
-"variant": "far_can_far",
-"route": "hard_explore_search",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_desk",
+"route": "v6_keep_kids_can__kid_desk",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 13,
-"variant": "far_can_far",
-"route": "hard_explore_search",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_desk",
+"route": "v6_keep_kids_can__kid_desk",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 14,
-"variant": "far_can_far__alt_dining_table_2",
-"route": "v6_far_can_far__alt_dining_table_2",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_desk",
+"route": "v6_keep_kids_can__kid_desk",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 15,
-"variant": "far_can_far",
-"route": "hard_explore_search",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_island",
+"route": "v6_keep_kids_can__kid_island",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 16,
-"variant": "far_can_far__alt_dining_table_2",
-"route": "v6_far_can_far__alt_dining_table_2",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_island",
+"route": "v6_keep_kids_can__kid_island",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 17,
-"variant": "far_can_far__alt_dining_table_2",
-"route": "v6_far_can_far__alt_dining_table_2",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_island",
+"route": "v6_keep_kids_can__kid_island",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 18,
-"variant": "far_can_far__alt_dining_table_2",
-"route": "v6_far_can_far__alt_dining_table_2",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_island",
+"route": "v6_keep_kids_can__kid_island",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 19,
-"variant": "far_can_far",
-"route": "hard_explore_search",
-"family": "far_can_far"
+"variant": "keep_kids_can__kid_desk",
+"route": "v6_keep_kids_can__kid_desk",
+"family": "keep_kids_can"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 10,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 11,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 12,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 13,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 14,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 15,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 16,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 17,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 18,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__bathroom",
+"route": "v6_trash_moved__bathroom",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 19,
-"variant": "h_task_can_in_microwave",
-"route": "v5_h_task_can_in_microwave",
-"family": "h_task_can_in_microwave"
+"variant": "trash_moved__dining",
+"route": "v6_trash_moved__dining",
+"family": "trash_moved"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 10,
-"variant": "h_dynamic_can_moved__alt_tv_stand_2",
-"route": "v6_h_dynamic_can_moved__alt_tv_stand_2",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__rubbish_leftovers",
+"route": "v6_after_dinner_clear__rubbish_leftovers",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 11,
-"variant": "h_dynamic_can_moved",
-"route": "v5_h_dynamic_can_moved",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__rubbish_mug",
+"route": "v6_after_dinner_clear__rubbish_mug",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 12,
-"variant": "h_dynamic_can_moved__alt_tv_stand_2",
-"route": "v6_h_dynamic_can_moved__alt_tv_stand_2",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__rubbish_leftovers",
+"route": "v6_after_dinner_clear__rubbish_leftovers",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 13,
-"variant": "h_dynamic_can_moved",
-"route": "v5_h_dynamic_can_moved",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__rubbish_mug",
+"route": "v6_after_dinner_clear__rubbish_mug",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 14,
-"variant": "h_dynamic_can_moved",
-"route": "v5_h_dynamic_can_moved",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__leftovers_mug",
+"route": "v6_after_dinner_clear__leftovers_mug",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 15,
-"variant": "h_dynamic_can_moved__alt_tv_stand_2",
-"route": "v6_h_dynamic_can_moved__alt_tv_stand_2",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__leftovers_mug",
+"route": "v6_after_dinner_clear__leftovers_mug",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 16,
-"variant": "h_dynamic_can_moved__alt_tv_stand_2",
-"route": "v6_h_dynamic_can_moved__alt_tv_stand_2",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__leftovers_mug",
+"route": "v6_after_dinner_clear__leftovers_mug",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 17,
-"variant": "h_dynamic_can_moved",
-"route": "v5_h_dynamic_can_moved",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__rubbish_leftovers",
+"route": "v6_after_dinner_clear__rubbish_leftovers",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 18,
-"variant": "h_dynamic_can_moved",
-"route": "v5_h_dynamic_can_moved",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__rubbish_leftovers",
+"route": "v6_after_dinner_clear__rubbish_leftovers",
+"family": "after_dinner_clear"
 },
 {
 "task": "T10_trash_the_can",
 "seed": 19,
-"variant": "h_dynamic_can_moved__alt_tv_stand_2",
-"route": "v6_h_dynamic_can_moved__alt_tv_stand_2",
-"family": "h_dynamic_can_moved"
+"variant": "after_dinner_clear__rubbish_mug",
+"route": "v6_after_dinner_clear__rubbish_mug",
+"family": "after_dinner_clear"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 10,
+"variant": "guests_coming__can_mug_block",
+"route": "v6_guests_coming__can_mug_block",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 11,
+"variant": "guests_coming__can_mug_block",
+"route": "v6_guests_coming__can_mug_block",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 12,
+"variant": "guests_coming__can_mug_block",
+"route": "v6_guests_coming__can_mug_block",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 13,
+"variant": "guests_coming__can_mug",
+"route": "v6_guests_coming__can_mug",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 14,
+"variant": "guests_coming__can_mug_block",
+"route": "v6_guests_coming__can_mug_block",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 15,
+"variant": "guests_coming__can_block",
+"route": "v6_guests_coming__can_block",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 16,
+"variant": "guests_coming__can_mug",
+"route": "v6_guests_coming__can_mug",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 17,
+"variant": "guests_coming__can_mug",
+"route": "v6_guests_coming__can_mug",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 18,
+"variant": "guests_coming__can_block",
+"route": "v6_guests_coming__can_block",
+"family": "guests_coming"
+},
+{
+"task": "T10_trash_the_can",
+"seed": 19,
+"variant": "guests_coming__can_block",
+"route": "v6_guests_coming__can_block",
+"family": "guests_coming"
 },
 {
 "task": "T10_trash_the_can",

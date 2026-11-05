@@ -131,6 +131,11 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "disposal_by_state": {
+   "type": "goal_inference",
+   "decision": "decompose",
+   "meaning": "the instruction names kinds of destination (trash, fridge, counter); which object goes where follows from what it is and its state (an empty disposable tray is rubbish, a glass box with food is leftovers)"
+  },
   "resource_in_use": {
    "type": "resource_state",
    "decision": "alternative",
@@ -35047,236 +35052,6 @@
       }
      }
     },
-    "far_can_far": {
-     "note": "the robot starts in the dining room, the can is on the TV stand",
-     "conditions": [
-      "start_elsewhere",
-      "not_in_view"
-     ],
-     "start": [
-      4.24,
-      5.12,
-      120.0
-     ],
-     "move": {
-      "soda_can": {
-       "support": "tv_stand_2/top",
-       "xy": [
-        7.2,
-        0.36
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "since": "v2",
-     "condition_types": [
-      "search_target",
-      "search_target"
-     ],
-     "decisions": [
-      "explore"
-     ],
-     "difficulty": "medium",
-     "v3_difficulty": "hard",
-     "v5": {
-      "tier": "medium",
-      "challenge": "the robot starts in the dining room, the can is on the TV stand",
-      "derived_from": "far_can_far",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "soda_can"
-        ],
-        "support": "tv_stand_2/top",
-        "box": [
-         7.167,
-         0.327,
-         7.233,
-         0.393
-        ],
-        "dx": [
-         -0.51,
-         1.13
-        ],
-        "dy": [
-         -0.1,
-         0.03
-        ]
-       }
-      ],
-      "static": {},
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [
-        "soda_can"
-       ],
-       "look": []
-      }
-     }
-    },
-    "h_task_can_in_microwave": {
-     "move": {
-      "soda_can": {
-       "support": "kitchen_microwave/inside_floor",
-       "xy": [
-        4.5,
-        2.5
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "goal": {
-      "all": [
-       [
-        "inside",
-        "soda_can",
-        "trash_can"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "is_closed",
-        "kitchen_microwave"
-       ]
-      ]
-     },
-     "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
-     "instruction_zh": "有人把空汽水罐落在微波炉里了。请把它扔进垃圾桶，并把微波炉门关好。",
-     "failures": [
-      {
-       "id": "dependency_initial",
-       "kind": "dependency",
-       "when": "initial",
-       "check": [
-        [
-         "is_closed",
-         "kitchen_microwave"
-        ],
-        [
-         "in_appliance",
-         "soda_can",
-         "kitchen_microwave"
-        ]
-       ]
-      }
-     ],
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "the can is inside the closed microwave: open it, take the can, close it, then trash it",
-     "v5": {
-      "tier": "hard",
-      "challenge": "the can is inside the closed microwave: open it, take the can, close it, then trash it",
-      "derived_from": "can_on_island",
-      "hard_category": "task"
-     },
-     "layout": {
-      "clusters": [],
-      "static": {},
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
-    "h_dynamic_can_moved": {
-     "move": {
-      "soda_can": {
-       "support": "kitchen_microwave/inside_floor",
-       "xy": [
-        4.5,
-        2.5
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "failures": [
-      {
-       "id": "dependency_initial",
-       "kind": "dependency",
-       "when": "initial",
-       "check": [
-        [
-         "is_closed",
-         "kitchen_microwave"
-        ],
-        [
-         "in_appliance",
-         "soda_can",
-         "kitchen_microwave"
-        ]
-       ]
-      },
-      {
-       "id": "resource_soda_can",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "open",
-        "args": {
-         "articulated": "kitchen_microwave"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "soda_can",
-        "to": {
-         "support": "dining_table_2/top",
-         "xy": [
-          3.7,
-          6.3
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
-     "goal": {
-      "all": [
-       [
-        "inside",
-        "soda_can",
-        "trash_can"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ],
-       [
-        "is_closed",
-        "kitchen_microwave"
-       ]
-      ]
-     },
-     "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
-     "instruction_zh": "有人把空汽水罐落在微波炉里了。请把它扔进垃圾桶，并把微波炉门关好。",
-     "difficulty": "hard",
-     "since": "v5",
-     "note": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
-     "v5": {
-      "tier": "hard",
-      "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can",
-      "derived_from": "h_task_can_in_microwave",
-      "hard_category": "dynamic"
-     },
-     "layout": {
-      "clusters": [],
-      "static": {},
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": []
-      }
-     }
-    },
     "can_in_dining_room__alt_tv_stand_2": {
      "note": "the can stands on the dining table in the next room, out of sight (here the soda_can is on tv_stand_2/top)",
      "move": {
@@ -35344,161 +35119,58 @@
       }
      }
     },
-    "far_can_far__alt_dining_table_2": {
-     "note": "the robot starts in the dining room, the can is on the TV stand (here the soda_can is on dining_table_2/top)",
+    "keep_kids_can__kid_desk": {
+     "move": {
+      "soda_can": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1797,
+        1.645
+       ],
+       "yaw_deg": 0.0
+      }
+     },
      "conditions": [
-      "start_elsewhere",
+      "referent_clue",
       "not_in_view"
      ],
-     "start": [
-      4.24,
-      5.12,
-      120.0
+     "instruction": "Throw the empty soda can into the trash can. The kid is keeping one can for a craft project; leave that one.",
+     "instruction_zh": "把喝完的空易拉罐扔进垃圾桶。孩子留着做手工的那个别扔。",
+     "watch": [
+      "soda_can",
+      "kids_can",
+      "craft_notebook",
+      "craft_pencil"
      ],
-     "move": {
-      "soda_can": {
-       "support": "dining_table_2/top",
+     "add": {
+      "kids_can": {
+       "asset": "soda_can",
+       "support": "desk_1/top",
        "xy": [
-        3.7,
-        6.3
+        -0.55,
+        -6.05
        ],
        "yaw_deg": 0.0
-      }
-     },
-     "since": "v6",
-     "condition_types": [
-      "search_target",
-      "search_target"
-     ],
-     "decisions": [
-      "explore"
-     ],
-     "difficulty": "medium",
-     "v3_difficulty": "hard",
-     "v6": {
-      "family": "far_can_far",
-      "case": "alt_dining_table_2",
-      "tier": "medium",
-      "hard_category": null,
-      "challenge": "the robot starts in the dining room, the can is on the TV stand (here the soda_can is on dining_table_2/top)",
-      "derived_from": "far_can_far",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "soda_can"
-        ],
-        "support": "dining_table_2/top",
-        "box": [
-         3.667,
-         6.267,
-         3.733,
-         6.333
-        ],
-        "dx": [
-         -0.04,
-         0.09
-        ],
-        "dy": [
-         -0.76,
-         1.61
-        ]
-       }
-      ],
-      "static": {
-       "dining_table_2/top": [
-        [
-         3.5863,
-         7.3282,
-         3.7719,
-         7.4299
-        ],
-        [
-         3.0905,
-         6.0312,
-         3.2083,
-         6.1672
-        ],
-        [
-         3.4108,
-         7.0744,
-         3.5475,
-         7.2247
-        ],
-        [
-         2.835,
-         6.405,
-         3.135,
-         6.795
-        ]
-       ]
       },
-      "start": {
-       "room": "dining_room_0_1",
-       "hide": [
-        "soda_can"
-       ],
-       "look": []
-      }
-     }
-    },
-    "h_dynamic_can_moved__alt_tv_stand_2": {
-     "move": {
-      "soda_can": {
-       "support": "kitchen_microwave/inside_floor",
+      "craft_notebook": {
+       "asset": "notebook",
+       "support": "desk_1/top",
        "xy": [
-        4.5,
-        2.5
+        -0.77,
+        -6.05
        ],
        "yaw_deg": 0.0
+      },
+      "craft_pencil": {
+       "asset": "pencil",
+       "support": "desk_1/top",
+       "xy": [
+        -0.55,
+        -5.93
+       ],
+       "yaw_deg": 90.0
       }
      },
-     "failures": [
-      {
-       "id": "dependency_initial",
-       "kind": "dependency",
-       "when": "initial",
-       "check": [
-        [
-         "is_closed",
-         "kitchen_microwave"
-        ],
-        [
-         "in_appliance",
-         "soda_can",
-         "kitchen_microwave"
-        ]
-       ]
-      },
-      {
-       "id": "resource_soda_can",
-       "kind": "resource",
-       "when": "dynamic",
-       "trigger": {
-        "skill": "open",
-        "args": {
-         "articulated": "kitchen_microwave"
-        },
-        "nth": 1,
-        "on": "success"
-       },
-       "event": {
-        "type": "move_object",
-        "object": "soda_can",
-        "to": {
-         "support": "tv_stand_2/top",
-         "xy": [
-          7.0,
-          0.36
-         ],
-         "yaw_deg": 0.0
-        }
-       }
-      }
-     ],
      "goal": {
       "all": [
        [
@@ -35511,25 +35183,721 @@
         "right"
        ],
        [
-        "is_closed",
-        "kitchen_microwave"
+        "near_start",
+        "kids_can",
+        0.03
+       ],
+       [
+        "near_start",
+        "craft_notebook",
+        0.03
+       ],
+       [
+        "near_start",
+        "craft_pencil",
+        0.03
+       ],
+       [
+        "upright",
+        "kids_can"
        ]
       ]
      },
-     "instruction": "Someone left an empty soda can in the microwave. Throw it into the trash can and close the microwave again.",
-     "instruction_zh": "有人把空汽水罐落在微波炉里了。请把它扔进垃圾桶，并把微波炉门关好。",
-     "difficulty": "hard",
      "since": "v6",
-     "note": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can (here the soda_can is on tv_stand_2/top)",
+     "note": "two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
      "v6": {
-      "family": "h_dynamic_can_moved",
-      "case": "alt_tv_stand_2",
-      "tier": "hard",
-      "hard_category": "dynamic",
-      "challenge": "the can is in the closed microwave, and just after the robot opens it someone takes the can to the dining table: close the microwave again and search the can (here the soda_can is on tv_stand_2/top)",
-      "derived_from": "h_dynamic_can_moved",
-      "seed_extension": true,
-      "rationale": "seed extension of the v5 design: the soda_can ends up somewhere else, so where to search and the route change; everything else is the v5 variant"
+      "family": "keep_kids_can",
+      "case": "kid_desk",
+      "challenge": "two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
+      "rationale": "the instruction excludes one can by a clue: tell the kid's can from what stands around it and throw out only the other one (throwing the kid's out fails)",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "which can is the kid's (seed: the one on the study desk among the craft things, or the one on the island among them)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "craft_notebook",
+         "craft_pencil",
+         "kids_can"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.875,
+         -6.1346,
+         -0.517,
+         -5.84
+        ],
+        "dx": [
+         -0.52,
+         0.48
+        ],
+        "dy": [
+         -0.01,
+         0.12
+        ]
+       },
+       {
+        "names": [
+         "soda_can"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         8.1467,
+         1.612,
+         8.2127,
+         1.678
+        ],
+        "dx": [
+         -0.1,
+         0.03
+        ],
+        "dy": [
+         -0.08,
+         0.29
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "kids_can"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "keep_kids_can__kid_island": {
+     "move": {
+      "soda_can": {
+       "support": "desk_1/top",
+       "xy": [
+        -0.55,
+        -6.05
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "not_in_view"
+     ],
+     "instruction": "Throw the empty soda can into the trash can. The kid is keeping one can for a craft project; leave that one.",
+     "instruction_zh": "把喝完的空易拉罐扔进垃圾桶。孩子留着做手工的那个别扔。",
+     "watch": [
+      "soda_can",
+      "kids_can",
+      "craft_notebook",
+      "craft_pencil"
+     ],
+     "add": {
+      "kids_can": {
+       "asset": "soda_can",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.4,
+        1.72
+       ],
+       "yaw_deg": 0.0
+      },
+      "craft_notebook": {
+       "asset": "notebook",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.180000000000001,
+        1.72
+       ],
+       "yaw_deg": 0.0
+      },
+      "craft_pencil": {
+       "asset": "pencil",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.4,
+        1.8399999999999999
+       ],
+       "yaw_deg": 90.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ],
+       [
+        "near_start",
+        "kids_can",
+        0.03
+       ],
+       [
+        "near_start",
+        "craft_notebook",
+        0.03
+       ],
+       [
+        "near_start",
+        "craft_pencil",
+        0.03
+       ],
+       [
+        "upright",
+        "kids_can"
+       ]
+      ]
+     },
+     "since": "v6",
+     "note": "two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
+     "v6": {
+      "family": "keep_kids_can",
+      "case": "kid_island",
+      "challenge": "two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), the other on its own; one of them is on the island, the other on the study desk",
+      "rationale": "the instruction excludes one can by a clue: tell the kid's can from what stands around it and throw out only the other one (throwing the kid's out fails)",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "which can is the kid's (seed: the one on the study desk among the craft things, or the one on the island among them)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "soda_can"
+        ],
+        "support": "desk_1/top",
+        "box": [
+         -0.583,
+         -6.083,
+         -0.517,
+         -6.017
+        ],
+        "dx": [
+         -0.81,
+         0.48
+        ],
+        "dy": [
+         -0.23,
+         0.0
+        ]
+       },
+       {
+        "names": [
+         "craft_notebook",
+         "craft_pencil",
+         "kids_can"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.075,
+         1.6353,
+         7.433,
+         1.93
+        ],
+        "dx": [
+         -0.52,
+         0.81
+        ],
+        "dy": [
+         -0.09,
+         0.04
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "soda_can"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "trash_moved__dining": {
+     "move": {
+      "soda_can": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1797,
+        1.645
+       ],
+       "yaw_deg": 0.0
+      },
+      "trash_can": {
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        4.6,
+        6.0
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "conditions": [
+      "destination_unnamed",
+      "not_in_view"
+     ],
+     "watch": [
+      "soda_can",
+      "trash_can"
+     ],
+     "since": "v6",
+     "note": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
+     "v6": {
+      "family": "trash_moved",
+      "case": "dining",
+      "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
+      "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "where the trash can is today (seed: the dining room or the bathroom)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "soda_can"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         8.1467,
+         1.612,
+         8.2127,
+         1.678
+        ],
+        "dx": [
+         -0.1,
+         0.03
+        ],
+        "dy": [
+         -0.08,
+         0.29
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "trash_can"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "trash_moved__bathroom": {
+     "move": {
+      "soda_can": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1797,
+        1.645
+       ],
+       "yaw_deg": 0.0
+      },
+      "trash_can": {
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        -0.4,
+        6.0
+       ],
+       "yaw_deg": 0
+      }
+     },
+     "conditions": [
+      "destination_unnamed",
+      "not_in_view"
+     ],
+     "watch": [
+      "soda_can",
+      "trash_can"
+     ],
+     "since": "v6",
+     "note": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
+     "v6": {
+      "family": "trash_moved",
+      "case": "bathroom",
+      "challenge": "the can is on the island, but the trash can is not in its usual place by the island: it stands in the dining room or in the bathroom, out of view",
+      "rationale": "the destination, not the item, has to be found: take the can and look for the trash can",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "where the trash can is today (seed: the dining room or the bathroom)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "soda_can"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         8.1467,
+         1.612,
+         8.2127,
+         1.678
+        ],
+        "dx": [
+         -0.1,
+         0.03
+        ],
+        "dy": [
+         -0.08,
+         0.29
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [
+        "trash_can"
+       ],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "after_dinner_clear__rubbish_leftovers": {
+     "move": {
+      "soda_can": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.62,
+        5.95
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "disposal_by_state",
+      "multi_object_goal"
+     ],
+     "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，吃剩的收进冰箱，用过的杯子拿回厨房台面。麦片盒留在桌上。",
+     "add": {
+      "takeout_tray": {
+       "asset": "foil_takeout_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.58,
+        6.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "leftovers": {
+       "asset": "glass_food_container",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.58,
+        6.85
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "inside",
+        "takeout_tray",
+        "trash_can"
+       ],
+       [
+        "on",
+        "leftovers",
+        "breakfast_fridge/inside_shelf"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "soda_can",
+      "takeout_tray",
+      "leftovers",
+      "clutter_cereal_a",
+      "clutter_cereal_b"
+     ],
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+     "v6": {
+      "family": "after_dinner_clear",
+      "case": "rubbish_leftovers",
+      "challenge": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+      "rationale": "decide for each object what it is in its state: the empty can and the empty disposable tray are rubbish, the glass box with rice is leftovers (fridge), the mug is a used cup (counter); the cereal stays.  One hand: open the fridge before picking up the leftovers, close it after",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "what is left on the table (seed: can, empty takeout tray and leftovers; can, leftovers and a mug; or can, takeout tray and a mug)",
+      "derived_from": "can_on_island"
      },
      "layout": {
       "clusters": [],
@@ -35537,7 +35905,842 @@
       "start": {
        "room": "living_room_0_0",
        "hide": [],
-       "look": []
+       "look": [
+        "dining_table_2/top"
+       ]
+      }
+     }
+    },
+    "after_dinner_clear__leftovers_mug": {
+     "move": {
+      "soda_can": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.62,
+        5.95
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "disposal_by_state",
+      "multi_object_goal"
+     ],
+     "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，吃剩的收进冰箱，用过的杯子拿回厨房台面。麦片盒留在桌上。",
+     "add": {
+      "leftovers": {
+       "asset": "glass_food_container",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.58,
+        6.85
+       ],
+       "yaw_deg": 0.0
+      },
+      "used_mug": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.62,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "on",
+        "leftovers",
+        "breakfast_fridge/inside_shelf"
+       ],
+       [
+        "is_closed",
+        "breakfast_fridge"
+       ],
+       [
+        "on",
+        "used_mug",
+        "kitchen_counter_2/top"
+       ],
+       [
+        "upright",
+        "used_mug"
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "soda_can",
+      "leftovers",
+      "used_mug",
+      "clutter_cereal_a",
+      "clutter_cereal_b"
+     ],
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+     "v6": {
+      "family": "after_dinner_clear",
+      "case": "leftovers_mug",
+      "challenge": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+      "rationale": "decide for each object what it is in its state: the empty can and the empty disposable tray are rubbish, the glass box with rice is leftovers (fridge), the mug is a used cup (counter); the cereal stays.  One hand: open the fridge before picking up the leftovers, close it after",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "what is left on the table (seed: can, empty takeout tray and leftovers; can, leftovers and a mug; or can, takeout tray and a mug)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [],
+      "static": {},
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "dining_table_2/top"
+       ]
+      }
+     }
+    },
+    "after_dinner_clear__rubbish_mug": {
+     "move": {
+      "soda_can": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.62,
+        5.95
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "disposal_by_state",
+      "multi_object_goal"
+     ],
+     "instruction": "Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
+     "instruction_zh": "晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，吃剩的收进冰箱，用过的杯子拿回厨房台面。麦片盒留在桌上。",
+     "add": {
+      "takeout_tray": {
+       "asset": "foil_takeout_tray",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.58,
+        6.45
+       ],
+       "yaw_deg": 0.0
+      },
+      "used_mug": {
+       "asset": "breakfast_mug",
+       "support": "dining_table_2/top",
+       "xy": [
+        3.62,
+        7.55
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "inside",
+        "takeout_tray",
+        "trash_can"
+       ],
+       [
+        "on",
+        "used_mug",
+        "kitchen_counter_2/top"
+       ],
+       [
+        "upright",
+        "used_mug"
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "soda_can",
+      "takeout_tray",
+      "used_mug",
+      "clutter_cereal_a",
+      "clutter_cereal_b"
+     ],
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+     "v6": {
+      "family": "after_dinner_clear",
+      "case": "rubbish_mug",
+      "challenge": "the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box with leftover rice, a used mug; the instruction names the kinds, not the objects",
+      "rationale": "decide for each object what it is in its state: the empty can and the empty disposable tray are rubbish, the glass box with rice is leftovers (fridge), the mug is a used cup (counter); the cereal stays.  One hand: open the fridge before picking up the leftovers, close it after",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "what is left on the table (seed: can, empty takeout tray and leftovers; can, leftovers and a mug; or can, takeout tray and a mug)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [],
+      "static": {},
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "dining_table_2/top"
+       ]
+      }
+     }
+    },
+    "guests_coming__can_mug_block": {
+     "move": {
+      "soda_can": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_a": {
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        6.7,
+        0.95
+       ],
+       "yaw_deg": 20.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.8,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "kitchen_sponge": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "goal_items_unstated",
+      "multi_object_goal"
+     ],
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，垃圾扔进垃圾桶，用过的杯子拿回厨房台面，孩子的玩具收进玩具箱。本来就该在那儿的东西别动。",
+     "add": {
+      "toy_box": {
+       "asset": "toy_box",
+       "support": null,
+       "z": 0.001,
+       "xy": [
+        5.7,
+        0.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "used_mug": {
+       "asset": "breakfast_mug",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.2,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "on",
+        "used_mug",
+        "kitchen_counter_2/top"
+       ],
+       [
+        "upright",
+        "used_mug"
+       ],
+       [
+        "inside",
+        "wooden_block_a",
+        "toy_box"
+       ],
+       [
+        "near_start",
+        "rolling_pin",
+        0.03
+       ],
+       [
+        "near_start",
+        "kitchen_sponge",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "soda_can",
+      "used_mug",
+      "wooden_block_a",
+      "toy_box",
+      "rolling_pin",
+      "kitchen_sponge"
+     ],
+     "since": "v6",
+     "note": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+     "v6": {
+      "family": "guests_coming",
+      "case": "can_mug_block",
+      "challenge": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+      "rationale": "find what is out of place in the room and send each to its own place (trash, counter, toy box); leave what belongs (the island's things)",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "what lies about (seed: the can, a used mug and a toy block; the can and the block; or the can and the mug)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "kitchen_sponge",
+         "rolling_pin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.69,
+         1.77,
+         8.145,
+         1.83
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.24,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "soda_can",
+         "used_mug"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.1537,
+         0.2967,
+         7.633,
+         0.4233
+        ],
+        "dx": [
+         -0.49,
+         0.73
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "guests_coming__can_block": {
+     "move": {
+      "soda_can": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "wooden_block_a": {
+       "support": null,
+       "z": 0.0,
+       "xy": [
+        6.7,
+        0.95
+       ],
+       "yaw_deg": 20.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.8,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "kitchen_sponge": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "goal_items_unstated",
+      "multi_object_goal"
+     ],
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，垃圾扔进垃圾桶，用过的杯子拿回厨房台面，孩子的玩具收进玩具箱。本来就该在那儿的东西别动。",
+     "add": {
+      "toy_box": {
+       "asset": "toy_box",
+       "support": null,
+       "z": 0.001,
+       "xy": [
+        5.7,
+        0.8
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "inside",
+        "wooden_block_a",
+        "toy_box"
+       ],
+       [
+        "near_start",
+        "rolling_pin",
+        0.03
+       ],
+       [
+        "near_start",
+        "kitchen_sponge",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "soda_can",
+      "wooden_block_a",
+      "toy_box",
+      "rolling_pin",
+      "kitchen_sponge"
+     ],
+     "since": "v6",
+     "note": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+     "v6": {
+      "family": "guests_coming",
+      "case": "can_block",
+      "challenge": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+      "rationale": "find what is out of place in the room and send each to its own place (trash, counter, toy box); leave what belongs (the island's things)",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "what lies about (seed: the can, a used mug and a toy block; the can and the block; or the can and the mug)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "kitchen_sponge",
+         "rolling_pin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.69,
+         1.77,
+         8.145,
+         1.83
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.24,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "soda_can"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.567,
+         0.327,
+         7.633,
+         0.393
+        ],
+        "dx": [
+         -0.91,
+         0.73
+        ],
+        "dy": [
+         -0.1,
+         0.03
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "guests_coming__can_mug": {
+     "move": {
+      "soda_can": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      },
+      "rolling_pin": {
+       "support": "kitchen_island/top",
+       "xy": [
+        6.8,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "kitchen_sponge": {
+       "support": "kitchen_island/top",
+       "xy": [
+        8.1,
+        1.8
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "goal_items_unstated",
+      "multi_object_goal"
+     ],
+     "instruction": "Guests arrive in ten minutes; make the living room presentable. Put whatever is lying about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, the kid's toys into their toy box. Leave things that belong where they are.",
+     "instruction_zh": "客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，垃圾扔进垃圾桶，用过的杯子拿回厨房台面，孩子的玩具收进玩具箱。本来就该在那儿的东西别动。",
+     "add": {
+      "toy_box": {
+       "asset": "toy_box",
+       "support": null,
+       "z": 0.001,
+       "xy": [
+        5.7,
+        0.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "used_mug": {
+       "asset": "breakfast_mug",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.2,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "inside",
+        "soda_can",
+        "trash_can"
+       ],
+       [
+        "on",
+        "used_mug",
+        "kitchen_counter_2/top"
+       ],
+       [
+        "upright",
+        "used_mug"
+       ],
+       [
+        "near_start",
+        "rolling_pin",
+        0.03
+       ],
+       [
+        "near_start",
+        "kitchen_sponge",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "watch": [
+      "soda_can",
+      "used_mug",
+      "toy_box",
+      "rolling_pin",
+      "kitchen_sponge"
+     ],
+     "since": "v6",
+     "note": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+     "v6": {
+      "family": "guests_coming",
+      "case": "can_mug",
+      "challenge": "in the living room an empty can and a used mug stand on the TV stand and a toy block lies on the floor (two or three of them); the island's rolling pin and sponge belong there",
+      "rationale": "find what is out of place in the room and send each to its own place (trash, counter, toy box); leave what belongs (the island's things)",
+      "control": "can_on_island",
+      "contrast": null,
+      "factor": "what lies about (seed: the can, a used mug and a toy block; the can and the block; or the can and the mug)",
+      "derived_from": "can_on_island"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "kitchen_sponge",
+         "rolling_pin"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         6.69,
+         1.77,
+         8.145,
+         1.83
+        ],
+        "dx": [
+         -0.03,
+         0.1
+        ],
+        "dy": [
+         -0.24,
+         0.14
+        ]
+       },
+       {
+        "names": [
+         "soda_can",
+         "used_mug"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.1537,
+         0.2967,
+         7.633,
+         0.4233
+        ],
+        "dx": [
+         -0.49,
+         0.73
+        ],
+        "dy": [
+         -0.07,
+         0.06
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.9038,
+         1.6017,
+         7.9963,
+         1.7283
+        ],
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         7.6207,
+         1.631,
+         7.6789,
+         1.6912
+        ],
+        [
+         7.8089,
+         1.7789,
+         7.9889,
+         1.899
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
       }
      }
     },
@@ -35577,6 +36780,7 @@
       ]
      },
      "instruction": "Someone put the empty soda can away in the microwave or in the low wall cabinet instead of throwing it out. Throw it into the trash can, and close whatever you open.",
+     "instruction_zh": "有人没把空易拉罐扔掉，而是收进了微波炉或者靠墙矮柜里。把它扔进垃圾桶，打开的门都关好。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -35598,7 +36802,7 @@
       "case": "in_cabinet",
       "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
       "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
-      "control": "h_task_can_in_microwave",
+      "control": "can_on_island",
       "contrast": null,
       "factor": "which closed place holds the item",
       "derived_from": "can_on_island"
@@ -35649,6 +36853,7 @@
       ]
      },
      "instruction": "Someone put the empty soda can away in the microwave or in the low wall cabinet instead of throwing it out. Throw it into the trash can, and close whatever you open.",
+     "instruction_zh": "有人没把空易拉罐扔掉，而是收进了微波炉或者靠墙矮柜里。把它扔进垃圾桶，打开的门都关好。",
      "failures": [
       {
        "id": "resource_can_put_away",
@@ -35670,7 +36875,7 @@
       "case": "in_microwave",
       "challenge": "the can was put away in one of two closed places (microwave or wall cabinet)",
       "rationale": "the item's location is a disjunction the planner must resolve by inspecting both candidates (reference route: the worse order, the can is in the second place); each door is opened and closed again",
-      "control": "h_task_can_in_microwave",
+      "control": "can_on_island",
       "contrast": null,
       "factor": "which closed place holds the item",
       "derived_from": "can_on_island"
@@ -35706,12 +36911,17 @@
    "oracle": {
     "can_on_island": "nominal",
     "can_in_dining_room": "search_first",
-    "far_can_far": "hard_explore_search",
-    "h_task_can_in_microwave": "v5_h_task_can_in_microwave",
-    "h_dynamic_can_moved": "v5_h_dynamic_can_moved",
     "can_in_dining_room__alt_tv_stand_2": "v6_can_in_dining_room__alt_tv_stand_2",
-    "far_can_far__alt_dining_table_2": "v6_far_can_far__alt_dining_table_2",
-    "h_dynamic_can_moved__alt_tv_stand_2": "v6_h_dynamic_can_moved__alt_tv_stand_2",
+    "keep_kids_can__kid_desk": "v6_keep_kids_can__kid_desk",
+    "keep_kids_can__kid_island": "v6_keep_kids_can__kid_island",
+    "trash_moved__dining": "v6_trash_moved__dining",
+    "trash_moved__bathroom": "v6_trash_moved__bathroom",
+    "after_dinner_clear__rubbish_leftovers": "v6_after_dinner_clear__rubbish_leftovers",
+    "after_dinner_clear__leftovers_mug": "v6_after_dinner_clear__leftovers_mug",
+    "after_dinner_clear__rubbish_mug": "v6_after_dinner_clear__rubbish_mug",
+    "guests_coming__can_mug_block": "v6_guests_coming__can_mug_block",
+    "guests_coming__can_block": "v6_guests_coming__can_block",
+    "guests_coming__can_mug": "v6_guests_coming__can_mug",
     "x6_gd_can_put_away__in_cabinet": "v6_x6_gd_can_put_away__in_cabinet",
     "x6_gd_can_put_away__in_microwave": "v6_x6_gd_can_put_away__in_microwave"
    },
@@ -35839,201 +37049,6 @@
      ],
      "since": "v2"
     },
-    "hard_explore_search": {
-     "kind": "explore",
-     "variants": [
-      "far_can_far"
-     ],
-     "recovery": "pick refused (can not observed) -> search -> explore for the trash can",
-     "steps": [
-      {
-       "skill": "pick",
-       "args": {
-        "object": "soda_can"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "soda_can",
-        "region": "living_room_0_0"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "soda_can"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "soda_can"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "trash_can"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "soda_can",
-        "container": "trash_can"
-       }
-      }
-     ],
-     "since": "v2"
-    },
-    "v5_h_task_can_in_microwave": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "soda_can"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "soda_can"
-       }
-      },
-      {
-       "skill": "retreat",
-       "args": {
-        "obstacle": "kitchen_microwave",
-        "distance_m": 0.3
-       }
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "trash_can"
-       }
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "soda_can",
-        "container": "trash_can"
-       }
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_task_can_in_microwave"
-    },
-    "v5_h_dynamic_can_moved": {
-     "steps": [
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "open",
-       "args": {
-        "articulated": "kitchen_microwave"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "soda_can",
-        "region": "dining_room_0_1"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_microwave"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "close",
-       "args": {
-        "articulated": "kitchen_microwave"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "soda_can"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "soda_can"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "trash_can"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "drop",
-       "args": {
-        "object": "soda_can",
-        "container": "trash_can"
-       },
-       "role": "recover"
-      }
-     ],
-     "kind": "v5_oracle",
-     "variant": "h_dynamic_can_moved"
-    },
     "v6_can_in_dining_room__alt_tv_stand_2": {
      "steps": [
       {
@@ -36093,30 +37108,20 @@
      "kind": "v6_seed_extension",
      "variant": "can_in_dining_room__alt_tv_stand_2"
     },
-    "v6_far_can_far__alt_dining_table_2": {
+    "v6_keep_kids_can__kid_desk": {
      "steps": [
       {
-       "skill": "pick",
+       "skill": "look",
        "args": {
-        "object": "soda_can"
-       },
-       "expect": "fail",
-       "role": "failure"
+        "target": "kitchen_island/top"
+       }
       },
       {
        "skill": "search",
        "args": {
-        "object": "soda_can",
-        "region": "dining_room_0_1"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "explore_room",
-       "args": {
-        "room": "living_room_0_0"
-       },
-       "role": "recovery"
+        "object": "kids_can",
+        "region": "living_room_0_1"
+       }
       },
       {
        "skill": "navigate",
@@ -36131,9 +37136,23 @@
        }
       },
       {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
        }
       },
       {
@@ -36144,83 +37163,832 @@
        }
       }
      ],
-     "kind": "v6_seed_extension",
-     "variant": "far_can_far__alt_dining_table_2"
+     "kind": "v6_oracle",
+     "variant": "keep_kids_can__kid_desk"
     },
-    "v6_h_dynamic_can_moved__alt_tv_stand_2": {
+    "v6_keep_kids_can__kid_island": {
      "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "soda_can",
+        "region": "living_room_0_1"
+       }
+      },
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_microwave"
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "keep_kids_can__kid_island"
+    },
+    "v6_trash_moved__dining": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "trash_can",
+        "region": "dining_room_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "trash_moved__dining"
+    },
+    "v6_trash_moved__bathroom": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "search",
+       "args": {
+        "object": "trash_can",
+        "region": "bathroom_0_1"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "trash_moved__bathroom"
+    },
+    "v6_after_dinner_clear__rubbish_leftovers": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "takeout_tray"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "takeout_tray"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "takeout_tray",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "takeout_tray",
+        "container": "trash_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
        }
       },
       {
        "skill": "open",
        "args": {
-        "articulated": "kitchen_microwave"
+        "articulated": "breakfast_fridge"
        }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_microwave/inside_floor"
-       }
-      },
-      {
-       "skill": "search",
-       "args": {
-        "object": "soda_can",
-        "region": "living_room_0_0"
-       },
-       "role": "recover"
       },
       {
        "skill": "navigate",
        "args": {
-        "destination": "kitchen_microwave"
-       },
-       "role": "recover"
+        "destination": "leftovers"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "leftovers"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "leftovers",
+        "receptacle": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "breakfast_fridge",
+        "distance_m": 0.3
+       }
       },
       {
        "skill": "close",
        "args": {
-        "articulated": "kitchen_microwave"
-       },
-       "role": "recover"
+        "articulated": "breakfast_fridge"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "after_dinner_clear__rubbish_leftovers"
+    },
+    "v6_after_dinner_clear__leftovers_mug": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "soda_can"
-       },
-       "role": "recover"
+       }
       },
       {
        "skill": "pick",
        "args": {
         "object": "soda_can"
-       },
-       "role": "recover"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
       },
       {
        "skill": "navigate",
        "args": {
         "destination": "trash_can"
-       },
-       "role": "recover"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
       },
       {
        "skill": "drop",
        "args": {
         "object": "soda_can",
         "container": "trash_can"
-       },
-       "role": "recover"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "open",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "leftovers"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "leftovers"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "leftovers",
+        "receptacle": "breakfast_fridge/inside_shelf"
+       }
+      },
+      {
+       "skill": "retreat",
+       "args": {
+        "obstacle": "breakfast_fridge",
+        "distance_m": 0.3
+       }
+      },
+      {
+       "skill": "close",
+       "args": {
+        "articulated": "breakfast_fridge"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "used_mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "used_mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "used_mug",
+        "receptacle": "kitchen_counter_2/top"
+       }
       }
      ],
-     "kind": "v6_seed_extension",
-     "variant": "h_dynamic_can_moved__alt_tv_stand_2"
+     "kind": "v6_oracle",
+     "variant": "after_dinner_clear__leftovers_mug"
+    },
+    "v6_after_dinner_clear__rubbish_mug": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "takeout_tray"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "takeout_tray"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "takeout_tray",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "takeout_tray",
+        "container": "trash_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "used_mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "used_mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "used_mug",
+        "receptacle": "kitchen_counter_2/top"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "after_dinner_clear__rubbish_mug"
+    },
+    "v6_guests_coming__can_mug_block": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "used_mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "used_mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "used_mug",
+        "receptacle": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_box"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "toy_box"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "toy_box"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "guests_coming__can_mug_block"
+    },
+    "v6_guests_coming__can_block": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "wooden_block_a"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "toy_box"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "toy_box"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "wooden_block_a",
+        "receptacle": "toy_box"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "guests_coming__can_block"
+    },
+    "v6_guests_coming__can_mug": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "soda_can"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "soda_can"
+       }
+      },
+      {
+       "skill": "lift",
+       "args": {
+        "object": "soda_can",
+        "height_m": 0.95
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "trash_can"
+       }
+      },
+      {
+       "skill": "hover",
+       "args": {
+        "object": "soda_can",
+        "target": "trash_can"
+       }
+      },
+      {
+       "skill": "drop",
+       "args": {
+        "object": "soda_can",
+        "container": "trash_can"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "used_mug"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "used_mug"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "kitchen_counter_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "used_mug",
+        "receptacle": "kitchen_counter_2/top"
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "guests_coming__can_mug"
     },
     "v6_x6_gd_can_put_away__in_cabinet": {
      "steps": [
@@ -36472,70 +38240,95 @@
      },
      "factor": "where the resource is to be found (seed extension)"
     },
-    "far_can_far": {
-     "origin": "v5",
+    "keep_kids_can": {
+     "origin": "v6",
      "control": "can_on_island",
      "layouts": [
-      "far_can_far",
-      "far_can_far__alt_dining_table_2"
+      "keep_kids_can__kid_desk",
+      "keep_kids_can__kid_island"
      ],
+     "factor": "which can is the kid's (seed: the one on the study desk among the craft things, or the one on the island among them)",
      "seeds": {
-      "10": "far_can_far__alt_dining_table_2",
-      "11": "far_can_far",
-      "12": "far_can_far",
-      "13": "far_can_far",
-      "14": "far_can_far__alt_dining_table_2",
-      "15": "far_can_far",
-      "16": "far_can_far__alt_dining_table_2",
-      "17": "far_can_far__alt_dining_table_2",
-      "18": "far_can_far__alt_dining_table_2",
-      "19": "far_can_far"
-     },
-     "factor": "where the resource is to be found (seed extension)"
-    },
-    "h_task_can_in_microwave": {
-     "origin": "v5",
-     "control": "can_on_island",
-     "layouts": [
-      "h_task_can_in_microwave"
-     ],
-     "seeds": {
-      "10": "h_task_can_in_microwave",
-      "11": "h_task_can_in_microwave",
-      "12": "h_task_can_in_microwave",
-      "13": "h_task_can_in_microwave",
-      "14": "h_task_can_in_microwave",
-      "15": "h_task_can_in_microwave",
-      "16": "h_task_can_in_microwave",
-      "17": "h_task_can_in_microwave",
-      "18": "h_task_can_in_microwave",
-      "19": "h_task_can_in_microwave"
+      "10": "keep_kids_can__kid_desk",
+      "11": "keep_kids_can__kid_island",
+      "12": "keep_kids_can__kid_desk",
+      "13": "keep_kids_can__kid_desk",
+      "14": "keep_kids_can__kid_desk",
+      "15": "keep_kids_can__kid_island",
+      "16": "keep_kids_can__kid_island",
+      "17": "keep_kids_can__kid_island",
+      "18": "keep_kids_can__kid_island",
+      "19": "keep_kids_can__kid_desk"
      }
     },
-    "h_dynamic_can_moved": {
-     "origin": "v5",
+    "trash_moved": {
+     "origin": "v6",
      "control": "can_on_island",
      "layouts": [
-      "h_dynamic_can_moved",
-      "h_dynamic_can_moved__alt_tv_stand_2"
+      "trash_moved__dining",
+      "trash_moved__bathroom"
      ],
+     "factor": "where the trash can is today (seed: the dining room or the bathroom)",
      "seeds": {
-      "10": "h_dynamic_can_moved__alt_tv_stand_2",
-      "11": "h_dynamic_can_moved",
-      "12": "h_dynamic_can_moved__alt_tv_stand_2",
-      "13": "h_dynamic_can_moved",
-      "14": "h_dynamic_can_moved",
-      "15": "h_dynamic_can_moved__alt_tv_stand_2",
-      "16": "h_dynamic_can_moved__alt_tv_stand_2",
-      "17": "h_dynamic_can_moved",
-      "18": "h_dynamic_can_moved",
-      "19": "h_dynamic_can_moved__alt_tv_stand_2"
-     },
-     "factor": "where the resource is to be found (seed extension)"
+      "10": "trash_moved__dining",
+      "11": "trash_moved__dining",
+      "12": "trash_moved__dining",
+      "13": "trash_moved__bathroom",
+      "14": "trash_moved__bathroom",
+      "15": "trash_moved__dining",
+      "16": "trash_moved__bathroom",
+      "17": "trash_moved__bathroom",
+      "18": "trash_moved__bathroom",
+      "19": "trash_moved__dining"
+     }
+    },
+    "after_dinner_clear": {
+     "origin": "v6",
+     "control": "can_on_island",
+     "layouts": [
+      "after_dinner_clear__rubbish_leftovers",
+      "after_dinner_clear__leftovers_mug",
+      "after_dinner_clear__rubbish_mug"
+     ],
+     "factor": "what is left on the table (seed: can, empty takeout tray and leftovers; can, leftovers and a mug; or can, takeout tray and a mug)",
+     "seeds": {
+      "10": "after_dinner_clear__rubbish_leftovers",
+      "11": "after_dinner_clear__rubbish_mug",
+      "12": "after_dinner_clear__rubbish_leftovers",
+      "13": "after_dinner_clear__rubbish_mug",
+      "14": "after_dinner_clear__leftovers_mug",
+      "15": "after_dinner_clear__leftovers_mug",
+      "16": "after_dinner_clear__leftovers_mug",
+      "17": "after_dinner_clear__rubbish_leftovers",
+      "18": "after_dinner_clear__rubbish_leftovers",
+      "19": "after_dinner_clear__rubbish_mug"
+     }
+    },
+    "guests_coming": {
+     "origin": "v6",
+     "control": "can_on_island",
+     "layouts": [
+      "guests_coming__can_mug_block",
+      "guests_coming__can_block",
+      "guests_coming__can_mug"
+     ],
+     "factor": "what lies about (seed: the can, a used mug and a toy block; the can and the block; or the can and the mug)",
+     "seeds": {
+      "10": "guests_coming__can_mug_block",
+      "11": "guests_coming__can_mug_block",
+      "12": "guests_coming__can_mug_block",
+      "13": "guests_coming__can_mug",
+      "14": "guests_coming__can_mug_block",
+      "15": "guests_coming__can_block",
+      "16": "guests_coming__can_mug",
+      "17": "guests_coming__can_mug",
+      "18": "guests_coming__can_block",
+      "19": "guests_coming__can_block"
+     }
     },
     "x6_gd_can_put_away": {
      "origin": "v6",
-     "control": "h_task_can_in_microwave",
+     "control": "can_on_island",
      "layouts": [
       "x6_gd_can_put_away__in_cabinet",
       "x6_gd_can_put_away__in_microwave"
@@ -36555,12 +38348,19 @@
      }
     }
    },
-   "v6_replaced": {},
+   "v6_replaced": {
+    "h_task_can_in_microwave": "removed: opening the microwave first is a local precondition (Action); x6_gd_can_put_away is its Task form",
+    "h_dynamic_can_moved": "removed: no dynamic events in T10 (someone takes the can)",
+    "far_can_far": "removed: can_in_dining_room is the same search"
+   },
    "v6_dropped": {
     "e2_from_dining_room": "same as can_on_island but for the layout (object poses / start)",
     "m_ik_can": "only injected action failures",
     "h_action_ik_pick_and_drop": "same as h_task_can_in_microwave without its injected action failures",
-    "h_mixed_microwave_ik": "same as h_task_can_in_microwave without its injected action failures"
+    "h_mixed_microwave_ik": "same as h_task_can_in_microwave without its injected action failures",
+    "h_task_can_in_microwave": "removed: opening the microwave first is a local precondition (Action); x6_gd_can_put_away is its Task form",
+    "h_dynamic_can_moved": "removed: no dynamic events in T10 (someone takes the can)",
+    "far_can_far": "removed: can_in_dining_room is the same search"
    },
    "v6_tracks": {
     "can_on_island": {
@@ -36575,28 +38375,36 @@
       "not_in_view"
      ]
     },
-    "far_can_far": {
+    "keep_kids_can": {
      "category": "task",
      "local": [],
      "longer": [
       "not_in_view",
-      "start_elsewhere"
+      "referent_clue"
      ]
     },
-    "h_task_can_in_microwave": {
-     "category": "action",
-     "local": [
-      "clear the object on the target / open the door first"
-     ],
-     "longer": []
-    },
-    "h_dynamic_can_moved": {
-     "category": "action_task",
-     "local": [
-      "clear the object on the target / open the door first"
-     ],
+    "trash_moved": {
+     "category": "task",
+     "local": [],
      "longer": [
-      "event: resource"
+      "destination_unnamed",
+      "not_in_view"
+     ]
+    },
+    "after_dinner_clear": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "disposal_by_state",
+      "multi_object_goal"
+     ]
+    },
+    "guests_coming": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "goal_items_unstated",
+      "multi_object_goal"
      ]
     },
     "x6_gd_can_put_away": {

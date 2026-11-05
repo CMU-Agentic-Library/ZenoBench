@@ -17,7 +17,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | separate | wooden_block_b | 15 | 21 | 58% | other 15, perception / search 6 | T02 T17 | 0 | PRECONDITION_FAILED: hand_empty(hand=right) is false (right holds wooden_block_b); not grasp_clearance(object=wooden_block_b) is false (pinc |
 | approach | soda_can | 20 | 20 | 50% | IK / reach / base pose 20 | T10 | 0 | approach soda_can: no base pose reaches it (rejected: {'candidates': 3432, 'out_of_reach': 44, 'footprint': 799, 'travel_pose': 112, 'ik': 4 |
 | uncover | handled_cooking_pot | 31 | 19 | 38% | grasp miss 19 | T09 T17 | 1 | pick pot_lid: not held (lift 0.000 m) |
-| pick | soda_can | 151 | 19 | 11% | IK / reach / base pose 10, grasp miss 9 | T10 T19 | 2 | pick soda_can: not held (lift -0.160 m) |
+| pick | soda_can | 151 | 19 | 11% | IK / reach / base pose 10, grasp miss 9 | T10 T19 | 6 | pick soda_can: not held (lift -0.160 m) |
 | place | mug | 29 | 18 | 38% | carry slip 16, other 1, placement result 1 | T04 T13 | 3 | carry: mug slipped out of the hand while carrying it |
 | approach | kitchen_island/top | 43 | 17 | 28% | other 16, IK / reach / base pose 1 | T08 | 2 | approach kitchen_island/top: parked but IK fails at [7.564, 1.565, 0.96] |
 | place | book_red | 8 | 17 | 68% | carry slip 7, placement result 5, IK / reach / base pose 3 | T14 | 1 | flat_turn: book_red slipped out of the hand while carrying it |
@@ -26,7 +26,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | breakfast_spoon | 146 | 12 | 8% | grasp miss 12 | T03 T09 | 9 | pick breakfast_spoon: not held (lift -0.001 m) |
 | hide | wooden_block_b | 35 | 12 | 26% | carry slip 6, placement result 3, grasp miss 2 | T17 | 2 | SUBSKILL_FAILED: fetch_object(object=wooden_block_b, receptacle=handled_cooking_pot): SUBSKILL_FAILED: pick_object(object=wooden_block_b): p |
 | pick | wooden_block_b | 80 | 11 | 12% | grasp miss 10, IK / reach / base pose 1 | T02 T08 | 6 | pick wooden_block_b: not held (lift 0.000 m) |
-| place | wooden_block_a | 127 | 10 | 7% | carry slip 10 | T06 T15 | 6 | carry_stand_up: wooden_block_a slipped out of the hand while carrying it |
+| place | wooden_block_a | 127 | 10 | 7% | carry slip 10 | T06 T15 | 7 | carry_stand_up: wooden_block_a slipped out of the hand while carrying it |
 | search | pot_lid | 0 | 10 | 100% | perception / search 10 | T17 | 1 | search pot_lid: not seen at ['kitchen_island', 'kitchen_stove', 'breakfast_fridge', 'tv_stand_2', 'kitchen_microwave', 'kitchen_cabinet_6',  |
 | inspect |  | 78 | 10 | 11% | other 10 | T18 | 3 | inspect kitchen_cabinet_6: line of sight blocked (h 0, v -12 deg) |
 | drop | foam_cube | 73 | 10 | 12% | IK / reach / base pose 10 | T19 | 1 | drop foam_cube: no base pose above wide_storage_bin (rejected: {'candidates': 3433, 'out_of_reach': 89, 'footprint': 990, 'travel_pose': 30, |
@@ -49,7 +49,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | bowl | 79 | 4 | 5% | placement result 4 | T13 | 5 | place bowl: xy err 0.326 m, on support True (dining_table_2/top) |
 | place | party_bowl_1 | 36 | 4 | 10% | other 3, IK / reach / base pose 1 | T20 | 0 | place party_bowl_1: container shifted 0.067 m before release |
 | collect | handled_cooking_pot | 78 | 3 | 4% | other 2, IK / reach / base pose 1 | T09 | 4 | SUBSKILL_FAILED: fetch_object(object=cherry_tomato_2, receptacle=handled_cooking_pot): SUBSKILL_FAILED: place_object(object=cherry_tomato_2, |
-| hover | soda_can | 26 | 3 | 10% | other 2, carry slip 1 | T10 | 0 | POSTCONDITION_FAILED: hovering_over(object=soda_can, target=trash_can) is false (xy 0.252 m, above by 0.343 m) |
+| hover | soda_can | 26 | 3 | 10% | other 2, carry slip 1 | T10 | 4 | POSTCONDITION_FAILED: hovering_over(object=soda_can, target=trash_can) is false (xy 0.252 m, above by 0.343 m) |
 | pick | rubber_duck | 86 | 3 | 3% | IK / reach / base pose 2, grasp miss 1 | T12 | 5 | pick rubber_duck: no reachable grasp from any base pose |
 | place | cup | 27 | 3 | 10% | placement result 3 | T13 | 5 | place cup: xy err 0.058 m, on support False (bottom at (3.15, 7.45, 0.933)) |
 | look | book_red | 57 | 3 | 5% | perception / search 3 | T14 | 1 | NOT_FOUND: 'book_red' is not visible at its last observed position |
@@ -60,11 +60,12 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 |---|---|---|
 | approach | serving_tray | T03/no_bin_substitute |
 | approach | sponge_tray | T08/return_sponge_home |
-| approach | toy_box | T08/wipe_and_sort |
-| close | breakfast_fridge | T09/tomato_in_fridge |
+| approach | toy_box | T08/wipe_and_sort, T10/guests_coming |
+| close | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear |
 | close | kitchen_cabinet_4 | T02/block_put_away, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T14/x6_gd_book_put_away, T18/x6_gd_bowl_elsewhere__three_places, T19/x6_gd_can_put_away, T20/x6_gd_bottle_put_away |
 | drop | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
 | drop | fridge_tomato | T09/tomato_in_fridge |
+| drop | takeout_tray | T10/after_dinner_clear |
 | expose | foil_takeout_tray | T07/vessel_decides_appliance |
 | expose | glass_food_container | T07/vessel_decides_appliance |
 | expose | notebook_1 | T05/homework_ready |
@@ -73,8 +74,9 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | hide | floor_block | T17/x6_gd_hide_both_event |
 | identify | pen | T05/check_desk_first |
 | identify | pencil | T05/check_desk_first |
+| lift | takeout_tray | T10/after_dinner_clear |
 | measure | toy_bin_small_2 | T12/x6_gd_bins_capacity |
-| open | breakfast_fridge | T09/tomato_in_fridge |
+| open | breakfast_fridge | T09/tomato_in_fridge, T10/after_dinner_clear |
 | pick | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere |
 | pick | floor_block | T02/block_put_away, T02/crowded_use_another, T02/tower_for_kid, T06/display_row |
@@ -82,6 +84,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | fridge_tomato | T09/tomato_in_fridge |
 | pick | glass_food_container | T07/vessel_decides_appliance |
 | pick | handled_cooking_pot | T09/pot_in_dining_room, T09/pot_in_use |
+| pick | leftovers | T10/after_dinner_clear |
 | pick | notebook_1 | T05/homework_ready |
 | pick | notebook_2 | T05/homework_ready |
 | pick | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
@@ -91,13 +94,15 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | pencil_2 | T05/all_pens |
 | pick | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
 | pick | steel_lunch_box | T07/vessel_decides_appliance |
+| pick | takeout_tray | T10/after_dinner_clear |
 | pick | toy_block | T02/third_toy_elsewhere |
-| pick | used_mug | T05/errand_combined |
+| pick | used_mug | T05/errand_combined, T10/after_dinner_clear, T10/guests_coming |
 | place | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
 | place | floor_block | T06/display_row |
 | place | foil_takeout_tray | T07/vessel_decides_appliance |
 | place | glass_food_container | T07/vessel_decides_appliance |
 | place | handled_cooking_pot | T09/pot_in_dining_room, T09/pot_in_use |
+| place | leftovers | T10/after_dinner_clear |
 | place | notebook_1 | T05/homework_ready |
 | place | notebook_2 | T05/homework_ready |
 | place | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
@@ -107,7 +112,7 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | pencil_2 | T05/all_pens |
 | place | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
 | place | steel_lunch_box | T07/vessel_decides_appliance |
-| place | used_mug | T05/errand_combined |
+| place | used_mug | T05/errand_combined, T10/after_dinner_clear, T10/guests_coming |
 | stack | floor_block | T02/block_put_away, T02/crowded_use_another, T02/tower_for_kid |
 | stack | rubber_duck | T02/third_toy_elsewhere, T02/tower_for_kid_duck |
 | stack | toy_block | T02/third_toy_elsewhere |

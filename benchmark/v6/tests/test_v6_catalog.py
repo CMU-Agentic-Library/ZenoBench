@@ -145,7 +145,7 @@ def test_local_fallbacks_are_action_level():
     # T01-T07 keep no pure Action-Level variant (TAMPAgent covers clearing a blocker; the fix is ruled out by a
     # constraint and a fallback named instead, or the step sits inside an Action + Task variant)
     for tid, t in TASKS.items():
-        if tid[:3] in ("T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09"):
+        if tid[:3] in ("T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09", "T10"):
             assert "action" not in {x["category"] for x in t["v6_tracks"].values()}, tid
     # a substitute, never a local fallback: Task-Level
     assert cat("T04_cup_or_mug_to_cabinet", "no_cup") == "task"

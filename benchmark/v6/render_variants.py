@@ -265,7 +265,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     for n in rtask.get("watch") or []:          # watched, never used: the look-alikes the challenge is built on
         if n in objs and n not in role:
             role[n] = "other"
-    LABEL = {"take": "要拿", "base": "叠在它上面", "keep": "别动", "other": "干扰，不用它", "use": "要用",
+    LABEL = {"take": "要拿", "base": "叠在它上面", "keep": "别动", "other": "相关", "use": "要用",
              "alt": "也可以用", "ref": "参照"}
     views, shown = [], set()
 
@@ -342,6 +342,11 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         views.append((sp.replace("/", "_"), stars(names), img,
                       f"{sp} 上的{'、'.join(kinds)}的东西：{'、'.join(names)}"))
         shown.update(names)
+    for at in atoms(goal):                       # a surface that must be left alone (the clean table: not wiped)
+        if at[0] == "not wiped" and at[1] not in shown:
+            eye, c = support_eye(at[1])
+            views.append((at[1].replace("/", "_"), None, shot(eye, c), f"别擦的 {at[1]}"))
+            shown.add(at[1])
     kind += ["point"] * (len(views) - len(kind))
     viewer = (task["variants"][lid].get("v6") or {}).get("viewer")
     if viewer:                                   # what a person sees from where they are (e.g. lying in bed)
@@ -354,11 +359,13 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     kind += ["view"] * (len(views) - len(kind))
     # a few pictures that show the variant: what is taken, where it goes, and what the variant turns on (a person's
     # view, a look-alike, the thing that must stay, the furniture to open); at most three
-    pick = []
-    for want in (("take",), ("place",), ("view", "point")):
-        i = next((i for k in want for i, x in enumerate(kind) if x == k and i not in pick), None)
-        if i is not None:
-            pick.append(i)
+    in_goal = {x for at in atoms(goal) for a in at[1:] for x in (a if isinstance(a, list) else [a])
+               if isinstance(x, str)}
+    pick = [i for i, x in enumerate(kind) if x == "take"][:1]
+    places = [i for i, x in enumerate(kind) if x == "place"]
+    places.sort(key=lambda i: views[i][0].replace("_", "/") not in {g.replace("_", "/") for g in in_goal})
+    pick += sorted(places[:2])                   # the goal's destinations first (the tray, not only the island)
+    pick += [i for i, x in enumerate(kind) if x in ("view", "point")][:1]
     views = [views[i] for i in sorted(pick)]
     out_dir.mkdir(parents=True, exist_ok=True)
     lay = f" · 摆法 {lid.split('__', 1)[1]}" if lid != vid else ""

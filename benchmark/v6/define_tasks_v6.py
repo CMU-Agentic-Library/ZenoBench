@@ -1161,11 +1161,136 @@ def T10(t):
                         nav("trash_can"), S("drop", object=CAN, container="trash_can")]
     in_cab = {"support": "kitchen_cabinet_6/inside_shelf", "xy": [3.63, 0.36], "yaw_deg": 0.0}
     in_mw = copy.deepcopy(t["variants"]["h_task_can_in_microwave"]["move"][CAN])
+    TRASH, ISL, COUNTER = "trash_can", "kitchen_island/top", "kitchen_counter_2/top"
+    base = OR(t, "can_on_island")       # look, explore_room, nav can, pick, lift, nav trash, hover, drop
+    throw = lambda x: [nav(x), pick(x), S("lift", object=x, height_m=0.95), nav(TRASH),  # noqa: E731
+                       S("hover", object=x, target=TRASH), S("drop", object=x, container=TRASH)]
+    # keep_kids_can: two empty cans; the kid's one stands among craft things (a notebook, a pencil) and is kept
+    KID = "kids_can"
+    craft = lambda sup, x, y: {  # noqa: E731
+        KID: {"asset": "soda_can", **P(sup, x, y)},
+        "craft_notebook": {"asset": "notebook", **P(sup, x - 0.22, y)},
+        "craft_pencil": {"asset": "pencil", **P(sup, x, y + 0.12, 90.0)}}
+    kid_goal = {"all": [["inside", CAN, TRASH], ["hand_empty", "right"],
+                        *[["near_start", n, 0.03] for n in (KID, "craft_notebook", "craft_pencil")],
+                        ["upright", KID]]}
+    kid_cases = {
+        "kid_desk": dict(add=craft("desk_1/top", -0.55, -6.05), goal=kid_goal,
+                         route=[look(ISL), S("search", object=KID, region="living_room_0_1")] + base[2:]),
+        "kid_island": dict(add=craft(ISL, 7.40, 1.72), move={CAN: P("desk_1/top", -0.55, -6.05)}, goal=kid_goal,
+                           route=[look(ISL), S("search", object=CAN, region="living_room_0_1")] + throw(CAN))}
+    # trash_moved: the trash can is not by the island today (dining room, or the bathroom); the can is on the island
+    moved = {"dining": ({"support": None, "z": 0.0, "xy": [4.60, 6.00], "yaw_deg": 0}, "dining_room_0_1"),
+             "bathroom": ({"support": None, "z": 0.0, "xy": [-0.40, 6.00], "yaw_deg": 0}, "bathroom_0_1")}
+    moved_cases = {c: dict(move={TRASH: pose},
+                           route=[look(ISL), nav(CAN), pick(CAN), S("lift", object=CAN, height_m=0.95),
+                                  S("search", object=TRASH, region=region), nav(TRASH),
+                                  S("hover", object=CAN, target=TRASH), S("drop", object=CAN, container=TRASH)])
+                   for c, (pose, region) in moved.items()}
+    # after_dinner_clear: what is on the dining table decides where it goes: the empty can and the empty foil takeout
+    # tray are rubbish, the glass box with leftover rice goes into the fridge, the used mug to the kitchen counter;
+    # the cereal boxes stay.  The fridge door is opened before the leftovers are picked up (one hand).
+    TRAY, LEFT, MUG, FRIDGE = "takeout_tray", "leftovers", "used_mug", "breakfast_fridge"
+    on_table = {CAN: P(DINING, 3.62, 5.95), TRAY: P(DINING, 3.58, 6.45), LEFT: P(DINING, 3.58, 6.85),
+                MUG: P(DINING, 3.62, 7.55)}
+    asset = {TRAY: "foil_takeout_tray", LEFT: "glass_food_container", MUG: "breakfast_mug"}
+    fate = {CAN: [["inside", CAN, TRASH]], TRAY: [["inside", TRAY, TRASH]],
+            LEFT: [["on", LEFT, f"{FRIDGE}/inside_shelf"], ["is_closed", FRIDGE]],
+            MUG: [["on", MUG, COUNTER], ["upright", MUG]]}
+    steps = {CAN: throw(CAN), TRAY: [nav(TRAY), pick(TRAY), S("lift", object=TRAY, height_m=0.95), nav(TRASH),
+                                     S("drop", object=TRAY, container=TRASH)],
+             LEFT: [nav(FRIDGE), S("open", articulated=FRIDGE), nav(LEFT), pick(LEFT), nav(FRIDGE),
+                    place(LEFT, f"{FRIDGE}/inside_shelf"), S("retreat", obstacle=FRIDGE, distance_m=0.3),
+                    S("close", articulated=FRIDGE)],
+             MUG: [nav(MUG), pick(MUG), nav(COUNTER), place(MUG, COUNTER)]}
+    dinner_cases = {}
+    for c, items in (("rubbish_leftovers", (CAN, TRAY, LEFT)), ("leftovers_mug", (CAN, LEFT, MUG)),
+                     ("rubbish_mug", (CAN, TRAY, MUG))):
+        dinner_cases[c] = dict(
+            move={CAN: on_table[CAN]},
+            add={x: {"asset": asset[x], **on_table[x]} for x in items if x != CAN},
+            goal={"all": [a for x in items for a in fate[x]] + [["near_start", n, 0.03] for n in
+                                                                 ("clutter_cereal_a", "clutter_cereal_b")]
+                  + [["hand_empty", "right"]]},
+            watch=[*items, "clutter_cereal_a", "clutter_cereal_b"],
+            route=[look(DINING)] + [st for x in items for st in steps[x]])
+    # guests_coming: things lying about the living room go where they belong (the can into the trash, the used mug
+    # to the kitchen counter, the kid's block into the toy box); what belongs there (the island's rolling pin and
+    # sponge, the fruit basket) stays
+    BOX, BLOCK = "toy_box", "wooden_block_a"
+    stays = ["rolling_pin", "kitchen_sponge"]
+    lying = {CAN: P("tv_stand_2/top", 7.60, 0.36), MUG: P("tv_stand_2/top", 7.20, 0.36),
+             BLOCK: {"support": None, "z": 0.0, "xy": [6.70, 0.95], "yaw_deg": 20.0}}
+    put = {CAN: [["inside", CAN, TRASH]], MUG: [["on", MUG, COUNTER], ["upright", MUG]], BLOCK: [["inside", BLOCK, BOX]]}
+    put_steps = {CAN: throw(CAN), MUG: steps[MUG],
+                 BLOCK: [nav(BLOCK), pick(BLOCK), nav(BOX), S("approach", target=BOX), place(BLOCK, BOX)]}
+    guest_cases = {}
+    for c, items in (("can_mug_block", (CAN, MUG, BLOCK)), ("can_block", (CAN, BLOCK)), ("can_mug", (CAN, MUG))):
+        guest_cases[c] = dict(
+            move={**{x: lying[x] for x in items if x != MUG},
+                  "rolling_pin": P(ISL, 6.80, 1.80), "kitchen_sponge": P(ISL, 8.10, 1.80)},
+            add={BOX: {"asset": "toy_box", "support": None, "z": 0.001, "xy": [5.70, 0.80], "yaw_deg": 0.0},
+                 **({MUG: {"asset": "breakfast_mug", **lying[MUG]}} if MUG in items else {})},
+            goal={"all": [a for x in items for a in put[x]] + [["near_start", n, 0.03] for n in stays]
+                  + [["hand_empty", "right"]]},
+            watch=[*items, BOX, *stays],
+            route=[look(ISL), look("tv_stand_2/top")] + [st for x in items for st in put_steps[x]])
     return {
+        "keep_kids_can": dict(
+            base="can_on_island", control="can_on_island", conditions=["referent_clue", "not_in_view"],
+            instruction="Throw the empty soda can into the trash can. The kid is keeping one can for a craft "
+                        "project; leave that one.",
+            instruction_zh="把喝完的空易拉罐扔进垃圾桶。孩子留着做手工的那个别扔。",
+            watch=[CAN, KID, "craft_notebook", "craft_pencil"],
+            factor="which can is the kid's (seed: the one on the study desk among the craft things, or the one on "
+                   "the island among them)",
+            challenge="two identical empty cans: one stands among the kid's craft things (a notebook and a pencil), "
+                      "the other on its own; one of them is on the island, the other on the study desk",
+            rationale="the instruction excludes one can by a clue: tell the kid's can from what stands around it "
+                      "and throw out only the other one (throwing the kid's out fails)",
+            cases=kid_cases),
+        "trash_moved": dict(
+            base="can_on_island", control="can_on_island", conditions=["destination_unnamed", "not_in_view"],
+            watch=[CAN, TRASH],
+            factor="where the trash can is today (seed: the dining room or the bathroom)",
+            challenge="the can is on the island, but the trash can is not in its usual place by the island: it "
+                      "stands in the dining room or in the bathroom, out of view",
+            rationale="the destination, not the item, has to be found: take the can and look for the trash can",
+            cases=moved_cases),
+        "after_dinner_clear": dict(
+            base="can_on_island", control="can_on_island", conditions=["disposal_by_state", "multi_object_goal"],
+            instruction="Dinner is over; clear the dining table. Rubbish goes into the trash can, leftover food "
+                        "into the fridge, used cups back to the kitchen counter. The cereal boxes stay on the table.",
+            instruction_zh="晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，吃剩的收进冰箱，用过的杯子拿回厨房台面。"
+                           "麦片盒留在桌上。",
+            keep_design=[DINING],
+            factor="what is left on the table (seed: can, empty takeout tray and leftovers; can, leftovers and a "
+                   "mug; or can, takeout tray and a mug)",
+            challenge="the dining table holds an empty soda can, and two of: an empty foil takeout tray, a glass box "
+                      "with leftover rice, a used mug; the instruction names the kinds, not the objects",
+            rationale="decide for each object what it is in its state: the empty can and the empty disposable tray "
+                      "are rubbish, the glass box with rice is leftovers (fridge), the mug is a used cup (counter); "
+                      "the cereal stays.  One hand: open the fridge before picking up the leftovers, close it after",
+            cases=dinner_cases),
+        "guests_coming": dict(
+            base="can_on_island", control="can_on_island", conditions=["goal_items_unstated", "multi_object_goal"],
+            instruction="Guests arrive in ten minutes; make the living room presentable. Put whatever is lying "
+                        "about where it belongs: rubbish into the trash can, used cups back to the kitchen counter, "
+                        "the kid's toys into their toy box. Leave things that belong where they are.",
+            instruction_zh="客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，垃圾扔进垃圾桶，用过的杯子拿回厨房"
+                           "台面，孩子的玩具收进玩具箱。本来就该在那儿的东西别动。",
+            factor="what lies about (seed: the can, a used mug and a toy block; the can and the block; or the can "
+                   "and the mug)",
+            challenge="in the living room an empty can and a used mug stand on the TV stand and a toy block lies on "
+                      "the floor (two or three of them); the island's rolling pin and sponge belong there",
+            rationale="find what is out of place in the room and send each to its own place (trash, counter, toy "
+                      "box); leave what belongs (the island's things)",
+            cases=guest_cases),
         "x6_gd_can_put_away": dict(
-            base="can_on_island", control="h_task_can_in_microwave",
+            base="can_on_island", control="can_on_island",
             factor="which closed place holds the item",
             instruction=instr, goal=goal, remove=["plate_inside_kitchen_cabinet"],
+            instruction_zh="有人没把空易拉罐扔掉，而是收进了微波炉或者靠墙矮柜里。把它扔进垃圾桶，打开的门都关好。",
             challenge="the can was put away in one of two closed places (microwave or wall cabinet)",
             rationale="the item's location is a disjunction the planner must resolve by inspecting both candidates "
                       "(reference route: the worse order, the can is in the second place); each door is opened "
@@ -1709,6 +1834,10 @@ def _broken_tried(t):
 ROUTE_FIX = {"T07_heat_oatmeal": {"microwave_broken": _broken_tried}}
 # variant -> why it leaves v6
 REPLACED = {
+    ("T10_trash_the_can", "h_task_can_in_microwave"): "removed: opening the microwave first is a local precondition "
+                                                      "(Action); x6_gd_can_put_away is its Task form",
+    ("T10_trash_the_can", "h_dynamic_can_moved"): "removed: no dynamic events in T10 (someone takes the can)",
+    ("T10_trash_the_can", "far_can_far"): "removed: can_in_dining_room is the same search",
     ("T09_tomato_soup", "lid_on"): "removed: taking the lid off first is a local precondition (Action); it lives on "
                                    "inside lid_on_spoon_away (Action + Task)",
     ("T09_tomato_soup", "h_dynamic_spoon_taken"): "removed: no dynamic events in T09 (someone takes the spoon)",
@@ -1756,6 +1885,10 @@ REPLACED = {
 
 
 NEW_CONDITIONS = {
+    "disposal_by_state": {"type": "goal_inference", "decision": "decompose",
+                          "meaning": "the instruction names kinds of destination (trash, fridge, counter); which "
+                                     "object goes where follows from what it is and its state (an empty disposable "
+                                     "tray is rubbish, a glass box with food is leftovers)"},
     "resource_in_use": {"type": "resource_state", "decision": "alternative",
                         "meaning": "the resource the instruction names is there but already in use (a pot full of "
                                    "other soup): it is not to be used or disturbed; another one is fetched"},

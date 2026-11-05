@@ -1520,9 +1520,27 @@
 - 摆法 `can_in_dining_room`：1. `look(target=kitchen_island/top)` → 2. `explore_room(room=living_room_0_0)` → 3. `pick(object=soda_can)` → 4. `search(object=soda_can, region=dining_room_0_1)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
 - 摆法 `alt_tv_stand_2`：1. `look(target=kitchen_island/top)` → 2. `explore_room(room=living_room_0_0)` → 3. `pick(object=soda_can)` → 4. `search(object=soda_can, region=living_room_0_0)` → 5. `navigate(destination=soda_can)` → 6. `pick(object=soda_can)` → 7. `navigate(destination=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
 
-### far_can_far（Task）
+### keep_kids_can（Task）
 
-**情况**：从餐厅出发，罐子在别的房间 → 先找
+**情况**：两个一样的空易拉罐：一个和作业本、铅笔摆在一起（孩子留着做手工的），另一个单独放着；指令说孩子那个别扔 → 从罐子周围的东西认出孩子的，只扔另一个（扔了孩子的算失败）
+
+**指令**：把喝完的空易拉罐扔进垃圾桶。孩子留着做手工的那个别扔。
+
+**成功条件**：
+
+- `soda_can` 在 `trash_can` 里
+- 手里空着
+- `kids_can`、`craft_notebook`、`craft_pencil` 没被挪动（离开局位置不超过 3 cm）
+- `kids_can` 立着
+
+**参考调用顺序**：
+
+- 摆法 `kid_desk`：1. `look(target=kitchen_island/top)` → 2. `search(object=kids_can, region=living_room_0_1)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
+- 摆法 `kid_island`：1. `look(target=kitchen_island/top)` → 2. `search(object=soda_can, region=living_room_0_1)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
+
+### trash_moved（Task）
+
+**情况**：罐子在岛台上，但垃圾桶今天不在岛台旁边的老地方 → 拿起罐子去找垃圾桶（找的是目的地，不是东西）
 
 **成功条件**：
 
@@ -1531,47 +1549,84 @@
 
 **参考调用顺序**：
 
-- 摆法 `far_can_far`：1. `pick(object=soda_can)` → 2. `search(object=soda_can, region=living_room_0_0)` → 3. `explore_room(room=living_room_0_0)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `navigate(destination=trash_can)` → 7. `drop(object=soda_can, container=trash_can)`
-- 摆法 `alt_dining_table_2`：1. `pick(object=soda_can)` → 2. `search(object=soda_can, region=dining_room_0_1)` → 3. `explore_room(room=living_room_0_0)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `navigate(destination=trash_can)` → 7. `drop(object=soda_can, container=trash_can)`
+- 摆法 `dining`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `search(object=trash_can, region=dining_room_0_1)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
+- 摆法 `bathroom`：1. `look(target=kitchen_island/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `search(object=trash_can, region=bathroom_0_1)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)`
 
-### h_task_can_in_microwave（Action）
+### after_dinner_clear（Task）
 
-**情况**：罐子在关着的微波炉里 → 开门拿出、关门，再扔
+**情况**：晚饭后餐桌上剩着空易拉罐，以及空的铝箔外卖盒、装着剩饭的玻璃保鲜盒、用过的马克杯中的两样；指令只说垃圾扔掉、剩菜进冰箱、用过的杯子回厨房台面、麦片盒留着 → 按每样东西是什么、什么状态决定去处；一只手，要先开冰箱门再去拿剩菜，放好后关门
 
-**指令**：有人把空汽水罐落在微波炉里了。请把它扔进垃圾桶，并把微波炉门关好。
-
-**成功条件**：
-
-- `soda_can` 在 `trash_can` 里
-- 手里空着
-- `kitchen_microwave` 关着
-
-**参考调用顺序**：
-
-1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `navigate(destination=soda_can)` → 5. `pick(object=soda_can)` → 6. `retreat(obstacle=kitchen_microwave, distance_m=0.3)` → 7. `close(articulated=kitchen_microwave)` → 8. `navigate(destination=trash_can)` → 9. `drop(object=soda_can, container=trash_can)`
-
-### h_dynamic_can_moved（Action + Task）
-
-**情况**：同上，开门后有人把罐子拿走 → 关好门，去找罐子
-
-**指令**：有人把空汽水罐落在微波炉里了。请把它扔进垃圾桶，并把微波炉门关好。
+**指令**：晚饭吃完了，把餐桌收拾干净：垃圾扔进垃圾桶，吃剩的收进冰箱，用过的杯子拿回厨房台面。麦片盒留在桌上。
 
 **成功条件**：
 
-- `soda_can` 在 `trash_can` 里
-- 手里空着
-- `kitchen_microwave` 关着
+- 摆法 `rubbish_leftovers`：
+  - `soda_can` 在 `trash_can` 里
+  - `takeout_tray` 在 `trash_can` 里
+  - `leftovers` 在 `breakfast_fridge/inside_shelf` 上
+  - `breakfast_fridge` 关着
+  - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `rubbish_mug`：
+  - `soda_can` 在 `trash_can` 里
+  - `takeout_tray` 在 `trash_can` 里
+  - `used_mug` 在 `kitchen_counter_2/top` 上
+  - `used_mug` 立着
+  - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `leftovers_mug`：
+  - `soda_can` 在 `trash_can` 里
+  - `leftovers` 在 `breakfast_fridge/inside_shelf` 上
+  - `breakfast_fridge` 关着
+  - `used_mug` 在 `kitchen_counter_2/top` 上
+  - `used_mug` 立着
+  - `clutter_cereal_a`、`clutter_cereal_b` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `h_dynamic_can_moved`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `search(object=soda_can, region=dining_room_0_1)`（补救） → 5. `navigate(destination=kitchen_microwave)`（补救） → 6. `close(articulated=kitchen_microwave)`（补救） → 7. `navigate(destination=soda_can)`（补救） → 8. `pick(object=soda_can)`（补救） → 9. `navigate(destination=trash_can)`（补救） → 10. `drop(object=soda_can, container=trash_can)`（补救）
-- 摆法 `alt_tv_stand_2`：1. `navigate(destination=kitchen_microwave)` → 2. `open(articulated=kitchen_microwave)` → 3. `look(target=kitchen_microwave/inside_floor)` → 4. `search(object=soda_can, region=living_room_0_0)`（补救） → 5. `navigate(destination=kitchen_microwave)`（补救） → 6. `close(articulated=kitchen_microwave)`（补救） → 7. `navigate(destination=soda_can)`（补救） → 8. `pick(object=soda_can)`（补救） → 9. `navigate(destination=trash_can)`（补救） → 10. `drop(object=soda_can, container=trash_can)`（补救）
+- 摆法 `rubbish_leftovers`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `navigate(destination=trash_can)` → 6. `hover(object=soda_can, target=trash_can)` → 7. `drop(object=soda_can, container=trash_can)` → 8. `navigate(destination=takeout_tray)` → 9. `pick(object=takeout_tray)` → 10. `lift(object=takeout_tray, height_m=0.95)` → 11. `navigate(destination=trash_can)` → 12. `drop(object=takeout_tray, container=trash_can)` → 13. `navigate(destination=breakfast_fridge)` → 14. `open(articulated=breakfast_fridge)` → 15. `navigate(destination=leftovers)` → 16. `pick(object=leftovers)` → 17. `navigate(destination=breakfast_fridge)` → 18. `place(object=leftovers, receptacle=breakfast_fridge/inside_shelf)` → 19. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 20. `close(articulated=breakfast_fridge)`
+- 摆法 `leftovers_mug`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `navigate(destination=trash_can)` → 6. `hover(object=soda_can, target=trash_can)` → 7. `drop(object=soda_can, container=trash_can)` → 8. `navigate(destination=breakfast_fridge)` → 9. `open(articulated=breakfast_fridge)` → 10. `navigate(destination=leftovers)` → 11. `pick(object=leftovers)` → 12. `navigate(destination=breakfast_fridge)` → 13. `place(object=leftovers, receptacle=breakfast_fridge/inside_shelf)` → 14. `retreat(obstacle=breakfast_fridge, distance_m=0.3)` → 15. `close(articulated=breakfast_fridge)` → 16. `navigate(destination=used_mug)` → 17. `pick(object=used_mug)` → 18. `navigate(destination=kitchen_counter_2/top)` → 19. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
+- 摆法 `rubbish_mug`：1. `look(target=dining_table_2/top)` → 2. `navigate(destination=soda_can)` → 3. `pick(object=soda_can)` → 4. `lift(object=soda_can, height_m=0.95)` → 5. `navigate(destination=trash_can)` → 6. `hover(object=soda_can, target=trash_can)` → 7. `drop(object=soda_can, container=trash_can)` → 8. `navigate(destination=takeout_tray)` → 9. `pick(object=takeout_tray)` → 10. `lift(object=takeout_tray, height_m=0.95)` → 11. `navigate(destination=trash_can)` → 12. `drop(object=takeout_tray, container=trash_can)` → 13. `navigate(destination=used_mug)` → 14. `pick(object=used_mug)` → 15. `navigate(destination=kitchen_counter_2/top)` → 16. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
+
+### guests_coming（Task）
+
+**情况**：客人快到了，客厅里散着空罐、用过的马克杯（电视柜上）、孩子的积木（地上）中的两三样；岛台上的擀面杖和海绵本来就该在那 → 找出客厅里乱放的东西，各送回该去的地方（垃圾桶、厨房台面、玩具箱），属于那里的东西不动
+
+**指令**：客人十分钟后到，把客厅收拾得能见人：乱放的东西各回各处，垃圾扔进垃圾桶，用过的杯子拿回厨房台面，孩子的玩具收进玩具箱。本来就该在那儿的东西别动。
+
+**成功条件**：
+
+- 摆法 `can_block`：
+  - `soda_can` 在 `trash_can` 里
+  - `wooden_block_a` 在 `toy_box` 里
+  - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `can_mug_block`：
+  - `soda_can` 在 `trash_can` 里
+  - `used_mug` 在 `kitchen_counter_2/top` 上
+  - `used_mug` 立着
+  - `wooden_block_a` 在 `toy_box` 里
+  - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `can_mug`：
+  - `soda_can` 在 `trash_can` 里
+  - `used_mug` 在 `kitchen_counter_2/top` 上
+  - `used_mug` 立着
+  - `rolling_pin`、`kitchen_sponge` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+
+**参考调用顺序**：
+
+- 摆法 `can_mug_block`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=used_mug)` → 10. `pick(object=used_mug)` → 11. `navigate(destination=kitchen_counter_2/top)` → 12. `place(object=used_mug, receptacle=kitchen_counter_2/top)` → 13. `navigate(destination=wooden_block_a)` → 14. `pick(object=wooden_block_a)` → 15. `navigate(destination=toy_box)` → 16. `approach(target=toy_box)` → 17. `place(object=wooden_block_a, receptacle=toy_box)`
+- 摆法 `can_block`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=wooden_block_a)` → 10. `pick(object=wooden_block_a)` → 11. `navigate(destination=toy_box)` → 12. `approach(target=toy_box)` → 13. `place(object=wooden_block_a, receptacle=toy_box)`
+- 摆法 `can_mug`：1. `look(target=kitchen_island/top)` → 2. `look(target=tv_stand_2/top)` → 3. `navigate(destination=soda_can)` → 4. `pick(object=soda_can)` → 5. `lift(object=soda_can, height_m=0.95)` → 6. `navigate(destination=trash_can)` → 7. `hover(object=soda_can, target=trash_can)` → 8. `drop(object=soda_can, container=trash_can)` → 9. `navigate(destination=used_mug)` → 10. `pick(object=used_mug)` → 11. `navigate(destination=kitchen_counter_2/top)` → 12. `place(object=used_mug, receptacle=kitchen_counter_2/top)`
 
 ### x6_gd_can_put_away（Task）
 
 **情况**：罐子被收进了关着门的微波炉或靠墙柜 → 逐个打开找
 
-**指令**：Someone put the empty soda can away in the microwave or in the low wall cabinet instead of throwing it out. Throw it into the trash can, and close whatever you open.
+**指令**：有人没把空易拉罐扔掉，而是收进了微波炉或者靠墙矮柜里。把它扔进垃圾桶，打开的门都关好。
 
 **成功条件**：
 

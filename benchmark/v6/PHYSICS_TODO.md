@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1230 episodes remain (530 of the 53 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1240 episodes remain (570 of the 57 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -66,9 +66,10 @@
 | T09 | pot_in_dining_room | task | 0/0 of 10 | - |
 | T10 | can_on_island | control | 0/0 of 10 | - |
 | T10 | can_in_dining_room | task | 0/0 of 10 | - |
-| T10 | far_can_far | task | 0/0 of 10 | - |
-| T10 | h_task_can_in_microwave | action | 0/0 of 10 | pick from the microwave cavity |
-| T10 | h_dynamic_can_moved | action_task | 0/0 of 10 | pick from the microwave cavity |
+| T10 | keep_kids_can | task | 0/0 of 10 | - |
+| T10 | trash_moved | task | 0/0 of 10 | - |
+| T10 | after_dinner_clear | task | 0/0 of 10 | - |
+| T10 | guests_coming | task | 0/0 of 10 | - |
 | T10 | x6_gd_can_put_away | task | 0/0 of 10 | low cabinet doors, pick from the microwave cavity |
 | T11 | fruits_on_table | control | 0/0 of 10 | - |
 | T11 | basket_missing | task | 0/0 of 10 | - |

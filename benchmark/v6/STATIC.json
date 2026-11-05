@@ -1,7 +1,7 @@
 {
- "variants": 123,
- "episodes": 1230,
- "static_ok": 1230,
+ "variants": 124,
+ "episodes": 1240,
+ "static_ok": 1240,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -41,8 +41,8 @@
    "static_ok": 60
   },
   "T10_trash_the_can": {
-   "episodes": 60,
-   "static_ok": 60
+   "episodes": 70,
+   "static_ok": 70
   },
   "T11_collect_fruits": {
    "episodes": 50,
@@ -87,9 +87,9 @@
  },
  "categories": {
   "control": 20,
-  "task": 78,
-  "action_task": 9,
-  "action": 16
+  "task": 81,
+  "action_task": 8,
+  "action": 15
  },
- "tasks_sha1": "e7c3258ddeea43318db64009c2632215e79d5c4a"
+ "tasks_sha1": "d2e8c1ac3a846771d1a880f214a148f0c618e55e"
 }
