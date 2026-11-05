@@ -1180,6 +1180,23 @@ FAMILIES = {"T01_book_to_dining_table": T01, "T02_stack_blocks": T02, "T04_cup_o
 BEDROOM_BIN = {"support": "bookcase_2/top", "xy": [1.0888, -0.4277], "yaw_deg": 0.0}
 
 
+SUP_Z = {"kitchen_island/top": 0.86, "bookcase_2/top": 0.709, "tv_stand_2/top": 0.484}
+SMALL_BIN_BLOCKS = ["small_bin_block_1", "small_bin_block_2"]
+
+
+def small_bin_with_blocks(sup, xy, yaw=0.0):
+    """The small storage bin (inside 21 x 16 cm) with two toy blocks in the corners along one long side: a 10 cm
+    strip along the other side takes the 18 cm spoon, the 22 cm rolling pin fits neither straight nor diagonally."""
+    import math
+    c, s_ = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+    z = SUP_Z[sup] + 0.009
+    out = {"small_storage_bin": {"asset": "small_storage_bin", "support": sup, "xy": list(xy), "yaw_deg": yaw}}
+    for name, (dx, dy) in zip(SMALL_BIN_BLOCKS, ((-0.055, 0.035), (0.055, 0.035))):   # the floor is smaller than the rim
+        out[name] = {"asset": "wooden_block", "support": None, "z": z,
+                     "xy": [round(xy[0] + c * dx - s_ * dy, 4), round(xy[1] + s_ * dx + c * dy, 4)], "yaw_deg": yaw}
+    return out
+
+
 def T03_long(t):
     bin_, spoon, pin = "wide_storage_bin", "breakfast_spoon", "rolling_pin"
     find_bins = [look("kitchen_island/top"), S("search", object=bin_, region="bedroom_0_1"),
@@ -1187,28 +1204,27 @@ def T03_long(t):
     put_both = [nav(spoon), pick(spoon), nav(bin_), S("approach", target=bin_), S("drop", object=spoon, container=bin_),
                 nav(pin), pick(pin), nav(bin_), S("approach", target=bin_), place(pin, bin_)]
     bin_goal = {"all": [["inside", pin, bin_], ["inside", spoon, bin_], ["hand_empty", "right"]]}   # no mug option
+    blocks_stay = [["inside", b, "small_storage_bin"] for b in SMALL_BIN_BLOCKS]       # the toys stay in the small bin
     return {
         "small_bin_or_bedroom_bin": dict(
             base="small_and_large", control="large_only", conditions=["small_container_present", "not_in_view"],
             move={bin_: copy.deepcopy(BEDROOM_BIN)}, remove=["mug"],
-            add={"small_storage_bin": {"asset": "small_storage_bin", "support": "kitchen_island/top", "xy": [7.1, 1.75],
-                                       "yaw_deg": 0.0}},
-            goal=bin_goal, watch=[pin, spoon, bin_, "small_storage_bin"],
-            challenge="a small storage bin (22 x 17 cm) stands on the island next to the utensils: the spoon would fit, "
-                      "the 22 cm rolling pin is as long as the bin's outside and does not; the wide storage bin is on "
-                      "the low bookcase in the bedroom",
-            rationale="measure: the near bin cannot take the rolling pin, and both go into one container, so both "
-                      "utensils go to the wide bin in the bedroom",
+            add=small_bin_with_blocks("kitchen_island/top", (7.1, 1.75)),
+            goal={"all": bin_goal["all"] + blocks_stay}, watch=[pin, spoon, bin_, "small_storage_bin", *SMALL_BIN_BLOCKS],
+            challenge="a small storage bin (22 x 17 cm) with two toy blocks in it stands on the island next to the "
+                      "utensils: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; "
+                      "the wide storage bin is on the low bookcase in the bedroom",
+            rationale="measure what room is left: the near bin cannot take the rolling pin, and both go into one "
+                      "container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin)",
             cases={"": dict(route=[look("kitchen_island/top"), S("measure", object="small_storage_bin"),
                                    S("measure", object=pin)] + find_bins[1:] + put_both)}),
         "three_containers_bedroom": dict(
             base="three_containers", control="large_only", conditions=["joint_capacity", "not_in_view"],
             move={bin_: {"support": "bookcase_2/top", "xy": [0.885, -0.43], "yaw_deg": 0.0}}, remove=["mug"],
-            add={"small_storage_bin": {"asset": "small_storage_bin", "support": "bookcase_2/top",
-                                       "xy": [1.195, -0.43], "yaw_deg": 90.0}},
-            goal=bin_goal, watch=[pin, spoon, bin_, "small_storage_bin"],
-            challenge="a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in "
-                      "the bedroom",
+            add=small_bin_with_blocks("bookcase_2/top", (1.195, -0.43), 90.0),
+            goal={"all": bin_goal["all"] + blocks_stay}, watch=[pin, spoon, bin_, "small_storage_bin", *SMALL_BIN_BLOCKS],
+            challenge="a small storage bin (22 x 17 cm, two toy blocks in it) and the wide storage bin side by side on "
+                      "the low bookcase in the bedroom",
             rationale="by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then "
                       "carry both utensils there",
             cases={"": dict(route=find_bins + [S("measure", object="small_storage_bin"),
@@ -1263,15 +1279,15 @@ def T03_more(t):
     fruit = {"fruit_basket": {"asset": "fruit_basket", "support": "dining_table_2/top", "xy": [3.2, 7.6], "yaw_deg": 0.0},
              "apple": {"asset": "apple", "support": None, "z": 0.87, "xy": [3.17, 7.58], "yaw_deg": 0.0},
              "orange": {"asset": "orange", "support": None, "z": 0.87, "xy": [3.24, 7.63], "yaw_deg": 0.0}}
-    small = {"small_storage_bin": {"asset": "small_storage_bin", "support": "tv_stand_2/top", "xy": [7.3, 0.4],
-                                   "yaw_deg": 0.0}}
+    small = small_bin_with_blocks("tv_stand_2/top", (7.3, 0.4))
     sub_cases = {}
     for case, (x, pose, region) in subs.items():
         sub_cases[case] = dict(
             add={**small, **fruit, x: {"asset": x, **pose}},
             goal={"all": [["inside", pin, x], ["inside", spoon, x], ["inside", "apple", "fruit_basket"],
-                          ["inside", "orange", "fruit_basket"], ["hand_empty", "right"]]},
-            watch=[pin, spoon, "small_storage_bin", x, "fruit_basket", "apple", "orange"],
+                          ["inside", "orange", "fruit_basket"],
+                          *[["inside", b, "small_storage_bin"] for b in SMALL_BIN_BLOCKS], ["hand_empty", "right"]]},
+            watch=[pin, spoon, "small_storage_bin", *SMALL_BIN_BLOCKS, x, "fruit_basket", "apple", "orange"],
             route=[look("kitchen_island/top"), S("measure", object=pin),
                    look("tv_stand_2/top"), S("measure", object="small_storage_bin"),
                    S("search", object=x, region=region), nav(x), look(x)] + put_both(x, drop_spoon=(x != "serving_tray")))
@@ -1310,8 +1326,8 @@ def T03_more(t):
             instruction_zh="烘焙结束了，把擀面杖和勺子一起收进储物箱；没有的话，找个能把两样一起装下的东西代替。",
             factor="which substitute and where (seed: the storage basket on the bedroom floor or the serving tray "
                    "on the study desk)",
-            challenge="no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the "
-                      "22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an "
+            challenge="no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) "
+                      "has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an "
                       "orange; a basket or a tray in another room holds both",
             rationale="the named bin is absent: measure the near bin, rule it out by size, do not use the "
                       "fruit basket (food), find the substitute in another room and put both utensils in it",

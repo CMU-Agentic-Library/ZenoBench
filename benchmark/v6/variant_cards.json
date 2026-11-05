@@ -3100,6 +3100,8 @@
     "wide_storage_bin"
    ],
    "added": [
+    "small_bin_block_1",
+    "small_bin_block_2",
     "small_storage_bin"
    ],
    "removed": [
@@ -3127,13 +3129,23 @@
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "inside",
+     "small_bin_block_1",
+     "small_storage_bin"
+    ],
+    [
+     "inside",
+     "small_bin_block_2",
+     "small_storage_bin"
     ]
    ]
   },
   "control": "large_only",
   "oracle_route": "v6_small_bin_or_bedroom_bin",
-  "challenge": "a small storage bin (22 x 17 cm) stands on the island next to the utensils: the spoon would fit, the 22 cm rolling pin is as long as the bin's outside and does not; the wide storage bin is on the low bookcase in the bedroom",
-  "rationale": "measure: the near bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom",
+  "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it stands on the island next to the utensils: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom",
+  "rationale": "measure what room is left: the near bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T03_utensils_one_container/three_containers_bedroom": {
@@ -3161,6 +3173,8 @@
     "wide_storage_bin"
    ],
    "added": [
+    "small_bin_block_1",
+    "small_bin_block_2",
     "small_storage_bin"
    ],
    "removed": [
@@ -3188,12 +3202,22 @@
     [
      "hand_empty",
      "right"
+    ],
+    [
+     "inside",
+     "small_bin_block_1",
+     "small_storage_bin"
+    ],
+    [
+     "inside",
+     "small_bin_block_2",
+     "small_storage_bin"
     ]
    ]
   },
   "control": "large_only",
   "oracle_route": "v6_three_containers_bedroom",
-  "challenge": "a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
+  "challenge": "a small storage bin (22 x 17 cm, two toy blocks in it) and the wide storage bin side by side on the low bookcase in the bedroom",
   "rationale": "by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then carry both utensils there",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -3379,6 +3403,8 @@
     "apple",
     "fruit_basket",
     "orange",
+    "small_bin_block_1",
+    "small_bin_block_2",
     "small_storage_bin",
     "storage_basket"
    ],
@@ -3418,6 +3444,16 @@
      "fruit_basket"
     ],
     [
+     "inside",
+     "small_bin_block_1",
+     "small_storage_bin"
+    ],
+    [
+     "inside",
+     "small_bin_block_2",
+     "small_storage_bin"
+    ],
+    [
      "hand_empty",
      "right"
     ]
@@ -3425,7 +3461,7 @@
   },
   "control": "large_only",
   "oracle_route": "v6_no_bin_substitute__basket",
-  "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+  "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
   "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
@@ -3452,6 +3488,8 @@
     "fruit_basket",
     "orange",
     "serving_tray",
+    "small_bin_block_1",
+    "small_bin_block_2",
     "small_storage_bin"
    ],
    "removed": [
@@ -3490,6 +3528,16 @@
      "fruit_basket"
     ],
     [
+     "inside",
+     "small_bin_block_1",
+     "small_storage_bin"
+    ],
+    [
+     "inside",
+     "small_bin_block_2",
+     "small_storage_bin"
+    ],
+    [
      "hand_empty",
      "right"
     ]
@@ -3497,7 +3545,7 @@
   },
   "control": "large_only",
   "oracle_route": "v6_no_bin_substitute__tray",
-  "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+  "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
   "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },

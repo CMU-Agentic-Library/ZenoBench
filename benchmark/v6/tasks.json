@@ -9327,6 +9327,26 @@
         1.75
        ],
        "yaw_deg": 0.0
+      },
+      "small_bin_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.869,
+       "xy": [
+        7.045,
+        1.785
+       ],
+       "yaw_deg": 0.0
+      },
+      "small_bin_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.869,
+       "xy": [
+        7.155,
+        1.785
+       ],
+       "yaw_deg": 0.0
       }
      },
      "goal": {
@@ -9344,6 +9364,16 @@
        [
         "hand_empty",
         "right"
+       ],
+       [
+        "inside",
+        "small_bin_block_1",
+        "small_storage_bin"
+       ],
+       [
+        "inside",
+        "small_bin_block_2",
+        "small_storage_bin"
        ]
       ]
      },
@@ -9351,15 +9381,17 @@
       "rolling_pin",
       "breakfast_spoon",
       "wide_storage_bin",
-      "small_storage_bin"
+      "small_storage_bin",
+      "small_bin_block_1",
+      "small_bin_block_2"
      ],
      "since": "v6",
-     "note": "a small storage bin (22 x 17 cm) stands on the island next to the utensils: the spoon would fit, the 22 cm rolling pin is as long as the bin's outside and does not; the wide storage bin is on the low bookcase in the bedroom",
+     "note": "a small storage bin (22 x 17 cm) with two toy blocks in it stands on the island next to the utensils: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom",
      "v6": {
       "family": "small_bin_or_bedroom_bin",
       "case": null,
-      "challenge": "a small storage bin (22 x 17 cm) stands on the island next to the utensils: the spoon would fit, the 22 cm rolling pin is as long as the bin's outside and does not; the wide storage bin is on the low bookcase in the bedroom",
-      "rationale": "measure: the near bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom",
+      "challenge": "a small storage bin (22 x 17 cm) with two toy blocks in it stands on the island next to the utensils: the spoon would still fit, the 22 cm rolling pin does not, straight or diagonally; the wide storage bin is on the low bookcase in the bedroom",
+      "rationale": "measure what room is left: the near bin cannot take the rolling pin, and both go into one container, so both utensils go to the wide bin in the bedroom (the blocks stay in the small bin)",
       "control": "large_only",
       "contrast": null,
       "factor": null,
@@ -9370,6 +9402,8 @@
        {
         "names": [
          "mug",
+         "small_bin_block_1",
+         "small_bin_block_2",
          "small_storage_bin"
         ],
         "support": "kitchen_island/top",
@@ -9512,6 +9546,26 @@
         -0.43
        ],
        "yaw_deg": 90.0
+      },
+      "small_bin_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.16,
+        -0.485
+       ],
+       "yaw_deg": 90.0
+      },
+      "small_bin_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.718,
+       "xy": [
+        1.16,
+        -0.375
+       ],
+       "yaw_deg": 90.0
       }
      },
      "conditions": [
@@ -9536,6 +9590,16 @@
        [
         "hand_empty",
         "right"
+       ],
+       [
+        "inside",
+        "small_bin_block_1",
+        "small_storage_bin"
+       ],
+       [
+        "inside",
+        "small_bin_block_2",
+        "small_storage_bin"
        ]
       ]
      },
@@ -9543,16 +9607,18 @@
       "rolling_pin",
       "breakfast_spoon",
       "wide_storage_bin",
-      "small_storage_bin"
+      "small_storage_bin",
+      "small_bin_block_1",
+      "small_bin_block_2"
      ],
      "instruction": "Baking is done. Put the rolling pin and the spoon away together in one suitable container, both of them completely inside.",
      "instruction_zh": "烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。",
      "since": "v6",
-     "note": "a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
+     "note": "a small storage bin (22 x 17 cm, two toy blocks in it) and the wide storage bin side by side on the low bookcase in the bedroom",
      "v6": {
       "family": "three_containers_bedroom",
       "case": null,
-      "challenge": "a small storage bin (22 x 17 cm) and the wide storage bin side by side on the low bookcase in the bedroom",
+      "challenge": "a small storage bin (22 x 17 cm, two toy blocks in it) and the wide storage bin side by side on the low bookcase in the bedroom",
       "rationale": "by size only the wide bin takes the 22 cm rolling pin, and it is in the bedroom: measure, then carry both utensils there",
       "control": "large_only",
       "contrast": null,
@@ -9641,6 +9707,18 @@
          -0.54,
          1.28,
          -0.32
+        ],
+        [
+         1.135,
+         -0.51,
+         1.185,
+         -0.46
+        ],
+        [
+         1.135,
+         -0.4,
+         1.185,
+         -0.35
         ]
        ]
       },
@@ -10224,6 +10302,26 @@
        ],
        "yaw_deg": 0.0
       },
+      "small_bin_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.245,
+        0.435
+       ],
+       "yaw_deg": 0.0
+      },
+      "small_bin_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.355,
+        0.435
+       ],
+       "yaw_deg": 0.0
+      },
       "fruit_basket": {
        "asset": "fruit_basket",
        "support": "dining_table_2/top",
@@ -10287,6 +10385,16 @@
         "fruit_basket"
        ],
        [
+        "inside",
+        "small_bin_block_1",
+        "small_storage_bin"
+       ],
+       [
+        "inside",
+        "small_bin_block_2",
+        "small_storage_bin"
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -10296,17 +10404,19 @@
       "rolling_pin",
       "breakfast_spoon",
       "small_storage_bin",
+      "small_bin_block_1",
+      "small_bin_block_2",
       "storage_basket",
       "fruit_basket",
       "apple",
       "orange"
      ],
      "since": "v6",
-     "note": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+     "note": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
      "v6": {
       "family": "no_bin_substitute",
       "case": "basket",
-      "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+      "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
       "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
       "control": "large_only",
       "contrast": null,
@@ -10379,6 +10489,8 @@
        },
        {
         "names": [
+         "small_bin_block_1",
+         "small_bin_block_2",
          "small_storage_bin",
          "wide_storage_bin"
         ],
@@ -10495,6 +10607,26 @@
        ],
        "yaw_deg": 0.0
       },
+      "small_bin_block_1": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.245,
+        0.435
+       ],
+       "yaw_deg": 0.0
+      },
+      "small_bin_block_2": {
+       "asset": "wooden_block",
+       "support": null,
+       "z": 0.493,
+       "xy": [
+        7.355,
+        0.435
+       ],
+       "yaw_deg": 0.0
+      },
       "fruit_basket": {
        "asset": "fruit_basket",
        "support": "dining_table_2/top",
@@ -10557,6 +10689,16 @@
         "fruit_basket"
        ],
        [
+        "inside",
+        "small_bin_block_1",
+        "small_storage_bin"
+       ],
+       [
+        "inside",
+        "small_bin_block_2",
+        "small_storage_bin"
+       ],
+       [
         "hand_empty",
         "right"
        ]
@@ -10566,17 +10708,19 @@
       "rolling_pin",
       "breakfast_spoon",
       "small_storage_bin",
+      "small_bin_block_1",
+      "small_bin_block_2",
       "serving_tray",
       "fruit_basket",
       "apple",
       "orange"
      ],
      "since": "v6",
-     "note": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+     "note": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
      "v6": {
       "family": "no_bin_substitute",
       "case": "tray",
-      "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm) is too small for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
+      "challenge": "no storage bin in the house; the small bin on the TV stand (22 x 17 cm, two toy blocks in it) has no room for the 22 cm rolling pin; the fruit basket on the dining table is big enough but holds an apple and an orange; a basket or a tray in another room holds both",
       "rationale": "the named bin is absent: measure the near bin, rule it out by size, do not use the fruit basket (food), find the substitute in another room and put both utensils in it",
       "control": "large_only",
       "contrast": null,
@@ -10669,6 +10813,8 @@
        },
        {
         "names": [
+         "small_bin_block_1",
+         "small_bin_block_2",
          "small_storage_bin",
          "wide_storage_bin"
         ],

@@ -396,13 +396,15 @@
 
 ### small_bin_or_bedroom_bin（Task）
 
-**情况**：岛台上餐具旁边有个小储物箱（22 × 17 cm），勺子放得下，但 22 cm 的擀面杖和箱子外沿一样长，放不进去；宽储物箱在卧室矮书架上 → 量一下判断放不下，两样要放同一个容器，所以都拿去卧室的宽箱
+**情况**：岛台上餐具旁边有个小储物箱（22 × 17 cm），里面已经放了两块积木：勺子还放得下，22 cm 的擀面杖平放、斜放都放不进；宽储物箱在卧室矮书架上 → 看剩下的空间判断放不下，两样要放同一个容器，所以都拿去卧室的宽箱；小箱里的积木不动
 
 **成功条件**：
 
 - `rolling_pin` 在 `wide_storage_bin` 里
 - `breakfast_spoon` 在 `wide_storage_bin` 里
 - 手里空着
+- `small_bin_block_1` 在 `small_storage_bin` 里
+- `small_bin_block_2` 在 `small_storage_bin` 里
 
 **参考调用顺序**：
 
@@ -410,7 +412,7 @@
 
 ### three_containers_bedroom（Task）
 
-**情况**：卧室矮书架上并排放着小储物箱和宽储物箱 → 量尺寸，22 cm 的擀面杖只能放宽箱，把两样都拿过去
+**情况**：卧室矮书架上并排放着小储物箱（里面有两块积木）和宽储物箱 → 看剩余空间，擀面杖只能放宽箱，把两样都拿过去；小箱里的积木不动
 
 **指令**：烘焙结束，请把擀面杖和勺子一起收进同一个合适容器，确保两件都完整放入。
 
@@ -419,6 +421,8 @@
 - `rolling_pin` 在 `wide_storage_bin` 里
 - `breakfast_spoon` 在 `wide_storage_bin` 里
 - 手里空着
+- `small_bin_block_1` 在 `small_storage_bin` 里
+- `small_bin_block_2` 在 `small_storage_bin` 里
 
 **参考调用顺序**：
 
@@ -447,7 +451,7 @@
 
 ### no_bin_substitute（Task）
 
-**情况**：家里没有储物箱；电视柜上的小箱（22 × 17 cm）放不下 22 cm 的擀面杖；餐桌上的果篮够大但装着苹果和橙子；指令说没有储物箱就找能装下两样的东西代替 → 量尺寸排除小箱，不用果篮，去别的房间找替代品，两样都放进去
+**情况**：家里没有储物箱；电视柜上的小箱（22 × 17 cm，里面有两块积木）放不下 22 cm 的擀面杖；餐桌上的果篮够大但装着苹果和橙子；指令说没有储物箱就找能装下两样的东西代替 → 排除小箱，不用果篮，去别的房间找替代品，两样都放进去
 
 **指令**：烘焙结束了，把擀面杖和勺子一起收进储物箱；没有的话，找个能把两样一起装下的东西代替。
 
@@ -458,12 +462,16 @@
   - `breakfast_spoon` 在 `serving_tray` 里
   - `apple` 在 `fruit_basket` 里
   - `orange` 在 `fruit_basket` 里
+  - `small_bin_block_1` 在 `small_storage_bin` 里
+  - `small_bin_block_2` 在 `small_storage_bin` 里
   - 手里空着
 - 摆法 `basket`：
   - `rolling_pin` 在 `storage_basket` 里
   - `breakfast_spoon` 在 `storage_basket` 里
   - `apple` 在 `fruit_basket` 里
   - `orange` 在 `fruit_basket` 里
+  - `small_bin_block_1` 在 `small_storage_bin` 里
+  - `small_bin_block_2` 在 `small_storage_bin` 里
   - 手里空着
 
 **参考调用顺序**：
