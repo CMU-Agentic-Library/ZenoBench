@@ -81,6 +81,8 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=No
     if prepare is not None:
         prepare(stage)
     P.base_joints(stage)                # after prepare: it may move the robot's start
+    from . import physx_contacts
+    physx_contacts.enable(stage, P.ASSET)   # the robot's real contacts (the contact monitor's ground truth)
     sim = sim_utils.SimulationContext(sim_utils.SimulationCfg(dt=1 / P.PHYSICS_HZ, device="cpu",
                                                               physics_prim_path="/World/PhysicsScene"))
     cams = {}
@@ -115,6 +117,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=No
                 spawn=sim_utils.PinholeCameraCfg(focal_length=first_person_focal_length, clipping_range=(0.02, 40.0)),
             ))
     robot = SingleArticulation("/World/ZenoMalo/Asset", name="zeno")
+    physx_contacts.allow_processing()   # SimulationContext turned it off
     sim.reset()
     robot.initialize()
     from .motion import Motion
@@ -125,6 +128,7 @@ def make_rig(app, scene, ann_path, video=True, res=(720, 1280), stride=8, log=No
     rig = Rig(sim, stage, robot, kin, world, ann, cams=cams, stride=stride,
               log=log or (lambda s: print(s, flush=True)),
               first_person_camera=first_person_camera, wrist_cameras=wrist)
+    rig.clear.physx = physx_contacts.Reader(P.ASSET)
     from .predicates import head_fov_deg
     # what perception counts as "in view" matches what the head camera images show
     rig.head_fov_deg = head_fov_deg(first_person_focal_length, *first_person_res)

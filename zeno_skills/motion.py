@@ -1345,6 +1345,26 @@ class Motion:
             cache[c.name] = next((p for p in reversed(parts) if p in known), "/".join(parts[-2:]))
         return cache[c.name]
 
+    def entity_of_path(self, path):
+        """The entity (as _entity names it) of the collider at prim ``path``, for a PhysX contact
+        report; a path the planner's world lacks: the annotated object, part or furniture its path
+        runs through, else its last two parts."""
+        by_name = self.__dict__.get("_col_by_name")
+        if by_name is None:
+            by_name = self._col_by_name = {c.name: c for c in self.cols.items}
+        c = by_name.get(path)
+        if c is not None:
+            return self._entity(c)
+        cache = self.__dict__.setdefault("_entity_of", {})
+        if path not in cache:
+            parts = path.strip("/").split("/")
+            prims = {o["prim"].strip("/"): n for n, o in self.ann.objects.items() if o.get("prim")}
+            known = {o["name"] for o in self.ann.obstacles}
+            name = next((prims[p] for p in ("/".join(parts[:i]) for i in range(len(parts), 0, -1)) if p in prims),
+                        None)
+            cache[path] = name or next((p for p in reversed(parts) if p in known), "/".join(parts[-2:]))
+        return cache[path]
+
     def _nearest_entity(self, p, r, poses, cols):
         """Entity of the collider in ``cols`` closest to sphere (p, r): distance to its box in its own frame."""
         c = self._nearest_collider(p, r, poses, cols)

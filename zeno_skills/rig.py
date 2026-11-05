@@ -300,8 +300,10 @@ class Rig:
             self.tick += 1
             if self.tick % 12 == 0:
                 self._advance_thermal(0.1)
-            if self.clear.monitor and self.tick % MONITOR_EVERY == 0:
-                self.clear.tick()
+            if self.clear.monitor:
+                self.clear.every_tick()
+                if self.tick % MONITOR_EVERY == 0:
+                    self.clear.tick()
             if render:
                 imgs = []
                 for cam in self.cams.values():

@@ -277,3 +277,70 @@ def test_monitor_logs_objects_pushed_away_unless_held_let_go_carried_or_allowed(
 def test_lifts_is_only_for_a_motion_out_of_a_contact():
     with pytest.raises(ValueError):
         Allow(lifts="mug", reason="x")
+
+
+def _physx_rig(logged, poses=None):
+    motion = SimpleNamespace(held={"right": set(), "left": set()},
+                             entity_of_path=lambda path: path.strip("/").split("/")[2])
+    upright = np.array([1.0, 0.0, 0.0, 0.0])
+    return SimpleNamespace(kin=SimpleNamespace(motion=motion, coll_kw={}), tick=0, held=None, left_held=None,
+                           ann=SimpleNamespace(objects={n: {} for n in (poses or {})}),
+                           obj_pose=lambda n: (np.array(poses[n], float), upright),
+                           log=lambda ev, **kw: logged.append((ev, kw)))
+
+
+def test_physx_contacts_log_each_new_touch_the_motion_does_not_permit():
+    logged = []
+    rig = _physx_rig(logged)
+    report = {}
+    clear = Clearance(rig)
+    clear.monitor = True
+    clear.physx = SimpleNamespace(touching=lambda: dict(report))
+    clear.skills = ["pick"]
+    clear.motion("pick_close", Allow(checked=False, hand="right", touch=("mug",), reason="closing"))
+    pad = "right_gripper_left_finger_link"
+    report.update({(pad, "/World/Tasks/mug/Asset/wall_88"): (0.0, 0.2),
+                   (pad, "/World/Tasks/mug/Asset/wall_89"): (0.001, 0.0),
+                   ("right_gripper_link", "/World/Appliances/kitchen_island/top"): (-0.001, 0.5)})
+    for _ in range(3):
+        rig.tick += 1
+        clear.every_tick()
+    rec = clear.summary()
+    assert rec["physx_allowed"] == 1 and rec["physx_unexpected"] == 1     # two mug walls: one touch
+    (r,) = rec["physx_records"]
+    assert (r["link"], r["entity"], r["leg"], r["ticks"]) == ("right_gripper_link", "kitchen_island", "pick_close", 3)
+    assert [ev for ev, _ in logged] == ["physx_contact"]
+    report.clear()
+    rig.tick += 1
+    clear.every_tick()                                       # let go: a later touch is a new onset
+    report[("right_gripper_link", "/World/Appliances/kitchen_island/top")] = (0.0, 0.1)
+    rig.held = {"name": "kitchen_island"}                    # (what a hand holds is never a contact)
+    clear.every_tick()
+    rig.held = None
+    clear.every_tick()
+    assert clear.counts["physx_unexpected"] == 2 and clear.counts["physx_by_leg"] == {"pick_close": 2}
+
+
+def test_watch_reports_how_far_the_object_moved_on_the_way():
+    logged = []
+    poses = {"mug": [7.95, 1.66, 0.92]}
+    rig = _physx_rig(logged, poses)
+    clear = Clearance(rig)
+    clear.monitor = True
+    clear.skills = ["pick"]
+    with clear.watch("mug"):
+        clear.motion("pick_grasp", FREE)
+        for dx in (0.0, 0.004, 0.0003):                      # knocked 4 mm, settles back
+            poses["mug"][0] = 7.95 + dx
+            rig.tick += 1
+            clear.every_tick()
+    with clear.watch("mug"):
+        rig.tick += 1
+        clear.every_tick()                                   # untouched
+    a, b = clear.summary()["approach"]
+    assert (a["leg"], a["moved_mm"], a["moved"], a["at_tick"]) == ("pick_grasp", 4.0, True, 2)
+    assert b["moved"] is False and clear.counts["approach_moved"] == 1
+    off = Clearance(rig)                                     # monitor off: no watch
+    with off.watch("mug"):
+        pass
+    assert off.approach == []

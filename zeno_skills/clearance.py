@@ -19,6 +19,14 @@ counts as part of the robot (link ``held:<object>``, judged by ``Allow.held_on``
 object is pushed away before a sphere sinks into it, so the monitor also watches the near
 objects nobody holds and logs a ``disturbed_object`` event when one moves or tips.  A metric
 only: it never fails a skill, and it leaves the planner's state exactly as it found it.
+
+With the monitor on it also reads, every tick, the robot's real contacts from PhysX
+(physx_contacts.py): each new robot link / entity pair the current motion's Allow does not
+permit is a ``physx_contact`` -- the ground truth the sphere model's checks approximate.  What a
+hand holds is left out.  And ``watch(name)`` follows one object every tick through a motion that
+must not touch it (the open hand's approach to a grasp): how far it moved and turned at most,
+logged as ``approach_watch`` (the disturbance check above, every MONITOR_EVERY ticks with 2 cm /
+20 deg, missed a fingertip knocking a mug 4 mm / 2.8 deg, and drops the picked object's record).
 """
 
 from __future__ import annotations
@@ -41,6 +49,10 @@ MOVED_M = 0.02              # m an object nobody holds may drift between checks.
 MOVED_TILT = 20.0           # ...or deg its up axis may tip (turning about it is not counted)
 SETTLE_TICKS = 240          # an object just let go, or just knocked, settles (falls into a bin, rolls) this long
 CARRIED_M = 0.02            # m: an object that moved like a held one since the last check rides in / on it
+# watch(): an object the motion must not touch counts as moved past either (a fingertip knocking a
+# mug on its rim: 4 mm, 2.8 deg, T04 no_cup 2026-11-05; untouched, the mug stood within 0.01 mm)
+APPROACH_MOVED_M = 0.001
+APPROACH_TURN = 1.0         # deg, any axis
 
 
 @dataclass(frozen=True)
@@ -181,6 +193,13 @@ class Clearance:
         self._prev = {}                  # object -> position at the last check
         self._held_since = {}            # object -> tick it was last picked up
         self._pending = []               # disturbances waiting SETTLE_TICKS: not the object being picked up
+        self.physx = None                # physx_contacts.Reader when the simulator reports the robot's contacts
+        self._px_live = {}               # (link, entity) touching at the last tick -> its record, None if allowed
+        self.physx_records = []
+        self.counts.update({"physx_unexpected": 0, "physx_allowed": 0, "physx_by_skill": {}, "physx_by_leg": {},
+                            "approach_moved": 0})
+        self._watch = None               # the object watch() follows
+        self.approach = []
 
     # ------------------------------------------------------------- skill scope
     @contextmanager
@@ -250,6 +269,85 @@ class Clearance:
         self.rig.log("clearance_fallback", **{k: v for k, v in rec.items() if k != "tick"})
 
     # ------------------------------------------------------------- contact monitor
+    def every_tick(self):
+        """Rig.step, every tick when the monitor is on: the PhysX contacts, the watched object."""
+        if self.physx is not None:
+            self._physx_tick()
+        if self._watch is not None:
+            self._watch_tick()
+
+    def _physx_tick(self):
+        rig = self.rig
+        pairs = self.physx.touching()
+        if not pairs and not self._px_live:
+            return
+        motion = getattr(rig.kin, "motion", None)
+        held = {h["name"] for h in (getattr(rig, "held", None), getattr(rig, "left_held", None)) if h}
+        if motion is not None:
+            held |= {o.split(":", 1)[1] for s in getattr(motion, "held", {}).values() for o in s}
+        now = {}
+        for (link, path), (sep, imp) in pairs.items():
+            ent = motion.entity_of_path(path) if motion is not None else path
+            if ent in held:
+                continue                             # the hand on what it holds (and what that carries)
+            s0, i0, _ = now.get((link, ent), (float("inf"), 0.0, None))
+            now[(link, ent)] = (min(s0, sep), max(i0, imp), path)
+        live = {}
+        skill = self.skills[-1] if self.skills else None
+        for key, (sep, imp, path) in now.items():
+            rec = self._px_live.get(key, False)
+            if rec is False:                         # a new touch
+                ok = self.allow.permits(*key)
+                self.counts["physx_allowed" if ok else "physx_unexpected"] += 1
+                rec = None
+                if not ok:
+                    for cnt, k in (("physx_by_skill", skill or "-"), ("physx_by_leg", self.leg or "-")):
+                        self.counts[cnt][k] = self.counts[cnt].get(k, 0) + 1
+                    rec = {"tick": rig.tick, "skill": skill, "leg": self.leg, "checked": self.allow.checked,
+                           "link": key[0], "entity": key[1], "collider": path.rsplit("/", 1)[1],
+                           "sep_m": round(sep, 4), "max_impulse": round(imp, 4), "ticks": 0}
+                    if len(self.physx_records) < MAX_RECORDS:
+                        self.physx_records.append(rec)
+                    rig.log("physx_contact", **{k: v for k, v in rec.items() if k not in ("tick", "ticks")})
+            if rec is not None:
+                rec["ticks"] += 1
+                rec["sep_m"] = round(min(rec["sep_m"], sep), 4)
+                rec["max_impulse"] = round(max(rec["max_impulse"], imp), 4)
+            live[key] = rec
+        self._px_live = live
+
+    @contextmanager
+    def watch(self, name):
+        """Follow object ``name`` every tick while the block runs (a motion that must not touch it):
+        on leaving, an ``approach_watch`` record of how far it moved and turned at most."""
+        rig = self.rig
+        if not self.monitor or name not in getattr(rig.ann, "objects", {}):
+            yield
+            return
+        p, q = rig.obj_pose(name)
+        self._watch = {"name": name, "p": p, "q": q, "moved": 0.0, "turn": 0.0, "at": None}
+        try:
+            yield
+        finally:
+            w, self._watch = self._watch, None
+            rec = {"tick": rig.tick, "skill": self.skills[-1] if self.skills else None, "leg": self.leg,
+                   "object": name, "moved_mm": round(w["moved"] * 1000, 2), "turn_deg": round(w["turn"], 2),
+                   "at_tick": w["at"]}
+            rec["moved"] = w["moved"] >= APPROACH_MOVED_M or w["turn"] >= APPROACH_TURN
+            self.counts["approach_moved"] += int(rec["moved"])
+            if len(self.approach) < MAX_RECORDS:
+                self.approach.append(rec)
+            rig.log("approach_watch", **{k: v for k, v in rec.items() if k != "tick"})
+
+    def _watch_tick(self):
+        w = self._watch
+        p, q = self.rig.obj_pose(w["name"])
+        d = float(np.linalg.norm(p - w["p"]))
+        turn = float(np.degrees(2 * np.arccos(np.clip(abs(float(np.dot(q, w["q"]))), 0.0, 1.0))))
+        if d > w["moved"] or turn > w["turn"]:
+            w["at"] = self.rig.tick
+        w["moved"], w["turn"] = max(w["moved"], d), max(w["turn"], turn)
+
     def tick(self):
         """Rig.step, every MONITOR_EVERY ticks when the monitor is on."""
         motion = getattr(self.rig.kin, "motion", None)
@@ -364,4 +462,5 @@ class Clearance:
         """result.json ``contacts``."""
         self._confirm_disturbances(final=True)
         return {**self.counts, "records": self.records, "fallbacks": self.fallbacks,
-                "disturbances": self.disturbances, "segments": self.segments}
+                "disturbances": self.disturbances, "segments": self.segments,
+                "physx": self.physx is not None, "physx_records": self.physx_records, "approach": self.approach}
