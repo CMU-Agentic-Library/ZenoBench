@@ -43,8 +43,8 @@ PUSH_SEG = 0.25               # longest single push; the base re-parks between p
 CARRY_Z = 0.55                # carried objects ride at least this high (floor picks)
 PICK_APPROACH = 0.04          # m: a pinch closes in straight along the gripper axis for this long
 PICK_LEAVE_CHECK = 0.03       # m of the lift out of the grasp the park search checks (the contact exit takes <= 3 cm)
-# m: the lowest pad corner of a top pinch stays this far above the object's bottom (the vertical
-# pinch's former TCP rule of 2.2 cm above it, less PAD_TIP: 2.15 mm)
+# m: the lowest pad corner of a top pinch stays this far above the surface under the object (the
+# vertical pinch's former TCP rule of 2.2 cm above its bottom, less PAD_TIP: 2.15 mm)
 PAD_FLOOR_GAP = 0.022 - PAD_TIP
 PLACE_APPROACH = 0.05         # m: a load is set down straight down for this long (into a shelf: SHELF_APPROACH across)
 SHELF_APPROACH = 0.16
@@ -995,10 +995,22 @@ def _grasp_targets(g):
             (g["p"] + np.array([0, 0, PICK_LEAVE_CHECK]), g["R"])]
 
 
+def _surface_under(rig, name, st):
+    """The surface a pinch's pads must clear under ``name``: the annotated support it rests on, or
+    the lowest point of its box where that is higher (a container's floor) or there is no support
+    (the floor).  Not the box's bottom face: a curved spoon's box hangs 4.7 mm below the island it
+    lies on, and pads 2 mm above that face went into the island."""
+    o = st["objects"][name]
+    size = np.asarray(rig.ann.asset_of(rig.ann.objects[name])["size"], float)
+    low = float(rig.geo.centre(name, st)[2] - 0.5 * np.abs(quat_R(o["quat"])[2, :]) @ size)
+    sup = rig.geo.support_under(name, st)
+    return max(low, float(sup["z"])) if sup is not None else low
+
+
 def _pads_clear_of(g, floor_z):
     """A top pinch's TCP raised, where needed, so the lowest corner of its open pads (PAD_*, opened
     to g["pre_open"] per finger, in the pinch's orientation: a tilted one dips a corner) stays
-    PAD_FLOOR_GAP above floor_z."""
+    PAD_FLOOR_GAP above the surface at floor_z (_surface_under)."""
     w = float(g["pre_open"])
     corners = np.array([[sx * PAD_HALF_WIDTH, sy * (w + t), -PAD_TIP]
                         for sx in (-1, 1) for sy in (-1, 1) for t in (0.0, PAD_THICKNESS)])
@@ -1162,6 +1174,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
     pos, quat = rig.obj_pose(name)
     st = rig.state()
     floor_z = float(rig.geo.bottom(name, st)[2])
+    surface_z = _surface_under(rig, name, st)
     cands = rig.ann.grasp_poses(obj, pos, quat, kinds=kinds)
     if not cands:
         raise SkillFailure(f"pick {name}: no pinch grasp annotated")
@@ -1179,7 +1192,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
         rig.log("pick_free_slots_skipped", reason=str(exc)) if hasattr(rig, "log") else None
     for g in cands:              # pads must not dig into the surface below
         if g["kind"] == "top_pinch":
-            g["p"] = _pads_clear_of(g, floor_z)
+            g["p"] = _pads_clear_of(g, surface_z)
     rig.sync_world()
     rig.kin.coll_kw = {"ignore_fingers": True}
     rig.focus_z = float(pos[2])
@@ -1228,7 +1241,7 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
                  if not any(np.allclose(c["R"], c0["R"], atol=1e-3) and np.allclose(c["p"], c0["p"], atol=1e-3)
                             for c0 in cands)]
         for g in extra:
-            g["p"] = _pads_clear_of(g, floor_z)
+            g["p"] = _pads_clear_of(g, surface_z)
             with _hand_opened(rig, g["pre_open"]):
                 park = find_park(rig.kin, rig.world, _grasp_targets(g), near=search_near, max_tries=120,
                                  q_start=rig.q_cmd, travel_q=_travel_q(rig))

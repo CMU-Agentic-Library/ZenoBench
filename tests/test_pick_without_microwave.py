@@ -16,16 +16,19 @@ def test_pick_without_microwave_uses_generic_grasp_search(monkeypatch):
         objects={"apple": {"support": "table"}},
         articulated=[],
         grasp_poses=lambda *args, **kwargs: [grasp.copy()],
+        asset_of=lambda obj: {"size": [0.07, 0.07, 0.07]},
     )
     rig = SimpleNamespace(
         ann=ann,
-        geo=SimpleNamespace(bottom=lambda *args: np.array([1.0, 2.0, 0.75])),
+        geo=SimpleNamespace(bottom=lambda *args: np.array([1.0, 2.0, 0.75]),
+                            centre=lambda *args: np.array([1.0, 2.0, 0.785]),
+                            support_under=lambda *args: {"name": "table/top", "z": 0.75}),
         kin=SimpleNamespace(coll_kw={}, rest=np.zeros(9)),
         world=object(),
         q_cmd=np.zeros(9),
         held=None,
         obj_pose=lambda name: (np.array([1.0, 2.0, 0.75]), np.array([1.0, 0.0, 0.0, 0.0])),
-        state=lambda: {},
+        state=lambda: {"objects": {"apple": {"pos": [1.0, 2.0, 0.75], "quat": [1.0, 0.0, 0.0, 0.0]}}},
         sync_world=lambda: None,
         base_pose=lambda: (0.0, 0.0, 0.0),
     )
