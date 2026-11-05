@@ -282,7 +282,7 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             b = rig.ann.support(sp)["aabb_xy"]
             c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, pos(n)[2]]
             img = shot(around(c, 1.6, 0.7), c)
-            views.append((n, [(project(pos(n)), f"{LABEL[r]}：{n}（在柜子里）")], img,
+            views.append((n, [(project(pos(n)), f"{LABEL[r]}：{n}（在里面）")], img,
                           f"{LABEL[r]}的 {n}：在关着的 {sp.split('/')[0]} 里（从外面看，★ 是它的位置）"))
         else:
             img = shot(around(pos(n), 0.75, 0.55), pos(n))
