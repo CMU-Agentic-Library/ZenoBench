@@ -185,6 +185,22 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             return None
         return [min(b[k] for b in boxes) for k in range(3)] + [max(b[k] for b in boxes) for k in range(3, 6)]
 
+    def inside_eye(sp, z):
+        """An item in closed furniture: an eye in front of a face of the furniture (in a room, a clear sight line
+        to that face), aimed at the item's place inside."""
+        from benchmark.v6.layout import room_of
+        b = rig.ann.support(sp)["aabb_xy"]
+        c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, z]
+        box = furniture_box(sp.split("/")[0]) or [b[0], b[1], 0, b[2], b[3], z]
+        faces = [([box[0] - 0.02, c[1]], (-1, 0)), ([box[3] + 0.02, c[1]], (1, 0)),
+                 ([c[0], box[1] - 0.02], (0, -1)), ([c[0], box[4] + 0.02], (0, 1))]
+        for (fx, fy), (dx, dy) in faces:
+            for d in (1.6, 1.2, 2.0):
+                eye = [fx + d * dx + 0.3 * dy, fy + d * dy + 0.3 * dx, z + 0.6]
+                if room_of(cfg["base"], eye) and _clear(rig.world, eye, [fx, fy, z]) and robot_clear(eye, c):
+                    return eye, c
+        return around(c, 1.6, 0.7), c
+
     def support_eye(name):
         sp = rig.ann.support(name)
         b = sp["aabb_xy"]
@@ -279,9 +295,9 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             continue
         sp = sup_of(n)
         if sp.endswith("/inside_shelf"):
-            b = rig.ann.support(sp)["aabb_xy"]
-            c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, pos(n)[2]]
-            img = shot(around(c, 1.6, 0.7), c)
+            eye, c = inside_eye(sp, pos(n)[2])
+            img = shot(eye, c)
+            shown.add(sp.split("/")[0])           # the furniture to open: this picture shows it
             views.append((n, [(project(pos(n)), f"{LABEL[r]}：{n}（在里面）")], img,
                           f"{LABEL[r]}的 {n}：在关着的 {sp.split('/')[0]} 里（从外面看，★ 是它的位置）"))
         else:
@@ -298,11 +314,17 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             views.append((n, None, img, f"放进 {n}（开局位置）"))
             shown.add(n)
             continue
-        eye, c = support_eye(n)
+        if n.endswith("/inside_shelf"):           # inside closed furniture: the furniture from outside
+            eye, c = inside_eye(n, rig.ann.support(n)["z"] + 0.05)
+            shown.add(n.split("/")[0])            # the same furniture needs no second picture to open it
+        else:
+            eye, c = support_eye(n)
         img = shot(eye, c)
         z = rig.ann.support(n)["z"]
         marks = [(project([h[1][0], h[1][1], z + 0.03]), h[2]) for h in place_hints(task, lid) if h[0] == n]
         stay = [x for x, rr in role.items() if rr in ("keep", "other", "ref", "alt") and sup_of(x) == n]
+        if not marks and n.endswith("/inside_shelf"):
+            marks = [(project(c), f"放进 {n.split('/')[0]} 里")]
         marks += stars([x for x in stay if role[x] in ("other", "ref", "alt")])
         kept = [x for x in stay if role[x] == "keep"]
         shown.update([n, *stay])
@@ -364,8 +386,9 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
     pick = [i for i, x in enumerate(kind) if x == "take"][:1]
     places = [i for i, x in enumerate(kind) if x == "place"]
     places.sort(key=lambda i: views[i][0].replace("_", "/") not in {g.replace("_", "/") for g in in_goal})
-    pick += sorted(places[:2])                   # the goal's destinations first (the tray, not only the island)
-    pick += [i for i, x in enumerate(kind) if x in ("view", "point")][:1]
+    goal_places = [i for i in places if views[i][0].replace("_", "/") in {g.replace("_", "/") for g in in_goal}]
+    pick += sorted(places[:max(2, min(3, len(goal_places)))])  # the goal's destinations first (tray, toy box)
+    pick += [i for i, x in enumerate(kind) if x in ("view", "point")][:max(0, 4 - len(pick))]
     views = [views[i] for i in sorted(pick)]
     out_dir.mkdir(parents=True, exist_ok=True)
     lay = f" · 摆法 {lid.split('__', 1)[1]}" if lid != vid else ""
