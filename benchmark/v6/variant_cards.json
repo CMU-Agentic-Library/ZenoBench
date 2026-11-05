@@ -4927,279 +4927,410 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/h_dynamic_pencil_taken": {
-  "variant": "h_dynamic_pencil_taken",
-  "category": "action_task",
+ "T05_pen_or_pencil_to_desk/check_desk_first__pen_on_desk": {
+  "variant": "check_desk_first",
+  "category": "task",
   "seeds": [
-   12,
-   16,
-   17,
-   18,
-   19
-  ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.",
-  "initial_conditions": {
-   "scene": "tasks/desk_prep",
-   "start": null,
-   "moved": [
-    "pencil"
-   ],
-   "added": [],
-   "removed": [
-    "pen",
-    "plate_inside_kitchen_cabinet"
-   ],
-   "conditions": [
-    "no_pen"
-   ],
-   "initial_checks": [
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "on",
-     "pencil",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_pencil",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "open",
-     "args": {
-      "articulated": "kitchen_cabinet_6"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pencil",
-     "to": {
-      "support": "dining_table_2/top",
-      "xy": [
-       3.7,
-       6.3
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ]
-    ],
-    [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ]
-    ]
-   ],
-   "all": [
-    [
-     "hand_empty",
-     "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ]
-   ]
-  },
-  "control": "e1_pencil_asked",
-  "oracle_route": "v5_h_dynamic_pencil_taken",
-  "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone takes the pencil to the dining table: close the cabinet again and search the pencil",
-  "rationale": "",
-  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
- },
- "T05_pen_or_pencil_to_desk/h_dynamic_pencil_taken__alt_tv_stand_2": {
-  "variant": "h_dynamic_pencil_taken",
-  "category": "action_task",
-  "seeds": [
-   10,
    11,
+   12,
    13,
    14,
    15
   ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.",
+  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
    "moved": [
+    "pen",
     "pencil"
    ],
    "added": [],
-   "removed": [
-    "pen",
-    "plate_inside_kitchen_cabinet"
-   ],
+   "removed": [],
    "conditions": [
-    "no_pen"
+    "goal_already_met"
    ],
-   "initial_checks": [
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
     [
      "on",
-     "pencil",
-     "kitchen_cabinet_6/inside_shelf"
-    ]
-   ]
-  },
-  "failure_triggers": [
-   {
-    "id": "dependency_initial",
-    "kind": "dependency",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   },
-   {
-    "id": "resource_pencil",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": {
-     "skill": "open",
-     "args": {
-      "articulated": "kitchen_cabinet_6"
-     },
-     "nth": 1,
-     "on": "success"
-    },
-    "event": {
-     "type": "move_object",
-     "object": "pencil",
-     "to": {
-      "support": "tv_stand_2/top",
-      "xy": [
-       7.0,
-       0.36
-      ],
-      "yaw_deg": 0.0
-     }
-    },
-    "when": "dynamic"
-   }
-  ],
-  "goal_constraints": {
-   "any": [
-    [
-     [
-      "on",
-      "pen",
-      "desk_1/top"
-     ]
+     "pen",
+     "desk_1/top"
     ],
     [
-     [
-      "on",
-      "pencil",
-      "desk_1/top"
-     ]
-    ]
-   ],
-   "all": [
+     "near_start",
+     "pen",
+     0.1
+    ],
+    [
+     "near_start",
+     "pencil",
+     0.03
+    ],
     [
      "hand_empty",
      "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
     ]
    ]
   },
   "control": "e1_pencil_asked",
-  "oracle_route": "v6_h_dynamic_pencil_taken__alt_tv_stand_2",
-  "challenge": "no pen; the pencil is behind a closed cabinet door, and just after the robot opens it someone takes the pencil to the dining table: close the cabinet again and search the pencil (here the pencil is on tv_stand_2/top)",
-  "rationale": "seed extension of the v5 design: the pencil ends up somewhere else, so where to search and the route change; everything else is the v5 variant",
+  "oracle_route": "v6_check_desk_first__pen_on_desk",
+  "challenge": "what the instruction asks for already lies on the study desk (the pen; or, with no pen in the house, a pencil); another writing thing is on the bedroom bookcase",
+  "rationale": "look before fetching: the goal already holds, so the right plan is to check the desk and stop; fetching another pen or pencil is a wasted errand (the other one stays where it is)",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T05_pen_or_pencil_to_desk/x6_gd_pencil_other_cabinet": {
-  "variant": "x6_gd_pencil_other_cabinet",
+ "T05_pen_or_pencil_to_desk/check_desk_first__pencil_on_desk": {
+  "variant": "check_desk_first",
   "category": "task",
   "seeds": [
    10,
-   11,
-   12,
-   13,
-   14,
-   15,
    16,
    17,
    18,
    19
   ],
-  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.",
+  "instruction": "The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil.",
   "initial_conditions": {
    "scene": "tasks/desk_prep",
    "start": null,
    "moved": [
     "pencil"
    ],
-   "added": [],
+   "added": [
+    "pencil_2"
+   ],
    "removed": [
-    "pen",
-    "plate_inside_kitchen_cabinet"
+    "pen"
    ],
    "conditions": [
-    "no_pen"
+    "goal_already_met"
    ],
-   "initial_checks": [
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
     [
      "on",
      "pencil",
-     "kitchen_cabinet_4/inside_shelf"
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "pencil",
+     0.1
+    ],
+    [
+     "near_start",
+     "pencil_2",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
     ]
    ]
   },
-  "failure_triggers": [
-   {
-    "id": "resource_pencil_elsewhere",
-    "kind": "resource",
-    "persist": false,
-    "until_moved": null,
-    "trigger": null,
-    "event": null,
-    "when": "initial"
-   }
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_check_desk_first__pencil_on_desk",
+  "challenge": "what the instruction asks for already lies on the study desk (the pen; or, with no pen in the house, a pencil); another writing thing is on the bedroom bookcase",
+  "rationale": "look before fetching: the goal already holds, so the right plan is to check the desk and stop; fetching another pen or pencil is a wasted errand (the other one stays where it is)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/all_pens__two": {
+  "variant": "all_pens",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   14,
+   17
   ],
+  "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [],
+   "removed": [],
+   "conditions": [
+    "unknown_count",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "pencil",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "pen",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_all_pens__two",
+  "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
+  "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/all_pens__three": {
+  "variant": "all_pens",
+  "category": "task",
+  "seeds": [
+   13,
+   15,
+   16
+  ],
+  "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "pencil_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "unknown_count",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "pencil",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "pen",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "pencil_2",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_all_pens__three",
+  "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
+  "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/all_pens__four": {
+  "variant": "all_pens",
+  "category": "task",
+  "seeds": [
+   12,
+   18,
+   19
+  ],
+  "instruction": "The kid is filling the pencil case. Collect every pen and pencil in the house onto the study desk.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "pen_2",
+    "pencil_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "unknown_count",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "pencil",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "pen",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "pencil_2",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "pen_2",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_all_pens__four",
+  "challenge": "the instruction does not say how many; two to four pens and pencils are spread over different rooms, most of them out of view",
+  "rationale": "an open-ended collection: search room after room, one item per trip, and stop only when every place has been checked; missing one fails",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/homework_ready__single": {
+  "variant": "homework_ready",
+  "category": "task",
+  "seeds": [
+   12,
+   15,
+   17,
+   18
+  ],
+  "instruction": "The kid is about to do homework at the study desk. Get the desk ready with what they need to do written homework.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen"
+   ],
+   "added": [
+    "book_red",
+    "notebook_1",
+    "teddy_bear"
+   ],
+   "removed": [
+    "pencil"
+   ],
+   "conditions": [
+    "goal_items_unstated",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
   "goal_constraints": {
    "any": [
     [
      [
       "on",
       "pen",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "notebook_1",
+      "desk_1/top"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "teddy_bear",
+     0.05
+    ],
+    [
+     "near_start",
+     "book_red",
+     0.05
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_homework_ready__single",
+  "challenge": "the instruction names the purpose, not the items; writing things and notebooks are in other rooms, next to a book (no notebook) and the kid's teddy bear",
+  "rationale": "written homework needs something to write with and a notebook to write in: bring one of each (any pen or pencil, any notebook), not the book or the teddy",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/homework_ready__several": {
+  "variant": "homework_ready",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   16
+  ],
+  "instruction": "The kid is about to do homework at the study desk. Get the desk ready with what they need to do written homework.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "book_red",
+    "notebook_1",
+    "notebook_2",
+    "pen_2",
+    "teddy_bear"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "notebook_1",
+      "desk_1/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "notebook_2",
       "desk_1/top"
      ]
     ],
@@ -5208,28 +5339,623 @@
       "on",
       "pencil",
       "desk_1/top"
+     ],
+     [
+      "on",
+      "notebook_1",
+      "desk_1/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "notebook_2",
+      "desk_1/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "pen_2",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "notebook_1",
+      "desk_1/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "pen_2",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "notebook_2",
+      "desk_1/top"
      ]
     ]
    ],
    "all": [
     [
+     "near_start",
+     "teddy_bear",
+     0.05
+    ],
+    [
+     "near_start",
+     "book_red",
+     0.05
+    ],
+    [
      "hand_empty",
      "right"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_6"
-    ],
-    [
-     "is_closed",
-     "kitchen_cabinet_4"
     ]
    ]
   },
-  "control": "h_task_pencil_in_cabinet",
-  "oracle_route": "v6_x6_gd_pencil_other_cabinet",
-  "challenge": "the pencil is not in the low wall cabinet the instruction names but in the other low cabinet",
-  "rationale": "the expected location is empty: the search decomposes over the candidate cabinets (inspect the second one, open and close both); the door is a precondition of the pick",
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_homework_ready__several",
+  "challenge": "the instruction names the purpose, not the items; writing things and notebooks are in other rooms, next to a book (no notebook) and the kid's teddy bear",
+  "rationale": "written homework needs something to write with and a notebook to write in: bring one of each (any pen or pencil, any notebook), not the book or the teddy",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/homework_ready__pencil_only": {
+  "variant": "homework_ready",
+  "category": "task",
+  "seeds": [
+   10,
+   14,
+   19
+  ],
+  "instruction": "The kid is about to do homework at the study desk. Get the desk ready with what they need to do written homework.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pencil"
+   ],
+   "added": [
+    "book_red",
+    "notebook_1",
+    "teddy_bear"
+   ],
+   "removed": [
+    "pen"
+   ],
+   "conditions": [
+    "goal_items_unstated",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "notebook_1",
+      "desk_1/top"
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_start",
+     "teddy_bear",
+     0.05
+    ],
+    [
+     "near_start",
+     "book_red",
+     0.05
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_homework_ready__pencil_only",
+  "challenge": "the instruction names the purpose, not the items; writing things and notebooks are in other rooms, next to a book (no notebook) and the kid's teddy bear",
+  "rationale": "written homework needs something to write with and a notebook to write in: bring one of each (any pen or pencil, any notebook), not the book or the teddy",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/pens_per_notebook__notebooks_2": {
+  "variant": "pens_per_notebook",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   14,
+   18,
+   19
+  ],
+  "instruction": "The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "hw_notebook_1",
+    "hw_notebook_2",
+    "pen_2",
+    "pencil_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "count_from_scene",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pen_2",
+      0.03
+     ],
+     [
+      "near_start",
+      "pencil_2",
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pen_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pen",
+      0.03
+     ],
+     [
+      "near_start",
+      "pencil_2",
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pencil_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pen",
+      0.03
+     ],
+     [
+      "near_start",
+      "pen_2",
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pen_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pencil",
+      0.03
+     ],
+     [
+      "near_start",
+      "pencil_2",
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pencil_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pencil",
+      0.03
+     ],
+     [
+      "near_start",
+      "pen_2",
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "pen_2",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pencil_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pencil",
+      0.03
+     ],
+     [
+      "near_start",
+      "pen",
+      0.03
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_any",
+     "hw_notebook_1",
+     [
+      "pencil",
+      "pen",
+      "pen_2",
+      "pencil_2"
+     ],
+     0.1
+    ],
+    [
+     "near_any",
+     "hw_notebook_2",
+     [
+      "pencil",
+      "pen",
+      "pen_2",
+      "pencil_2"
+     ],
+     0.1
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_pens_per_notebook__notebooks_2",
+  "challenge": "the number of pens is not in the instruction but on the desk (two or three notebooks); four writing things are spread over the bedroom bookcase, the TV stand and the dining table",
+  "rationale": "count the notebooks first, then bring exactly that many writing things and put one by each; the others stay where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/pens_per_notebook__notebooks_3": {
+  "variant": "pens_per_notebook",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   15,
+   16,
+   17
+  ],
+  "instruction": "The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "hw_notebook_1",
+    "hw_notebook_2",
+    "hw_notebook_3",
+    "pen_2",
+    "pencil_2"
+   ],
+   "removed": [],
+   "conditions": [
+    "count_from_scene",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "any": [
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pen_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pencil_2",
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pencil_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pen_2",
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "pencil",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pen_2",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pencil_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pen",
+      0.03
+     ]
+    ],
+    [
+     [
+      "on",
+      "pen",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pen_2",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "pencil_2",
+      "desk_1/top"
+     ],
+     [
+      "near_start",
+      "pencil",
+      0.03
+     ]
+    ]
+   ],
+   "all": [
+    [
+     "near_any",
+     "hw_notebook_1",
+     [
+      "pencil",
+      "pen",
+      "pen_2",
+      "pencil_2"
+     ],
+     0.1
+    ],
+    [
+     "near_any",
+     "hw_notebook_2",
+     [
+      "pencil",
+      "pen",
+      "pen_2",
+      "pencil_2"
+     ],
+     0.1
+    ],
+    [
+     "near_any",
+     "hw_notebook_3",
+     [
+      "pencil",
+      "pen",
+      "pen_2",
+      "pencil_2"
+     ],
+     0.1
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_pens_per_notebook__notebooks_3",
+  "challenge": "the number of pens is not in the instruction but on the desk (two or three notebooks); four writing things are spread over the bedroom bookcase, the TV stand and the dining table",
+  "rationale": "count the notebooks first, then bring exactly that many writing things and put one by each; the others stay where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/errand_combined__pen_bedroom": {
+  "variant": "errand_combined",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   16,
+   17,
+   19
+  ],
+  "instruction": "The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: take it back to the kitchen counter.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "used_mug"
+   ],
+   "removed": [],
+   "conditions": [
+    "errands_combined"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "pen",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "used_mug",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "upright",
+     "used_mug"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_errand_combined__pen_bedroom",
+  "challenge": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there to the kitchen; one hand",
+  "rationale": "order the errands: fetch the pen, put it on the desk and take the mug from the same spot to the kitchen, instead of a separate trip to the desk for the mug",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T05_pen_or_pencil_to_desk/errand_combined__pen_dining": {
+  "variant": "errand_combined",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   15,
+   18
+  ],
+  "instruction": "The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: take it back to the kitchen counter.",
+  "initial_conditions": {
+   "scene": "tasks/desk_prep",
+   "start": null,
+   "moved": [
+    "pen",
+    "pencil"
+   ],
+   "added": [
+    "used_mug"
+   ],
+   "removed": [],
+   "conditions": [
+    "errands_combined"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "pen",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "used_mug",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "upright",
+     "used_mug"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "e1_pencil_asked",
+  "oracle_route": "v6_errand_combined__pen_dining",
+  "challenge": "two errands that meet at the study desk: a pen to bring there, a used mug to take from there to the kitchen; one hand",
+  "rationale": "order the errands: fetch the pen, put it on the desk and take the mug from the same spot to the kitchen, instead of a separate trip to the desk for the mug",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T05_pen_or_pencil_to_desk/x6_gd_pen_or_pencil_cabinets__pen_in_4": {

@@ -745,47 +745,201 @@
 
 1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()`（补救） → 4. `explore_furniture(furniture=kitchen_cabinet_6)`（补救） → 5. `straighten()`（补救） → 6. `navigate(destination=pencil)` → 7. `pick(object=pencil)` → 8. `retreat(obstacle=kitchen_cabinet_6, distance_m=0.3)` → 9. `close(articulated=kitchen_cabinet_6)` → 10. `navigate(destination=desk_1/top)` → 11. `place(object=pencil, receptacle=desk_1/top)`
 
-### h_dynamic_pencil_taken（Action + Task）
+### check_desk_first（Task）
 
-**情况**：同上，开门后有人把铅笔拿走 → 关好柜门，再去找铅笔
-
-**指令**：孩子写作业需要笔。请把钢笔拿到书房书桌上；没有钢笔就拿铅笔。铅笔收在矮墙柜里，拿完请把柜门关好。
+**情况**：指令照常（拿钢笔，没有就拿铅笔），但书桌上其实已经有了：钢笔在桌上；或者家里没有钢笔、铅笔已经在桌上 → 先看书桌，确认已经有了就停手；再拿一支来算失败，别处的笔要原地不动
 
 **成功条件**：
 
-- 手里空着
-- `kitchen_cabinet_6` 关着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `pen` 在 `desk_1/top` 上
-  - 第 2 组：
-    - `pencil` 在 `desk_1/top` 上
+- 摆法 `pen_on_desk`：
+  - `pen` 在 `desk_1/top` 上
+  - `pen` 没被挪动（离开局位置不超过 10 cm）
+  - `pencil` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
+- 摆法 `pencil_on_desk`：
+  - `pencil` 在 `desk_1/top` 上
+  - `pencil` 没被挪动（离开局位置不超过 10 cm）
+  - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+  - 手里空着
 
 **参考调用顺序**：
 
-- 摆法 `h_dynamic_pencil_taken`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `look(target=kitchen_cabinet_6/inside_shelf)` → 4. `navigate(destination=dining_table_2/top)`（补救） → 5. `look(target=dining_table_2/top)`（补救） → 6. `navigate(destination=kitchen_cabinet_6)`（补救） → 7. `close(articulated=kitchen_cabinet_6)`（补救） → 8. `navigate(destination=pencil)`（补救） → 9. `pick(object=pencil)`（补救） → 10. `navigate(destination=desk_1/top)`（补救） → 11. `place(object=pencil, receptacle=desk_1/top)`（补救）
-- 摆法 `alt_tv_stand_2`：1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `look(target=kitchen_cabinet_6/inside_shelf)` → 4. `navigate(destination=tv_stand_2/top)`（补救） → 5. `look(target=tv_stand_2/top)`（补救） → 6. `navigate(destination=kitchen_cabinet_6)`（补救） → 7. `close(articulated=kitchen_cabinet_6)`（补救） → 8. `navigate(destination=pencil)`（补救） → 9. `pick(object=pencil)`（补救） → 10. `navigate(destination=desk_1/top)`（补救） → 11. `place(object=pencil, receptacle=desk_1/top)`（补救）
+- 摆法 `pen_on_desk`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pen)`
+- 摆法 `pencil_on_desk`：1. `navigate(destination=desk_1/top)` → 2. `look(target=desk_1/top)` → 3. `identify(object=pencil)`
 
-### x6_gd_pencil_other_cabinet（Task）
+### all_pens（Task）
 
-**情况**：指令说铅笔在靠墙矮柜里，其实在另一个矮柜 → 第一个找不到就去开第二个
+**情况**：孩子整理文具盒，把家里所有钢笔和铅笔都收到书桌上；指令不说有几支，2 到 4 支分散在卧室书架、餐桌、电视柜、厨房台面 → 一间间找，一次拿一支，每个地方都找过才算完；漏一支算失败
 
-**指令**：The kid needs something to write with for homework. Bring a pen to the study desk; if there is no pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.
+**指令**：孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。
 
 **成功条件**：
 
-- 手里空着
-- `kitchen_cabinet_6` 关着
-- `kitchen_cabinet_4` 关着
-- 满足下面任意一组：
-  - 第 1 组：
-    - `pen` 在 `desk_1/top` 上
-  - 第 2 组：
-    - `pencil` 在 `desk_1/top` 上
+- 摆法 `two`：
+  - `pencil` 在 `desk_1/top` 上
+  - `pen` 在 `desk_1/top` 上
+  - 手里空着
+- 摆法 `three`：
+  - `pencil` 在 `desk_1/top` 上
+  - `pen` 在 `desk_1/top` 上
+  - `pencil_2` 在 `desk_1/top` 上
+  - 手里空着
+- 摆法 `four`：
+  - `pencil` 在 `desk_1/top` 上
+  - `pen` 在 `desk_1/top` 上
+  - `pencil_2` 在 `desk_1/top` 上
+  - `pen_2` 在 `desk_1/top` 上
+  - 手里空着
 
 **参考调用顺序**：
 
-1. `navigate(destination=kitchen_cabinet_6)` → 2. `open(articulated=kitchen_cabinet_6)` → 3. `bend()` → 4. `explore_furniture(furniture=kitchen_cabinet_6)` → 5. `straighten()` → 6. `close(articulated=kitchen_cabinet_6)` → 7. `navigate(destination=kitchen_cabinet_4)` → 8. `open(articulated=kitchen_cabinet_4)` → 9. `bend()` → 10. `explore_furniture(furniture=kitchen_cabinet_4)` → 11. `straighten()` → 12. `navigate(destination=pencil)` → 13. `pick(object=pencil)` → 14. `retreat(obstacle=kitchen_cabinet_4, distance_m=0.3)` → 15. `close(articulated=kitchen_cabinet_4)` → 16. `navigate(destination=desk_1/top)` → 17. `place(object=pencil, receptacle=desk_1/top)`
+- 摆法 `two`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.2, -5.95])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])`
+- 摆法 `three`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.2, -5.95])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])`
+- 摆法 `four`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.2, -5.95])` → 6. `search(object=pen, region=dining_room_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 11. `search(object=pencil_2, region=living_room_0_0)` → 12. `navigate(destination=pencil_2)` → 13. `pick(object=pencil_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pencil_2, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])` → 16. `search(object=pen_2, region=kitchen_0_1)` → 17. `navigate(destination=pen_2)` → 18. `pick(object=pen_2)` → 19. `navigate(destination=desk_1/top)` → 20. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.3, -5.95])`
+
+### homework_ready（Task）
+
+**情况**：指令只说"把写作业要用的东西准备到书桌上"；家里有笔、作业本，旁边还有一本书（不是作业本）和泰迪熊 → 自己推出要一支笔和一本作业本，书和泰迪熊不动
+
+**指令**：孩子马上要在书房书桌写作业了。把写作业要用的东西准备到书桌上。
+
+**成功条件**：
+
+- 摆法 `several`：
+  - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `pen` 在 `desk_1/top` 上
+      - `notebook_1` 在 `desk_1/top` 上
+    - 第 2 组：
+      - `pen` 在 `desk_1/top` 上
+      - `notebook_2` 在 `desk_1/top` 上
+    - 第 3 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `notebook_1` 在 `desk_1/top` 上
+    - 第 4 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `notebook_2` 在 `desk_1/top` 上
+    - 第 5 组：
+      - `pen_2` 在 `desk_1/top` 上
+      - `notebook_1` 在 `desk_1/top` 上
+    - 第 6 组：
+      - `pen_2` 在 `desk_1/top` 上
+      - `notebook_2` 在 `desk_1/top` 上
+- 摆法 `single`：
+  - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `pen` 在 `desk_1/top` 上
+      - `notebook_1` 在 `desk_1/top` 上
+- 摆法 `pencil_only`：
+  - `teddy_bear`、`book_red` 没被挪动（离开局位置不超过 5 cm）
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `notebook_1` 在 `desk_1/top` 上
+
+**参考调用顺序**：
+
+- 摆法 `single`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 6. `search(object=notebook_1, region=dining_room_0_1)` → 7. `navigate(destination=notebook_1)` → 8. `expose(object=notebook_1)` → 9. `look(target=notebook_1)` → 10. `pick(object=notebook_1)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=notebook_1, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])`
+- 摆法 `several`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 6. `search(object=notebook_2, region=living_room_0_0)` → 7. `navigate(destination=notebook_2)` → 8. `expose(object=notebook_2)` → 9. `look(target=notebook_2)` → 10. `pick(object=notebook_2)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=notebook_2, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])`
+- 摆法 `pencil_only`：1. `search(object=notebook_1, region=bedroom_0_1)` → 2. `navigate(destination=notebook_1)` → 3. `expose(object=notebook_1)` → 4. `look(target=notebook_1)` → 5. `pick(object=notebook_1)` → 6. `navigate(destination=desk_1/top)` → 7. `place(object=notebook_1, receptacle=desk_1/top, hint_xy=[-0.9, -5.95])` → 8. `search(object=pencil, region=dining_room_0_1)` → 9. `navigate(destination=pencil)` → 10. `pick(object=pencil)` → 11. `navigate(destination=desk_1/top)` → 12. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.6, -5.95])`
+
+### pens_per_notebook（Task）
+
+**情况**：孩子们在书桌写作业，指令说桌上有几本作业本就拿几支笔，每本旁边放一支，不要多拿；家里有 4 支笔分散在不同房间 → 先数作业本，再拿正好那么多支，每本旁边放一支，其余的笔不动
+
+**指令**：孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，每本旁边放一支，不要多拿。
+
+**成功条件**：
+
+- 摆法 `notebooks_2`：
+  - `hw_notebook_1` 离其中至少一个不超过 10 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+  - `hw_notebook_2` 离其中至少一个不超过 10 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `pen` 在 `desk_1/top` 上
+      - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+      - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+    - 第 2 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `pen_2` 在 `desk_1/top` 上
+      - `pen` 没被挪动（离开局位置不超过 3 cm）
+      - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+    - 第 3 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `pencil_2` 在 `desk_1/top` 上
+      - `pen` 没被挪动（离开局位置不超过 3 cm）
+      - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+    - 第 4 组：
+      - `pen` 在 `desk_1/top` 上
+      - `pen_2` 在 `desk_1/top` 上
+      - `pencil` 没被挪动（离开局位置不超过 3 cm）
+      - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+    - 第 5 组：
+      - `pen` 在 `desk_1/top` 上
+      - `pencil_2` 在 `desk_1/top` 上
+      - `pencil` 没被挪动（离开局位置不超过 3 cm）
+      - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+    - 第 6 组：
+      - `pen_2` 在 `desk_1/top` 上
+      - `pencil_2` 在 `desk_1/top` 上
+      - `pencil` 没被挪动（离开局位置不超过 3 cm）
+      - `pen` 没被挪动（离开局位置不超过 3 cm）
+- 摆法 `notebooks_3`：
+  - `hw_notebook_1` 离其中至少一个不超过 10 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+  - `hw_notebook_2` 离其中至少一个不超过 10 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+  - `hw_notebook_3` 离其中至少一个不超过 10 cm：`pencil`、`pen`、`pen_2`、`pencil_2`
+  - 手里空着
+  - 满足下面任意一组：
+    - 第 1 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `pen` 在 `desk_1/top` 上
+      - `pen_2` 在 `desk_1/top` 上
+      - `pencil_2` 没被挪动（离开局位置不超过 3 cm）
+    - 第 2 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `pen` 在 `desk_1/top` 上
+      - `pencil_2` 在 `desk_1/top` 上
+      - `pen_2` 没被挪动（离开局位置不超过 3 cm）
+    - 第 3 组：
+      - `pencil` 在 `desk_1/top` 上
+      - `pen_2` 在 `desk_1/top` 上
+      - `pencil_2` 在 `desk_1/top` 上
+      - `pen` 没被挪动（离开局位置不超过 3 cm）
+    - 第 4 组：
+      - `pen` 在 `desk_1/top` 上
+      - `pen_2` 在 `desk_1/top` 上
+      - `pencil_2` 在 `desk_1/top` 上
+      - `pencil` 没被挪动（离开局位置不超过 3 cm）
+
+**参考调用顺序**：
+
+- 摆法 `notebooks_2`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-0.85, -5.92])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.3, -5.92])`
+- 摆法 `notebooks_3`：1. `search(object=pencil, region=bedroom_0_1)` → 2. `navigate(destination=pencil)` → 3. `pick(object=pencil)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pencil, receptacle=desk_1/top, hint_xy=[-1.0, -5.92])` → 6. `search(object=pen, region=bedroom_0_1)` → 7. `navigate(destination=pen)` → 8. `pick(object=pen)` → 9. `navigate(destination=desk_1/top)` → 10. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.57, -5.92])` → 11. `search(object=pen_2, region=living_room_0_0)` → 12. `navigate(destination=pen_2)` → 13. `pick(object=pen_2)` → 14. `navigate(destination=desk_1/top)` → 15. `place(object=pen_2, receptacle=desk_1/top, hint_xy=[-0.14, -5.92])`
+
+### errand_combined（Task）
+
+**情况**：两件事：拿一支钢笔到书房书桌；书桌上有个用过的马克杯要拿回厨房台面；只有一只手 → 先拿钢笔到书桌，放下后顺手拿起马克杯送回厨房，比单独跑一趟省路
+
+**指令**：孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，要拿回厨房台面。
+
+**成功条件**：
+
+- `pen` 在 `desk_1/top` 上
+- `used_mug` 在 `kitchen_counter_2/top` 上
+- `used_mug` 立着
+- 手里空着
+
+**参考调用顺序**：
+
+- 摆法 `pen_bedroom`：1. `search(object=pen, region=bedroom_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.75, -5.95])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.15, 7.3])`
+- 摆法 `pen_dining`：1. `search(object=pen, region=dining_room_0_1)` → 2. `navigate(destination=pen)` → 3. `pick(object=pen)` → 4. `navigate(destination=desk_1/top)` → 5. `place(object=pen, receptacle=desk_1/top, hint_xy=[-0.75, -5.95])` → 6. `pick(object=used_mug)` → 7. `navigate(destination=kitchen_counter_2/top)` → 8. `place(object=used_mug, receptacle=kitchen_counter_2/top, hint_xy=[-0.15, 7.3])`
 
 ### x6_gd_pen_or_pencil_cabinets（Task）
 

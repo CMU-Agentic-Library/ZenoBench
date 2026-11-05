@@ -1,7 +1,7 @@
 # Physics validation to do
 
 * 0 variants are PHYSICS_VALIDATED (10/10 seeds passed in the v5 grid with the current hash and route).
-* 1290 episodes remain (470 of the 47 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
+* 1320 episodes remain (510 of the 51 new variants): `batches/physics_todo.json`; the new variants alone: `batches/physics_v6_new.json`.
 * Run: `$ISAACLAB_PYTHON benchmark/run_episode.py --tasks benchmark/v6/tasks.json --batch benchmark/v6/batches/physics_v6_new.json --jobs 2 --out benchmark/runs/v6_physics --no-eval` (~43 episodes / hour with 2 simulators).
 * Order: (1) new variants without a skill dependency (`depends on` -), (2) after each skill fix the variants that depend on it, (3) re-run T11 `h_action_grasp_and_ik` (failure-injection fix 019e517; it passed in the smoke run), (4) the v5 variants below 10/10 after each skill fix.
 
@@ -38,8 +38,11 @@
 | T05 | e1_pencil_asked | control | 0/0 of 10 | - |
 | T05 | no_pen_pencil_away | task | 0/0 of 10 | - |
 | T05 | h_task_pencil_in_cabinet | action_task | 0/0 of 10 | low cabinet doors |
-| T05 | h_dynamic_pencil_taken | action_task | 0/0 of 10 | low cabinet doors |
-| T05 | x6_gd_pencil_other_cabinet | task | 0/0 of 10 | low cabinet doors |
+| T05 | check_desk_first | task | 0/0 of 10 | - |
+| T05 | all_pens | task | 0/0 of 10 | - |
+| T05 | homework_ready | task | 0/0 of 10 | - |
+| T05 | pens_per_notebook | task | 0/0 of 10 | - |
+| T05 | errand_combined | task | 0/0 of 10 | - |
 | T05 | x6_gd_pen_or_pencil_cabinets | task | 0/0 of 10 | low cabinet doors |
 | T06 | free | control | 0/0 of 10 | - |
 | T06 | occupied | task | 0/0 of 10 | - |

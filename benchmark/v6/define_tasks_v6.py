@@ -498,33 +498,176 @@ def T04(t):
 
 def T05(t):
     tail_desk = [nav("desk_1/top"), place("pencil", "desk_1/top")]
-    cab_goal = copy.deepcopy(t["variants"]["h_task_pencil_in_cabinet"]["goal"])
-    cab_goal["all"].append(["is_closed", "kitchen_cabinet_4"])
     two_cab = ("The kid needs something to write with for homework. Bring a pen to the study desk; if there is no "
                "pen, a pencil. Pens and pencils are kept in the two low kitchen cabinets; close them again afterwards.")
-    other_cab = ("The kid needs something to write with for homework. Bring a pen to the study desk; if there is no "
-                 "pen, a pencil. The pencils are kept in the low wall cabinet; close it again afterwards.")
     in4 = {"support": "kitchen_cabinet_4/inside_shelf", "xy": [1.4, 0.42], "yaw_deg": 90}
 
     def fetch(x, art):
         return [nav(x), pick(x), S("retreat", obstacle=art, distance_m=0.3), S("close", articulated=art)]
-    other = open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")] \
-        + open_explore("kitchen_cabinet_4") + fetch("pencil", "kitchen_cabinet_4") + tail_desk
     pen4 = open_explore("kitchen_cabinet_6") + [S("close", articulated="kitchen_cabinet_6")] \
         + open_explore("kitchen_cabinet_4") + fetch("pen", "kitchen_cabinet_4") + [nav("desk_1/top"), place("pen", "desk_1/top")]
     pen6 = open_explore("kitchen_cabinet_4") + [S("close", articulated="kitchen_cabinet_4")] \
         + open_explore("kitchen_cabinet_6") + fetch("pen", "kitchen_cabinet_6") + [nav("desk_1/top"), place("pen", "desk_1/top")]
     pen_goal = {"all": [["on", "pen", "desk_1/top"], ["hand_empty", "right"], ["is_closed", "kitchen_cabinet_6"],
                         ["is_closed", "kitchen_cabinet_4"]]}
+    # ---- reasoning about the goal itself: already met, how many, which items, in which order
+    DESK = "desk_1/top"
+    BOOK, DT, TV, KC = "bookcase_2/top", "dining_table_2/top", "tv_stand_2/top", "kitchen_counter_2/top"
+    REG = {BOOK: "bedroom_0_1", DT: "dining_room_0_1", TV: "living_room_0_0", KC: "kitchen_0_1"}
+    PENCIL0 = P(BOOK, 0.9646, -0.4948, -72.1)            # the pencil where the base scene has it (bedroom bookcase)
+    base_instr = dict(instruction=t["instruction"], instruction_zh=t["instruction_zh"])
+
+    def put(name, sup, x, y, yaw=0.0, asset=None):
+        """A pose (move) or, with ``asset``, an added object."""
+        return {name: {**({"asset": asset} if asset else {}), "support": sup, "xy": [x, y], "yaw_deg": yaw}}
+
+    def fetch_to(x, sup, hint, flat=False):
+        grab = [nav(x), S("expose", object=x), look(x), pick(x)] if flat else [nav(x), pick(x)]
+        return [S("search", object=x, region=REG[sup])] + grab + [nav(DESK), place(x, DESK, hint)]
+    desk_x = [-1.2, -0.9, -0.6, -0.3]
+
+    # check_desk_first: what the instruction asks for is already on the desk (the usual instruction)
+    check_cases = {
+        "pen_on_desk": dict(move={"pen": P(DESK, -0.65, -5.95, 90.0), "pencil": PENCIL0},
+                            goal={"all": [["on", "pen", DESK], ["near_start", "pen", 0.10], ["near_start", "pencil", 0.03],
+                                          ["hand_empty", "right"]]},
+                            watch=["pen", "pencil"]),
+        "pencil_on_desk": dict(move={"pencil": P(DESK, -0.65, -5.95, 90.0)},
+                               add=put("pencil_2", BOOK, 0.96, -0.49, -72.1, asset="pencil"),
+                               goal={"all": [["on", "pencil", DESK], ["near_start", "pencil", 0.10],
+                                             ["near_start", "pencil_2", 0.03], ["hand_empty", "right"]]},
+                               watch=["pencil", "pencil_2"])}
+    for c, x in (("pen_on_desk", "pen"), ("pencil_on_desk", "pencil")):
+        check_cases[c]["route"] = [nav(DESK), look(DESK), S("identify", object=x)]     # it is already there: stop
+
+    # all_pens: every pen and pencil in the house to the desk; how many there are is not said (seed: 2, 3 or 4)
+    spots = [("pencil", BOOK, (0.96, -0.49, -72.1), None), ("pen", DT, (3.6, 6.6, 0.0), None),
+             ("pencil_2", TV, (7.2, 0.36, 0.0), "pencil"), ("pen_2", KC, (-0.1, 7.2, 0.0), "pen")]
+    all_cases = {}
+    for n, case in ((2, "two"), (3, "three"), (4, "four")):
+        mv, add = {}, {}
+        for name, sup, (x, y, yaw), asset in spots[:n]:
+            (add if asset else mv).update(put(name, sup, x, y, yaw, asset))
+        names = [s_[0] for s_ in spots[:n]]
+        all_cases[case] = dict(
+            move=mv, add=add, watch=names,
+            goal={"all": [*[["on", x, DESK] for x in names], ["hand_empty", "right"]]},
+            route=[x for i, (name, sup, *_r) in enumerate(spots[:n]) for x in fetch_to(name, sup, [desk_x[i], -5.95])])
+
+    # homework_ready: the instruction names the purpose only; the seed sets how many writing things and notebooks
+    # there are (one of each, several, no pen); a book is no notebook, the teddy is no homework thing
+    TOOLS = ["pen", "pencil", "pen_2"]
+    NBS = ["notebook_1", "notebook_2"]
+    ready_layouts = {
+        "single": ({**put("pen", BOOK, 1.15, -0.40)},
+                   {**put("notebook_1", DT, 3.6, 6.5, asset="notebook"), **put("teddy_bear", BOOK, 0.85, -0.45, asset="teddy_bear"),
+                    **put("book_red", DT, 3.65, 6.85, asset="book_red")},
+                   ["pencil"], [("pen", BOOK, False), ("notebook_1", DT, True)]),
+        "several": ({**put("pen", BOOK, 1.15, -0.40), "pencil": PENCIL0},
+                    {**put("pen_2", TV, 6.9, 0.36, asset="pen"), **put("notebook_1", DT, 3.6, 6.5, asset="notebook"),
+                     **put("notebook_2", TV, 7.9, 0.36, asset="notebook"),
+                     **put("teddy_bear", TV, 7.35, 0.36, asset="teddy_bear"), **put("book_red", DT, 3.65, 6.85, asset="book_red")},
+                    [], [("pen", BOOK, False), ("notebook_2", TV, True)]),          # the nearer notebook
+        "pencil_only": ({**put("pencil", DT, 3.3, 5.8)},
+                        {**put("notebook_1", BOOK, 1.0, -0.45, asset="notebook"),
+                         **put("teddy_bear", TV, 7.35, 0.36, asset="teddy_bear"), **put("book_red", DT, 3.65, 6.85, asset="book_red")},
+                        ["pen"], [("notebook_1", BOOK, True), ("pencil", DT, False)]),
+    }
+    ready_cases = {}
+    for case, (mv, add, rm, order) in ready_layouts.items():
+        tools = [x for x in TOOLS if x in mv or x in add]
+        nbs = [x for x in NBS if x in add]
+        ready_cases[case] = dict(
+            move=mv, add=add, remove=rm, watch=[*tools, *nbs, "teddy_bear", "book_red"],
+            goal={"any": [[["on", w, DESK], ["on", nb, DESK]] for w in tools for nb in nbs],
+                  "all": [["near_start", "teddy_bear", 0.05], ["near_start", "book_red", 0.05], ["hand_empty", "right"]]},
+            route=[x for i, (name, sup, flat) in enumerate(order) for x in fetch_to(name, sup, [desk_x[1 + i], -5.95], flat)])
+
+    # pens_per_notebook: one writing thing beside each notebook on the desk; the number is read off the desk (seed:
+    # 2 or 3 notebooks); four writing things around the house, so it is not "bring them all"
+    W4 = {**{"pen": P(BOOK, 1.15, -0.40), "pencil": PENCIL0}}
+    W4_add = {**put("pen_2", TV, 7.2, 0.36, asset="pen"), **put("pencil_2", DT, 3.6, 6.6, asset="pencil")}
+    W_ALL = ["pencil", "pen", "pen_2", "pencil_2"]
+    W_SUP = {"pencil": BOOK, "pen": BOOK, "pen_2": TV, "pencil_2": DT}
+    from itertools import combinations
+    per_cases = {}
+    for n, xs in ((2, [-1.0, -0.45]), (3, [-1.15, -0.72, -0.29])):
+        nbs = {f"hw_notebook_{i + 1}": {"asset": "notebook", "support": DESK, "xy": [x, -5.92], "yaw_deg": 0.0}
+               for i, x in enumerate(xs)}
+        per_cases[f"notebooks_{n}"] = dict(
+            move=copy.deepcopy(W4), add={**copy.deepcopy(W4_add), **nbs}, watch=[*W_ALL, *nbs],
+            goal={"any": [[*[["on", w, DESK] for w in sub], *[["near_start", w, 0.03] for w in W_ALL if w not in sub]]
+                          for sub in combinations(W_ALL, n)],
+                  "all": [*[["near_any", nb, W_ALL, 0.10] for nb in nbs], ["hand_empty", "right"]]},
+            route=[x for i, w in enumerate(W_ALL[:n]) for x in fetch_to(w, W_SUP[w], [round(xs[i] + 0.15, 3), -5.92])])
+
+    # errand_combined: bring a pen to the desk and take the used mug on the desk back to the kitchen counter; the
+    # pen first, so the trip to the desk also starts the mug's
+    MUG = "used_mug"
+    errand_cases = {c: dict(move={"pen": P(sup, *xy)},
+                            route=fetch_to("pen", sup, [-0.75, -5.95])
+                            + [pick(MUG), nav(KC), place(MUG, KC, [-0.15, 7.3])])
+                    for c, sup, xy in (("pen_bedroom", BOOK, (1.15, -0.40)), ("pen_dining", DT, (3.6, 6.6)))}
     return {
-        "x6_gd_pencil_other_cabinet": dict(
-            base="h_task_pencil_in_cabinet", control="h_task_pencil_in_cabinet",
-            move={"pencil": in4}, goal=cab_goal, instruction=other_cab,
-            challenge="the pencil is not in the low wall cabinet the instruction names but in the other low cabinet",
-            rationale="the expected location is empty: the search decomposes over the candidate cabinets (inspect the "
-                      "second one, open and close both); the door is a precondition of the pick",
-            cases={"": dict(failures=[f_initial("resource", [["on", "pencil", "kitchen_cabinet_4/inside_shelf"]],
-                                                fid="resource_pencil_elsewhere")], route=other)}),
+        "check_desk_first": dict(
+            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["goal_already_met"], **base_instr,
+            factor="what is already on the desk (seed: the pen, or the pencil when there is no pen)",
+            challenge="what the instruction asks for already lies on the study desk (the pen; or, with no pen in the "
+                      "house, a pencil); another writing thing is on the bedroom bookcase",
+            rationale="look before fetching: the goal already holds, so the right plan is to check the desk and stop; "
+                      "fetching another pen or pencil is a wasted errand (the other one stays where it is)",
+            cases=check_cases),
+        "all_pens": dict(
+            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["unknown_count", "not_in_view"],
+            instruction="The kid is filling the pencil case. Collect every pen and pencil in the house onto the study "
+                        "desk.",
+            instruction_zh="孩子要整理文具盒。把家里所有的钢笔和铅笔都收到书房的书桌上。",
+            factor="how many writing things there are and where (seed: 2, 3 or 4, over the bedroom, the dining room, "
+                   "the living room and the kitchen)",
+            challenge="the instruction does not say how many; two to four pens and pencils are spread over different "
+                      "rooms, most of them out of view",
+            rationale="an open-ended collection: search room after room, one item per trip, and stop only when every "
+                      "place has been checked; missing one fails",
+            cases=all_cases),
+        "homework_ready": dict(
+            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["goal_items_unstated", "not_in_view"],
+            instruction="The kid is about to do homework at the study desk. Get the desk ready with what they need to "
+                        "do written homework.",
+            instruction_zh="孩子马上要在书房书桌写作业了。把写作业要用的东西准备到书桌上。",
+            factor="how many writing things and notebooks there are (seed: one pen and one notebook; several; a pencil "
+                   "and no pen)",
+            challenge="the instruction names the purpose, not the items; writing things and notebooks are in other "
+                      "rooms, next to a book (no notebook) and the kid's teddy bear",
+            rationale="written homework needs something to write with and a notebook to write in: bring one of each "
+                      "(any pen or pencil, any notebook), not the book or the teddy",
+            cases=ready_cases),
+        "pens_per_notebook": dict(
+            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["count_from_scene", "not_in_view"],
+            instruction="The kids are doing homework at the study desk, each with a notebook. Bring one pen or pencil "
+                        "for each notebook on the desk and put it beside that notebook; one per notebook, no more.",
+            instruction_zh="孩子们在书房书桌写作业，每人一本作业本。桌上有几本作业本，就拿几支笔（钢笔、铅笔都行）来，"
+                           "每本旁边放一支，不要多拿。",
+            keep_design=[DESK],
+            factor="how many notebooks are on the desk (seed: 2 or 3)",
+            challenge="the number of pens is not in the instruction but on the desk (two or three notebooks); four "
+                      "writing things are spread over the bedroom bookcase, the TV stand and the dining table",
+            rationale="count the notebooks first, then bring exactly that many writing things and put one by each; "
+                      "the others stay where they are",
+            cases=per_cases),
+        "errand_combined": dict(
+            base="e1_pencil_asked", control="e1_pencil_asked", conditions=["errands_combined"],
+            add={MUG: {"asset": "breakfast_mug", "support": DESK, "xy": [-0.35, -5.95], "yaw_deg": 0.0}},
+            instruction="The kid needs a pen for homework at the study desk. Also, there is a used mug on that desk: "
+                        "take it back to the kitchen counter.",
+            instruction_zh="孩子在书房书桌写作业要用钢笔，拿一支过去。另外，那张书桌上有个用过的马克杯，要拿回厨房台面。",
+            goal={"all": [["on", "pen", DESK], ["on", MUG, KC], ["upright", MUG], ["hand_empty", "right"]]},
+            watch=["pen", MUG],
+            factor="where the pen is (seed: the bedroom bookcase or the dining table)",
+            challenge="two errands that meet at the study desk: a pen to bring there, a used mug to take from there to "
+                      "the kitchen; one hand",
+            rationale="order the errands: fetch the pen, put it on the desk and take the mug from the same spot to the "
+                      "kitchen, instead of a separate trip to the desk for the mug",
+            cases=errand_cases),
         "x6_gd_pen_or_pencil_cabinets": dict(
             base="h_task_pencil_in_cabinet", control="h_task_pencil_in_cabinet",
             factor="which cabinet holds the preferred item",
@@ -1220,11 +1363,23 @@ REPLACED = {
     ("T02_stack_blocks", "far_crowded"): "replaced by tower_for_kid (the search was one turn to the island; now "
                                          "three blocks are spread over the house and the tower goes on the dining "
                                          "table)",
+    ("T05_pen_or_pencil_to_desk", "h_dynamic_pencil_taken"): "removed: no dynamic events in T05 (someone takes the "
+                                                             "pencil away)",
     ("T05_pen_or_pencil_to_desk", "no_pen"): "removed: no_pen_pencil_away is the same choice over a longer horizon",
 }
 
 
 NEW_CONDITIONS = {
+    "goal_already_met": {"type": "goal_state", "decision": "verify",
+                         "meaning": "what the instruction asks for already holds: check, and do not fetch again"},
+    "unknown_count": {"type": "resource_count", "decision": "explore",
+                      "meaning": "how many items the goal covers is not said: search every place before stopping"},
+    "goal_items_unstated": {"type": "goal_inference", "decision": "decompose",
+                            "meaning": "the instruction names a purpose; which items it needs is to be inferred"},
+    "count_from_scene": {"type": "goal_inference", "decision": "decompose",
+                         "meaning": "how many items to bring is read off the scene, not the instruction"},
+    "errands_combined": {"type": "goal_structure", "decision": "decompose",
+                         "meaning": "two errands meet at one place; an order that joins them saves a trip"},
     "missing_piece": {"type": "object_absent", "decision": "alternative",
                       "meaning": "the goal needs one more piece than the house has (no third block); another item of "
                                  "the kind the instruction names (another toy) stands in, in another room; a look-alike "
@@ -1248,7 +1403,6 @@ EXT_PLACES = [("dining_table_2/top", [3.7, 6.3], "dining_room_0_1"), ("tv_stand_
               ("kitchen_cabinet_4/top", [1.4, 0.42], None), ("kitchen_cabinet_6/top", [3.7, 0.36], "living_room_0_0")]
 SEED_EXT = {
     ('T04_cup_or_mug_to_cabinet', 'no_cup_mug_away'): 0,
-    ('T05_pen_or_pencil_to_desk', 'h_dynamic_pencil_taken'): 1,
     ('T06_block_destination_occupied', 'occupied_block_away'): 1,
     ('T07_heat_oatmeal', 'broken_oatmeal_away'): 0,
     ('T08_wipe_island', 'far_sponge_tv'): 0,

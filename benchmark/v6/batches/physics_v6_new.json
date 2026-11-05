@@ -1262,72 +1262,352 @@
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 10,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 11,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 12,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 13,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 14,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 15,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pen_on_desk",
+"route": "v6_check_desk_first__pen_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 16,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 17,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 18,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
 "seed": 19,
-"variant": "x6_gd_pencil_other_cabinet",
-"route": "v6_x6_gd_pencil_other_cabinet",
-"family": "x6_gd_pencil_other_cabinet"
+"variant": "check_desk_first__pencil_on_desk",
+"route": "v6_check_desk_first__pencil_on_desk",
+"family": "check_desk_first"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "all_pens__two",
+"route": "v6_all_pens__two",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 11,
+"variant": "all_pens__two",
+"route": "v6_all_pens__two",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 12,
+"variant": "all_pens__four",
+"route": "v6_all_pens__four",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 13,
+"variant": "all_pens__three",
+"route": "v6_all_pens__three",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 14,
+"variant": "all_pens__two",
+"route": "v6_all_pens__two",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 15,
+"variant": "all_pens__three",
+"route": "v6_all_pens__three",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 16,
+"variant": "all_pens__three",
+"route": "v6_all_pens__three",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 17,
+"variant": "all_pens__two",
+"route": "v6_all_pens__two",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 18,
+"variant": "all_pens__four",
+"route": "v6_all_pens__four",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 19,
+"variant": "all_pens__four",
+"route": "v6_all_pens__four",
+"family": "all_pens"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "homework_ready__pencil_only",
+"route": "v6_homework_ready__pencil_only",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 11,
+"variant": "homework_ready__several",
+"route": "v6_homework_ready__several",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 12,
+"variant": "homework_ready__single",
+"route": "v6_homework_ready__single",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 13,
+"variant": "homework_ready__several",
+"route": "v6_homework_ready__several",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 14,
+"variant": "homework_ready__pencil_only",
+"route": "v6_homework_ready__pencil_only",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 15,
+"variant": "homework_ready__single",
+"route": "v6_homework_ready__single",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 16,
+"variant": "homework_ready__several",
+"route": "v6_homework_ready__several",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 17,
+"variant": "homework_ready__single",
+"route": "v6_homework_ready__single",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 18,
+"variant": "homework_ready__single",
+"route": "v6_homework_ready__single",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 19,
+"variant": "homework_ready__pencil_only",
+"route": "v6_homework_ready__pencil_only",
+"family": "homework_ready"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "pens_per_notebook__notebooks_3",
+"route": "v6_pens_per_notebook__notebooks_3",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 11,
+"variant": "pens_per_notebook__notebooks_3",
+"route": "v6_pens_per_notebook__notebooks_3",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 12,
+"variant": "pens_per_notebook__notebooks_2",
+"route": "v6_pens_per_notebook__notebooks_2",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 13,
+"variant": "pens_per_notebook__notebooks_2",
+"route": "v6_pens_per_notebook__notebooks_2",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 14,
+"variant": "pens_per_notebook__notebooks_2",
+"route": "v6_pens_per_notebook__notebooks_2",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 15,
+"variant": "pens_per_notebook__notebooks_3",
+"route": "v6_pens_per_notebook__notebooks_3",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 16,
+"variant": "pens_per_notebook__notebooks_3",
+"route": "v6_pens_per_notebook__notebooks_3",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 17,
+"variant": "pens_per_notebook__notebooks_3",
+"route": "v6_pens_per_notebook__notebooks_3",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 18,
+"variant": "pens_per_notebook__notebooks_2",
+"route": "v6_pens_per_notebook__notebooks_2",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 19,
+"variant": "pens_per_notebook__notebooks_2",
+"route": "v6_pens_per_notebook__notebooks_2",
+"family": "pens_per_notebook"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 10,
+"variant": "errand_combined__pen_dining",
+"route": "v6_errand_combined__pen_dining",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 11,
+"variant": "errand_combined__pen_bedroom",
+"route": "v6_errand_combined__pen_bedroom",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 12,
+"variant": "errand_combined__pen_dining",
+"route": "v6_errand_combined__pen_dining",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 13,
+"variant": "errand_combined__pen_dining",
+"route": "v6_errand_combined__pen_dining",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 14,
+"variant": "errand_combined__pen_bedroom",
+"route": "v6_errand_combined__pen_bedroom",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 15,
+"variant": "errand_combined__pen_dining",
+"route": "v6_errand_combined__pen_dining",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 16,
+"variant": "errand_combined__pen_bedroom",
+"route": "v6_errand_combined__pen_bedroom",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 17,
+"variant": "errand_combined__pen_bedroom",
+"route": "v6_errand_combined__pen_bedroom",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 18,
+"variant": "errand_combined__pen_dining",
+"route": "v6_errand_combined__pen_dining",
+"family": "errand_combined"
+},
+{
+"task": "T05_pen_or_pencil_to_desk",
+"seed": 19,
+"variant": "errand_combined__pen_bedroom",
+"route": "v6_errand_combined__pen_bedroom",
+"family": "errand_combined"
 },
 {
 "task": "T05_pen_or_pencil_to_desk",
