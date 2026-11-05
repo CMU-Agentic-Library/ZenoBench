@@ -3362,43 +3362,43 @@
 {
 "task": "T07_heat_oatmeal",
 "seed": 10,
-"variant": "vessel_decides_appliance__in_bowl",
-"route": "v6_vessel_decides_appliance__in_bowl",
+"variant": "vessel_decides_appliance__in_foil_tray",
+"route": "v6_vessel_decides_appliance__in_foil_tray",
 "family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 11,
-"variant": "vessel_decides_appliance__in_pot",
-"route": "v6_vessel_decides_appliance__in_pot",
+"variant": "vessel_decides_appliance__in_ceramic_bowl",
+"route": "v6_vessel_decides_appliance__in_ceramic_bowl",
 "family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 12,
-"variant": "vessel_decides_appliance__in_bowl",
-"route": "v6_vessel_decides_appliance__in_bowl",
+"variant": "vessel_decides_appliance__in_ceramic_bowl",
+"route": "v6_vessel_decides_appliance__in_ceramic_bowl",
 "family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 13,
-"variant": "vessel_decides_appliance__in_pot",
-"route": "v6_vessel_decides_appliance__in_pot",
+"variant": "vessel_decides_appliance__in_foil_tray",
+"route": "v6_vessel_decides_appliance__in_foil_tray",
 "family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 14,
-"variant": "vessel_decides_appliance__in_pot",
-"route": "v6_vessel_decides_appliance__in_pot",
+"variant": "vessel_decides_appliance__in_steel_box",
+"route": "v6_vessel_decides_appliance__in_steel_box",
 "family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 15,
-"variant": "vessel_decides_appliance__in_bowl",
-"route": "v6_vessel_decides_appliance__in_bowl",
+"variant": "vessel_decides_appliance__in_glass_box",
+"route": "v6_vessel_decides_appliance__in_glass_box",
 "family": "vessel_decides_appliance"
 },
 {
@@ -3411,22 +3411,22 @@
 {
 "task": "T07_heat_oatmeal",
 "seed": 17,
-"variant": "vessel_decides_appliance__in_pot",
-"route": "v6_vessel_decides_appliance__in_pot",
+"variant": "vessel_decides_appliance__in_glass_box",
+"route": "v6_vessel_decides_appliance__in_glass_box",
 "family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 18,
-"variant": "vessel_decides_appliance__in_bowl",
-"route": "v6_vessel_decides_appliance__in_bowl",
+"variant": "vessel_decides_appliance__in_steel_box",
+"route": "v6_vessel_decides_appliance__in_steel_box",
 "family": "vessel_decides_appliance"
 },
 {
 "task": "T07_heat_oatmeal",
 "seed": 19,
-"variant": "vessel_decides_appliance__in_bowl",
-"route": "v6_vessel_decides_appliance__in_bowl",
+"variant": "vessel_decides_appliance__in_pot",
+"route": "v6_vessel_decides_appliance__in_pot",
 "family": "vessel_decides_appliance"
 },
 {

@@ -72,7 +72,7 @@ Removed with the injected action failures: 101 variants (21 had nothing else, 61
 | T07 | microwave_broken | Task-Level | - | microwave_broken | 1 |
 | T07 | broken_oatmeal_away | Task-Level | - | microwave_broken; not_in_view | 2 |
 | T07 | microwave_holds_pot | Task-Level | - | appliance_occupied | 1 |
-| T07 | vessel_decides_appliance | Task-Level | - | appliance_compatibility | 2 |
+| T07 | vessel_decides_appliance | Task-Level | - | appliance_compatibility | 5 |
 | T07 | two_portions | Task-Level | - | appliance_compatibility; multi_object_goal | 2 |
 | T08 | sponge_on_island | Control | - | - | 1 |
 | T08 | island_cluttered | Action-Level | move the objects off the work strip, work, put them back | - | 1 |

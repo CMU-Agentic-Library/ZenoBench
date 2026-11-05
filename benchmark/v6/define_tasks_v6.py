@@ -776,65 +776,82 @@ def T06(t):
 
 def T07(t):
     X, POT, LID, MW, ST = "oatmeal", "handled_cooking_pot", "pot_lid", "kitchen_microwave", "kitchen_stove"
-    base = OR(t, "microwave_works")      # nav mw, open, look island, nav oat, pick, nav mw floor, place, close, heat
-    POT_AT = {"dining": (P("dining_table_2/top", 3.35, 6.75), "dining_room_0_1"),
-              "counter": (P("kitchen_counter_2/top", -0.13, 7.3), "kitchen_0_1")}
-    # a metal pot does not heat in the microwave; a ceramic bowl is not put on the burner
-    POT_FOOD = {"initial_c": 4.0, "heating_rate_c_per_s": 0.0, "stove_rate_c_per_s": 2.0, "cooling_rate_c_per_s": 1.0}
+    ISL, BURNER = "kitchen_island/top", [8.41, 1.725]
+    # leftovers in their own containers (assets/embodiedgen_heating_assets.json): metal goes on the stove (it does
+    # not heat in the microwave), glass and ceramic go in the microwave (a ceramic bowl does not count on the burner)
+    MICRO = {"initial_c": 4.0, "heating_rate_c_per_s": 4.0, "stove_rate_c_per_s": 0.0, "cooling_rate_c_per_s": 1.0}
+    STOVE = {"initial_c": 4.0, "heating_rate_c_per_s": 0.0, "stove_rate_c_per_s": 2.0, "cooling_rate_c_per_s": 1.0}
+    FLAT = {"glass_food_container", "steel_lunch_box", "foil_takeout_tray"}     # pushed to the edge, then pinched
     done = [["not heating", ST], ["not heating", MW], ["is_closed", MW], ["hand_empty", "right"]]
+    clear_stove = [X, POT, LID]                          # the old bowl and the empty pot on the burner leave
 
-    def pot_to_stove(region=None, temp=40):
-        return ([S("search", object=POT, region=region)] if region else []) + [
-            nav(POT), pick(POT), nav("kitchen_stove/top"), place(POT, "kitchen_stove/top", [8.41, 1.725]),
-            S("heat", food=POT, appliance=ST, temp_c=temp)]
-    # vessel_decides_appliance: the leftover oatmeal is in a ceramic bowl (microwave) or in the metal pot (stove)
-    vessel_cases = {
-        "in_bowl": dict(thermal_override={X: {"stove_rate_c_per_s": 0.0}},
-                        goal={"all": [["temperature_at_least", X, 40], *done]}, route=base),
-        "in_pot": dict(remove=[X, LID], move={POT: POT_AT["dining"][0]},
-                       thermal_override={POT: dict(POT_FOOD)},
-                       goal={"all": [["temperature_at_least", POT, 40], *done]},
-                       route=[look("kitchen_island/top")] + pot_to_stove(POT_AT["dining"][1]))}
-    # two_portions: the oatmeal in a bowl (microwave) and the leftover soup in the pot (stove).  Both are wanted warm
-    # at the same time and food cools (0.2 C/s), so heating one after the other with heat (which waits for its
-    # target and switches off) leaves the first one cold: start both appliances (press), wait, then switch both off
-    slow = {X: {"stove_rate_c_per_s": 0.0, "cooling_rate_c_per_s": 0.2},
-            POT: dict(POT_FOOD, cooling_rate_c_per_s=0.2)}
+    def grab(x, region=None):
+        return ([S("search", object=x, region=region)] if region else []) + [nav(x)] \
+            + ([S("expose", object=x), look(x)] if x in FLAT else []) + [pick(x)]
+
+    def to_microwave(x, region=None, temp=40, heat=True):
+        return [nav(MW), S("open", articulated=MW), look(ISL)] + grab(x, region) \
+            + [nav("kitchen_microwave/inside_floor"), place(x, "kitchen_microwave/inside_floor"),
+               S("close", articulated=MW)] + ([S("heat", food=x, appliance=MW, temp_c=temp)] if heat else [])
+
+    def to_stove(x, region=None, temp=40, heat=True):
+        return [look(ISL)] + grab(x, region) + [nav("kitchen_stove/top"), place(x, "kitchen_stove/top", BURNER)] \
+            + ([S("heat", food=x, appliance=ST, temp_c=temp)] if heat else [])
+
+    # vessel_decides_appliance: which container the leftovers are in (seed); the right appliance follows from it
+    ON_ISLAND = {"support": ISL, "xy": [6.69, 1.83], "yaw_deg": 0.0}
+    POT_DINING = {"support": "dining_table_2/top", "xy": [3.35, 6.75], "yaw_deg": 0.0}
+    VESSELS = {"in_ceramic_bowl": ("oatmeal_bowl", MICRO, ON_ISLAND, None),
+               "in_glass_box": ("glass_food_container", MICRO, ON_ISLAND, None),
+               "in_pot": ("soup_pot", STOVE, POT_DINING, "dining_room_0_1"),
+               "in_steel_box": ("steel_lunch_box", STOVE, ON_ISLAND, None),
+               "in_foil_tray": ("foil_takeout_tray", STOVE, ON_ISLAND, None)}
+    vessel_cases = {}
+    for case, (x, rates, pose, region) in VESSELS.items():
+        vessel_cases[case] = dict(
+            add={x: {"asset": x, **copy.deepcopy(pose)}}, thermal_override={x: dict(rates)}, watch=[x],
+            goal={"all": [["temperature_at_least", x, 40], *done]},
+            route=(to_microwave if rates is MICRO else to_stove)(x, region))
+    # two_portions: the oatmeal bowl (microwave) and the pot of soup (stove), both warm at the same time; food cools
+    # (0.2 C/s), so heating one after the other (heat waits for its target and switches off) leaves the first one
+    # cold: start both appliances (press), wait, switch both off
+    BOWL, SOUP = "oatmeal_bowl", "soup_pot"
+    SOUP_AT = {"dining": (POT_DINING, "dining_room_0_1"),
+               "counter": ({"support": "kitchen_counter_2/top", "xy": [-0.13, 7.3], "yaw_deg": 0.0}, "kitchen_0_1")}
 
     def both_at_once(region):
-        return ([S("search", object=POT, region=region)] + [nav(POT), pick(POT), nav("kitchen_stove/top"),
-                                                             place(POT, "kitchen_stove/top", [8.41, 1.725]),
-                                                             S("press", button="kitchen_stove/power_button")]
-                + base[:-1]                                        # the bowl into the microwave, door closed
+        return (to_stove(SOUP, region, heat=False)[1:] + [S("press", button="kitchen_stove/power_button")]
+                + to_microwave(BOWL, heat=False)
                 + [S("approach", target="kitchen_microwave/start_button"),
                    S("press", button="kitchen_microwave/start_button"), S("wait", seconds=25),
-                   S("stop", appliance=MW), S("close", articulated=MW), nav("kitchen_stove"), S("stop", appliance=ST)])
-    two_cases = {c: dict(move={POT: pose}, route=both_at_once(region)) for c, (pose, region) in POT_AT.items()}
-    hint = dict(instruction="Warm up the leftover oatmeal for breakfast (at least 40 C); mind whether its container "
-                            "can go in the microwave or on the burner. Afterwards the stove must be off and the "
-                            "microwave door closed.",
-                instruction_zh="把剩下的燕麦粥热一下当早饭（至少 40 度），注意装粥的容器适不适合进微波炉或放到灶上。"
-                               "做完后灶台要关火，微波炉门要关好。")
+                   S("stop", appliance=MW), S("close", articulated=MW), nav(ST), S("stop", appliance=ST)])
+    two_cases = {c: dict(add={SOUP: {"asset": SOUP, **copy.deepcopy(pose)},
+                              BOWL: {"asset": BOWL, **copy.deepcopy(ON_ISLAND)}},
+                         route=both_at_once(region)) for c, (pose, region) in SOUP_AT.items()}
     return {
         "vessel_decides_appliance": dict(
-            base="microwave_works", control="microwave_works", conditions=["appliance_compatibility"], **hint,
-            watch=[X, POT, LID],
-            factor="what the oatmeal is in (seed: a ceramic bowl on the island, or the metal pot on the dining table)",
-            challenge="both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or "
-                      "still in the metal cooking pot (not for the microwave)",
-            rationale="choose the appliance by the container: the bowl goes in the microwave, the pot onto the stove; "
-                      "the wrong one does not heat it",
+            base="microwave_works", control="microwave_works", conditions=["appliance_compatibility"],
+            remove=clear_stove,
+            instruction="Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in "
+                        "the microwave or on the burner. Afterwards the stove must be off and the microwave door "
+                        "closed.",
+            instruction_zh="把剩饭热一下当早饭（至少 40 度），注意装剩饭的容器适不适合进微波炉或放到灶上。"
+                           "做完后灶台要关火，微波炉门要关好。",
+            factor="which container the leftovers are in (seed: a ceramic bowl or a glass box -> microwave; the "
+                   "metal pot, a steel lunch box or a foil tray -> stove)",
+            challenge="both appliances work; the leftovers come in one of five containers: ceramic and glass do not "
+                      "heat on the burner, metal does not heat in the microwave",
+            rationale="choose the appliance by the container's material: the wrong one does not heat the food",
             cases=vessel_cases),
         "two_portions": dict(
             base="microwave_works", control="microwave_works",
-            conditions=["appliance_compatibility", "multi_object_goal"],
-            thermal_override=slow, remove=[LID],
-            instruction="Breakfast needs two things warmed up: the leftover oatmeal in its bowl and the leftover soup "
-                        "in the cooking pot, both to at least 40 C. Afterwards the stove must be off and the microwave "
-                        "door closed.",
-            instruction_zh="早饭要热两样：碗里剩的燕麦粥和锅里剩的汤，都要热到至少 40 度。做完后灶台要关火，微波炉门要关好。",
-            goal={"all": [["temperature_at_least", X, 40], ["temperature_at_least", POT, 40], *done]},
-            watch=[X, POT, LID],
+            conditions=["appliance_compatibility", "multi_object_goal"], remove=clear_stove,
+            thermal_override={BOWL: dict(MICRO, cooling_rate_c_per_s=0.2), SOUP: dict(STOVE, cooling_rate_c_per_s=0.2)},
+            instruction="Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both "
+                        "to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
+            instruction_zh="早饭要热两样：一碗燕麦粥和一锅剩汤，都要热到至少 40 度。做完后灶台要关火，微波炉门要关好。",
+            goal={"all": [["temperature_at_least", BOWL, 40], ["temperature_at_least", SOUP, 40], *done]},
+            watch=[BOWL, SOUP],
             factor="where the pot of soup is (seed: the dining table or the kitchen counter)",
             challenge="two foods wanted warm together: the oatmeal in a ceramic bowl (microwave only) and the soup in "
                       "the metal pot (stove only); food cools while it waits",

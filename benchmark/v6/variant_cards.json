@@ -7300,26 +7300,26 @@
   "rationale": "",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T07_heat_oatmeal/vessel_decides_appliance__in_bowl": {
+ "T07_heat_oatmeal/vessel_decides_appliance__in_ceramic_bowl": {
   "variant": "vessel_decides_appliance",
   "category": "task",
   "seeds": [
-   10,
-   12,
-   15,
-   18,
-   19
+   11,
+   12
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C); mind whether its container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal"
+   "moved": [],
+   "added": [
+    "oatmeal_bowl"
    ],
-   "added": [],
-   "removed": [],
+   "removed": [
+    "handled_cooking_pot",
+    "oatmeal",
+    "pot_lid"
+   ],
    "conditions": [
     "appliance_compatibility"
    ],
@@ -7330,7 +7330,7 @@
    "all": [
     [
      "temperature_at_least",
-     "oatmeal",
+     "oatmeal_bowl",
      40
     ],
     [
@@ -7352,30 +7352,28 @@
    ]
   },
   "control": "microwave_works",
-  "oracle_route": "v6_vessel_decides_appliance__in_bowl",
-  "challenge": "both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or still in the metal cooking pot (not for the microwave)",
-  "rationale": "choose the appliance by the container: the bowl goes in the microwave, the pot onto the stove; the wrong one does not heat it",
+  "oracle_route": "v6_vessel_decides_appliance__in_ceramic_bowl",
+  "challenge": "both appliances work; the leftovers come in one of five containers: ceramic and glass do not heat on the burner, metal does not heat in the microwave",
+  "rationale": "choose the appliance by the container's material: the wrong one does not heat the food",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
- "T07_heat_oatmeal/vessel_decides_appliance__in_pot": {
+ "T07_heat_oatmeal/vessel_decides_appliance__in_glass_box": {
   "variant": "vessel_decides_appliance",
   "category": "task",
   "seeds": [
-   11,
-   13,
-   14,
-   16,
+   15,
    17
   ],
-  "instruction": "Warm up the leftover oatmeal for breakfast (at least 40 C); mind whether its container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "handled_cooking_pot"
+   "moved": [],
+   "added": [
+    "glass_food_container"
    ],
-   "added": [],
    "removed": [
+    "handled_cooking_pot",
     "oatmeal",
     "pot_lid"
    ],
@@ -7389,7 +7387,64 @@
    "all": [
     [
      "temperature_at_least",
-     "handled_cooking_pot",
+     "glass_food_container",
+     40
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "not heating",
+     "kitchen_microwave"
+    ],
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "microwave_works",
+  "oracle_route": "v6_vessel_decides_appliance__in_glass_box",
+  "challenge": "both appliances work; the leftovers come in one of five containers: ceramic and glass do not heat on the burner, metal does not heat in the microwave",
+  "rationale": "choose the appliance by the container's material: the wrong one does not heat the food",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T07_heat_oatmeal/vessel_decides_appliance__in_pot": {
+  "variant": "vessel_decides_appliance",
+  "category": "task",
+  "seeds": [
+   16,
+   19
+  ],
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "soup_pot"
+   ],
+   "removed": [
+    "handled_cooking_pot",
+    "oatmeal",
+    "pot_lid"
+   ],
+   "conditions": [
+    "appliance_compatibility"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "temperature_at_least",
+     "soup_pot",
      40
     ],
     [
@@ -7412,8 +7467,122 @@
   },
   "control": "microwave_works",
   "oracle_route": "v6_vessel_decides_appliance__in_pot",
-  "challenge": "both appliances work; the leftover oatmeal is either in a ceramic bowl (not for the burner) or still in the metal cooking pot (not for the microwave)",
-  "rationale": "choose the appliance by the container: the bowl goes in the microwave, the pot onto the stove; the wrong one does not heat it",
+  "challenge": "both appliances work; the leftovers come in one of five containers: ceramic and glass do not heat on the burner, metal does not heat in the microwave",
+  "rationale": "choose the appliance by the container's material: the wrong one does not heat the food",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T07_heat_oatmeal/vessel_decides_appliance__in_steel_box": {
+  "variant": "vessel_decides_appliance",
+  "category": "task",
+  "seeds": [
+   14,
+   18
+  ],
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "steel_lunch_box"
+   ],
+   "removed": [
+    "handled_cooking_pot",
+    "oatmeal",
+    "pot_lid"
+   ],
+   "conditions": [
+    "appliance_compatibility"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "temperature_at_least",
+     "steel_lunch_box",
+     40
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "not heating",
+     "kitchen_microwave"
+    ],
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "microwave_works",
+  "oracle_route": "v6_vessel_decides_appliance__in_steel_box",
+  "challenge": "both appliances work; the leftovers come in one of five containers: ceramic and glass do not heat on the burner, metal does not heat in the microwave",
+  "rationale": "choose the appliance by the container's material: the wrong one does not heat the food",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T07_heat_oatmeal/vessel_decides_appliance__in_foil_tray": {
+  "variant": "vessel_decides_appliance",
+  "category": "task",
+  "seeds": [
+   10,
+   13
+  ],
+  "instruction": "Warm up the leftovers for breakfast (at least 40 C); mind whether their container can go in the microwave or on the burner. Afterwards the stove must be off and the microwave door closed.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "foil_takeout_tray"
+   ],
+   "removed": [
+    "handled_cooking_pot",
+    "oatmeal",
+    "pot_lid"
+   ],
+   "conditions": [
+    "appliance_compatibility"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "temperature_at_least",
+     "foil_takeout_tray",
+     40
+    ],
+    [
+     "not heating",
+     "kitchen_stove"
+    ],
+    [
+     "not heating",
+     "kitchen_microwave"
+    ],
+    [
+     "is_closed",
+     "kitchen_microwave"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "microwave_works",
+  "oracle_route": "v6_vessel_decides_appliance__in_foil_tray",
+  "challenge": "both appliances work; the leftovers come in one of five containers: ceramic and glass do not heat on the burner, metal does not heat in the microwave",
+  "rationale": "choose the appliance by the container's material: the wrong one does not heat the food",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  },
  "T07_heat_oatmeal/two_portions__dining": {
@@ -7426,16 +7595,18 @@
    16,
    19
   ],
-  "instruction": "Breakfast needs two things warmed up: the leftover oatmeal in its bowl and the leftover soup in the cooking pot, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal"
+   "moved": [],
+   "added": [
+    "oatmeal_bowl",
+    "soup_pot"
    ],
-   "added": [],
    "removed": [
+    "handled_cooking_pot",
+    "oatmeal",
     "pot_lid"
    ],
    "conditions": [
@@ -7449,12 +7620,12 @@
    "all": [
     [
      "temperature_at_least",
-     "oatmeal",
+     "oatmeal_bowl",
      40
     ],
     [
      "temperature_at_least",
-     "handled_cooking_pot",
+     "soup_pot",
      40
     ],
     [
@@ -7491,16 +7662,18 @@
    17,
    18
   ],
-  "instruction": "Breakfast needs two things warmed up: the leftover oatmeal in its bowl and the leftover soup in the cooking pot, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
+  "instruction": "Breakfast needs two things warmed up: the bowl of oatmeal and the pot of leftover soup, both to at least 40 C. Afterwards the stove must be off and the microwave door closed.",
   "initial_conditions": {
    "scene": "tasks/kitchen_skills",
    "start": null,
-   "moved": [
-    "handled_cooking_pot",
-    "oatmeal"
+   "moved": [],
+   "added": [
+    "oatmeal_bowl",
+    "soup_pot"
    ],
-   "added": [],
    "removed": [
+    "handled_cooking_pot",
+    "oatmeal",
     "pot_lid"
    ],
    "conditions": [
@@ -7514,12 +7687,12 @@
    "all": [
     [
      "temperature_at_least",
-     "oatmeal",
+     "oatmeal_bowl",
      40
     ],
     [
      "temperature_at_least",
-     "handled_cooking_pot",
+     "soup_pot",
      40
     ],
     [

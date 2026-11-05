@@ -36,11 +36,11 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | place | apple | 73 | 8 | 10% | IK / reach / base pose 8 | T11 | 1 | place_pre: no IK solution reaches apple from this base pose |
 | look | desk_1/top | 150 | 8 | 5% | IK / reach / base pose 8 | T14 | 2 | face desk_1/top: turning in place would hit furniture |
 | arrange |  | 2 | 8 | 80% | IK / reach / base pose 5, other 2, placement result 1 | T13 | 0 | SUBSKILL_FAILED: pick_object(object=cup): no IK for pick_lift |
-| pick | oatmeal | 162 | 7 | 4% | other 7 | T07 | 2 | pick from cavity oatmeal: front approach missed by 0.163 m |
+| pick | oatmeal | 162 | 7 | 4% | other 7 | T07 | 0 | pick from cavity oatmeal: front approach missed by 0.163 m |
 | pick | pencil | 50 | 7 | 12% | IK / reach / base pose 5, grasp miss 2 | T05 | 3 | joint move to pick_pre_far: no collision-free trajectory (MotionGenStatus.TRAJOPT_FAIL) |
 | pick | pot_lid | 90 | 7 | 7% | grasp miss 7 | T17 | 7 | pick pot_lid: not held (lift 0.010 m) |
 | place | rolling_pin | 72 | 6 | 8% | other 5, carry slip 1 | T03 | 5 | carry: rolling_pin slipped out of the hand while carrying it |
-| place | oatmeal | 156 | 6 | 4% | other 4, IK / reach / base pose 1, placement result 1 | T04 T07 T16 | 2 | no IK for place_above |
+| place | oatmeal | 156 | 6 | 4% | other 4, IK / reach / base pose 1, placement result 1 | T04 T07 T16 | 0 | no IK for place_above |
 | pick | bowl | 83 | 6 | 7% | grasp miss 6 | T13 | 5 | pick bowl: not held (lift 0.000 m) |
 | expose | paperback_book | 25 | 5 | 17% | other 5 | T01 | 1 | slide to edge: centre of mass may leave the support |
 | look | rolling_pin | 33 | 5 | 13% | IK / reach / base pose 3, perception / search 2 | T03 | 0 | NOT_FOUND: 'rolling_pin' is not visible at its last observed position |
@@ -62,8 +62,11 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | close | kitchen_cabinet_4 | T02/block_put_away, T04/x6_gd_cup_in_cabinets, T05/x6_gd_pen_or_pencil_cabinets, T14/x6_gd_book_put_away, T18/x6_gd_bowl_elsewhere__three_places, T19/x6_gd_can_put_away, T20/x6_gd_bottle_put_away |
 | drop | cherry_tomato_1 | T09/x6_pp_tomato_taken_out__tomato1 |
 | drop | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere, T09/x6_pp_tomato_taken_out__tomato2, T09/x6_pp_tomato_taken_out__tomato2_after_stir |
+| expose | foil_takeout_tray | T07/vessel_decides_appliance |
+| expose | glass_food_container | T07/vessel_decides_appliance |
 | expose | notebook_1 | T05/homework_ready |
 | expose | notebook_2 | T05/homework_ready |
+| expose | steel_lunch_box | T07/vessel_decides_appliance |
 | hide | floor_block | T17/x6_gd_hide_both_event |
 | identify | pen | T05/check_desk_first |
 | identify | pencil | T05/check_desk_first |
@@ -73,25 +76,35 @@ Task design does not change skills; this list is what the v5 physics baseline (1
 | pick | cherry_tomato_2 | T09/x6_gd_tomato_elsewhere, T09/x6_pp_tomato_taken_out__tomato2, T09/x6_pp_tomato_taken_out__tomato2_after_stir |
 | pick | clutter_cereal_b | T01/seat_slot_blocked, T06/clear_front_row |
 | pick | floor_block | T02/block_put_away, T02/tower_for_kid, T06/display_row |
-| pick | handled_cooking_pot | T07/two_portions, T07/vessel_decides_appliance, T09/pot_in_dining_room |
+| pick | foil_takeout_tray | T07/vessel_decides_appliance |
+| pick | glass_food_container | T07/vessel_decides_appliance |
+| pick | handled_cooking_pot | T09/pot_in_dining_room |
 | pick | notebook_1 | T05/homework_ready |
 | pick | notebook_2 | T05/homework_ready |
+| pick | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
 | pick | orange_2 | T11/x6_gd_fruits_event |
 | pick | pen | T05/all_pens, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
 | pick | pen_2 | T05/all_pens, T05/pens_per_notebook |
 | pick | pencil_2 | T05/all_pens |
+| pick | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
+| pick | steel_lunch_box | T07/vessel_decides_appliance |
 | pick | toy_block | T02/third_toy_elsewhere |
 | pick | used_mug | T05/errand_combined |
 | place | bowl_kitchen_cabinet | T13/x6_gd_two_settings |
 | place | clutter_cereal_b | T01/seat_slot_blocked, T06/clear_front_row |
 | place | floor_block | T06/display_row |
-| place | handled_cooking_pot | T07/two_portions, T07/vessel_decides_appliance, T09/pot_in_dining_room |
+| place | foil_takeout_tray | T07/vessel_decides_appliance |
+| place | glass_food_container | T07/vessel_decides_appliance |
+| place | handled_cooking_pot | T09/pot_in_dining_room |
 | place | notebook_1 | T05/homework_ready |
 | place | notebook_2 | T05/homework_ready |
+| place | oatmeal_bowl | T07/two_portions, T07/vessel_decides_appliance |
 | place | orange_2 | T11/x6_gd_fruits_event |
 | place | pen | T05/all_pens, T05/errand_combined, T05/homework_ready, T05/pens_per_notebook, T05/x6_gd_pen_or_pencil_cabinets |
 | place | pen_2 | T05/all_pens, T05/pens_per_notebook |
 | place | pencil_2 | T05/all_pens |
+| place | soup_pot | T07/two_portions, T07/vessel_decides_appliance |
+| place | steel_lunch_box | T07/vessel_decides_appliance |
 | place | used_mug | T05/errand_combined |
 | stack | floor_block | T02/block_put_away, T02/tower_for_kid |
 | stack | rubber_duck | T02/third_toy_elsewhere, T02/tower_for_kid_duck |
