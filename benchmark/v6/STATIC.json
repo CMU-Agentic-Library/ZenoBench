@@ -1,12 +1,12 @@
 {
- "variants": 132,
- "episodes": 1320,
- "static_ok": 1320,
+ "variants": 131,
+ "episodes": 1310,
+ "static_ok": 1310,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
-   "episodes": 70,
-   "static_ok": 70
+   "episodes": 60,
+   "static_ok": 60
   },
   "T02_stack_blocks": {
    "episodes": 70,
@@ -87,9 +87,9 @@
  },
  "categories": {
   "control": 20,
-  "action": 28,
-  "task": 72,
-  "action_task": 12
+  "task": 76,
+  "action": 25,
+  "action_task": 10
  },
- "tasks_sha1": "46dce7092331b8db8ad1a34217285b94f4c47c1b"
+ "tasks_sha1": "39ac1b25f3ea2851f8e39e037adf6e012a3867ca"
 }

@@ -39,6 +39,7 @@ ATOMS = {
     "not on_floor": lambda o: f"{_names(o)} 不在地上",
     "clear_of": lambda o, others, d: f"{_names(o)} 离这些东西都至少 {round(d * 100)} cm：{_names(others)}",
     "near_any": lambda o, others, d: f"{_names(o)} 离其中至少一个不超过 {round(d * 100)} cm：{_names(others)}",
+    "not near_any": lambda o, others, d: f"{_names(o)} 离这些都超过 {round(d * 100)} cm：{_names(others)}",
     "front_visible": lambda o: f"{_names(o)} 从房间里看得见（前面没有更高的东西挡着）",
     "flipped": lambda o: f"{_names(o)} 翻过面",
     "object_rolled": lambda o: f"{_names(o)} 滚过",

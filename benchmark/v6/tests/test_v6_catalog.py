@@ -50,9 +50,7 @@ def test_seeds_keep_what_the_variant_tests():
     def rel(cfg, a, b):
         return [round(cfg["move"][a]["xy"][k] - cfg["move"][b]["xy"][k], 3) for k in (0, 1)]
     for tid, vid, a, b in (("T16_rolling_pin_at_edge", "h_task_bowl_behind", "oatmeal", "rolling_pin"),
-                           ("T02_stack_blocks", "crowded", "wooden_block_b", "oatmeal"),
-                           ("T01_book_to_dining_table", "x6_dr_block_on_book__block", "wooden_block_a",
-                            "paperback_book")):
+                           ("T02_stack_blocks", "crowded", "wooden_block_b", "oatmeal")):
         t = TASKS[tid]
         assert len({tuple(rel(episode_config(t, s, vid), a, b)) for s in SEEDS}) == 1, (tid, vid)
     for tid, vid in (("T13_breakfast_setup", "no_cup_spoon_boxed_in"), ("T20_juice_back_to_table", "table_full")):
@@ -138,12 +136,12 @@ def test_every_variant_has_its_category():
 def test_local_fallbacks_are_action_level():
     """A few skills at the work spot: expose / separate before the pick, the lid off, the object on the book."""
     cat = lambda tid, vid: TASKS[tid]["v6_tracks"][vid]["category"]  # noqa: E731
-    for tid, vid in (("T01_book_to_dining_table", "no_overhang"), ("T02_stack_blocks", "crowded"),
-                     ("T09_tomato_soup", "lid_on"), ("T01_book_to_dining_table", "x6_dr_block_on_book__block"),
+    for tid, vid in (("T02_stack_blocks", "crowded"), ("T09_tomato_soup", "lid_on"),
                      ("T15_book_face_up", "h_task_block_on_book")):
         assert cat(tid, vid) == "action", (tid, vid)
-    # finding the table the guests eat at next to the local fallback: both
-    assert cat("T01_book_to_dining_table", "which_table") == "action_task"
+    # T01 has no Action-Level variant left: what it tests is which table, which seat, which book, or the fallback
+    t01 = TASKS["T01_book_to_dining_table"]["v6_tracks"]
+    assert {x["category"] for x in t01.values()} == {"control", "task"}
     # a substitute, never a local fallback: Task-Level
     assert cat("T04_cup_or_mug_to_cabinet", "no_cup") == "task"
 
@@ -237,7 +235,7 @@ def _t01_suitable(cfg, sup="dining_table_2/top"):
 
 def test_t01_one_suitable_slot_per_setting():
     """T01 table_seats: in every setting and seed the edge has one suitable slot (the route's), and it differs
-    between the settings; seat_slot_blocked has none until the cereal box is moved."""
+    between the settings; no_room_fallback has one in its seats layouts and none in its full one."""
     t = TASKS["T01_book_to_dining_table"]
     slots = {}
     for s, lid in t["v6_variants"]["table_seats"]["seeds"].items():
@@ -247,8 +245,30 @@ def test_t01_one_suitable_slot_per_setting():
         assert min(ok) - 0.02 <= hint[1] <= max(ok) + 0.02, (lid, s, hint)
         slots[lid] = round(hint[1], 2)
     assert len(set(slots.values())) == 3
-    for s in SEEDS:
-        assert not _t01_suitable(episode_config(t, s, "seat_slot_blocked"))
+    for s, lid in t["v6_variants"]["no_room_fallback"]["seeds"].items():
+        ok = _t01_suitable(episode_config(t, int(s), lid))
+        assert bool(ok) == (not lid.endswith("full_a")), (lid, s, sorted(ok))
+    assert {lid.split("__")[1] for lid in t["v6_variants"]["no_room_fallback"]["seeds"].values()} == \
+        {"seats_b", "seats_c", "full_a"}
+
+
+def test_t01_reader_seat():
+    """T01 reader_seat: every seat has a suitable slot; the route's is beside the mug's seat only; the mug's seat
+    differs between the layouts."""
+    t = TASKS["T01_book_to_dining_table"]
+    mugs = set()
+    for s, lid in t["v6_variants"]["reader_seat"]["seeds"].items():
+        cfg = episode_config(t, int(s), lid)
+        ok = sorted(_t01_suitable(cfg))
+        assert ok[-1] - ok[0] > 1.0, (lid, s, ok)                        # slots beside seats far apart
+        hint = [x for x in t["routes"][t["oracle"][lid]]["steps"] if x["skill"] == "place"][-1]["args"]["hint_xy"]
+        goal = t["variants"][lid]["goal"]["all"]
+        mine = next(a[2][0] for a in goal if a[0] == "near_any")
+        others = next(a[2] for a in goal if a[0] == "not near_any")
+        y = lambda n: cfg["move"][n]["xy"][1]  # noqa: E731
+        assert abs(hint[1] - y(mine)) < min(abs(hint[1] - y(o)) for o in others), (lid, s)
+        mugs.add(round(y("mug_dining_cabinet"), 2))
+    assert len(mugs) == 3
 
 
 def test_t01_which_table():

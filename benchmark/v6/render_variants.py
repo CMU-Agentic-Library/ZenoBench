@@ -192,7 +192,13 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
             b = s["aabb_xy"]
             c = [(b[0] + b[2]) / 2, (b[1] + b[3]) / 2, s["z"]]
             span = max(b[2] - b[0], b[3] - b[1])
-            if span > 0.9:                       # a long table from above, slightly tilted
+            if min(b[2] - b[0], b[3] - b[1]) < 0.5:   # a narrow top along a wall: from its room side at an angle
+                from benchmark.v6.layout import room_of
+                ax = (0, 1) if b[2] - b[0] > b[3] - b[1] else (1, 0)     # across the long side
+                room = room_of(cfg["base"], c)
+                eyes = [[c[0] + k * 1.2 * ax[0], c[1] + k * 1.2 * ax[1], c[2] + 0.8] for k in (1, -1)]
+                eye = next((e for e in eyes if room_of(cfg["base"], e) == room), eyes[0])
+            elif span > 0.9:                     # a long table from above, slightly tilted
                 eye = [c[0] + 0.25, c[1] - 0.05, c[2] + 0.75 * span + 0.3]
                 if not _clear(rig.world, eye, c):
                     eye = around(c, 0.8, 0.75 * span)

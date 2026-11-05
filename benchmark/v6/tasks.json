@@ -131,6 +131,16 @@
    "decision": "alternative",
    "meaning": "the world is already in a different state than the usual plan expects"
   },
+  "referent_clue": {
+   "type": "referent_identity",
+   "decision": "explore",
+   "meaning": "the instruction names the object or place by a clue (whose it is, where it was used), not by its name; the nearest look-alike is not the one meant"
+  },
+  "infeasible_fallback": {
+   "type": "goal_feasibility",
+   "decision": "alternative",
+   "meaning": "under the stated constraints the goal may not be reachable: check, and if not, take the fallback the instruction names instead of breaking a constraint"
+  },
   "appliance_compatibility": {
    "type": "appliance_choice",
    "decision": "replace",
@@ -259,103 +269,6 @@
          1.458,
          7.68,
          1.638
-        ],
-        "dx": [
-         -1.01,
-         0.57
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "no_overhang": {
-     "note": "the book overhangs the front edge by 1.5 cm only: the edge pinch fails until it is exposed",
-     "move": {
-      "paperback_book": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.62,
-        1.59
-       ],
-       "yaw_deg": 90
-      }
-     },
-     "conditions": [
-      "no_overhang"
-     ],
-     "since": "v2",
-     "condition_types": [
-      "grasp_blocked"
-     ],
-     "decisions": [
-      "fallback"
-     ],
-     "v5": {
-      "tier": "medium",
-      "challenge": "the book overhangs the front edge by 1.5 cm only: the edge pinch fails until it is exposed",
-      "derived_from": "no_overhang",
-      "existing": true,
-      "seed_vary_added": true
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "paperback_book"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.56,
-         1.5,
-         7.68,
-         1.68
         ],
         "dx": [
          -1.01,
@@ -1273,301 +1186,13 @@
       }
      }
     },
-    "seat_slot_blocked": {
-     "move": {
-      "paperback_book": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.62,
-        1.548
-       ],
-       "yaw_deg": 90
-      },
-      "bowl_side_table": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        6.083
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.66,
-        6.615
-       ],
-       "yaw_deg": 0.0
-      },
-      "cup_side_table": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        6.266
-       ],
-       "yaw_deg": 0.0
-      },
-      "plate_counter_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.66,
-        7.353
-       ],
-       "yaw_deg": 0.0
-      },
-      "clutter_cereal_a": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        5.882
-       ],
-       "yaw_deg": 0.0
-      },
-      "mug_dining_cabinet": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        7.581
-       ],
-       "yaw_deg": 0.0
-      },
-      "spoon_target_table": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.4,
-        7.353
-       ],
-       "yaw_deg": 0.0
-      },
-      "clutter_cereal_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        7.059
-       ],
-       "yaw_deg": 0.0
-      },
-      "cup_counter_b": {
-       "support": "dining_table_2/top",
-       "xy": [
-        3.7,
-        6.834
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "conditions": [
-      "spot_quality",
-      "destination_full"
-     ],
-     "goal": {
-      "all": [
-       [
-        "on",
-        "paperback_book",
-        "dining_table_2/top"
-       ],
-       [
-        "clear_of",
-        "paperback_book",
-        [
-         "plate_counter_a",
-         "plate_counter_b",
-         "bowl_side_table",
-         "cup_side_table",
-         "cup_counter_b",
-         "mug_dining_cabinet",
-         "clutter_cereal_a",
-         "clutter_cereal_b",
-         "spoon_target_table"
-        ],
-        0.05
-       ],
-       [
-        "near_any",
-        "paperback_book",
-        [
-         "bowl_side_table",
-         "plate_counter_a",
-         "plate_counter_b"
-        ],
-        0.15
-       ],
-       [
-        "near_start",
-        "plate_counter_a",
-        0.03
-       ],
-       [
-        "near_start",
-        "plate_counter_b",
-        0.03
-       ],
-       [
-        "near_start",
-        "bowl_side_table",
-        0.03
-       ],
-       [
-        "near_start",
-        "cup_side_table",
-        0.03
-       ],
-       [
-        "near_start",
-        "cup_counter_b",
-        0.03
-       ],
-       [
-        "near_start",
-        "mug_dining_cabinet",
-        0.03
-       ],
-       [
-        "near_start",
-        "clutter_cereal_a",
-        0.03
-       ],
-       [
-        "near_start",
-        "spoon_target_table",
-        0.03
-       ],
-       [
-        "on",
-        "clutter_cereal_b",
-        "dining_table_2/top"
-       ],
-       [
-        "upright",
-        "cup_side_table"
-       ],
-       [
-        "upright",
-        "cup_counter_b"
-       ],
-       [
-        "upright",
-        "mug_dining_cabinet"
-       ],
-       [
-        "upright",
-        "clutter_cereal_a"
-       ],
-       [
-        "upright",
-        "clutter_cereal_b"
-       ],
-       [
-        "hand_empty",
-        "right"
-       ]
-      ]
-     },
-     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
-     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
-     "watch": [
-      "paperback_book",
-      "plate_counter_a",
-      "plate_counter_b",
-      "bowl_side_table",
-      "cup_side_table",
-      "cup_counter_b",
-      "mug_dining_cabinet",
-      "clutter_cereal_a",
-      "clutter_cereal_b",
-      "spoon_target_table"
-     ],
-     "since": "v6",
-     "keep_design": [
-      "dining_table_2/top"
-     ],
-     "note": "the table is set as in table_seats, but the second cereal box stands in the middle of the one wide slot beside a seat: no free slot is both beside a seat and clear of the tableware",
-     "v6": {
-      "family": "seat_slot_blocked",
-      "case": null,
-      "challenge": "the table is set as in table_seats, but the second cereal box stands in the middle of the one wide slot beside a seat: no free slot is both beside a seat and clear of the tableware",
-      "rationale": "make the suitable place: set the book down at the free end, move the cereal box back from the edge (it is not tableware of a seat), then put the book in the slot by the seat",
-      "control": "overhang_ready",
-      "contrast": null,
-      "factor": null,
-      "derived_from": "table_set"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "paperback_book"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.56,
-         1.458,
-         7.68,
-         1.638
-        ],
-        "dx": [
-         -1.01,
-         0.57
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
-        ],
-        [
-         8.1185,
-         1.7875,
-         8.2095,
-         1.8493
-        ],
-        [
-         7.195,
-         1.6,
-         7.245,
-         1.6501
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
     "which_table__near_a": {
      "move": {
       "paperback_book": {
        "support": "kitchen_island/top",
        "xy": [
         7.62,
-        1.59
+        1.548
        ],
        "yaw_deg": 90
       },
@@ -1668,13 +1293,12 @@
        "yaw_deg": 0.0
       }
      },
-     "conditions": [
-      "no_overhang",
-      "destination_unnamed",
-      "spot_quality"
-     ],
      "remove": [
       "spoon_side_table"
+     ],
+     "conditions": [
+      "destination_unnamed",
+      "spot_quality"
      ],
      "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
      "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
@@ -1817,16 +1441,16 @@
       "dining_table_2/top",
       "dining_table_1/top"
      ],
-     "note": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+     "note": "the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
      "v6": {
       "family": "which_table",
       "case": "near_a",
-      "challenge": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
-      "rationale": "push the book over the edge to pick it (in place); then find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
-      "control": "no_overhang",
+      "challenge": "the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+      "rationale": "find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
+      "control": "overhang_ready",
       "contrast": null,
       "factor": "which of the two dining tables the guests eat at, and its setting (seed: one of four)",
-      "derived_from": "no_overhang"
+      "derived_from": "overhang_ready"
      },
      "layout": {
       "clusters": [
@@ -1837,9 +1461,9 @@
         "support": "kitchen_island/top",
         "box": [
          7.56,
-         1.5,
+         1.458,
          7.68,
-         1.68
+         1.638
         ],
         "dx": [
          -1.01,
@@ -1890,7 +1514,7 @@
        "support": "kitchen_island/top",
        "xy": [
         7.62,
-        1.59
+        1.548
        ],
        "yaw_deg": 90
       },
@@ -1991,13 +1615,12 @@
        "yaw_deg": 0.0
       }
      },
-     "conditions": [
-      "no_overhang",
-      "destination_unnamed",
-      "spot_quality"
-     ],
      "remove": [
       "spoon_side_table"
+     ],
+     "conditions": [
+      "destination_unnamed",
+      "spot_quality"
      ],
      "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
      "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
@@ -2140,16 +1763,16 @@
       "dining_table_2/top",
       "dining_table_1/top"
      ],
-     "note": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+     "note": "the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
      "v6": {
       "family": "which_table",
       "case": "near_b",
-      "challenge": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
-      "rationale": "push the book over the edge to pick it (in place); then find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
-      "control": "no_overhang",
+      "challenge": "the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+      "rationale": "find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
+      "control": "overhang_ready",
       "contrast": null,
       "factor": "which of the two dining tables the guests eat at, and its setting (seed: one of four)",
-      "derived_from": "no_overhang"
+      "derived_from": "overhang_ready"
      },
      "layout": {
       "clusters": [
@@ -2160,9 +1783,9 @@
         "support": "kitchen_island/top",
         "box": [
          7.56,
-         1.5,
+         1.458,
          7.68,
-         1.68
+         1.638
         ],
         "dx": [
          -1.01,
@@ -2213,7 +1836,7 @@
        "support": "kitchen_island/top",
        "xy": [
         7.62,
-        1.59
+        1.548
        ],
        "yaw_deg": 90
       },
@@ -2314,13 +1937,12 @@
        "yaw_deg": 0.0
       }
      },
-     "conditions": [
-      "no_overhang",
-      "destination_unnamed",
-      "spot_quality"
-     ],
      "remove": [
       "spoon_side_table"
+     ],
+     "conditions": [
+      "destination_unnamed",
+      "spot_quality"
      ],
      "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
      "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
@@ -2458,16 +2080,16 @@
       "dining_table_2/top",
       "dining_table_1/top"
      ],
-     "note": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+     "note": "the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
      "v6": {
       "family": "which_table",
       "case": "far_a",
-      "challenge": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
-      "rationale": "push the book over the edge to pick it (in place); then find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
-      "control": "no_overhang",
+      "challenge": "the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+      "rationale": "find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
+      "control": "overhang_ready",
       "contrast": null,
       "factor": "which of the two dining tables the guests eat at, and its setting (seed: one of four)",
-      "derived_from": "no_overhang"
+      "derived_from": "overhang_ready"
      },
      "layout": {
       "clusters": [
@@ -2478,9 +2100,9 @@
         "support": "kitchen_island/top",
         "box": [
          7.56,
-         1.5,
+         1.458,
          7.68,
-         1.68
+         1.638
         ],
         "dx": [
          -1.01,
@@ -2531,7 +2153,7 @@
        "support": "kitchen_island/top",
        "xy": [
         7.62,
-        1.59
+        1.548
        ],
        "yaw_deg": 90
       },
@@ -2632,13 +2254,12 @@
        "yaw_deg": 0.0
       }
      },
-     "conditions": [
-      "no_overhang",
-      "destination_unnamed",
-      "spot_quality"
-     ],
      "remove": [
       "spoon_side_table"
+     ],
+     "conditions": [
+      "destination_unnamed",
+      "spot_quality"
      ],
      "instruction": "The guests are having breakfast. Bring the paperback from the kitchen island to the table where they are eating and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it.",
      "instruction_zh": "客人正在吃早饭。把岛台上的书拿到他们吃饭的那张桌子上，放在某位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。",
@@ -2776,16 +2397,16 @@
       "dining_table_2/top",
       "dining_table_1/top"
      ],
-     "note": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+     "note": "the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
      "v6": {
       "family": "which_table",
       "case": "far_b",
-      "challenge": "the book lies flat on the island (no overhang); the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
-      "rationale": "push the book over the edge to pick it (in place); then find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
-      "control": "no_overhang",
+      "challenge": "the house has two dining tables, the near one (6 m) and one in the west dining room (16 m); breakfast for three is set on one of them, the other holds the kid's toys and the storage bin and has free edge slots too; the instruction does not say which table",
+      "rationale": "find the table the guests eat at: look at the near table, and if no places are set there go on to the other dining room; there judge the slots as in table_seats.  Putting the book on the idle table fails",
+      "control": "overhang_ready",
       "contrast": null,
       "factor": "which of the two dining tables the guests eat at, and its setting (seed: one of four)",
-      "derived_from": "no_overhang"
+      "derived_from": "overhang_ready"
      },
      "layout": {
       "clusters": [
@@ -2796,9 +2417,9 @@
         "support": "kitchen_island/top",
         "box": [
          7.56,
-         1.5,
+         1.458,
          7.68,
-         1.68
+         1.638
         ],
         "dx": [
          -1.01,
@@ -2843,7 +2464,7 @@
       }
      }
     },
-    "x6_dr_block_on_book__block": {
+    "no_room_fallback__seats_b": {
      "move": {
       "paperback_book": {
        "support": "kitchen_island/top",
@@ -2853,48 +2474,221 @@
        ],
        "yaw_deg": 90
       },
-      "wooden_block_a": {
-       "support": null,
-       "z": 0.886,
+      "bowl_side_table": {
+       "support": "dining_table_2/top",
        "xy": [
-        7.62,
-        1.59
+        3.7,
+        6.396
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        5.694
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.579
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        6.928
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.332
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.156
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon_target_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.4,
+        5.694
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.506
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        5.913
        ],
        "yaw_deg": 0.0
       }
      },
-     "failures": [
-      {
-       "id": "dependency_initial",
-       "kind": "dependency",
-       "when": "initial",
-       "check": [
-        [
-         "on_top_of",
-         "wooden_block_a",
-         "paperback_book"
-        ]
-       ]
-      }
+     "conditions": [
+      "spot_quality",
+      "infeasible_fallback"
      ],
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "watch": [
+      "paperback_book",
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "clear_of",
+        "paperback_book",
+        [
+         "plate_counter_a",
+         "plate_counter_b",
+         "bowl_side_table",
+         "cup_side_table",
+         "cup_counter_b",
+         "mug_dining_cabinet",
+         "clutter_cereal_a",
+         "clutter_cereal_b",
+         "spoon_target_table"
+        ],
+        0.05
+       ],
+       [
+        "near_any",
+        "paperback_book",
+        [
+         "bowl_side_table",
+         "plate_counter_a",
+         "plate_counter_b"
+        ],
+        0.15
+       ],
+       [
+        "near_start",
+        "plate_counter_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "bowl_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "mug_dining_cabinet",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "upright",
+        "cup_side_table"
+       ],
+       [
+        "upright",
+        "cup_counter_b"
+       ],
+       [
+        "upright",
+        "mug_dining_cabinet"
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
      "since": "v6",
-     "note": "a toy block (or the sponge) lies on top of the paperback",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
      "v6": {
-      "family": "x6_dr_block_on_book",
-      "case": "block",
-      "challenge": "a toy block (or the sponge) lies on top of the paperback",
-      "rationale": "the book cannot be lifted with something on it: take that off (and leave it on the island) first; it is not part of the goal, so this is an inserted precondition",
-      "control": "overhang_ready",
+      "family": "no_room_fallback",
+      "case": "seats_b",
+      "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "control": "table_seats",
       "contrast": null,
-      "factor": "which object lies on the book (blocking relation)",
-      "derived_from": "overhang_ready"
+      "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it)",
+      "derived_from": "table_set"
      },
      "layout": {
       "clusters": [
        {
         "names": [
-         "paperback_book",
-         "wooden_block_a"
+         "paperback_book"
         ],
         "support": "kitchen_island/top",
         "box": [
@@ -2922,115 +2716,6 @@
          1.7875,
          8.2095,
          1.8493
-        ],
-        [
-         7.045,
-         1.6,
-         7.095,
-         1.6501
-        ],
-        [
-         6.5886,
-         1.6011,
-         6.8103,
-         1.6604
-        ],
-        [
-         6.5852,
-         1.7261,
-         6.7947,
-         1.9338
-        ],
-        [
-         7.175,
-         1.825,
-         7.225,
-         1.875
-        ]
-       ]
-      },
-      "start": {
-       "room": "living_room_0_0",
-       "hide": [],
-       "look": [
-        "kitchen_island/top"
-       ]
-      }
-     }
-    },
-    "x6_dr_block_on_book__sponge": {
-     "move": {
-      "paperback_book": {
-       "support": "kitchen_island/top",
-       "xy": [
-        7.62,
-        1.548
-       ],
-       "yaw_deg": 90
-      },
-      "kitchen_sponge": {
-       "support": null,
-       "z": 0.886,
-       "xy": [
-        7.62,
-        1.59
-       ],
-       "yaw_deg": 0.0
-      }
-     },
-     "failures": [
-      {
-       "id": "dependency_initial",
-       "kind": "dependency",
-       "when": "initial",
-       "check": [
-        [
-         "on_top_of",
-         "kitchen_sponge",
-         "paperback_book"
-        ]
-       ]
-      }
-     ],
-     "since": "v6",
-     "note": "a toy block (or the sponge) lies on top of the paperback",
-     "v6": {
-      "family": "x6_dr_block_on_book",
-      "case": "sponge",
-      "challenge": "a toy block (or the sponge) lies on top of the paperback",
-      "rationale": "the book cannot be lifted with something on it: take that off (and leave it on the island) first; it is not part of the goal, so this is an inserted precondition",
-      "control": "overhang_ready",
-      "contrast": null,
-      "factor": "which object lies on the book (blocking relation)",
-      "derived_from": "overhang_ready"
-     },
-     "layout": {
-      "clusters": [
-       {
-        "names": [
-         "kitchen_sponge",
-         "paperback_book"
-        ],
-        "support": "kitchen_island/top",
-        "box": [
-         7.56,
-         1.458,
-         7.68,
-         1.638
-        ],
-        "dx": [
-         -1.01,
-         0.57
-        ]
-       }
-      ],
-      "static": {
-       "kitchen_island/top": [
-        [
-         7.3892,
-         1.6139,
-         7.54,
-         1.7787
         ],
         [
          7.195,
@@ -3055,12 +2740,1814 @@
          1.7261,
          6.7947,
          1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "no_room_fallback__seats_c": {
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.548
+       ],
+       "yaw_deg": 90
+      },
+      "bowl_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        5.808
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        7.505
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        5.625
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        6.357
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.593
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.13
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon_target_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.4,
+        7.505
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.119
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.286
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "spot_quality",
+      "infeasible_fallback"
+     ],
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "watch": [
+      "paperback_book",
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "clear_of",
+        "paperback_book",
+        [
+         "plate_counter_a",
+         "plate_counter_b",
+         "bowl_side_table",
+         "cup_side_table",
+         "cup_counter_b",
+         "mug_dining_cabinet",
+         "clutter_cereal_a",
+         "clutter_cereal_b",
+         "spoon_target_table"
+        ],
+        0.05
+       ],
+       [
+        "near_any",
+        "paperback_book",
+        [
+         "bowl_side_table",
+         "plate_counter_a",
+         "plate_counter_b"
+        ],
+        0.15
+       ],
+       [
+        "near_start",
+        "plate_counter_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "bowl_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "mug_dining_cabinet",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "upright",
+        "cup_side_table"
+       ],
+       [
+        "upright",
+        "cup_counter_b"
+       ],
+       [
+        "upright",
+        "mug_dining_cabinet"
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
+     "v6": {
+      "family": "no_room_fallback",
+      "case": "seats_c",
+      "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "control": "table_seats",
+      "contrast": null,
+      "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it)",
+      "derived_from": "table_set"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.56,
+         1.458,
+         7.68,
+         1.638
+        ],
+        "dx": [
+         -1.01,
+         0.57
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
         ],
         [
-         7.155,
-         1.82,
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
          7.245,
-         1.88
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "no_room_fallback__full_a": {
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.548
+       ],
+       "yaw_deg": 90
+      },
+      "bowl_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.083
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        6.615
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.266
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        7.353
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        5.882
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.581
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon_target_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.4,
+        7.353
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.059
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.834
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "spot_quality",
+      "infeasible_fallback"
+     ],
+     "instruction": "Breakfast is set on the dining table for the guests. Bring the paperback from the island and put it beside one of the guests' places, so they can read while they eat; leave some space between the book and the tableware, do not put it right against it. Do not move the tableware or the cereal boxes; if there is no such place on the table, put the book on top of the low cell shelf by the dining room's south wall instead.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。请把岛台上的书拿过去，放在某位客人吃饭的位置旁边，方便边吃边看；书和餐具之间要留出空隙，不要挨着。桌上的餐具和麦片都别挪动；要是桌上没有这样的位置，就把书放到餐厅南墙边那个矮格子柜的顶上。",
+     "watch": [
+      "paperback_book",
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "cell_shelf_4/top"
+       ],
+       [
+        "near_start",
+        "plate_counter_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "bowl_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "mug_dining_cabinet",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "upright",
+        "cup_side_table"
+       ],
+       [
+        "upright",
+        "cup_counter_b"
+       ],
+       [
+        "upright",
+        "mug_dining_cabinet"
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
+     "v6": {
+      "family": "no_room_fallback",
+      "case": "full_a",
+      "challenge": "breakfast is set for three as in table_seats; in one layout of three a cereal box stands in the one wide slot beside a seat, so no slot is both beside a seat and clear of the tableware; the instruction forbids moving the tableware and the cereal and names a fallback place",
+      "rationale": "judge the table first: if a slot beside a seat fits, use it (the fallback then fails); if none fits, the goal cannot be met under the constraint: take the named fallback, the cell shelf, instead of clearing the slot (moving the cereal box fails)",
+      "control": "table_seats",
+      "contrast": null,
+      "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it)",
+      "derived_from": "table_set"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.56,
+         1.458,
+         7.68,
+         1.638
+        ],
+        "dx": [
+         -1.01,
+         0.57
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "reader_seat__mug_1": {
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.548
+       ],
+       "yaw_deg": 90
+      },
+      "bowl_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.703
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        5.984
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.886
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        7.405
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.792
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.212
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon_target_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.4,
+        5.984
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.15,
+        5.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.624
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "spot_quality"
+     ],
+     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上喝咖啡的那位客人的，把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。",
+     "watch": [
+      "paperback_book",
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "clear_of",
+        "paperback_book",
+        [
+         "plate_counter_a",
+         "plate_counter_b",
+         "bowl_side_table",
+         "cup_side_table",
+         "cup_counter_b",
+         "mug_dining_cabinet",
+         "clutter_cereal_a",
+         "clutter_cereal_b",
+         "spoon_target_table"
+        ],
+        0.05
+       ],
+       [
+        "near_any",
+        "paperback_book",
+        [
+         "plate_counter_a",
+         "mug_dining_cabinet"
+        ],
+        0.15
+       ],
+       [
+        "not near_any",
+        "paperback_book",
+        [
+         "bowl_side_table",
+         "plate_counter_b"
+        ],
+        0.15
+       ],
+       [
+        "near_start",
+        "plate_counter_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "bowl_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "mug_dining_cabinet",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "upright",
+        "cup_side_table"
+       ],
+       [
+        "upright",
+        "cup_counter_b"
+       ],
+       [
+        "upright",
+        "mug_dining_cabinet"
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "three seats, each a plate or bowl with its drink, and a wide free slot beside every seat; one seat has a coffee mug, the other two a cup; the instruction names the guest only by what they drink",
+     "v6": {
+      "family": "reader_seat",
+      "case": "mug_1",
+      "challenge": "three seats, each a plate or bowl with its drink, and a wide free slot beside every seat; one seat has a coffee mug, the other two a cup; the instruction names the guest only by what they drink",
+      "rationale": "every seat has room, so the slot alone does not decide: find the seat with the mug and put the book in the slot beside it (within 15 cm of its plate or mug, not within 15 cm of another seat's plate); which seat that is changes with the seed",
+      "control": "table_seats",
+      "contrast": null,
+      "factor": "which seat has the coffee mug (seed: one of three)",
+      "derived_from": "table_set"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.56,
+         1.458,
+         7.68,
+         1.638
+        ],
+        "dx": [
+         -1.01,
+         0.57
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "reader_seat__mug_2": {
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.548
+       ],
+       "yaw_deg": 90
+      },
+      "bowl_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.686
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        5.984
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.203
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        7.405
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.792
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.878
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon_target_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.4,
+        6.686
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.15,
+        5.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.624
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "spot_quality"
+     ],
+     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上喝咖啡的那位客人的，把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。",
+     "watch": [
+      "paperback_book",
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "clear_of",
+        "paperback_book",
+        [
+         "plate_counter_a",
+         "plate_counter_b",
+         "bowl_side_table",
+         "cup_side_table",
+         "cup_counter_b",
+         "mug_dining_cabinet",
+         "clutter_cereal_a",
+         "clutter_cereal_b",
+         "spoon_target_table"
+        ],
+        0.05
+       ],
+       [
+        "near_any",
+        "paperback_book",
+        [
+         "bowl_side_table",
+         "mug_dining_cabinet"
+        ],
+        0.15
+       ],
+       [
+        "not near_any",
+        "paperback_book",
+        [
+         "plate_counter_a",
+         "plate_counter_b"
+        ],
+        0.15
+       ],
+       [
+        "near_start",
+        "plate_counter_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "bowl_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "mug_dining_cabinet",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "upright",
+        "cup_side_table"
+       ],
+       [
+        "upright",
+        "cup_counter_b"
+       ],
+       [
+        "upright",
+        "mug_dining_cabinet"
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "three seats, each a plate or bowl with its drink, and a wide free slot beside every seat; one seat has a coffee mug, the other two a cup; the instruction names the guest only by what they drink",
+     "v6": {
+      "family": "reader_seat",
+      "case": "mug_2",
+      "challenge": "three seats, each a plate or bowl with its drink, and a wide free slot beside every seat; one seat has a coffee mug, the other two a cup; the instruction names the guest only by what they drink",
+      "rationale": "every seat has room, so the slot alone does not decide: find the seat with the mug and put the book in the slot beside it (within 15 cm of its plate or mug, not within 15 cm of another seat's plate); which seat that is changes with the seed",
+      "control": "table_seats",
+      "contrast": null,
+      "factor": "which seat has the coffee mug (seed: one of three)",
+      "derived_from": "table_set"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.56,
+         1.458,
+         7.68,
+         1.638
+        ],
+        "dx": [
+         -1.01,
+         0.57
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "reader_seat__mug_3": {
+     "move": {
+      "paperback_book": {
+       "support": "kitchen_island/top",
+       "xy": [
+        7.62,
+        1.548
+       ],
+       "yaw_deg": 90
+      },
+      "bowl_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.686
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        7.388
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_side_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.869
+       ],
+       "yaw_deg": 0.0
+      },
+      "plate_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.66,
+        5.984
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_a": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.792
+       ],
+       "yaw_deg": 0.0
+      },
+      "mug_dining_cabinet": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        7.616
+       ],
+       "yaw_deg": 0.0
+      },
+      "spoon_target_table": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.4,
+        7.388
+       ],
+       "yaw_deg": 0.0
+      },
+      "clutter_cereal_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.15,
+        5.8
+       ],
+       "yaw_deg": 0.0
+      },
+      "cup_counter_b": {
+       "support": "dining_table_2/top",
+       "xy": [
+        3.7,
+        6.203
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "spot_quality"
+     ],
+     "instruction": "Breakfast is set on the dining table for the guests. The paperback on the island belongs to the guest who drinks coffee in the morning: put it beside that guest's place, so they can read while they eat; leave some space between the book and the tableware.",
+     "instruction_zh": "餐桌上已经给客人摆好了早餐。岛台上那本书是早上喝咖啡的那位客人的，把它放在那位客人的位置旁边，方便边吃边看；书和餐具之间要留出空隙。",
+     "watch": [
+      "paperback_book",
+      "plate_counter_a",
+      "plate_counter_b",
+      "bowl_side_table",
+      "cup_side_table",
+      "cup_counter_b",
+      "mug_dining_cabinet",
+      "clutter_cereal_a",
+      "clutter_cereal_b",
+      "spoon_target_table"
+     ],
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "clear_of",
+        "paperback_book",
+        [
+         "plate_counter_a",
+         "plate_counter_b",
+         "bowl_side_table",
+         "cup_side_table",
+         "cup_counter_b",
+         "mug_dining_cabinet",
+         "clutter_cereal_a",
+         "clutter_cereal_b",
+         "spoon_target_table"
+        ],
+        0.05
+       ],
+       [
+        "near_any",
+        "paperback_book",
+        [
+         "plate_counter_a",
+         "mug_dining_cabinet"
+        ],
+        0.15
+       ],
+       [
+        "not near_any",
+        "paperback_book",
+        [
+         "plate_counter_b",
+         "bowl_side_table"
+        ],
+        0.15
+       ],
+       [
+        "near_start",
+        "plate_counter_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "plate_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "bowl_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_side_table",
+        0.03
+       ],
+       [
+        "near_start",
+        "cup_counter_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "mug_dining_cabinet",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_a",
+        0.03
+       ],
+       [
+        "near_start",
+        "clutter_cereal_b",
+        0.03
+       ],
+       [
+        "near_start",
+        "spoon_target_table",
+        0.03
+       ],
+       [
+        "upright",
+        "cup_side_table"
+       ],
+       [
+        "upright",
+        "cup_counter_b"
+       ],
+       [
+        "upright",
+        "mug_dining_cabinet"
+       ],
+       [
+        "upright",
+        "clutter_cereal_a"
+       ],
+       [
+        "upright",
+        "clutter_cereal_b"
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "since": "v6",
+     "keep_design": [
+      "dining_table_2/top"
+     ],
+     "note": "three seats, each a plate or bowl with its drink, and a wide free slot beside every seat; one seat has a coffee mug, the other two a cup; the instruction names the guest only by what they drink",
+     "v6": {
+      "family": "reader_seat",
+      "case": "mug_3",
+      "challenge": "three seats, each a plate or bowl with its drink, and a wide free slot beside every seat; one seat has a coffee mug, the other two a cup; the instruction names the guest only by what they drink",
+      "rationale": "every seat has room, so the slot alone does not decide: find the seat with the mug and put the book in the slot beside it (within 15 cm of its plate or mug, not within 15 cm of another seat's plate); which seat that is changes with the seed",
+      "control": "table_seats",
+      "contrast": null,
+      "factor": "which seat has the coffee mug (seed: one of three)",
+      "derived_from": "table_set"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.56,
+         1.458,
+         7.68,
+         1.638
+        ],
+        "dx": [
+         -1.01,
+         0.57
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "which_book__living": {
+     "move": {
+      "paperback_book": {
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.4,
+        0.484
+       ],
+       "yaw_deg": 90.0
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "item_out_of_view"
+     ],
+     "watch": [
+      "paperback_book",
+      "book_island",
+      "book_other"
+     ],
+     "add": {
+      "book_island": {
+       "asset": "book_red",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.76
+       ],
+       "yaw_deg": 0.0
+      },
+      "book_other": {
+       "asset": "book_blue",
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0,
+        -0.43
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "near_start",
+        "book_island",
+        0.03
+       ],
+       [
+        "near_start",
+        "book_other",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Last night the guest read for a while in the living room while watching TV and left the book there. Bring that book to the dining table; they want to go on reading at breakfast.",
+     "instruction_zh": "客人昨晚在客厅看电视时看了会儿书，看完就放在那儿了。把那本书拿到餐桌上，客人想边吃早饭边接着看。",
+     "since": "v6",
+     "note": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
+     "v6": {
+      "family": "which_book",
+      "case": "living",
+      "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
+      "rationale": "the nearest book is not the one meant: go to the room the instruction names, take the book there and bring it to the dining table; the island book and the book in the other room stay",
+      "control": "overhang_ready",
+      "contrast": null,
+      "factor": "the room the guest read in (seed: living room or bedroom)",
+      "derived_from": "overhang_ready"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "book_other"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.9,
+         -0.5,
+         1.1,
+         -0.36
+        ],
+        "dx": [
+         -0.18,
+         0.18
+        ],
+        "dy": [
+         -0.1,
+         0.03
+        ]
+       },
+       {
+        "names": [
+         "book_island"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.18,
+         1.6763,
+         7.42,
+         1.8437
+        ],
+        "dx": [
+         -0.62,
+         0.82
+        ],
+        "dy": [
+         0.0,
+         0.13
+        ]
+       },
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.34,
+         0.394,
+         7.46,
+         0.574
+        ],
+        "dx": [
+         -0.68,
+         0.9
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
+        ]
+       ]
+      },
+      "start": {
+       "room": "living_room_0_0",
+       "hide": [],
+       "look": [
+        "kitchen_island/top"
+       ]
+      }
+     }
+    },
+    "which_book__bedroom": {
+     "move": {
+      "paperback_book": {
+       "support": "bookcase_2/top",
+       "xy": [
+        1.0,
+        -0.589
+       ],
+       "yaw_deg": 90.0
+      }
+     },
+     "conditions": [
+      "referent_clue",
+      "item_out_of_view"
+     ],
+     "watch": [
+      "paperback_book",
+      "book_island",
+      "book_other"
+     ],
+     "add": {
+      "book_island": {
+       "asset": "book_green",
+       "support": "kitchen_island/top",
+       "xy": [
+        7.3,
+        1.76
+       ],
+       "yaw_deg": 0.0
+      },
+      "book_other": {
+       "asset": "book_blue",
+       "support": "tv_stand_2/top",
+       "xy": [
+        7.6,
+        0.36
+       ],
+       "yaw_deg": 0.0
+      }
+     },
+     "goal": {
+      "all": [
+       [
+        "on",
+        "paperback_book",
+        "dining_table_2/top"
+       ],
+       [
+        "near_start",
+        "book_island",
+        0.03
+       ],
+       [
+        "near_start",
+        "book_other",
+        0.03
+       ],
+       [
+        "hand_empty",
+        "right"
+       ]
+      ]
+     },
+     "instruction": "Last night the guest read in the bedroom before going to sleep and left the book there. Bring that book to the dining table; they want to go on reading at breakfast.",
+     "instruction_zh": "客人昨晚睡前在卧室看书，看完就放在那儿了。把那本书拿到餐桌上，客人想边吃早饭边接着看。",
+     "since": "v6",
+     "note": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
+     "v6": {
+      "family": "which_book",
+      "case": "bedroom",
+      "challenge": "a book lies on the island; the guest's book is in the room they read in last night (on the TV stand in the living room, or on the bookcase in the bedroom), and the other room has a third book; the instruction names only the room and the occasion",
+      "rationale": "the nearest book is not the one meant: go to the room the instruction names, take the book there and bring it to the dining table; the island book and the book in the other room stay",
+      "control": "overhang_ready",
+      "contrast": null,
+      "factor": "the room the guest read in (seed: living room or bedroom)",
+      "derived_from": "overhang_ready"
+     },
+     "layout": {
+      "clusters": [
+       {
+        "names": [
+         "paperback_book"
+        ],
+        "support": "bookcase_2/top",
+        "box": [
+         0.94,
+         -0.679,
+         1.06,
+         -0.499
+        ],
+        "dx": [
+         -0.22,
+         0.22
+        ]
+       },
+       {
+        "names": [
+         "book_island"
+        ],
+        "support": "kitchen_island/top",
+        "box": [
+         7.1899,
+         1.6685,
+         7.4101,
+         1.8515
+        ],
+        "dx": [
+         -0.63,
+         0.83
+        ],
+        "dy": [
+         -0.01,
+         0.12
+        ]
+       },
+       {
+        "names": [
+         "book_other"
+        ],
+        "support": "tv_stand_2/top",
+        "box": [
+         7.5,
+         0.29,
+         7.7,
+         0.4299
+        ],
+        "dx": [
+         -0.84,
+         0.66
+        ],
+        "dy": [
+         -0.06,
+         0.07
+        ]
+       }
+      ],
+      "static": {
+       "kitchen_island/top": [
+        [
+         7.3892,
+         1.6139,
+         7.54,
+         1.7787
+        ],
+        [
+         8.1185,
+         1.7875,
+         8.2095,
+         1.8493
+        ],
+        [
+         7.195,
+         1.6,
+         7.245,
+         1.6501
+        ],
+        [
+         7.045,
+         1.6,
+         7.095,
+         1.6501
+        ],
+        [
+         6.5886,
+         1.6011,
+         6.8103,
+         1.6604
+        ],
+        [
+         6.5852,
+         1.7261,
+         6.7947,
+         1.9338
         ]
        ]
       },
@@ -3096,17 +4583,21 @@
    "nominal": "nominal",
    "oracle": {
     "overhang_ready": "v5fix_overhang_ready",
-    "no_overhang": "v5fix_no_overhang",
     "table_seats__seats_a": "v6_table_seats__seats_a",
     "table_seats__seats_b": "v6_table_seats__seats_b",
     "table_seats__seats_c": "v6_table_seats__seats_c",
-    "seat_slot_blocked": "v6_seat_slot_blocked",
     "which_table__near_a": "v6_which_table__near_a",
     "which_table__near_b": "v6_which_table__near_b",
     "which_table__far_a": "v6_which_table__far_a",
     "which_table__far_b": "v6_which_table__far_b",
-    "x6_dr_block_on_book__block": "v6_x6_dr_block_on_book__block",
-    "x6_dr_block_on_book__sponge": "v6_x6_dr_block_on_book__sponge"
+    "no_room_fallback__seats_b": "v6_no_room_fallback__seats_b",
+    "no_room_fallback__seats_c": "v6_no_room_fallback__seats_c",
+    "no_room_fallback__full_a": "v6_no_room_fallback__full_a",
+    "reader_seat__mug_1": "v6_reader_seat__mug_1",
+    "reader_seat__mug_2": "v6_reader_seat__mug_2",
+    "reader_seat__mug_3": "v6_reader_seat__mug_3",
+    "which_book__living": "v6_which_book__living",
+    "which_book__bedroom": "v6_which_book__bedroom"
    },
    "routes": {
     "nominal": {
@@ -3216,75 +4707,6 @@
      ],
      "since": "v2",
      "fixes": "nominal"
-    },
-    "v5fix_no_overhang": {
-     "kind": "v5_route_fix",
-     "variants": [
-      "no_overhang"
-     ],
-     "recovery": "Pick -> failure -> Expose -> Pick",
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "paperback_book"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "expose",
-       "args": {
-        "object": "paperback_book"
-       },
-       "role": "recovery"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "paperback_book"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "paperback_book"
-       },
-       "role": "retry_after_recovery"
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "paperback_book",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.72,
-         6.5
-        ]
-       }
-      }
-     ],
-     "since": "v2",
-     "fixes": "fallback_expose"
     },
     "v6_table_seats__seats_a": {
      "steps": [
@@ -3466,117 +4888,6 @@
      "kind": "v6_oracle",
      "variant": "table_seats__seats_c"
     },
-    "v6_seat_slot_blocked": {
-     "steps": [
-      {
-       "skill": "look",
-       "args": {
-        "target": "kitchen_island/top"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "paperback_book"
-       }
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "paperback_book"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "paperback_book"
-       }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "dining_table_2/top"
-       }
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "paperback_book",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.72,
-         5.67
-        ]
-       }
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "clutter_cereal_b"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "clutter_cereal_b",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.4,
-         7.059
-        ]
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "approach",
-       "args": {
-        "target": "paperback_book"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "look",
-       "args": {
-        "target": "paperback_book"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "paperback_book"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "paperback_book",
-        "receptacle": "dining_table_2/top",
-        "hint_xy": [
-         3.72,
-         7.059
-        ]
-       }
-      }
-     ],
-     "kind": "v6_oracle",
-     "variant": "seat_slot_blocked"
-    },
     "v6_which_table__near_a": {
      "steps": [
       {
@@ -3592,19 +4903,10 @@
        }
       },
       {
-       "skill": "pick",
+       "skill": "approach",
        "args": {
-        "object": "paperback_book"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "expose",
-       "args": {
-        "object": "paperback_book"
-       },
-       "role": "recovery"
+        "target": "paperback_book"
+       }
       },
       {
        "skill": "look",
@@ -3617,8 +4919,7 @@
        "skill": "pick",
        "args": {
         "object": "paperback_book"
-       },
-       "role": "retry_after_recovery"
+       }
       },
       {
        "skill": "navigate",
@@ -3662,19 +4963,10 @@
        }
       },
       {
-       "skill": "pick",
+       "skill": "approach",
        "args": {
-        "object": "paperback_book"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "expose",
-       "args": {
-        "object": "paperback_book"
-       },
-       "role": "recovery"
+        "target": "paperback_book"
+       }
       },
       {
        "skill": "look",
@@ -3687,8 +4979,7 @@
        "skill": "pick",
        "args": {
         "object": "paperback_book"
-       },
-       "role": "retry_after_recovery"
+       }
       },
       {
        "skill": "navigate",
@@ -3732,19 +5023,10 @@
        }
       },
       {
-       "skill": "pick",
+       "skill": "approach",
        "args": {
-        "object": "paperback_book"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "expose",
-       "args": {
-        "object": "paperback_book"
-       },
-       "role": "recovery"
+        "target": "paperback_book"
+       }
       },
       {
        "skill": "look",
@@ -3757,8 +5039,7 @@
        "skill": "pick",
        "args": {
         "object": "paperback_book"
-       },
-       "role": "retry_after_recovery"
+       }
       },
       {
        "skill": "navigate",
@@ -3814,19 +5095,10 @@
        }
       },
       {
-       "skill": "pick",
+       "skill": "approach",
        "args": {
-        "object": "paperback_book"
-       },
-       "expect": "fail",
-       "role": "failure"
-      },
-      {
-       "skill": "expose",
-       "args": {
-        "object": "paperback_book"
-       },
-       "role": "recovery"
+        "target": "paperback_book"
+       }
       },
       {
        "skill": "look",
@@ -3839,8 +5111,7 @@
        "skill": "pick",
        "args": {
         "object": "paperback_book"
-       },
-       "role": "retry_after_recovery"
+       }
       },
       {
        "skill": "navigate",
@@ -3881,39 +5152,13 @@
      "kind": "v6_oracle",
      "variant": "which_table__far_b"
     },
-    "v6_x6_dr_block_on_book__block": {
+    "v6_no_room_fallback__seats_b": {
      "steps": [
       {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "wooden_block_a"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "wooden_block_a"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "wooden_block_a",
-        "receptacle": "kitchen_island/top",
-        "hint_xy": [
-         7.2,
-         1.85
-        ]
-       },
-       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -3947,53 +5192,33 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "paperback_book",
         "receptacle": "dining_table_2/top",
         "hint_xy": [
          3.72,
-         6.5
+         6.138
         ]
        }
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_dr_block_on_book__block"
+     "variant": "no_room_fallback__seats_b"
     },
-    "v6_x6_dr_block_on_book__sponge": {
+    "v6_no_room_fallback__seats_c": {
      "steps": [
       {
        "skill": "look",
        "args": {
         "target": "kitchen_island/top"
        }
-      },
-      {
-       "skill": "navigate",
-       "args": {
-        "destination": "kitchen_sponge"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "pick",
-       "args": {
-        "object": "kitchen_sponge"
-       },
-       "role": "recover"
-      },
-      {
-       "skill": "place",
-       "args": {
-        "object": "kitchen_sponge",
-        "receptacle": "kitchen_island/top",
-        "hint_xy": [
-         7.2,
-         1.85
-        ]
-       },
-       "role": "recover"
       },
       {
        "skill": "navigate",
@@ -4027,6 +5252,323 @@
        }
       },
       {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         7.779
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "no_room_fallback__seats_c"
+    },
+    "v6_no_room_fallback__full_a": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "cell_shelf_4/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "cell_shelf_4/top",
+        "hint_xy": [
+         4.3,
+         4.45
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "no_room_fallback__full_a"
+    },
+    "v6_reader_seat__mug_1": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         5.69
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "reader_seat__mug_1"
+    },
+    "v6_reader_seat__mug_2": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         6.428
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "reader_seat__mug_2"
+    },
+    "v6_reader_seat__mug_3": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       },
+       "role": "recover"
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         7.094
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "reader_seat__mug_3"
+    },
+    "v6_which_book__living": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "tv_stand_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
        "skill": "place",
        "args": {
         "object": "paperback_book",
@@ -4039,7 +5581,72 @@
       }
      ],
      "kind": "v6_oracle",
-     "variant": "x6_dr_block_on_book__sponge"
+     "variant": "which_book__living"
+    },
+    "v6_which_book__bedroom": {
+     "steps": [
+      {
+       "skill": "look",
+       "args": {
+        "target": "kitchen_island/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "bookcase_2/top"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "paperback_book"
+       }
+      },
+      {
+       "skill": "approach",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "look",
+       "args": {
+        "target": "paperback_book"
+       }
+      },
+      {
+       "skill": "pick",
+       "args": {
+        "object": "paperback_book"
+       }
+      },
+      {
+       "skill": "navigate",
+       "args": {
+        "destination": "dining_table_2/top"
+       }
+      },
+      {
+       "skill": "place",
+       "args": {
+        "object": "paperback_book",
+        "receptacle": "dining_table_2/top",
+        "hint_xy": [
+         3.72,
+         6.5
+        ]
+       }
+      }
+     ],
+     "kind": "v6_oracle",
+     "variant": "which_book__bedroom"
     }
    },
    "benchmark_version": "v6",
@@ -4090,25 +5697,6 @@
       "19": "overhang_ready"
      }
     },
-    "no_overhang": {
-     "origin": "v5",
-     "control": "overhang_ready",
-     "layouts": [
-      "no_overhang"
-     ],
-     "seeds": {
-      "10": "no_overhang",
-      "11": "no_overhang",
-      "12": "no_overhang",
-      "13": "no_overhang",
-      "14": "no_overhang",
-      "15": "no_overhang",
-      "16": "no_overhang",
-      "17": "no_overhang",
-      "18": "no_overhang",
-      "19": "no_overhang"
-     }
-    },
     "table_seats": {
      "origin": "v6",
      "control": "overhang_ready",
@@ -4131,29 +5719,9 @@
       "19": "table_seats__seats_c"
      }
     },
-    "seat_slot_blocked": {
-     "origin": "v6",
-     "control": "overhang_ready",
-     "layouts": [
-      "seat_slot_blocked"
-     ],
-     "factor": null,
-     "seeds": {
-      "10": "seat_slot_blocked",
-      "11": "seat_slot_blocked",
-      "12": "seat_slot_blocked",
-      "13": "seat_slot_blocked",
-      "14": "seat_slot_blocked",
-      "15": "seat_slot_blocked",
-      "16": "seat_slot_blocked",
-      "17": "seat_slot_blocked",
-      "18": "seat_slot_blocked",
-      "19": "seat_slot_blocked"
-     }
-    },
     "which_table": {
      "origin": "v6",
-     "control": "no_overhang",
+     "control": "overhang_ready",
      "layouts": [
       "which_table__near_a",
       "which_table__near_b",
@@ -4174,48 +5742,76 @@
       "19": "which_table__near_a"
      }
     },
-    "x6_dr_block_on_book__block": {
+    "no_room_fallback": {
      "origin": "v6",
      "control": "overhang_ready",
      "layouts": [
-      "x6_dr_block_on_book__block"
+      "no_room_fallback__seats_b",
+      "no_room_fallback__seats_c",
+      "no_room_fallback__full_a"
      ],
+     "factor": "whether the set table has a suitable slot (seed: two settings with one, one with a cereal box in it)",
      "seeds": {
-      "10": "x6_dr_block_on_book__block",
-      "11": "x6_dr_block_on_book__block",
-      "12": "x6_dr_block_on_book__block",
-      "13": "x6_dr_block_on_book__block",
-      "14": "x6_dr_block_on_book__block",
-      "15": "x6_dr_block_on_book__block",
-      "16": "x6_dr_block_on_book__block",
-      "17": "x6_dr_block_on_book__block",
-      "18": "x6_dr_block_on_book__block",
-      "19": "x6_dr_block_on_book__block"
+      "10": "no_room_fallback__seats_c",
+      "11": "no_room_fallback__seats_b",
+      "12": "no_room_fallback__seats_b",
+      "13": "no_room_fallback__full_a",
+      "14": "no_room_fallback__full_a",
+      "15": "no_room_fallback__seats_c",
+      "16": "no_room_fallback__full_a",
+      "17": "no_room_fallback__seats_b",
+      "18": "no_room_fallback__seats_c",
+      "19": "no_room_fallback__seats_b"
      }
     },
-    "x6_dr_block_on_book__sponge": {
+    "reader_seat": {
      "origin": "v6",
      "control": "overhang_ready",
      "layouts": [
-      "x6_dr_block_on_book__sponge"
+      "reader_seat__mug_1",
+      "reader_seat__mug_2",
+      "reader_seat__mug_3"
      ],
+     "factor": "which seat has the coffee mug (seed: one of three)",
      "seeds": {
-      "10": "x6_dr_block_on_book__sponge",
-      "11": "x6_dr_block_on_book__sponge",
-      "12": "x6_dr_block_on_book__sponge",
-      "13": "x6_dr_block_on_book__sponge",
-      "14": "x6_dr_block_on_book__sponge",
-      "15": "x6_dr_block_on_book__sponge",
-      "16": "x6_dr_block_on_book__sponge",
-      "17": "x6_dr_block_on_book__sponge",
-      "18": "x6_dr_block_on_book__sponge",
-      "19": "x6_dr_block_on_book__sponge"
+      "10": "reader_seat__mug_2",
+      "11": "reader_seat__mug_1",
+      "12": "reader_seat__mug_3",
+      "13": "reader_seat__mug_2",
+      "14": "reader_seat__mug_1",
+      "15": "reader_seat__mug_2",
+      "16": "reader_seat__mug_1",
+      "17": "reader_seat__mug_1",
+      "18": "reader_seat__mug_3",
+      "19": "reader_seat__mug_3"
+     }
+    },
+    "which_book": {
+     "origin": "v6",
+     "control": "overhang_ready",
+     "layouts": [
+      "which_book__living",
+      "which_book__bedroom"
+     ],
+     "factor": "the room the guest read in (seed: living room or bedroom)",
+     "seeds": {
+      "10": "which_book__bedroom",
+      "11": "which_book__living",
+      "12": "which_book__bedroom",
+      "13": "which_book__living",
+      "14": "which_book__living",
+      "15": "which_book__bedroom",
+      "16": "which_book__bedroom",
+      "17": "which_book__bedroom",
+      "18": "which_book__living",
+      "19": "which_book__living"
      }
     }
    },
    "v6_replaced": {
     "table_set": "replaced by table_seats (several free slots, the suitable one changes with the setting)",
-    "h_dynamic_pushed_back": "removed: two unrelated challenges (no_overhang mid-way and table_set); seat_slot_blocked is the Action + Task variant of T01",
+    "h_dynamic_pushed_back": "removed: two unrelated challenges (no_overhang mid-way and table_set)",
+    "no_overhang": "removed: pushing the book over the edge is a local precondition (Action), no task-level choice",
     "far_no_overhang": "replaced by which_table (the search was one turn to the island; now the table the guests eat at is to be found)"
    },
    "v6_dropped": {
@@ -4224,20 +5820,14 @@
     "h_action_ik_pick_and_place": "same as table_set without its injected action failures",
     "h_mixed_table_set_ik": "same as table_set without its injected action failures",
     "table_set": "replaced by table_seats (several free slots, the suitable one changes with the setting)",
-    "h_dynamic_pushed_back": "removed: two unrelated challenges (no_overhang mid-way and table_set); seat_slot_blocked is the Action + Task variant of T01",
+    "h_dynamic_pushed_back": "removed: two unrelated challenges (no_overhang mid-way and table_set)",
+    "no_overhang": "removed: pushing the book over the edge is a local precondition (Action), no task-level choice",
     "far_no_overhang": "replaced by which_table (the search was one turn to the island; now the table the guests eat at is to be found)"
    },
    "v6_tracks": {
     "overhang_ready": {
      "category": "control",
      "local": [],
-     "longer": []
-    },
-    "no_overhang": {
-     "category": "action",
-     "local": [
-      "expose the flat object over the edge, then pick it"
-     ],
      "longer": []
     },
     "table_seats": {
@@ -4247,38 +5837,37 @@
       "spot_quality"
      ]
     },
-    "seat_slot_blocked": {
-     "category": "action_task",
-     "local": [
-      "move what fills the destination to a legal place, then place"
-     ],
-     "longer": [
-      "spot_quality"
-     ]
-    },
     "which_table": {
-     "category": "action_task",
-     "local": [
-      "expose the flat object over the edge, then pick it"
-     ],
+     "category": "task",
+     "local": [],
      "longer": [
       "destination_unnamed",
       "spot_quality"
      ]
     },
-    "x6_dr_block_on_book__block": {
-     "category": "action",
-     "local": [
-      "clear the object on the target / open the door first"
-     ],
-     "longer": []
+    "no_room_fallback": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "infeasible_fallback",
+      "spot_quality"
+     ]
     },
-    "x6_dr_block_on_book__sponge": {
-     "category": "action",
-     "local": [
-      "clear the object on the target / open the door first"
-     ],
-     "longer": []
+    "reader_seat": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "referent_clue",
+      "spot_quality"
+     ]
+    },
+    "which_book": {
+     "category": "task",
+     "local": [],
+     "longer": [
+      "item_out_of_view",
+      "referent_clue"
+     ]
     }
    }
   },
