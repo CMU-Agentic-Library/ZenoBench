@@ -166,6 +166,14 @@ def render_one(tid, vid, lid, seed, out_dir, situation):
         if o and n not in used and n in st["objects"] and assets.get(o.get("asset"), {}).get("container") \
                 and not (cfg["move"].get(n, {}).get("support") or "").endswith("/inside_shelf"):
             other.append(n)
+    # a watched object the route never touches, on a support no view shows (a look-alike book on the island or in
+    # another room, the boxes that fill the cabinet top): its support from above
+    for n in rtask.get("watch") or []:
+        sup = ((cfg.get("move") or {}).get(n) or (cfg.get("add") or {}).get(n) or {}).get("support")
+        if n in used or n not in st["objects"] or not sup or sup.endswith("/inside_shelf") \
+                or sup in place_sups | picked | set(other) or n in other:
+            continue
+        other.append(sup)
     for kind, name in plan_views(task, lid) + [("other", s) for s in other]:
         if kind == "object":
             if name not in st["objects"] or (cfg["move"].get(name, {}).get("support") in place_sups and
