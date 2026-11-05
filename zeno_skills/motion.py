@@ -1053,7 +1053,7 @@ class Motion:
         """{owner: {link: depth m}}: what each obstacle within ``reach`` of the TCP is penetrated by
         at q, every link of the arm checked (fingers too) and no target exempt -- the full model,
         not the one a motion ran under.  One query per owner with only its colliders on; for
-        measuring (6.2: what the open hand at a grasp pose touches), not for planning."""
+        measuring (what the open hand at a grasp pose touches: grasp_contacts), not for planning."""
         with self._query(kin, other_q, {"exempt_targets": False}) as arm:
             q = np.clip(np.asarray(q, float), arm.lo, arm.hi)
             if not self._touching(arm, q):

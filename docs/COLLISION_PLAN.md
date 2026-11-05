@@ -5,9 +5,9 @@
 - `COLLISION_AUDIT.md`：最初的现状盘点和问题来源（历史，"审计 x.y"指它的章节）。
 - `COLLISION_CLEANUP.md`：要删的东西逐条列表，每条标了类别（W、F、C、K、S、B、X）和归哪一步。
 - `skills/`：每个技能现在在物理上一步一步做什么。改了技能就同步改那里。
-- `CONTAINER_COLLIDERS.md`：容器碰撞体和真实网格对不上（马克杯、锅），待定。
+- `CONTAINER_COLLIDERS.md`：容器碰撞体和真实网格对不上（马克杯、锅），先不修。
 
-代码：分支 `remove-handcoded-motion`。最近一次全量是 `0c7eb90`（3b 第 2 项），之后又有导航常数的三个提交（第 4 节）。
+代码：分支 `remove-handcoded-motion`。最近一次全量是 `0c7eb90`（119/170），之后的提交里有好几组会改变基线（第 5 节）。
 
 ## 1. 目标、原则和检查清单
 
@@ -56,25 +56,38 @@
 
 **手里有东西时不做目标豁免。** 手去的是物体要去的地方，不是去碰那里的东西。
 
-**pick 和 place 的接近、离开、搬运查手指**（作为步骤 5 的例外提前做，2026-11-03）；其他技能的 `ignore_fingers` 留到步骤 5。
+**pick 和 place 的接近、离开、搬运查手指**（步骤 5 的例外，提前做了）；其他技能的 `ignore_fingers` 留到步骤 5。
 
 ## 3. 现在的机制
 
 ### 运动入口（`rig.py`）
 
 - `move_to`、`move_to_any`、`joint_path`、`move_left_to` 共用 `_motion_path`：不查碰撞（或没有 world）就走直线；查碰撞就在 `_planning` 里规划；fallback 类的 Allow 规划不出来、或起点已在碰撞里，就走直线并记 `clearance_fallback`；其他的抛 `SkillFailure`。
-- `move_to` 的规划：直线（`cart_path`）→ `plan_to`（持物时保持倾角的位姿约束，否则以直线接近收尾）→ 规划到关节目标（`q_hint` 在实际底盘位姿下沿它的分支重解，不行就全局 IK，最后用 `q_hint` 本身）。关节目标这一档必须保留：不持物时位姿约束的规划几乎总是失败（3a 全量 231 段成功 6 段）。
+- `move_to` 的规划：直线（`cart_path`）→ `plan_to`（持物时保持倾角的位姿约束，否则以直线接近收尾）→ 规划到关节目标。关节目标这一档必须保留：不持物时位姿约束的规划几乎总是失败（3a 全量 231 段成功 6 段）。
+- 关节目标（`_goal`）：有 `q_hint`（停车点搜索验证过的解）时，它的 TCP 离目标 1 mm、0.01 rad 以内且无碰撞就用它本身（`HINT_REACH`、`HINT_TURN`：底盘停在搜索给的位置上，就规划到搜索验证过的那个目标）；否则沿它的分支重解；再不行就没有关节目标，不换 IK 分支。没有 `q_hint` 时取当前姿态附近的 IK 解。
 - 不查碰撞的直线（`_straight_move`）：直线没有 IK 时关节插值到 IK 解；朝 `q_hint` 摆动超过 1 rad 的仍然规划（前臂扫过垃圾桶）。
 - 手里的物体进碰撞模型（`Motion.scope`）：每次查碰撞的运动把它的包围盒球挂到该臂的 held link 上。起点时还贴着东西、又不是离开接触的运动，这一段不带它。
 - 持物约束（K 类）：手里有东西时一律平滑跟随，手臂关节限速 0.5 rad/s（沿口捏着的容器 0.25）；规划器里保持倾角，直线关节插值用 `tips_over` 检查；`q_hint` 保持 IK 分支连续。
+- 规划器里的头和手指按仿真里的实际值锁定（两根手指取张得更开的那根）；停车点搜索查抓取时，模型里的手指张到候选的宽度（`Motion.hand_open`）。
 
 ### 接近与离开（`Rig._approach`、`Rig.leave`）
 
 物理上怎么走见 `skills/approach_leave.md`。要点：
 
-- **接近**：技能给中继位姿、方向 u、直线长度 L。接触段长度由碰撞模型往回量（多走 `LEAVE_MARGIN`，最长 `LEAVE_MAX`）；自由段规划到"中继位姿往回 max(L, 接触段)"处，再沿直线进去，手指和目标物体都是障碍物（`FREE_SPACE_KW`）；接触段不查碰撞（`into_contact`）。pick 要改成两段式（第 6 节）。
+- **接近**：技能给中继位姿、方向 u、直线长度 L。自由段规划到直线起点，再沿直线进去，手指和目标物体都是障碍物（`FREE_SPACE_KW`）。
+  - `Allow` 不查碰撞时（place 的 `place_down` 等，`into_contact`）：接触段长度由碰撞模型往回量（多走 `LEAVE_MARGIN`，最长 `LEAVE_MAX`），直线起点在中继位姿往回 max(L, 接触段) 处，接触段不查碰撞。
+  - `Allow` 查碰撞时（pick 的 `pick_grasp`）：终点本身必须无碰撞，没有接触段，规划不出来就失败，不退回直线。
 - **离开**：技能只给方向。沿方向走到机器人（含手指、手里的物体）离开周围 5 mm 以上再多 1 cm，最多 6 cm（终点没 IK 就减半）；抬起时（`lifts_off`）至少升高 `LEAVE_GAP`。判据用间隙不用穿透：手里物体的碰撞球内切在包围盒里，平放时穿透深度正好是 0。
 - 接触段不整段规划的原因：cuRobo 拒绝从碰撞中的起点规划；关掉起点检查让优化器自己挤出去，方向不受控。
+
+### pick（两段式，`_pick_pinch_core`）
+
+物理上怎么走见 `skills/pick.md`。
+
+1. **张开的手到抓取位姿**：一次查碰撞的运动（`pick_grasp`），最后 4 cm（`PICK_APPROACH`）沿夹爪轴直线，要抓的物体是障碍物，不做目标豁免。停车点验证用同一条规则：接近起点和抓取位姿按自由空间查，模型里的手指张到候选的宽度；抬起 3 cm（`PICK_LEAVE_CHECK`）那一项照旧（那时物体算在手里）。
+2. **合爪**：只动手指，`closing(name)`（这只手的手指可以碰这个物体）。然后竖直离开接触，再规划到搬运姿态。
+
+抓取高度：顶部捏取张开的指垫最低那个角至少比物体下面的表面高 `PAD_FLOOR_GAP`，按这次夹爪朝向算，表面取它所在的支撑面或包围盒最低点（`_surface_under`）；掌心、相机不碰物体的最低高度由 `tools/prepare_assets.py` 按碰撞球对物体网格推导，写在抓取标注里。
 
 ### 目标集合
 
@@ -84,7 +97,7 @@
 
 ### 目标豁免（`Motion._targets_allow`）
 
-TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这个物体的整个碰撞体在这段运动里对整个机器人都不存在。手里有东西、或 `coll_kw` 里 `exempt_targets` 为 False 时不做。这是粗放的规则：手腕、小臂也能穿过目标物体的其他部位。只有带 TCP 目标点的查询会豁免：`ik` / `ik_global`（目标点）、`ik_set`、`cart_path`（起点和终点都算）、`plan_to`（起点和终点）、`clearance`；`free`、`near`、`segment_free`、关节空间的 `plan`、`explain` 不带目标点，不豁免。所以同一个姿态，用 IK 解出来时"不碰"、再用 `free` 查可能"碰"，停车点验证（IK 和直线）和展开检查（关节规划）对目标物体的规则也不一样。改两段式时要让这些查询规则一致。pick 改两段式时在 pick 里取消；其他技能在步骤 4 改成 `Allow` 预设时取消。
+TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这个物体的整个碰撞体在这段运动里对整个机器人都不存在。手里有东西、或 `coll_kw` 里 `exempt_targets` 为 False 时不做（`FREE_SPACE_KW`；pick 全程这样）。还在用的：place 停车点搜索里的接近起点（`FINGERS_KW`）和步骤 4 之前的其他技能。这是粗放的规则：手腕、小臂也能穿过目标物体的其他部位。只有带 TCP 目标点的查询会豁免：`ik` / `ik_global`（目标点）、`ik_set`、`cart_path`（起点和终点都算）、`plan_to`（起点和终点）、`clearance`；`free`、`near`、`segment_free`、关节空间的 `plan`、`explain` 不带目标点，不豁免。所以同一个姿态，用 IK 解出来时"不碰"、再用 `free` 查可能"碰"。各技能在步骤 4 改成 `Allow` 预设时取消。
 
 ### 底盘规划器（`base_planner.py`）
 
@@ -111,27 +124,28 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 | `f5779ab`、`0909b03`、`9b1ce93` | 3a：目标集合（`move_to_any`、`find_park_set`）；搬运姿态、放置链、drop、hover、站位、wipe 选带的变体和退路删掉 |
 | `3e6fdf4` | 3b 第 1 项：豁免盒子用真实包围盒（托盘不再对规划器不可见）；站位可达性按整个场景算 |
 | `5372541`、`0c7eb90` | 3b 第 2 项：入口的接近和离开；pick、place、drop、wipe 的预备点、写死的抬起 / 退出终点和吞异常删掉；收臂可选下垂 |
-| `519cd78`、`99d02f1`、`b81bdfa`、`9614253` | 原则 5；导航常数：开车速度上限收到 `drive_base`（转身、后退拿着东西时从 0.35 → 0.5 rad/s、0.15 → 0.25 m/s，空手后退 0.2 → 0.35 m/s），站位的占地余量改成和底盘规划器一致（以前 5 cm、房间 8 cm），站位不再只取前 6 个；其余只改名 |
-| `16f7276` | pick：sticky 焊住也要手指没合到底才算拿住（6.1 D 类） |
-| `39bca85`、`dccf75c` | 6.2 测量（`grasp_contacts`）；top_pinch 的高度按掌心碰撞球推导（易拉罐等 5 个物体） |
-| `a3b8aa6`、`e8925a1`、`32f445b` | 手指碰撞球改成指垫方块上的三排；躯干、头少几个球（守住 cuRobo 快速自碰撞内核）；规划器的头和手指按仿真里的实际值锁定（以前手指永远全开、头永远朝前）；退回直线、接近直线碰撞时记下位置和对象 |
-| `6466347`、`f5081e9` | 6.2 pick 两段式；顶部捏取的指垫高度按夹爪朝向和支撑面推导 |
-| `a99d8e7` | 6.1 B：左臂收起姿态 `LEFT_ARM_FOLD` 改到底盘柱子以内；`build_curobo_robot.py --links`（不带参数）只更新默认姿态和自碰撞对 |
+| `519cd78`、`99d02f1`、`b81bdfa`、`9614253` | 原则 5；导航常数：开车速度上限收到 `drive_base`，站位的占地余量改成和底盘规划器一致，站位不再只取前 6 个 |
+| `16f7276`、`39bca85`、`dccf75c` | pick：sticky 焊住也要手指没合到底才算拿住；抓取位姿接触测量（`grasp_contacts`）；top_pinch 的高度按掌心碰撞球推导 |
+| `a3b8aa6`、`e8925a1`、`32f445b` | 手指碰撞球改成指垫方块上的三排；躯干、头少几个球（守住 cuRobo 快速自碰撞内核）；规划器的头和手指按实际值锁定；退回直线、接近直线碰撞时记下位置和对象 |
+| `6466347`、`f5081e9` | pick 两段式；顶部捏取的指垫高度按夹爪朝向和支撑面推导 |
+| `a99d8e7` | 左臂收起姿态 `LEFT_ARM_FOLD` 改到底盘柱子以内（步骤 5 的一项提前做）；`build_curobo_robot.py --links`（不带参数）只更新默认姿态和自碰撞对 |
+| `281cf99` | 真实接触（PhysX 接触报告）和 pick 接近时逐 tick 盯住目标物体（第 5 节） |
+| `ba9fd99` | `_goal` 一条规则：验证过的解还到得了就用它，否则沿分支重解，不换分支 |
 
 ## 5. 回归方法
 
 **每一步**：单元测试、`build_skill_library --check`，加上这一步动到的技能对应的几个 episode（只单独重跑相关的，不整批反复跑）。第 1 节清单能静态数的部分由 `tests/test_collision_audit.py` 卡住：`tools/audit_collision.py` 按文件统计 `LEGACY` / `unchecked`、目标豁免、`ignore_fingers`、目标里的字面量偏移、`except` 和吞异常、遍历备选的重试循环等，任何一项比 `tests/fixtures/collision_audit_baseline.json` 高就失败（`--sites --kind <类>` 看具体位置）；降下来了就用 `--update-baseline` 把基线一起降下来提交。
 
-静态计数清零只是必要条件（`while` 换点、用返回值换策略、按几何拼的避障点数不出来），所以还有三样：
+静态计数清零只是必要条件（`while` 换点、用返回值换策略、按几何拼的避障点数不出来），所以还有这几样：
 
-- **运动记录和快照。** 每段运动在入口（`Clearance.motion`）记一行，写进 `result.json` 的 `contacts.segments`：技能、段名、哪只手臂、碰撞规则（free / planned / fallback / leave_contact / into_contact / lifting / legacy / unchecked / base_drive；`follow` 前没声明运动的记 raw）、手里有没有东西、这段之前的碰撞查询放宽了什么（`exempt` 目标豁免、`fingers` / `hand` 不查这只手）。`tools/motion_signature.py RUN --compare <快照>` 列出新出现、消失的行：每一行要么是这一步想要的，要么是漏改的。fallback 次数受规划随机性影响，只显示，不算差异。快照在 `tests/fixtures/motion_signature_*.json`，按针对性批次各存一份（`--save`），这一步想要的变化确认后再存新的。只记这只手自己的放宽，"另一只手的手指一律不查"是常开的，不记（步骤 5 删）。
-- **真实接触**（11-05 起，`physx_contacts.py`）：监视器打开时，每个 tick 读 PhysX 接触报告（机器人躯干以上的连杆挂 `PhysxContactReportAPI`；Isaac Lab 默认关掉接触处理，`make_rig` 里打开，不改仿真，耗时多 2–3%）。当前运动的 `Allow` 不允许的新接触记一条 `physx_contact`，写进 `contacts` 的 `physx_unexpected`、`physx_by_leg`、`physx_records`；手里拿着的东西不算。pick 的接近（`pick_grasp`）逐 tick 盯住目标物体（`Clearance.watch`），记 `approach_watch` 和 `contacts.approach`，推动 1 mm 或转 1° 以上算动了（`approach_moved`）。监视器原来的检查用的是规划器的碰撞球、每 30 tick 一次、阈值 2 cm / 20°，还会丢掉被抓物体的记录，漏掉了 T04 手指打杯子（4 mm、2.9°）；以真实接触为准。
+- **运动记录。** 每段运动在入口（`Clearance.motion`）记一行，写进 `result.json` 的 `contacts.segments`：技能、段名、哪只手臂、碰撞规则（free / planned / fallback / leave_contact / into_contact / lifting / legacy / unchecked / base_drive；`follow` 前没声明运动的记 raw）、手里有没有东西、这段之前的碰撞查询放宽了什么（`exempt` 目标豁免、`fingers` / `hand` 不查这只手）。`tools/motion_signature.py RUN --save <快照>` 存一份，之后 `--compare <快照>` 列出新出现、消失的行：每一行要么是这一步想要的，要么是漏改的。fallback 次数受规划随机性影响，只显示，不算差异。**还没存过快照**：6.1 的验证批次跑完后存第一份（`tests/fixtures/motion_signature_approach_leave.json`）。只记这只手自己的放宽，"另一只手的手指一律不查"是常开的，不记（步骤 5 删）。
+- **真实接触**（`physx_contacts.py`）：监视器打开时（所有 profile 默认打开），每个 tick 读 PhysX 接触报告（机器人躯干以上的连杆挂 `PhysxContactReportAPI`；Isaac Lab 默认关掉接触处理，`make_rig` 里打开，不改仿真，耗时多 2–3%）。当前运动的 `Allow` 不允许的新接触记一条 `physx_contact`，写进 `contacts` 的 `physx_unexpected`、`physx_by_leg`、`physx_records`；手里拿着的东西不算。pick 的接近（`pick_grasp`）逐 tick 盯住目标物体（`Clearance.watch`），记 `approach_watch` 和 `contacts.approach`，推动 1 mm 或转 1° 以上算动了（`approach_moved`）。监视器原来的检查（`unexpected`、`disturbed`）用的是规划器的碰撞球、每 30 tick 一次、阈值 2 cm / 20°，还会丢掉被抓物体的记录，漏掉了 T04 手指打杯子（4 mm、2.9°）：**以真实接触为准**。
 - **覆盖率。** `ZB_COVERAGE=1` 跑针对性 episode，`tools/skill_coverage.py RUN --file zeno_skills/skills.py` 列出这批 episode 一次都没进去的函数：没跑到的路径，回归通过也说明不了它对，要么补 episode，要么在完成标准里写明没验证。
-- **Stop 钩子**（`.claude/settings.json` → `tools/stop_check.py`）：Claude 每轮结束前，`zeno_skills/`、`tools/`、`tests/` 有改动时检查改过的 Python 能编译、审计计数没超基线，不过就不让结束；没改动直接放行。单元测试要在容器里跑两分多钟，不放进钩子。
+- **Stop 钩子**（`.claude/settings.json` → `tools/stop_check.py`）：Claude 每轮结束前，`zeno_skills/`、`tools/`、`tests/` 有改动时检查改过的 Python 能编译、审计计数没超基线，不过就不让结束；没改动直接放行。单元测试要在容器里跑半分多钟，不放进钩子。
 
-**全量**（T、P 全部 variation，种子 10、11，170 个）：批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像），驱动脚本参考 `/data/zenobench/bench_1104/drive.sh`。只在这些节点跑：3b 完成后、3c 完成后、步骤 5 完成后。和上一次全量比四个数：成功数、`contacts`、`disturbed`、`fallbacks`，逐个对比写在 `COMPARE.md`。
+**全量**（T、P 全部 variation，种子 10、11，170 个）：批次 `benchmark/batches/v3_sticky_gt_2seeds_video.json`（`sticky/gt`，录像），驱动脚本参考 `/data/zenobench/bench_1104/drive.sh`。只在这些节点跑：pick 和 place 修完后（6.2 结束，重新定基线）、3b 完成后、3c 完成后、步骤 5 完成后。和上一次全量比：成功数、`contacts`、`disturbed`、`fallbacks`、`physx_unexpected`、`approach_moved`，逐个对比写在 `COMPARE.md`。
 
-**基线**：3a（`0909b03`）139/170，`benchmark/runs/v3_sticky_gt_1103_3seeds/`；3b 第 2 项（`0c7eb90`）119/170，`benchmark/runs/v3_sticky_gt_1104_2seeds/`。下一次全量要先排除导航常数提交、标注高度（`dccf75c`）、碰撞模型（`a3b8aa6`、`e8925a1`）、pick 两段式（`6466347`、`f5081e9`）和左臂收起姿态的影响：它们都会改变停车点、IK 解、目标选择，暴露出原有的弱点。针对性批次 approach_leave 在 `e8925a1` 上 11/14（`benchmark/runs/approach_leave_e8925a1`；旧碰撞球 `palm_height_1104` 12/14）：P18 变成功，T10、T20 变失败，T12 换了失败点，见第 7 节。
+**基线**：3a（`0909b03`）139/170，`benchmark/runs/v3_sticky_gt_1103_3seeds/`；3b 第 2 项（`0c7eb90`）119/170，`benchmark/runs/v3_sticky_gt_1104_2seeds/`。之后这些提交会改变停车点、IK 解、目标选择，暴露出原有的弱点，下一次全量的倒退要先按它们分：导航常数（`99d02f1` 等）、标注高度（`dccf75c`）、碰撞模型和锁定（`a3b8aa6`、`e8925a1`）、pick 两段式（`6466347`、`f5081e9`）、左臂收起姿态（`a99d8e7`）、`_goal`（`ba9fd99`）。最近的针对性结果：`benchmark/runs/twophase_1105`（`6466347`，approach_leave 14 个 + T13 no_cup + P14，s10，12/16）。
 
 **倒退怎么处理**：每个新失败看日志和录像，归到三类之一：
 
@@ -150,156 +164,94 @@ TCP 目标点落在某物体真实包围盒加 `TARGET_PAD`（3 cm）里，这�
 ```
 1 手臂规划前提 ✓ ──► 3 手臂按技能合并 ──► 4 接触动作 ──► 5 左臂和清理
 2 底盘规划器 ✓
-3a ✓ ──► 3b 第 1、2 项 ✓ ──► 11-04 倒退（A、C、D ✓） ──► pick 两段式 ✓ ──► pick 修完 ──► place 修完 ──► 3b 其余 ──► 3c
+3a ✓ ──► 3b 第 1、2 项 ✓ ──► pick 两段式 ✓ ──► 6.1 pick 修完 ──► 6.2 place 修完 ──► 6.3 3b 其余 ──► 6.4 3c
 ```
 
-**现在在哪（2026-11-05）**：pick 两段式已实现（`6466347`，6.2）。顺序定为（11-05）：先把 pick 相关的全部修完（6.3），再把 place 相关的全部修完（6.4），最后做步骤 3 剩下的内容（6.5 3b 其余、6.6 3c）。6.1 B（左臂收起姿态）11-05 提前改了，但 P06 的双手交接从新收起姿态规划失败，要先查（不属于 pick / place，排在 6.5 之前查）。下一次全量前要考虑第 5 节列的几组会改变基线的提交。
+**现在在哪（2026-11-05）**：6.1 第 2 项（删 pick 里剩下的换策略）。还有一件不属于 pick / place 的事要在 6.3 之前查：左臂收起姿态改了以后（`a99d8e7`），P06 的双手交接失败——左臂从新收起姿态规划到 `handover_left_pre` 出 `GRAPH_FAIL`（右手递擀面杖的 `handover_present_across` 也规划失败、退回直线），旧姿态下成功（`benchmark/runs/left_fold_1105`）。
 
-### 6.1 11-04 全量的倒退（119/170，24 个新失败）
+### 6.1 pick 修完（进行中）
 
-| 类 | episode | 原因 | 处理 |
-|---|---|---|---|
-| A 代码写错 | T04 no_cup_mug_away ×2（确认）；T02 edge_base ×2（待查） | place 松手后的收臂不查手指，手停在刚放下的物体正上方，把它带倒（杯子掉到地上） | 已修（11-04）：`Rig.tuck` 查手指；T04 ×2、T02 edge_base s10 重跑成功，P12 s10 不变（`benchmark/runs/tuck_fingers_1104`） |
-| D 代码写错 | T13 no_cup ×2、T09 lid_on_spoon_away | pick 把"sticky 焊住"放在手指检查之前，手指读数 [0, 0] 也判成拿住 | 已修（11-04）：焊住也要手指没合到底，和 `holding` 一致。三个都还会失败（pick 自己报没拿住），根因是合爪时没捏稳：杯子是 C 类（接近推开 3 cm，一指 3.6 mm、一指 32 mm），勺子合在 22 mm 后滑出 |
-| B 步骤 5 被暴露 | T20 table_full、T13 no_cup_bowl_on_cabinet、T09 cookware_choice、T04 no_cup ×2；`e8925a1` 上 approach_leave 的 T20 s10（放果汁瓶时左臂第 5 节被躯干带着压进桌面 2.4 mm，`approach_line_hit`） | 竖直下放时躯干下降，收在身侧的左臂压到桌面，手被顶住；`place_down` 的 41 次 fallback 里大多是左臂 | 已改（11-05，提前做，`LEFT_ARM_FOLD`）：新的左臂收起姿态在底盘柱子以内（腰竖直和前倾 0.2 rad 都缩进 8 mm）。验证只跑了 4 个 s10（`benchmark/runs/left_fold_1105`）：T20 table_full、P07 成功；T04 no_cup 失败在两段式 pick 的接近规划（`TRAJOPT_FAIL`，看起来和左臂无关）；**P06 变失败**：左臂从新的收起姿态规划到 `handover_left_pre` 出 `GRAPH_FAIL`（之前右手递擀面杖的 `handover_present_across` 也规划失败、退回直线），旧姿态下 11-04 成功，没细查 |
-| G 步骤 5 被暴露 | P07 ×2 | 停车位置变了，左臂收臂（直接插值、不查碰撞）卡在岛台上 | 步骤 5 |
-| C 接近 | P14 ×2、T13 no_cup ×2 | 接近途中把要抓的物体推开 3–4 cm，手停在离抓取点约 4 cm 处；可能和目标豁免有关，没确认 | 两段式后复查（11-05，`twophase_1105`，只跑了 s10）：P14、T13 no_cup 都成功，抓取没推动物体（T13 这次换了个方位角捏杯子）。s11 没跑 |
-| E 3b 第 1 项 | T19 bin_on_bookcase ×2 | 桶不再被豁免，`drop_above` 带倾角规划不出来（以前 fallback 从看不见的桶中间穿过去） | 规划器能力不够，记下 |
-| F 搬运 | T05 pen_available ×2 | pick 结束在搬运姿态，选出的姿态更高更伸展，拿着笔开车找不到路 | 待查 |
-| 其他 | T09 lid_off（勺子落点 0.100 m，容差 0.10）；T08 sponge_on_island（`wipe_press` 带倾角规划失败）；T03 far_small_and_large s11（擀面杖放进杯子找不到停车点）；T02 far_crowded s10（separate 没推动，push 没改） | | 逐个查 |
-
-`carry_pose_kept` 从 3a 的 24 次涨到 75 次（都是带倾角的规划失败），可能和搬运规划改成查手指有关，没确认。
-
-### 6.2 pick 的接近改成两段（2026-11-04 定，11-05 实现 ✓）
-
-**为什么：** 要抓的物体在好几个环节仍被整体豁免（抓取位姿的手臂姿态、停车点验证），接触段又整段不查碰撞，手往抓取位姿去时可能碰到物体的其他部位而规划器看不见。
-
-**目标：** pick 里任何环节都不做目标豁免，抓取只分两段：
-
-1. **把夹爪送到抓取位姿，保持张开。** 规划的，全程查碰撞：手指、夹爪、手腕、手臂都在模型里，要抓的物体是障碍物。张开的手指应从两侧套住物体、不碰它。到不了就是这个抓法、这个停车点不行。
-2. **合爪。** 只动手指，不规划；接触由监视器按 `Allow`（这只手的手指可以碰这个物体）记录。
-
-之后不变：竖直离开接触，再规划到搬运姿态。停车点验证用同一条规则；pick 里取消接触段。放下已经是这样（放下位姿离支撑面 1.4 cm，接触段全是 0），wipe 改到时同样处理。
-
-**动手前先测量：** 11-04 全量里 pick 的接触段 62% 不为 0（中位数 1.5 cm、最长 4.2 cm），即按现在的模型，张开停在抓取位姿时很多次已经碰到了东西。先在 `benchmark/batches/approach_leave.json`（14 个）里记下每次抓取位姿上哪些连杆碰到哪个物体、多深（只加日志），再按结果处理：
-
-| 碰到的是 | 处理 |
-|---|---|
-| 要抓的物体，碰的是手指 | 修手指的碰撞球或张开宽度，不豁免 |
-| 支撑面，碰的是指垫 | 调整抓取标注（顶部捏取"指垫至少高出底面 2.2 cm"要从夹爪几何重新推导） |
-| 物体或家具，碰的是夹爪本体、手腕、手臂 | 被拒是对的 |
-
-同时定下 `PICK_LEAVE_CHECK`（第 8 节）和第 10 节的两条。
-
-**测量结果（2026-11-04，`benchmark/runs/grasp_contacts_1104`）：** pick 到达抓取位姿后、合爪前记一条 `grasp_contacts`：在命令的抓取关节角上，用完整模型（手指也查，不豁免目标，世界是规划这次接近时的）按 owner 逐个查穿透（`Motion.contacts_by_owner`）。14 个 episode，27 次抓取：
-
-| 碰到的 | 次数 | 例子 | 处理 |
-|---|---|---|---|
-| 什么都不碰 | 11 | 所有 rim_pinch（杯、碗）、锅盖、苹果、泡沫块 | — |
-| 手指碰支撑面（`static`） | 8，全是 top_pinch | 积木 ×4 各 1.0 mm；樱桃番茄 4.1、擀面杖 4.9、玩具车 5.8、勺子 ×2 8.8 mm | 不是标注的问题：真实指尖下沿在 TCP 下方 1.99 cm（手指网格），pick 的"TCP 高出支撑面 2.2 cm"留 2 mm 是对的；手指碰撞球最低到 TCP 下方 2.62 cm，比网格胖 6.3 mm（lula 拟合后统一放大）。已改（11-05，`a3b8aa6`）：手指碰撞球按指垫方块排成三排（3 × 6，半径 6.5 mm，指尖和方块底面相切）。approach_leave 里只剩勺子 ×2 各 2.5 mm（斜放，待查），其余清零。两段式下这几毫米靠什么处理（精确几何确认还是显式放行）还没定 |
-| 夹爪本体 / 相机碰要抓的物体 | 6 | 易拉罐 top_pinch ×4：`gripper_link` 穿进罐子 27 mm，实际手停在差 2–3 cm 处（第 7 节"手停在差 2 cm"的原因）；小黄鸭 2.3 mm；果汁瓶 side_pinch 1.2 mm | 已修（11-04）：`prepare_assets.py` 按掌心、相机的碰撞球对物体网格推导 top_pinch 的最低高度（所有候选旋转，留 `LEAVE_GAP`），易拉罐 6.0 → 9.27 cm、零食盒 8.5 → 14.4、小黄鸭 4.17 → 5.43、苹果 3.5 → 3.97、泡沫块 3.0 → 3.28。重跑 approach_leave（`benchmark/runs/palm_height_1104`）：这几类接触清零，易拉罐的手不再差 2 cm（误差 0.4 mm），12/14 成功（之前 11/14，T10 can_on_island 变成功；P18、T12 失败和之前一样）。果汁瓶 side_pinch 1.2 mm 没改 |
-| 手指碰要抓的物体 | 0 | — | 不用改手指碰撞球 |
-
-
-**完成标准：** pick 里没有目标豁免和不查碰撞的接近段；14 个针对性 episode 里 C 类消失，其余倒退能归类。
-
-**实现（11-05，`6466347`、`f5081e9`）**：停车点验证里接近起点和抓取位姿按自由空间查（手指也查，物体是障碍物，模型里的手指张到这个候选的宽度：`Motion.hand_open`）；抬起 3 cm 那一项照旧（那时物体算在手里）。`pick_grasp` 是一次查碰撞的运动，末段沿夹爪轴直线：`move_to` 的 approach 配一个查碰撞的 `Allow` 时，终点本身必须无碰撞、没有接触段、规划不出来不退回直线。删掉 `pick_grasp_fix`。合爪前声明 `closing(name)`（这只手的手指可以碰这个物体）。顶部捏取的高度：张开的指垫最低那个角至少比物体下面的表面高 `PAD_FLOOR_GAP`（2.15 mm），按这次夹爪朝向算；表面取它所在的支撑面，或包围盒最低点（更高时，比如碗底），不再用包围盒底面中心（`_surface_under`）。
-
-**结果**（`benchmark/runs/twophase_1105`，approach_leave 14 个 + T13 no_cup + P14，都是 s10，跑的是 `6466347`，即参照面修正之前）：12/16。27 次抓取全部拿住，抓取位姿在完整模型里全部无碰撞，pick 没有推动任何物体，pick 没有一次 fallback。和上一版（`e8925a1`，11/14）比：T20 变成功；T03、T09 变失败，都是勺子找不到停车点（包围盒挂在岛台下面 4.7 mm，参照面修正 `f5081e9` 离线算 TCP 0.877 → 0.882 m，**还没在仿真里跑过**）；T10、T12 失败和之前一样（第 7 节）。
-
-**还开着的**：
-- 先跑 T03、T09 验证勺子（`f5081e9`）。
-- 合爪时夹爪本体蹭到碗下面的支撑面一次（T13 bowl_on_cabinet，`pick_close` 上 `right_gripper_link` 碰 `tv_stand_2` 3.1 mm，记成意外接触）：碗沿捏取合爪时手被拉低还是合爪前就贴得很近，没查。
-- `PICK_LEAVE_CHECK`（第 8 节）和第 10 节"离开接触段提前停下"那条还没定。
-- pick 里剩下的换策略（放开腰限重试、"不管附近物体"重试、捏取失败改 `pick_flat`）。
-
-以上都归 6.3。
-
-### 6.3 pick 修完（下一步）
-
-**范围：** `pick` 和它调用的所有抓法（捏取、`pick_flat`、corner / edge 捏取），从选停车点到抓起后到达搬运姿态为止。微波炉腔体里取物（`PickFromCavityPolicy`、`_pick_pinch_core` 里水平退出腔体的写死点）和双手平抬（`BimanualFlatPickPolicy`）是场景特例，留在 3c。
+**范围：** `pick` 和它调用的所有抓法（捏取、`pick_flat`、corner / edge 捏取），从选停车点到抓起后到达搬运姿态为止。微波炉腔体里取物（`PickFromCavityPolicy`、`_pick_pinch_core` 里水平退出腔体的写死点）和双手平抬（`BimanualFlatPickPolicy`）是场景特例，留在 6.4。
 
 **要做的：**
 
-1. **验证 6.2 还没跑过的部分。**
-   - T03、T09 上验证勺子的高度规则（`f5081e9`）；斜放勺子在 6.2 测量里指垫碰支撑面 2.5 mm，两段式下是靠精确几何确认还是显式放行，在这里定。
-   - T04 no_cup 两段式接近规划失败（`TRAJOPT_FAIL`，`left_fold_1105`）：查原因。
-   - T13 bowl_on_cabinet `pick_close` 上 `right_gripper_link` 碰 `tv_stand_2` 3.1 mm：查是合爪时手被拉低还是合爪前就贴得太近。
-   - C 类（P14、T13 no_cup）补跑 s11。
-   - 已做（11-05）：勺子 `f5081e9` 在 T03、T09 s10 上通过（`benchmark/runs/pick63_verify_80467fd`）。T04 no_cup 的 `TRAJOPT_FAIL`：执行时把停车点搜索验证过的解重解了一遍，得到一个腰贴着下限的解，规划 4 次成 1 次（验证过的解 4/4）；`_goal` 改成一条规则：q_hint 仍到得了目标（1 mm、0.01 rad 内）就用它本身，否则沿它的分支重解，再不行就没有关节目标；删掉全局 IK 和退回 q_hint 两档（不换 IK 分支）。只在 T04 上验证过，影响所有带 q_hint 的规划段，6.3 的验证批次一起看。T13 那次 3.1 mm 接触其实在 no_cup（捏 `tv_stand_2` 上的杯子），不是 bowl_on_cabinet。
-   - T04 的接近碰了杯子（4 mm、2.9°）：手指碰撞球没包住指垫棱边（第 7 节），加上杯子碰撞壁外扩（`CONTAINER_COLLIDERS.md`）。两个都先不修（11-05）。`twophase_1105` 的"pick 没推动任何物体"是监视器给的，不可靠：6.3 的验证批次用 `approach_watch` 和真实接触重新核对。
+1. **复查。**
+   - C 类（接近途中把要抓的物体推开，P14、T13 no_cup）两段式后 s10 都成功，s11 还没跑。
+   - T13 no_cup：捏 `tv_stand_2` 上的杯子，`pick_close` 上 `right_gripper_link` 碰 `tv_stand_2` 3.1 mm（`twophase_1105`）。用真实接触看是合爪时手被拉低，还是合爪前就贴得太近。
+   - T13 no_cup ×2、T09 lid_on_spoon_away 在 11-04 全量里合爪没捏稳（杯子一指 3.6 mm、一指 32 mm；勺子合在 22 mm 后滑出），两段式后再看。
+   - `twophase_1105` 说"pick 没有推动任何物体"是监视器给的，不可靠，验证批次用 `approach_watch` 和真实接触重新核对。已知的一次：T04 no_cup 接近时手指指尖压在杯子碰撞壁顶面，杯子被推 4 mm、转 2.9°（第 7 节手指碰撞球、`CONTAINER_COLLIDERS.md`，都先不修）。
+   - `_goal`（`ba9fd99`）只在 T04 上验证过，影响所有带 `q_hint` 的规划段：看验证批次里有没有"分支上解不出来"的新失败。
 2. **删掉 pick 里剩下的 F、W 类**（`COLLISION_CLEANUP.md` 3.5，push 那行除外）：
    - 捏取失败改 `pick_flat`；
    - 放开腰限重试、"不管附近物体"重试（`_pick_pinch`）；edge 捏取的限腰 → 放开重试；
    - 找不到停车点后追加旋转的 top pinch（改成一开始就在候选集合里，算目标采样）；
    - `pick_flat` 换边重试；
-   - corner、edge 的 `pre_far` 额外 +3 cm；`corner_grasp_retry`；corner / edge 的接近改成和捏取一样的两段式（原来排在步骤 4 的"拆成两段的接近合成一段"中 pick 那部分提前到这里）。
+   - corner、edge 的 `pre_far` 额外 +3 cm；`corner_grasp_retry`；corner / edge 的接近改成和捏取一样的两段式（步骤 4 里"拆成两段的接近合成一段"中 pick 那部分提前到这里）。
    - 删完后每个抓法只有一条路，失败就是失败；"按可行性挑抓法"如果要保留，要做成一次目标集合（第 2 节）。
 3. **离开接触和搬运。**
    - 定 `PICK_LEAVE_CHECK`（第 8 节）和第 10 节"离开接触段提前停下"那条。
-   - F 类 T05 拿着笔开车找不到路（pick 结束选出的搬运姿态更高更伸展）。
+   - T05 pen_available ×2：pick 结束选出的搬运姿态更高更伸展，拿着笔开车找不到路。
    - pick 后手臂在另一个 IK 分支、去不了搬运姿态（`carry_pose_kept`，第 7 节，T10）：至少查清是不是选抓法 / 抓取 IK 时没看后面的搬运姿态；要动停车点搜索的部分如果太大，单独记下。
-4. **常数**（第 8 节里标 6.3 的）：`PICK_APPROACH`、`PICK_LEAVE_CHECK`、`PAD_FLOOR_GAP` 里的 0.022 和 edge 捏取的 0.022、`slot_blocker` / `GRASP_GAP_M`（手指已在碰撞模型里，应该删）、`check_held` 的阈值、候选排序的 `0.3 × along_rank`、`_neighbour_boxes` 的 0.30 m。
+4. **常数**（第 8 节里标 6.1 的）：`PICK_APPROACH`、`PICK_LEAVE_CHECK`、`PAD_FLOOR_GAP` 里的 0.022 和 edge 捏取的 0.022、`slot_blocker` / `GRASP_GAP_M`（手指已在碰撞模型里，应该删）、`check_held` 的阈值、候选排序的 `0.3 × along_rank`、`_neighbour_boxes` 的 0.30 m。
 
-**针对性检查：** approach_leave 14 个加 T03、T04、T05、T09、T13、P14，种子 10、11，加 `ZB_COVERAGE=1` 看 pick 的哪些函数没跑到（`pick_flat`、corner / edge 要有用到它们的 episode）。
+**针对性检查：** approach_leave 14 个加 T03、T04、T05、T09、T13（no_cup、bowl_on_cabinet）、P14，种子 10、11，加 `ZB_COVERAGE=1` 看 pick 的哪些函数没跑到（`pick_flat`、corner / edge 要有用到它们的 episode）。跑完存第一份运动记录快照（第 5 节）。
 
-**完成标准：** pick 的每段运动按第 1 节清单答完；`COLLISION_CLEANUP.md` 3.5 里 pick 的行清零；上面这批 episode 里和 pick 有关的失败都归了类（第 5 节）；`skills/pick.md` 同步。
+**完成标准：** pick 的每段运动按第 1 节清单答完；`COLLISION_CLEANUP.md` 3.5 里 pick 的行清零；上面这批 episode 里 `approach_moved` 为 0（已知的 T04 除外），和 pick 有关的失败都归了类（第 5 节）；`skills/pick.md` 同步。
 
-### 6.4 place 修完
+### 6.2 place 修完
 
-**范围：** `place`、`place_on`、`place_flat`（书架、平放）、drop、hover，以及 sticky 的 place，从拿着东西选放置停车点到松手离开、收臂为止。微波炉里放（`place_microwave`）留在 3c。
+**范围：** `place`、`place_on`、`place_flat`（书架、平放）、drop、hover，以及 sticky 的 place，从拿着东西选放置停车点到松手离开、收臂为止。微波炉里放（`place_microwave`）留在 6.4。
 
 **要做的：**
 
 1. **删掉 place 里剩下的 W、F 类：**
    - `held_vertical_move` / `place_lower_to_contact`（落到支撑面前再往下放到差 6 mm）：改成放下运动本身就到位，或按第 2 节的接触段处理；
-   - 餐桌的 `table_pre_lift` 手写抬高姿态（`COLLISION_CLEANUP.md` 3.2）；
    - `slots_blocked`（手指已在碰撞模型里，应该删）；
-   - `place_flat`（清单 3.3，原在 3c）：内层板加大 `pre`、`while True` 换点、丢掉推入目标重找停车点、`flat_back_out`、吞异常；书在夹爪里下垂的 `R_fix` 补偿和搬运时书本 edge +6 cm（清单 3.1、第 6 节）；
+   - `place_flat`（清单 3.3）：内层板加大 `pre`、`while True` 换点、丢掉推入目标重找停车点、`flat_back_out`、吞异常；书在夹爪里下垂的 `R_fix` 补偿和搬运时书本 edge +6 cm（清单 3.1、清单第 6 节）；
    - sticky 的 `sticky_clear` 上抬 3 档 / 2 档（清单 3.9）。
+   - place 停车点搜索里接近起点的目标豁免（`FINGERS_KW`）：和 pick 一样改成自由空间。
 2. **已知的 place 失败：**
    - P18 floor_pick s10 `place_down` 带倾角 `IK_FAIL`（第 7 节）；
    - T09 lid_off 竖着吊放的细长物体松手倒下（第 7 节，放置关系的选择）；
    - T03 far_small_and_large s11 擀面杖放进杯子找不到停车点；
-   - T19 bin_on_bookcase `drop_above` 带倾角规划不出来（6.1 E）；T10 `hover_above` 带倾角规划失败（第 7 节）；
-   - 6.1 B 的 `place_down` fallback：左臂收起姿态改了以后在全部 place 上复查；
-   - 6.1 A：T02 edge_base s11、P12 s10 放完收臂的问题。
-3. **常数**（第 8 节里标 6.4 的）：`PLACE_APPROACH`、`SHELF_APPROACH`、`PLACE_*_COST`。
+   - T19 bin_on_bookcase ×2：桶不再被豁免后 `drop_above` 带倾角规划不出来（以前 fallback 从看不见的桶中间穿过去）；T10 `hover_above` 带倾角规划失败（第 7 节）；
+   - 左臂收起姿态改了以后（`a99d8e7`），在全部 place 上复查 `place_down` 的 fallback（以前大多是左臂压到桌面）；
+   - T02 edge_base s11、P12 s10：放完收臂的问题（`Rig.tuck` 查手指之后，s10 已好，这两个没复查）。
+3. **常数**（第 8 节里标 6.2 的）：`PLACE_APPROACH`、`SHELF_APPROACH`、`PLACE_*_COST`。
 
 **针对性检查：** 上面列到的 episode 加用到 `place_flat`、drop、hover、sticky place 的（T14、T15 书架等），种子 10、11，加覆盖率。
 
-**完成标准：** place 系每段运动按第 1 节清单答完；`COLLISION_CLEANUP.md` 3.2–3.4 和 sticky place 的行清零；失败都归了类；`skills/place.md`、`skills/drop_hover.md` 同步。做完 pick 和 place 之后考虑跑一次全量，重新定基线（第 5 节）。
+**完成标准：** place 系每段运动按第 1 节清单答完；`COLLISION_CLEANUP.md` 3.2–3.4 和 sticky place 的行清零；失败都归了类；`skills/place.md`、`skills/drop_hover.md` 同步。做完跑全量，重新定基线。
 
-### 6.5 3b 其余
+### 6.3 3b 其余
 
-open / close、rotate、flip、stir、pour、wave、upright、push 推到够不着为止、各处手传的 `step` / `steps_per_wp` / `smooth`（只会更慢，持物限速已在入口）；其他技能 `LEAVE_CONTACT` 动作手写的终点（`{verb}_back` 最长 14 cm、`close_push_back` 12 cm 等）。T18（开门停车位分叉）、T15（翻书路径分叉）改到对应技能时一起查。逐条见 `COLLISION_CLEANUP.md` 3.6、3.7、3.10。
+open / close、rotate、flip、stir、pour、wave、upright、push 推到够不着为止、各处手传的 `step` / `steps_per_wp` / `smooth`（只会更慢，持物限速已在入口）；其他技能 `LEAVE_CONTACT` 动作手写的终点（`{verb}_back` 最长 14 cm、`close_push_back` 12 cm 等）。逐条见 `COLLISION_CLEANUP.md` 3.6、3.7、3.10。改到对应技能时一起查：T18（开门停车位分叉）、T15（翻书路径分叉）、T08 sponge_on_island（`wipe_press` 带倾角规划失败）、T02 far_crowded s10（separate 没推动）。
 
 做完跑全量。
 
-### 6.6 3c 场景特例和其余
+### 6.4 3c 场景特例和其余
 
 微波炉（清单 3.8，包括 pick 里水平退出腔体的写死点、`clear_microwave_door_sweep` 开到写死位姿、`place_microwave`）、S 类写死的常数（清单第 6 节）、双手、contact、perceive 等（清单 3.9）。`planner._chain` 的"停车点搜索只认直线"在手写 park 删掉时一起看。做完即步骤 3 完成，跑全量。
 
-### 6.7 步骤 4：接触动作
+### 6.5 步骤 4：接触动作
 
-接触段（清单 C 类）改用 `Allow` 预设，`LEGACY` 清零。接触段是任务规定方向的直线，不规划、不查碰撞，接触只由监视器按 `Allow` 记录；自由段从离开接触后的无碰撞点开始规划。
+接触段（清单 C 类）改用 `Allow` 预设，`LEGACY` 清零。接触段是任务规定方向的直线，不规划、不查碰撞，接触由监视器按 `Allow` 记录；自由段从离开接触后的无碰撞点开始规划。
 
 | 预设 | 动作 |
 |---|---|
-| `grasp` | `edge_pre`、`edge_grasp`、`corner_pre`、`corner_grasp*`、`steady_grasp`、flip / upright 的抓握段 |
+| `grasp` | `steady_grasp`、flip / upright 的抓握段（corner / edge 在 6.1） |
 | `handle` | `close_push_contact`；门和推门逐段切换 `coll_kw` 的写法 |
 | `press` | 按钮的 align / press / retract（含微波炉）、`knock_*`、`touch_*`（`button_align` 其实是空中段，改成中继位姿 + 规划） |
 | `sweep` | push / pull / center / separate / sweep 的 down、slide、up；`wipe_lift`；`stir_dip`、`stir_circle`；`flat_push*` |
 | `set_down` | `flat_lower`、`flat_release_down`、`microwave_insert`、`upright_lower` |
 
-还有：拆成两段的接近（`upright_top_in`；`corner_pre`、`edge_pre` 在 6.3 随 pick 一起改）合成一段；wipe 和 flip 的底盘推；其余技能的目标豁免换成预设里的显式声明。预设不够就加预设，不要退回 `unchecked`。
+还有：拆成两段的接近（`upright_top_in`）合成一段；wipe 和 flip 的底盘推；其余技能的目标豁免换成预设里的显式声明。预设不够就加预设，不要退回 `unchecked`。
 
-**完成标准：** `LEGACY` = 0；监视器记到的接触都在 `allow` 范围内。
+**完成标准：** `LEGACY` = 0；真实接触里的接触都在 `allow` 范围内（现在按开关、按钮的 `button_press` 就会记成意外，T09）。
 
-### 6.8 步骤 5：左臂和清理
+### 6.6 步骤 5：左臂和清理
 
-- ~~左臂收起姿态不伸出底盘轮廓（停车点被拒、放东西时压到桌面，见 6.1 B 类）~~：提前做了（11-05），见 6.1 B 类；P06 的交接要查。
-- `LeftArmFoldPolicy` 和所有左臂运动走同一套规划，不再直接插值（6.1 G 类）。
+- `LeftArmFoldPolicy` 和所有左臂运动走同一套规划，不再直接插值（P07 ×2：停车位置变了，左臂收臂卡在岛台上）。
 - `follow` / `left_follow` 只接受检查过的路径。
 - 删掉：`ignore_fingers`、"另一只手的手指一律不查"、`other_touching` 的永久排除、`world.active`、`world.left_active`、`WorldModel.temp_obstacles`（空操作）。两只手都碰物体时（handover）在 `allow` 里显式声明。
 - `kin.set_base`、`kin.lo` / `kin.hi` 的临时改写换成上下文管理器。
@@ -311,47 +263,45 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 | 问题 | 例子 | 打算 |
 |---|---|---|
 | 同样输入，cuRobo 规划结果会分叉 | P07 s10 连跑两次一次成功一次 "no IK for shake" | 不单独处理，按第 5 节区分 |
+| cuRobo 规划到贴着关节限位的目标很不稳：腰离下限 1 mrad 的目标 4 次成 1 次，往里 0.02 rad 就 4/4 | T04 no_cup 抓马克杯（以前 `_goal` 重解出贴限位的解） | 规划器能力不够；`_goal` 不再无故重解。停车点搜索选出的解本身贴限位时还会遇到：可以在停车点打分里惩罚贴限位（目标采样） |
+| 手指碰撞球没包住仿真里的指垫方块（28 × 12 × 55 mm）：3 排球只在指尖面中心和方块底面相切，指尖棱边露出 2.3 mm、角 3.7 mm、侧棱 1.3 mm。规划器以为不碰的地方，指尖棱边会碰上 | T04 no_cup s10 接近时左手指指尖压在杯子碰撞壁顶面，杯子被推 4 mm（`/data/zenobench/pick63/t04_physx`） | 先不修（11-05）。修法：加大球包住方块（手指变胖，指垫碰支撑面的误报会回来，自碰撞对数 16271 离上限 16384 很近）或仿真指垫改圆角对齐球（改仿真接触）；都改基线 |
+| 马克杯、带柄锅的容器碰撞体和真实网格对不上 | T04 no_cup 抓杯时手指捏在离真实杯壁约 2.2 cm 的碰撞壁上 | 见 `CONTAINER_COLLIDERS.md`；先不修 |
+| 仿真里手指只有指垫方块参与碰撞：原网格是 L 形（手指 + 横跨夹爪的滑轨），凸分解成伸进两指之间的楔形，所以整个关掉了（`physics.py`）。指垫以上那段手指、滑轨两端（各伸出夹爪本体约 13 mm）在仿真里不碰任何东西 | — | 这个分支不动（改仿真接触）；以后可以把 L 形拆成几块凸体 |
+| cuRobo 快速自碰撞内核上限 16384 对：超过后改用慢内核，单次 IK 约 25 ms → 0.8 s，停车点搜索在时间预算内找不到解 | 手指每根 18 个球、躯干和头不减时 18007 对 | 加球前先算对数（`build_curobo_robot.py` 打印）；现在 16271 对 |
+| 搬运姿态到不了时手臂留在原处开车（`carry_pose_kept`，都是带倾角的规划失败）：pick 后手臂在另一个 IK 分支上 | 3a 全量 24 次、11-04 全量 75 次；T10 s10 抓完第 3 个关节 2.30 rad，去任何搬运姿态都要把易拉罐翻约 3 rad | 6.1 先查根因；如果要在停车点搜索里做和执行一致的位姿目标规划，要先解决 CUDA graph 重录的开销（第 9 节） |
+| 竖着吊放的细长物体松手倒下，落点离目标 9–12 cm | T09 lid_off（容差 10 cm） | 6.2（放置关系的选择） |
+| T10 can_on_island s10 在导航常数提交之后确定性失败：站位占地余量 5 → 3 cm（`99d02f1`）后开往易拉罐的站位变了，之后抓取姿态、垃圾桶旁的悬停停车点都不同，`hover_above` 带倾角规划失败 | T10 can_on_island s10（`benchmark/runs/t10_at_5df416b`） | 规划器能力不够，6.2 和 hover 一起看 |
+| P18 floor_pick s10 在 11-04 全量之后确定性失败：去搬运姿态选中的姿态变了，放置停车朝向 0° → −90°，`place_down` 带倾角 IK_FAIL | P18 floor_pick s10（`benchmark/runs/p18_at_16f7276`） | 来自 `0c7eb90` 之后的提交，没二分；6.2 查 |
+| 收臂偶尔报 `DT_EXCEPTION`（cuRobo 的时间参数化失败），手臂留在原处，底盘规划器从那个姿态开不出去 | T12 s11 放完玩具车（`approach_leave_e8925a1`）；11-04 全量 4 次 | 待查 |
+| 离开接触段上方有东西时会直接顶上去（不查碰撞，最多 6 cm） | 柜子里、层板下面抓取 | 第 10 节 |
 | 底盘规划慢：惰性边检查每轮从头重搜 | T13 s10 规划合计 129 s，拿着东西单次最长 52 s | 待定：复用上一轮的搜索树；捷径分批检查 |
 | 底盘规划无路可走时要搜完能到的区域才报错 | 极紧的停车点，几十秒 | 待定：搜索前先查终点附近能否接上 |
 | 底盘规划器拿着东西时不会自己换搬运高度 | 删掉 `_carry_bottom_z` 的避障抬高后 T13 bowl_on_cabinet 开往餐桌搜到上限 | 待定：姿态链里加搬运高度，之后才能删 `_carry_bottom_z` |
-| 搬运姿态到不了时手臂留在原处开车（`carry_pose_kept`）：pick 后手臂在另一个 IK 分支上 | T10 s10；11-04 全量 75 次；`e8925a1` 上 T10 又走到这里（抓完第 3 个关节 2.30 rad，去任何搬运姿态都要把易拉罐翻约 3 rad，`hover_above` 失败） | 6.3 pick 修完时先查根因；如果要在停车点搜索里做和执行一致的位姿目标规划，要先解决 CUDA graph 重录的开销（第 9 节） |
-| 马克杯、带柄锅的容器碰撞体和真实网格对不上：马克杯的圆筒中心按包围盒中心取，偏向把手 1.6 cm、半径大 1 cm；锅的截面是椭圆，碰撞体是圆 | T04 no_cup 抓杯时手指捏在离真实杯壁约 2.2 cm 的碰撞壁上 | 见 `CONTAINER_COLLIDERS.md`；改了会动基线，先定再改 |
-| 手指碰撞球没包住仿真里的指垫方块（28 × 12 × 55 mm）：3 排球只在指尖面中心和方块底面相切，指尖棱边露出 2.3 mm、角 3.7 mm、侧棱 1.3 mm。规划器以为不碰的地方，指尖棱边会碰上 | T04 no_cup s10 接近时左手指指尖压在杯子碰撞壁顶面，杯子被推 4 mm（PhysX 接触报告，`/data/zenobench/pick63/t04_physx`） | 先不修（11-05）。修法：加大球包住方块（手指变胖，6.2 的指垫碰支撑面会回来，自碰撞对数 16271 离上限 16384 很近）或仿真指垫改圆角对齐球（改仿真接触）；都改基线 |
-| cuRobo 规划到贴着关节限位的目标很不稳：腰离下限 1 mrad 的目标 4 次成 1 次，往里 0.02 rad 就 4/4 | T04 no_cup 抓马克杯（`_goal` 重解出贴限位的解） | 规划器能力不够；`_goal` 不再无故重解。停车点搜索选出的解本身贴限位时还会遇到：可以在停车点打分里惩罚贴限位（目标采样） |
-| 竖着吊放的细长物体松手倒下，落点离目标 9–12 cm | T09 lid_off（容差 10 cm） | 6.4 place 修完（放置关系的选择） |
-| 离开接触段上方有东西时会直接顶上去（不查碰撞，最多 6 cm） | 柜子里、层板下面抓取 | 第 10 节 |
-| 边走边伸手 / 抓 / 放（`mobile.py`）已停用：底盘路径按出发姿态规划，没有整机检查 | 没有任务用到 | 整机规划之前不恢复 |
 | 占地检查只在 0.15、0.6 m 两个高度取点（`COLUMN_Z`），0.6–1.05 m 之间的台面边漏查（餐桌面约 0.75 m） | — | 待定 |
-| T10 can_on_island s10 在导航常数提交之后确定性失败（11-04 成功）：开往易拉罐的站位从 `[7.546, 1.011, 45°]` 变成 `[7.281, 1.126, 30°]`（30 个站位都可达，变化来自站位占地余量 5 → 3 cm，`99d02f1`），之后抓取姿态、垃圾桶旁的悬停停车点都不同，`hover_above` 带倾角规划失败。`5df416b` 上同样失败（`benchmark/runs/t10_at_5df416b`），和路径合并无关 | T10 can_on_island s10 | 规划器能力不够（同 6.1 E 类），在 6.4 和 hover 一起看；下一次全量时看还有哪些受站位变化影响 |
-| P18 floor_pick s10 在 11-04 全量之后确定性失败（`16f7276` 上去掉日志也一样，`benchmark/runs/p18_at_16f7276`）：抓完后去搬运姿态的目标集合可达数 56 → 58、选中的搬运姿态 19 → 50，放置停车朝向 0° → −90°，`place_down` 带倾角 IK_FAIL（11-04 那次同一段也规划失败，退回的直线走通了） | P18 floor_pick s10 | 来自 `0c7eb90` 之后的提交，没二分；6.4 place 修完时查 |
-| ~~规划器里手指永远全开、头永远朝前~~ | T03：捏着勺子保持倾角去搬运姿态，模型里的手指比实际宽 2.5 cm，蹭到岛台 | 已修（11-05，`e8925a1`）：每次查询按仿真里的实际值锁定头和手指（两根手指取张得更开的那根）。底盘规划的整机检查本来就用实际值 |
-| cuRobo 快速自碰撞内核上限 16384 对：超过后改用慢内核，单次 IK 约 25 ms → 0.8 s，停车点搜索在时间预算内找不到解 | 手指每根 18 个球、躯干和头不减时 18007 对（`benchmark/runs/diag_fingersonly`） | 加球前先算对数（`build_curobo_robot.py` 打印）；现在 16271 对 |
-| 仿真里手指只有指垫方块（28 × 12 × 55 mm）参与碰撞：原网格是 L 形（手指 + 横跨夹爪的滑轨），凸分解成伸进两指之间的楔形，所以整个关掉了（`physics.py`）。指垫以上那段手指、滑轨两端（各伸出夹爪本体约 13 mm）在仿真里不碰任何东西 | — | 这个分支不动（会改仿真接触，要重跑基线）；以后可以把 L 形拆成几块凸体 |
-| 收臂偶尔报 `DT_EXCEPTION`（cuRobo 的时间参数化失败），手臂留在原处，底盘规划器从那个姿态开不出去 | T12 s11 放完玩具车（`approach_leave_e8925a1`，之后搜索小黄鸭时底盘没动）；11-04 全量也出现过 4 次 | 待查 |
-| ~~face、retreat、sidestep、navigate 按"收好、空手"和"其他"分成几条路径~~ | — | 已合并（2026-11-04）：每个技能一条路径（navigate → `policy_092`，face → `policy_066`，retreat → `policy_067`，sidestep → `policy_114`；双手搬运、微波炉门的 retreat 保留），`policy_001`、`002`、`035`、`036`、`037`、`099`、`100` 退役（`skill_library/check.py`） |
+| 边走边伸手 / 抓 / 放（`policies/mobile.py`）已停用：底盘路径按出发姿态规划，没有整机检查 | 没有任务用到 | 整机规划之前不恢复 |
 
 ## 8. 常数登记（不满足原则 5 的）
 
 | 常数 | 问题 | 什么时候处理 |
 |---|---|---|
-| `PICK_APPROACH` 4 cm、`PLACE_APPROACH` 5 cm、`SHELF_APPROACH` 16 cm | 沿用旧的 `pick_pre`、`place_lower`、层板插入距离，没有出处 | `PICK_APPROACH` 在 6.3，另两个在 6.4（接近直线已定保留，第 10 节） |
-| `PICK_LEAVE_CHECK` 3 cm | 依据是 9af5c0c 时抬起离开段最长 2.9 cm，11-04 全量里最长 4.7 cm；执行时上限是 `LEAVE_MAX` 6 cm，两边不一致。倾向：验证到 `LEAVE_MAX`，pick 抬起去掉减半（place 保留） | 6.3 |
+| `PICK_APPROACH` 4 cm、`PLACE_APPROACH` 5 cm、`SHELF_APPROACH` 16 cm | 沿用旧的 `pick_pre`、`place_lower`、层板插入距离，没有出处 | `PICK_APPROACH` 在 6.1，另两个在 6.2（接近直线保留，11-05 定） |
+| `PICK_LEAVE_CHECK` 3 cm | 依据是 9af5c0c 时抬起离开段最长 2.9 cm，11-04 全量里最长 4.7 cm；执行时上限是 `LEAVE_MAX` 6 cm，两边不一致。倾向：验证到 `LEAVE_MAX`，pick 抬起去掉减半（place 保留） | 6.1 |
 | `LEAVE_GAP` 5 mm、`LEAVE_MARGIN` 1 cm、`LEAVE_MAX` 6 cm、`ON_LINE` 5 mm | 步骤 1 补丁时拍定 | 离开段改提前停止时（第 10 节） |
-| `TARGET_PAD` 3 cm | 豁免盒子的边距；豁免本身要取消 | 随豁免一起删（6.2、6.7） |
-| 顶部捏取指垫至少高出底面 0.022 m | `f5081e9` 改成 `PAD_FLOOR_GAP = 0.022 - PAD_TIP`，0.022 本身还是字面量，edge 捏取（`skills.py` 里 `a * 0.022`）和 `tools/prepare_assets.py` 里还各有一份 | 6.3，从夹爪几何推导 |
-| 手指槽偏移（张开宽度外 6 mm、沿夹爪 ±1.4 cm、底面上 3 mm 到抓取点上 4 cm，`slot_blocker`）；`GRASP_GAP_M` 3.5 cm | 字面量，两处的手指厚度没关联；手指进碰撞模型后这个筛选应该删；place 的 `slots_blocked` 同理 | 6.3（place 的在 6.4） |
-| `check_held` 的滑移 5 / 8 cm、手指间隙 4 / 8 mm | 没有出处 | 6.3 |
+| `TARGET_PAD` 3 cm | 豁免盒子的边距；豁免本身要取消 | 随豁免一起删（步骤 4，6.5） |
+| 顶部捏取指垫至少高出底面 0.022 m | `f5081e9` 改成 `PAD_FLOOR_GAP = 0.022 - PAD_TIP`，0.022 本身还是字面量，edge 捏取（`skills.py` 里 `a * 0.022`）和 `tools/prepare_assets.py` 里还各有一份 | 6.1，从夹爪几何推导 |
+| 手指槽偏移（张开宽度外 6 mm、沿夹爪 ±1.4 cm、底面上 3 mm 到抓取点上 4 cm，`slot_blocker`）；`GRASP_GAP_M` 3.5 cm | 字面量，两处的手指厚度没关联；手指进碰撞模型后这个筛选应该删；place 的 `slots_blocked` 同理 | 6.1（place 的在 6.2） |
+| `check_held` 的滑移 5 / 8 cm、手指间隙 4 / 8 mm | 没有出处 | 6.1 |
 | pick 候选排序的 `0.3 × along_rank` | 拍定 | 同上 |
-| `CARRY_SPOTS`（4 个位置）、`CARRY_RISE`、`CARRY_BODY_W`、`CARRY_SPOT_COST`；`PLACE_*_COST`；`WIPE_*` | 3a 拍定 | 搬运的在 6.3，`PLACE_*` 在 6.4，`WIPE_*` 在 6.5 |
+| `CARRY_SPOTS`（4 个位置）、`CARRY_RISE`、`CARRY_BODY_W`、`CARRY_SPOT_COST`；`PLACE_*_COST`；`WIPE_*` | 3a 拍定 | 搬运的在 6.1，`PLACE_*` 在 6.2，`WIPE_*` 在 6.3 |
 | `DRIVE_EMPTY` / `DRIVE_LOADED` / `DRIVE_SWINGING` | 继承的，没测过 | 测一次拿着容器开车、转身时物体的晃动 |
 | `STANDOFF_*`、`ROOM_SPOT_*`、`SAME_POSTURE`、`AT_PARK_*`、`FACE_ERR_DEG`、`RETREAT_*`、`BACK_OFF_SLACK`、`DEPTH_TOL`、`PHYSICS_HZ` 相关的"等一秒"、`REST_TOL` / `STOWED_TOL`、`HELD_CHECK_EVERY`、`BLOCKED_PROBE_M` | 有名字，没出处 | 改到所在技能时 |
-| 探索的 `COVER_*`、`VIEW_TURNS`、`SWEEP_*`、`VIEW_TRIES`，以及 `max_views` / `min_spacing` 的默认值（`perceive.py`） | 继承的，没测过 | 3c（和清单 3.9 的"视点不可达就跳过"一起） |
+| 探索的 `COVER_*`、`VIEW_TURNS`、`SWEEP_*`、`VIEW_TRIES`，以及 `max_views` / `min_spacing` 的默认值（`perceive.py`） | 继承的，没测过 | 6.4（和清单 3.9 的"视点不可达就跳过"一起） |
 | `FOOTPRINT_MARGIN` 4.6 cm（原来两层余量之和）、`FOOTPRINT_GRID`、`COLUMN_Z` | 值没测过（已知的一项：11-04 全量 2409 次开车，终点误差都在 7 mm 以内，即日志的厘米舍入；开车途中的跟踪误差没记）；`COLUMN_Z` 漏查（第 7 节） | 待定，改了要针对性检查站位和路径 |
 | `base_planner` 的 `TURN_COST`、`SWITCH_COST`、`GREEDY`、`MAX_EXPAND` | 偏好和预算，没有数据 | 底盘规划提速时 |
 | 停车点搜索次数（pick 120、push 60、`ApproachTargetPolicy` 160） | 各处不同 | 改到所在技能时 |
 | `planner.Grid` / `plan_path` 的 `R_BASE` 0.28 m | 没有 cuRobo 时的旧规划，回归不走 | 步骤 5 清理 |
 
-没动的：接触段里的底盘推速度（wipe 0.05、`hand.py` 0.06 m/s，步骤 4）、微波炉的 0.06 / 0.2 m/s（3c）、bimanual 0.12 m/s（3c）。
+没动的：接触段里的底盘推速度（wipe 0.05、`hand.py` 0.06 m/s，步骤 4）、微波炉的 0.06 / 0.2 m/s（6.4）、bimanual 0.12 m/s（6.4）。
 
 ## 9. 试过、不要再做的
 
@@ -370,9 +320,7 @@ open / close、rotate、flip、stir、pour、wave、upright、push 推到够不�
 
 | 问题 | 什么时候定 |
 |---|---|
-| ~~左臂收起姿态不伸出底盘要不要提前到 3b 做~~ | 定了（11-05）：提前做，已改，见 6.1 B 类 |
-| ~~pick 两段式的第一段，最后几厘米要不要仍沿夹爪轴走直线~~ | 定了（11-05）：保留，最后 4 cm 沿夹爪轴直线，查碰撞 |
-| 离开接触段要不要在逐点检查时，碰到"一开始就在碰的东西"以外的任何东西就提前停下，交给后面的规划 | 6.3 pick 修完 |
-| 降低任务参数改成任务范围后，每个任务的下限（pour 最少倾斜多少、stir 最小半径） | 3b 改到它们时 |
-| 删掉换策略后 `auto_recovery` 只剩 expose，这个开关留不留 | 3b 结束时（6.5） |
-| `Allow` 的五个预设是否覆盖所有技能 | 步骤 4 迁移时 |
+| 离开接触段要不要在逐点检查时，碰到"一开始就在碰的东西"以外的任何东西就提前停下，交给后面的规划 | 6.1 |
+| 降低任务参数改成任务范围后，每个任务的下限（pour 最少倾斜多少、stir 最小半径） | 6.3 改到它们时 |
+| 删掉换策略后 `auto_recovery` 只剩 expose，这个开关留不留 | 6.3 结束时 |
+| `Allow` 的五个预设是否覆盖所有技能 | 步骤 4（6.5） |

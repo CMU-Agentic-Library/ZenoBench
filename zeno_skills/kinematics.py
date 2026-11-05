@@ -43,7 +43,7 @@ DRIVE_Q = [0.0, 0.0, 0.0, 0.03, 0.0, 0.03, 0.0, 0.0, 0.0]
 # and the right arm (rest and hanging), the hand off the chest (x <= 0.2 m), then moved off the
 # joint limits it pressed on.  The inherited fold (3ccd5e99: joints 1, 2, 4 = 0.2, 0.35, 2.3) held the
 # hand 17 cm out in front of the column: parks near a counter were refused and a torso lowered to
-# set a load down pressed it onto the table (docs/COLLISION_PLAN.md 6.1 B).
+# set a load down pressed it onto the table (docs/COLLISION_PLAN.md, left arm fold).
 LEFT_ARM_FOLD = {"left_arm_joint_1": -1.249, "left_arm_joint_2": 0.047, "left_arm_joint_3": -0.035,
                  "left_arm_joint_4": 2.038, "left_arm_joint_5": 1.52, "left_arm_joint_6": 0.09,
                  "left_arm_joint_7": -0.312}

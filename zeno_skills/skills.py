@@ -1287,12 +1287,12 @@ def _pick_pinch_core(rig, name, max_candidates=12, kinds=("top_pinch", "side_pin
     # object in the collision model, nothing exempt; planned to end straight along the gripper
     # axis, no fallback: a hand that cannot get there open without touching is a grasp (or a park)
     # that does not work.  2: the fingers close where the hand stands.
-    # the object is watched every tick on the way (the monitor's checks miss a knock, plan 6.3)
+    # the object is watched every tick on the way (the monitor's checks miss a knock, plan section 5)
     with rig._fingers_checked(rig.kin), _watching(rig, name):
         err = rig.move_to(g["p"], g["R"], step=0.003, steps_per_wp=4, label="pick_grasp", q_hint=park_qs[1],
                           smooth=True, approach=(*_grasp_approach(g), park_qs[0]), allow=FREE, free=FREE)
     if rig.kin.motion is not None:
-        # what the open hand at the commanded grasp pose penetrates in the full model (plan 6.2)
+        # what the open hand at the commanded grasp pose penetrates in the full model (grasp_contacts)
         rig.log("grasp_contacts", obj=name, kind=g["kind"], tcp_err_m=round(err, 4),
                 hits=rig.kin.motion.contacts_by_owner(rig.kin, rig.q_cmd, rig.kin._other_q()))
     rig.caption = f"PICK {name}: close gripper"

@@ -49,7 +49,7 @@ R 类不列。下面只列要动的。
 
 **刷新于 2026-11-02（`67b377c`）：** 行号、函数名按现在的代码重新定位；"状态"一列说明步骤 1、2 之后这条还在不在。106 条里仍在 94、已改 11、已删 1。已改的主要是松手、离开接触的那一段改成了 `LEAVE_CONTACT`，以及餐桌、层板、微波炉取物的"退出去再开回"改成了 `relocate`；这些条目里的变体列表和吞异常大多还在，步骤 3 照样要删。3.10 是这次刷新新发现、原表里没有的。
 
-按计划里的子步排：3.1–3.4 和 wipe 选带属于 3a；3b 剩下的按 11-05 定的顺序：3.5 pick（push 那行除外）先做（计划 6.3），然后 place 系（3.2 剩下的、3.3 `place_flat`、3.4、sticky 的 place，计划 6.4），再是 3.6、3.7、3.10（计划 6.5）；3.8、3.9 其余属于 3c（`COLLISION_PLAN.md` 步骤 3）。
+按计划里的子步排：3.1–3.4 和 wipe 选带属于 3a；3b 剩下的按 11-05 定的顺序：3.5 pick（push 那行除外）先做（计划 6.1），然后 place 系（3.2 剩下的、3.3 `place_flat`、3.4、sticky 的 place，计划 6.2），再是 3.6、3.7、3.10（计划 6.3）；3.8、3.9 其余属于 3c（计划 6.4）（`COLLISION_PLAN.md` 步骤 3）。
 
 ### 3.1 `_carry_pose`（skills.py）
 
@@ -79,7 +79,7 @@ R 类不列。下面只列要动的。
 | skills.py:1927-1940 | `place` | 没 park 就去掉越障点、8 个 yaw 重来（`place_clearance_dropped`） | F | 已删（3a） |
 | skills.py:1945-1946 | `place` | `place_level_dropped` | F | 已删（3a） |
 | skills.py:1952-1953 | `place` | 重测后丢掉越障腿重算 | W | 已删（3a） |
-| skills.py:1966-1982 | `place` | 餐桌整段：退 0.40 m → `table_staging` → `table_pre_lift` → 开回 | B/W | 已改：步骤 2 换成一次 `relocate`，到达姿态是 `table_pre_lift`（IK 抬高 dz）；后撤、`table_staging`、开回都删了。`table_pre_lift` 这个手写抬高姿态还在 |
+| skills.py:1966-1982 | `place` | 餐桌整段：退 0.40 m → `table_staging` → `table_pre_lift` → 开回 | B/W | 已改：步骤 2 换成一次 `relocate`，到达姿态是 `table_pre_lift`（IK 抬高 dz）；后撤、`table_staging`、开回都删了。`table_pre_lift` 在 3a（`f5779ab`）随放置链改目标集合删掉 |
 | skills.py:2003-2011 | `place` | 越障点高度按 `k in (1.0, 0.7, 0.4)` 试 IK | W/F | 已删（3a） |
 | skills.py:2024-2041 | `place` | `container_pre_lift`，记下 `container_exit_pose` | W | 已删（3a） |
 | skills.py:2043-2067 | `place` | 贴边时选净空最大的一侧退出（`place_back_from_edge`），距离 `(need, 0.04)` + try/except | W/F | 已删（3a） |

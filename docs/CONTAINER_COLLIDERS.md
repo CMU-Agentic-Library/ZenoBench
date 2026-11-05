@@ -48,7 +48,7 @@ T04 no_cup 抓马克杯（`benchmark/runs/pick63_t04_goalhint`，s10）：沿口
 3. 重新生成受影响资产的 USD（`prepare_assets.py --patch-usd`，同 `book_red` 的做法），只动 `breakfast_mug`、`handled_cooking_pot`。
 
 **改之前要定的**：
-- 会改变仿真接触和抓取位姿，用到马克杯、锅的任务（T04、T09、T13 等）基线都会变；和 `COLLISION_PLAN.md` 6.3 的其他改动放在一起还是单独一次针对性检查。
+- 会改变仿真接触和抓取位姿，用到马克杯、锅的任务（T04、T09、T13 等）基线都会变；和 `COLLISION_PLAN.md` 6.1 的其他改动放在一起还是单独一次针对性检查。
 - 椭圆截面用什么表示（椭圆拟合，还是按角度的半径表）。
 
 **改完要验证的**：马克杯、锅的碰撞体和可视网格叠在一起看（离线渲染或仿真里显示 guide 层）；T04 no_cup、T09、T13 重跑；沿口捏取时手指贴着真实杯壁。
