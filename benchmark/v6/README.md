@@ -1,15 +1,15 @@
 # ZenoBench v6: task design in four categories (design stage)
 
 v6 is the task-design layer on top of v5. It reads `benchmark/v5/tasks.json` and never writes it. v6 adds new
-variants on 17 of the 20 base tasks, removes every injected action failure, and
-puts each variant in one of four categories.
+variants on the 20 v5 base tasks and ten base tasks of its own (T21-T30, `new_tasks_v6.py`: everyday goals with one
+step of reasoning each), removes every injected action failure, and puts each variant in one of four categories.
 
 | | |
 |---|---|
-| base tasks | 20 (one house, 10 rooms, existing assets only) |
-| variants | 107; each runs seeds 10-19 (1,070 episodes) |
-| categories | control 20 (one per task), Action-Level 0, Task-Level 83, Action + Task 4 (`TRACKS.md`) |
-| static checks | 1,070 / 1,070 episodes |
+| base tasks | 30: T01-T20 from v5, T21-T30 new in v6 (`new_tasks_v6.py`); one house, 10 rooms, existing assets only |
+| variants | 167; each runs seeds 10-19 (1,670 episodes) |
+| categories | control 30 (one per task), Action-Level 0, Task-Level 133, Action + Task 4 (`TRACKS.md`) |
+| static checks | 1,670 / 1,670 episodes |
 | physics | none yet: every layout is new (seed generator); all STATIC_VALIDATED (`PHYSICS_TODO.md`) |
 
 ## Definitions
@@ -52,9 +52,9 @@ Each variant contains the fallback its category is about; the category reads onl
 
 | category | the variant needs | variants | episodes |
 |---|---|---|---|
-| **Control** | nothing: the nominal plan works (the reference for the others) | 20 | 200 |
+| **Control** | nothing: the nominal plan works (the reference for the others) | 30 | 300 |
 | **Action-Level** | a short fallback at the work spot, a few skills combined, then the plan goes on: expose a flat book before the pick, separate a crowded block, take the lid off, clear what lies on the target or open the door first, move clutter off the work strip, clear a full destination, move the base in from the edge (`LOCAL_CONDITIONS`, `local_failure`); also a dynamic event put right at the work spot: a book pushed back, a tomato taken out of the pot, a door opened again (`event_is_local`); none left as a variant of its own (TAMPAgent covers clearing a blocker), only inside Action + Task | 0 | 0 |
-| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 83 | 830 |
+| **Task-Level** | a longer-horizon change of plan: a substitute, a search in another place or room, a capacity split, another destination / appliance / cookware, an object an event takes elsewhere | 133 | 1330 |
 | **Action + Task** | both | 4 | 40 |
 
 **No injected action failures, anywhere.** No IK refusal, grasp miss, slip or placement miss is forced on a
@@ -86,7 +86,7 @@ Status: static (`validate_v6.py` checks that no injected failure is left and eve
 content). `oracle_check.py` replays every oracle route on a symbolic state (where each object is, the hand, open
 doors, lids, temperatures, the robot's place): each step's preconditions (from the skill contracts, plus an item in
 closed furniture needs the door open, a covered container takes nothing, the robot is near what it handles), the
-dynamic events at their trigger, and at the end the goal (197 / 197 routes; atoms only geometry can decide, such as
+dynamic events at their trigger, and at the end the goal (265 / 265 routes; atoms only geometry can decide, such as
 upright or clear_of, are left to the simulation). Evaluation metrics are not defined yet.
 
 ## Commands

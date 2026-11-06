@@ -1,7 +1,7 @@
 {
- "variants": 107,
- "episodes": 1070,
- "static_ok": 1070,
+ "variants": 167,
+ "episodes": 1670,
+ "static_ok": 1670,
  "problems": [],
  "per_task": {
   "T01_book_to_dining_table": {
@@ -83,12 +83,52 @@
   "T14_shelve_the_book": {
    "episodes": 60,
    "static_ok": 60
+  },
+  "T21_bring_tissues": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T22_put_away_shopping": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T23_pick_up_dropped": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T24_snack_for_kid": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T25_drink_for_guest": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T26_kids_things_to_room": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T27_leftovers_to_fridge": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T28_cup_to_bedside": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T29_clear_table_for_dinner": {
+   "episodes": 60,
+   "static_ok": 60
+  },
+  "T30_bowls_for_soup": {
+   "episodes": 60,
+   "static_ok": 60
   }
  },
  "categories": {
-  "control": 20,
-  "task": 83,
+  "control": 30,
+  "task": 133,
   "action_task": 4
  },
- "tasks_sha1": "d7712a1e0c9fc6512df35fd64fb8f76a1c54a78d"
+ "tasks_sha1": "65df7ed4417ff3f0501607ebbae662f9e63f27a5"
 }

@@ -367,3 +367,151 @@ One line per layout of each variant (`!` expected to fail, `+` recovery step). S
 * `next_in_series__on_bookcase` (v6_next_in_series__on_bookcase, 10 steps): look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.55]) look(bookcase_2/top) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.8, -6.05])
 * `next_in_series__on_other_bookcase` (v6_next_in_series__on_other_bookcase, 12 steps): look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.55]) look(bookcase_2/top) search(red_book_2,bedroom_0_1) look(bookcase_3/top) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.8, -6.05])
 * `next_in_series__on_tall_shelf` (v6_next_in_series__on_tall_shelf, 12 steps): look(desk_1/top) navigate(book_red) pick(book_red) navigate(bookcase_2/top) place(book_red,bookcase_2/top,[1.0, -0.55]) look(bookcase_2/top) search(red_book_2,bedroom_0_1) look(large_shelf_4/shelf_1) navigate(red_book_2) pick(red_book_2) navigate(desk_1/top) place(red_book_2,desk_1/top,[-0.8, -6.05])
+
+## T21_bring_tissues
+
+### Control
+
+* `tissue_on_tv_stand` (nominal, 4 steps): navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.3, 6.65])
+
+### Task-Level
+
+* `tissue_out_of_view` (v6_tissue_out_of_view, 5 steps): search(tissue,living_room_0_1) navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.3, 6.65])
+* `which_table__east` (v6_which_table__east, 5 steps): navigate(tissue) pick(tissue) look(dining_table_1/top) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.3, 6.65])
+* `which_table__west` (v6_which_table__west, 5 steps): navigate(tissue) pick(tissue) look(dining_table_2/top) navigate(dining_table_1/top) place(tissue,dining_table_1/top,[-7.75, 7.4])
+* `no_tissue` (v6_no_tissue, 5 steps): look(tv_stand_2/top) navigate(spare_sponge) pick(spare_sponge) navigate(dining_table_2/top) place(spare_sponge,dining_table_2/top,[3.3, 6.65])
+* `tissue_put_away__in_4` (v6_tissue_put_away__in_4, 17 steps): navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() close(kitchen_cabinet_6) navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(tissue) pick(tissue) retreat(kitchen_cabinet_4,0.3) close(kitchen_cabinet_4) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.3, 6.65])
+* `tissue_put_away__in_6` (v6_tissue_put_away__in_6, 17 steps): navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() close(kitchen_cabinet_4) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) bend() explore_furniture(kitchen_cabinet_6) straighten() navigate(tissue) pick(tissue) retreat(kitchen_cabinet_6,0.3) close(kitchen_cabinet_6) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.3, 6.65])
+* `the_kids_side__kid_north` (v6_the_kids_side__kid_north, 4 steps): navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.1, 7.45])
+* `the_kids_side__kid_south` (v6_the_kids_side__kid_south, 4 steps): navigate(tissue) pick(tissue) navigate(dining_table_2/top) place(tissue,dining_table_2/top,[3.1, 6.4])
+
+## T22_put_away_shopping
+
+### Control
+
+* `juice_on_table` (nominal, 7 steps): navigate(breakfast_fridge) open(breakfast_fridge) navigate(bought_juice) pick(bought_juice) navigate(breakfast_fridge) place(bought_juice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
+
+### Task-Level
+
+* `by_kind` (v6_by_kind, 19 steps): navigate(breakfast_fridge) open(breakfast_fridge) navigate(bought_juice) pick(bought_juice) navigate(breakfast_fridge) place(bought_juice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge) navigate(bought_apple) pick(bought_apple) navigate(home_basket) place(bought_apple,home_basket) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) inspect(kitchen_cabinet_6) navigate(bought_snack) pick(bought_snack) navigate(kitchen_cabinet_6) place(bought_snack,kitchen_cabinet_6/inside_shelf,[3.6, 0.36]) close(kitchen_cabinet_6)
+* `eat_now` (v6_eat_now, 11 steps): navigate(breakfast_fridge) open(breakfast_fridge) navigate(bought_juice) pick(bought_juice) navigate(breakfast_fridge) place(bought_juice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge) navigate(bought_snack) pick(bought_snack) navigate(desk_1/top) place(bought_snack,desk_1/top,[-1.1, -5.95])
+* `basket_missing` (v6_basket_missing, 11 steps): navigate(breakfast_fridge) open(breakfast_fridge) navigate(bought_juice) pick(bought_juice) navigate(breakfast_fridge) place(bought_juice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge) navigate(bought_apple) pick(bought_apple) navigate(fruit_tray) place(bought_apple,fruit_tray)
+* `not_shopping` (v6_not_shopping, 8 steps): look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(bought_juice) pick(bought_juice) navigate(breakfast_fridge) place(bought_juice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
+* `two_spots` (v6_two_spots, 21 steps): look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(bought_juice) pick(bought_juice) navigate(breakfast_fridge) place(bought_juice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge) look(kitchen_island/top) navigate(bought_apple) pick(bought_apple) navigate(home_basket) place(bought_apple,home_basket) navigate(kitchen_cabinet_6) open(kitchen_cabinet_6) inspect(kitchen_cabinet_6) navigate(bought_snack) pick(bought_snack) navigate(kitchen_cabinet_6) place(bought_snack,kitchen_cabinet_6/inside_shelf,[3.6, 0.36]) close(kitchen_cabinet_6)
+
+## T23_pick_up_dropped
+
+### Control
+
+* `spoon_on_floor` (nominal, 5 steps): look(kitchen_counter_2/top) navigate(dropped_spoon) pick(dropped_spoon) navigate(kitchen_counter_2/top) place(dropped_spoon,kitchen_counter_2/top,[-0.1, 7.6])
+
+### Task-Level
+
+* `by_kind` (v6_by_kind, 9 steps): look(kitchen_counter_2/top) navigate(dropped_spoon) pick(dropped_spoon) navigate(kitchen_counter_2/top) place(dropped_spoon,kitchen_counter_2/top,[-0.1, 7.6]) navigate(dropped_block) pick(dropped_block) navigate(toy_box) place(dropped_block,toy_box)
+* `belongs_on_floor` (v6_belongs_on_floor, 5 steps): look(kitchen_counter_2/top) navigate(dropped_spoon) pick(dropped_spoon) navigate(kitchen_counter_2/top) place(dropped_spoon,kitchen_counter_2/top,[-0.1, 7.6])
+* `dropped_out_of_view` (v6_dropped_out_of_view, 6 steps): look(kitchen_counter_2/top) search(dropped_spoon,dining_room_0_1) navigate(dropped_spoon) pick(dropped_spoon) navigate(kitchen_counter_2/top) place(dropped_spoon,kitchen_counter_2/top,[-0.1, 7.6])
+* `only_this_room` (v6_only_this_room, 5 steps): look(kitchen_counter_2/top) navigate(dropped_spoon) pick(dropped_spoon) navigate(kitchen_counter_2/top) place(dropped_spoon,kitchen_counter_2/top,[-0.1, 7.6])
+* `dropped_in_two_rooms` (v6_dropped_in_two_rooms, 10 steps): look(kitchen_counter_2/top) navigate(dropped_spoon) pick(dropped_spoon) navigate(kitchen_counter_2/top) place(dropped_spoon,kitchen_counter_2/top,[-0.1, 7.6]) search(dropped_pencil,living_room_0_1) navigate(dropped_pencil) pick(dropped_pencil) navigate(desk_1/top) place(dropped_pencil,desk_1/top,[-1.05, -5.95])
+
+## T24_snack_for_kid
+
+### Control
+
+* `apple_on_table` (nominal, 4 steps): navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.1, -5.95])
+
+### Task-Level
+
+* `no_apples_for_him` (v6_no_apples_for_him, 5 steps): look(dining_table_2/top) navigate(snack_banana) pick(snack_banana) navigate(desk_1/top) place(snack_banana,desk_1/top,[-1.1, -5.95])
+* `dinner_soon` (v6_dinner_soon, 5 steps): look(dining_table_2/top) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.1, -5.95])
+* `fruit_out_of_view` (v6_fruit_out_of_view, 6 steps): look(dining_table_2/top) search(home_basket,bedroom_0_1) navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.1, -5.95])
+* `where_is_he__study` (v6_where_is_he__study, 5 steps): navigate(snack_apple) pick(snack_apple) look(desk_3/top) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.1, -5.95])
+* `where_is_he__bedroom` (v6_where_is_he__bedroom, 5 steps): navigate(snack_apple) pick(snack_apple) look(desk_1/top) navigate(desk_3/top) place(snack_apple,desk_3/top,[6.2, -5.5])
+* `two_kids` (v6_two_kids, 8 steps): navigate(snack_apple) pick(snack_apple) navigate(desk_1/top) place(snack_apple,desk_1/top,[-1.1, -5.95]) navigate(snack_banana) pick(snack_banana) navigate(desk_3/top) place(snack_banana,desk_3/top,[6.2, -5.5])
+
+## T25_drink_for_guest
+
+### Control
+
+* `drink_on_island` (nominal, 8 steps): navigate(guest_juice) pick(guest_juice) navigate(tv_stand_2/top) place(guest_juice,tv_stand_2/top,[7.3, 0.36]) navigate(guest_cup) pick(guest_cup) navigate(tv_stand_2/top) place(guest_cup,tv_stand_2/top,[7.55, 0.36])
+
+### Task-Level
+
+* `cup_elsewhere` (v6_cup_elsewhere, 9 steps): navigate(guest_juice) pick(guest_juice) navigate(tv_stand_2/top) place(guest_juice,tv_stand_2/top,[7.3, 0.36]) search(cup_counter_b,kitchen_0_1) navigate(cup_counter_b) pick(cup_counter_b) navigate(tv_stand_2/top) place(cup_counter_b,tv_stand_2/top,[7.55, 0.36])
+* `cold_one` (v6_cold_one, 12 steps): navigate(breakfast_fridge) open(breakfast_fridge) navigate(cold_juice) pick(cold_juice) retreat(breakfast_fridge,0.3) close(breakfast_fridge) navigate(tv_stand_2/top) place(cold_juice,tv_stand_2/top,[7.3, 0.36]) navigate(guest_cup) pick(guest_cup) navigate(tv_stand_2/top) place(guest_cup,tv_stand_2/top,[7.55, 0.36])
+* `drink_in_fridge` (v6_drink_in_fridge, 13 steps): look(kitchen_island/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(cold_juice) pick(cold_juice) retreat(breakfast_fridge,0.3) close(breakfast_fridge) navigate(tv_stand_2/top) place(cold_juice,tv_stand_2/top,[7.3, 0.36]) navigate(guest_cup) pick(guest_cup) navigate(tv_stand_2/top) place(guest_cup,tv_stand_2/top,[7.55, 0.36])
+* `two_guests` (v6_two_guests, 12 steps): navigate(guest_juice) pick(guest_juice) navigate(tv_stand_2/top) place(guest_juice,tv_stand_2/top,[7.3, 0.36]) navigate(guest_cup) pick(guest_cup) navigate(tv_stand_2/top) place(guest_cup,tv_stand_2/top,[7.55, 0.36]) navigate(guest_cup_2) pick(guest_cup_2) navigate(tv_stand_2/top) place(guest_cup_2,tv_stand_2/top,[7.8, 0.36])
+* `little_guest` (v6_little_guest, 8 steps): navigate(guest_juice) pick(guest_juice) navigate(tv_stand_2/top) place(guest_juice,tv_stand_2/top,[7.3, 0.36]) navigate(kid_cup) pick(kid_cup) navigate(tv_stand_2/top) place(kid_cup,tv_stand_2/top,[7.55, 0.36])
+
+## T26_kids_things_to_room
+
+### Control
+
+* `car_in_living_room` (nominal, 5 steps): explore_room(living_room_0_0) navigate(living_car) pick(living_car) navigate(kids_basket) place(living_car,kids_basket)
+
+### Task-Level
+
+* `whose` (v6_whose, 5 steps): look(tv_stand_2/top) navigate(kid_book) pick(kid_book) navigate(bookcase_2/top) place(kid_book,bookcase_2/top,[1.12, -0.43])
+* `scattered` (v6_scattered, 13 steps): explore_room(living_room_0_0) navigate(living_car) pick(living_car) navigate(kids_basket) place(living_car,kids_basket) navigate(living_duck) pick(living_duck) navigate(kids_basket) place(living_duck,kids_basket) navigate(living_block) pick(living_block) navigate(kids_basket) place(living_block,kids_basket)
+* `where_in_room` (v6_where_in_room, 9 steps): explore_room(living_room_0_0) navigate(living_car) pick(living_car) navigate(kids_basket) place(living_car,kids_basket) navigate(kid_book) pick(kid_book) navigate(bookcase_2/top) place(kid_book,bookcase_2/top,[1.12, -0.43])
+* `bear_to_bed` (v6_bear_to_bed, 5 steps): look(tv_stand_2/top) navigate(living_bear) pick(living_bear) navigate(mattress_1/top) place(living_bear,mattress_1/top,[0.0, -4.0])
+* `two_bedrooms__room_east` (v6_two_bedrooms__room_east, 5 steps): navigate(living_car) pick(living_car) search(kids_basket,bedroom_0_1) navigate(kids_basket) place(living_car,kids_basket)
+* `two_bedrooms__room_south` (v6_two_bedrooms__room_south, 5 steps): navigate(living_car) pick(living_car) search(kids_basket,bedroom_0_0) navigate(kids_basket) place(living_car,kids_basket)
+
+## T27_leftovers_to_fridge
+
+### Control
+
+* `rice_on_table` (nominal, 7 steps): navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
+
+### Task-Level
+
+* `which_is_leftover` (v6_which_is_leftover, 8 steps): look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
+* `two_leftovers__soup_on_table` (v6_two_leftovers__soup_on_table, 12 steps): look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) navigate(leftover_soup) pick(leftover_soup) navigate(breakfast_fridge) place(leftover_soup,breakfast_fridge/inside_shelf,[5.98, 3.18]) close(breakfast_fridge)
+* `two_leftovers__soup_on_stove` (v6_two_leftovers__soup_on_stove, 13 steps): look(dining_table_2/top) look(kitchen_stove/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) navigate(leftover_soup) pick(leftover_soup) navigate(breakfast_fridge) place(leftover_soup,breakfast_fridge/inside_shelf,[5.98, 3.18]) close(breakfast_fridge)
+* `still_eating` (v6_still_eating, 8 steps): look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
+* `fridge_out_of_view` (v6_fridge_out_of_view, 9 steps): look(dining_table_2/top) explore_room(living_room_0_0) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
+* `fruit_stays_out` (v6_fruit_stays_out, 8 steps): look(dining_table_2/top) navigate(breakfast_fridge) open(breakfast_fridge) navigate(leftover_rice) pick(leftover_rice) navigate(breakfast_fridge) place(leftover_rice,breakfast_fridge/inside_shelf,[5.78, 3.18]) close(breakfast_fridge)
+
+## T28_cup_to_bedside
+
+### Control
+
+* `cup_on_counter` (nominal, 4 steps): navigate(kid_cup) pick(kid_cup) navigate(bookcase_3/top) place(kid_cup,bookcase_3/top,[2.1, -4.88])
+
+### Task-Level
+
+* `which_cup` (v6_which_cup, 5 steps): look(kitchen_counter_2/top) navigate(kid_cup) pick(kid_cup) navigate(bookcase_3/top) place(kid_cup,bookcase_3/top,[2.1, -4.88])
+* `cup_put_away` (v6_cup_put_away, 11 steps): navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(kid_cup) pick(kid_cup) retreat(kitchen_cabinet_4,0.3) close(kitchen_cabinet_4) navigate(bookcase_3/top) place(kid_cup,bookcase_3/top,[2.1, -4.88])
+* `which_bed__east` (v6_which_bed__east, 5 steps): navigate(kid_cup) pick(kid_cup) look(mattress_2/top) navigate(bookcase_3/top) place(kid_cup,bookcase_3/top,[2.1, -4.88])
+* `which_bed__south` (v6_which_bed__south, 5 steps): navigate(kid_cup) pick(kid_cup) look(mattress_1/top) navigate(cell_shelf_2/top) place(kid_cup,cell_shelf_2/top,[1.42, -10.8])
+* `cup_out_of_view` (v6_cup_out_of_view, 6 steps): look(kitchen_counter_2/top) search(kid_cup,dining_room_0_1) navigate(kid_cup) pick(kid_cup) navigate(bookcase_3/top) place(kid_cup,bookcase_3/top,[2.1, -4.88])
+* `already_there` (v6_already_there, 2 steps): navigate(bookcase_3/top) look(bookcase_3/top)
+
+## T29_clear_table_for_dinner
+
+### Control
+
+* `car_on_table` (nominal, 5 steps): look(dining_table_2/top) navigate(table_car) pick(table_car) navigate(toy_box) place(table_car,toy_box)
+
+### Task-Level
+
+* `belongs_on_table` (v6_belongs_on_table, 5 steps): look(dining_table_2/top) navigate(table_car) pick(table_car) navigate(toy_box) place(table_car,toy_box)
+* `homework_on_table` (v6_homework_on_table, 9 steps): look(dining_table_2/top) navigate(hw_notebook) pick(hw_notebook) navigate(desk_1/top) place(hw_notebook,desk_1/top,[-0.7, -5.95]) navigate(hw_pencil) pick(hw_pencil) navigate(desk_1/top) place(hw_pencil,desk_1/top,[-0.35, -5.95])
+* `several` (v6_several, 13 steps): look(dining_table_2/top) navigate(table_car) pick(table_car) navigate(toy_box) place(table_car,toy_box) navigate(empty_can) pick(empty_can) navigate(trash_can) drop(empty_can,trash_can) navigate(table_book) pick(table_book) navigate(bookcase_2/top) place(table_book,bookcase_2/top,[1.0, -0.43])
+* `nothing_to_clear` (v6_nothing_to_clear, 2 steps): navigate(dining_table_2/top) look(dining_table_2/top)
+* `which_table__east` (v6_which_table__east, 6 steps): look(dining_table_2/top) look(dining_table_1/top) navigate(toy_east) pick(toy_east) navigate(toy_box) place(toy_east,toy_box)
+* `which_table__west` (v6_which_table__west, 6 steps): look(dining_table_2/top) look(dining_table_1/top) navigate(toy_west) pick(toy_west) navigate(toy_box) place(toy_west,toy_box)
+
+## T30_bowls_for_soup
+
+### Control
+
+* `bowl_on_cabinet` (nominal, 4 steps): navigate(soup_bowl_1) pick(soup_bowl_1) navigate(kitchen_island/top) place(soup_bowl_1,kitchen_island/top,[8.05, 1.75])
+
+### Task-Level
+
+* `how_many` (v6_how_many, 13 steps): look(dining_table_2/top) navigate(soup_bowl_1) pick(soup_bowl_1) navigate(kitchen_island/top) place(soup_bowl_1,kitchen_island/top,[7.65, 1.75]) navigate(soup_bowl_2) pick(soup_bowl_2) navigate(kitchen_island/top) place(soup_bowl_2,kitchen_island/top,[7.85, 1.75]) navigate(soup_bowl_3) pick(soup_bowl_3) navigate(kitchen_island/top) place(soup_bowl_3,kitchen_island/top,[8.05, 1.75])
+* `clean_one` (v6_clean_one, 5 steps): look(kitchen_cabinet_6/top) navigate(soup_bowl_1) pick(soup_bowl_1) navigate(kitchen_island/top) place(soup_bowl_1,kitchen_island/top,[8.05, 1.75])
+* `bowl_put_away` (v6_bowl_put_away, 11 steps): navigate(kitchen_cabinet_4) open(kitchen_cabinet_4) bend() explore_furniture(kitchen_cabinet_4) straighten() navigate(soup_bowl_1) pick(soup_bowl_1) retreat(kitchen_cabinet_4,0.3) close(kitchen_cabinet_4) navigate(kitchen_island/top) place(soup_bowl_1,kitchen_island/top,[8.05, 1.75])
+* `no_bowl` (v6_no_bowl, 5 steps): look(kitchen_cabinet_6/top) navigate(spare_mug) pick(spare_mug) navigate(kitchen_island/top) place(spare_mug,kitchen_island/top,[8.05, 1.75])
+* `bowl_not_plate` (v6_bowl_not_plate, 5 steps): look(kitchen_cabinet_6/top) navigate(soup_bowl_1) pick(soup_bowl_1) navigate(kitchen_island/top) place(soup_bowl_1,kitchen_island/top,[8.05, 1.75])

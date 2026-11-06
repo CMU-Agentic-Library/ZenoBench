@@ -16350,5 +16350,3992 @@
   "challenge": "the set is told by its red cover; the other book stands among books of other covers, on the kid's bookcase or another shelf in the bedroom",
   "rationale": "two subgoals in opposite directions; the second item is named only by its relation to the first (same set): look at the covers, search the shelves until the matching one is found",
   "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/tissue_on_tv_stand": {
+  "variant": "tissue_on_tv_stand",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "tissue"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "the tissue box on the TV stand, a bowl of soup on the dining table",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/tissue_out_of_view": {
+  "variant": "tissue_out_of_view",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "tissue"
+   ],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_tissue_out_of_view",
+  "challenge": "the tissue box is not on the TV stand where it usually is but on the study desk, out of view",
+  "rationale": "find the tissues first, then bring them to the table",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/which_table__east": {
+  "variant": "which_table",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   14,
+   16
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "tissue"
+   ],
+   "removed": [
+    "bowl_side_table",
+    "cup_side_table",
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "destination_unnamed"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_which_table__east",
+  "challenge": "two dining tables; a bowl of soup stands on one of them, the other is bare",
+  "rationale": "the spill is where someone eats: look which table has the meal and bring the tissues there",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/which_table__west": {
+  "variant": "which_table",
+  "category": "task",
+  "seeds": [
+   11,
+   15,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "tissue"
+   ],
+   "removed": [
+    "bowl_side_table",
+    "cup_side_table",
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "destination_unnamed"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_which_table__west",
+  "challenge": "two dining tables; a bowl of soup stands on one of them, the other is bare",
+  "rationale": "the spill is where someone eats: look which table has the meal and bring the tissues there",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/no_tissue": {
+  "variant": "no_tissue",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "spare_sponge"
+   ],
+   "removed": [],
+   "conditions": [
+    "resource_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "spare_sponge",
+     "dining_table_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_no_tissue",
+  "challenge": "there are no tissues in the house; a dry kitchen sponge lies on the island",
+  "rationale": "the purpose is to wipe the spill: bring the closest thing that does that (the sponge)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/tissue_put_away__in_4": {
+  "variant": "tissue_put_away",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   13,
+   17,
+   18
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "tissue"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "item_put_away"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_2/top"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_tissue_put_away__in_4",
+  "challenge": "the tissue box was put away in one of the two low wall cabinets",
+  "rationale": "look in the cabinets until the tissues are found, take them out, close the doors",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/tissue_put_away__in_6": {
+  "variant": "tissue_put_away",
+  "category": "task",
+  "seeds": [
+   11,
+   14,
+   15,
+   16,
+   19
+  ],
+  "instruction": "Some soup got spilled at the dining table. Bring some tissues over.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "meal_spoon",
+    "soup_bowl",
+    "tissue"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "item_put_away"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_2/top"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_tissue_put_away__in_6",
+  "challenge": "the tissue box was put away in one of the two low wall cabinets",
+  "rationale": "look in the cabinets until the tissues are found, take them out, close the doors",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/the_kids_side__kid_north": {
+  "variant": "the_kids_side",
+  "category": "task",
+  "seeds": [
+   10,
+   12,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid spilled some soup at the dining table. Bring him some tissues.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "adult_bowl",
+    "adult_mug",
+    "kid_bowl",
+    "kid_cup",
+    "tissue"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_2/top"
+    ],
+    [
+     "near_any",
+     "tissue",
+     [
+      "kid_bowl",
+      "kid_cup"
+     ],
+     0.15
+    ],
+    [
+     "not near_any",
+     "tissue",
+     [
+      "adult_bowl",
+      "adult_mug"
+     ],
+     0.25
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_the_kids_side__kid_north",
+  "challenge": "two places at the table: the kid's (a plastic cup) and a grown-up's (a mug)",
+  "rationale": "the kid spilled: tell the kid's place by the plastic cup and put the tissues next to it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T21_bring_tissues/the_kids_side__kid_south": {
+  "variant": "the_kids_side",
+  "category": "task",
+  "seeds": [
+   11,
+   13,
+   14,
+   15,
+   16
+  ],
+  "instruction": "The kid spilled some soup at the dining table. Bring him some tissues.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "adult_bowl",
+    "adult_mug",
+    "kid_bowl",
+    "kid_cup",
+    "tissue"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "tissue",
+     "dining_table_2/top"
+    ],
+    [
+     "near_any",
+     "tissue",
+     [
+      "kid_bowl",
+      "kid_cup"
+     ],
+     0.15
+    ],
+    [
+     "not near_any",
+     "tissue",
+     [
+      "adult_bowl",
+      "adult_mug"
+     ],
+     0.25
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "tissue_on_tv_stand",
+  "oracle_route": "v6_the_kids_side__kid_south",
+  "challenge": "two places at the table: the kid's (a plastic cup) and a grown-up's (a mug)",
+  "rationale": "the kid spilled: tell the kid's place by the plastic cup and put the tissues next to it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/juice_on_table": {
+  "variant": "juice_on_table",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Put the shopping away.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_juice"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "bought_juice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "a bottle of juice from the shop on the dining table",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/by_kind": {
+  "variant": "by_kind",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Put the shopping away.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_apple",
+    "bought_juice",
+    "bought_snack",
+    "home_basket",
+    "old_snack"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "storage_place",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "bought_juice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "inside",
+     "bought_apple",
+     "home_basket"
+    ],
+    [
+     "on",
+     "bought_snack",
+     "kitchen_cabinet_6/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_by_kind",
+  "challenge": "juice, an apple and a box of snacks on the table; the fruit basket is on the island, the snacks are kept in the low wall cabinet (an opened box is already there)",
+  "rationale": "each item where its kind is kept: the juice in the fridge, the apple in the fruit basket, the snack box in the cabinet with the other snacks",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/eat_now": {
+  "variant": "eat_now",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Put the shopping away. The kid says he wants the snacks now; he is doing homework in the study.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_juice",
+    "bought_snack",
+    "homework"
+   ],
+   "removed": [],
+   "conditions": [
+    "preference_allocation"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "bought_juice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "on",
+     "bought_snack",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_eat_now",
+  "challenge": "juice and a box of snacks; the kid doing homework in the study wants the snacks now",
+  "rationale": "the snacks are not put away but brought to the kid; the juice goes into the fridge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/basket_missing": {
+  "variant": "basket_missing",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Put the shopping away.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_apple",
+    "bought_juice",
+    "fruit_tray"
+   ],
+   "removed": [],
+   "conditions": [
+    "container_absent",
+    "storage_place"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "bought_juice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "inside",
+     "bought_apple",
+     "fruit_tray"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_basket_missing",
+  "challenge": "juice and an apple; no fruit basket in the house, a serving tray on the island",
+  "rationale": "the apple has no basket to go to: the tray stands in for it; the juice into the fridge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/not_shopping": {
+  "variant": "not_shopping",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Put the shopping away.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_juice",
+    "table_book",
+    "table_car"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "bought_juice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "near_start",
+     "table_car",
+     0.03
+    ],
+    [
+     "near_start",
+     "table_book",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_not_shopping",
+  "challenge": "the juice from the shop, and the kid's toy car and picture book on the same table",
+  "rationale": "only what was bought is put away: the toy and the book are not shopping and stay",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T22_put_away_shopping/two_spots": {
+  "variant": "two_spots",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Put the shopping away.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bought_apple",
+    "bought_juice",
+    "bought_snack",
+    "home_basket",
+    "old_snack"
+   ],
+   "removed": [
+    "bowl_inside_kitchen_cabinet",
+    "plate_inside_kitchen_cabinet"
+   ],
+   "conditions": [
+    "goal_items_unstated",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "bought_juice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "bought_juice"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "inside",
+     "bought_apple",
+     "home_basket"
+    ],
+    [
+     "on",
+     "bought_snack",
+     "kitchen_cabinet_6/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_6"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "juice_on_table",
+  "oracle_route": "v6_two_spots",
+  "challenge": "the juice on the dining table; a second bag was emptied on the island: an apple and a box of snacks there, the basket next to them",
+  "rationale": "the shopping is in two places: find both, put each item away",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/spoon_on_floor": {
+  "variant": "spoon_on_floor",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_spoon"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "dropped_spoon",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "a spoon on the kitchen floor; the spoons are kept on the kitchen counter",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/by_kind": {
+  "variant": "by_kind",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_block",
+    "dropped_spoon",
+    "toy_box"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "dropped_spoon",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "inside",
+     "dropped_block",
+     "toy_box"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_by_kind",
+  "challenge": "a spoon and a toy block on the kitchen floor; the kid's toy box stands in the living room",
+  "rationale": "each thing goes back where its kind belongs: the spoon to the counter, the block to the toy box",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/belongs_on_floor": {
+  "variant": "belongs_on_floor",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_spoon",
+    "kitchen_bin",
+    "laundry_basket"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "dropped_spoon",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "near_start",
+     "kitchen_bin",
+     0.03
+    ],
+    [
+     "near_start",
+     "laundry_basket",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_belongs_on_floor",
+  "challenge": "next to the spoon on the floor stand a waste bin and a laundry basket, which live on the floor",
+  "rationale": "only what fell is picked up: the bin and the basket belong on the floor and stay",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/dropped_out_of_view": {
+  "variant": "dropped_out_of_view",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Something fell on the floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_spoon"
+   ],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "dropped_spoon",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_dropped_out_of_view",
+  "challenge": "the spoon fell and slid into the dining room next door, out of view from the kitchen",
+  "rationale": "look around until the dropped thing is found, then put it back on the counter",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/only_this_room": {
+  "variant": "only_this_room",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Something fell on the kitchen floor. Please pick it up and put it where it belongs.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_spoon",
+    "living_car"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "dropped_spoon",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "near_start",
+     "living_car",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_only_this_room",
+  "challenge": "a spoon on the kitchen floor, and the kid's toy car on the living-room floor",
+  "rationale": "the instruction names the kitchen: pick up the spoon, leave the car in the living room",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T23_pick_up_dropped/dropped_in_two_rooms": {
+  "variant": "dropped_in_two_rooms",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Some things fell on the floor around the house. Please pick them up and put them where they belong.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    -1.2,
+    9.4,
+    0.0
+   ],
+   "moved": [],
+   "added": [
+    "dropped_pencil",
+    "dropped_spoon",
+    "homework"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "dropped_spoon",
+     "kitchen_counter_2/top"
+    ],
+    [
+     "on",
+     "dropped_pencil",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "spoon_on_floor",
+  "oracle_route": "v6_dropped_in_two_rooms",
+  "challenge": "a spoon on the kitchen floor, and a pencil under the study desk (the kid's notebook is on the desk)",
+  "rationale": "more than one thing fell, in different rooms: look through the house, put each back (the spoon on the counter, the pencil on the desk with the notebook)",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/apple_on_table": {
+  "variant": "apple_on_table",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "snack_apple"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_apple",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "an apple on the dining table, the kid's homework on the study desk",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/no_apples_for_him": {
+  "variant": "no_apples_for_him",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; he doesn't like apples.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "snack_apple",
+    "snack_banana"
+   ],
+   "removed": [],
+   "conditions": [
+    "preference_allocation"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_banana",
+     "desk_1/top"
+    ],
+    [
+     "not on",
+     "snack_apple",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_no_apples_for_him",
+  "challenge": "an apple and a banana on the table; the kid does not like apples",
+  "rationale": "choose by what the kid likes: the banana",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/dinner_soon": {
+  "variant": "dinner_soon",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat; dinner is in half an hour.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "snack_apple",
+    "snack_box"
+   ],
+   "removed": [],
+   "conditions": [
+    "preference_allocation"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_apple",
+     "desk_1/top"
+    ],
+    [
+     "near_start",
+     "snack_box",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_dinner_soon",
+  "challenge": "an apple and a box of snacks on the table; dinner is in half an hour",
+  "rationale": "with dinner close, the fruit, not the snacks",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/fruit_out_of_view": {
+  "variant": "fruit_out_of_view",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is doing homework in the study and is hungry. Bring him something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "home_basket",
+    "homework",
+    "snack_apple"
+   ],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_apple",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_fruit_out_of_view",
+  "challenge": "no food on the dining table; the fruit basket with an apple is on the bedroom bookcase",
+  "rationale": "find where food is kept (the fruit basket), take something from it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/where_is_he__study": {
+  "variant": "where_is_he",
+  "category": "task",
+  "seeds": [
+   10,
+   13,
+   16,
+   18,
+   19
+  ],
+  "instruction": "The kid is doing homework and is hungry. Bring him something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "snack_apple"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_apple",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_where_is_he__study",
+  "challenge": "the kid's open homework lies on one of two desks; the instruction does not say which room",
+  "rationale": "the kid is where his homework is: bring the food to that desk",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/where_is_he__bedroom": {
+  "variant": "where_is_he",
+  "category": "task",
+  "seeds": [
+   11,
+   12,
+   14,
+   15,
+   17
+  ],
+  "instruction": "The kid is doing homework and is hungry. Bring him something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework_3",
+    "snack_apple"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "snack_apple",
+     "desk_3/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_where_is_he__bedroom",
+  "challenge": "the kid's open homework lies on one of two desks; the instruction does not say which room",
+  "rationale": "the kid is where his homework is: bring the food to that desk",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T24_snack_for_kid/two_kids": {
+  "variant": "two_kids",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kids are doing homework and are hungry. Bring them something to eat.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "homework",
+    "homework_3",
+    "snack_apple",
+    "snack_banana"
+   ],
+   "removed": [],
+   "conditions": [
+    "count_from_scene",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "snack_apple",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "snack_banana",
+      "desk_3/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "snack_banana",
+      "desk_1/top"
+     ],
+     [
+      "on",
+      "snack_apple",
+      "desk_3/top"
+     ]
+    ]
+   ]
+  },
+  "control": "apple_on_table",
+  "oracle_route": "v6_two_kids",
+  "challenge": "two kids' homework, on the study desk and on the bedroom desk; an apple and a banana on the table",
+  "rationale": "one snack for each kid: as many as there are kids doing homework, one to each desk",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/drink_on_island": {
+  "variant": "drink_on_island",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "A guest is sitting in the living room. Bring him something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "guest_cup",
+    "guest_juice"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "on",
+     "guest_cup",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_cup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "a bottle of juice and a cup on the kitchen island; the guest sits in the living room",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/cup_elsewhere": {
+  "variant": "cup_elsewhere",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "A guest is sitting in the living room. Bring him something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "guest_juice"
+   ],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "cup_counter_b",
+      "tv_stand_2/top"
+     ],
+     [
+      "upright",
+      "cup_counter_b"
+     ]
+    ],
+    [
+     [
+      "on",
+      "cup_kitchen_cabinet",
+      "tv_stand_2/top"
+     ],
+     [
+      "upright",
+      "cup_kitchen_cabinet"
+     ]
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cup_elsewhere",
+  "challenge": "the juice on the island, no cup there; cups stand on the kitchen counter in the small kitchen",
+  "rationale": "a drink is served with a cup: find one",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/cold_one": {
+  "variant": "cold_one",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "It's a hot day. A guest is sitting in the living room; bring him something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "cold_juice",
+    "guest_cup",
+    "guest_juice"
+   ],
+   "removed": [],
+   "conditions": [
+    "preference_allocation"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cold_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "cold_juice"
+    ],
+    [
+     "on",
+     "guest_cup",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_cup"
+    ],
+    [
+     "near_start",
+     "guest_juice",
+     0.03
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_cold_one",
+  "challenge": "a bottle on the island at room temperature, another one in the fridge; it is a hot day",
+  "rationale": "on a hot day the cold one: open the fridge for it, close it again",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/drink_in_fridge": {
+  "variant": "drink_in_fridge",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "A guest is sitting in the living room. Bring him something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "cold_juice",
+    "guest_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "cold_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "cold_juice"
+    ],
+    [
+     "on",
+     "guest_cup",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_cup"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_drink_in_fridge",
+  "challenge": "a cup on the island, nothing to drink out; the juice is in the fridge",
+  "rationale": "drinks are kept in the fridge: open it, take the juice, close it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/two_guests": {
+  "variant": "two_guests",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Two guests are sitting in the living room. Bring them something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "guest_cup",
+    "guest_cup_2",
+    "guest_juice"
+   ],
+   "removed": [],
+   "conditions": [
+    "count_from_scene",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "on",
+     "guest_cup",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_cup"
+    ],
+    [
+     "on",
+     "guest_cup_2",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_cup_2"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_two_guests",
+  "challenge": "two guests; one bottle of juice and two cups on the island",
+  "rationale": "one cup per guest: both cups with the bottle",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T25_drink_for_guest/little_guest": {
+  "variant": "little_guest",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "A little girl is visiting and sitting in the living room. Bring her something to drink.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "guest_cup",
+    "guest_juice",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "preference_allocation"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "guest_juice",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "guest_juice"
+    ],
+    [
+     "on",
+     "kid_cup",
+     "tv_stand_2/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "near_start",
+     "guest_cup",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "drink_on_island",
+  "oracle_route": "v6_little_guest",
+  "challenge": "the guest is a small child; a china cup and a plastic cup on the island",
+  "rationale": "for a small child the plastic cup, not the china one",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T26_kids_things_to_room/car_in_living_room": {
+  "variant": "car_in_living_room",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Take the things the kid left in the living room back to his room.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "kids_basket",
+    "kids_shelf_book",
+    "living_car"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "living_car",
+     "kids_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "the kid's toy car on the living-room floor; his toy basket is in his bedroom",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T26_kids_things_to_room/whose": {
+  "variant": "whose",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Take the things the kid left in the living room back to his room.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "adult_novel",
+    "kid_book",
+    "kids_basket",
+    "kids_shelf_book"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_book",
+     "bookcase_2/top"
+    ],
+    [
+     "near_start",
+     "adult_novel",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_in_living_room",
+  "oracle_route": "v6_whose",
+  "challenge": "a picture book like the ones on the kid's bookcase and a grown-up's novel on the TV stand",
+  "rationale": "only the kid's things go: the picture book to his bookcase, the novel stays",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T26_kids_things_to_room/scattered": {
+  "variant": "scattered",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Take the things the kid left in the living room back to his room.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "kids_basket",
+    "kids_shelf_book",
+    "living_block",
+    "living_car",
+    "living_duck"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "living_car",
+     "kids_basket"
+    ],
+    [
+     "inside",
+     "living_duck",
+     "kids_basket"
+    ],
+    [
+     "inside",
+     "living_block",
+     "kids_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_in_living_room",
+  "oracle_route": "v6_scattered",
+  "challenge": "the car on the floor, the duck on the TV stand, a block on the island",
+  "rationale": "everything of his in the living room, not only the first thing seen",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T26_kids_things_to_room/where_in_room": {
+  "variant": "where_in_room",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Take the things the kid left in the living room back to his room.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "kid_book",
+    "kids_basket",
+    "kids_shelf_book",
+    "living_car"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "living_car",
+     "kids_basket"
+    ],
+    [
+     "on",
+     "kid_book",
+     "bookcase_2/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_in_living_room",
+  "oracle_route": "v6_where_in_room",
+  "challenge": "the car and one of his picture books in the living room",
+  "rationale": "in his room each by kind: the car into the toy basket, the book onto his bookcase",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T26_kids_things_to_room/bear_to_bed": {
+  "variant": "bear_to_bed",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is going to bed. Take the things he left in the living room back to his room.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "kids_basket",
+    "kids_shelf_book",
+    "living_bear"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "living_bear",
+     "mattress_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_in_living_room",
+  "oracle_route": "v6_bear_to_bed",
+  "challenge": "his teddy bear on the TV stand; it is bedtime",
+  "rationale": "at bedtime the bear goes to his bed, not into the toy basket",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T26_kids_things_to_room/two_bedrooms__room_east": {
+  "variant": "two_bedrooms",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   15,
+   16,
+   18
+  ],
+  "instruction": "Take the things the kid left in the living room back to his room.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "kids_basket",
+    "living_car"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "living_car",
+     "kids_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_in_living_room",
+  "oracle_route": "v6_two_bedrooms__room_east",
+  "challenge": "two bedrooms; his is the one with the toy basket",
+  "rationale": "tell his room by his things in it and take the car there",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T26_kids_things_to_room/two_bedrooms__room_south": {
+  "variant": "two_bedrooms",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   17,
+   19
+  ],
+  "instruction": "Take the things the kid left in the living room back to his room.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "kids_basket",
+    "living_car"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue",
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "living_car",
+     "kids_basket"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_in_living_room",
+  "oracle_route": "v6_two_bedrooms__room_south",
+  "challenge": "two bedrooms; his is the one with the toy basket",
+  "rationale": "tell his room by his things in it and take the car there",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/rice_on_table": {
+  "variant": "rice_on_table",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "leftover_rice"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "a glass box of leftover rice on the dining table",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/which_is_leftover": {
+  "variant": "which_is_leftover",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "empty_tray",
+    "leftover_rice"
+   ],
+   "removed": [],
+   "conditions": [
+    "disposal_by_state"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "not on",
+     "empty_tray",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "rice_on_table",
+  "oracle_route": "v6_which_is_leftover",
+  "challenge": "the box of rice and an empty takeout tray on the table",
+  "rationale": "only food goes into the fridge: the empty tray does not",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/two_leftovers__soup_on_table": {
+  "variant": "two_leftovers",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   13,
+   15,
+   16
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "leftover_rice",
+    "leftover_soup"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "on",
+     "leftover_soup",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "leftover_soup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "rice_on_table",
+  "oracle_route": "v6_two_leftovers__soup_on_table",
+  "challenge": "the box of rice on the table, and a pot of leftover soup, on the table or still on the stove",
+  "rationale": "all the leftovers, not only the first one seen: both into the fridge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/two_leftovers__soup_on_stove": {
+  "variant": "two_leftovers",
+  "category": "task",
+  "seeds": [
+   12,
+   14,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "leftover_rice",
+    "leftover_soup"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_items_unstated",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "on",
+     "leftover_soup",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "upright",
+     "leftover_soup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "rice_on_table",
+  "oracle_route": "v6_two_leftovers__soup_on_stove",
+  "challenge": "the box of rice on the table, and a pot of leftover soup, on the table or still on the stove",
+  "rationale": "all the leftovers, not only the first one seen: both into the fridge",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/still_eating": {
+  "variant": "still_eating",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "eating_bowl",
+    "eating_spoon",
+    "leftover_rice"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "near_start",
+     "eating_bowl",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "rice_on_table",
+  "oracle_route": "v6_still_eating",
+  "challenge": "the box of rice, and a bowl of oatmeal with a spoon in front of a seat: someone is still eating",
+  "rationale": "a portion someone is still eating is not a leftover: only the rice",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/fridge_out_of_view": {
+  "variant": "fridge_out_of_view",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": [
+    3.8,
+    4.9,
+    180.0
+   ],
+   "moved": [],
+   "added": [
+    "leftover_rice"
+   ],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "rice_on_table",
+  "oracle_route": "v6_fridge_out_of_view",
+  "challenge": "the robot starts in the dining room; the fridge stands in the open kitchen, out of view",
+  "rationale": "find the fridge first, then put the rice in",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T27_leftovers_to_fridge/fruit_stays_out": {
+  "variant": "fruit_stays_out",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is over. Put the leftovers in the fridge.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "leftover_rice",
+    "table_basket",
+    "table_cereal"
+   ],
+   "removed": [],
+   "conditions": [
+    "category_rule"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "leftover_rice",
+     "breakfast_fridge/inside_shelf"
+    ],
+    [
+     "is_closed",
+     "breakfast_fridge"
+    ],
+    [
+     "near_start",
+     "table_basket",
+     0.03
+    ],
+    [
+     "near_start",
+     "table_cereal",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "rice_on_table",
+  "oracle_route": "v6_fruit_stays_out",
+  "challenge": "the box of rice, the fruit basket with an apple and a box of cereal on the table",
+  "rationale": "only leftovers go into the fridge: the fruit and the cereal stay where they are",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T28_cup_to_bedside/cup_on_counter": {
+  "variant": "cup_on_counter",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bed_bear",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_cup",
+     "bookcase_3/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "the kid's plastic cup on the kitchen counter; his bed has the teddy bear on it",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T28_cup_to_bedside/which_cup": {
+  "variant": "which_cup",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bed_bear",
+    "counter_mug",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_cup",
+     "bookcase_3/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "near_start",
+     "cup_counter_b",
+     0.03
+    ],
+    [
+     "near_start",
+     "counter_mug",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_on_counter",
+  "oracle_route": "v6_which_cup",
+  "challenge": "on the counter: the kid's plastic cup, a china cup and a mug",
+  "rationale": "his cup is the plastic one: bring that one",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T28_cup_to_bedside/cup_put_away": {
+  "variant": "cup_put_away",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bed_bear",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "item_put_away"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_cup",
+     "bookcase_3/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_on_counter",
+  "oracle_route": "v6_cup_put_away",
+  "challenge": "the cup was put away in the low wall cabinet",
+  "rationale": "look in the cabinet, take the cup, close the door",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T28_cup_to_bedside/which_bed__east": {
+  "variant": "which_bed",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   16,
+   18
+  ],
+  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bed_bear",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_cup",
+     "bookcase_3/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_on_counter",
+  "oracle_route": "v6_which_bed__east",
+  "challenge": "two bedrooms with a bed each; his teddy bear lies on his",
+  "rationale": "his bed is the one with his bear: the cup goes next to that bed",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T28_cup_to_bedside/which_bed__south": {
+  "variant": "which_bed",
+  "category": "task",
+  "seeds": [
+   13,
+   14,
+   15,
+   17,
+   19
+  ],
+  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bed_bear",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_cup",
+     "cell_shelf_2/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_on_counter",
+  "oracle_route": "v6_which_bed__south",
+  "challenge": "two bedrooms with a bed each; his teddy bear lies on his",
+  "rationale": "his bed is the one with his bear: the cup goes next to that bed",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T28_cup_to_bedside/cup_out_of_view": {
+  "variant": "cup_out_of_view",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bed_bear",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "not_in_view"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_cup",
+     "bookcase_3/top"
+    ],
+    [
+     "upright",
+     "kid_cup"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_on_counter",
+  "oracle_route": "v6_cup_out_of_view",
+  "challenge": "the cup was left on the dining table, out of view",
+  "rationale": "find the cup first",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T28_cup_to_bedside/already_there": {
+  "variant": "already_there",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The kid is going to bed. Bring his cup to his bedside.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "bed_bear",
+    "kid_cup"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_already_met"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "kid_cup",
+     "bookcase_3/top"
+    ],
+    [
+     "near_start",
+     "kid_cup",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "cup_on_counter",
+  "oracle_route": "v6_already_there",
+  "challenge": "the cup already stands by his bed",
+  "rationale": "the goal already holds: check and leave it",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T29_clear_table_for_dinner/car_on_table": {
+  "variant": "car_on_table",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "table_car",
+    "toy_box"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "table_car",
+     "toy_box"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "the kid's toy car on the dining table; his toy box in the living room",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T29_clear_table_for_dinner/belongs_on_table": {
+  "variant": "belongs_on_table",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "set_bowl",
+    "set_spoon",
+    "table_car",
+    "toy_box"
+   ],
+   "removed": [],
+   "conditions": [
+    "category_rule"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "table_car",
+     "toy_box"
+    ],
+    [
+     "near_start",
+     "set_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "set_spoon",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_on_table",
+  "oracle_route": "v6_belongs_on_table",
+  "challenge": "the toy car, and a bowl and a spoon set for the meal",
+  "rationale": "what is set for the meal stays; only the toy goes",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T29_clear_table_for_dinner/homework_on_table": {
+  "variant": "homework_on_table",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "hw_notebook",
+    "hw_pencil"
+   ],
+   "removed": [],
+   "conditions": [
+    "storage_place",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "hw_notebook",
+     "desk_1/top"
+    ],
+    [
+     "on",
+     "hw_pencil",
+     "desk_1/top"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_on_table",
+  "oracle_route": "v6_homework_on_table",
+  "challenge": "the kid's notebook and pencil on the dining table",
+  "rationale": "homework goes back to the study desk, not just off the table",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T29_clear_table_for_dinner/several": {
+  "variant": "several",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "empty_can",
+    "table_book",
+    "table_car",
+    "toy_box"
+   ],
+   "removed": [],
+   "conditions": [
+    "category_rule",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "table_car",
+     "toy_box"
+    ],
+    [
+     "inside",
+     "empty_can",
+     "trash_can"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ],
+   "any": [
+    [
+     [
+      "on",
+      "table_book",
+      "bookcase_2/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "table_book",
+      "bookcase_3/top"
+     ]
+    ],
+    [
+     [
+      "on",
+      "table_book",
+      "large_shelf_2/shelf_1"
+     ]
+    ],
+    [
+     [
+      "on",
+      "table_book",
+      "large_shelf_2/shelf_2"
+     ]
+    ]
+   ]
+  },
+  "control": "car_on_table",
+  "oracle_route": "v6_several",
+  "challenge": "the toy car, a paperback and an empty soda can on the table",
+  "rationale": "each to its place: the toy to the toy box, the book to a bookshelf, the empty can into the bin",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T29_clear_table_for_dinner/nothing_to_clear": {
+  "variant": "nothing_to_clear",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "set_bowl",
+    "set_spoon"
+   ],
+   "removed": [],
+   "conditions": [
+    "goal_already_met"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "near_start",
+     "set_bowl",
+     0.03
+    ],
+    [
+     "near_start",
+     "set_spoon",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_on_table",
+  "oracle_route": "v6_nothing_to_clear",
+  "challenge": "the table holds only what is set for the meal",
+  "rationale": "nothing on it is out of place: leave the table as it is",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T29_clear_table_for_dinner/which_table__east": {
+  "variant": "which_table",
+  "category": "task",
+  "seeds": [
+   12,
+   13,
+   14,
+   15,
+   16
+  ],
+  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "dinner_pot",
+    "toy_box",
+    "toy_east",
+    "toy_west"
+   ],
+   "removed": [
+    "bowl_side_table",
+    "cup_side_table",
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "destination_unnamed"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "toy_east",
+     "toy_box"
+    ],
+    [
+     "near_start",
+     "toy_west",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_on_table",
+  "oracle_route": "v6_which_table__east",
+  "challenge": "a toy on each dining table; the pot of soup stands on one of them",
+  "rationale": "clear the table the meal is served on; the other table is left as it is",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T29_clear_table_for_dinner/which_table__west": {
+  "variant": "which_table",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   17,
+   18,
+   19
+  ],
+  "instruction": "Dinner is about to start. Take away what doesn't belong on the dining table.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "dinner_pot",
+    "toy_box",
+    "toy_east",
+    "toy_west"
+   ],
+   "removed": [
+    "bowl_side_table",
+    "cup_side_table",
+    "spoon_side_table"
+   ],
+   "conditions": [
+    "destination_unnamed"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "inside",
+     "toy_west",
+     "toy_box"
+    ],
+    [
+     "near_start",
+     "toy_east",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "car_on_table",
+  "oracle_route": "v6_which_table__west",
+  "challenge": "a toy on each dining table; the pot of soup stands on one of them",
+  "rationale": "clear the table the meal is served on; the other table is left as it is",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T30_bowls_for_soup/bowl_on_cabinet": {
+  "variant": "bowl_on_cabinet",
+  "category": "control",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "soup_bowl_1"
+   ],
+   "removed": [],
+   "conditions": [],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "soup_bowl_1",
+     "kitchen_island/top"
+    ],
+    [
+     "upright",
+     "soup_bowl_1"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": null,
+  "oracle_route": "nominal",
+  "challenge": "the soup cooking in the pot on the stove; a clean bowl on the low wall cabinet",
+  "rationale": "",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T30_bowls_for_soup/how_many": {
+  "variant": "how_many",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The soup is almost ready. Bring bowls over for serving it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "seat_spoon_1",
+    "seat_spoon_2",
+    "seat_spoon_3",
+    "soup_bowl_1",
+    "soup_bowl_2",
+    "soup_bowl_3"
+   ],
+   "removed": [
+    "clutter_cereal_a",
+    "clutter_cereal_b"
+   ],
+   "conditions": [
+    "count_from_scene",
+    "multi_object_goal"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "count_on_at_least",
+     [
+      "soup_bowl_1",
+      "soup_bowl_2",
+      "soup_bowl_3"
+     ],
+     "kitchen_island/top",
+     3
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bowl_on_cabinet",
+  "oracle_route": "v6_how_many",
+  "challenge": "three spoons laid out at the dining table; three clean bowls on the cabinet",
+  "rationale": "as many bowls as places at the table: three",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T30_bowls_for_soup/clean_one": {
+  "variant": "clean_one",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "full_bowl",
+    "soup_bowl_1"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "soup_bowl_1",
+     "kitchen_island/top"
+    ],
+    [
+     "upright",
+     "soup_bowl_1"
+    ],
+    [
+     "near_start",
+     "full_bowl",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bowl_on_cabinet",
+  "oracle_route": "v6_clean_one",
+  "challenge": "two bowls on the cabinet: one still has oatmeal in it, the other is empty",
+  "rationale": "for serving, the empty bowl",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T30_bowls_for_soup/bowl_put_away": {
+  "variant": "bowl_put_away",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "soup_bowl_1"
+   ],
+   "removed": [],
+   "conditions": [
+    "item_put_away"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "soup_bowl_1",
+     "kitchen_island/top"
+    ],
+    [
+     "upright",
+     "soup_bowl_1"
+    ],
+    [
+     "is_closed",
+     "kitchen_cabinet_4"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bowl_on_cabinet",
+  "oracle_route": "v6_bowl_put_away",
+  "challenge": "no bowl out; the clean bowls are in the low cabinet",
+  "rationale": "look in the cabinet, take a bowl, close the door",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T30_bowls_for_soup/no_bowl": {
+  "variant": "no_bowl",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "spare_mug",
+    "spare_plate"
+   ],
+   "removed": [
+    "bowl_dining_cabinet",
+    "bowl_inside_kitchen_cabinet",
+    "bowl_kitchen_cabinet",
+    "bowl_side_table"
+   ],
+   "conditions": [
+    "resource_absent"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "spare_mug",
+     "kitchen_island/top"
+    ],
+    [
+     "upright",
+     "spare_mug"
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bowl_on_cabinet",
+  "oracle_route": "v6_no_bowl",
+  "challenge": "no clean bowl anywhere; a mug and a plate on the cabinet",
+  "rationale": "soup needs something that holds liquid: the mug, not the plate",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
+ },
+ "T30_bowls_for_soup/bowl_not_plate": {
+  "variant": "bowl_not_plate",
+  "category": "task",
+  "seeds": [
+   10,
+   11,
+   12,
+   13,
+   14,
+   15,
+   16,
+   17,
+   18,
+   19
+  ],
+  "instruction": "The soup is almost ready. Bring a bowl over for serving it.",
+  "initial_conditions": {
+   "scene": "tasks/kitchen_skills",
+   "start": null,
+   "moved": [],
+   "added": [
+    "soup_bowl_1",
+    "spare_plate"
+   ],
+   "removed": [],
+   "conditions": [
+    "referent_clue"
+   ],
+   "initial_checks": []
+  },
+  "failure_triggers": [],
+  "goal_constraints": {
+   "all": [
+    [
+     "on",
+     "soup_bowl_1",
+     "kitchen_island/top"
+    ],
+    [
+     "upright",
+     "soup_bowl_1"
+    ],
+    [
+     "near_start",
+     "spare_plate",
+     0.03
+    ],
+    [
+     "hand_empty",
+     "right"
+    ]
+   ]
+  },
+  "control": "bowl_on_cabinet",
+  "oracle_route": "v6_bowl_not_plate",
+  "challenge": "a plate and a bowl on the cabinet",
+  "rationale": "soup is served in a bowl: the bowl, not the plate",
+  "success_criteria": "every GT goal atom holds at the end, nothing watched on the floor (unless allowed), every declared failure fired and manifested, the route's expected failures failed (benchmark/v5/validate.py classify)"
  }
 }

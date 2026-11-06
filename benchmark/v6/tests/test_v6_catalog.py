@@ -32,6 +32,8 @@ def test_v5_designs_unchanged():
     where things stand and where the robot starts are the seed's (layout.py)."""
     v5 = {t["task_id"]: t for t in json.loads((ROOT / "benchmark/v5/tasks.json").read_text())["tasks"]}
     for tid, t in TASKS.items():
+        if tid not in v5:                               # T21-T30: base tasks of v6's own (new_tasks_v6.py)
+            continue
         for vid in [x for ids in v5[tid]["v5_formal"].values() for x in ids]:
             if vid in t["v6_dropped"]:
                 assert vid not in t["variants"]
@@ -291,3 +293,17 @@ def test_t01_which_table():
                        if n.split("_")[0] in ("plate", "bowl", "cup", "mug", "spoon"))
         tables.add(sup)
     assert len(tables) == 2
+
+
+def test_new_base_tasks():
+    """T21-T30: a control and five Task-Level variants each, no Action-Level, no dynamic event, Chinese text."""
+    for k in range(21, 31):
+        tid = next(x for x in TASKS if x.startswith(f"T{k}_"))
+        tr = TASKS[tid]["v6_tracks"]
+        assert sorted(x["category"] for x in tr.values()) == ["control"] + ["task"] * 5, tid
+        t = TASKS[tid]
+        assert t["instruction_zh"]
+        for info in t["v6_variants"].values():
+            for lid in info["layouts"]:
+                v = t["variants"][lid]
+                assert not v.get("instruction") or v.get("instruction_zh"), (tid, lid)

@@ -2606,8 +2606,12 @@ def exact_base_poses(t, v):
 
 def build() -> dict:
     doc = json.loads(V5.read_text())
-    tasks = [build_task(t) for t in doc["tasks"]]
-    reg = dict(doc["condition_registry"], **NEW_CONDITIONS)
+    from benchmark.v6.new_tasks_v6 import NEW_CONDITIONS as NEW_TASK_CONDITIONS, families_for, new_base_tasks
+    new = [t for t, _ in new_base_tasks()]       # T21-T30: base tasks of v6's own, built like the v5 ones
+    for t in new:
+        FAMILIES.setdefault(t["task_id"], lambda t, tid=t["task_id"]: families_for(tid))
+    tasks = [build_task(t) for t in doc["tasks"] + new]
+    reg = dict(doc["condition_registry"], **NEW_CONDITIONS, **NEW_TASK_CONDITIONS)
     out = {"schema_version": 6, "benchmark_version": "v6", "kind": "zenobench_benchmark_tasks",
            "note": "Source: python benchmark/v6/define_tasks_v6.py (reads benchmark/v5/tasks.json); tracks: "
                    "benchmark/v6/tracks.py.",
